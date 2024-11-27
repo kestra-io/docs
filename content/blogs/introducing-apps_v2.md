@@ -10,24 +10,26 @@ author:
 image: /blogs/introducing-apps.jpg
 ---
 
-We’re excited to introduce a new feature in Kestra Enterprise Edition: **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
+Build self-service applications for data products and business processes using your Kestra workflows as a backend.
 
-![image.png](/blogs/introducing-apps/image.png)
+## Overview
+
+We’re excited to introduce a new feature in Kestra Enterprise Edition: **Apps**. Apps let you use your Kestra workflows as the backend for custom user interfaces. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. **Flows** act as the **backend**, processing data and executing tasks, while Apps serve as the frontend, allowing anyone to interact with your workflows regardless of their technical background. Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results.
+
+You can think of Apps as **custom UIs for flows**, allowing your users to interact with Kestra from the outside world, without needing to write any code.
 
 ---
 
-## What Are Apps
+## What Are Apps?
 
-Apps act as **frontend applications** for your Kestra workflows. They allow end-users to interact with workflows through forms, output displays, markdown blocks, approval buttons, and other UI components, while Kestra flows handle all backend processing.
+Apps act as a **front end** for your Kestra workflows. They allow users to interact with workflows through forms, approval buttons, and other UI components, while Kestra handles all the backend processing.
 
 With Apps, you can:
-- Create forms that submit data to workflows
-- Build approval interfaces for paused workflows
-- Display workflow outputs or logs, enabling non-technical stakeholders to validate data quality and request data they need for reporting and analytics in a self-serve manner.
+- create forms that submit data to workflows
+- build approval interfaces for paused workflows
+- display workflow outputs or logs, enabling stakeholders to validate data quality and request data they need for reporting and analytics in a self-serve manner
 
 In short, Apps let you turn any Kestra workflow into a user-facing application.
-
-![image1.png](/blogs/introducing-apps/image1.png)
 
 ---
 
@@ -43,16 +45,13 @@ Here are some examples of what you can do with Apps:
 
 ---
 
-## Use Cases for Apps
+## App Types
 
-Currently, Kestra supports two main use cases with Apps:
+Currently, Kestra offers two types of Apps:
+- **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
+- **Approval Apps**: these apps enable forms for approving or rejecting paused workflows. Depending on the decision, the workflow will either resume and provision the resources, or stop.
 
-1. **Form Submissions** — users submit data to workflows by entering custom parameter values. When they press the `Submit` button, Kestra initiates a new workflow execution.
-2. **Approval Processes** — users can approve or reject paused workflow executions. The workflow resumes or stops based on their decision.
-
-Both of them are built using the `Execution` app type. Read more about [available App types in our docs](https://kestra.io/docs/enterprise/apps).
-
-More types of apps are on the roadmap, such as apps to trigger actions using Kestra’s API. If you have a specific use case in mind, [we’d love to hear about it](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=enhancement%2Carea%2Fbackend%2Carea%2Ffrontend&projects=&template=feature.yml)!
+More types of apps are on the roadmap, such as apps to trigger actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
 
 ---
 
@@ -173,15 +172,7 @@ layout:
 
 Click on `View App` to see it in action:
 
-![image2.png](/blogs/introducing-apps/image2.png)
-
-You should see a page with a form:
-
-![image3.png](/blogs/introducing-apps/image3.png)
-
 Fill out the form and click on `Submit`. Once processing is complete, you should see the results displayed.
-
-![image4.png](/blogs/introducing-apps/image4.png)
 
 The UI display and all actions performed by the app are configurable through `blocks` specified in the `layout` property.
 
