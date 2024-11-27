@@ -48,8 +48,6 @@ Let’s dive into these highlights and other enhancements in more detail.
 
 ## Apps: Custom UIs for Your Flows
 
-::badge{version=">=0.20" editions="EE,Cloud"}
-::
 
 **Apps** let you create custom interfaces for interacting with Kestra workflows. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. **Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as the **frontend**, allowing anyone in the world to interact with your workflows regardless of their technical background. Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results to perform data validation and quality checks for critical business processes.
 
@@ -58,9 +56,6 @@ You can think of Apps as **custom UIs for flows**, allowing your end users to in
 Read more about Apps [in the docs](https://kestra.io/docs/enterprise/apps).
 
 ## Team-Level Isolation for Storage and Secrets
-
-::badge{version=">=0.20" editions="EE,Cloud"}
-::
 
 Kestra Enterprise has built-in [multitenancy](../docs/06.enterprise/03.tenants.md), providing *virtual* isolation across teams or business units. By default, each tenant uses the same [internal storage](../configuration/index.md#internal-storage) and [secrets backend](./secrets-manager.md) configured in your Kestra instance.
 
@@ -74,9 +69,6 @@ This feature enables decentralized workspaces for individual business units with
 
 ## Improved User Management with Invitations
 
-::badge{version=">=0.20" editions="EE,Cloud"}
-::
-
 Adding new users to Kestra just got simpler. With the new invitation feature, administrators can invite users with pre-configured RBAC permissions. Invitations can be emailed directly, and users can set up their accounts upon acceptance.
 
 Previously, administrators needed to create users manually and then assign roles afterward. Now, the process is streamlined: create an invitation with the right permissions, and users can join in a more self-service manner.
@@ -86,9 +78,6 @@ By default, if the email server is configured in Kestra EE, we send an email fro
 ![image.png](/blogs/release-0-20/image.png)
 
 ## Announcements
-
-::badge{version=">=0.20" editions="EE,Cloud"}
-::
 
 You can now add custom announcements from the Kestra UI to inform users about planned maintenance, outages, or incidents. This feature helps communicate important events directly from the UI. Announcements appear as banners of the chosen type (Info, Warning, Error) for the specified time period.
 
@@ -204,7 +193,7 @@ Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/trigger
 
 ## Task conditions with `runIf`
 
-The new `runIf` condition allows for simple conditional branching by using a single task property. You can skip a task if the provided condition evaluates to false.
+The new `runIf` task property allows performing a check before executing a task. This feature is particularly useful when you need to conditionally execute tasks based on the output of a previous task or a user input. If the provided condition evaluates to false, the task will be skipped.
 
 ::collapse{title="Example with a task that runs only if the boolean input is true"}
 ```yaml
@@ -224,13 +213,13 @@ tasks:
 ```
 ::
 
-This is especially helpful for microservice orchestration scenarios where you need to conditionally execute different tasks based on the status code of prior API calls.
+This new property is useful in microservice orchestration scenarios where you need to conditionally execute tasks based on the status code of prior API calls.
 
 ## New `allowWarning` core task property
 
-Often some tasks emit warnings that are not important enough to prevent marking the task execution as Success.
+Often some tasks emit warnings that are not important enough to block downstream processes or require manual intervention.
 
-The new core task property `allowWarning` allow a task run with warnings to be marked as Success.
+The new core task property `allowWarning` allow a task run with warnings to be marked as `Success` by simply setting `allowWarning: true`.
 
 ::collapse{title="Expand to learn more"}
 
@@ -306,16 +295,8 @@ If you want to become a Kestra contributor, check out our [Contributing Guide](h
 
 ## Next Steps
 
-This post covered new features and enhancements added in Kestra 0.20. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
-
-If you have any questions, reach out via Slack or open a GitHub issue.
-
-If you like the project, give us a GitHub star ⭐️ and join the community.
-
-## Next Steps
-
-This post covered new features and enhancements added in Kestra 0.19.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
+This post covered new features and enhancements added in Kestra 0.20.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
