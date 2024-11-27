@@ -18,7 +18,16 @@ You can execute Python code inside of a flow by either writing your Python inlin
 
 In this example, the flow will install the required pip packages, make an API request to fetch data and use the Python Kestra library to generate outputs and metrics using this data.
 
-## Scripts
+## Managing Dependencies
+
+Managing Python Dependencies can be frustrating. There's 3 ways you can manage your dependencies in Kestra:
+- Install with pip using `beforeCommands`
+- Set Container Image with Docker Task Runner
+- Build Docker Image and set it with Docker Task Runner
+
+For more information, check out the [dedicated guide here](./python-dependencies.md).
+
+## Script
 
 If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
 
