@@ -105,7 +105,7 @@ function App() {
 
 We can get our Webhook URL by going to **Triggers** at the top of our Flow in Kestra and hovering over webhook icon on the right:
 
-![trigger_copy](/docs//docs/how-to-guides/js-webhook/trigger_copy.png)
+![trigger_copy](/docs/how-to-guides/js-webhook/trigger_copy.png)
 
 This current example will make a request with data from a form (which we will add later) using the `useState` hook. We will store the state in `formData` and update it using `setFormData`.
 
@@ -177,7 +177,7 @@ function App() {
 
 Now our example will collect the data inside of the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
 
-![js-final](/docs//docs/how-to-guides/js-webhook/js-final.png)
+![js-final](/docs/how-to-guides/js-webhook/js-final.png)
 
 The last thing to add now is to display the response back to the user.
 
@@ -236,16 +236,16 @@ function App() {
 export default App;
 ```
 
-![js-response](/docs//docs/how-to-guides/js-webhook/js-response.png)
+![js-response](/docs/how-to-guides/js-webhook/js-response.png)
 
 This will:
 1. Display a Form with an input and a button.
 2. Make a request to Kestra with the input data as our request body.
 3. Receive the response and display it to the user.
 
-When we type in a value and press submit, we can see a new execution is created in Kestra and our request body was received and used in our Log task:
+When we type in a value and press **Submit**, we can see a new execution is created in Kestra and our request body was received and used in our Log task:
 
-![kestra-logs](/docs//docs/how-to-guides/js-webhook/kestra-logs.png)
+![kestra-logs](/docs/how-to-guides/js-webhook/kestra-logs.png)
 
 ::collapse{title="CSS Styling"}
 
