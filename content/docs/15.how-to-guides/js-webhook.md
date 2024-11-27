@@ -1,5 +1,5 @@
 ---
-title: Connect JavaScript App to Kestra
+title: Connect JavaScript Apps to Kestra
 icon: /docs/icons/nodejs.svg
 stage: Getting Started
 topics:
