@@ -29,7 +29,7 @@ micronaut:
 Multiple paths can be provided, and nested files will also be watched.
 Files have to end with `.yml` or `.yaml` to be considered as a flow. And only valid flows will be loaded, invalid flows will be ignored.
 
-File created locally should use `<namespace>.<flow_id>.yml` or `<namespace>_<flow_id>.yml` syntax to be loader properly.
+File created locally should use `<namespace>.<flow_id>.yml` or `<namespace>_<flow_id>.yml` syntax to be loaded properly.
 
 Flow created inside the UI will be created at the root of the first path supplied in the configuration.
 
