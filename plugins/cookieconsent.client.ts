@@ -73,6 +73,13 @@ export default defineNuxtPlugin(nuxtApp => {
             }
         }
 
+        if (!isEurope) {
+            enabledAnalytics();
+            enabledMarketing();
+
+            return;
+        }
+
         document.documentElement.classList.add('cc--darkmode');
 
         cookieConsent.run({
