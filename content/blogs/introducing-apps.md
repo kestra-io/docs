@@ -98,11 +98,7 @@ outputs:
     value: "{{outputs.extract.uri}}"
 ```
 
-Save that flow.
-
-Then, use the `Apps` page to configure a custom UI for that workflow.
-
-Go to the `Apps` page and click on `+ Create`. Then, paste the app configuration shown below.
+Save that flow. Then, go to the `Apps` page and click on `+ Create`. Then, paste the app configuration shown below.
 
 ::collapse{title="Expand for the App code"}
 ```yaml
