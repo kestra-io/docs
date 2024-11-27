@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.kestra.io">
-    <img src="https://kestra.io/og-image.png" style="border-radius: 10px" width="800" alt="Kestra workflow orchestrator" />
+    <img src="https://kestra.io/banner.png"  alt="Kestra workflow orchestrator" />
   </a>
 </p>
 
