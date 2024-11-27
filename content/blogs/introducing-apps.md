@@ -1,6 +1,6 @@
 ---
 title: "Introducing Apps: Custom UIs for Kestra Workflows"
-description: Create custom user interfaces on top of your workflows, allowing you to build self-service applications for your data products and business processes.
+description: Build self-service applications for data products and business processes using your Kestra workflows as a backend.
 date: 2024-12-05T13:00:00
 category: News & Products Updates
 author:
@@ -21,11 +21,8 @@ We’re excited to introduce a new feature in Kestra Enterprise Edition: **Apps*
 Apps act as a **front end** for your Kestra workflows. They allow users to interact with workflows through forms, approval buttons, and other UI components, while Kestra handles all the backend processing.
 
 With Apps, you can:
-
 - Create forms that submit data to workflows
-
 - Build approval interfaces for paused workflows
-
 - Display workflow outputs or logs enabling your stakeholders to validate data quality and request data they need for reporting and analytics in a self-serve manner.
 
 In short, Apps let you turn any Kestra workflow into a user-facing application.
@@ -39,13 +36,9 @@ In short, Apps let you turn any Kestra workflow into a user-facing application.
 Workflows often require input from non-technical users who need to validate some data processing steps and decide on approval status. Traditionally, building such interfaces required a lot of effort—writing frontend code, connecting to APIs, validating user inputs, and handling security and permissions. Apps eliminate all that complexity. You can configure a custom UI for your workflows in just a few lines of declarative YAML configuration, and Kestra takes care of the rest.
 
 Here are some examples of what you can do with Apps:
-
 - **Approval Workflows**: approve or reject workflows provisioning resources or validating data.
-
 - **Data Requests**: let your stakeholders request datasets they need and download them directly from the app as a self-service.
-
 - **Feedback Forms**: collect feedback, or handle signups for events.
-
 - **IT Tickets**: users can submit bug reports or feature requests, which will be routed to the appropriate team to resolve the issue.
 
 ---
@@ -200,7 +193,7 @@ For more examples, check out the [GitHub repository](https://github.com/kestra-i
 
 ---
 
-## What’s Next?
+## Next Steps
 
 This is just the first App release that opens up a world of possibilities for automating user-facing processes. If you have ideas or feedback, we’d love to hear from you.
 
@@ -208,5 +201,6 @@ With Apps, you can make Kestra workflows accessible to everyone, regardless of t
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
 ::
