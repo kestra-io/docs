@@ -25,7 +25,7 @@ Managing Python Dependencies can be frustrating. There's 3 ways you can manage y
 - Set Container Image with Docker Task Runner
 - Build Docker Image and set it with Docker Task Runner
 
-For more information, check out the [dedicated guide here](./python-dependencies.md)
+For more information, check out the [dedicated guide here](./python-dependencies.md).
 
 ## Script
 
