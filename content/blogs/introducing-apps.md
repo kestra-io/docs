@@ -10,7 +10,7 @@ author:
 image: /blogs/introducing-apps.jpg
 ---
 
-We’re excited to introduce a new feature in Kestra Enterprise Edition: **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
+We’re excited to introduce **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
 
 ![image.png](/blogs/introducing-apps/image.png)
 
