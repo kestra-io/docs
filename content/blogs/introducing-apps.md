@@ -39,7 +39,7 @@ Here are some examples of what you can do with Apps:
 - **Approval Workflows**: approve or reject workflows that provision resources or validate data
 - **Data Requests**: let stakeholders request datasets they need and download them directly from the app as a self-service
 - **Feedback Forms**: collect feedback or handle signups for events
-- **IT Tickets**: users can submit bug reports or feature requests, which are then routed to the appropriate team to resolve the issue
+- **IT Tickets**: users can submit bug reports or feature requests, which are then routed to the appropriate team to resolve the issue.
 
 ---
 
@@ -90,12 +90,12 @@ inputs:
 tasks:
   - id: extract
     type: io.kestra.plugin.core.http.Download
-    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/ion/{{ inputs.data }}.ion
+    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/ion/{{inputs.data}}.ion
 
 outputs:
   - id: data
     type: FILE
-    value: "{{ outputs.extract.uri }}"
+    value: "{{outputs.extract.uri}}"
 ```
 
 Save that flow.
