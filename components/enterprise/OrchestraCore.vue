@@ -333,7 +333,7 @@
                 gap: 42px;
 
                 @include media-breakpoint-down(sm) {
-                    background-size: auto;
+                    background-size: 160% auto;
                     background-position: center;
                 }
                 @media only screen and (max-width: 760px) {
