@@ -17,24 +17,24 @@ Enterprise Edition users can now benefit from more team-level isolation, a new i
 
 The table below highlights the key features of this release.
 
-| Feature                                          | Description                                                                                                                                     | Edition |
-|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-| Apps                                             | Build custom UIs to interact with Kestra from the outside world.                                                                                | Enterprise Edition |
-| Team-level Storage and Secret Backends Isolation | Provide data isolation across business units or teams by configuring dedicated storage or secret backends for each tenant or namespace.         | Enterprise Edition |
-| Invitations                                      | Add new users to your tenant or instance by using the invitation process.                                                                       | Enterprise Edition |
-| Announcements                                    | Add a custom announcement to inform users about planned maintenance downtimes, outages, or incidents.                                           | Enterprise Edition |
-| Flow-level SLA            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                             | All editions |
-| New core `runIf` task property                   | Skip a task if the provided condition evaluates to false.                                                                                       | All editions |
-| System Labels                                    | Add extra metadata to disable edits from the UI (`system.readOnly`) or to track cross-execution dependencies (`system.correlationId`).          | All editions |
-| Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                               | All editions |
-| New `errorLogs()` function                       | Add details about why workflow has failed in alert notifications.                                                                               | All editions |
-| Bookmarks                                        | Bookmark any page with your selected UI filters.                                                                                                | All editions |
-| Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                                | All editions |
-| Improved filter & search bar                     | Adjust filters on any UI page simply by typing your filter criteria.                                                                            | All editions |
-| Enhancements to dbt                              | Kestra can persist the dbt manifest in the KV Store to rebuild only models that changed since the last run.                                     | All editions |
-| Azure ADLS Gen2 plugin                           | Process files from Azure ADLS Gen2 data lake                                                                                                    | All editions |
-| OAuth token tasks for AWS and Azure              | Dedicated tasks to fetch OAuth tokens that you can use e.g. along with the [Kubernetes task runner](https://kestra.io/docs/task-runners/types/kubernetes-task-runner)                                               | All editions |
-| Manually pause running Executions                | When you pause an execution manually, it will continue running the current task but all downstream tasks will be paused until manually resumed. | All editions |
+| Feature                                          | Description                                                                                                                                    | Edition |
+|--------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------| --- |
+| Apps                                             | Build custom UIs to interact with Kestra from the outside world.                                                                               | Enterprise Edition |
+| Team-level Storage and Secret Backends Isolation | Provide data isolation across business units or teams by configuring dedicated storage or secret backends for each tenant or namespace.        | Enterprise Edition |
+| Invitations                                      | Add new users to your tenant or instance by using the invitation process.                                                                      | Enterprise Edition |
+| Announcements                                    | Add a custom announcement to inform users about planned maintenance downtimes, outages, or incidents.                                          | Enterprise Edition |
+| Flow-level SLA            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                            | All editions |
+| New core `runIf` task property                   | Skip a task if the provided condition evaluates to false.                                                                                      | All editions |
+| System Labels                                    | Disable edits from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.               | All editions |
+| Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                              | All editions |
+| New `errorLogs()` function                       | Add details about why workflow has failed in alert notifications.                                                                              | All editions |
+| Bookmarks                                        | Bookmark any page with your selected UI filters.                                                                                               | All editions |
+| Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                               | All editions |
+| Improved filter & search bar                     | Adjust filters on any UI page simply by typing your filter criteria.                                                                           | All editions |
+| Enhancements to dbt                              | Persist the dbt manifest in the KV Store to rebuild only dbt models that changed since the last run.                                           | All editions |
+| Azure ADLS Gen2 plugin                           | Process files from Azure ADLS Gen2 data lake.                                                                                                  | All editions |
+| OAuth token tasks for AWS and Azure              | Fetch OAuth tokens that you can use along with the [Kubernetes task runner](https://kestra.io/docs/task-runners/types/kubernetes-task-runner). | All editions |
+| Manually pause running Executions                | Pause an execution manually to pause all downstream tasks until manually resumed (pause starts after finishing the task in progress).          | All editions |
 
 Check the video below for a quick overview of the new features.
 
@@ -71,7 +71,7 @@ This feature enables decentralized workspaces for individual business units with
 
 Adding new users to Kestra just got simpler. With the new invitation feature, administrators can invite users with pre-configured RBAC permissions. Invitations can be emailed directly, and users can set up their accounts upon acceptance.
 
-Previously, administrators needed to create users manually and then assign roles afterward. Now, the process is streamlined: create an invitation with the right permissions, and users can join in a more self-service manner.
+Previously, administrators needed to create users manually and then assign roles afterward. Now, once you create an invitation with the right permissions, users can join in a more self-service manner.
 
 By default, if the email server is configured in Kestra EE, we send an email from [no-reply@kestra.io](mailto:no-reply@kestra.io) with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
 
@@ -79,9 +79,11 @@ By default, if the email server is configured in Kestra EE, we send an email fro
 
 ## Announcements
 
-You can now add custom announcements from the Kestra UI to inform users about planned maintenance, outages, or incidents. This feature helps communicate important events directly from the UI. Announcements appear as banners of the chosen type (Info, Warning, Error) for the specified time period.
+You can now add custom announcements from the Kestra UI to inform users about planned maintenance, outages, or incidents. This feature helps communicate important events directly from the UI.
 
 ![image 1.png](/blogs/release-0-20/image_1.png)
+
+Announcements appear as banners of the chosen type (`Info`, `Warning`, `Error`) for the specified time period.
 
 ![image 2.png](/blogs/release-0-20/image_2.png)
 
@@ -93,9 +95,9 @@ Labels prefixed with `system.` are hidden in the UI unless you explicitly filter
 
 ## Flow-Level SLA
 
-Set custom Service Level Agreements (SLAs) per workflow, defining what happens if a workflow runs too long—fail it, cancel it, or log a warning. SLAs help you ensure that workflows meet your requirements by specifying conditions that must be met during execution.
+Set custom Service Level Agreements (SLAs) per workflow, defining what happens if a workflow runs too long or doesn't satisfy conditions — fail it, cancel it, or just log a message. SLAs help you ensure that workflows meet your requirements by specifying conditions that must be met during execution.
 
-For instance, if a workflow is stuck in a created state for too long, SLAs can trigger corrective actions like marking the workflow as failed or cancelling it. This ensures workflow health and timely execution.
+For instance, if a workflow is stuck in a created state for too long, SLAs can trigger corrective actions like marking the workflow as failed or cancelling it.
 
 ::collapse{title="Expand for an SLA example"}
 ```yaml
