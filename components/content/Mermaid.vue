@@ -1,5 +1,5 @@
 <template>
-    <div class="mermaid" v-if="show">
+    <div class="mermaid bg-white p-4" v-if="show" >
         <slot></slot>
     </div>
 </template>
@@ -17,3 +17,14 @@
   })
 
 </script>
+
+<style lang="scss">
+.mermaid {
+    border-radius: 10px;
+      
+    span p {
+      color: black;
+      font-size: 22px;
+    }
+}
+</style>
