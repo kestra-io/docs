@@ -133,7 +133,7 @@ POST _snapshot/my_snapshot_repository/kestra/_restore
 If you need to start from a fresh Kafka instance, you can reindex Kafka from the data in Elasticsearch using the following Kestra command:
 
 ```shell
-kestra sys restore-queue
+kestra sys-ee restore-queue
 ```
 
 Since some execution information is stored only in Kafka, not all pending executions may be restarted.
