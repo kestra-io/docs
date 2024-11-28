@@ -8,6 +8,12 @@ topics:
 
 Extend Kestra by using the API.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 Kestra is built with an API-first design in mind, with a powerful API allowing you to connect Kestra to external systems. Whether that's through your flows directly or using the Kestra API, there's lots of options.
 
 In this guide, we're going to specifically look at the Kestra API and how that can enable you to extend Kestra and integrate it into other systems.
@@ -23,7 +29,7 @@ In the documentation, there's references for both the [Open Source](../api-refer
 If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentication), or you're using the [Enterprise Edition](/enterprise), you will need to add authentication to your requests. You can easily do this using the `-u` argument and passing our username and password in using the following format `username:password`. This example uses the default username and password inside of the [Kestra Docker Compose](../02.installation/03.docker-compose.md):
 
 ```bash
-curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8084/api/v1/executions/company.team/hello_world
+curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world
 ```
 
 With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/api-tokens.md) to authenticate when making requests, for example:
@@ -53,7 +59,7 @@ tasks:
 To make this request, we can use [cURL](https://en.wikipedia.org/wiki/CURL) in the command line:
 
 ```bash
-curl -X POST http://localhost:8084/api/v1/flows -H "Content-Type:application/x-yaml" -d "id: created_by_api
+curl -X POST http://localhost:8080/api/v1/flows -H "Content-Type:application/x-yaml" -d "id: created_by_api
 namespace: company.team
 
 tasks:
@@ -162,7 +168,7 @@ For more examples on executing with the API, check out the [Executions documenta
 When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution with the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/executions/-executionId-) `/api/v1/executions/{executionId}`:
 
 ```bash
-curl -X GET http://localhost:8084/api/v1/executions/MYkTmLrI36s10iVXHwRbR
+curl -X GET http://localhost:8080/api/v1/executions/MYkTmLrI36s10iVXHwRbR
 ```
 
 The response received includes everything about the execution including the times the state changed, and any outputs generated:
