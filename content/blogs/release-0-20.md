@@ -28,6 +28,7 @@ The table below highlights the key features of this release.
 | System Labels                                    | Disable edits from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.               | All editions |
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                              | All editions |
 | New `errorLogs()` function                       | Add details about why workflow has failed in alert notifications.                                                                              | All editions |
+| New sidebar                                      | See the latest product news and docs from the right sidebar.                                                                                   | All editions |
 | Bookmarks                                        | Bookmark any page with your selected UI filters.                                                                                               | All editions |
 | Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                               | All editions |
 | Improved filter & search bar                     | Adjust filters on any UI page simply by typing your filter criteria.                                                                           | All editions |
@@ -306,6 +307,12 @@ errors:
     message: "Failure alert: {{ errorLogs() }}"
 ```
 ::
+
+## New Sidebar
+
+The new sidebar on the right side of the Kestra UI provides quick access to the latest product news, documentation, and other resources. You can now stay up-to-date and browse the docs (soon contextual!) without leaving the UI.
+
+![sidebar](/blogs/release-0-20/sidebar.png)
 
 ## Bookmarks
 
