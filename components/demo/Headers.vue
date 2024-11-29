@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 align-items-center d-flex meeting-container">
-                    <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/meetings/david76?embed=true"></div>
+                    <div class="meetings-iframe-container" data-src="https://share-eu1.hsforms.com/12BdUcBTuRU2vxM6AZd7p8gg7f8j?embed=true"></div>
                 </div>
             </div>
         </div>
