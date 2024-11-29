@@ -12,7 +12,7 @@
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-animated btn-purple-animated me-2 mb-2"
+                        class="btn btn-animated btn-purple-animated me-2"
                     >
                         <NuxtImg
                             width="25px"
@@ -25,7 +25,9 @@
                         Get started
                     </NuxtLink>
 
-                    <a href="https://www.producthunt.com/posts/kestra?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kestra" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=612077&theme=light" alt="Kestra - All&#0045;in&#0045;one&#0032;automation&#0032;&#0038;&#0032;orchestration&#0032;platform | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+                    <a href="https://www.producthunt.com/posts/kestra?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kestra" target="_blank">
+                        <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=612077&theme=light" alt="Kestra - All&#0045;in&#0045;one&#0032;automation&#0032;&#0038;&#0032;orchestration&#0032;platform | Product Hunt" style="width: 250px; height: 49px;" width="250" height="54" />
+                    </a>
                 </div>
             </div>
             <div class="img-block">
