@@ -311,7 +311,7 @@ errors:
 
 You can now bookmark any Kestra UI page with your selected filters. This feature is particularly handy when you need quick access to specific filtered views, such as certain workflows or error logs. This new feature speeds up navigation and makes frequently-used pages available at a glance.
 
-TODO good image
+![bookmarks](/blogs/release-0-20/bookmarks.png)
 
 ## Transactional Queries
 
@@ -323,7 +323,7 @@ In short, you can use this feature to safely execute sequences of SQL operations
 
 The filter and search bars have been improved to better handle more complex filtering criteria. You can now adjust filters on any UI page simply by typing your filter criteria. The improved filtering system applies across different parts of the Kestra UI, including the main Dashboard, Executions, Logs, Flows, Apps, Blueprints, and more.
 
-TODO super short GIF
+![filters](/blogs/release-0-20/filters.png)
 
 ## Enhancements to dbt
 
