@@ -25,23 +25,7 @@
                         Get started
                     </NuxtLink>
 
-                    <a
-                        href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
-                        class="btn btn-animated btn-dark-animated  mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#home-intro"
-                    >
-                        <NuxtImg
-                            width="25px"
-                            height="25px"
-                            loading="lazy"
-                            format="webp"
-                            src="/landing/home/play.svg"
-                            alt="play"
-                        />
-                        Watch video
-                    </a>
-
+                    <a href="https://www.producthunt.com/posts/kestra?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kestra" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=612077&theme=light" alt="Kestra - All&#0045;in&#0045;one&#0032;automation&#0032;&#0038;&#0032;orchestration&#0032;platform | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
                 </div>
             </div>
             <div class="img-block">
