@@ -1380,6 +1380,27 @@ Functions in Kestra allow you to dynamically generate or manipulate content. The
 
 ---
 
+### errorLogs
+
+The `errorLogs()` function retrieves a list of error logs from the failed task run. This is useful when sending alerts on failure. When using this function e.g. in a Slack alert message, you'll have a context about why the execution failed.
+
+```yaml
+id: error_logs_demo
+namespace: company.team
+
+tasks:
+  - id: fail
+    type: io.kestra.plugin.core.execution.Fail
+    errorMessage: Something went wrong, make sure to fix it asap ⚠️
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.core.log.Log
+    message: list of error logs — {{ errorLogs() }}>
+```
+
+---
+
 ### block
 
 The `block` function renders the contents of a block multiple times. It is distinct from the `block` tag used to declare blocks.
