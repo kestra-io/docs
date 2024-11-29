@@ -23,7 +23,7 @@ The table below highlights the key features of this release.
 | Team-level Storage and Secret Backends Isolation | Provide data isolation across business units or teams by configuring dedicated storage or secret backends for each tenant or namespace.        | Enterprise Edition |
 | Invitations                                      | Add new users to your tenant or instance by using the invitation process.                                                                      | Enterprise Edition |
 | Announcements                                    | Add a custom announcement to inform users about planned maintenance downtimes, outages, or incidents.                                          | Enterprise Edition |
-| Flow-level SLA            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                            | All editions |
+| Flow-level SLA (Beta)                            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                            | All editions |
 | New core `runIf` task property                   | Skip a task if the provided condition evaluates to false.                                                                                      | All editions |
 | System Labels                                    | Disable edits from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.               | All editions |
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                              | All editions |
@@ -93,11 +93,49 @@ System Labels provide a powerful way to add extra metadata to manage executions.
 
 Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your Kestra configuration. Read more in the [System Labels documentation](https://kestra.io/docs/concepts/system-labels).
 
-## Flow-Level SLA
+## Flow-Level SLAs
 
-Set custom Service Level Agreements (SLAs) per workflow, defining what happens if a workflow runs too long or doesn't satisfy conditions — fail it, cancel it, or just log a message. SLAs help you ensure that workflows meet your requirements by specifying conditions that must be met during execution.
+Starting from Kestra 0.20, you can define Service Level Agreements (SLAs) at the workflow level to specify actions when workflows fail to meet defined conditions. SLAs allow you to maintain control by triggering behaviors such as failing the workflow, canceling it, or logging a message when a breach occurs.
 
-For instance, if a workflow is stuck in a created state for too long, SLAs can trigger corrective actions like marking the workflow as failed or cancelling it.
+For instance, you can use an SLA to cancel a workflow that runs longer than expected or fails to meet specific assertions, ensuring your processes stay within defined parameters.
+
+::collapse{title="Expand for an SLA example"}
+```yaml
+id: sla_example
+namespace: company.team
+
+sla:
+  - id: maxDuration
+    type: MAX_DURATION
+    behavior: CANCEL
+    duration: PT2S
+    labels:
+      sla: missed
+      reason: "Execution exceeded the maximum allowed duration."
+
+tasks:
+  - id: start_log
+    type: io.kestra.plugin.core.log.Log
+    message: "Workflow initiated. SLA monitoring in progress."
+
+  - id: delayed_task
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT3S  # Exceeds the SLA to trigger corrective action
+
+  - id: skipped_task
+    type: io.kestra.plugin.core.log.Log
+    message: "This task is skipped due to SLA breach."
+```
+::
+
+SLAs in Kestra 0.20 empower you to enforce execution policies tailored to your workflows, whether by tracking duration limits or defining specific conditions for success. Learn more about SLAs and their configuration in the [SLA documentation](https://kestra.io/docs/workflow-components/sla).
+
+
+## Flow-Level SLA (Beta)
+
+Starting from Kestra 0.20, you can set custom Service Level Agreements (SLAs) per workflow, defining what happens if a workflow runs longer than expected or doesn't satisfy conditions. You can assert that your workflows meet SLAs and trigger corrective actions when they don't.
+
+For instance, if a workflow takes longer than expected (`MAX_DURATION`) or doesn't return the expected results (`EXECUTION_ASSERTION`), you can set an SLA `behavior` to cancel or fail the execution. Alternatively, an SLA behavior can be set to `NONE` to simply log a message and add specific labels indicating the SLA breach.
 
 ::collapse{title="Expand for an SLA example"}
 ```yaml
@@ -111,7 +149,6 @@ sla:
     duration: PT2S
     labels:
       sla: missed
-      reason: "Task 'sleepyhead' exceeded the allowed duration."
 
 tasks:
   - id: punctual
@@ -128,7 +165,12 @@ tasks:
 ```
 ::
 
-For more SLA examples, check out the [SLA docs](https://kestra.io/docs/workflow-components).
+::alert{type="info"}
+Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases, or it might become unsupported.
+::
+
+For more details and examples, check the [SLA docs](https://kestra.io/docs/workflow-components/sla).
+
 
 ## Flow Trigger Enhancements
 
@@ -152,7 +194,7 @@ triggers:
     preconditions:
       timeWindow:
         type: DAILY_TIME_DEADLINE
-        deadline: "09:00:00+01:00"
+        deadline: "09:00:00"
       flows:
         - namespace: company.team
           flowId: bronze_layer
