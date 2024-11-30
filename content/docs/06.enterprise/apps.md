@@ -23,8 +23,6 @@ Currently, Kestra offers two types of Apps:
 - **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
 - **Approval Apps**: these apps enable forms for approving or rejecting paused workflows. Using the same example, an approval app could be used to either approve or reject a request for provisioning resources. Depending on the decision, the workflow will either resume and provision the resources, or stop.
 
-More types of apps are on the roadmap, such as apps to trigger actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
-
 ---
 
 ## How Apps Help
@@ -47,8 +45,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`.
 
-### Example 1: App to Start a New Execution
-
+### App to create a new execution
 Apps serve as custom UIs for workflows, so you need to first create a flow. Here is a simple configuration for a paremtrized flow that logs a message when triggered:
 
 ```yaml
@@ -66,8 +63,9 @@ tasks:
     message: Hello {{ inputs.user }}
 ```
 
-Here’s a simple configuration for a form app that triggers a new workflow execution when submitted:
+Below is a simple configuration for a form app that triggers a new workflow execution when submitted.
 
+::collapse{title="App to start a new execution"}
 ```yaml
 id: hello_world_app
 type: io.kestra.plugin.ee.apps.Execution
@@ -123,13 +121,16 @@ layout:
         url: https://github.com/kestra-io/examples/tree/main/apps
         style: INFO
 ```
+::
 
+This app is `PUBLIC`, so anyone with the URL can access it without requiring login. Alternatively, you can set the `access` type to `PRIVATE` to restrict the app only to specific users.
+This app is perfect for building **public forms** that anyone in the world can access.
 
-Note that this app is `PUBLIC`, meaning anyone with the URL can access it without requiring login. Alternatively, you can set the `access` type to `PRIVATE` to restrict the app only to specific users.
-This app is perfect for building **public forms** that anyone can access.
+### More examples
 
+Below you can find more examples of apps that you can create in Kestra.
 
-### Example 2: App to Request and Download Data
+::collapse{title="App to request and download data"}
 
 Let's create a flow that fetches the relevant dataset based on user input:
 
@@ -228,9 +229,9 @@ layout:
 ```
 
 This app is perfect for reporting and analytics use cases where users can request data and download the results.
+::
 
-
-## App to Resume a Paused Execution
+::collapse{title="App to request compute resources and get them approved"}
 
 Here is a flow simulating a request for resources that needs manual approval:
 
@@ -240,8 +241,7 @@ namespace: company.team
 
 variables:
   slack_message: >
-    New form submission! Click on the Resume button here to approve or reject the request
-#      {{ appLink('myApp') }}
+    New form submission! Click on the Resume button here to approve or reject the request {{ appLink('myApp') }}
 
 inputs:
   - id: resource_type
@@ -346,10 +346,8 @@ outputs:
     value: "{{ outputs.get_service_catalog.uri }}"
 ```
 
-Below is a comprehensive example of a compute resources approval app. Expand the snippet to see the complete configuration:
+Below is a comprehensive example of a compute resources approval app.
 
-
-::collapse{title="Complete Configuration for an Approval App"}
 ```yaml
 id: compute_resources_approval
 type: io.kestra.plugin.ee.apps.Execution
@@ -513,7 +511,7 @@ You can add custom tags to organize and filter apps in the App Catalog. For exam
 
 Each app has a unique URL that you can share with others. When someone opens the URL, they will see the app and can submit requests. You can share the URL with team members, customers, or partners to let them interact with your Kestra workflows.
 
-The basic structure of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
+The base URL of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
 
 You can copy the URL from the Apps catalog page in the Kestra UI.
 
@@ -527,35 +525,14 @@ For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 
 When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
 
----
 
-## Private Access for Using Apps
+### Private Access for Using Apps
 
 When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
 
-## Private Access for Building Apps
+### Private Access for Building Apps
 
 The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
-
----
-
-## Expiration
-
-For each app, you can set an expiration date (`expiration.endDate`) when you know exactly how long the app should be available. Once the date passes, the app will no longer be accessible.
-
-You can also determine a time period (`expiration.startDate` and `expiration.endDate`) during which the app should be available.
-
-For example, if you’re collecting feedback on a new feature, you can set the form app to be available starting on a release date and ending after being live for a week. Both the start and end dates are optional, so you can:
-- let the app be active indefinitely with no start or end date
-- let the app be active indefinitely but starting from a specific start date (e.g. `"2026-01-01"`) with no end date
-- let the app be active for a predetermined period starting from a given start date and ending on a specific end date
-- let the app be active for a predetermined period but only specifying the end date.
-
----
-
-## App Theme Templates
-
-Kestra offers multiple templates to style your app. At the time of writing, the available templates include `SYSTEM`, `LIGHT`, and `DARK` themes. You can choose the theme that best fits your app’s design and branding.
 
 ---
 
