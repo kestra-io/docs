@@ -200,7 +200,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - cat {{outputs.outputs_metrics.outputFiles['downloads.txt']}}
+      - cat {{ outputs.outputs_metrics.outputFiles['downloads.txt'] }}
 ```
 
 _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
