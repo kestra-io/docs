@@ -38,6 +38,6 @@ If you want to change the default expiration time, you can do so by setting the 
 ```yaml
 kestra:
   security:
-    invitation:
+    invitations:
       expireAfter: P30D
 ```
