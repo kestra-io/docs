@@ -29,10 +29,9 @@
                 </div>
                 <div class="sticky-features-item mb__5">
                     <div class="features-item-content" :class="{'w--current': isItemInView(2)}">
-                        <h3>Better Governance</h3>
+                        <h3>Scale with no limits</h3>
                         <p class="mt-3">
-                            Give your team secured, isolated environments and control over workflows. With tailored
-                            automation and precise access management, you can ensure compliance and efficiency at scale.
+ Kestra Enterprise scales with no downtime. Its reliable architecture and task runners, support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Get a Demo</span>
