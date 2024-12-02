@@ -29,7 +29,7 @@
                 </div>
                 <div class="sticky-features-item mb__5">
                     <div class="features-item-content">
-                        <h3>Better Governance</h3>
+                        <h3>Scale With No Limits</h3>
                         <p class="mt-3">
                             Kestra Enterprise scales with no downtime. Its reliable architecture and task runners,
                             support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
