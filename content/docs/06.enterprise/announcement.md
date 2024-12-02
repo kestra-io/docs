@@ -5,20 +5,23 @@ editions: ["EE"]
 version: ">= 0.20.0"
 ---
 
-Announcements allow you to notify your users about any changes or inform them about planned maintenance downtime
+Communicate planned maintenance or incidents with in-app banners
 
-### How to create an announcement
+## Overview
 
-You can add a custom banner to communicate information such a news or an upcoming maintenance of the Kestra instance.
-To do so, administrator can setup an Announcement by going throught the Administration > Cluster > Announcement panel
+Announcements allow you to notify your users about any important events such as planned maintenance downtime.
+
+## How to create an announcement
+
+To add a custom in-app banner, go to the Administration → Cluster → Announcements tab.
 
 ![announcement panel](/docs/enterprise/announcement/main_announcement.png)
 
-The admin can configure the announcement as follows:
+As a user with an Admin role, you can configure the following within each announcement:
 
-* Message
-* Type: information, alert or note
-* Start and end date for which to display the announcement
+- `Message`: the text to display in the banner
+- `Type`: the type of banner to display (`info`, `warning`, `error`)
+- The `start` and `end` date during which the announcement should be displayed.
 
 ![setup announcement](/docs/enterprise/announcement/setup_announcement.png)
 
