@@ -1,6 +1,8 @@
 ---
 title: Announcement
+icon: /docs/icons/admin.svg
 editions: ["EE"]
+version: ">= 0.20.0"
 ---
 
 Announcements allow you to notify your users about any changes or inform them about planned maintenance downtime
