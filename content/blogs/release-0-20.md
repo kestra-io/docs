@@ -11,7 +11,7 @@ image: /blogs/release-0-20.png
 ---
 
 
-Kestra 0.20.0 is here, and it adds multiple highly requested features, including new flow and task properties (like `sla` and `runIf`) to your favorite open-source orchestration platform.
+Kestra 0.20.0 is here, introducing multiple highly requested features to your favorite open-source orchestration platform. This release adds new flow and task properties, such as `sla` and `runIf`, and new Flow trigger `preconditions` bringing advanced time-driven dependencies across flows.
 
 Enterprise Edition users can now benefit from more team-level isolation, a new invite process, and custom UIs to interact with Kestra from the outside world using Apps.
 
@@ -25,9 +25,9 @@ The table below highlights the key features of this release.
 | Announcements                                    | Add a custom announcement to inform users about planned maintenance downtimes, outages, or incidents.                                          | Enterprise Edition |
 | Flow-level SLA (Beta)                            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                            | All editions |
 | New core `runIf` task property                   | Skip a task if the provided condition evaluates to false.                                                                                      | All editions |
-| System Labels                                    | Disable edits from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.               | All editions |
+| System Labels                                    | Prevent edits from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.               | All editions |
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                              | All editions |
-| New `errorLogs()` function                       | Add details about why workflow has failed in alert notifications.                                                                              | All editions |
+| New `errorLogs()` function                       | Provide context about why workflow has failed in alert notifications.                                                                          | All editions |
 | New sidebar                                      | See the latest product news and docs from the right sidebar.                                                                                   | All editions |
 | Bookmarks                                        | Bookmark any page with your selected UI filters.                                                                                               | All editions |
 | Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                               | All editions |
@@ -74,7 +74,7 @@ Adding new users to Kestra just got simpler. With the new invitation feature, ad
 
 Previously, administrators needed to create users manually and then assign roles afterward. Now, once you create an invitation with the right permissions, users can join in a more self-service manner.
 
-By default, if the email server is configured in Kestra EE, we send an email from [no-reply@kestra.io](mailto:no-reply@kestra.io) with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
+By default, if the email server is configured in Kestra EE, we send an email with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
 
 ![image.png](/blogs/release-0-20/image.png)
 
