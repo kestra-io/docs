@@ -329,7 +329,7 @@ kestra:
         limit: 1048576
 ```
 
-## Telemetry
+## Usage
 
 By default, the `kestra.anonymousUsageReport` is enabled to send [anonymous usage data](../09.administrator-guide/usage.md) to Kestra to help us improve the product. If you want to disable it, you can set it to `false`:
 
