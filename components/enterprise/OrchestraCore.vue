@@ -144,7 +144,7 @@
         },
         testimonialData: [
           {
-            message: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+            message: "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
             name: "John Kim",
             designation: "Manager Corporate Strategy",
             alt: " Manager Corporate Strategy",
