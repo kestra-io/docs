@@ -241,8 +241,6 @@
                     border: none;
                     border-radius: 20px;
                     padding: $rem-1;
-
-
                     box-sizing: border-box;
                     position: relative;
 
@@ -290,11 +288,9 @@
                         li {
                             position: relative;
                             box-sizing: border-box;
-                            cursor: pointer;
                             display: flex;
                             gap: 10px;
                             padding: $rem-1;
-
                             border-radius: 4px;
 
                             &::after {
