@@ -1423,6 +1423,19 @@ kestra:
 Make sure that you attach the `defaultRole` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
 ::
 
+### Invitation Expiration
+
+When you invite a new user to Kestra, the invitation will expire after a certain amount of time. By default, invitations expire after 7 days.
+
+If you want to change the default expiration time, you can do so by setting the `expireAfter` property in the `kestra.security.invitation` section. For example, to set the expiration time to 30 days, add the following configuration:
+
+```yaml
+kestra:
+  security:
+    invitation:
+      expireAfter: P30D
+```
+
 ## Server
 
 Using the `kestra.server` configuration, you can set up multiple server-specific functionalities.
