@@ -116,7 +116,7 @@
             <div class="opportunities">
                 <div>
                     <CalculatorVariant/>
-                    <span>Business LogicIn Any Language</span>
+                    <span>Business Logic In Any Language</span>
                 </div>
                 <div>
                     <WebBox/>
