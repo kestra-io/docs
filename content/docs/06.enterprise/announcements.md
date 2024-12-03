@@ -1,5 +1,5 @@
 ---
-title: Announcement
+title: Announcements
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.20.0"
