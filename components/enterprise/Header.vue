@@ -56,7 +56,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/loreal-logo.svg"
+                                    src="/landing/companies/leroymerlin.svg"
                                     alt="L'Oréal"
                                     data-aos="fade-left"
                                 />
