@@ -67,7 +67,7 @@ id: read_only_flow
 namespace: company.team
 
 labels:
-  system.readOnly: "true"
+  system.readOnly: true
 
 tasks:
   - id: log
