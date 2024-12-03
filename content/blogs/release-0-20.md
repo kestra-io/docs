@@ -49,11 +49,9 @@ Let’s dive into these highlights and other enhancements in more detail.
 ## Apps: Custom UIs for Your Flows
 
 
-**Apps** let you create custom interfaces for interacting with Kestra workflows. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. **Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as the **frontend**, allowing anyone in the world to interact with your workflows regardless of their technical background. Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results to perform data validation and quality checks for critical business processes.
+**Apps** let you create [custom interfaces](https://kestra.io/docs/enterprise/apps) for interacting with Kestra workflows. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. **Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as the **frontend**, allowing anyone in the world to interact with your workflows regardless of their technical background. Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results to perform data validation and quality checks for critical business processes.
 
 You can think of Apps as **custom UIs for flows**, allowing your end users to interact with Kestra from anywhere without any technical knowledge. They can resume paused workflows waiting for approval or trigger new ones.
-
-Read more about Apps [in the docs](https://kestra.io/docs/enterprise/apps).
 
 ## Team-Level Isolation for Storage and Secrets
 
@@ -89,14 +87,14 @@ Announcements appear as banners of the chosen type (`Info`, `Warning`, `Error`) 
 
 ## System Labels
 
-System Labels provide a powerful way to add extra metadata to manage executions. For example, they allow you to disable edits from the UI by making workflows read-only or track cross-execution dependencies using correlation IDs.
+[System Labels](https://kestra.io/docs/concepts/system-labels) provide a powerful way to add extra metadata to manage executions. For example, they allow you to disable edits from the UI by making workflows read-only or track cross-execution dependencies using correlation IDs.
 
-Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your Kestra configuration. Read more in the [System Labels documentation](https://kestra.io/docs/concepts/system-labels).
+Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your Kestra configuration.
 
 
 ## Flow-Level SLA (Beta)
 
-Starting from Kestra 0.20, you can set custom Service Level Agreements (SLAs) per workflow, defining what happens if a workflow runs longer than expected or doesn't satisfy conditions. You can assert that your workflows meet SLAs and trigger corrective actions when they don't.
+Starting from Kestra 0.20, you can set custom [Service Level Agreements (SLAs) per workflow](https://kestra.io/docs/workflow-components/sla), defining what happens if a workflow runs longer than expected or doesn't satisfy conditions. You can assert that your workflows meet SLAs and trigger corrective actions when they don't.
 
 For instance, if a workflow takes longer than expected (`MAX_DURATION`) or doesn't return the expected results (`EXECUTION_ASSERTION`), you can set an SLA `behavior` to cancel or fail the execution. Alternatively, an SLA behavior can be set to `NONE` to simply log a message and add specific labels indicating the SLA breach.
 
@@ -131,8 +129,6 @@ tasks:
 ::alert{type="info"}
 Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases.
 ::
-
-For more details and examples, check the [SLA docs](https://kestra.io/docs/workflow-components/sla).
 
 
 ## Flow Trigger Enhancements
@@ -197,7 +193,7 @@ triggers:
 ::
 
 
-Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [plugin examples](https://kestra.io/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger preconditions.
+Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [plugin examples](https://kestra.io/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
 
 ## Task conditions with `runIf`
 
