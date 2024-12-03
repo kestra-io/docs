@@ -23,7 +23,7 @@ The table below highlights the key features of this release.
 | Team-level Storage and Secret Backends Isolation | Provide data isolation across business units or teams by configuring dedicated storage or secret backends for each tenant or namespace.                                                   | Enterprise Edition |
 | Invitations                                      | Add new users to your tenant or instance by using the [invitation process](https://kestra.io/docs/enterprise/invitations).                                                                | Enterprise Edition |
 | Announcements                                    | [Add a custom announcement](https://kestra.io/docs/enterprise/announcements) to inform users about planned maintenance downtimes, outages, or incidents.                                  | Enterprise Edition |
-| Flow-level SLA (Beta)                            | Set custom SLA conditions for each workflow using the new `sla` property of a flow.                                                                                                       | All editions |
+| Flow-level SLA (Beta)                            | [Set custom SLA](https://kestra.io/docs/workflow-components/sla) conditions for each workflow using the new `sla` property of a flow.                                                                                                       | All editions |
 | New core `runIf` task property                   | Skip a task if the provided condition evaluates to false.                                                                                                                                 | All editions |
 | System Labels                                    | [Prevent edits](https://kestra.io/docs/concepts/system-labels) from the UI with `system.readOnly` label and track cross-execution dependencies with `system.correlationId` label.         | All editions |
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                                                                         | All editions |
@@ -291,7 +291,7 @@ In short, you can use this feature to safely execute sequences of SQL operations
 
 ## Improved Filter & Search Bar
 
-The filter and search bars have been improved to better handle more complex filtering criteria. You can now adjust filters on any UI page simply by typing your filter criteria. The improved filtering system applies across different parts of the Kestra UI, including the main Dashboard, Executions, Logs, Flows, Apps, Blueprints, and more.
+The filter and search bars have been improved to better handle more complex filtering criteria. You can now adjust filters on any UI page simply by typing your filter criteria. The improved filtering system applies across different parts of the Kestra UI, including the main Dashboard, Executions, Logs, Flows, Apps, and more.
 
 ![filters](/blogs/release-0-20/filters.png)
 
