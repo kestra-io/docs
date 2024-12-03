@@ -1,7 +1,6 @@
 <template>
     <details data-aos="zoom-in">
         <summary>
-            <HelpCircleOutline />
             <h3>{{ title }}</h3>
             <span class="icon">
                 <ChevronDown />
@@ -37,11 +36,10 @@
     @import "../../assets/styles/variable";
 
     details {
-        background: var(--bs-white);
+        background: #121217 !important;
         padding: 1rem;
-        border: 1px solid var(--bs-border-color);
-        box-shadow: $box-shadow;
-        border-radius: var(--bs-border-radius);
+        border: none !important;
+        border-bottom: 1px solid #252526 !important;
         margin-bottom: 1rem;
 
         summary {
@@ -63,6 +61,12 @@
                 font-size: var(--bs-body-font-size);
                 margin-bottom: 0;
                 flex-grow: 1;
+                font-weight: 400;
+
+                @include media-breakpoint-down(lg) {
+                    font-size: 18px !important;
+                    font-weight: 400;
+                }
             }
 
             .chevron-up-icon {
@@ -88,7 +92,6 @@
             }
         }
     }
-
 
     h6 {
         font-weight: 700;
