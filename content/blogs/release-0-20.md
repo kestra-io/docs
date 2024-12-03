@@ -29,7 +29,7 @@ The table below highlights the key features of this release.
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                                                                 | All editions |
 | New `errorLogs()` function                       | Provide context about why workflow has failed in alert notifications.                                                                                                             | All editions |
 | New sidebar                                      | See the latest product news and docs from the right sidebar.                                                                                                                      | All editions |
-| Bookmarks                                        | Bookmark any page with your selected UI filters.                                                                                                                                  | All editions |
+| Bookmarks                                        | [Bookmark any page](https://kestra.io/docs/ui/bookmarks) with your selected UI filters.                                                                                           | All editions |
 | Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                                                                  | All editions |
 | Improved filter & search bar                     | Adjust filters on any UI page simply by typing your filter criteria.                                                                                                              | All editions |
 | Enhancements to dbt                              | Persist the dbt manifest in the KV Store to rebuild only dbt models that changed since the last run.                                                                              | All editions |
@@ -278,7 +278,7 @@ The new sidebar on the right side of the Kestra UI provides quick access to the 
 
 ## Bookmarks
 
-You can now bookmark any Kestra UI page with your selected filters. This feature is particularly handy when you need quick access to specific filtered views, such as certain workflows or error logs. This new feature speeds up navigation and makes frequently-used pages available at a glance.
+You can now [bookmark any Kestra UI page](https://kestra.io/docs/ui/bookmarks) with your selected filters which is particularly handy when you need quick access to specific filtered views, such as _"Failed Executions within the last 2 days"_. This new feature makes frequently-used pages available at a fingertip.
 
 ![bookmarks](/blogs/release-0-20/bookmarks.png)
 
