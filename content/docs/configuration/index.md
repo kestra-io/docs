@@ -1043,6 +1043,21 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
+### Configure Local Flow Syncronization
+
+Below is the minimal configuration to enable local flow synchronization:
+
+```yaml
+micronaut:
+  io:
+    watch:
+      enabled: true
+      paths:
+        - /path/to/your/flows
+```
+
+For more information, check out the [dedicated guide](../15.how-to-guides/local-file-sync.md).
+
 ## Plugins
 
 Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
@@ -1407,6 +1422,19 @@ kestra:
 ::alert{type="info"}
 Make sure that you attach the `defaultRole` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
 ::
+
+### Invitation Expiration
+
+When you invite a new user to Kestra, the invitation will expire after a certain amount of time. By default, invitations expire after 7 days.
+
+If you want to change the default expiration time, you can do so by setting the `expireAfter` property in the `kestra.security.invitation` section. For example, to set the expiration time to 30 days, add the following configuration:
+
+```yaml
+kestra:
+  security:
+    invitations:
+      expireAfter: P30D
+```
 
 ## Server
 

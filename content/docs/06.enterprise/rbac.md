@@ -244,6 +244,11 @@ information attached to it, such as the first name or last name.
 They can change their own password, and adjust other settings such as theme, editor preferences,
 timezone, and a default namespace.
 
+To add users to your Kestra instance, you can do one of the following:
+- [Invite users](./invitations.md) to your instance or tenant from the UI
+- Sync users from an external identity provider using SCIM
+- Create users directly using Terraform
+
 #### Change password
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the top right corner of the UI.
