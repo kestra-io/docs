@@ -92,43 +92,6 @@ System Labels provide a powerful way to add extra metadata to manage executions.
 
 Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your Kestra configuration. Read more in the [System Labels documentation](https://kestra.io/docs/concepts/system-labels).
 
-## Flow-Level SLAs
-
-Starting from Kestra 0.20, you can define Service Level Agreements (SLAs) at the workflow level to specify actions when workflows fail to meet defined conditions. SLAs allow you to maintain control by triggering behaviors such as failing the workflow, canceling it, or logging a message when a breach occurs.
-
-For instance, you can use an SLA to cancel a workflow that runs longer than expected or fails to meet specific assertions, ensuring your processes stay within defined parameters.
-
-::collapse{title="Expand for an SLA example"}
-```yaml
-id: sla_example
-namespace: company.team
-
-sla:
-  - id: maxDuration
-    type: MAX_DURATION
-    behavior: CANCEL
-    duration: PT2S
-    labels:
-      sla: missed
-      reason: "Execution exceeded the maximum allowed duration."
-
-tasks:
-  - id: start_log
-    type: io.kestra.plugin.core.log.Log
-    message: "Workflow initiated. SLA monitoring in progress."
-
-  - id: delayed_task
-    type: io.kestra.plugin.core.flow.Sleep
-    duration: PT3S  # Exceeds the SLA to trigger corrective action
-
-  - id: skipped_task
-    type: io.kestra.plugin.core.log.Log
-    message: "This task is skipped due to SLA breach."
-```
-::
-
-SLAs in Kestra 0.20 empower you to enforce execution policies tailored to your workflows, whether by tracking duration limits or defining specific conditions for success. Learn more about SLAs and their configuration in the [SLA documentation](https://kestra.io/docs/workflow-components/sla).
-
 
 ## Flow-Level SLA (Beta)
 
@@ -165,7 +128,7 @@ tasks:
 ::
 
 ::alert{type="info"}
-Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases, or it might become unsupported.
+Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases.
 ::
 
 For more details and examples, check the [SLA docs](https://kestra.io/docs/workflow-components/sla).
