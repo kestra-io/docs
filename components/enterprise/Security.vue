@@ -1,255 +1,500 @@
 <template>
-    <div class="container">
-        <Section
-            subtitle="Ready"
-            subtitle-before="Enterprise"
-        >
-            <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-0 d-flex flex-column justify-content-center align-items-center" data-aos="fade-right">
+    <div class="content">
+        <div class="sticky-features-wrapper">
+            <div class="scroll-block">
+                <div class="sticky-features-item">
+                    <div class="features-item-content">
+                        <h3>More Security</h3>
+                        <p class="mt-3">
+                            Ensures top-tier security with SSO, audit logs, and revision history for complete
+                            transparency. Integration with secrets managers and API tokens enhances secure automation,
+                            while end-to-end encryption protects your data at all times.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+                <div class="sticky-features-item">
+                    <div class="features-item-content">
+                        <h3>Better Governance</h3>
+                        <p class="mt-3">
+                            Give your team secured, isolated environments and control over workflows. With tailored
+                            automation and precise access management, you can ensure compliance and efficiency at scale.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+                <div class="sticky-features-item mb__5">
+                    <div class="features-item-content">
+                        <h3>Scale With No Limits</h3>
+                        <p class="mt-3">
+                            Kestra Enterprise scales with no downtime. Its reliable architecture and task runners,
+                            support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
+            <div class="sticky-features-visuals">
+                <div class="sticky-features-sticky">
+                    <div class="sticky-features-box">
+                        <img
+                            class="u-img-cover"
+                            :src="imageUrls[getCurrentImageIndex()]"
+                            alt="A dashboard with success or fail task events"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row mb-5-rem security-item">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="fade-left">
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-1-1.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
+                </div>
+                <div class="item-info" data-aos="fade-right">
                     <div>
                         <h3>More Security</h3>
                         <p class="mt-3">
-                            Monitor unauthorized access, modifications, or executions with precision, manage resource permission,  and unify account access through a single, secure connection. Securely store all secrets in one dedicated and managed environment, ensuring your data's safety and integrity with Kestra Enterprise.
+                            Ensures top-tier security with SSO, audit logs, and revision history for complete
+                            transparency. Integration with secrets managers and API tokens enhances secure automation,
+                            while end-to-end encryption protects your data at all times.
                         </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <NuxtImg loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-1.webp" alt="A dashboard with success or fail task events" />
-                </div>
             </div>
-            <div class="row mb-5">
-                <div class="col-md-6 image-container" data-aos="fade-right">
-                    <NuxtImg loading="lazy" format="webp"  class="img-fluid" src="/landing/enterprise/security-2.webp" alt="Stylized view of administrator settings with role-based view" />
+            <div class="security-item mb-5-rem">
+                <div class="col-md-6 order-0 order-md-1 rounded-2" data-aos="fade-left">
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-2-2.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
                 </div>
-                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="item-info" data-aos="fade-right">
                     <div>
-                        <h3>Complete Governance</h3>
+                        <h3>Better Governance</h3>
                         <p class="mt-3">
-                            Enable your multi-tenant architecture by combining centralized control of user access with namespace management for organized workflow control, and custom blueprints for shared knowledge and efficiency. Simplify collaboration and secure your operations with these powerful features designed for enterprise-level orchestration and automation.
+                            Give your team secured, isolated environments and control over workflows. With tailored
+                            automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
-            <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-0 d-flex justify-content-center align-items-center" data-aos="fade-right">
+            <div class="security-item mb-5-rem">
+                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-3-3.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
+                </div>
+                <div class="item-info" data-aos="fade-right">
                     <div>
                         <h3>Scale with no limits</h3>
                         <p class="mt-3">
-                            Kestra Enterprise offers dedicated workers to target computing resources accurately for specific tasks, ensuring both adaptability and customization. Guaranteed with no single point of failure, enhancing system reliability. Worker groups add flexibility, enabling specialized task execution and effective resource use across various settings.
+                            Kestra Enterprise scales with no downtime. Its reliable architecture and task runners,
+                            support both internal and external execution, minimize risk and provide performance
+                            insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <NuxtImg loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-3.webp" alt="A dashboard with success or fail task events" />
-                </div>
             </div>
-
-            <div class="row mb-4">
-                <div class="security-features">
-                    <Card
-                        img="/landing/enterprise/security-icon.svg"
-                        imgAlt="Security"
-                        title="Security & Compliance"
-                        :bottomMenuBar="securityFeatures.security"
-                        :isClickable="false"
-                    />
-                    <Card
-                        img="/landing/enterprise/governance-icon.svg"
-                        imgAlt="Governance"
-                        title="Governance & Productivity"
-                        :bottomMenuBar="securityFeatures.governance"
-                        :isClickable="false"
-                    />
-                    <Card
-                        img="/landing/enterprise/scalability-icon.svg"
-                        imgAlt="Scalability"
-                        title="Scalability & Infrastructure"
-                        :bottomMenuBar="securityFeatures.scalability"
-                        :isClickable="false"
-                    />
-                </div>
-            </div>
-            <div class="row mt-1 mb-5">
-                <div class="d-flex justify-content-center">
-                    <NuxtLink href="/pricing" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                        Compare all features
-                    </NuxtLink>
-                </div>
-            </div>
-        </Section>
+        </div>
     </div>
 </template>
-
-
 <script>
-    import Section from '../layout/Section.vue';
-    export default {
-      components: {Section},
-      data() {
-        return {
-          securityFeatures: {
-            security: [
-              { text: "Audit log & Revision History", active: false },
-              { text: "SSO", active: false },
-              { text: "Service Account & API Tokens", active: false },
-              { text: "Secrets Manager Integration", active: false },
-              { text: "Encryption", active: false },
-            ],
-            governance: [
-              { text: "Multi Tenancy", active: false },
-              { text: "RBAC", active: false },
-              { text: "Namespaces Management", active: false },
-              { text: "Worker Isolation, Plugins Control", active: false },
-              { text: "Custom Blueprints", active: false },
-            ],
-            scalability: [
-              { text: "Worker Groups, Distant Workers", active: false },
-              { text: "Task Runners", active: false },
-              { text: "High Availability & Throughput", active: false },
-              { text: "Fault Tolerant", active: false },
-              { text: "Custom Dashboard", active: false },
-            ],
-          },
-        };
+  export default {
+    data() {
+      return {
+        itemPositions: [],
+        prevImageIndex: 0,
+        imageUrls: {
+          0: '/landing/enterprise/security-1-1.svg',
+          1: '/landing/enterprise/security-2-2.svg',
+          2: '/landing/enterprise/security-3-3.svg',
+        },
+      }
+    },
+    mounted() {
+      this.updateItemPositions();
+      window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+      window.removeEventListener('scroll', this.handleScroll);
+    },
+    methods: {
+      updateItemPositions() {
+        this.itemPositions = [];
+        const items = this.$el.querySelectorAll('.sticky-features-item');
+        items.forEach(item => {
+          const rect = item.getBoundingClientRect();
+          this.itemPositions.push({rect, isCentered: false});
+        });
       },
-    }
+      handleScroll() {
+        this.updateItemPositions();
+        this.itemPositions.forEach((item, index) => {
+          const centerOfViewport = window.innerHeight / 2;
+          const itemCenter = item.rect.top + item.rect.height / 2;
+          const isCentered = Math.abs(itemCenter - centerOfViewport) <= 150;
+          this.itemPositions[index] = {...item, isCentered};
+        });
+      },
+      isItemInView(index) {
+        return this.itemPositions[index] && this.itemPositions[index].isCentered;
+      },
+      getCurrentImageIndex() {
+        for (let i = 0; i < this.itemPositions.length; i++) {
+          if (this.isItemInView(i)) {
+            this.prevImageIndex = i;
+            return i;
+          }
+        }
+        return this.prevImageIndex;
+      },
+    },
+  }
 </script>
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
-    :deep(section) {
-        margin-top: calc($spacer * 7.8);
+
+    .content {
+        padding: 160px 0;
+        display: flex;
+        background-color: $white;
         position: relative;
+        justify-content: center;
+        width: 100%;
 
-        &:before {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background: url("/landing/ee/background-mask.svg") no-repeat center;
-            background-size: 156% 100%;
-            overflow: hidden;
-            top: -33%;
-            z-index: -1;
-        }
-        .subtitle {
-            margin: 0 !important;
-            p {
-                margin: 0 !important;
-            }
-
-            div.main {
-                padding-top: 0 !important;
-            }
-        }
-    }
-    .container {
-        border-top: $block-border;
-
-        h3 {
-            color: $white;
-            font-size: $h2-font-size;
-            font-weight: 300;
-            margin: 0;
+        @include media-breakpoint-down(xl) {
+            padding: 120px $rem-2;
         }
 
-        p {
-            color: $white;
-            font-size: $font-size-md;
-            font-weight: 300;
-            max-width: calc($spacer * 28);
-
-            b {
-                color: $white;
-                font-weight: 600;
-            }
+        @include media-breakpoint-down(md) {
+            padding: 60px $rem-2;
         }
 
-        .image-container {
+        .sticky-features-wrapper {
+            display: grid;
+            grid-template-columns: 42% 54%;
             position: relative;
-            z-index: 10;
-
-            &::before,
-            &::after
-            {
-                content: "";
-                position: absolute;
-                width: calc($spacer * 12);
-                height: calc($spacer * 12);
-                background: radial-gradient(50% 50% at 50% 50%, #343434 0%, rgba(127, 122, 232, 0) 195% 117%);
-                filter: blur(47px);
-                z-index: -5;
+            max-width: 1120px;
+            justify-content: space-between;
+            @media only screen and (max-width: 767px) {
+                display: none;
             }
 
-            &::before {
-                left: -1rem;
-                top: 11rem;
+            .sticky-features-visuals {
+                align-self: stretch;
+                position: relative;
+
+                .sticky-features-sticky {
+                    border-radius: 4px;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding-top: 74vh;
+                    display: flex;
+                    position: sticky;
+                    top: 16vh;
+
+                    .sticky-features-box {
+                        border: 1px solid var(--color--grey-border);
+                        border-radius: 4px;
+                        height: 100%;
+                        position: absolute;
+                        inset: 0%;
+
+                        .u-img-cover {
+                            object-fit: cover;
+                            object-position: 50% 50%;
+                            width: 100%;
+                            max-width: 600px;
+                            height: 100%;
+                            inset: 0%;
+                            border-radius: 20px;
+                        }
+                    }
+                }
             }
 
-            &::after {
-                left: 27rem;
-                top: -2rem;
+            .scroll-block {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 500px;
+                padding: 200px 0;
+
+                .mb__5 {
+                    padding-bottom: 50px !important;
+                }
+
+                .sticky-features-item {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    padding-bottom: 0;
+                    gap: 64px;
+                    height: 50%;
+
+                    .features-item-content {
+                        transition: opacity .3s;
+                        cursor: default;
+                        padding: 0;
+                        text-decoration: none;
+                        position: relative;
+                        @media only screen and (max-width: 768px) {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                        }
+
+                        h3 {
+                            font-weight: 400;
+                            font-size: 41px;
+                            color: #070708;
+                            line-height: $rem-3;
+                        }
+
+                        p {
+                            font-size: 18px;
+                            color: #070708;
+                            line-height: 28px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .demo-btn {
+            margin-top: 26px;
+            cursor: pointer;
+            padding: 10px 16px;
+            max-width: 121px;
+            background-color: #6862F5;
+            border-radius: 4px;
+
+            > span {
+                font-family: $font-family-sans-serif;
+                font-size: var(--fontsizemd);
+                font-weight: 700;
+                text-align: center;
+                color: $white;
+            }
+        }
+
+
+        .container {
+            padding: 120px 0;
+            max-width: 1120px;
+            border-top: none;
+            display: none;
+
+            @media only screen and (max-width: 767px) {
+                display: block;
             }
 
-            @include media-breakpoint-down(lg) {
+            @include media-breakpoint-down(md) {
+                padding-bottom: 40px;
+                padding-top: 65px;
+            }
+
+            .img-fluid {
+                border-radius: 10px;
+            }
+
+            .mb-5-rem {
+                margin-bottom: $rem-5;
+            }
+
+            .security-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 64px;
+
+
+                @include media-breakpoint-down(md) {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+
+                .item-info {
+                    height: 100%;
+                    text-align: start;
+                    max-width: 476px;
+
+                    h3 {
+                        font-weight: 400;
+                        font-size: 41px;
+                        color: #070708;
+                        line-height: $rem-3;
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        order: 1;
+                    }
+                }
+            }
+
+            .demo-btn {
+                margin-top: 26px;
+                cursor: pointer;
+                padding: 10px 16px;
+                max-width: 121px;
+                background-color: #6862F5;
+                border-radius: 4px;
+
+                > span {
+                    font-family: $font-family-sans-serif;
+                    font-size: var(--fontsizemd);
+                    font-weight: 700;
+                    line-height: var(--fontline-heightmd);
+                    text-align: center;
+                    color: $white;
+                }
+
+                @include media-breakpoint-down(md) {
+                    margin-top: 10px;
+                }
+            }
+
+            h3 {
+                color: $black;
+                font-family: $font-family-sans-serif;
+                font-size: 41px;
+                font-weight: 600;
+                line-height: 48.18px;
+                text-align: left;
+                margin: 0;
+            }
+
+            p {
+                color: #070708;
+                font-size: 18px;
+                line-height: 28px;
+                text-align: left;
+                font-weight: 400;
+                max-width: calc($spacer * 28);
+
+                @media only screen and (max-width: 420px) {
+                    font-size: 18px;
+                }
+
+                b {
+                    color: $white;
+                    font-weight: 600;
+                }
+            }
+
+            .image-container {
+                position: relative;
+                z-index: 10;
+
+                &::before,
                 &::after {
-                    left: 13rem;
+                    content: "";
+                    position: absolute;
+                    width: calc($spacer * 12);
+                    height: calc($spacer * 12);
+                    background: radial-gradient(50% 50% at 50% 50%, #343434 0%, rgba(127, 122, 232, 0) 195% 117%);
+                    filter: blur(47px);
+                    z-index: -5;
                 }
 
                 &::before {
-                    left: -3rem;
-                    top: 5rem;
+                    left: -1rem;
+                    top: 11rem;
                 }
-            }
 
-            @include media-breakpoint-down(md) {
                 &::after {
-                   left: 23rem;
+                    left: 27rem;
+                    top: -2rem;
                 }
-            }
-        }
-
-        .security-features {
-            display: flex;
-            justify-content: center;
-            gap: calc($spacer * 1.8);
-            position: relative;
-
-            :deep(.title-block) {
-                align-items: center;
-            }
-
-            @include media-breakpoint-down(lg) {
-                flex-direction: column;
-                align-items: center;
-
-                :deep(.card) {
-                    width: 60%;
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
-
-            @include media-breakpoint-down(md) {
-                :deep(.card) {
-                    width: auto;
-                }
-            }
-            &::before {
-                content: "";
-                position: absolute;
-                width: calc($spacer * 12);
-                height: calc($spacer * 12);
-                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
-                filter: blur(100px);
-                z-index: -5;
-                left: 49rem;
-                top: -1rem;
 
                 @include media-breakpoint-down(lg) {
-                    left: 35%;
-                    top: 50%;
+                    &::after {
+                        left: 13rem;
+                    }
+
+                    &::before {
+                        left: -3rem;
+                        top: 5rem;
+                    }
+                }
+
+                @include media-breakpoint-down(md) {
+                    &::after {
+                        left: 23rem;
+                    }
+                }
+            }
+
+            .security-features {
+                display: flex;
+                justify-content: center;
+                gap: calc($spacer * 1.8);
+                position: relative;
+
+                :deep(.title-block) {
+                    align-items: center;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column;
+                    align-items: center;
+
+                    :deep(.card) {
+                        width: 60%;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+
+                @include media-breakpoint-down(md) {
+                    :deep(.card) {
+                        width: auto;
+                    }
+                }
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    width: calc($spacer * 12);
+                    height: calc($spacer * 12);
+                    background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+                    filter: blur(100px);
+                    z-index: -5;
+                    left: 49rem;
+                    top: -1rem;
+
+                    @include media-breakpoint-down(lg) {
+                        left: 35%;
+                        top: 50%;
+                    }
                 }
             }
         }
     }
 </style>
+
+
