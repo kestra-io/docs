@@ -33,7 +33,8 @@
                 </thead>
                 <tbody class="t-head-body">
                     <tr v-for="item in tableData"
-                        :key="item.id">
+                        :key="item.id"
+                    >
                         <td class="ps-5 t-border-data-first-block"
                             :class="!item.textBold ? '' : 't-r-heading-text'">
                                 <span>
@@ -41,17 +42,17 @@
                                 </span>
                         </td>
                         <td class="tick t-border-data">
-                            <div class="bg-gray">
+                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
                                 <CheckBold v-if="!item.isFullLine && item.isOpenSource"/>
-                                <Close class="close-svg" v-else-if="!item.isFullLine && !item.openSourceText"/>
-                                <span v-else-if="!item.isFullLine">{{item.openSourceText}}</span>
+                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.openSourceText"/>
+                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.openSourceText}}</span>
                             </div>
                         </td>
                         <td class="tick t-border-data">
-                            <div class="bg-gray">
+                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
                                 <CheckBold v-if="!item.isFullLine && item.isEnterprise"/>
-                                <Close class="close-svg" v-else-if="!item.isFullLine && !item.enterpriseText"/>
-                                <span v-else-if="!item.isFullLine">{{item.enterpriseText}}</span>
+                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.enterpriseText"/>
+                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.enterpriseText}}</span>
                             </div>
                         </td>
                     </tr>
@@ -93,11 +94,11 @@
                                 v-if="selectedType === 'enterprise' && child.enterpriseText">{{child.enterpriseText}}</span>
                             <span v-else-if="selectedType !== 'enterprise' && child.openSourceText">{{child.openSourceText}}</span>
                             <div v-if="selectedType === 'enterprise' && !child.enterpriseText">
-                                <Close class="close-svg" v-if="!child.isEnterprise"/>
+                                <Close class="close-svg-red" v-if="!child.isEnterprise"/>
                                 <CheckBold v-else-if="child.isEnterprise"/>
                             </div>
                             <div v-else-if="selectedType === 'opensource' && !child.openSourceText">
-                                <Close class="close-svg" v-if="!child.isOpenSource"/>
+                                <Close class="close-svg-red" v-if="!child.isOpenSource"/>
                                 <CheckBold v-else-if="child.isOpenSource"/>
                             </div>
                         </div>
@@ -138,7 +139,7 @@
     },
     {
       name: 'Enterprise',
-      period: "Enterprise",
+      period: "Per Instance",
       button: {
         text: "Talk to Sales",
         href: "/",
@@ -649,9 +650,13 @@
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
 
-    :deep(.close-svg > svg ) {
+    .close-svg-red {
+        width: 24px;
+        height: auto;
+    }
+    :deep(.close-svg-red > svg ) {
         color: #E3262F !important;
-        font-size: 16px;
+        font-size: 24px !important;
     }
 
     .enterprise-btn {
@@ -721,11 +726,17 @@
             border-radius: 8px;
             border: none;
 
+            .border-top-transparent {
+                border-top: 16px solid transparent;
+            }
+
             .t-r-heading-text {
+                display: flex;
                 color: $black-2;
                 line-height: 24px;
-
+                max-height: 74px;
                 span {
+                    margin-top: 32px;
                     font-weight: 700;
                     font-size: 18px !important;
                 }
@@ -735,8 +746,12 @@
                 border: none !important;
             }
 
+            .heading-bg {
+                min-height: 74px !important;
+            }
+
             .bg-gray {
-                min-height: 60px;
+                min-height: 61px;
                 padding: 1.3rem $rem-2;
                 background-color: #F8F8F8;
             }
@@ -770,6 +785,7 @@
                 }
 
                 tr {
+                    line-height: 16px;
                     td {
                         min-width: 358px;
                         font-size: $font-size-base;
@@ -785,6 +801,12 @@
             .t-border-data {
                 border-bottom: none;
                 color: $black-2;
+
+                .enterprise-text {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #000000;
+                }
             }
 
             .t-border-data-first-block {

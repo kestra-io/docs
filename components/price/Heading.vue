@@ -10,16 +10,16 @@
         <!-- cards  -->
         <Section class="pt-0">
             <div class="row card-group mb-4">
-                <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end pt-34">
+                <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end pt-37">
                     <div class="card text-white col-lg-9 col-xl-8  max-w-328">
                         <div class="card-body">
-                            <div class="pb-4">
+                            <div class="pb-rem-2">
                                 <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                                 <p class="pricing" data-aos="fade-left">Best for Development</p>
                                 <p class="pricing-type" data-aos="fade-left">Free</p>
-                                <span class="pricing-desc" data-aos="fade-left">
+                                <div class="pricing-desc" data-aos="fade-left">
                                     The core features of Kestra, maintained by the Kestra team and community.
-                                </span>
+                                </div>
                             </div>
                             <NuxtLink
                                 href="https://github.com/kestra-io/kestra"
@@ -54,11 +54,11 @@
                             </span>
                             </div>
                             <div class="card-body">
-                                <div class="pb-4">
+                                <div class="pb-rem-2">
                                     <h4 class="card-title" data-aos="fade-right">Enterprise Edition</h4>
                                     <p class="pricing" data-aos="fade-left">Built For Production</p>
                                     <p class="pricing-type" data-aos="fade-left">On-Demand</p>
-                                    <span class="pricing-desc" data-aos="fade-left">Instance based model with:  No limits on users, workflows, or tasks.</span>
+                                    <div class="pricing-desc" data-aos="fade-left">Instance based model with:  No limits on users, workflows, or tasks.</div>
                                 </div>
                                 <NuxtLink
                                     href="/demo"
@@ -204,8 +204,8 @@ import Plus from 'vue-material-design-icons/Plus.vue'
     .max-w-328 {
         max-width: 328px;
     }
-    .pt-34 {
-        padding-top: 34px;
+    .pt-37 {
+        padding-top: 37px;
     }
 
     .bordered-block {
@@ -262,6 +262,10 @@ import Plus from 'vue-material-design-icons/Plus.vue'
     .card-body {
         padding: calc($spacer * 2);
 
+        .pb-rem-2 {
+            padding-bottom: $rem-2;
+        }
+
         .card-title {
             color: $black-1;
             font-size: $font-size-xl;
@@ -291,7 +295,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         .pricing-desc {
             font-family: $font-family-sans-serif;
             font-weight: 400;
-            margin-top: 18px;
+            margin-top: 16px;
             color: rgba(61, 61, 63, 1);
             font-size: 12px;
             line-height: 18px;

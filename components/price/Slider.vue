@@ -281,7 +281,7 @@
                     > span {
                         font-family: $font-family-sans-serif;
                         font-size: 39px;
-                        font-weight: 600;
+                        font-weight: 400;
                         line-height: 52.26px;
                         letter-spacing: -0.005em;
                         text-align: left;

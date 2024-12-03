@@ -79,7 +79,6 @@
             margin-top: 1rem;
             border-left: 1px solid var(--bs-indigo);
             padding-left: 1rem;
-            margin-left: 3rem;
         }
 
         &[open] summary .icon {
