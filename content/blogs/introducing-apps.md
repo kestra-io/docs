@@ -12,7 +12,7 @@ image: /blogs/introducing-apps.jpg
 
 We’re excited to introduce **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
 
-![image.png](/blogs/introducing-apps/image.png)
+![apps_catalog](/docs/enterprise/apps/apps_catalog.png)
 
 ---
 
@@ -40,6 +40,10 @@ Here are some examples of what you can do with Apps:
 - **Data Requests**: let stakeholders request datasets they need and download them directly from the app as a self-service
 - **Feedback Forms**: collect feedback or handle signups for events
 - **IT Tickets**: users can submit bug reports or feature requests, which are then routed to the appropriate team to resolve the issue.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ---
 
@@ -108,7 +112,7 @@ displayName: Form to request and download data
 description: This app will request data and provide it for download.
 namespace: company.team
 flowId: get_data
-access: PRIVATE
+access: PUBLIC
 tags:
   - Reporting
   - Analytics
@@ -116,7 +120,7 @@ tags:
 layout:
   - on: OPEN
     blocks:
-      - type: io.kestra.ee.apps.blocks.Markdown
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: |
           ## Request data
           Select the dataset you want to download.
@@ -126,44 +130,48 @@ layout:
 
   - on: RUNNING
     blocks:
-      - type: io.kestra.ee.apps.blocks.Markdown
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: |
           ## Fetching your data...
           Don't close this window. The results will be displayed as soon as the processing is complete.
 
-      - type: io.kestra.ee.apps.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.core.blocks.Loading
       - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
       - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
         text: Cancel request
 
   - on: SUCCESS
     blocks:
-      - type: io.kestra.ee.apps.blocks.Markdown
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: |
           ## Request processed successfully
           You requested the following dataset:
 
       - type: io.kestra.plugin.ee.apps.execution.blocks.Inputs
 
-      - type: io.kestra.ee.apps.blocks.Alert
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
         style: SUCCESS
         showIcon: true
         content: Your data is ready for download!
 
       - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
 
-      - type: io.kestra.ee.apps.blocks.Markdown
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: Find more App examples in the linked repository
 
-      - type: io.kestra.ee.apps.blocks.Button
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
         text: App examples
-        url: https://github.com/kestra-io/examples/tree/main/apps
+        url: https://github.com/kestra-io/enterprise-edition-examples
         style: INFO
 
-      - type: io.kestra.ee.apps.blocks.Button
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
         text: Submit new request
         url: "{{ app.url }}"
         style: DEFAULT
+
+      - type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo
+        delay: PT60S
+        url: https://kestra.io/docs/
 ```
 ::
 
@@ -181,7 +189,7 @@ Fill out the form and click on `Submit`. Once processing is complete, you should
 
 The UI display and all actions performed by the app are configurable through `blocks` specified in the `layout` property.
 
-By clicking on the `View App` button, your end users can use the app directly, or you can share the link with your end users. If access is set to `PUBLIC`, your app link will be visible to anyone in the world! 🌍
+You can share the App link with your end users, or they can access it directly from the Kestra UI by clicking on the `View App` button. If access is set to `PUBLIC`, your App link will be accessible by anyone in the world! 🌍
 
 For more examples, check out the [GitHub repository](https://github.com/kestra-io/enterprise-edition-examples).
 
@@ -189,7 +197,7 @@ For more examples, check out the [GitHub repository](https://github.com/kestra-i
 
 ## Next Steps
 
-This is just the first App release that opens up a world of possibilities for automating user-facing processes. If you have ideas or feedback, we’d love to hear from you.
+Apps open up a wide range of possibilities for automating user-facing processes. We’re excited to see how you’ll use them to build self-service applications for your data products and business processes. If you have ideas or feedback, we’d love to hear from you.
 
 With Apps, you can make Kestra workflows accessible to everyone, regardless of their technical expertise. Try out Apps in the latest version of Kestra Enterprise Edition, and let us know what you think!
 
