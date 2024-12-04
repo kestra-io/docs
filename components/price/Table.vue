@@ -22,7 +22,7 @@
                             <NuxtLink
                                 v-if="head?.button"
                                 :href="head?.button?.href"
-                                :class="head.name === 'Enterprise' ? 'enterprise-btn btn btn-animated btn-purple-animated' : 'edition-btn btn btn-animated btn-dark-animated'"
+                                :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
                                 data-aos="zoom-in"
                             >
                                 {{head.button?.text}}
@@ -106,7 +106,7 @@
                 </CollapsedFeatures>
                 <NuxtLink
                     :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
-                    :class="selectedType === 'enterprise' ? 'enterprise-btn btn btn-animated btn-purple-animated' : 'edition-btn btn btn-animated btn-purple-animated'"
+                    :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'"
                 >
                     {{selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started'}}
                 </NuxtLink>
@@ -659,8 +659,8 @@
     }
 
     .enterprise-btn {
-        &:after {
-            background: #7117FF;
+        &:hover {
+            background-color: #8255FF;
         }
         margin-top: 8px;
         display: flex;
@@ -675,8 +675,8 @@
     }
 
     .edition-btn {
-        &:after {
-            background: $white;
+        &:hover {
+            background: #F2F5F8;
         }
         margin-top: 8px;
         display: flex;

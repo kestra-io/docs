@@ -23,7 +23,7 @@
                             </div>
                             <NuxtLink
                                 href="https://github.com/kestra-io/kestra"
-                                class="get-started btn btn-animated btn-purple-animated"
+                                class="get-started"
                                 data-aos="zoom-in"
                             >
                                 Get started
@@ -62,7 +62,7 @@
                                 </div>
                                 <NuxtLink
                                     href="/demo"
-                                    class="demo-btn btn btn-animated btn-purple-animated"
+                                    class="demo-btn"
                                     data-aos="zoom-in"
                                 >
                                     Book a Demo
@@ -111,11 +111,10 @@
                         <div>
                             <NuxtImg
                                 width="100%"
-                                height="63px"
                                 loading="lazy"
                                 format="webp"
                                 class="img-fluid"
-                                src="/landing/pricing/teams/fila-logo.svg"
+                                src="/landing/pricing/teams/LM.svg"
                                 alt="FILA"
                                 data-aos="fade-left"
                             />
@@ -123,11 +122,10 @@
                         <div>
                             <NuxtImg
                                 width="100%"
-                                height="63px"
                                 loading="lazy"
                                 format="webp"
                                 class="img-fluid"
-                                src="/landing/pricing/teams/gorgias-logo.svg"
+                                src="/landing/pricing/teams/GORGIAS.svg"
                                 alt="Gorgias"
                                 data-aos="fade-left"
                             />
@@ -135,11 +133,10 @@
                         <div>
                             <NuxtImg
                                 width="100%"
-                                height="63px"
                                 loading="lazy"
                                 format="webp"
                                 class="img-fluid"
-                                src="/landing/pricing/teams/acxiom-logo.svg"
+                                src="/landing/pricing/teams/ACXIOM.svg"
                                 alt="Acxiom"
                                 data-aos="fade-left"
                             />
@@ -147,11 +144,10 @@
                         <div>
                             <NuxtImg
                                 width="100%"
-                                height="63px"
                                 loading="lazy"
                                 format="webp"
                                 class="img-fluid"
-                                src="/landing/pricing/teams/loreal-logo.svg"
+                                src="/landing/pricing/teams/T-SYSTEM.svg"
                                 alt="L'Oréal"
                                 data-aos="fade-left"
                             />
@@ -159,11 +155,21 @@
                         <div>
                             <NuxtImg
                                 width="100%"
-                                height="63px"
                                 loading="lazy"
                                 format="webp"
                                 class="img-fluid"
-                                src="/landing/pricing/teams/battelle-logo.svg"
+                                src="/landing/pricing/teams/BATTELLE.svg"
+                                alt="Battelle"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/DATAPORT.svg"
                                 alt="Battelle"
                                 data-aos="fade-left"
                             />
@@ -302,8 +308,9 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         }
 
         .get-started {
-            &:after {
-                background: $white !important;
+            &:hover {
+                background: #F2F5F8;
+                border: 1px solid #000000;
             }
             display: flex;
             width: 100%;
@@ -317,8 +324,8 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         }
 
         .demo-btn {
-            &:after {
-                background: #7117FF !important;
+            &:hover {
+                background: #8255FF;
             }
             display: flex;
             width: 100%;
@@ -328,6 +335,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
             border-radius: 4px;
             font-size: 16px;
             font-weight: 700;
+            background: #7117FF;
         }
 
         ul {
@@ -445,9 +453,17 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         .teams-content {
             margin-top: calc($spacer * 2.125);
             width: fit-content;
-            padding: 2rem 0;
+            padding: $rem-2 0 $rem-6 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            @include media-breakpoint-down(sm) {
+                align-items: start !important;
+                padding: $rem-2 0;
+            }
 
             p {
+                padding: 0 14px;
                 font-size: $font-size-xl;
                 font-weight: 300;
                 line-height: 25.85px;
@@ -455,17 +471,29 @@ import Plus from 'vue-material-design-icons/Plus.vue'
                 color: rgba(255, 255, 255, 1);
                 @include media-breakpoint-down(sm) {
                     text-align: start;
-                    font-size: $font-size-sm;
+                    font-size: $rem-1;
                 }
             }
 
             .teams-logos {
                 display: flex;
-                gap: 21px;
-                padding-bottom: 2rem;
-                img {
-                    min-height: 17px !important;
+                column-gap: 43px;
+                row-gap: 20px;
+                padding: 0 14px;
+                @include media-breakpoint-down(lg) {
+                    padding: 0;
                 }
+                img {
+                    height: 74px;
+                    @include media-breakpoint-down(lg) {
+                        height: 50px;
+                    }
+                }
+
+                @include media-breakpoint-down(sm) {
+                    column-gap: 21px;
+                }
+
                 @include media-breakpoint-down(md) {
                     flex-wrap: wrap;
                 }
