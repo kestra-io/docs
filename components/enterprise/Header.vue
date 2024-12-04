@@ -56,7 +56,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/companies/leroymerlin.svg"
+                                    src="/landing/enterprise/teams/loreal-logo.svg"
                                     alt="L'Oréal"
                                     data-aos="fade-left"
                                 />
@@ -227,7 +227,10 @@
             .teams-content {
                 margin-top: calc($spacer * 2.125);
                 width: fit-content;
-                padding: 2rem 0;
+                padding: $rem-2 0 $rem-6 0;
+                @include media-breakpoint-down(sm) {
+                    padding: $rem-2 0;
+                }
 
                 p {
                     padding: 0 14px;
@@ -243,8 +246,13 @@
 
                 .teams-logos {
                     display: flex;
-                    gap: 21px;
+                    column-gap: 43px;
+                    row-gap: 20px;
                     padding: 0 14px;
+
+                    @include media-breakpoint-down(sm) {
+                        column-gap: 21px;
+                    }
                     img {
                         height: 18px;
                     }
