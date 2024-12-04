@@ -8,7 +8,7 @@ topics:
 
 How to iterate over a list of values in your flow.
 
-In this guide, you will learn how to iterate over a list of values using the  `EachSequential` task. This task enables you to loop through a list of values and execute specific tasks for each value in the list. This approach is useful for scenarios where multiple similar tasks need to be run for different inputs.
+In this guide, you will learn how to iterate over a list of values using the `ForEach` task. This task enables you to loop through a list of values and execute specific tasks for each value in the list. This approach is useful for scenarios where multiple similar tasks need to be run for different inputs.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Before you begin:
   
 ## Loop Over Nested Lists of Values
 
-This example demonstrates how to use `EachSequential` to loop over a list of strings and then loop through a nested list for each string. To see the flow in action, define the `each_nested` flow as shown below:
+This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string. To see the flow in action, define the `each_nested` flow as shown below:
 
 ```yaml
 id: each_nested
@@ -27,15 +27,15 @@ namespace: company.team
 
 tasks:
   - id: 1_each
-    type: io.kestra.plugin.core.flow.EachSequential
-    value: '["s1", "s2", "s3"]'
+    type: io.kestra.plugin.core.flow.ForEach
+    values: '["s1", "s2", "s3"]'
     tasks:
       - id: 1-1_return
         type: io.kestra.plugin.core.debug.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
       - id: 1-2_each
-        type: io.kestra.plugin.core.flow.EachSequential
-        value: '["a a", "b b"]'
+        type: io.kestra.plugin.core.flow.ForEach
+        values: '["a a", "b b"]'
         tasks:
           - id: 1-2-1_return
             type: io.kestra.plugin.core.debug.Return
@@ -57,7 +57,7 @@ The above flow, when executed, iterates over a nested list of values, logging me
 
 Within the flow:
 
-- `1_each`: Uses the `EachSequential` task to iterate over the list `["s1", "s2", "s3"]`. For each value, it runs the nested tasks defined within.
+- `1_each`: Uses the `ForEach` task to iterate over the list `["s1", "s2", "s3"]`. For each value, it runs the nested tasks defined within.
   
   - `1-1_return`: Logs the task ID, the current list value, and the task run start time.
   
@@ -74,10 +74,10 @@ Within the flow:
 
 ## Next Steps
 
-Now that you've seen how to loop over a list of values using `EachSequential`, you can apply this technique to any scenario where multiple iterations of similar tasks are needed. You can further extend this flow by:
+Now that you've seen how to loop over a list of values using `ForEach`, you can apply this technique to any scenario where multiple iterations of similar tasks are needed. You can further extend this flow by:
 - Adding more complex nested loops.
 - Using dynamic input values instead of hardcoded lists.
 - Logging or processing additional data from each iteration.
 
-For more advanced use cases, refer to Kestra’s official [EachSequential](https://kestra.io/plugins/core/tasks/flow/io.kestra.plugin.core.flow.eachsequential) task documentation.
+For more advanced use cases, refer to Kestra’s official [ForEach](https://kestra.io/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
 
