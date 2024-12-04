@@ -69,9 +69,9 @@ tasks:
 ```
 
 Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CANCEL`:
-- `WAIT`: The task will wait for the worker to be available.
-- `FAIL`: The task run will be terminated immediately if the worker is not available.
-- `CANCEL`: The task run will be gracefully killed if the worker is not available.
+- `WAIT`: The task will wait for the worker to be available and will remain in a `CREATED` state until the worker picks it up.
+- `FAIL`: The task run will be terminated immediately if the worker is not available and the execution will be marked as `FAILED`.
+- `CANCEL`: The task run will be gracefully terminated and execution will be marked as `KILLED` without an error.
 
 You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
 
