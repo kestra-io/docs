@@ -223,6 +223,7 @@
                         height: 100%;
                         position: absolute;
                         inset: 0%;
+                        max-height: 750px;
 
                         .u-img-cover {
                             object-fit: cover;
