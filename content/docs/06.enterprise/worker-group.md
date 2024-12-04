@@ -10,9 +10,12 @@ How to configure Worker Groups in Kestra Enterprise Edition.
 
 Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
 
-## Creating Worker Groups
+## Creating Worker Groups from the UI
 
-To create a new worker group, navigate to the `Cluster` page under the `Administration` section in the UI, go to the `Worker Groups` tab and click on the `+ Create` button. Then, set a `key` (and optionally, also a `description`) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+::badge{version=">=0.19" editions="EE"}
+::
+
+To create a new worker group, navigate to the `Cluster` page under the `Administration` section in the UI, go to the `Worker Groups` tab and click on the `+ Create` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
 
 ## Starting Workers for a Worker Group
 
@@ -30,7 +33,7 @@ Example flow configuration with a worker group:
 
 ```yaml
 id: worker_group
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: wait
@@ -44,6 +47,33 @@ tasks:
 ```
 
 If the `workerGroup.key` property is not provided, all tasks and polling triggers are executed on the default worker group. That default worker group doesn't have a dedicated key.
+
+## Worker Group behavior
+
+::badge{version=">=0.20" editions="EE"}
+::
+
+By default, a task configured to run on a given worker will wait for the worker to be available i.e. `workerGroup.fallback: WAIT`. If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
+
+```yaml
+id: worker_group
+namespace: company.team
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT0S
+    workerGroup:
+      key: gpu
+      fallback: FAIL
+```
+
+Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CANCEL`:
+- `WAIT`: The task will wait for the worker to be available.
+- `FAIL`: The task run will be terminated immediately if the worker is not available.
+- `CANCEL`: The task run will be gracefully killed if the worker is not available.
+
+You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
 
 ## When to use Worker Groups
 
