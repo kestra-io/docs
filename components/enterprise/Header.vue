@@ -20,7 +20,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/fila-logo.svg"
+                                    src="/landing/enterprise/teams/FILA.svg"
                                     alt="FILA"
                                     data-aos="fade-left"
                                 />
@@ -32,7 +32,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/gorgias-logo.svg"
+                                    src="/landing/enterprise/teams/GORGIAS.svg"
                                     alt="Gorgias"
                                     data-aos="fade-left"
                                 />
@@ -44,7 +44,31 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/acxiom-logo.svg"
+                                    src="/landing/enterprise/teams/DATAPORT.svg"
+                                    alt="Gorgias"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    height="63px"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/T-SYSTEM.svg"
+                                    alt="Gorgias"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    height="63px"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/ACXIOM.svg"
                                     alt="Acxiom"
                                     data-aos="fade-left"
                                 />
@@ -56,7 +80,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/companies/leroymerlin.svg"
+                                    src="/landing/companies/LM.svg"
                                     alt="L'Oréal"
                                     data-aos="fade-left"
                                 />
@@ -68,7 +92,7 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/battelle-logo.svg"
+                                    src="/landing/enterprise/teams/BATTELLE.svg"
                                     alt="Battelle"
                                     data-aos="fade-left"
                                 />
