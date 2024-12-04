@@ -3,7 +3,7 @@
         <div class="hero container">
             <div class="justify-content-center row">
                 <div class="row justify-content-center align-items-center flex-column w-100 header-content">
-                    <p class="text-center header-desc">Build For Critical Use Cases</p>
+                    <p class="text-center header-desc">Built For Critical Use Cases</p>
                     <h1 data-aos="fade-right">Scale With Kestra <br> Enterprise Edition</h1>
                     <div class="d-flex flex-wrap gap-2 button-group">
                         <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
