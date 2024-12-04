@@ -16,11 +16,10 @@
                             <div>
                                 <NuxtImg
                                     width="100%"
-                                    height="63px"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/fila-logo.svg"
+                                    src="/landing/enterprise/teams/LM.svg"
                                     alt="FILA"
                                     data-aos="fade-left"
                                 />
@@ -28,11 +27,10 @@
                             <div>
                                 <NuxtImg
                                     width="100%"
-                                    height="63px"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/gorgias-logo.svg"
+                                    src="/landing/enterprise/teams/GORGIAS.svg"
                                     alt="Gorgias"
                                     data-aos="fade-left"
                                 />
@@ -40,11 +38,10 @@
                             <div>
                                 <NuxtImg
                                     width="100%"
-                                    height="63px"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/acxiom-logo.svg"
+                                    src="/landing/enterprise/teams/ACXIOM.svg"
                                     alt="Acxiom"
                                     data-aos="fade-left"
                                 />
@@ -52,11 +49,10 @@
                             <div>
                                 <NuxtImg
                                     width="100%"
-                                    height="63px"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/loreal-logo.svg"
+                                    src="/landing/enterprise/teams/T-SYSTEM.svg"
                                     alt="L'Oréal"
                                     data-aos="fade-left"
                                 />
@@ -64,11 +60,21 @@
                             <div>
                                 <NuxtImg
                                     width="100%"
-                                    height="63px"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/battelle-logo.svg"
+                                    src="/landing/enterprise/teams/BATTELLE.svg"
+                                    alt="Battelle"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/DATAPORT.svg"
                                     alt="Battelle"
                                     data-aos="fade-left"
                                 />
@@ -228,7 +234,11 @@
                 margin-top: calc($spacer * 2.125);
                 width: fit-content;
                 padding: $rem-2 0 $rem-6 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 @include media-breakpoint-down(sm) {
+                    align-items: start !important;
                     padding: $rem-2 0;
                 }
 
@@ -240,7 +250,7 @@
                     text-align: center;
                     @include media-breakpoint-down(sm) {
                         text-align: start;
-                        font-size: $font-size-sm;
+                        font-size: $rem-1;
                     }
                 }
 
@@ -250,11 +260,15 @@
                     row-gap: 20px;
                     padding: 0 14px;
 
+                    img {
+                        height: 74px;
+                        @include media-breakpoint-down(lg) {
+                            height: 50px;
+                        }
+                    }
+
                     @include media-breakpoint-down(sm) {
                         column-gap: 21px;
-                    }
-                    img {
-                        height: 18px;
                     }
 
                     @include media-breakpoint-down(md) {
