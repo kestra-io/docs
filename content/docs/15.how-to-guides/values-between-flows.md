@@ -1,7 +1,7 @@
 ---
 title: Access Values Between Flows
 icon: /docs/icons/tutorial.svg
-stage: Beginner
+stage: Getting Started
 topics:
   - Kestra Concepts
 ---
