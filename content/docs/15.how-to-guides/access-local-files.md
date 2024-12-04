@@ -1,5 +1,5 @@
 ---
-title: Access Local Files in Kestra
+title: Access Files on your Local Machine in Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,11 +7,15 @@ topics:
   - Integrations
 ---
 
-Access locally stored files on your machine.
+Access locally stored files on your machine inside of Kestra Workflows.
 
 In Kestra, you can access files stored on your local machine inside of your Flows. 
 
 This can be useful if you have a directory of files you want to process, or code you want to run without having to run them 
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/aWvUtbu8FAo?si=KTF7V7PrcjR_fBuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Setting up Kestra with Docker
 
