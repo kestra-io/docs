@@ -22,7 +22,7 @@
                             <NuxtLink
                                 v-if="head?.button"
                                 :href="head?.button?.href"
-                                :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
+                                :class="head.name === 'Enterprise' ? 'enterprise-btn btn btn-animated btn-purple-animated' : 'edition-btn btn btn-animated btn-dark-animated'"
                                 data-aos="zoom-in"
                             >
                                 {{head.button?.text}}
@@ -105,9 +105,8 @@
                     </div>
                 </CollapsedFeatures>
                 <NuxtLink
-                    :href="selectedType === 'enterprise' && '/enterprise'"
-                    :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                    data-aos="zoom-in"
+                    :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
+                    :class="selectedType === 'enterprise' ? 'enterprise-btn btn btn-animated btn-purple-animated' : 'edition-btn btn btn-animated btn-purple-animated'"
                 >
                     {{selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started'}}
                 </NuxtLink>
@@ -134,7 +133,7 @@
       period: "Free",
       button: {
         text: "Get Started",
-        href: "/",
+        href: "/demo",
       },
     },
     {
@@ -142,7 +141,7 @@
       period: "Per Instance",
       button: {
         text: "Talk to Sales",
-        href: "/",
+        href: "/enterprise",
       },
     },
   ]);
@@ -660,6 +659,9 @@
     }
 
     .enterprise-btn {
+        &:after {
+            background: #7117FF;
+        }
         margin-top: 8px;
         display: flex;
         width: 100%;
@@ -673,6 +675,9 @@
     }
 
     .edition-btn {
+        &:after {
+            background: $white;
+        }
         margin-top: 8px;
         display: flex;
         width: 100%;
@@ -860,6 +865,7 @@
                 background-color: #000000;
 
                 p {
+                    white-space: nowrap;
                     margin: 0;
                     color: $white;
                     font-size: $rem-1;
@@ -889,6 +895,7 @@
                 background-color: #E1E1E1;
 
                 p {
+                    white-space: nowrap;
                     margin: 0;
                     font-size: $rem-1;
                     font-weight: 600;

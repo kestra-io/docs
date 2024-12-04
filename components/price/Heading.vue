@@ -23,7 +23,7 @@
                             </div>
                             <NuxtLink
                                 href="https://github.com/kestra-io/kestra"
-                                class="get-started"
+                                class="get-started btn btn-animated btn-purple-animated"
                                 data-aos="zoom-in"
                             >
                                 Get started
@@ -62,7 +62,7 @@
                                 </div>
                                 <NuxtLink
                                     href="/demo"
-                                    class="demo-btn"
+                                    class="demo-btn btn btn-animated btn-purple-animated"
                                     data-aos="zoom-in"
                                 >
                                     Book a Demo
@@ -302,6 +302,9 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         }
 
         .get-started {
+            &:after {
+                background: $white !important;
+            }
             display: flex;
             width: 100%;
             justify-content: center;
@@ -314,6 +317,9 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         }
 
         .demo-btn {
+            &:after {
+                background: #7117FF !important;
+            }
             display: flex;
             width: 100%;
             justify-content: center;
@@ -322,7 +328,6 @@ import Plus from 'vue-material-design-icons/Plus.vue'
             border-radius: 4px;
             font-size: 16px;
             font-weight: 700;
-            background-color: #7117FF;
         }
 
         ul {

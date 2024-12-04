@@ -73,7 +73,7 @@
                         with confidence. Empower your team, streamline governance, and harness reliable infrastructure
                         to drive growth without compromise.
                     </span>
-                    <NuxtLink href="/demo" class="demo-btn">
+                    <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                         <span>Get a Demo</span>
                     </NuxtLink>
 
@@ -139,9 +139,11 @@
                 padding: 0;
             }
             .demo-btn {
+                &:after {
+                    background-color: #6862F5 !important;
+                }
                 cursor: pointer;
                 padding: 10px 16px;
-                background-color: #6862F5;
                 border-radius: 4px;
                 max-width: 135px;
                 span {
