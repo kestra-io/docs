@@ -5,6 +5,25 @@ icon: /docs/icons/admin.svg
 
 Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
+## How to upgrade Kestra
+
+To upgrade Kestra, follow these steps:
+1. Perform a database backup (optional but recommended)
+2. Read the [release notes](https://github.com/kestra-io/kestra/releases) on GitHub to understand the changes in the new version
+3. Perform a rolling upgrade of Kestra components e.g. for a Kubernetes deployment, upgrade the Kestra Helm chart as described below in the section "Rolling upgrades in Kubernetes"
+4. Perform any actions needed following the release notes (e.g. update configuration files, adjust deprecated features, etc.)
+
+
+## How to rollback Kestra to a previous version
+
+Soemtimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+1. Perform a database backup (optional but recommended)
+2. Stop all Kestra components
+3. Restore from a backup
+4. Restart from an older version
+
+Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra.
+
 ## Where you can find the release changelog
 
 You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](/blogs).
