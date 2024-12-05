@@ -596,6 +596,16 @@ In versions prior to [v0.18.0](/blogs/2024-08-06-release-0-18.md), this filter w
 
 ---
 
+### `toIon`
+
+The `toIon` filter converts any object into an Ion string. Example:
+
+```twig
+{{ myObject | toIon }}
+```
+
+---
+
 ### `jq`
 
 The `jq` filter applies a [JQ expression](https://stedolan.github.io/jq/) to a variable. The result is always an array formatted as JSON. Use the `first` filter to extract the first (or only) result.
@@ -1457,6 +1467,18 @@ Examples:
 
 {{ fromJson('{"foo": [666, 1, 2]}').foo[0] }}
 # output: 666
+```
+
+---
+
+### fromIon
+
+The `fromIon` function parses a ION string into an object, enabling property access.
+
+Example:
+
+```twig
+{{ fromIon(read(someItem)).someField }}
 ```
 
 ---
