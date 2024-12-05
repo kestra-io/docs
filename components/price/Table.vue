@@ -4,42 +4,42 @@
             <h3>Compare All Features</h3>
             <table class="table table-dark">
                 <thead class="t-head">
-                <tr>
-                    <th
-                        class="t-head-title"
-                        :class="{
-                                'w-50 ps-5': title === 'Features',
-                                'text-center': title !== 'Features',
-                             }"
-                        v-for="(head, index) in  tableHead "
-                        :key="head"
-                    >
-                        <div class="border-radius" :class="{
-                                'bg-gray': index !== 0,
-                           }">
-                            <p>{{ head.name }}</p>
-                            <span>{{ head.period }}</span>
-                            <NuxtLink
-                                v-if="head?.button"
-                                :href="head?.button?.href"
-                                :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                                data-aos="zoom-in"
-                            >
-                                {{head.button?.text}}
-                            </NuxtLink>
-                        </div>
-                    </th>
-                </tr>
+                    <tr>
+                        <th
+                            class="t-head-title"
+                            :class="{
+                                        'w-50 ps-5': title === 'Features',
+                                        'text-center': title !== 'Features',
+                                     }"
+                            v-for="(head, index) in  tableHead "
+                            :key="head"
+                        >
+                            <div class="border-radius" :class="{
+                                        'bg-gray': index !== 0,
+                                   }">
+                                <p>{{ head.name }}</p>
+                                <span>{{ head.period }}</span>
+                                <NuxtLink
+                                    v-if="head?.button"
+                                    :href="head?.button?.href"
+                                    :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
+                                >
+                                    {{head.button?.text}}
+                                </NuxtLink>
+                            </div>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody class="t-head-body">
                     <tr v-for="item in tableData"
                         :key="item.id"
+                        :class="!item.textBold ? '' : 'sticky-tr'"
                     >
                         <td class="ps-5 t-border-data-first-block"
                             :class="!item.textBold ? '' : 't-r-heading-text'">
-                                <span>
-                                    {{item.title }}
-                                </span>
+                                    <span>
+                                        {{item.title }}
+                                    </span>
                         </td>
                         <td class="tick t-border-data">
                             <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
@@ -63,11 +63,13 @@
     <div class="collapsed-table">
         <div class="container">
             <div class="buttons">
-                <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'" @click="changeSelectedType('enterprise')">
+                <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
+                     @click="changeSelectedType('enterprise')">
                     <p>Enterprise</p>
                     <span>Per Instance</span>
                 </div>
-                <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'" @click="changeSelectedType('opensource')">
+                <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
+                     @click="changeSelectedType('opensource')">
                     <p>Open-Source</p>
                     <span>Free</span>
                 </div>
@@ -644,11 +646,37 @@
   const changeSelectedType = (type) => {
     selectedType.value = type
   }
+
+  const handleScroll = () => {
+      const stickyElements = document.querySelectorAll('.sticky-tr');
+      if(stickyElements) {
+        stickyElements?.forEach((item) => {
+          if (item.getBoundingClientRect()?.top <= 210) {
+            item?.classList.add('shadow')
+          } else {
+            item?.classList.remove('shadow')
+          }
+        });
+      }
+  };
+  onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+  });
 </script>
 
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
-
+    .shadow {
+        box-shadow: 0px 2px 0px 0px #EFEFEF !important;
+        td {
+            >span {
+                margin-top: 25px !important;
+            }
+        }
+    }
     .close-svg-red {
         width: 24px;
         height: auto;
@@ -706,6 +734,7 @@
         }
 
         .table-responsive {
+            overflow: unset;
             max-width: 1140px;
             padding: 0;
         }
@@ -727,6 +756,7 @@
         }
 
         .table {
+            overflow: unset;
             background-color: $white !important;
             border-radius: 8px;
             border: none;
@@ -740,6 +770,7 @@
                 color: $black-2;
                 line-height: 24px;
                 max-height: 74px;
+
                 span {
                     margin-top: 32px;
                     font-weight: 700;
@@ -748,7 +779,31 @@
             }
 
             .t-head {
-                border: none !important;
+                background: #FFFFFF;
+                border: none;
+                z-index: 200;
+                position: sticky;
+                top: 67px;
+                @include media-breakpoint-down(xl) {
+                    top: 64px;
+                }
+
+                .border-bottom-elem {
+                    position: absolute;
+                    width: 100%;
+                    z-index: 99999999!important;
+                    padding: 0 16px 0 44px;
+                    bottom: -47px;
+
+                    @include media-breakpoint-down(xl) {
+                        padding: 0 16px;
+                    }
+                    div {
+                        padding: 0;
+                        width: 100%;
+                        border-bottom: 1px solid #B0B0B0;
+                    }
+                }
             }
 
             .heading-bg {
@@ -787,6 +842,12 @@
             .t-head-body {
                 .tick {
                     text-align: center;
+                }
+                .sticky-tr {
+                    position: sticky;
+                    top: 185px;
+                    background: #FFFFFF;
+                    z-index: 100;
                 }
 
                 tr {

@@ -57,6 +57,7 @@
     @import "../../assets/styles/variable";
 
     .cont {
+        overflow: clip;
         background: #121217;
 
         @include media-breakpoint-down(md) {
