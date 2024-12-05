@@ -1,97 +1,178 @@
 <template>
     <div class="container">
         <div class="header">
-            <div class="heading mx-auto pb-1 mt-5 pt-3 pb-4">
-                <h3 class="title lh-base text-white text-center"><span class="title-animated">Scale</span>
-                    as you grow</h3>
-                <h3 class="desc text-white text-center">Get started with the Open Source edition of Kestra
-                    and scale with Enterprise Edition exclusive features</h3>
-            </div>
+            <span class="text-white text-center">Kestra Editions</span>
+            <h3 class="title text-white text-center">
+                Explore with Open Source
+                Scale with Enterprise Edition
+            </h3>
         </div>
         <!-- cards  -->
         <Section class="pt-0">
             <div class="row card-group mb-4">
-                <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end">
-                    <div class="card text-white col-lg-9 col-xl-8">
+                <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end pt-37">
+                    <div class="card text-white col-lg-9 col-xl-8  max-w-328">
                         <div class="card-body">
-                            <div class="pb-4">
-                                <h4 class="card-title" data-aos="fade-right">Open-Source</h4>
-                                <p class="pricing" data-aos="fade-left">Free under Apache 2.O License</p>
-                                <NuxtLink
-                                    href="https://github.com/kestra-io/kestra"
-                                    class="btn btn-animated btn-dark-animated w-100"
-                                    data-aos="zoom-in"
-                                >
-                                    Get started
-                                </NuxtLink>
+                            <div class="pb-rem-2">
+                                <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
+                                <p class="pricing" data-aos="fade-left">Best for Development</p>
+                                <p class="pricing-type" data-aos="fade-left">Free</p>
+                                <div class="pricing-desc" data-aos="fade-left">
+                                    The core features of Kestra, maintained by the Kestra team and community.
+                                </div>
                             </div>
+                            <NuxtLink
+                                href="https://github.com/kestra-io/kestra"
+                                class="get-started"
+                                data-aos="zoom-in"
+                            >
+                                Get started
+                            </NuxtLink>
                             <ul>
-                                <li data-aos="fade-right" class="w-100"><span>Powerful orchestration engine</span></li>
-                                <li data-aos="fade-right" data-aos-delay="50"><span>Declarative workflows as code and from
-                                        the UI</span>
+                                <li data-aos="fade-right" data-aos-delay="100">
+                                    <div class="check-icon">
+                                        <CheckBold />
+                                    </div>
+                                    <span>Core Features</span>
                                 </li>
-                                <li data-aos="fade-right" data-aos-delay="100"><span>Event-driven automations</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Embedded code editor</span></li>
-                                <li data-aos="fade-right" data-aos-delay="200"><span>Embedded documentation</span></li>
-                                <li data-aos="fade-right" data-aos-delay="250"><span>Live-updating topology view</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Access to 400+ plugins</span></li>
-                                <li data-aos="fade-right" data-aos-delay="350"><span>Git & CI/CD integrations</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Basic authentication</span></li>
-                                <li data-aos="fade-right" data-aos-delay="450"><span>Community support</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150">
+                                    <div class="check-icon">
+                                        <CheckBold />
+                                    </div>
+                                    <span>Open Source Under Apache 2.0 Licence</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-12 col-md-6 z-3 rightcard">
-                    <div class="card-Demo text-white col-lg-9 col-xl-8 mt-3 mt-md-0">
-                        <div class="card-body">
-                            <div class="mb-7 gap-3">
-                                <h3 class="card-title mb-5" data-aos="fade-right">Enterprise Edition</h3>
-
-                                <NuxtLink
-                                    class="d-block w-100 d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated"
-                                    href="/demo">
-                                    Get a demo
-                                </NuxtLink>
+                <div class="col-12 col-md-6 z-3 ">
+                    <div class="bordered-block">
+                        <div class="card-Demo text-white col-lg-9 col-xl-8 mt-3 mt-md-0  max-w-328">
+                            <div class="top-block">
+                            <span>
+                                Recommended for Enterprises & SMBs
+                            </span>
                             </div>
-                            <ul>
-                                <li data-aos="fade-left">
-                                    <span>
-                                        <strong>
-                                            All features from the Open-Source Edition and
-                                            more
-                                        </strong>
-                                    </span>
-                                </li>
+                            <div class="card-body">
+                                <div class="pb-rem-2">
+                                    <h4 class="card-title" data-aos="fade-right">Enterprise Edition</h4>
+                                    <p class="pricing" data-aos="fade-left">Built For Production</p>
+                                    <p class="pricing-type" data-aos="fade-left">On-Demand</p>
+                                    <div class="pricing-desc" data-aos="fade-left">Instance based model with:  No limits on users, workflows, or tasks.</div>
+                                </div>
+                                <NuxtLink
+                                    href="/demo"
+                                    class="demo-btn"
+                                    data-aos="zoom-in"
+                                >
+                                    Book a Demo
+                                </NuxtLink>
                                 <ul>
-                                    <p class="category-title">Security</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Audit logs</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>RBAC</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>SSO</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Secrets Manager</span></li>
+                                    <li data-aos="fade-right" data-aos-delay="100">
+                                        <div class="check-icon">
+                                            <CheckBold />
+                                        </div>
+                                        <span>Everything in Open-source</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>Governance</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>Security</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>Productivity</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>SLA & Customer Success Program</span>
+                                    </li>
                                 </ul>
-                                <ul>
-                                    <p class="category-title">Governance</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Multi Tenancy</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Namespace Management</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Custom blueprints</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Task Configuration</span></li>
-                                </ul>
-                                <ul>
-                                    <p class="category-title">Scalability</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Dedicated Worker</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>High Throughput</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>High Availability</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Fault Tolerant</span></li>
-                                </ul>
-                                <ul>
-                                    <p class="category-title">Services</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Customer Success Program</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Support & Enterprise SLA</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Training & Roadmap</span></li>
-                                </ul>
-                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="team-container">
+                <div class="teams-content">
+                    <p>Trusted by Teams From:</p>
+                    <div class="teams-logos">
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/LM.svg"
+                                alt="FILA"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/GORGIAS.svg"
+                                alt="Gorgias"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/ACXIOM.svg"
+                                alt="Acxiom"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/T-SYSTEM.svg"
+                                alt="L'Oréal"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/BATTELLE.svg"
+                                alt="Battelle"
+                                data-aos="fade-left"
+                            />
+                        </div>
+                        <div>
+                            <NuxtImg
+                                width="100%"
+                                loading="lazy"
+                                format="webp"
+                                class="img-fluid"
+                                src="/landing/pricing/teams/DATAPORT.svg"
+                                alt="Battelle"
+                                data-aos="fade-left"
+                            />
                         </div>
                     </div>
                 </div>
@@ -102,69 +183,164 @@
 
 <script setup>
 import Section from '../layout/Section.vue';
+import CheckBold from 'vue-material-design-icons/CheckBold.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
 </script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
 .container {
-    .card-Demo {
-        background-color: $black-2 !important;
-        box-shadow: none;
-        background: var(--Kestra-io-Token-color-background-secondary, $black-2);
+    background-image: url(/public/landing/pricing/visual-bg_pricing.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
 
-        position: relative;
-        $border: 1px;
-        background: #000;
-        background-clip: padding-box;
-        border: solid $border transparent;
-        border-radius: 8px;
+    @include media-breakpoint-down(md) {
+        background-image: unset;
+        padding-left: $rem-2;
+        padding-right: $rem-2;
+    }
 
-        &:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: -1;
-            margin: -$border;
-            border-radius: inherit;
-            background: linear-gradient(to right, #E151F7, #5C47F5);
+    :deep(section) {
+        @include media-breakpoint-down(md) {
+            padding-bottom: 0;
+        }
+    }
+    .max-w-328 {
+        max-width: 328px;
+    }
+    .pt-37 {
+        padding-top: 37px;
+    }
+
+    .bordered-block {
+        width: fit-content;
+        padding: 3px;
+        border-radius: 10px;
+        border: 1px solid #A870FF;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 20px;
         }
 
+        .card-Demo {
+            width: 100%;
+            background-color: $white !important;
+            box-shadow: none;
+            background: var(--Kestra-io-Token-color-background-secondary, $black-2);
+            position: relative;
+            $border: 1px;
+            background: #000;
+            background-clip: padding-box;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 0 !important;
+            }
+
+
+            .top-block {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                background-color: rgba(113, 23, 255, 1);
+                padding: 8px 0;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                border: none;
+
+                span {
+                    color: $white;
+                    font-size: 12px;
+                }
+            }
+        }
     }
+
 
     .card {
-        background-color: $black-2 !important;
+        background-color: $white !important;
         border: $block-border !important;
         box-shadow: none;
-
-    }
-
-    .card-title {
-        font-size: $font-size-xl;
-        font-weight: 600;
-        margin-bottom: 0;
-        line-height: 2rem;
-    }
-
-    .pricing {
-        color: #B9B9BA;
-        font-weight: 400;
-        font-size: $font-size-md;
-        line-height: 2rem;
-    }
-
-    .custom {
-        color: $primary;
     }
 
     .card-body {
         padding: calc($spacer * 2);
+
+        .pb-rem-2 {
+            padding-bottom: $rem-2;
+        }
+
+        .card-title {
+            color: $black-1;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            padding-bottom: 11px;
+            border-bottom: 1px solid rgba(217, 217, 217, 1);
+            line-height: 2rem;
+        }
+
+        .pricing {
+            margin-top: $rem-1;
+            margin-bottom: 0;
+            color: $black-1;
+            font-weight: 700;
+            font-size: $font-size-md;
+            line-height: 2rem;
+        }
+
+        .pricing-type {
+            margin: 0;
+            color: rgba(61, 61, 63, 1);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+        }
+
+        .pricing-desc {
+            font-family: $font-family-sans-serif;
+            font-weight: 400;
+            margin-top: 16px;
+            color: rgba(61, 61, 63, 1);
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        .get-started {
+            &:hover {
+                background: #F2F5F8;
+                border: 1px solid #000000;
+            }
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            color: $black-2 !important;
+            border: 1px solid rgba(43, 49, 62, 1);
+            padding: 9px 0;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .demo-btn {
+            &:hover {
+                background: #8255FF;
+            }
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            color: $white !important;
+            padding: 9px 0;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            background: #7117FF;
+        }
+
         ul {
             padding-top: $spacer;
-            padding-left: 0px;
+            padding-left: 0;
 
             .category-title {
                 text-transform: uppercase;
@@ -176,81 +352,153 @@ import Section from '../layout/Section.vue';
             }
 
             li {
+                display: flex;
+                gap: 8px;
                 padding: 0 0.1rem;
-                list-style-image: url("public/landing/check.svg");
-                list-style-position: inside;
-                line-height: calc($spacer * 2);
+                list-style: none;
+                min-height: 24px;
+
+                .check-icon {
+                    max-width: 16px;
+                    position: relative;
+                    height: 100%;
+                    :deep(svg) {
+                        top: 0;
+                        position: absolute;
+                        font-size: 16px;
+                    }
+                }
 
                 span {
+                    color: $black-2;
                     position: relative;
-                    top: -0.1rem;
-
-                    strong {
-                        font-weight: 400;
-                        line-height: calc($spacer * 2);
-                        font-size: $font-size-lg;
-                    }
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 22px;
                 }
             }
         }
     }
 
-    .heading {
-        max-width: 700px;
-    }
-
     .header {
-        max-width: full;
-        background-image: url('/mask1.svg');
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+
+        @include media-breakpoint-down(lg) {
+            gap: 10px;
+        }
+
+        span {
+            text-align: center;
+            align-items: center;
+            font-family: $font-family-sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px   ;
+            text-decoration-skip-ink: none;
+            color: rgba(115, 107, 205, 1) !important;
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                text-align: start !important;
+            }
+        }
+
+        .title {
+            font-weight: 400;
+            font-family: $font-family-sans-serif;
+            font-size: 40px !important;
+            line-height: 48px;
+            max-width: 543px;
+
+            @include media-breakpoint-down(lg) {
+                font-size: 35px !important;
+                line-height: 43px;
+            }
+
+            @include media-breakpoint-down(md) {
+                text-align: start !important;
+            }
+        }
     }
 
     .card-group {
-
         z-index: 10;
         position: relative;
+        overflow: hidden;
 
-        &::after {
-            content: "";
-            position: absolute;
-            top: -5%;
-            right: 34%;
-            width: 694.541px;
-            background: linear-gradient(145deg, rgba(98, 24, 255, 0.00) 37.5%, #7D17FF 79.5%);
-            filter: blur(100px);
-            height: 382.203px;
-            z-index: 0;
+        @include media-breakpoint-down(md) {
+            padding: 0;
         }
 
-        &::before {
-            content: "";
-            position: absolute;
+        @include media-breakpoint-down(lg) {
+            background-size: 1500px 800px;
+        }
+
+        div {
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                max-width: unset;
+            }
+        }
+    }
+
+    .team-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        .teams-content {
+            margin-top: calc($spacer * 2.125);
+            width: fit-content;
+            padding: $rem-2 0 $rem-6 0;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            width: 2024px;
-            height: 800px;
-            background: url('/mask2.svg');
-            top: 300px;
-            opacity: 0.4;
-            z-index: 0;
-            border-radius: 50px;
+            @include media-breakpoint-down(sm) {
+                align-items: start !important;
+                padding: $rem-2 0;
+            }
 
+            p {
+                padding: 0 14px;
+                font-size: $font-size-xl;
+                font-weight: 300;
+                line-height: 25.85px;
+                text-align: center;
+                color: rgba(255, 255, 255, 1);
+                @include media-breakpoint-down(sm) {
+                    text-align: start;
+                    font-size: $rem-1;
+                }
+            }
+
+            .teams-logos {
+                display: flex;
+                column-gap: 43px;
+                row-gap: 20px;
+                padding: 0 14px;
+                @include media-breakpoint-down(lg) {
+                    padding: 0;
+                }
+                img {
+                    height: 74px;
+                    @include media-breakpoint-down(lg) {
+                        height: 50px;
+                    }
+                }
+
+                @include media-breakpoint-down(sm) {
+                    column-gap: 21px;
+                }
+
+                @include media-breakpoint-down(md) {
+                    flex-wrap: wrap;
+                }
+            }
         }
     }
-
-    .title {
-        font-weight: 400;
-        font-size: $font-size-4xl;
-        line-height: 3.75rem;
-
-        &-animated {
-            background: linear-gradient(90deg, #E151F7 57.52%, #5C47F5 92.48%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    }
-
-    .desc {
-        font-size: $font-size-xl;
-        font-weight: 300;
-    }
-}</style>
+}
+</style>
