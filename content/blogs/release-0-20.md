@@ -59,7 +59,7 @@ You can think of Apps as **custom UIs for flows**, allowing your end users to in
 
 ## Team-Level Isolation for Storage and Secrets
 
-Kestra Enterprise has built-in [multitenancy](../docs/06.enterprise/03.tenants.md), providing *virtual* isolation across teams or business units. By default, each tenant uses the same [internal storage](../configuration/index.md#internal-storage) and [secrets backend](./secrets-manager.md) configured in your Kestra instance.
+Kestra Enterprise has built-in [multitenancy](../docs/06.enterprise/03.tenants.md), providing *virtual* isolation across teams or business units. By default, each tenant uses the same [internal storage](../docs/configuration/index.md#internal-storage) and [secrets backend](../docs/configuration/index.md#secret-managers) configured in your Kestra instance.
 
 However, teams often need *physical* data isolation per organizational unit. Starting with version 0.20, Kestra now supports team-level isolation for internal storage and secrets. This means you can configure dedicated storage and secrets managers per tenant or namespace, providing stricter data isolation for your business units. This capability is particularly useful for organizations requiring infrastructure isolation across teams or customers.
 
