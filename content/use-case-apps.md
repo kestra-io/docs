@@ -1,0 +1,123 @@
+---
+title: "There's an Apps for that"
+description: Endless possibilities with Kestra Apps
+date: 2024-12-12T13:00:00
+category: Solutions
+author:
+  name: Benoit Pimpaud
+  image: bpimpaud
+image: /blogs/introducing-apps.jpg
+---
+
+We recently introduced **Apps**: **frontend applications** for your Kestra workflows. They allow end-users to interact with workflows through forms, output displays, markdown blocks, approval buttons, and other UI components, while Kestra flows handle all backend processing.
+
+
+
+## Requests & Review
+
+One use case we see a lot among Kestra customers is the need for ingesting data into FTP. Uploading Excel file in FTP server is still something very common, even in the era of Gen AI.
+
+With Apps we can build a simple frontend allowing users to upload a file, selecting the FTP configuration they want and the folder to simply upload files without the worry of credentials inputs, server configuration, or old designed UI.
+
+```yaml
+id: upload_ftp
+namespace: company
+
+inputs:
+
+  - id: file
+    displayName: File
+    type: FILE
+
+  - id: folder
+    displayName: FTP Folder
+    type: STRING
+
+  - id: file_name
+    displayName: Filename in the FTP
+    type: STRING
+    description: What will be the file name in the FTP?
+    defaults: "data.csv"
+
+  - id: ftp_config
+    type: SELECT
+    values:
+      - FTP Company
+      - FTP Shiny Rocks
+      - FTP Internal
+
+tasks:
+  - id: switch
+    type: io.kestra.plugin.core.flow.Switch
+    value: "{{ inputs.ftp_config }}"
+    cases:
+      "FTP Company":
+        - id: ftp_company
+          type: io.kestra.plugin.fs.ftp.Upload
+          host: ftp://ftp.company.com
+          port: 21
+          username: "{{ secret('FTP_COMPANY_USER')}}"
+          password: "{{ secret('FTP_COMPANY_PASSWORD') }}"
+          from: "{{ inputs.file }}"
+          to: "{{inputs.folder}}/{{inputs.file_name}}"
+          
+      "FTP Shiny Rocks":
+        - id: ftp_shiny
+          type: io.kestra.plugin.fs.ftp.Upload
+          host: ftp://ftp.shiny.com
+          port: 21
+          username: "{{ secret('FTP_SHINY_USER')}}"
+          password: "{{ secret('FTP_SHINY_PASSWORD') }}"
+          from: "{{ inputs.file }}"
+          to: "{{inputs.folder}}/{{inputs.file_name}}"
+
+      "FTP Internal":
+        - id: ftp_internal
+          type: io.kestra.plugin.fs.ftp.Upload
+          host: ftp://ftp.internal.com
+          port: 21
+          username: "{{ secret('FTP_INTERNAL_USER')}}"
+          password: "{{ secret('FTP_INTERNAL_PASSWORD') }}"
+          from: "{{ inputs.file }}"
+          to: "{{inputs.folder}}/{{inputs.file_name}}"
+
+    defaults:
+      - id: default
+        type: io.kestra.plugin.core.execution.Fail
+        errorMessage: "Please choose an existing FTP configuration"
+```
+
+
+![fist_app_inputs](/blogs/use-case-apps/first_app_inputs.png)
+
+![fist_app_loading](/blogs/use-case-apps/first_app_loading.png)
+
+
+
+## Dynamic Self-Serve
+
+Sometimes you build dashboards. Tons of dashboards. But actual data consumer sometimes only want a particular set, something dynamic, where they can inputs their dimensions, measures or any parameters for their analysis.
+We can build an app that will bound such request while allowing users to play with parameters. For example, let's take a parametized query allowing us to aggregate some data over time. The end user might want to download trends for different dimension and measures alongside a specific time frame.
+
+Such workflow can be easily setup in Kestra, like this:
+
+KESTRA FLOW QUERY + GRAPH GEN
+
+We can wrap up this workflow with an App where the user can select his parameters, hit execute and get the graphic he wants.
+
+APP SCREENSHOTS
+
+## Simple Interface for Custom Automation
+
+Kestra is at its best when the automation built can be used in our daily work. It's not only a scheduler but a real automation platform.
+
+For example, Product or Sales team might want to qualify user research response or leads discussion. It's usually something manual, that go through some scoring, etc.
+What if we can just bring context of a discussion or project to our favorite LLM, ask for qualification bounded to a certain set of rules and get associated response as well as qualification score ?
+
+Under the hood it's a matter of building a Kestra Flow that will call Hugging Face API. We can expose this complex logic within an Apps where, as a user, I only give the context hit executes and get suggested answers for my user and corresponding categorization.
+
+I could even connect this to my CRM or database to automatically track discussions and leads pipelines.
+
+EXAMPLE FLOW
+
+EXAMPLE APPLICATION
