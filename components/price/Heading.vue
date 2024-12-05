@@ -451,15 +451,13 @@ import Plus from 'vue-material-design-icons/Plus.vue'
         display: flex;
         justify-content: center;
         .teams-content {
-            margin-top: calc($spacer * 2.125);
             width: fit-content;
-            padding: $rem-2 0 $rem-6 0;
+            padding: $rem-2 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             @include media-breakpoint-down(sm) {
                 align-items: start !important;
-                padding: $rem-2 0;
             }
 
             p {

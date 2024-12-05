@@ -811,8 +811,8 @@
             }
 
             .bg-gray {
-                min-height: 61px;
-                padding: 1.3rem $rem-2;
+                min-height: 45px;
+                padding: 10px $rem-2;
                 background-color: #F8F8F8;
             }
 
