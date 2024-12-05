@@ -101,11 +101,140 @@ We can build an app that will bound such request while allowing users to play wi
 
 Such workflow can be easily setup in Kestra, like this:
 
-KESTRA FLOW QUERY + GRAPH GEN
+```yaml
+id: query_analysis
+namespace: kestra.weather
+
+inputs:
+  - id: dimension
+    type: SELECT
+    values:
+      - city
+      - region
+      - country
+
+  - id: start_date
+    type: DATETIME
+
+  - id: end_date
+    type: DATETIME
+
+tasks:
+  - id: query
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: |
+      SELECT
+        _{{ inputs.dimension }} AS city,
+        DATE(_time) AS date_time,
+        AVG(_temperature) AS avg_temperature
+      FROM weather.staging_temperature
+      WHERE
+        _time BETWEEN '{{ inputs.start_date}}' AND '{{ inputs.end_date }}'
+      GROUP BY _{{ inputs.dimension }}, DATE(_time)
+    store: true
+
+  - id: ion_to_csv
+    type: io.kestra.plugin.serdes.csv.IonToCsv
+    from: "{{ outputs.query.uri }}"
+
+  - id: chart
+    type: io.kestra.plugin.scripts.python.Script
+    warningOnStdErr: false
+    inputFiles:
+      data.csv: "{{ outputs.ion_to_csv.uri }}"
+    outputFiles:
+      - "plot.png"
+    beforeCommands:
+      - pip install pandas
+      - pip install plotnine
+    script: |
+      import pandas as pd
+      from plotnine import ggplot, geom_col, aes, ggsave
+
+      data = pd.read_csv("data.csv")
+      print(data.head())
+      plot = (
+          ggplot(data) + 
+          geom_col(aes(x="date_time", fill="city", y="avg_temperature"), position="dodge")
+      )
+      ggsave(plot, "plot.png")
+
+outputs:
+  - id: plot
+    type: FILE
+    value: '{{ outputs.chart["outputFiles"]["plot.png"] }}'
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "jdbc:postgresql://{{ secret('POSTGRES_HOST') }}/data"
+      username: "{{ secret('POSTGRES_USERNAME') }}"
+      password: "{{ secret('POSTGRES_PASSWORD') }}"
+```
+
 
 We can wrap up this workflow with an App where the user can select his parameters, hit execute and get the graphic he wants.
 
-APP SCREENSHOTS
+```yaml
+id: self_serve_analytics
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Self-serve Analytics
+namespace: kestra.weather
+flowId: query_analysis
+access: PRIVATE
+tags:
+  - Reporting
+  - Analytics
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Self Serve Weather Analysis
+          Select the geography granularity dimension and a timeframe
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Running analysis
+          Don't close this window. The results will be displayed as soon as the processing is complete.
+      
+      - type: io.kestra.plugin.ee.apps.core.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel request
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Request processed successfully
+          Here is your data
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+        
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: Find more App examples in the linked repository
+
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: App examples
+        url: https://github.com/kestra-io/enterprise-edition-examples/tree/main/apps
+        style: INFO
+
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: Submit new request
+        url: "{{ app.url }}"
+        style: DEFAULT
+```
+
+
+![second_app_inputs](/blogs/use-case-apps/second_app_inputs.png)
+![second_app_outputs](/blogs/use-case-apps/second_app_outputs.png)
 
 ## Simple Interface for Custom Automation
 
