@@ -249,4 +249,174 @@ I could even connect this to my CRM or database to automatically track discussio
 
 EXAMPLE FLOW
 
-EXAMPLE APPLICATION
+```
+id: user_research_categorization_feedback
+namespace: kestra
+
+inputs:
+
+  - id: user_context
+    type: STRING
+
+
+
+variables:
+  pre_prompt: "You're an senior product manager with a strong baground in user research."
+  
+  new_discussion_prompt: "Write a friendly message to welcome the user and ask an open question (what, when, where, etc.) to engage a new discussion"
+
+  follow_up_prompt: "It's been quite a long time you didn't message the user. Write a follow up question to get some news"
+
+  discovery_prompt: "The user already gave you some information about his issues or project timeline. Part of a sales discovery framework set in your sales motion, write a question to deep-dive and get more information about high level use case, project timeline, etc."
+
+tasks:
+  - id: llm_categorization
+    type: io.kestra.plugin.core.http.Request
+    uri: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+    method: POST
+    contentType: application/json
+    headers:
+      Authorization: "Bearer {{ secret('HF_API_TOKEN') }}"
+    formData:
+      inputs: "{{ inputs.user_context }}"
+      parameters:
+        candidate_labels:
+          - "new discussion"
+          - "follow up"
+          - "discovery"
+
+  - id: message_category
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ json(outputs.llm_categorization.body).labels[0] }}"
+
+
+  - id: llm_prompting
+    type: io.kestra.plugin.core.flow.Switch
+    value: "{{ json(outputs.llm_categorization.body).labels[0] }}"
+    cases:
+      "new discussion":
+        - id: new_discussion_prompt
+          type: io.kestra.plugin.core.http.Request
+          uri: https://api-inference.huggingface.co/models/Qwen/Qwen2.5-1.5B-Instruct/v1/chat/completions
+          method: POST
+          contentType: application/json
+          headers:
+            Authorization: "Bearer {{ secret('HF_API_TOKEN') }}"
+          formData:
+            model: "Qwen/Qwen2.5-1.5B-Instruct"
+            messages: [
+              {"role": "system", "content": "{{ vars.pre_prompt }}. {{vars.new_discussion_prompt }}"},
+              {"role": "user", "content": "{{ inputs.user_context }}"}
+            ]
+
+        - id: log_response
+          type: io.kestra.plugin.core.log.Log
+          message: "{{ json(outputs.new_discussion_prompt.body) }}"
+            
+      "follow up":
+        - id: follow_up_prompt
+          type: io.kestra.plugin.core.http.Request
+          uri: https://api-inference.huggingface.co/models/Qwen/Qwen2.5-1.5B-Instruct/v1/chat/completions
+          method: POST
+          contentType: application/json
+          headers:
+            Authorization: "Bearer {{ secret('HF_API_TOKEN') }}"
+          formData:
+            model: "Qwen/Qwen2.5-1.5B-Instruct"
+            messages: [
+              {"role": "system", "content": "{{ vars.pre_prompt }}. {{vars.follow_up_prompt }}"},
+              {"role": "user", "content": "{{ inputs.user_context }}"}
+            ]
+            
+
+        - id: log_response2
+          type: io.kestra.plugin.core.log.Log
+          message: "{{ json(outputs.follow_up_prompt.body) }}"
+
+      "discovery":
+        - id: discovery_prompt
+          type: io.kestra.plugin.core.http.Request
+          uri: https://api-inference.huggingface.co/models/Qwen/Qwen2.5-1.5B-Instruct/v1/chat/completions
+          method: POST
+          contentType: application/json
+          headers:
+            Authorization: "Bearer {{ secret('HF_API_TOKEN') }}"
+          formData:
+            model: "Qwen/Qwen2.5-1.5B-Instruct"
+            messages: [
+              {"role": "system", "content": "{{ vars.pre_prompt }}. {{vars.discovery_prompt }}"},
+              {"role": "user", "content": "{{ inputs.user_context }}"}
+            ]
+        - id: log_response3
+          type: io.kestra.plugin.core.log.Log
+          message: "{{ json(outputs.discovery_prompt.body) }}"
+```
+
+
+```yaml
+id: user_research
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Get answer recommendation for user research
+namespace: kestra
+flowId: user_research_categorization_feedback
+access: PRIVATE
+tags:
+  - User Research
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## User Context
+          This AI powered application helps you to answer user questions. It's a great help for your user research work!
+          
+          Please fill the user context below.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Doing magic 🧙
+          Don't close this window. The results will be displayed as soon as the LLM is doing its magic!
+      
+      - type: io.kestra.plugin.ee.apps.core.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel request
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          Here are a potential answer:
+      
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+        filter:
+          logLevel: INFO
+          taskIds: ['log_response', 'log_response2', 'log_response3']
+     
+
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: App examples
+        url: https://github.com/kestra-io/enterprise-edition-examples/tree/main/apps
+        style: INFO
+
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: Submit new request
+        url: "{{ app.url }}"
+        style: DEFAULT
+```
+
+Here is our main user interface. Here the user is asked the general user context
+![alt text](/blogs/use-case-apps/custom_1.png)
+
+
+LLMs are doing the work under the hood
+![alt text](/blogs/use-case-apps/custom_2.png)
+
+
+And then we get a potential answer for our user
+![alt text](/blogs/use-case-apps/custom_3.png)
