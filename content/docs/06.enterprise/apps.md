@@ -51,6 +51,12 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 ## Creating Apps in Code
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`.
 
 ### App to run a Hello World flow
