@@ -1,5 +1,5 @@
 ---
-title: "There's an Apps for that"
+title: "There's an App for that!"
 description: Endless possibilities with Kestra Apps
 date: 2024-12-12T13:00:00
 category: Solutions
@@ -9,19 +9,23 @@ author:
 image: /blogs/introducing-apps.jpg
 ---
 
-We recently introduced **Apps**: **frontend applications** for your Kestra workflows. They allow end-users to interact with workflows through forms, output displays, markdown blocks, approval buttons, and other UI components, while Kestra flows handle all backend processing.
+Automation focuses on the execution of tasks—triggering scripts, transferring data, or running jobs. Orchestration, however, operates at a higher level: coordinating these tasks, defining dependencies, and ensuring everything flows across systems and teams.
+Despite its potential, orchestration tools often overlook a crucial aspect: accessibility. Most platforms cater exclusively to developers, leaving non-technical users with limited visibility and fragmented solutions to perform their part in the workflow. The result? Silos, manual workarounds, and missed opportunities to maximize automation’s value.
+Kestra Apps change this.
 
-This new feature enforce a call we hear more and more at Kestra: the need for user facing interface going beyond technical matters. 
+By introducing a layer of self-service interfaces on top of orchestrated workflows, Kestra Apps make orchestration accessible to everyone. Developers retain full control of the backend processes, while end-users—regardless of technical expertise—can interact directly with workflows through intuitive forms, approval buttons, or output dashboards.
 
-In this blog post we'll share with you three different use cases for using Apps in Kestra.
+Kestra Apps bridge the gap between technical orchestration and practical usability, enabling true collaboration across teams and simplifying even the most complex workflows.
 
-
+This blog dives into how Kestra Apps bring workflows closer to your teams. From simplifying file uploads to enabling dynamic data requests, we’ll explore practical examples and how Apps make automation accessible to everyone.
 
 ## Requests & Review
 
-One use case we see a lot among Kestra customers is the need for ingesting data into FTP. Uploading Excel file in FTP server is still something very common, even in the era of Gen AI.
+Uploading files to an FTP server—still a thing, right? But doing it securely and efficiently? That’s where the pain begins.
+Kestra Apps simplify it all. Instead of dealing with credentials, server configurations, or outdated UIs, users can select their FTP configuration, choose a folder, and upload their file with a single click.
+Automation shouldn’t feel manual. With Apps, workflows handle the complexity while users get an experience that makes sense.
 
-With Apps we can build a simple frontend allowing users to upload a file, selecting the FTP configuration and simply upload files without the worry of credentials inputs, server configuration, or old cluttered FileZilla UI.
+With Apps we can build a simple frontend allowing users to upload a file, selecting the FTP configuration they want and the folder to simply upload files without the worry of credentials inputs, server configuration, or old designed UI.
 
 ```yaml
 id: upload_ftp
