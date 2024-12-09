@@ -380,7 +380,7 @@ layout:
     blocks:
       - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: |
-          ## Doing magic 🧙
+          ## Doing science 🧙
           Don't close this window. The results will be displayed as soon as the LLM is doing its magic!
       
       - type: io.kestra.plugin.ee.apps.core.blocks.Loading
