@@ -13,14 +13,15 @@ We recently introduced **Apps**: **frontend applications** for your Kestra workf
 
 This new feature enforce a call we hear more and more at Kestra: the need for user facing interface going beyond technical matters. 
 
+In this blog post we'll share with you three different use cases for using Apps in Kestra.
 
-In someway, everyone wants a custom application providing the keystones for fast and automated work. In our daily work we want things to get done, not thinking about unneccessary technical matters.
+
 
 ## Requests & Review
 
 One use case we see a lot among Kestra customers is the need for ingesting data into FTP. Uploading Excel file in FTP server is still something very common, even in the era of Gen AI.
 
-With Apps we can build a simple frontend allowing users to upload a file, selecting the FTP configuration they want and the folder to simply upload files without the worry of credentials inputs, server configuration, or old designed UI.
+With Apps we can build a simple frontend allowing users to upload a file, selecting the FTP configuration and simply upload files without the worry of credentials inputs, server configuration, or old cluttered FileZilla UI.
 
 ```yaml
 id: upload_ftp
@@ -95,12 +96,18 @@ tasks:
 
 ![fist_app_loading](/blogs/use-case-apps/first_app_loading.png)
 
+This example is one of the many one can imagine! Providing a simple interface for any users to request infrastructure deployment, file access, days off for holiday, etc. There are tons of cases where these need custom specifications and underlying automation.
+
+Kestra already made easy connection with any system. It now provides the key to build custom interface on top of these automations.
 
 
 ## Dynamic Self-Serve
 
-Sometimes you build dashboards. Tons of dashboards. But actual data consumer sometimes only want a particular set, something dynamic, where they can inputs their dimensions, measures or any parameters for their analysis.
-We can build an app that will bound such request while allowing users to play with parameters. For example, let's take a parametized query allowing us to aggregate some data over time. The end user might want to download trends for different dimension and measures alongside a specific time frame.
+Sometimes you build dashboards. Tons of dashboards. But data consumers often crave something more flexible—a dynamic interface where they can craft their own analysis by tweaking dimensions, measures, and parameters on the fly.
+
+We can build an app that will bound such request while allowing users to play with parameters. 
+
+For example, let's take a parametized query allowing us to aggregate some data over time. The end user might want to download trends for different dimension and measures alongside a specific time frame.
 
 Such workflow can be easily setup in Kestra, like this:
 
