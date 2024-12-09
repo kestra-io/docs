@@ -11,7 +11,10 @@ image: /blogs/introducing-apps.jpg
 
 We recently introduced **Apps**: **frontend applications** for your Kestra workflows. They allow end-users to interact with workflows through forms, output displays, markdown blocks, approval buttons, and other UI components, while Kestra flows handle all backend processing.
 
+This new feature enforce a call we hear more and more at Kestra: the need for user facing interface going beyond technical matters. 
 
+
+In someway, everyone wants a custom application providing the keystones for fast and automated work. In our daily work we want things to get done, not thinking about unneccessary technical matters.
 
 ## Requests & Review
 
@@ -240,14 +243,15 @@ layout:
 
 Kestra is at its best when the automation built can be used in our daily work. It's not only a scheduler but a real automation platform.
 
-For example, Product or Sales team might want to qualify user research response or leads discussion. It's usually something manual, that go through some scoring, etc.
-What if we can just bring context of a discussion or project to our favorite LLM, ask for qualification bounded to a certain set of rules and get associated response as well as qualification score ?
+For example, Product or Sales team might want to qualify user research responses or leads discussions. It's usually manual process that go through some spreadsheet overhead, hand-operated scoring, etc.
 
-Under the hood it's a matter of building a Kestra Flow that will call Hugging Face API. We can expose this complex logic within an Apps where, as a user, I only give the context hit executes and get suggested answers for my user and corresponding categorization.
+What if we can just bring context of a discussion or project to our favorite LLM, ask for bounded qualification with certain set of rules and get associated responses?
 
-I could even connect this to my CRM or database to automatically track discussions and leads pipelines.
+Under the hood it's a matter of building a Kestra Flow that will call Hugging Face API. We can expose this complex logic within an Apps where, as a user, we only give the context, hit executes, and get suggested answers for our user and corresponding categorization.
 
-EXAMPLE FLOW
+We could even connect this to my CRM or database to automatically track discussions and leads pipelines.
+
+In the example below we automate user's message categorization and probe a LLM to give a corresponding answer:
 
 ```
 id: user_research_categorization_feedback
@@ -420,3 +424,9 @@ LLMs are doing the work under the hood
 
 And then we get a potential answer for our user
 ![alt text](/blogs/use-case-apps/custom_3.png)
+
+
+## What's your application?
+
+ADD PROBING
+ADD LINK TO SLACK, KESTRA
