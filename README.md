@@ -19,21 +19,23 @@
 <br />
 
 <p align="center">
-    <a href="https://twitter.com/kestra_io"><img height="25" src="https://kestra.io/twitter.svg" alt="twitter" /></a> &nbsp;
-    <a href="https://www.linkedin.com/company/kestra/"><img height="25" src="https://kestra.io/linkedin.svg" alt="linkedin" /></a> &nbsp;
-<a href="https://www.youtube.com/@kestra-io"><img height="25" src="https://kestra.io/youtube.svg" alt="youtube" /></a> &nbsp;
+    <a href="https://kestra.io/slack"><img height="20" src="assets/socials/slack.svg" alt="slack" /></a> &nbsp;
+    <a href="https://twitter.com/kestra_io"><img height="20" src="assets/socials/twitter-x.svg" alt="twitter" /></a> &nbsp;
+    <a href="https://www.linkedin.com/company/kestra/"><img height="20" src="assets/socials/linkedin.svg" alt="linkedin" /></a> &nbsp;
+<a href="https://www.youtube.com/@kestra-io"><img height="20" src="assets/socials/youtube.svg" alt="youtube" /></a> &nbsp;
 </p>
+
 
 <p align="center">
     <a href="https://go.kestra.io/video/product-overview" target="_blank">
         <img src="https://kestra.io/startvideo.png" alt="Get started in 4 minutes with Kestra" width="640px" />
     </a>
 </p>
-<p align="center" style="color:grey;"><i>Get started with Kestra in 4 minutes.</i></p>
+<p align="center" style="color:#CF9FFF;"><strong>Get started with Kestra in 4 minutes.</strong></p>
 
-# Kestra documentation
+# Kestra Documentation
 
-> Event-driven declarative orchestrator that simplifies data operations.
+Kestra is an open-source infinitely-scalable orchestration platform enabling all engineers to manage business-critical workflows declaratively in code.
 
 ![gif](https://kestra.io/video.gif)
 
@@ -56,15 +58,15 @@ You can access the docs at [localhost:3001](http://localhost:3001/).
 
 ## Contributing Tips
 
-Make sure that links are relative, including images.
+Ensure that all links, including images, are relative.
 
 ## Troubleshooting tips
 
 Depending on your Node.js and OS version, you may encounter the following error: `Error message "error:0308010C:digital envelope routines::unsupported"`.
 
-In this case, you must switch to the OpenSSL legacy provider via `export NODE_OPTIONS=--openssl-legacy-provider`.
+To resolve this issue, you will need to switch to the OpenSSL legacy provider by executing the following command: `export NODE_OPTIONS=--openssl-legacy-provider`.
 
-If you are using an Apple Silicon Mac, use Node version 20 or higher.
+If you are using an Apple Silicon Mac, please ensure that you are using Node.js version 20 or higher.
 
 ## License
 Apache 2.0 © [Kestra Technologies](https://kestra.io)
@@ -72,6 +74,6 @@ Apache 2.0 © [Kestra Technologies](https://kestra.io)
 
 ## Stay up to date
 
-We release new versions every month. Give the [main repository](https://github.com/kestra-io/kestra) a star to stay up to date with the latest releases and get notified about future updates.
+We release new versions on a monthly basis. To stay informed about the latest releases and receive notifications for future updates, please consider starring our [main repository](https://github.com/kestra-io/kestra).
 
 ![Star the repo](https://kestra.io/star.gif)
