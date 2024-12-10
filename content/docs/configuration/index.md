@@ -1756,14 +1756,14 @@ kestra:
   storage:
     type: minio
     minio:
-      endpoint: "<your-endpoint>"
-      port: "<your-port>"
-      accessKey: "<your-accessKey>"
-      secretKey: "<your-secretKey>"
-      region: "<your-region>"
-      secure: "<your-secure>"
-      bucket: "<your-bucket>"
-      partSize: "<your-part-size>" # syntax: <number><unit> (KB, MB, GB), defaults to 5MB
+      endpoint: your_endpoint_without_https_protocol_and_without_any_slashes
+      port: 9000 # the default is 9000 but if your endpoint is secured with TSL/SSL protocol, use 443
+      secure: false # set it to true when using TSL/SSL protocol
+      accessKey: ${AWS_ACCESS_KEY_ID}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      region: "default"
+      bucket: your_s3_bucket_name
+      partSize: your_part_size_for_multipart_uploads # syntax: <number><unit> without space e.g. 100KB, 5MB, 1GB — defaults to 5MB
 ```
 
 Optionally and if the Minio configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on Minio server), you can also use the `kestra.storage.minio.vhost: true` property to make Minio client to use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
