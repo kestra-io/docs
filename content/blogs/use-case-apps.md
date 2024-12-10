@@ -267,7 +267,7 @@ Here’s how it works:
 
 Below is an example YAML configuration showcasing how Kestra workflows and Apps make this possible:
 
-```
+``` YAML
 id: user_research_categorization_feedback
 namespace: kestra
 
@@ -430,7 +430,7 @@ layout:
 
 ## User-Friendly Interface for Advanced Workflows
 
-With Kestra Apps, this workflow is paired with a simple UI that allows users to provide input and see results effortlessly.
+With Kestra Apps, this workflow is paired with a simple UI that allows users to provide input and see results.
 
 Here is our main user interface. Here the user is asked the general user context
 ![alt text](/blogs/use-case-apps/custom_1.png)
