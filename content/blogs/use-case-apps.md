@@ -250,19 +250,22 @@ layout:
 ![second_app_inputs](/blogs/use-case-apps/second_app_inputs.png)
 ![second_app_outputs](/blogs/use-case-apps/second_app_outputs.png)
 
-## Simple Interface for Custom Automation
+## Simple Interfaces for Everyday Automation
 
-Kestra is at its best when the automation built can be used in our daily work. It's not only a scheduler but a real automation platform.
+With Kestra Apps, you can build intuitive, self-service interfaces on top of complex workflows, making automation part of daily operations for teams like product, sales, and customer success.
 
-For example, Product or Sales team might want to qualify user research responses or leads discussions. It's usually manual process that go through some spreadsheet overhead, hand-operated scoring, etc.
+This capability shines when repetitive, manual processes—like qualifying user research responses or evaluating lead discussions—can be managed by automated workflows.
 
-What if we can just bring context of a discussion or project to our favorite LLM, ask for bounded qualification with certain set of rules and get associated responses?
+For example, take a sales or product team managing user inquiries. Traditionally, they might rely on spreadsheets and manual scoring to categorize and respond, leading to delays. By connecting workflows to advanced APIs like Hugging Face, you can automate tasks like categorization and response generation while keeping the interface user-friendly.
 
-Under the hood it's a matter of building a Kestra Flow that will call Hugging Face API. We can expose this complex logic within an Apps where, as a user, we only give the context, hit executes, and get suggested answers for our user and corresponding categorization.
+Here’s how it works:
 
-We could even connect this to my CRM or database to automatically track discussions and leads pipelines.
+- A user provides the context of a discussion or inquiry through the app’s interface.
+- The workflow uses an LLM to categorize the inquiry into predefined categories, such as “New Discussion,” “Follow-Up,” or “Discovery.”
+- Based on the category, the workflow generates a tailored response aligned with predefined business rules.
+- The results are displayed back to the user in an intuitive app interface, with an option to integrate directly into tools like CRMs or databases for further tracking.
 
-In the example below we automate user's message categorization and probe a LLM to give a corresponding answer:
+Below is an example YAML configuration showcasing how Kestra workflows and Apps make this possible:
 
 ```
 id: user_research_categorization_feedback
@@ -425,6 +428,10 @@ layout:
         style: DEFAULT
 ```
 
+## User-Friendly Interface for Advanced Workflows
+
+With Kestra Apps, this workflow is paired with a simple UI that allows users to provide input and see results effortlessly.
+
 Here is our main user interface. Here the user is asked the general user context
 ![alt text](/blogs/use-case-apps/custom_1.png)
 
@@ -436,8 +443,18 @@ LLMs are doing the work under the hood
 And then we get a potential answer for our user
 ![alt text](/blogs/use-case-apps/custom_3.png)
 
+This example is just one of many. Whether automating lead qualification, simplifying infrastructure requests, or responding to customer inquiries, Kestra Apps make automation accessible to all teams.
+
+By combining the power of orchestration and intuitive interfaces, Kestra ensures automation isn’t confined to backend systems but becomes a practical, everyday tool for everyone.
 
 ## What's your application?
 
-ADD PROBING
-ADD LINK TO SLACK, KESTRA
+Apps open up a wide range of possibilities for automating user-facing processes. We’re excited to see how you’ll use them to build self-service applications for your data products and business processes. If you have ideas or feedback, we’d love to hear from you.
+
+With Apps, you can make Kestra workflows accessible to everyone, regardless of their technical expertise. Try out Apps in the latest version of Kestra Enterprise Edition, and let us know what you think!
+
+::alert{type="info"}
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+::
