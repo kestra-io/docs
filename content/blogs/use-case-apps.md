@@ -1,12 +1,12 @@
 ---
 title: "Empower Business Users with Kestra Apps: Build Intuitive UIs on Top of Your Workflows"
 description: Endless possibilities with Kestra Apps
-date: 2024-12-12T13:00:00
+date: 2024-12-11T17:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: /blogs/introducing-apps.jpg
+image: /blogs/use-case-apps.jpg
 ---
 
 Automation focuses on the execution of tasks—triggering scripts, transferring data, or running jobs. Orchestration, however, operates at a higher level: coordinating these tasks, defining dependencies, and ensuring everything flows across systems and teams.
