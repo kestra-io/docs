@@ -19,4 +19,5 @@ The collected data can be found [here](https://github.com/kestra-io/kestra/tree/
 - **plugins data:** the list of plugins installed and their current versions.
 - **flow data:** the namespace count, flow count, the task type and the trigger type used.
 - **execution data:** the execution and taskruns count for last 2 days with count and duration grouped by status.
+- **iu interaction:** to understand user experience within the interface.
 - **common data:** the server type, version, timezone, env, start time and url.
