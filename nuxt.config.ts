@@ -260,7 +260,7 @@ export default defineNuxtConfig({
         '/docs/migration-guide/volume-mount': {redirect: '/docs/migration-guide/0.17.0/volume-mount'},
         '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
-        '/docs/how-toguides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
+        '/docs/how-to-guides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
         '/docs/developer-guide/': {redirect: '/docs'},
         '/docs/developer-guide/storage': {redirect: '/docs/concepts/storage'},
