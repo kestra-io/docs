@@ -1,4 +1,7 @@
+import * as sass from "sass"
+
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
+
 export default defineNuxtConfig({
     modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos'],
     target: 'server',
@@ -150,7 +153,7 @@ export default defineNuxtConfig({
             preprocessorOptions: {
                 scss: {
                     api: 'modern',
-                    silenceDeprecations: ['mixed-decls', 'color-functions'],
+                    logger: sass.Logger.silent
                 },
             },
         },
