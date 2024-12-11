@@ -267,7 +267,7 @@ Here’s how it works:
 
 Below is an example YAML configuration showcasing how Kestra workflows and Apps make this possible:
 
-``` YAML
+```yaml
 id: user_research_categorization_feedback
 namespace: kestra
 
