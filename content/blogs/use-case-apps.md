@@ -1,5 +1,5 @@
 ---
-title: "There's an App for that!"
+title: "Empower Business Users with Kestra Apps: Build Intuitive UIs on Top of Your Workflows"
 description: Endless possibilities with Kestra Apps
 date: 2024-12-12T13:00:00
 category: Solutions
