@@ -1056,7 +1056,7 @@ micronaut:
         - /path/to/your/flows
 ```
 
-For more information, check out the [dedicated guide](../15.how-to-guides/local-file-sync.md).
+For more information, check out the [dedicated guide](../15.how-to-guides/local-flow-sync.md).
 
 ## Plugins
 
