@@ -281,7 +281,7 @@ export default defineNuxtConfig({
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
-        '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
+        '/t/**': {proxy: 'https://eu.posthog.com/**'},
     },
 
     build: {
