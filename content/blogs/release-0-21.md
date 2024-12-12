@@ -6,7 +6,6 @@ category: News & Products Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-  role: Product Lead
 image: /blogs/release-0-21.png
 ---
 
