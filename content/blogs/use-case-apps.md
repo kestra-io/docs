@@ -272,19 +272,13 @@ id: user_research_categorization_feedback
 namespace: kestra
 
 inputs:
-
   - id: user_context
     type: STRING
 
-
-
 variables:
   pre_prompt: "You're an senior product manager with a strong baground in user research."
-  
   new_discussion_prompt: "Write a friendly message to welcome the user and ask an open question (what, when, where, etc.) to engage a new discussion"
-
   follow_up_prompt: "It's been quite a long time you didn't message the user. Write a follow up question to get some news"
-
   discovery_prompt: "The user already gave you some information about his issues or project timeline. Part of a sales discovery framework set in your sales motion, write a question to deep-dive and get more information about high level use case, project timeline, etc."
 
 tasks:
@@ -306,7 +300,6 @@ tasks:
   - id: message_category
     type: io.kestra.plugin.core.debug.Return
     format: "{{ json(outputs.llm_categorization.body).labels[0] }}"
-
 
   - id: llm_prompting
     type: io.kestra.plugin.core.flow.Switch
@@ -346,7 +339,6 @@ tasks:
               {"role": "user", "content": "{{ inputs.user_context }}"}
             ]
             
-
         - id: log_response2
           type: io.kestra.plugin.core.log.Log
           message: "{{ json(outputs.follow_up_prompt.body) }}"
