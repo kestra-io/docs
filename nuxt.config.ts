@@ -204,8 +204,7 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml'],
-            autoSubfolderIndex: false
+            routes: ['/rss.xml']
         },
     },
 
@@ -308,7 +307,6 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
-        debug: true,
         data: {
             enabled: true,
         },
