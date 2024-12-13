@@ -1,5 +1,5 @@
 ---
-title: Namespace Variables vs. KV Store
+title: Namespace Variables vs KV Store
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,6 +7,10 @@ topics:
 ---
 
 When to store key-value pairs as namespace-level Variables vs. KV store
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/fs86GLg-OGM?si=aKz38pdclO54Z2jh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div
 
 ## Overview
 
