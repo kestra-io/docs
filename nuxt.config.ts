@@ -105,13 +105,6 @@ export default defineNuxtConfig({
         },
     },
 
-    router: {
-        options: {
-            strict: true
-        },
-        middleware: ['redirect'],
-    },
-
     devServer: {
         port: 3001
     },
@@ -132,8 +125,7 @@ export default defineNuxtConfig({
         build: {
             rollupOptions: {
                 external: [
-                    'shiki/onig.wasm',
-                    '@kestra-io/ui-libs'
+                    'shiki/onig.wasm'
                 ],
             }
         },
@@ -213,6 +205,7 @@ export default defineNuxtConfig({
     nitro: {
         prerender: {
             routes: ['/rss.xml'],
+            autoSubfolderIndex: false
         },
     },
 
