@@ -2039,3 +2039,19 @@ kestra:
         }
       </style>
 ```
+
+# Configuring a mail server
+
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the `kestra.mail-service` configuration.
+
+```yaml
+    host: host.smtp.io
+    port: 587
+    username: user
+    password: password
+    from: configurable@mail.com
+    fromName: Kestra
+    auth: true #default
+    starttlsEnable: true #default
+
+```
