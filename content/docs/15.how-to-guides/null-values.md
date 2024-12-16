@@ -128,3 +128,61 @@ tasks:
       because the first expression using the undefined-coalesce-operator '???' will return null, 
       and the coalesce-operator '??' will return the default value 'other_default'.
 ```
+
+## Processing Trigger values
+
+When using a Trigger, you can use the `{{ trigger }}` expression inside of your flow. However, this expression is undefined if you execute your flow manually.
+
+Here's an example of a Webhook trigger that might receive a body of data. You can use the null coalescing operator to handle when the body of data is different to what's expected:
+```yaml
+id: webhook_example
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.body.dataField ?? 'data' }}"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: abcdefg
+```
+
+You can also use this for Schedule triggers. Here's an example that uses the date when the Schedule trigger starts an execution but in combination with the null coalescing operator to use an input value if an execution is started manually. 
+
+```yaml
+id: scheduling
+namespace: company.team
+
+inputs:
+  - id: country
+    type: STRING
+    defaults: US
+  - id: date
+    type: DATETIME
+    required: false
+    defaults: 2023-12-24T14:00:00.000Z
+
+tasks:
+  - id: check_if_business_date
+    type: io.kestra.plugin.scripts.python.Commands
+    warningOnStdErr: false
+    namespaceFiles:
+      enabled: true
+    commands:
+      - python schedule.py "{{ trigger.date ?? inputs.date }}" {{ inputs.country }}
+    beforeCommands:
+      - pip install workalendar
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: business day - continuing the flow...
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 14 25 12 *
+```
