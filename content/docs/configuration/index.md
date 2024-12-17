@@ -36,6 +36,27 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
+Injecting OS environment variables is also a possible way to configure Kestra. These environment variables take precedence over configuration files that have been loaded.
+
+To populate an environment variable with the right property, replace any special character with `_` (underscore). Below a comprehensive table on how properties can be translated in variables.
+
+| Configuration Value | Resulting Properties                                                                                                               |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| MYAPP_MYSTUFF       | myapp.mystuff, myapp-mystuff                                                                                                        |
+| MY_APP_MY_STUFF     | my.app.my.stuff, my.app.my-stuff, my.app-my.stuff, my.app-my-stuff,<br>my-app.my.stuff, my-app.my-stuff, my-app-my.stuff, my-app-my-stuff |
+
+The following example shows how to replace the postgres username property from defining it in config file:
+
+```yaml
+datasources:
+  postgres:
+    username: kestra
+```
+
+to environment variable:
+
+`DATASOURCES_POSTGRES_USERNAME=kestra`
+
 ## Setup
 
 Kestra offers many configuration options and customization.
