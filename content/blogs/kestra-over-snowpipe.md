@@ -49,8 +49,6 @@ Kestra turns static ingestion processes into dynamic, event-driven pipelines wit
 
 Kestra lets you combine data ingestion, transformation, and validation in a single workflow, eliminating the need for multiple tools.
 
-### YAML Example:
-
 ```yaml
 yaml
 id: snowflake_pipeline
@@ -88,8 +86,6 @@ When your sales team needs instant insights from new Snowflake data, Kestra enab
 2. Calculate campaign metrics from new data
 3. Update business intelligence dashboards automatically
 
-### YAML Example:
-
 ```yaml
 yaml
 id: sales_insights
@@ -122,8 +118,6 @@ This automated workflow eliminates manual reporting steps.
 
 Kestra replaces ad hoc scripts with built-in tasks for conditional file processing, dynamic renaming, and archiving.
 
-### YAML Example:
-
 ```yaml
 yaml
 id: manage_files
@@ -148,8 +142,6 @@ This workflow ensures organized, automated file management.
 ## Automating Git Workflows for dbt Projects in Snowflake
 
 Kestra integrates Git and dbt  to orchestrate version-controlled data transformations, enhancing team collaboration and consistency.
-
-### YAML Example:
 
 ```yaml
 yaml
@@ -205,7 +197,7 @@ Kestra expands Snowflake's possibilities by offering:
 
 ## Conclusion: Kestra Complements Snowflake for Data Orchestration
 
-Snowpipe remains a valuable tool for lightweight ingestion scenarios, but its scope is limited. For  data teams managing complex workflows, Kestra provides the orchestration capabilities to scale, optimize, and simplify operations.
+Snowpipe remains a valuable tool for lightweight ingestion scenarios, but its scope is limited. For data teams managing complex workflows, Kestra provides the orchestration capabilities to scale, optimize, and simplify operations.
 
 With Kestra, you move beyond basic ingestion to build dynamic, event-driven workflows that  integrate with Snowflake. Whether it’s handling complex transformations, responding to real-time events, or managing downstream processes, Kestra ensures your data pipelines are both powerful and future-proof.
 
