@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-image: /blogs/introducing-apps.jpg
+image: /blogs/kestra-over-snowpipe.jpg
 ---
 
 Snowflake is a leading cloud data platform that delivers scalable, real-time data solutions. Its **Snowpipe** feature automatically loads files into Snowflake from cloud storage. Though powerful, this is just the beginning. As data architectures become more complex, Snowpipe's limitations emerge, leading teams to seek orchestration solutions.
