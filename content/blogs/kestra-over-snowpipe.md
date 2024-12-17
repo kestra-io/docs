@@ -37,9 +37,9 @@ Kestra fills Snowpipe's gaps with a robust platform for orchestrating end-to-end
 
 Kestra turns static ingestion processes into dynamic, event-driven pipelines with features like:
 
-- **Multi-Stage Pipelines**: Seamlessly automate ingestion, transformations, validations, and downstream processes.
+- **Multi-Stage Pipelines**: Automate ingestion, transformations, validations, and downstream processes.
 - **Custom Triggers**: Enable flexible automation with database events, API calls, and time-based schedules.
-- **Advanced Monitoring**: Get real-time workflow visibility, historical execution tracking, and simplified debugging in one dashboard.
+- **Advanced Monitoring**: Get real-time workflow visibility, historical execution tracking, and debugging in one dashboard.
 
 ---
 
