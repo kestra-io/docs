@@ -13,7 +13,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-text">
-                                <div id="hubspotForm" data-aos="fade-left" />
+                                <ClientOnly>
+                                    <div id="hubspotForm" data-aos="fade-left" />
+                                </ClientOnly>
                             </div>
                         </div>
                     </div>

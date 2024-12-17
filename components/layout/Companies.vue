@@ -4,19 +4,21 @@
             <div class="col-12 p-0">
                 <div class="companies-list-container">
                     <div ref="companies" class="companies companies-list scrolling">
-                        <template v-for="(img, index) in companies" :key="index">
-                            <NuxtImg
-                                v-if="img.name"
-                                loading="lazy"
-                                format="webp"
-                                data-aos="fade-up"
-                                :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img.name  + '.svg'"
-                                :alt="img.name"
-                                :width="img.width"
-                                :height="img.height"
-                            />
+                        <template v-for="(img, index) in shuffledCompanies" :key="index">
+                            <ClientOnly :fallback="companies[index].name">
+                                <NuxtImg
+                                    v-if="img.name"
+                                    loading="lazy"
+                                    format="webp"
+                                    data-aos="fade-up"
+                                    :class="{'inverted': inverted}"
+                                    :data-aos-delay="index*50"
+                                    :src="'/landing/companies/' + img.name  + '.svg'"
+                                    :alt="img.name"
+                                    :width="img.width"
+                                    :height="img.height"
+                                />
+                            </ClientOnly>
                         </template>
                     </div>
                 </div>
@@ -35,12 +37,7 @@
         },
         data() {
             return {
-                random: .5 - Math.random()
-            };
-        },
-        computed: {
-            companies() {
-                return [
+                companies: [
                     { name: "acxiom", width: "130px", height: "29px" },
                     { name: "bouygues-immobilier", width: "132px", height: "53px" },
                     { name: "leroymerlin", width: "63px", height: "39px" },
@@ -63,7 +60,11 @@
                     { name: "fila", width: "83px", height: "25px" },
                     { name: "intersport", width: "225px", height: "25px" },
                 ]
-                    .sort(() => this.random)
+            }
+        },
+        computed: {
+            shuffledCompanies() {
+                return this.companies.toSorted(() => .5 - Math.random())
             },
         }
     });

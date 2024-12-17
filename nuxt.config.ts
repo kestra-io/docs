@@ -105,13 +105,6 @@ export default defineNuxtConfig({
         },
     },
 
-    router: {
-        options: {
-            strict: true
-        },
-        middleware: ['redirect'],
-    },
-
     devServer: {
         port: 3001
     },
@@ -131,7 +124,9 @@ export default defineNuxtConfig({
     vite: {
         build: {
             rollupOptions: {
-                external: ['shiki/onig.wasm'],
+                external: [
+                    'shiki/onig.wasm'
+                ],
             }
         },
         optimizeDeps: {
@@ -209,7 +204,7 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml'],
+            routes: ['/rss.xml']
         },
     },
 
@@ -312,7 +307,6 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
-        debug: true,
         data: {
             enabled: true,
         },
