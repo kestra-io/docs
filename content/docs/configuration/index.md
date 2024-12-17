@@ -38,7 +38,7 @@ kestra:
 
 Injecting OS environment variables is also a possible way to configure Kestra. These environment variables take precedence over configuration files that have been loaded.
 
-To populate an environment variable with the right property, replace any special character with `_` (underscore). Below a comprehensive table on how properties can be translated in variables.
+To populate an environment variable with the right property, replace any special characters with `_` (underscore). Below is a comprehensive table on how properties can be translated in variables.
 
 | Configuration Value | Resulting Properties                                                                                                               |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------|
@@ -53,9 +53,7 @@ datasources:
     username: kestra
 ```
 
-to environment variable:
-
-`DATASOURCES_POSTGRES_USERNAME=kestra`
+to environment variable: `DATASOURCES_POSTGRES_USERNAME=kestra`
 
 ## Setup
 
