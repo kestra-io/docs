@@ -38,6 +38,14 @@ export default defineNuxtPlugin(nuxtApp => {
             }
 
             posthog.capture('$pageview');
+
+            if (window.signals) {
+                window.signals.identify({kuid: response.data.id})
+            }
+
+            if (window._hsq) {
+                _hsq.push(['identify', {id: response.data.id}]);
+            }
         };
 
         const enabledMarketing = () => {
