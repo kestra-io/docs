@@ -60,7 +60,7 @@ export default defineNuxtPlugin(nuxtApp => {
             reoScript.text = "!function(){var e,t,n;e=\"d6e8ccb6fd045f8\",t=function(){Reo.init({clientID:\"d6e8ccb6fd045f8\"})},(n=document.createElement(\"script\")).src=\"https://static.reo.dev/\"+e+\"/reo.js\",n.async=!0,n.onload=t,document.head.appendChild(n)}();";
             document.head.appendChild(reoScript);
 
-            cookieConsent.loadScript('https://opps-widget.getwarmly.com/warmly.js?clientId=088e34e198e5f9dc0b0a4d37ad873a46',{defer: "defer"});
+            cookieConsent.loadScript('https://opps-widget.getwarmly.com/warmly.js?clientId=088e34e198e5f9dc0b0a4d37ad873a46',{id: "warmly-script-loader", defer: "defer"});
 
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
