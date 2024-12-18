@@ -64,7 +64,7 @@ tasks:
 
 Kestra ensures clusters are spun up only when needed and terminated immediately after, eliminating idle time and unnecessary costs.
 
-### 2. Orchestrating  ETL Pipelines
+### Orchestrating  ETL Pipelines
 
 Databricks workflows are great for Spark-centric operations, but  pipelines often touch multiple systems. We let you connect Databricks with cloud storage, APIs, and databases.
 
