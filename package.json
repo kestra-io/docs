@@ -59,7 +59,7 @@
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
-    "sass": "^1.82.0",
+    "sass": "^1.83.0",
     "wrangler": "^3.95.0"
   }
 }
