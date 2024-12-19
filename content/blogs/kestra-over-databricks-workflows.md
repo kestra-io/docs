@@ -4,9 +4,9 @@ description: Databricks simplifies big data and ML workflows but brings challeng
 date: 2024-12-18T13:00:00
 category: Solutions
 author:
-  name: Emmanuel Darras
-  image: edarras
-  role: CEO & Co-Founder
+  name: Cyril Amsellem
+  image: camsellem
+  role: Solution Architect
 image: /blogs/kestra-over-databricks-workflows.jpg
 ---
 
