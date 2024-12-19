@@ -1,6 +1,6 @@
 ---
 title: "Simplifying Databricks Workflow Management with Kestra"
-description: Kestra doesn’t try to replace Databricks’ capabilities—it complements them by addressing the operational gaps that come with managing large-scale workflows.
+description: Databricks simplifies big data and ML workflows but brings challenges like cluster costs and debugging complexity. See how Kestra's orchestration enhances Databricks capabilities
 date: 2024-12-18T13:00:00
 category: Solutions
 author:
