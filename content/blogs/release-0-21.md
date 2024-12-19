@@ -30,6 +30,10 @@ Let’s dive into these highlights and other enhancements in more detail.
 ## <Features>
 
 
+## New Plugins
+
+HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352
+
 ## Thanks to Our Contributors
 
 A big thanks to all the contributors who helped make this release possible. Your feedback, bug reports, and pull requests have been invaluable.
