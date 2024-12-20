@@ -29,10 +29,23 @@ resource "kestra_tenant" "example" {
 ### Optional
 
 - `name` (String) The tenant name.
+- `secret_configuration` (Map of String) The secret configuration.
+- `secret_type` (String) The secret type.
+- `storage_configuration` (Map of String) The storage configuration.
+- `storage_type` (String) The storage type.
+- `worker_group` (Block List, Max: 1) The worker group. (see [below for nested schema](#nestedblock--worker_group))
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+
+<a id="nestedblock--worker_group"></a>
+### Nested Schema for `worker_group`
+
+Required:
+
+- `fallback` (String) The fallback strategy.
+- `key` (String) The worker group key.
 
 ## Import
 

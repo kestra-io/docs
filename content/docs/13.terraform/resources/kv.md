@@ -8,7 +8,7 @@ description: |-
 
 # kestra_kv (Resource)
 
-Manages a Kestra Namespace Key Value Store.
+Manages a Kestra Namespace File.
 
 
 
