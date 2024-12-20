@@ -131,19 +131,19 @@
       period: "",
     },
     {
-      name: 'The Open-Source Edition',
+      name: 'Open-Source Edition',
       period: "Free",
       button: {
         text: "Get Started",
-        href: "/demo",
+        href: "/docs/getting-started/quickstart#start-kestra",
       },
     },
     {
-      name: 'Enterprise',
+      name: 'Enterprise Editin',
       period: "Per Instance",
       button: {
         text: "Talk to Sales",
-        href: "/enterprise",
+        href: "/demo",
       },
     },
   ]);
@@ -189,8 +189,8 @@
     {
       id: 7,
       title: "Custom Plugins",
-      openSourceText: 'Priority in plugin roadmap',
-      enterpriseText: 'On-Demand',
+      isOpenSource: false,
+      enterpriseText: 'Available With Consultation',
     },
     {
       id: 8,
@@ -587,6 +587,12 @@
         {
           id: 29,
           title: "Namespace-Level Secrets Management",
+          isOpenSource: false,
+          isEnterprise: true,
+        },
+        {
+          id: 30,
+          title: "Apps",
           isOpenSource: false,
           isEnterprise: true,
         },
