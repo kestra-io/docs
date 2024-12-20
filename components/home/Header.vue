@@ -97,261 +97,261 @@
 </template>
 
 <script>
-import Console from "vue-material-design-icons/Console.vue";
-import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
+    import Console from "vue-material-design-icons/Console.vue";
+    import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
 
-import TextScroller from "~/components/layout/TextScroller.vue";
+    import TextScroller from "~/components/layout/TextScroller.vue";
 
-export default {
-    components: {
-        Console,
-        PlayOutline,
-        TextScroller,
-    },
-    data() {
-        return {
-            videoVisible: false,
-            scrollingTexts: [
-                { text: "Orchestrate", color: "#E500EA" },
-                { text: "Automate", color: "#4281FF" },
-                { text: "Schedule", color: "#9D40FB" },
-            ],
-        };
-    },
-};
+    export default {
+        components: {
+            Console,
+            PlayOutline,
+            TextScroller,
+        },
+        data() {
+            return {
+                videoVisible: false,
+                scrollingTexts: [
+                    { text: "Orchestrate", color: "#E500EA" },
+                    { text: "Automate", color: "#4281FF" },
+                    { text: "Schedule", color: "#9D40FB" },
+                ],
+            };
+        },
+    };
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.main {
-    position: relative;
-    &::before {
-        position: absolute;
-        content: "";
-        z-index: 0;
-        width: 100vw;
-        height: 91.6%;
-        background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
-        right: 0;
-        top: 0;
-    }
-    .text-block {
-        margin: 4rem 0 1rem;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-        gap: $spacer;
-        @include media-breakpoint-down(md) {
-            margin: 2.5rem 0 1rem;
-        }
-    }
-
-    .hero {
-        padding-bottom: 2rem;
-        padding-top: 5rem;
+    .main {
         position: relative;
-    }
-
-    h1 {
-        color: var(--bs-white);
-        text-align: center;
-        max-width: 100%;
-        font-size: 32px!important;
-        font-weight: 600;
-        margin: 0;
-        padding: 0;
-
-        @include media-breakpoint-up(lg) {
-            font-size: 53px!important;
-        }
-
-
-        :deep(span) {
-            background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    }
-
-    p {
-        max-width: fit-content;
-        text-align: center;
-        font-weight: 500;
-        font-size: $h6-font-size;
-        color: $white;
-    }
-
-    .buttons {
-        text-align: center;
-    }
-
-    .companies {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 4rem !important;
-    }
-
-    .companies-title {
-        position: relative;
-
-        &:after {
-            content: "";
+        &::before {
             position: absolute;
-            left: 50%;
-            bottom: calc(-1 * var(--spacer));
-            transform: translateX(-50%);
-            display: inline-block;
-            height: 2px;
-            width: 51px;
-            background: var(--bs-pink);
-        }
-    }
-
-    @include media-breakpoint-down(lg) {
-        .hero {
-            padding-top: 6rem;
-            padding-bottom: 2rem;
-
-            .text-block {
-                margin-bottom: 0;
-            }
-        }
-    }
-
-    .companies-background {
-        padding-bottom: 4rem;
-        position: relative;
-        z-index: 10;
-        margin-top: -170px;
-
-        @include media-breakpoint-down(xxl) {
-            margin-top: -80px;
-        }
-
-        @include media-breakpoint-down(xl) {
+            content: "";
+            z-index: 0;
             width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+            height: 91.6%;
+            background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
+            right: 0;
+            top: 0;
         }
-        @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
-            width: unset;
-            position: unset;
-            left: unset;
-            right: unset;
-            margin-left: -15px;
-            margin-right: -15px;
-        }
-        @include media-breakpoint-down(md) {
-            margin-top: -40px;
-        }
-        :deep(.companies-container .companies img) {
+        .text-block {
+            margin: 4rem 0 1rem;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+            gap: $spacer;
             @include media-breakpoint-down(md) {
-                max-height: 30px;
-                width: auto;
+                margin: 2.5rem 0 1rem;
             }
-            @include media-breakpoint-down(sm) {
-                max-height: 15px;
-                width: auto;
-            }
-
         }
-    }
 
-    .activity-list {
-        border-radius: 8px;
-        border: 0.829px solid $black-6;
-        padding: 34px 122.5px;
-        background: url("/landing/home/bg.svg") no-repeat center;
-        background-size: 100% 100%;
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        text-transform: uppercase;
+        .hero {
+            padding-bottom: 2rem;
+            padding-top: 5rem;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--bs-white);
+            text-align: center;
+            max-width: 100%;
+            font-size: 32px!important;
+            font-weight: 600;
+            margin: 0;
+            padding: 0;
+
+            @include media-breakpoint-up(lg) {
+                font-size: 53px!important;
+            }
+
+
+            :deep(span) {
+                background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
 
         p {
-            margin: 0;
-        }
-
-        .count {
-            color: $white;
-            font-size: 48.087px;
-            font-weight: 100;
-            line-height: 46px;
-        }
-
-        .description {
-            color: rgba(255, 255, 255, 0.70);
-            font-size: 11.607px;
+            max-width: fit-content;
+            text-align: center;
             font-weight: 500;
+            font-size: $h6-font-size;
+            color: $white;
         }
 
-        @include media-breakpoint-down(xl) {
-            padding: 30px 64px;
+        .buttons {
+            text-align: center;
+        }
+
+        .companies {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 4rem !important;
+        }
+
+        .companies-title {
+            position: relative;
+
+            &:after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: calc(-1 * var(--spacer));
+                transform: translateX(-50%);
+                display: inline-block;
+                height: 2px;
+                width: 51px;
+                background: var(--bs-pink);
+            }
         }
 
         @include media-breakpoint-down(lg) {
-            padding: 30px 44px;
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 2rem;
+
+                .text-block {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .companies-background {
+            padding-bottom: 4rem;
+            position: relative;
+            z-index: 10;
+            margin-top: -170px;
+
+            @include media-breakpoint-down(xxl) {
+                margin-top: -80px;
+            }
+
+            @include media-breakpoint-down(xl) {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                right: 50%;
+                margin-left: -50vw;
+                margin-right: -50vw;
+            }
+            @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
+                width: unset;
+                position: unset;
+                left: unset;
+                right: unset;
+                margin-left: -15px;
+                margin-right: -15px;
+            }
+            @include media-breakpoint-down(md) {
+                margin-top: -40px;
+            }
+            :deep(.companies-container .companies img) {
+                @include media-breakpoint-down(md) {
+                    max-height: 30px;
+                    width: auto;
+                }
+                @include media-breakpoint-down(sm) {
+                    max-height: 15px;
+                    width: auto;
+                }
+
+            }
+        }
+
+        .activity-list {
+            border-radius: 8px;
+            border: 0.829px solid $black-6;
+            padding: 34px 122.5px;
+            background: url("/landing/home/bg.svg") no-repeat center;
+            background-size: 100% 100%;
+            text-align: center;
+            font-family: $font-family-sans-serif;
+            text-transform: uppercase;
+
+            p {
+                margin: 0;
+            }
+
             .count {
-                font-size: 30px;
-                line-height: 30px;
+                color: $white;
+                font-size: 48.087px;
+                font-weight: 100;
+                line-height: 46px;
             }
 
             .description {
-                font-size: 9px;
+                color: rgba(255, 255, 255, 0.70);
+                font-size: 11.607px;
+                font-weight: 500;
             }
-        }
 
-        @include media-breakpoint-down(md) {
-            max-width: 330px;
-            flex-wrap: wrap;
-            justify-content: center !important;
-            gap: 25px;
-        }
-    }
+            @include media-breakpoint-down(xl) {
+                padding: 30px 64px;
+            }
 
-    .img-block
-    {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        position: relative;
+            @include media-breakpoint-down(lg) {
+                padding: 30px 44px;
+                .count {
+                    font-size: 30px;
+                    line-height: 30px;
+                }
 
-        &:after {
-            content: "";
-            background-image: url(/landing/header-menu/bg-dots.png);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            position: absolute;
-            top: 0;
-            width: 148%;
+                .description {
+                    font-size: 9px;
+                }
+            }
+
             @include media-breakpoint-down(md) {
-                width: 138%;
+                max-width: 330px;
+                flex-wrap: wrap;
+                justify-content: center !important;
+                gap: 25px;
             }
-            height: 85%;
         }
 
-        img {
-            width: 80%;
+        .img-block
+        {
+            display: flex;
+            width: 100%;
+            justify-content: center;
             position: relative;
-            z-index: 5;
-            @include media-breakpoint-down(md) {
-                width: 100%;
-            }
-        }
-    }
 
-    :deep(.companies-container) {
-        max-width: unset;
-        .companies-list-container {
-            &:before,
             &:after {
-                content: none;
+                content: "";
+                background-image: url(/landing/header-menu/bg-dots.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                position: absolute;
+                top: 0;
+                width: 148%;
+                @include media-breakpoint-down(md) {
+                    width: 138%;
+                }
+                height: 85%;
+            }
+
+            img {
+                width: 80%;
+                position: relative;
+                z-index: 5;
+                @include media-breakpoint-down(md) {
+                    width: 100%;
+                }
+            }
+        }
+
+        :deep(.companies-container) {
+            max-width: unset;
+            .companies-list-container {
+                &:before,
+                &:after {
+                    content: none;
+                }
             }
         }
     }
-}
 </style>

@@ -29,7 +29,7 @@
                 required: true,
             },
             scrolled: {
-                type: String,
+                type: Boolean,
                 required: false
             }
         },

@@ -16,7 +16,9 @@
                 </div>
 
                 <div class="col-12 col-md-8 col-lg-5 form-container mx-auto pt-3">
-                    <div id="hubspotForm" data-aos="zoom-in" />
+                    <ClientOnly>
+                        <div id="hubspotForm" data-aos="zoom-in" />
+                    </ClientOnly>
                 </div>
             </div>
         </div>

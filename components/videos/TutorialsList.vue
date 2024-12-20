@@ -188,7 +188,7 @@
   }
 
   const closeModal = () => {
-    if (youtubeVideoModal.value) {
+    if (process.client && youtubeVideoModal.value) {
       const modal = $bootstrap.Modal.getInstance(youtubeVideoModal.value);
       if (modal) {
         modal.hide();

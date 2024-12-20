@@ -290,7 +290,7 @@
                 }
             },
             close() {
-                if (this.$refs.modal) {
+                if (process.client && this.$refs.modal) {
                     const modal = this.$bootstrap.Modal.getInstance(this.$refs.modal);
                     if (modal) {
                         modal.hide();

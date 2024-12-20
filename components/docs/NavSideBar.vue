@@ -45,22 +45,13 @@
 <script setup>
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
-
+  import Menu from "vue-material-design-icons/Menu.vue"
+  import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
 </script>
 
 <script>
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Menu from "vue-material-design-icons/Menu.vue"
-    import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
 
     export default defineComponent({
-        components: {
-            RecursiveNavSidebar,
-            ChevronDown,
-            ChevronUp,
-            Menu
-        },
         props: {
             type: {
                 type: String,
