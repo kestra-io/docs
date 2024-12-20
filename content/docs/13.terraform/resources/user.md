@@ -29,12 +29,12 @@ resource "kestra_user" "example" {
 
 ### Required
 
+- `email` (String) The user email.
 - `username` (String) The user name.
 
 ### Optional
 
 - `description` (String) The user description.
-- `email` (String) The user email.
 - `first_name` (String) The user first name.
 - `groups` (List of String) The user groups id.
 - `last_name` (String) The user last name.
