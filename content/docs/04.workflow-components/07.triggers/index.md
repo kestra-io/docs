@@ -1,6 +1,7 @@
 ---
 title: Triggers
 icon: /docs/icons/flow.svg
+docId: triggers
 ---
 
 Trigger is a mechanism that automates the execution of a flow.
@@ -259,7 +260,7 @@ Let's break down the above example:
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
 
-## Setting inputs inside of triggers 
+## Setting inputs inside of triggers
 
 You can easily pass inputs to triggers by using the `inputs` property and passing them as a key-value pair.
 

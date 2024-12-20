@@ -2,6 +2,7 @@
 title: Secrets
 icon: /docs/icons/kestra.svg
 editions: ["EE"]
+docId: secrets
 ---
 
 How to create and manage Secrets in the Enterprise Edition.
