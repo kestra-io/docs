@@ -1,8 +1,12 @@
 <template>
-    <NuxtLayout>
+    <DefaultLayout>
         <Error :error="error" :title="title" :description="description" />
-    </NuxtLayout>
+    </DefaultLayout>
 </template>
+
+<script setup>
+    import DefaultLayout from "~/layouts/default.vue";
+</script>
 
 <script>
     export default {

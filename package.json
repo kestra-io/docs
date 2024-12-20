@@ -10,14 +10,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "pages:dev": "NITRO_PRESET=cloudflare-pages wrangler pages dev --compatibility-date=2023-10-25 --proxy 3000 -- npm run dev",
-    "pages:build": "NITRO_PRESET=cloudflare-pages npm run build",
+    "pages:dev": "NITRO_PRESET=cloudflare_pages wrangler pages dev --proxy 3000 -- npm run dev",
+    "pages:build": "NITRO_PRESET=cloudflare_pages npm run build",
     "pages:deploy": "wrangler pages deploy --project-name docs ./dist",
     "pages:build-deploy": "npm run pages:build && npm run pages:deploy",
     "analyze": "nuxt analyze"
   },
   "dependencies": {
-    "@kestra-io/ui-libs": "^0.0.78",
     "@popperjs/core": "^2.11.8",
     "@vue-flow/background": "^1.3.2",
     "@vue-flow/controls": "^1.1.2",
