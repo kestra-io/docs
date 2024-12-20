@@ -539,7 +539,7 @@
                     color: $white;
                     font-family: $font-family-sans-serif;
                     font-size: $font-size-xs;
-                    font-weight: 400;
+                    font-weight: 800;
                 }
             }
         }
