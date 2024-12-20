@@ -139,7 +139,7 @@
       },
     },
     {
-      name: 'Enterprise Editin',
+      name: 'Enterprise Edition',
       period: "Per Instance",
       button: {
         text: "Talk to Sales",
