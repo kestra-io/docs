@@ -36,6 +36,7 @@ Let’s dive into these highlights and other enhancements in more detail.
 
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207
 - `uuid` - https://github.com/kestra-io/kestra/issues/6208
+- `distinct` - https://github.com/kestra-io/kestra/issues/6417
 
 ## New Tasks & Plugins
 
