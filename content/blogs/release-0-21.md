@@ -32,9 +32,9 @@ Let’s dive into these highlights and other enhancements in more detail.
 
 ## New Tasks & Plugins
 
-Exit task - https://github.com/kestra-io/kestra/issues/5599
-Write task - https://github.com/kestra-io/kestra/issues/6524
-HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352
+- Exit task - https://github.com/kestra-io/kestra/issues/5599
+- Write task - https://github.com/kestra-io/kestra/issues/6524
+- HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352
 
 ## Thanks to Our Contributors
 
