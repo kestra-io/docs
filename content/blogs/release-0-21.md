@@ -30,6 +30,11 @@ Let’s dive into these highlights and other enhancements in more detail.
 ## <Features>
 
 
+
+### New Pebble functions
+
+- `randomInt` - https://github.com/kestra-io/kestra/issues/6207
+
 ## New Tasks & Plugins
 
 - Exit task - https://github.com/kestra-io/kestra/issues/5599
