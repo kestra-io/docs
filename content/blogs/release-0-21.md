@@ -30,6 +30,7 @@ Let’s dive into these highlights and other enhancements in more detail.
 ## <Features>
 
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
+- Improvements in the UI (filters, charts, padding, button, etc.)
 
 ### New Pebble functions
 
