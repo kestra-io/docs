@@ -34,6 +34,7 @@ Let’s dive into these highlights and other enhancements in more detail.
 ### New Pebble functions
 
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207
+- `uuid` - https://github.com/kestra-io/kestra/issues/6208
 
 ## New Tasks & Plugins
 
