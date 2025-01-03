@@ -3,6 +3,7 @@ title: Invitations
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.20.0"
+docId: users
 ---
 
 Add new users to your tenant or instance by using the invitation process.

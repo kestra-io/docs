@@ -3,6 +3,7 @@ title: Apps
 icon: /docs/icons/kestra.svg
 editions: ["EE"]
 version: ">= 0.20.0"
+docId: apps
 ---
 
 Build custom UIs to interact with Kestra from the outside world.
@@ -13,9 +14,9 @@ Build custom UIs to interact with Kestra from the outside world.
 
 ## Overview
 
-Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. 
+Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks.
 
-**Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as **frontend**, allowing anyone to interact with your workflows regardless of their technical background. 
+**Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as **frontend**, allowing anyone to interact with your workflows regardless of their technical background.
 
 Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results.
 
