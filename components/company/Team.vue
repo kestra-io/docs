@@ -188,6 +188,18 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/elevatebart.png" alt="Bart Ledoux"/>
+                    <div class="w-100">
+                        <div class="team-name">Bart Ledoux</div>
+                        <div class="team-title font-small">Senior Frontend Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/bartledoux/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/elevatebart" target="_blank" class="me-2"><github /></a>
+                        <a href="https://piaille.fr/@elevatebart" target="_blank" class="me-2"><mastodon /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
                     <div class="w-100">
                         <div class="team-name">Stefan Muntean</div>
@@ -208,9 +220,10 @@
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
     import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Mastodon from "vue-material-design-icons/Mastodon.vue";
 
     export default {
-        components: {Twitter, Linkedin, Github, Section}
+        components: {Twitter, Linkedin, Github, Section, Mastodon}
     }
 </script>
 
