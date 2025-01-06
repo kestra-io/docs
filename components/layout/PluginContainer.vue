@@ -341,8 +341,4 @@
             }
         }
     }
-
-    .docs :deep(img:not(.page-icon)) {
-        width: 100%;
-    }
 </style>

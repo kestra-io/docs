@@ -241,7 +241,7 @@ $bd-gutter-x: 3rem;
     }
 
 
-    img {
+    img:not(h2 img) {
         width: 100%;
     }
     video, iframe {
