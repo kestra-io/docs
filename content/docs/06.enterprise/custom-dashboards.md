@@ -3,6 +3,7 @@ title: Custom Dashboards
 icon: /docs/icons/kestra.svg
 editions: ["EE", "Beta"]
 version: ">= 0.20.0"
+docId: default
 ---
 
 Build custom dashboards to visualize your executions, logs and metrics.
