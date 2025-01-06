@@ -27,24 +27,31 @@ Check the video below for a quick overview of the new features.
 
 Let’s dive into these highlights and other enhancements in more detail.
 
-## <Features>
+## Feature Highlights
 
-- Log Shipper
-- New No Code experience
-- Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
-- Improvements in the UI (filters, charts, padding, button, etc.)
+- Log Shipper (WIP)
+- New No Code experience (WIP)
+- Custom Dashboard JDBC (WIP)
+- Maintenance Mode (WIP)
+  
+## Other Features and Improvements
+
+- In-Apps documentation (WIP)
+- Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
+- Improvements in the UI (filters, charts, padding, button, etc.) (WIP)
 
 ### New Pebble functions
-
-- `randomInt` - https://github.com/kestra-io/kestra/issues/6207
-- `uuid` - https://github.com/kestra-io/kestra/issues/6208
-- `distinct` - https://github.com/kestra-io/kestra/issues/6417
+- `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
+- `uuid` - https://github.com/kestra-io/kestra/issues/6208 (MERGED)
+- `distinct` - https://github.com/kestra-io/kestra/issues/6417 (MERGED)
 
 ## New Tasks & Plugins
 
-- Exit task - https://github.com/kestra-io/kestra/issues/5599
-- Write task - https://github.com/kestra-io/kestra/issues/6524
-- HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352
+- Exit task - https://github.com/kestra-io/kestra/issues/5599 (MERGED)
+- Write task - https://github.com/kestra-io/kestra/issues/6524 (MERGED) 
+- HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352 (MERGED) 
+- LangChain task (WIP)
+- EMR plugin (TBD)
 
 ## Thanks to Our Contributors
 
