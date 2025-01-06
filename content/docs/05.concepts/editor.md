@@ -1,9 +1,7 @@
 ---
 title: Editor
 icon: /docs/icons/concepts.svg
-docId:
-  - new
-  - flowEditor
+docId: flowEditor
 ---
 
 Kestra provides a built-in code editor to write and test your flows.
