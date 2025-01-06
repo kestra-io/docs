@@ -105,6 +105,18 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/nkwiatkowski.png" alt="Nicolas Kwiatkowski Picture"/>
+                    <div class="w-100">
+                        <div class="team-name">Nicolas Kwiatkowski</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/nicolas-kwiatkowski-a75217169/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/nkwiatkowski" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
                          alt="Nicolas Callens Picture"/>
                     <div class="w-100">
@@ -163,7 +175,7 @@
                         <a href="https://www.linkedin.com/in/paul-grainger-65653115" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/paulgrainger85" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>                
+                </div>
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
                     <div class="w-100">
@@ -176,6 +188,18 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/elevatebart.png" alt="Bart Ledoux"/>
+                    <div class="w-100">
+                        <div class="team-name">Bart Ledoux</div>
+                        <div class="team-title font-small">Senior Frontend Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/bartledoux/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/elevatebart" target="_blank" class="me-2"><github /></a>
+                        <a href="https://piaille.fr/@elevatebart" target="_blank" class="me-2"><mastodon /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
                     <div class="w-100">
                         <div class="team-name">Stefan Muntean</div>
@@ -185,7 +209,7 @@
                         <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>                                                   
+                </div>
             </div>
         </Section>
     </div>
@@ -196,9 +220,10 @@
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
     import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Mastodon from "vue-material-design-icons/Mastodon.vue";
 
     export default {
-        components: {Twitter, Linkedin, Github, Section}
+        components: {Twitter, Linkedin, Github, Section, Mastodon}
     }
 </script>
 

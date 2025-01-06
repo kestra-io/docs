@@ -857,7 +857,7 @@ export default {
     },
     props: {
       scrolled: {
-        type: String,
+        type: Boolean,
         required: true
       }
     },
