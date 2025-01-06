@@ -6,8 +6,8 @@
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>
                 <h1 v-if="page && getPageTitle()" class="py-0 title">
                     <NuxtImg
-                        v-if="getPageIcon()"
-                        :src="page.pluginType === 'definitions' ? getPageIcon() : page.icon"
+                        v-if="pageIcon"
+                        :src="pageIcon"
                         :alt="getPageTitle()"
                         width="40px"
                         height="40px"
@@ -20,12 +20,12 @@
                     <span v-html="transformTitle(getPageTitle())"></span>
                 </h1>
             </div>
-            <NavToc :rate-helpful="true" :page="page && page" class="my-md-0 my-4 right-menu"/>
+            <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu"/>
 
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                         :version="page.version"/>
-                <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
+                <SchemaToHtml :schema="page.body.jsonSchema" :plugin-type="getPageName()" v-if="page.pluginType === 'definitions'">
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content" tag="article" />
                     </template>
@@ -51,7 +51,6 @@
     import {SchemaToHtml} from '@kestra-io/ui-libs'
     import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
-
 
     const isDoc = computed(() => props.type === 'docs');
     const config = useRuntimeConfig();
@@ -154,8 +153,10 @@
         return pageType.join('.');
     }
 
-    const getPageIcon = () => {
-        return `${config.public.apiUrl}/plugins/icons/${getPageName()}`;
+    let pageIcon = page.icon;
+    if (page.pluginType === 'definitions') {
+        const iconB64 = await $fetch(`/api/plugins?page=${getPageName()}&type=icon`);
+        pageIcon = `data:image/svg+xml;base64,${iconB64}`;
     }
 
     const getPageTitle = () => {

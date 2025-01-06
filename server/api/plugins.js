@@ -16,26 +16,16 @@ function toNuxtContent(parsedMarkdown, type) {
 }
 
 function toNuxtBlocks(data, type) {
-    const { $schema, required, title, description, $examples, $deprecated, $beta, $metrics, ...pageData } = data;
-
-    if ($examples) {
-        pageData.examples = $examples;
-    }
-
-    if ($metrics) {
-        pageData.metrics = $metrics;
-    }
     return {
         body: {
-            children: pageData,
+            jsonSchema: data,
             toc: {
-                links: navTocData(pageData)
+                links: navTocData(data)
             },
         },
         pluginType: type,
-        description,
-        deprecated: $deprecated,
-        title,
+        description: data.properties.description,
+        title: data.properties.title
     };
 }
 
@@ -50,37 +40,49 @@ const generateNavTocChildren = (properties) => {
         children.push({
             id: key,
             depth: 3,
-            text: properties[key].name ? properties[key].name : key,
+            text: key,
         });
     }
 
     return children;
 }
 
-function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
+const navTocData = (schema) => {
+    const links = [];
 
-const navTocData = (pageData) => {
-    const links = [{
-        id: 'examples',
-        depth: 2,
-        text: 'Examples',
-    }];
-    for(const [key, value] of Object.entries(pageData)) {
-        if (key !== 'examples' && key.split('')[0] !== '$') {
-            const data = {
-                id: key,
-                depth: 2,
-                text: capitalizeFirstLetter(key),
-            }
+    if (schema.properties?.["$examples"]) {
+        links.push({
+            id: 'examples',
+            depth: 2,
+            text: 'Examples'
+        });
+    }
 
-            if (Object.keys(value).length > 0) {
-                data.children = generateNavTocChildren(value);
-            }
+    if (schema.properties?.properties) {
+        links.push({
+            id: 'properties',
+            depth: 2,
+            text: 'Properties',
+            children: generateNavTocChildren(schema.properties.properties)
+        });
+    }
 
-            links.push(data)
-        }
+    if (schema.outputs?.properties) {
+        links.push({
+            id: 'outputs',
+            depth: 2,
+            text: 'Outputs',
+            children: generateNavTocChildren(schema.outputs.properties)
+        });
+    }
+
+    if (schema.definitions) {
+        links.push({
+            id: 'definitions',
+            depth: 2,
+            text: 'Definitions',
+            children: generateNavTocChildren(schema.definitions)
+        });
     }
 
     return links;
@@ -145,22 +147,14 @@ export default defineEventHandler(async (event) => {
         const page = requestUrl.searchParams.get("page");
         const type = requestUrl.searchParams.get("type");
         const config = useRuntimeConfig();
+        if (type === 'icon') {
+            let icon = await (await $fetch(`${config.public.apiUrl}/plugins/icons/${page}`)).text();
+            return Buffer.from(icon.replaceAll("currentColor", "#CAC5DA")).toString('base64');
+        }
         if (type === 'definitions') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
 
-            if (pageData.schema.outputs && pageData.schema.outputs.properties) {
-                pageData.schema.properties.outputs = pageData.schema.outputs.properties;
-            }
-
-            if (pageData.schema.definitions && Object.keys(pageData.schema.definitions).length) {
-                pageData.schema.properties.definitions = pageData.schema.definitions;
-            }
-
-            if (pageData.schema['examples']) {
-                pageData.schema.properties.examples = pageData.schema['examples']
-            }
-
-            return toNuxtBlocks(pageData.schema.properties, type);
+            return toNuxtBlocks(pageData.schema, type);
         }
         if (type === 'plugin') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
