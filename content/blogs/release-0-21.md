@@ -10,9 +10,9 @@ image: /blogs/release-0-21.png
 ---
 
 
-Kestra 0.20.0 is here, introducing multiple highly requested features to your favorite open-source orchestration platform. This release adds new flow and task properties, such as `sla` and `runIf`, and new Flow trigger `preconditions` bringing advanced time-driven dependencies across flows.
+Kestra 0.21.0 is here, introducing multiple highly requested features to your favorite open-source orchestration platform. This release adds XXX
 
-Enterprise Edition users can now benefit from more team-level isolation, a new invite process, and custom UIs to interact with Kestra from the outside world using Apps.
+Enterprise Edition users can now benefit XXX
 
 The table below highlights the key features of this release.
 
@@ -29,6 +29,8 @@ Let’s dive into these highlights and other enhancements in more detail.
 
 ## <Features>
 
+- Log Shipper
+- New No Code experience
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
 - Improvements in the UI (filters, charts, padding, button, etc.)
 
