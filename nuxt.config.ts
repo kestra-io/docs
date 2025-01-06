@@ -1,4 +1,4 @@
-import * as sass from "sass"
+import * as sass from "sass";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -125,8 +125,8 @@ export default defineNuxtConfig({
         build: {
             rollupOptions: {
                 external: [
-                    'shiki/onig.wasm'
-                ],
+                    'shiki/onig.wasm',
+                ]
             }
         },
         optimizeDeps: {
@@ -204,8 +204,7 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml'],
-            autoSubfolderIndex: false
+            routes: ['/rss.xml']
         },
     },
 
@@ -309,7 +308,6 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
-        debug: true,
         data: {
             enabled: true,
         },
