@@ -17,7 +17,7 @@
     "analyze": "nuxt analyze"
   },
   "dependencies": {
-    "@kestra-io/ui-libs": "^0.0.80",
+    "@kestra-io/ui-libs": "^0.0.82",
     "@popperjs/core": "^2.11.8",
     "@vue-flow/background": "^1.3.2",
     "@vue-flow/controls": "^1.1.2",
