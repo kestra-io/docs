@@ -33,12 +33,13 @@ Let’s dive into these highlights and other enhancements in more detail.
 - New No Code experience (WIP)
 - Custom Dashboard JDBC (WIP)
 - Maintenance Mode (WIP)
-  
+
 ## Other Features and Improvements
 
 - In-Apps documentation (WIP)
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
 - Improvements in the UI (filters, charts, padding, button, etc.) (WIP)
+- Dynamic Properties in every task (but not for trigger)
 
 ### New Pebble functions
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
