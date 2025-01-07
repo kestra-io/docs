@@ -60,7 +60,7 @@
             }
         },
         computed: {
-            async shuffledCompanies() {
+            shuffledCompanies() {
                 return this.companies.toSorted(() => .5 - Math.random())
             },
         }
