@@ -25,7 +25,7 @@
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                         :version="page.version"/>
-                <SchemaToHtml :schema="page.body.jsonSchema" :plugin-type="getPageName()" v-if="page.pluginType === 'definitions'">
+                <SchemaToHtml class="bd-markdown" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :show-code-lang="true" :copyable-code="true" v-if="page.pluginType === 'definitions'">
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content" tag="article" />
                     </template>
@@ -179,6 +179,10 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    :deep(.plugin-title) {
+        font-size: 1.5em;
+    }
+
     .container-fluid {
         gap: calc($spacer * 4);
         overflow-x: unset;
@@ -219,7 +223,6 @@
     }
 
     :deep(p) {
-        font-weight: 400;
         line-height: 1.75rem;
         font-size: $h6-font-size;
     }

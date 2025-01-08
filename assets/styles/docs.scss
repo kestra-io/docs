@@ -273,7 +273,6 @@ $bd-gutter-x: 3rem;
         color: $white;
         line-height: 1.75rem;
         font-size: $font-size-md;
-        font-weight: 400;
 
         a {
             color: $purple-36;
@@ -291,9 +290,11 @@ $bd-gutter-x: 3rem;
     }
 
     code {
-        border: $block-border;
-        background-color: $black-2;
-        color: $purple-36;
+        background: #161617;
+        border: 1px solid #252526;
+        border-radius: var(--bs-border-radius);
+        color: #b9b9ba;
+        padding: 0 .25rem;
     }
 
     .code-block, .doc-alert {
