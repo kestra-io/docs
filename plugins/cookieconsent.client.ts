@@ -44,7 +44,7 @@ export default defineNuxtPlugin(nuxtApp => {
             }
 
             if (window._hsq) {
-                _hsq.push(['identify', {id: response.data.id}]);
+                window._hsq.push(['identify', {id: response.data.id}]);
             }
         };
 
