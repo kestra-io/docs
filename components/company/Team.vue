@@ -117,6 +117,18 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/mgabelle.png" alt="Mathieu Gabelle Picture"/>
+                    <div class="w-100">
+                        <div class="team-name">Mathieu Gabelle</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/mgabelle/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/mgabelle" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
                          alt="Nicolas Callens Picture"/>
                     <div class="w-100">
