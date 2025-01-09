@@ -40,10 +40,9 @@ While we've successfully supported both worlds, the no-code experience needed en
 
 The new interface introduces intuitive left-side panels for flow properties and task management. We've simplified task configuration through organized drawers, making complex nested properties more accessible. A clear breadcrumb navigation helps you track your position within the configuration hierarchy.
 
+### Custom Dashboard 
 
-### Custom Dashboard JDBC
-
-[TBR]
+[TBR - introduce custom dashboard]
 
 ### Maintenance Mode
 
@@ -53,22 +52,20 @@ The new interface introduces intuitive left-side panels for flow properties and 
 
 [WIP/TBR]
 
-## Other Features and Improvements
+## Improvements in the UI and UX (filters, charts, padding, button, etc.)
 
-- In-Apps documentation (WIP)
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
 - Improvements in the UI (filters, charts, padding, button, etc.) (WIP)
 - system label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
+- In-Apps documentation (WIP)
+
+## Other Features and Improvements
+
 - Dynamic Properties in every task (but not for trigger)
 - Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171 (MERGED)
 - Update Terraform ressources
 - taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842 (MERGED)
 - New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
-
-### New Pebble functions
-- `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
-- `uuid` - https://github.com/kestra-io/kestra/issues/6208 (MERGED)
-- `distinct` - https://github.com/kestra-io/kestra/issues/6417 (MERGED)
 
 ## New Tasks & Plugins
 
@@ -77,6 +74,11 @@ The new interface introduces intuitive left-side panels for flow properties and 
 - HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352 (MERGED) 
 - LangChain task (WIP)
 - EMR plugin (TBD)
+
+### New Pebble functions
+- `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
+- `uuid` - https://github.com/kestra-io/kestra/issues/6208 (MERGED)
+- `distinct` - https://github.com/kestra-io/kestra/issues/6417 (MERGED)
 
 ## Thanks to Our Contributors
 
