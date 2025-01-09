@@ -45,6 +45,7 @@ Let’s dive into these highlights and other enhancements in more detail.
 - Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171 (MERGED)
 - Update Terraform ressources
 - taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842 (MERGED)
+- New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
 
 ### New Pebble functions
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
