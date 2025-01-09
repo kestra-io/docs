@@ -33,13 +33,18 @@ Let’s dive into these highlights and other enhancements in more detail.
 - New No Code experience (WIP)
 - Custom Dashboard JDBC (WIP)
 - Maintenance Mode (WIP)
+- Subflow restart behavior (WIP)
 
 ## Other Features and Improvements
 
 - In-Apps documentation (WIP)
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
 - Improvements in the UI (filters, charts, padding, button, etc.) (WIP)
+- system label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
 - Dynamic Properties in every task (but not for trigger)
+- Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171 (MERGED)
+- Update Terraform ressources
+- taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842 (MERGED)
 
 ### New Pebble functions
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
