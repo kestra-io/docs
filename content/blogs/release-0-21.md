@@ -25,15 +25,33 @@ Check the video below for a quick overview of the new features.
 
 [PLACEHOLDER VIDEO RELEASE]
 
-Let’s dive into these highlights and other enhancements in more detail.
+Let's dive into these highlights and other enhancements in more detail.
 
 ## Feature Highlights
 
-- Log Shipper (WIP)
-- New No Code experience (WIP)
-- Custom Dashboard JDBC (WIP)
-- Maintenance Mode (WIP)
-- Subflow restart behavior (WIP)
+### Log Shipper
+
+[WIP]
+
+### New No Code Experience
+
+Kestra's interface has always been its core strength, bridging the gap between no-code and traditional development approaches. 
+While we've successfully supported both worlds, the no-code experience needed enhancement: today, we're excited to unveil a complete redesign of our no-code flow editor.
+
+The new interface introduces intuitive left-side panels for flow properties and task management. We've simplified task configuration through organized drawers, making complex nested properties more accessible. A clear breadcrumb navigation helps you track your position within the configuration hierarchy.
+
+
+### Custom Dashboard JDBC
+
+[TBR]
+
+### Maintenance Mode
+
+[WIP]
+
+### Subflow restart behavior
+
+[WIP/TBR]
 
 ## Other Features and Improvements
 
