@@ -9,6 +9,11 @@ Expressions & Context Variables
 
 Kestra's expressions combine the [Pebble templating engine](../05.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+
 ## Using Expressions
 
 To dynamically set values in your flows, wrap an expression in curly braces, e.g. `{{ your_expression }}`.
