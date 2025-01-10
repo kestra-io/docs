@@ -92,6 +92,12 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/6pN5bZ4l1_8?si=QudHhk15z8LeZ8lw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 If you want to get a variable or file from your Python code, you can use an [output](../04.workflow-components/06.outputs.md).
 
 You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra.
