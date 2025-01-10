@@ -134,6 +134,7 @@ Everyone as different need, different service level threasholds. With custom das
 
 ## New Tasks & Plugins
 
+- DuckDB fixes
 - Exit task - https://github.com/kestra-io/kestra/issues/5599 (MERGED)
 - Write task - https://github.com/kestra-io/kestra/issues/6524 (MERGED) 
 - HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352 (MERGED) 
