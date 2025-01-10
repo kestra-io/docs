@@ -40,9 +40,68 @@ While we've successfully supported both worlds, the no-code experience needed en
 
 The new interface introduces intuitive left-side panels for flow properties and task management. We've simplified task configuration through organized drawers, making complex nested properties more accessible. A clear breadcrumb navigation helps you track your position within the configuration hierarchy.
 
-### Custom Dashboard 
+### Custom Dashboards
 
-[TBR - introduce custom dashboard]
+Monitoring executions and get overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track key metrics.
+
+As everything in Kestra, you can declare dashboards as code. Clicking on the + Create a new dashboard button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+
+```yaml
+title: Getting Started
+description: First custom dashboard
+timeWindow:
+  default: P7D
+  max: P365D
+charts:
+  - id: executions_timeseries
+    type: io.kestra.plugin.core.dashboard.chart.TimeSeries
+    chartOptions:
+      displayName: Executions
+      description: Executions last week
+      legend:
+        enabled: true
+      column: date
+      colorByColumn: state
+    data:
+      type: io.kestra.plugin.core.dashboard.data.Executions
+      columns:
+        date:
+          field: START_DATE
+          displayName: Date
+        state:
+          field: STATE
+        total:
+          displayName: Executions
+          agg: COUNT
+          graphStyle: BARS
+        duration:
+          displayName: Duration
+          field: DURATION
+          agg: SUM
+          graphStyle: LINES
+
+  - id: executions_pie
+    type: io.kestra.plugin.core.dashboard.chart.Pie
+    chartOptions:
+      graphStyle: DONUT
+      displayName: Total Executions
+      description: Total executions per state
+      legend:
+        enabled: true
+      colorByColumn: state
+    data:
+      type: io.kestra.plugin.core.dashboard.data.Executions
+      columns:
+        state:
+          field: STATE
+        total:
+          agg: COUNT
+```
+
+To see all available properties to configure a custom dashboard as code, see examples provided in the [Enterprise Edition Examples repository](https://github.com/kestra-io/enterprise-edition-examples).
+
+Everyone as different need, different service level threasholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
+
 
 ### Maintenance Mode
 
