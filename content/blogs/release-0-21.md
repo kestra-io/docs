@@ -18,7 +18,10 @@ The table below highlights the key features of this release.
 
 | Feature                                          | Description                                                                                                                                                                               | Edition |
 |--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-| <feature name>                                           | <feature description>                                                                                | All editions |
+| Log Shipper                                      | Forward Kestra logs to external destination                                                                                                 | Enterprise Edition |
+| No Code                                          | New experience regarding no-code flow creation and task edition                                                                             | All Editions |
+| Custom Dashboards                                | Create your own custom dashboards, tailored to your monitoring needs                                                                        | All Editions |
+| Maintenance Mode                                 | Set your Kestra instance in maintenance mode to streamline server upgrades                                                                  | All Editions |
 
 
 Check the video below for a quick overview of the new features.
@@ -39,6 +42,9 @@ Kestra's interface has always been its core strength, bridging the gap between n
 While we've successfully supported both worlds, the no-code experience needed enhancement: today, we're excited to unveil a complete redesign of our no-code flow editor.
 
 The new interface introduces intuitive left-side panels for flow properties and task management. We've simplified task configuration through organized drawers, making complex nested properties more accessible. A clear breadcrumb navigation helps you track your position within the configuration hierarchy.
+
+[PLACEHOLDER IMAGE 1]
+[PLACEHOLDER IMAGE 2]
 
 ### Custom Dashboards
 
