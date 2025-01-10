@@ -116,13 +116,18 @@ Everyone as different need, different service level threasholds. With custom das
 ### Subflow restart behavior
 
 [WIP/TBR]
+- Restarting subflows no longer triggers new executions
+- new EmbeddedSubflow task
+
 
 ## Improvements in the UI and UX (filters, charts, padding, button, etc.)
 
+
+- Improvements in the UI (filters, search bar, charts, padding, button, etc.) (WIP)
+- App improvements - added bulk actions, preview + plugin docs + group access + terraform object for Apps + Git tasks to sync Apps to and from Git 
+- System label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
+- Contextual In-Apps documentation (WIP)
 - Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
-- Improvements in the UI (filters, charts, padding, button, etc.) (WIP)
-- system label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
-- In-Apps documentation (WIP)
 
 ## Other Features and Improvements
 
