@@ -138,7 +138,7 @@ Everyone as different need, different service level threasholds. With custom das
 - Write task - https://github.com/kestra-io/kestra/issues/6524 (MERGED) 
 - HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352 (MERGED) 
 - LangChain task (WIP)
-- EMR plugin (TBD)
+- EMR plugin (TBD + bluerprint PR https://github.com/kestra-io/blueprints/pull/21)
 
 ### New Pebble functions
 - `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
