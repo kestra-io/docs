@@ -6,25 +6,23 @@ version: ">= 0.20.0"
 docId: default
 ---
 
-Build custom dashboards to visualize your executions, logs and metrics.
+Build custom dashboards to visualize your executions, logs, and metrics.
 
 ## Overview
 
 Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra’s home screen, you can create charts that answer specific questions and track key metrics.
 
-## The Dashboard Page
+## Dashboard page
 
-The Dashboard page displays both the **default dashboard** and any **custom dashboards** you’ve created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, simply type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards.
+The Dashboard page displays both the **default dashboard** and any **custom dashboards** you’ve created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards.
 
 ![main_page](/docs/enterprise/dashboards/main_page.png)
 
-The `+ Create a new dashboard` button lets you set up a new dashboard defined directly as code.
+## Create a new Dashboard as code
 
-## Create a new Dashboard as Code
+Clicking on the `+ Create new dashboard` button opens a code editor where you can define the dashboard layout and data sources as code.
 
-Clicking on the `+ Create a new dashboard` button opens a Code Editor where you can define the dashboard layout and data sources in code.
-
-Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+Below is an example of a dashboard definition that displays executions over time and a pie chart of execution states:
 
 ```yaml
 title: Getting Started
@@ -80,9 +78,9 @@ charts:
 
 To see all available properties to configure a custom dashboard as code, see examples provided in the [Enterprise Edition Examples](https://github.com/kestra-io/enterprise-edition-examples) repository.
 
-## Querying Data
+## Querying data
 
-The `data` property of a chart defines the type of data that will be queried and displayed. The `type` determines which columns are available for display.
+The `data` property of a chart defines the type of data that is queried and displayed. The `type` determines which columns are displayed.
 
 Dashboards can query data from these source `types`:
 - `type: io.kestra.plugin.core.dashboard.data.Executions`: data related to your workflow executions
@@ -94,14 +92,14 @@ After defining the data source, specify the columns to display in the chart. Eac
 
 | Property | Description                                                                                                    |
 | --- |----------------------------------------------------------------------------------------------------------------|
-| `field` | The name of the column in the data source. This is the only required field.                                    |
-| `displayName` | The label that will be displayed in the chart                                                                  |
-| `agg` | The aggregation function to apply to the column. Supported aggregations include `AVG`, `COUNT`, `MAX`, `MIN`, `SUM` |
-| `graphStyle` | The style of the graph to display. Supported styles include `LINES`, `BARS`, `POINTS`                          |
-| `columnAlignment` | The alignment of the column in the table. Supported alignments include `LEFT`, `RIGHT`, `CENTER`               |
+| `field` | The only required field, specifies the name of the column in the data source to use                           |
+| `displayName` | Sets the label displayed in the chart                                                                  |
+| `agg` |  Defines the aggregation function applied to the column: supported aggregations include `AVG`, `COUNT`, `MAX`, `MIN`, `SUM` |
+| `graphStyle` | Indicates the style of the graph displayed: supported styles include `LINES`, `BARS`, `POINTS`                          |
+| `columnAlignment` | Specifies the alignment of the column in the table: supported alignments include `LEFT`, `RIGHT`, `CENTER`               |
 
 
-You can also use the `where` property to set conditions that filter the result set before displaying it in the chart. Filters can apply to any column in the data source, with all conditions in the `where` property combined using the `AND` operator. If multiple conditions are needed with different logic, you can use the `type: OR` property.
+You can also use the `where` property to set conditions that filter the result set before displaying it in the chart. Filters can apply to any column in the data source. For shared logic, use the `AND` operator in the `where` property to combine several conditions. If multiple conditions are needed with different logic, use the `type: OR` property.
 
 Available filter types include:
 - `CONTAINS`
