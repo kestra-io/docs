@@ -17,9 +17,13 @@ Before you begin:
 - Deploy [Kestra](../02.installation/index.md) in your preferred development environment.
 - Ensure you have a [basic understanding of how to run Kestra flows.](../01.getting-started/03.tutorial.md)
   
-## Loop Over Nested Lists of Values
+## Loop over nested lists of values
 
-This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string. To see the flow in action, define the `each_nested` flow as shown below:
+This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string. 
+
+You can access the current iteration value using the variable `{{ taskrun.value }}` or `{{ parent.taskrun.value }}` if you are in a nested child task. Additionally, you can access the batch or iteration number with `{{ taskrun.iteration }}`.
+
+To see the flow in action, define the `each_nested` flow as shown below:
 
 ```yaml
 id: each_nested
@@ -72,12 +76,12 @@ Within the flow:
 - `2_return`: Fetches the output from the nested loop (`1-2-1_return` for the value `a a`) and logs it.
 
 
-## Next Steps
+## Next steps
 
 Now that you've seen how to loop over a list of values using `ForEach`, you can apply this technique to any scenario where multiple iterations of similar tasks are needed. You can further extend this flow by:
 - Adding more complex nested loops.
 - Using dynamic input values instead of hardcoded lists.
 - Logging or processing additional data from each iteration.
 
-For more advanced use cases, refer to Kestra’s official [ForEach](https://kestra.io/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
+For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
 
