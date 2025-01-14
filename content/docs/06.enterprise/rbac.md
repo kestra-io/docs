@@ -261,6 +261,13 @@ If a user wants to change their password, they can do it on their profile. This 
 
 Kestra does not provide any forgot password feature yet. Currently only a super admin can update a user password through its User Edit page.
 
+#### Impersonate user (Admin)
+
+As an Admin of your Kestra environment, you can test the permission setup of other users with the **Impersonate** feature.
+**Impersonate** is available through the IAM-Users tab. Select any user to impersonate, and you can experience your Kestra instance from the perspective of that user, ensuring permissions and access are correctly implemented.
+
+![impersonate-user](/docs/enterprise/impersonate-user.png)
+
 ### Groups
 
 Each `Group` is a collection of `Users` or `Service Accounts`.
