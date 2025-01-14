@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-image: /blogs/introducing-apps.jpg
+image: /blogs/embedded-databases.jpg
 ---
 
 Whether you're building complex ETL pipelines, conducting exploratory data analysis, or powering real-time APIs, these databases are usually in your stack. Why? They eliminate the latency of disk I/O. Tools like [**DuckDB**](https://github.com/duckdb/duckdb), [chDB](https://github.com/chdb-io/chdb), and [**SQLite**](https://github.com/sqlite/sqlite), alongside the rise of [**Limbo**](https://github.com/tursodatabase/limbo), are more relevant **than ever for 2025.**
