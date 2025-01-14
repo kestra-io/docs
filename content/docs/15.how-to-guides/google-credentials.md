@@ -95,7 +95,7 @@ You can now access this inside of Kestra with the following pebble expression:
 With this, we can add this to the `serviceAccount` property like so:
 
 ```yaml
-- id: "upload"
+- id: upload
   type: "io.kestra.plugin.googleworkspace.drive.Upload"
   from: "{{ inputs.file }}"
   parents:
