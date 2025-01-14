@@ -24,28 +24,28 @@ For more information on Google Cloud Service Accounts, check out the [documentat
 Inside of Kestra, you can paste the service account JSON directly to the task property. This is useful for testing purposes:
 
 ```yaml
-id: "upload"
-type: "io.kestra.plugin.googleworkspace.drive.Upload"
-from: "{{ inputs.file }}"
-parents:
- - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
-name: "My awesome CSV"
-contentType: "text/csv"
-mimeType: "application/vnd.google-apps.spreadsheet"
-serviceAccount: |
-  {
-    "type": "service_account",
-    "project_id": "...",
-    "private_key_id": "...",
-    "private_key": "...",
-    "client_email": "...",
-    "client_id": "...",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "...",
-    "universe_domain": "googleapis.com"
-  }
+- id: "upload"
+  type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  from: "{{ inputs.file }}"
+  parents:
+    - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
+  name: "My awesome CSV"
+  contentType: "text/csv"
+  mimeType: "application/vnd.google-apps.spreadsheet"
+  serviceAccount: |
+    {
+      "type": "service_account",
+      "project_id": "...",
+      "private_key_id": "...",
+      "private_key": "...",
+      "client_email": "...",
+      "client_id": "...",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "...",
+      "universe_domain": "googleapis.com"
+    }
 ```
 
 ::alert{type="warning"}
@@ -54,33 +54,27 @@ This is not recommended as you might expose your key. We'd recommend using [secr
 
 ## Add Service Account as a Secret
 
-We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it directly to our Docker Compose file. If you want to look at alternative ways, check out the [secrets page](../05.concepts/04.secret.md).
+We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it via environment variables which will link to our Docker Compose file. If you want more information regarding how secrets work, check out the [secrets page](../05.concepts/04.secret.md).
 
-
-Once you have the service account downloaded, you can encode it to base64 using the following command, where `sa.json` is your JSON file:
-```bash
-cat sa.json | base64
-```
-
-Once you've done that, copy and paste the response as a new environment variable, that starts with `SECRET_`, in your `docker-compose.yml`:
-```yaml
-kestra:
-  environment:
-    SECRET_GCP_SA: base64_encoded_json
-```
-
-## Add Secrets to a `.env` file
-
-You can also add all of your secrets into a separate `.env` file and add this to your Docker Compose to keep them separate.
-
-The script below requires you to have a `.env` file (even if it's empty) to work. This will create a `.env_encoded` file with the base64 encoded secrets inside of it.
+Once you have the service account file downloaded, you can rename it to `service-account.json`. Then we'll encode the service account JSON and store it inside of a file named `.env_encoded` which will hold all of our encoded secrets:
 
 ```bash
+echo SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0) >> .env_encoded
+```
+
+If you already have an existing `.env` file, you can use the following bash script:
+
+```bash
+#!/bin/bash
+
+ENV_FILENAME=.env_encoded
+
 while IFS='=' read -r key value; do
-    echo "SECRET_$key=$(echo -n "$value" | base64)";
-done < .env > .env_encoded
+  echo "SECRET_$key=$(echo -n "$value" | base64)";
+done < .env > $ENV_FILENAME
 
-echo "SECRET_GCP_SA=$(cat sa.json | base64)" >> .env_encoded
+# Encodes the service account file without line wrapping to make sure the whole JSON value is intact.
+echo "SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0)" >> $ENV_FILENAME
 ```
 
 You can then set the `.env_encoded` file inside of your `docker-compose.yml`:
@@ -93,21 +87,23 @@ kestra:
 ## Access Service Account inside of Kestra
 
 You can now access this inside of Kestra with the following pebble expression:
+
 ```yaml
-"{{ secret('GCP_SA') }}"
+"{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 With this, we can add this to the `serviceAccount` property like so:
+
 ```yaml
-id: "upload"
-type: "io.kestra.plugin.googleworkspace.drive.Upload"
-from: "{{ inputs.file }}"
-parents:
-  - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
-name: "My awesome CSV"
-contentType: "text/csv"
-mimeType: "application/vnd.google-apps.spreadsheet"
-serviceAccount: "{{ secret('GCP_SA') }}"
+- id: "upload"
+  type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  from: "{{ inputs.file }}"
+  parents:
+    - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
+  name: "My awesome CSV"
+  contentType: "text/csv"
+  mimeType: "application/vnd.google-apps.spreadsheet"
+  serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 ```yaml
@@ -118,7 +114,7 @@ serviceAccount: "{{ secret('GCP_SA') }}"
     SELECT 1 as id, "John" as name
     UNION ALL
     SELECT 2 as id, "Doe" as name
-  serviceAccount: "{{ secret('GCP_SA') }}"
+  serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 ## Set the Service Account with `PluginDefaults`
@@ -138,7 +134,7 @@ tasks:
 pluginDefaults:
   - type: io.kestra.plugin.googleworkspace.drive.Upload
     values:
-      serviceAccount: "{{ secret('GOOGLE_SA') }}"
+      serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 ## Configuring Secrets in the Enterprise Edition
