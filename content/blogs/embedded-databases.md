@@ -23,7 +23,7 @@ This post breaks down **Embedded Database** tool choices in 2025.
 - **Avoiding I/O bottlenecks:** Disk read/write operations can become a significant bottleneck, especially during complex joins and aggregations.
 - **Reducing ETL over-engineering:** Instead of shuffling data between transactional and analytical stores, **Embedded Databases** bring computation directly to the data.
 
-These advantages make them also the go-to solution for real-time data processing in machine learning, anomaly detection, and interactive dashboards.
+These advantages make them also the go-to solution because of distinct advantages such as:
 
 - **Real-time performance:** Data pipelines, anomaly detection, and machine learning workflows demand sub-second response times.
 - **Simplified architecture:** Combining OLAP (analytical queries) and OLTP (transactional processing) reduces complexity and maintenance.
@@ -87,9 +87,12 @@ Below is an example of how to use chDB to query a Parquet file:
 
 ```python
 import chdb
-conn = chdb.connect()
-result = conn.sql("SELECT AVG(sales) FROM 'data.parquet' WHERE region = 'North'")
-print(result.to_dataframe())
+
+data = chdb.query("""
+SELECT * 
+FROM url('https://huggingface.co/datasets/kestra/datasets/resolve/main/json/products.json');
+""", 'PrettyCompact')
+print(data)
 
 ```
 
@@ -195,23 +198,36 @@ Whether you’re deploying cloud-native apps, serverless functions, or building 
 **Extended Example Kestra Workflow:**
 
 ```yaml
+id: embedded_databases
+namespace: company.team
+
 tasks:
+  - id: chDB
+    type: io.kestra.plugin.scripts.python.Script
+    allowWarning: true
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    beforeCommands:
+      - pip install chdb
+    script: |
+      import chdb
 
-  - id: query_with_duckdb
-    type: io.kestra.plugin.sql.duckdb.Query
-    inputFiles:
-       data: "path/to/sales/*.csv"
-    properties:
-      query: |
-        SELECT product_name, SUM(total) AS total FROM "{{ workingDir }}/data" GROUP BY product_name ORDER BY total DESC LIMIT 10;
+      data = chdb.query("""
+      SELECT sum(total) as total, avg(quantity) as avg_quantity
+      FROM url('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv');
+      """, 'PrettyCompact')
+      print(data)    
 
-  - id: transform_with_clickhouse
-    type: io.kestra.plugin.sql.clickhouse.Query
-    properties:
-      query: |
-        SELECT category, AVG(price) AS avg_price FROM "sales_aggregated" GROUP BY category;
-    fetchType: STORE
+  - id: duckDB
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
 
+      SELECT sum(total) as total, avg(quantity) as avg_quantity
+      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv',
+      header=True);
+    fetchType: FETCH
 ```
 
 **Advanced Configuration:** Kestra also supports retries, error handling, and parallel task execution, making it easy to build robust data pipelines.
