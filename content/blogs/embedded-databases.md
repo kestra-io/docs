@@ -15,7 +15,7 @@ This post breaks down **Embedded Database** tool choices in 2025.
 
 ---
 
-### Embedded Databases**: Why Developers Care in 2025
+### Embedded Databases: Why Developers Care in 2025
 
 **Embedded Databases** have become indispensable because they are fast. Well, it’s a bit more complex than that; what they do best is:
 
