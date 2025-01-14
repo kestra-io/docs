@@ -96,7 +96,7 @@ With this, we can add this to the `serviceAccount` property like so:
 
 ```yaml
 - id: upload
-  type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  type: io.kestra.plugin.googleworkspace.drive.Upload
   from: "{{ inputs.file }}"
   parents:
     - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
