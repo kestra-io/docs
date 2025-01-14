@@ -24,7 +24,7 @@ For more information on Google Cloud Service Accounts, check out the [documentat
 Inside of Kestra, you can paste the service account JSON directly to the task property. This is useful for testing purposes:
 
 ```yaml
-- id: "upload"
+- id: upload
   type: "io.kestra.plugin.googleworkspace.drive.Upload"
   from: "{{ inputs.file }}"
   parents:
