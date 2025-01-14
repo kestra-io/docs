@@ -25,7 +25,7 @@ Inside of Kestra, you can paste the service account JSON directly to the task pr
 
 ```yaml
 - id: upload
-  type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  type: io.kestra.plugin.googleworkspace.drive.Upload
   from: "{{ inputs.file }}"
   parents:
     - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
