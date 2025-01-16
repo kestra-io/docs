@@ -21,7 +21,7 @@ The table below highlights the key features of this release.
 | Log Shipper                                      | Forward Kestra logs to external destination                                                                                                 | Enterprise Edition |
 | No Code                                          | New experience regarding no-code flow creation and task edition                                                                             | All Editions |
 | Custom Dashboards                                | Create your own custom dashboards, tailored to your monitoring needs                                                                        | All Editions |
-| Maintenance Mode                                 | Set your Kestra instance in maintenance mode to streamline server upgrades                                                                  | All Editions |
+| Maintenance Mode                                 | Set your Kestra instance in maintenance mode to streamline server upgrades                                                                  |  Enterprise Edition |
 
 
 Check the video below for a quick overview of the new features.
@@ -48,22 +48,23 @@ The new interface introduces intuitive left-side panels for flow properties and 
 
 ### Custom Dashboards
 
-Monitoring executions and get overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track key metrics.
-
+Monitoring executions and get overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track key metrics. Everyone as different need, different service level threasholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
 As everything in Kestra, you can declare dashboards as code. Clicking on the + Create a new dashboard button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
 
+::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
-title: Getting Started
-description: First custom dashboard
+title: Data Team Executions
+description: Data Executions dashboard
 timeWindow:
-  default: P7D
+  default: P30D # P30DT30H
   max: P365D
+
 charts:
   - id: executions_timeseries
     type: io.kestra.plugin.core.dashboard.chart.TimeSeries
     chartOptions:
       displayName: Executions
-      description: Executions last week
+      description: Executions duration and count per date
       legend:
         enabled: true
       column: date
@@ -85,6 +86,10 @@ charts:
           field: DURATION
           agg: SUM
           graphStyle: LINES
+      where:
+        - field: NAMESPACE
+          type: STARTS_WITH
+          value: data
 
   - id: executions_pie
     type: io.kestra.plugin.core.dashboard.chart.Pie
@@ -102,16 +107,32 @@ charts:
           field: STATE
         total:
           agg: COUNT
+      where:
+        - field: NAMESPACE
+          type: STARTS_WITH
+          value: data
 ```
+::
+
+![custom dashboard editor screenshot](/blogs/custom_dashboard_editor.png)
 
 To see all available properties to configure a custom dashboard as code, see examples provided in the [Enterprise Edition Examples repository](https://github.com/kestra-io/enterprise-edition-examples).
-
-Everyone as different need, different service level threasholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
 
 
 ### Maintenance Mode
 
-[WIP]
+We're excited to announce Maintenance Mode, a new feature designed to simplify platform maintenance operations for Kestra installations running at scale. This feature addresses a common challenge faced by organizations running numerous workflows: finding the right moment to perform platform updates without disrupting ongoing operations.
+
+When activated, Maintenance Mode introduces a controlled state where:
+
+- The executor stops processing new executions. New flow executions are automatically queued.
+- Existing executions are allowed to complete gracefully (workers complete their current tasks without picking up new ones).
+- The platform continues to accept and schedule new executions, storing them for later processing (web server and scheduler components remain active, ensuring no requests are lost).
+- New executions are queued for processing after maintenance concludes
+
+
+You can enter in Maintenance Mode via the `Administration > Instance` panel of you Kestra instance.
+
 
 ### Subflow restart behavior
 
@@ -120,9 +141,9 @@ Everyone as different need, different service level threasholds. With custom das
 - new EmbeddedSubflow task
 
 
-## Improvements in the UI and UX (filters, charts, padding, button, etc.)
+## User Interface & Experience Improvements
 
-
+As with each release, we continued to improve the interface elements, colors and motion to 
 - Improvements in the UI (filters, search bar, charts, padding, button, etc.) (WIP)
 - App improvements - added bulk actions, preview + plugin docs + group access + terraform object for Apps + Git tasks to sync Apps to and from Git 
 - System label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
