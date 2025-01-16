@@ -66,7 +66,7 @@ Below you can see the full list of renamed plugins:
 | `io.kestra.core.tasks.flows.Dag`                                     | `io.kestra.plugin.core.flow.Dag`                              |
 | `io.kestra.core.tasks.flows.EachParallel`                            | `io.kestra.plugin.core.flow.EachParallel`                     |
 | `io.kestra.core.tasks.flows.EachSequential`                          | `io.kestra.plugin.core.flow.EachSequential`                   |
-| `io.kestra.core.tasks.flows.Flow`                                    | `io.kestra.plugin.core.flow.Flow`                             |
+| `io.kestra.core.tasks.flows.Flow`                                    | `io.kestra.plugin.core.flow.Subflow`                          |
 | `io.kestra.core.tasks.flows.ForEachItem`                             | `io.kestra.plugin.core.flow.ForEachItem`                      |
 | `io.kestra.core.tasks.flows.If`                                      | `io.kestra.plugin.core.flow.If`                               |
 | `io.kestra.core.tasks.flows.Parallel`                                | `io.kestra.plugin.core.flow.Parallel`                         |
