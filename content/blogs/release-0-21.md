@@ -137,40 +137,63 @@ You can enter in Maintenance Mode via the `Administration > Instance` panel of y
 ### Subflow restart behavior
 
 [WIP/TBR]
-- Restarting subflows no longer triggers new executions
-- new EmbeddedSubflow task
-
 
 ## User Interface & Experience Improvements
 
-As with each release, we continued to improve the interface elements, colors and motion to 
-- Improvements in the UI (filters, search bar, charts, padding, button, etc.) (WIP)
-- App improvements - added bulk actions, preview + plugin docs + group access + terraform object for Apps + Git tasks to sync Apps to and from Git 
-- System label for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682 (MERGED)
-- Contextual In-Apps documentation (WIP)
-- Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403 (MERGED)
+As with each release, we continued to improve the interface elements, colors and user motion:
+
+- Improvements in the UI: 
+  - Filters ans search bars are now consistent across the different panels
+  - We also fixed some UI paddings, buttons, and colors.
+
+- Improvments for Apps:
+  - Apps can now be previewed in the corresponding editor
+  - Apps can be declared via Terraform definitions
+  - [TBD] Access Group?
+  - [TBD] mention UI improvements (bulk action & co)?
+
+- Introduce system labels for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682
+- [TBD] Contextual In-Apps documentation
+- [TBD] Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
 
 ## Other Features and Improvements
 
-- Dynamic Properties in every task (but not for trigger)
-- Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171 (MERGED)
-- Update Terraform ressources
-- taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842 (MERGED)
-- New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
+- [TBD] Dynamic Properties in every task (but not for trigger)
+- [TBD] Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171
+- [TBD] Update Terraform ressources
+- [TBD] taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842
+- [TBD] New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
 
 ## New Tasks & Plugins
 
-- DuckDB fixes
-- Exit task - https://github.com/kestra-io/kestra/issues/5599 (MERGED)
-- Write task - https://github.com/kestra-io/kestra/issues/6524 (MERGED) 
-- HuggingFace Inference - https://github.com/kestra-io/kestra/issues/6352 (MERGED) 
-- LangChain task (WIP)
-- EMR plugin (TBD + bluerprint PR https://github.com/kestra-io/blueprints/pull/21)
+### DuckDB Fixes
+
+We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/issues/165) regarding the DuckDB version used in Kestra. Now Kestra support the latest version of DuckDB!
+
+
+### New Exit task
+
+[TBD] https://github.com/kestra-io/kestra/issues/5599
+
+### New Write task
+
+[TBD] https://github.com/kestra-io/kestra/issues/6524 
+
+### New AI plugins
+
+[TBD] **HuggingFace Inference**  https://github.com/kestra-io/kestra/issues/6352 
+[TBD] LangChain task
+
+### New AWS EMR plugin
+[TBD; see blueprints] https://github.com/kestra-io/blueprints/pull/21
 
 ### New Pebble functions
-- `randomInt` - https://github.com/kestra-io/kestra/issues/6207 (MERGED)
-- `uuid` - https://github.com/kestra-io/kestra/issues/6208 (MERGED)
-- `distinct` - https://github.com/kestra-io/kestra/issues/6417 (MERGED)
+
+`randomInt` - you can now [generate a random integer](https://github.com/kestra-io/kestra/issues/6207) with the `randomInt` function in Pebble.
+
+`uuid` - you can [generate a UUID](https://github.com/kestra-io/kestra/issues/6208) with the new `uuid` function in Pebble.
+
+`distinct` - you can now [get the uniq set of values](https://github.com/kestra-io/kestra/issues/6417) from an array with the new `distinct` function in Pebble.
 
 ## Thanks to Our Contributors
 
