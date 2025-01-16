@@ -58,7 +58,7 @@
                                     <h4 class="card-title" data-aos="fade-right">Enterprise Edition</h4>
                                     <p class="pricing" data-aos="fade-left">Built For Production</p>
                                     <p class="pricing-type" data-aos="fade-left">On-Demand</p>
-                                    <div class="pricing-desc" data-aos="fade-left"> Predictable nstance based model with: no limits on users, workflows, or tasks.</div>
+                                    <div class="pricing-desc" data-aos="fade-left"> Predictable instance based model with: no limits on users, workflows, or tasks.</div>
                                 </div>
                                 <NuxtLink
                                     href="/demo"
