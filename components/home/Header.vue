@@ -45,17 +45,7 @@
                 </div>
             </div>
             <div class="img-block">
-                <NuxtImg
-                    class="img-fluid headerimg"
-                    src="/landing/home/header.png"
-                    format="webp"
-                    quality="100"
-                    width="1034"
-                    height="785"
-                    densities="x1 x2"
-                    sizes="320px xs:640px lg:1034px"
-                    alt="Unified Orchestration Platform in an All-Inclusive Dashboard"
-                />
+                <canvas ref="canvas" id="riveCanvas" height="785" width="1034" style="width: 120vw;"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
@@ -96,29 +86,43 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+    import { ref, onMounted } from "vue";
     import Console from "vue-material-design-icons/Console.vue";
     import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
-
     import TextScroller from "~/components/layout/TextScroller.vue";
 
-    export default {
-        components: {
-            Console,
-            PlayOutline,
-            TextScroller,
-        },
-        data() {
-            return {
-                videoVisible: false,
-                scrollingTexts: [
-                    { text: "Orchestrate", color: "#E500EA" },
-                    { text: "Automate", color: "#4281FF" },
-                    { text: "Schedule", color: "#9D40FB" },
-                ],
-            };
-        },
-    };
+    import { Rive } from "@rive-app/canvas";
+
+    const videoVisible = ref(false)
+    const canvas = ref()
+    const scrollingTexts = [
+        { text: "Orchestrate", color: "#E500EA" },
+        { text: "Automate", color: "#4281FF" },
+        { text: "Schedule", color: "#9D40FB" },
+    ]
+
+    const riveAnimation = ref()
+
+    onMounted(() => {
+        if(canvas.value){
+            const anim = new Rive({
+                src: "/landing/home/homepage.riv",
+                canvas: canvas.value,
+                autoplay: true,
+                stateMachines: "kestra",
+                onLoad: () => {
+                    anim.resizeDrawingSurfaceToCanvas();
+                },
+            })
+
+            riveAnimation.value = anim
+        }
+    })
+
+    onUnmounted(() => {
+        riveAnimation.value?.cleanup();
+    })
 </script>
 
 <style lang="scss" scoped>
@@ -132,11 +136,13 @@
             z-index: 0;
             width: 100vw;
             height: 91.6%;
-            background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
+            // background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
             right: 0;
             top: 0;
         }
         .text-block {
+            position: relative;
+            z-index: 10;
             margin: 4rem 0 1rem;
             display: flex;
             flex-direction: column;
@@ -316,30 +322,25 @@
         .img-block
         {
             display: flex;
-            width: 100%;
             justify-content: center;
-            position: relative;
-
-            &:after {
-                content: "";
-                background-image: url(/landing/header-menu/bg-dots.png);
-                background-repeat: no-repeat;
-                background-size: 100% 100%;
-                position: absolute;
-                top: 0;
-                width: 148%;
-                @include media-breakpoint-down(md) {
-                    width: 138%;
-                }
-                height: 85%;
+            @include media-breakpoint-down(md) {
+                justify-content: flex-start;
+                left: -100px;
             }
-
-            img {
-                width: 80%;
-                position: relative;
-                z-index: 5;
+            position: relative;
+            margin-bottom: 100px;
+            canvas {
+                min-width: 1024px;
+                width: 120vw;
+                margin-top: -32%;
+                    @include media-breakpoint-down(xl) {
+                    margin-top: -38%;
+                }
+                @include media-breakpoint-down(lg) {
+                    margin-top: -48%;
+                }
                 @include media-breakpoint-down(md) {
-                    width: 100%;
+                    margin-top: -64%;
                 }
             }
         }
