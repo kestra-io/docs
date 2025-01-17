@@ -20,6 +20,9 @@ export default defineNuxtConfig({
             },
             plugins: {
                 sources: ['/api/sitemap']
+            },
+            blueprints: {
+                sources: ['/api/sitemap']
             }
         },
     },
