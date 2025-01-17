@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="img-block">
-                <canvas ref="canvas" id="riveCanvas" height="785" width="1034" style="width: 120vw;"/>
+                <canvas ref="canvas" height="785" width="1034" style="width: 120vw;"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
