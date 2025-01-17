@@ -74,9 +74,10 @@
                         }
                     }
 
-                    if (window.dataLayer) {
-                        window.dataLayer.push({'event': 'newsletter_form'});
-                    }
+                    gtm?.trackEvent({
+                        event: "newsletter_form",
+                        noninteraction: false,
+                    })
 
                     identify(form.email.value);
 

@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import identify from "./identify";
+const gtm = useGtm();
 
 export function hubspotFormCreate(eventType, data) {
     scriptLoad(() => {
@@ -8,9 +9,11 @@ export function hubspotFormCreate(eventType, data) {
                 region: "eu1",
                 portalId: "27220195",
                 onFormSubmit: function ($form) {
-                    if (window.dataLayer) {
-                        window.dataLayer.push({'event': eventType});
-                    }
+                    gtm?.trackEvent({
+                        event: eventType,
+                        noninteraction: false,
+                    })
+
                     posthog.capture(eventType);
 
                     const email = $form.querySelector('[name="email"]')
