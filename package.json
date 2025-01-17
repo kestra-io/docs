@@ -49,7 +49,7 @@
     "@nuxt/devtools": "^1.6.4",
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/mdc": "npm:@nuxtjs/mdc-edge@0.9.1-28769211.a288cfa",
-    "@nuxtjs/robots": "^5.1.0",
+    "@nuxtjs/robots": "^5.1.1",
     "@nuxtjs/sitemap": "^7.0.1",
     "@types/node": "^22.10.2",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
