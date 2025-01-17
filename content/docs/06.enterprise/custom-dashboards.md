@@ -12,6 +12,8 @@ Build custom dashboards to visualize your executions, logs, and metrics.
 
 Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra’s home screen, you can create charts that answer specific questions and track key metrics.
 
+Note that during the Beta phase, this feature is only available to customers running Kestra with a Kafka/Elastic backend. Once released in GA, custom dashboards will be available to all Enterprise customers regardless of the backend.
+
 ## Dashboard page
 
 The Dashboard page displays both the **default dashboard** and any **custom dashboards** you’ve created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards.
