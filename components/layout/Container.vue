@@ -328,13 +328,14 @@
     }
 
     :deep(.doc-alert) {
-        border: 1px solid #3A3C55;
-        background-color: #18131F;
-        color: #B9BEF8;
-        p {
-            font-size: $font-size-base;
-        }
-    }
+      p {
+          font-size: $font-size-base;
+
+          &:first-child {
+              margin-top: 1rem;
+          }
+      }
+  }
 
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
         color: $white-3;
