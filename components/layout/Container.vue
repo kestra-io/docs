@@ -330,15 +330,55 @@
     :deep(.doc-alert) {
       p {
           font-size: $font-size-base;
-
           &:first-child {
               margin-top: 1rem;
           }
       }
-  }
+    }
+        
+    :deep(.alert-success) {
+        background-color: $success-bg;
+        border-color: $success-border;
+        color: $success-color;
+
+        p{
+          color: $success-color;
+        }
+    }
+
+    :deep(.alert-info) {
+        background-color: $info-bg;
+        border-color: $info-border;
+        color: $info-color;
+        
+        p{
+          color: $info-color;
+        }
+    }
+
+    :deep(.alert-warning) {
+        background-color: $warning-bg;
+        border-color: $warning-border;
+        color: $warning-color;
+
+        p{
+          color: $warning-color;
+        }
+    }
+
+    :deep(.alert-danger) {
+        background-color: $danger-bg;
+        border-color: $danger-border;
+        color: $danger-color;
+
+        p{
+          color: $danger-color;
+        }
+    }
+  
 
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
-        color: $white-3;
+        color: $white-2;
         text-decoration: none !important;
     }
 

@@ -54,6 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .doc-alert {
     --bs-alert-padding-x: var(--spacer);
     --bs-alert-margin-bottom: var(--spacer);
@@ -66,48 +67,5 @@ export default {
     > * {
         margin: 0;
     }
-}
-
-.alert {
-
-    $success-bg: rgba(5, 27, 17, .5);
-    $success-border: rgba(15, 81, 50, 1);
-    $success-color: rgba(117, 183, 152, 1);
-
-    $info-bg: rgba(3, 40, 48, .5);
-    $info-border: rgba(8, 121, 144, 1);
-    $info-color: rgba(110, 223, 246, 1);
-
-    $warning-bg: rgba(51, 39, 1, .5);
-    $warning-border: rgba(153, 116, 4, 1);
-    $warning-color: rgba(255, 218, 106, 1);
-
-    $danger-bg: rgba(44, 11, 14, .5);
-    $danger-border: rgba(132, 32, 41, 1);
-    $danger-color: rgba(234, 134, 143, 1);
-
-    &-success {
-        background-color: $success-bg;
-        border-color: $success-border;
-        color: $success-color;
-    }
-
-    &-info {
-        background-color: $info-bg;
-        border-color: $info-border;
-        color: $info-color;
-    }
-
-    &-warning {
-        background-color: $warning-bg;
-        border-color: $warning-border;
-        color: $warning-color;
-    }
-
-    &-danger {
-        background-color: $danger-bg;
-        border-color: $danger-border;
-        color: $danger-color;
-    }
-}
+} 
 </style>

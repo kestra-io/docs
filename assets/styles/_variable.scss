@@ -162,6 +162,23 @@ $container-border: 1px solid rgba(255, 255, 255, 0.10);
 $block-border: 1px solid $black-3;
 $btn-dark-border: 1px solid rgba(255, 255, 255, 0.12);
 
+//DOCS Alert Colors for the theme.
+$success-bg: rgba(5, 27, 17, .5);
+$success-border: rgba(15, 81, 50, 1);
+$success-color: rgba(117, 183, 152, 1);
+
+$info-bg: rgba(3, 40, 48, .5);
+$info-border: rgba(8, 121, 144, 1);
+$info-color: rgba(110, 223, 246, 1);
+
+$warning-bg: rgba(51, 39, 1, .5);
+$warning-border: rgba(153, 116, 4, 1);
+$warning-color: rgba(255, 218, 106, 1);
+
+$danger-bg: rgba(44, 11, 14, .5);
+$danger-border: rgba(132, 32, 41, 1);
+$danger-color: rgba(234, 134, 143, 1);
+
 //margin
 $popper-margin: .2rem;
 
