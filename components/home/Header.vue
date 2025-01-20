@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="img-block">
-                <canvas ref="canvas" height="785" width="1034" style="width: 120vw;"/>
+                <canvas ref="canvas" height="785" width="1034"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
@@ -324,23 +324,17 @@
             display: flex;
             justify-content: center;
             @include media-breakpoint-down(md) {
+                position: relative;
                 justify-content: flex-start;
-                left: -100px;
+                left: -160px;
             }
-            position: relative;
-            margin-bottom: 100px;
+            
             canvas {
-                min-width: 1024px;
-                width: 120vw;
-                margin-top: -32%;
-                    @include media-breakpoint-down(xl) {
-                    margin-top: -38%;
-                }
-                @include media-breakpoint-down(lg) {
-                    margin-top: -48%;
-                }
+                width: 2000px;
+                margin-top: -650px;
                 @include media-breakpoint-down(md) {
-                    margin-top: -64%;
+                    width: 1100px;
+                    margin-top: -350px;
                 }
             }
         }
