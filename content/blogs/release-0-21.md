@@ -195,6 +195,9 @@ We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/is
 
 `distinct` - you can now [get the uniq set of values](https://github.com/kestra-io/kestra/issues/6417) from an array with the new `distinct` function in Pebble.
 
+`"{{ ['1', '1', '2', '3'] | distinct }}"`
+
+
 ## Thanks to Our Contributors
 
 A big thanks to all the contributors who helped make this release possible. Your feedback, bug reports, and pull requests have been invaluable.
