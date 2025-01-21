@@ -13,7 +13,7 @@ Automate maintenance workflows with System Flows.
 
 ---
 
-System Flows periodically execute background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
+System Flows periodically execute background operations that keep your platform running but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 
 1. Sending [alert notifications](https://kestra.io/blueprints/failure-alert-slack)
 2. Creating automated support tickets when critical workflows fail
@@ -29,11 +29,11 @@ kestra:
     namespace: system
 ```
 
-To access System Flows, navigate to the `Namespaces` section in the UI. The `system` namespace is pinned at the top for quick access.
+To access System Flows, navigate to the **Namespaces** section in the UI. The `system` namespace is pinned at the top for quick access.
 
 ![system_namespace](/docs/concepts/system-flows/system_namespace.png)
 
-Here, you’ll find the _System Blueprints_ tab, which provides fully customizable templates which you can modify to suit your organization’s needs.
+From this section, you’ll find the _System Blueprints_ tab, which provides fully customizable templates that you can modify to suit your organization’s needs.
 
 ![system_blueprints](/docs/concepts/system-flows/system_blueprints.png)
 
@@ -41,7 +41,7 @@ Here, you’ll find the _System Blueprints_ tab, which provides fully customizab
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
 ::
 
-System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
+System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions or view both simultaneously.
 
 ![system_filter](/docs/concepts/system-flows/system_filter.png)
 
