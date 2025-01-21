@@ -171,7 +171,7 @@
             padding: 0;
 
             @include media-breakpoint-up(lg) {
-                font-size: 53px!important;
+                font-size: 32pt;
             }
 
 

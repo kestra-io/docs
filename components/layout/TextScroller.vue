@@ -79,7 +79,7 @@ export default {
 
     @include media-breakpoint-up(lg) {
         min-width: 280px;
-        font-size: 55px!important;
+        font-size: 42pt;
     }
 
     @keyframes fadeInBottom {
