@@ -97,15 +97,15 @@
 
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
-    import TextScroller from "~/components/layout/TextScroller.vue";
     import { useMediaQuery } from "@vueuse/core";
+    import TextScroller from "~/components/layout/TextScroller.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
     import { Rive } from "@rive-app/canvas";
 
     const videoVisible = ref(false)
-    const canvas = ref()
+    const canvas = ref<HTMLCanvasElement>()
     const scrollingTexts = [
         { text: "Orchestrate", color: "#E500EA" },
         { text: "Automate", color: "#4281FF" },
@@ -115,6 +115,7 @@
     const riveAnimation = ref()
 
     function setupRiveAnimation(){
+        if(!canvas.value) return
         const anim = new Rive({
             src: "/landing/home/homepage.riv",
             canvas: canvas.value,
@@ -129,7 +130,7 @@
     }
 
     onMounted(() => {
-        if(canvas.value && !isMobile.value){
+        if(!isMobile.value){
             setupRiveAnimation()
         }
     })
@@ -185,7 +186,7 @@
             color: var(--bs-white);
             text-align: center;
             max-width: 100%;
-            font-size: 32px!important;
+            font-size: 24pt;
             font-weight: 400;
             margin: 0;
             padding: 0;
@@ -227,7 +228,7 @@
                 content: "";
                 position: absolute;
                 left: 50%;
-                bottom: calc(-1 * var(--spacer));
+                bottom: -1rem;
                 transform: translateX(-50%);
                 display: inline-block;
                 height: 2px;
