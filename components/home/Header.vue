@@ -111,6 +111,7 @@
                 canvas: canvas.value,
                 autoplay: true,
                 stateMachines: "kestra",
+                isTouchScrollEnabled: true,
                 onLoad: () => {
                     anim.resizeDrawingSurfaceToCanvas();
                 },
