@@ -45,6 +45,15 @@
                 </div>
             </div>
             <div class="img-block">
+                <NuxtImg
+                    width="2991px"
+                    height="1257px"
+                    loading="lazy"
+                    format="webp"
+                    src="/landing/home/homepage.jpg"
+                    alt="homepage"
+                    class="homepage-image"
+                />
                 <canvas ref="canvas" height="785" width="1034"/>
             </div>
             <div class="companies-background">
@@ -91,6 +100,9 @@
     import Console from "vue-material-design-icons/Console.vue";
     import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
     import TextScroller from "~/components/layout/TextScroller.vue";
+    import { useMediaQuery } from "@vueuse/core";
+
+    const isMobile = useMediaQuery('(max-width: 768px)')
 
     import { Rive } from "@rive-app/canvas";
 
@@ -104,20 +116,31 @@
 
     const riveAnimation = ref()
 
-    onMounted(() => {
-        if(canvas.value){
-            const anim = new Rive({
-                src: "/landing/home/homepage.riv",
-                canvas: canvas.value,
-                autoplay: true,
-                stateMachines: "kestra",
-                isTouchScrollEnabled: true,
-                onLoad: () => {
-                    anim.resizeDrawingSurfaceToCanvas();
-                },
-            })
+    function setupRiveAnimation(){
+        const anim = new Rive({
+            src: "/landing/home/homepage.riv",
+            canvas: canvas.value,
+            autoplay: true,
+            stateMachines: "kestra",
+            isTouchScrollEnabled: true,
+            onLoad: () => {
+                anim.resizeDrawingSurfaceToCanvas();
+            },
+        });
+        riveAnimation.value = anim
+    }
 
-            riveAnimation.value = anim
+    onMounted(() => {
+        if(canvas.value && !isMobile.value){
+            setupRiveAnimation()
+        }
+    })
+
+    watch(isMobile, (newVal) => {
+        if(newVal){
+            riveAnimation.value?.cleanup();
+        }else{
+            setupRiveAnimation();
         }
     })
 
@@ -324,19 +347,26 @@
         {
             display: flex;
             justify-content: center;
+            .homepage-image{
+                display: none;
+            }
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
-                left: -160px;
+                left: -50px;
+                canvas {
+                    display: none;
+                }
+                .homepage-image{
+                    display: block;
+                    height: 500px;
+                    margin-bottom: 100px;
+                }
             }
             
             canvas {
                 width: 2000px;
                 margin-top: -650px;
-                @include media-breakpoint-down(md) {
-                    width: 1100px;
-                    margin-top: -350px;
-                }
             }
         }
 

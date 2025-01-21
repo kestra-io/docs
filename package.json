@@ -23,6 +23,7 @@
     "@vue-flow/background": "^1.3.2",
     "@vue-flow/controls": "^1.1.2",
     "@vue-flow/core": "^1.41.6",
+    "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "dagre": "^0.8.5",
