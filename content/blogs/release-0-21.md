@@ -204,7 +204,39 @@ We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/is
 
 ### New Exit task
 
-[TBD] https://github.com/kestra-io/kestra/issues/5599
+The Exit task gives you control over your workflow's execution state. This new addition gives you precise control over how and when your workflows terminate. For example it allows you to kill an execution depending on some condition logics, as highlighted in the following example:
+
+::collapse{title="Exit task example"}
+```yaml
+id: exit
+namespace: company.team
+inputs:
+  - id: state
+    type: SELECT
+    values:
+      - CONTINUE
+      - END
+    defaults: CONTINUE
+tasks:
+  - id: if
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{inputs.state == 'CONTINUE'}}"
+    then:
+      - id: continue
+        type: io.kestra.plugin.core.log.Log
+        message: I'm continuing
+    else:
+      - id: exit
+        type: io.kestra.plugin.core.execution.Exit
+        state: KILLED
+  - id: end
+    type: io.kestra.plugin.core.log.Log
+    message: I'm ending
+```
+::
+
+[TBD LINK TO PLUGIN DOC]
+https://github.com/kestra-io/kestra/issues/5599
 
 ### New Write task
 
