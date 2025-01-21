@@ -34,7 +34,42 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-[WIP]
+We're excited to introduce Log Shipper, a powerful new feature that streamlines how you manage and distribute logs across your entire infrastructure. Whether you're using Elasticsearch, Datadog, Azure, or other logging platforms, you can now effortlessly ensure your logs are exactly where you need them, when you need them.
+
+This log synchronization feature automatically batches your logs in optimal chunks and intelligently manages synchronization points. This means you get reliable, consistent log delivery without overwhelming your systems or missing critical data.
+
+Log Shipper is build on top plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch and OpenTelemetry. 
+
+We're particularly excited about our OpenTelemetry integration. As an open-source observability framework, OpenTelemetry has emerged as the industry standard for telemetry data collection. This integration means you can forward logs to any platform supporting the OpenTelemetry protocol.
+
+For example, here is a flow designed to send logs via Opentelemetry exporter to an Opentelemetry collector.
+
+::collapse{title="Expand for a LogShipper example "}
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    logExporters:
+      - id: OTLPLogExporter
+        type: io.kestra.plugin.ee.opentelemetry.LogExporter
+        otlpEndpoint: http://localhost:4318/v1/logs
+        authorizationHeaderName: Authorization
+        authorizationHeaderValue: Bearer token
+```
+::
+
+
 
 ### New No Code Experience
 
@@ -133,11 +168,6 @@ When activated, Maintenance Mode introduces a controlled state where:
 
 You can enter in Maintenance Mode via the `Administration > Instance` panel of you Kestra instance.
 
-
-### Subflow restart behavior
-
-[WIP/TBR]
-
 ## User Interface & Experience Improvements
 
 As with each release, we continued to improve the interface elements, colors and user motion:
@@ -155,6 +185,7 @@ As with each release, we continued to improve the interface elements, colors and
 - Introduce system labels for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682
 - [TBD] Contextual In-Apps documentation
 - [TBD] Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
+- Subflow restart behavior
 
 ## Other Features and Improvements
 
