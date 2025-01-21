@@ -97,8 +97,6 @@
 
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
-    import Console from "vue-material-design-icons/Console.vue";
-    import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
     import TextScroller from "~/components/layout/TextScroller.vue";
     import { useMediaQuery } from "@vueuse/core";
 
@@ -160,7 +158,6 @@
             z-index: 0;
             width: 100vw;
             height: 91.6%;
-            // background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
             right: 0;
             top: 0;
         }
