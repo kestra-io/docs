@@ -72,7 +72,7 @@ export default {
     font-size: 42px!important;
 
     @include media-breakpoint-down(sm) {
-        font-weight: 600;
+        font-weight: 400;
         min-width: 100%;
         text-align: center;
     }
