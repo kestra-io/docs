@@ -95,18 +95,22 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [HasRetryAttemptCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattemptcondition)
-- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
-- [NotCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.NotCondition)
-- [OrCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.OrCondition)
-- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlowCondition)
-- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespaceCondition)
-- [ExecutionLabelsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabelscondition)
-- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatusCondition)
-- [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
-- [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
+- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.HasRetryAttempt)
+- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.MultipleCondition)
+- [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
+- [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
+- [ExecutionFlow](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlow)
+- [ExecutionNamespace](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespace)
+- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionLabels)
+- [ExecutionStatus](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatus)
+- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionOutputs)
+- [Expression](/plugins/core/conditions/io.kestra.plugin.core.condition.Expression)
+- [FlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.flowcondition)
+- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.flownamespacecondition)
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger.md#schedule-conditions).
+
+View the full list of conditions in the [Plugin Docs](/plugins/core#condition) 
 
 ## Unlocking, enabling and disabling triggers
 

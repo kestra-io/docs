@@ -3,7 +3,7 @@ import * as sass from "sass";
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos'],
+    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
     target: 'server',
     image: {
         formats: {
@@ -19,6 +19,9 @@ export default defineNuxtConfig({
                 sources: ['/api/sitemap']
             },
             plugins: {
+                sources: ['/api/sitemap']
+            },
+            blueprints: {
                 sources: ['/api/sitemap']
             }
         },
@@ -154,9 +157,12 @@ export default defineNuxtConfig({
         },
     },
 
-    gtag: {
-        id: 'G-EYVNS03HHR',
-        enabled: true
+    gtm: {
+        id: 'GTM-T4F85WRF',
+        enabled: false,
+        debug: false,
+        enableRouterSync: true,
+        devtools: true,
     },
 
     runtimeConfig: {

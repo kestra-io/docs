@@ -21,6 +21,7 @@
     import axios from "axios";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
+    const gtm = useGtm();
 
     export default {
         data() {
@@ -55,9 +56,10 @@
                         }
                     }
 
-                    if (window.dataLayer) {
-                        window.dataLayer.push({'event': 'newsletter_form'});
-                    }
+                    gtm?.trackEvent({
+                        event: "newsletter_form",
+                        noninteraction: false,
+                    })
 
                     axios.post(hubSpotUrl, formData)
                         .then((response) => {
