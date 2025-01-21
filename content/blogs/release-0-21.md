@@ -208,7 +208,12 @@ We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/is
 
 ### New Write task
 
-[TBD] https://github.com/kestra-io/kestra/issues/6524 
+The Write task takes your string input and saves it as a file in Kestra's internal storage. The task returns a URI pointing to the newly created file, which you can easily reference in subsequent tasks.
+This particuliarly useful when you want to store messages that come as a string to files that could be later passed on as uri further down the flow for further processing.
+
+You can find corresponding documentation [HERE TBD]
+
+https://github.com/kestra-io/kestra/issues/6524
 
 ### New AI plugins
 
