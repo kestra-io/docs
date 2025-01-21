@@ -165,7 +165,7 @@
             text-align: center;
             max-width: 100%;
             font-size: 32px!important;
-            font-weight: 600;
+            font-weight: 400;
             margin: 0;
             padding: 0;
 
