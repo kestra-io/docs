@@ -108,7 +108,7 @@
         }),
         methods: {
             pathToId(path) {
-                return path.replaceAll("/", '_').replaceAll(".", "-")
+                return path.replaceAll(/[/.]/g, '_')
             },
             filterChildren(item) {
                 return (item.children || []).filter(r => item._path !== r._path);
