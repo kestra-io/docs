@@ -9,7 +9,7 @@ body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
-    background-color: $black-4;
+    background-color: #0a0a0c;
 }
 .nuxt-loading-indicator {
     background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @include media-breakpoint-down(lg) {
     h1 {
-        font-size: 1.625rem !important;
+        font-size: 1.625rem;
     }
     h2 {
         font-size: $h4-font-size !important;
