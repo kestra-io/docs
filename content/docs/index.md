@@ -8,7 +8,7 @@ Kestra is an open-source **infinitely-scalable orchestration platform** enabling
 
 Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven data pipelines effortless.
 
-::HomePageButtons{ :buttons='[{"label": "Quickstart Guide →", "href": "/docs/getting-started/"},{"label": "Why Kestra?","href": "/docs/getting-started/"},{"label": "Enterprise Edition","href": "/docs/getting-started/"}]'}
+::HomePageButtons{ :buttons='[{"label": "Quickstart Guide →", "href": "/docs/getting-started"},{"label": "Why Kestra?","href": "/docs/why-kestra"},{"label": "Enterprise Edition","href": "/docs/06.enterprise"}]'}
 ::
 
 ::
@@ -20,7 +20,7 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 ---
 
 
-::BigChildCards{directory="/docs/possible"}
+::BigChildCards{directory="/docs/use-cases"}
 ::
 
 ---
