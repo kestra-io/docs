@@ -77,12 +77,6 @@ export default {
             color: #CDD5EF !important;
         }
 
-        &:first-child {
-            &:before {
-                display: none;
-            }
-        }
-
         a {
             color: #CDD5EF !important;
 
