@@ -5,7 +5,6 @@
                 {{ pageNames[item] ? pageNames[item] : item }}
             </NuxtLink>
         </span>
-        <span>/</span>
     </div>
 </template>
 
@@ -71,7 +70,7 @@ export default {
     }
 
     span {
-        &:before {
+        &:after {
             content: '/';
             margin-right: 0.25rem;
             margin-left: 0.25rem;
