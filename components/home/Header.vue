@@ -45,6 +45,7 @@
             </div>
             <div class="img-block">
                 <NuxtImg
+                    v-if="isMobile"
                     width="2991px"
                     height="1257px"
                     loading="lazy"
@@ -53,7 +54,7 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas ref="canvas" height="785" width="1034"/>
+                <canvas v-else ref="canvas" height="1520" width="2000"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
@@ -133,17 +134,27 @@
             setupRiveAnimation()
         }
     })
+    function cleanupRiveAnimation(){
+        try{
+            riveAnimation.value?.cleanup();
+        }catch(e){
+            // eat the error
+        }
+        riveAnimation.value = undefined
+    }
 
     watch(isMobile, (newVal) => {
         if(newVal){
-            riveAnimation.value?.cleanup();
+            cleanupRiveAnimation()
         }else{
-            setupRiveAnimation();
+            nextTick(() => {
+                setupRiveAnimation();
+            })
         }
     })
 
     onUnmounted(() => {
-        riveAnimation.value?.cleanup();
+        cleanupRiveAnimation();
     })
 </script>
 
