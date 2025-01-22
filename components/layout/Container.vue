@@ -393,6 +393,27 @@
       background: url('/docs/ui/homepage-bg.webp') no-repeat,
         radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 85%) no-repeat;
       background-size: 1261px 984px, 500px 400px;
-      background-position: top left, 500px 300px;
+      background-position: top center, 500px 300px;
+
+        @media only screen and (min-width: 1920px) {
+            .bd-content {
+                    max-width: 733px;
+
+            }
+
+            .bd-title{
+                margin: 0 auto;
+            }
+
+            .bd-title, .bd-title h1{
+                width: 733px;
+            }
+
+            :deep(.video-container){
+                padding-top: 56.25%;
+                height: auto;
+                background-color: transparent;
+            }
+        }
     }
 </style>

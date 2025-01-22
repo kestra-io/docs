@@ -19,5 +19,11 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 
 ---
 
-::ChildCard{pageUrl="/docs/getting-started/"}
+
+::BigChildCards{directory="/docs/possible"}
+::
+
+---
+
+::WhatsNew{title="What's New in Kestra"}
 ::
