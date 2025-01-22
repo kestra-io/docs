@@ -47,18 +47,24 @@ h2{
 .list-of-posts{
     display: flex;
     flex-direction: column;
-    gap: .125rem;
+    gap:.125rem
     hr{
         width: 100%;
         border: none;
         border-top: 1px solid $black-3;
+        margin: 0;
     }
 }
 .post-card{
     display: flex;
     gap: 1rem;
     align-items: start;
-    padding-right: 1rem;
+    padding: .5rem 0;
+    &:hover{
+        background-image: radial-gradient(circle, rgba($primary,.3) 0%, #13172500 30%);
+        background-position: -280px center;
+        background-repeat: no-repeat;
+    }
 }
 
 .card-img-left{
