@@ -5,8 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 
     if (to.path !== "/" && to.path.endsWith("/")) {
-        const newPath = to.path.substring(0, to.path.length - 1)
-        console.log({newPath})
-        // return navigateTo(newPath, {redirectCode: 301});
+        return navigateTo(to.path.substring(0, to.path.length - 1), {redirectCode: 301});
     }
 })
