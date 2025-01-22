@@ -7,8 +7,7 @@
                     <br>
                     Smarter Not Harder
                 </h1>
-                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
-                    <br>and Govern them as Code and from the UI.</p>
+                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows and Govern them as Code and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
@@ -188,11 +187,13 @@
             max-width: 100%;
             font-size: 24pt;
             font-weight: 400;
-            margin: 0;
             padding: 0;
-
+            margin-top: 2rem;
+            margin-bottom: 0;
             @include media-breakpoint-up(lg) {
-                font-size: 32pt;
+                margin: 0;
+                font-size: 39pt;
+                line-height: 1em;
             }
 
 
@@ -210,6 +211,15 @@
             font-weight: 500;
             font-size: $h6-font-size;
             color: $white;
+            text-wrap: balance;
+            margin:0;
+            @include media-breakpoint-down(md) {
+                font-size: 11pt;
+            }
+            @include media-breakpoint-up(lg) {
+                text-wrap: wrap;
+                width: 600px;
+            }
         }
 
         .buttons {

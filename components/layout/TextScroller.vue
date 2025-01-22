@@ -78,6 +78,10 @@ export default {
         min-width: 280px;
     }
 
+    @include media-breakpoint-down(lg) {
+        font-size: 32pt;
+    }
+
     @keyframes fadeInBottom {
         from {
             opacity: 0;

@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @include media-breakpoint-down(lg) {
     h1 {
-        font-size: 1.625rem !important;
+        font-size: 1.625rem;
     }
     h2 {
         font-size: $h4-font-size !important;
