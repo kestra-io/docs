@@ -222,6 +222,16 @@
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/alin.png" alt="Antoine Lin"/>
+                    <div class="w-100">
+                        <div class="team-name">Antoine Lin</div>
+                        <div class="team-title font-small">Lead Finance & Admin</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/antoine-lin-a49aaa74/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
             </div>
         </Section>
     </div>
