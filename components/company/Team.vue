@@ -222,6 +222,16 @@
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/asouid.png" alt="Ala Eddine Souid"/>
+                    <div class="w-100">
+                        <div class="team-name">Ala Eddine Souid</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/alaa-eddine-souid-354987134/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
             </div>
         </Section>
     </div>
