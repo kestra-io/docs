@@ -246,7 +246,7 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/camsellem.png" alt="Cyril Amsellem"/>
                     <div class="w-100">
                         <div class="team-name">Cyril Amsellem</div>
-                        <div class="team-title font-small">Lead Field Engineer</div>
+                        <div class="team-title font-small">Customer Success</div>
                     </div>
                     <span>
                         <a href="https://github.com/camsellem" target="_blank" class="me-2"><github /></a>
