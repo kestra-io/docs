@@ -1,6 +1,7 @@
 <template>
     <div class="home-page-header">
         <h2>{{ title }}</h2>
+        <NuxtImg src="/docs/ui/kestra-logo-big.webp" alt="Kestra Logo" class="kestra-logo" />
         <slot></slot>
     </div>
 </template>
@@ -18,7 +19,17 @@
     @import "../../assets/styles/_variable.scss";
 
     .home-page-header {
-        font-size: $font-size-xl;
-        line-height: 1.375rem;
+        font-size: 11pt !important;
+        h2 {
+            padding-top: 0;
+            font-size: 15pt;
+        }
+
+        .kestra-logo {
+            float: right;
+            width: 132px;
+            margin: 1rem;
+            margin-bottom: 3rem;
+        }
     }
 </style>

@@ -1,5 +1,6 @@
 ---
 title: Welcome to Kestra
+isHomepage: true
 ---
 
 ::HomePageHeader{title="What is Kestra?"}

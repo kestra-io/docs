@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
         <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.isHomepage}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
@@ -387,5 +387,12 @@
 
     .docs :deep(.img-block) {
         text-align: left !important;
+    }
+
+    .homepage {
+      background: url('/docs/ui/homepage-bg.webp') no-repeat,
+        radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 85%) no-repeat;
+      background-size: 1261px 984px, 500px 400px;
+      background-position: top left, 500px 300px;
     }
 </style>

@@ -16,8 +16,11 @@
         href: {
             type: String,
             default: undefined
+        },
+        onClick: {
+            type: Function,
+            default: () => () => {}
         }
-        
     })
 </script>
 
