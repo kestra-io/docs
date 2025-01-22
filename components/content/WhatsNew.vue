@@ -59,8 +59,6 @@ h2{
     gap: 1rem;
     align-items: start;
     padding-right: 1rem;
-    transition: all .3s;
-    background-image: linear-gradient(-90deg, rgba($primary,.5) 0%, $primary .3%,rgba($primary,.5) .6%, rgba(black, 0) 1%, rgba(black, 0) 100%);
 }
 
 .card-img-left{
