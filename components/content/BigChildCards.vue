@@ -32,6 +32,7 @@ const orderedNavigation = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/styles/_variable.scss";
 .big-card-grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -49,11 +50,11 @@ const orderedNavigation = computed(() => {
     transition: all 0.3s;
     h4 {
         padding-top: 0;
-        font-size: 15pt;
+        font-size: $font-size-xl;
         font-weight: normal;
     }
     p{
-        font-size: 9pt;
+        font-size: $font-size-sm;
         line-height: 1.5em;
     }
     &:hover{

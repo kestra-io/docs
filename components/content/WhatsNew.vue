@@ -40,7 +40,7 @@ const {data: posts} = await useAsyncData(
 <style lang="scss" scoped>
 @import "../../assets/styles/_variable.scss";
 h2{
-    font-size: 17pt;
+    font-size: $font-size-xl;
     margin-bottom: 2rem;
     font-weight: 600;
 }
@@ -71,7 +71,7 @@ h2{
     flex-direction: column;
 }
 .card-details{
-    font-size: 10pt;
+    font-size: $font-size-xs;
 }
 .card-category{
     color: $purple-36;
@@ -81,7 +81,7 @@ h2{
     color: $white-3;
 }
 .card-title{
-    font-size: 12pt;
+    font-size: $font-size-sm;
     font-weight: normal;
 }
 </style>

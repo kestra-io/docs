@@ -2,7 +2,7 @@
     <div class="home-page-header">
         <h2>{{ title }}</h2>
         <NuxtImg src="/docs/ui/kestra-logo-big.webp" alt="Kestra Logo" class="kestra-logo" />
-        <slot></slot>
+        <slot/>
     </div>
 </template>
 
@@ -22,7 +22,11 @@
         font-size: 11pt !important;
         h2 {
             padding-top: 0;
-            font-size: 15pt;
+            font-size: $font-size-xl;
+        }
+
+        :deep(p){
+            font-size: $font-size-sm;
         }
 
         .kestra-logo {
