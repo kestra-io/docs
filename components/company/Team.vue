@@ -252,6 +252,16 @@
                         <a href="https://www.linkedin.com/in/ryan-wyllie-0a530059/" target="_blank" class="me-2"><linkedin /></a>
                     </span>
                 </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/aemerich.png" alt="Alex Emerich"/>
+                    <div class="w-100">
+                        <div class="team-name">Alex Emerich</div>
+                        <div class="team-title font-small">Technical Writer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/alex-emerich/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
             </div>
         </Section>
     </div>
