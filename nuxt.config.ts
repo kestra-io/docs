@@ -5,11 +5,6 @@ const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
     modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
     target: 'server',
-    imports: {
-        transform: {
-            exclude: [/\bui-libs\b/]
-        }
-    },
     image: {
         formats: {
             webp: {
@@ -60,8 +55,7 @@ export default defineNuxtConfig({
 
     css: [
         '@/assets/styles/vendor.scss',
-        '@/assets/styles/app.scss',
-        '@/assets/styles/theme.scss'
+        '@/assets/styles/app.scss'
     ],
 
     content: {
@@ -129,6 +123,7 @@ export default defineNuxtConfig({
             }
         }
     },
+
     vite: {
         build: {
             rollupOptions: {

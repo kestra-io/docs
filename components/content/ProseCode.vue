@@ -29,9 +29,6 @@
                 default: null
             }
         },
-        components: {
-            Mermaid
-        },
         data() {
             return {
                 icons: shallowRef({
@@ -79,10 +76,8 @@
             {{code}}
         </Mermaid>
     </template>
-    <div class="code-block" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
-        <div class="language" v-if="language && !isHoveringCode">
-            {{ language }}
-        </div>
+    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
+        <div class="language" v-if="language">{{ language }}</div>
         <template v-if="isHoveringCode">
             <button ref="copyButton" class="copy">
                 <component
@@ -92,7 +87,7 @@
             </button>
             <div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
                 Copied!
-                <div id="arrow" data-popper-arrow />
+                <div id="arrow" data-popper-arrow></div>
             </div>
         </template>
         <slot />
@@ -111,7 +106,11 @@
         position: relative;
 
         .language {
-            font-size: 0.75rem;
+            position: absolute;
+            right: 0.35rem;
+            top: 0.25rem;
+            color: var(--bs-gray-600);
+            font-size: calc($font-size-base * .75);
         }
 
         :deep(pre) {
@@ -119,23 +118,13 @@
             margin-bottom: 0;
         }
 
-        .language, .copy {
-            color: var(--kestra-io-neutral-gray700) !important;
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-        }
-
         .copy {
+            position: absolute;
+            right: 0;
+            bottom: 0.1rem;
+            color: $gray-600;
             border: none;
             background: none;
-
-            & .material-design-icon{
-                &, & * {
-                    height: 1.125rem !important;
-                    width: 1.125rem !important;
-                }
-            }
         }
 
         #copied-tooltip {

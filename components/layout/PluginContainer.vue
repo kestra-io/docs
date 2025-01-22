@@ -25,13 +25,11 @@
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                         :version="page.version"/>
-                <Suspense v-if="page.pluginType === 'definitions'">
-                    <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()">
-                        <template v-slot:markdown="{ content }">
-                            <MDC :value="content" />
-                        </template>
-                    </SchemaToHtml>
-                </Suspense>
+                <SchemaToHtml class="bd-markdown" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :show-code-lang="true" :copyable-code="true" v-if="page.pluginType === 'definitions'">
+                    <template v-slot:markdown="{ content }">
+                        <MDC :value="content" tag="article" />
+                    </template>
+                </SchemaToHtml>
                 <ContentRendererMarkdown
                     class="bd-markdown"
                     :value="page"
@@ -226,7 +224,7 @@
 
     :deep(p) {
         line-height: 1.75rem;
-        font-size: $h6-font-size !important;
+        font-size: $h6-font-size;
     }
 
     :deep(.bd-markdown > h2) {
@@ -307,6 +305,7 @@
         padding: 0 calc($spacer / 4);
     }
 
+
     :deep(li > mark) {
         background-color: $link-color;
     }
@@ -342,126 +341,6 @@
 
             a {
                 color: $link-color;
-            }
-        }
-    }
-
-    .plugin-schema {
-        :deep(hr) {
-            opacity: 1;
-            border-top: calc(2 * var(--bs-border-width)) solid var(--kestra-io-token-color-border-secondary);
-        }
-
-        :deep(article) {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacer);
-        }
-
-        :deep(.code-block) {
-            background-color: var(--kestra-io-token-color-background-secondary);
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
-        }
-
-        :deep(.language), :deep(.copy) {
-            color: var(--kestra-io-neutral-gray700) !important;
-        }
-
-        :deep(#copied-tooltip) {
-            background: $gray-500;
-            color: #fff;
-        }
-
-        :deep(.plugin-section) {
-            & .material-design-icon {
-                &, & * {
-                    bottom: 0;
-                }
-            }
-
-            p {
-                margin-bottom: 0;
-
-                & > code {
-                    color: var(--kestra-io-neutral-gray900);
-                    background-color: transparent !important;
-                    border: none;
-                }
-            }
-
-            .collapse-button {
-                font-size: var(--font-size-lg);
-                line-height: 1.5rem;
-                color: var(--kestra-io-token-color-white);
-            }
-
-            > .collapse-button {
-                line-height: 2.375rem;
-
-                &:not(.collapsed) {
-                    color: var(--kestra-io-token-text-link-default);
-
-                    & .material-design-icon {
-                        background-color: var(--kestra-io-neutral-gray400);
-                    }
-                }
-            }
-
-            .collapsible-body > .border {
-                border-color: var(--kestra-io-token-color-border-secondary) !important;
-
-                > .property:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
-                }
-
-                > * {
-                    background: var(--kestra-io-token-color-background-secondary);
-
-                    &:not(:has(.collapse-button.collapsed)) {
-                        background: var(--kestra-io-token-color-background-primary);
-
-                        > button {
-                            background: var(--kestra-io-neutral-gray300);
-                            outline: $spacer solid var(--kestra-io-neutral-gray300);
-                        }
-
-                        .property-detail > *:first-child {
-                            border-top: none;
-                        }
-                    }
-                }
-            }
-
-            .property-detail {
-                color: var(--kestra-io-token-color-white);
-
-                .property-description p {
-                    color: var(--kestra-io-neutral-gray700);
-                }
-
-                > * {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
-                }
-
-                .border:not(.type-box) {
-                    border-color: var(--kestra-io-neutral-gray500) !important;
-                }
-            }
-
-            .type-box{
-                color: var(--kestra-io-token-color-white);
-
-                .ref-type {
-                    border-right: 1px solid var(--kestra-io-token-color-border-primary);
-                }
-
-                &:has(.ref-type):hover {
-                    background: var(--kestra-io-token-color-background-hover-primary) !important;
-
-                    .ref-type {
-                        border-right: 1px solid var(--ks-border-secondary);
-                    }
-                }
             }
         }
     }
