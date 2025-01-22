@@ -53,7 +53,7 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas ref="canvas" height="785" width="1034"/>
+                <canvas ref="canvas" height="1520" width="2000"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
