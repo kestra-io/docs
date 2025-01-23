@@ -5,7 +5,8 @@ date: 2025-01-24T13:00:00
 category: Solutions
 author:
   name: Anna Geller
-  image: "ageller"
+  image: ageller
+  role: Product Lead
 image: /blogs/2025-data-engineering-and-ai-trends.png
 ---
 
