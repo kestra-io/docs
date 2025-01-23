@@ -1,8 +1,7 @@
 <template>
     <div class="container">
         <Section
-            subtitle="Reasons to integrate with"
-            subtitle-after="Kestra"
+            subtitle="Better Together"
         >
             <div class="row">
                 <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
@@ -44,6 +43,8 @@ export default {
                     name: "Chris Tata",
                     designation: "Head of Partnerships @ Airbyte",
                     alt: "Picture of Chris Tata",
+                    directory: "/partners/partners-logos/",
+                    imgName: "airbyte"
                 },
                 {
                     profile: "/partners/adrian-brudaru.svg",
@@ -52,6 +53,8 @@ export default {
                     name: "Adrian Brudaru",
                     designation: "Co-Founder @ dlthub",
                     alt: "Picture of Adrian Brudaru",
+                    directory: "/partners/partners-logos/",
+                    imgName: "dlthub"
                 },
                 {
                     profile: "/partners/charles-letaillieur.svg",
@@ -60,6 +63,8 @@ export default {
                     name: "Charles Letaillieur",
                     designation: "Senior Manager @ Converteo",
                     alt: "Picture of Charles Letaillieur",
+                    directory: "/partners/partners-logos/",
+                    imgName: "converteo"
                 },
             ],
         };
