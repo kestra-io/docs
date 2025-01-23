@@ -1,10 +1,10 @@
 ---
-title: Wky Kestra
+title: Why Kestra
 description: "A Simpler, More Powerful Way to Orchestrate Everything"
 hideSidebar: true
 ---
 
-## How We See the Orchestration and Automation Market
+How We See the Orchestration and Automation Market
 
 Most orchestration solutions fall into one of two extremes.
 
