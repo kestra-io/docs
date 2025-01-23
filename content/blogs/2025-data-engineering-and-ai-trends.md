@@ -65,13 +65,13 @@ With tools like [Kestra](https://kestra.io/docs/enterprise), you can build compl
 
 ## 5. Cloud Costs Under the Microscope
 
-As more AI and data workloads [enter production](https://cloud.google.com/transform/2025-and-the-next-chapters-of-ai), cloud costs rise. Data leaders keep a closer eye on how often they run jobs and how much storage they consume. Hidden costs like data egress, idle services, or frequent transformations can spiral if left unchecked. Open table formats and smarter data orchestration with on-demand compute (like **Kestra’s [task runners](https://kestra.io/docs/enterprise/task-runners)**) can help cut costs.
+As more AI and data workloads [enter production](https://cloud.google.com/transform/2025-and-the-next-chapters-of-ai), cloud costs rise. Data leaders keep a closer eye on how often they run jobs and how much storage they consume. Hidden costs like data egress, idle services, or frequent transformations can add up fast if not closely monitored. Open table formats and smarter data orchestration with on-demand compute (like **Kestra’s [task runners](https://kestra.io/docs/enterprise/task-runners)**) can help cut costs.
 
 ---
 
 ## 6. Demand for Data Lakes and Open Table Formats
 
-Cost optimization continues to drive renewed interest in data lakes, with teams combining **open table formats** like Apache Iceberg with object storage to balance governance and flexibility. The architecture often leverages Parquet files for columnar storage, while Iceberg’s metadata layer ([spec](https://iceberg.apache.org/spec/)) adds critical features:
+Cost optimization continues to drive renewed interest in data lakes, with teams combining **open table formats** like Apache Iceberg with object storage to balance governance and flexibility. The architecture often leverages Parquet files for columnar storage, while Iceberg’s (metadata layer](https://iceberg.apache.org/spec/)) adds critical features:
 
 - Row-level deletions for GDPR compliance
 - Schema evolution to handle evolving data structures
@@ -96,7 +96,7 @@ The [2024 Stack Overflow survey](https://survey.stackoverflow.co/2024/) found 49
 
 ![postgres](/blogs/2025-data-engineering-and-ai-trends/postgres.png)
 
-Source: [“Postgres is eating the database world”](https://medium.com/@fengruohang/postgres-is-eating-the-database-world-157c204dcfc4)
+Source: [Postgres is eating the database world](https://medium.com/@fengruohang/postgres-is-eating-the-database-world-157c204dcfc4)
 
 ---
 
