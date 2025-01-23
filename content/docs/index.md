@@ -22,3 +22,6 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 
 ::WhatsNew{title="What's New in Kestra"}
 ::
+
+::SupportLinks{title="Support"}
+::
