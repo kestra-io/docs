@@ -1,5 +1,6 @@
 
 <template>
+    <h2 class="big-title">{{title}}</h2>
     <div class="big-card-grid">
         <NuxtLink :href="item._path" class="big-card" v-for="item in orderedNavigation" :key="item._path">
             <h4 class="card-title">{{ item.title }}</h4>
@@ -15,6 +16,7 @@
 
 const props = defineProps<{
     directory: string
+    title: string
 }>()
 
 const {data: navigation} = await useAsyncData(
@@ -37,6 +39,15 @@ const orderedNavigation = computed(() => {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    @include media-breakpoint-up(xxl){
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+h2.big-title {
+    padding: 0;
+    font-size: $font-size-xl;
+    border: none;
 }
 
 .big-card{

@@ -32,8 +32,10 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <HelpfulVote />
-                    <PrevNext v-if="prevNext" :navigation="navigation" />
+                    <template v-if="!page?.isHomepage">
+                        <HelpfulVote />
+                        <PrevNext v-if="prevNext" :navigation="navigation" />
+                    </template>
                 </div>
             </ContentRenderer>
         </article>
@@ -390,29 +392,38 @@
     }
 
     .homepage {
-      background: url('/docs/ui/homepage-bg.webp') no-repeat,
-        radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 85%) no-repeat;
-      background-size: 1261px 984px, 500px 400px;
-      background-position: top center, 500px 300px;
+      background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 85%) no-repeat;
+      background-size: 500px 400px;
+      background-position: 500px 300px;
+      .bd-content {
+        background: url('/docs/ui/homepage-bg.webp') no-repeat;
+        background-size: 1261px 984px;
+        margin-bottom: 2em;
+        background-position: top -200px right -350px;
+      }
 
-        @media only screen and (min-width: 1920px) {
+        @include media-breakpoint-up(lg) {
             .bd-content {
-                    max-width: 733px;
-
+                max-width: 1159px;
             }
 
             .bd-title{
                 margin: 0 auto;
             }
 
-            .bd-title, .bd-title h1{
-                width: 733px;
+            .bd-title, .bd-title h1, .bd-title .slug{
+                max-width: 1159px;
+                width: 100%;
             }
 
             :deep(.video-container){
                 padding-top: 56.25%;
                 height: auto;
-                background-color: transparent;
+                overflow: hidden;
+                iframe{
+                    max-width: none;
+                    max-height: none;
+                }
             }
         }
     }
