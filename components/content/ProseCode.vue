@@ -29,6 +29,9 @@
                 default: null
             }
         },
+        components: {
+            Mermaid
+        },
         data() {
             return {
                 icons: shallowRef({
@@ -76,8 +79,10 @@
             {{code}}
         </Mermaid>
     </template>
-    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
-        <div class="language" v-if="language">{{ language }}</div>
+    <div class="code-block" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
+        <div class="language" v-if="language && !isHoveringCode">
+            {{ language }}
+        </div>
         <template v-if="isHoveringCode">
             <button ref="copyButton" class="copy">
                 <component
@@ -87,7 +92,7 @@
             </button>
             <div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
                 Copied!
-                <div id="arrow" data-popper-arrow></div>
+                <div id="arrow" data-popper-arrow />
             </div>
         </template>
         <slot />
@@ -106,11 +111,7 @@
         position: relative;
 
         .language {
-            position: absolute;
-            right: 0.35rem;
-            top: 0.25rem;
-            color: var(--bs-gray-600);
-            font-size: calc($font-size-base * .75);
+            font-size: 0.75rem;
         }
 
         :deep(pre) {
@@ -118,13 +119,23 @@
             margin-bottom: 0;
         }
 
-        .copy {
+        .language, .copy {
+            color: var(--kestra-io-neutral-gray700) !important;
             position: absolute;
-            right: 0;
-            bottom: 0.1rem;
-            color: $gray-600;
+            top: 1.25rem;
+            right: 1.25rem;
+        }
+
+        .copy {
             border: none;
             background: none;
+
+            & .material-design-icon{
+                &, & * {
+                    height: 1.125rem !important;
+                    width: 1.125rem !important;
+                }
+            }
         }
 
         #copied-tooltip {
