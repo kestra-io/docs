@@ -2,9 +2,9 @@
   <div>
         <h2>{{title}}</h2>
         <div class="list-of-posts">
-            <template v-for="(post, index) of posts" :key="post.slug" >
+            <template v-for="(post, index) of posts" :key="post._path" >
                 <hr v-if="index > 0" />
-                <NuxtLink :to="`/blogs/${post.slug}`" class="post-card">
+                <NuxtLink :to="post._path" class="post-card">
                     <img :src="post.image" class="card-img-left" alt="blog.title" />
                     <div class="card-body">
                         <div class="card-details">
