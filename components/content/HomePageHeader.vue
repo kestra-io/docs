@@ -1,7 +1,7 @@
 <template>
     <div class="home-page-header">
         <h2>{{ title }}</h2>
-        <NuxtImg src="/docs/ui/kestra-logo-big.webp" alt="Kestra Logo" class="kestra-logo" />
+        <NuxtImg src="/docs/ui/kestra-logo-big.png" alt="Kestra Logo" class="kestra-logo" />
         <slot/>
     </div>
 </template>
