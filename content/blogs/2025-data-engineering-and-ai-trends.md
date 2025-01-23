@@ -23,7 +23,7 @@ Tech giants (Nvidia, AWS, Azure, Google) and LLM vendors profit from selling sho
 
 ---
 
-## 2. AI Agents Will Keep Improving
+## 2. AI Agents and Reasoning Models
 
 Many data teams in 2025 are experimenting with agentic AI – systems that plan tasks and make decisions autonomously. These AI agents can break tasks into smaller steps, execute those tasks, and interact with other tools.
 
