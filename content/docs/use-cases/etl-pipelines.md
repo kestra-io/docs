@@ -1,7 +1,7 @@
 ---
 title: Build ETL Pipelines
 description: Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
-order: 20
+order: 10
 ---
 
 Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.

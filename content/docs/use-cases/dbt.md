@@ -1,7 +1,7 @@
 ---
-title: Orchestrate DBT Workflows
+title: Orchestrate dbt Workflows
 description: Edit dbt code from Kestra's Code Editor
-order: 10
+order: 20
 ---
 
 Edit dbt code from Kestra's Code Editor
