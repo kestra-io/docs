@@ -33,7 +33,7 @@ const buttons = [{
 {
     label: "Help Center",
     description: "Contact support for help with your Enterprise account",
-    href: "https://github.com/kestra-io/kestra",
+    href: "https://kestra.io/demo",
     icon: LifebuoyIcon,
 }]
 </script>
