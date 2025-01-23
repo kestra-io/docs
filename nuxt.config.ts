@@ -55,7 +55,8 @@ export default defineNuxtConfig({
 
     css: [
         '@/assets/styles/vendor.scss',
-        '@/assets/styles/app.scss'
+        '@/assets/styles/app.scss',
+        '@/assets/styles/theme.scss'
     ],
 
     content: {
@@ -124,7 +125,6 @@ export default defineNuxtConfig({
             }
         }
     },
-
     vite: {
         build: {
             rollupOptions: {
@@ -214,14 +214,6 @@ export default defineNuxtConfig({
             routes: [
                 '/rss.xml',
             ],
-        },
-    },
-    $production: {
-        nitro: {
-            // !Important: we only want to enable the wasm feature in production since it will break syntax highlighting when running the dev server
-            experimental: {
-                wasm: true,
-            },
         },
     },
 
