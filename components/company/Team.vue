@@ -189,6 +189,17 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/ssaily.png" alt="Sami Säily"/>
+                    <div class="w-100">
+                        <div class="team-name">Sami Säily</div>
+                        <div class="team-title font-small">Lead Field Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/ssaily/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/ssaily" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
                     <div class="w-100">
                         <div class="team-name">Miloš Paunović</div>
@@ -220,6 +231,56 @@
                     <span>
                         <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/asouid.png" alt="Ala Eddine Souid"/>
+                    <div class="w-100">
+                        <div class="team-name">Ala Eddine Souid</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/alaa-eddine-souid-354987134/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/alin.png" alt="Antoine Lin"/>
+                    <div class="w-100">
+                        <div class="team-name">Antoine Lin</div>
+                        <div class="team-title font-small">Lead Finance & Admin</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/antoine-lin-a49aaa74/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/camsellem.png" alt="Cyril Amsellem"/>
+                    <div class="w-100">
+                        <div class="team-name">Cyril Amsellem</div>
+                        <div class="team-title font-small">Customer Success</div>
+                    </div>
+                    <span>
+                        <a href="https://github.com/camsellem" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/rwyllie.png" alt="Ryan Wyllie"/>
+                    <div class="w-100">
+                        <div class="team-name">Ryan Wyllie</div>
+                        <div class="team-title font-small">RevOps & Growth</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/ryan-wyllie-0a530059/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/aemerich.png" alt="Alex Emerich"/>
+                    <div class="w-100">
+                        <div class="team-name">Alex Emerich</div>
+                        <div class="team-title font-small">Technical Writer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/alex-emerich/" target="_blank" class="me-2"><linkedin /></a>
                     </span>
                 </div>
             </div>
