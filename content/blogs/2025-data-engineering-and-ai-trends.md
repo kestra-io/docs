@@ -33,7 +33,7 @@ The next wave of improvements will likely focus on two areas: more robust framew
 
 ---
 
-## 3. Gigantic **and Small LLMs**
+## 3. Massive and Small LLMs
 
 The scale of model sizes continues to diverge. On one end, the big LLM providers, such as OpenAI, build their [own data centers](https://www.theverge.com/2025/1/21/24348816/openai-softbank-ai-data-center-stargate-project) to power **enormously large models** which soon might reach trillions of parameters. Those LLMs can solve broad, complex problems. On the other end, **small models** (many of which are open-source) can run on laptops or phones and are perfect for specialized tasks. Both approaches broaden how (and where) data teams can deploy generative AI.
 
