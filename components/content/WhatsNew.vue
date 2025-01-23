@@ -71,6 +71,8 @@ h2{
     width: 125px;
     height: 70px;
     object-fit: cover;
+    border-radius: .25rem;
+    border: 1px solid $black-3;
 }
 .card-body{
     display: flex;
