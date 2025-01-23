@@ -212,12 +212,7 @@ export default defineNuxtConfig({
         prerender: {
             routes: [
                 '/rss.xml',
-                '/pages/**'
             ],
-            ignore: [
-                '/api/**',
-                '/blog/**',
-            ]
         },
     },
 
