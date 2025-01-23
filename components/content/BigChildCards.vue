@@ -48,6 +48,9 @@ h2.big-title {
     padding: 0;
     font-size: $font-size-xl;
     border: none;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .big-card{

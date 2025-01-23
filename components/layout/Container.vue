@@ -392,9 +392,10 @@
     }
 
     .homepage {
-      background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 85%) no-repeat;
-      background-size: 500px 400px;
-      background-position: 500px 300px;
+      background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat,
+      radial-gradient(ellipse closest-side, rgba($primary, .2) 0%, #DDC4FF00 100%) no-repeat;
+      background-size: 500px 250px, 500px 300px;
+      background-position: top 220px right 130px, top 750px left -50px;
       .bd-content {
         background: url('/docs/ui/homepage-bg.webp') no-repeat;
         background-size: 1261px 984px;

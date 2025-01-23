@@ -41,7 +41,9 @@ const {data: posts} = await useAsyncData(
 @import "../../assets/styles/_variable.scss";
 h2{
     font-size: $font-size-xl;
-    margin-bottom: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding: 0;
     font-weight: 600;
 }
 .list-of-posts{

@@ -19,21 +19,22 @@
     @import "../../assets/styles/_variable.scss";
 
     .home-page-header {
-        font-size: 11pt !important;
         h2 {
             padding-top: 0;
             font-size: $font-size-xl;
+            font-weight: 600;
         }
 
         :deep(p){
             font-size: $font-size-sm;
+            line-height: 1.5em;
         }
 
         .kestra-logo {
             float: right;
             width: 132px;
-            margin: 1rem;
-            margin-bottom: 3rem;
+            margin: 3rem;
+            margin-top: 0;
         }
     }
 </style>
