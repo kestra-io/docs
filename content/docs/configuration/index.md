@@ -1047,6 +1047,8 @@ micronaut:
     hostResolution:
       hostHeader: Host
       protocolHeader: X-Forwarded-Proto
+      portHeader: X-Forwarded-Port
+      portInHost: false # Optional: If the host header supports a port, setting this to 'true' makes the portHeader setting optional
 ```
 
 
