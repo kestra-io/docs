@@ -60,7 +60,7 @@ This server is a local development server. It will contain all server components
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
+* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
 
 
 ## Kestra with server components in different services
