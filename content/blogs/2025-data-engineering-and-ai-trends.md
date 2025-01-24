@@ -72,15 +72,13 @@ As more AI and data workloads [enter production](https://cloud.google.com/transf
 
 ## 6. Demand for Data Lakes and Open Table Formats
 
-Cost optimization continues to drive renewed interest in data lakes, with teams combining **open table formats** like Apache Iceberg with object storage to balance governance and flexibility. The architecture often leverages Parquet files for columnar storage, while Iceberg’s (metadata layer](https://iceberg.apache.org/spec/)) adds critical features:
+Cost optimization continues to drive renewed interest in data lakes, with teams combining **open table formats** like Apache Iceberg with object storage to balance governance and flexibility. The architecture often leverages Parquet files for columnar storage, while Iceberg’s [metadata layer](https://iceberg.apache.org/spec/) adds critical features:
 
 - Row-level deletions for GDPR compliance
-- Schema evolution to handle evolving data structures
+- Schema evolution to handle changing data models
 - RBAC integration through catalogs like [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/).
 
-This setup allows teams to query data directly in object storage using [engines like DuckDB](https://kestra.io/blogs/2023-08-11-dataframes) (ad hoc analysis), Polars (complex transformations), or [chDB](https://kestra.io/blogs/embedded-databases) (lightweight aggregations). While data warehouses remain common for managing mission-critical data, the trend favors open **hybrid lakehouse architectures** – Iceberg-governed lakes handle raw data storage and governance, while warehouses manage curated data marts.
-
-Notably, major platforms like Databricks and Snowflake now support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
+This setup allows teams to query data directly in object storage using engines like [DuckDB](https://kestra.io/blogs/2023-08-11-dataframes) (ad-hoc analysis), [chDB](https://kestra.io/blogs/embedded-databases) (lightweight aggregations), or Polars (complex transformations). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
 
 ---
 
