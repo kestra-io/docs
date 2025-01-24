@@ -16,7 +16,7 @@ Many trends that began shaping [data engineering in 2024](https://kestra.io/blog
 
 ## **1. Generative AI as an Efficiency Driver**
 
-Last year’s prediction that AI would turn data teams [from cost into profit centers](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends#data-teams-as-profit-centers) has collided with reality. While generative AI is delivering measurable productivity gains, its impact on **revenue generation remains limited outside hyperscalers and niche applications**.
+Last year’s prediction that AI would turn data teams [from cost into profit centers](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends#data-teams-as-profit-centers) hasn't played out as expected. While generative AI is delivering measurable productivity gains, its impact on **revenue generation remains limited outside hyperscalers and niche applications**.
 
 Coding assistants (e.g., Cursor, GitHub Copilot) accelerate development, while AI chatbots and search tools streamline workflows—enabling teams to achieve more with fewer hires.
 
@@ -26,7 +26,7 @@ Tech giants (Nvidia, AWS, Azure, Google) and LLM vendors profit from selling sho
 
 ## 2. AI Agents and Reasoning Models
 
-Many data teams in 2025 are experimenting with agentic AI – systems that plan tasks and make decisions autonomously. These AI agents can break tasks into smaller steps, execute those tasks, and interact with other tools.
+Many data teams in 2025 are experimenting with agentic AI – systems that plan tasks and make decisions autonomously. These AI agents can break tasks into smaller steps, execute them, and interact with other tools.
 
 That said, current agents still struggle with complex tasks. When faced with ambiguity or multi-layered problems, they might misinterpret context, hallucinate or continue running endlessly without knowing when to stop.
 
@@ -58,9 +58,7 @@ The **EU AI Act** entered force in August 2024, with strict rules for high-risk 
 
 **1. Fighting Bias at the Source —** AI systems must now document training data origins and implement bias safeguards. Teams need audit trails showing exactly how data moves from raw sources to model inputs.
 
-**2. Granular Control —** [Article 10](https://artificialintelligenceact.eu/article/10/) requires tracking *who* accesses sensitive data and *why*. Apache Iceberg’s [merge/delete capabilities](https://iceberg.apache.org/spec/) can help satisfy GDPR’s right to be forgotten, while integrations with [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/) enable column-level permissions.
-
-With tools like [Kestra](https://kestra.io/docs/enterprise), you can build compliance into workflows through built-in [custom RBAC](https://kestra.io/docs/enterprise/rbac), [SSO](https://kestra.io/docs/enterprise/sso), [SCIM](https://kestra.io/docs/enterprise/scim), [audit logs](https://kestra.io/docs/enterprise/audit-logs), [outputs](https://kestra.io/docs/workflow-components/outputs) and [metrics](https://kestra.io/docs/workflow-components/tasks/scripts/outputs-metrics) tracking, and [manual approval](https://kestra.io/docs/how-to-guides/pause-resume) features.
+**2. Granular Control —** [Article 10](https://artificialintelligenceact.eu/article/10/) requires tracking *who* accesses sensitive data and *why*. Apache Iceberg’s [merge/delete capabilities](https://iceberg.apache.org/spec/) can help satisfy GDPR’s right to be forgotten, while integrations with [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/) enable column-level permissions. With orchestration tools like [Kestra](https://kestra.io/docs/enterprise), you can add compliance to your data workflows through built-in [custom RBAC](https://kestra.io/docs/enterprise/rbac), [SSO](https://kestra.io/docs/enterprise/sso), [SCIM](https://kestra.io/docs/enterprise/scim), [audit logs](https://kestra.io/docs/enterprise/audit-logs), [outputs](https://kestra.io/docs/workflow-components/outputs) and [metrics](https://kestra.io/docs/workflow-components/tasks/scripts/outputs-metrics) tracking, and [manual approval](https://kestra.io/docs/how-to-guides/pause-resume) features.
 
 ---
 
