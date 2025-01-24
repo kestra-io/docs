@@ -1665,9 +1665,9 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 ```
-### randInt
+### randomInt
 
-The `randInt` function generates a random integer from a specified range.
+The `randomInt` function generates a random integer from a specified range.
 
 Example with a range between 1 and 10:
 
@@ -1690,6 +1690,19 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "Generated UUID: {{ uuid() }}"
     # Output: Generated UUID: d815cb05-ac71-429d-8e73-f7c92f5429c4
+```
+
+### randomPort
+
+The `randomPort` function generate a random available port.
+
+Example:
+
+```yaml
+tasks:
+  - id: uuid
+    type: io.kestra.plugin.core.log.Log
+    message: "Generated Port: {{ randomPort() }}"
 ```
 
 ---
