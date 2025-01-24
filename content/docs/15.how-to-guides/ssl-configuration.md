@@ -8,7 +8,7 @@ topics:
 
 Configure secure access via https to the Kestra UI.
 
-This guide will walk through the steps to configure secure access via https to the Kestra UI.
+This guide walks through the steps to configure secure access via https to the Kestra UI.
 
 ## Why use SSL/TLS encryption
 
@@ -84,7 +84,7 @@ keytool -import -trustcacerts -noprompt -alias ca \
 Enabling https is accomplished via the `micronaut` configuration settings. These are set at the root level within the Kestra configuration.
 
 ::alert{type="info"}
-Ensure that you expose the secure port of the connection if different from the default port!
+Ensure that you expose the secure port of the connection if different from the default port.
 ::
 
 ```yaml
@@ -150,11 +150,11 @@ Ensure that you expose the secure port of the connection if different from the d
 
 ## Enabling CSRF Protection
 
-CSRF or Cross-site request forgery is a type of attack that occurs when a malicious web site or email
+Cross-site request forgery (CSRF) is a type of attack that occurs when a malicious website or email
 causes a user's web browser to perform an unwanted action on a trusted site when the user is authenticated.
 
-To enable CSRF protection, you must ensure that you're instance have TLS/SSL enabled.
-Then you can add the following to your configuration:
+To enable CSRF protection, you must ensure that your instance has TLS/SSL enabled.
+Once this is configured, add the following to your configuration file:
 
 ```yaml
 micronaut
@@ -163,5 +163,5 @@ micronaut
       enabled: true
 ```
 
-This will enable CSRF protection on all endpoints that reach `/api/.*`.
+This setting enables CSRF protection on all endpoints that reach `/api/.*`.
 
