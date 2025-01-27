@@ -44,7 +44,7 @@ We're particularly excited about our OpenTelemetry integration. As an open-sourc
 
 For example, here is a flow designed to send logs via Opentelemetry exporter to an Opentelemetry collector.
 
-::collapse{title="Expand for a LogShipper example "}
+::collapse{title="Expand for a LogShipper example with OpenTelemetry "}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -69,7 +69,30 @@ tasks:
 ```
 ::
 
+::collapse{title="Expand for an example with AWS CloudWatch"}
+```yaml
+id: log_shipper
+namespace: company.team
 
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    logExporters:
+      - id: AWSLogExporter
+        type: io.kestra.plugin.ee.aws.LogExporter
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+        region: "{{ vars.region }}"
+```
+::
 
 ### New No Code Experience
 
@@ -151,7 +174,7 @@ charts:
 
 ![custom dashboard editor screenshot](/blogs/custom_dashboard_editor.png)
 
-To see all available properties to configure a custom dashboard as code, see examples provided in the [Enterprise Edition Examples repository](https://github.com/kestra-io/enterprise-edition-examples).
+You can find Custom Dashboard blueprints directly inside you instance (under the Blueprint tab).
 
 
 ### Maintenance Mode
@@ -170,34 +193,31 @@ You can enter in Maintenance Mode via the `Administration > Instance` panel of y
 
 ## User Interface & Experience Improvements
 
-As with each release, we continued to improve the interface elements, colors and user motion:
+As with each release, we continued to improve the Kestra interface:
 
-- Improvements in the UI: 
-  - Filters ans search bars are now consistent across the different panels
-  - We also fixed some UI paddings, buttons, and colors.
+- Filters ans search bars are now consistent across the different panels
 
-- Improvments for Apps:
-  - Apps can now be previewed in the corresponding editor
-  - Apps can be declared via Terraform definitions
-  - [TBD] Access Group?
-  - [TBD] mention UI improvements (bulk action & co)?
+- Improvements for Apps:
+  - Apps can now be previewed in the editor.
+  - Apps can be declared via [Terraform definitions](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app).
+  - You can find Apps blueprints inside the Blueprint tab of your instance.
 
 - Introduce system labels for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682
-- [TBD] Contextual In-Apps documentation
-- [TBD] Resource Type filter in AuditLogs - https://github.com/kestra-io/kestra-ee/issues/1403
-- Subflow restart behavior
+- Improvement on in-app context documentation. Also, the documentation is less cluttered as task examples and properties are now collapsed.
+- [TBD] Resource Type filter in AuditLogs + Revision History for all resources- https://github.com/kestra-io/kestra-ee/issues/1403
+- [TBD] Subflow restart behavior
 
 ## Other Features and Improvements
 
 - [TBD] Dynamic Properties in every task (but not for trigger)
 
-- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171) -  The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
+- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
 
-- [TBD] Update Terraform ressources
+- Declare [Apps](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app) and [Custom Dashboards](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/dashboard) with Terraform. 
 
-- [TBD] taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842
+- [Manage iteration index inside the ForEach](https://github.com/kestra-io/kestra/issues/4842) task with the new `taskrun.iteration` property.
 
-- [TBD] New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
+- New `finally` properties that run any tasks at the [end of a flow execution](https://github.com/kestra-io/kestra/issues/6649), regardless of the final state.
 
 ## New Tasks & Plugins
 
