@@ -189,17 +189,23 @@ As with each release, we continued to improve the interface elements, colors and
 
 ## Other Features and Improvements
 
-- [TBD] Dynamic Properties in every task (but not for trigger)
-- [TBD] Notification plugin improvement - https://github.com/kestra-io/plugin-notifications/issues/171
-- [TBD] Update Terraform ressources
-- [TBD] taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842
-- [TBD] New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
+- [TBD] Dynamic Properties in every task (but not for trigger)
+
+- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171) -  The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
+
+- [TBD] Update Terraform ressources
+
+- [TBD] taskrun.iteration in ForEach - https://github.com/kestra-io/kestra/issues/4842
+
+- [TBD] New `finally` properties that run at the end regardless of the final state - https://github.com/kestra-io/kestra/issues/6649
 
 ## New Tasks & Plugins
 
 ### DuckDB Fixes
 
-We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/issues/165) regarding the DuckDB version used in Kestra. Now Kestra support the latest version of DuckDB!
+We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/issues/165) regarding the DuckDB version used in Kestra. 
+
+Now Kestra support the latest version of DuckDB!
 
 
 ### New Exit task
@@ -236,7 +242,6 @@ tasks:
 ::
 
 [TBD LINK TO PLUGIN DOC]
-https://github.com/kestra-io/kestra/issues/5599
 
 ### New Write task
 
@@ -245,25 +250,86 @@ This particuliarly useful when you want to store messages that come as a string 
 
 [TBD LINK TO PLUGIN DOC]
 
-https://github.com/kestra-io/kestra/issues/6524
 
-### New AI plugins
+### New HugginFace Plugin
 
-[TBD] **HuggingFace Inference**  https://github.com/kestra-io/kestra/issues/6352 
-[TBD] LangChain task
+HuggingFace has become a leading force in democratizing AI and Large Language Models (LLMs). We're excited to introduce the new `huggingface.Inference` task, enabling seamless integration with the [HuggingFace Inference API](https://huggingface.co/docs/api-inference/index).
+This integration allows you to leverage thousands of state-of-the-art AI models directly in your Kestra workflows. With a generous free tier of 50 API calls per hour, you can easily incorporate LLM capabilities into your Kestra flows.
+
+::collapse{title="HuggingFace Inference task example"}
+```yaml
+id: hugging_face
+namespace: blueprint
+
+inputs:
+  - id: message
+    type: STRING
+
+tasks:
+
+  - id: classification
+    type: io.kestra.plugin.huggingface.Inference
+    model: facebook/bart-large-mnli
+    apiKey: "{{ secret('HUGGINGFACE_API_KEY') }}"
+    inputs: "{{ inputs.message }}"
+    parameters:
+        candidate_labels:
+          - "support"
+          - "warranty"
+          - "upsell"
+          - "help"
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "The input is categorized as a {{ json(outputs.classification.output).labels[0] }} message."
+```
+:: 
+
+[TBD LINK TO PLUGIN DOC]
+
 
 ### New AWS EMR plugin
-[TBD; see blueprints] https://github.com/kestra-io/blueprints/pull/21
+
+The AWS EMR plugin allows to create (`io.kestra.plugin.aws.emr.CreateCluster`) or delete (`io.kestra.plugin.aws.emr.DeleteCluster`) clusters while managing running jobs (`io.kestra.plugin.aws.emr.AddJobFlowsSteps`).
+
+::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
+```yaml
+id: create-aws-emr-cluster
+namespace: company.team
+
+tasks:
+  - id: create_cluster
+    type: io.kestra.plugin.aws.emr.CreateCluster
+    accessKeyId: {{ secret('AWS_ACCESS_KEY') }}
+    secretKeyId: {{ secret('AWS_SECRET_KEY') }}
+    region: eu-west-3
+    clusterName: "Spark_job_cluster"
+    logUri: "s3://kestra-test/test-emr-logs"
+    keepJobFlowAliveWhenNoSteps: true
+    applications:
+        - Spark
+    masterInstanceType: m5.xlarge
+    slaveInstanceType: m5.xlarge
+    instanceCount: 3
+    ec2KeyName: test-key-pair
+    steps:
+        - name: Spark_job_test
+          jar: "command-runner.jar"
+          actionOnFailure: CONTINUE
+          commands:
+            - spark-submit s3://kestra-test/health_violations.py --data_source s3://kestra-test/food_establishment_data.csv --output_uri s3://kestra-test/test-emr-output
+    wait: false
+```
+
+[TBD LINK TO PLUGIN DOC]
 
 ### New Pebble functions
 
-`randomInt` - you can now [generate a random integer](https://github.com/kestra-io/kestra/issues/6207) with the `randomInt` function in Pebble.
+- `randomInt`: you can now [generate a random integer](https://github.com/kestra-io/kestra/issues/6207) with the `randomInt` function in Pebble.
 
-`uuid` - you can [generate a UUID](https://github.com/kestra-io/kestra/issues/6208) with the new `uuid` function in Pebble.
+- `uuid`: you can [generate a UUID](https://github.com/kestra-io/kestra/issues/6208) with the new `uuid` function in Pebble.
 
-`distinct` - you can now [get the uniq set of values](https://github.com/kestra-io/kestra/issues/6417) from an array with the new `distinct` function in Pebble.
-
-`"{{ ['1', '1', '2', '3'] | distinct }}"`
+- `distinct`: you can now [get the uniq set of values](https://github.com/kestra-io/kestra/issues/6417) from an array with the new `distinct` function in Pebble. For example: `"{{ ['1', '1', '2', '3'] | distinct }}"` will return `['1', '2', '3']`.
 
 
 ## Thanks to Our Contributors
