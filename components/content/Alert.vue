@@ -1,7 +1,7 @@
 <template>
-    <div :class="'d-flex align-items-baseline doc-alert alert alert-' + type" role="alert">
+    <div :class="'doc-alert alert alert-' + type" role="alert">
         <div class="me-3">
-            <component :is="Icon" class="icon" />
+            <component :is="Icon" class="alert-icon" />
         </div>
         <div class="d-flex flex-column">
             <slot />
@@ -42,22 +42,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.doc-alert {
-    --bs-alert-padding-x: var(--spacer);
-    --bs-alert-margin-bottom: var(--spacer);
+@import "../../assets/styles/variable";
 
-    border-left-width: 5px !important;
-    border-style: solid;
-    padding: 0 var(--bs-alert-padding-x);
-    margin-bottom: var(--bs-alert-margin-bottom);
-    
-    :deep(.material-design-icon__svg) {
-    width: 22px;
-    height: 22px;
-    bottom: -0.45em !important;
-}
-    > * {
-        margin: 0;
+.doc-alert {
+        display: flex;
+        align-items: start;
+        border: 1px solid;
+        border-left-width: 5px !important;
+        padding: var(--spacer);
+        padding-bottom: 2px !important;
+        margin-bottom: 1rem;
+        border-radius: $border-radius;
+
+        :deep(p){
+            font-size: $font-size-base;
+            color: inherit;
+        }
+
+        > * {
+            margin: 0;
+        }
+
+        .alert-icon {
+            font-size: 22px;
+        }
+
+        &.alert-danger {
+            border-color: $danger-border;
+            color: $danger-color;
+            background-color: $danger-bg;
+        }
+
+        &.alert-warning {
+            border-color: $warning-border;
+            color: $warning-color;
+            background-color: $warning-bg;
+        }
+
+        &.alert-info {
+            border-color: $info-border;
+            color: $info-color;
+            background-color: $info-bg;
+        }
+
+        &.alert-success {
+            border-color: $success-border;
+            color: $success-color;
+            background-color: $success-bg;
+        }
     }
-}
 </style>

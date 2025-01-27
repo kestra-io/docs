@@ -162,22 +162,25 @@ $container-border: 1px solid rgba(255, 255, 255, 0.10);
 $block-border: 1px solid $black-3;
 $btn-dark-border: 1px solid rgba(255, 255, 255, 0.12);
 
-//DOCS Alert Colors for the theme.
-$success-bg: rgba(5, 27, 17, .5);
-$success-border: rgba(15, 81, 50, 1);
-$success-color: rgba(117, 183, 152, 1);
+// Alert Colors according to kestra dark theme.  
+// These variables can be removed once the ks-theme-dark.scss is updated for docs too. 
+// Then we can just import '@kestra-io/ui-libs/src/scss/ks-theme-dark.scss' inside Alert.vue and use.
 
-$info-bg: rgba(3, 40, 48, .5);
-$info-border: rgba(8, 121, 144, 1);
-$info-color: rgba(110, 223, 246, 1);
+$success-bg: rgba(0, 35, 25, .2);
+$success-border: #02be8a;
+$success-color: #beefe2;
 
-$warning-bg: rgba(51, 39, 1, .5);
-$warning-border: rgba(153, 116, 4, 1);
-$warning-color: rgba(255, 218, 106, 1);
+$info-bg: rgba(14, 59, 154, .2);
+$info-border: #1761fd;
+$info-color: #c7fdff;
 
-$danger-bg: rgba(44, 11, 14, .5);
-$danger-border: rgba(132, 32, 41, 1);
-$danger-color: rgba(234, 134, 143, 1);
+$warning-bg: rgba(111, 48, 0, .2);
+$warning-border: #e9985b;
+$warning-color: #eeae7e;
+
+$danger-bg: rgba(38, 0, 2, .2);
+$danger-border: #e3262f;
+$danger-color: #fd9297;
 
 //margin
 $popper-margin: .2rem;
