@@ -59,7 +59,7 @@ export default {
                 {
                     profile: "/partners/charles-letaillieur.svg",
                     message:
-                        "Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management and maintenance of large-scale data flows.What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte and Restack. We are genuinely thrilled to engage Kestra.",
+                        "Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management and maintenance of large-scale data flows.What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte. We are genuinely thrilled to engage Kestra.",
                     name: "Charles Letaillieur",
                     designation: "Senior Manager @ Converteo",
                     alt: "Picture of Charles Letaillieur",
