@@ -203,13 +203,16 @@ As with each release, we continued to improve the Kestra interface:
   - You can find Apps blueprints inside the Blueprint tab of your instance.
 
 - Introduce system labels for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682
-- Improvement on in-app context documentation. Also, the documentation is less cluttered as task examples and properties are now collapsed.
-- [TBD] Resource Type filter in AuditLogs + Revision History for all resources- https://github.com/kestra-io/kestra-ee/issues/1403
-- [TBD] Subflow restart behavior
+- Enhanced in-app documentation with collapsible task examples and properties, resulting in a cleaner, more organized interface.
+- [TBD] Resource Type filter in AuditLogs + Revision History for all resources- https://github.com/kestra-io/kestra-ee/issues/1403
+- Failed subflow executions now resume from their last execution when restarted, rather than creating new executions from scratch
 
 ## Other Features and Improvements
 
-- [TBD] Dynamic Properties in every task (but not for trigger)
+
+- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework - an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
+
+- A wider set of tasks properties now support dynamic values - allowing better integration with tasks dependanices and Pebble syntax.
 
 - [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
 
