@@ -199,16 +199,6 @@
                         <a href="https://github.com/ssaily" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
-                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/camsellem.png"/>
-                    <div class="w-100">
-                        <div class="team-name">Cyril Amsellem</div>
-                        <div class="team-title font-small">Field Engineering</div>
-                    </div>
-                    <span>
-                        <a href="https://github.com/camsellem" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
                     <div class="w-100">
