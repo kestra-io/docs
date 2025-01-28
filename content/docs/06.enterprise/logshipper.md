@@ -17,8 +17,33 @@ Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can inte
 
 ## Log Shipper example
 
-The below example demonstrates how to design an execution that runs a daily log synchronization and distribution of logs through an Opentelemetry exporter to an Opentelemetry collector.
+The below example demonstrates how to design an execution that runs a daily log synchronization and distribution of logs with [Datadog](https://www.datadoghq.com/).
 
+::collapse{title="Expand for a LogShipper example with Datadog "}
+```yaml
+id: log_shipper
+namespace: company.team
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    logExporters:
+      - id: DatadogLogExporter
+        type: io.kestra.plugin.ee.datadog.LogExporter
+        basePath: '{{ secret("DATADOG_INSTANCE_URL") }}'
+        apiKey: '{{ secret("DATADOG_APIK_KEY") }}'
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+```
+::
+
+Additionally, here is another example using [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/):
+
+::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -35,12 +60,13 @@ tasks:
     batchSize: 1000
     lookbackPeriod: P1D
     logExporters:
-      - id: OTLPLogExporter
-        type: io.kestra.plugin.ee.opentelemetry.LogExporter
-        otlpEndpoint: http://localhost:4318/v1/logs
-        authorizationHeaderName: Authorization
-        authorizationHeaderValue: Bearer token
+      - id: AWSLogExporter
+        type: io.kestra.plugin.ee.aws.LogExporter
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+        region: "{{ vars.region }}"
 ```
+::
 
 An execution uses either the last log send date or the difference between **Now** and the `startingDayBefore` to search logs, fetch a batch of logs, and send them via a log shipper plugin. 
 
