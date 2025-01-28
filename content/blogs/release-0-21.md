@@ -18,9 +18,9 @@ The table below highlights the key features of this release.
 
 | Feature                                          | Description                                                                                                                                                                               | Edition |
 |--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-| Log Shipper                                      | Forward Kestra logs to external destination                                                                                                 | Enterprise Edition |
 | No Code                                          | New experience regarding no-code flow creation and task edition                                                                             | All Editions |
 | Custom Dashboards                                | Create your own custom dashboards, tailored to your monitoring needs                                                                        | All Editions |
+| Log Shipper                                      | Forward Kestra logs logs across your entire infrastructure                                                                                                 | Enterprise Edition |
 | Maintenance Mode                                 | Set your Kestra instance in maintenance mode to streamline server upgrades                                                                  |  Enterprise Edition |
 
 
@@ -211,9 +211,9 @@ As with each release, we continued to improve the Kestra interface:
 ## Other Features and Improvements
 
 
-- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework - an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
+- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework withk an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
 
-- A wider set of tasks properties now support dynamic values - allowing better integration with tasks dependanices and Pebble syntax.
+- A wider set of tasks properties now support [dynamic values](https://www.youtube.com/watch?v=TJ4BFBV8ZvU) - allowing better integration with tasks dependanices and Pebble syntax.
 
 - [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
 
@@ -229,7 +229,7 @@ As with each release, we continued to improve the Kestra interface:
 
 We have fixed a [long running issue](https://github.com/kestra-io/plugin-jdbc/issues/165) regarding the DuckDB version used in Kestra. 
 
-Now Kestra support the latest version of DuckDB!
+Now Kestra supports the latest version of DuckDB!
 
 
 ### New Exit task
