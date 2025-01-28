@@ -107,8 +107,8 @@ The new interface introduces intuitive left-side panels for flow properties and 
 
 ### Custom Dashboards
 
-Monitoring executions and get overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track key metrics. Everyone as different need, different service level threasholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
-As everything in Kestra, you can declare dashboards as code. Clicking on the + Create a new dashboard button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+Monitoring executions to get an overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track your key metrics. Everyone has different needs and service level thresholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
+As everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create a new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
 
 ::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
