@@ -42,18 +42,14 @@ Log Shipper is build on top plugins, meaning it can be integrated with many log 
 
 We're particularly excited about our OpenTelemetry integration. As an open-source observability framework, OpenTelemetry has emerged as the industry standard for telemetry data collection. This integration means you can forward logs to any platform supporting the OpenTelemetry protocol.
 
-For example, here is a flow designed to send logs via Opentelemetry exporter to an Opentelemetry collector.
+For example, here is a flow designed to send logs via Datadog.
 
-::collapse{title="Expand for a LogShipper example with OpenTelemetry "}
+![datadog logshipper](/blogs/logshipper_datadog.png)
+
+::collapse{title="Expand for a LogShipper example with Datadog "}
 ```yaml
 id: log_shipper
 namespace: company.team
-
-triggers:
-  - id: daily
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@daily"
-
 tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
@@ -61,13 +57,18 @@ tasks:
     batchSize: 1000
     lookbackPeriod: P1D
     logExporters:
-      - id: OTLPLogExporter
-        type: io.kestra.plugin.ee.opentelemetry.LogExporter
-        otlpEndpoint: http://localhost:4318/v1/logs
-        authorizationHeaderName: Authorization
-        authorizationHeaderValue: Bearer token
+      - id: DatadogLogExporter
+        type: io.kestra.plugin.ee.datadog.LogExporter
+        basePath: '{{ secret("DATADOG_INSTANCE_URL") }}'
+        apiKey: '{{ secret("DATADOG_APIK_KEY") }}'
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
 ```
 ::
+
+
 
 ::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
