@@ -48,6 +48,8 @@ export default defineNuxtPlugin(nuxtApp => {
             })
 
             gtm?.trackView(route.name, route.fullPath);
+
+            localStorage.setItem("KUID", response.data.id);
         };
 
         const enabledMarketing = () => {
