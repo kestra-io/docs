@@ -173,7 +173,8 @@ charts:
 ```
 ::
 
-![custom dashboard editor screenshot](/blogs/custom_dashboard_editor.png)
+![alt text](/blogs/custom_dashboard1.png)
+![alt text](/blogs/custom_dashboard2.png)
 
 You can find Custom Dashboard blueprints directly inside you instance (under the Blueprint tab).
 
