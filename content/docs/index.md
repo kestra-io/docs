@@ -11,14 +11,13 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 ::HomePageButtons{ :buttons='[{"label": "Quickstart Guide →", "href": "/docs/getting-started"},{"label": "Why Kestra?","href": "/docs/why-kestra"},{"label": "Enterprise Edition","href": "/docs/enterprise"}]'}
 ::
 
+
+::BigChildCards{directory="/docs/use-cases" title="What’s possible with Kestra"}
 ::
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/feC6-KQLYyA?si=BTVeAthx3ZxE2e3c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-::BigChildCards{directory="/docs/use-cases" title="What’s possible with Kestra"}
-::
 
 ::WhatsNew{title="What's New in Kestra"}
 ::
