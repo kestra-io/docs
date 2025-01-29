@@ -38,7 +38,7 @@ We're excited to introduce Log Shipper, a powerful new feature that streamlines 
 
 This log synchronization feature automatically batches your logs in optimal chunks and intelligently manages synchronization points. This means you get reliable, consistent log delivery without overwhelming your systems or missing critical data.
 
-Log Shipper is build on top plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch and OpenTelemetry. 
+Log Shipper is built on top plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch and OpenTelemetry. 
 
 We're particularly excited about our OpenTelemetry integration. As an open-source observability framework, OpenTelemetry has emerged as the industry standard for telemetry data collection. This integration means you can forward logs to any platform supporting the OpenTelemetry protocol.
 
@@ -108,7 +108,7 @@ The new interface introduces intuitive left-side panels for flow properties and 
 ### Custom Dashboards
 
 Monitoring executions to get an overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track your key metrics. Everyone has different needs and service level thresholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
-As everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create a new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+As with everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
 
 ::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
@@ -195,9 +195,9 @@ You can enter in Maintenance Mode via the `Administration > Instance` panel of y
 
 ## User Interface & Experience Improvements
 
-As with each release, we continued to improve the Kestra interface:
+As with each release, we continue to improve the Kestra interface:
 
-- Filters ans search bars are now consistent across the different panels
+- Filters and search bars are now consistent across the different panels
 
 - Improvements for Apps:
   - Apps can now be previewed in the editor.
@@ -235,7 +235,7 @@ Now Kestra supports the latest version of DuckDB!
 
 ### New Exit task
 
-The Exit task gives you control over your workflow's execution state. This new addition gives you precise control over how and when your workflows terminate. For example it allows you to kill an execution depending on some condition logics, as highlighted in the following example:
+The Exit task gives you control over your workflow's execution state. This new addition gives you precise control over how and when your workflows terminate. For example, it allows you to kill an execution depending on some conditional logics, as highlighted in the following example:
 
 ::collapse{title="Exit task example"}
 ```yaml
@@ -271,7 +271,7 @@ tasks:
 ### New Write task
 
 The Write task takes your string input and saves it as a file in Kestra's internal storage. The task returns a URI pointing to the newly created file, which you can easily reference in subsequent tasks.
-This particuliarly useful when you want to store messages that come as a string to files that could be later passed on as uri further down the flow for further processing.
+This is particuliarly useful when you want to store messages that come as a string to files that could be later passed on as uri further down the flow for further processing.
 
 [TBD LINK TO PLUGIN DOC]
 
@@ -315,7 +315,7 @@ tasks:
 
 ### New AWS EMR plugin
 
-The AWS EMR plugin allows to create (`io.kestra.plugin.aws.emr.CreateCluster`) or delete (`io.kestra.plugin.aws.emr.DeleteCluster`) AWS EMR clusters while managing running jobs (`io.kestra.plugin.aws.emr.AddJobFlowsSteps`).
+The AWS EMR plugin allows you to create (`io.kestra.plugin.aws.emr.CreateCluster`) or delete (`io.kestra.plugin.aws.emr.DeleteCluster`) AWS EMR clusters while managing running jobs (`io.kestra.plugin.aws.emr.AddJobFlowsSteps`).
 
 ::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
 ```yaml
