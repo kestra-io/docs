@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-12 col-lg-6 mt-5 mt-lg-0 align-items-center d-flex meeting-container">
                     <div v-if="valid === false" class="meeting-form">
-                        <img src="/demo/header-background.png" alt="" data-aos="fade-right" />
+                        <img class="background" src="/demo/header-background.png" alt="" data-aos="fade-right" />
                         <form class="row needs-validation" ref="demo-form" @submit="onSubmit" novalidate data-aos="fade-left">
                             <div v-if="message" class="alert alert-danger mt-3 mb-0">{{ message }}</div>
                             <div class="col-md-6 col-12">
@@ -57,8 +57,11 @@
                                 <input name="email" type="email" class="form-control" id="demo-email" placeholder="Company Email" required>
                             </div>
 
-                            <div class="col-12 mt-3 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">Schedule a demo with David</button>
+                            <div class="col-12 mt-4 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <img src="/demo/david.png" class="me-3" height="32" alt="" />
+                                        Schedule a demo with David
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -265,7 +268,7 @@
             align-items: center;
             justify-content: center;
 
-            img {
+            img.background {
                 width: 644px;
                 max-width: 100%;
                 z-index: 0;
@@ -278,6 +281,12 @@
                 position: absolute;
                 z-index: 1;
                 top: 25%;
+                width: 85%;
+
+                @include media-breakpoint-up(lg) {
+                    width: 75%;
+                }
+
                 background: white;
             }
         }
