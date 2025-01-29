@@ -69,6 +69,7 @@ export default defineNuxtConfig({
                 'c',
                 'cpp',
                 'csv',
+                'css',
                 'dockerfile',
                 'go',
                 'groovy',
