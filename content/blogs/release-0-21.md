@@ -315,7 +315,7 @@ tasks:
 
 ### New AWS EMR plugin
 
-The AWS EMR plugin allows to create (`io.kestra.plugin.aws.emr.CreateCluster`) or delete (`io.kestra.plugin.aws.emr.DeleteCluster`) clusters while managing running jobs (`io.kestra.plugin.aws.emr.AddJobFlowsSteps`).
+The AWS EMR plugin allows to create (`io.kestra.plugin.aws.emr.CreateCluster`) or delete (`io.kestra.plugin.aws.emr.DeleteCluster`) AWS EMR clusters while managing running jobs (`io.kestra.plugin.aws.emr.AddJobFlowsSteps`).
 
 ::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
 ```yaml
