@@ -272,7 +272,7 @@
     import Section from '../../components/layout/Section.vue';
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Twitter from "../components/icons/TwitterXIcon.vue";
     import Mastodon from "vue-material-design-icons/Mastodon.vue";
 
     export default {
