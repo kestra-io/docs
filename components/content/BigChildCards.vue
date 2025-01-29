@@ -39,9 +39,7 @@ const orderedNavigation = computed(() => {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    @include media-breakpoint-up(xxl){
-        grid-template-columns: repeat(3, 1fr);
-    }
+
 }
 
 h2.big-title {

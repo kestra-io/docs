@@ -405,7 +405,7 @@
 
         @include media-breakpoint-up(lg) {
             .bd-content {
-                max-width: 1159px;
+                max-width: 733px;
             }
 
             .bd-title{
@@ -413,7 +413,7 @@
             }
 
             .bd-title, .bd-title h1, .bd-title .slug{
-                max-width: 1159px;
+                max-width: 733px;
                 width: 100%;
             }
 
