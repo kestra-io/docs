@@ -15,8 +15,7 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 ::BigChildCards{directory="/docs/use-cases" title="What’s possible with Kestra"}
 ::
 
-::
-
+<div style="height: 50px;"></div>
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/feC6-KQLYyA?si=BTVeAthx3ZxE2e3c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
