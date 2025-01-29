@@ -59,12 +59,15 @@ tasks:
     logLevelFilter: INFO
     batchSize: 1000
     lookbackPeriod: P1D
+    offsetKey: LogShipper-state-2
     logExporters:
       - id: AWSLogExporter
         type: io.kestra.plugin.ee.aws.LogExporter
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
         region: "{{ vars.region }}"
+        logGroupName: test_kestra
+        logStreamName: test_stream
 ```
 ::
 
