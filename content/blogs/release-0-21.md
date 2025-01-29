@@ -6,13 +6,10 @@ category: News & Products Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: /blogs/release-0-21.png
+image: /blogs/release-0-21.jpg
 ---
 
-
-Kestra 0.21.0 is here, introducing multiple highly requested features to your favorite open-source orchestration platform. This release adds XXX
-
-Enterprise Edition users can now benefit XXX
+Kestra 0.21.0 is here, packed with your most-requested features for our open-source orchestration platform. This major release introduces a seamless no-code experience for easier workflow creation, customizable dashboards to monitor your operations, advanced log forwarding across your entire infrastructure - and many improvements.
 
 The table below highlights the key features of this release.
 
