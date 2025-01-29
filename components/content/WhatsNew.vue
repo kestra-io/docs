@@ -46,17 +46,13 @@ h2{
     padding: 0;
     font-weight: 600;
 }
-.list-of-posts{
-    display: flex;
-    flex-direction: column;
-    gap:.125rem
-    hr{
-        width: 100%;
-        border: none;
-        border-top: 1px solid $black-3;
-        margin: 0;
-    }
+.list-of-posts hr{
+    width: 100%;
+    border: none;
+    border-top: 1px solid $black-3;
+    margin: 0;
 }
+
 .post-card{
     display: flex;
     gap: 1rem;

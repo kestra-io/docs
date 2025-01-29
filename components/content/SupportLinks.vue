@@ -57,7 +57,7 @@ h2.support-title{
 }
 .support-link{
     padding: 1rem;
-    border-radius: .25rem;
+    border-radius: .5rem;
     border: 1px solid $black-3;
     span{
         font-size: 24px;
