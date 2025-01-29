@@ -44,8 +44,6 @@ We're particularly excited about our OpenTelemetry integration. As an open-sourc
 
 For example, here is a flow designed to send logs via Datadog.
 
-![datadog logshipper](/blogs/logshipper_datadog.png)
-
 ::collapse{title="Expand for a LogShipper example with Datadog "}
 ```yaml
 id: log_shipper
@@ -68,8 +66,9 @@ triggers:
 ```
 ::
 
+![datadog logshipper](/blogs/logshipper_datadog.png)
 
-
+Here is an example with AWS CloudWatch:
 ::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
 id: log_shipper
@@ -94,6 +93,8 @@ tasks:
         region: "{{ vars.region }}"
 ```
 ::
+
+![logshipper aws cloudwatch](/blogs/logshipper_aws_cloudwatch.png)
 
 ### New No Code Experience
 
