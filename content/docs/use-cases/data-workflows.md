@@ -1,10 +1,10 @@
 ---
 title: Orchestrate Data Workflows
 description: Schedule, backfill, automate, scale, and observe data pipelines with declarative workflows
-order: 30
+order: 10
 ---
 
-Modern data teams use orchestration to manage complex pipelines — ingesting raw data, transforming it, and delivering it to warehouses, lakes, or applications. Orchestration ensures workflows run in the correct sequence, recover from failures, and scale dynamically.
+Data teams use orchestration platforms like Kestra to manage complex pipelines — ingesting raw data, transforming it, and delivering it to warehouses, lakes, or applications. The orchestration engine ensures workflows run in the correct sequence, recover from failures, and scale dynamically.
 
 ## What is Data Orchestration?
 
@@ -20,11 +20,11 @@ With Kestra, orchestration means:
 
 ## Why Use Kestra for Data Orchestration?
 
-1. **Portability** – Define entire pipelines in a single YAML flow incl. tasks, triggers, dependencies and infrastructure concerns.
-2. **Dynamic Scaling** – Task runners spin up containers on cloud services (AWS ECS Fargate, Google Batch) only when needed — no complex always-on workers needed.
+1. **Portability** – Define each data pipeline in a self-contained, portable YAML configuration that includes tasks, triggers, dependencies and infrastructure concerns.
+2. **Dynamic Scaling** – Task runners spin up containers on cloud services (AWS ECS Fargate, Google Batch, Kubernetes) dynamically at runtime — no need for dedicated always-on workers (unless on-premise resources are preferred using [worker groups](../06.enterprise/worker-group.md)).
 3. **Execution Control** – Set retries, timeouts, SLAs, and concurrency limits.
 4. **Zero Code Changes** – Run existing Python/R/SQL scripts as-is (no decorators needed); specify dependencies via YAML configuration.
-5. **State Management** – Pass data of any size between tasks (files, variables, query results) or between workflows (using KV Store) thanks to internal storage.
+5. **State Management** – Pass data of any size between tasks (files, variables, query results) or between workflows (using KV Store) thanks to [internal storage](../07.architecture/09.internal-storage.md).
 6. **Extensible Integrations** – Connect to over 600 services via [pre-built plugins](https://kestra.io/plugins).
 7. **Observability** – Monitor flow execution states, durations, logs, inputs, outputs and resource usage in real time.
 
@@ -32,7 +32,7 @@ With Kestra, orchestration means:
 
 ## Example: Data Engineering Pipeline
 
-This flow downloads a JSON dataset via REST API, filters specific columns using Python, and calculates KPIs with DuckDB. Kestra dynamically provisions a Python container for the transformation step and scales down once the task completes:
+This flow downloads a JSON dataset via REST API, filters specific columns using Python, and calculates KPIs with DuckDB. Kestra dynamically provisions a Python container for the transformation step and terminates it once the task completes:
 
 ```yaml
 id: data_pipeline
@@ -92,7 +92,7 @@ tasks:
 1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or the full [installation instructions for production environments](../02.installation/index.md).
 2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML, declaring inputs, tasks, and triggers. Tasks can be anything — scripts, queries, remote jobs or API calls. Add `retry`, `timeout`, `concurrency` or `taskRunner` settings to scale tasks dynamically and manage the orchestration logic.
 3. **Add Triggers** – Execute flows manually, via schedules, API, flow or event [triggers](../04.workflow-components/07.triggers/index.md) (e.g., S3 file uploads).
-4. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to inspect data, execution states, logs, lineage dependencies, and optimize resource usage.
+4. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to inspect workflow outputs, logs, execution states, and dependencies.
 
 ---
 

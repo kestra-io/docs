@@ -6,8 +6,6 @@ order: 20
 
 Kestra's built-in Code Editor allows you to easily manage dbt projects by cloning the Git repository with the dbt code, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
 
-Let's look at how you can use Kestra's Code Editor to manage dbt projects.
-
 ---
 
 ## Clone a dbt project from Git
@@ -80,7 +78,7 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-Note how by using the `namespaceFiles` property, we can run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to build the entire project every time.
+Note how by using the `namespaceFiles` property, we can run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to clone the Git repository every time.
 
 Execute the flow using the default value for the `dbt_command` input.
 

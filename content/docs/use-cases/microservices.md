@@ -4,33 +4,33 @@ description: Run flows in response to events from microservices
 order: 30
 ---
 
-Modern data and engineering teams often rely on microservices to keep their systems modular, fault-tolerant, and flexible. Each microservice handles a single task, making it easier to develop, scale, and maintain. The main challenge is orchestrating these independent components so they run in the correct order, automatically recover from failures, and scale as needed.
+Data and engineering teams often rely on microservices to keep their systems modular, fault-tolerant, and flexible. Each microservice handles a single task, making it easier to develop, scale, and maintain. The main challenge is orchestrating these independent components so they run in the correct order, automatically recover from failures, and scale as needed.
 
 ## What is Microservices Orchestration?
 
-Microservices orchestration is the automated coordination of services, often triggered by events such as a file upload to S3/SFTP, a message in Kafka/PubSub, or a new database row. A platform like Kestra defines the sequence of these services, manages their dependencies, and ensures reliable execution—whether triggered manually, via API calls, webhooks, schedules, or by other services.
+Microservices orchestration is the automated coordination of services, often triggered by events such as a file upload to S3/SFTP, a message in Kafka/PubSub, or a new database row. A platform like Kestra defines the sequence of these services, manages their dependencies, and ensures reliable execution—whether triggered manually, via API calls, webhooks, schedules, or by completion of upstream workflows.
 
 Kestra can:
-- Trigger your microservices from any event, schedule, or dependency
-- Pass data between services, ensuring each receives the right input
+- [Trigger](../04.workflow-components/07.triggers/index.md) your microservices from any event, schedule, or flow dependency
+- Pass data of any size between services thanks to built-in [internal storage](../07.architecture/09.internal-storage.md)
 - Dynamically provision task runner environments, so your services have enough compute resources
 - Retry failed services, keeping workflows robust and fault-tolerant
 - Send alerts or notifications on success or failure
 - Track logs, metrics, inputs, and outputs of each service execution
-- Roll back to earlier workflow versions as needed.
+- Roll back to earlier workflow [revisions](../15.how-to-guides/rollback-and-revision-history.md) as needed.
 
 ## Why Use Kestra for Microservices Orchestration?
 
 1. **Visibility** – View dependencies, see which service failed or succeeded, then restart or roll back as needed.
 2. **Simplicity** – Declare dependencies in YAML or use Kestra’s UI with no-code/low-code options.
 3. **Scalability** – Run microservices in parallel and scale compute resources based on workload.
-4. **Resilience** – If one service fails, Kestra can retry just that part instead of re-running the entire pipeline.
-5. **Separation of Orchestration and Logic** – Keep your existing code as-is and add minimal YAML on top to orchestrate it.
+4. **Resilience** – If one service fails, Kestra can retry just that part instead of re-running the entire workflow.
+5. **Zero Code Changes** – Keep your existing code as-is and add minimal YAML on top to orchestrate it.
 6. **Extensibility** – Add new triggers, tasks, runners, or notifications through Kestra’s plugin system.
 7. **Security and Compliance** – Manage secrets, access, encryption, and audit logs within Kestra.
 8. **Version Control** – Keep orchestration configurations in Git and revert to previous versions if needed.
-9. **Multi-Tenancy** – Use separate tenants/namespaces for different workflows, each with its own variables and secrets.
-10. **Community and Support** – Ask questions and share tips in our Slack community.
+9. **Multi-Tenancy** – Use separate tenants/namespaces for different teams or projects, each with its own variables and secrets.
+10. **Open-Source Core** – Ask questions in our Slack community, report issues on GitHub, contribute to the codebase — all with no vendor lock-in.
 
 ## Example: Microservices Orchestration in Kestra
 
@@ -92,4 +92,12 @@ pluginDefaults:
 3. **Add Triggers** – Use scheduled or event-based [triggers](../04.workflow-components/07.triggers/index.md) to start microservice workflows.
 4. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to monitor states, logs, and metrics. Rerun failed workflow executions or roll back with one click.
 
-If you’d like to explore further, join the [Slack community](https://kestra.io/slack) or [book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your microservices.
+---
+
+## Next Steps
+- [Explore plugins](https://kestra.io/plugins) for databases, message brokers or custom scripts in any language.
+- [Explore blueprints](https://kestra.io/blueprints) for common microservice orchestration patterns.
+- [Explore How-to Guides](../15.how-to-guides/index.md) for detailed examples on using Kestra to orchestrate scripts written in Python, R, Node.js, Rust, Ruby, Go, Shell, Powershell or any other language.
+- [Explore Task Runners](../06.enterprise/task-runners.md) for scaling custom scripts and containerized services.
+- [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.
+- [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your microservices.
