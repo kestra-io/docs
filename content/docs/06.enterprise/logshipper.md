@@ -21,7 +21,7 @@ Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can inte
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
-- `logExporters` - This property is required, and it specifies how the logs are exported. For example, you can specify AWS Cloudwatch credentials to use an external plugin or use Kestra's core `FileLogExporter` plugin.
+- `logExporters` - This property is required, and it specifies the plaform where the logs will be exported. It support a list of entries, allowing you to export logs to different plateforms at once
 - `batchSize` - Defines the amount of logs per batch. The default value is set to `1000`.
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. You can specify, for example, only to batch `WARNING` or `ERROR` level logs.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
