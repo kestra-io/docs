@@ -69,6 +69,7 @@ export default defineNuxtConfig({
                 'c',
                 'cpp',
                 'csv',
+                'css',
                 'dockerfile',
                 'go',
                 'groovy',
@@ -213,6 +214,14 @@ export default defineNuxtConfig({
             routes: [
                 '/rss.xml',
             ],
+        },
+    },
+    $production: {
+        nitro: {
+            // !Important: we only want to enable the wasm feature in production since it will break syntax highlighting when running the dev server
+            experimental: {
+                wasm: true,
+            },
         },
     },
 
