@@ -15,11 +15,21 @@ Log Shipper can distribute Kestra logs from across your instance to an external 
 
 Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure, Google Cloud Platform, AWS Cloudwatch, and OpenTelemetry.
 
-## Log Shipper example
+## Log Shipper properties
+
+The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
+
+- `logExporters` - This property is required, and it specifies how the logs are exported. For example, you can specify AWS Cloudwatch credentials to use an external plugin or use Kestra's core `FileLogExporter` plugin.
+- `batchSize` - Defines the amount of logs per batch. The default value is set to `1000`.
+- `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. You can specify, for example, only to batch `WARNING` or `ERROR` level logs.
+- `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
+- `namespace` - Sets the task to only gather logs from a specific Kestra Namespace. If not specified, all instance logs are fetched.
+- `offsetKey` - Specifies the prefix of the Key Value (KV) store key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`.
+
+## Log Shipper examples
 
 The below example demonstrates how to design an execution that runs a daily log synchronization and distribution of logs with [Datadog](https://www.datadoghq.com/).
 
-::collapse{title="Expand for a LogShipper example with Datadog "}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -39,11 +49,11 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 ```
-::
+
+![Datadog Logs](/docs/enterprise/logshipper_datadog.png)
 
 Additionally, here is another example using [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/):
 
-::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -69,10 +79,5 @@ tasks:
         logGroupName: test_kestra
         logStreamName: test_stream
 ```
-::
 
-An execution uses either the last log send date or the difference between **Now** and the `startingDayBefore` to search logs, fetch a batch of logs, and send them via a log shipper plugin. 
-
-The `batchSize` property can be changed to your desired amount of logs, and the default size is `1000` logs. The `logExporters` property defines the endpoint of your logging platform the logs should be sent to.
-
-(TBD) Add more about properties
+![AWS Cloud Watch Logs](/docs/enterprise/logshipper_aws_cloudwatch.png)
