@@ -392,16 +392,12 @@
     }
 
     .homepage {
-      background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat,
-      radial-gradient(ellipse closest-side, rgba($primary, .2) 0%, #DDC4FF00 100%) no-repeat;
-      background-size: 500px 250px, 500px 300px;
-      background-position: top 220px right 130px, top 750px left -50px;
-      .bd-content {
-        background: url('/docs/ui/homepage-bg.webp') no-repeat;
-        background-size: 1261px 984px;
-        margin-bottom: 2em;
-        background-position: top -200px right -350px;
-      }
+        .bd-content {
+            background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
+            background-size: 500px 250px, 1261px 984px;
+            background-position: top 110px right -30px, top -200px right -350px;
+            margin-bottom: 2em;
+        }
 
         @include media-breakpoint-up(lg) {
             .bd-content {
