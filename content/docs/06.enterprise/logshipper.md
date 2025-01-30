@@ -7,7 +7,9 @@ version: "0.21.0"
 
 Manage and distribute logs across your entire infrastructure.
 
-**Add Video**
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Log Shipper functionality
 
