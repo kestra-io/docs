@@ -6,7 +6,7 @@ isHomepage: true
 ::HomePageHeader{title="What is Kestra?"}
 Kestra is an open-source **infinitely-scalable orchestration platform** enabling all engineers to manage **business-critical workflows** declaratively in code.
 
-Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven data pipelines effortless.
+Thanks to hundreds of built-in plugins and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven data pipelines effortless.
 
 ::HomePageButtons{ :buttons='[{"label": "Quickstart Guide →", "href": "/docs/getting-started"},{"label": "Why Kestra?","href": "/docs/why-kestra"},{"label": "Enterprise Edition","href": "/docs/enterprise"}]'}
 ::

@@ -1,12 +1,8 @@
 ---
-title: Orchestrate dbt Workflows
-description: Edit dbt code from Kestra's Code Editor
+title: Orchestrate dbt models
+description: Run dbt models at scale and manage dbt projects with Kestra's Code Editor
 order: 20
 ---
-
-Edit dbt code from Kestra's Code Editor
-
-## Overview
 
 Kestra's built-in Code Editor allows you to easily manage dbt projects by cloning the Git repository with the dbt code, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
 
