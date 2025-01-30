@@ -64,40 +64,7 @@ export default defineNuxtConfig({
             fields: ['hideSidebar', 'hideSubMenus'],
         },
         documentDriven: false,
-        highlight: {
-            langs: [
-                'bash',
-                'c',
-                'cpp',
-                'csv',
-                'css',
-                'dockerfile',
-                'go',
-                'groovy',
-                'handlebars',
-                'hcl',
-                'ini',
-                'java',
-                'javascript',
-                'json',
-                'markdown',
-                'mermaid',
-                'perl',
-                'php',
-                'python',
-                'r',
-                'ruby',
-                'rust',
-                'scala',
-                'sql',
-                'systemd',
-                'twig',
-                'typescript',
-                'xml',
-                'yaml'
-            ],
-            theme: 'github-dark'
-        },
+        highlight: false,
         markdown: {
             remarkPlugins: {
                 'remark-flexible-markers': {

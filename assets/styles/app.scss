@@ -564,4 +564,17 @@ blockquote.blockquote {
     }
 }
 
+.bd-content .bd-markdown .code-block{
+    code{
+        white-space: pre-wrap;
+    }
+    pre.shiki{
+        margin-top: 0;
+        code {
+            display: block;
+        }
+    }
+}
+
+
 @import "./docs";
