@@ -1,6 +1,6 @@
 ---
-title: Kestra 0.21 introduces Custom Dashboards, new No Code experience and Log Shipper for logs synchronization over your entire infrastructure
-description: Elevate yourn platform with a no-code workflow creation experience, new customizable operation dashboards, advanced infrastructure-wide log forwarding, and a suite improvements that streamline workflow management.
+title: Kestra 0.21 introduces Custom Dashboards, new No Code experience, and Log Shipper for logs synchronization over your entire infrastructure
+description: Elevate your platform with a no-code workflow creation experience, new customizable operation dashboards, advanced infrastructure-wide log forwarding, and a suite of improvements that streamline workflow management.
 date: 2025-02-04T17:00:00
 category: News & Products Updates
 author:
@@ -35,7 +35,7 @@ We're excited to introduce Log Shipper, a powerful new feature that streamlines 
 
 This log synchronization feature automatically batches your logs in optimal chunks and intelligently manages synchronization points. This means you get reliable, consistent log delivery without overwhelming your systems or missing critical data.
 
-Log Shipper is built on top plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch and OpenTelemetry. 
+Log Shipper is built on top of plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch, and OpenTelemetry. 
 
 We're particularly excited about our OpenTelemetry integration. As an open-source observability framework, OpenTelemetry has emerged as the industry standard for telemetry data collection. This integration means you can forward logs to any platform supporting the OpenTelemetry protocol.
 
@@ -176,7 +176,6 @@ charts:
 
 You can find Custom Dashboard blueprints directly inside you instance (under the Blueprint tab).
 
-
 ### Maintenance Mode
 
 We're excited to announce Maintenance Mode, a new feature designed to simplify platform maintenance operations for Kestra installations running at scale. This feature addresses a common challenge faced by organizations running numerous workflows: finding the right moment to perform platform updates without disrupting ongoing operations.
@@ -189,13 +188,13 @@ When activated, Maintenance Mode introduces a controlled state where:
 - New executions are queued for processing after maintenance concludes
 
 
-You can enter in Maintenance Mode via the `Administration > Instance` panel of you Kestra instance.
+You can enter into Maintenance Mode via the `Administration > Instance` panel of you Kestra instance.
 
 ## User Interface & Experience Improvements
 
 As with each release, we continue to improve the Kestra interface:
 
-- Filters and search bars are now consistent across the different panels
+- Filters and search bars are now consistent across the different panels.
 
 - Improvements for Apps:
   - Apps can now be previewed in the editor.
@@ -205,22 +204,22 @@ As with each release, we continue to improve the Kestra interface:
 - Introduce [system labels](https://github.com/kestra-io/kestra/issues/6682) for restarted and replayed execution.
 - Enhanced in-app documentation with collapsible task examples and properties, resulting in a cleaner, more organized interface.
 - Add [revision history](https://github.com/kestra-io/kestra-ee/issues/1403) for all resources (EE)
-- Failed subflow executions now resume from their last execution when restarted, rather than creating new executions from scratch
+- Failed subflow executions now resume from their last execution when restarted, rather than creating new executions from scratch.
 
 ## Other Features and Improvements
 
 
-- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework withk an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
+- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework with an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
 
 - A wider set of tasks properties now support [dynamic values](https://www.youtube.com/watch?v=TJ4BFBV8ZvU) - allowing better integration with tasks dependanices and Pebble syntax.
 
-- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks allowing to send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
+- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks that send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
 
 - Declare [Apps](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app) and [Custom Dashboards](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/dashboard) with Terraform. 
 
 - [Manage iteration index inside the ForEach](https://github.com/kestra-io/kestra/issues/4842) task with the new `taskrun.iteration` property.
 
-- New `finally` properties that run any tasks at the [end of a flow execution](https://github.com/kestra-io/kestra/issues/6649), regardless of the final state.
+- New `finally` property that runs any tasks at the [end of a flow execution](https://github.com/kestra-io/kestra/issues/6649), regardless of the final state.
 
 ## New Tasks & Plugins
 
