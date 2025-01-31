@@ -18,11 +18,12 @@ Human-in-the-loop (HITL) automation combines automated tasks with human decision
 
 ## Why Use Kestra for Human-in-the-Loop Workflows?
 
-1. **Flexible Integration** – Add approval steps to existing workflows without code changes
+1. **Flexible Integration** – Add approval steps to existing workflows in a few lines of YAML
 2. **Enterprise Security** – Manage permissions via namespace-level RBAC
 3. **Cross-Platform Notifications** – Send approval requests to Slack, Teams, or Email
-4. **Input Validation** – Enforce structured responses (Boolean, Dates, Options)
-5. **Bulk Operations** – Manage hundreds of paused executions simultaneously
+4. **Input Validation** – Enforce structured responses (Numeric, Boolean, Dates, Dropdowns)
+5. **Bulk Actions** – Bulk-resume multiple paused workflows when needed.
+6. **Audit Trails** – Track approvals, rejections, and reasons for each decision.
 
 ---
 
@@ -80,9 +81,9 @@ tasks:
 
 ---
 
-## Key Features
+##  Kestra Features for Human-in-the-Loop Automation
 
-### 1. Declarative Syntax
+### 1. Structured Inputs for Human Decisions
 
 Add approval steps with structured inputs to any workflow:
 ```yaml
@@ -91,10 +92,17 @@ Add approval steps with structured inputs to any workflow:
     onResume:
       - id: approved
         type: BOOLEAN
-        description: Approve this request?
+        displayName: Approve this request?
       - id: reason
         type: STRING
-        description: Decision notes
+        displayName: Decision notes
+      - id: team
+        type: SELECT
+        displayName: Team to review
+        values:
+          - HR
+          - Finance
+          - IT
 ```
 
 ### 2. Bulk Actions
@@ -104,7 +112,7 @@ Approve multiple paused workflows simultaneously:
 
 ### 3. Audit Trails
 
-The Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
+Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
 ```json
 {
   "approved": true,
@@ -152,13 +160,13 @@ Route next automated tasks based on human decisions:
        }
    ```
 4. **Add Triggers** – Use scheduled or event-based [triggers](../04.workflow-components/07.triggers/index.md) to launch workflows.
-5. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to monitor states, logs, outputs, and metrics. Rerun failed workflow executions or roll back to a previous revision with one click.
+5. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to monitor states, logs, outputs, and metrics. Correct and replay failed workflow executions or roll back to a previous revision when needed.
 
 ---
 
 ## Next Steps
 
 - [Explore notification plugins](https://kestra.io/plugins) for Slack, Teams, Email and more
-- [Check HITL How-to Guides](../15.how-to-guides/pause-resume.md) for detailed examples of approval workflows
+- [Check How-to Guides](../15.how-to-guides/pause-resume.md) for detailed examples of approval workflows
 - [Join Slack](https://kestra.io/slack) to ask questions, contribute code, or share feature requests
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help automate your approval processes.
