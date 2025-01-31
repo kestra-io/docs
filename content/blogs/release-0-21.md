@@ -1,6 +1,6 @@
 ---
-title: Kestra 0.21
-description: XXX.
+title: Kestra 0.21 introduces Custom Dashboards, new No Code experience and Log Shipper for logs synchronization over your entire infrastructure
+description: Elevate yourn platform with a no-code workflow creation experience, new customizable operation dashboards, advanced infrastructure-wide log forwarding, and a suite improvements that streamline workflow management.
 date: 2025-02-04T17:00:00
 category: News & Products Updates
 author:
@@ -202,9 +202,9 @@ As with each release, we continue to improve the Kestra interface:
   - Apps can be declared via [Terraform definitions](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app).
   - You can find Apps blueprints inside the Blueprint tab of your instance.
 
-- Introduce system labels for restarted and replayed execution - https://github.com/kestra-io/kestra/issues/6682
+- Introduce [system labels](https://github.com/kestra-io/kestra/issues/6682) for restarted and replayed execution.
 - Enhanced in-app documentation with collapsible task examples and properties, resulting in a cleaner, more organized interface.
-- [TBD] Resource Type filter in AuditLogs + Revision History for all resources- https://github.com/kestra-io/kestra-ee/issues/1403
+- Add [revision history](https://github.com/kestra-io/kestra-ee/issues/1403) for all resources (EE)
 - Failed subflow executions now resume from their last execution when restarted, rather than creating new executions from scratch
 
 ## Other Features and Improvements
@@ -343,6 +343,7 @@ tasks:
             - spark-submit s3://kestra-test/health_violations.py --data_source s3://kestra-test/food_establishment_data.csv --output_uri s3://kestra-test/test-emr-output
     wait: false
 ```
+::
 
 [TBD LINK TO PLUGIN DOC]
 
