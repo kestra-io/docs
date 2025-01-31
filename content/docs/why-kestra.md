@@ -64,7 +64,7 @@ With Kestra, you don’t have to turn your code into a special “task function�
 
 ### 6. Bridging Developer and Non-Developer Worlds
 
-Kestra isn’t just for engineers. Business stakeholders can schedule flows, validate data quality, or manage critical tasks from the UI. They don’t have to open an IDE or file a ticket for simple changes. This democratizes orchestration across the organization, breaks down silos, and speeds up daily work.
+Kestra isn’t just for engineers — business stakeholders can schedule flows, validate data quality, and manage key tasks directly from the UI. There’s no need for an IDE or developer support for simple changes; they can write and run code in the built-in editor. This makes automation accessible across teams and removes unnecessary bottlenecks.
 
 ## Unique Advantages
 
@@ -146,13 +146,14 @@ Since Kestra is open-source and self-hosted, you retain full control over your e
 - **Generative AI Workflows**: Orchestrate LLM-powered tasks and integrate with OpenAI, LangChain, or Google Gemini plugins. Trigger AI steps in response to any business event and use Kestra’s Pause & Resume functionality to let humans validate AI-generated outputs.
 - **IT Automation**: Automate resource requests for infrastructure provisioning across AWS, GCP, or on-prem. Orchestrate build processes with plugins for Terraform, Ansible, or Docker and simplify DevOps processes from a single orchestrator.
 - **Cross-Team Collaboration**: Let analytics, finance, marketing, and engineering automate work in the same platform, each at their own comfort level.
+- **Custom Applications**: Use Kestra as a backend workflow engine for your internal tools, SaaS products, or customer-facing applications.
 
 ## Outcomes Kestra Delivers for Our Users
 
 - **Shorter Time-to-Value**: You can build, test, and deploy new workflows in hours or days, not weeks or months.
 - **Greater Operational Efficiency**: Non-technical users handle many tasks themselves, freeing engineers to tackle other projects.
 - **Clarity and Structure**: Kestra provides visibility into dependencies across teams, data sources, and environments.
-- **Reduced Chaos**: Stop juggling multiple orchestration tools. With Kestra, you get a single platform to automate everything from simple scheduled jobs to large-scale mission-critical data pipelines.
+- **Single Pane of Glass**: Stop juggling multiple orchestration tools. With Kestra, you get a unified platform to automate everything from simple scheduled jobs to large-scale mission-critical data pipelines.
 
 ## Our Vision: Orchestrate Everything, Everywhere
 
