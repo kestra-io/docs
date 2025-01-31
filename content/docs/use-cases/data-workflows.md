@@ -8,7 +8,7 @@ Data teams use orchestration platforms like Kestra to manage complex pipelines �
 
 ## What is Data Orchestration?
 
-Data orchestration automates the execution of interconnected tasks (ETL, analytics, AI and ML jobs) while governing their dependencies and business logic. It focuses on **how data moves** between systems, teams and processes.
+Data orchestration automates the execution of interconnected tasks (ETL, Analytics, AI and ML jobs) while governing their dependencies and business logic. It focuses on **how data moves** between systems, teams and processes.
 
 Kestra's data orchestration capabilities include:
 - **Flexible workflow triggers** — run data flows on schedule, external events (e.g., a new file in S3/SFTP), or API calls.
@@ -110,7 +110,7 @@ tasks:
 ## Getting Started with Data Orchestration
 
 1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or the full [installation instructions for production environments](../02.installation/index.md).
-2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML, declaring inputs, tasks, and triggers. Tasks can be anything — scripts, queries, remote jobs or API calls. Add `retry`, `timeout`, `concurrency` or `taskRunner` settings to scale tasks dynamically and manage the orchestration logic.
+2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML, declaring inputs, tasks, and triggers. Tasks can be anything — scripts, queries, remote jobs or API calls. Add `retry`, `timeout`, `concurrency` or `taskRunner` settings to scale tasks dynamically and manage data orchestration logic.
 3. **Add Triggers** – Execute flows manually, via schedules, API, flow or event [triggers](../04.workflow-components/07.triggers/index.md) (e.g., S3 file uploads).
 4. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to inspect workflow outputs, logs, execution states, and dependencies.
 
@@ -118,7 +118,7 @@ tasks:
 
 ## Next Steps
 - [Explore plugins](https://kestra.io/plugins) for databases, data ingestion and transformation tools or custom scripts in any language.
-- [Explore blueprints](https://kestra.io/blueprints) for common data workflows and orchestration patterns.
+- [Explore blueprints](https://kestra.io/blueprints) for common data workflows and data orchestration patterns.
 - [Explore How-to Guides](../15.how-to-guides/index.md) for detailed examples on [using Kestra for ETL](../15.how-to-guides/etl-pipelines.md), [ELT](../15.how-to-guides/dbt.md), ML, and more.
 - [Explore Task Runners](../06.enterprise/task-runners.md) for scaling custom scripts and containers.
 - [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.

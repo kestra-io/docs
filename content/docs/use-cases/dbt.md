@@ -11,7 +11,7 @@ Data teams use dbt to transform data in warehouses. While dbt simplifies SQL tra
 Orchestration platforms like Kestra automate the execution of dbt models while managing dependencies, environments, and deployments. With Kestra, you can:
 - **Version control models** – Store dbt projects in Git and sync with Kestra's namespace files
 - **Test changes safely** – Run modified models in isolated containers before production
-- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using task runners (AWS/GCP/Azure Batch)
+- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../06.enterprise/task-runners.md) (AWS/GCP/Azure Batch)
 - **Integrate with data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
 
 ---
@@ -32,9 +32,9 @@ Orchestration platforms like Kestra automate the execution of dbt models while m
 
 Below are common patterns to orchestrate dbt workflows using Kestra.
 
-### Git Clone dbt Project and Run dbt Build
+### Fetch dbt Project from Git at Runtime
 
-The example below shows a simple flow that runs `dbt build` for DuckDB in a Docker container.
+The example below shows a simple flow that runs `dbt build` for DuckDB in a Docker container. Note that the dbt project is cloned from a Git repository at runtime to ensure the latest version is used.
 
 ```yaml
 id: dbt_duckdb
@@ -71,7 +71,7 @@ tasks:
 
 ### Sync dbt Project from Git to Kestra's Namespace Files
 
-You can sync the dbt project from a Git branch to Kestra's namespace and iterate on the models from the integrated code editor.
+You can sync the dbt project from a Git branch to Kestra's namespace and iterate on the models from the integrated code editor in the Kestra UI.
 
 ```yaml
 id: dbt_build
@@ -258,7 +258,8 @@ Add quality checks between dbt stages:
 ```
 
 ### 4. Multi-Project Coordination
-Orchestrate multiple dbt projects:
+
+If needed, you can orchestrate multiple dbt projects from a single flow:
 
 ```yaml
 - id: core
@@ -272,11 +273,11 @@ Orchestrate multiple dbt projects:
 
 ### 5. Scale dbt Builds in the Cloud
 
-Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that computationally heavy parsing process runs on AWS ECS Fargate, Google Batch, or Azure Batch:
+Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that the (_computationally heavy_) dbt parsing process runs on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes job by leveraging [Kestra's task runners](../06.enterprise/task-runners.md):
 
 ```yaml
 pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
+  - type: io.kestra.plugin.dbt.cli.DbtCLI
     values:
        taskRunner:
          type: io.kestra.plugin.ee.aws.runner.Batch
@@ -296,15 +297,9 @@ You can set plugin defaults at the flow, namespace, or global level to apply to 
 
 ## Getting Started with dbt Orchestration
 
-1. **Sync Your Project**
-   ```yaml
-   - id: init
-     type: io.kestra.plugin.git.SyncNamespaceFiles
-     url: https://github.com/your/dbt-repo
-     namespace: company.analytics.dbt
-   ```
-
-2. **Configure Environments** — Set up dbt profiles for different targets based on your dbt project setup:
+1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or the full [installation instructions for production environments](../02.installation/index.md).
+2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML, declaring inputs, tasks, and triggers. Use one of the patterns above to sync dbt projects from Git, run dbt CLI commands, and push changes back to Git.
+3. **Configure Environments** — Set up dbt profiles for different targets based on your dbt project setup:
    ```yaml
    - id: dbt
      type: io.kestra.plugin.dbt.cli.DbtCLI
@@ -315,18 +310,15 @@ You can set plugin defaults at the flow, namespace, or global level to apply to 
            prod:
              type: duckdb
    ```
-
-3. **Add Execution Triggers**
+4. **Add Execution Triggers** — Schedule dbt runs or trigger them based on upstream data availability:
    ```yaml
    triggers:
      - id: schedule
        type: io.kestra.plugin.core.trigger.Schedule
        cron: "0 9 * * 1-5"  # Weekdays at 9 AM
       ```
+5. **Monitor Runs** — Track dbt models and their execution durations in Kestra's UI.
 
-4. **Monitor Runs** — Track model timing and execution status in Kestra's UI.
-
-![dbt-code-editor](/docs/how-to-guides/dbt/dbt-code-editor-2.png)
 
 ---
 
@@ -334,5 +326,5 @@ You can set plugin defaults at the flow, namespace, or global level to apply to 
 
 - [Explore dbt plugins](https://kestra.io/plugins/plugin-dbt)
 - [Read how-to guide on dbt](../15.how-to-guides/dbt.md)
-- [Join Slack](https://kestra.io/slack) to ask questions, contribute bug reports, and feature requests.
+- [Join Slack](https://kestra.io/slack) to ask questions, contribute code, report bugs and share and feature requests.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your dbt workflows.
