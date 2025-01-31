@@ -1,38 +1,114 @@
 ---
-title: Orchestrate dbt models
-description: Run dbt models at scale and manage dbt projects with Kestra's Code Editor
+title: Orchestrate dbt Workflows
+description: Version, test, and deploy dbt models with GitOps and scalable execution
 order: 20
 ---
 
-Kestra's built-in Code Editor allows you to easily manage dbt projects by cloning the Git repository with the dbt code, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
+Data teams use dbt to transform data in warehouses. While dbt simplifies SQL transformations, managing dependencies, testing changes, and deploying models at scale remains challenging. Kestra solves this by integrating dbt with your data platform through version-controlled workflows.
+
+## What is needed to orchestrate dbt workflows?
+
+Orchestration platforms like Kestra automate the execution of dbt models while managing dependencies, environments, and deployments. With Kestra, you can:
+- **Version control models** – Store dbt projects in Git and sync with Kestra's namespace files
+- **Test changes safely** – Run modified models in isolated containers before production
+- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using task runners (AWS/GCP/Azure Batch)
+- **Integrate with data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
 
 ---
 
-## Clone a dbt project from Git
+## Why Use Kestra for dbt Orchestration?
 
-This flow pulls a dbt project from Git and uploads it to Kestra as Namespace Files:
+1. **GitOps Workflows** – Sync dbt projects from Git and push changes back through Kestra.
+2. **Environment Management** – Run models in different targets (dev/stage/prod) from one self-contained flow.
+3. **Dynamic Scaling** – Execute heavy dbt builds on spot instances, serverless containers or Kubernetes clusters.
+4. **Dependency Tracking** – Automatically parse `manifest.json` to visualize model relationships.
+5. **Integrated Testing** – Add data quality checks between dbt models using Python or SQL.
+6. **CI/CD Pipelines** – Deploy model changes to multiple Kestra namespaces or Git branches.
+7. **Multi-Project Support** – Coordinate multiple dbt projects declaratively in one flow.
+
+---
+
+## Example: dbt Project Orchestration
+
+Below are common patterns to orchestrate dbt workflows using Kestra.
+
+### Git Clone dbt Project and Run dbt Build
+
+The example below shows a simple flow that runs `dbt build` for DuckDB in a Docker container.
 
 ```yaml
-id: upload_dbt_project
-namespace: company.datateam.dbt
+id: dbt_duckdb
+namespace: company.team.dbt
 
 tasks:
-  - id: wdir
+  - id: dbt
     type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
-      - id: git_clone
+      - id: clone_repository
         type: io.kestra.plugin.git.Clone
         url: https://github.com/kestra-io/dbt-example
-        branch: master
+        branch: main
 
-      - id: upload
-        type: io.kestra.plugin.core.namespace.UploadFiles
-        namespace: "{{ flow.namespace }}"
-        files:
-          - "glob:**/dbt/**"
+      - id: dbt_build
+        type: io.kestra.plugin.dbt.cli.DbtCLI
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+        commands:
+          - dbt deps
+          - dbt build
+        profiles: |
+          my_dbt_project:
+            outputs:
+              dev:
+                type: duckdb
+                path: ":memory:"
+                fixed_retries: 1
+                threads: 16
+                timeout_seconds: 300
+            target: dev
 ```
 
-You can use this flow as an initial setup:
+### Sync dbt Project from Git to Kestra's Namespace Files
+
+You can sync the dbt project from a Git branch to Kestra's namespace and iterate on the models from the integrated code editor.
+
+```yaml
+id: dbt_build
+namespace: company.team.dbt
+
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    url: https://github.com/kestra-io/dbt-example
+    branch: master
+    namespace: "{{ flow.namespace }}"
+    gitDirectory: dbt
+    dryRun: false
+
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+    namespaceFiles:
+      enabled: true
+      exclude:
+        - profiles.yml
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    commands:
+      - dbt build
+    profiles: |
+      my_dbt_project:
+        outputs:
+          prod:
+            type: duckdb
+            path: ":memory:"
+            schema: main
+            threads: 8
+        target: prod
+```
+
+You can use the above flow as an initial setup:
 1. Add this flow within Kestra UI
 2. Save it
 3. Execute that flow
@@ -40,15 +116,17 @@ You can use this flow as an initial setup:
 
 ![dbt-code-editor](/docs/how-to-guides/dbt/dbt-code-editor.png)
 
----
+You can then set `disabled: true` within the first task after the first execution to avoid re-syncing the project. This allows you to iterate on the models without cloning the repository every time.
 
-## Run dbt CLI commands
+With the Code Editor built into Kestra, you can easily manage dbt projects by cloning the dbt Git repository, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
 
-Let's create a flow that runs dbt CLI commands:
+::collapse{title="Run dbt CLI, iterate on models, and push changes to Git"}
+
+Let's create a flow that runs dbt CLI commands on top of the dbt project synced from Git to our Kestra namespace. We will use the Code Editor to make changes to the dbt models and push the changes back to the Git repository.
 
 ```yaml
 id: dbt_build
-namespace: company.datateam.dbt
+namespace: company.team.dbt
 
 inputs:
   - id: dbt_command
@@ -82,7 +160,7 @@ Note how by using the `namespaceFiles` property, we can run dbt commands on the 
 
 Execute the flow using the default value for the `dbt_command` input.
 
-## Edit dbt files
+### Edit dbt file
 
 You can now open the dbt files in the Code Editor and make changes as needed. For example, let's add a new model `my_third_dbt_model.sql`:
 
@@ -96,7 +174,7 @@ where id = 2
 
 When you now run the flow using the second dropdown value for the `dbt_command` input, only the new model will be built. This allows you to test the changes quickly and iterate faster.
 
-## Push changes to Git
+### Push changes to Git
 
 Once you are satisfied with the changes, you can push them to the same Git repository to your desired Git branch using the [PushNamespaceFiles](./pushnamespacefiles.md).
 
@@ -122,3 +200,139 @@ tasks:
 ```
 
 Make sure to adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
+::
+
+---
+
+## Kestra Features to Orchestrate dbt Workflows
+
+### 1. Git Integration
+
+Clone dbt projects from any Git provider:
+
+```yaml
+- id: clone
+  type: io.kestra.plugin.git.Clone
+  url: https://github.com/kestra-io/dbt-example
+  branch: main
+```
+
+### 2. Manifest Tracking
+
+Store dbt artifacts between runs in the integrated KV Store:
+```yaml
+tasks:
+  - id: dbt
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    namespaceFiles:
+      enabled: true
+    loadManifest:
+      key: manifest.json
+      namespace: "{{ flow.namespace }}"
+    storeManifest:
+      key: manifest.json
+      namespace: "{{ flow.namespace }}"
+```
+
+### 3. Model Testing
+
+Add quality checks between dbt stages:
+```yaml
+  - id: scan
+    type: io.kestra.plugin.soda.Scan
+    configuration:
+      # ...
+    checks:
+      checks for orderDetail:
+        - row_count > 0
+        - max(unitPrice):
+            warn: when between 1 and 250
+            fail: when > 250
+      checks for territory:
+        - row_count > 0
+        - failed rows:
+            name: Failed rows query test
+            fail condition: regionId = 4
+    requirements:
+      - soda-core-bigquery
+```
+
+### 4. Multi-Project Coordination
+Orchestrate multiple dbt projects:
+
+```yaml
+- id: core
+  type: io.kestra.plugin.dbt.cli.DbtCLI
+  projectDir: dbt-core
+
+- id: marts
+  type: io.kestra.plugin.dbt.cli.DbtCLI
+  projectDir: dbt-marts
+```
+
+### 5. Scale dbt Builds in the Cloud
+
+Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that computationally heavy parsing process runs on AWS ECS Fargate, Google Batch, or Azure Batch:
+
+```yaml
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python
+    values:
+       taskRunner:
+         type: io.kestra.plugin.ee.aws.runner.Batch
+         region: us-east-1
+         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+         computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
+         jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
+         executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
+         taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
+         bucket: kestra-us
+```
+
+You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all dbt tasks run on AWS ECS Fargate in a given environment.
+
+---
+
+## Getting Started with dbt Orchestration
+
+1. **Sync Your Project**
+   ```yaml
+   - id: init
+     type: io.kestra.plugin.git.SyncNamespaceFiles
+     url: https://github.com/your/dbt-repo
+     namespace: company.analytics.dbt
+   ```
+
+2. **Configure Environments** — Set up dbt profiles for different targets based on your dbt project setup:
+   ```yaml
+   - id: dbt
+     type: io.kestra.plugin.dbt.cli.DbtCLI
+     containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+     profiles: |
+       my_dbt_project:
+         outputs:
+           prod:
+             type: duckdb
+   ```
+
+3. **Add Execution Triggers**
+   ```yaml
+   triggers:
+     - id: schedule
+       type: io.kestra.plugin.core.trigger.Schedule
+       cron: "0 9 * * 1-5"  # Weekdays at 9 AM
+      ```
+
+4. **Monitor Runs** — Track model timing and execution status in Kestra's UI.
+
+![dbt-code-editor](/docs/how-to-guides/dbt/dbt-code-editor-2.png)
+
+---
+
+## Next Steps
+
+- [Explore dbt plugins](https://kestra.io/plugins/plugin-dbt)
+- [Read how-to guide on dbt](../15.how-to-guides/dbt.md)
+- [Join Slack](https://kestra.io/slack) to ask questions, contribute bug reports, and feature requests.
+- [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your dbt workflows.

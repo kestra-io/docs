@@ -1,6 +1,6 @@
 ---
 title: Process Automation
-description: Orchestrate IT & Human-in-the-loop workflows across systems and teams
+description: Orchestrate Human-in-the-loop workflows across IT systems and teams
 order: 50
 ---
 

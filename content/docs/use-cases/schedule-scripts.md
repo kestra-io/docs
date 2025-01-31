@@ -1,6 +1,6 @@
 ---
 title: Orchestrate Python Workflows
-description: Automate, scale, and observe Python workflows with declarative orchestration
+description: Automate and scale Python workflows declaratively
 order: 60
 ---
 
@@ -77,6 +77,11 @@ tasks:
         • Top Product ID: #{{ outputs.transform.vars.top_product_id }}
         • Units Sold of Top Product: {{ outputs.transform.vars.total_quantity_sold }}"
       }
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *" # Run every day at 9 AM
 ```
 
 Adding the following `pluginDefaults` to that flow (or your namespace) will scale the Python task to run on AWS ECS Fargate:
