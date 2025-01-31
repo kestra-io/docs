@@ -21,7 +21,7 @@ System Flows periodically execute background operations that keep your platform 
 4. Syncing code from Git or pushing code to Git
 5. Automatically [releasing flows](https://kestra.io/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments
 
-We refer to these as **System Flows** because by default they are hidden from end users and are only visible within the `system` namespace. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
+We refer to these as **System Flows** because by default they are hidden from end users and are only visible within the `system` namespace. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](../configuration/index.md#system-flows):
 
 ```yaml
 kestra:
