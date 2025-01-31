@@ -1,6 +1,6 @@
 ---
 title: Human-in-the-Loop Automation
-description: Integrate manual approvals and validation steps into automated workflows
+description: Integrate manual approvals into critical steps of automated workflows
 order: 60
 ---
 

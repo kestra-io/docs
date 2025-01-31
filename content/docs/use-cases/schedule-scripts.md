@@ -1,6 +1,6 @@
 ---
 title: Orchestrate Python Workflows
-description: Automate and scale Python workflows declaratively
+description: Automate, schedule and scale Python workflows in a declarative way
 order: 60
 ---
 

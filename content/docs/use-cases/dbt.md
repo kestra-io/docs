@@ -1,6 +1,6 @@
 ---
 title: Orchestrate dbt Workflows
-description: Version, test, and deploy dbt models with GitOps and scalable execution
+description: Version-control, test, and deploy dbt models with GitOps and on-demand compute
 order: 20
 ---
 

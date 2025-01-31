@@ -1,6 +1,6 @@
 ---
-title: Orchestrate Data Workflows
-description: Schedule, backfill, automate, scale, and observe data pipelines with declarative workflows
+title: Orchestrate Data Pipelines
+description: Schedule, backfill, automate, and scale data pipelines declaratively
 order: 10
 ---
 

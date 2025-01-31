@@ -1,6 +1,6 @@
 ---
 title: Coordinate Microservices
-description: Run flows in response to events from microservices
+description: Run microservice tasks in response to events, recover from failures, and scale as needed
 order: 30
 ---
 
