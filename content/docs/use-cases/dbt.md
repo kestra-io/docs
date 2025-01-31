@@ -206,7 +206,7 @@ Make sure to adjust the `url`, `branch`, and `gitDirectory` properties to match 
 
 ## Kestra Features to Orchestrate dbt Workflows
 
-### 1. Git Integration
+### Git Integration
 
 Clone dbt projects from any Git provider:
 
@@ -217,7 +217,7 @@ Clone dbt projects from any Git provider:
   branch: main
 ```
 
-### 2. Manifest Tracking
+### Manifest Tracking
 
 Store dbt artifacts between runs in the integrated KV Store:
 ```yaml
@@ -234,7 +234,7 @@ tasks:
       namespace: "{{ flow.namespace }}"
 ```
 
-### 3. Model Testing
+### Model Testing & Quality Checks
 
 Add quality checks between dbt stages:
 ```yaml
@@ -257,7 +257,7 @@ Add quality checks between dbt stages:
       - soda-core-bigquery
 ```
 
-### 4. Multi-Project Coordination
+### Multi-Project Coordination
 
 If needed, you can orchestrate multiple dbt projects from a single flow:
 
@@ -271,7 +271,7 @@ If needed, you can orchestrate multiple dbt projects from a single flow:
   projectDir: dbt-marts
 ```
 
-### 5. Scale dbt Builds in the Cloud
+### Scale dbt Workflows in the Cloud
 
 Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that the (_computationally heavy_) dbt parsing process runs on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes job by leveraging [Kestra's task runners](../06.enterprise/task-runners.md):
 

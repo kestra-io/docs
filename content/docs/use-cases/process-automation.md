@@ -83,7 +83,7 @@ tasks:
 
 ##  Kestra Features for Human-in-the-Loop Automation
 
-### 1. Structured Inputs for Human Decisions
+### Structured Inputs for Human Decisions
 
 Add approval steps with structured inputs to any workflow:
 ```yaml
@@ -105,12 +105,12 @@ Add approval steps with structured inputs to any workflow:
           - IT
 ```
 
-### 2. Bulk Actions
+### Bulk Actions
 
 Approve multiple paused workflows simultaneously:
 ![Bulk Resume](/docs/how-to-guides/pause-resume/pause_resume2.png)
 
-### 3. Audit Trails
+### Audit Trails
 
 Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
 ```json
@@ -120,7 +120,7 @@ Audit Logs capture who approved or rejected each request, and the Pause task's o
 }
 ```
 
-### 4. Conditional Flows
+### Conditional Branching
 
 Route next automated tasks based on human decisions:
 ```yaml

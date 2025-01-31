@@ -136,6 +136,6 @@ tasks:
 ## Next Steps
 - [Explore plugins](https://kestra.io/plugins) for Docker, Terraform, Ansible, Script tasks (Python, Go, Shell, Powershell, Ruby and more), and cloud providers.
 - [Explore Task Runners](../06.enterprise/task-runners.md) for scaling custom scripts and containers.
-- [Read how-to guides](../15.how-to-guides/index.md) on how to integrate with Grafaana, Prometheus, and other monitoring tools.
+- [Read how-to guides](../15.how-to-guides/index.md) on how to integrate with Grafana, Prometheus, and other monitoring tools.
 - [Join Slack](https://kestra.io/slack) to ask questions or contribute bug reports and feature requests.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your infrastructure workflows.
