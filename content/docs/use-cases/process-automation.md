@@ -1,117 +1,164 @@
 ---
-title: Process Automation
-description: Orchestrate Human-in-the-loop workflows across IT systems and teams
-order: 50
+title: Human-in-the-Loop Automation
+description: Integrate manual approvals and validation steps into automated workflows
+order: 60
 ---
 
-Pause and Resume your flows for Manual Approval, Output Validation, and Human-in-the-loop scenarios.
+Modern automation requires human oversight for critical decisions. Kestra enables integration of manual approval steps within workflows while maintaining audit trails and process consistency.
 
-## The use cases for pausing and resuming workflows
+## What is Human-in-the-Loop Automation?
 
-Here are common scenarios where the Pause and Resume feature is particularly useful:
-1. **Output Validation**: you can pause a workflow to check the logs and view the generated outputs before processing downstream tasks.
-2. **Manual Approval**: the execution can wait for manual approval, e.g. after validating that a file has been correctly uploaded to an external system.
-3. **Human-in-the-loop**: you can pause a workflow execution to perform a human task before resuming the execution, e.g. to validate a trained machine learning model before deploying it to production.
+Human-in-the-loop (HITL) automation combines automated tasks with human decision points. Kestra implements this through:
+- **Pause/Resume** – Pause workflows for manual inspection before resuming
+- **Dynamic Inputs** – Collect user decisions during execution
+- **Approval Chains** – Route decisions to specific users or teams
+- **Audit Logs** – Track who approved/rejected each request and why.
 
-## How to pause and resume a workflow
+---
 
-```yaml
-id: pause_resume
-namespace: company.team
+## Why Use Kestra for Human-in-the-Loop Workflows?
 
-tasks:
-  - id: pause
-    type: io.kestra.plugin.core.flow.Pause
+1. **Flexible Integration** – Add approval steps to existing workflows without code changes
+2. **Enterprise Security** – Manage permissions via namespace-level RBAC
+3. **Cross-Platform Notifications** – Send approval requests to Slack, Teams, or Email
+4. **Input Validation** – Enforce structured responses (Boolean, Dates, Options)
+5. **Bulk Operations** – Manage hundreds of paused executions simultaneously
 
-  - id: after_pause
-    type: io.kestra.plugin.core.log.Log
-    message: Execution has been resumed!
-```
+---
 
-The `Pause` task will pause the execution and the `Log` task will run only once the workflow has been resumed.
+## Example: Vacation Approval Workflow
 
-## Pausing and resuming a workflow from the UI
-
-You can either use the Pause task or manually Pause from the Execution overview page. Once the execution is paused, you can inspect the current logs and outputs. Then, you can resume it from the UI by clicking on the `Resume` button in the `Overview` tab:
-
-![pause_resume](/docs/how-to-guides/pause-resume/pause_resume.png)
-
-## Bulk-resuming paused workflows
-
-You can bulk-resume paused workflows from the `Executions` page by selecting the workflows you want to resume and clicking on the `Resume` button:
-
-![pause_resume2](/docs/how-to-guides/pause-resume/pause_resume2.png)
-
-This feature is useful when you have multiple paused workflows and want to resume them all at once.
-
-::alert{type="warning"}
-Make sure to select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
-::
-
-
-### Manual Approval Process
-
-Below, you can see an example of a workflow that sends a Slack message requesting approval for a vacation request to a manager. The workflow execution is paused until the manager resumes it with custom input values. Those input values indicate whether the request was approved and the reason for the decision.
+This workflow demonstrates a complete approval process with Slack notifications and audit logging:
 
 ```yaml
-id: vacation_approval_process
-namespace: company.team
+id: vacation_approval
+namespace: hr.operations
 
 inputs:
-  - id: request.name
+  - id: employee
     type: STRING
-    defaults: Rick Astley
-
-  - id: request.start_date
+  - id: start_date
     type: DATE
-    defaults: 2024-07-01
-
-  - id: request.end_date
+  - id: end_date
     type: DATE
-    defaults: 2024-07-07
-
-  - id: slack_webhook_uri
-    type: URI
-    defaults: https://reqres.in/api/slack
 
 tasks:
-  - id: sendApprovalRequest
+  - id: notify_manager
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ inputs.slack_webhook_uri }}"
+    url: "{{ secret('SLACK_HR_WEBHOOK') }}"
     payload: |
       {
-        "channel": "#vacation",
-        "text": "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
+        "channel": "#vacation-approvals",
+        "text": "Review request from {{ inputs.employee }}\n*Dates*: {{ inputs.start_date }} → {{ inputs.end_date }}\nApprove: {{ appLink('appId') }}"
       }
 
-  - id: waitForApproval
+  - id: await_decision
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
-        description: Approve the request?
         type: BOOLEAN
-        defaults: true
+        description: Approve this request?
       - id: reason
-        description: Reason for approval or rejection?
         type: STRING
-        defaults: Approved
+        description: Decision notes
 
-  - id: approve
+  - id: update_hr_system
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/products
+    uri: "{{ kv('HR_API_ENDPOINT') }}/approvals"
     method: POST
-    contentType: application/json
-    body: "{{ inputs.request }}"
+    contentType: multipart/form-data
+    formData:
+      employee: "{{ inputs.employee }}"
+      status: "{{ outputs.await_decision.onResume.approved ? 'APPROVED' : 'REJECTED' }}"
+      notes: "{{ outputs.await_decision.onResume.reason }}"
 
-  - id: log
+  - id: log_result
     type: io.kestra.plugin.core.log.Log
-    message: Status is {{ outputs.waitForApproval.onResume.reason }}. Process finished with {{ outputs.approve.body }}
+    message: |
+      Decision: {{ outputs.await_decision.onResume }}
 ```
 
-When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
+---
 
-![pause_resume_1](/docs/how-to-guides/pause-resume/pause_resume_1.png)
+## Key Features
 
-After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
+### 1. Declarative Syntax
 
-![pause_resume_2](/docs/how-to-guides/pause-resume/pause_resume_2.png)
+Add approval steps with structured inputs to any workflow:
+```yaml
+  - id: await_decision
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: approved
+        type: BOOLEAN
+        description: Approve this request?
+      - id: reason
+        type: STRING
+        description: Decision notes
+```
+
+### 2. Bulk Actions
+
+Approve multiple paused workflows simultaneously:
+![Bulk Resume](/docs/how-to-guides/pause-resume/pause_resume2.png)
+
+### 3. Audit Trails
+
+The Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
+```json
+{
+  "approved": true,
+  "reason": "Within policy limits"
+}
+```
+
+### 4. Conditional Flows
+
+Route next automated tasks based on human decisions:
+```yaml
+  - id: handle_rejection
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.await_decision.onResume.approved is false }}"
+    then:
+      - id: notify_employee
+        type: io.kestra.plugin.notifications.mail.MailSend
+        to: "{{ inputs.employee_email }}"
+        subject: "Request Denied"
+        htmlTextContent: "Reason: {{ outputs.await_decision.onResume.reason }}"
+```
+
+---
+
+## Getting Started with Human-in-the-Loop Automation
+
+1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or the full [installation instructions for production environments](../02.installation/index.md).
+2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML. Each automated task can invoke an API, run scripts, or call any existing service. Then, add `Pause` tasks for manual approvals:
+   ```yaml
+   - id: approval_gate
+     type: io.kestra.plugin.core.flow.Pause
+     onResume:
+       - id: signoff
+         type: BOOLEAN
+         required: true
+   ```
+3. **Configure Notifications** – Use Slack, Teams, or Email plugins to notify users about pending approvals:
+   ```yaml
+   - id: alert
+     type: io.kestra.plugin.notifications.teams.TeamsIncomingWebhook
+     url: "{{ secret('TEAMS_WEBHOOK') }}"
+     payload: |
+       {
+         "text": "The process {{ flow.id }} is pending approval {{ appLink() }}"
+       }
+   ```
+4. **Add Triggers** – Use scheduled or event-based [triggers](../04.workflow-components/07.triggers/index.md) to launch workflows.
+5. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to monitor states, logs, outputs, and metrics. Rerun failed workflow executions or roll back to a previous revision with one click.
+
+---
+
+## Next Steps
+
+- [Explore notification plugins](https://kestra.io/plugins) for Slack, Teams, Email and more
+- [Check HITL How-to Guides](../15.how-to-guides/pause-resume.md) for detailed examples of approval workflows
+- [Join Slack](https://kestra.io/slack) to ask questions, contribute code, or share feature requests
+- [Book a demo](https://kestra.io/demo) to discuss how Kestra can help automate your approval processes.
