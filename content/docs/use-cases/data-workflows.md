@@ -4,35 +4,35 @@ description: Schedule, backfill, automate, and scale data pipelines declarativel
 order: 10
 ---
 
-Data teams use orchestration platforms like Kestra to manage complex pipelines — ingesting raw data, transforming it, and delivering it to warehouses, lakes, or applications. The orchestration engine ensures workflows run in the correct sequence, recover from failures, and scale dynamically.
+Data teams use orchestration platforms like Kestra to manage complex pipelines — ingest raw data, transform it, and deliver it to data warehouses, lakes, and user-facing applications. The orchestration engine ensures workflows run in the correct sequence, recover from failures, and scale dynamically.
 
 ## What is Data Orchestration?
 
-Data orchestration automates the execution of interconnected tasks (like ETL, analytics, or ML jobs) while respecting dependencies and business logic. It focuses on **how data moves** between systems, teams and processes.
+Data orchestration automates the execution of interconnected tasks (ETL, analytics, AI and ML jobs) while governing their dependencies and business logic. It focuses on **how data moves** between systems, teams and processes.
 
-With Kestra, orchestration means:
-- **Flexible workflow triggers** via `Schedule`, external events (e.g., a new file in S3/SFTP), or API calls.
-- **Managing execution** — retries, parallel task runs, timeouts, SLAs, concurrency and error handling.
-- **Dynamic resource allocation** — provisioning containers on-demand (e.g., AWS Fargate, GCP Batch, Azure Batch, Kubernetes) for compute-heavy tasks.
-- **Visibility** — tracking logs, inputs, outputs, metrics, and lineage across workflows and tasks.
+Kestra's data orchestration capabilities include:
+- **Flexible workflow triggers** — run data flows on schedule, external events (e.g., a new file in S3/SFTP), or API calls.
+- **Powerful orchestration engine** — control retries, parallel task runs, timeouts, SLAs, concurrency and error handling.
+- **Dynamic resource allocation** — provision containers on-demand (e.g., AWS Fargate, GCP Batch, Azure Batch, Kubernetes) for compute-heavy tasks.
+- **Visibility** — track logs, traces, metrics, inputs, outputs, and lineage across workflows and tasks.
 
 ---
 
 ## Why Use Kestra for Data Orchestration?
 
-1. **Portability** – Define each data pipeline in a self-contained, portable YAML configuration that includes tasks, triggers, dependencies and infrastructure concerns.
-2. **Dynamic Scaling** – Task runners spin up containers on cloud services (AWS ECS Fargate, Google Batch, Kubernetes) dynamically at runtime — no need for dedicated always-on workers (unless on-premise resources are preferred using [worker groups](../06.enterprise/worker-group.md)).
+1. **Simple Declarative Syntax** – Define each data pipeline in a self-contained, portable YAML configuration that includes tasks, triggers, dependencies and infrastructure requirements.
+2. **Extensible Integrations** – Connect to over 600 services via [pre-built plugins](https://kestra.io/plugins). Thanks to plugins, you can avoid writing custom code for boilerplate tasks like file downloads, SQL queries, or REST API calls.
 3. **Execution Control** – Set retries, timeouts, SLAs, and concurrency limits.
-4. **Zero Code Changes** – Run existing Python/R/SQL scripts as-is (no decorators needed); specify dependencies via YAML configuration.
-5. **State Management** – Pass data of any size between tasks (files, variables, query results) or between workflows (using KV Store) thanks to [internal storage](../07.architecture/09.internal-storage.md).
-6. **Extensible Integrations** – Connect to over 600 services via [pre-built plugins](https://kestra.io/plugins).
+4. **Zero Code Changes** – Run existing Python/R/SQL scripts as-is (no rewrites needed); specify dependencies via YAML configuration.
+5. **State Management** – Pass data of any size between tasks (_files, variables, query results_) or between workflows (_using KV Store_) thanks to [internal storage](../07.architecture/09.internal-storage.md).
+6. **Dynamic Scaling** – Scale custom code with [task runners](../06.enterprise/task-runners.md). Spin up containers on cloud services (AWS ECS Fargate, Google Batch, Kubernetes) dynamically at runtime — no need for dedicated always-on workers (_to scale on-premise deployments, you can use [worker groups](../06.enterprise/worker-group.md)_).
 7. **Observability** – Monitor flow execution states, durations, logs, inputs, outputs and resource usage in real time.
 
 ---
 
 ## Example: Data Engineering Pipeline
 
-This flow downloads a JSON dataset via REST API, filters specific columns using Python, and calculates KPIs with DuckDB. Kestra dynamically provisions a Python container for the transformation step and terminates it once the task completes:
+The following flow triggers a data sync from Airbyte, Fivetran, and dbt Cloud. Then, it downloads a JSON dataset via REST API, filters specific columns using Python, and calculates KPIs with DuckDB. Kestra dynamically provisions a Python container for the task running custom code and terminates it once the task completes:
 
 ```yaml
 id: data_pipeline
@@ -48,6 +48,26 @@ inputs:
       - price
 
 tasks:
+  - id: airbyte_sync
+    type: io.kestra.plugin.airbyte.connections.Sync
+    url: http://localhost:8080
+    connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12cd
+    wait: true
+
+  - id: fivetran_sync
+    type: io.kestra.plugin.fivetran.connectors.Sync
+    apiKey: "{{ secret('FIVETRAN_API_KEY') }}"
+    apiSecret: "{{ secret('FIVETRAN_API_SECRET') }}"
+    connectorId: myConnectorId
+    wait: true
+
+  - id: dbt_job
+    type: io.kestra.plugin.dbt.cloud.TriggerRun
+    accountId: dbt_account
+    token: "{{ secret('DBT_CLOUD_TOKEN') }}"
+    jobId: abc12345
+    wait: true
+
   - id: extract
     type: io.kestra.plugin.core.http.Download
     uri: https://dummyjson.com/products
