@@ -606,7 +606,7 @@ outputs:
 
 When executing this flow, you will see a masked field:
 
-![secret](/docs/configuration-guide/secret.png)
+![Masked Field](/docs/configuration-guide/masked-field.png)
 
 
 In the Execution Overview tab, you will see a masked value of the secret.
