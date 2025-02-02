@@ -15,9 +15,9 @@ The table below highlights the key features of this release.
 
 | Feature                                          | Description                                                                                                                                                                               | Edition |
 |--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-| No Code                                          | New experience regarding no-code flow creation and task edition                                                                             | All Editions |
-| Custom Dashboards                                | Create your own custom dashboards, tailored to your monitoring needs                                                                        | All Editions |
-| Log Shipper                                      | Forward Kestra logs logs across your entire infrastructure                                                                                                 | Enterprise Edition |
+| [Log Shipper](https://youtu.be/iV6JtAwtuBg)                                          | Forward Kestra logs logs across your entire infrastructure                                                                             | Enterprise Edition |
+| No Code                                      | New experience regarding no-code flow creation and task edition                                                                                                 | All Editions |
+| [Custom Dashboards](https://youtu.be/Ag4ICYbE2YE)                                | Create your own custom dashboards, tailored to your monitoring needs                                                                        | All Editions |
 | Maintenance Mode                                 | Set your Kestra instance in maintenance mode to streamline server upgrades                                                                  |  Enterprise Edition |
 
 
