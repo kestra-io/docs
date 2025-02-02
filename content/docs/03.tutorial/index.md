@@ -13,9 +13,9 @@ You can use Kestra to:
 - programmatically interact with any system or programming language
 - orchestrate **microservices**, **batch jobs**, ad-hoc **scripts** (written in Python, R, Julia, Node.js, and more), **SQL queries**, data ingestion syncs, dbt or Spark jobs, or any other **applications** or **processes**
 
-This tutorial will guide you through **key concepts** in Kestra. We'll start with the same "Hello world" flow from the [Quickstart Guide](../01.getting-started/01.quickstart.md), and we'll gradually introduce new concepts including `namespaces`, `tasks`, parametrization with `inputs` and scheduling using `triggers`.
+This tutorial guides you through **key concepts** in Kestra. We start with the same "Hello world" flow from the [Quickstart Guide](../01.getting-started/01.quickstart.md), and we gradually introduce new concepts including `namespaces`, `tasks`, parametrization with `inputs` and scheduling using `triggers`.
 
-We'll then dive into `parallel` task execution, error handling, as well as custom scripts and microservices running in isolated containers. Let's get started!
+We then dive into `parallel` task execution, error handling, as well as custom scripts and microservices running in isolated containers. Let's get started!
 
 
 ::next-link

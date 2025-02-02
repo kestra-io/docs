@@ -40,7 +40,9 @@ Next to all bug fixes and enhancements, you can find a dedicated section called 
 
 If running Kestra in separate components you should:
 - Stop the executors and the scheduler
-- Stop the workers - there is a graceful shutdown (which can be configured but I'm not sure we already document how to configure this) and automatic task resubmission.
+- Stop the workers - there is a graceful shutdown period to finish active jobs before closing the worker. This is set by default to be: `kestra.server.terminateGracePeriod = '5m'` but is adjustable in your [Kestra Configuration](../configuration/index.md).
+  - If the job in progress is shorter than five minutes, then the worker will shutdown immediately when completed. If not, the task will be killed and restart when the worker is restarted.
+
 - Stop the webserver (and the indexer using EE and Kafka)
 
 Normally, there is a graceful shutdown on all components so you will not lose anything. Once this is done, you can update and restart everything in the opposite order (or any order as all components are independent).

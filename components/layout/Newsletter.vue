@@ -8,7 +8,7 @@
                 <form class="row g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
                     <div class="col-md-5 col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Email" required>
+                        <input name="email" type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Email" required>
                     </div>
 
                     <div class="col-md-auto col-12">
@@ -19,7 +19,7 @@
                 <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
                 <div class="d-flex align-items-center justify-content-center gap-3 socials">
                     <a href="https://twitter.com/kestra_io" class="d-flex align-items-center social-item gap-1" title="Twitter" target="_blank">
-                        <twitter />
+                        <twitter class="mb-1"/>
                         <p class="m-0">Twitter</p>
                     </a>
                     <a href="https://www.youtube.com/@kestra-io" class="d-flex align-items-center social-item gap-1" title="YouTube" target="_blank">
@@ -33,12 +33,9 @@
 </template>
 
 <script>
-    import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Twitter from "../components/icons/TwitterXIcon.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
-    import axios from "axios";
-    import identify from "../../utils/identify.js";
-
-    const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
+    import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
     export default {
         components: {Twitter, Youtube},
@@ -48,51 +45,9 @@
                 message: undefined,
             };
         },
-        methods:{
+        methods: {
             checkForm: function (e) {
-                e.preventDefault()
-                e.stopPropagation()
-
-                const form = this.$refs.newsletter;
-                const route = useRoute()
-                if (!form.checkValidity()) {
-                    this.valid = false;
-                    this.message = "Invalid form, please review the fields."
-                } else {
-                    this.valid = true;
-                    form.classList.add('was-validated')
-
-                    const formData = {
-                        fields: [{
-                            objectTypeId: "0-1",
-                            name: "email",
-                            value: form.email.value
-                        }],
-                        context: {
-                            pageUri: route.path,
-                            pageName: route.path
-                        }
-                    }
-
-                    if (window.dataLayer) {
-                        window.dataLayer.push({'event': 'newsletter_form'});
-                    }
-
-                    identify(form.email.value);
-
-                    axios.post(hubSpotUrl, formData)
-                        .then((response) => {
-                            if (response.status !== 200) {
-                                this.message = response.data.message;
-                                this.valid = false;
-                            } else {
-                                this.valid = true;
-                                this.message = response.data.inlineMessage;
-                                form.reset()
-                                form.classList.remove('was-validated')
-                            }
-                        })
-                }
+                newsletterSubmit(this, e);
             }
         }
     }

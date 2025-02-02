@@ -102,3 +102,73 @@ tasks:
       total_revenue = df['total'].sum()
       Kestra.outputs({"total": total_revenue})
 ```
+
+## Build Custom Packages
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/mLcoLK0y1m0?si=0H4XW_s-aayEJDi8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+You can also build packages directly inside of Kestra and then use that package between different flows in the same namespace. This works for zip files and wheels.
+
+Here's an example that generates a `.tar.gz` package:
+
+```yaml
+id: build_tar_gz
+namespace: company
+
+tasks:
+  - id: sync_code_to_kestra
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    disabled: true # already synced files
+    namespace: "{{ flow.namespace }}"
+    gitDirectory: .
+    url: https://github.com/anna-geller/python-in-kestra
+    branch: main
+    username: anna-geller
+    password: "{{ kv('GITHUB_ACCESS_TOKEN') }}"
+
+  - id: build
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    beforeCommands:
+      - pip install build
+    commands:
+      - python -m build
+    outputFiles:
+      - "**/*.tar.gz"
+
+  - id: upload
+    type: io.kestra.plugin.core.namespace.UploadFiles
+    namespace: company.sales
+    filesMap:
+      "etl-0.1.0.tar.gz": "{{ outputs.build.outputFiles['dist/etl-0.1.0.tar.gz']}}"
+```
+
+The package can be used in a separate workflow:
+```yaml
+id: install_from_zip
+namespace: company.sales
+
+inputs:
+  - id: date
+    type: STRING
+    defaults: 12/24/2024
+    displayName: Delivery Date
+
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    namespaceFiles:
+      enabled: true
+    beforeCommands:
+      - pip install etl-0.1.0.tar.gz
+    script: |
+      import etl.utils as etl
+
+      out = etl.standardize_date_format("{{ inputs.date }}")
+      print(out)
+```

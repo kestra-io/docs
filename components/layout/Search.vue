@@ -290,7 +290,7 @@
                 }
             },
             close() {
-                if (this.$refs.modal) {
+                if (process.client && this.$refs.modal) {
                     const modal = this.$bootstrap.Modal.getInstance(this.$refs.modal);
                     if (modal) {
                         modal.hide();
@@ -539,7 +539,7 @@
                     color: $white;
                     font-family: $font-family-sans-serif;
                     font-size: $font-size-xs;
-                    font-weight: 400;
+                    font-weight: 800;
                 }
             }
         }

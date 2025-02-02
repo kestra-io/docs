@@ -58,14 +58,14 @@
                                     <h4 class="card-title" data-aos="fade-right">Enterprise Edition</h4>
                                     <p class="pricing" data-aos="fade-left">Built For Production</p>
                                     <p class="pricing-type" data-aos="fade-left">On-Demand</p>
-                                    <div class="pricing-desc" data-aos="fade-left">Instance based model with:  No limits on users, workflows, or tasks.</div>
+                                    <div class="pricing-desc" data-aos="fade-left"> Predictable instance based model with: no limits on users, workflows, or tasks.</div>
                                 </div>
                                 <NuxtLink
                                     href="/demo"
                                     class="demo-btn"
                                     data-aos="zoom-in"
                                 >
-                                    Book a Demo
+                                    Book a Call
                                 </NuxtLink>
                                 <ul>
                                     <li data-aos="fade-right" data-aos-delay="100">
@@ -91,6 +91,12 @@
                                             <Plus />
                                         </div>
                                         <span>Productivity</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>Scalability</span>
                                     </li>
                                     <li data-aos="fade-right" data-aos-delay="150">
                                         <div class="check-icon">

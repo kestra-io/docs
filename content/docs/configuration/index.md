@@ -36,6 +36,25 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
+Injecting OS environment variables is also a possible way to configure Kestra. These environment variables take precedence over configuration files that have been loaded.
+
+To populate an environment variable with the right property, replace any special characters with `_` (underscore). Below is a comprehensive table on how properties can be translated in variables.
+
+| Configuration Value | Resulting Properties                                                                                                               |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| MYAPP_MYSTUFF       | myapp.mystuff, myapp-mystuff                                                                                                        |
+| MY_APP_MY_STUFF     | my.app.my.stuff, my.app.my-stuff, my.app-my.stuff, my.app-my-stuff,<br>my-app.my.stuff, my-app.my-stuff, my-app-my.stuff, my-app-my-stuff |
+
+The following example shows how to replace the postgres username property from defining it in config file:
+
+```yaml
+datasources:
+  postgres:
+    username: kestra
+```
+
+to environment variable: `DATASOURCES_POSTGRES_USERNAME=kestra`
+
 ## Setup
 
 Kestra offers many configuration options and customization.
@@ -587,7 +606,7 @@ outputs:
 
 When executing this flow, you will see a masked field:
 
-![secret1](/docs/configuration-guide/secret1.png)
+![Masked Field](/docs/configuration/masked-field.png)
 
 
 In the Execution Overview tab, you will see a masked value of the secret.
@@ -632,7 +651,7 @@ All JVM options can be passed in an environment variable named `JAVA_OPTS`. You 
 Example:
 
 ```shell
-export JAVA_OPTS="-Duser.timezone=Europe/Paris"
+export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
 ### Timezone
@@ -2038,4 +2057,20 @@ kestra:
           color: var(--white-always);
         }
       </style>
+```
+
+# Configuring a mail server
+
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the `kestra.mail-service` configuration.
+
+```yaml
+    host: host.smtp.io
+    port: 587
+    username: user
+    password: password
+    from: configurable@mail.com
+    fromName: Kestra
+    auth: true #default
+    starttlsEnable: true #default
+
 ```

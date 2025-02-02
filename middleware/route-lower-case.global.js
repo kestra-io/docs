@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return navigateTo(to.fullPath.replace(to.path, to.path.toLocaleLowerCase()), {redirectCode: 301})
     }
 
-    if (process.env.NODE_ENV  === "production" && to.path !== "/" && to.path.endsWith("/")) {
+    if (to.path !== "/" && to.path.endsWith("/") && useRequestURL().hostname !== "localhost") {
         return navigateTo(to.path.substring(0, to.path.length - 1), {redirectCode: 301});
     }
 })

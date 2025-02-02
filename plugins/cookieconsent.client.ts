@@ -10,10 +10,11 @@ export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.provide("cookieConsent", cookieConsent);
 
     nuxtApp.hook('page:finish', () => {
-        const {initialize} = useGtag()
+        const gtm = useGtm()
+        const route = useRoute()
 
         const enabledAnalytics = async () => {
-            initialize();
+            gtm?.enable(true);
 
             const response = await axios.get(`${runtimeConfig.public.apiUrl}/config`, {withCredentials: true})
 
@@ -38,31 +39,25 @@ export default defineNuxtPlugin(nuxtApp => {
             }
 
             posthog.capture('$pageview');
+
+            gtm?.trackEvent({
+                event: 'identify',
+                category: 'sys',
+                noninteraction: true,
+                kuid: response.data.id
+            })
+
+            gtm?.trackView(route.name, route.fullPath);
+
+            localStorage.setItem("KUID", response.data.id);
         };
 
         const enabledMarketing = () => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.cr-relay.com/v1/site/a52e9652-1bdf-4c6b-9ef0-06edf432aeef/signals.js';
-            script.async = true;
-            window.signals = Object.assign(
-                [],
-                ['page', 'identify', 'form'].reduce(function (acc, method){
-                    acc[method] = function () {
-                        signals.push([method, arguments]);
-                        return signals;
-                    };
-                    return acc;
-                }, {})
-            );
-            document.head.appendChild(script);
-
-            const reoScript = document.createElement('script');
-            reoScript.text = "!function(){var e,t,n;e=\"d6e8ccb6fd045f8\",t=function(){Reo.init({clientID:\"d6e8ccb6fd045f8\"})},(n=document.createElement(\"script\")).src=\"https://static.reo.dev/\"+e+\"/reo.js\",n.async=!0,n.onload=t,document.head.appendChild(n)}();";
-            document.head.appendChild(reoScript);
-
-            cookieConsent.loadScript('https://opps-widget.getwarmly.com/warmly.js?clientId=088e34e198e5f9dc0b0a4d37ad873a46',{defer: "defer"});
-
-            return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
+            gtm?.trackEvent({
+                event: 'enable_marketing',
+                category: 'sys',
+                noninteraction: true,
+            })
         };
 
         if (window?.location?.search) {

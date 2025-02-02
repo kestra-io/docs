@@ -1,10 +1,10 @@
-import * as sass from "sass"
+import * as sass from "sass";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos'],
-    target: 'server',
+    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
+    target: 'static',
     image: {
         formats: {
             webp: {
@@ -19,6 +19,9 @@ export default defineNuxtConfig({
                 sources: ['/api/sitemap']
             },
             plugins: {
+                sources: ['/api/sitemap']
+            },
+            blueprints: {
                 sources: ['/api/sitemap']
             }
         },
@@ -66,6 +69,7 @@ export default defineNuxtConfig({
                 'c',
                 'cpp',
                 'csv',
+                'css',
                 'dockerfile',
                 'go',
                 'groovy',
@@ -105,13 +109,6 @@ export default defineNuxtConfig({
         },
     },
 
-    router: {
-        options: {
-            strict: true
-        },
-        middleware: ['redirect'],
-    },
-
     devServer: {
         port: 3001
     },
@@ -131,7 +128,9 @@ export default defineNuxtConfig({
     vite: {
         build: {
             rollupOptions: {
-                external: ['shiki/onig.wasm'],
+                external: [
+                    'shiki/onig.wasm',
+                ]
             }
         },
         optimizeDeps: {
@@ -159,9 +158,12 @@ export default defineNuxtConfig({
         },
     },
 
-    gtag: {
-        id: 'G-EYVNS03HHR',
-        enabled: true
+    gtm: {
+        id: 'GTM-T4F85WRF',
+        enabled: false,
+        debug: false,
+        enableRouterSync: true,
+        devtools: true,
     },
 
     runtimeConfig: {
@@ -209,7 +211,17 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml'],
+            routes: [
+                '/rss.xml',
+            ],
+        },
+    },
+    $production: {
+        nitro: {
+            // !Important: we only want to enable the wasm feature in production since it will break syntax highlighting when running the dev server
+            experimental: {
+                wasm: true,
+            },
         },
     },
 
@@ -262,11 +274,13 @@ export default defineNuxtConfig({
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
         '/docs/how-to-guides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
+        '/docs/how-to-guide': {redirect: '/docs/how-to-guides'},
         '/docs/developer-guide/': {redirect: '/docs'},
         '/docs/developer-guide/storage': {redirect: '/docs/concepts/storage'},
         '/docs/developer-guide/caching': {redirect: '/docs/concepts/caching'},
         '/docs/developer-guide/namespace-files': {redirect: '/docs/concepts/namespace-files'},
         '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
+        '/docs/developer-guide/git': {redirect: '/docs/version-control-cicd/git'},
         '/docs/concepts/flowable-tasks': {redirect: '/docs/workflow-components/tasks/flowable-tasks'},
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
@@ -282,6 +296,8 @@ export default defineNuxtConfig({
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
+        '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
@@ -312,7 +328,6 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
-        debug: true,
         data: {
             enabled: true,
         },

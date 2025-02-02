@@ -2,17 +2,91 @@ import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
 
-function toNuxtContent(parsedMarkdown) {
+function toNuxtContent(parsedMarkdown, type) {
     return {
         body: {
             toc: parsedMarkdown.toc,
             ...parsedMarkdown.body
         },
+        pluginType: type,
         description: parsedMarkdown.data.description,
         title: parsedMarkdown.data.title,
         icon: `data:image/svg+xml;base64,${parsedMarkdown.data.icon}` ?? null
     };
 }
+
+function toNuxtBlocks(data, type) {
+    return {
+        body: {
+            jsonSchema: data,
+            toc: {
+                links: navTocData(data)
+            },
+        },
+        pluginType: type,
+        description: data.properties.description,
+        title: data.properties.title
+    };
+}
+
+const generateNavTocChildren = (properties) => {
+    const children = [];
+
+    const sortedKeys = Object.keys(properties).sort((a, b) => {
+        return (properties[b].$required || false) - (properties[a].$required || false);
+    });
+
+    for (const key of sortedKeys) {
+        children.push({
+            id: key,
+            depth: 3,
+            text: key,
+        });
+    }
+
+    return children;
+}
+
+const navTocData = (schema) => {
+    const links = [];
+
+    if (schema.properties?.["$examples"]) {
+        links.push({
+            id: 'examples',
+            depth: 2,
+            text: 'Examples'
+        });
+    }
+
+    if (schema.properties?.properties) {
+        links.push({
+            id: 'properties',
+            depth: 2,
+            text: 'Properties',
+            children: generateNavTocChildren(schema.properties.properties)
+        });
+    }
+
+    if (schema.outputs?.properties) {
+        links.push({
+            id: 'outputs',
+            depth: 2,
+            text: 'Outputs',
+            children: generateNavTocChildren(schema.outputs.properties)
+        });
+    }
+
+    if (schema.definitions) {
+        links.push({
+            id: 'definitions',
+            depth: 2,
+            text: 'Definitions',
+            children: generateNavTocChildren(schema.definitions)
+        });
+    }
+
+    return links;
+};
 
 function generateSubMenu(baseUrl, group, items) {
     return generateSubMenuWithGroupProvider(baseUrl, () => group, items);
@@ -73,20 +147,21 @@ export default defineEventHandler(async (event) => {
         const page = requestUrl.searchParams.get("page");
         const type = requestUrl.searchParams.get("type");
         const config = useRuntimeConfig();
-
+        if (type === 'icon') {
+            let icon = await (await $fetch(`${config.public.apiUrl}/plugins/icons/${page}`)).text();
+            return Buffer.from(icon.replaceAll("currentColor", "#CAC5DA")).toString('base64');
+        }
         if (type === 'definitions') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
 
-            const parsedMarkdown = await parseMarkdown(pageData.markdown);
-
-            return toNuxtContent(parsedMarkdown);
+            return toNuxtBlocks(pageData.schema, type);
         }
         if (type === 'plugin') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
 
             const parsedMarkdown = await parseMarkdown(pageData.body);
 
-            return toNuxtContent(parsedMarkdown);
+            return toNuxtContent(parsedMarkdown, type);
         }
         if (type === 'navigation') {
             const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
