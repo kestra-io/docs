@@ -120,9 +120,9 @@ Install packages at runtime or use pre-built images:
     # Your code here
 ```
 
-### Outputs & Metrics
+### Outputs and Metrics
 
-Pass data between tasks and track performance:
+Pass data between tasks using outputs and track metrics:
 
 ```python
 from kestra import Kestra
@@ -133,6 +133,7 @@ Kestra.counter("rows_processed", 1000)  # Track metrics
 ### Dynamic Scaling
 
 Run heavy scripts on dynamically provisioned cloud infrastructure:
+
 ```yaml
 taskRunner:
   type: io.kestra.plugin.ee.aws.runner.Batch
@@ -143,7 +144,8 @@ taskRunner:
 
 ### Error Handling
 
-Retry failed tasks with configurable policies:
+Add configurable `retry` policies to automatically retry failed tasks:
+
 ```yaml
 retry:
   type: constant
@@ -152,11 +154,12 @@ retry:
 ```
 
 Alert on failures via email, Slack, and other [notification plugins](https://kestra.io/plugins):
+
 ```yaml
 errors:
   - id: send_alert
     type: io.kestra.plugin.notifications.slack.SlackExecution
-    url: "{{ secret('SLACK_WEBHOOK_URL') }}"
+    url: "{{secret('SLACK_WEBHOOK_URL')}}"
     executionId: "{{execution.id}}"
 ```
 
@@ -165,7 +168,7 @@ errors:
 ## Getting Started Orchestrating Python Workflows
 
 1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or [production setup](../02.installation/index.md).
-2. **Write Your Flow** – Define Python tasks in YAML. Use `Script` for inline code or `Commands` for external `.py` files:
+2. **Write Your Flow** – Define Python tasks in YAML. Use `Script` for inline code or `Commands` for `.py` files:
    ```yaml
    - id: py
      type: io.kestra.plugin.scripts.python.Commands
@@ -174,7 +177,7 @@ errors:
      commands:
        - python scripts/transform.py
    ```
-3. **Add Triggers** – Schedule daily runs or trigger via API or on events (e.g., new files in S3).
+3. **Add Triggers** – run flows on schedule, via API or on events (e.g., new files in S3).
 4. **Observe** – Monitor execution logs, outputs, and metrics in [Kestra’s UI](../08.ui/index.md).
 
 ---
@@ -182,5 +185,6 @@ errors:
 ## Next Steps
 - [Explore Python plugins](https://kestra.io/plugins/plugin-script-python)
 - [Manage package dependencies](../15.how-to-guides/python-dependencies.md) with Docker or `pip`.
+- [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to ask questions, contribute code or share feature requests.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your Python workflows.

@@ -168,5 +168,6 @@ Route next automated tasks based on human decisions:
 
 - [Explore notification plugins](https://kestra.io/plugins) for Slack, Teams, Email and more
 - [Check How-to Guides](../15.how-to-guides/pause-resume.md) for detailed examples of approval workflows
+- [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel
 - [Join Slack](https://kestra.io/slack) to ask questions, contribute code, or share feature requests
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help automate your approval processes.

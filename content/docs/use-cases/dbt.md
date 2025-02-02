@@ -12,15 +12,15 @@ Orchestration platforms like Kestra automate the execution of dbt models while m
 - **Version control models** – Store dbt projects in Git and sync with Kestra's namespace files
 - **Test changes safely** – Run modified models in isolated containers before production
 - **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../06.enterprise/task-runners.md) (AWS/GCP/Azure Batch)
-- **Integrate with data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
+- **Integrate with your data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
 
 ---
 
 ## Why Use Kestra for dbt Orchestration?
 
-1. **GitOps Workflows** – Sync dbt projects from Git and push changes back through Kestra.
+1. **GitOps Workflows** – Sync dbt projects from Git, add and test new models, then push changes to Git from Kestra.
 2. **Environment Management** – Run models in different targets (dev/stage/prod) from one self-contained flow.
-3. **Dynamic Scaling** – Execute heavy dbt builds on spot instances, serverless containers or Kubernetes clusters.
+3. **Dynamic Scaling** – Execute heavy dbt builds on serverless containers or Kubernetes clusters.
 4. **Dependency Tracking** – Automatically parse `manifest.json` to visualize model relationships.
 5. **Integrated Testing** – Add data quality checks between dbt models using Python or SQL.
 6. **CI/CD Pipelines** – Deploy model changes to multiple Kestra namespaces or Git branches.
@@ -217,6 +217,12 @@ Clone dbt projects from any Git provider:
   branch: main
 ```
 
+### Best-in-class log navigation across dbt models
+
+Kestra automatically parses the `manifest.json` file within the Execution Gantt chart to provide visibility into each dbt model's built status, their duration and logs. You can browse all logs in one place (without having to manually navigate to each dbt model) and you can easily jump to the next `INFO`/`WARN`/`ERROR` log thanks to the best-in-class log navigation feature.
+
+![dbtLogs](/docs/use-cases/dbtLogs.png)
+
 ### Manifest Tracking
 
 Store dbt artifacts between runs in the integrated KV Store:
@@ -234,9 +240,9 @@ tasks:
       namespace: "{{ flow.namespace }}"
 ```
 
-### Model Testing & Quality Checks
+### Custom Quality Checks
 
-Add quality checks between dbt stages:
+Add quality checks validating dbt models using various plugins such as [Soda](https://kestra.io/plugins/plugin-soda):
 ```yaml
   - id: scan
     type: io.kestra.plugin.soda.Scan
@@ -326,5 +332,6 @@ You can set plugin defaults at the flow, namespace, or global level to apply to 
 
 - [Explore dbt plugins](https://kestra.io/plugins/plugin-dbt)
 - [Read how-to guide on dbt](../15.how-to-guides/dbt.md)
+- [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel
 - [Join Slack](https://kestra.io/slack) to ask questions, contribute code, report bugs and share and feature requests.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your dbt workflows.
