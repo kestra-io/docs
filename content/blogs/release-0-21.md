@@ -247,6 +247,7 @@ The Exit task gives you control over your workflow's execution state. This new a
 ```yaml
 id: exit
 namespace: company.team
+
 inputs:
   - id: state
     type: SELECT
@@ -254,6 +255,7 @@ inputs:
       - CONTINUE
       - END
     defaults: CONTINUE
+
 tasks:
   - id: if
     type: io.kestra.plugin.core.flow.If
@@ -266,6 +268,7 @@ tasks:
       - id: exit
         type: io.kestra.plugin.core.execution.Exit
         state: KILLED
+
   - id: end
     type: io.kestra.plugin.core.log.Log
     message: I'm ending
