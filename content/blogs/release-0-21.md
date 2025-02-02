@@ -23,7 +23,11 @@ The table below highlights the key features of this release.
 
 Check the video below for a quick overview of the new features.
 
-[PLACEHOLDER VIDEO RELEASE]
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/C8sBlcAHi-k?si=QDhbv7TUa7hDR5DO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
 
 Let's dive into these highlights and other enhancements in more detail.
 
@@ -45,6 +49,7 @@ For example, here is a flow designed to send logs via Datadog.
 ```yaml
 id: log_shipper
 namespace: company.team
+
 tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
@@ -56,6 +61,7 @@ tasks:
         type: io.kestra.plugin.ee.datadog.LogExporter
         basePath: '{{ secret("DATADOG_INSTANCE_URL") }}'
         apiKey: '{{ secret("DATADOG_APIK_KEY") }}'
+
 triggers:
   - id: daily
     type: io.kestra.plugin.core.trigger.Schedule
@@ -71,11 +77,6 @@ Here is an example with AWS CloudWatch:
 id: log_shipper
 namespace: company.team
 
-triggers:
-  - id: daily
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@daily"
-
 tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
@@ -88,6 +89,11 @@ tasks:
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
         region: "{{ vars.region }}"
+     
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
 ```
 ::
 
@@ -106,7 +112,10 @@ The new interface introduces intuitive left-side panels for flow properties and 
 ### Custom Dashboards
 
 Monitoring executions to get an overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track your key metrics. Everyone has different needs and service level thresholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
-As with everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code. Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+
+As with everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code. 
+
+Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
 
 ::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
