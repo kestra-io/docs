@@ -109,6 +109,10 @@
         :deep(li > a) {
             color: $purple-35;
         }
+
+        :deep(.bd-main) .alert p {
+            color: inherit;
+        }
     }
 
     .header-container {

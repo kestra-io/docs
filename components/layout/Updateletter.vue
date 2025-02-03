@@ -6,7 +6,7 @@
                 <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
                 <div v-if="valid === false && message" class="alert alert-danger">{{ message }}</div>
                 <form class="needs-validation d-flex flex-column align-items-center gap-3" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
-                    <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
+                    <input name="email" type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
                     <button type="submit" class="btn btn-animated btn-purple-animated">Subscribe</button>
                 </form>
 
@@ -19,9 +19,7 @@
 <script>
     import Twitter from "vue-material-design-icons/Twitter.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
-    import axios from "axios";
-
-    const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
+    import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
     export default {
         components: {Twitter, Youtube},
@@ -31,50 +29,9 @@
                 message: undefined,
             };
         },
-        methods:{
+        methods: {
             checkForm: function (e) {
-                e.preventDefault()
-                e.stopPropagation()
-
-                const form = this.$refs.newsletter;
-                const route = useRoute()
-                if (!form.checkValidity()) {
-                    this.valid = false;
-                    this.message = "Invalid form, please review the fields."
-                } else {
-                    this.valid = true;
-                    form.classList.add('was-validated')
-
-                    const formData = {
-                        fields: [{
-                            objectTypeId: "0-1",
-                            name: "email",
-                            value: form.email.value
-                        }],
-                        context: {
-                            pageUri: route.path,
-                            pageName: route.path
-                        }
-                    }
-
-                    gtm?.trackEvent({
-                        event: "newsletter_form",
-                        noninteraction: false,
-                    })
-
-                    axios.post(hubSpotUrl, formData)
-                        .then((response) => {
-                            if (response.status !== 200) {
-                                this.message = response.data.message;
-                                this.valid = false;
-                            } else {
-                                this.valid = true;
-                                this.message = response.data.inlineMessage;
-                                form.reset()
-                                form.classList.remove('was-validated')
-                            }
-                        })
-                }
+                newsletterSubmit(this, e);
             }
         }
     }

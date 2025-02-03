@@ -4,7 +4,7 @@ const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
     modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
-    target: 'server',
+    target: 'static',
     image: {
         formats: {
             webp: {
@@ -19,6 +19,9 @@ export default defineNuxtConfig({
                 sources: ['/api/sitemap']
             },
             plugins: {
+                sources: ['/api/sitemap']
+            },
+            blueprints: {
                 sources: ['/api/sitemap']
             }
         },
@@ -66,6 +69,7 @@ export default defineNuxtConfig({
                 'c',
                 'cpp',
                 'csv',
+                'css',
                 'dockerfile',
                 'go',
                 'groovy',
@@ -207,7 +211,17 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml']
+            routes: [
+                '/rss.xml',
+            ],
+        },
+    },
+    $production: {
+        nitro: {
+            // !Important: we only want to enable the wasm feature in production since it will break syntax highlighting when running the dev server
+            experimental: {
+                wasm: true,
+            },
         },
     },
 
@@ -266,6 +280,7 @@ export default defineNuxtConfig({
         '/docs/developer-guide/caching': {redirect: '/docs/concepts/caching'},
         '/docs/developer-guide/namespace-files': {redirect: '/docs/concepts/namespace-files'},
         '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
+        '/docs/developer-guide/git': {redirect: '/docs/version-control-cicd/git'},
         '/docs/concepts/flowable-tasks': {redirect: '/docs/workflow-components/tasks/flowable-tasks'},
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
@@ -282,6 +297,7 @@ export default defineNuxtConfig({
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
