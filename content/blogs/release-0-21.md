@@ -368,7 +368,7 @@ tasks:
     key: data/myfile.txt
 ```
 
-### New HugginFace Plugin
+### New HuggingFace Plugin
 
 The new `huggingface.Inference` task integrates with the [HuggingFace Inference API](https://huggingface.co/docs/api-inference/index), allowing you to leverage thousands of state-of-the-art AI models directly in your Kestra workflows. With a generous free tier of 50 API calls per hour, you can easily incorporate LLM capabilities into your flows.
 
