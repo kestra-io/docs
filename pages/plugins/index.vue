@@ -17,7 +17,7 @@
 <script setup>
     const config = useRuntimeConfig();
 
-    const {data: plugins} = await useFetch(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`);
+    const {data: plugins} = await useFetch(`${config.public.apiUrl}/plugins/subgroups`);
 
     const pluginsList = computed(() => {
         return plugins.value

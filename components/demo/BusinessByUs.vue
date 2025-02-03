@@ -1,5 +1,5 @@
 <template>
-    <div class="container mb-5">
+    <div class="container">
         <div class="business-container">
             <div class="business-by-us">
                 <div class="info-content">

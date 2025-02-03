@@ -47,7 +47,7 @@ This server is a special server, since it will contain all the server components
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
+* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 * `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
 
 ## Kestra local, development server with no dependencies
@@ -60,7 +60,7 @@ This server is a local development server. It will contain all server components
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
+* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
 
 ## Kestra with server components in different services

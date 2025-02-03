@@ -31,7 +31,6 @@
         purpleButtonText="Get started with Kestra"
         purpleButtonHref="https://kestra.io/slack"
         :animation="false"
-        class="mb-5"
     />
 </template>
 

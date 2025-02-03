@@ -2,7 +2,7 @@
 title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 editions: ["EE"]
-docId: iam
+docId: bindings
 ---
 
 How to manage access and permissions to your instance.

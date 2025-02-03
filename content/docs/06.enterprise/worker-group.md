@@ -15,7 +15,7 @@ Worker Group is a set of workers that can be targeted specifically for a task ex
 ::badge{version=">=0.19" editions="EE"}
 ::
 
-To create a new worker group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+To create a new worker group, navigate to the `Cluster` page under the `Administration` section in the UI, go to the `Worker Groups` tab and click on the `+ Create` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
 
 ## Starting Workers for a Worker Group
 

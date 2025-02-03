@@ -5,10 +5,9 @@
                 <div class="w-100 d-flex justify-content-between align-items-center">
                     <span class="card-quote">“</span>
                     <NuxtImg
-                        v-if="item.imgName"
                         class="company-icon"
                         data-aos="fade-up"
-                        :src="(item.directory ?? '/landing/companies/') + item.imgName  + '.svg'"
+                        :src="'/landing/companies/' + item.imgName  + '.svg'"
                         :alt="item.imgName"
                     />
                 </div>

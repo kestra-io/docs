@@ -337,8 +337,7 @@
         }
     }
     .bd-social-list, .bd-toc-collapse {
-        background-color: rgba($black-4, .7);
-        padding-bottom: 1rem;
+        background-color: $black-4;
 
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;

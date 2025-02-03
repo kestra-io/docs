@@ -40,16 +40,17 @@ export default defineNuxtPlugin(nuxtApp => {
 
             posthog.capture('$pageview');
 
-            gtm?.trackEvent({
-                event: 'identify',
-                category: 'sys',
-                noninteraction: true,
-                kuid: response.data.id
-            })
+            window.setTimeout(() => {
+                gtm?.trackEvent({
+                    event: 'identify',
+                    category: 'sys',
+                    noninteraction: true,
+                    kuid: response.data.id
+                })
+            }, 5000)
+
 
             gtm?.trackView(route.name, route.fullPath);
-
-            localStorage.setItem("KUID", response.data.id);
         };
 
         const enabledMarketing = () => {

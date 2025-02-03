@@ -46,27 +46,3 @@ function scriptLoad(callback) {
         }
     }
 }
-
-export function getHubspotTracking() {
-    if (window.__hsUserToken) {
-        return window.__hsUserToken;
-    }
-
-    const HS_COOKIE_NAME = "hubspotutk"
-
-    let e = null;
-    if (document.cookie && "" !== document.cookie) {
-        for (let n = document.cookie.split(";"), o = 0; o < n.length; o++) {
-            let r = n[o].trim(),
-                a = HS_COOKIE_NAME + "=";
-
-            if (r.substring(0, HS_COOKIE_NAME.length + 1) === a) {
-                e = r.substring(HS_COOKIE_NAME.length + 1);
-                break
-            }
-        }
-    }
-
-    return e
-}
-

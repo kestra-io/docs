@@ -68,18 +68,18 @@ export default {
     animation-duration: 500ms;
     animation-fill-mode: both;
     animation-name: fadeInBottom;
+    font-weight: 600;
+    font-size: 42px!important;
 
     @include media-breakpoint-down(sm) {
+        font-weight: 600;
         min-width: 100%;
         text-align: center;
     }
 
     @include media-breakpoint-up(lg) {
         min-width: 280px;
-    }
-
-    @include media-breakpoint-down(lg) {
-        font-size: 32pt;
+        font-size: 55px!important;
     }
 
     @keyframes fadeInBottom {

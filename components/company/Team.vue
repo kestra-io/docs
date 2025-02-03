@@ -189,17 +189,6 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ssaily.png" alt="Sami Säily"/>
-                    <div class="w-100">
-                        <div class="team-name">Sami Säily</div>
-                        <div class="team-title font-small">Lead Field Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/ssaily/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/ssaily" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
                     <div class="w-100">
                         <div class="team-name">Miloš Paunović</div>
@@ -233,36 +222,6 @@
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/asouid.png" alt="Ala Eddine Souid"/>
-                    <div class="w-100">
-                        <div class="team-name">Ala Eddine Souid</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/alaa-eddine-souid-354987134/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/alin.png" alt="Antoine Lin"/>
-                    <div class="w-100">
-                        <div class="team-name">Antoine Lin</div>
-                        <div class="team-title font-small">Lead Finance & Admin</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/antoine-lin-a49aaa74/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/aemerich.png" alt="Alex Emerich"/>
-                    <div class="w-100">
-                        <div class="team-name">Alex Emerich</div>
-                        <div class="team-title font-small">Technical Writer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/alex-emerich/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
             </div>
         </Section>
     </div>
@@ -272,7 +231,7 @@
     import Section from '../../components/layout/Section.vue';
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "../components/icons/TwitterXIcon.vue";
+    import Twitter from "vue-material-design-icons/Twitter.vue";
     import Mastodon from "vue-material-design-icons/Mastodon.vue";
 
     export default {

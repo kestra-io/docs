@@ -39,7 +39,7 @@
     }
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').pop();
+    const currentPageDir = currentPage.split('/').reverse()[0];
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,

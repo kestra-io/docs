@@ -5,6 +5,7 @@
             <Meta name="description"
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
+
         <HomeHeader/>
         <HomeFeatures/>
         <NuxtLazyHydrate when-visible>

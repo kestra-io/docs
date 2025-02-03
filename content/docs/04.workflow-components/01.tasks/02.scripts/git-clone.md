@@ -5,7 +5,7 @@ icon: /docs/icons/dev.svg
 
 Clone a Git repository and use the files in your tasks.
 
-This task clones a Git repository into a working directory, and then enables you to use the files from that repository in downstream tasks.
+This task allows you to clone a Git repository into a working directory and then use the files from that repository in downstream tasks.
 
 ## `Git` plugin
 
@@ -13,12 +13,12 @@ To use the `io.kestra.plugin.git.Clone` task in your flow, make sure to add it a
 
 ### Add `io.kestra.plugin.git.Clone` as the first task in a `WorkingDirectory`
 
-Adding the `io.kestra.plugin.git.Clone` task directly as the first child task of the `WorkingDirectory` task ensures that you clone your repository into an empty directory before any other task would generate any output artifacts.
+Adding the `io.kestra.plugin.git.Clone` task directly as the first child task of the `WorkingDirectory` task will ensure that you clone your repository into an empty directory before any other task would generate any output artifacts.
 
 ### Private Git repositories
-Typically, you want to use `io.kestra.plugin.git.Clone`  with a private GitHub repository. Make sure to:
+Typically, you would want to use `io.kestra.plugin.git.Clone`  with a private GitHub repository. Make sure to:
 1. Add your organization/user name as `username`
-2. Generate your access token and provide it on the `password` property
+2. Generate your access token and provide it on the `password` property.
 
 Below you can find links to instructions on how to generate an access token for the relevant Git platform:
 

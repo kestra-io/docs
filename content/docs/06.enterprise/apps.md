@@ -34,7 +34,7 @@ Currently, Kestra offers two types of Apps:
 
 ---
 
-## Apps Benefits
+## How Apps Help
 
 Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. **With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.**
 
@@ -58,9 +58,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 ---
 
-To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`. Like Flows, Apps also have different editor views. You can configure your App while simultaneously viewing documentation, previewing your App layout, or searching the App blueprint repository.
-
-![App Editor Views](/docs/enterprise/apps/app-editor-views.png)
+To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`.
 
 ### App to run a Hello World flow
 
@@ -127,7 +125,7 @@ You can copy the URL from the Apps catalog page in the Kestra UI.
 
 ---
 
-## App access and RBAC permissions
+## App Access and RBAC Permissions
 
 For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 
@@ -136,11 +134,11 @@ For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
 
 
-### Private Access for using Apps
+### Private Access for Using Apps
 
 When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
 
-### Private Access for building Apps
+### Private Access for Building Apps
 
 The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
 

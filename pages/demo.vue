@@ -1,7 +1,7 @@
 <template>
     <div>
         <DemoHeaders/>
-        <DemoCompanies class="mt-5" />
+        <DemoCompanies/>
         <DemoBusinessByUs/>
     </div>
 </template>

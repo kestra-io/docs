@@ -52,7 +52,7 @@
                         }],
                         context: {
                             pageUri: route.path,
-                            pageName: document.title
+                            pageName: route.path
                         }
                     }
 

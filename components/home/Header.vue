@@ -7,7 +7,8 @@
                     <br>
                     Smarter Not Harder
                 </h1>
-                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows and Govern them as Code and from the UI.</p>
+                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
+                    <br>and Govern them as Code and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
@@ -45,16 +46,16 @@
             </div>
             <div class="img-block">
                 <NuxtImg
-                    v-if="isMobile"
-                    width="2991px"
-                    height="1257px"
-                    loading="lazy"
+                    class="img-fluid headerimg"
+                    src="/landing/home/header.png"
                     format="webp"
-                    src="/landing/home/homepage.jpg"
-                    alt="homepage"
-                    class="homepage-image"
+                    quality="100"
+                    width="1034"
+                    height="785"
+                    densities="x1 x2"
+                    sizes="320px xs:640px lg:1034px"
+                    alt="Unified Orchestration Platform in an All-Inclusive Dashboard"
                 />
-                <canvas v-else ref="canvas" height="1520" width="2000"/>
             </div>
             <div class="companies-background">
                 <LayoutCompanies class="d-xl-none" />
@@ -95,67 +96,29 @@
     </div>
 </template>
 
-<script setup lang="ts">
-    import { ref, onMounted } from "vue";
-    import { useMediaQuery } from "@vueuse/core";
+<script>
+    import Console from "vue-material-design-icons/Console.vue";
+    import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
+
     import TextScroller from "~/components/layout/TextScroller.vue";
 
-    const isMobile = useMediaQuery('(max-width: 768px)')
-
-    import { Rive } from "@rive-app/canvas";
-
-    const videoVisible = ref(false)
-    const canvas = ref<HTMLCanvasElement>()
-    const scrollingTexts = [
-        { text: "Orchestrate", color: "#E500EA" },
-        { text: "Automate", color: "#4281FF" },
-        { text: "Schedule", color: "#9D40FB" },
-    ]
-
-    const riveAnimation = ref()
-
-    function setupRiveAnimation(){
-        if(!canvas.value) return
-        const anim = new Rive({
-            src: "/landing/home/homepage.riv",
-            canvas: canvas.value,
-            autoplay: true,
-            stateMachines: "kestra",
-            isTouchScrollEnabled: true,
-            onLoad: () => {
-                anim.resizeDrawingSurfaceToCanvas();
-            },
-        });
-        riveAnimation.value = anim
-    }
-
-    onMounted(() => {
-        if(!isMobile.value){
-            setupRiveAnimation()
-        }
-    })
-    function cleanupRiveAnimation(){
-        try{
-            riveAnimation.value?.cleanup();
-        }catch(e){
-            // eat the error
-        }
-        riveAnimation.value = undefined
-    }
-
-    watch(isMobile, (newVal) => {
-        if(newVal){
-            cleanupRiveAnimation()
-        }else{
-            nextTick(() => {
-                setupRiveAnimation();
-            })
-        }
-    })
-
-    onUnmounted(() => {
-        cleanupRiveAnimation();
-    })
+    export default {
+        components: {
+            Console,
+            PlayOutline,
+            TextScroller,
+        },
+        data() {
+            return {
+                videoVisible: false,
+                scrollingTexts: [
+                    { text: "Orchestrate", color: "#E500EA" },
+                    { text: "Automate", color: "#4281FF" },
+                    { text: "Schedule", color: "#9D40FB" },
+                ],
+            };
+        },
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -169,12 +132,11 @@
             z-index: 0;
             width: 100vw;
             height: 91.6%;
+            background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
             right: 0;
             top: 0;
         }
         .text-block {
-            position: relative;
-            z-index: 10;
             margin: 4rem 0 1rem;
             display: flex;
             flex-direction: column;
@@ -196,15 +158,13 @@
             color: var(--bs-white);
             text-align: center;
             max-width: 100%;
-            font-size: 24pt;
-            font-weight: 400;
+            font-size: 32px!important;
+            font-weight: 600;
+            margin: 0;
             padding: 0;
-            margin-top: 2rem;
-            margin-bottom: 0;
+
             @include media-breakpoint-up(lg) {
-                margin: 0;
-                font-size: 39pt;
-                line-height: 1em;
+                font-size: 53px!important;
             }
 
 
@@ -222,15 +182,6 @@
             font-weight: 500;
             font-size: $h6-font-size;
             color: $white;
-            text-wrap: balance;
-            margin:0;
-            @include media-breakpoint-down(md) {
-                font-size: 11pt;
-            }
-            @include media-breakpoint-up(lg) {
-                text-wrap: wrap;
-                width: 600px;
-            }
         }
 
         .buttons {
@@ -249,7 +200,7 @@
                 content: "";
                 position: absolute;
                 left: 50%;
-                bottom: -1rem;
+                bottom: calc(-1 * var(--spacer));
                 transform: translateX(-50%);
                 display: inline-block;
                 height: 2px;
@@ -365,27 +316,31 @@
         .img-block
         {
             display: flex;
+            width: 100%;
             justify-content: center;
-            .homepage-image{
-                display: none;
+            position: relative;
+
+            &:after {
+                content: "";
+                background-image: url(/landing/header-menu/bg-dots.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                position: absolute;
+                top: 0;
+                width: 148%;
+                @include media-breakpoint-down(md) {
+                    width: 138%;
+                }
+                height: 85%;
             }
-            @include media-breakpoint-down(md) {
+
+            img {
+                width: 80%;
                 position: relative;
-                justify-content: flex-start;
-                left: -50px;
-                canvas {
-                    display: none;
+                z-index: 5;
+                @include media-breakpoint-down(md) {
+                    width: 100%;
                 }
-                .homepage-image{
-                    display: block;
-                    height: 500px;
-                    margin-bottom: 100px;
-                }
-            }
-            
-            canvas {
-                width: 2000px;
-                margin-top: -650px;
             }
         }
 
