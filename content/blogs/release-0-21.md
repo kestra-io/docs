@@ -1,6 +1,6 @@
 ---
 title: Kestra 0.21 introduces Custom Dashboards, No-Code Forms, Log Shipper, and New Core Property
-description: Elevate your orchestration platform with improved no-code forms, custom dashboards, log forwarding, and a new `finally` core property.
+description: Elevate your orchestration platform with improved no-code forms, custom operational dashboards, log forwarding, and a new core property for cleanup tasks.
 date: 2025-02-04T17:00:00
 category: News & Products Updates
 author:
@@ -13,13 +13,13 @@ Kestra 0.21 is here, and it introduces no-code forms for easier workflow creatio
 
 The table below highlights the key features of this release.
 
-| Feature                                           | Description                                                                | Edition |
-|---------------------------------------------------|----------------------------------------------------------------------------| --- |
-| [Log Shipper](https://youtu.be/iV6JtAwtuBg)       | Forward Kestra logs logs across your entire infrastructure                 | Enterprise Edition |
-| New `finally` core property                       | Run cleanup tasks at the end of your workflow even if previous tasks fail  | All Editions |
-| No Code                                           | New experience regarding no-code flow creation and task edition            | All Editions |
-| [Custom Dashboards](https://youtu.be/Ag4ICYbE2YE) | Create your own custom dashboards, tailored to your monitoring needs       | All Editions |
-| Maintenance Mode                                  | Set your Kestra instance in maintenance mode to streamline server upgrades |  Enterprise Edition |
+| Feature                                   | Description                                                                | Edition |
+|-------------------------------------------|----------------------------------------------------------------------------| --- |
+| Log Shipper       | Forward Kestra logs logs across your entire infrastructure                 | Enterprise Edition |
+| New `finally` core property               | Run cleanup tasks at the end of your workflow even if previous tasks fail  | All Editions |
+| No Code                                   | New experience regarding no-code flow creation and task edition            | All Editions |
+| Custom Dashboards | Create your own custom dashboards, tailored to your monitoring needs       | All Editions |
+| Maintenance Mode                          | Set your Kestra instance in maintenance mode to streamline server upgrades |  Enterprise Edition |
 
 
 Check the video below for a quick overview of the new features.
@@ -40,11 +40,13 @@ We're excited to introduce Log Shipper, a powerful new feature that streamlines 
 
 This log synchronization feature automatically batches your logs in optimal chunks and intelligently manages synchronization points. This means you get reliable, consistent log delivery without overwhelming your systems or missing critical data.
 
-Log Shipper is built on top of plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure, Google Cloud Plateform, AWS CloudWatch, and OpenTelemetry.
+Log Shipper is built on top of plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
-We're particularly excited about our OpenTelemetry integration. As an open-source observability framework, OpenTelemetry has emerged as the industry standard for telemetry data collection. This integration means you can forward logs to any platform supporting the OpenTelemetry protocol.
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
-For example, here is a flow designed to send logs via Datadog.
+The examples below show how to configure Log Shipper with Datadog and AWS CloudWatch.
 
 ::collapse{title="Expand for a LogShipper example with Datadog "}
 ```yaml
@@ -110,6 +112,10 @@ The new interface introduces intuitive left-side panels for flow properties and 
 ### Custom Dashboards
 
 Monitoring executions to get an overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track your key metrics. Everyone has different needs and service level thresholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
+
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 As with everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code.
 
