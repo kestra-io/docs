@@ -21,12 +21,12 @@ Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can inte
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
-- `logExporters` - This property is required, and it specifies the plaform where the logs will be exported. It support a list of entries, allowing you to export logs to different plateforms at once
+- `logExporters` - This property is required, and it specifies the plaform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
 - `batchSize` - Defines the amount of logs per batch. The default value is set to `1000`.
-- `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. You can specify, for example, only to batch `WARNING` or `ERROR` level logs.
+- `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. You can specify, for example, only to forward `WARNING` or `ERROR` level logs.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
-- `namespace` - Sets the task to only gather logs from a specific Kestra Namespace. If not specified, all instance logs are fetched.
-- `offsetKey` - Specifies the prefix of the Key Value (KV) store key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`.
+- `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
+- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`.
 
 
 ## Log Shipper examples
@@ -35,7 +35,7 @@ The Log Shipper integrates with many popular observability platforms. Below are 
 
 ### Kestra `FileLogExporter`
 
-The following example uses Kestra's core `FileLogExporter` plugin to sychronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file uri is passed as an expression in the `upload` task to then upload the logs to an S3 bucket. 
+The following example uses Kestra's core `FileLogExporter` plugin to sychronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file `uri` is passed as an expression in the `upload` task to then upload the logs to an S3 bucket.
 
 ```yaml
 id: log_shipper_file
@@ -58,9 +58,9 @@ tasks:
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
     from: "{{ outputs.synchronize_logs.outputs.file.uri }}"
-    key: "logs"
+    key: logs/kestra.txt
     bucket: kestra-log-demo-bucket
-    region: "eu-west-2"
+    region: eu-west-2
 ```
 
 ### Datadog
@@ -95,7 +95,7 @@ The batched logs directly populate your Datadog instance like in the following s
 
 ### AWS Cloudwatch
 
-This example exports logs to [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/). The following example flow triggers a daily batch and export to an AWS Cloudwatch instance:
+This example exports logs to [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/). The following example flow triggers a daily batch and exports to AWS's service [Amazon CloudWatch](https://docs.aws.amazon.com/cloudwatch/):
 
 ```yaml
 id: log_shipper
@@ -112,15 +112,15 @@ tasks:
     logLevelFilter: INFO
     batchSize: 1000
     lookbackPeriod: P1D
-    offsetKey: LogShipper-state-2
+    offsetKey: log_shipper_aws_cloudwatch_state
     logExporters:
-      - id: AWSLogExporter
-        type: io.kestra.plugin.ee.aws.LogExporter
+      - id: aws_cloudwatch
+        type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
         region: "{{ vars.region }}"
-        logGroupName: test_kestra
-        logStreamName: test_stream
+        logGroupName: kestra
+        logStreamName: kestra-log-stream
 ```
 
 The logs are viewable in the interface of the specified Log Group and can be examined like in the following screenshot:
