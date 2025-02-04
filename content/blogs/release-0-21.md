@@ -35,11 +35,9 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-The new Log Shipper feature streamlines how you manage and distribute logs across your entire infrastructure. Whether you're using Elasticsearch, Datadog, New Relic, Azure Monitor, AWS CloudWatch or other logging platforms, you can ensure logs are delivered exactly where you need them, when you need them.
+The new [Log Shipper feature](../docs/06.enterprise/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages synchronization points. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
-This synchronization automatically batches logs into optimized chunks and manages synchronization points. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
-
-Built on plugin architecture, the Log Shipper integrates with many log collectors, including Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
+Built on plugin architecture, the Log Shipper integrates with many log exporters, including Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -107,7 +105,7 @@ Kestra's interface has always bridged the gap between code and no-code. In this 
 
 ### Custom Dashboards
 
-Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to create custom dashboards, so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
+Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to [create custom dashboards](../docs/08.ui/00.dashboard.md), so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
