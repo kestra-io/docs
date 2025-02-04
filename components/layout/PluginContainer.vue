@@ -210,7 +210,7 @@
         }
 
         .bd-content {
-            margin: 0 auto;
+            margin: 0 auto 2em auto;
             @media only screen and (min-width: 1920px) {
                 max-width:71.25rem
             }
