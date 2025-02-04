@@ -67,8 +67,6 @@ Performance highly depends on the nature of the tasks you are running inside the
 
 Our Kafka/Elasticsearch backend emits logs asynchronously via a dedicated indexer component, which needs to be started independently. However, this was not the case for our JDBC backends (H2, MySQL, PostgreSQL, SQLServer).
 
-To do so, our Kafka backend has a dedicated component: the indexer, which needed to be started independently.
-
 We introduced a JDBC indexer so that now logs are always emitted asynchronously, this moved the insertion of logs inside the database from the emission of the logs into our internal queue, to the reception of the logs. So logs are now inserted into the database inside the indexer instead of the Executor or the Worker. We also now insert them in batches that lower the network round-trips between Kestra and the database.
 
 This leads to an average performance improvements of 20%, and for log intensive tasks (for example, tasks that generated tens of thousands of logs) this can speed the task execution to up to 10x!
