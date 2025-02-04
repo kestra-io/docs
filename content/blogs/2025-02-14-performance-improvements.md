@@ -1,6 +1,6 @@
 ---
-title: "Recent performance improvements"
-description: "Kestra engineering team continuously improves the performance of the orchestrator, let's dig into recent improvements"
+title: "How Kestra engineers optimized orchestrator performance"
+description: "Optimized performance is critical to every application, check out how Kestra engineers improved the orchestrator's performance in recent versions. "
 date: 2025-02-14T13:00:00
 category: Solutions
 author:
@@ -10,7 +10,7 @@ author:
 image: /blogs/TODO
 ---
 
-Kestra engineers continuously improve the performance of the orchestrator, let's dig into recent improvements made in Kestra 0.19 and 0.20 a few months ago.
+Kestra engineers are continuously improving the performance of the orchestrator to be more resource efficient. Recently, in Kestra versions 0.19 and 0.20, we tackled performance inefficiencies in data serialization, database query indexes, log handling, and more. Let's dig into the details of the recent peformance improvements.
 
 ## Serialization performance improvements
 
