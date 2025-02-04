@@ -39,8 +39,6 @@ We discovered a performance issue in the way JSONB was handled in [jOOQ](https:/
 
 We worked around the issue by changing the way we handle JSONB, improving CPU usage by 15% and memory allocation by 20% in some conducted benchmarks.
 
-TODO: there are flamegraphs in the PR, maybe it would be worth it to add it in the blog post and explain what it is and how to get some.
-
 More information can be found in this [Pull Request](https://github.com/kestra-io/kestra/pull/4899).
 
 We shared our findings with the jOOQ team, and they implemented a fix directly inside jOOQ. See this [GitHub Pull Request](https://github.com/jOOQ/jOOQ/issues/17497#issuecomment-2462506427) for more information.
