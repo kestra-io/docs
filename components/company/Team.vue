@@ -129,6 +129,19 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/msabatini.png" alt="Marco Sabatini Picture"/>
+                    <div class="w-100">
+                        <div class="team-name">Marco Sabatini</div>
+                        <div class="team-title font-small">Platform Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/marco-sabatini-69b127152/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/MarcoSaba" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+
+
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
                          alt="Nicolas Callens Picture"/>
                     <div class="w-100">
