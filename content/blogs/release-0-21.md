@@ -9,18 +9,17 @@ author:
 image: /blogs/release-0-21.jpg
 ---
 
-Kestra 0.21 is here, and it introduces no-code forms for easier workflow creation, customizable dashboards to monitor your operations, new core property for cleanup tasks, advanced log forwarding across your entire infrastructure - and many improvements.
+Kestra 0.21 introduces no-code forms for simpler workflow creation, customizable dashboards for more flexible monitoring, a new core property for cleanup tasks, advanced log forwarding across your entire infrastructure, and several other improvements.
 
 The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-| Log Shipper       | Forward Kestra logs logs across your entire infrastructure                 | Enterprise Edition |
+| Log Shipper       | Forward Kestra logs across your entire infrastructure                 | Enterprise Edition |
 | New `finally` core property               | Run cleanup tasks at the end of your workflow even if previous tasks fail  | All Editions |
 | No Code                                   | New experience regarding no-code flow creation and task edition            | All Editions |
 | Custom Dashboards | Create your own custom dashboards, tailored to your monitoring needs       | All Editions |
 | Maintenance Mode                          | Set your Kestra instance in maintenance mode to streamline server upgrades |  Enterprise Edition |
-
 
 Check the video below for a quick overview of the new features.
 
@@ -36,11 +35,11 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-We're excited to introduce Log Shipper, a powerful new feature that streamlines how you manage and distribute logs across your entire infrastructure. Whether you're using Elasticsearch, Datadog, Azure, or other logging platforms, you can now effortlessly ensure your logs are exactly where you need them, when you need them.
+The new Log Shipper feature streamlines how you manage and distribute logs across your entire infrastructure. Whether you're using Elasticsearch, Datadog, New Relic, Azure Monitor, AWS CloudWatch or other logging platforms, you can ensure logs are delivered exactly where you need them, when you need them.
 
-This log synchronization feature automatically batches your logs in optimal chunks and intelligently manages synchronization points. This means you get reliable, consistent log delivery without overwhelming your systems or missing critical data.
+This synchronization automatically batches logs into optimized chunks and manages synchronization points. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
-Log Shipper is built on top of plugins, meaning it can be integrated with many log collectors. Launch day support includes integration with major observability and cloud platforms:  ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
+Built on plugin architecture, the Log Shipper integrates with many log collectors, including Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -104,22 +103,19 @@ triggers:
 
 ### New No Code Experience
 
-Kestra's interface has always been its core strength, bridging the gap between no-code and traditional development approaches.
-While we've successfully supported both worlds, the no-code experience needed enhancement: today, we're excited to unveil a complete redesign of our no-code flow editor.
-
-The new interface introduces intuitive left-side panels for flow properties and task management. We've simplified task configuration through organized drawers, making complex nested properties more accessible. A clear breadcrumb navigation helps you track your position within the configuration hierarchy.
+Kestra's interface has always bridged the gap between code and no-code. In this release, we've redesigned our no-code flow editor. The new interface features intuitive left-side panels for flow properties and task management, plus organized drawers for simpler navigation of complex nested properties. A breadcrumb shows your position within each configuration.
 
 ### Custom Dashboards
 
-Monitoring executions to get an overview of what's going on in your automations is a keystone of orchestration. In this new release we doubled down on that promise: rather than relying only on the default dashboard on Kestra's home screen, you can create charts that answer specific questions and track your key metrics. Everyone has different needs and service level thresholds. With custom dashboards you can now create tailored dashboards and focus on what matters the most to you.
+Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to create custom dashboards, so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-As with everything in Kestra, you can declare dashboards as code. Clicking on the **+ Create new dashboard** button opens a Code Editor where you can define the dashboard layout and data sources in code.
+As with everything in Kestra, you can manage dashboards as code (and you can create them via Terraform or API). Clicking **+ Create new dashboard** opens a code editor where you can define the dashboard layout and data sources.
 
-Here's an example of a dashboard definition that displays executions over time and a pie chart of execution states:
+Here’s an example that displays executions over time and a pie chart of execution states:
 
 ::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
@@ -192,21 +188,18 @@ You can find Dashboard blueprints from the left side menu.
 
 ### Maintenance Mode
 
-We're excited to announce Maintenance Mode, a new feature designed to simplify platform maintenance operations for Kestra installations running at scale. This feature addresses a common challenge faced by organizations running numerous workflows: finding the right moment to perform platform updates without disrupting ongoing operations.
+Maintenance Mode addresses a frequent challenge in environments running many workflows at scale: safely updating the platform without disrupting active operations. When enabled:
 
-When activated, Maintenance Mode introduces a controlled state where:
+- The executor stops processing new executions; new flow executions are automatically queued.
+- Ongoing executions complete gracefully (workers complete their current tasks without picking up new ones).
+- The platform still accepts and schedules new executions, buffering them until maintenance is finished (webserver and scheduler components remain active, ensuring no requests are lost).
+- Once Maintenance Mode is disabled, queued executions resume as normal.
 
-- The executor stops processing new executions. New flow executions are automatically queued.
-- Existing executions are allowed to complete gracefully (workers complete their current tasks without picking up new ones).
-- The platform continues to accept and schedule new executions, storing them for later processing (web server and scheduler components remain active, ensuring no requests are lost).
-- New executions are queued for processing after maintenance concludes
-
-You can enter into Maintenance Mode via the `Administration > Instance` panel of you Kestra instance.
-
+You can enter Maintenance Mode from the **Administration > Instance** panel.
 
 ## New `finally` Core Property
 
-We've [introduced](https://github.com/kestra-io/kestra/issues/6649) a new `finally` property that runs tasks at the end of a flow execution, regardless of the final state. This feature is particularly useful for cleanup tasks such as removing Spark clusters spun up on-demand during a flow execution or shutting down temporary resources such as Docker containers.
+We've [introduced](https://github.com/kestra-io/kestra/issues/6649) a `finally` property that runs tasks at the end of a flow, regardless of prior task outcomes. It's especially useful for cleanup steps like shutting down temporary resources spun up during a flow execution such as Docker containers or on-demand Spark clusters.
 
 ::collapse{title="Example starting and stopping a Docker container"}
 
@@ -274,46 +267,34 @@ finally:
 ```
 ::
 
-
 ## User Interface & Experience Improvements
 
-As with each release, we continue to improve the Kestra interface:
+As with each release, there are more UI and UX enhancements:
 
-- Filters and search bars are now consistent across the different panels.
-
-- Improvements for Apps:
-  - Apps can now be previewed in the editor.
-  - Apps can be declared via [Terraform definitions](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app).
-  - You can find Apps blueprints inside the Blueprint tab of your instance.
-
-- Introduce [system labels](https://github.com/kestra-io/kestra/issues/6682) for restarted and replayed execution.
-- Enhanced in-app documentation with collapsible task examples and properties, resulting in a cleaner, more organized interface.
-- Add [revision history](https://github.com/kestra-io/kestra-ee/issues/1403) for all resources (EE)
-- Failed subflow executions now resume from their last execution when restarted, rather than creating new executions from scratch.
+- Filters and search bars are now consistent across different panels.
+- Apps can be previewed in the editor and declared via [Terraform definitions](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app). You can also find App blueprints in the Blueprint tab.
+- [System labels](https://github.com/kestra-io/kestra/issues/6682) have been added for restarted and replayed executions.
+- In-app plugin documentation now has collapsible task examples and properties, providing a cleaner UI.
+- Revision history is now available for all resources in the Enterprise Edition.
+- Failed subflow executions, when restarted from a parent execution, now restart their existing execution from a failed task rather than creating a new execution from scratch.
 
 ## Other Features and Improvements
 
-- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can be collected from your Kestra instance. OpenTelemetry is an observability framework with an API, SDK, and tools that are designed to aid in the generation and collection of application telemetry data such as metrics, logs, and traces.
-
-- A wider set of tasks properties now support [dynamic values](https://www.youtube.com/watch?v=TJ4BFBV8ZvU) - allowing better integration with tasks dependanices and Pebble syntax.
-
-- [Notification plugin improvement](https://github.com/kestra-io/plugin-notifications/issues/171). The tasks that send flow execution information to your favorite messaging app now include the last task ID in an execution in addition to the a link to the execution page, the execution ID, namespace, flow name, the start date, duration, and the final status of the execution.
-
-- Declare [Apps](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app) and [Custom Dashboards](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/dashboard) with Terraform.
-
-- [Manage iteration index inside the ForEach](https://github.com/kestra-io/kestra/issues/4842) task with the new `taskrun.iteration` property.
-
+- [OpenTelemetry traces and metrics](https://github.com/kestra-io/kestra/issues/5102) can now be collected from your Kestra instance.
+- Most Kestra plugins now support [dynamic properties](https://www.youtube.com/watch?v=TJ4BFBV8ZvU), improving dynamic rendering of Pebble expressions.
+- [Notification plugin improvements](https://github.com/kestra-io/plugin-notifications/issues/171): tasks that send flow execution updates now include the last task ID in an execution, along with a link to the execution page, the execution ID, namespace, flow name, start date, duration, and final status.
+- [Apps](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/app) and [Custom Dashboards](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/dashboard) can be declared via Terraform.
+- [ForEach iteration index](https://github.com/kestra-io/kestra/issues/4842) is now accessible within the execution context using the `taskrun.iteration` property.
 
 ## Plugin enhancements
 
 ### DuckDB
 
-We have [fixed an issue](https://github.com/kestra-io/plugin-jdbc/issues/165) preventing us to upgrade the DuckDB version. Now Kestra supports the latest version of DuckDB!
-
+We’ve [fixed](https://github.com/kestra-io/plugin-jdbc/issues/165) an issue preventing DuckDB upgrades. Kestra now supports the latest DuckDB version.
 
 ### New `Exit` core task
 
-The `Exit` task allows you to terminate an execution in a given state depending on a custom condition.
+The `Exit` task allows you to terminate an execution in a given state based on a custom condition.
 
 ::collapse{title="Exit task example"}
 ```yaml
@@ -370,7 +351,7 @@ tasks:
 
 ### New HuggingFace Plugin
 
-The new `huggingface.Inference` task integrates with the [HuggingFace Inference API](https://huggingface.co/docs/api-inference/index), allowing you to leverage thousands of state-of-the-art AI models directly in your Kestra workflows. With a generous free tier of 50 API calls per hour, you can easily incorporate LLM capabilities into your flows.
+The new `huggingface.Inference` task integrates with the [HuggingFace Inference API](https://huggingface.co/docs/api-inference/index), letting you incorporate LLM-based capabilities into your Kestra workflows.
 
 ::collapse{title="HuggingFace Inference task example"}
 ```yaml
@@ -400,10 +381,9 @@ tasks:
 ```
 ::
 
-
 ### New AWS EMR plugin
 
-The [AWS EMR plugin](https://kestra.io/plugins/plugin-aws#emr) allows you to create or terminate AWS EMR clusters while managing running jobs.
+The [AWS EMR plugin](https://kestra.io/plugins/plugin-aws#emr) lets you create or terminate AWS EMR clusters and manage jobs.
 
 ::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
 ```yaml
@@ -435,21 +415,15 @@ tasks:
 ```
 ::
 
-
 ### New Pebble functions
 
-- `randomInt`: [generate a random integer](https://github.com/kestra-io/kestra/issues/6207) with the `randomInt` function in Pebble.
-
-- `uuid`: you can [generate a UUID](https://github.com/kestra-io/kestra/issues/6208) with the new `uuid` function in Pebble.
-
-- `distinct`: [get the uniq set of values](https://github.com/kestra-io/kestra/issues/6417) from an array with the new `distinct` function in Pebble. For example: `"{{ ['1', '1', '2', '3'] | distinct }}"` will return `['1', '2', '3']`.
-
+- `randomInt` to generate a [random integer](https://github.com/kestra-io/kestra/issues/6207).
+- `uuid` to generate a [UUID](https://github.com/kestra-io/kestra/issues/6208).
+- `distinct` to get a [unique set of values](https://github.com/kestra-io/kestra/issues/6417) from an array (e.g., `['1', '1', '2', '3'] | distinct` returns `['1', '2', '3']`).
 
 ## Thanks to Our Contributors
 
-A big thanks to all the contributors who helped make this release possible. Your feedback, bug reports, and pull requests have been invaluable.
-
-If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues).
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues).
 
 ## Next Steps
 
