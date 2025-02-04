@@ -10,62 +10,62 @@ author:
 image: /blogs/TODO
 ---
 
-Kestra engineering team continuously improves the performance of the orchestrator, let's dig into recent improvements made around Kestra 0.19 and 0.20 a few months ago.
+Kestra engineers continuously improve the performance of the orchestrator, let's dig into recent improvements made in Kestra 0.19 and 0.20 a few months ago.
 
 ## Serialization performance improvements
 
 Data is at the heart of Kestra. To represent data, you need a format, which in Kestra is the ION format.
-ION is like a richer (with more types), and slightly less verbose JSON like format, as we also support a variety of other format like JSON, CSV, Avro,... it is often necessary to transform a file in one format to another.
+ION is like a richer (with more types) and slightly less verbose JSON-like format. We also support a variety of other format like JSON, CSV, and Avro. It is often necessary to transform a file in one format to another.
 
-To do that, we have a dedicated plugin: [plugin-serdes](/plugins/plugin-serdes).
+To make that transformation, we have a dedicated plugin: [plugin-serdes](/plugins/plugin-serdes).
 
-Both our default format handling, and the serialization plugin uses under the cover the same code facility, the [FileSerde](https://github.com/kestra-io/kestra/blob/develop/core/src/main/java/io/kestra/core/serializers/FileSerde.java).
+Both our default format handling and the serialization plugin use the same code facility, [FileSerde](https://github.com/kestra-io/kestra/blob/develop/core/src/main/java/io/kestra/core/serializers/FileSerde.java), under the hood.
 
-The FileSerde uses the [Jackson](https://github.com/FasterXML/jackson) serialization library, it has been changed to use Jackson's `MappingIterator` and `SequenceWriter` for optimized batch serialization, this avoids creating temporary objects when serializing a batch of records and reuse some internal serialization components.
+FileSerde uses the [Jackson](https://github.com/FasterXML/jackson) serialization library, and it has been changed to use Jackson's `MappingIterator` and `SequenceWriter` for optimized batch serialization; this avoids creating temporary objects when serializing a batch of records and reuses some internal serialization components.
 
-We also take the opportunity of rewritting our serialization layer to align all usage to buffering more aggressively (with a 32KB buffer).
+We also took the opportunity to rewrite our serialization layer to align all usage to buffer more aggressively (i.e., with a 32KB buffer).
 
-Both changes can lead to performance improvements measured between 20% to 40%! All existing tasks have been updated to take advantage of these optimizations.
+Both changes led to performance improvements measured between 20% to 40%! As a result, all existing tasks have been updated to take advantage of these optimizations.
 
-This was a joint effort between an external contributor, Yoann Vernageau from CleverConnect, and our team. We want to take the opportunity to thank him for its time and effort in improving Kestra.
+This was a joint effort between an external contributor, Yoann Vernageau from CleverConnect, and our team. We want to take the opportunity to thank him for the time and effort given to improving Kestra.
 
-More information can be found in this Pull Request: https://github.com/kestra-io/plugin-serdes/pull/105.
+More information can be found in this [Pull Request](https://github.com/kestra-io/plugin-serdes/pull/105).
 
 ## PostgreSQL backend performance improvement
 
-In our PostgreSQL backend, we intensively use JSONB support for all Kestra related internal resource representation (like flow, executions, ...).
+In our PostgreSQL backend, we make extensive use of JSONB support for representing all Kestra-related internal resources, such as flows and executions.
 
 We discovered a performance issue in the way JSONB was handled in [jOOQ](https://www.jooq.org/), the Java library we use to access the database.
 
-We worked around the issue by changing the way we handle JSONB which improves CPU usage by 15% and memory allocation by 20% is some contrived benchmarks.
+We worked around the issue by changing the way we handle JSONB, improving CPU usage by 15% and memory allocation by 20% in some conducted benchmarks.
 
 TODO: there are flamegraphs in the PR, maybe it would be worth it to add it in the blog post and explain what it is and how to get some.
 
-More information can be found in this Pull Request: https://github.com/kestra-io/kestra/pull/4899.
+More information can be found in this [Pull Request](https://github.com/kestra-io/kestra/pull/4899).
 
-We share our findings with the jOOQ team, and they implement a fix directly inside jOOQ. See this GitHub Pull Request for more information: https://github.com/jOOQ/jOOQ/issues/17497#issuecomment-2462506427.
+We shared our findings with the jOOQ team, and they implemented a fix directly inside jOOQ. See this [GitHub Pull Request](https://github.com/jOOQ/jOOQ/issues/17497#issuecomment-2462506427) for more information.
 
 ## JDBC backend performance improvement
 
 All our JDBC backends (H2, MySQL, PostgreSQL, SQLServer) had some performance improvements when processing queued executions (see [flow concurrency limit](/docs/workflow-components/concurrency)).
 
-We discovered that queries to the execution queued table was missing an index! This has been fixed in the following Pull Request: https://github.com/kestra-io/kestra/pull/6050.
+We discovered that queries to the execution queued table were missing an index! This has been fixed in the following [Pull Request](https://github.com/kestra-io/kestra/pull/6050).
 
 ## Worker default number of threads
 
 Previously, we configured the Worker with 128 threads by default in our docker-compose and Helm chart.
 
-This provided a good performance for task executions as it allows a Worker to process as many as 128 tasks concurrently.
+This provided good performance for task executions, as it allows a Worker to process as many as 128 tasks concurrently.
 
-But most people deployed Kestra in containerized environments, with multiple Workers for redundancy and high availability. In these environments, 128 is too much and can lead to high memory usage (each thread uses a 1MB stack) and incorrect CPU utilization if the container has very few CPU count.
+However, most people deploy Kestra in containerized environments, with multiple Workers for redundancy and high availability. In these environments, 128 tasks is too many and can lead to high memory usage (each thread uses a 1MB stack) and incorrect CPU utilization if the container has a very low CPU count.
 
-We reduce the default number of threads to four times the number of available CPU cores, this should be a good balance between memory utilization and task execution performance.
+We reduced the default number of threads to four times the number of available CPU cores, optimizing the balance between memory utilization and task execution performance.
 
-As it highly depends on the nature of the tasks you are running inside the Worker, if you experience low CPU utilization, you can change the number of worker threads to fit your needs via the `--threads` command line option of the Worker.
+Performance highly depends on the nature of the tasks you are running inside the Worker. If you experience low CPU utilization, you can change the number of worker threads to fit your needs via the `--threads` command line option of the Worker.
 
 ## Logs performance improvements
 
-In our Kafka/Elasticsearch backend, logs were emitted asynchronously, but it was not the case in our JDBC backends (H2, MySQL, PostgreSQL, SQLServer).
+Our Kafka/Elasticsearch backend emits logs asynchronously via a dedicated indexer component, which needs to be started independently. However, this was not the case for our JDBC backends (H2, MySQL, PostgreSQL, SQLServer).
 
 To do so, our Kafka backend has a dedicated component: the indexer, which needed to be started independently.
 
@@ -77,32 +77,32 @@ To facilitate the deployment of the indexer, we decided to automatically start a
 
 An indexer can still be started to speed up resource indexation, but our test shows that this is rarely necessary.
 
-More information in the pull request: https://github.com/kestra-io/kestra/pull/4974.
+More information in the [Pull Request](https://github.com/kestra-io/kestra/pull/4974).
 
 ## Logging to a file
 
-Even with the recent performance improvements into logs handling, logging can take a faire amount of a task execution time as they need to be inserted into our internal queue to be then indexing asynchronously.
+Even with recent performance improvements to log handling, logging can still take up a significant portion of task execution time, as logs must be inserted into our internal queue before being indexed asynchronously.
 
-When a task emits a lot of logs, and you don't need them inside the UI but still want to be able to access them, you can log to a file by configuring tasks and triggers with `logToFile: true`. When enabled, logs will be stored inside an internal storage file, accessible from the UI, instead of inside the Kestra database.
+When a task emits many logs and you don't need them inside the UI but still want to be able to access them, you can configure tasks and triggers with `logToFile: true` to log to a file. When enabled, logs will be stored inside an internal storage file, accessible from the UI, instead of inside the Kestra database.
 
-More information in the pull request: https://github.com/kestra-io/kestra/pull/4757.
+More information in the [Pull Request](https://github.com/kestra-io/kestra/pull/4757).
 
-Of course, if you don't need the log, you can just avoid emitting them totally by configuring the `logLevel` of the task form de default `INFOR` level to `WARN` or `ERROR`.
+Of course, if you don't need the log, you can just avoid emitting them completely by configuring the `logLevel` of the task from the default `INFO` level to `WARN` or `ERROR`.
 
 ## Worker performance improvements
 
-The Worker is one of the most performance sensible components in Kestra as it processes task executions.
+The Worker is one of the most performance-sensitive components in Kestra, as it processes task executions.
 
-We try to use immutability in our code base as it allows code that is easier to reason about, and have usually better performance characteristics.
+We strive to use immutability in our codebase, as it makes the code more predictable and easier to understand while usually providing better performance characteristics.
 
-But the Worker mutate the `WorkerTask`, the message that it receives from the Executor to process a task, which lead to suboptimal code where we need to clean up temporary structures before sending a `WorkerTaskResult` message back to the Executor.
+However, the Worker mutates the `WorkerTask`—the message that it receives from the Executor to process a task. This mutation leads to suboptimal code, requiring us to clean up temporary structures before sending a `WorkerTaskResult` message back to the Executor.
 
-On some contrived benchmarks, this can eat up to 15% or CPU cycles of the Worker!
+After some benchmark tests, we found that this can eat up to 15% of CPU cycles of the Worker!
 
-By refactoring the Worker to never mutate the `WorkerTask`, we can avoid temporary structures clean up and get back these CPU cycle for what matters: executing your tasks!
+By refactoring the Worker to never mutate the `WorkerTask`, we avoid temporary structure cleanup and recover these CPU cycles for what matters: executing your tasks!
 
-More information in the pull request: https://github.com/kestra-io/kestra/pull/5348.
+More information in the [Pull request](https://github.com/kestra-io/kestra/pull/5348).
 
 ## Conclusion
 
-This was just some of the more impactful performance improvements I can remember working on lately, but our team is commited to enhance performance continuously. Performance is one of the topics we keep looking at and we care for it on each improvement me made to Kesra to provide one of the most performant and scalable platforms for your orchestration need.
+These are just some of the most impactful performance improvements I recall working on recently, and as always, our team is committed to continuously enhancing performance. We consider and prioritize performance for each improvement we make to Kestra, ensuring it remains one of the most scalable and high-performing orchestration platforms available.
