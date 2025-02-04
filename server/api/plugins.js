@@ -29,7 +29,7 @@ function toNuxtBlocks(data, type) {
     };
 }
 
-const generateNavTocChildren = (properties) => {
+const generateNavTocChildren = (hrefPrefix = "", properties) => {
     const children = [];
 
     const sortedKeys = Object.keys(properties).sort((a, b) => {
@@ -38,7 +38,7 @@ const generateNavTocChildren = (properties) => {
 
     for (const key of sortedKeys) {
         children.push({
-            id: key,
+            id: hrefPrefix + key,
             depth: 3,
             text: key,
         });
@@ -63,7 +63,7 @@ const navTocData = (schema) => {
             id: 'properties',
             depth: 2,
             text: 'Properties',
-            children: generateNavTocChildren(schema.properties.properties)
+            children: generateNavTocChildren("properties_", schema.properties.properties)
         });
     }
 
@@ -72,7 +72,7 @@ const navTocData = (schema) => {
             id: 'outputs',
             depth: 2,
             text: 'Outputs',
-            children: generateNavTocChildren(schema.outputs.properties)
+            children: generateNavTocChildren("outputs_", schema.outputs.properties)
         });
     }
 
@@ -81,7 +81,7 @@ const navTocData = (schema) => {
             id: 'definitions',
             depth: 2,
             text: 'Definitions',
-            children: generateNavTocChildren(schema.definitions)
+            children: generateNavTocChildren(undefined, schema.definitions)
         });
     }
 
