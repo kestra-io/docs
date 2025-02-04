@@ -8,30 +8,30 @@ topics:
 
 Configure secure access via https to the Kestra UI.
 
-This guide will walk through the steps to configure secure access via https to the Kestra UI. 
+This guide walks through the steps to configure secure access via https to the Kestra UI.
 
 ## Why use SSL/TLS encryption
 
 In short, adding TLS encryption to your environment provides the following benefits:
 
-- Data is encrypted in transit, so no sensitive data can be intercepted in so-called "man-in-the-middle" attacks. 
+- Data is encrypted in transit so no sensitive data can be intercepted in so-called "man-in-the-middle" attacks.
 
-- Adding TLS to your environment provides an added layer of trust, so  your users know the URL they are accessing is genuine - e.g., you want your users to be confident that accessing https://mycompany.kestra.com/ui is a valid internal site. 
+- Adding TLS to your environment provides an added layer of trust, so  your users know the URL they are accessing is genuine - e.g. you want your users to be confident that accessing https://mycompany.kestra.com/ui is a valid internal site.
 
-For further details, Cloudflare has a good write-up on [why you should use https](https://www.cloudflare.com/en-gb/learning/ssl/why-use-https/).
+For further details, Cloudflare have a good write-up on why you should use https on your site https://www.cloudflare.com/en-gb/learning/ssl/why-use-https/
 
-## Creating self-signed certificates 
+## Creating self-signed certificates
 
-To get started in lower environments, you can create self-signed certificates using the OpenSSL library. Full details on the various steps and how to examine the certificates and keys in more details can be found in this [Micronaut article](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html). 
+To get started in lower environments, you can easily create self-signed certificates using the OpenSSL library. Full details on the various steps and how to examine the certificates and keys in more details can be found in this Micronaut article https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html.
 
 ::alert{type="info"}
-While self-signed certificates encrypt traffic, they are considered unsuitable for production usage. They are deemed untrustworthy, as they do not come from a trusted Certificate Authority (CA) such as [Let's Encrypt](https://letsencrypt.org/). Please follow your organization's best-practices when choosing the appropriate CA provider.
+While self-signed certificates encrypt traffic, they are considered unsuitable for production usage. They are deemed untrustworthy as they do not come from a trusted Certificate Authority (CA) such as Let's Encrypt. Please follow your organizations best-pratices when choosing the appropriate CA provider.
 ::
 
 ```bash
 # Create a folder which will be later mounted to the kestra container
 mkdir -p /app/ssl
-cd /app/ssl 
+cd /app/ssl
 ```
 
 ```bash
@@ -72,7 +72,7 @@ keytool -importkeystore -srckeystore server.p12 \
         -deststoretype pkcs12 \
         -deststorepass changeit -srcstorepass changeit
 
-# Create truststore.jks 
+# Create truststore.jks
 keytool -import -trustcacerts -noprompt -alias ca \
         -ext san=dns:localhost,ip:127.0.0.1 \
         -file cacert.pem -keystore truststore.jks \
@@ -81,10 +81,10 @@ keytool -import -trustcacerts -noprompt -alias ca \
 
 ## Sample Kestra configuration with SSL enabled
 
-Enabling https is accomplished via the `micronaut` configuration settings. These are set at the root level within the Kestra configuration. 
+Enabling https is accomplished via the `micronaut` configuration settings. These are set at the root level within the Kestra configuration.
 
 ::alert{type="info"}
-Ensure that you expose the secure port of the connection if different from the default port. 
+Ensure that you expose the secure port of the connection if different from the default port.
 ::
 
 ```yaml
@@ -120,7 +120,7 @@ Ensure that you expose the secure port of the connection if different from the d
               trustStore:
                 path: file:/app/ssl/truststore.jks
                 password: changeit
-                type: JKS      
+                type: JKS
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
@@ -148,74 +148,20 @@ Ensure that you expose the secure port of the connection if different from the d
             - "8443:8443"
 ```
 
-## Outbound SSL configuration
+## Enabling CSRF Protection
 
-If using Kestra tasks to make outbound calls to other services, then you may want to secure the the process by configuring SSL for outbound traffic. You can accomplish this in your Kestra configuration file by passing the following JVM options in the `JAVA_OPTS` environment variable:
+Cross-site request forgery (CSRF) is a type of attack that occurs when a malicious website or email
+causes a user's web browser to perform an unwanted action on a trusted site when the user is authenticated.
 
-```yaml
-JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
-```
-
-Below is an example configuration file with the newly added environment variable:
+To enable CSRF protection, you must ensure that your instance has TLS/SSL enabled.
+Once this is configured, add the following to your configuration file:
 
 ```yaml
-  kestra:
-    image: registry.kestra.io/docker/kestra:latest
-    pull_policy: always
-    user: "root"
-    command: server standalone --worker-thread=128
-    volumes:
-      - kestra-data:/app/storage
-      - /var/run/docker.sock:/var/run/docker.sock
-      - tmp-kestra:/tmp/kestra-wd
-      - /app/ssl:/app/ssl
-    ports:
-      - "8443:8443"
-    environment:
-      JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit" # Add in the JVM options as an environment variable
-      KESTRA_CONFIGURATION: |
-        micronaut:
-          security:
-            x509:
-              enabled: false
-          ssl:
-            enabled: true
-          server:
-            ssl:
-              port: 8443
-              enabled: true
-              clientAuthentication: want
-              keyStore:
-                path: file:/app/ssl/server.p12
-                password: changeit
-                type: PKCS12
-              trustStore:
-                path: file:/app/ssl/truststore.jks
-                password: changeit
-                type: JKS      
-        datasources:
-          postgres:
-            url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
-            username: kestra
-            password: k3str4
-        kestra:
-          server:
-            basicAuth:
-              enabled: false
-              username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
-          repository:
-            type: postgres
-          storage:
-            type: local
-            local:
-              basePath: "/app/storage"
-          queue:
-            type: postgres
-          tasks:
-            tmpDir:
-              path: /tmp/kestra-wd/tmp
-          ports:
-            - "8443:8443"
+micronaut
+  security:
+    csrf:
+      enabled: true
 ```
+
+This setting enables CSRF protection on all endpoints that reach `/api/.*`.
+

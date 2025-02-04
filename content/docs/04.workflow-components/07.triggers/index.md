@@ -20,35 +20,34 @@ Kestra supports both **scheduled** and **external** events.
 
 Kestra provides five types of triggers:
 
-- [Schedule trigger](./01.schedule-trigger.md) executes your flow on a regular cadence e.g., using a CRON expression and custom scheduling conditions.
-- [Flow trigger](./02.flow-trigger.md) executes your flow when another flow finishes its execution (based on a configurable list of states)
-- [Webhook trigger](./03.webhook-trigger.md) executes your flow based on an HTTP request emitted by a webhook.
-- [Polling trigger](./04.polling-trigger.md) executes your flow by polling external systems for the presence of data.
-- [Realtime trigger](./05.realtime-trigger.md) executes your flow when events happen with millisecond latency.
+- [Schedule trigger](./01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
+- [Flow trigger](./02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+- [Webhook trigger](./03.webhook-trigger.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
+- [Polling trigger](./04.polling-trigger.md) allows you to execute your flow by polling external systems for the presence of data.
+- [Realtime trigger](./05.realtime-trigger.md) allows you to execute your flow when events happen with millisecond latency.
 
-Many other triggers are available from the plugins, such as triggers based on file detection events like the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.strigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
+Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.strigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
 
 
-### Trigger common properties
+### Trigger Common Properties
 
-The following trigger properties can be set.
+Following trigger properties can be set.
 
 | Field | Description                                                         |
 | ----- |---------------------------------------------------------------------|
 |`id`| The flow identifier, must be unique inside a flow.                  |
-|`type`| The Java FQDN of the trigger                                       |
-|`description`| The description of the trigger                                     |
+|`type`| The Java FQDN of the trigger.                                       |
+|`description`| The description of the trigger.                                     |
 |`disabled`| Set it to `true` to disable execution of the trigger.               |
 |`workerGroup.key`| To execute this trigger on a specific Worker Group (EE) |
 
 ---
 
-## Trigger variables
+## Trigger Variables
 
-Triggers allow you to access trigger metadata through expressions such as `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers like the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+Triggers allow you to access trigger metadata through expressions e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
 
-This example logs the date when the trigger executes the flow:
-
+This example will log the date when the trigger executes the flow:
 ```yaml
 id: variables
 namespace: company.team
@@ -68,7 +67,7 @@ triggers:
 ::alert{type="warning"}
 Note that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
-Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using the `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those files, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
+Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
 ::
 
 Triggers restrict parallel execution for a given trigger ID to one active run. For instance, if an Execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled Executions will not be affected.
@@ -96,27 +95,23 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.HasRetryAttempt)
-- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.MultipleCondition)
+- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattempt)
+- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
 - [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
 - [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
 - [ExecutionFlow](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlow)
 - [ExecutionNamespace](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespace)
-- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionLabels)
+- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabels)
 - [ExecutionStatus](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatus)
-- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionOutputs)
+- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputs)
 - [Expression](/plugins/core/conditions/io.kestra.plugin.core.condition.Expression)
-- [FlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.flowcondition)
-- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.flownamespacecondition)
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger.md#schedule-conditions).
-
-View the full list of conditions in the [Plugin Docs](/plugins/core#condition) 
 
 ## Unlocking, enabling and disabling triggers
 
 ### Disabling a trigger in the source code
-If you want to temporarily disable a trigger, you could do so by setting the `disabled` property to `true`, as shown in the example below:
+If you want to temporarily disable a trigger, you could do so by setting the `disabled` property to `true`, as you can see in the example below:
 
 ```yaml
 id: hello_world
@@ -151,11 +146,11 @@ If your trigger is locked due to an execution in progress, you can unlock it by 
 
 ![trigger_unlock](/docs/workflow-components/triggers/trigger_unlock.png)
 
-The **Unlock trigger** functionality is useful for troubleshooting, e.g., if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
+The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
 ### Toggle or unlock triggers from the Administation page
 
-You can also disable, re-enable, or unlock triggers from the **Administration** page. Here is how you can do it:
+You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:
 
 ![triggers_administration](/docs/workflow-components/triggers/triggers_administration.png)
 
@@ -192,7 +187,7 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 ## The ``stopAfter`` property
 
-Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that disable the trigger after the flow execution has reached one of the states in the list.
+Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
 
 This property is meant to be used primarily for a `Schedule` trigger and triggers that poll for conditions including the HTTP, JDBC, or File Detection triggers. However, you can use it with all triggers.
 
@@ -254,8 +249,8 @@ triggers:
 
 Let's break down the above example:
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
-2. If the condition is met, the Execution will be created.
-3. Within that execution, the `slack` task will send a Slack message to the `#price-alerts` channel to notify about the price change.
+2. If the condition is met, the Execution will be created
+3. Within that execution, the `slack` task will send a Slack message to the `#price-alerts` channel to notify about the price change
 4. After that execution finishes successfully, the `stopAfter` property condition is met — it will disable the trigger ensuring that you don't get alerted every 30 seconds about the same condition.
 
 
