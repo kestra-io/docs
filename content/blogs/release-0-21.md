@@ -35,7 +35,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-The new [Log Shipper feature](../docs/06.enterprise/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages synchronization points. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
+The new [Log Shipper feature](../docs/06.enterprise/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
 Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
@@ -57,10 +57,10 @@ tasks:
     batchSize: 1000
     lookbackPeriod: P1D
     logExporters:
-      - id: DatadogLogExporter
+      - id: data_dog
         type: io.kestra.plugin.ee.datadog.LogExporter
         basePath: '{{ secret("DATADOG_INSTANCE_URL") }}'
-        apiKey: '{{ secret("DATADOG_APIK_KEY") }}'
+        apiKey: '{{ secret("DATADOG_API_KEY") }}'
 
 triggers:
   - id: daily
@@ -71,7 +71,7 @@ triggers:
 
 ![datadog logshipper](/blogs/release-0-21/logshipper_datadog.png)
 
-Here is an example with AWS CloudWatch:
+
 ::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
 id: log_shipper
@@ -84,16 +84,16 @@ tasks:
     batchSize: 1000
     lookbackPeriod: P1D
     logExporters:
-      - id: AWSLogExporter
+      - id: aws_cloudwatch
         type: io.kestra.plugin.ee.aws.LogExporter
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-        secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-        region: "{{ vars.region }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: us-east-1
 
 triggers:
   - id: daily
     type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@daily"
+    cron: "0 9 * * *" # everyday at 9am
 ```
 ::
 
@@ -101,7 +101,7 @@ triggers:
 
 ### New No Code Experience
 
-Kestra's interface has always bridged the gap between code and no-code. In this release, we've redesigned our no-code flow editor. The new interface features intuitive left-side panels for flow properties and task management, plus organized drawers for simpler navigation of complex nested properties. A breadcrumb shows your position within each configuration.
+Kestra's interface has always bridged the gap between code and no-code. In this release, we've redesigned our no-code flow editor. The new interface provides intuitive left-side panels for flow properties and organized drawers for simpler navigation of complex plugin properties. A breadcrumb shows your position within each configuration.
 
 ### Custom Dashboards
 
