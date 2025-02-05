@@ -4,7 +4,7 @@ icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---
 
-Authentication, RBAC, & User Management
+The following topics describe how to manage Authentication, Role-based Access Control, and Users in Kestra.
 
 ::ChildCard
 ::
