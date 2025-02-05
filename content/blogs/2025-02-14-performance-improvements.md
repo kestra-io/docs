@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/TODO
+image: /blogs/optimized-performance.png
 ---
 
 Kestra engineers are continuously improving the performance of the orchestrator to be more resource efficient. Recently, in Kestra versions 0.19 and 0.20, we tackled performance inefficiencies in data serialization, database query indexes, log handling, and more. Let's dig into the details of the recent peformance improvements.
