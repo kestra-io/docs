@@ -111,11 +111,6 @@
         :deep(pre) {
             overflow: hidden;
             margin-bottom: 0;
-
-            code {
-                padding: 0;
-                color: var(--bs-white) !important;
-            }
         }
 
         .language, .copy {

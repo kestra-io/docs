@@ -330,7 +330,7 @@
     }
 
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
-        color: $white-2;
+        color: $white-3;
         text-decoration: none !important;
     }
 
