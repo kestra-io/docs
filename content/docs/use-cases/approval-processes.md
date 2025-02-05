@@ -1,0 +1,173 @@
+---
+title: Automate Manual Approval Processes
+description: Integrate Human-in-the-Loop approvals into critical steps of automated workflows
+order: 60
+---
+
+Modern automation requires human oversight for critical decisions. Kestra enables integration of manual approval steps within workflows while maintaining audit trails and process consistency.
+
+## What is Human-in-the-Loop Automation?
+
+Human-in-the-loop (HITL) automation combines automated tasks with human decision points. Kestra implements this through:
+- **Pause/Resume** – Pause workflows for manual inspection before resuming
+- **Dynamic Inputs** – Collect user decisions during execution
+- **Approval Chains** – Route decisions to specific users or teams
+- **Audit Logs** – Track who approved/rejected each request and why.
+
+---
+
+## Why Use Kestra for Human-in-the-Loop Workflows?
+
+1. **Flexible Integration** – Add approval steps to existing workflows in a few lines of YAML
+2. **Enterprise Security** – Manage permissions via namespace-level RBAC
+3. **Cross-Platform Notifications** – Send approval requests to Slack, Teams, or Email
+4. **Input Validation** – Enforce structured responses (Numeric, Boolean, Dates, Dropdowns)
+5. **Bulk Actions** – Bulk-resume multiple paused workflows when needed.
+6. **Audit Trails** – Track approvals, rejections, and reasons for each decision.
+
+---
+
+## Example: Vacation Approval Workflow
+
+This workflow demonstrates a complete approval process with Slack notifications and audit logging:
+
+```yaml
+id: vacation_approval
+namespace: hr.operations
+
+inputs:
+  - id: employee
+    type: STRING
+  - id: start_date
+    type: DATE
+  - id: end_date
+    type: DATE
+
+tasks:
+  - id: notify_manager
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_HR_WEBHOOK') }}"
+    payload: |
+      {
+        "channel": "#vacation-approvals",
+        "text": "Review request from {{ inputs.employee }}\n*Dates*: {{ inputs.start_date }} → {{ inputs.end_date }}\nApprove: {{ appLink('appId') }}"
+      }
+
+  - id: await_decision
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: approved
+        type: BOOLEAN
+        description: Approve this request?
+      - id: reason
+        type: STRING
+        description: Decision notes
+
+  - id: update_hr_system
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ kv('HR_API_ENDPOINT') }}/approvals"
+    method: POST
+    contentType: multipart/form-data
+    formData:
+      employee: "{{ inputs.employee }}"
+      status: "{{ outputs.await_decision.onResume.approved ? 'APPROVED' : 'REJECTED' }}"
+      notes: "{{ outputs.await_decision.onResume.reason }}"
+
+  - id: log_result
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Decision: {{ outputs.await_decision.onResume }}
+```
+
+---
+
+##  Kestra Features for Human-in-the-Loop Automation
+
+### Structured Inputs for Human Decisions
+
+Add approval steps with structured inputs to any workflow:
+```yaml
+  - id: await_decision
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: approved
+        type: BOOLEAN
+        displayName: Approve this request?
+      - id: reason
+        type: STRING
+        displayName: Decision notes
+      - id: team
+        type: SELECT
+        displayName: Team to review
+        values:
+          - HR
+          - Finance
+          - IT
+```
+
+### Bulk Actions
+
+Approve multiple paused workflows simultaneously:
+![Bulk Resume](/docs/how-to-guides/pause-resume/pause_resume2.png)
+
+### Audit Trails
+
+Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
+```json
+{
+  "approved": true,
+  "reason": "Within policy limits"
+}
+```
+
+### Conditional Branching
+
+Route next automated tasks based on human decisions:
+```yaml
+  - id: handle_rejection
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.await_decision.onResume.approved is false }}"
+    then:
+      - id: notify_employee
+        type: io.kestra.plugin.notifications.mail.MailSend
+        to: "{{ inputs.employee_email }}"
+        subject: "Request Denied"
+        htmlTextContent: "Reason: {{ outputs.await_decision.onResume.reason }}"
+```
+
+---
+
+## Getting Started with Human-in-the-Loop Automation
+
+1. **Install Kestra** – Follow the [quick start guide](../01.getting-started/01.quickstart.md) or the full [installation instructions for production environments](../02.installation/index.md).
+2. **Write Your Workflows** – Configure your [flow](../03.tutorial/index.md) in YAML. Each automated task can invoke an API, run scripts, or call any existing service. Then, add `Pause` tasks for manual approvals:
+   ```yaml
+   - id: approval_gate
+     type: io.kestra.plugin.core.flow.Pause
+     onResume:
+       - id: signoff
+         type: BOOLEAN
+         required: true
+   ```
+3. **Configure Notifications** – Use Slack, Teams, or Email plugins to notify users about pending approvals:
+   ```yaml
+   - id: alert
+     type: io.kestra.plugin.notifications.teams.TeamsIncomingWebhook
+     url: "{{ secret('TEAMS_WEBHOOK') }}"
+     payload: |
+       {
+         "text": "The process {{ flow.id }} is pending approval {{ appLink() }}"
+       }
+   ```
+4. **Add Triggers** – Use scheduled or event-based [triggers](../04.workflow-components/07.triggers/index.md) to launch workflows.
+5. **Observe and Manage** – Use [Kestra’s UI](../08.ui/index.md) to monitor states, logs, outputs, and metrics. Correct and replay failed workflow executions or roll back to a previous revision when needed.
+
+---
+
+## Next Steps
+
+- [Explore notification plugins](https://kestra.io/plugins) for Slack, Teams, Email and more
+- [Check How-to Guides](../15.how-to-guides/pause-resume.md) for detailed examples of approval workflows
+- [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel
+- [Join Slack](https://kestra.io/slack) to ask questions, contribute code, or share feature requests
+- [Book a demo](https://kestra.io/demo) to discuss how Kestra can help automate your approval processes.

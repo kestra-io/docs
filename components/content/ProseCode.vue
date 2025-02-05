@@ -1,13 +1,13 @@
-<script>
-    import {defineComponent} from "#imports";
+<script setup>
+    import {onMounted} from "#imports";
     import { createPopper } from "@popperjs/core";
+    import useShiki from "~/composables/useShiki";
 
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
     import Mermaid from "~/components/content/Mermaid.vue";
 
-    export default defineComponent({
-        props: {
+    const props = defineProps({
             code: {
                 type: String,
                 default: ""
@@ -28,46 +28,44 @@
                 type: String,
                 default: null
             }
-        },
-        data() {
-            return {
-                icons: shallowRef({
-                    ContentCopy: shallowRef(ContentCopy),
-                    Check: shallowRef(Check)
-                }),
-                copyIcon: undefined,
-                copyIconResetTimer: undefined,
-                isHoveringCode: false
-            }
-        },
-        created() {
-            this.copyIcon = this.icons.ContentCopy;
-        },
-        methods: {
-            hoverCode(){
-                this.isHoveringCode = true;
-                if(this.copyIconResetTimer) {
-                    nextTick(() => {
-                        createPopper(this.$refs.copyButton, this.$refs.copyTooltip, {
-                            placement: 'left',
-                        });
+        })
+
+        const copied = ref(false);
+        const isHoveringCode = ref(false);
+        const copyIconResetTimer = ref(undefined);
+        const copyButton = ref(null);
+        const copyTooltip = ref(null);
+
+        const {highlightCodeBlocks} = useShiki();
+
+        const codeBlock = ref(null);
+
+        onMounted(() => {
+            highlightCodeBlocks(codeBlock.value);
+        });
+
+        function hoverCode(){
+            isHoveringCode.value = true;
+            if(copyIconResetTimer.value) {
+                nextTick(() => {
+                    createPopper(copyButton.value, copyTooltip.value, {
+                        placement: 'left',
                     });
-                }
-            },
-            copyToClipboard() {
-                clearTimeout(this.copyIconResetTimer);
-
-                navigator.clipboard.writeText(this.code.trimEnd())
-
-                this.copyIcon = this.icons.Check;
-
-                this.copyIconResetTimer = setTimeout(() => {
-                    this.copyIcon = this.icons.ContentCopy;
-                    this.copyIconResetTimer = undefined;
-                }, 2000)
+                });
             }
         }
-    });
+
+        function copyToClipboard() {
+            clearTimeout(copyIconResetTimer.value);
+            copied.value = true;
+
+            navigator.clipboard.writeText(props.code.trimEnd())
+
+            copyIconResetTimer.value = setTimeout(() => {
+                copied.value = false;
+                copyIconResetTimer.value = undefined;
+            }, 2000)
+        }
 </script>
 
 <template>
@@ -76,18 +74,18 @@
             {{code}}
         </Mermaid>
     </template>
-    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
-        <div class="language" v-if="language">{{ language }}</div>
+    <div v-else class="code-block" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" ref="codeBlock">
+        <div class="language" v-if="language && !isHoveringCode">
+            {{ language }}
+        </div>
         <template v-if="isHoveringCode">
-            <button ref="copyButton" class="copy">
-                <component
-                    :is="copyIcon"
-                    @click="copyToClipboard"
-                />
+            <button ref="copyButton" @click="copyToClipboard" class="copy">
+                <Check v-if="copied" />
+                <ContentCopy v-else />
             </button>
             <div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
                 Copied!
-                <div id="arrow" data-popper-arrow></div>
+                <div id="arrow" data-popper-arrow />
             </div>
         </template>
         <slot />
@@ -104,13 +102,10 @@
         border-radius: var(--bs-border-radius-lg);
         color: var(--bs-white);
         position: relative;
+        margin-bottom: 1em;
 
         .language {
-            position: absolute;
-            right: 0.35rem;
-            top: 0.25rem;
-            color: var(--bs-gray-600);
-            font-size: calc($font-size-base * .75);
+            font-size: 0.75rem;
         }
 
         :deep(pre) {
@@ -123,13 +118,23 @@
             }
         }
 
-        .copy {
+        .language, .copy {
+            color: var(--kestra-io-neutral-gray700) !important;
             position: absolute;
-            right: 0;
-            bottom: 0.1rem;
-            color: $gray-600;
+            top: 1.25rem;
+            right: 1.25rem;
+        }
+
+        .copy {
             border: none;
             background: none;
+
+            & .material-design-icon{
+                &, & * {
+                    height: 1.125rem !important;
+                    width: 1.125rem !important;
+                }
+            }
         }
 
         #copied-tooltip {

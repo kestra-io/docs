@@ -2,7 +2,7 @@
 title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 editions: ["EE"]
-docId: bindings
+docId: iam
 ---
 
 How to manage access and permissions to your instance.
@@ -260,13 +260,6 @@ If a user wants to change their password, they can do it on their profile. This 
 #### Reset password (by a Super Admin)
 
 Kestra does not provide any forgot password feature yet. Currently only a super admin can update a user password through its User Edit page.
-
-#### Impersonate user (Admin)
-
-As an Admin of your Kestra environment, you can test the permission setup of other users with the **Impersonate** feature.
-**Impersonate** is available through the IAM-Users tab. Select any user to impersonate, and you can experience your Kestra instance from the perspective of that user, ensuring permissions and access are correctly implemented.
-
-![impersonate-user](/docs/enterprise/impersonate-user.png)
 
 ### Groups
 

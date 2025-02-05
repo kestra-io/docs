@@ -96,7 +96,7 @@ triggers:
   - id: multiple_listen_flow
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - SUCCESS
       - id: multiple
@@ -105,11 +105,11 @@ triggers:
         windowAdvance: P0D
         conditions:
           flow_a:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: company.team
             flowId: multiplecondition_flow_a
           flow_b:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: company.team
             flowId: multiplecondition_flow_b
 ```

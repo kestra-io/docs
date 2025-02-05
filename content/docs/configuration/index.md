@@ -606,7 +606,7 @@ outputs:
 
 When executing this flow, you will see a masked field:
 
-![secret1](/docs/configuration-guide/secret1.png)
+![Masked Field](/docs/configuration/masked-field.png)
 
 
 In the Execution Overview tab, you will see a masked value of the secret.
@@ -651,7 +651,7 @@ All JVM options can be passed in an environment variable named `JAVA_OPTS`. You 
 Example:
 
 ```shell
-export JAVA_OPTS="-Duser.timezone=Europe/Paris"
+export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
 ### Timezone

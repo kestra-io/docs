@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
         <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.isHomepage}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
@@ -32,8 +32,10 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <HelpfulVote />
-                    <PrevNext v-if="prevNext" :navigation="navigation" />
+                    <template v-if="!page?.isHomepage">
+                        <HelpfulVote />
+                        <PrevNext v-if="prevNext" :navigation="navigation" />
+                    </template>
                 </div>
             </ContentRenderer>
         </article>
@@ -247,7 +249,7 @@
             }
         }
         .bd-content {
-            margin: 0 auto;
+            margin: 0 auto 2em auto;
             max-width: calc($spacer * 43.7);
             @media only screen and (min-width: 1920px) {
                 max-width: 71.25rem;
@@ -378,5 +380,39 @@
 
     .docs :deep(.img-block) {
         text-align: left !important;
+    }
+
+    .homepage {
+        .bd-content {
+            background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
+            background-size: 500px 250px, 1261px 984px;
+            background-position: top 110px right -30px, top -200px right -350px;
+            margin-bottom: 2em;
+        }
+
+        @include media-breakpoint-up(lg) {
+            .bd-content {
+                max-width: 733px;
+            }
+
+            .bd-title{
+                margin: 0 auto;
+            }
+
+            .bd-title, .bd-title h1, .bd-title .slug{
+                max-width: 733px;
+                width: 100%;
+            }
+
+            :deep(.video-container){
+                padding-top: 56.25%;
+                height: auto;
+                overflow: hidden;
+                iframe{
+                    max-width: none;
+                    max-height: none;
+                }
+            }
+        }
     }
 </style>
