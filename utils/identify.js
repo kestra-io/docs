@@ -10,7 +10,7 @@ export default function(email) {
     })
 
     posthog.identify(
-        undefined,
+        posthog.get_distinct_id(),
         {email: email}
     );
 }
