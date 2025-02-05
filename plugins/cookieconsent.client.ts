@@ -50,6 +50,14 @@ export default defineNuxtPlugin(nuxtApp => {
             gtm?.trackView(route.name, route.fullPath);
 
             localStorage.setItem("KUID", response.data.id);
+
+            if (window?.location?.search) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const ke = urlParams.get('ke');
+                if (ke) {
+                    identify(ke);
+                }
+            }
         };
 
         const enabledMarketing = () => {
@@ -60,13 +68,6 @@ export default defineNuxtPlugin(nuxtApp => {
             })
         };
 
-        if (window?.location?.search) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ke = urlParams.get('ke');
-            if (ke) {
-                identify(ke);
-            }
-        }
 
         if (!isEurope) {
             enabledAnalytics();
