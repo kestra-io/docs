@@ -1,7 +1,5 @@
 <template>
-    <Suspense>
-        <PluginContainer :prevNext="false" type="plugins" />
-    </Suspense>
+    <PluginContainer :prevNext="false" type="plugins" />
 </template>
 
 <script setup>
