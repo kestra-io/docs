@@ -162,26 +162,6 @@ $container-border: 1px solid rgba(255, 255, 255, 0.10);
 $block-border: 1px solid $black-3;
 $btn-dark-border: 1px solid rgba(255, 255, 255, 0.12);
 
-// Alert Colors according to kestra dark theme.  
-// These variables can be removed once the ks-theme-dark.scss is updated for docs too. 
-// Then we can just import '@kestra-io/ui-libs/src/scss/ks-theme-dark.scss' inside Alert.vue and use.
-
-$success-bg: rgba(0, 35, 25, .2);
-$success-border: #02be8a;
-$success-color: #beefe2;
-
-$info-bg: rgba(14, 59, 154, .2);
-$info-border: #1761fd;
-$info-color: #c7fdff;
-
-$warning-bg: rgba(111, 48, 0, .2);
-$warning-border: #e9985b;
-$warning-color: #eeae7e;
-
-$danger-bg: rgba(38, 0, 2, .2);
-$danger-border: #e3262f;
-$danger-color: #fd9297;
-
 //margin
 $popper-margin: .2rem;
 
