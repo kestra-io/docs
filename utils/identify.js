@@ -13,5 +13,13 @@ export default function(email) {
         posthog.get_distinct_id(),
         {email: email}
     );
+
+
+    if (window.signals) {
+        window.signals.identify({email: email});
+    }
+
+    let _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['identify', {email: email}]);
 }
 
