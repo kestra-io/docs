@@ -1,7 +1,7 @@
 ---
 title: "How Kestra engineers optimized orchestrator performance"
 description: "Optimized performance is critical to every application, check out how Kestra engineers improved the orchestrator's performance in recent versions. "
-date: 2025-02-14T13:00:00
+date: 2025-02-06T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
