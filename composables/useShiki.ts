@@ -60,7 +60,8 @@ export default function useShiki(options = {immediate: false}) {
             // check is there is a language class and extract it
             const languageClass = Array.from(preClassList).find((c) => c.startsWith('language-'))
             if(languageClass) {
-                const html = (await shiki.value)?.codeToHtml(block.innerHTML.replace(/\n$/, ''), {
+                const originalCode = block.innerHTML.replace(/\n$/, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+                const html = (await shiki.value)?.codeToHtml(originalCode, {
                     lang: languageClass.replace('language-', ''),
                     theme: 'github-dark'
                 })
@@ -80,6 +81,7 @@ export default function useShiki(options = {immediate: false}) {
                 if(classList) {
                     block.parentElement?.classList.add(...classList)
                 }
+
                 block.innerHTML = innerHTML.replace(/\n/g, '')
             }
             // add mb-3 to the block-code element
