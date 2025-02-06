@@ -2,9 +2,9 @@
   <div>
         <h2>{{title}}</h2>
         <div class="list-of-posts">
-            <template v-for="(post, index) of posts" :key="post._path" >
+            <template v-for="(post, index) of posts" :key="post.path" >
                 <hr v-if="index > 0" />
-                <NuxtLink :to="post._path" class="post-card">
+                <NuxtLink :to="post.path" class="post-card">
                     <img :src="post.image" class="card-img-left" alt="blog.title" />
                     <div class="card-body">
                         <div class="card-details">
@@ -33,7 +33,7 @@ const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
 
 const {data: posts} = await useAsyncData(
     `Blog-Page-Short-List`,
-    () => queryContent("/blogs/").sort({date:-1}).limit(4).find()
+    () => queryCollection("blogs").order("date", "DESC").limit(4).all()
 );
 </script>
 

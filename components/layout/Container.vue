@@ -26,12 +26,7 @@
 
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
-                    <ContentRendererMarkdown
-                        class="bd-markdown"
-                        :value="page"
-                        data-bs-spy="scroll"
-                        data-bs-target="#nav-toc"
-                    />
+
                     <template v-if="!page?.isHomepage">
                         <HelpfulVote />
                         <PrevNext v-if="prevNext" :navigation="navigation" />
@@ -68,11 +63,10 @@
       pageList = recursivePages(navigationFetch.data.value[0]);
       pageNames = generatePageNames(navigationFetch.data.value[0]);
     } else {
-      const queryBuilder = queryContent('/' + props.type + '/');
 
       navigationFetch = await useAsyncData(
         `NavSideBar-${hash(props.type)}`,
-        () => fetchContentNavigation(queryBuilder)
+        () => queryCollectionNavigation('docs')
       );
 
       if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
@@ -187,7 +181,7 @@
   } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
-        return queryContent(slug.value).findOne();
+        return queryCollection('docs').path(slug.value).findOne();
       } catch (error) {
         throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
       }
@@ -223,6 +217,7 @@
       ]
     })
 </script>
+
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 

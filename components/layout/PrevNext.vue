@@ -39,7 +39,8 @@ import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import {prevNext} from "~/utils/navigation.js";
 
-const {navDirFromPath} = useContentHelpers()
+// const {navDirFromPath} = useContentHelpers()
+const navDirFromPath = () => []
 
     export default defineComponent({
         components: {ArrowLeft, ArrowRight},

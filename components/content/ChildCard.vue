@@ -43,7 +43,7 @@
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
-        () => queryContent(currentPage + "/").where({ _dir: currentPageDir}).find()
+        () => queryCollection('docs').where('path', 'LIKE', `/${currentPage}/%`).all()
     );
 
     // if (currentPage == "/docs/faq") {

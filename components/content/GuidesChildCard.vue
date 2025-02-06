@@ -140,7 +140,7 @@
       const {data: result} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => {
-          let query = queryContent(currentPage + "/").where({ _dir: currentPageDir });
+          let query = queryCollection('docs').path(currentPage + "/").where({ _dir: currentPageDir });
 
           let queryParams = {};
 

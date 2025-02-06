@@ -1,6 +1,6 @@
 <script>
     import {hash} from "ohash";
-    import {useAsyncData, fetchContentNavigation} from "#imports";
+    import {useAsyncData} from "#imports";
     import {NuxtLink} from "#components";
 
     export default defineComponent({
@@ -17,7 +17,8 @@
         async setup(props) {
             const {pageUrl, max} = toRefs(props);
             const route = useRoute()
-            const {navDirFromPath} = useContentHelpers()
+            // const {navDirFromPath} = useContentHelpers()
+            const navDirFromPath = () => []
 
             let currentPage = null;
 
@@ -29,11 +30,9 @@
 
             currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
-            const queryBuilder = queryContent(currentPage)
-
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => fetchContentNavigation(queryBuilder),
+                () => queryCollectionNavigation('docs').where("path", "LIKE", `${currentPage}/%`).all()
             );
 
             const dir = (navDirFromPath(currentPage, navigation.value) || [])
