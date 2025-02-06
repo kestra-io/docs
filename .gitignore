@@ -29,6 +29,7 @@ node_modules
 dist
 .obsidian/**/*
 .vercel
+.data
 
 ## Cloudflare
 .wrangler

@@ -1,4 +1,5 @@
 import * as sass from "sass";
+import {defineCollection} from '@nuxt/content'
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -75,6 +76,14 @@ export default defineNuxtConfig({
                 },
             }
         },
+        collections: {
+            docs: defineCollection({
+                // Load every file inside the `content` directory
+                source: 'content/**.md',
+                // Specify the type of content in this collection
+                type: 'page'
+            })
+        }
     },
 
     devServer: {
