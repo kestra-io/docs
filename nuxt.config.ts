@@ -6,15 +6,15 @@ const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
     modules: [
         '@nuxt/devtools',
-        '@nuxtjs/sitemap',
-        '@nuxtjs/robots',
-        '@nuxt/content',
         '@nuxt/image',
         'nuxt-multi-cache',
         'vue3-carousel-nuxt',
         'nuxt-lazy-hydrate',
         'nuxt-aos',
-        '@zadigetvoltaire/nuxt-gtm'
+        '@zadigetvoltaire/nuxt-gtm',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        '@nuxt/content',
     ],
     target: 'static',
     image: {
@@ -86,14 +86,6 @@ export default defineNuxtConfig({
                     rootDir: process.cwd()
                 },
             }
-        },
-        collections: {
-            docs: defineCollection({
-                // Load every file inside the `content` directory
-                source: 'content/**/*.md',
-                // Specify the type of content in this collection
-                type: 'page'
-            })
         }
     },
 
