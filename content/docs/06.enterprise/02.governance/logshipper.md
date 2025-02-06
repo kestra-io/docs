@@ -25,8 +25,8 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 - `batchSize` - Defines the amount of logs per batch. The default value is set to `1000`.
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. You can specify, for example, only to forward `WARNING` or `ERROR` level logs.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
-- `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
-- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`.
+- `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
+- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`.
 
 
 ## Log Shipper examples

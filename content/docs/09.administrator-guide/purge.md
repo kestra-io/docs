@@ -11,7 +11,7 @@ As your workflows grow, you may need to clean up old executions and logs to save
 The recommended way to clean execution and logs is using a combination of `io.kestra.plugin.core.execution.PurgeExecutions` and the newly added `io.kestra.plugin.core.log.PurgeLogs` task as shown below. The `PurgeLogs` task removes all logs (both `Execution` logs and `Trigger` logs) in a performant batch operation. Combining those two together will give you the same functionality as the previous `io.kestra.plugin.core.storage.Purge` task but in a more performant and reliable way (roughly [10x faster](https://github.com/kestra-io/kestra/pull/4298#issuecomment-2220106142)).
 
 ::alert{type="info"}
-Additionally, the [Enterprise Edition](../06.enterprise/index.md) includes the [`PurgeAuditLogs` task](../06.enterprise/06.audit-logs.md#how-to-purge-audit-logs).
+Additionally, the [Enterprise Edition](../06.enterprise/index.md) includes the [`PurgeAuditLogs` task](../06.enterprise/02.governance/06.audit-logs.md#how-to-purge-audit-logs).
 ::
 
 ```yaml

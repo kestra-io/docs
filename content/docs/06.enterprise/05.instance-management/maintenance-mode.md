@@ -13,9 +13,9 @@ Maintenance Mode is an enterprise feature designed to transition your Kestra ins
 
 Maintenance Mode addresses a common challenge faced by organizations running numerous workflows: finding the right moment to perform platform updates without disrupting ongoing operations. When activated, Maintenance Mode introduces a controlled state where:
 
-- The [executor](../07.architecture/04.executor.md) stops processing new executions and automatically queues new flow executions.
-- Existing executions are allowed to be completed gracefully ([workers](../07.architecture/05.worker.md) complete their current tasks without picking up new ones).
-- The platform continues to accept and schedule new executions, storing them for later processing ([web server](../07.architecture/08.webserver.md) and [scheduler](../07.architecture/06.scheduler.md) components remain active, ensuring no requests are lost).
+- The [executor](../../07.architecture/04.executor.md) stops processing new executions and automatically queues new flow executions.
+- Existing executions are allowed to be completed gracefully ([workers](../../07.architecture/05.worker.md) complete their current tasks without picking up new ones).
+- The platform continues to accept and schedule new executions, storing them for later processing ([web server](../../07.architecture/08.webserver.md) and [scheduler](../../07.architecture/06.scheduler.md) components remain active, ensuring no requests are lost).
 - New executions are queued for processing after maintenance concludes
 
 ## Access Maintenance Mode

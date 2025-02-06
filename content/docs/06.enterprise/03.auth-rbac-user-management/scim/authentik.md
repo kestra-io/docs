@@ -76,7 +76,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ### Install authentik
 
-Authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the initial setup URL http://docker.for.mac.localhost:9000/if/flow/initial-setup/ to create your first user.
+Authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
 
 ![scim-for-authentik-user](/docs/enterprise/scim/authentik/authentik1.png)
 

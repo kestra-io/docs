@@ -19,8 +19,8 @@ API tokens are used anytime you want to grant programmatic access to the Kestra 
 Currently, we support API tokens as authentication mechanism for the following services:
 1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
 2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra CLI](../06.enterprise/cli.md)
-4. [Kestra API](../06.enterprise/api.md)
+3. [Kestra CLI](../../ee-server-cli/index.md)
+4. [Kestra API](./api.md)
 
 ## How to create an API token
 

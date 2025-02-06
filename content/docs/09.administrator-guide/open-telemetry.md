@@ -96,7 +96,7 @@ micronaut:
 
 ## Logs
 
-To send logs to an OpenTelemetry compatible collector, use the new [LogShipper](../06.enterprise/logshipper.md) functionality with the built-in OpenTelemetry log exporter. LogShipper is available in the Kestra [Enterprise Edition](/enterprise).
+To send logs to an OpenTelemetry compatible collector, use the new [LogShipper](../06.enterprise/02.governance/logshipper.md) functionality with the built-in OpenTelemetry log exporter. LogShipper is available in the Kestra [Enterprise Edition](/enterprise).
 
 The following flow sends logs from all flows to an OpenTelemetry compatible collector daily:
 

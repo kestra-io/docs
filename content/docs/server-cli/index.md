@@ -32,7 +32,7 @@ Kestra leverages five different server components. The `kestra server` command a
 **Options:**
 
 * `-t` or `--thread`: the number of threads that can handle tasks at the same time. By default, the worker will start 2 threads per CPU core available.
-* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/worker-group.md).
+* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/04.scalability-productivity/worker-group.md).
 
 ### Webserver
 

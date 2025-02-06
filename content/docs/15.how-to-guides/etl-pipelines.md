@@ -174,7 +174,7 @@ tasks:
 
 When the python scripts get more compute-intesive or memory-intensive, it is advised to run them on remote batch compute resources using Batch Task Runners.
 
-Kestra provides a variety of Batch Task Runners(/docs/enterprise/task-runners#task-runner-types). Here is an example of how the ETL python script can be run on a AWS Batch Task Runner.
+Kestra provides a variety of [Batch Task Runners](../06.enterprise/04.scalability-productivity/task-runners.md#task-runner-types). Here is an example of how the ETL python script can be run on a AWS Batch Task Runner.
 
 ```yaml
 id: aws_batch_task_runner_etl
