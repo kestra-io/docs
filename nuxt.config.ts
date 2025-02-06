@@ -4,7 +4,18 @@ import {defineCollection} from '@nuxt/content'
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
+    modules: [
+        '@nuxt/devtools',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        '@nuxt/content',
+        '@nuxt/image',
+        'nuxt-multi-cache',
+        'vue3-carousel-nuxt',
+        'nuxt-lazy-hydrate',
+        'nuxt-aos',
+        '@zadigetvoltaire/nuxt-gtm'
+    ],
     target: 'static',
     image: {
         formats: {
@@ -79,7 +90,7 @@ export default defineNuxtConfig({
         collections: {
             docs: defineCollection({
                 // Load every file inside the `content` directory
-                source: 'content/**.md',
+                source: 'content/**/*.md',
                 // Specify the type of content in this collection
                 type: 'page'
             })
