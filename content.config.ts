@@ -6,9 +6,11 @@ export default defineContentConfig({
       type: 'page',
       source: 'docs/**/*.md',
       schema: z.object({
-        order: z.number().optional(),
-        icon: z.string().optional(),
+        title: z.string(),
+        icon: z.string(),
         release: z.string().optional(),
+        version: z.string().optional(),
+        editions: z.array(z.enum(["OSS", "EE"])).optional(),
       })
     }),
     blogs: defineCollection({
