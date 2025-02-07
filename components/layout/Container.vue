@@ -31,7 +31,7 @@
                         <PrevNext v-if="prevNext" :navigation="navigation" />
                     </template>
                 </div>
-                <ContentRenderer :value="page"/>
+                <ContentRenderer v-if="page" :value="page"/>
         </article>
     </div>
 </template>
