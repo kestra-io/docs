@@ -181,7 +181,7 @@
   } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
-        return queryCollection('docs').path(slug.value).findOne();
+        return queryCollection('docs').path(slug.value.replace(/\/$/, '')).first();
       } catch (error) {
         throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
       }
@@ -196,8 +196,6 @@
   }
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
-
-  useContentHead(page);
 
   const {description, title} = page;
     useHead({
