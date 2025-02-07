@@ -19,8 +19,6 @@
                     </NuxtLink>
                 </li>
             </ul>
-            <pre style="color:white;">{{ pageData[0] }}</pre>
-
         </LayoutSection>
     </div>
 </template>
