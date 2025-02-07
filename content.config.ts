@@ -11,6 +11,10 @@ export default defineContentConfig({
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE"])).optional(),
+        deprecated: z.object({
+            since: z.string(),
+            migrationGuide: z.string(),
+        }).optional(),
       })
     }),
     blogs: defineCollection({

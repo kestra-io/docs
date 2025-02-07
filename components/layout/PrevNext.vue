@@ -7,8 +7,8 @@
         >
             <ArrowLeft />
             <div class="wrapper">
-                <span v-if="directory(prev._path)" class="directory">
-                  {{ directory(prev._path) }}
+                <span v-if="directory(prev.path)" class="directory">
+                  {{ directory(prev.path) }}
                 </span>
                 <span class="title">{{ prev.title }}</span>
             </div>
@@ -22,8 +22,8 @@
             class="next"
         >
             <div class="wrapper">
-                <span v-if="directory(next._path)" class="directory">
-                  {{ directory(next._path) }}
+                <span v-if="directory(next.path)" class="directory">
+                  {{ directory(next.path) }}
                 </span>
                 <span class="title">{{ next.title }}</span>
             </div>
@@ -34,7 +34,6 @@
 
 <script>
 import {upperFirst} from 'scule'
-import {hash} from "ohash";
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import {prevNext} from "~/utils/navigation.js";
