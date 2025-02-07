@@ -24,14 +24,15 @@
                 <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
+                    <ContentRenderer v-if="page" :value="page"/>
+
                     <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
 
-                    <template v-if="!page?.isHomepage">
+                    <template v-if="!page?.meta?.isHomepage">
                         <HelpfulVote />
                         <PrevNext v-if="prevNext" :navigation="navigation" />
                     </template>
                 </div>
-                <ContentRenderer v-if="page" :value="page"/>
         </article>
     </div>
 </template>

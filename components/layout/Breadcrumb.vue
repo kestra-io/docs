@@ -82,5 +82,9 @@ export default {
 
         }
     }
+
+    .link{
+        text-transform: capitalize;
+    }
 }
 </style>

@@ -19,7 +19,6 @@
 <script setup>
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
-    import Typewriter from "vue-material-design-icons/Typewriter.vue";
 
     const props = defineProps({
         pageUrl: {
@@ -38,12 +37,12 @@
         currentPage = route.path;
     }
 
-    currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').pop();
+    currentPage = currentPage.replace(/\/$/, '');
+    console.log(currentPage);
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
-        () => queryCollection('docs').where('path', 'LIKE', `/${currentPage}/%`).all()
+        () => queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`).all()
     );
 
     // if (currentPage == "/docs/faq") {
