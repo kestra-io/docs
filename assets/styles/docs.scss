@@ -46,7 +46,6 @@ $bd-gutter-x: 3rem;
 
     p {
         color: $white;
-        text-align: justify;
 
         a {
             color: $purple-35;
@@ -302,6 +301,13 @@ $bd-gutter-x: 3rem;
         background-color: $black-2;
         code {
             border: 0;
+            color: $white;
+        }
+    }
+
+    .code-block {
+        code {
+            padding: 0;
         }
     }
 

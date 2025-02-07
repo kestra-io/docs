@@ -17,6 +17,10 @@ Kestra leverages five different server components. The `kestra server` command a
 
 * `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
 
+::alert{type="info"}
+For more information on troubleshooting CLI options, see the dedicated [Troubleshooting](../09.administrator-guide/16.troubleshooting.md#unprocessable-execution) page.
+::
+
 ### Indexer
 
 `./kestra server indexer`
