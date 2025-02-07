@@ -39,9 +39,9 @@ triggers:
 
 ## Purge tasks vs. UI deletion
 
-It is important and useful to note the difference between executing a purge task to clean your Kestra instance versus deleting items such as executions or logs in the UI. Using a purge task to delete executions, execution logs, or trigger logs hard deletes those records from your Kestra instance (i.e., the deleted data is unrecoverable). This clears up disk space storage and is an effective practice to take with Kestra data that is no longer needed or stored externally. For example, you can purge any log data more than one month old on a schedule to keep your instance clean.
+It is important and useful to note the difference between executing a purge task to clean your Kestra instance versus deleting items such as executions or logs in the UI. Using a purge task to delete executions, execution logs, or trigger logs hard deletes those records from your Kestra instance (i.e., the deleted data is unrecoverable). This clears up disk space storage and is an effective practice to take with Kestra data that is no longer needed or stored externally. For example, you can purge any log data more than one month old on a schedule to keep your instance clean. Alternatively, deleting executions or logs from the UI performs a soft delete of the data and does not fully clear the disk space storage as a purge task would. 
 
-Deleting executions or logs from the UI performs a soft delete of the data and does not fully clear the disk space storage as a purge task would. However, this does mean that the data is recoverable via....
+If after purging your instance you want to reinsert that data, you would need to have saved those records externally. You can then create a new database and import all of your purged executions, files, logs, and KV stores to bring your instance back to the pre-purged state. 
 
 ::alert{type="warning"}
 Note that the **Purge tasks** do not affect Kestra's [internal queues](../07.architecture/01.main-components.md#queue). Queue retention is configured separately. The database type uses a dedicated [JDBC Cleaner](../configuration/index.md#jdbc-cleaner) and the Kafka type relies on [topic retention](../configuration/index.md#topic-retention).
