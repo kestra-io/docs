@@ -39,7 +39,7 @@ triggers:
 
 ## Purge tasks vs. UI deletion
 
-It is important to note the difference between executing a purge task to clean your Kestra instance versus deleting items such as flows, executions, or logs in the UI. Using a purge task to delete executions, execution logs, or trigger logs hard deletes those records from your Kestra instance (i.e., the deleted data is unrecoverable). This clears up disk space storage and is an effective practice to take with Kestra data that is no longer needed or stored externally. For example, you can purge any log data more than one month old on a schedule to keep your instance clean. 
+It is important to note the difference between executing a purge task to clean your Kestra instance versus deleting items such as flows, executions, or logs in the UI. Using a purge task hard deletes those records from your Kestra instance (i.e., the deleted data is unrecoverable). This clears up disk space storage and is an effective practice to take with Kestra data that is no longer needed or stored externally. For example, you can purge any log data more than one month old on a schedule to keep your instance clean. 
 
 Alternatively, deleting executions or logs from the UI performs a soft deletion of the data and does not fully wipe the storage as a purge task would. For example, if you delete a flow and then create a flow with the same name and `id`, then the historical data from that flow will reappear such as revision history and past executions. This data is retained because it provides a full history of the flow and its revisions for troubleshooting or auditing.   
 
