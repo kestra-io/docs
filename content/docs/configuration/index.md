@@ -1374,7 +1374,7 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth-rbac-user-management/rbac.md#super-admin)
+The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth-users/rbac.md#super-admin)
 
 You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
 
@@ -1412,7 +1412,7 @@ The default role requires three properties:
 * `kestra.security.defaultRole.name`: the name of the default role
 * `kestra.security.defaultRole.description`: the description of the default role
 * `kestra.security.defaultRole.permissions`: the permissions of the default role
-  * This has to be a map with a [Permission](../06.enterprise/03.auth-rbac-user-management/rbac.md#permissions) as a key and a list of [Action](../06.enterprise/03.auth-rbac-user-management/rbac.md#actions) as a value
+  * This has to be a map with a [Permission](../06.enterprise/03.auth-users/rbac.md#permissions) as a key and a list of [Action](../06.enterprise/03.auth-users/rbac.md#actions) as a value
 
 ```yaml
 kestra:
@@ -1473,7 +1473,7 @@ kestra:
 ```
 
 HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
-the [Authentication page](../06.enterprise/03.auth-rbac-user-management/04.authentication.md).
+the [Authentication page](../06.enterprise/03.auth-users/04.authentication.md).
 
 ### Delete configuration files
 

@@ -18,7 +18,7 @@ Each tenant functions as a separate entity with its own resources, such as flows
 You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.getting-started-ee/01.enterprise-edition.md).
 ::
 
-When multi-tenancy is enabled, all resources (such as [flows](../../04.workflow-components/01.flow.md), [triggers](../../04.workflow-components/07.triggers/index.md), [executions](../../04.workflow-components/03.execution.md), [RBAC](../03.auth-rbac-user-management/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
+When multi-tenancy is enabled, all resources (such as [flows](../../04.workflow-components/01.flow.md), [triggers](../../04.workflow-components/07.triggers/index.md), [executions](../../04.workflow-components/03.execution.md), [RBAC](../03.auth-users/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
 Data stored inside the internal storage are also isolated by tenants.
 

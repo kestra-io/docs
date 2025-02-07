@@ -122,7 +122,7 @@ jobs:
 
 As you can see, the `user` and `password` are added as secrets with the expression syntax `${{ secret.name }}` to prevent you from committing these to your repository.
 
-If you're using the [Enterprise Edition](/enterprise), you can use an [API Token](../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead:
+If you're using the [Enterprise Edition](/enterprise), you can use an [API Token](../06.enterprise/03.auth-users/api-tokens.md) instead:
 
 ```yaml
 name: Kestra CI/CD

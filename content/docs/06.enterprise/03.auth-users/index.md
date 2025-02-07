@@ -1,5 +1,5 @@
 ---
-title: Authentication & User Management
+title: Authentication & Users
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---
