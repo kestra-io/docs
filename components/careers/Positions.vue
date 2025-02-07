@@ -1,13 +1,13 @@
 <template>
     <div class="container" id="positions">
-        <Section
+        <LayoutSection
             subtitle="It's a"
             subtitle-after="Match"
             baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
         >
             <ul class="list-unstyled d-flex flex-column gap-3">
                 <li data-aos="fade-left" v-for="doc in pageData">
-                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="doc._path">
+                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="doc.path">
                         <div class="d-flex align-items-center gap-3">
                             <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
                             <span>{{ doc.title }}</span>
@@ -19,26 +19,17 @@
                     </NuxtLink>
                 </li>
             </ul>
+            <pre style="color:white;">{{ pageData[0] }}</pre>
 
-        </Section>
+        </LayoutSection>
     </div>
 </template>
 
 <script setup>
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
     const {data: pageData} = await useAsyncData(
-        `Blog-Page-List`,
-        () => queryContent("/careers/").find()
+        `Career-Positions`,
+        () => queryCollection("careers").all()
     );
-
-</script>
-
-<script>
-    import Section from '../../components/layout/Section.vue';
-
-    export default {
-        components: {Section}
-    }
 </script>
 
 <style lang="scss" scoped>
