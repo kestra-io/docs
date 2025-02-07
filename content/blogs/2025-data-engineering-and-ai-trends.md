@@ -12,6 +12,10 @@ image: /blogs/2025-data-engineering-and-ai-trends.png
 
 Many trends that began shaping [data engineering in 2024](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends) continue to affect data teams in 2025. AI keeps accelerating, and data lakes—along with open table formats—are more popular than ever. Below is our take on the trends influencing data engineering and AI today, and how they impact data professionals.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/JMfRRP_2Bs8?si=W1SSyqcwRGw-sfZV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ---
 
 ## **1. Generative AI as an Efficiency Driver**
