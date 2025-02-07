@@ -1,9 +1,8 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
         <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.isHomepage}">
-            <ContentRenderer :value="page">
-                <div class="bd-title">
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.meta?.isHomepage}">
+            <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
                     <h1 v-if="page && page.title" class="py-0 title">
                         <NuxtImg
@@ -32,7 +31,7 @@
                         <PrevNext v-if="prevNext" :navigation="navigation" />
                     </template>
                 </div>
-            </ContentRenderer>
+                <ContentRenderer :value="page"/>
         </article>
     </div>
 </template>
