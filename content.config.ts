@@ -11,6 +11,8 @@ export default defineContentConfig({
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE"])).optional(),
+        topics: z.array(z.string()).optional(),
+        stage: z.string().optional(),
         deprecated: z.object({
             since: z.string(),
             migrationGuide: z.string(),
