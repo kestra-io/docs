@@ -1,7 +1,4 @@
 contact_links:
-  - name: GitHub Discussions
-    url: https://github.com/kestra-io/kestra/discussions
-    about: Ask questions about Kestra on GitHub
-  - name: Chat
+  - name: Slack
     url: https://kestra.io/slack
-    about: Chat with us on Slack.
+    about: Ask questions and get help from the Kestra community.

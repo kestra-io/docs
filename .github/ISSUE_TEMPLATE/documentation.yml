@@ -1,15 +1,11 @@
 name: Documentation Issue
 description: Create a new documentation issue
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please describe what did you find missing in the documentation and what you would like to see added.
   - type: textarea
     attributes:
-      label: Description
-      placeholder: Describe the issue concisely
+      label: Describe what's missing in our docs
+      placeholder: Describe anything that's missing or incorrect in our documentation.
     validations:
       required: true
 labels:
-  - documentation
+  - area/docs
