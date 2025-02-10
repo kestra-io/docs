@@ -4,7 +4,7 @@ body:
   - type: textarea
     attributes:
       label: Describe what's missing in our docs
-      placeholder: Describe anything that's missing or incorrect in our documentation.
+      placeholder: Describe anything that's missing or incorrect in our documentation
     validations:
       required: true
 labels:
