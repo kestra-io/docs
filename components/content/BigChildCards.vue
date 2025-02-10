@@ -2,7 +2,7 @@
 <template>
     <h2 class="big-title">{{title}}</h2>
     <div class="big-card-grid">
-        <NuxtLink :href="item._path" class="big-card" v-for="item in orderedNavigation" :key="item._path">
+        <NuxtLink :href="item._path" class="big-card" v-for="item in navigation" :key="item._path">
             <h4 class="card-title">{{ item.title }}</h4>
             <p class="card-text">{{ item.description }}</p>
         </NuxtLink>
@@ -23,14 +23,6 @@ const {data: navigation} = await useAsyncData(
         `BigChildCard-${hash(props.directory)}`,
         () => queryContent(props.directory + "/").find()
     );
-
-const orderedNavigation = computed(() => {
-    return navigation.value?.sort((a, b) => {
-        const aOrder = a.order?.toString() || "0";
-        const bOrder = b.order?.toString() || "0";
-        return aOrder.localeCompare(bOrder);
-    });
-});
 </script>
 
 <style lang="scss" scoped>
