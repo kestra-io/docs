@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
+    <div class="container-fluid bd-gutter bd-layout type-docs">
         <NavSideBar type="docs" :navigation="navigation"/>
         <article class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
@@ -183,14 +183,6 @@
             font-weight: 400;
             line-height: 3.25rem;
             margin: 0 auto;
-        }
-
-        &.type-plugins {
-            :deep(.bd-content) {
-                img {
-                    width: 25px;
-                }
-            }
         }
     }
 
