@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout type-docs">
-        <NavSideBar :type="type" :navigation="navigation"/>
+        <NavSideBar type="docs" :navigation="navigation"/>
         <article class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.isHomepage}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
@@ -108,18 +108,6 @@
       .replace(/([A-Z])/g, '&#x200B;$1')
       .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
   }
-
-  const props = defineProps({
-    type: {
-      type: String,
-      required: true
-    },
-    prevNext: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-  })
 
   if (slug.value.endsWith(".md")) {
     await navigateTo(slug.value.substring(0, slug.value.length - 3));
