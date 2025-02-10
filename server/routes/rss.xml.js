@@ -1,11 +1,9 @@
-import { serverQueryContent } from '#content/server'
 import RSS from "rss"
 
 const SITE_URL = "https://kestra.io"
 
 export default defineEventHandler(async (event) => {
-    const pages = await serverQueryContent(event).sort({ date: -1 }).where({ _partial: false }).find()
-    const blogs = pages.filter((page) => page?._path?.includes('/blogs/'))
+    const blogs = await queryCollection(event, 'blogs').sort("date", "DESC").where('_partial', '=', false).select('title', 'path', 'date', 'description').all()
 
 
     const feed = new RSS({
@@ -17,7 +15,7 @@ export default defineEventHandler(async (event) => {
     for (const blog of blogs) {
         feed.item({
             title: blog.title,
-            url: `${SITE_URL}${blog._path}`,
+            url: `${SITE_URL}${blog.path}`,
             date: blog.date,
             description: blog.description,
         })

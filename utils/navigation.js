@@ -6,7 +6,7 @@ export function prevNext(navigation, path) {
 
     const recursiveFetch = (current) => {
         if (current.children) {
-            for (const item of current.children.filter(item => item._path !== current._path)) {
+            for (const item of current.children.filter(item => item.path !== current.path)) {
                 if (next && prev) {
                     break;
                 }
@@ -15,7 +15,7 @@ export function prevNext(navigation, path) {
                     next = item;
                 }
 
-                if (item._path === path) {
+                if (item.path === path) {
                     found = true;
                 }
 
@@ -43,7 +43,7 @@ export function prevNext(navigation, path) {
 export const recursivePages = (item) => {
     const paths = [];
     if (item.isPage ?? true) {
-        paths.push(item._path);
+        paths.push(item.path);
     }
     if (item.children) {
         paths.push(...(item.children.flatMap(child => {
@@ -57,8 +57,8 @@ export const recursivePages = (item) => {
 export const generatePageNames = (item) => {
     const result = {};
     function traverse(item) {
-        if (item._path && item.title) {
-            let key = item._path.split("/")[item._path.split("/").length - 1];
+        if (item.path && item.title) {
+            let key = item.path.split("/")[item.path.split("/").length - 1];
             result[key] = item.title;
         }
         if (item.children) {

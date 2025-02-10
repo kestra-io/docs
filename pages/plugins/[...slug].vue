@@ -1,5 +1,5 @@
 <template>
-    <PluginContainer :prevNext="false" type="plugins" />
+    <PluginContainer />
 </template>
 
 <script setup>

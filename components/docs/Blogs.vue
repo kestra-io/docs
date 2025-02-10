@@ -40,12 +40,7 @@
 
     const {data: blogs} = await useAsyncData(
         `Blog`,
-        () => queryContent("/blogs/")
-            .where({ _path: { $ne : props.page._path } })
-            .sort({ date: -1 })
-            .without('unused-key')
-            .limit(3)
-            .find()
+        () => queryCollection("blogs").order("date", "DESC").limit(3).all()
     );
 
 </script>

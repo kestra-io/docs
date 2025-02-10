@@ -34,7 +34,7 @@
         if (!NON_NUXT_CONTENT_RESOLVED_PATHS.some(p => route.path.includes(p))) {
             page = (await useAsyncData(
                 `ProseA-${hash(route.path)}`,
-                () => queryContent(route.path).only("_file").findOne(),
+                () => queryCollection('docs').path(route.path).select('id').findOne(),
                 {
                     dedupe: "defer"
                 }
@@ -42,7 +42,7 @@
         }
 
         // If we are on an index page, we want to resolve relative paths starting from our current route
-        if (page?.value?._file?.includes('index.md') || !page) {
+        if (page?.value?.file?.includes('index.md') || !page) {
             absolutePath = absolutePath + "/";
         }
 

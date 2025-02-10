@@ -1,5 +1,5 @@
 <template>
-    <DocContainer type="docs"/>
+    <DocContainer />
 </template>
 
 <script setup>

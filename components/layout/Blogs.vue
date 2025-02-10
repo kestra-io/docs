@@ -37,11 +37,7 @@
 
     const {data: blogs} = await useAsyncData(
         `layout-blog`,
-        () => queryContent("/blogs/")
-            .sort({ date: -1 })
-            .only(['title', 'category', 'image', 'author', 'date', '_path'])
-            .limit(3)
-            .find(),
+        () => queryCollection("blogs").order("date", "DESC").select('title', 'category', 'image', 'author', 'date', 'path').limit(3).all(),
         {
             serverMaxAge: 60 * 10,
         }

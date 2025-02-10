@@ -1,43 +1,38 @@
 <template>
-    <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
-        <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.isHomepage}">
-            <ContentRenderer :value="page">
-                <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
-                    <h1 v-if="page && page.title" class="py-0 title">
-                        <NuxtImg
-                            v-if="page.icon"
-                            :src="page.icon"
-                            :alt="page.title"
-                            width="40px"
-                            height="40px"
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            class="me-3 page-icon"
-                        />
-                        <span v-html="transformTitle(page.title)"></span>
-                    </h1>
-                </div>
-
-                <NavToc :page="page" class="my-md-0 my-4 right-menu" />
-
-                <div class="bd-content">
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
-                    <ContentRendererMarkdown
-                        class="bd-markdown"
-                        :value="page"
-                        data-bs-spy="scroll"
-                        data-bs-target="#nav-toc"
+    <div class="container-fluid bd-gutter bd-layout type-docs">
+        <NavSideBar type="docs" :navigation="navigation"/>
+        <article class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
+            <div class="bd-title">
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
+                <h1 v-if="page && page.title" class="py-0 title">
+                    <NuxtImg
+                        v-if="page.icon"
+                        :src="page.icon"
+                        :alt="page.title"
+                        width="40px"
+                        height="40px"
+                        loading="lazy"
+                        format="webp"
+                        quality="80"
+                        densities="x1 x2"
+                        class="me-3 page-icon"
                     />
-                    <template v-if="!page?.isHomepage">
-                        <HelpfulVote />
-                        <PrevNext v-if="prevNext" :navigation="navigation" />
-                    </template>
-                </div>
-            </ContentRenderer>
+                    <span v-html="transformTitle(page.title)"></span>
+                </h1>
+            </div>
+
+            <NavToc :page="page" class="my-md-0 my-4 right-menu" />
+
+            <div class="bd-content">
+                <ContentRenderer class="bd-markdown" v-if="page" :value="page"/>
+
+                <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
+
+                <template v-if="!page?.meta?.isHomepage">
+                    <HelpfulVote />
+                    <PrevNext :navigation="navigation" />
+                </template>
+            </div>
         </article>
     </div>
 </template>
@@ -51,11 +46,10 @@
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
-  const isDoc = computed(() => props.type === 'docs');
   const config = useRuntimeConfig();
 
   const route = useRoute()
-  const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+  const slug = computed(() => `/docs/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
   let page;
 
   const fetchNavigation = async () => {
@@ -63,19 +57,12 @@
     let pageList = null;
     let pageNames = null;
 
-    if (props.type === "plugins") {
-      navigationFetch = await useFetch(`/api/plugins?type=navigation`);
-      pageList = recursivePages(navigationFetch.data.value[0]);
-      pageNames = generatePageNames(navigationFetch.data.value[0]);
-    } else {
-      const queryBuilder = queryContent('/' + props.type + '/');
-
       navigationFetch = await useAsyncData(
-        `NavSideBar-${hash(props.type)}`,
-        () => fetchContentNavigation(queryBuilder)
+        `NavSideBar-docs`,
+        () => queryCollectionNavigation('docs')
       );
 
-      if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+      if (navigationFetch.data && navigationFetch.data.value && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
         navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
           title: "Videos Tutorials",
           _path: "/tutorial-videos",
@@ -102,7 +89,7 @@
       });
 
       navigationFetch.data.value[0].children = newData;
-    }
+
 
     const navigation = navigationFetch.data;
 
@@ -115,18 +102,6 @@
       .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
   }
 
-  const props = defineProps({
-    type: {
-      type: String,
-      required: true
-    },
-    prevNext: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-  })
-
   if (slug.value.endsWith(".md")) {
     await navigateTo(slug.value.substring(0, slug.value.length - 3));
   }
@@ -135,59 +110,10 @@
 
   let ogImage = `${origin}/landing/home/header-bg.png`;
 
-  if (props.type === 'plugins') {
-    const parts = slug.value.split('/');
-    let pageName;
-    let pageType;
 
-    if (parts.length > 3) {
-      pageName = parts[parts.length - 1].replace(/.md$/, "");
-      pageType = 'definitions';
-    } else {
-      pageName = parts[2];
-      pageType = 'plugin';
-    }
-
-    let pageUrl = `/api/plugins?page=${pageName}&type=${pageType}`
-
-    const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
-      return $fetch(pageUrl)
-    });
-
-    if (pluginInformation?.value?.error) {
-      throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
-    }
-    page = pluginInformation.value;
-
-    const updateObject = function(obj) {
-      if (typeof obj !== 'object' || obj === null) {
-        return obj;
-      }
-
-      if (Array.isArray(obj)) {
-        return obj.map(updateObject);
-      }
-
-      let newObj = { ...obj };
-      for (const key in newObj) {
-        if (newObj.tag === 'binding') {
-          newObj.children = [{
-            type: 'text',
-            value: newObj.props.value ? "{{ " + newObj.props.value + " }}" : ""
-          }];
-          newObj.tag = 'span'
-        }
-        newObj[key] = updateObject(newObj[key]);
-      }
-      return newObj;
-    }
-    page = updateObject(pluginInformation.value);
-
-    ogImage = `${origin}/meta/plugins/${pageName}.svg?type=${pageType}`
-  } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
-        return queryContent(slug.value).findOne();
+        return queryCollection('docs').path(slug.value.replace(/\/$/, '')).first();
       } catch (error) {
         throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
       }
@@ -199,11 +125,9 @@
     const iconPath = page.icon?.split('/');
     const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
     ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
-  }
+
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
-
-  useContentHead(page);
 
   const {description, title} = page;
     useHead({
@@ -223,6 +147,7 @@
       ]
     })
 </script>
+
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
@@ -231,26 +156,23 @@
         overflow-x: unset;
 
         .bd-title {
-            margin-top: calc($spacer * 4);
-            @include media-breakpoint-down(lg) {
-                margin-top: calc($spacer * 1);
-            }
+            margin-top: 4rem;
             h1 {
-                max-width: calc($spacer * 43.7);
+                max-width: 45.8rem;
                 @media only screen and (min-width: 1920px) {
                     max-width: 71.25rem;
                 }
             }
         }
         .bd-main {
-            gap: calc($spacer * 2) $spacer;
+            gap: 2rem 2rem;
             @include media-breakpoint-down(sm) {
-                gap: calc($spacer * 2) calc($spacer * 7);
+                gap: 2rem 7rem;
             }
         }
         .bd-content {
             margin: 0 auto 2em auto;
-            max-width: calc($spacer * 43.7);
+            max-width: 45.8rem;
             @media only screen and (min-width: 1920px) {
                 max-width: 71.25rem;
             }
@@ -261,14 +183,6 @@
             font-weight: 400;
             line-height: 3.25rem;
             margin: 0 auto;
-        }
-
-        &.type-plugins {
-            :deep(.bd-content) {
-                img {
-                    width: 25px;
-                }
-            }
         }
     }
 
@@ -387,32 +301,6 @@
             background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
             background-size: 500px 250px, 1261px 984px;
             background-position: top 110px right -30px, top -200px right -350px;
-            margin-bottom: 2em;
-        }
-
-        @include media-breakpoint-up(lg) {
-            .bd-content {
-                max-width: 733px;
-            }
-
-            .bd-title{
-                margin: 0 auto;
-            }
-
-            .bd-title, .bd-title h1, .bd-title .slug{
-                max-width: 733px;
-                width: 100%;
-            }
-
-            :deep(.video-container){
-                padding-top: 56.25%;
-                height: auto;
-                overflow: hidden;
-                iframe{
-                    max-width: none;
-                    max-height: none;
-                }
-            }
         }
     }
 </style>

@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <NuxtLink :href="item._path" class="col-12 col-md-4 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item.path" class="col-12 col-md-4 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body">
                     <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
@@ -60,8 +60,6 @@
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import Close from "vue-material-design-icons/Close.vue"
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
 
 
@@ -140,24 +138,21 @@
       const {data: result} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => {
-          let query = queryContent(currentPage + "/").where({ _dir: currentPageDir });
-
-          let queryParams = {};
+          let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
 
           if (Array.isArray(stage.value) && stage.value.length > 0) {
-            queryParams.stage = { $in: stage.value };
+            query = query.andWhere('stage', 'IN', stage.value);
           }
 
           if (Array.isArray(topic.value) && topic.value.length > 0) {
-            queryParams.topics = { $contains: topic.value };
+            query = query.andWhere('topics', 'CONTAINS', topic.value);
           }
 
           if (search.value) {
-            queryParams.title = { $icontains: search.value }
+            query = query.andWhere('title', 'CONTAINS', search.value);
           }
-          query = query.where(queryParams);
 
-          return query.find();
+          return query.all();
         });
       navigation.value = result.value;
     };

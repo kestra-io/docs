@@ -1,11 +1,10 @@
-import {serverQueryContent} from '#content/server'
 import url from "node:url";
 
 export default cachedEventHandler(async e => {
     const requestUrl = new url.URL("http://localhost" + e.node.req.url);
-    return (await serverQueryContent(e, '/').find()).map(e => {
+    return (await queryCollection(e, 'docs').all()).map(e => {
         return {
-            loc: e._path
+            loc: e.path
         }
     })
 }, {

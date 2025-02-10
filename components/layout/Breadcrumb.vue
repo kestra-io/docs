@@ -48,7 +48,7 @@ export default {
 .slug {
     white-space: pre-wrap;
     width: 100%;
-    max-width: calc($spacer * 43.7);
+    max-width: 45.8rem;;
     font-size: $font-size-sm;
     font-family: $font-family-sans-serif;
     font-weight: 400;
@@ -81,6 +81,10 @@ export default {
             color: #CDD5EF !important;
 
         }
+    }
+
+    .link{
+        text-transform: capitalize;
     }
 }
 </style>
