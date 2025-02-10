@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
-        <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.meta?.isHomepage}">
+        <NavSideBar type="docs" :navigation="navigation"/>
+        <article class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
                 <h1 v-if="page && page.title" class="py-0 title">
@@ -30,7 +30,7 @@
 
                 <template v-if="!page?.meta?.isHomepage">
                     <HelpfulVote />
-                    <PrevNext v-if="prevNext" :navigation="navigation" />
+                    <PrevNext :navigation="navigation" />
                 </template>
             </div>
         </article>
@@ -46,11 +46,10 @@
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
-  const isDoc = computed(() => props.type === 'docs');
   const config = useRuntimeConfig();
 
   const route = useRoute()
-  const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+  const slug = computed(() => `/docs/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
   let page;
 
   const fetchNavigation = async () => {
@@ -58,18 +57,12 @@
     let pageList = null;
     let pageNames = null;
 
-    if (props.type === "plugins") {
-      navigationFetch = await useFetch(`/api/plugins?type=navigation`);
-      pageList = recursivePages(navigationFetch.data.value[0]);
-      pageNames = generatePageNames(navigationFetch.data.value[0]);
-    } else {
-
       navigationFetch = await useAsyncData(
-        `NavSideBar-${hash(props.type)}`,
+        `NavSideBar-docs`,
         () => queryCollectionNavigation('docs')
       );
 
-      if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+      if (navigationFetch.data && navigationFetch.data.value && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
         navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
           title: "Videos Tutorials",
           _path: "/tutorial-videos",
@@ -96,7 +89,7 @@
       });
 
       navigationFetch.data.value[0].children = newData;
-    }
+
 
     const navigation = navigationFetch.data;
 
@@ -109,18 +102,6 @@
       .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
   }
 
-  const props = defineProps({
-    type: {
-      type: String,
-      required: true
-    },
-    prevNext: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-  })
-
   if (slug.value.endsWith(".md")) {
     await navigateTo(slug.value.substring(0, slug.value.length - 3));
   }
@@ -129,56 +110,7 @@
 
   let ogImage = `${origin}/landing/home/header-bg.png`;
 
-  if (props.type === 'plugins') {
-    const parts = slug.value.split('/');
-    let pageName;
-    let pageType;
 
-    if (parts.length > 3) {
-      pageName = parts[parts.length - 1].replace(/.md$/, "");
-      pageType = 'definitions';
-    } else {
-      pageName = parts[2];
-      pageType = 'plugin';
-    }
-
-    let pageUrl = `/api/plugins?page=${pageName}&type=${pageType}`
-
-    const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
-      return $fetch(pageUrl)
-    });
-
-    if (pluginInformation?.value?.error) {
-      throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
-    }
-    page = pluginInformation.value;
-
-    const updateObject = function(obj) {
-      if (typeof obj !== 'object' || obj === null) {
-        return obj;
-      }
-
-      if (Array.isArray(obj)) {
-        return obj.map(updateObject);
-      }
-
-      let newObj = { ...obj };
-      for (const key in newObj) {
-        if (newObj.tag === 'binding') {
-          newObj.children = [{
-            type: 'text',
-            value: newObj.props.value ? "{{ " + newObj.props.value + " }}" : ""
-          }];
-          newObj.tag = 'span'
-        }
-        newObj[key] = updateObject(newObj[key]);
-      }
-      return newObj;
-    }
-    page = updateObject(pluginInformation.value);
-
-    ogImage = `${origin}/meta/plugins/${pageName}.svg?type=${pageType}`
-  } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
         return queryCollection('docs').path(slug.value.replace(/\/$/, '')).first();
@@ -193,7 +125,7 @@
     const iconPath = page.icon?.split('/');
     const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
     ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
-  }
+
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
 
