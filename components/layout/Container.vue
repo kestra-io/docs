@@ -377,32 +377,6 @@
             background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
             background-size: 500px 250px, 1261px 984px;
             background-position: top 110px right -30px, top -200px right -350px;
-            margin-bottom: 2em;
-        }
-
-        @include media-breakpoint-up(lg) {
-            .bd-content {
-                max-width: 733px;
-            }
-
-            .bd-title{
-                margin: 0 auto;
-            }
-
-            .bd-title, .bd-title h1, .bd-title .slug{
-                max-width: 733px;
-                width: 100%;
-            }
-
-            :deep(.video-container){
-                padding-top: 56.25%;
-                height: auto;
-                overflow: hidden;
-                iframe{
-                    max-width: none;
-                    max-height: none;
-                }
-            }
         }
     }
 </style>
