@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout">
         <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false }">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>
                 <h1 v-if="page && getPageTitle()" class="py-0 title">
@@ -39,48 +39,26 @@
                     data-bs-target="#nav-toc"
                     v-else
                 />
-                <PrevNext v-if="prevNext" :navigation="navigation"/>
             </div>
         </article>
     </div>
 </template>
 
 <script setup>
-    import PrevNext from "~/components/layout/PrevNext.vue";
+    import {hash} from "ohash";
+    import {SchemaToHtml} from '@kestra-io/ui-libs'
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
-    import {SchemaToHtml} from '@kestra-io/ui-libs'
-    import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
-    const isDoc = computed(() => props.type === 'docs');
-    const config = useRuntimeConfig();
-
     const route = useRoute()
-    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    const slug = computed(() => `/plugins/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
 
 
     const fetchNavigation = async () => {
-        let navigationFetch;
-        if (props.type === "plugins") {
-            navigationFetch = await useFetch(`/api/plugins?type=navigation`);
-        } else {
-            const queryBuilder = queryContent('/' + props.type + '/');
-
-            navigationFetch = await useAsyncData(
-                `NavSideBar-${hash(props.type)}`,
-                () => fetchContentNavigation(queryBuilder)
-            );
-
-            if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos tutorials"))) {
-                navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0, {
-                    title: "Videos Tutorials",
-                    _path: "/tutorial-videos",
-                });
-            }
-        }
+        const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
 
         const navigation = navigationFetch.data;
 
@@ -96,49 +74,22 @@
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
-    const props = defineProps({
-        type: {
-            type: String,
-            required: true
-        },
-        prevNext: {
-            type: Boolean,
-            required: false,
-            default: true
-        },
-    })
-
-    if (props.type === 'plugins') {
-        const parts = slug.value.split('/');
-        let pageUrl;
-        if (parts?.length > 3) {
-            pageUrl = `/api/plugins?page=${parts[parts?.length - 1].replace(/.md$/, "")}&type=definitions`
-        } else {
-            pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
-        }
-
-        const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
-            return $fetch(pageUrl)
-        });
-
-        if (pluginInformation?.value?.error) {
-            throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
-        }
-        page = pluginInformation?.value;
+    const parts = slug.value.split('/');
+    let pageUrl;
+    if (parts?.length > 3) {
+        pageUrl = `/api/plugins?page=${parts[parts?.length - 1].replace(/.md$/, "")}&type=definitions`
     } else {
-        const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
-            try {
-                return queryContent(slug.value).findOne();
-            } catch (error) {
-                throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
-            }
-        });
-        page = data.value;
-
-        if (error && error.value) {
-            throw error.value;
-        }
+        pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
     }
+
+    const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
+        return $fetch(pageUrl)
+    });
+
+    if (pluginInformation?.value?.error) {
+        throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
+    }
+    page = pluginInformation?.value;
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
 
