@@ -3,36 +3,36 @@
         <NavSideBar :type="type" :navigation="navigation"/>
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc, 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
-                    <h1 v-if="page && page.title" class="py-0 title">
-                        <NuxtImg
-                            v-if="page.icon"
-                            :src="page.icon"
-                            :alt="page.title"
-                            width="40px"
-                            height="40px"
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            class="me-3 page-icon"
-                        />
-                        <span v-html="transformTitle(page.title)"></span>
-                    </h1>
-                </div>
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
+                <h1 v-if="page && page.title" class="py-0 title">
+                    <NuxtImg
+                        v-if="page.icon"
+                        :src="page.icon"
+                        :alt="page.title"
+                        width="40px"
+                        height="40px"
+                        loading="lazy"
+                        format="webp"
+                        quality="80"
+                        densities="x1 x2"
+                        class="me-3 page-icon"
+                    />
+                    <span v-html="transformTitle(page.title)"></span>
+                </h1>
+            </div>
 
-                <NavToc :page="page" class="my-md-0 my-4 right-menu" />
+            <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
-                <div class="bd-content">
-                    <ContentRenderer v-if="page" :value="page"/>
+            <div class="bd-content">
+                <ContentRenderer class="bd-markdown" v-if="page" :value="page"/>
 
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
+                <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
 
-                    <template v-if="!page?.meta?.isHomepage">
-                        <HelpfulVote />
-                        <PrevNext v-if="prevNext" :navigation="navigation" />
-                    </template>
-                </div>
+                <template v-if="!page?.meta?.isHomepage">
+                    <HelpfulVote />
+                    <PrevNext v-if="prevNext" :navigation="navigation" />
+                </template>
+            </div>
         </article>
     </div>
 </template>
@@ -224,10 +224,7 @@
         overflow-x: unset;
 
         .bd-title {
-            margin-top: calc($spacer * 4);
-            @include media-breakpoint-down(lg) {
-                margin-top: calc($spacer * 1);
-            }
+            margin-top: 4rem;
             h1 {
                 max-width: calc($spacer * 43.7);
                 @media only screen and (min-width: 1920px) {

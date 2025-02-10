@@ -298,17 +298,17 @@ $bd-gutter-x: 3rem;
         padding: 0 .25rem;
     }
 
-    .code-block, .doc-alert {
+    pre.shiki{
+        border-radius: var(--bs-border-radius);
+        border: 1px solid #252526;
+        padding: 0 1.5rem;
+    }
+
+    pre.shiki, .doc-alert {
         background-color: $black-2;
         code {
             border: 0;
             color: $white;
-        }
-    }
-
-    .code-block {
-        code {
-            padding: 0;
         }
     }
 
