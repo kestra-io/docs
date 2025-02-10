@@ -38,7 +38,6 @@
     }
 
     currentPage = currentPage.replace(/\/$/, '');
-    console.log(currentPage);
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
