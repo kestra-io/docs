@@ -226,21 +226,21 @@
         .bd-title {
             margin-top: 4rem;
             h1 {
-                max-width: calc($spacer * 43.7);
+                max-width: 45.8rem;
                 @media only screen and (min-width: 1920px) {
                     max-width: 71.25rem;
                 }
             }
         }
         .bd-main {
-            gap: calc($spacer * 2) $spacer;
+            gap: 2rem 2rem;
             @include media-breakpoint-down(sm) {
-                gap: calc($spacer * 2) calc($spacer * 7);
+                gap: 2rem 7rem;
             }
         }
         .bd-content {
             margin: 0 auto 2em auto;
-            max-width: calc($spacer * 43.7);
+            max-width: 45.8rem;
             @media only screen and (min-width: 1920px) {
                 max-width: 71.25rem;
             }
