@@ -165,7 +165,7 @@ kestra:
       secret: "your-secret-key"
 ```
 
-Your secret key should be encrypted. You can find an example of [encryption key here](../configuration/index.md#encryption).
+Your secret key should be encrypted. You can find an example of [encryption key here](../../configuration/index.md#encryption).
 
 ## Elastic Secret Manager
 
@@ -179,7 +179,7 @@ kestra:
       secret: "your-secret-key"
 ```
 
-Your secret key should be encrypted. You can find an example of [encryption key here](../configuration/index.md#encryption).
+Your secret key should be encrypted. You can find an example of [encryption key here](../../configuration/index.md#encryption).
 
 ## Default Tags
 

@@ -83,6 +83,30 @@ Here are common use cases in which Worker Groups can be beneficial:
 - Restrict backend access to a set of workers (firewall rules, private networks, etc.).
 - Execute tasks and polling triggers close to a remote backend (region selection).
 
+### Distant Workers
+
+You can use a Worker Group to designate a worker to execute **any** task on a remote resource. Additionally, you may want to have an **always-on** worker that stays available for execution-intensive workloads. 
+
+The Distant Worker use case requires a connection to the Kestra metastore, and it solves for scenarios of always-on, intensive workloads and workloads that need to execute workloads on an external environment.
+
+![Distant Worker Architecture](/docs/enterprise/distant-worker.png)
+
+### Task Runners
+
+If you are using scripting tasks, you can set up Worker Group of Task Runners to leverage **on-demand** cloud resources to execute intensive workloads. For example, you can have a Worker Group dedicated to executing on AWS Batch or Kubernetes. 
+
+This is particularly useful for script task workloads that have bursts in resource demand.
+
+![Task Runner Architecture](/docs/enterprise/task-runners.png)
+
+### Data Isolation
+
+Worker Groups strongly fits **Data Isolation** use cases. Multi-tenancy requirements may demand that you have strict isolation of remote resources such as key vaults. Worker groups enable you to split out dedicated workers per tenant.
+
+In the below architecture, it is not possible to execute tasks on worker 1 from tenant 3. 
+
+![Data Isolation Architecture](/docs/enterprise/data-isolation.png)
+
 ::alert{type="warning"}
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
 ::

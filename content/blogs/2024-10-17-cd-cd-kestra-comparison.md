@@ -201,7 +201,7 @@ Kestra, instead, uses a declarative YAML-based syntax that is much easier to rea
 #### Scalability Challenges
 Jenkins requires a lot of manual setup for distributed builds or scaling across [multiple nodes](https://www.jenkins.io/doc/book/managing/nodes/), and this can lead to bottlenecks when the infrastructure needs to grow.
 
-In contrast, Kestra leverages [Worker Groups](../docs/06.enterprise/worker-group.md), which are collections of workers that can be targeted for executing tasks based on specific requirements, allowing for efficient workload distribution across different nodes. Additionally, [Task Runners](../docs/06.enterprise/task-runners.md) enable the dynamic allocation of tasks in various cloud environments, facilitating the execution of compute-intensive jobs without the need for permanent infrastructure.
+In contrast, Kestra leverages [Worker Groups](../docs/06.enterprise/04.scalability-productivity/worker-group.md), which are collections of workers that can be targeted for executing tasks based on specific requirements, allowing for efficient workload distribution across different nodes. Additionally, [Task Runners](../docs/06.enterprise/04.scalability-productivity/task-runners.md) enable the dynamic allocation of tasks in various cloud environments, facilitating the execution of compute-intensive jobs without the need for permanent infrastructure.
 
 These features provide streamlined and scalable approach to managing complex workflows, reducing the operational overhead associated with scaling Jenkins.
 

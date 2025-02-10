@@ -15,10 +15,10 @@ A tenant represents an **isolated environment within a single Kestra instance**.
 Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy, security along with separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
 
 ::alert{type="info"}
-You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../06.enterprise/01.enterprise-edition.md).
+You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.getting-started-ee/01.enterprise-edition.md).
 ::
 
-When multi-tenancy is enabled, all resources (such as [flows](../04.workflow-components/01.flow.md), [triggers](../04.workflow-components/07.triggers/index.md), [executions](../04.workflow-components/03.execution.md), [RBAC](../06.enterprise/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
+When multi-tenancy is enabled, all resources (such as [flows](../../04.workflow-components/01.flow.md), [triggers](../../04.workflow-components/07.triggers/index.md), [executions](../../04.workflow-components/03.execution.md), [RBAC](../03.auth-users/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
 Data stored inside the internal storage are also isolated by tenants.
 
@@ -26,7 +26,7 @@ Multi-tenancy functionality is not visible to end-users from the UI except for t
 
 ![Tenants selection dropdown](/docs/enterprise/tenants.png)
 
-The API URLs also include the tenant identifier. For example, the URL of the API operation to list flows of the `marketing` namespace is `/api/v1/flows/marketing` when multi-tenancy is not enabled. Once you enable multi-tenancy and create a tenant `prod`, this URL becomes `/api/v1/prod/flows/marketing`. You can check the [API Guide](../api-reference/enterprise.md) for more information.
+The API URLs also include the tenant identifier. For example, the URL of the API operation to list flows of the `marketing` namespace is `/api/v1/flows/marketing` when multi-tenancy is not enabled. Once you enable multi-tenancy and create a tenant `prod`, this URL becomes `/api/v1/prod/flows/marketing`. You can check the [API Guide](../../api-reference/enterprise.md) for more information.
 
 Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.
 
@@ -133,7 +133,7 @@ create a tenant and assign admin roles to an existing admin user
 
 ### Creating a Tenant from the API
 
-Tenants can be managed programmatically via Kestra's [API](../api-reference/enterprise.md#post-/api/v1/tenants). Here is an example of an API call for creating a tenant:
+Tenants can be managed programmatically via Kestra's [API](../../api-reference/enterprise.md#post-/api/v1/tenants). Here is an example of an API call for creating a tenant:
 
 ```bash
 curl -X POST "https://demo.kestra.io/api/v1/tenants" \
@@ -144,7 +144,7 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
 
 ### Creating a Tenant from Terraform
 
-Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../13.terraform/resources/tenant.md). Here is an example of a Terraform configuration for creating a tenant:
+Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../../13.terraform/resources/tenant.md). Here is an example of a Terraform configuration for creating a tenant:
 
 ```hcl
 resource "kestra_tenant" "stage" {
@@ -161,7 +161,7 @@ Note that there is an exception to this rule if tenant is created by a Super Adm
 
 ### Dedicated Storage and Secrets backend per Tenant
 
-By default, each tenant uses the same [internal storage](../configuration/index.md#internal-storage) and [secrets backend](./secrets-manager.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
+By default, each tenant uses the same [internal storage](../../configuration/index.md#internal-storage) and [secrets backend](./secrets-manager.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
 To configure a dedicated storage and secrets backend per tenant, navigate to the respective tenant in the UI and click on the **Edit** button. Then, select the storage and secrets backend you want to use for that tenant:
 

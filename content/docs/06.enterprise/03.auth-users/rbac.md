@@ -24,8 +24,8 @@ Access page in the UI).
 ## Roles and Bindings
 
 A Role is a collection of permissions that can be assigned to Users, Service Accounts or Groups.\
-Theses permissions are defined by a combination of a **Permission** (e.g. `FLOWS`) and an **Action** (
-e.g. `CREATE`).
+Theses permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
+e.g., `CREATE`).
 
 ::collapse{title="More information"}
 
@@ -114,13 +114,13 @@ However, you should use Kestra through the role system.
 
 #### Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../06.enterprise/02.setup.md).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started-ee//02.setup.md).
 
 This interface will offer you to create your first User which will be automatically assigned the `Super Admin` privilege.
 
 #### Through the CLI
 
-To create a User with a Super Admin privilege from the [CLI](../06.enterprise/cli.md), use the `--superadmin` option:
+To create a User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -144,7 +144,7 @@ kestra:
         - <optional>
 ```
 
-For more detail, check the [Enterprise Edition Configuration](../configuration/index.md#super-admin) page.
+For more detail, check the [Enterprise Edition Configuration](../../configuration/index.md#super-admin) page.
 
 ::
 
@@ -162,7 +162,7 @@ You can grant or revoke the Super Admin privilege using the switch in the User E
 
 #### Through the CLI
 
-To set an existing User with a Super Admin privilege from the [CLI](./cli.md), use the dedicated command:
+To set an existing User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the dedicated command:
 
 ```bash
 # Set a user as Super Admin
@@ -190,7 +190,7 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ####  Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../06.enterprise/02.setup.md).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started-ee//02.setup.md).
 
 This interface will offer you to create the first User which will automatically create the role Admin and bind the User to the role.
 

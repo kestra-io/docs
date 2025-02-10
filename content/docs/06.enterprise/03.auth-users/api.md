@@ -9,7 +9,7 @@ How to interact with Kestra Enterprise Edition using the API.
 
 ## Authentication
 
-To authenticate with the Kestra API, you will need to create an [API token](../06.enterprise/api-tokens.md). You can create it directly from the Kestra UI.
+To authenticate with the Kestra API, you will need to create an [API token](../../06.enterprise/03.auth-users/api-tokens.md). You can create it directly from the Kestra UI.
 
 Once you have your API token, you can use it to authenticate with the API. You can use the `Authorization` header with the `Bearer` token to authenticate with the API.
 
@@ -20,4 +20,4 @@ curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
 
 ## Browse the API Reference
 
-For a full list of available API endpoints, check the [Enterprise Edition API Reference](../api-reference/enterprise.md).
+For a full list of available API endpoints, check the [Enterprise Edition API Reference](../../api-reference/enterprise.md).

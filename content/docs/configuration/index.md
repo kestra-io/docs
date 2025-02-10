@@ -1153,7 +1153,7 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 ### Allowed plugins
 
 ::alert{type="info"}
-This is an [Enterprise Edition](/docs/enterprise) feature available starting with Kestra 0.19.
+This is an [Enterprise Edition](../06.enterprise/index.md) feature available starting with Kestra 0.19.
 ::
 
 You can restrict which plugins can be used in a Kestra instance by configuring an allowlist / exclude list using regexes.
@@ -1227,7 +1227,7 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
 
 ## Secret Managers
 
-You can configure the [secret manager](../06.enterprise/secrets-manager.md) backend using the `kestra.secret` configuration.
+You can configure the [secret manager](../06.enterprise/02.governance/secrets-manager.md) backend using the `kestra.secret` configuration.
 
 ### AWS Secret Manager
 
@@ -1374,7 +1374,7 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/rbac.md#super-admin)
+The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth-users/rbac.md#super-admin)
 
 You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
 
@@ -1412,7 +1412,7 @@ The default role requires three properties:
 * `kestra.security.defaultRole.name`: the name of the default role
 * `kestra.security.defaultRole.description`: the description of the default role
 * `kestra.security.defaultRole.permissions`: the permissions of the default role
-  * This has to be a map with a [Permission](../06.enterprise/rbac.md#permissions) as a key and a list of [Action](../06.enterprise/rbac.md#actions) as a value
+  * This has to be a map with a [Permission](../06.enterprise/03.auth-users/rbac.md#permissions) as a key and a list of [Action](../06.enterprise/03.auth-users/rbac.md#actions) as a value
 
 ```yaml
 kestra:
@@ -1424,7 +1424,7 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
 ```
 
-When using [multitenancy](../06.enterprise/03.tenants.md), the default role will be added to every tenant and will grant specified access permissions to new users across all tenants. If you prefer to restrict the default role to only allow access to a given tenant e.g. `staging`, you can add the `tenantId` property as follows:
+When using [multitenancy](../06.enterprise/02.governance/tenants.md), the default role will be added to every tenant and will grant specified access permissions to new users across all tenants. If you prefer to restrict the default role to only allow access to a given tenant e.g. `staging`, you can add the `tenantId` property as follows:
 
 ```yaml
 kestra:
@@ -1473,7 +1473,7 @@ kestra:
 ```
 
 HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
-the [Authentication page](../06.enterprise/04.authentication.md).
+the [Authentication page](../06.enterprise/03.auth-users/04.authentication.md).
 
 ### Delete configuration files
 

@@ -32,7 +32,7 @@ If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentica
 curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world
 ```
 
-With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/api-tokens.md) to authenticate when making requests, for example:
+With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/03.auth-users/api-tokens.md) to authenticate when making requests, for example:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
