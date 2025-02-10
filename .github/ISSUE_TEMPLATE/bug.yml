@@ -1,5 +1,5 @@
 name: Bug on the website
-description: File a bug report for something that doesn't look right on the website.
+description: File a bug report for something that doesn't look right on the website
 body:
   - type: markdown
     attributes:
