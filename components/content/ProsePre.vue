@@ -1,7 +1,6 @@
 <script setup>
     import {onMounted} from "#imports";
     import { createPopper } from "@popperjs/core";
-    import useShiki from "~/composables/useShiki";
 
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
@@ -36,13 +35,7 @@
         const copyButton = ref(null);
         const copyTooltip = ref(null);
 
-        const {highlightCodeBlocks} = useShiki();
-
         const codeBlock = ref(null);
-
-        onMounted(() => {
-            highlightCodeBlocks(codeBlock.value);
-        });
 
         function hoverCode(){
             isHoveringCode.value = true;
