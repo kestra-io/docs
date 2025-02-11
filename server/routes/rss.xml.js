@@ -3,8 +3,7 @@ import RSS from "rss"
 const SITE_URL = "https://kestra.io"
 
 export default defineEventHandler(async (event) => {
-    const blogs = await queryCollection(event, 'blogs').sort("date", "DESC").where('_partial', '=', false).select('title', 'path', 'date', 'description').all()
-
+    const blogs = await queryCollection(event, 'blogs').order("date", "DESC").select('title', 'path', 'date', 'description').all()
 
     const feed = new RSS({
         title: 'Kestra',
