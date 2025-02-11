@@ -62,7 +62,7 @@ Temporarily pause all workflows and services for upgrades:
 ::badge{version=">=0.10" editions="EE"}
 ::
 
-Create [worker groups](./worker-group.md) to isolate workloads or delegate tasks to given workers:  
+Create [worker groups](../04.scalability-productivity/worker-group.md) to isolate workloads or delegate tasks to given workers:  
 - **Add Worker Groups**: Define groups with specific resource limits or labels.  
 - **Assign Tasks**: Route workflows to designated groups via worker group key within a task or trigger.  
 

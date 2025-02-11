@@ -15,7 +15,7 @@ Task Runner capabilities and supported plugins.
 
 ## Task Runner Types
 
-There are a number of task runner types. The [Docker](../task-runners/04.types/02.docker-task-runner.md) and [Process](../task-runners/04.types/01.process-task-runner.md) task runners are included in the Open Source edition. All other types require an [Enterprise Edition](./index.md) license or a [Kestra Cloud](/cloud) account.
+There are a number of task runner types. The [Docker](../../task-runners/04.types/02.docker-task-runner.md) and [Process](../../task-runners/04.types/01.process-task-runner.md) task runners are included in the Open Source edition. All other types require an [Enterprise Edition](./index.md) license or a [Kestra Cloud](/cloud) account.
 
 Enterprise Edition Task Runners:
 - [Kubernetes](../task-runners/04.types/03.kubernetes-task-runner.md)
@@ -26,8 +26,8 @@ Enterprise Edition Task Runners:
 
 ## Task Runners vs Worker Groups
 
-[Task Runners](../task-runners/index.md) and [Worker Groups](worker-group.md) both **offload compute-intensive tasks to dedicated workers**. However, **worker groups have a broader scope**, applying to **all tasks** in Kestra, whereas **task runners** are limited to **scripting tasks** (Python, R, JavaScript, Shell, dbt, etc. — see the [full list here](../task-runners/01.overview.md#plugins-supporting-task-runners)). Worker groups can be used with any plugins.
+[Task Runners](../../task-runners/index.md) and [Worker Groups](worker-group.md) both **offload compute-intensive tasks to dedicated workers**. However, **worker groups have a broader scope**, applying to **all tasks** in Kestra, whereas **task runners** are limited to **scripting tasks** (Python, R, JavaScript, Shell, dbt, etc. — see the [full list here](../../task-runners/01.overview.md#plugins-supporting-task-runners)). Worker groups can be used with any plugins.
 
 For instance, if you need to query an on-premise SQL Server database running on a different server than Kestra, your SQL Server Query task can target a worker with access to that server. Additionally, worker groups can fulfill the same use case as task runners by distributing the load of scripting tasks to dedicated workers with the necessary resources and dependencies (_incl. hardware, region, network, operating system_).
 
-You can read more about the differences on the [dedicated page](../task-runners/03.task-runners-vs-worker-groups.md).
+You can read more about the differences on the [dedicated page](../../task-runners/03.task-runners-vs-worker-groups.md).

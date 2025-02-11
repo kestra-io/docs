@@ -35,7 +35,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-The new [Log Shipper feature](../docs/06.enterprise/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
+The new [Log Shipper feature](../docs/06.enterprise/02.governance/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
 Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 

@@ -100,10 +100,10 @@ tasks:
 ## Namespace Variables
 
 ::alert{type="info"}
-This is an [Enterprise Edition](/docs/enterprise) feature.
+This is an [Enterprise Edition](../06.enterprise/index.md) feature.
 ::
 
-Using [Namespace Variables](../06.enterprise/07.namespace-management.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../08.ui/04.namespaces/ee.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
+Using [Namespace Variables](../06.enterprise/02.governance/07.namespace-management.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../08.ui/04.namespaces/ee.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
 
 For example, we can define our variables as a key-value pair in our Namespace:
 

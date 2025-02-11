@@ -5,7 +5,7 @@ editions: ["EE"]
 
 How to configure Kestra Enterprise Edition.
 
-The [Enterprise Edition](../06.enterprise/01.enterprise-edition.md) is a robust, enterprise-grade version of Kestra deployed to your private infrastructure. It offers security and governance features including multi-tenancy, authentication, SSO, RBAC, namespace-level management, distributed worker groups, worker isolation, secrets manager integrations, audit logs, and more.
+The [Enterprise Edition](01.getting-started-ee//01.enterprise-edition.md) is a robust, enterprise-grade version of Kestra deployed to your private infrastructure. It offers security and governance features including multi-tenancy, authentication, SSO, RBAC, namespace-level management, distributed worker groups, worker isolation, secrets manager integrations, audit logs, and more.
 
 This section describes those features in detail and explains how to configure them.
 

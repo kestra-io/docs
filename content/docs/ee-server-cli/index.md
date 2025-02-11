@@ -8,7 +8,7 @@ How to interact with Kestra Enterprise Edition using the CLI.
 
 ## Authentication
 
-The Kestra CLI uses the same authentication as the [Kestra API](../06.enterprise/api.md). You can use the `--api-token` option to authenticate with the API.
+The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/enterprise.md). You can use the `--api-token` option to authenticate with the API.
 
 ```shell
 kestra --api-token <your-api-token> --help
