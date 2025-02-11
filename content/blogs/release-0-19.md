@@ -493,7 +493,7 @@ Using an invalid worker group key in a task leads to task runs being stuck in a 
 
 With the new Worker Groups UI page, worker groups are now treated as API-first objects — they must be created first from the UI, API, CLI, or Terraform before being used in flows. This ensures that worker group keys are valid and exist before they are referenced in tasks.
 
-Check the [Worker Group](../docs/06.enterprise/04.scalability-productivity/worker-group.md) documentation to learn how to create and manage worker groups.
+Check the [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md) documentation to learn how to create and manage worker groups.
 
 In short, this new feature improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
