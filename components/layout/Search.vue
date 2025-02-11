@@ -133,7 +133,7 @@
                 document.querySelector('#search-input').focus();
                 this.search();
             },
-            search(value = '') {
+            search(value) {
                 if (this.cancelToken !== undefined) {
                     this.cancelToken.cancel('cancel all');
                 }
@@ -144,7 +144,7 @@
                 return axios.get(`${this.$config.public.apiUrl}/search`, {
                     params: {
                         q: value,
-                        type: this.selectedFacet || '',
+                        type: this.selectedFacet,
                     },
                     cancelToken: this.cancelToken.token
                 }).then(response => {
