@@ -23,8 +23,7 @@
             <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu"/>
 
             <div class="bd-content">
-                <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
-                                        :version="page.version"/>
+                <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page" />
                 <Suspense v-if="page.pluginType === 'definitions'">
                     <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :props-initially-expanded="true">
                         <template v-slot:markdown="{ content }">
@@ -32,12 +31,12 @@
                         </template>
                     </SchemaToHtml>
                 </Suspense>
-                <ContentRendererMarkdown
+                <ContentRenderer
                     class="bd-markdown"
                     :value="page"
                     data-bs-spy="scroll"
                     data-bs-target="#nav-toc"
-                    v-else
+                    v-else-if="page"
                 />
             </div>
         </article>
