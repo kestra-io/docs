@@ -23,7 +23,7 @@ For organizations using external [secrets managers](06.enterprise/02.governance/
 
 ## Governance and Compliance
 
-Enterprise Edition provides [audit logs](06.enterprise/02.governance/06.audit-logs.md) that track every user action and workflow change, critical for industries like healthcare or finance. Logs can be automatically exported to observability platforms such as Datadog or Elasticsearch using the [Log Shipper](06.enterprise/02.governance/logshipper.md), integrating with your existing DevOps monitoring practices.
+Enterprise Edition provides [audit logs](06.enterprise/02.governance/06.audit-logs.md) that track every user action and workflow change, critical for highly regulated industries. Logs can be automatically exported to observability platforms such as Datadog or Elasticsearch using the [Log Shipper](06.enterprise/02.governance/logshipper.md).
 
 [Multi-tenancy](06.enterprise/02.governance/tenants.md) allows you to create fully isolated environments, e.g. separate tenants for specific [teams or business units](14.best-practices/8.business-unit-separation.md). Each tenant can use separate secrets managers or dedicated internal storage backends (e.g., AWS S3 for Tenant A, GCS for Tenant B).
 
@@ -33,9 +33,9 @@ Enterprise Edition provides [audit logs](06.enterprise/02.governance/06.audit-lo
 
 ## Scalability and Reliability
 
-The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition uses Kafka and Elasticsearch for distributed event processing, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
+The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka and Elasticsearch for distributed event processing, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
 
-[Worker Groups](06.enterprise/04.scalability/worker-group.md) let you assign tasks to specialized infrastructure. For example, GPU-heavy machine learning workflows can target a worker group with NVIDIA GPUs, while ETL jobs run on cost-optimized spot instances. [Task Runners](06.enterprise/04.scalability/task-runners.md) offload compute-intensive scripts on-demand to Kubernetes or cloud batch services such as Azure Batch, Google Cloud Run or AWS ECS Fargate, preventing resource contention on core Kestra servers.
+[Worker Groups](06.enterprise/04.scalability/worker-group.md) let you assign tasks to specialized infrastructure. For example, GPU-heavy machine learning workflows can target a worker group with NVIDIA GPUs, while ETL jobs run on cost-optimized spot instances. [Task Runners](06.enterprise/04.scalability/task-runners.md) offload compute-intensive scripts on-demand to Kubernetes or cloud batch services such as Azure Batch, Google Cloud Run or AWS ECS Fargate to prevent resource contention.
 
 [Maintenance Mode](06.enterprise/05.instance/maintenance-mode.md) allows safe upgrades: new executions queue while in-progress tasks complete gracefully, avoiding abrupt workflow termination. [Cluster monitoring](06.enterprise/05.instance/index.md) provides real-time visibility into resource usage, helping teams proactively address infrastructure bottlenecks. The [Backup and Restore](09.administrator-guide/backup-and-restore.md) eliminates the risk of data loss or corruption during upgrades, allowing you to recover from accidental deletions or system failures.
 
@@ -45,7 +45,7 @@ The Open-Source Edition runs by default on a single server, which can become a b
 
 [Custom Blueprints](06.enterprise/02.governance/custom-blueprints.md) act as reusable workflow templates, e.g. a **standardized** data ingestion pattern that all teams can consistently adopt. **Full-text search across task runs** speeds up navigation — e.g. engineers can quickly find logs for a failed Python script without manually filtering through thousands of executions.
 
-**Centralized** namespace-level [plugin defaults](06.enterprise/02.governance/07.namespace-management.md) simplify configuration. A namespace-wide setting on a root namespace might **enforce AWS credentials** for all S3 tasks and triggers, eliminating redundant code. **Impersonation** lets admins validate permissions by temporarily assuming a user’s role, which significantly helps with troubleshooting access management issues.
+**Centralized** namespace-level [plugin defaults](06.enterprise/02.governance/07.namespace-management.md) simplify configuration. A [namespace-wide setting](06.enterprise/02.governance/07.namespace-management.md) on a root namespace might **enforce AWS credentials** for all S3 tasks and triggers, eliminating redundant code. **Impersonation** lets admins validate permissions by temporarily assuming a user’s role, which significantly helps with troubleshooting access management issues.
 
 [Apps](06.enterprise/04.scalability/apps.md) turn workflows into user-friendly interfaces. A finance team can build a self-service tool for expense approvals, where non-technical stakeholders can submit requests via a form. Approved requests automatically trigger downstream tasks to process payments.
 
@@ -55,7 +55,7 @@ The Open-Source Edition runs by default on a single server, which can become a b
 
 Enterprise Edition includes **SLAs with guaranteed response times** for support tickets, which is critical for teams running 24/7-operations. Onboarding support helps customize Kestra to your stack and deployment requirements.
 
-Customers also get early access to beta features and roadmap previews, allowing teams to plan upgrades around upcoming capabilities. The dedicated customer portal provides direct access to Kestra’s engineering team for architecture reviews or best practices.
+Customers’ feature requests are prioritized over those from open-source users. They also get early access to beta features and roadmap previews, allowing teams to plan upgrades around upcoming capabilities. The dedicated customer portal provides direct access to Kestra’s engineering team for architecture reviews or best practices.
 
 ---
 
