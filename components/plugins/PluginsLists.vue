@@ -118,7 +118,7 @@
     function creatingTooltipContainer (plugin, categoryItems, categoryName) {
       if (categoryItems && categoryItems.length > 0) {
         plugin.tooltipContent += `
-            <p>${categoryName}</p>
+            <p class="ks-plugin-card-${categoryName.toLowerCase()}">${categoryName}</p>
             <ul>
               ${generateCategoryList(plugin, categoryItems, categoryName)}
             </ul>
