@@ -114,7 +114,7 @@ However, you should use Kestra through the role system.
 
 #### Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started-ee//02.setup.md).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started//02.setup.md).
 
 This interface will offer you to create your first User which will be automatically assigned the `Super Admin` privilege.
 
@@ -190,7 +190,7 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ####  Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started-ee//02.setup.md).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.getting-started//02.setup.md).
 
 This interface will offer you to create the first User which will automatically create the role Admin and bind the User to the role.
 

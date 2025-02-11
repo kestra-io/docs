@@ -19,7 +19,7 @@ There's a number of extra namespace pages available in the enterprise edition:
 
 ## Edit
 
-Manage the namespace description, [worker group](../../06.enterprise/04.scalability-productivity/worker-group.md), and permissions.
+Manage the namespace description, [worker group](../../06.enterprise/04.scalability/worker-group.md), and permissions.
 
 ![Edit](/docs/user-interface-guide/edit.png)
 

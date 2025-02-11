@@ -36,7 +36,7 @@ For more information on troubleshooting CLI options, see the dedicated [Troubles
 **Options:**
 
 * `-t` or `--thread`: the number of threads that can handle tasks at the same time. By default, the worker will start 2 threads per CPU core available.
-* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/04.scalability-productivity/worker-group.md).
+* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/04.scalability/worker-group.md).
 
 ### Webserver
 
