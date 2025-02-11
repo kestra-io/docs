@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const {data: navigation} = await useAsyncData(
         `BigChildCard-${hash(props.directory)}`,
-        () => queryCollection('docs').where("path", "LIKE", `${props.directory}/%`).all()
+        () => queryCollection("docs").where("path", "LIKE", `${props.directory}/%`).all()
     );
 </script>
 
