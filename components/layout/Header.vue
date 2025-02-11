@@ -882,6 +882,8 @@ export default {
         $route(to) {
             this.transparentHeader = to.meta.transparentHeader === true;
             this.transparentClass = to.meta.transparentHeader === true;
+            // on route change always close the menu
+            this.globalClick(true)
         }
     },
     mounted() {
