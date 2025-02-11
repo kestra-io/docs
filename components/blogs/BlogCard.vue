@@ -1,6 +1,6 @@
 <template>
     <div class="mb-5 mt-1" role="button">
-        <NuxtLink class="text-dark" :href="blog._path">
+        <NuxtLink class="text-dark" :href="blog.path">
             <img loading="lazy" :alt="blog.title" :src="blog.image" class="card-image w-100 rounded-3" />
             <div class="mt-1">
                 <span class="small-text category">{{ blog.category }}</span>

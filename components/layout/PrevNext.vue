@@ -2,7 +2,7 @@
     <div v-if="prev || next" class="docs-prev-next mt-5">
         <NuxtLink
             v-if="prev"
-            :to="prev._path"
+            :to="prev.path"
             class="prev"
         >
             <ArrowLeft />
@@ -18,7 +18,7 @@
 
         <NuxtLink
             v-if="next"
-            :to="next._path"
+            :to="next.path"
             class="next"
         >
             <div class="wrapper">
@@ -55,10 +55,10 @@ const navDirFromPath = () => []
         },
         methods: {
             directory(link) {
-                const nav = navDirFromPath(link._path, this.navigation || [])
+                const nav = navDirFromPath(link.path, this.navigation || [])
 
                 if (nav && nav[0]) {
-                    return nav[0]._path
+                    return nav[0].path
                 } else {
                     const dirs = link.split('/')
                     const directory = dirs[Math.max(1, dirs.length - 2)]

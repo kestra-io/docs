@@ -1,6 +1,6 @@
 <template>
     <div class="" role="button">
-        <NuxtLink class="d-inline-block text-dark w-100" :href="blog._path">
+        <NuxtLink class="d-inline-block text-dark w-100" :href="blog.path">
             <NuxtImg width="840" loading="lazy" format="webp" quality="80" densities="x1 x2" class="w-100 col-md-12 rounded-3 img-fluid blog-image" :alt="blog.image" :src="blog.image" />
             <div class="description mt-4">
                 <span class="small-text category">{{ blog.category }}</span>

@@ -1,6 +1,6 @@
 <template>
     <div class="row card-group mb-2">
-        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body d-flex">
                         <span class="card-icon">

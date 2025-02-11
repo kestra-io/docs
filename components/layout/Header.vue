@@ -1899,7 +1899,8 @@ export default {
 }
 </style>
 
-<style lang="scss">@import "../../assets/styles/variable";
+<style lang="scss">
+@import "../../assets/styles/variable";
 
 .wrapper.announce {
     nav {
