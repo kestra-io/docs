@@ -47,14 +47,6 @@ Admins can impersonate users to guarantee correct permissions and access. Additi
 
 ---
 
-## Enterprise Support & Services
-
-Companies using the Enterprise Edition gain access to Onboarding & Training Support, ensuring teams can quickly get up to speed with Kestra’s features.
-Additionally, Kestra provides a Customer Success Program with Service-Level Agreements (SLAs), offering dedicated support, guaranteed response times, and expert guidance to optimize workflow execution.
-Enterprise Edition also keeps you one step ahead with a preview of the product roadmap and upcoming features.
-
----
-
 ## Scalability & Performance
 
 For organizations requiring high availability, the Enterprise Edition includes **High Availability (HA) Architecture**, ensuring that no single point of failure disrupts workflows.
@@ -65,6 +57,16 @@ This is especially useful for tasks with bursts in resource demand and always-on
 To enhance observability and performance monitoring, [**Cluster Monitoring & Custom Storage**](../05.instance-management/index.md) enables real-time infrastructure insights and customized storage solutions.
 Enterprise Edition also support a [**maintenance mode**](../05.instance-management/maintenance-mode.md) for pausing your Kestra instance for migrations and upgrades.
 Finally, for organizations handling massive data processing workloads, **High-Throughput Event Handling** ensures that workflows can scale efficiently while maintaining performance.
+
+---
+
+## Enterprise Support & Services
+
+Companies using the Enterprise Edition gain access to Onboarding & Training Support, ensuring teams can quickly get up to speed with Kestra’s features.
+Additionally, Kestra provides a Customer Success Program with Service-Level Agreements (SLAs), offering dedicated support, guaranteed response times, and expert guidance to optimize workflow execution.
+Enterprise Edition also keeps you one step ahead with a preview of the product roadmap and upcoming features.
+
+---
 
 ## So why pay?
 
