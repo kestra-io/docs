@@ -25,7 +25,6 @@
 </template>
 <script setup>
     import Section from '../layout/Section.vue';
-    import {useAsyncData} from "#imports";
 
     const props = defineProps({
       title: {
@@ -33,14 +32,17 @@
         default: undefined,
       },
       page: {
-        type: String,
+        type: Object,
         default: undefined,
       }
     });
 
     const {data: blogs} = await useAsyncData(
         `Blog`,
-        () => queryCollection("blogs").order("date", "DESC").limit(3).all()
+        () => queryCollection("blogs")
+            .order("date", "DESC")
+            .limit(3)
+            .all()
     );
 
 </script>
