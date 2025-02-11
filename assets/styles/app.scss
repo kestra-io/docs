@@ -546,9 +546,13 @@ blockquote.blockquote {
         text-align: left !important;
         max-height: 20rem;
         overflow: auto;
-        background-color: var(--bs-body-color);
+        background-color: rgb(0,0,0,.6);
+        backdrop-filter: blur(4px);
         color: var(--kestra-io-token-color-white);
+        border: 1px solid var(--kestra-io-token-color-border-primary);
+        border-radius: 1em;
         max-width: 80ch;
+        padding: 1rem;
 
         p:not(li p) {
             margin-bottom: 0;
@@ -576,6 +580,9 @@ blockquote.blockquote {
             background: var(--bs-primary);
             border-radius: 0px;
         }
+    }
+    .tooltip-arrow {
+        --bs-tooltip-bg: var(--kestra-io-token-color-border-primary);
     }
 }
 
