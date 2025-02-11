@@ -1,11 +1,9 @@
 ---
-title: Why Kestra Enterprise Edition?
+title: OSS vs. Paid
 icon: /docs/icons/admin.svg
 ---
 
 Discover the features only available in Kestra Enterprise Edition and why it is the best option for teams using Kestra.
-
-# Kestra Open-Source vs. Paid
 
 ## TL;DR
 
