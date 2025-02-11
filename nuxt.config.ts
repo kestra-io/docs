@@ -151,7 +151,8 @@ export default defineNuxtConfig({
             include: [
                 "humanize-duration",
                 "lodash",
-                "dagre"
+                "dagre",
+                "debug",
             ],
             exclude: [
                 '* > @kestra-io/ui-libs'

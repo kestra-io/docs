@@ -4,11 +4,11 @@
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false }">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>
-                <h1 v-if="page && pageTitle" class="py-0 title">
+                <h1 v-if="page && getPageTitle()" class="py-0 title">
                     <NuxtImg
                         v-if="pageIcon"
                         :src="pageIcon"
-                        :alt="pageTitle"
+                        :alt="getPageTitle()"
                         width="40px"
                         height="40px"
                         loading="lazy"
@@ -17,7 +17,7 @@
                         densities="x1 x2"
                         class="me-3 page-icon"
                     />
-                    <span v-html="transformedTitle"></span>
+                    <span v-html="transformTitle(getPageTitle())"></span>
                 </h1>
             </div>
             <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu"/>
@@ -25,12 +25,11 @@
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page" />
                 <Suspense v-if="page.pluginType === 'definitions'">
-                    hello
-                    <!-- <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pageName" :props-initially-expanded="true">
+                    <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :props-initially-expanded="true">
                         <template v-slot:markdown="{ content }">
                             <MDC :value="content" />
                         </template>
-                    </SchemaToHtml> -->
+                    </SchemaToHtml>
                 </Suspense>
                 <ContentRenderer
                     class="bd-markdown"
@@ -57,15 +56,36 @@
     let page;
 
 
+    function recursivelyRenamePath(navigation){
+        if(Array.isArray(navigation)){
+            return navigation.map(n => recursivelyRenamePath(n));
+        }
+        if(navigation.children){
+            navigation.children = navigation.children.map(child => {
+                return recursivelyRenamePath({
+                    ...child,
+                    path: child._path,
+                });
+            });
+        }
+        return navigation;
+    }
+
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
 
-        const navigation = navigationFetch.data;
+        const navigation = recursivelyRenamePath(navigationFetch.data.value);
 
-        const pageList = recursivePages(navigation.value[0]);
-        const pageNames = generatePageNames(navigation.value[0]);
+        const pageList = recursivePages(navigation[0]);
+        const pageNames = generatePageNames(navigation[0]);
 
         return {navigation, pageList, pageNames};
+    }
+
+    const transformTitle = (text) => {
+        return text
+            .replace(/([A-Z])/g, '&#x200B;$1')
+            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
     const parts = slug.value.split('/');
@@ -87,16 +107,16 @@
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
 
-    const pageType = computed(() => {
+    const getPageType = () => {
         const paths = route.path.split('/');
         return paths[paths?.length - 1];
-    })
+    }
 
-    const pageName = computed(() => {
-        const pageTypeArray = pageType.value.split('.');
-        pageType[pageTypeArray?.length - 1] = pageNames[pageType.value];
-        return pageTypeArray.join('.');
-    })
+    const getPageName = () => {
+        const pageType = getPageType().split('.');
+        pageType[pageType?.length - 1] = pageNames[getPageType()];
+        return pageType.join('.');
+    }
 
     let pageIcon = page.icon;
     if (page.pluginType === 'definitions') {
@@ -104,16 +124,9 @@
         pageIcon = `data:image/svg+xml;base64,${iconB64}`;
     }
 
-    const pageTitle = computed(() => {
-        return pageNames[pageType.value];
-    })
-
-    const transformedTitle = computed(() => {
-        return pageTitle.value
-            .replace(/([A-Z])/g, '&#x200B;$1')
-            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-    })
-
+    const getPageTitle = () => {
+        return pageNames[getPageType()];
+    }
 
     const {description, title} = page;
     const {origin} = useRequestURL();
