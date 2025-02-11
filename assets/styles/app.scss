@@ -547,6 +547,21 @@ blockquote.blockquote {
         max-height: 20rem;
         overflow: auto;
         background-color: var(--bs-body-color);
+        color: var(--kestra-io-token-color-white);
+        max-width: 80ch;
+
+        p:not(li p) {
+            margin-bottom: 0;
+            line-height: 1.625rem;
+        }
+
+        li::marker, a {
+            color: var(--kestra-io-token-text-link-default);
+        }
+
+        li {
+            line-height: 1.25rem;
+        }
 
         &::-webkit-scrollbar {
             width: 2px;
