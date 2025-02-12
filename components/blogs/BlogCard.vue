@@ -1,7 +1,16 @@
 <template>
     <div class="mb-5 mt-1" role="button">
         <NuxtLink class="text-dark" :href="blog.path">
+            <img
+                v-if="blog.image?.startsWith("https")"
+                width="300"
+                loading="lazy"
+                :alt="blog.title"
+                :src="blog.image"
+                class="card-image w-100 rounded-3"
+            />
             <NuxtImg
+                v-else
                 width="300"
                 loading="lazy"
                 :alt="blog.title"
