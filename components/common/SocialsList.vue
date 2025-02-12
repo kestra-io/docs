@@ -58,10 +58,10 @@
     });
 
     const editLink = computed(() => {
-        if (!props.page._file) {
+        if (!props.page.stem || !props.page.extension) {
             return false;
         }
-        return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.page._file}`;
+        return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.page.stem}.${props.page.extension}`;
     });
 </script>
 <style lang="scss" scoped>
