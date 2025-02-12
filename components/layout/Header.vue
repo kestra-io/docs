@@ -112,7 +112,7 @@
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/docs/getting-started/workflow-components" @click="globalClick(true)">
+                                            <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
                                                 <TimelineTextOutline />
                                                 <p>
                                                     <span>Workflow components</span><br />
@@ -513,7 +513,7 @@
                                 </NuxtLink>
                                 <ul class="header-menu-right-menu">
                                     <li>
-                                        <NuxtLink class="dropdown-item" href="/docs/getting-started/workflow-components" @click="globalClick(true)">
+                                        <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
                                             <TimelineTextOutline />
                                             <p>
                                                 <span>Workflow components</span><br />

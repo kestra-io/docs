@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body d-flex">
                         <span class="card-icon">
-                            <img :src="item.icon" :alt="item.title" width="50px" height="50px"/>
+                            <img :src="item.icon ?? currentPage.icon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
                         <h4 class="card-title">{{ item.title }}</h4>
@@ -29,12 +29,12 @@
 
     const route = useRoute()
 
-    let currentPage = null;
+    let currentPageSlug = null;
 
     if (props.pageUrl) {
-        currentPage = props.pageUrl;
+        currentPageSlug = props.pageUrl;
     } else {
-        currentPage = route.path;
+        currentPageSlug = route.path;
     }
 
     currentPage = currentPage.replace(/\/$/, '');
@@ -42,6 +42,11 @@
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`).all()
+    );
+
+    const {data: currentPage} = await useAsyncData(
+        `ChildCardCurrentPage-${hash(currentPageSlug)}`,
+        () => queryCollection('docs').path(currentPageSlug).first()
     );
 
     // if (currentPage == "/docs/faq") {
