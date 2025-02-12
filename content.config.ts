@@ -40,6 +40,10 @@ export default defineContentConfig({
         schema: z.object({
             type: z.string(),
         })
-    })
+    }),
+    misc: defineCollection({
+        type: 'page',
+        source: '*.md',
+    }),
   }
 })
