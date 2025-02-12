@@ -1,5 +1,4 @@
 import * as sass from "sass";
-import {defineCollection} from '@nuxt/content'
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
