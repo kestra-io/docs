@@ -65,7 +65,7 @@
       if (navigationFetch.data && navigationFetch.data.value && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
         navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
           title: "Videos Tutorials",
-          _path: "/tutorial-videos",
+          path: "/tutorial-videos",
         });
       }
       pageList = recursivePages(navigationFetch.data.value[0]);
