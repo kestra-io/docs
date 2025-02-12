@@ -1,11 +1,10 @@
 ---
-title: Open-Source vs. Enterprise Edition Comparison
-icon: /docs/icons/admin.svg
+title: Open-Source vs. Enterprise Edition
 ---
 
-Understand the differences between Kestra's Open-Source and Enterprise Editions, and learn how the paid version supports teams running mission-critical workflows at scale.
+Understand the differences between Kestra's Open-Source and Enterprise Editions, and learn how the commercial offering supports teams running mission-critical workflows at scale.
 
-## TL;DR
+## Overview
 
 Kestra's Open-Source Edition provides a foundation for workflow automation — it's best suited for solo-developers or small teams exploring workflow orchestration.
 
