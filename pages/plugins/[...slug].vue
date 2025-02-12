@@ -122,6 +122,10 @@
     if (page.pluginType === 'definitions') {
         const iconB64 = await $fetch(`/api/plugins?page=${getPageName()}&type=icon`);
         pageIcon = `data:image/svg+xml;base64,${iconB64}`;
+    } else {
+        const iconB64 = pageIcon.substring(26)
+        const coloredIcon = atob(iconB64).replace(/currentColor/g, '#CAC5DA');
+        pageIcon = `data:image/svg+xml;base64,${btoa(coloredIcon)}`;
     }
 
     const getPageTitle = () => {
