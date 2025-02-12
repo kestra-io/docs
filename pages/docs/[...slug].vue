@@ -297,10 +297,18 @@
     }
 
     .homepage {
+        .bd-title {
+            @media only screen and (min-width: 1920px) {
+                width: 45.8rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
         .bd-content {
             background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
             background-size: 500px 250px, 1261px 984px;
             background-position: top 110px right -30px, top -200px right -350px;
+            max-width: 45.8rem;
         }
     }
 </style>
