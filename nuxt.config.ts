@@ -74,8 +74,8 @@ export default defineNuxtConfig({
     content: {
         // fixes https://github.com/nuxt/content/issues/3095
         database: {
-            type: 'sqlite',
-            filename: '/tmp/content.sqlite',
+            type: 'd1',
+            bindingName: 'nuxt-content'
         },
         build: {
             markdown: {
