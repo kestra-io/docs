@@ -20,7 +20,7 @@
         </template>
         <div v-else class="container bd-gutter mt-3 my-md-4 bd-layout">
             <article class="bd-main order-1">
-                <ContentDoc />
+                <ContentRenderer :value="page"/>
             </article>
         </div>
         <LayoutFooterContact
@@ -38,6 +38,8 @@
     const route = useRoute()
     const slug = "/careers/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const title = ref();
+
+    const page = ref(null);
 
     if (slug === '/careers/') {
         useHead({
@@ -64,7 +66,7 @@
     } else {
         const {data, error} = await useAsyncData(`Careers-Page-Item-${slug}`, () => {
             try {
-                return queryContent(slug).findOne();
+                return queryCollection("careers").path(slug).first();
             } catch (error) {
                 throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
             }
@@ -73,6 +75,8 @@
         if (error && error.value) {
             throw error.value;
         }
+
+        page.value = data.value;
 
         useContentHead(data.value)
 
