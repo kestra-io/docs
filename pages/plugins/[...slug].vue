@@ -56,25 +56,9 @@
     let page;
 
 
-    function recursivelyRenamePath(navigation){
-        if(Array.isArray(navigation)){
-            return navigation.map(n => recursivelyRenamePath(n));
-        }
-        if(navigation.children){
-            navigation.children = navigation.children.map(child => {
-                return recursivelyRenamePath({
-                    ...child,
-                    path: child._path,
-                });
-            });
-        }
-        return navigation;
-    }
-
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
-
-        const navigation = recursivelyRenamePath(navigationFetch.data.value);
+        const navigation = navigationFetch.data.value;
 
         const pageList = recursivePages(navigation[0]);
         const pageNames = generatePageNames(navigation[0]);

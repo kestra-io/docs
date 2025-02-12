@@ -98,7 +98,7 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
         if (subMenuSplitter === -1) {
             m[item] = {
                 title: toNavTitle(item),
-                _path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`.toLowerCase(),
+                path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`.toLowerCase(),
                 isPage: true,
             }
         } else {
@@ -120,7 +120,7 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
         if (Array.isArray(value)) {
             return {
                 title: toNavTitle(key),
-                _path: `${baseUrl}/${key}`.toLowerCase(),
+                path: `${baseUrl}/${key}`.toLowerCase(),
                 isPage: false,
                 children: value
             }
@@ -224,14 +224,14 @@ export default defineEventHandler(async (event) => {
 
                         return {
                             title: toNavTitle(category),
-                            _path: `${rootPluginUrl}/${kebabCasedCategory}`.toLowerCase(),
+                            path: `${rootPluginUrl}/${kebabCasedCategory}`.toLowerCase(),
                             isPage: false,
                             children
                         }
                     });
                 return {
                     title: toNavTitle(plugin.title),
-                    _path: rootPluginUrl.toLowerCase(),
+                    path: rootPluginUrl.toLowerCase(),
                     children
                 };
             }).sort((a, b) => {
@@ -249,7 +249,7 @@ export default defineEventHandler(async (event) => {
             });
             return [{
                 title: "Plugins",
-                _path: "/plugins",
+                path: "/plugins",
                 children: sortedPluginsHierarchy
             }];
         }

@@ -122,7 +122,7 @@
     if (error && error.value) {
       throw error.value;
     }
-    const iconPath = page.icon?.split('/');
+    const iconPath = page?.icon?.split('/');
     const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
     ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
 
