@@ -72,21 +72,21 @@ export default defineNuxtConfig({
     ],
 
     content: {
-        navigation: {
-            fields: ['hideSidebar', 'hideSubMenus'],
+        // fixes https://github.com/nuxt/content/issues/3095
+        database: {
+            type: 'sqlite',
+            filename: '/tmp/content.sqlite',
         },
-        documentDriven: false,
-
-        markdown: {
-            remarkPlugins: {
-                'remark-flexible-markers': {
-                    markerClassName: 'type-mark',
+        build: {
+            markdown: {
+                remarkPlugins: {
+                    'remark-flexible-markers': {
+                        markerClassName: 'type-mark',
+                    },
+                    'remark-code-import': {
+                        rootDir: process.cwd()
+                    },
                 },
-                'remark-code-import': {
-                    rootDir: process.cwd()
-                },
-            }
-        },
                 highlight: {
                     // Theme used in all color schemes.
                     theme: 'github-dark',
@@ -122,6 +122,8 @@ export default defineNuxtConfig({
                         'yaml'
                     ]
                 },
+            },
+        },
     },
 
     devServer: {
