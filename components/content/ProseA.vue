@@ -21,6 +21,10 @@
         }
     })
     let link = props.href
+    if (link.startsWith("https://kestra.io")) {
+        // if the link is not local but should be (like in plugins) we remove the kestra.io part
+        link = link.slice(17)
+    }
     let target = props.target || (link.startsWith("http") ? "_blank" : undefined);
 
 
