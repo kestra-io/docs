@@ -59,7 +59,7 @@
 
       navigationFetch = await useAsyncData(
         `NavSideBar-docs`,
-        () => queryCollectionNavigation('docs')
+        () => queryCollectionNavigation('docs', ['hideSubMenus'])
       );
 
       if (navigationFetch.data && navigationFetch.data.value && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {

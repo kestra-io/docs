@@ -13,6 +13,7 @@ export default defineContentConfig({
         editions: z.array(z.enum(["OSS", "EE"])).optional(),
         topics: z.array(z.string()).optional(),
         stage: z.string().optional(),
+        hideSubMenus: z.boolean().optional(),
         deprecated: z.object({
             since: z.string(),
             migrationGuide: z.string(),
