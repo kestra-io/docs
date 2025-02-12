@@ -6,7 +6,7 @@
                 <template v-for="blog in blogs">
                     <div class="col-md-4">
                         <div class="card" data-aos="fade-right">
-                            <NuxtLink class="text-dark" :href="blog._path">
+                            <NuxtLink class="text-dark" :href="blog.path">
                                 <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
                                 <div class="card-body d-flex flex-column">
                                     <p class="type mt-1 mb-0">{{ blog.category }}</p>
@@ -25,7 +25,6 @@
 </template>
 <script setup>
     import Section from '../layout/Section.vue';
-    import {useAsyncData} from "#imports";
 
     const props = defineProps({
       title: {
@@ -33,19 +32,17 @@
         default: undefined,
       },
       page: {
-        type: String,
+        type: Object,
         default: undefined,
       }
     });
 
     const {data: blogs} = await useAsyncData(
         `Blog`,
-        () => queryContent("/blogs/")
-            .where({ _path: { $ne : props.page._path } })
-            .sort({ date: -1 })
-            .without('unused-key')
+        () => queryCollection("blogs")
+            .order("date", "DESC")
             .limit(3)
-            .find()
+            .all()
     );
 
 </script>

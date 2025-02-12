@@ -2,7 +2,7 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="showAnnounce" :content="content" :scrolled="isScrolled" />
+        <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="isScrolled" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
             <LayoutHeader :scrolled="isScrolled" />
             <main>
@@ -15,11 +15,7 @@
 </template>
 
 <script setup>
-    import {ref, watch, onMounted, onUnmounted} from 'vue';
-
     const config = useRuntimeConfig();
-    const content = ref(null);
-    const showAnnounce = ref(false);
     const route = useRoute();
     const isScrolled = ref(false)
 
@@ -33,9 +29,9 @@
         }
     );
 
-    if (bannerMessages.value && bannerMessages.value.results) {
-        content.value = bannerMessages.value.results;
-    }
+    const content = computed(() => {
+        return bannerMessages.value.results;
+    })
 
     const handleScroll = () => {
       isScrolled.value = window.scrollY > 20
@@ -49,19 +45,11 @@
       window.removeEventListener('scroll', handleScroll)
     })
 
-    const checkDisplayingAnnounce = (content, path) => {
-        if (content && content.length > 0 && path === '/') {
-            showAnnounce.value = true;
-        } else {
-            showAnnounce.value = false;
-        }
-    }
-
-    checkDisplayingAnnounce(content.value, route.path);
-
-    watch([() => route.path, content], ([newPath, newContent]) => {
-        checkDisplayingAnnounce(newContent, newPath)
-    });
+    const showAnnounce = computed(() => {
+        const innerContent = content.value;
+        const path = route.path;
+        return innerContent && innerContent.length > 0 && path === '/'
+    })
 </script>
 
 <script>

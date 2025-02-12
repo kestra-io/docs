@@ -64,7 +64,7 @@
                 <div class="row mt-5">
                     <div
                         v-for="(blog, index) in paginatedBlogs"
-                        :key="blog._path"
+                        :key="blog.path"
                         :ref="`blog-${index}`"
                         class="col-lg-6 col-md-6"
                     >

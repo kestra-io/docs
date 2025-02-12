@@ -23,8 +23,7 @@
             <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu"/>
 
             <div class="bd-content">
-                <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
-                                        :version="page.version"/>
+                <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page" />
                 <Suspense v-if="page.pluginType === 'definitions'">
                     <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :props-initially-expanded="true">
                         <template v-slot:markdown="{ content }">
@@ -32,7 +31,7 @@
                         </template>
                     </SchemaToHtml>
                 </Suspense>
-                <ContentRendererMarkdown
+                <ContentRenderer
                     class="bd-markdown"
                     :value="page"
                     data-bs-spy="scroll"
@@ -57,13 +56,28 @@
     let page;
 
 
+    function recursivelyRenamePath(navigation){
+        if(Array.isArray(navigation)){
+            return navigation.map(n => recursivelyRenamePath(n));
+        }
+        if(navigation.children){
+            navigation.children = navigation.children.map(child => {
+                return recursivelyRenamePath({
+                    ...child,
+                    path: child._path,
+                });
+            });
+        }
+        return navigation;
+    }
+
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
 
-        const navigation = navigationFetch.data;
+        const navigation = recursivelyRenamePath(navigationFetch.data.value);
 
-        const pageList = recursivePages(navigation.value[0]);
-        const pageNames = generatePageNames(navigation.value[0]);
+        const pageList = recursivePages(navigation[0]);
+        const pageNames = generatePageNames(navigation[0]);
 
         return {navigation, pageList, pageNames};
     }
@@ -92,8 +106,6 @@
     page = pluginInformation?.value;
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
-
-    useContentHead(page);
 
     const getPageType = () => {
         const paths = route.path.split('/');

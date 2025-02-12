@@ -1,6 +1,6 @@
 <template>
     <div class="row card-group mb-2">
-        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body d-flex">
                         <span class="card-icon">
@@ -19,7 +19,6 @@
 <script setup>
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
-    import Typewriter from "vue-material-design-icons/Typewriter.vue";
 
     const props = defineProps({
         pageUrl: {
@@ -38,17 +37,16 @@
         currentPageSlug = route.path;
     }
 
-    currentPageSlug = currentPageSlug.endsWith("/") ? currentPageSlug.slice(0, -1) : currentPageSlug;
-    const currentPageDir = currentPageSlug.split('/').pop();
+    currentPageSlug = currentPageSlug.replace(/\/$/, '');
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPageSlug)}`,
-        () => queryContent(currentPageSlug + "/").where({ _dir: currentPageDir}).find()
+        () => queryCollection('docs').where('path', 'LIKE', `${currentPageSlug}/%`).all()
     );
 
     const {data: currentPage} = await useAsyncData(
         `ChildCardCurrentPage-${hash(currentPageSlug)}`,
-        () => queryContent(currentPageSlug).findOne()
+        () => queryCollection('docs').path(currentPageSlug).first()
     );
 
     // if (currentPage == "/docs/faq") {

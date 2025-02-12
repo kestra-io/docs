@@ -3,7 +3,18 @@ import * as sass from "sass";
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
+    modules: [
+        '@nuxt/devtools',
+        '@nuxt/image',
+        'nuxt-multi-cache',
+        'vue3-carousel-nuxt',
+        'nuxt-lazy-hydrate',
+        'nuxt-aos',
+        '@zadigetvoltaire/nuxt-gtm',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        '@nuxt/content',
+    ],
     target: 'static',
     image: {
         formats: {
@@ -60,20 +71,52 @@ export default defineNuxtConfig({
     ],
 
     content: {
-        navigation: {
-            fields: ['hideSidebar', 'hideSubMenus'],
-        },
-        documentDriven: false,
-        highlight: false,
-        markdown: {
-            remarkPlugins: {
-                'remark-flexible-markers': {
-                    markerClassName: 'type-mark',
+        build: {
+            markdown: {
+                remarkPlugins: {
+                    'remark-flexible-markers': {
+                        markerClassName: 'type-mark',
+                    },
+                    'remark-code-import': {
+                        rootDir: process.cwd()
+                    },
                 },
-                'remark-code-import': {
-                    rootDir: process.cwd()
+                highlight: {
+                    // Theme used in all color schemes.
+                    theme: 'github-dark',
+                    langs: [
+                        'bash',
+                        'c',
+                        'cpp',
+                        'csv',
+                        'css',
+                        'dockerfile',
+                        'go',
+                        'groovy',
+                        'handlebars',
+                        'hcl',
+                        'ini',
+                        'java',
+                        'javascript',
+                        'json',
+                        'markdown',
+                        'mermaid',
+                        'perl',
+                        'php',
+                        'python',
+                        'r',
+                        'ruby',
+                        'rust',
+                        'scala',
+                        'sql',
+                        'systemd',
+                        'twig',
+                        'typescript',
+                        'xml',
+                        'yaml'
+                    ]
                 },
-            }
+            },
         },
     },
 
@@ -104,7 +147,8 @@ export default defineNuxtConfig({
             include: [
                 "humanize-duration",
                 "lodash",
-                "dagre"
+                "dagre",
+                "debug",
             ],
             exclude: [
                 '* > @kestra-io/ui-libs'
