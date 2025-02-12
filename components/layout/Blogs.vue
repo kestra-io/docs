@@ -6,7 +6,7 @@
                     <div class="col-md-4 mb-4">
                         <div class="card bg-dark-4" data-aos="fade-right">
                             <NuxtLink class="text-dark" :href="blog.path">
-                                <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
+                                <NuxtImg loading="lazy" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
                                 <div class="card-body">
                                     <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                     <h4 class="card-title">{{ blog.title }}</h4>

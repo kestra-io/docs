@@ -4,9 +4,6 @@
             <NuxtImg
                 width="300"
                 loading="lazy"
-                format="webp"
-                quality="80"
-                densities="x1 x2"
                 :alt="blog.title"
                 :src="blog.image"
                 class="card-image w-100 rounded-3"
@@ -14,18 +11,15 @@
             <div class="mt-1">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h6 class="my-1">{{ blog.title }}</h6>
-                <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
+                <BlogsBlogCardDetails :name="blog.author.name" :date="blog.date"/>
             </div>
         </NuxtLink>
     </div>
 </template>
 
 <script>
-    import BlogCardDetails from "./BlogCardDetails.vue";
-
     export default {
         name: "BlogCard",
-        components: {BlogCardDetails},
         props: {
             blog: {
                 type: Object,

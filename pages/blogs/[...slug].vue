@@ -21,9 +21,6 @@
                         </div>
                         <NuxtImg
                             loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
                             data-aos="fade-right"
                             class="mb-2 rounded-3 img"
                             :alt="page.title"

@@ -9,12 +9,9 @@
                         v-if="pageIcon"
                         :src="pageIcon"
                         :alt="getPageTitle()"
-                        width="40px"
-                        height="40px"
+                        width="40"
+                        height="40"
                         loading="lazy"
-                        format="webp"
-                        quality="80"
-                        densities="x1 x2"
                         class="me-3 page-icon"
                     />
                     <span v-html="transformTitle(getPageTitle())"></span>

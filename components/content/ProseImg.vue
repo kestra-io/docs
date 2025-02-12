@@ -8,9 +8,6 @@
             :height="height"
             :class="classWithZoom"
             loading="lazy"
-            format="webp"
-            quality="80"
-            densities="x1 x2"
         />
 
         <img

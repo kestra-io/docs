@@ -21,7 +21,9 @@ export default defineNuxtConfig({
             webp: {
                 quality: 80
             }
-        }
+        },
+        densities: [1, 2],
+        domains: ['kestra.io']
     },
     sitemap: {
         sitemaps: {
