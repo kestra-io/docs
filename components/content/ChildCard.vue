@@ -37,11 +37,11 @@
         currentPageSlug = route.path;
     }
 
-    currentPage = currentPage.replace(/\/$/, '');
+    currentPageSlug = currentPageSlug.replace(/\/$/, '');
 
     const {data: navigation} = await useAsyncData(
-        `ChildCard-${hash(currentPage)}`,
-        () => queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`).all()
+        `ChildCard-${hash(currentPageSlug)}`,
+        () => queryCollection('docs').where('path', 'LIKE', `${currentPageSlug}/%`).all()
     );
 
     const {data: currentPage} = await useAsyncData(
