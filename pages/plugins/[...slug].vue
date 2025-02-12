@@ -26,8 +26,15 @@
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page" />
                 <Suspense v-if="page.pluginType === 'definitions'">
                     <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :props-initially-expanded="true">
-                        <template v-slot:markdown="{ content }">
-                            <MDC :value="content" />
+                        <template #markdown="{ content }">
+                            <MDC :value="content">
+                                <template #default="{data, body}">
+                                    <MDCRenderer
+                                        v-bind="{data, body}"
+                                        :components="proseComponents"
+                                    />
+                                </template>
+                            </MDC>
                         </template>
                     </SchemaToHtml>
                 </Suspense>
@@ -54,6 +61,18 @@
     const route = useRoute()
     const slug = computed(() => `/plugins/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
+
+    // make MDCRenderer use the prose components of this content
+    const proseComponentsImports = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
+    const proseComponents = {}
+    for (const path in proseComponentsImports) {
+        // extract the component name from the file path
+        // example: `file/path/ProsePre.vue` => `pre`
+        const compName = path.split("/").pop()?.slice(5, -4).toLowerCase()
+        if(compName) {
+            proseComponents[compName] = proseComponentsImports[path].default
+        }
+    }
 
 
     const fetchNavigation = async () => {
