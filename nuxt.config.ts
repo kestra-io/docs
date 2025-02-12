@@ -71,11 +71,6 @@ export default defineNuxtConfig({
     ],
 
     content: {
-        // fixes https://github.com/nuxt/content/issues/3095
-        database: {
-            type: 'd1',
-            bindingName: 'DB'
-        },
         build: {
             markdown: {
                 remarkPlugins: {
