@@ -54,7 +54,6 @@
         </div>
     </div>
     <div class="bottom">
-        <DocsBlogs title="More content" :page="page" />
         <Updateletter/>
     </div>
 </template>
