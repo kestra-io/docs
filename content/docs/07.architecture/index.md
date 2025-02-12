@@ -32,6 +32,8 @@ Here are the components and their interactions:
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
 
+For either database choice, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) and [SQL Server JDBC Driver](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver16) can provide an encrypted connection with some configuration.
+
 ### Scalability with JDBC
 
 The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md), and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance.
