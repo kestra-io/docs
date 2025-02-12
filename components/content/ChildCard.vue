@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body d-flex">
                         <span class="card-icon">
-                            <img :src="item.icon" :alt="item.title" width="50px" height="50px"/>
+                            <img :src="item.icon ?? currentPage.icon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
                         <h4 class="card-title">{{ item.title }}</h4>
@@ -30,20 +30,25 @@
 
     const route = useRoute()
 
-    let currentPage = null;
+    let currentPageSlug = null;
 
     if (props.pageUrl) {
-        currentPage = props.pageUrl;
+        currentPageSlug = props.pageUrl;
     } else {
-        currentPage = route.path;
+        currentPageSlug = route.path;
     }
 
-    currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').pop();
+    currentPageSlug = currentPageSlug.endsWith("/") ? currentPageSlug.slice(0, -1) : currentPageSlug;
+    const currentPageDir = currentPageSlug.split('/').pop();
 
     const {data: navigation} = await useAsyncData(
-        `ChildCard-${hash(currentPage)}`,
-        () => queryContent(currentPage + "/").where({ _dir: currentPageDir}).find()
+        `ChildCard-${hash(currentPageSlug)}`,
+        () => queryContent(currentPageSlug + "/").where({ _dir: currentPageDir}).find()
+    );
+
+    const {data: currentPage} = await useAsyncData(
+        `ChildCardCurrentPage-${hash(currentPageSlug)}`,
+        () => queryContent(currentPageSlug).findOne()
     );
 
     // if (currentPage == "/docs/faq") {
