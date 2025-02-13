@@ -83,42 +83,8 @@ export default defineNuxtConfig({
                         rootDir: process.cwd()
                     },
                 },
-                highlight: {
-                    // Theme used in all color schemes.
-                    theme: 'github-dark',
-                    langs: [
-                        'bash',
-                        'c',
-                        'cpp',
-                        'csv',
-                        'css',
-                        'dockerfile',
-                        'go',
-                        'groovy',
-                        'handlebars',
-                        'hcl',
-                        'ini',
-                        'java',
-                        'javascript',
-                        'json',
-                        'markdown',
-                        'mermaid',
-                        'perl',
-                        'php',
-                        'python',
-                        'r',
-                        'ruby',
-                        'rust',
-                        'scala',
-                        'sql',
-                        'systemd',
-                        'twig',
-                        'typescript',
-                        'xml',
-                        'yaml'
-                    ]
-                },
-            },
+                highlight: false,
+            }
         },
     },
 
