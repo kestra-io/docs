@@ -40,7 +40,7 @@
             const dir = computed(() => {
                 const extractLeafChildrenPages = (children) => {
                     return children.map((child) => {
-                        if (child.children && child.children.length) {
+                        if (child.children?.length) {
                             return extractLeafChildrenPages(child.children);
                         }
                         return child;
@@ -65,7 +65,7 @@
                     (data || []).map((link) => {
                         if (link.children &&
                             (max === undefined || max <= level) &&
-                            (link.children.length > 1 || link.children.length === 1 && link.children[0].path !== link.path)
+                            (link.children.length > 1 || (link.children.length === 1 && link.children[0].path !== link.path))
                         ) {
                             return h("li", null, [renderLink(link), renderLinks(link.children, level + 1)]);
                         }

@@ -1,17 +1,25 @@
-export default function useContentHead(page: Ref<{title?:string, description?:string, image?:string}>) {
+export default function useContentHead(page: Ref<{title?:string, description?:string, image?:string, path?:string}>) {
     const title = computed(() => page.value?.title)
     const description = computed(() => page.value?.description)
     const image = computed(() => page.value?.image)
+
+    const {origin} = useRequestURL()
+
     useHead({
         title: title.value,
         meta: [
-            { hid: 'description', name: 'description', content: description.value },
-            { hid: 'og:title', property: 'og:title', content: title.value },
-            { hid: 'og:description', property: 'og:description', content: description.value },
-            { hid: 'og:image', property: 'og:image', content: image.value },
-            { hid: 'twitter:title', name: 'twitter:title', content: title.value },
-            { hid: 'twitter:description', name: 'twitter:description', content: description.value },
-            { hid: 'twitter:image', name: 'twitter:image', content: image.value },
+            {property: 'og:title', content: title.value},
+            {property: 'og:description', content: description.value},
+            {property: 'og:image', content: image},
+            {property: 'og:image:type', content: "image/svg+xml"},
+            {property: 'og:image:alt', content: title.value},
+            {property: 'og:url', content: `${origin}/${page.value.path}`},
+            {name: 'twitter:card', content: 'summary_large_image'},
+            {name: 'twitter:site', content: '@kestra_io'},
+            {name: 'twitter:title', content: title.value},
+            {name: 'twitter:description', content: description.value},
+            {name: 'twitter:image', content: image},
+            {name: 'twitter:image:alt', content: title.value}
         ]
     })
 }

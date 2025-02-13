@@ -64,7 +64,7 @@
             ]
         })
     } else {
-        const {data, error} = await useAsyncData(`Careers-Page-Item-${slug}`, () => {
+        const {data:page, error} = await useAsyncData(`Careers-Page-Item-${slug}`, () => {
             try {
                 return queryCollection("careers").path(slug).first();
             } catch (error) {
@@ -76,24 +76,24 @@
             throw error.value;
         }
 
-        page.value = data.value;
+        page.value.image = `${origin}/og-image.png`
 
-        useContentHead(data.value)
+        useContentHead(page)
 
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary-large-image' },
                 { name: 'twitter:site', content: '@kestra_io' },
-                { name: 'twitter:title', content: data.value.title },
-                { name: 'twitter:description', content: data.value.description },
-                { name: 'twitter:image:alt', content: data.value.title },
+                { name: 'twitter:title', content: page.value.title },
+                { name: 'twitter:description', content: page.value.description },
+                { name: 'twitter:image:alt', content: page.value.title },
                 { name: 'twitter:image', content: `${origin}/og-image.png` },
                 { name: 'twitter:image:alt', content: "About-Us" },
-                { property: 'og:title', content: data.value.title },
-                { property: 'og:description', content: data.value.description },
+                { property: 'og:title', content: page.value.title },
+                { property: 'og:description', content: page.value.description },
                 { property: 'og:image', content: `${origin}/og-image.png` },
                 { property: 'og:image:type', content: "image/svg+xml" },
-                { property: 'og:image:alt', content: data.value.title },
+                { property: 'og:image:alt', content: page.value.title },
             ]
         })
 

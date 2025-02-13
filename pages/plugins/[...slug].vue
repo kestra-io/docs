@@ -107,6 +107,12 @@
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
 
+    if(pluginInformation?.value){
+        pluginInformation.value.image = `${origin}/landing/home/header-bg.png`
+        await useContentHead(pluginInformation);
+    }
+
+
     const getPageType = () => {
         const paths = route.path.split('/');
         return paths[paths?.length - 1];

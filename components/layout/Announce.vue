@@ -4,7 +4,7 @@
             <div class="alert alert-primary" :class="{ 'scrolled': scrolled }">
                 <Carousel
                     :autoplay="4500"
-                    :wrap-around="content.length > 1"
+                    :wrap-around="content?.length > 1"
                     :transition="2000"
                     v-model="currentSlide"
                     :breakpoints="breakpoints"

@@ -128,6 +128,8 @@
 
         page.value = data.value;
           (async () => {
+            page.value.image = `${origin + image}`;
+            await useContentHead(page);
             setTimeout(() => {
               extractHash()
             }, 1000)
