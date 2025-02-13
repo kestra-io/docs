@@ -26,6 +26,19 @@
      * databases, object storage, AI inference, real-time communication and more.
      * https://developers.cloudflare.com/workers/runtime-apis/bindings/
      */
+    "kv_namespaces": [
+        {
+            "binding": "CLOUDFLARE_KVSTORAGE",
+            "id": "e1cec38e2fe84984ac38f33d46b0147c"
+        }
+    ],
+    "d1_databases": [
+        {
+            "binding": "DB",
+            "database_name": "nuxt-content",
+            "database_id": "7cdb11eb-f50a-4e0f-9985-bf6d58883ae9"
+        }
+    ],
     "env": {
         "preview": {
             "kv_namespaces": [
@@ -39,21 +52,6 @@
                     "binding": "DB",
                     "database_name": "nuxt-content-preview",
                     "database_id": "942aceaa-9720-4b32-acde-a1de14cae594"
-                }
-            ]
-        },
-        "production": {
-            "kv_namespaces": [
-                {
-                    "binding": "CLOUDFLARE_KVSTORAGE",
-                    "id": "e1cec38e2fe84984ac38f33d46b0147c"
-                }
-            ],
-            "d1_databases": [
-                {
-                    "binding": "DB",
-                    "database_name": "nuxt-content",
-                    "database_id": "7cdb11eb-f50a-4e0f-9985-bf6d58883ae9"
                 }
             ]
         }
