@@ -2,6 +2,7 @@
 title: Custom Blueprints
 icon: /docs/icons/kestra.svg
 editions: ["EE"]
+docId: custom
 ---
 
 How to create and manage Custom Blueprints.
