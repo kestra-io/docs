@@ -37,20 +37,22 @@ const langs = ['bash',
     'typescript',
     'xml',
     'yaml'] as const
-let shiki: HighlighterGeneric<(typeof langs)[number], 'github-dark'> | null = null
+let shiki: Promise<HighlighterGeneric<(typeof langs)[number], 'github-dark'>> | null = null
 
-export async function getShiki() {
-    if(shiki) return shiki
-    shiki = await createHighlighter({
-        themes: ['github-dark'],
-        langs: [...langs],
-        engine: jsEngine
-    })
+export function getShiki() {
+    if(!shiki){
+        shiki = createHighlighter({
+            themes: ['github-dark'],
+            langs: [...langs],
+            engine: jsEngine
+        })
+    }
     return shiki
 }
 
 export default function useShiki() {
     const shiki = ref<ReturnType<typeof getShiki>>()
+
     async function highlightCodeBlocks(root: HTMLElement = document.body) {
         const blocks = root.querySelectorAll('pre > code')
         for(const block of blocks) {
@@ -61,11 +63,16 @@ export default function useShiki() {
             const languageClass = Array.from(preClassList).find((c) => c.startsWith('language-'))
             if(languageClass) {
                 const originalCode = block.innerHTML.replace(/\n$/, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-                const html = (await shiki.value)?.codeToHtml(originalCode, {
+                const shikiValue = await shiki.value
+                const html = shikiValue?.codeToHtml(originalCode, {
                     lang: languageClass.replace('language-', ''),
                     theme: 'github-dark'
                 })
                 if(!html) {
+                    if(!shikiValue) {
+                        console.error('Error highlighting code block 0', 'shiki is not initialized')
+                        continue
+                    }
                     console.error('Error highlighting code block 1', block.innerHTML)
                     continue
                 }
@@ -89,5 +96,10 @@ export default function useShiki() {
             }
         }
     }
+
+    onMounted(async () => {
+        shiki.value = getShiki()
+    })
+
     return { highlightCodeBlocks }
 }
