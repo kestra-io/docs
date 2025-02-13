@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout type-docs">
         <NavSideBar type="docs" :navigation="navigation"/>
-        <article class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
+        <article v-if="page" class="bd-main order-1 docs" :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
-                <h1 v-if="page && page.title" class="py-0 title">
+                <h1 v-if="page.title" class="py-0 title">
                     <NuxtImg
                         v-if="page.icon"
                         :src="page.icon"
@@ -31,6 +31,7 @@
                 </template>
             </div>
         </article>
+        <div v-else>Docs Page not found</div>
     </div>
 </template>
 
@@ -62,7 +63,7 @@
         throw error.value;
       }
 
-      if (data && data.value && !data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+      if (data && data.value && !data.value[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
         data.value[0].children.splice(data.value[0].children.length - 3, 0 , {
           title: "Videos Tutorials",
           path: "/tutorial-videos",
@@ -77,11 +78,11 @@
 
       Object.entries(sections).forEach(([sectionName, titles]) => {
         // Add the section object
-        newData.push({ title: sectionName, isSection: true, _path: "/" });
+        newData.push({ title: sectionName, isSection: true, path: "/" });
 
         // Add the matching items from the data array
         titles.forEach(title => {
-          const matchedItem = data.value[0].children.find(item => item.title === title);
+          const matchedItem = data.value[0].children.find(item => item?.title === title);
           if (matchedItem) {
             newData.push(matchedItem);
           }
@@ -124,7 +125,7 @@
     }
     const iconPath = page?.icon?.split('/');
     const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
-    ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
+    ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page?.title || ''}`
 
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
