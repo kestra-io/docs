@@ -2,7 +2,7 @@
 <template>
     <h2 class="big-title">{{title}}</h2>
     <div class="big-card-grid">
-        <NuxtLink :href="item.path" class="big-card" v-for="item in navigation" :key="item.path">
+        <NuxtLink :href="item.path" class="big-card" v-for="item in protectedNavigation" :key="item.path">
             <h4 class="card-title">{{ item.title }}</h4>
             <p class="card-text">{{ item.description }}</p>
         </NuxtLink>
@@ -20,9 +20,14 @@ const props = defineProps<{
 }>()
 
 const {data: navigation} = await useAsyncData(
-        `BigChildCard-${hash(props.directory)}`,
-        () => queryCollection("docs").where("path", "LIKE", `${props.directory}/%`).all()
-    );
+    `BigChildCard-${hash(props.directory)}`,
+    () => queryCollection("docs").where("path", "LIKE", `${props.directory}/%`).all()
+);
+
+// avoid null values in navigation
+const protectedNavigation = computed(() => {
+    return navigation.value.filter(Boolean)
+})
 </script>
 
 <style lang="scss" scoped>
