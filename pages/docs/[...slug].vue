@@ -130,7 +130,7 @@
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
 
-  const {description, title} = page;
+  const {description, title} = page ?? {};
     useHead({
       meta: [
         {property: 'og:title', content: title},

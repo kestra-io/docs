@@ -6,3 +6,8 @@ enabled = true
 # [[d1_databases]]
 # binding = "DB"
 # database_name = "nuxt-content-preview"
+# database_id = "942aceaa-9720-4b32-acde-a1de14cae594"
+
+# [[kv_namespaces]]
+# binding = "CLOUDFLARE_KVSTORAGE"
+# id = "e1cec38e2fe84984ac38f33d46b0147c"
