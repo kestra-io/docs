@@ -3,7 +3,7 @@
         <NuxtLink :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body d-flex">
-                        <span class="card-icon">
+                        <span v-if="!hideIcons" class="card-icon">
                             <img :src="item.icon ?? currentPage.icon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
@@ -25,6 +25,10 @@
             type: String,
             default: undefined
         },
+        hideIcons: {
+            type: Boolean,
+            default: false
+        }
     });
 
     const route = useRoute()
