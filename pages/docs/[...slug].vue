@@ -130,6 +130,8 @@
 
   const {navigation, pageList, pageNames} = await fetchNavigation();
 
+  await useContentHead(page);
+
   const {description, title} = page ?? {};
     useHead({
       meta: [

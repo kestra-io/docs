@@ -128,6 +128,7 @@
 
         page.value = data.value;
           (async () => {
+            await useContentHead(page);
             setTimeout(() => {
               extractHash()
             }, 1000)

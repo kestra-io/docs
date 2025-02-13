@@ -107,6 +107,8 @@
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
 
+    await useContentHead(page);
+
     const getPageType = () => {
         const paths = route.path.split('/');
         return paths[paths?.length - 1];
