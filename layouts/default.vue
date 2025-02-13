@@ -30,7 +30,7 @@
     );
 
     const content = computed(() => {
-        return bannerMessages.value.results;
+        return bannerMessages.value?.results;
     })
 
     const handleScroll = () => {

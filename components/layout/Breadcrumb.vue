@@ -38,7 +38,7 @@ export default {
         breadcrumb() {
             let breadcrumbs = [...new Set(this.slug.split("/")
                 .filter(r => r !== ""))].slice(0, -1);
-            return breadcrumbs.length > 0 ? breadcrumbs : ['docs']
+            return (breadcrumbs && breadcrumbs.length > 0) ? breadcrumbs : ['docs']
         },
     }
 }

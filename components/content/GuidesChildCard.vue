@@ -23,12 +23,12 @@
                     :showDropdown="showStageDropdown"
                 />
             </div>
-            <div :class="`col-xl col-md-${stage.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
+            <div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
                 <Magnify />
                 <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
             </div>
             <div class="col-xl-auto col-md-6 pb-3 pb-xl-0">
-                <div class="clear-filter" @click="removeFilter" v-if="stage.length || topic.length || search">
+                <div class="clear-filter" @click="removeFilter" v-if="stage?.length || topic?.length || search">
                     <DeleteOutline/>
                     <span>Clear filters</span>
                 </div>
@@ -140,11 +140,11 @@
         () => {
           let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
 
-          if (Array.isArray(stage.value) && stage.value.length > 0) {
+          if (Array.isArray(stage.value) && stage.value?.length > 0) {
             query = query.andWhere('stage', 'IN', stage.value);
           }
 
-          if (Array.isArray(topic.value) && topic.value.length > 0) {
+          if (Array.isArray(topic.value) && topic.value?.length > 0) {
             query = query.andWhere('topics', 'CONTAINS', topic.value);
           }
 
