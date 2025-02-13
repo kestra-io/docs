@@ -97,7 +97,7 @@
             ]
         })
 
-        title.value = data.value.title;
+        title.value = page.value.title;
     }
 
 </script>
