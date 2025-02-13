@@ -84,8 +84,12 @@ export default defineNuxtConfig({
                     },
                 },
                 highlight: false,
-            }
+            },
         },
+        database: {
+            type: 'd1',
+            bindingName: 'DB_KESTRA'
+        }
     },
 
     devServer: {
