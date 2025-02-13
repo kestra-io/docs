@@ -65,7 +65,7 @@
 
     const route = useRoute()
 
-    console.log("navigation", props.navigation)
+    console.log("navigation", toRaw(props.navigation)[0].children)
 
     const activeSlug = computed(() => route.path)
     const items = computed(() => props.navigation?.[0]?.children ?? [])

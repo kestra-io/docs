@@ -75,9 +75,11 @@
 
       const newData = [];
 
+      console.log('query result', data.value[0].children);
+
       Object.entries(sections).forEach(([sectionName, titles]) => {
         // Add the section object
-        newData.push({ title: sectionName, isSection: true, _path: "/" });
+        newData.push({ title: sectionName, isSection: true, path: "/" });
 
         // Add the matching items from the data array
         titles.forEach(title => {
