@@ -75,7 +75,7 @@
 
       const newData = [];
 
-      console.log('query result', toRaw(data.value)[0].children);
+      console.log('query result', JSON.parse(JSON.stringify(data.value[0].children)));
 
       Object.entries(sections).forEach(([sectionName, titles]) => {
         // Add the section object
