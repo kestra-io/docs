@@ -50,23 +50,26 @@
   let page;
 
   const fetchNavigation = async () => {
-    let navigationFetch;
     let pageList = null;
     let pageNames = null;
 
-      navigationFetch = await useAsyncData(
+      const {data, error} = await useAsyncData(
         `NavSideBar-docs`,
         () => queryCollectionNavigation('docs', ['hideSubMenus'])
       );
 
-      if (navigationFetch.data && navigationFetch.data.value && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
-        navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
+      if(error && error.value) {
+        throw error.value;
+      }
+
+      if (data && data.value && !data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+        data.value[0].children.splice(data.value[0].children.length - 3, 0 , {
           title: "Videos Tutorials",
           path: "/tutorial-videos",
         });
       }
-      pageList = recursivePages(navigationFetch.data.value[0]);
-      pageNames = generatePageNames(navigationFetch.data.value[0]);
+      pageList = recursivePages(data.value[0]);
+      pageNames = generatePageNames(data.value[0]);
 
       const sections = config.public.docs.sections;
 
@@ -78,17 +81,17 @@
 
         // Add the matching items from the data array
         titles.forEach(title => {
-          const matchedItem = navigationFetch.data.value[0].children.find(item => item.title === title);
+          const matchedItem = data.value[0].children.find(item => item.title === title);
           if (matchedItem) {
             newData.push(matchedItem);
           }
         });
       });
 
-      navigationFetch.data.value[0].children = newData;
+      data.value[0].children = newData;
 
 
-    const navigation = navigationFetch.data;
+    const navigation = data;
 
     return {navigation, pageList, pageNames};
   }
