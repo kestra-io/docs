@@ -227,9 +227,6 @@ export default defineNuxtConfig({
         prerender: {
             routes: [
                 '/rss.xml',
-                '/docs/configuration',
-                '/docs/expressions',
-                '/docs/ee-server-cli',
             ],
             autoSubfolderIndex: false,
         },
