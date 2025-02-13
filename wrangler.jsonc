@@ -61,7 +61,7 @@
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
      */
-    "vars": { "NITRO_PRESET": "cloudflare-pages" },
+    "vars": { "NITRO_PRESET": "cloudflare-pages" }
     /**
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
