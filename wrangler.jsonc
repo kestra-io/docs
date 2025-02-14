@@ -53,7 +53,8 @@
                     "database_name": "nuxt-content-preview",
                     "database_id": "942aceaa-9720-4b32-acde-a1de14cae594"
                 }
-            ]
+            ],
+            "vars": { "NITRO_PRESET": "cloudflare-pages" }
         }
     },
 
