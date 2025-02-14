@@ -627,6 +627,14 @@ endpoints:
       password: your-password
 ```
 
+The management endpoint port can be configured with the following:
+
+```yaml
+endpoints:
+  all:
+    port: 8084
+```
+
 ## Environment
 
 Here are the configuration options for the environment UI display.
