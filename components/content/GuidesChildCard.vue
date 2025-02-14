@@ -132,7 +132,6 @@
     }
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').reverse()[0];
 
     const fetchChildDocs = async () => {
       const {data: result} = await useAsyncData(
@@ -141,15 +140,17 @@
           let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
 
           if (Array.isArray(stage.value) && stage.value?.length > 0) {
-            query = query.andWhere('stage', 'IN', stage.value);
+            query = query.where('stage', 'IN', stage.value);
           }
 
           if (Array.isArray(topic.value) && topic.value?.length > 0) {
-            query = query.andWhere('topics', 'CONTAINS', topic.value);
+            for (const soloTopic of topic.value) {
+              query = query.where('topics', 'LIKE', `%${soloTopic}%`);
+            }
           }
 
           if (search.value) {
-            query = query.andWhere('title', 'CONTAINS', search.value);
+            query = query.where('title', 'LIKE', `%${search.value}%`);
           }
 
           return query.all();
@@ -158,10 +159,6 @@
     };
 
     fetchChildDocs();
-
-    const changeFilter = () => {
-      fetchChildDocs();
-    }
 
     function debounce(func, delay) {
       let timeout;
