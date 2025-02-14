@@ -107,6 +107,8 @@
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
 
+    const {origin} = useRequestURL();
+
     if(pluginInformation?.value){
         pluginInformation.value.image = `${origin}/landing/home/header-bg.png`
         await useContentHead(pluginInformation);
@@ -139,7 +141,7 @@
     }
 
     const {description, title} = page;
-    const {origin} = useRequestURL();
+
     useHead({
         meta: [
             {name: 'twitter:card', content: 'summary_large_image'},

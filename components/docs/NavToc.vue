@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc position-relative d-lg-flex justify-content-end">
+    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
         <div>
             <template v-if="generated.length > 0" class="bd-contents-list">
                 <button
@@ -187,22 +187,22 @@
         > div {
 
             @include media-breakpoint-up(lg) {
+                position: sticky;
+                top: 7rem;
                 max-width: 308px;
                 width: 100%;
-                height: 100%;
-                border-left: 1px solid $black-6;
+                height: fit-content;
+                overflow-x: hidden;
+                overflow-y: auto;
             }
         }
 
         @include media-breakpoint-up(lg) {
-            position: sticky !important;
-            top: 9rem;
-            right: 0;
-            z-index: 2;
-            height: fit-content;
+            margin-top: 4rem;
             max-height: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
+            border-left: 1px solid $black-6;
+            background-color: rgba($black-4, .7);
+            padding-bottom: 1rem;
         }
 
         > .btn.d-lg-none {
@@ -213,10 +213,10 @@
         }
 
         nav {
-            padding-bottom: calc($spacer * 1.165);
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid $black-6;
             overflow-y: auto;
-            max-height: 500px;
+            max-height: 60vh;
             overflow-x: hidden;
             position: relative;
             &::-webkit-scrollbar {
@@ -291,6 +291,7 @@
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
+            padding: .5rem;
         }
 
         hr {
@@ -337,9 +338,6 @@
         }
     }
     .bd-social-list, .bd-toc-collapse {
-        background-color: rgba($black-4, .7);
-        padding-bottom: 1rem;
-
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
             border: 1px solid $black-6;

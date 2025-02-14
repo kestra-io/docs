@@ -18,7 +18,7 @@
                 </h1>
             </div>
 
-            <NavToc :page="page" class="my-md-0 my-4 right-menu" />
+            <NavToc :page="page" class="right-menu" />
 
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
@@ -145,12 +145,14 @@
         overflow-x: unset;
 
         .bd-title {
-            margin-top: 4rem;
             h1 {
                 max-width: 45.8rem;
                 @media only screen and (min-width: 1920px) {
                     max-width: 71.25rem;
                 }
+            }
+            @include media-breakpoint-up(lg){
+                margin-top: 4rem;
             }
         }
         .bd-main {
