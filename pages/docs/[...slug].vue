@@ -97,7 +97,6 @@
     return {navigation, pageList, pageNames};
   }
 
-  // this should probably be a computed property
   const transformTitle = (text) => {
     return text
       .replace(/([A-Z])/g, '&#x200B;$1')
