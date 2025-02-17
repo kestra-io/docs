@@ -2,8 +2,8 @@
     <div
         :id="pathToId(parentSlug)"
         :data-bs-parent="'#'+pathToId(parentSlug)"
-        class="accordion-collapse"
-        :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
+        class="accordion-collapse collapse"
+        :class="{show: isActiveOrExpanded({path: parentSlug, children: items})}"
     >
         <template v-for="item in items">
             <ul class="list-unstyled mb-0">
@@ -21,36 +21,38 @@
                     <NuxtLink
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
-                        class="disabled"
-                        @click="toggle(item.path, isPage(item))" data-bs-toggle="collapse"
+                        data-bs-toggle="collapse"
                         :data-bs-target="'#'+pathToId(item.path)"
+                        @click="toggleWithChildrenHandling(item.path)"
                     >
                             {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
-                    <template v-if="filterChildren(item).length > 0 && (!item.hideSubMenus || !item.hideSubMenus)">
+                    <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
                         <chevron-down
-                            v-if="isShow(item.path)"
-                            @click="toggle(item.path)"
-                            class="accordion-button" data-bs-toggle="collapse"
+                            v-if="isActiveOrExpanded(item)"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item.path)"
+                            @click="toggleWithChildrenHandling(item.path)"
                             role="button"
                         />
                         <chevron-right
                             v-else
-                            @click="toggle(item.path)"
-                            class="accordion-button" data-bs-toggle="collapse"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item.path)"
+                            @click="toggleWithChildrenHandling(item.path)"
                             role="button"
                         />
                     </template>
                 </li>
                     <RecursiveNavSidebar
                         v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+                        :ref="`childSideBar-${pathToId(item.path)}`"
                         :items="filterChildren(item)"
                         :depth-level="depthLevel+1"
                         :active-slug="activeSlug"
-                        :open="isShow(item.path)"
                         :parent-slug="item.path"
                         :disabled-pages="disabledPages"
                         :type="type"
@@ -83,10 +85,6 @@
                 type: String,
                 required: true
             },
-            open: {
-                type: Boolean,
-                required: true
-            },
             parentSlug: {
                 type: String,
                 required: true
@@ -100,28 +98,50 @@
                 required: false
             }
         },
-        created() {
-            this.showMenu = [this.activeSlug]
-        },
         data: () => ({
-            showMenu: [],
+            toggled: [],
         }),
         methods: {
+            toggleWithChildrenHandling(path) {
+                this.items.filter(i => i.path.startsWith(path))
+                    .forEach(i => {
+                        if (this.isActiveOrExpanded(i) || i.path === path) {
+                            this.$refs["childSideBar-" + this.pathToId(i.path)]?.[0]?.toggleWithChildrenHandling(i.path);
+                        }
+
+                        if (this.isActiveOrExpanded(i) && i.path !== path) {
+                            this.rawToggle(i.path);
+                        }
+                    });
+
+                this.rawToggle(path);
+            },
+            rawToggle(path) {
+                if (this.toggled.includes(path)) {
+                    this.toggled = this.toggled.filter(p => p !== path);
+                } else {
+                    this.toggled.push(path);
+                }
+            },
             pathToId(path) {
-                return path.replaceAll("/", '_').replaceAll(".", "-")
+                return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__");
             },
             filterChildren(item) {
                 return (item.children || []).filter(r => item.path !== r.path);
             },
-            toggle(item) {
-                if (this.showMenu.some(path => path.startsWith(item))) {
-                    this.showMenu = this.showMenu.filter(i => !i.startsWith(item))
-                } else {
-                    this.showMenu.push(item)
+            isActive(item) {
+                if (item.path.includes("#") && item.children?.some(c => this.isActive(c))) {
+                    return true;
                 }
+
+                return this.activeSlug.startsWith(item.path);
             },
-            isShow(item) {
-                return this.showMenu.some(path => path.startsWith(item))
+            isActiveOrExpanded(item) {
+                if (this.isActive(item)) {
+                    return !this.toggled.includes(item.path);
+                }
+
+                return this.toggled.includes(item.path);
             },
             isPage(item) {
                 if (item.isPage === false) {
@@ -135,13 +155,11 @@
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
-                let s = (this.activeSlug + '/').startsWith(item.path + '/');
-
                 return {
                     bold: depthLevel === 1,
                     section: item.isSection,
-                    active: s,
-                    disabled: s && disabled
+                    active: this.isActive(item),
+                    disabled: disabled
                 }
             }
         }
@@ -184,7 +202,7 @@
                 }
 
                 &:hover, &.active {
-                    color: $purple;
+                    color: $purple !important;
                 }
 
                 &.disabled {
