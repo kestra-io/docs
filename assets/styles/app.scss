@@ -4,6 +4,10 @@ html {
     height: 100%;
 }
 
+* {
+    scroll-margin-top: var(--top-bar-height);
+}
+
 body {
     min-width: 320px;
     min-height: 100%;
@@ -59,17 +63,6 @@ h1 {
 
 h2 {
     font-weight: 800
-}
-
-// Offsets anchor headers to scroll past the top-bar
-.container {
-    h1, h2, h3, h4, h5, h6 {
-        &[id] {
-            --anchor-offset: calc(var(--top-bar-height) + var(--spacer));
-            margin-top: calc(var(--anchor-offset) * -1);
-            padding-top: var(--anchor-offset);
-        }
-    }
 }
 
 main {
