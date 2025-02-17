@@ -22,13 +22,23 @@
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
-                            <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text" @click="closeToc" class="table-content">
-                                <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="'depth-' + tableOfContent.depth">{{ tableOfContent.text }}</a>
+                            <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text"
+                                @click="closeToc" class="table-content">
+                                <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="{
+                                    'text-capitalize': capitalize,
+                                    [`depth-${tableOfContent.depth}`]: true
+                                    }">{{ tableOfContent.text }}</a>
                             </li>
-                            <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent.children && tableOfContent.children.length">
-                                <template v-for="item in tableOfContent.children" >
-                                    <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
-                                        <a @click="menuNavigate" :href="`#${item.id}`" :class="'depth-' + item.depth">{{ item.text }}</a>
+                            <ul class="ps-0 pt-2 pt-lg-0"
+                                v-if="tableOfContent.children && tableOfContent.children.length">
+                                <template v-for="item in tableOfContent.children">
+                                    <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc"
+                                        :class="{'mt-3': item.depth === 2}">
+                                        <a @click="menuNavigate" :href="`#${item.id}`"
+                                           :class="{
+                                    'text-capitalize': capitalize,
+                                    [`depth-${item.depth}`]: true
+                                    }">{{ item.text }}</a>
                                     </li>
                                 </template>
                             </ul>
@@ -47,8 +57,6 @@
 <script setup>
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import ThumbUpOutline from "vue-material-design-icons/ThumbUpOutline.vue";
-    import ThumbDownOutline from "vue-material-design-icons/ThumbDownOutline.vue";
 </script>
 
 <script>
@@ -58,6 +66,10 @@
                 type: Object,
                 required: true
             },
+            capitalize: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
@@ -216,6 +228,7 @@
             max-height: 60vh;
             overflow-x: hidden;
             position: relative;
+
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
@@ -232,10 +245,13 @@
             &::-webkit-scrollbar-thumb:hover {
                 background: #370883;
             }
+
             @include font-size(.875rem);
+
             ul {
                 margin-bottom: 0;
                 list-style: none;
+
                 &:has(a.active) {
                     .table-content {
                         a {
@@ -246,6 +262,7 @@
                         }
                     }
                 }
+
                 li {
                     a {
                         border-left: 1px solid transparent;
@@ -256,7 +273,7 @@
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
-                                padding-left: calc(0.5rem * ($i - 2) +  2rem);
+                                padding-left: calc(0.5rem * ($i - 2) + 2rem);
                             }
                         }
 
@@ -305,6 +322,7 @@
         background: $black-4;
         color: var(--bs-gray-500);
         font-size: $font-size-sm;
+
         &.collapsed {
             border-radius: 8px 8px 0 0;
         }
@@ -323,6 +341,7 @@
         strong {
             margin-left: calc($spacer * 2);
         }
+
         @include media-breakpoint-down(lg) {
             nav {
                 padding-bottom: $spacer;
@@ -334,19 +353,23 @@
             display: block !important; // stylelint-disable-line declaration-no-important
         }
     }
+
     .bd-social-list, .bd-toc-collapse {
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
             border: 1px solid $black-6;
             border-radius: 0 0 8px 8px;
         }
+
         button:hover {
             color: $purple-36 !important;
         }
+
         ul, :deep(ul) {
             li {
                 a {
                     font-weight: 500;
+
                     &:hover {
                         color: $purple-36 !important;
                         border-left: 1px solid $purple-36 !important;
