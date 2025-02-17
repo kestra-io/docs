@@ -25,11 +25,8 @@
                     <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="getPageName()" :props-initially-expanded="true">
                         <template #markdown="{ content }">
                             <MDC :value="content">
-                                <template #default="{data, body}">
-                                    <MDCRenderer
-                                        v-bind="{data, body}"
-                                        :components="proseComponents"
-                                    />
+                                <template #default="{body}">
+                                    <ContentRenderer :value="body"/>
                                 </template>
                             </MDC>
                         </template>
@@ -58,19 +55,6 @@
     const route = useRoute()
     const slug = computed(() => `/plugins/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
-
-    // make MDCRenderer use the prose components of this content
-    const proseComponentsImports = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
-    const proseComponents = {}
-    for (const path in proseComponentsImports) {
-        // extract the component name from the file path
-        // example: `file/path/ProsePre.vue` => `pre`
-        const compName = path.split("/").pop()?.slice(5, -4).toLowerCase()
-        if(compName) {
-            proseComponents[compName] = proseComponentsImports[path].default
-        }
-    }
-
 
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
