@@ -1,10 +1,10 @@
 <template>
     <div class="row card-group mb-2">
-        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body d-flex">
-                        <span class="card-icon">
-                            <img :src="item.icon" :alt="item.title" width="50px" height="50px"/>
+                        <span v-if="!hideIcons" class="card-icon">
+                            <img :src="item.icon ?? currentPage.icon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
                         <h4 class="card-title">{{ item.title }}</h4>
@@ -19,31 +19,38 @@
 <script setup>
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
-    import Typewriter from "vue-material-design-icons/Typewriter.vue";
 
     const props = defineProps({
         pageUrl: {
             type: String,
             default: undefined
         },
+        hideIcons: {
+            type: Boolean,
+            default: false
+        }
     });
 
     const route = useRoute()
 
-    let currentPage = null;
+    let currentPageSlug = null;
 
     if (props.pageUrl) {
-        currentPage = props.pageUrl;
+        currentPageSlug = props.pageUrl;
     } else {
-        currentPage = route.path;
+        currentPageSlug = route.path;
     }
 
-    currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').reverse()[0];
+    currentPageSlug = currentPageSlug.replace(/\/$/, '');
 
     const {data: navigation} = await useAsyncData(
-        `ChildCard-${hash(currentPage)}`,
-        () => queryContent(currentPage + "/").where({ _dir: currentPageDir}).find()
+        `ChildCard-${hash(currentPageSlug)}`,
+        () => queryCollection('docs').where('path', 'LIKE', `${currentPageSlug}/%`).all()
+    );
+
+    const {data: currentPage} = await useAsyncData(
+        `ChildCardCurrentPage-${hash(currentPageSlug)}`,
+        () => queryCollection('docs').path(currentPageSlug).first()
     );
 
     // if (currentPage == "/docs/faq") {

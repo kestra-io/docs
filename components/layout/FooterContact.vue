@@ -1,5 +1,5 @@
 <template>
-    <div class="container rounded-3">
+    <div class="container rounded-3 mb-5">
         <Section :animation="animation">
             <div class="text-center cta px-5">
                 <p class="title" v-if="title" :data-aos="animationType('fade-left')">

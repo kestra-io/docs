@@ -96,7 +96,7 @@ triggers:
   - id: on_failure
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
           - WARNING

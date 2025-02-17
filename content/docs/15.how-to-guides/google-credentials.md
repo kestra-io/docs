@@ -143,7 +143,117 @@ In Kestra Enterprise Edition, secrets can be managed directly from the UI meanin
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
+By setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable on the nodes running Kestra. It must point to an application credentials file. Warning: it must be the same on all worker nodes and can cause some security concerns.
+
 While you can use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, this is not advised as you'll need to mount the JSON file to Docker which isn't always possible depending on how you've setup Kestra.
+
+To set it up, you will need to make sure Kestra has access to the JSON file containing the service account details. If you're using Docker, you'll need to create a bind mount like the example below:
+
+```yaml
+kestra:
+  image: kestra/kestra:latest
+  pull_policy: always
+  user: "root"
+  command: server standalone
+  volumes:
+    - kestra-data:/app/storage
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /tmp/kestra-wd:/tmp/kestra-wd
+    - ~/.gcp/workflow-orchestration-credentials.json:/.gcp/credentials.json
+  ...
+```
+
+The xample uses a file in the location `~/.gcp/workflow-orchestration-credentials.json` so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
+
+After that, add an environment variable under `environment` called `GOOGLE_APPLICATION_CREDENTIALS`
+
+```yaml
+environment:
+  GOOGLE_APPLICATION_CREDENTIALS: '/.gcp/credentials.json'
+  KESTRA_CONFIGURATION: |
+  ...
+```
+
+::collapse{title="Full Docker Compose with GOOGLE_APPLICATION_CREDENTIALS"}
+Here is a full Docker Compose that you can use to add a service account using the environment variable `GOOGLE_APPLICATION_CREDENTIALS`:
+
+```yaml
+volumes:
+  postgres-data:
+    driver: local
+  kestra-data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:16.6
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: kestra
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: k3str4
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+
+      retries: 10
+
+  kestra:
+    image: kestra/kestra:latest
+    pull_policy: always
+    user: "root"
+    command: server standalone
+    volumes:
+      - kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+      - ~/.gcp/workflow-orchestration-credentials.json:/.gcp/credentials.json
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: '/.gcp/credentials.json'
+      KESTRA_CONFIGURATION: |
+        datasources:
+          postgres:
+            url: jdbc:postgresql://postgres:5432/kestra
+            driverClassName: org.postgresql.Driver
+            username: kestra
+            password: k3str4
+        kestra:
+          server:
+            basicAuth:
+              enabled: false
+              username: "admin@kestra.io" # it must be a valid email address
+              password: kestra
+          repository:
+            type: postgres
+          storage:
+            type: local
+            local:
+              basePath: "/app/storage"
+          tutorial-flows:
+            enabled: false 
+          plugins:
+            defaults:
+              - type: io.kestra.plugin.jdbc.postgresql
+                values:
+                  url: jdbc:postgresql://host.docker.internal:5432/ny_taxi
+                  username: root
+                  password: root
+          queue:
+            type: postgres
+          tasks:
+            tmpDir:
+              path: /tmp/kestra-wd/tmp
+          url: http://localhost:8080/
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+```
+
+::
 
 ## Google App Passwords
 

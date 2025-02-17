@@ -203,6 +203,16 @@ $rem-10: 10rem;
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
+
+$spacers: map-merge($spacers, (
+    6: ($spacer * 2),
+    7: ($spacer * 0.625)
+));
+
+$font-sizes: map-merge($font-sizes, (
+    7: ($font-size-base * 0.75)
+));
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";

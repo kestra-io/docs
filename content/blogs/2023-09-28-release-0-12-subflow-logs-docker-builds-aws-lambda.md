@@ -281,11 +281,11 @@ Apart from new features and integrations, we've also made several improvements t
 
 This release also adds several new features to the Enterprise Edition, including:
 
-🔹 [Azure Secrets Manager](https://kestra.io/docs/administrator-guide/configuration/enterprise-edition/secrets/azure-key-manager) allows you to store your Kestra secrets in Azure Key Vault.
+🔹 [Azure Key Vault](../docs/configuration/index.md#azure-key-vault) allows you to store your Kestra secrets in Azure Key Vault.
 
-🔹 [AWS Secrets Manager](https://kestra.io/docs/administrator-guide/configuration/enterprise-edition/secrets/aws-secrets-manager) allows you to store your Kestra  secrets in AWS Secrets Manager.
+🔹 [AWS Secrets Manager](../docs/configuration/index.md#aws-secret-manager) allows you to store your Kestra  secrets in AWS Secrets Manager.
 
-🔹 [Google Secrets Manager](https://kestra.io/docs/administrator-guide/configuration/enterprise-edition/secrets/google-secrets-manager) allows you to store your Kestra secrets in Google Secrets Manager.
+🔹 [Google Secrets Manager](../docs/configuration/index.md#google-secret-manager) allows you to store your Kestra secrets in Google Secrets Manager.
 
 Apart from those changes, the [task runs page](https://github.com/kestra-io/kestra-ee/issues/407) now also displays execution labels and attempt numbers.
 

@@ -54,10 +54,10 @@ triggers:
   - id: watch-failed-flows
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
-      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespace
         namespace: company.team
         prefix: true
 ```

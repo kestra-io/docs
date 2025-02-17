@@ -10,7 +10,13 @@
 </template>
 
 <script setup>
+    import { getCurrentInstance } from "vue";
     import TaskIcon from "../common/TaskIcon.vue";
+    // Mock i18n for topology
+    const currentInstance = getCurrentInstance()
+    if (currentInstance) {
+        currentInstance.appContext.config.globalProperties.$t = (key) => key
+    }
 </script>
 
 <script>

@@ -17,6 +17,10 @@ Kestra leverages five different server components. The `kestra server` command a
 
 * `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
 
+::alert{type="info"}
+For more information on troubleshooting CLI options, see the dedicated [Troubleshooting](../09.administrator-guide/16.troubleshooting.md#unprocessable-execution) page.
+::
+
 ### Indexer
 
 `./kestra server indexer`
@@ -32,7 +36,7 @@ Kestra leverages five different server components. The `kestra server` command a
 **Options:**
 
 * `-t` or `--thread`: the number of threads that can handle tasks at the same time. By default, the worker will start 2 threads per CPU core available.
-* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/worker-group.md).
+* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/04.scalability/worker-group.md).
 
 ### Webserver
 
@@ -47,7 +51,7 @@ This server is a special server, since it will contain all the server components
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
+* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
 * `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
 
 ## Kestra local, development server with no dependencies
@@ -60,7 +64,7 @@ This server is a local development server. It will contain all server components
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
+* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
 
 
 ## Kestra with server components in different services

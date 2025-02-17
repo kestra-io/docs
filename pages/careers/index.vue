@@ -7,8 +7,8 @@
         </Head>
 
         <CareersHeader/>
-        <CareersPerks/>
         <CareersPositions/>
+        <CareersPerks/>
         <LayoutFooterContact
             title="Join our community"
             darkButtonText="Join our Slack"

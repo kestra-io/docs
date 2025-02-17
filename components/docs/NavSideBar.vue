@@ -47,38 +47,26 @@
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
   import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
-</script>
+  const props = defineProps({
+        type: {
+            type: String,
+            required: true
+        },
+        navigation: {
+            type: Object,
+        },
+    })
 
-<script>
+    const disabledPages = [
+        '/docs/terraform/data-sources',
+        '/docs/terraform/guides',
+        '/docs/terraform/resources'
+    ]
 
-    export default defineComponent({
-        props: {
-            type: {
-                type: String,
-                required: true
-            },
-            navigation: {
-                type: Object,
-            },
-        },
-        data() {
-          return {
-              disabledPages: [
-                  '/docs/terraform/data-sources',
-                  '/docs/terraform/guides',
-                  '/docs/terraform/resources'
-              ]
-          }
-        },
-        computed: {
-            activeSlug() {
-                return this.$route.path
-            },
-            items() {
-                return this.navigation?.[0]?.children ?? []
-            }
-        },
-    });
+    const route = useRoute()
+
+    const activeSlug = computed(() => route.path)
+    const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,16 @@
 <template>
-    <div class="container mt-3 my-md-4 bd-layout">
-        <article class="bd-main">
-            <ContentDoc />
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <article class="bd-main order-1">
+            <ContentRenderer :value="page" class="bd-markdown" />
         </article>
     </div>
 </template>
+
+<script setup>
+const route = useRoute()
+const {data: page} = await useAsyncData(
+    route.path,
+    () => queryCollection("misc").path(route.path).first()
+);
+</script>
+

@@ -1,28 +1,17 @@
-name: Bug report
-description: File a bug report
+name: Bug on the website
+description: File a bug report for something that doesn't look right on the website
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting an issue! Please provide a [Minima Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example) 
-        and share any additional information that may help reproduce, troubleshoot, and hopefully fix the issue, including screenshots, error traceback, and your Kestra server logs.
-        NOTE: If your issue is more of a question, please ping us directly on [Slack](https://kestra.io/slack).
+        This template is for filing bugs on the website. If you want to report something in the docs content, please use the [documentation issue template](https://github.com/kestra-io/docs/issues/new?assignees=&labels=documentation&projects=&template=documentation.yml). Attach screenshot images or a screen-capture video to help us reproduce and fix the issue.
   - type: textarea
     attributes:
       label: Describe the issue
-      description: A concise description of the issue and how we can reproduce it.
-      placeholder: Describe the issue step by step
+      description: Description of the issue and how we can reproduce it
+      placeholder: Describe the issue, add any screenshots or screen-capture videos
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: Environment
-      description: Environment information where the problem occurs.
-      value: |
-        - Kestra Version:
-        - Operating System (OS/Docker/Kubernetes):
-        - Java Version (if you don't run kestra in Docker):
-    validations:
-      required: false
 labels:
+  - area/frontend
   - bug

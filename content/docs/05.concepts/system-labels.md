@@ -38,11 +38,11 @@ System Labels are labels prefixed with `system.` that serve specific purposes. B
 
 ### `system.correlationId`
 
-- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks.
-- Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage.
+- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks
+- Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
 - Use this label to filter all executions originating from a specific parent execution.
 
-For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` will display all related executions.
+For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` displays all related executions.
 
 **Note:** The Execution API supports setting this label at execution creation but not modification.
 
@@ -50,15 +50,15 @@ For example, if a parent flow triggers multiple subflows, filtering by the paren
 
 ### `system.username`
 
-- Automatically set for every execution and contains the username of the user who triggered the execution.
-- Useful for auditing and identifying who initiated specific executions.
+- Automatically set for every execution and contains the username of the user who triggered the execution
+- Useful for auditing and identifying who initiated specific executions
 
 ---
 
 ### `system.readOnly`
 
-- Used to mark a flow as read-only, disabling the flow editor in the UI.
-- Helps prevent modifications to critical workflows, such as production flows managed through CI/CD pipelines.
+- Used to mark a flow as read-only, disabling the flow editor in the UI
+- Helps prevent modifications to critical workflows, such as production flows managed through CI/CD pipelines
 
 **Example:**
 

@@ -306,3 +306,102 @@ flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 ```
 
 Read more about it on the [execution page](../04.workflow-components/03.execution.md).
+
+## Automate Python with Triggers
+
+You can combine your Python code with a trigger to automatically execute your code. There's a few key ways you can automate it:
+- Run on a schedule
+- Run when a webhook is called
+- Run when a file is available in a data lake or storage bucket 
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/FIOIvNwtKM8?si=l8NCFNKgE4cuY-Hn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+### Run on a schedule
+
+You can use the [Schedule Trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md) to run your flow on a routine. You can pass the date that the trigger executed to your code through an expression. This is useful when using backfills as it allows you to pass the date of when the execution was suppose to run from the schedule directly to your code, rather than the current time, for example useful when fetching a daily report from a specific date in the past:  
+
+```yaml
+id: schedule_code
+namespace: company.team
+
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    outputFiles:
+      - "*.txt"
+    script: |
+      date = f"{{ trigger.date | date("yyyy-MM-dd") }}"
+      report_content = f"Daily Report - {date}\nSales: $5000\nUsers: 200"
+
+      with open(f"daily_report_{date}.txt", "w") as file:
+        file.write(report_content)
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 8 * * *"
+```
+### Run when a webhook is called
+
+You can use the [Webhook Trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) to run your flow when a webhook is called. You can also call the webhook with a body, which can be passed to your code through an expression or environment variable: 
+
+```yaml
+id: python_webhook
+namespace: company.team
+
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    script: |
+
+      response = {{ trigger.body ?? '' }}
+
+      print(f"{response['first_name']} {response['last_name']}")
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: abcdefg
+```
+
+### Run when a file is available in a data lake or storage bucket
+
+You can use a [Polling Trigger](../04.workflow-components/07.triggers/04.polling-trigger.md), such as the [S3 Trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+
+```yaml
+id: s3_trigger
+namespace: company.team
+
+tasks:
+  - id: process_data
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    inputFiles:
+      input.csv: "{{ read(trigger.objects[0].uri) }}"
+    outputFiles:
+      - data.csv
+    script: |
+      import os
+      import pandas as pd
+      from kestra import Kestra
+
+      df = pd.read_csv('input.csv')
+      df['discounted_total'] = df['total'] * 0.9
+      df.to_csv('data.csv')
+
+triggers:
+  - id: watch
+    type: io.kestra.plugin.aws.s3.Trigger
+    interval: "PT1S"
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    region: "eu-west-2"
+    bucket: "kestra-python-s3"
+    action: DELETE
+    filter: FILES
+    maxKeys: 1
+```
+
+

@@ -3,7 +3,7 @@
         <div class="col-md-10">
             <h3>Source</h3>
             <div class="mt-4 relative code mb-3 main-code-block" :class="{ hide: hideCode }">
-                <ContentRendererMarkdown
+                <ContentRenderer
                     class="bd-markdown"
                     :value="flow"
                 />
@@ -19,7 +19,7 @@
             <div class="title">
                 <p>{{ tagsList }}</p>
             </div>
-            <ContentRendererMarkdown
+            <ContentRenderer
                 class="bd-markdown"
                 :value="description"
             />

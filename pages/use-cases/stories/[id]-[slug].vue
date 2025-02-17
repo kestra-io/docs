@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-md-8 mb-4">
                         <div class="story-container">
-                            <ContentRendererMarkdown class="bd-markdown" :value="content" />
+                            <ContentRenderer class="bd-markdown" :value="content" />
                         </div>
                     </div>
                     <div class="col-md-4 mb-4">

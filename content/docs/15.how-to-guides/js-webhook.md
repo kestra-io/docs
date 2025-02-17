@@ -15,6 +15,10 @@ This can be useful if you want a request from your website to be made and start 
 
 In this guide, we'll walk through how you can set up Kestra to receive webhooks as well as build a basic JavaScript application with React.js that can make requests.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/AMOwx9Mjlh8?si=RYQ6LEkN5NOqwjBZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Configuring CORS
 
 To make sure we can make requests to Kestra from our JavaScript application locally, we'll need to enable CORS in our Kestra Configuration. We can do that by adding the following configuration:
@@ -87,7 +91,6 @@ function App() {
           await axios.post('http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 console.log(response.data)
-                
               }); 
       } catch (error) {
           console.error('Error:', error);
@@ -145,10 +148,9 @@ function App() {
   const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-          await axios.post('http://localhost:8084/api/v1/executions/webhook/company.team/webhook_example/abcdefg',
+          await axios.post('http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 console.log(response.data)
-                
               }); 
       } catch (error) {
           console.error('Error:', error);
@@ -203,10 +205,9 @@ function App() {
   const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-          await axios.post('http://localhost:8084/api/v1/executions/webhook/company.team/webhook_example/abcdefg',
+          await axios.post('http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 setResponseData(response.data)
-                
               }); 
       } catch (error) {
           console.error('Error:', error);

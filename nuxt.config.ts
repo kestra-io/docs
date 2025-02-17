@@ -3,14 +3,27 @@ import * as sass from "sass";
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos', '@zadigetvoltaire/nuxt-gtm'],
-    target: 'server',
+    modules: [
+        '@nuxt/devtools',
+        '@nuxt/image',
+        'nuxt-multi-cache',
+        'vue3-carousel-nuxt',
+        'nuxt-lazy-hydrate',
+        'nuxt-aos',
+        '@zadigetvoltaire/nuxt-gtm',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        '@nuxt/content',
+    ],
+    target: 'static',
     image: {
         formats: {
             webp: {
                 quality: 80
             }
-        }
+        },
+        densities: [1, 2],
+        domains: ['kestra.io']
     },
     sitemap: {
         sitemaps: {
@@ -55,56 +68,57 @@ export default defineNuxtConfig({
 
     css: [
         '@/assets/styles/vendor.scss',
-        '@/assets/styles/app.scss'
+        '@/assets/styles/app.scss',
+        '@/assets/styles/theme.scss'
     ],
 
     content: {
-        navigation: {
-            fields: ['hideSidebar', 'hideSubMenus'],
-        },
-        documentDriven: false,
-        highlight: {
-            langs: [
-                'bash',
-                'c',
-                'cpp',
-                'csv',
-                'dockerfile',
-                'go',
-                'groovy',
-                'handlebars',
-                'hcl',
-                'ini',
-                'java',
-                'javascript',
-                'json',
-                'markdown',
-                'mermaid',
-                'perl',
-                'php',
-                'python',
-                'r',
-                'ruby',
-                'rust',
-                'scala',
-                'sql',
-                'systemd',
-                'twig',
-                'typescript',
-                'xml',
-                'yaml'
-            ],
-            theme: 'github-dark'
-        },
-        markdown: {
-            remarkPlugins: {
-                'remark-flexible-markers': {
-                    markerClassName: 'type-mark',
+        build: {
+            markdown: {
+                remarkPlugins: {
+                    'remark-flexible-markers': {
+                        markerClassName: 'type-mark',
+                    },
+                    'remark-code-import': {
+                        rootDir: process.cwd()
+                    },
                 },
-                'remark-code-import': {
-                    rootDir: process.cwd()
+                highlight: {
+                    // Theme used in all color schemes.
+                    theme: 'github-dark',
+                    langs: [
+                        'bash',
+                        'c',
+                        'cpp',
+                        'csv',
+                        'css',
+                        'dockerfile',
+                        'go',
+                        'groovy',
+                        'handlebars',
+                        'hcl',
+                        'ini',
+                        'java',
+                        'javascript',
+                        'json',
+                        'markdown',
+                        'mermaid',
+                        'perl',
+                        'php',
+                        'python',
+                        'r',
+                        'ruby',
+                        'rust',
+                        'scala',
+                        'sql',
+                        'systemd',
+                        'twig',
+                        'typescript',
+                        'xml',
+                        'yaml'
+                    ]
                 },
-            }
+            },
         },
     },
 
@@ -123,7 +137,6 @@ export default defineNuxtConfig({
             }
         }
     },
-
     vite: {
         build: {
             rollupOptions: {
@@ -136,7 +149,8 @@ export default defineNuxtConfig({
             include: [
                 "humanize-duration",
                 "lodash",
-                "dagre"
+                "dagre",
+                "debug",
             ],
             exclude: [
                 '* > @kestra-io/ui-libs'
@@ -201,7 +215,8 @@ export default defineNuxtConfig({
                         "Expressions",
                         "API Reference",
                         "Terraform Provider",
-                        "Server CLI"
+                        "Server CLI",
+                        "Kestra EE CLI"
                     ]
                 }
             }
@@ -210,7 +225,10 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml']
+            routes: [
+                '/rss.xml',
+            ],
+            autoSubfolderIndex: false,
         },
     },
 
@@ -269,9 +287,37 @@ export default defineNuxtConfig({
         '/docs/developer-guide/caching': {redirect: '/docs/concepts/caching'},
         '/docs/developer-guide/namespace-files': {redirect: '/docs/concepts/namespace-files'},
         '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
+        '/docs/developer-guide/git': {redirect: '/docs/version-control-cicd/git'},
         '/docs/concepts/flowable-tasks': {redirect: '/docs/workflow-components/tasks/flowable-tasks'},
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
+        '/docs/enterprise/enterprise-edition': {redirect: '/docs/enterprise/overview/enterprise-edition'},
+        '/docs/enterprise/setup': {redirect: '/docs/enterprise/overview/setup'},
+        '/docs/enterprise/releases': {redirect: '/docs/enterprise/overview/releases'},
+        '/docs/enterprise/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
+        '/docs/enterprise/namespace-management': {redirect: '/docs/enterprise/governance/namespace-management'},
+        '/docs/enterprise/centralized-task-configuration': {redirect: 'https://kestra.io/docs/enterprise/governance/centralized-task-configuration'},
+        '/docs/enterprise/custom-blueprints': {redirect: '/docs/enterprise/governance/custom-blueprints'},
+        '/docs/enterprise/logshipper': {redirect: '/docs/enterprise/governance/logshipper'},
+        '/docs/enterprise/secrets': {redirect: '/docs/enterprise/governance/secrets'},
+        '/docs/enterprise/secrets-manager': {redirect: '/docs/enterprise/governance/secrets-manager'},
+        '/docs/enterprise/tenants': {redirect: '/docs/enterprise/governance/tenants'},
+        '/docs/enterprise/authentication': {redirect: '/docs/enterprise/auth/authentication'},
+        '/enterprise/auth/sso': {redirect: '/enterprise/auth/sso'},
+        '/docs/enterprise/api': {redirect: '/docs/enterprise/auth/api'},
+        '/docs/enterprise/api-tokens': {redirect: '/docs/enterprise/auth/api-tokens'},
+        '/docs/enterprise/invitations': {redirect: '/docs/enterprise/auth/invitations'},
+        '/docs/enterprise/rbac': {redirect: '/docs/enterprise/auth/rbac'},
+        '/docs/enterprise/scim': {redirect: '/docs/enterprise/auth/scim'},
+        '/docs/enterprise/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
+        '/docs/enterprise/apps': {redirect: '/docs/enterprise/scalability/apps'},
+        '/docs/enterprise/task-runners': {redirect: '/docs/enterprise/scalability/task-runners'},
+        '/docs/enterprise/worker-group': {redirect: '/docs/enterprise/scalability/worker-group'},
+        '/docs/enterprise/worker-isolation': {redirect: '/docs/enterprise/scalability/worker-isolation'},
+        '/docs/enterprise/announcements': {redirect: '/docs/enterprise/instance/announcements'},
+        '/docs/enterprise/dashboard': {redirect: '/docs/enterprise/instance/dashboard'},
+        '/docs/enterprise/maintenance-mode': {redirect: '/docs/enterprise/instance/maintenance-mode'},
+        '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
         '/docs/administrator-guide/server-cli': {redirect: '/docs/server-cli'},
         '/docs/configuration-guide': {redirect: '/docs/configuration'},
@@ -281,10 +327,10 @@ export default defineNuxtConfig({
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/flows': {redirect: '/docs/workflow-components/flows#faq'},
         '/docs/faq/variables': {redirect: '/docs/workflow-components/variables#faq'},
-        '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},

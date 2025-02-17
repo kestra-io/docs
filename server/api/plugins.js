@@ -29,7 +29,7 @@ function toNuxtBlocks(data, type) {
     };
 }
 
-const generateNavTocChildren = (properties) => {
+const generateNavTocChildren = (hrefPrefix = "", properties) => {
     const children = [];
 
     const sortedKeys = Object.keys(properties).sort((a, b) => {
@@ -38,7 +38,7 @@ const generateNavTocChildren = (properties) => {
 
     for (const key of sortedKeys) {
         children.push({
-            id: key,
+            id: hrefPrefix + key,
             depth: 3,
             text: key,
         });
@@ -63,7 +63,7 @@ const navTocData = (schema) => {
             id: 'properties',
             depth: 2,
             text: 'Properties',
-            children: generateNavTocChildren(schema.properties.properties)
+            children: generateNavTocChildren("properties_", schema.properties.properties)
         });
     }
 
@@ -72,7 +72,7 @@ const navTocData = (schema) => {
             id: 'outputs',
             depth: 2,
             text: 'Outputs',
-            children: generateNavTocChildren(schema.outputs.properties)
+            children: generateNavTocChildren("outputs_", schema.outputs.properties)
         });
     }
 
@@ -81,7 +81,7 @@ const navTocData = (schema) => {
             id: 'definitions',
             depth: 2,
             text: 'Definitions',
-            children: generateNavTocChildren(schema.definitions)
+            children: generateNavTocChildren(undefined, schema.definitions)
         });
     }
 
@@ -98,7 +98,7 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
         if (subMenuSplitter === -1) {
             m[item] = {
                 title: toNavTitle(item),
-                _path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`.toLowerCase(),
+                path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`.toLowerCase(),
                 isPage: true,
             }
         } else {
@@ -120,7 +120,7 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
         if (Array.isArray(value)) {
             return {
                 title: toNavTitle(key),
-                _path: `${baseUrl}/${key}`.toLowerCase(),
+                path: `${baseUrl}/${key}`.toLowerCase(),
                 isPage: false,
                 children: value
             }
@@ -224,14 +224,14 @@ export default defineEventHandler(async (event) => {
 
                         return {
                             title: toNavTitle(category),
-                            _path: `${rootPluginUrl}/${kebabCasedCategory}`.toLowerCase(),
+                            path: `${rootPluginUrl}/${kebabCasedCategory}`.toLowerCase(),
                             isPage: false,
                             children
                         }
                     });
                 return {
                     title: toNavTitle(plugin.title),
-                    _path: rootPluginUrl.toLowerCase(),
+                    path: rootPluginUrl.toLowerCase(),
                     children
                 };
             }).sort((a, b) => {
@@ -249,7 +249,7 @@ export default defineEventHandler(async (event) => {
             });
             return [{
                 title: "Plugins",
-                _path: "/plugins",
+                path: "/plugins",
                 children: sortedPluginsHierarchy
             }];
         }

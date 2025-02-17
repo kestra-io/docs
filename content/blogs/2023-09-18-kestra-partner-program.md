@@ -15,7 +15,7 @@ As the demand for Kestra continues to grow, we recognize the need for hands-on a
 
 ![Converteo & Ntico & Kestra Partnership](/blogs/2023-09-18-kestra-partner-program/partners.png)
 
-> “Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management, and maintenance of large-scale data flow. What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte and Restack. We are genuinely thrilled to engage with Kestra.”
+> “Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management, and maintenance of large-scale data flow. What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte. We are genuinely thrilled to engage with Kestra.”
 
 *Charles Letaillieur, Senior Manager at Converteo.*
 
@@ -29,7 +29,7 @@ We invite technology and consulting companies to join our Partner Program to sol
 
 Our commitment is to develop a significant network of Partners, each bringing a deep understanding of various facets of the ecosystem. We aim to form strong, trust-based relationships that will enhance our collective customer value. Partnering with industry-leading organizations enables us to deliver end-to-end solutions that meet the changing business needs across a large range of industries.
 
-If you are looking to leverage the simplest and most versatile open-source workflow orchestration solution, fill out the form below to become a partner. 
+If you are looking to leverage the simplest and most versatile open-source workflow orchestration solution, fill out the form below to become a partner.
 
 
 ::HubspotForm

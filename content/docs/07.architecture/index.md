@@ -32,6 +32,8 @@ Here are the components and their interactions:
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
 
+For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) and [SQL Server JDBC Driver](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver16) can provide an encrypted connection with some configuration.
+
 ### Scalability with JDBC
 
 The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md), and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance.
@@ -46,7 +48,7 @@ The following diagram shows the main components of Kestra using the Kafka and El
 
 ![Kestra OSS Architecture](/docs/architecture/kafka.png "Kestra Architecture")
 
-Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.enterprise-edition.md) of Kestra.
+Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
 
 This architecture is designed to provide the enhanced scalability, high availability, and fault tolerance required to meet the needs of large-scale enterprise deployments.
 
@@ -93,7 +95,7 @@ The **data layer** is decoupled from the application layer and provides a separa
 - storing execution metadata — (Kafka/JDBC) **Queue** is used as the orchestration backend
 - storing logs and user-facing data — the (Elasticsearch/JDBC) **Repository** is used to store data needed to serve Kestra UI and API.
 
-The Indexer, available only in the [Enterprise Edition](../06.enterprise/01.enterprise-edition.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Thanks to the separation between Queue and Repository in the Kafka Architecture, even if your Elasticsearch instance experiences downtime, your executions will continue to work by relying on the Kafka backend.
+The Indexer, available only in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Thanks to the separation between Queue and Repository in the Kafka Architecture, even if your Elasticsearch instance experiences downtime, your executions will continue to work by relying on the Kafka backend.
 
 ## Components in detail
 

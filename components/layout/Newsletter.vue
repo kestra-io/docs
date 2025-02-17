@@ -19,7 +19,7 @@
                 <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
                 <div class="d-flex align-items-center justify-content-center gap-3 socials">
                     <a href="https://twitter.com/kestra_io" class="d-flex align-items-center social-item gap-1" title="Twitter" target="_blank">
-                        <twitter />
+                        <twitter class="mb-1"/>
                         <p class="m-0">Twitter</p>
                     </a>
                     <a href="https://www.youtube.com/@kestra-io" class="d-flex align-items-center social-item gap-1" title="YouTube" target="_blank">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Twitter from "../components/icons/TwitterXIcon.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import newsletterSubmit from "../../utils/newsletterSubmit.js";
 

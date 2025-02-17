@@ -112,7 +112,7 @@
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/docs/getting-started/workflow-components" @click="globalClick(true)">
+                                            <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
                                                 <TimelineTextOutline />
                                                 <p>
                                                     <span>Workflow components</span><br />
@@ -513,7 +513,7 @@
                                 </NuxtLink>
                                 <ul class="header-menu-right-menu">
                                     <li>
-                                        <NuxtLink class="dropdown-item" href="/docs/getting-started/workflow-components" @click="globalClick(true)">
+                                        <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
                                             <TimelineTextOutline />
                                             <p>
                                                 <span>Workflow components</span><br />
@@ -882,6 +882,8 @@ export default {
         $route(to) {
             this.transparentHeader = to.meta.transparentHeader === true;
             this.transparentClass = to.meta.transparentHeader === true;
+            // on route change always close the menu
+            this.globalClick(true)
         }
     },
     mounted() {
@@ -1899,7 +1901,8 @@ export default {
 }
 </style>
 
-<style lang="scss">@import "../../assets/styles/variable";
+<style lang="scss">
+@import "../../assets/styles/variable";
 
 .wrapper.announce {
     nav {

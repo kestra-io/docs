@@ -2,10 +2,10 @@
   <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-12 col-md-6 d-flex">
+                <div class="col-12 col-lg-6 d-flex">
                     <div class="schedule-demo">
                         <h1>Lets Talk About <br><span>Orchestration</span></h1>
-                        <p class="description">Connect with our product specialists and evaluate Kestra Enterprise</p>
+                        <p class="description">Connect with our product specialists and evaluate Kestra Enterprise</p>
                         <div class="cards">
                             <div class="card-item">
                                 <div class="title-block">
@@ -37,8 +37,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 align-items-center d-flex meeting-container">
-                    <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/meetings/david76?embed=true"></div>
+                <div class="col-12 col-lg-6 mt-5 mt-lg-0 align-items-center d-flex meeting-container">
+                    <div v-if="valid === false" class="meeting-form">
+                        <img class="background" src="/demo/header-background.png" alt="" data-aos="fade-right" />
+                        <form class="row needs-validation" ref="demo-form" @submit="onSubmit" novalidate data-aos="fade-left">
+                            <div v-if="message" class="alert alert-danger mt-3 mb-0">{{ message }}</div>
+                            <div class="col-md-6 col-12">
+                                <label for="demo-first-name" class="form-label">First name</label>
+                                <input name="first-name" type="text" class="form-control" id="demo-first-name" placeholder="First name" required>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <label for="demo-last-name" class="form-label">Last name</label>
+                                <input name="last-name" type="text" class="form-control" id="demo-last-name" placeholder="Last name" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="demo-email">Company Email</label>
+                                <input name="email" type="email" class="form-control" id="demo-email" placeholder="Company Email" required>
+                            </div>
+
+                            <div class="col-12 mt-4 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <img src="/demo/david.png" class="me-3" height="32" alt="" />
+                                        Schedule a demo with David
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div v-else class="custom-meetings-iframe-container" data-src="https://hs.kestra.io/meetings/david76/website?embed=true"></div>
                 </div>
             </div>
         </div>
@@ -46,14 +74,115 @@
 </template>
 
 <script setup>
-onMounted(() => {
-    if (process.client) {
+    import posthog from "posthog-js";
+    import axios from "axios";
+    import {getHubspotTracking} from "~/utils/hubspot.js";
+
+    const route = useRoute();
+    const gtm = useGtm();
+    const formRef = useTemplateRef('demo-form');
+
+    const valid = ref(false)
+    const message = ref("")
+
+    const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
+
+
+    const onSubmit = async (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
         const script = document.createElement("script");
-        script.type = "text/javascript";
         script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+        script.setAttribute('defer','');
         document.body.appendChild(script);
+        script.addEventListener("load", async () => {
+            if (!window?.hbspt?.meetings) {
+                message.value = "Failed to load the calendar, please send an email to hello@kestra.io please!"
+                return;
+            }
+
+            const form = formRef.value;
+            const hsq = (window._hsq = window._hsq || []);
+
+            if (!form.checkValidity()) {
+                valid.value = false;
+                message.value = "Invalid form, please review the fields."
+            } else {
+                hsq.push(["identify", {
+                    email: form['email'].value,
+                    firstname: form['first-name'].value,
+                    lastname: form['last-name'].value,
+                    kuid: localStorage.getItem("KUID"),
+                }]);
+
+                let ip = await axios.get("https://api.ipify.org?format=json");
+                const formData = {
+                    fields: [
+                        {
+                            objectTypeId: "0-1",
+                            name: "email",
+                            value: form['email'].value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "firstname",
+                            value: form['first-name'].value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "lastname",
+                            value: form['last-name'].value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "kuid",
+                            value: localStorage.getItem("KUID")
+                        }
+                    ],
+                    context: {
+                        hutk: getHubspotTracking(),
+                        ipAddress: ip.data.ip,
+                        pageUri: route.path,
+                        pageName: document.title
+                    }
+                }
+
+                posthog.capture("bookdemo_form");
+                hsq.push(['trackCustomBehavioralEvent', {name: 'bookdemo_form'}]);
+
+                gtm?.trackEvent({
+                    event: "bookdemo_form",
+                    noninteraction: false,
+                })
+
+                identify(form['email'].value);
+
+                axios.post(hubSpotUrl, formData, {})
+                    .then(() => {
+                        valid.value = true;
+
+                        // we have some delay "it seems" between the form submission or maybe since we not reloading the page
+                        hsq.push(['refreshPageHandlers'])
+                        hsq.push(['trackPageView']);
+
+                        window.setTimeout(() => {
+                            window.hbspt.meetings.create(".custom-meetings-iframe-container")
+                        }, 250);
+                    })
+                    .catch((error) => {
+                        valid.value = false;
+                        if (error.response.data.errors.filter(e => e.errorType === "BLOCKED_EMAIL").length > 0) {
+                            message.value = "Please use a professional email address";
+                        } else {
+                            message.value = error.response.data.message
+                        }
+                    })
+            }
+        });
+
+
     }
-})
 
 </script>
 
@@ -134,6 +263,34 @@ onMounted(() => {
             }
         }
 
+        .meeting-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img.background {
+                width: 644px;
+                max-width: 100%;
+                z-index: 0;
+                opacity: 0.2;
+            }
+
+            form {
+                border-radius: 0.25rem;
+                padding: 0rem 1rem 2rem 1rem;
+                position: absolute;
+                z-index: 1;
+                top: 25%;
+                width: 85%;
+
+                @include media-breakpoint-up(lg) {
+                    width: 75%;
+                }
+
+                background: white;
+            }
+        }
+
         .meeting-container {
             position: relative;
 
@@ -199,7 +356,7 @@ onMounted(() => {
                 }
             }
 
-            .meetings-iframe-container {
+            .custom-meetings-iframe-container {
                 width: 100%;
                 position: relative;
 

@@ -69,7 +69,7 @@ tasks:
     branch: develop
     flows:
       - hello_world
-    sourcenamespace: company.team
+    sourceNamespace: company.team
     targetNamespace: prod
     gitDirectory: flows
     commitMessage: "changes to kestra flows"

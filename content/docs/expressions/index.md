@@ -776,6 +776,15 @@ The `className` filter returns the class name of an object.
 # output: java.lang.Float
 ```
 
+### distinct
+
+The `distinct` filter deduplicates a list and returns only the unique values.
+
+```twig
+"{{ ['1', '1', '2', '3'] | distinct }}"
+# results in ["1","2","3"]
+```
+
 ### first
 
 The `first` filter retrieves the first item of a collection or the first character of a string.
@@ -1655,6 +1664,45 @@ tasks:
   - id: github_secret
     type: io.kestra.plugin.core.log.Log
     message: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+```
+### randomInt
+
+The `randomInt` function generates a random integer from a specified range.
+
+Example with a range between 1 and 10:
+
+```yaml
+tasks:
+  - id: random
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ randomInt(1, 10) }}"
+```
+
+### uuid
+
+The `uuid` function generates a UUID in the Kestra format (i.e., a UUID encoded in Url62).
+
+Example:
+
+```yaml
+tasks:
+  - id: uuid
+    type: io.kestra.plugin.core.log.Log
+    message: "Generated UUID: {{ uuid() }}"
+    # Output: Generated UUID: d815cb05-ac71-429d-8e73-f7c92f5429c4
+```
+
+### randomPort
+
+The `randomPort` function generate a random available port.
+
+Example:
+
+```yaml
+tasks:
+  - id: uuid
+    type: io.kestra.plugin.core.log.Log
+    message: "Generated Port: {{ randomPort() }}"
 ```
 
 ---

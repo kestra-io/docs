@@ -1,8 +1,7 @@
 <template>
     <div class="container">
         <Section
-            subtitle="Reasons to integrate with"
-            subtitle-after="Kestra"
+            subtitle="Better Together"
         >
             <div class="row">
                 <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
@@ -44,6 +43,8 @@ export default {
                     name: "Chris Tata",
                     designation: "Head of Partnerships @ Airbyte",
                     alt: "Picture of Chris Tata",
+                    directory: "/partners/partners-logos/",
+                    imgName: "airbyte"
                 },
                 {
                     profile: "/partners/adrian-brudaru.svg",
@@ -52,14 +53,18 @@ export default {
                     name: "Adrian Brudaru",
                     designation: "Co-Founder @ dlthub",
                     alt: "Picture of Adrian Brudaru",
+                    directory: "/partners/partners-logos/",
+                    imgName: "dlthub"
                 },
                 {
                     profile: "/partners/charles-letaillieur.svg",
                     message:
-                        "Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management and maintenance of large-scale data flows.What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte and Restack. We are genuinely thrilled to engage Kestra.",
+                        "Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management and maintenance of large-scale data flows.What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte. We are genuinely thrilled to engage Kestra.",
                     name: "Charles Letaillieur",
                     designation: "Senior Manager @ Converteo",
                     alt: "Picture of Charles Letaillieur",
+                    directory: "/partners/partners-logos/",
+                    imgName: "converteo"
                 },
             ],
         };
