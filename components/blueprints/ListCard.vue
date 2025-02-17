@@ -20,10 +20,6 @@
     </NuxtLink>
 </template>
 
-<script setup>
-    import {slugify} from "~/utils/url.js";
-</script>
-
 <script>
     export default {
         props: {

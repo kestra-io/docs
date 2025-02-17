@@ -8,6 +8,10 @@
     import DefaultLayout from "~/layouts/default.vue";
     import "@kestra-io/ui-libs/style.css";
 
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1)
+    }
+
     useHead({
         htmlAttrs: {
             lang: "en",
