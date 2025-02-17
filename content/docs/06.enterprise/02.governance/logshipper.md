@@ -189,8 +189,6 @@ tasks:
 This example exports logs to [Elasticsearch](https://www.elastic.co). The following example flow triggers a daily batch and export to [Elasticsearch Observability platform](https://www.elastic.co/observability).
 
 ```yaml
-ps://kestra.io/docs/enterprise/governance/logshipper
-
 id: logShipper
 namespace: system
 
