@@ -31,7 +31,7 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 
 ## Log Shipper examples
 
-The Log Shipper integrates with many popular observability platforms. Below are a coupe of example flows using a Kestra core plugin as well as a couple of external platform plugins.
+The Log Shipper integrates with many popular observability platforms. Below are a coupe of example flows using a Kestra core plugin as well as external platform plugins.
 
 ### Kestra `FileLogExporter`
 
@@ -126,3 +126,149 @@ tasks:
 The logs are viewable in the interface of the specified Log Group and can be examined like in the following screenshot:
 
 ![AWS Cloud Watch Logs](/docs/enterprise/logshipper_aws_cloudwatch.png)
+
+### Google Operational Suite
+
+This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability). The following example flow triggers a daily batch and exports to Google Cloud Platform's observability monitor.
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: googleOperationalSuite
+        type: io.kestra.plugin.ee.gcp.operationalsuite.LogExporter
+        projectId: my-gcp-project
+```
+
+### Azure Monitor
+
+This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview). The following example flow triggers a daily batch and export to Azure Monitor.
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: azureMonitor
+        type: io.kestra.plugin.ee.azure.LogExporter
+        endpoint: https://endpoint-host.ingest.monitor.azure.com
+        tenantId: "{{ secret('AZURE_TENANT_ID') }}"
+        clientId: "{{ secret('AZURE_CLIENT_ID') }}"
+        clientSecret: "{{ secret('AZURE_CLIENT_SECRET') }}"
+        ruleId: dcr-69f0b123041d4d6e9f2bf72aad0b62cf
+        streamName: kestraLogs
+```
+
+### Elasticsearch
+
+This example exports logs to [Elasticsearch](https://www.elastic.co). The following example flow triggers a daily batch and export to [Elasticsearch Observability platform](https://www.elastic.co/observability).
+
+```yaml
+ps://kestra.io/docs/enterprise/governance/logshipper
+
+id: logShipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: elasticsearch
+        type: io.kestra.plugin.elasticsearch.LogExporter
+        indexName: kestra-logs
+        connection:
+          basicAuth:
+            password: "{{ secret('ES_PASSWORD') }}"
+            username: kestra_user
+          hosts:
+            - https://elastic.example.com:9200
+```
+
+### New Relic
+
+This example exports logs to [New Relic](https://newrelic.com/). The following example flow triggers a daily batch and export to the [New Relic Observability Platform](https://newrelic.com/platform).
+
+```yaml
+id: logShipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: newRelic
+        type: io.kestra.plugin.ee.newrelic.LogExporter
+        basePath: https://log-api.newrelic.com
+        apiKey: "{{ secret('NEWRELIC_API_KEY') }}"
+```
+
+### OpenTelemetry
+
+This example exports logs to [OpenTelemetry](https://opentelemetry.io/). The following example flow triggers a daily batch and export to an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).
+
+```yaml
+id: logShipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    batchSize: 1000
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: openTelemetry
+        type: io.kestra.plugin.ee.opentelemetry.LogExporter
+        otlpEndpoint: http://otel-collector:4318/v1/logs
+        authorizationHeaderName: Authorization
+        authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
+```
