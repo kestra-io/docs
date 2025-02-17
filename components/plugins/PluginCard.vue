@@ -6,7 +6,7 @@
                 <img :src="`/icons/${plugin.subGroup || plugin.group}.svg`" :alt="plugin.title">
             </div>
             <h6>
-                {{ pluginTitle(plugin.title) }}
+                {{ plugin.title }}
             </h6>
         </div>
     </NuxtLink>
@@ -24,13 +24,6 @@
         },
     });
 
-    const pluginTitle = (title) => {
-        const titleCase = title[0].toUpperCase() + title.slice(1);
-        return titleCase.length > 150 ? titleCase.substring(0, 150) + '...' : titleCase;
-    }
-
-
-
     const root = ref(null);
 
     onMounted(() => {
@@ -41,14 +34,14 @@
         });
 
         root.value.addEventListener('mouseenter', () => {
-          const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-          if (tooltip) {
-            removeAllTooltips();
-            tooltip.show();
-            tooltip.tip.addEventListener('mouseleave', () => {
-              tooltip.hide();
-            });
-          }
+            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+            if (tooltip) {
+                removeAllTooltips();
+                tooltip.show();
+                tooltip.tip.addEventListener('mouseleave', () => {
+                tooltip.hide();
+                });
+            }
         });
       }
     });
@@ -89,6 +82,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            text-transform: capitalize;
             font-size: $font-size-md;
             font-weight: 400;
             margin-bottom: 0;

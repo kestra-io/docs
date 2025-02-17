@@ -40,8 +40,6 @@ triggers:
     cron: "*/1 * * * *"
 ```
 
-Check the [`render()` function's documentation](../../expressions/04.function.md#render) for more details about how to use that function and when to use it.
-
 ---
 
 ## Migrating a 0.13.0 flow to the new rendering behavior in 0.14.0
@@ -55,7 +53,7 @@ To keep the previous (recursive) behavior, add the following configuration:
 ```yaml
 kestra:
   variables:
-    recursive-rendering: true # default: false
+    recursiveRendering: true # default: false
 ```
 
 This is an instance-level configuration, so you don't need any changes in your code. We recommend that you migrate your flows to the new rendering behavior as soon as you can, as we believe this more explicit rendering behavior will be more intuitive and less error-prone in the long run.

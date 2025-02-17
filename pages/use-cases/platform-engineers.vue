@@ -21,7 +21,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints />
+            <UseCasesEngineersExploreBlueprints tag="DevOps" />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration

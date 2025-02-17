@@ -1,6 +1,9 @@
 <template>
     <div class="container">
-        <Section subtitle="Better Together">
+        <Section
+            subtitle="Reasons to integrate with"
+            subtitle-after="Kestra"
+        >
             <div class="row card-group mb-2">
                 <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card

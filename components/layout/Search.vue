@@ -33,7 +33,7 @@
                         <div class="row search-results" v-else>
                             <div class="search-result col-12 col-md-6">
                                 <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                    <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
+                                    <NuxtLink :href="'/' + result.url" :class="{'active': index === selectedIndex}" @click="close">
                                         <div class="result">
                                             <div class="w-100">
                                                 <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
@@ -133,7 +133,7 @@
                 document.querySelector('#search-input').focus();
                 this.search();
             },
-            search(value = '') {
+            search(value) {
                 if (this.cancelToken !== undefined) {
                     this.cancelToken.cancel('cancel all');
                 }
@@ -144,7 +144,7 @@
                 return axios.get(`${this.$config.public.apiUrl}/search`, {
                     params: {
                         q: value,
-                        type: this.selectedFacet || '',
+                        type: this.selectedFacet,
                     },
                     cancelToken: this.cancelToken.token
                 }).then(response => {
@@ -290,7 +290,7 @@
                 }
             },
             close() {
-                if (this.$refs.modal) {
+                if (process.client && this.$refs.modal) {
                     const modal = this.$bootstrap.Modal.getInstance(this.$refs.modal);
                     if (modal) {
                         modal.hide();
@@ -539,7 +539,7 @@
                     color: $white;
                     font-family: $font-family-sans-serif;
                     font-size: $font-size-xs;
-                    font-weight: 400;
+                    font-weight: 800;
                 }
             }
         }

@@ -32,7 +32,7 @@ url: jdbc:snowflake://<account_identifier>.snowflakecomputing.com
 username: snowflake
 password: snowflake_passwd
 sql: select * from source
-fetch: true
+fetchType: FETCH
 
 ```
 

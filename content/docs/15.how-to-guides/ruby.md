@@ -1,5 +1,5 @@
 ---
-title: How to Ruby
+title: Run Ruby inside of your Flow
 icon: /docs/icons/ruby.svg
 stage: Getting Started
 topics:

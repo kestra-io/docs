@@ -8,6 +8,10 @@ topics:
 
 When to use parallel tasks and when to use sequential tasks in Kestra.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/8sfCQyCRcP8?si=l-ZGBuEyllYNY2QY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Parallel Tasks
 
 The following flow has 6 tasks wrapped in the `Parallel` task. Since the `concurrent` property is set to 3, Kestra will run 3 tasks in parallel. As soon as any of the three tasks completes, the next task will start.

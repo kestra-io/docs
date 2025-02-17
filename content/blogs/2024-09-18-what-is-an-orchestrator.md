@@ -11,6 +11,12 @@ image: /blogs/2024-09-18-what-is-an-orchestrator.jpg
 
 If you're an engineer looking to scale your automation - maybe because your company is growing rapidly — then this article is definitely for you.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/ZV6CPZDiJFA?si=AnX2FAvAOITG8q8X" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 Here, we’ll break down what an orchestrator is, why you might need one, and provide a practical example using Kestra.
 
 Let’s dive in!

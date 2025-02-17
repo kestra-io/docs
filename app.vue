@@ -1,28 +1,32 @@
 <template>
-    <NuxtLayout>
+    <DefaultLayout>
         <NuxtPage />
-    </NuxtLayout>
+    </DefaultLayout>
 </template>
 
 <script setup lang="ts">
-useHead({
-    htmlAttrs: {
-        lang: "en",
-    },
-    link: [
-        {
-            rel: "icon",
-            type: "image/png",
-            href: "/favicon-192x192.png",
+    import DefaultLayout from "~/layouts/default.vue";
+    import "@kestra-io/ui-libs/style.css";
+
+    useHead({
+        htmlAttrs: {
+            lang: "en",
+            class: "dark",
         },
-    ],
-    titleTemplate: (titleChunk) => {
-        return titleChunk &&
-            titleChunk != "Kestra, Open Source Declarative Data Orchestration"
-            ? `${titleChunk}`
-            : "Kestra, Open Source Declarative Data Orchestration";
-    },
-});
+        link: [
+            {
+                rel: "icon",
+                type: "image/png",
+                href: "/favicon-192x192.png",
+            },
+        ],
+        titleTemplate: (titleChunk) => {
+            return titleChunk &&
+                titleChunk != "Kestra, Open Source Declarative Data Orchestration"
+                ? `${titleChunk}`
+                : "Kestra, Open Source Declarative Data Orchestration";
+        },
+    });
 </script>
 
 <style lang="scss">

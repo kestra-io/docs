@@ -7,7 +7,9 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6 form-container bg-dark-2" >
-                    <div id="hubspotForm" data-aos="fade-left" />
+                    <ClientOnly>
+                        <div id="hubspotForm" data-aos="fade-left" />
+                    </ClientOnly>
                 </div>
             </div>
         </div>

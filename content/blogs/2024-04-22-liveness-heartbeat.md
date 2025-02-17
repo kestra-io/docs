@@ -53,7 +53,7 @@ This approach was successful in most deployment scenarios. However, in more comp
 
 One of the first disadvantages was that the heartbeat configuration had to be the same for all workers. This configuration was managed globally by the Executor service, which was responsible for detecting unhealthy workers by applying the same rule to all. However, all workers don't necessarily have the same load, the same type of processing or being deployed in the same network. As a result, some workers may be more prone to resource saturation, leading to thread starvation or even network disconnection due to reduced bandwidth.
 
-As an example, Kestra Edition Enterprise provides the [Worker Group](https://kestra.io/docs/enterprise/worker-group) feature, which allows you to create logical groups of Workers. Those groups can then be targeted for specific task executions.  Worker groups come in handy when you need a task to be executed on a worker having specific hardware configurations (GPUs with preconfigured CUDA drivers), in a specific network availability zone, or when you want to isolate long-running and resource-intensive workloads. In such a context, you can relax the heartbeat mechanism and tolerate more missing heartbeats to avoid considering a worker dead when it is not.
+As an example, Kestra Edition Enterprise provides the [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md) feature, which allows you to create logical groups of Workers. Those groups can then be targeted for specific task executions.  Worker groups come in handy when you need a task to be executed on a worker having specific hardware configurations (GPUs with preconfigured CUDA drivers), in a specific network availability zone, or when you want to isolate long-running and resource-intensive workloads. In such a context, you can relax the heartbeat mechanism and tolerate more missing heartbeats to avoid considering a worker dead when it is not.
 
 ### Zombies may lead to duplicates
 
@@ -94,7 +94,7 @@ Now that we have a better understanding of the lifecycle of services and how the
 
 ### Configuring liveness and heartbeat
 
-Starting from Kestra 0.16.0, the liveness and heartbeat mechanism can be configured individually for each service through the properties under `kestra.server.liveness`. This means you can now adapt your configuration depending on the service type, the service load, or even your [Worker Group](https://kestra.io/docs/enterprise/worker-group).
+Starting from Kestra 0.16.0, the liveness and heartbeat mechanism can be configured individually for each service through the properties under `kestra.server.liveness`. This means you can now adapt your configuration depending on the service type, the service load, or even your [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md).
 
 Without going into too much detail, here is the default and recommended configuration for a Kestra JDBC deployment.
 

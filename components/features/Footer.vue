@@ -14,7 +14,7 @@
             </NuxtLink>
             <NuxtLink href="/demo">
               <button class="btn btn-animated btn-purple-animated mx-2 mt-2">
-                Talk to Us
+                get a demo
               </button>
             </NuxtLink>
           </div>

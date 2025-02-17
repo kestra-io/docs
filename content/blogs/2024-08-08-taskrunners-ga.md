@@ -17,7 +17,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 ## What are Task Runners
 
-[Task Runners](../docs/05.concepts/09.task-runners/index.md) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
+[Task Runners](../docs/task-runners/index.md) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
 
 You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered in Kestra Enterprise or Kestra Cloud, such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
 
@@ -41,7 +41,7 @@ Task Runners empower you with **fine-grained resource allocation**, ensuring tha
 
 Thanks to the built-in documentation and autocompletion, building workflows with Task Runners is easy and fast. When you add a specific `taskRunner` to your workflow in the Code Editor, its documentation appears on the right side of the screen, providing immediate access to all available properties and usage examples. Additionally, the syntax validation helps you gain confidence that your task runner configuration is correct before you run it.
 
-To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws/225-run-multiple-python-scripts-in-parallel-on-aws-ecs-fargate-with-aws-batch) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
+To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws-batch-terraform-git) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
 
 ![task_runner_blueprints](/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
 

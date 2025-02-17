@@ -1,4 +1,3 @@
-@use "@kestra-io/ui-libs/src/scss/app.scss";
 @import "variable";
 
 html {
@@ -9,7 +8,7 @@ body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
-    background-color: $black-4;
+    background-color: #0a0a0c;
 }
 .nuxt-loading-indicator {
     background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
@@ -34,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @include media-breakpoint-down(lg) {
     h1 {
-        font-size: 1.625rem !important;
+        font-size: 1.625rem;
     }
     h2 {
         font-size: $h4-font-size !important;
@@ -471,7 +470,8 @@ blockquote.blockquote {
     --cc-font-family: var(--bs-body-font-family);
     --cc-btn-primary-color: #FFF;
     --cc-btn-primary-bg: var(--bs-primary);
-    --cc-btn-primary-hover-bg: var(--bs-primary-text);
+    --cc-btn-primary-hover-bg: #8d45ff;
+    --cc-btn-primary-hover-color: $white;
     --cc-btn-primary-border-color: var(--bs-primary);
 }
 
@@ -546,7 +546,26 @@ blockquote.blockquote {
         text-align: left !important;
         max-height: 20rem;
         overflow: auto;
-        background-color: var(--bs-body-color);
+        background-color: rgb(0,0,0,.6);
+        backdrop-filter: blur(4px);
+        color: var(--kestra-io-token-color-white);
+        border: 1px solid var(--kestra-io-token-color-border-primary);
+        border-radius: 1em;
+        max-width: 80ch;
+        padding: 1rem;
+
+        p:not(li p) {
+            margin-bottom: 0;
+            line-height: 1.625rem;
+        }
+
+        li::marker, a {
+            color: var(--kestra-io-token-text-link-default);
+        }
+
+        li {
+            line-height: 1.25rem;
+        }
 
         &::-webkit-scrollbar {
             width: 2px;
@@ -562,6 +581,22 @@ blockquote.blockquote {
             border-radius: 0px;
         }
     }
+    .tooltip-arrow {
+        --bs-tooltip-bg: var(--kestra-io-token-color-border-primary);
+    }
 }
+
+.bd-content .bd-markdown .code-block{
+    code{
+        white-space: pre-wrap;
+    }
+    pre.shiki{
+        margin-top: 0;
+        code {
+            display: block;
+        }
+    }
+}
+
 
 @import "./docs";

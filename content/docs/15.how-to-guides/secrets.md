@@ -1,5 +1,5 @@
 ---
-title: Secrets
+title: Configure Secrets
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,6 +7,10 @@ topics:
 ---
 
 How you can use secrets in various Kestra use cases.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## What are Secrets
 
@@ -84,8 +88,9 @@ Now, you can change the contents of the docker-compose.yaml file to point to the
 Let us use these secrets in a Kestra flow. In the following Kestra flow, we will first connect with PostgresDB using the `SECRET_POSTGRES_PASSWORD`, and query the data from the database. Then, we will dump the resulting output into AWS S3 using `SECRET_AWS_ACCESS_KEY` and `SECRET_AWS_SECRET_KEY`.
 
 ```yaml
-id: postgres-to-s3
+id: postgres_to_s3
 namespace: company.team
+
 tasks:
   - id: fetch
     type: io.kestra.plugin.jdbc.postgresql.Query
@@ -93,8 +98,9 @@ tasks:
     username: pg_user
     password: "{{ secret('POSTGRES_PASSWORD') }}"
     sql: select id, first_name, last_name, city from users
-    store: true
-  - id: write-to-s3
+    fetchType: STORE
+  
+  - id: write_to_s3
     type: "io.kestra.plugin.aws.s3.Upload"
     accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"

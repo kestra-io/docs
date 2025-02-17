@@ -35,10 +35,10 @@ micronaut:
       enabled: true
       clients:
         keycloak:
-          client-id: "{{ clientId }}"
-          client-secret: "{{ clientSecret}}"
+          client-id: "{{clientId}}"
+          client-secret: "{{clientSecret}}"
           openid:
-            issuer: "https://{{ keyCloakServer }}/auth/realms/{{yourRealm}}"
+            issuer: "https://{{keyCloakServer}}/auth/realms/{{yourRealm}}"
     endpoints:
       logout:
         get-allowed: true
@@ -55,7 +55,7 @@ Don't forget to set a default role in your Kestra configuration to streamline th
 ```
 kestra:
   security:
-    default-role:
+    defaultRole:
       name: Editor
       description: Default Editor role
       permissions:

@@ -13,7 +13,7 @@
                                 class="btn text-white btn-animated btn-dark-animated me-2 mb-2"
                                 data-aos="zoom-in"
                             >
-                                Talk to Us
+                                Get a demo
                             </NuxtLink>
                             <NuxtLink
                                 href="/docs/getting-started/quickstart#start-kestra"
@@ -103,9 +103,6 @@
         line-height: 3.7rem;
         text-align: center;
         font-weight: 300;
-        @include media-breakpoint-down(lg) {
-            line-height: calc($font-size-base * 1.625);;
-        }
 
         span {
             background: linear-gradient(90deg, #E151F7 -3.38%, #5C47F5 34.75%);

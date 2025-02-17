@@ -22,6 +22,10 @@ This quick tutorial, will show you how templating capbilities brought by Terrafo
 - Incorporate extra modularity
 - Implement complex pipelines while keeping syntax clear
 
+You can check the [kestra-flows-template](https://github.com/kestra-io/kestra-flows-template) repo which contains a set of modules and subflows to help you get started with Terraform.
+
+Below we will cover the creation of a single Terraform module and a subflow, and how to use them in your codebase.
+
 ## Code structure
 
 ```
@@ -64,7 +68,7 @@ Let's create a module that will define a Kestra flow that will sync data from Ai
     └── variables.tf
 ```
 
-### `main.tf`
+### `main.tf` contains the kestra_flow terraform resource, which will define the flow using a templated YAML file
 
 ```hcl
 resource "kestra_flow" "airbyte_sync" {
@@ -91,7 +95,7 @@ resource "kestra_flow" "airbyte_sync" {
 }
 ```
 
-## `variables.tf`
+## `variables.tf` will contain all the variables that can be passed to the module with appropriate validation and description
 
 ```hcl
 variable "airbyte_connections" {
@@ -164,7 +168,7 @@ variable "late_maximum_delay" {
 ```
 
 
-## `tasks.yml`
+## `tasks.yml` will contain the flow definition in YAML format, we can leverage jinja as supported by Terraform templatefile.
 
 ```yaml
 tasks:
@@ -196,12 +200,12 @@ tasks:
 
 triggers:
   - id: cron_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "${cron-expression}"
     lateMaximumDelay: "${late-maximum-delay}"
 ```
 
-## Using the module
+## Using the module in a Terraform environment
 
 Using the module will look like this :
 
@@ -235,6 +239,8 @@ It is now easy to instantiate the module in your `main.tf` file, and to expose o
 - `cron_expression`: the cron expression to trigger the flow
 - `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedules (backfill)
 
+In case of changes in the way you want to implement the underlying tasks, you can easily modify the Terraform module without changing the interface (variables).
+
 ## Sublfow example: query and display results for a given Postgres database
 
 Subflows are a way to encapsulate logic and make it reusable across your codebase.
@@ -258,10 +264,10 @@ tasks:
   username: MY_USER
   password: "{{ secrets.get('my-postgres-password') }}"
   sql: "{{ inputs.sqlQuery }}"
-  fetch: true
+  fetchType: FETCH
 
-- id: show-result
-  type: io.kestra.core.tasks.log.Log
+- id: show_result
+  type: io.kestra.plugin.core.log.Log
   message: |
     {% for row in outputs.query_data.rows %}
       {%- for key in row.keySet() -%}
@@ -304,7 +310,7 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
 
 1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.
 1. Subflow natively displays results in logs for easy debugging.
-1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show-result` task.
+1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show_result` task.
 
 > Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
 
@@ -315,7 +321,7 @@ Parent flow logs will display tasks from subflow directly:
 
 Subflows hide unnecessary details to their users, abstracting connection details, logging and such for a given set of tasks.
 
-Modules helps you define logic of the tasks to be executed, and expose only the variables that are meant to be changed.
+Terraform modules allow you to define complex flows in a modular way. Also it supports passing outputs from one Terraform resource to another across systems (Airbyte terraform resource output to Kestra module input variable) and strongly validate inputs which is not possible with subflows.
 
 ## Conclusion
 

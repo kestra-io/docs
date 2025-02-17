@@ -24,7 +24,7 @@
               Learn more
           </NuxtLink>
           <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2">
-              Talk to Us
+              get a demo
           </NuxtLink>
         </div>
       </div>

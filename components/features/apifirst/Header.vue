@@ -9,9 +9,12 @@
                             Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration.
                         </p>
                         <div class="cta d-flex gap-3">
-                            <NuxtLink href="https://kestra.io/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                                Get started
+                            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                                Get Started
                             </NuxtLink>
+                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                                Get a demo
+                            </a>
                         </div>
                     </div>
                 </div>

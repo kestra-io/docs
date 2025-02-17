@@ -1,9 +1,7 @@
 ---
-title: Create a CI/CD pipeline
+title: CI/CD Pipeline
 icon: /docs/icons/dev.svg
 ---
-
-
 
 Kestra provides several ways to create a CI/CD pipeline for your flows.
 
@@ -36,7 +34,7 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ```
 
 ::alert{type="info"}
-Note that the `--api-token` option is available only in the [Enterprise Edition](../../06.enterprise/api-tokens.md). In the open-source version, you can leverage the basic authentication using the `--user` flag:
+Note that the `--api-token` option is available only in the [Enterprise Edition](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md). In the open-source version, you can leverage the basic authentication using the `--user` flag:
 ```bash
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
 ```
@@ -204,7 +202,7 @@ jobs:
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
 ::alert{type="info"}
-Here is a modified version of the same workflow but this time using an [API token](../../06.enterprise/api-tokens.md) instead of a `user` name and `password`:
+Here is a modified version of the same workflow but this time using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of a `user` name and `password`:
 
 ```yaml
 name: Kestra CI/CD

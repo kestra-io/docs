@@ -55,6 +55,14 @@ With this information, you can test your flow by running the following command i
 curl http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
 
+You can also copy the formed Webhook URL from the **Triggers** tab.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 ## Webhooks in Kestra EE
 
 Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.

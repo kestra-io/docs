@@ -1,5 +1,7 @@
 <template>
-    <div :id="uuid" />
+    <ClientOnly>
+        <div :id="uuid" />
+    </ClientOnly>
 </template>
 
 <script setup>

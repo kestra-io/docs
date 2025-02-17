@@ -173,10 +173,10 @@ triggers:
       orders_data: "{{ outputs.file_outputs.uris['orders.csv'] }}"
       order_date: "{{ outputs.run_date.value }}"
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlow
         namespace: shiny_rocks.analytics
         flowId: produce_data
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - SUCCESS
 ```
@@ -288,7 +288,7 @@ triggers:
   - id: multiple-listen-flow
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - SUCCESS
       - id: multiple
@@ -297,19 +297,19 @@ triggers:
         windowAdvance: P0D
         conditions:
           orders:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: shiny_rocks.analytics
             flowId: load_orders_bigquery
           payments:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: shiny_rocks.analytics
             flowId: load_payments_bigquery
           services:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: shiny_rocks.analytics
             flowId: load_services_bigquery
           marketing_investments:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlow
             namespace: shiny_rocks.analytics
             flowId: marketing_investments_to_bigquery
 ```
@@ -404,10 +404,10 @@ triggers:
   - id: get_data
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlow
         namespace: shiny_rocks.analytics
         flowId: dbt_run
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - SUCCESS
 ```

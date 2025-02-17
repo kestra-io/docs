@@ -1,30 +1,88 @@
 <template>
     <div class="container-fluid">
         <div class="hero container">
-            <div class="justify-content-between row">
-                <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
-                    <div>
-                        <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
-                        <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure
-                            production workloads with high-security standards and enterprise support.</p>
-                        <div class="d-flex flex-wrap gap-2">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                                Talk to Us
-                            </NuxtLink>
+            <div class="justify-content-center row">
+                <div class="row justify-content-center align-items-center flex-column w-100 header-content">
+                    <p class="text-center header-desc">Built For Critical Use Cases</p>
+                    <h1 data-aos="fade-right">Scale With Kestra <br> Enterprise Edition</h1>
+                    <div class="d-flex flex-wrap gap-2 button-group">
+                        <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            Talk to sales
+                        </NuxtLink>
+                    </div>
+                    <div class="teams-content">
+                        <p>Trusted by Teams From:</p>
+                        <div class="teams-logos">
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/LM.svg"
+                                    alt="FILA"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/GORGIAS.svg"
+                                    alt="Gorgias"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/ACXIOM.svg"
+                                    alt="Acxiom"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/T-SYSTEM.svg"
+                                    alt="L'Oréal"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/BATTELLE.svg"
+                                    alt="Battelle"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/DATAPORT.svg"
+                                    alt="Battelle"
+                                    data-aos="fade-left"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="zoom-in">
-                    <NuxtImg
-                        width="569px"
-                        height="418px"
-                        loading="lazy"
-                        format="webp"
-                        class="img-fluid"
-                        src="/landing/ee/header.svg"
-                        alt="A screenshot of the user interface of Kestra's application"
-                    />
-                </div>
+                <EnterpriseMeetKestra/>
             </div>
         </div>
     </div>
@@ -34,10 +92,71 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: url("/landing/ee/header-bg.svg") no-repeat 100% 100%;
         color: var(--bs-white);
         padding-top: 5rem;
-        background-position: 79% 54%;
+        padding-right: 0;
+        padding-left: 0;
+        position: relative;
+        @include media-breakpoint-down(md) {
+            padding-top: $rem-10;
+        }
+
+        &::after {
+            content: "";
+            background-image: url(/landing/enterprise/bg-left.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            z-index: -50;
+            top: 435px;
+            width: 538px;
+            height: 830px;
+            @include media-breakpoint-down(xl) {
+                width: 335px;
+                height: 700px;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 300px;
+                height: 600px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                display: none;
+            }
+        }
+
+        &::before {
+            content: "";
+            background-image: url(/landing/enterprise/bg-right.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            top: -67px;
+            right: 0;
+            z-index: -50;
+            width: 480px;
+            height: 566px;
+
+            @include media-breakpoint-down(xl) {
+                width: 400px;
+                height: 450px;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 300px;
+                height: 420px;
+            }
+
+
+            @include media-breakpoint-down(sm) {
+                background-image: url(/landing/enterprise/bg-right-mobile.png);
+                width: 240px;
+                height: 380px;
+                top: -25px;
+            }
+        }
+
 
         @include media-breakpoint-down(xxl) {
             background-position: 30% 54%;
@@ -60,11 +179,38 @@
         .container {
             border-bottom: $block-border;
 
+            .header-content {
+                @include media-breakpoint-down(md) {
+                    align-items: start !important;
+                }
+            }
+
             h1 {
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
                 font-family: $font-family-sans-serif;
-                max-width: 75%;
+                width: fit-content !important;
+                @include media-breakpoint-down(lg) {
+                    font-size: $font-size-2xl !important;
+                }
+            }
+
+            .header-desc {
+                color: $purple-38;
+                font-size: calc($spacer * 1.5);
+                font-weight: 400;
+                margin-bottom: 30px;
+                text-align: center;
+
+                @include media-breakpoint-down(lg) {
+                    font-size: $font-size-md !important;
+                    margin-bottom: 10px;
+                }
+
+                @include media-breakpoint-down(md) {
+                    text-align: start !important;
+
+                }
             }
 
             span {
@@ -77,6 +223,58 @@
 
                 @include media-breakpoint-down(lg) {
                     font-size: 1.625rem !important;
+                }
+            }
+
+            .button-group {
+                width: fit-content;
+            }
+
+            .teams-content {
+                margin-top: calc($spacer * 2.125);
+                width: fit-content;
+                padding: $rem-2 0 $rem-6 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                @include media-breakpoint-down(sm) {
+                    align-items: start !important;
+                    padding: $rem-2 0;
+                }
+
+                p {
+                    padding: 0 14px;
+                    font-size: $font-size-xl;
+                    font-weight: 300;
+                    line-height: 25.85px;
+                    text-align: center;
+                    @include media-breakpoint-down(sm) {
+                        text-align: start;
+                        font-size: $rem-1;
+                    }
+                }
+
+                .teams-logos {
+                    display: flex;
+                    column-gap: 43px;
+                    row-gap: 20px;
+                    padding: 0 14px;
+
+                    img {
+                        height: 74px;
+                        @include media-breakpoint-down(lg) {
+                            height: 50px;
+                        }
+                    }
+
+                    @include media-breakpoint-down(sm) {
+                        column-gap: 21px;
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        flex-wrap: wrap;
+                    }
+
                 }
             }
 

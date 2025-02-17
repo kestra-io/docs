@@ -1,6 +1,7 @@
 ---
 title: Triggers
 icon: /docs/icons/flow.svg
+docId: triggers
 ---
 
 Trigger is a mechanism that automates the execution of a flow.
@@ -94,16 +95,16 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [HasRetryAttemptCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattemptcondition)
+- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattempt)
 - [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
-- [NotCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.NotCondition)
-- [OrCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.OrCondition)
-- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlowCondition)
-- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespaceCondition)
-- [ExecutionLabelsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabelscondition)
-- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatusCondition)
-- [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
-- [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
+- [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
+- [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
+- [ExecutionFlow](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlow)
+- [ExecutionNamespace](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespace)
+- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabels)
+- [ExecutionStatus](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatus)
+- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputs)
+- [Expression](/plugins/core/conditions/io.kestra.plugin.core.condition.Expression)
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger.md#schedule-conditions).
 
@@ -258,3 +259,31 @@ Let's break down the above example:
 [Flow](./02.flow-trigger.md), [Schedule](./01.schedule-trigger.md) and [Polling triggers](./04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
+
+## Setting inputs inside of triggers
+
+You can easily pass inputs to triggers by using the `inputs` property and passing them as a key-value pair.
+
+In this example, the `user` input is set to "John Smith" inside of the `schedule` trigger:
+
+```yaml
+id: myflow
+namespace: company.team
+
+inputs:
+  - id: user
+    type: STRING
+    defaults: Rick Astley
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello {{ inputs.user }}! 🚀"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/1 * * * *"
+    inputs:
+      user: John Smith
+```

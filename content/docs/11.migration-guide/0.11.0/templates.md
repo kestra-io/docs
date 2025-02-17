@@ -6,7 +6,7 @@ release: 0.11.0
 
 Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
-If you still rely on templates, you can re-enable them in your [configuration](../../10.configuration-guide/enabled.md#kestratemplates).
+If you still rely on templates, you can re-enable them in your [configuration](../../configuration/index.md#enabling-templates).
 
 ## Why templates are deprecated
 
@@ -49,8 +49,9 @@ tasks:
         outputs:
           - out/**
   - id: each
-    type: io.kestra.plugin.core.flow.EachParallel
-    value: "{{outputs.out.uris | jq('.[]')}}"
+    type: io.kestra.plugin.core.flow.ForEach
+    concurrencyLimit: 0
+    values: "{{ outputs.out.uris | jq('.[]') }}"
     tasks:
       - id: path
         type: io.kestra.plugin.core.debug.Return

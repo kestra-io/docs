@@ -2,6 +2,8 @@ name: Index doc on tag
 
 on:
   push:
+    branches:
+      - main
     tags:
       - v*
 
@@ -14,8 +16,43 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Extract version to index
+        id: extract-version
+        run: |
+          REF=${GITHUB_REF#refs/}
+          if [[  $REF == 'heads/main' ]]; then
+            echo "version=v$(curl -s https://api.kestra.io/v1/versions/latest | jq -r '.version')" >> $GITHUB_OUTPUT
+            echo "snapshot_version=v$(curl -s https://api.kestra.io/v1/versions/latest?snapshot=true | jq -r '.version')" >> $GITHUB_OUTPUT
+          elif [[  $REF == 'tags/v'* ]]; then
+            echo "version=${REF#tags/}" >> $GITHUB_OUTPUT
+          fi
       - name: Doc indexing webhook for tag
         id: trigger-index
         run: |
-          TAG=${GITHUB_REF#refs/*/}
-          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$TAG\"}" https://us.kestra.cloud/api/v1/kestra-tech/executions/webhook/product/doc-to-storage/${{ secrets.DOC_INDEXING_WEBHOOK }}
+          version=${{steps.extract-version.outputs.version}}
+          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$version\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
+          if [ -n "${{steps.extract-version.outputs.snapshot_version}}" ]; then
+            snapshot_version=${{steps.extract-version.outputs.snapshot_version}}
+            major_version=${version%%.*}
+            major_version=${major_version#v}
+            major_snapshot_version=${snapshot_version%%.*}
+            major_snapshot_version=${major_snapshot_version#v}
+
+            : # Here we try to detect if there is a gap between stable and snapshot release, if that's the case we're probably under an RC release and that must be covered so we launch the indexing for the RC version
+            if [ $major_version -eq $major_snapshot_version ]; then
+              tmp=${version#*.}
+              minor_version=${tmp%%.*}
+              minor_version=${minor_version#v}
+              tmp=${snapshot_version#*.}
+              minor_snapshot_version=${tmp%%.*}
+              minor_snapshot_version=${minor_snapshot_version#v}
+
+              rc_minor_version=$(($minor_version + 1))
+              if [ $rc_minor_version -lt $minor_snapshot_version ]; then
+                curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"v${major_version}.${rc_minor_version}.0-SNAPSHOT\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
+              fi
+            fi
+
+            : # Run indexing for SNAPSHOT version
+            curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$snapshot_version\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
+          fi

@@ -45,49 +45,28 @@
 <script setup>
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
+  import Menu from "vue-material-design-icons/Menu.vue"
+  import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+  const props = defineProps({
+        type: {
+            type: String,
+            required: true
+        },
+        navigation: {
+            type: Object,
+        },
+    })
 
-</script>
+    const disabledPages = [
+        '/docs/terraform/data-sources',
+        '/docs/terraform/guides',
+        '/docs/terraform/resources'
+    ]
 
-<script>
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Menu from "vue-material-design-icons/Menu.vue"
-    import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+    const route = useRoute()
 
-    export default defineComponent({
-        components: {
-            RecursiveNavSidebar,
-            ChevronDown,
-            ChevronUp,
-            Menu
-        },
-        props: {
-            type: {
-                type: String,
-                required: true
-            },
-            navigation: {
-                type: Object,
-            },
-        },
-        data() {
-          return {
-              disabledPages: [
-                  '/docs/terraform/data-sources',
-                  '/docs/terraform/guides',
-                  '/docs/terraform/resources'
-              ]
-          }
-        },
-        computed: {
-            activeSlug() {
-                return this.$route.path
-            },
-            items() {
-                return this.navigation?.[0]?.children ?? []
-            }
-        },
-    });
+    const activeSlug = computed(() => route.path)
+    const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
 
 <style lang="scss" scoped>

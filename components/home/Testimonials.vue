@@ -123,7 +123,7 @@
                         message: "it's great product with a fantastic web UI: it's extremely approachable and clear, and I love the yaml declarative approach!",
                         name: "Noelle Chubb",
                         link: "https://www.linkedin.com/in/noelle-chubb-a68141134",
-                        designation: "Political Scientist @ IDEA Public Schools",
+                        designation: "Interventionist @ IDEA Public Schools",
                         alt: "Picture of Noelle testimony",
                         imgName: 'ideaPublicSchools'
                     },

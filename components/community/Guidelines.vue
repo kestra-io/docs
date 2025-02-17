@@ -47,18 +47,12 @@
 
 <script>
   import Section from '../../components/layout/Section.vue';
-  import {useApi} from "~/composables/useApi.js";
   import Card from '../card/Card.vue';
 
   export default {
     components: {Section, Card},
-    setup() {
-      return {useApi}
-    },
     data() {
       return {
-        contributors: undefined,
-        contributorsRand: undefined,
         kestraCommunity: { title: "Be respectful to the Kestra community", descriptionHtml: "Be respectful towards other members of this Slack Community. Do not harass others. <br/><br/> Assume positive intent."},
         makeEasy: {
 
@@ -77,15 +71,6 @@
         relevantChannel: { title: "Use relevant channels", description: "Refrain from asking questions multiple times across different channels." },
         dontSpam: { title: "Don’t spam", descriptionHtml: "While we’ll do our best to help you, there is no guaranteed timeline to answer your question. <br /><br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>" },
       };
-    },
-    async created() {
-      try {
-        const { data } = await this.useApi().get('/communities/github/contributors')
-        this.contributors = data
-        this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random())
-      } catch (e) {
-        this.contributors = []
-      }
     }
   }
 </script>

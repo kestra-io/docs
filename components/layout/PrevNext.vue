@@ -2,13 +2,13 @@
     <div v-if="prev || next" class="docs-prev-next mt-5">
         <NuxtLink
             v-if="prev"
-            :to="prev._path"
+            :to="prev.path"
             class="prev"
         >
             <ArrowLeft />
             <div class="wrapper">
-                <span v-if="directory(prev._path)" class="directory">
-                  {{ directory(prev._path) }}
+                <span v-if="directory(prev.path)" class="directory">
+                  {{ directory(prev.path) }}
                 </span>
                 <span class="title">{{ prev.title }}</span>
             </div>
@@ -18,12 +18,12 @@
 
         <NuxtLink
             v-if="next"
-            :to="next._path"
+            :to="next.path"
             class="next"
         >
             <div class="wrapper">
-                <span v-if="directory(next._path)" class="directory">
-                  {{ directory(next._path) }}
+                <span v-if="directory(next.path)" class="directory">
+                  {{ directory(next.path) }}
                 </span>
                 <span class="title">{{ next.title }}</span>
             </div>
@@ -34,12 +34,12 @@
 
 <script>
 import {upperFirst} from 'scule'
-import {hash} from "ohash";
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import {prevNext} from "~/utils/navigation.js";
 
-const {navDirFromPath} = useContentHelpers()
+// const {navDirFromPath} = useContentHelpers()
+const navDirFromPath = () => []
 
     export default defineComponent({
         components: {ArrowLeft, ArrowRight},
@@ -55,10 +55,10 @@ const {navDirFromPath} = useContentHelpers()
         },
         methods: {
             directory(link) {
-                const nav = navDirFromPath(link._path, this.navigation || [])
+                const nav = navDirFromPath(link.path, this.navigation || [])
 
                 if (nav && nav[0]) {
-                    return nav[0]._path
+                    return nav[0].path
                 } else {
                     const dirs = link.split('/')
                     const directory = dirs[Math.max(1, dirs.length - 2)]

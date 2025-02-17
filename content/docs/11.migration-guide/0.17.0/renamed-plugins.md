@@ -15,7 +15,7 @@ We've also renamed `taskDefaults` to `pluginDefaults` to highlight that you can 
 
 All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
-![renamed-core-plugins](/docs/migration-guide/renamed-plugins.png)
+![renamed-core-plugins](/docs/migration-guide/renamed-core-plugins.png)
 
 It's worth taking a couple of minutes to rename those in your flows to future-proof your code.
 
@@ -66,7 +66,7 @@ Below you can see the full list of renamed plugins:
 | `io.kestra.core.tasks.flows.Dag`                                     | `io.kestra.plugin.core.flow.Dag`                              |
 | `io.kestra.core.tasks.flows.EachParallel`                            | `io.kestra.plugin.core.flow.EachParallel`                     |
 | `io.kestra.core.tasks.flows.EachSequential`                          | `io.kestra.plugin.core.flow.EachSequential`                   |
-| `io.kestra.core.tasks.flows.Flow`                                    | `io.kestra.plugin.core.flow.Flow`                             |
+| `io.kestra.core.tasks.flows.Flow`                                    | `io.kestra.plugin.core.flow.Subflow`                          |
 | `io.kestra.core.tasks.flows.ForEachItem`                             | `io.kestra.plugin.core.flow.ForEachItem`                      |
 | `io.kestra.core.tasks.flows.If`                                      | `io.kestra.plugin.core.flow.If`                               |
 | `io.kestra.core.tasks.flows.Parallel`                                | `io.kestra.plugin.core.flow.Parallel`                         |

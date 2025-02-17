@@ -11,7 +11,7 @@ To run a script stored locally, you can bind-mount it to your Kestra container.
 
 Bind-mounting local scripts to the Kestra server can also make the local scripts available to the Docker containers running the script tasks. This is useful when you want to test a script and you don't want to use Namespace Files.
 
-First, make sure that your Kestra configuration in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) allows volume mounting. Here is how you can configure it:
+First, make sure that your Kestra configuration in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) allows volume mounting. Below is an example with the intended setting in the final line:
 
 ```yaml
   kestra:
@@ -35,7 +35,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
             password: k3str4
         kestra:
           server:
-            basic-auth:
+            basicAuth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -44,11 +44,11 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
           storage:
             type: local
             local:
-              base-path: "/app/storage"
+              basePath: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmp-dir:
+            tmpDir:
               path: /tmp/kestra-wd/tmp
           plugins:
             configurations:

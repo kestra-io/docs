@@ -17,7 +17,7 @@
                                 href="/demo"
                                 class="btn text-white btn-animated btn-purple-animated mt-2"
                             >
-                                Talk to Us
+                                Get a demo
                             </NuxtLink>
                         </div>
                     </div>
@@ -40,15 +40,15 @@
             >
                 <div class="metrics">
                     <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi1Content" />
+                        <ContentRenderer :value="kpi1Content" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi2Content" />
+                        <ContentRenderer :value="kpi2Content" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi3Content" />
+                        <ContentRenderer :value="kpi3Content" />
                     </div>
                 </div>
             </Section>

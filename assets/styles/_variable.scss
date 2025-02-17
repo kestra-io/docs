@@ -94,13 +94,15 @@ $purple-27: #8200FF;
 $purple-28: #2D313E;
 $purple-29: #F1F5FF;
 $purple-30: rgba(255, 255, 255, 0.1);
-$purple-35: #1B0229;
 $purple-31: #2A1940;
 $purple-32: #CFCEFF;
 $purple-33: #110221;
 $purple-34: #10051F;
 $purple-35: #736BCD;
 $purple-36: #9CA1DE;
+$purple-37: #A396FF;
+$purple-38: #7078EF;
+$purple-39: #817CFF;
 
 $theme-colors: (
     "primary": $primary,
@@ -201,6 +203,16 @@ $rem-10: 10rem;
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
+
+$spacers: map-merge($spacers, (
+    6: ($spacer * 2),
+    7: ($spacer * 0.625)
+));
+
+$font-sizes: map-merge($font-sizes, (
+    7: ($font-size-base * 0.75)
+));
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";

@@ -1,6 +1,6 @@
 ---
 title: Push Flows to a Git Repository
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
@@ -69,7 +69,7 @@ tasks:
     branch: develop
     flows:
       - hello_world
-    sourcenamespace: company.team
+    sourceNamespace: company.team
     targetNamespace: prod
     gitDirectory: flows
     commitMessage: "changes to kestra flows"

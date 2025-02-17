@@ -23,18 +23,18 @@
                     :showDropdown="showStageDropdown"
                 />
             </div>
-            <div :class="`col-xl col-md-${stage.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
+            <div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
                 <Magnify />
                 <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
             </div>
             <div class="col-xl-auto col-md-6 pb-3 pb-xl-0">
-                <div class="clear-filter" @click="removeFilter" v-if="stage.length || topic.length || search">
+                <div class="clear-filter" @click="removeFilter" v-if="stage?.length || topic?.length || search">
                     <DeleteOutline/>
                     <span>Clear filters</span>
                 </div>
             </div>
         </div>
-        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item.path" class="col-12 col-md-4 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body">
                     <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
@@ -60,8 +60,6 @@
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import Close from "vue-material-design-icons/Close.vue"
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
 
 
@@ -134,39 +132,33 @@
     }
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-    const currentPageDir = currentPage.split('/').reverse()[0];
 
     const fetchChildDocs = async () => {
       const {data: result} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => {
-          let query = queryContent(currentPage + "/").where({ _dir: currentPageDir });
+          let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
 
-          let queryParams = {};
-
-          if (Array.isArray(stage.value) && stage.value.length > 0) {
-            queryParams.stage = { $in: stage.value };
+          if (Array.isArray(stage.value) && stage.value?.length > 0) {
+            query = query.where('stage', 'IN', stage.value);
           }
 
-          if (Array.isArray(topic.value) && topic.value.length > 0) {
-            queryParams.topics = { $contains: topic.value };
+          if (Array.isArray(topic.value) && topic.value?.length > 0) {
+            for (const soloTopic of topic.value) {
+              query = query.where('topics', 'LIKE', `%${soloTopic}%`);
+            }
           }
 
           if (search.value) {
-            queryParams.title = { $icontains: search.value }
+            query = query.where('title', 'LIKE', `%${search.value}%`);
           }
-          query = query.where(queryParams);
 
-          return query.find();
+          return query.all();
         });
       navigation.value = result.value;
     };
 
     fetchChildDocs();
-
-    const changeFilter = () => {
-      fetchChildDocs();
-    }
 
     function debounce(func, delay) {
       let timeout;
@@ -194,7 +186,7 @@
     @import "../../assets/styles/_variable.scss";
 
     .card {
-        padding: 32px;
+        padding: 8px;
     }
     .card-title {
         font-size: calc($font-size-base * 1.5);;

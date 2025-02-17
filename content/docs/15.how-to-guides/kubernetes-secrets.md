@@ -1,5 +1,5 @@
 ---
-title: Setup Secrets from a Helm Chart
+title: Set Up Secrets from a Helm Chart
 icon: /docs/icons/helm.svg
 stage: Getting Started
 topics:
@@ -11,7 +11,7 @@ editions: ["OSS"]
 How to add Kestra Secrets to your Helm Chart deployment.
 
 ::alert{type="info"}
-Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../06.enterprise/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../06.enterprise/secrets-manager.md) of your choice.
+Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../06.enterprise/02.governance/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../06.enterprise/02.governance/secrets-manager.md) of your choice.
 ::
 
 ## Pass environment variables directly

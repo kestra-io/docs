@@ -5,65 +5,57 @@
                        :external-news="externalNews"/>
             <div v-else class="container bd-gutter bd-layout margin">
                 <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
-                    <ContentRenderer :value="page">
-                        <div class="bd-content">
-                            <div class="bd-title">
-                                <p class="d-flex breadcrumb" data-aos="fade-right">
-                                    <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
-                                </p>
-                                <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
-                                <div class="d-lg-none d-block" data-aos="fade-zoom">
-                                    <NavToc :page="page" >
-                                        <template #header>
-                                            <BlogDetails :blog="page"/>
-                                        </template>
-                                    </NavToc>
-                                </div>
+                    <div class="bd-content">
+                        <div class="bd-title">
+                            <p class="d-flex breadcrumb" data-aos="fade-right">
+                                <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
+                            </p>
+                            <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                            <div class="d-lg-none d-block" data-aos="fade-zoom">
+                                <NavToc :page="page" >
+                                    <template #header>
+                                        <BlogDetails :blog="page"/>
+                                    </template>
+                                </NavToc>
                             </div>
-                            <NuxtImg
-                                loading="lazy"
-                                format="webp"
-                                quality="80"
-                                densities="x1 x2"
-                                data-aos="fade-right"
-                                class="mb-2 rounded-3 img"
-                                :alt="page.title"
-                                :src="page.image"
-                                fit="cover"
-                            />
-                            <div class="subtitle">
-                                <p>
-                                    {{ page.description }}
-                                </p>
-                            </div>
-                            <ClientOnly>
-                                <ContentRendererMarkdown
-                                    class="bd-markdown mt-4"
-                                    :value="page"
-                                    data-bs-spy="scroll"
-                                    data-bs-target="#nav-toc"
-                                />
-                            </ClientOnly>
                         </div>
-                        <NavToc class="d-lg-block d-none right-menu" :page="page">
-                            <template #header>
-                                <BlogDetails :blog="page"/>
-                            </template>
-                        </NavToc>
-                    </ContentRenderer>
+                        <NuxtImg
+                            loading="lazy"
+                            data-aos="fade-right"
+                            class="mb-2 rounded-3 img"
+                            :alt="page.title"
+                            :src="page.image"
+                            fit="cover"
+                        />
+                        <div class="subtitle">
+                            <p>
+                                {{ page.description }}
+                            </p>
+                        </div>
+                        <ClientOnly>
+                            <ContentRenderer
+                                class="bd-markdown mt-4"
+                                :value="page"
+                                data-bs-spy="scroll"
+                                data-bs-target="#nav-toc"
+                            />
+                        </ClientOnly>
+                    </div>
+                    <NavToc class="d-lg-block d-none right-menu" :page="page">
+                        <template #header>
+                            <BlogDetails :blog="page"/>
+                        </template>
+                    </NavToc>
                 </article>
             </div>
         </div>
     </div>
     <div class="bottom">
-        <DocsBlogs title="More content" :page="page" />
         <Updateletter/>
     </div>
 </template>
 <script setup>
-  import { onMounted } from 'vue';
-
-  import NavToc from "~/components/docs/NavToc.vue";
+    import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
     import Updateletter from "~/components/layout/Updateletter.vue";
 
@@ -72,12 +64,6 @@
     const externalNews = ref()
     const page = ref([]);
     const config = useRuntimeConfig();
-
-    const sort = (data)=>{
-        data.sort((a,b)=>
-            new Date(a.date)-new Date(b.date)
-        )
-    }
 
     const handleHash = (hashValue) => {
         setTimeout(() => {
@@ -102,9 +88,8 @@
         if (slug === "/blogs/") {
             const {data: pageData} = await useAsyncData(
                 `Blog-Page-List`,
-                () => queryContent("/blogs/").find()
+                () => queryCollection("blogs").order("date", "ASC").all()
             );
-            sort(pageData.value)
             page.value = pageData.value;
         }
 
@@ -115,7 +100,7 @@
         externalNews.value = externalNewsData.value.results.map((data) => {
             return {
                 id: data.id,
-                _path: data.link,
+                path: data.link,
                 image: data.image,
                 category: data.media,
                 author: {name: data.author},
@@ -131,7 +116,7 @@
     } else {
         const {data, error} = await useAsyncData(`Blog-Page-Item-${slug}`, () => {
             try {
-                return queryContent(slug).findOne();
+                return queryCollection('blogs').path(slug).first();
             } catch (error) {
                 throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
             }
@@ -143,6 +128,7 @@
 
         page.value = data.value;
           (async () => {
+            page.value.image = `${origin + image}`;
             await useContentHead(page);
             setTimeout(() => {
               extractHash()

@@ -244,9 +244,9 @@
     }
 
     :deep(details) {
-        box-shadow: none;
-        border: $block-border;
-        background-color: $black-2;
+        box-shadow: none!important;
+        border: $block-border!important;
+        background-color: $black-2!important;
         @include media-breakpoint-down(sm) {
             padding-left: calc($spacer * 0.2);
             padding-right: calc($spacer * 0.2);

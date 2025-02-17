@@ -284,16 +284,16 @@ triggers:
   - id: failed_prod_workflows
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespace
         namespace: company.payroll
         prefix: false
 ```
 
-In the YAML above, the `ExecutionStatusCondition` says that any time the execution status is either `FAILED` or `WARNING`, and the `ExecutionNamespaceCondition` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.  
+In the YAML above, the `ExecutionStatus` says that any time the execution status is either `FAILED` or `WARNING`, and the `ExecutionNamespace` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.  
 
 In pseudo-code, the entire flow might read like this:
 
@@ -326,11 +326,8 @@ tasks:
   - id: say_hello
     type: io.kestra.plugin.core.log.Log
     message: This should have triggered the sentry_execution_example flow.
-  - id: bash_will_fail
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-    - "exit 1"
+  - id: task_will_fail
+    type: io.kestra.plugin.core.execution.Fail
 ```
 
 ### A flow using SentryExecution
@@ -350,11 +347,11 @@ triggers:
   - id: failed_prod_workflows
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespace
         namespace: company.payroll
         prefix: false        
  # namespace must match exactly
@@ -396,7 +393,7 @@ triggers:
 
 Per the [online documentation](https://kestra.io/docs/concepts/executions), there are nine possible states for any execution:
 
-However, not all are available or make sense with the `ExecutionStatusCondition` task. This task could be executed by the PAUSED state when someone manually pauses the task execution. The most common for states are FAILED and WARNING.
+However, not all are available or make sense with the `ExecutionStatus` condition task. This task could be executed by the PAUSED state when someone manually pauses the task execution. The most common for states are FAILED and WARNING.
 
 - `CREATED`: The Execution or Task Run is waiting to be processed. This state usually means that the Execution is in a queue and has yet to be started.
 - `RUNNING`: The Execution or Task Run is currently running.
@@ -451,7 +448,7 @@ tasks:
 - id: get_files
   type: io.kestra.plugin.jdbc.postgresql.Query
   sql: select not_a_real_column from not_a_real_table;
-  fetch: true
+  fetchType: FETCH
 
 - id: use_files
   type: io.kestra.plugin.core.log.Log
@@ -492,7 +489,7 @@ tasks:
   - id: get_files
     type: io.kestra.plugin.jdbc.postgresql.Query
     sql: select not_a_real_column from not_a_real_table;
-    fetch: true
+    fetchType: FETCH
   - id: use_files
     type: io.kestra.plugin.core.log.Log
     message: Number of rows returned is "{{get_files.outputs.size}}"
@@ -533,11 +530,11 @@ triggers:
   - id: failed_prod_workflows
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespace
         namespace: company.payroll # needs to match the namespace of the flow above
         prefix: false
 ```

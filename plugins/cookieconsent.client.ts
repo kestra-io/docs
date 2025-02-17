@@ -1,6 +1,7 @@
 import * as CookieConsent from "vanilla-cookieconsent";
 import posthog from 'posthog-js'
 import axios from "axios";
+import identify from "../utils/identify";
 
 export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
@@ -9,10 +10,11 @@ export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.provide("cookieConsent", cookieConsent);
 
     nuxtApp.hook('page:finish', () => {
-        const {initialize} = useGtag()
+        const gtm = useGtm()
+        const route = useRoute()
 
         const enabledAnalytics = async () => {
-            initialize();
+            gtm?.enable(true);
 
             const response = await axios.get(`${runtimeConfig.public.apiUrl}/config`, {withCredentials: true})
 
@@ -22,6 +24,7 @@ export default defineNuxtPlugin(nuxtApp => {
                     api_host: response.data.posthog.apiHost,
                     ui_host: 'https://eu.posthog.com',
                     capture_pageview: false,
+                    capture_pageleave: true,
                     autocapture: false,
                     disable_session_recording: true
                 }
@@ -36,26 +39,42 @@ export default defineNuxtPlugin(nuxtApp => {
             }
 
             posthog.capture('$pageview');
+
+            gtm?.trackEvent({
+                event: 'identify',
+                category: 'sys',
+                noninteraction: true,
+                kuid: response.data.id
+            })
+
+            gtm?.trackView(route.name, route.fullPath);
+
+            localStorage.setItem("KUID", response.data.id);
+
+            if (window?.location?.search) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const ke = urlParams.get('ke');
+                if (ke) {
+                    identify(ke);
+                }
+            }
         };
 
         const enabledMarketing = () => {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.cr-relay.com/v1/site/a52e9652-1bdf-4c6b-9ef0-06edf432aeef/signals.js';
-            script.async = true;
-            window.signals = Object.assign(
-                [],
-                ['page', 'identify', 'form'].reduce(function (acc, method){
-                    acc[method] = function () {
-                        signals.push([method, arguments]);
-                        return signals;
-                    };
-                    return acc;
-                }, {})
-            );
-            document.head.appendChild(script);
-
-            return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
+            gtm?.trackEvent({
+                event: 'enable_marketing',
+                category: 'sys',
+                noninteraction: true,
+            })
         };
+
+
+        if (!isEurope) {
+            enabledAnalytics();
+            enabledMarketing();
+
+            return;
+        }
 
         document.documentElement.classList.add('cc--darkmode');
 

@@ -2,9 +2,9 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="showAnnounce" :content="content" />
+        <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="isScrolled" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
-            <LayoutHeader />
+            <LayoutHeader :scrolled="isScrolled" />
             <main>
                 <slot />
             </main>
@@ -15,12 +15,9 @@
 </template>
 
 <script setup>
-    import {ref, watch, onMounted} from 'vue';
-
     const config = useRuntimeConfig();
-    const content = ref(null);
-    const showAnnounce = ref(false);
     const route = useRoute();
+    const isScrolled = ref(false)
 
     const {data: bannerMessages} = await useCachedAsyncData(
         `header-annonces`,
@@ -32,23 +29,27 @@
         }
     );
 
-    if (bannerMessages.value && bannerMessages.value.results) {
-        content.value = bannerMessages.value.results;
+    const content = computed(() => {
+        return bannerMessages.value?.results;
+    })
+
+    const handleScroll = () => {
+      isScrolled.value = window.scrollY > 20
     }
 
-    const checkDisplayingAnnounce = (content, path) => {
-        if (content && content.length > 0 && path === '/') {
-            showAnnounce.value = true;
-        } else {
-            showAnnounce.value = false;
-        }
-    }
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+    })
 
-    checkDisplayingAnnounce(content.value, route.path);
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
 
-    watch([() => route.path, content], ([newPath, newContent]) => {
-        checkDisplayingAnnounce(newContent, newPath)
-    });
+    const showAnnounce = computed(() => {
+        const innerContent = content.value;
+        const path = route.path;
+        return innerContent && innerContent.length > 0 && path === '/'
+    })
 </script>
 
 <script>
@@ -75,7 +76,6 @@
     @import "../assets/styles/variable";
 
     .wrapper.announce {
-        margin-top: 30px;
 
         nav {
             .navbar-collapse {

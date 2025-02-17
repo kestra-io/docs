@@ -14,7 +14,7 @@
                     <NuxtLink
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
-                        :href="item._path">
+                        :href="item.path">
                            {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
@@ -22,25 +22,25 @@
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
                         class="disabled"
-                        @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
-                        :data-bs-target="'#'+pathToId(item._path)"
+                        @click="toggle(item.path, isPage(item))" data-bs-toggle="collapse"
+                        :data-bs-target="'#'+pathToId(item.path)"
                     >
                             {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0 && (!item.hideSubMenus || !item.hideSubMenus)">
                         <chevron-down
-                            v-if="isShow(item._path)"
-                            @click="toggle(item._path)"
+                            v-if="isShow(item.path)"
+                            @click="toggle(item.path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item._path)"
+                            :data-bs-target="'#'+pathToId(item.path)"
                             role="button"
                         />
                         <chevron-right
                             v-else
-                            @click="toggle(item._path)"
+                            @click="toggle(item.path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item._path)"
+                            :data-bs-target="'#'+pathToId(item.path)"
                             role="button"
                         />
                     </template>
@@ -50,8 +50,8 @@
                         :items="filterChildren(item)"
                         :depth-level="depthLevel+1"
                         :active-slug="activeSlug"
-                        :open="isShow(item._path)"
-                        :parent-slug="item._path"
+                        :open="isShow(item.path)"
+                        :parent-slug="item.path"
                         :disabled-pages="disabledPages"
                         :type="type"
                     />
@@ -108,10 +108,10 @@
         }),
         methods: {
             pathToId(path) {
-                return path.replaceAll(/[/.]/g, '_')
+                return path.replaceAll("/", '_').replaceAll(".", "-")
             },
             filterChildren(item) {
-                return (item.children || []).filter(r => item._path !== r._path);
+                return (item.children || []).filter(r => item.path !== r.path);
             },
             toggle(item) {
                 if (this.showMenu.some(path => path.startsWith(item))) {
@@ -129,13 +129,13 @@
                 }
 
                 if (this.disabledPages) {
-                    return !this.disabledPages.includes(item._path)
+                    return !this.disabledPages.includes(item.path)
                 }
 
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
-                let s = (this.activeSlug + '/').startsWith(item._path + '/');
+                let s = (this.activeSlug + '/').startsWith(item.path + '/');
 
                 return {
                     bold: depthLevel === 1,

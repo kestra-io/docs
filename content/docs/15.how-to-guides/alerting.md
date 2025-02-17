@@ -1,9 +1,10 @@
 ---
-title: How to Configure alerts inside of Kestra
+title: Configure Alerts inside of Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - DevOps
+  - Kestra Concepts
 ---
 
 Configure alerts when workflow failures occurs.
@@ -95,7 +96,7 @@ triggers:
   - id: on_failure
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
         in:
           - FAILED
           - WARNING

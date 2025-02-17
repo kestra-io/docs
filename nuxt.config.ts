@@ -1,13 +1,29 @@
+import * as sass from "sass";
+
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
+
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos'],
-    target: 'server',
+    modules: [
+        '@nuxt/devtools',
+        '@nuxt/image',
+        'nuxt-multi-cache',
+        'vue3-carousel-nuxt',
+        'nuxt-lazy-hydrate',
+        'nuxt-aos',
+        '@zadigetvoltaire/nuxt-gtm',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        '@nuxt/content',
+    ],
+    target: 'static',
     image: {
         formats: {
             webp: {
                 quality: 80
             }
-        }
+        },
+        densities: [1, 2],
+        domains: ['kestra.io']
     },
     sitemap: {
         sitemaps: {
@@ -16,6 +32,9 @@ export default defineNuxtConfig({
                 sources: ['/api/sitemap']
             },
             plugins: {
+                sources: ['/api/sitemap']
+            },
+            blueprints: {
                 sources: ['/api/sitemap']
             }
         },
@@ -49,64 +68,58 @@ export default defineNuxtConfig({
 
     css: [
         '@/assets/styles/vendor.scss',
-        '@/assets/styles/app.scss'
+        '@/assets/styles/app.scss',
+        '@/assets/styles/theme.scss'
     ],
 
     content: {
-        navigation: {
-            fields: ['hideSidebar', 'hideSubMenus'],
-        },
-        documentDriven: false,
-        highlight: {
-            langs: [
-                'bash',
-                'c',
-                'cpp',
-                'csv',
-                'dockerfile',
-                'go',
-                'groovy',
-                'handlebars',
-                'hcl',
-                'ini',
-                'java',
-                'javascript',
-                'json',
-                'markdown',
-                'mermaid',
-                'perl',
-                'php',
-                'python',
-                'r',
-                'ruby',
-                'rust',
-                'scala',
-                'sql',
-                'systemd',
-                'twig',
-                'typescript',
-                'xml',
-                'yaml'
-            ],
-            theme: 'github-dark'
-        },
-        markdown: {
-            remarkPlugins: {
-                'remark-flexible-markers': {
-                    markerClassName: 'type-mark',
+        build: {
+            markdown: {
+                remarkPlugins: {
+                    'remark-flexible-markers': {
+                        markerClassName: 'type-mark',
+                    },
+                    'remark-code-import': {
+                        rootDir: process.cwd()
+                    },
                 },
-                'remark-code-import': {
-                    rootDir: process.cwd()
+                highlight: {
+                    // Theme used in all color schemes.
+                    theme: 'github-dark',
+                    langs: [
+                        'bash',
+                        'c',
+                        'cpp',
+                        'csv',
+                        'css',
+                        'dockerfile',
+                        'go',
+                        'groovy',
+                        'handlebars',
+                        'hcl',
+                        'ini',
+                        'java',
+                        'javascript',
+                        'json',
+                        'markdown',
+                        'mermaid',
+                        'perl',
+                        'php',
+                        'python',
+                        'r',
+                        'ruby',
+                        'rust',
+                        'scala',
+                        'sql',
+                        'systemd',
+                        'twig',
+                        'typescript',
+                        'xml',
+                        'yaml'
+                    ]
                 },
-            }
+            },
         },
-    },
-
-    router: {
-        options: {
-            strict: true
-        },
-        middleware: ['redirect'],
     },
 
     devServer: {
@@ -124,18 +137,20 @@ export default defineNuxtConfig({
             }
         }
     },
-
     vite: {
         build: {
             rollupOptions: {
-                external: ['shiki/onig.wasm'],
+                external: [
+                    'shiki/onig.wasm',
+                ]
             }
         },
         optimizeDeps: {
             include: [
                 "humanize-duration",
                 "lodash",
-                "dagre"
+                "dagre",
+                "debug",
             ],
             exclude: [
                 '* > @kestra-io/ui-libs'
@@ -150,15 +165,18 @@ export default defineNuxtConfig({
             preprocessorOptions: {
                 scss: {
                     api: 'modern',
-                    silenceDeprecations: ['mixed-decls', 'color-functions'],
+                    logger: sass.Logger.silent
                 },
             },
         },
     },
 
-    gtag: {
-        id: 'G-EYVNS03HHR',
-        enabled: true
+    gtm: {
+        id: 'GTM-T4F85WRF',
+        enabled: false,
+        debug: false,
+        enableRouterSync: true,
+        devtools: true,
     },
 
     runtimeConfig: {
@@ -178,7 +196,6 @@ export default defineNuxtConfig({
                     "Build with Kestra": [
                         "Concepts",
                         "Workflow Components",
-                        "Expressions",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -191,10 +208,15 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Configuration Guide",
-                        "Migration Guide",
+                        "Migration Guide"
+                    ],
+                    "Reference Docs": [
+                        "Configuration",
+                        "Expressions",
+                        "API Reference",
                         "Terraform Provider",
-                        "API Reference"
+                        "Server CLI",
+                        "Kestra EE CLI"
                     ]
                 }
             }
@@ -203,7 +225,10 @@ export default defineNuxtConfig({
 
     nitro: {
         prerender: {
-            routes: ['/rss.xml'],
+            routes: [
+                '/rss.xml',
+            ],
+            autoSubfolderIndex: false,
         },
     },
 
@@ -224,13 +249,20 @@ export default defineNuxtConfig({
         '/docs/developer-guide/error-handling': {redirect: '/docs/workflow-components/errors'},
         '/docs/developer-guide/scripts/output-directory': {redirect: '/docs/developer-guide/scripts/input-output-files'},
         '/docs/best-practice': {redirect: '/docs/best-practices'},
+        '/docs/best-practices/pebble-templating-with-namespace-files': {redirect: '/docs/best-practices/expressions-with-namespace-files'},
         '/docs/workflow-components/trigger': {redirect: '/docs/workflow-components/triggers'},
         '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},
         '/docs/workflow-components/triggers/conditions': {redirect: '/docs/workflow-components/triggers#conditions'},
         '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components/flow'},
         '/docs/workflow-components/task-defaults': {redirect: '/docs/workflow-components/plugin-defaults'},
-        '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/expressions/expression-types'},
-        '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/expressions/expression-usage'},
+        '/docs/concepts/expression/expression-types': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/expression-usage': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/filter': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/function': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/operator': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/tag': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/test': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/deprecated-handlebars': {redirect: '/docs/expressions'},
         '/docs/concepts/expression': {redirect: '/docs/expressions'},
         '/docs/expression': {redirect: '/docs/expressions'},
         '/docs/migration-guide/core-script-tasks': {redirect: '/docs/migration-guide/0.11.0/core-script-tasks'},
@@ -247,28 +279,62 @@ export default defineNuxtConfig({
         '/docs/migration-guide/volume-mount': {redirect: '/docs/migration-guide/0.17.0/volume-mount'},
         '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
+        '/docs/how-to-guides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
+        '/docs/how-to-guide': {redirect: '/docs/how-to-guides'},
         '/docs/developer-guide/': {redirect: '/docs'},
         '/docs/developer-guide/storage': {redirect: '/docs/concepts/storage'},
         '/docs/developer-guide/caching': {redirect: '/docs/concepts/caching'},
         '/docs/developer-guide/namespace-files': {redirect: '/docs/concepts/namespace-files'},
         '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
+        '/docs/developer-guide/git': {redirect: '/docs/version-control-cicd/git'},
         '/docs/concepts/flowable-tasks': {redirect: '/docs/workflow-components/tasks/flowable-tasks'},
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
+        '/docs/enterprise/enterprise-edition': {redirect: '/docs/enterprise/overview/enterprise-edition'},
+        '/docs/enterprise/setup': {redirect: '/docs/enterprise/overview/setup'},
+        '/docs/enterprise/releases': {redirect: '/docs/enterprise/overview/releases'},
+        '/docs/enterprise/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
+        '/docs/enterprise/namespace-management': {redirect: '/docs/enterprise/governance/namespace-management'},
+        '/docs/enterprise/centralized-task-configuration': {redirect: 'https://kestra.io/docs/enterprise/governance/centralized-task-configuration'},
+        '/docs/enterprise/custom-blueprints': {redirect: '/docs/enterprise/governance/custom-blueprints'},
+        '/docs/enterprise/logshipper': {redirect: '/docs/enterprise/governance/logshipper'},
+        '/docs/enterprise/secrets': {redirect: '/docs/enterprise/governance/secrets'},
+        '/docs/enterprise/secrets-manager': {redirect: '/docs/enterprise/governance/secrets-manager'},
+        '/docs/enterprise/tenants': {redirect: '/docs/enterprise/governance/tenants'},
+        '/docs/enterprise/authentication': {redirect: '/docs/enterprise/auth/authentication'},
+        '/enterprise/auth/sso': {redirect: '/enterprise/auth/sso'},
+        '/docs/enterprise/api': {redirect: '/docs/enterprise/auth/api'},
+        '/docs/enterprise/api-tokens': {redirect: '/docs/enterprise/auth/api-tokens'},
+        '/docs/enterprise/invitations': {redirect: '/docs/enterprise/auth/invitations'},
+        '/docs/enterprise/rbac': {redirect: '/docs/enterprise/auth/rbac'},
+        '/docs/enterprise/scim': {redirect: '/docs/enterprise/auth/scim'},
+        '/docs/enterprise/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
+        '/docs/enterprise/apps': {redirect: '/docs/enterprise/scalability/apps'},
+        '/docs/enterprise/task-runners': {redirect: '/docs/enterprise/scalability/task-runners'},
+        '/docs/enterprise/worker-group': {redirect: '/docs/enterprise/scalability/worker-group'},
+        '/docs/enterprise/worker-isolation': {redirect: '/docs/enterprise/scalability/worker-isolation'},
+        '/docs/enterprise/announcements': {redirect: '/docs/enterprise/instance/announcements'},
+        '/docs/enterprise/dashboard': {redirect: '/docs/enterprise/instance/dashboard'},
+        '/docs/enterprise/maintenance-mode': {redirect: '/docs/enterprise/instance/maintenance-mode'},
+        '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
+        '/docs/administrator-guide/server-cli': {redirect: '/docs/server-cli'},
+        '/docs/configuration-guide': {redirect: '/docs/configuration'},
+        '/docs/configuration-guide/**': {redirect: '/docs/configuration'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/flows': {redirect: '/docs/workflow-components/flows#faq'},
         '/docs/faq/variables': {redirect: '/docs/workflow-components/variables#faq'},
-        '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
+        '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
-        '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
+        '/t/**': {proxy: 'https://eu.posthog.com/**'},
     },
 
     build: {
@@ -295,7 +361,6 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
-        debug: true,
         data: {
             enabled: true,
         },

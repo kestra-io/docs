@@ -89,17 +89,17 @@ In the future, we plan to add more customization options allowing you to set cus
 ## System Flows
 
 System Flows are designed to handle periodically executed background operations that keep your platform running but are generally kept out of sight. These flows automate maintenance workflows, such as:
-1. Sending [alert notifications](https://kestra.io/blueprints/system/250-set-up-alerts-for-failed-workflow-executions-using-slack)
+1. Sending [alert notifications](https://kestra.io/blueprints/failure-alert-slack)
 2. Creating automated support tickets when critical workflows fail
-3. [Purging logs](https://kestra.io/blueprints/trigger/234-purge-execution-data-including-logs-metrics-and-outputs-on-a-schedule) and removing old executions or internal storage files to save space
+3. [Purging logs](https://kestra.io/blueprints/purge) and removing old executions or internal storage files to save space
 4. Syncing code from Git or pushing code to Git
-5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments.
+5. Automatically [releasing flows](https://kestra.io/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments.
 
 We refer to these as **System Flows** because, by default, they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
 ```yaml
 kestra:
-  system-flows:
+  systemFlows:
     namespace: system
 ```
 
@@ -435,7 +435,7 @@ This configuration step is critical to ensure that Kestra EE operates correctly 
 ```yaml
 kestra:
   encryption:
-    secret-key: pleaseChangeThisSecret # ✅ mandatory!
+    secretKey: pleaseChangeThisSecret # ✅ mandatory!
 ```
 
 The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `pleaseChangeThisSecret` with a secure, custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
@@ -493,7 +493,7 @@ Using an invalid worker group key in a task leads to task runs being stuck in a 
 
 With the new Worker Groups UI page, worker groups are now treated as API-first objects — they must be created first from the UI, API, CLI, or Terraform before being used in flows. This ensures that worker group keys are valid and exist before they are referenced in tasks.
 
-Check the [Worker Group](https://kestra.io/docs/enterprise/worker-group) documentation to learn how to create and manage worker groups.
+Check the [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md) documentation to learn how to create and manage worker groups.
 
 In short, this new feature improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
@@ -539,7 +539,7 @@ Here’s how you can configure the email server in your `application.yaml` file:
 
 ```yaml
 kestra:
-  mail-service:
+  mailService:
     host: String
     port: Number
     username: String
@@ -601,8 +601,6 @@ For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/iss
 We've also added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
 
 The SSH Command plugin has been updated to [support OpenSSH config authentication](https://github.com/kestra-io/plugin-fs/pull/154/files).
-
-Finally, we’ve [updated](https://github.com/kestra-io/plugin-docker/issues/32) the Docker `Push` task to support a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
 
 ---
 

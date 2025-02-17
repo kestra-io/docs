@@ -36,7 +36,7 @@ $bd-gutter-x: 3rem;
 
 .bd-content, .bd-main > div.bd-title > h1 {
     margin: 0 auto;
-    max-width: 700px;
+    max-width: 45.8rem;
     width: 100%;
 }
 
@@ -207,7 +207,7 @@ $bd-gutter-x: 3rem;
     h1, h2, h3, h4, h5, h6 {
         margin-bottom: 0.5rem;
         a {
-            color: var(--bs-body-color);
+            color: $white;
         }
     }
 
@@ -241,7 +241,7 @@ $bd-gutter-x: 3rem;
     }
 
 
-    img {
+    img:not(h2 img) {
         width: 100%;
     }
     video, iframe {
@@ -273,7 +273,6 @@ $bd-gutter-x: 3rem;
         color: $white;
         line-height: 1.75rem;
         font-size: $font-size-md;
-        font-weight: 400;
 
         a {
             color: $purple-36;
@@ -291,15 +290,24 @@ $bd-gutter-x: 3rem;
     }
 
     code {
-        border: $block-border;
-        background-color: $black-2;
-        color: $purple-36;
+        background: #161617;
+        border: 1px solid #252526;
+        border-radius: var(--bs-border-radius);
+        color: #b9b9ba;
+        padding: 0 .25rem;
     }
 
     .code-block, .doc-alert {
         background-color: $black-2;
         code {
             border: 0;
+            color: $white;
+        }
+    }
+
+    .code-block {
+        code {
+            padding: 0;
         }
     }
 

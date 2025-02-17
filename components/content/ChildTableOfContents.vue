@@ -1,6 +1,6 @@
 <script>
     import {hash} from "ohash";
-    import {useAsyncData, fetchContentNavigation} from "#imports";
+    import {useAsyncData} from "#imports";
     import {NuxtLink} from "#components";
 
     export default defineComponent({
@@ -17,7 +17,6 @@
         async setup(props) {
             const {pageUrl, max} = toRefs(props);
             const route = useRoute()
-            const {navDirFromPath} = useContentHelpers()
 
             let currentPage = null;
 
@@ -29,15 +28,27 @@
 
             currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
-            const queryBuilder = queryContent(currentPage)
-
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => fetchContentNavigation(queryBuilder),
+                () => queryCollectionNavigation('docs').andWhere(query =>
+                    query
+                        .where('path', 'LIKE', `${currentPage}/%`)
+                        .where('path', '<>', currentPage)
+                )
             );
 
-            const dir = (navDirFromPath(currentPage, navigation.value) || [])
-                .filter(value => value._path !== currentPage)
+            const dir = computed(() => {
+                const extractLeafChildrenPages = (children) => {
+                    return children.map((child) => {
+                        if (child.children?.length) {
+                            return extractLeafChildrenPages(child.children);
+                        }
+                        return child;
+                    }).flat();
+                };
+
+                return extractLeafChildrenPages(navigation.value)
+            });
 
             return {dir, max};
         },
@@ -45,8 +56,7 @@
         render(ctx) {
             const {dir, max} = ctx;
 
-            const renderLink = (link) => h(NuxtLink, {to: link._path}, () => link.title);
-
+            const renderLink = (link) => h(NuxtLink, {to: link.path}, () => link.title);
 
             const renderLinks = (data, level) => {
                 return h(
@@ -55,7 +65,7 @@
                     (data || []).map((link) => {
                         if (link.children &&
                             (max === undefined || max <= level) &&
-                            (link.children.length > 1 || link.children.length === 1 && link.children[0]._path !== link._path)
+                            (link.children.length > 1 || (link.children.length === 1 && link.children[0].path !== link.path))
                         ) {
                             return h("li", null, [renderLink(link), renderLinks(link.children, level + 1)]);
                         }
