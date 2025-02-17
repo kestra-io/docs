@@ -23,12 +23,12 @@
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
                             <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text" @click="closeToc" class="table-content">
-                                <a @click="menuNavigate" :name="tableOfContent.id" :class="'depth-' + tableOfContent.depth">{{ tableOfContent.text }}</a>
+                                <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="'depth-' + tableOfContent.depth">{{ tableOfContent.text }}</a>
                             </li>
                             <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent.children && tableOfContent.children.length">
                                 <template v-for="item in tableOfContent.children" >
                                     <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
-                                        <a @click="menuNavigate" :name="item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
+                                        <a @click="menuNavigate" :href="`#${item.id}`" :class="'depth-' + item.depth">{{ item.text }}</a>
                                     </li>
                                 </template>
                             </ul>
@@ -52,8 +52,6 @@
 </script>
 
 <script>
-    import posthog from 'posthog-js'
-
     export default {
         props: {
             page: {
@@ -69,12 +67,12 @@
         },
         computed: {
             generated() {
-                return this.page.body.toc.links
+                return this.page.body?.toc?.links ?? [];
             }
         },
         mounted() {
-            window.addEventListener('scroll', this.handleScroll);
             this.scrollToHash();
+            window.addEventListener('scroll', this.handleScroll);
         },
         beforeDestroy() {
             window.removeEventListener('scroll', this.handleScroll);
@@ -115,20 +113,20 @@
               }, 1000);
             },
             activateMenuItem(item, index, linkArray, removeActiveTab) {
-              if (item?.id && linkArray[index - 1]?.id) {
+              if (item?.id) {
                 const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
-                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect().top : undefined;
-                if (childrenLinkPosition?.top <= 160  && childrenLinkPosition?.top > 0) {
-                  let activeTapItem = document.querySelector(`.right-menu a[name='${item.id}']`);
+                const prevChildrenLinkPosition = index > 0 ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect()?.top : undefined;
+                if (childrenLinkPosition?.top <= 160) {
+                  let activeTapItem = document.querySelector(`.right-menu a[href='#${item.id}']`);
                   if (!activeTapItem.classList.contains('active')) {
                     if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
                       removeActiveTab();
                       activeTapItem.classList.add('active');
+                      activeTapItem.scrollIntoView({block: "nearest", inline: "nearest"});
                     }
                   }
                 }
               }
-              return
             },
             scrollToHash() {
               const hash = this.$route.hash;
@@ -141,9 +139,8 @@
               const element = document.getElementById(id);
               this.$nextTick(() => {
                 if (element) {
-                  const offset = element?.getBoundingClientRect().top + window.scrollY;
                   setTimeout(() => {
-                    window.scrollTo({ top: offset - 70 });
+                    element.scrollIntoView({block: "nearest", inline: "nearest"});
                   }, 100);
                 } else {
                   setTimeout(() => {
