@@ -202,17 +202,6 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ssaily.png" alt="Sami Säily"/>
-                    <div class="w-100">
-                        <div class="team-name">Sami Säily</div>
-                        <div class="team-title font-small">Lead Field Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/ssaily/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/ssaily" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
                     <div class="w-100">
                         <div class="team-name">Miloš Paunović</div>
