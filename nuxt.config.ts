@@ -185,6 +185,9 @@ export default defineNuxtConfig({
                         "Kestra EE CLI"
                     ]
                 }
+            },
+            posthog: {
+                enabled: process.env.POSTHOG_ENABLED !== "false"
             }
         },
     },
@@ -329,7 +332,7 @@ export default defineNuxtConfig({
 
     multiCache: {
         data: {
-            enabled: true,
+            enabled: process.env.NUXT_CACHE_ENABLED !== 'false',
         },
     },
 
