@@ -1,5 +1,7 @@
 import slugifyLib from "slugify";
 
+slugifyLib.extend({'(': '-', ')': ''})
+
 export function slugify(text) {
     return slugifyLib(text, {
         lower: true,
