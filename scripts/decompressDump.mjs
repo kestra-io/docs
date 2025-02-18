@@ -6,7 +6,7 @@ import { promises as fs } from 'fs'
 import * as path from 'path'
 import minimist from 'minimist'
 
-async function decompressSQLDump(base64Str, compressionType = 'gzip'){
+function decompressSQLDump(base64Str, compressionType = 'gzip'){
     // Decode Base64 to binary data
     const binaryData = Uint8Array.from(atob(base64Str), c => c.charCodeAt(0))
 
@@ -14,9 +14,7 @@ async function decompressSQLDump(base64Str, compressionType = 'gzip'){
     const response = new Response(new Blob([binaryData]))
     const decompressedStream = response.body?.pipeThrough(new DecompressionStream(compressionType))
     // Read the decompressed data as text
-    const decompressedText = await new Response(decompressedStream).text()
-
-    return decompressedText
+    return new Response(decompressedStream).text()
 }
 
 async function main(){
@@ -24,9 +22,10 @@ async function main(){
     const params = minimist(process.argv.slice(2))
     const filePath = params._[0]
     const compressionType = params.compression || 'gzip'
-    const fileContent = await fs.readFile(path.join(cwd, filePath), 'utf-8')
+    const finalCwd = filePath.startsWith('/') ? '' : cwd
+    const fileContent = await fs.readFile(path.join(finalCwd, filePath), 'utf-8')
     const text = await decompressSQLDump(fileContent, compressionType)
-    const outputPath = path.join(path.dirname(path.join(cwd, filePath)), 'decompressed.sql')
+    const outputPath = path.join(path.dirname(path.join(finalCwd, filePath)), 'decompressed.sql')
     await fs.writeFile(outputPath, text)
     return outputPath
 }
