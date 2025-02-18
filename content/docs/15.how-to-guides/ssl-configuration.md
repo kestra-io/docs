@@ -157,7 +157,7 @@ To enable CSRF protection, you must ensure that your instance has TLS/SSL enable
 Once this is configured, add the following to your configuration file:
 
 ```yaml
-micronaut
+micronaut:
   security:
     csrf:
       enabled: true
@@ -165,3 +165,140 @@ micronaut
 
 This setting enables CSRF protection on all endpoints that reach `/api/.*`.
 
+## Configuring SSL with Kubernetes
+
+For Kubernetes deployments, you can enable HTTPS either by configuring TLS at the Ingress level or by using self-signed certificates at the application level.
+
+### Using Ingress with TLS Termination (Recommended for Production)
+
+Most cloud providers expect TLS termination at the ingress controller. Here's how to configure HTTPS using Let's Encrypt certificates:
+
+1. **Install cert-manager** (automates certificate management — to select a different version, check the [available releases on GitHub](https://github.com/cert-manager/cert-manager/releases)):
+   ```bash
+   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.1/cert-manager.yaml
+   ```
+
+2. **Create a Let's Encrypt issuer** (replace `your-email@example.com`):
+   ```yaml
+   apiVersion: cert-manager.io/v1
+   kind: ClusterIssuer
+   metadata:
+     name: letsencrypt-prod
+   spec:
+     acme:
+       server: https://acme-v02.api.letsencrypt.org/directory
+       email: your-email@example.com
+       privateKeySecretRef:
+         name: letsencrypt-prod
+       solvers:
+       - http01:
+           ingress:
+             class: nginx # Update for your ingress controller
+   ```
+
+3. **Configure Ingress with TLS** (Azure AKS example):
+   ```yaml
+   apiVersion: networking.k8s.io/v1
+   kind: Ingress
+   metadata:
+     name: kestra-ingress
+     annotations:
+       cert-manager.io/cluster-issuer: letsencrypt-prod
+       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+   spec:
+     tls:
+       - hosts:
+           - kestra.yourdomain.com
+         secretName: kestra-tls
+     rules:
+       - host: kestra.yourdomain.com
+         http:
+           paths:
+             - path: /
+               pathType: Prefix
+               backend:
+                 service:
+                   name: kestra-service
+                   port:
+                     number: 80
+   ```
+
+### Using Self-Signed Certificates (For Testing)
+
+1. **Generate certificates** using the OpenSSL commands from the previous section.
+
+2. **Create TLS secret**:
+   ```bash
+   kubectl create secret tls kestra-tls \
+     --cert=server.pem \
+     --key=server.key
+   ```
+
+3. **Reference the secret in your Ingress**:
+   ```yaml
+   spec:
+     tls:
+       - hosts:
+           - kestra.yourdomain.com
+         secretName: kestra-tls
+   ```
+
+### Application-Level SSL Configuration
+
+For environments where ingress TLS termination isn't available:
+
+1. **Create secret with SSL files**:
+   ```bash
+   kubectl create secret generic kestra-ssl \
+     --from-file=keystore.p12 \
+     --from-file=truststore.jks
+   ```
+
+2. **Configure Kestra deployment**:
+   ```yaml
+   env:
+     - name: KESTRA_CONFIGURATION
+       value: |
+         micronaut:
+           server:
+             ssl:
+               enabled: true
+               port: 8443
+               keyStore:
+                 path: file:/app/ssl/keystore.p12
+                 password: changeit
+                 type: PKCS12
+   volumeMounts:
+     - name: ssl-secret
+       mountPath: "/app/ssl"
+   volumes:
+     - name: ssl-secret
+       secret:
+         secretName: kestra-ssl
+   ```
+
+3. **Expose HTTPS port** in your service:
+   ```yaml
+   ports:
+     - name: https
+       port: 8443
+       targetPort: 8443
+   ```
+
+::alert{type="warning"}
+Production deployments on cloud platforms such as e.g. Azure AKS typically require valid certificates from trusted CAs for SSO integration. Self-signed certificates may work for testing but aren't suitable for production use.
+::
+
+### Verifying the Configuration
+
+Check certificate validity with:
+
+```bash
+kubectl get certificate kestra-tls -w
+```
+
+Expected output:
+```
+NAME        READY   SECRET      AGE
+kestra-tls  True    kestra-tls  5m
+```
