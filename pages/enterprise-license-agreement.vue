@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { CollectionNames } from "~/content.config.names";
+const {public:{CollectionNames}} = useRuntimeConfig()
 const route = useRoute()
 const {data: page} = await useAsyncData(
     route.path,

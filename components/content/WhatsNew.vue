@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { CollectionNames } from "~/content.config.names";
+const {public:{CollectionNames}} = useRuntimeConfig()
 defineProps({
   title: {
     type: String,

@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
     const {data: pageData} = await useAsyncData(
         `Career-Positions`,
         () => queryCollection(CollectionNames.careers).all()

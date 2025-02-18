@@ -27,7 +27,7 @@
 </template>
 <script setup>
     import Section from './Section.vue';
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     const props = defineProps({
         title: {

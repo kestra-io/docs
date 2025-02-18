@@ -58,7 +58,7 @@
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
     import Updateletter from "~/components/layout/Updateletter.vue";
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);

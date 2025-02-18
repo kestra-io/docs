@@ -61,7 +61,7 @@
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
 
     const props = defineProps({

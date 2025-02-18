@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
     const { origin } = useRequestURL()
 
     const route = useRoute()

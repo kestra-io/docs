@@ -13,7 +13,7 @@
     import {computed} from "vue";
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
-    import { CollectionNames } from "~/content.config.names";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     const props = defineProps<{
         directory: string

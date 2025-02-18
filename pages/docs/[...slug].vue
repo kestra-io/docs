@@ -43,7 +43,7 @@
   import HelpfulVote from "~/components/docs/HelpfulVote.vue";
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
-  import { CollectionNames } from "~/content.config.names";
+  const {public:{CollectionNames}} = useRuntimeConfig()
 
   const config = useRuntimeConfig();
 
