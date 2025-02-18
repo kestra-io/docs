@@ -33,6 +33,7 @@
 </template>
 
 <script setup>
+    import { CollectionNames } from "~/content.config.names";
     const { origin } = useRequestURL()
 
     const route = useRoute()
@@ -42,7 +43,7 @@
 
     const {data: page, error} = await useAsyncData(route.path, () => {
         try {
-            return queryCollection("careers").path(slug).first();
+            return queryCollection(CollectionNames.careers).path(slug).first();
         } catch (error) {
             throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
         }

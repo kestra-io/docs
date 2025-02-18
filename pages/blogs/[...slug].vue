@@ -89,7 +89,7 @@
         if (slug === "/blogs/") {
             const {data: pageData} = await useAsyncData(
                 `Blog-Page-List`,
-                () => queryCollection("blogs").order("date", "ASC").all()
+                () => queryCollection(CollectionNames.blogs).order("date", "ASC").all()
             );
             page.value = pageData.value;
         }

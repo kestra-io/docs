@@ -24,9 +24,10 @@
 </template>
 
 <script setup>
+    import { CollectionNames } from "~/content.config.names";
     const {data: pageData} = await useAsyncData(
         `Career-Positions`,
-        () => queryCollection("careers").all()
+        () => queryCollection(CollectionNames.careers).all()
     );
 </script>
 

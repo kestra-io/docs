@@ -13,21 +13,22 @@
     import {computed} from "vue";
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
+    import { CollectionNames } from "~/content.config.names";
 
-const props = defineProps<{
-    directory: string
-    title: string
-}>()
+    const props = defineProps<{
+        directory: string
+        title: string
+    }>()
 
-const {data: navigation} = await useAsyncData(
-    `BigChildCard-${hash(props.directory)}`,
-    () => queryCollection("docs").where("path", "LIKE", `${props.directory}/%`).all()
-);
+    const {data: navigation} = await useAsyncData(
+        `BigChildCard-${hash(props.directory)}`,
+        () => queryCollection(CollectionNames.docs).where("path", "LIKE", `${props.directory}/%`).all()
+    );
 
-// avoid null values in navigation
-const protectedNavigation = computed(() => {
-    return navigation.value.filter(Boolean)
-})
+    // avoid null values in navigation
+    const protectedNavigation = computed(() => {
+        return navigation.value?.filter(Boolean)
+    })
 </script>
 
 <style lang="scss" scoped>

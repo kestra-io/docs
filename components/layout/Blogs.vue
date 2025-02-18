@@ -27,6 +27,7 @@
 </template>
 <script setup>
     import Section from './Section.vue';
+    import { CollectionNames } from "~/content.config.names";
 
     const props = defineProps({
         title: {
@@ -37,7 +38,7 @@
 
     const {data: blogs} = await useAsyncData(
         `layout-blog`,
-        () => queryCollection("blogs").order("date", "DESC").select('title', 'category', 'image', 'author', 'date', 'path').limit(3).all(),
+        () => queryCollection(CollectionNames.blogs).order("date", "DESC").select('title', 'category', 'image', 'author', 'date', 'path').limit(3).all(),
         {
             serverMaxAge: 60 * 10,
         }
