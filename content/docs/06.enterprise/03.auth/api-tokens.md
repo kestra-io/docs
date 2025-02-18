@@ -32,7 +32,7 @@ Once in your profile, click on **+ Create API Token** in the **Manage your API T
 
 ![create-api-token](/docs/enterprise/create-api-token.png)
 
-Fill in the form with the required information including the `Name`, `Description`, and `Max age` and click `Generate`:
+Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
 
 ![new-token-details](/docs/enterprise/new-token-details.png)
 
@@ -52,7 +52,7 @@ Then, go to the `API Tokens` tab and click on the `Create` button:
 
 ![api-token](/docs/enterprise/api-token.png)
 
-Fill in the form with the required information including the `Name`, `Description`, and `Max age` and click `Generate`:
+Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
 
 ![api-token2](/docs/enterprise/api-token2.png)
 
