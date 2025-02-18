@@ -14,7 +14,7 @@ API tokens are used to authenticate API requests to the Kestra API. You can crea
 
 ## Where you can use API tokens
 
-API tokens are used anytime you want to grant programmatic access to the Kestra API. To authenticate your custom API calls, you can pass a bearer token to the request header. For example, you can use API tokens to authenticate with the Kestra API from a CI/CD pipeline, or from a custom application.
+API tokens are used anytime you want to grant programmatic access to the Kestra API. To authenticate your custom API calls, you can pass a bearer token to the request header. For example, you can use API tokens to authenticate with the Kestra API from a CI/CD pipeline or from a custom application.
 
 Currently, we support API tokens as authentication mechanism for the following services:
 1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
@@ -22,20 +22,42 @@ Currently, we support API tokens as authentication mechanism for the following s
 3. [Kestra CLI](../../ee-server-cli/index.md)
 4. [Kestra API](./api.md)
 
-## How to create an API token
+## How to create a User API token
 
-To create an API token, navigate to the `Administration` section and click on the `Service Accounts` or `Users` page, depending on whether you want to create an API token for a service account (bot) or a regular user (human).
+To create an API token, navigate to the person icon in the top right corner of the Kestra UI and click on **Get a token**.
+
+![user-api-token](/docs/enterprise/user-api-token.png)
+
+Once in your profile, click on **+ Create API Token** in the **Manage your API Tokens** section.
+
+![create-api-token](/docs/enterprise/create-api-token.png)
+
+Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
+
+![new-token-details](/docs/enterprise/new-token-details.png)
+
+::alert{type="info"}
+**Note:** you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that automatically prolongs the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::
+
+Once you confirm the API token creation, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
+
+![copy-and-save](docs/enterprise/copy-and-save.png)
+
+## How to create a Service Account API token
+
+To create an API token for a Service Account, navigate to the `Administration` section and click on the `Service Accounts` page.
 
 Then, go to the `API Tokens` tab and click on the `Create` button:
 
 ![api-token](/docs/enterprise/api-token.png)
 
-Fill in the form with the required information including the `Name`, `Description` and `Max age`, and click `Generate`:
+Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
 
 ![api-token2](/docs/enterprise/api-token2.png)
 
 ::alert{type="info"}
-**Note:** you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+**Note:** same as for a user token, you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
 ::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
