@@ -61,6 +61,7 @@
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
+    import { CollectionNames } from "~/content.config.names";
 
 
     const props = defineProps({
@@ -135,7 +136,7 @@
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => {
-            let query = queryCollection('docs')
+            let query = queryCollection(CollectionNames.docs)
                 .where('path', 'LIKE', `${currentPage}/%`)
                 // only take direct children
                 .where('path', 'NOT LIKE', `${currentPage}/%/%`)

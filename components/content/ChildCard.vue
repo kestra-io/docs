@@ -19,6 +19,7 @@
 <script setup>
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
+    import { CollectionNames } from "~/content.config.names";
 
     const props = defineProps({
         pageUrl: {
@@ -45,7 +46,7 @@
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPageSlug)}`,
-        () => queryCollection('docs')
+        () => queryCollection(CollectionNames.docs)
             .where('path', 'LIKE', `${currentPageSlug}/%`)
             .where('path', 'NOT LIKE', `${currentPageSlug}/%/%`)
             .all()
@@ -53,7 +54,7 @@
 
     const {data: currentPage} = await useAsyncData(
         `ChildCardCurrentPage-${hash(currentPageSlug)}`,
-        () => queryCollection('docs').path(currentPageSlug).first()
+        () => queryCollection(CollectionNames.docs).path(currentPageSlug).first()
     );
 
     // if (currentPage == "/docs/faq") {

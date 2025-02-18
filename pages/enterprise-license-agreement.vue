@@ -7,11 +7,10 @@
 </template>
 
 <script setup>
+import { CollectionNames } from "~/content.config.names";
 const route = useRoute()
 const {data: page} = await useAsyncData(
     route.path,
-    () => queryCollection("misc").path(route.path).first()
+    () => queryCollection(CollectionNames.misc).path(route.path).first()
 );
 </script>
-
-

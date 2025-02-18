@@ -5,8 +5,9 @@
 </template>
 
 <script setup>
-    import {useAsyncData} from "#imports";
     import {hash} from "ohash";
+    import {useAsyncData} from "#imports";
+    import { CollectionNames } from "~/content.config.names";
 
     const route = useRoute()
     const config = useRuntimeConfig()
@@ -38,7 +39,7 @@
         if (!NON_NUXT_CONTENT_RESOLVED_PATHS.some(p => route.path.includes(p))) {
             page = (await useAsyncData(
                 `ProseA-${hash(route.path)}`,
-                () => queryCollection('docs').path(routePath).select('id').first(),
+                () => queryCollection(CollectionNames.docs).path(routePath).select('id').first(),
                 {
                     dedupe: "defer"
                 }

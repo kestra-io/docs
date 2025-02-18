@@ -17,6 +17,7 @@
 <script setup>
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
+    import { CollectionNames } from "~/content.config.names";
 
     const props = defineProps({
         pageUrl: {
@@ -39,6 +40,6 @@
 
     const {data: navigation} = await useAsyncData(
         `ChildReleases-${hash(currentPage)}`,
-        () => () => queryCollection('docs').where('release', 'IS', `NotNull`).sort("release", "DESC").all()
+        () => () => queryCollection(CollectionNames.docs).where('release', 'IS', `NotNull`).sort("release", "DESC").all()
     );
 </script>

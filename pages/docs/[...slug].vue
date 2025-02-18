@@ -43,6 +43,7 @@
   import HelpfulVote from "~/components/docs/HelpfulVote.vue";
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
+  import { CollectionNames } from "~/content.config.names";
 
   const config = useRuntimeConfig();
 
@@ -56,7 +57,7 @@
 
       const {data, error} = await useAsyncData(
         `NavSideBar-docs`,
-        () => queryCollectionNavigation('docs', ['hideSubMenus'])
+        () => queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus'])
       );
 
       if(error && error.value) {
@@ -114,7 +115,7 @@
 
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
-        return queryCollection('docs').path(slug.value.replace(/\/$/, '')).first();
+        return queryCollection(CollectionNames.docs).path(slug.value.replace(/\/$/, '')).first();
       } catch (error) {
         throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
       }
