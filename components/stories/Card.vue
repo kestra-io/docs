@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-    import {slugify} from "~/utils/url.js";
+    import {slugify} from "~/utils/url";
 
     defineProps({
         story: {

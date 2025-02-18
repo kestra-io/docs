@@ -1,6 +1,6 @@
 import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
-import {camelToKebabCase} from "~/utils/url.js";
+import {camelToKebabCase} from "~/utils/url";
 
 function toNuxtContent(parsedMarkdown, type) {
     return {
