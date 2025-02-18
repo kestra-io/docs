@@ -72,7 +72,6 @@
 
     const route = useRoute();
 
-    const navigation = ref([]);
     const stage = ref([]);
     const topic = ref([]);
     const showStageDropdown = ref(false);
@@ -133,30 +132,31 @@
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
-    const fetchChildDocs = async () => {
-      const {data: result} = await useAsyncData(
+    const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
         () => {
-          let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
+            let query = queryCollection('docs')
+                .where('path', 'LIKE', `${currentPage}/%`)
+                // only take direct children
+                .where('path', 'NOT LIKE', `${currentPage}/%/%`)
 
-          if (Array.isArray(stage.value) && stage.value?.length > 0) {
-            query = query.where('stage', 'IN', stage.value);
-          }
-
-          if (Array.isArray(topic.value) && topic.value?.length > 0) {
-            for (const soloTopic of topic.value) {
-              query = query.where('topics', 'LIKE', `%${soloTopic}%`);
+            if (Array.isArray(stage.value) && stage.value?.length > 0) {
+                query = query.where('stage', 'IN', stage.value);
             }
-          }
 
-          if (search.value) {
-            query = query.where('title', 'LIKE', `%${search.value}%`);
-          }
+            if (Array.isArray(topic.value) && topic.value?.length > 0) {
+                for (const soloTopic of topic.value) {
+                    query = query.where('topics', 'LIKE', `%${soloTopic}%`);
+                }
+            }
 
-          return query.all();
+            if (search.value) {
+                query = query.where('title', 'LIKE', `%${search.value}%`);
+            }
+
+            return query.all();
         });
-      navigation.value = result.value;
-    };
+
 
     fetchChildDocs();
 

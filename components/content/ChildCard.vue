@@ -45,7 +45,10 @@
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPageSlug)}`,
-        () => queryCollection('docs').where('path', 'LIKE', `${currentPageSlug}/%`).all()
+        () => queryCollection('docs')
+            .where('path', 'LIKE', `${currentPageSlug}/%`)
+            .where('path', 'NOT LIKE', `${currentPageSlug}/%/%`)
+            .all()
     );
 
     const {data: currentPage} = await useAsyncData(
