@@ -1,4 +1,4 @@
-import {slugify} from '~/utils/url'
+import {slugify} from './utils/url'
 
 const contentPrefix = process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main' ? `${slugify(process.env.CF_PAGES_BRANCH)}-` : ''
 
