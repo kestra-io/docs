@@ -14,7 +14,7 @@ How to create and manage Service Accounts.
 
 ---
 
-A Service Account represents an **application** that can access Kestra. It is not tied to a specific person, and does not have personal information (such as the first name, last name or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
+A Service Account represents an **application** that can access Kestra. It is not tied to a specific person and does not have personal information (such as the first name, last name, or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
 
 ## Service Accounts vs. Users
 
@@ -22,7 +22,7 @@ In contrast to regular users, Service Accounts don't have a password and their a
 
 ## Creating a Service Account
 
-To create a new service account, go to the Service Accounts page under the Administration section and click on the **Create** button. Fill in the form with the required information including the name and description, and click **Save**:
+To create a new service account, go to the Service Accounts page under the Administration section and click on the **Create** button. Fill in the form with the required information including the name and description and click **Save**:
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
@@ -30,12 +30,12 @@ Once you have created a service account, you can add a Role that will grant the 
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
-Finally, you can generate an API token for the service account by clicking on the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g. in Terraform provider configuration or GitHub Actions secrets).
+Finally, you can generate an API token for the service account by clicking on the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
 ::alert{type="info"}
-**Note:** You can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+**Note:** You can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
 ::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
@@ -48,7 +48,7 @@ You can create an **API token** for a regular **User** as well. While Service Ac
 
 ![service_account_create_3](/docs/user-interface-guide/service_account_create_3.png)
 
-Therefore, the difference between a Service Account and a User is that a Service Account is designed for programmatic access, and doesn't have a password or personal information attached to it. Instead, it is authenticated exclusively using an API token. A User, on the other hand, can interact with both the Kestra UI and the API, and can be authenticated using a password or an API token.
+Therefore, the difference between a Service Account and a User is that a Service Account is designed for programmatic access and doesn't have a password or personal information attached to it. Instead, it is authenticated exclusively using an API token. A User, on the other hand, can interact with both the Kestra UI and the API, and can be authenticated using a password or an API token.
 
 ## The Purpose of Service Accounts
 
@@ -56,18 +56,18 @@ Service Accounts are intended for programmatic access to Kestra from any other a
 
 ## Allocating Service Accounts to Groups
 
-Each Service Account can be attached to one or more Groups e.g. a group “Bots” that centrally governs programmatic access for CI/CD across multiple projects with just one Role. This is useful to manage programmatic access used by Terraform, GitHub Action, or other external applications, in one place by attaching a single Role to that Group.
+Each Service Account can be attached to one or more Groups such as a group called “Bots” that centrally governs programmatic access for CI/CD across multiple projects with just one Role. This is useful to manage programmatic access used by Terraform, GitHub Action, or other external applications, in one place by attaching a single Role to that Group.
 
 Speaking of CI/CD, note that currently Kestra supports authenticating with both Basic Authentication User, as well as with an API token:
 
-1. Use the `--api-token=mytoken` CLI property to allow authenticating with a service account token, e.g.:
+1. Use the `--api-token=mytoken` CLI property to allow authenticating with a service account token:
 
 ```
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --api-token yourtoken
 ```
 
-2. Use the `--user user_email:password` flag to the CLI to allow authenticating with a Basic Authentication access, e.g.:
+2. Use the `--user user_email:password` flag to the CLI to allow authenticating with a Basic Authentication access:
 
 ```
 ./kestra namespace files update prod scripts . \
@@ -76,9 +76,9 @@ Speaking of CI/CD, note that currently Kestra supports authenticating with both 
 
 ## Service Account Name Convention
 
-When creating a new service account, make sure to follow the DNS naming convention. Specifically, the `name` property needs to:
+When creating a new Service Account, make sure to follow the DNS naming convention. Specifically, the `name` property needs to:
 - contain at most 63 characters
-- contain only lowercase alphanumeric characters or hyphens (i.e. the `-` character)
+- contain only lowercase alphanumeric characters or hyphens (i.e., the `-` character)
 - start with an alphanumeric character
 - end with an alphanumeric character.
 
@@ -89,7 +89,7 @@ Some examples to make that clear:
 - ❌ `myServiceAccount` is not a valid name because it contains uppercase characters and camel case
 - ❌ `my-service-account-` is not a valid name because it ends with a hyphen.
 
-**Why do we follow such a restrictive convention?** We follow the standard DNS-tyle pattern to be ready for potential future use cases where we could e.g. forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
+**Why do we follow such a restrictive convention?** We follow the standard DNS-tyle pattern to be ready for potential future use cases where we could, for example, forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
 
 ## Impersonate Service Account (Admin)
 
