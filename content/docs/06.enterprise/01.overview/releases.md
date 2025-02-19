@@ -67,7 +67,7 @@ This strategy aligns Kestra with industry best practices used by major software 
 
 ## Bugfix Releases
 
-Every **Thursday**, we release a new bugfix version for the `latest` release. This means that if you are using the latest version of Kestra, you can expect a new bugfix release every week. You can track which GitHub issues are planned for the next bugfix release in our public [GitHub project board](https://github.com/orgs/kestra-io/projects/15/views/25).
+Every **Thursday**, we release a new bugfix version for the `latest` release. This means that if you are using the latest version of Kestra, you can expect a new bugfix release every week. You can track which GitHub issues are planned for the next bugfix release in our public [GitHub project board](https://github.com/orgs/kestra-io/projects/15/views/1).
 
 ::alert{type="info"}
 We recommend regularly updating to the `latest` version to benefit from the most recent bug fixes and security patches.
