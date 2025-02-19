@@ -133,30 +133,31 @@
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
-    const {data: navigation} = await useAsyncData(
-        `ChildCard-${hash(currentPage)}`,
-        () => {
-            let query = queryCollection(CollectionNames.docs)
-                .where('path', 'LIKE', `${currentPage}/%`)
-                // only take direct children
-                .where('path', 'NOT LIKE', `${currentPage}/%/%`)
+    function fetchChildDocs(){
+        let query = queryCollection(CollectionNames.docs)
+            .where('path', 'LIKE', `${currentPage}/%`)
+            // only take direct children
+            .where('path', 'NOT LIKE', `${currentPage}/%/%`)
 
-            if (Array.isArray(stage.value) && stage.value?.length > 0) {
-                query = query.where('stage', 'IN', stage.value);
+        if (Array.isArray(stage.value) && stage.value?.length > 0) {
+            query = query.where('stage', 'IN', stage.value);
+        }
+
+        if (Array.isArray(topic.value) && topic.value?.length > 0) {
+            for (const soloTopic of topic.value) {
+                query = query.where('topics', 'LIKE', `%${soloTopic}%`);
             }
+        }
 
-            if (Array.isArray(topic.value) && topic.value?.length > 0) {
-                for (const soloTopic of topic.value) {
-                    query = query.where('topics', 'LIKE', `%${soloTopic}%`);
-                }
-            }
+        if (search.value) {
+            query = query.where('title', 'LIKE', `%${search.value}%`);
+        }
 
-            if (search.value) {
-                query = query.where('title', 'LIKE', `%${search.value}%`);
-            }
+        return query.all();
+    }
 
-            return query.all();
-        });
+    const navigation = ref([])
+    navigation.value = await fetchChildDocs()
 
 
     function debounce(func, delay) {
@@ -171,8 +172,8 @@
       };
     }
 
-    const debouncedFilterPlugins = debounce(() => {
-      fetchChildDocs()
+    const debouncedFilterPlugins = debounce(async () => {
+        navigation.value = await fetchChildDocs()
     }, 1000);
 
     watch([currentPage, search, () => stage.value, () => topic.value], () => {

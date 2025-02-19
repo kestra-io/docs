@@ -35,13 +35,6 @@ export default defineContentConfig({
         image: z.string(),
       })
     }),
-    [CollectionNames.careers]: defineCollection({
-        type: 'page',
-        source: 'careers/**/*.md',
-        schema: z.object({
-            type: z.string(),
-        })
-    }),
     [CollectionNames.misc]: defineCollection({
         type: 'page',
         source: '*.md',

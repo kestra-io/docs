@@ -8,8 +8,8 @@ export default function ({ route, redirect }) {
 
     plugins.forEach(plugin => {
         plugin.taskRunners.forEach(taskRunner => {
-            const standardPath = `/plugins/plugin-${plugin.base}/task-runners/io.kestra.plugin.${plugin.base}.runner.${taskRunner}`;
-            const eePath = `/plugins/plugin-ee-${plugin.base}/task-runners/io.kestra.plugin.ee.${plugin.base}.runner.${taskRunner}`;
+            const standardPath = `/plugins/plugin-${plugin.base}/io.kestra.plugin.${plugin.base}.runner.${taskRunner}`;
+            const eePath = `/plugins/plugin-ee-${plugin.base}/io.kestra.plugin.ee.${plugin.base}.runner.${taskRunner}`;
 
             if (route?.path === standardPath) {
                 return redirect(eePath);

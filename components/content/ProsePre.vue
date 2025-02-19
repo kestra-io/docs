@@ -111,7 +111,7 @@
             font-size: 0.75rem;
         }
 
-        :deep(pre) {
+        pre {
             overflow: hidden;
             margin-bottom: 0;
         }
@@ -163,9 +163,17 @@
         }
     }
 
-    :deep(pre code .line) {
+    pre :deep(code .line) {
         white-space: pre-wrap;
         display: block;
         min-height: 1rem;
+    }
+
+    pre :deep(code) {
+        opacity: 0;
+    }
+
+    pre.shiki :deep(code){
+        opacity: 1;
     }
 </style>

@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-    import {slugify} from "~/utils/url";
+    import {slugify} from "@kestra-io/ui-libs";
 
     const props = defineProps({
         story: {
