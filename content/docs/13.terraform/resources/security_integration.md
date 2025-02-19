@@ -27,7 +27,7 @@ Manages a Kestra Security Integration. Note that when imported URI and secret to
 ### Read-Only
 
 - `id` (String) The ID of this resource.
-- `secret_token` (String, Sensitive) The secret token of the security integration. Not provided when importing the resource.
+- `secret_token` (String, Sensitive) The secret token of the security integration.
 - `tenant_id` (String) The tenant id.
 - `uid` (String) The unique identifier of the security integration.
-- `uri` (String) The url of the security integration. Not provided when importing the resource.
+- `uri` (String) The url of the security integration.
