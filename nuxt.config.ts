@@ -247,6 +247,7 @@ export default defineNuxtConfig({
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
         '/docs/how-to-guides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
+        '/docs/how-to-guides/ssl-configuration': {redirect: '/docs/administrator-guide/ssl-configuration'},
         '/docs/how-to-guide': {redirect: '/docs/how-to-guides'},
         '/docs/developer-guide/': {redirect: '/docs'},
         '/docs/developer-guide/storage': {redirect: '/docs/concepts/storage'},
