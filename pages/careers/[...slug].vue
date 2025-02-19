@@ -30,7 +30,6 @@
 
 <script setup>
     const route = useRoute()
-    const title = ref();
 
     const {data: page, error} = await useAsyncData(route.path, () => {
         try {

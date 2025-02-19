@@ -1,4 +1,5 @@
 import * as sass from "sass";
+import { CollectionNames } from "./content.config.names";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -186,9 +187,10 @@ export default defineNuxtConfig({
                     ]
                 }
             },
+            CollectionNames,
             posthog: {
                 enabled: process.env.POSTHOG_ENABLED !== "false"
-            }
+            },
         },
     },
 

@@ -44,7 +44,8 @@
     import NavToc from "~/components/docs/NavToc.vue";
     import HelpfulVote from "~/components/docs/HelpfulVote.vue";
     import {hash} from "ohash";
-    import {generatePageNames, recursivePages} from "~/utils/navigation.js";
+    import {generatePageNames, recursivePages} from "~/utils/navigation";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     const config = useRuntimeConfig();
 
@@ -55,7 +56,7 @@
         const {data: fetched, error} = await useAsyncData(
             `NavSideBar-docs`,
             async () => {
-                const data = await queryCollectionNavigation('docs', ['hideSubMenus']);
+                const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus']);
 
                 if (data && !data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
                     data[0].children.splice(data[0].children.length - 3, 0, {
@@ -115,7 +116,7 @@
 
     const {data: page, error} = await useAsyncData(`Container-${hash(slug.value)}`, async () => {
         try {
-            const doc = await (queryCollection('docs').path(slug.value.replace(/\/$/, '')).first());
+            const doc = await (queryCollection(CollectionNames.docs).path(slug.value.replace(/\/$/, '')).first());
             const iconPath = doc.icon?.split('/');
             const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
             doc.image = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${doc.title || ''}`;
