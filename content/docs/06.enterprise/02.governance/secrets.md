@@ -17,10 +17,10 @@ Secrets are used to store confidential information such as passwords, API keys, 
 
 ## How to create a new Secret
 
-From the left navigation menu, go to **Namespaces**. Select a namespace and click on the **Secrets** tab. Then, click on the "Create" button to add a new Secret.
+From the left navigation menu, go to **Namespaces**. Select a namespace and click on the **Secrets** tab. Then, click on the **Create** button to add a new Secret.
 
 ## How are Secrets different between the Open-Source and Enterprise Editions?
 
-Currently, we don't provide Secrets Management in the Open-Source Edition. However, you can pass special base64-encoded environment variables to your Kestra instance to store sensitive information. Then, you can access these variables in your flows using the same `secret()` function as in the Enterprise Edition. Since there is no real notion of Secrets Management in the Open-Source Edition, you will need to manage the lifecycle of these environment variables manually. This means that you will need to restart your Kestra instance to update or delete a Secret. We encourage you to plan such operations carefully to avoid any downtime, or reach out to us to upgrade to the Enterprise Edition to benefit from the full Secrets Management backend including the possibility to integrate with your existing [Secrets Manager](./secrets-manager.md).
+Currently, we don't provide Secrets Management in the Open Source Edition. However, you can pass special base64-encoded environment variables to your Kestra instance to store sensitive information. Then, you can access these variables in your flows using the same `secret()` function as in the Enterprise Edition. Since there is no real notion of Secrets Management in the Open Source Edition, you will need to manage the lifecycle of these environment variables manually. This means that you will need to restart your Kestra instance to update or delete a Secret. We encourage you to plan such operations carefully to avoid any downtime, or reach out to us to upgrade to the Enterprise Edition to benefit from the full Secrets Management backend including the possibility to integrate with your existing [Secrets Manager](./secrets-manager.md).
 
-You can read more about secrets [here](../../05.concepts/04.secret.md).
+For more, check out our [secrets documentation](../../05.concepts/04.secret.md).

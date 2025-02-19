@@ -17,7 +17,7 @@ Announcements allow you to notify your users about any important events such as 
 
 ## How to create an announcement
 
-To add a custom in-app banner, go to the Administration → Instance → Announcements tab.
+To add a custom in-app banner, go to the **Administration → Instance → Announcements** tab.
 
 ![announcement panel](/docs/enterprise/announcement/main_announcement.png)
 
