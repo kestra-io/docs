@@ -19,7 +19,7 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 
 ```hcl
 resource "kestra_service_account" "example" {
-  username    = "my-service-account"
+  name        = "my-service-account"
   description = "Friendly description"
 }
 ```
@@ -29,27 +29,24 @@ resource "kestra_service_account" "example" {
 
 ### Required
 
-- `username` (String) The service account name.
+- `name` (String) The service account name.
 
 ### Optional
 
 - `description` (String) The service account description.
-- `group` (Block Set) The service account group. (see [below for nested schema](#nestedblock--group))
+- `groups` (Block Set) The service account group. (see [below for nested schema](#nestedblock--groups))
+- `super_admin` (Boolean) Is the service account a super admin.
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
 
-<a id="nestedblock--group"></a>
-### Nested Schema for `group`
+<a id="nestedblock--groups"></a>
+### Nested Schema for `groups`
 
 Required:
 
-- `group_id` (String) The group id.
-
-Optional:
-
-- `tenant_id` (String) The tenant id for this group.
+- `id` (String) The group id.
 
 ## Import
 

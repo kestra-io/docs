@@ -30,22 +30,16 @@ data "kestra_user_service_account" "example" {
 
 - `id` (String) The service account id.
 
-### Optional
-
-- `group` (Block Set) The service account group. (see [below for nested schema](#nestedblock--group))
-
 ### Read-Only
 
 - `description` (String) The service account description.
-- `username` (String) The service account name.
+- `groups` (Block Set) The service account group. (see [below for nested schema](#nestedblock--groups))
+- `name` (String) The service account name.
+- `super_admin` (Boolean) The service account description.
 
-<a id="nestedblock--group"></a>
-### Nested Schema for `group`
-
-Optional:
-
-- `tenant_id` (String) The tenant id for this group.
+<a id="nestedblock--groups"></a>
+### Nested Schema for `groups`
 
 Read-Only:
 
-- `group_id` (String) The group id.
+- `id` (String) The group id.

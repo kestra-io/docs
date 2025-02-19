@@ -48,10 +48,14 @@ EOT
 
 - `allowed_namespaces` (Block List) The allowed namespaces. (see [below for nested schema](#nestedblock--allowed_namespaces))
 - `description` (String) The namespace friendly description.
+- `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
 - `plugin_defaults` (String) The namespace plugin defaults in yaml string.
 - `secret_configuration` (Map of String) The secret configuration.
+- `secret_isolation` (Block List, Max: 1) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedblock--secret_isolation))
+- `secret_read_only` (Boolean) Whether secrets are read-only in this namespace.
 - `secret_type` (String) The secret type.
 - `storage_configuration` (Map of String) The storage configuration.
+- `storage_isolation` (Block List, Max: 1) Storage isolation configuration. (see [below for nested schema](#nestedblock--storage_isolation))
 - `storage_type` (String) The storage type.
 - `variables` (String) The namespace variables in yaml string.
 - `worker_group` (Block List, Max: 1) The worker group. (see [below for nested schema](#nestedblock--worker_group))
@@ -69,13 +73,34 @@ Required:
 - `namespace` (String) The namespace.
 
 
+<a id="nestedblock--secret_isolation"></a>
+### Nested Schema for `secret_isolation`
+
+Optional:
+
+- `denied_services` (List of String) List of denied services for secret isolation.
+- `enabled` (Boolean) Enable secret isolation.
+
+
+<a id="nestedblock--storage_isolation"></a>
+### Nested Schema for `storage_isolation`
+
+Optional:
+
+- `denied_services` (List of String) List of denied services for isolation.
+- `enabled` (Boolean) Enable storage isolation.
+
+
 <a id="nestedblock--worker_group"></a>
 ### Nested Schema for `worker_group`
 
 Required:
 
-- `fallback` (String) The fallback strategy.
 - `key` (String) The worker group key.
+
+Optional:
+
+- `fallback` (String) The fallback strategy.
 
 ## Import
 

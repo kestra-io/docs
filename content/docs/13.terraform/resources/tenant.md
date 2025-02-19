@@ -34,15 +34,38 @@ resource "kestra_tenant" "example" {
 ### Optional
 
 - `name` (String) The tenant name.
+- `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
+- `require_existing_namespace` (Boolean) Whether tenant requires an existing namespace.
 - `secret_configuration` (Map of String) The secret configuration.
+- `secret_isolation` (Block List, Max: 1) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedblock--secret_isolation))
+- `secret_read_only` (Boolean) Whether secrets are read-only in this tenant.
 - `secret_type` (String) The secret type.
 - `storage_configuration` (Map of String) The storage configuration.
+- `storage_isolation` (Block List, Max: 1) Storage isolation configuration. (see [below for nested schema](#nestedblock--storage_isolation))
 - `storage_type` (String) The storage type.
 - `worker_group` (Block List, Max: 1) The worker group. (see [below for nested schema](#nestedblock--worker_group))
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+
+<a id="nestedblock--secret_isolation"></a>
+### Nested Schema for `secret_isolation`
+
+Optional:
+
+- `denied_services` (List of String) List of denied services for secret isolation.
+- `enabled` (Boolean) Enable secret isolation.
+
+
+<a id="nestedblock--storage_isolation"></a>
+### Nested Schema for `storage_isolation`
+
+Optional:
+
+- `denied_services` (List of String) List of denied services for isolation.
+- `enabled` (Boolean) Enable storage isolation.
+
 
 <a id="nestedblock--worker_group"></a>
 ### Nested Schema for `worker_group`
