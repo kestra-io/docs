@@ -116,7 +116,7 @@
 
     const {data: page, error} = await useAsyncData(`Container-${hash(slug.value)}`, async () => {
         try {
-            const doc = await (queryCollection('docs').path(slug.value.replace(/\/$/, '')).first());
+            const doc = await (queryCollection(CollectionNames.docs).path(slug.value.replace(/\/$/, '')).first());
             const iconPath = doc.icon?.split('/');
             const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
             doc.image = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${doc.title || ''}`;
