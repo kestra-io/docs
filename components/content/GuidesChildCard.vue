@@ -61,6 +61,7 @@
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
 
     const props = defineProps({
@@ -133,7 +134,7 @@
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
     function fetchChildDocs(){
-        let query = queryCollection('docs')
+        let query = queryCollection(CollectionNames.docs)
             .where('path', 'LIKE', `${currentPage}/%`)
             // only take direct children
             .where('path', 'NOT LIKE', `${currentPage}/%/%`)

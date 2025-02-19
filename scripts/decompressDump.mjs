@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // debug script to decompress nuxt content dump
-// usage: node scripts/decompressDump.mjs path/to/dump.sql.html
+// usage: wget https://kestra.io/api/content/docs/database.sql && node scripts/decompressDump.mjs database.sql
 
 import { promises as fs } from 'fs'
 import * as path from 'path'

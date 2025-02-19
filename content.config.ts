@@ -1,8 +1,9 @@
 import { defineContentConfig, defineCollection, z } from '@nuxt/content'
+import { CollectionNames } from './content.config.names'
 
 export default defineContentConfig({
   collections: {
-    docs: defineCollection({
+    [CollectionNames.docs]: defineCollection({
       type: 'page',
       source: 'docs/**/*.md',
       schema: z.object({
@@ -20,7 +21,7 @@ export default defineContentConfig({
         }).optional(),
       })
     }),
-    blogs: defineCollection({
+    [CollectionNames.blogs]: defineCollection({
       type: 'page',
       source: 'blogs/**/*.md',
       schema: z.object({
@@ -34,7 +35,7 @@ export default defineContentConfig({
         image: z.string(),
       })
     }),
-    misc: defineCollection({
+    [CollectionNames.misc]: defineCollection({
         type: 'page',
         source: '*.md',
     }),

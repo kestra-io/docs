@@ -58,6 +58,7 @@
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
     import Updateletter from "~/components/layout/Updateletter.vue";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
@@ -88,7 +89,7 @@
         if (slug === "/blogs/") {
             const {data: pageData} = await useAsyncData(
                 `Blog-Page-List`,
-                () => queryCollection("blogs").order("date", "ASC").all()
+                () => queryCollection(CollectionNames.blogs).order("date", "ASC").all()
             );
             page.value = pageData.value;
         }
@@ -116,7 +117,7 @@
     } else {
         const {data, error} = await useAsyncData(`Blog-Page-Item-${slug}`, () => {
             try {
-                return queryCollection('blogs').path(slug).first();
+                return queryCollection(CollectionNames.blogs).path(slug).first();
             } catch (error) {
                 throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
             }

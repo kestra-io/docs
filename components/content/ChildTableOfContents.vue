@@ -2,6 +2,7 @@
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import {NuxtLink} from "#components";
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
     export default defineComponent({
         props: {
@@ -30,7 +31,7 @@
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => queryCollectionNavigation('docs').andWhere(query =>
+                () => queryCollectionNavigation(CollectionNames.docs).andWhere(query =>
                     query
                         .where('path', 'LIKE', `${currentPage}/%`)
                         .where('path', '<>', currentPage)
