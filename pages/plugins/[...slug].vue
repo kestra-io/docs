@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify, Utils} from '@kestra-io/ui-libs'
+    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify} from '@kestra-io/ui-libs'
     import type {Plugin} from "@kestra-io/ui-libs";
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -69,7 +69,6 @@
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);
-    const pluginType = computed(() => splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined);
 
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
@@ -82,6 +81,17 @@
     }
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
+
+    const pluginType = computed(() => {
+        const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
+        if (lowerCasePluginType === undefined) {
+            return undefined;
+        }
+
+        let splitPluginType = lowerCasePluginType.split(".");
+        const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
+        return `${packageName}.${pageNames[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
+    });
 
     if (pluginType.value !== undefined) {
         // pluginName/subGroup/pluginType is the longest route, other should be redirected, it's legacy routes in pluginName/tasks|triggers|.../subGroup/pluginType format
