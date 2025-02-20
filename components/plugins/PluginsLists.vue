@@ -3,9 +3,10 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our +{{totalPlugins}} plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our +{{ totalPlugins }} plugins</h4>
                 <div class="col-12 search-input position-relative">
-                    <input type="text" class="form-control form-control-lg" :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
+                    <input type="text" class="form-control form-control-lg"
+                           :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -31,7 +32,8 @@
                 </div>
                 <div class="d-flex justify-content-between pagination-container" v-if="totalGroups > itemsPerPage">
                     <div class="items-per-page">
-                        <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
+                        <select class="form-select bg-dark-2" aria-label="Default select example"
+                                v-model="itemsPerPage">
                             <option :value="20">20</option>
                             <option :value="40">40</option>
                             <option :value="60">60</option>
@@ -62,7 +64,7 @@
     const plugins = ref([]);
     const activeCategory = ref('All Categories');
     const categories = ref([]);
-    const props = defineProps(["plugins","categories"]);
+    const props = defineProps(["plugins", "categories"]);
     const totalPages = ref(0);
     const totalGroups = ref(0);
     const totalPlugins = ref(0);
@@ -70,7 +72,7 @@
     const route = useRoute();
     const router = useRouter();
 
-    if(props.plugins) {
+    if (props.plugins) {
         let allTasks = [];
         let allTriggers = [];
         let allConditions = [];
@@ -82,11 +84,16 @@
             allTriggers = [...allTriggers, ...(plugin.triggers ?? [])];
             allConditions = [...allConditions, ...(plugin.conditions ?? [])];
             allTaskRunners = [...allTaskRunners, ...(plugin.taskRunners ?? [])];
-            plugin.tooltipContent = '',
-            creatingTooltipContainer(plugin, plugin.tasks, 'Tasks');
-            creatingTooltipContainer(plugin, plugin.triggers, 'Triggers');
-            creatingTooltipContainer(plugin, plugin.conditions, 'Conditions');
-            creatingTooltipContainer(plugin, plugin.taskRunners, 'TaskRunners');
+            plugin.tooltipContent = '';
+
+            // We only need this mapping for root plugin cards
+            const subGroupsToSlugs = plugin.subGroup === undefined
+                ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
+                : undefined;
+            creatingTooltipContainer(plugin, 'Tasks', plugin.tasks, subGroupsToSlugs);
+            creatingTooltipContainer(plugin, 'Triggers', plugin.triggers, subGroupsToSlugs);
+            creatingTooltipContainer(plugin, 'Conditions', plugin.conditions, subGroupsToSlugs);
+            creatingTooltipContainer(plugin, 'TaskRunners', plugin.taskRunners, subGroupsToSlugs);
         });
 
         totalPlugins.value = (new Set(allTasks)).size +
@@ -95,36 +102,44 @@
             (new Set(allTaskRunners)).size;
     }
 
-    if(props.categories) {
+    if (props.categories) {
         categories.value = ['All Categories', ...props.categories];
     }
 
-    function generateCategoryLink(title, item, categoryName) {
-      return `plugins/${title}/${categoryName.toLowerCase()}/${item}`
+    function generateCategoryLink(pluginQualifier, item) {
+        return `plugins/${pluginQualifier}/${item}`
     }
 
-    function generateCategoryList (plugin, categoryItems, categoryName) {
-      let list = ``;
-      categoryItems.forEach(item => {
-        list += `
-              <li>
-                <a href="${generateCategoryLink(plugin.title, item, categoryName)}">${item}</a>
-              </li>
-            `
-      });
-      return list;
-    };
+    function generateCategoryList(plugin, categoryItems, subGroupsToSlugs) {
+        return categoryItems.map(item => {
+            let subGroupQualifier = "";
+            if (plugin.subGroup === undefined) {
+                const matchingSubGroupSlug = Object.entries(subGroupsToSlugs).filter(([subGroup]) => item.startsWith(subGroup)).sort(([subGroupA], [subGroupB]) => subGroupB.length - subGroupA.length)?.[0]?.[1];
+                if (matchingSubGroupSlug !== undefined) {
+                    subGroupQualifier = `/${matchingSubGroupSlug}`;
+                }
+            } else {
+                subGroupQualifier = `/${plugin.title}`
+            }
 
-    function creatingTooltipContainer (plugin, categoryItems, categoryName) {
-      if (categoryItems && categoryItems.length > 0) {
-        plugin.tooltipContent += `
+            return `
+                      <li>
+                        <a href="${generateCategoryLink(plugin.name + subGroupQualifier, item)}">${item}</a>
+                      </li>
+                    `
+        }).join("");
+    }
+
+    function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
+        if (categoryItems && categoryItems.length > 0) {
+            plugin.tooltipContent += `
             <p class="ks-plugin-card-${categoryName.toLowerCase()}">${categoryName}</p>
             <ul>
-              ${generateCategoryList(plugin, categoryItems, categoryName)}
+              ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
             </ul>
         `
-      }
-    };
+        }
+    }
 
     const setActiveCategory = (category) => {
         activeCategory.value = category
@@ -203,20 +218,20 @@
         }
     };
 
-    if(route.query.page) currentPage.value = parseInt(route.query.page);
-    if(route.query.size) itemsPerPage.value = parseInt(route.query.size);
-    if(route.query.category) {
+    if (route.query.page) currentPage.value = parseInt(route.query.page);
+    if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
+    if (route.query.category) {
         activeCategory.value = categories.value.find(c => c === route.query.category);
-        filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
+        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
     }
-    if(route.query.q) {
+    if (route.query.q) {
         searchQuery.value = route.query.q.trim();
-        filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
+        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
     }
 
     let timer;
     watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
-        if(timer) {
+        if (timer) {
             clearTimeout(timer)
         }
         timer = setTimeout(async () => {
@@ -230,8 +245,10 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+
     .header-container {
         background: url("/landing/plugins/bg.svg") no-repeat top;
+
         .header {
             padding-bottom: calc($spacer * 4.125);
             border-bottom: 1px solid rgba(255, 255, 255, 0.10);
@@ -253,6 +270,7 @@
         }
 
     }
+
     .form-control {
         padding-left: 2.5rem;
 
@@ -261,6 +279,7 @@
             box-shadow: none;
         }
     }
+
     .total-pages {
         font-size: $font-size-sm;
         color: $white;
