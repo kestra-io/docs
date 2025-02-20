@@ -65,10 +65,11 @@
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
     const route = useRoute()
-    const routeSlug = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
+    const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);
+    const pluginType = computed(() => splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined);
 
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
@@ -78,6 +79,18 @@
         const pageNames = generatePageNames(navigation[0]);
 
         return {navigation, pageList, pageNames};
+    }
+
+    const {navigation, pageList, pageNames} = await fetchNavigation();
+
+    if (pluginType.value !== undefined) {
+        // pluginName/subGroup/pluginType is the longest route, other should be redirected, it's legacy routes in pluginName/tasks|triggers|.../subGroup/pluginType format
+        let maybeRedirect = `/plugins/${splitRouteSlug[0].concat("/" + splitRouteSlug.slice(2).join("/"))}`;
+        if (splitRouteSlug.length >= 3 && !pageList.includes(slug.value) && pageList.includes(maybeRedirect)) {
+            await navigateTo({
+                path: maybeRedirect
+            });
+        }
     }
 
     function pluginToc(subGroupsWrappers: Plugin[]) {
@@ -114,7 +127,6 @@
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
-    const pluginType = computed(() => splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined);
     const subGroup = computed(() => {
         const maybeSubGroup = splitRouteSlug?.[1];
         return maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
@@ -156,8 +168,6 @@
 
         page.value.description = subGroup.value === undefined ? pluginWrapper.value.description : subGroupWrapper.value.description;
     }
-
-    const {navigation, pageList, pageNames} = await fetchNavigation();
 
     const {origin} = useRequestURL();
 
