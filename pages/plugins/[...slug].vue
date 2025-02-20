@@ -93,12 +93,11 @@
         return `${packageName}.${pageNames[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
     });
 
-    if (pluginType.value !== undefined) {
-        // pluginName/subGroup/pluginType is the longest route, other should be redirected, it's legacy routes in pluginName/tasks|triggers|.../subGroup/pluginType format
-        let maybeRedirect = `/plugins/${splitRouteSlug[0].concat("/" + splitRouteSlug.slice(2).join("/"))}`;
-        if (splitRouteSlug.length >= 3 && !pageList.includes(slug.value) && pageList.includes(maybeRedirect)) {
+    if (pluginType.value !== undefined && !pageList.includes(slug.value)) {
+        const redirect = pageList.find(page => page.endsWith("/" + pluginType.value));
+        if (redirect !== undefined) {
             await navigateTo({
-                path: maybeRedirect
+                path: redirect
             });
         }
     }
