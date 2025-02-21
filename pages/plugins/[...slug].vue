@@ -120,7 +120,7 @@
                 return {
                     id: `section-${slugify(key)}`,
                     depth: 2,
-                    text: key,
+                    text: key.charAt(0).toUpperCase() + key.slice(1),
                     children: value.map((element) => ({
                         id: slugify(element),
                         depth: 3,
