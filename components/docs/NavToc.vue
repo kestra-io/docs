@@ -128,7 +128,6 @@
                     if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
                       removeActiveTab();
                       activeTapItem.classList.add('active');
-                      activeTapItem.scrollIntoView({block: "nearest", inline: "nearest"});
                     }
                   }
                 }
