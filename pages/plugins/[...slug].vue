@@ -117,10 +117,13 @@
     function pluginSubGroupToc(subGroupWrapper: Plugin) {
         return Object.entries(subGroupWrapper).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
             .map(([key, value]) => {
+                let text = key.replaceAll(/[A-Z]/g, match => ` ${match}`);
+                text = text.charAt(0).toUpperCase() + text.slice(1);
+
                 return {
                     id: `section-${slugify(key)}`,
                     depth: 2,
-                    text: key.charAt(0).toUpperCase() + key.slice(1),
+                    text,
                     children: value.map((element) => ({
                         id: slugify(element),
                         depth: 3,
@@ -170,10 +173,7 @@
     const subGroupWrapper = computed(() => subGroup.value === undefined || pluginType.value !== undefined ? undefined : page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
 
     if (pluginType.value === undefined) {
-        page.value.title = pluginWrapper.value.title.concat(
-            subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`
-        );
-
+        page.value.title = pluginWrapper.value.title.charAt(0).toUpperCase() + pluginWrapper.value.title.slice(1) + (subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`);
 
         page.value.description = subGroup.value === undefined ? pluginWrapper.value.description : subGroupWrapper.value.description;
     }
