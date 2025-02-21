@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify, Utils} from '@kestra-io/ui-libs'
+    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify} from '@kestra-io/ui-libs'
     import type {Plugin} from "@kestra-io/ui-libs";
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -65,7 +65,7 @@
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
     const route = useRoute()
-    const routeSlug = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
+    const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);
@@ -78,6 +78,28 @@
         const pageNames = generatePageNames(navigation[0]);
 
         return {navigation, pageList, pageNames};
+    }
+
+    const {navigation, pageList, pageNames} = await fetchNavigation();
+
+    const pluginType = computed(() => {
+        const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
+        if (lowerCasePluginType === undefined) {
+            return undefined;
+        }
+
+        let splitPluginType = lowerCasePluginType.split(".");
+        const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
+        return `${packageName}.${pageNames[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
+    });
+
+    if (pluginType.value !== undefined && !pageList.includes(slug.value)) {
+        const redirect = pageList.find(page => page.endsWith("/" + pluginType.value));
+        if (redirect !== undefined) {
+            await navigateTo({
+                path: redirect
+            });
+        }
     }
 
     function pluginToc(subGroupsWrappers: Plugin[]) {
@@ -114,7 +136,6 @@
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
-    const pluginType = computed(() => splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined);
     const subGroup = computed(() => {
         const maybeSubGroup = splitRouteSlug?.[1];
         return maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
@@ -156,8 +177,6 @@
 
         page.value.description = subGroup.value === undefined ? pluginWrapper.value.description : subGroupWrapper.value.description;
     }
-
-    const {navigation, pageList, pageNames} = await fetchNavigation();
 
     const {origin} = useRequestURL();
 
