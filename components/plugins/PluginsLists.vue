@@ -55,8 +55,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
+    import {isEntryAPluginElementPredicate, slugify} from "@kestra-io/ui-libs";
 
     const DONT_CAPITALIZE_CATEGORIES = ["AI"];
     const currentPage = ref(1);
@@ -116,15 +117,15 @@
             if (plugin.subGroup === undefined) {
                 const matchingSubGroupSlug = Object.entries(subGroupsToSlugs).filter(([subGroup]) => item.startsWith(subGroup)).sort(([subGroupA], [subGroupB]) => subGroupB.length - subGroupA.length)?.[0]?.[1];
                 if (matchingSubGroupSlug !== undefined) {
-                    subGroupQualifier = `/${matchingSubGroupSlug}`;
+                    subGroupQualifier = `/${slugify(matchingSubGroupSlug)}`;
                 }
             } else {
-                subGroupQualifier = `/${plugin.title}`
+                subGroupQualifier = `/${slugify(plugin.title)}`
             }
 
             return `
                       <li>
-                        <a href="${generateCategoryLink(plugin.name + subGroupQualifier, item)}">${item}</a>
+                        <a href="${generateCategoryLink(slugify(plugin.name) + subGroupQualifier, item)}">${item}</a>
                       </li>
                     `
         }).join("");
@@ -133,7 +134,7 @@
     function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
         if (categoryItems && categoryItems.length > 0) {
             plugin.tooltipContent += `
-            <p class="ks-plugin-card-${categoryName.toLowerCase().replaceAll(" ", "_")}">${categoryName}</p>
+            <p class="text-capitalize ks-plugin-card-${slugify(categoryName)}">${categoryName}</p>
             <ul>
               ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
             </ul>

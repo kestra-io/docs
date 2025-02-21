@@ -24,10 +24,7 @@
                         <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
                             <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text"
                                 @click="closeToc" class="table-content">
-                                <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="{
-                                    'text-capitalize': capitalize,
-                                    [`depth-${tableOfContent.depth}`]: true
-                                    }">{{ tableOfContent.text }}</a>
+                                <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="`depth-${tableOfContent.depth}`">{{ tableOfContent.text }}</a>
                             </li>
                             <ul class="ps-0 pt-2 pt-lg-0"
                                 v-if="tableOfContent.children && tableOfContent.children.length">
@@ -35,10 +32,7 @@
                                     <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc"
                                         :class="{'mt-3': item.depth === 2}">
                                         <a @click="menuNavigate" :href="`#${item.id}`"
-                                           :class="{
-                                    'text-capitalize': capitalize,
-                                    [`depth-${item.depth}`]: true
-                                    }">{{ item.text }}</a>
+                                           :class="`depth-${item.depth}`">{{ item.text }}</a>
                                     </li>
                                 </template>
                             </ul>
