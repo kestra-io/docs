@@ -93,7 +93,7 @@
             creatingTooltipContainer(plugin, 'Tasks', plugin.tasks, subGroupsToSlugs);
             creatingTooltipContainer(plugin, 'Triggers', plugin.triggers, subGroupsToSlugs);
             creatingTooltipContainer(plugin, 'Conditions', plugin.conditions, subGroupsToSlugs);
-            creatingTooltipContainer(plugin, 'TaskRunners', plugin.taskRunners, subGroupsToSlugs);
+            creatingTooltipContainer(plugin, 'Task Runners', plugin.taskRunners, subGroupsToSlugs);
         });
 
         totalPlugins.value = (new Set(allTasks)).size +
@@ -133,7 +133,7 @@
     function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
         if (categoryItems && categoryItems.length > 0) {
             plugin.tooltipContent += `
-            <p class="ks-plugin-card-${categoryName.toLowerCase()}">${categoryName}</p>
+            <p class="ks-plugin-card-${categoryName.toLowerCase().replaceAll(" ", "_")}">${categoryName}</p>
             <ul>
               ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
             </ul>
