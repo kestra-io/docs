@@ -26,15 +26,9 @@
     "@vueuse/core": "^12.5.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "dagre": "^0.8.5",
     "dayjs": "^1.11.13",
-    "humanize-duration": "^3.32.1",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.4.1",
-    "moment": "^2.30.1",
-    "moment-timezone": "^0.5.47",
     "nuxt-lazy-hydrate": "^1.0.0",
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.217.4",
@@ -44,8 +38,7 @@
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel-nuxt": "^1.1.5",
     "vue3-count-to": "^1.1.2",
-    "vuex": "^4.1.0",
-    "yaml": "^2.7.0"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@nuxt/content": "3.2.0",
@@ -64,5 +57,8 @@
     "rss": "^1.2.2",
     "sass": "^1.84.0",
     "wrangler": "^3.108.1"
+  },
+  "engines": {
+    "node": ">= 14"
   }
 }
