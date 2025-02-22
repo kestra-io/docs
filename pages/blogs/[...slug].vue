@@ -132,7 +132,6 @@
         const { origin } = useRequestURL()
 
         const setContentHead = async () => {
-            page.value.image = `${origin + image}`;
             await useContentHead(page);
             setTimeout(() => {
               extractHash()
