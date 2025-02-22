@@ -128,16 +128,20 @@
         }
 
         page.value = data.value;
-          (async () => {
+        const {title,author,description,image,date} = page.value
+        const { origin } = useRequestURL()
+
+        const setContentHead = async () => {
             page.value.image = `${origin + image}`;
             await useContentHead(page);
             setTimeout(() => {
               extractHash()
             }, 1000)
-          })();
+          };
 
-        const {title,author,description,image,date} = page.value
-        const { origin } = useRequestURL()
+          setContentHead()
+
+
 
         useHead({
             meta: [
