@@ -114,9 +114,7 @@ export default defineNuxtConfig({
         },
         optimizeDeps: {
             include: [
-                "humanize-duration",
                 "lodash",
-                "dagre",
                 "debug",
             ],
             exclude: [
