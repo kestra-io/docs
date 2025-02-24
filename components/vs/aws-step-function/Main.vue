@@ -60,7 +60,7 @@
             <table class="table table-bordered mb-0">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Feature/Aspect</th>
                         <th>Kestra</th>
                         <th>AWS Step Functions</th>
                     </tr>
@@ -111,7 +111,6 @@
 
 </template>
 
-
 <script setup>
     import Typewriter from "vue-material-design-icons/Typewriter.vue";
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
@@ -125,7 +124,7 @@
     import Section from '../../layout/Section.vue';
 
     export default {
-        components: {Section}
+        components: { Section }
     }
 </script>
 
@@ -165,7 +164,7 @@
     section.about {
         border-bottom: $block-border;
 
-        h2 {
+        h2, h3 {
             color: $white;
             font-weight: 300;
             margin-bottom: 16px;
@@ -178,7 +177,7 @@
             }
         }
 
-        p {
+        p, ul > li {
             color: $white;
             font-size: $h6-font-size;
             font-weight: 400;

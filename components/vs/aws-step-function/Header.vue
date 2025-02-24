@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="zoom-in">
-                    <img class="zoom img-fluid" src="/landing/vs/aws/header.svg" alt="A screenshot of the user interface of Kestra's application"/>
+                    <img class="zoom img-fluid" src="/landing/vs/aws-step-function/header.svg" alt="A screenshot of the user interface of Kestra's application"/>
                 </div>
             </div>
         </div>
