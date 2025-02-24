@@ -28,7 +28,7 @@ function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     };
 }
 
-const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<string, JSONProperty>) => {
+const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<string, JSONProperty>, usePropertyTitle = false) => {
     const children = [];
 
     const sortedProperties = Object.entries(properties).sort(([_, valueA], [__, valueB]) => {
@@ -39,7 +39,7 @@ const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<str
         children.push({
             id: hrefPrefix + key,
             depth: 3,
-            text: property.title ?? key.split("_")[0],
+            text: (usePropertyTitle ? property.title : undefined) ?? key.split("_")[0],
         });
     }
 
@@ -80,7 +80,7 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
             id: 'definitions',
             depth: 2,
             text: 'Definitions',
-            children: jsonSchemaPropertiesChildrenToc(undefined, schema.definitions)
+            children: jsonSchemaPropertiesChildrenToc(undefined, schema.definitions, true)
         });
     }
 
