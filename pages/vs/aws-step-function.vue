@@ -1,7 +1,7 @@
 <template>
     <div>
         <Head>
-            <Title>Airflow vs Kestra</Title>
+            <Title>Kestra alternative to AWS Step Function</Title>
             <Meta name="description" content="What are the differences between Kestra and AWS Step Function" />
         </Head>
 
