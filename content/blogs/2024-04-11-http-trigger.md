@@ -22,7 +22,7 @@ And this is exactly what we are going to show you in this blog post.
 
 The ultimate goal of automation is to trigger action based on business events. What happens when the product stock is too low to support new orders? How to deal with unused analytics dashboards and improve data governance in the company, how to scale the underlying application infrastructure when traffic is unusual during pics of activity?
 
-Let’s dive into 3 examples of [Kestra’s HTTP trigger task](https://kestra.io/plugins/plugin-fs/triggers/http/io.kestra.plugin.fs.http.trigger) that allows triggering workflows based on API status.
+Let’s dive into 3 examples of [Kestra’s HTTP trigger task](/plugins/plugin-fs/http/io.kestra.plugin.fs.http.trigger) that allows triggering workflows based on API status.
 
 ## Notify the supply when the warehouse stock hits a threshold
 
@@ -132,7 +132,7 @@ Incident management is usually spread over diverse teams and responsibilities. S
 
 This involves several tools and processes. Depending on the the level of maturity and complexity of the company it can be hard to streamline the “war room” process and improve the Mean Time To Repair metric. An automation platform like Kestra allows to manage all this setup and interconnect all the necessary tools during the process.
 
-Here is an example of Kestra flow that listens to [Grafana](https://grafana.com/) metrics critical to the underlying business. When a metric is larger than the SLA threshold, it will automatically trigger a war room setup by creating a ticket with [Service Now](https://kestra.io/plugins/plugin-servicenow), creating a dedicated “war room channel” in Slack, and sending an alert through [Pager Duty](https://pagerduty.com/) to easily head up the engineer in duty while managing team rotation.
+Here is an example of Kestra flow that listens to [Grafana](https://grafana.com/) metrics critical to the underlying business. When a metric is larger than the SLA threshold, it will automatically trigger a war room setup by creating a ticket with [Service Now](/plugins/plugin-servicenow), creating a dedicated “war room channel” in Slack, and sending an alert through [Pager Duty](https://pagerduty.com/) to easily head up the engineer in duty while managing team rotation.
 
 ```yaml
 id: war-room-setup
@@ -172,7 +172,7 @@ tasks:
     formData:
       users: "W1234567890,U2345678901,U3456789012"
       channel_id: "{{ json(outputs.create_war_room_slack.body).channel.id }}"
-    
+
   - id: send_pagerduty_alert
     type: io.kestra.plugin.notifications.pagerduty.PagerDutyAlert
     url: "{{ secret('PAGERDUTY_URL') }}"

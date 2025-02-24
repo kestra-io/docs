@@ -14,11 +14,11 @@ We're excited to announce Kestra 0.11.0, which includes a **redesigned topology 
 
 Along with this release, we've published the **[official Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra)** offering autocompletion and syntax validation for local development. You can now create and deploy complex workflows directly from your local VS Code IDE without ever having to open the UI.
 
-This release also makes Kestra easier to use for Command Line enthusiasts. We've added new integrations to automate tasks on [AWS](https://kestra.io/plugins/plugin-aws#cli), [Google Cloud](https://kestra.io/plugins/plugin-gcp#cli), [Azure](https://kestra.io/plugins/plugin-azure#cli), [dbt](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli), and [Spark](https://kestra.io/plugins/plugin-spark/tasks/io.kestra.plugin.spark.sparkcli) using dedicated **CLI tasks**.
+This release also makes Kestra easier to use for Command Line enthusiasts. We've added new integrations to automate tasks on [AWS](/plugins/plugin-aws#cli), [Google Cloud](/plugins/plugin-gcp#cli), [Azure](/plugins/plugin-azure#cli), [dbt](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli), and [Spark](/plugins/plugin-spark/io.kestra.plugin.spark.sparkcli) using dedicated **CLI tasks**.
 
-The [Databricks](https://kestra.io/plugins/plugin-databricks) and [AWS Athena](https://kestra.io/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](https://kestra.io/plugins/plugin-script-julia)**.
+The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](https://kestra.io/plugins/plugin-hightouch), a [Telegram](https://kestra.io/plugins/plugin-notifications#telegram) notification task, Singer Taps for [Oracle](https://kestra.io/plugins/plugin-singer/tasks/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](https://kestra.io/plugins/plugin-singer/tasks/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](https://kestra.io/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-notifications#telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -244,7 +244,7 @@ In the Enterprise Editon, the Administration section also includes user manageme
 
 ## New CLI Tasks
 
-We've added several Command Line Interface tasks to help you automate any process or service API calls on [AWS](https://kestra.io/plugins/plugin-aws#cli), [Google Cloud](https://kestra.io/plugins/plugin-gcp#cli) and [Microsoft Azure](https://kestra.io/plugins/plugin-azure#cli).
+We've added several Command Line Interface tasks to help you automate any process or service API calls on [AWS](/plugins/plugin-aws#cli), [Google Cloud](/plugins/plugin-gcp#cli) and [Microsoft Azure](/plugins/plugin-azure#cli).
 
 We've also introduced additional CLI tasks to the following existing plugins:
 - **dbt plugin** now includes a generic `DbtCLI` task to run any dbt command
@@ -253,7 +253,7 @@ We've also introduced additional CLI tasks to the following existing plugins:
 
 ### Google Cloud CLI
 
-Using the `gcloud` [CLI task](https://kestra.io/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](https://demo.kestra.io/ui/blueprints/community/96) showing various ways of capturing relevant API responses from the CLI output.
+Using the `gcloud` [CLI task](/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](https://demo.kestra.io/ui/blueprints/community/96) showing various ways of capturing relevant API responses from the CLI output.
 
 ```yaml
 id: gcloudCLI
@@ -272,7 +272,7 @@ tasks:
 
 ### AWS CLI
 
-AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI task](https://kestra.io/plugins/plugin-aws#cli), you can trigger any API call interacting with your AWS resources as part of your end-to-end workflow. Below is a simple example from the [blueprints catalog](https://demo.kestra.io/ui/blueprints/community/97) listing AWS ECS clusters from the `AwsCLI` task.
+AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI task](/plugins/plugin-aws#cli), you can trigger any API call interacting with your AWS resources as part of your end-to-end workflow. Below is a simple example from the [blueprints catalog](https://demo.kestra.io/ui/blueprints/community/97) listing AWS ECS clusters from the `AwsCLI` task.
 
 ```yaml
 id: awsCLIlistECSclusters
@@ -291,7 +291,7 @@ tasks:
 
 ### Microsoft Azure CLI
 
-This release also introduces the `az` [CLI task](https://kestra.io/plugins/plugin-azure#cli) to automate any Azure task from the Command Line, as shown in the following [blueprints example](https://demo.kestra.io/ui/blueprints/community/98).
+This release also introduces the `az` [CLI task](/plugins/plugin-azure#cli) to automate any Azure task from the Command Line, as shown in the following [blueprints example](https://demo.kestra.io/ui/blueprints/community/98).
 
 ```yaml
 id: azureCLI
@@ -332,7 +332,7 @@ tasks:
         - spark-submit --name Pi --master spark://localhost:7077 etl/spark_pi.py
 ```
 
-Similarly to `SparkCLI`, the new [DbtCLI task](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](https://demo.kestra.io/ui/blueprints/community/125) running `dbt deps` and `dbt build` commands.
+Similarly to `SparkCLI`, the new [DbtCLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](https://demo.kestra.io/ui/blueprints/community/125) running `dbt deps` and `dbt build` commands.
 
 ```yaml
 id: dbtGitDockerDuckDB
@@ -378,11 +378,11 @@ This release introduces new integrations to automate data lake processes includi
 
 ### Amazon Athena
 
-Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](https://kestra.io/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](https://kestra.io/blogs/2023-08-05-iceberg-for-aws-users).
+Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](https://kestra.io/blogs/2023-08-05-iceberg-for-aws-users).
 
 ### Databricks plugin
 
-Databricks is a unified data analytics platform that provides a collaborative workspace for data scientists, engineers, and machine learning practitioners. The `Databricks` [plugin](https://kestra.io/plugins/plugin-databricks) allows managing Databricks jobs, clusters, files and queries as part of your end-to-end automated data pipelines in Kestra. Here are example use cases available in the blueprints catalog:
+Databricks is a unified data analytics platform that provides a collaborative workspace for data scientists, engineers, and machine learning practitioners. The `Databricks` [plugin](/plugins/plugin-databricks) allows managing Databricks jobs, clusters, files and queries as part of your end-to-end automated data pipelines in Kestra. Here are example use cases available in the blueprints catalog:
 
 
 - [Run a SQL query on Databricks, output the result to a CSV file and read that CSV file in a Python script with Pandas](https://demo.kestra.io/ui/blueprints/community/92) - this flow demonstrates how you can fetch data from Databricks using SQL and use that data in any downstream process e.g. in a custom Python script
@@ -397,9 +397,9 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 
 ## AI and ML
 
-We've added two new tasks to integrate Kestra with [Vertex AI APIs](https://kestra.io/plugins/plugin-gcp/#vertex-ai) using Google's PaLM 2 Large Language Models.
-1. The [PaLM TextCompletion API](https://kestra.io/plugins/plugin-gcp/tasks/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
-2. The [PaLM ChatCompletion API](https://kestra.io/plugins/plugin-gcp/tasks/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
+We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plugin-gcp/#vertex-ai) using Google's PaLM 2 Large Language Models.
+1. The [PaLM TextCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
+2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
 
 To see both of these tasks in action, check [the blog post by Loïc Mathieu](https://kestra.io/blogs/2023-08-24-using-google-bard-ai-with-kestra).
 
@@ -409,7 +409,7 @@ To see both of these tasks in action, check [the blog post by Loïc Mathieu](htt
 
 ### Hightouch plugin to support reverse ETL
 
-Our community member, [Antoine Balliet](https://github.com/aballiet), contributed a [Hightouch plugin](https://kestra.io/plugins/plugin-hightouch/tasks/io.kestra.plugin.hightouch.sync) that allows triggering Hightouch syncs as part of end-to-end processes. The task is fully declarative — add a Hightouch API token and a sync ID, and start syncing data from a data warehouse to your SaaS tools.
+Our community member, [Antoine Balliet](https://github.com/aballiet), contributed a [Hightouch plugin](/plugins/plugin-hightouch/io.kestra.plugin.hightouch.sync) that allows triggering Hightouch syncs as part of end-to-end processes. The task is fully declarative — add a Hightouch API token and a sync ID, and start syncing data from a data warehouse to your SaaS tools.
 
 ```yaml
 id: bigquery_to_gsheets
@@ -424,8 +424,8 @@ tasks:
 ### New Singer Taps: Oracle and Microsoft SQL Server
 
 We've extended the existing Singer plugin to support the following new taps:
-- [Microsoft SQL Server](https://kestra.io/plugins/plugin-singer/tasks/targets/io.kestra.plugin.singer.targets.sqlserver)
-- [Oracle](https://kestra.io/plugins/plugin-singer/tasks/targets/io.kestra.plugin.singer.targets.oracle).
+- [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver)
+- [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle).
 
 
 ### MotherDuck integration
@@ -450,14 +450,14 @@ You can read more about various use cases for using MotherDuck with Kestra in ou
 
 ### Julia support and new script documentation
 
-So far, Kestra has supported custom scripts written in Python, R, Node.js, Shell and Powershell. With this release, we've also added [support for Julia](https://kestra.io/plugins/plugin-script-julia).
+So far, Kestra has supported custom scripts written in Python, R, Node.js, Shell and Powershell. With this release, we've also added [support for Julia](/plugins/plugin-script-julia).
 
 We've also improved the [documentation for new script plugins](https://kestra.io/docs/developer-guide/scripts).
 
 
 ### Telegram notifications
 
-There is a [new plugin](https://kestra.io/plugins/plugin-notifications#telegram) allowing you to send notifications using [Telegram](https://telegram.org/).
+There is a [new plugin](/plugins/plugin-notifications#telegram) allowing you to send notifications using [Telegram](https://telegram.org/).
 
 Below is a simple example:
 

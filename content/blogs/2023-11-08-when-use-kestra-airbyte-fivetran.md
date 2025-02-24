@@ -54,13 +54,13 @@ For scenarios with a limited number of sources to integrate, Kestra offers a str
 
 As Kestra comes with many plugins you can already move data from one database to another. From one filesystem to another. You can also listen to queue systems for new messages, listen for [events on file systems such as S3 buckets of FTP servers](https://kestra.io/docs/developer-guide/triggers).
 
-Moreover Kestra has a [Singer plugin](https://kestra.io/plugins/plugin-singer) allowing to consolidate data integration with the famous systems of taps and targets. This way you can find an in-between between Airbyte and Kestra standalone.
+Moreover Kestra has a [Singer plugin](/plugins/plugin-singer) allowing to consolidate data integration with the famous systems of taps and targets. This way you can find an in-between between Airbyte and Kestra standalone.
 
 ## What’s Next?
 
 When it comes to data ingestion, there are various approaches available. The choice depends on factors such as the context and the number of data sources involved. In some cases, a combination of Kestra and specialized ingestion tools may be the most effective solution.
 
-Checkout the [Airbyte](https://kestra.io/plugins/plugin-airbyte) and [Fivetran](https://kestra.io/plugins/plugin-fivetran) Kestra plugins allowing to trigger sync directly from Kestra and create end-to-end pipelines.
+Checkout the [Airbyte](/plugins/plugin-airbyte) and [Fivetran](/plugins/plugin-fivetran) Kestra plugins allowing to trigger sync directly from Kestra and create end-to-end pipelines.
 
 If you want to go further with Kestra and data ingestion use cases you can read [“How to create an end-to-end data ingestion, transformation and orchestration pipeline with Airbyte, dbt and Kestra”](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
 

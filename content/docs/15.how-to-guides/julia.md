@@ -40,7 +40,7 @@ tasks:
       println(lines)
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-julia/tasks/io.kestra.plugin.scripts.julia.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-julia/io.kestra.plugin.scripts.julia.script)
 
 ### Commands
 
@@ -84,7 +84,7 @@ tasks:
       - julia main.jl
 ```
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-julia/tasks/io.kestra.plugin.scripts.julia.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-julia/io.kestra.plugin.scripts.julia.commands).
 
 ## Handling Outputs
 

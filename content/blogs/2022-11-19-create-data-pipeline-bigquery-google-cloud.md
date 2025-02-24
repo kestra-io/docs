@@ -29,7 +29,7 @@ Kestra provides a suite of plugins for various GCP services, such as Google Clou
 Kestra enables standard operations in BigQuery, such as creating and deleting datasets and tables, running queries, and importing/exporting tables to/from BigQuery and GCS, and many more, using simple plugins.
 
 ### Data Modeling
-Data modeling is a process that involves setting up a coherent structure for data to make it useful for a business, reflecting the organization's goals and business logic. It's about organizing, standardizing, and understanding the data related to business processes, workflows, and definitions. This is achieved through a series of transformations applied to the raw datasets, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.query) plugin for BigQuery can be used for this purpose.
+Data modeling is a process that involves setting up a coherent structure for data to make it useful for a business, reflecting the organization's goals and business logic. It's about organizing, standardizing, and understanding the data related to business processes, workflows, and definitions. This is achieved through a series of transformations applied to the raw datasets, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query) plugin for BigQuery can be used for this purpose.
 
 For instance, you can apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
 
@@ -107,7 +107,7 @@ This option controls the behavior when writing query results to a table that alr
 Kestra supports the use of template variables, which are denoted by {{ }}. In the `query_new_data task`, date('{{ outputs.query_latest_date.row.date }}') fetches the output date from the `query_latest_date` task and uses it in the SQL query.
 
 ### Interacting with Google Cloud Storage ###
-The [**LoadFromGcs**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.loadfromgcs) plugin is used to import the data from GCS and store it in the BigQuery table directly. This can be especially helpful to analyse and generate insights from the static data files stored in GCS. This plugin can take the input data files for **various file formats** like Avro, JSON, PARQUET, ORC, and CSV.
+The [**LoadFromGcs**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.loadfromgcs) plugin is used to import the data from GCS and store it in the BigQuery table directly. This can be especially helpful to analyse and generate insights from the static data files stored in GCS. This plugin can take the input data files for **various file formats** like Avro, JSON, PARQUET, ORC, and CSV.
 
 Here is an example of a flow that load the data from GCS and store it in a BigQuery table with specified inputs.
 
@@ -133,7 +133,7 @@ Here is an example of a flow that load the data from GCS and store it in a BigQu
   - gs://sandbox-kestra-dev/sandbox/titanic.csv
 ```
 
-On the other side, the [**ExportToGCS**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.extracttogcs) plugin is designed to extract tables from BigQuery and store them at a specified GCS bucket path. This comes in handy when a BigQuery table is needed for utilization in other services or platforms, like creating backups to save on BigQuery storage costs or generating a dataset for ML model training.
+On the other side, the [**ExportToGCS**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.extracttogcs) plugin is designed to extract tables from BigQuery and store them at a specified GCS bucket path. This comes in handy when a BigQuery table is needed for utilization in other services or platforms, like creating backups to save on BigQuery storage costs or generating a dataset for ML model training.
 
 Here's an example of a flow that allows exporting data back to GCS:
 
@@ -167,7 +167,7 @@ curl -v "http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-t
 ```
 
 ### Storage Write ###
-The [StorageWrite](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.storagewrite) plugin is used for importing data from various sources, including databases, distributed message queues, or other plugins, into BigQuery. This is especially useful when data is stored externally. Another advantage of using this plugin is to avoid quotas limitation during streaming and batch data ingestion.
+The [StorageWrite](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.storagewrite) plugin is used for importing data from various sources, including databases, distributed message queues, or other plugins, into BigQuery. This is especially useful when data is stored externally. Another advantage of using this plugin is to avoid quotas limitation during streaming and batch data ingestion.
 
 Below is an example flow that streams data from a Kafka topic to a BigQuery table using the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery:
 
@@ -199,7 +199,7 @@ tasks:
 Kestra also allows you to create dynamic data pipelines that can be triggered based on external events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports such event-driven workflows via trigger plugins for BigQuery and GCS.
 
 ### BigQuery Trigger ###
-The BigQuery [**Trigger**](/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) task). Here's how you could set up such a flow:
+The BigQuery [**Trigger**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) task). Here's how you could set up such a flow:
 
 ```yaml
 id: Trigger_flow
