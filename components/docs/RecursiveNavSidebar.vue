@@ -134,7 +134,7 @@
                     return true;
                 }
 
-                return this.activeSlug.startsWith(item.path);
+                return item.path.match(/[^/]*\.[^/]*$/) ? this.activeSlug === item.path : this.activeSlug.startsWith(item.path);
             },
             isActiveOrExpanded(item) {
                 if (this.isActive(item)) {
