@@ -65,8 +65,6 @@
                 </ul>
             </div>
         </Section>
-
-        <h2>Comparison Table</h2>
                 <div class="table-responsive mb-5">
                     <table class="table table-bordered mb-0">
                         <thead>
@@ -138,7 +136,7 @@
                                 <td>Scales within Azure but can become expensive at higher workloads</td>
                             </tr>
                             <tr>
-                                <td>Integrations</td>
+                                <td>Cloud Integrations</td>
                                 <td>Works with AWS, GCP, Azure, and on-prem tools, supports event-driven and scheduled workflows</td>
                                 <td>Limited to Microsoft technologies, with deep Azure integration but fewer external connectors</td>
                             </tr>
