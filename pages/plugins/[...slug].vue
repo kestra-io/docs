@@ -409,12 +409,6 @@
         }
 
         :deep(.plugin-section) {
-            .material-design-icon {
-                &, & * {
-                    bottom: 0;
-                }
-            }
-
             p {
                 margin-bottom: 0;
 
@@ -447,26 +441,18 @@
                 }
             }
 
-            .collapsible-body > .border {
+            .collapsible-body .border {
+                #{--collapsible-border-color}: var(--kestra-io-token-color-border-secondary);
                 border-color: var(--kestra-io-token-color-border-secondary) !important;
 
-                > .property:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
-                }
-
-                > * {
+                > .property {
                     background: var(--kestra-io-token-color-background-secondary);
 
                     &:not(:has(.collapse-button.collapsed)) {
-                        background: var(--kestra-io-token-color-background-primary);
+                        background: var(--kestra-io-neutral-gray300);
 
-                        > button {
-                            background: var(--kestra-io-neutral-gray300);
-                            outline: $spacer solid var(--kestra-io-neutral-gray300);
-                        }
-
-                        .property-detail > *:first-child {
-                            border-top: none;
+                        > .collapsible-body {
+                            background: var(--kestra-io-token-color-background-primary);
                         }
                     }
                 }
@@ -479,7 +465,7 @@
                     color: var(--kestra-io-neutral-gray700);
                 }
 
-                > * {
+                > *:not(:first-child) {
                     border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
                 }
 
