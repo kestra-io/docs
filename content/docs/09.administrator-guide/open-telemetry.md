@@ -46,16 +46,7 @@ Kestra propagates the trace context so that traces are correlated:
 - The flow execution trace correlates with the parent flow when the `Subflow` or `ForEachItem` task is used.
 - External HTTP calls include the standard propagation header so correlation happens with downstream systems.
 
-The following screenshot displays traces created inside [Jaeger](https://www.jaegertracing.io), an OpenTelemetry compatible tracing platform.
-
-You can see three traces, all correlated:
-- One created from the API call that creates the execution
-- One created from an execution of a flow named `opentelemetry_parent` which has several spans, including one for a `Subflow` task that creates an execution of the flow `opentelemetry_basic`
-- One created from an execution of a flow named `opentelemetry_basic`
-
-![Traces example](/docs/administrator-guide/opentelemetry_traces.png)
-
-Enable Jaeger with Kestra for tracing in a docker-compose configuration file like the following:
+Enable [Jaeger](https://www.jaegertracing.io), and OpenTelemetry compatible tracing platform, with Kestra in a docker-compose configuration file with the following:
 
 ```yaml
 services:
@@ -82,6 +73,15 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 ```
+
+The following screenshot displays traces created inside Jaeger:
+
+You can see three traces, all correlated:
+- One created from the API call that creates the execution
+- One created from an execution of a flow named `opentelemetry_parent` which has several spans, including one for a `Subflow` task that creates an execution of the flow `opentelemetry_basic`
+- One created from an execution of a flow named `opentelemetry_basic`
+
+![Traces example](/docs/administrator-guide/opentelemetry_traces.png)
 
 Kestra traces inside flow executions can be disabled while keeping traces inside the API by disabling the Kestra tracer:
 
