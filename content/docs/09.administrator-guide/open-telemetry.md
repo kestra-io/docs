@@ -55,6 +55,34 @@ You can see three traces, all correlated:
 
 ![Traces example](/docs/administrator-guide/opentelemetry_traces.png)
 
+Enable Jaeger with Kestra for tracing in a docker-compose configuration file like the following:
+
+```yaml
+services:
+  restart: on-failure
+
+  postgres:
+    image: postgres:14.13
+    environment:
+      POSTGRES_DB: kestra_unit
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: k3str4
+    ports:
+      - 5432:5432
+    restart: on-failure
+
+  jaeger-all-in-one:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Receive legacy OpenTracing traces, optional
+      - "4317:4317"    # OTLP gRPC receiver
+      - "4318:4318"    # OTLP HTTP receiver
+      - "14250:14250"  # Receive from external otel-collector, optional
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+```
+
 Kestra traces inside flow executions can be disabled while keeping traces inside the API by disabling the Kestra tracer:
 
 ```yaml
