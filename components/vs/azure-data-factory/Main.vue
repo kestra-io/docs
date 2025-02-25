@@ -86,11 +86,6 @@
                                 <td>No native scripting, limited to Azure-native transformations</td>
                             </tr>
                             <tr>
-                                <td>Declarative Interface</td>
-                                <td>Yes — API-first with YAML syntax exposed for simplicity</td>
-                                <td>No-code interface, not declarative</td>
-                            </tr>
-                            <tr>
                                 <td>Ease of Setup</td>
                                 <td>Quick setup, scheduled workflow in minutes</td>
                                 <td>Requires Azure account, complex permission setup</td>
