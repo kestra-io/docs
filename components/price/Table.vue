@@ -580,7 +580,7 @@
         },
         {
           id: 28,
-          title: "Custom Apps & Dashboard Views",
+          title: "Apps",
           isOpenSource: false,
           isEnterprise: true,
         },
