@@ -1,5 +1,5 @@
 ---
-title: Configure authentik SSO in Kestra
+title: Configure authentik SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE"]
 ---

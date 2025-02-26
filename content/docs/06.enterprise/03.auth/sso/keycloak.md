@@ -1,5 +1,5 @@
 ---
-title: Configure KeyCloak SSO in Kestra
+title: Configure KeyCloak SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE"]
 ---

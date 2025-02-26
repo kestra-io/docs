@@ -1,5 +1,5 @@
 ---
-title: Use Microsoft as an OIDC SSO Provider
+title: Microsoft as an OIDC SSO Provider
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---

@@ -1,5 +1,5 @@
 ---
-title: Use Google as an OIDC SSO Provider
+title: Google as an OIDC SSO Provider
 icon: /docs/icons/tutorial.svg
 editions: ["EE"]
 ---
