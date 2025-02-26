@@ -48,7 +48,7 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
-    "@nuxt/content": "https://pkg.pr.new/@nuxt/content@81aae7b",
+    "@nuxt/content": "https://pkg.pr.new/@nuxt/content@4d70008",
     "@nuxt/devtools": "^2.0.0",
     "@nuxt/image": "^1.9.0",
     "@nuxtjs/mdc": "npm:@nuxtjs/mdc-edge@0.13.3-28966458.8a59ae3",
