@@ -142,7 +142,7 @@
       name: 'Enterprise Edition',
       period: "Per Instance",
       button: {
-        text: "Book a Call",
+        text: "Talk to us",
         href: "/demo",
       },
     },

@@ -65,7 +65,7 @@
                                     class="demo-btn"
                                     data-aos="zoom-in"
                                 >
-                                    Book a Call
+                                    Talk to us
                                 </NuxtLink>
                                 <ul>
                                     <li data-aos="fade-right" data-aos-delay="100">
