@@ -11,8 +11,8 @@ image: /blogs/2023-09-04-reverse-etl-vs-cdp.jpg
 
 In this deep dive, we'll unravel the mechanics of leading Customer Data Platforms (CDPs), dissecting how they handle data ingestion, analytics, and real-time processing. We'll also spotlight how some of these platforms are merging with Reverse ETL functionalities. By the end, you'll have a robust understanding of their architecture and capabilities.
 
-## About Reverse ETL ## 
-Reverse ETL pushes data from data warehouses and lakes back to operational systems such as CRMs, marketing automation platforms, and custom-built applications. Instead of simply extracting, loading, and then transforming data (the traditional ETL process), Reverse ETL takes another approach. The data that's been curated in a warehouse is made operational, essentially turning those insights into actionable information by pushing back to tools where business users can take actions. This is what we call “data activation”. 
+## About Reverse ETL ##
+Reverse ETL pushes data from data warehouses and lakes back to operational systems such as CRMs, marketing automation platforms, and custom-built applications. Instead of simply extracting, loading, and then transforming data (the traditional ETL process), Reverse ETL takes another approach. The data that's been curated in a warehouse is made operational, essentially turning those insights into actionable information by pushing back to tools where business users can take actions. This is what we call “data activation”.
 
 Reverse ETL begins by extracting data from environments like data warehouses, lakes, or the contemporary lakehouses, utilizing systems such as Snowflake or BigQuery. This data undergoes transformation, often through SQL queries, ensuring compatibility with third-party tools. Finally, using APIs or direct connections, the refined data is loaded into business applications.
 
@@ -25,7 +25,7 @@ Technically, CDPs must be adept at data ingestion. Whether it's through API call
 
 ---
 
-## CDP vs. Reverse ETL: The Overlaps and Distinctions ## 
+## CDP vs. Reverse ETL: The Overlaps and Distinctions ##
 
 While CDPs and Reverse ETL tools have overlapping functionalities, they cater to distinct business needs. CDPs primarily focus on consolidating customer data for a unified view, whereas Reverse ETL emphasizes making analytical data operational for third-party applications allowing complex data flows across tools.
 
@@ -130,7 +130,7 @@ The Sync task has properties such as fullResynchronization to run a full synchro
 
 This plugin allows you to build even more complex workflows and reduce latency between data sync. Just after running an Airbyte sync (ETL to extract your data from a source), you can apply some transformations using Kestra dbt plugin and at the end running an Hightouch sync to activate your data without waiting for the next schedule.
 
-Check out the full [plugin documentation](https://kestra.io/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Baillet](https://github.com/aballiet) for the creation of this plugin!
+Check out the full [plugin documentation](/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Baillet](https://github.com/aballiet) for the creation of this plugin!
 
 ---
 
@@ -142,6 +142,6 @@ To further grasp the nuances of data management and to explore related concepts,
 
 Thank you for taking this deep dive with us. We hope this guide has been instrumental in helping you understand the unique capabilities and advantages of Reverse ETL and CDPs.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
+If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).

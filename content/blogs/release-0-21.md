@@ -381,7 +381,7 @@ tasks:
 
 ### New AWS EMR plugin
 
-The [AWS EMR plugin](https://kestra.io/plugins/plugin-aws#emr) lets you create or terminate AWS EMR clusters and manage jobs.
+The [AWS EMR plugin](/plugins/plugin-aws#emr) lets you create or terminate AWS EMR clusters and manage jobs.
 
 ::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
 ```yaml

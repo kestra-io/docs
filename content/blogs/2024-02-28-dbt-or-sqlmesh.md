@@ -35,7 +35,7 @@ Still, here are some common complaints raised by the dbt community:
 - While incremental models in dbt efficiently process new or updated data, backfilling only specific time range intervals can become challenging when using the "most recent records" approach.
 
 
-- Thousands of lines of SQL paired with Jinja macros can easily become difficult to maintain especially with complex business logic. 
+- Thousands of lines of SQL paired with Jinja macros can easily become difficult to maintain especially with complex business logic.
 
 
 - Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundreds (if not thousands) of models built by different teams and projects. However, cross-project references are not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md), but the final decisions have been to move it into [dbt Mesh](https://www.getdbt.com/product/dbt-mesh), which is part of the commercial dbt Cloud offering.
@@ -77,7 +77,7 @@ SQLMesh introduces key improvements for managing SQL queries:
 - SQLMesh provides native support for multiple repos and makes it easy to maintain data consistency and correctness even with multiple repos.
 
 
-- SQLMesh has different user interfaces: a web UI and a CLI. Both are included in the open-source version. 
+- SQLMesh has different user interfaces: a web UI and a CLI. Both are included in the open-source version.
 
 
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
@@ -146,13 +146,13 @@ Even though both frameworks are extraordinary for building data transformations 
 
 Data engineers often have more complex pipelines than what we see in Modern Data Stack schemas where it’s often about connecting an ingesting tool ([Airbyte](https://airbyte.com/), [Fivetran](https://www.fivetran.com), [dlt](https://dlthub.com/)), transforming tool (dbt), and a reverse ETL tool ([Hightouch](https://hightouch.com/), [Census](https://www.getcensus.com/reverse-etl)) or a dashboarding tool ([Tableau](https://www.tableau.com), [PowerBI](https://www.microsoft.com/en-en/power-platform/products/power-bi), [Metabase](https://www.metabase.com/), [Superset](https://superset.apache.org/)). Data teams also need notification services, custom API calls, monitoring, very specific transformations, etc.
 
-Connecting all those tools needs a central orchestrator such as [Kestra](https://github.com/kestra-io/kestra). 
+Connecting all those tools needs a central orchestrator such as [Kestra](https://github.com/kestra-io/kestra).
 
 The following sections will demonstrate how you can easily orchestrate dbt and SQL Mesh transformations in just a few lines of YAML code in Kestra.
 
 ### Orchestrating SQL Mesh with Kestra
 
-Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](https://kestra.io/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
+Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
 
 ```yaml
 id: sqlmesh
@@ -163,7 +163,7 @@ tasks:
   - id: working_dir
     type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
-    
+
       - id: git_clone
         type: io.kestra.plugin.git.Clone
         url: https://github.com/TobikoData/sqlmesh-examples.git

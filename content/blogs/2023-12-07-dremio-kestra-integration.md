@@ -11,7 +11,7 @@ image: /blogs/2023-12-07-dremio-kestra-integration.png
 
 
 
-Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-dremio/) and [Arrow Flight SQL](https://kestra.io/plugins/plugin-jdbc-arrow-flight/) plugins, which allow you to automate [Dremio](https://www.dremio.com/) data workflows with [Kestra](https://github.com/kestra-io/kestra). This post will dive into how you can leverage Dremio, [dbt](https://github.com/dbt-labs/dbt-core), Python and Kestra to orchestrate processes built on top of a data lakehouse.
+Recently, we've released the [Dremio](/plugins/plugin-jdbc-dremio/) and [Arrow Flight SQL](/plugins/plugin-jdbc-arrow-flight/) plugins, which allow you to automate [Dremio](https://www.dremio.com/) data workflows with [Kestra](https://github.com/kestra-io/kestra). This post will dive into how you can leverage Dremio, [dbt](https://github.com/dbt-labs/dbt-core), Python and Kestra to orchestrate processes built on top of a data lakehouse.
 
 ---
 
@@ -24,7 +24,7 @@ Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-drem
 
 ## How Kestra Helps to Manage Data Lakehouse Workflows
 
-Kestra is a universal orchestration platform for business-critical operations. It allows you to automate data workflows across multiple systems, including Dremio. It's designed to reliably manage complex workflows, be it event-driven pipelines, scheduled batch data transformations, or API-driven automations. Kestra is built with a modular architecture that allows you to easily extend its functionality with plugins, including among others [dbt](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli), [Python](https://kestra.io/plugins/plugin-script-python), [Dremio](https://kestra.io/plugins/plugin-jdbc-dremio) and the [Arrow Flight SQL](https://kestra.io/plugins/plugin-jdbc-arrow-flight) plugins. These plugins allow you to execute custom scripts and SQL queries, trigger actions based on data changes, and much more.
+Kestra is a universal orchestration platform for business-critical operations. It allows you to automate data workflows across multiple systems, including Dremio. It's designed to reliably manage complex workflows, be it event-driven pipelines, scheduled batch data transformations, or API-driven automations. Kestra is built with a modular architecture that allows you to easily extend its functionality with plugins, including among others [dbt](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli), [Python](/plugins/plugin-script-python), [Dremio](/plugins/plugin-jdbc-dremio) and the [Arrow Flight SQL](/plugins/plugin-jdbc-arrow-flight) plugins. These plugins allow you to execute custom scripts and SQL queries, trigger actions based on data changes, and much more.
 
 ---
 

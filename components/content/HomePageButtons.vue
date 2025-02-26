@@ -16,11 +16,12 @@
     })
 </script>
 
-<style lang="scss" scoped> 
+<style lang="scss" scoped>
 .docs-button-row {
     display: flex;
     justify-content: flex-start;
     gap:.5rem;
     margin-bottom: 3rem;
+    flex-wrap: wrap;
 }
 </style>

@@ -59,7 +59,7 @@ tasks:
       GetDockerImageDownloads("kestra/kestra")
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-node/tasks/io.kestra.plugin.scripts.node.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script)
 
 ## Commands
 
@@ -88,7 +88,7 @@ tasks:
 
 You'll need to add your JavaScript code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-node/tasks/io.kestra.plugin.scripts.node.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands).
 
 ## Handling Outputs
 

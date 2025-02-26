@@ -15,13 +15,13 @@ Worker Group is a set of workers that can be targeted specifically for a task ex
 ::badge{version=">=0.19" editions="EE"}
 ::
 
-To create a new worker group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
 
 ## Starting Workers for a Worker Group
 
 Once a worker group key is created, you can start a worker with the `--worker-group workerGroupKey` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
 
-The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active, and the number of active workers.
+The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
 
 ## Using Worker Groups
 
@@ -29,7 +29,7 @@ To assign a worker group, add the `workerGroup.key` property to the task or the 
 
 The flow editor validates worker group keys when creating flows from the UI. If the provided key doesn’t exist, the syntax validation will prevent the flow from being saved.
 
-Example flow configuration with a worker group:
+Below is an example flow configuration with a worker group:
 
 ```yaml
 id: worker_group
@@ -53,7 +53,7 @@ If the `workerGroup.key` property is not provided, all tasks and polling trigger
 ::badge{version=">=0.20" editions="EE"}
 ::
 
-By default, a task configured to run on a given worker will wait for the worker to be available i.e. `workerGroup.fallback: WAIT`. If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
+By default, a task configured to run on a given worker will wait for the worker to be available (i.e., `workerGroup.fallback: WAIT`). If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
 
 ```yaml
 id: worker_group

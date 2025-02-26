@@ -6,7 +6,7 @@ version: ">= 0.16.0"
 docId: instance
 ---
 
-The Instance dashboard provides an overview of your instance health, including the status, configuration and metrics of all worker, executor, scheduler, indexer and webserver components.
+The Instance dashboard provides an overview of your instance health, including the status, configuration and metrics of all worker, executor, scheduler, indexer, and webserver components.
 
 ## Overview
 

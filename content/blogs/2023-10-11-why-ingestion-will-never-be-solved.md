@@ -56,7 +56,7 @@ All of these tools work in a similar way:
 3. Finally, you can directly add a schedule or trigger from the same UI so that the process runs on a regular basis.
 
 ::alert{type="info"}
-To see how you can orchestrate Fivetran connectors with [kestra](https://github.com/kestra-io/kestra), check our [Fivetran blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=fivetran) and the [plugin documentation](https://kestra.io/plugins/plugin-fivetran).
+To see how you can orchestrate Fivetran connectors with [kestra](https://github.com/kestra-io/kestra), check our [Fivetran blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=fivetran) and the [plugin documentation](/plugins/plugin-fivetran).
 ::
 
 ### Why no-code is often not enough
@@ -78,7 +78,7 @@ When commercial no-code tools don't cut it, you'll likely "just" write a script.
 [Stitch](https://www.stitchdata.com/) tried to solve that problem by building a universal data ingestion **standard** called [Singer spec](https://hub.meltano.com/singer/spec/). That spec aimed to improve standardization and community collaboration to avoid reinventing the wheel across companies.
 
 ::alert{type="info"}
-To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](https://demo.kestra.io/ui/blueprints/community/70) and the [Singer plugin documentation](https://kestra.io/plugins/plugin-singer).
+To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](https://demo.kestra.io/ui/blueprints/community/70) and the [Singer plugin documentation](/plugins/plugin-singer).
 ::
 
 A typical [Singer](https://www.singer.io/) project consists of **taps**, **targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.

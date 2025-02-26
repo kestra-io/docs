@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify, Utils} from '@kestra-io/ui-libs'
+    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify} from '@kestra-io/ui-libs'
     import type {Plugin} from "@kestra-io/ui-libs";
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -65,7 +65,7 @@
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
     const route = useRoute()
-    const routeSlug = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
+    const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);
@@ -78,6 +78,28 @@
         const pageNames = generatePageNames(navigation[0]);
 
         return {navigation, pageList, pageNames};
+    }
+
+    const {navigation, pageList, pageNames} = await fetchNavigation();
+
+    const pluginType = computed(() => {
+        const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
+        if (lowerCasePluginType === undefined) {
+            return undefined;
+        }
+
+        let splitPluginType = lowerCasePluginType.split(".");
+        const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
+        return `${packageName}.${pageNames[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
+    });
+
+    if (pluginType.value !== undefined && !pageList.includes(slug.value)) {
+        const redirect = pageList.find(page => page.endsWith("/" + pluginType.value));
+        if (redirect !== undefined) {
+            await navigateTo({
+                path: redirect
+            });
+        }
     }
 
     function pluginToc(subGroupsWrappers: Plugin[]) {
@@ -95,10 +117,13 @@
     function pluginSubGroupToc(subGroupWrapper: Plugin) {
         return Object.entries(subGroupWrapper).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
             .map(([key, value]) => {
+                let text = key.replaceAll(/[A-Z]/g, match => ` ${match}`);
+                text = text.charAt(0).toUpperCase() + text.slice(1);
+
                 return {
                     id: `section-${slugify(key)}`,
                     depth: 2,
-                    text: key,
+                    text,
                     children: value.map((element) => ({
                         id: slugify(element),
                         depth: 3,
@@ -114,7 +139,6 @@
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
-    const pluginType = computed(() => splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined);
     const subGroup = computed(() => {
         const maybeSubGroup = splitRouteSlug?.[1];
         return maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
@@ -149,15 +173,10 @@
     const subGroupWrapper = computed(() => subGroup.value === undefined || pluginType.value !== undefined ? undefined : page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
 
     if (pluginType.value === undefined) {
-        page.value.title = pluginWrapper.value.title.concat(
-            subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`
-        );
-
+        page.value.title = pluginWrapper.value.title.charAt(0).toUpperCase() + pluginWrapper.value.title.slice(1) + (subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`);
 
         page.value.description = subGroup.value === undefined ? pluginWrapper.value.description : subGroupWrapper.value.description;
     }
-
-    const {navigation, pageList, pageNames} = await fetchNavigation();
 
     const {origin} = useRequestURL();
 
@@ -390,12 +409,6 @@
         }
 
         :deep(.plugin-section) {
-            .material-design-icon {
-                &, & * {
-                    bottom: 0;
-                }
-            }
-
             p {
                 margin-bottom: 0;
 
@@ -428,26 +441,18 @@
                 }
             }
 
-            .collapsible-body > .border {
+            .collapsible-body .border {
+                #{--collapsible-border-color}: var(--kestra-io-token-color-border-secondary);
                 border-color: var(--kestra-io-token-color-border-secondary) !important;
 
-                > .property:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
-                }
-
-                > * {
+                > .property {
                     background: var(--kestra-io-token-color-background-secondary);
 
                     &:not(:has(.collapse-button.collapsed)) {
-                        background: var(--kestra-io-token-color-background-primary);
+                        background: var(--kestra-io-neutral-gray300);
 
-                        > button {
-                            background: var(--kestra-io-neutral-gray300);
-                            outline: $spacer solid var(--kestra-io-neutral-gray300);
-                        }
-
-                        .property-detail > *:first-child {
-                            border-top: none;
+                        > .collapsible-body {
+                            background: var(--kestra-io-token-color-background-primary);
                         }
                     }
                 }
@@ -460,7 +465,7 @@
                     color: var(--kestra-io-neutral-gray700);
                 }
 
-                > * {
+                > *:not(:first-child) {
                     border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
                 }
 

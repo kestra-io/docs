@@ -2,7 +2,6 @@
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import {NuxtLink} from "#components";
-    const {public:{CollectionNames}} = useRuntimeConfig()
 
     export default defineComponent({
         props: {
@@ -18,6 +17,8 @@
         async setup(props) {
             const {pageUrl, max} = toRefs(props);
             const route = useRoute()
+
+            const {public:{CollectionNames}} = useRuntimeConfig()
 
             let currentPage = null;
 

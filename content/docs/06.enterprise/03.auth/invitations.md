@@ -20,11 +20,11 @@ By default, if the email server is configured in Kestra EE, we send an email wit
 
 ## How to Invite Users
 
-1. Navigate to the `IAM` page in the Administration section
-2. Click on the `Users` tab
-3. Click on the `Invite` button
+1. Navigate to the **IAM** page in the Administration section
+2. Click on the **Users** tab
+3. Click on the **Invite** button
 4. Fill in the user's email address and select the desired Group or attach the role directly, optionally restricting the permission to one or more namespaces
-5. Click on the `Invite` button — this will send an email to the user with an invitation link, or display the link you can share with the user manually.
+5. Click on the **Invite** button — this will send an email to the user with an invitation link, or display the link you can share with the user manually.
 
 ![invite1](/docs/enterprise/invitations/invite1.png)
 
@@ -32,7 +32,7 @@ By default, if the email server is configured in Kestra EE, we send an email wit
 
 ## Accepting Invitations
 
-When a user receives an invitation, they can click on the link in the email to accept it. The user will be redirected to the Kestra login page, where they can set up their account (i.e. create a password), or login using SSO if it's enabled.
+When a user receives an invitation, they can click on the link in the email to accept it. The user will be redirected to the Kestra login page, where they can set up their account (i.e., create a password), or login using SSO if it's enabled.
 
 ## Invite Expiration Time
 

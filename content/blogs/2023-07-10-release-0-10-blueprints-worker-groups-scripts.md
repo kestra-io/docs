@@ -170,7 +170,7 @@ The workflow below demonstrates a simple use case where there are:
 
 ![dag](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
 
-Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag):
+Here is a workflow example that uses the [new DAG task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag):
 
 ```yaml
 id: magicDAG
@@ -270,7 +270,7 @@ Keep in mind that **worker groups are entirely optional**. Use them only for com
 
 ## New Plugin to interact with OpenAI
 
-The [new OpenAI plugin](https://kestra.io/plugins/plugin-openai) allows you to interact with the OpenAI platform from a simple declarative interface in Kestra. It comes with two tasks:
+The [new OpenAI plugin](/plugins/plugin-openai) allows you to interact with the OpenAI platform from a simple declarative interface in Kestra. It comes with two tasks:
 1. Chat completion: to get a response from an LLM given a prompt
 2. Image generation: to create an image based on a natural language prompt.
 

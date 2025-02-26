@@ -81,7 +81,7 @@ tasks:
   - id: http_download
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv
-    
+
   - id: create_table
     type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://<mysql_host>:3306/public
@@ -95,16 +95,16 @@ tasks:
         brand VARCHAR(100),
         PRIMARY KEY (product_id)
       )
-  
+
   - id: load_products
     type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://<mysql_host>:3306/public
     username: "{{ secret('MYSQL_USER') }}"
     password: "{{ secret('MYSQL_PASSWORD') }}"
     sql: |
-      LOAD DATA INFILE '{{ outputs.http_download.uri }}' 
+      LOAD DATA INFILE '{{ outputs.http_download.uri }}'
       INTO TABLE products
-      FIELDS TERMINATED BY ',' 
+      FIELDS TERMINATED BY ','
       ENCLOSED BY '"'
       LINES TERMINATED BY '\n'
       IGNORE 1 ROWS
@@ -134,7 +134,7 @@ tasks:
     password: "{{ secret('MYSQL_PASSWORD') }}"
     sql: SELECT * FROM products
     fetchType: STORE
-  
+
   - id: join_datasets
     type: io.kestra.plugin.scripts.python.Script
     description: Python ETL Script
@@ -147,7 +147,7 @@ tasks:
       orders_data = read_ion("{{ outputs.load_orders.uri }}")
       products_data = read_ion("{{ outputs.load_products.uri }}")
       orders_df = pd.DataFrame(orders_data)
-      products_df = pd.DataFrame(products_data) 
+      products_df = pd.DataFrame(products_data)
       detailed_orders = orders_df.merge(products_df, how='left', left_on='PRODUCT_ID', right_on='product_id')
       detailed_orders.to_csv("detailed_orders.csv")
     outputFiles:
@@ -189,7 +189,7 @@ tasks:
     password: "{{ secret('MYSQL_PASSWORD') }}"
     sql: SELECT * FROM products
     fetchType: STORE
-  
+
   - id: join_datasets
     type: io.kestra.plugin.scripts.python.Script
     description: Python ETL Script
@@ -202,7 +202,7 @@ tasks:
       orders_data = read_ion("{{ outputs.load_orders.uri }}")
       products_data = read_ion("{{ outputs.load_products.uri }}")
       orders_df = pd.DataFrame(orders_data)
-      products_df = pd.DataFrame(products_data) 
+      products_df = pd.DataFrame(products_data)
       detailed_orders = orders_df.merge(products_df, how='left', left_on='PRODUCT_ID', right_on='product_id')
       detailed_orders.to_csv("detailed_orders.csv")
     outputFiles:
@@ -223,7 +223,7 @@ Thus, it is clear that having ION format throughout for the internal storage can
 
 ## ION Transformations
 
-Given that ION is a standardized format used by Kestra for its internal storage, you might come across multiple scenarios for converting data in other formats to and from ION format while working with Kestra. For this, Kestra has a rich set of [SerDe tasks](https://kestra.io/plugins/plugin-serdes) that you can use for format conversions. It supports data conversion from and to CSV, Avro, JSON, XML, Parquet and Excel formats into ION format. Here is an example of how you can convert CSV file into ION format and vice-versa:
+Given that ION is a standardized format used by Kestra for its internal storage, you might come across multiple scenarios for converting data in other formats to and from ION format while working with Kestra. For this, Kestra has a rich set of [SerDe tasks](/plugins/plugin-serdes) that you can use for format conversions. It supports data conversion from and to CSV, Avro, JSON, XML, Parquet and Excel formats into ION format. Here is an example of how you can convert CSV file into ION format and vice-versa:
 
 ```yaml
 id: csv_to_ion
