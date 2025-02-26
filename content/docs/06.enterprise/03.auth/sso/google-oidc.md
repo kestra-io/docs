@@ -45,6 +45,8 @@ This guide provides step-by-step instructions to configure **OpenID Connect (OID
    - **Issuer URL**: Provide the **Issuer URL** (e.g., `https://accounts.google.com`).
    - **Scopes**: Specify any additional scopes required by your application.
 
+![oidc-details](docs/how-to-guides/google-oidc/oidc-provider.png)
+
 4. **Save the Configuration**:
    - Click **"Save"** to add the OIDC provider to your Identity Platform configuration.
 
