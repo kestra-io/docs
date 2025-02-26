@@ -190,7 +190,7 @@
       id: 7,
       title: "Custom Plugins",
       isOpenSource: false,
-      enterpriseText: 'Available With Consultation',
+      enterpriseText: 'On Request',
     },
     {
       id: 8,
