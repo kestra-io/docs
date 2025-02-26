@@ -63,6 +63,6 @@
     "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
     "sass": "^1.84.0",
-    "wrangler": "^3.108.1"
+    "wrangler": "^3.110.0"
   }
 }
