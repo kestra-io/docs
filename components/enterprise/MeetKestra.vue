@@ -82,12 +82,8 @@
                             <span>Fault Tolerant</span>
                         </li>
                         <li>
-                            <History/>
-                            <span>Log Shippers</span>
-                        </li>
-                        <li>
                             <MonitorDashboard/>
-                            <span>Cluster Dashboard</span>
+                            <span>Cluster Monitoring & Log Shipper</span>
                         </li>
                         <li>
                             <DatabaseLockOutline/>
