@@ -142,7 +142,7 @@
       name: 'Enterprise Edition',
       period: "Per Instance",
       button: {
-        text: "Book a Call",
+        text: "Talk to us",
         href: "/demo",
       },
     },
@@ -190,7 +190,7 @@
       id: 7,
       title: "Custom Plugins",
       isOpenSource: false,
-      enterpriseText: 'Available With Consultation',
+      enterpriseText: 'On Request',
     },
     {
       id: 8,
@@ -580,7 +580,7 @@
         },
         {
           id: 28,
-          title: "Custom Apps & Dashboard Views",
+          title: "Apps",
           isOpenSource: false,
           isEnterprise: true,
         },
