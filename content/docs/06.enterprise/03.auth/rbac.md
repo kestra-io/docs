@@ -37,7 +37,7 @@ This Binding grants the permissions defined by that Role to the User, Service Ac
 
 A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a Role attached to the `prod` namespace automatically grants access to the `prod.engineering` namespace as well.
 
-Note that you can [configure a default role](../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./05.sso.md).
+Note that you can [configure a default role](../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
 ::
