@@ -6,6 +6,8 @@ editions: ["EE"]
 
 Setup KeyCloak SSO to manage authentication for users.
 
+In conjunction with SSO, check out the [KeyCloak SCIM provisioning guide](../scim/keycloak.md).
+
 ## Start a KeyCloak service
 
 If you don't have a KeyCloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).

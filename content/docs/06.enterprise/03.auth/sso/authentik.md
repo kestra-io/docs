@@ -6,6 +6,8 @@ editions: ["EE"]
 
 Setup authentik SSO to manage authentication for users.
 
+In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
+
 ## authentik SSO Setup
 
 ### Install authentik
