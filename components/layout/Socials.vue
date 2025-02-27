@@ -10,6 +10,11 @@
                 <twitter />
             </a>
         </li>
+        <li>
+            <a href="https://web-cdn.bsky.app/profile/kestra.io" title="BlueSky" target="_blank">
+                <bluesky />
+            </a>
+        </li>
         <li class="list-inline-item ml-1">
             <a href="https://www.linkedin.com/company/kestra" title="LinkedIn" target="_blank">
                 <linkedin />
@@ -34,8 +39,9 @@
     import Github from "vue-material-design-icons/Github.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import Twitter from "../icons/TwitterXIcon.vue";
+    import BlueSky from "../icons/BlueSkyIcon.vue";
 
     export default {
-        components: {Github, Slack, Twitter, Linkedin, Youtube}
+        components: {Github, Slack, Twitter, Linkedin, Youtube, BlueSky}
     }
 </script>
