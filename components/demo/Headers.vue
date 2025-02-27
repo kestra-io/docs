@@ -60,7 +60,7 @@
                             <div class="col-12 mt-4 d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <img src="/demo/david.png" class="me-3" height="32" alt="" />
-                                        Schedule a demo with David
+                                        Let's Talk
                                 </button>
                             </div>
                         </form>
