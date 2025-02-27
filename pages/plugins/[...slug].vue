@@ -34,7 +34,7 @@
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content">
                             <template #default="{body}">
-                                <ContentRenderer :value="body"/>
+                                <ContentRenderer class="markdown" :value="body"/>
                             </template>
                         </MDC>
                     </template>
@@ -45,7 +45,7 @@
                         <template #markdown="{ content }">
                             <MDC :value="content">
                                 <template #default="{body}">
-                                    <ContentRenderer :value="body"/>
+                                    <ContentRenderer class="markdown" :value="body"/>
                                 </template>
                             </MDC>
                         </template>
@@ -408,9 +408,17 @@
             color: #fff;
         }
 
+        :deep(.markdown) {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacer);
+        }
+
         :deep(.plugin-section) {
             p {
-                margin-bottom: 0;
+                &:not(.doc-alert p) {
+                    margin-bottom: 0;
+                }
 
                 & > code {
                     color: var(--kestra-io-neutral-gray900);
