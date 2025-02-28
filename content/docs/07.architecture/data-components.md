@@ -1,5 +1,5 @@
 ---
-title: What is stored where in Kestra
+title: Kestra Data
 icon: /docs/icons/architecture.svg
 ---
 
