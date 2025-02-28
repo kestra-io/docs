@@ -1,19 +1,17 @@
 ---
-title: Kestra Data
+title: Data Storage in Kestra
 icon: /docs/icons/architecture.svg
 ---
 
-# Data Storage in Kestra
-
 Understand where different data components (inputs, outputs, logs, etc.) are stored in Kestra's architecture.
 
-## Data Storage in Kestra
+## Overview
 
 Kestra processes and stores various data components, including flow definitions, workflow inputs, outputs, logs, execution metadata, and more. Understanding where these components are stored is beneficial for optimizing performance, configuring persistence, and integrating with external storage solutions. 
 
 Kestra data is stored in either a database such as PostgreSQL or internal storage, which by default is your local storage but can be configured to an S3 bucket or MinIO. You can read more about [Kestra's architecture](../07.architecture/03.deployment-architecture.md) and [internal storage](../07.architecture/09.internal-storage.md) in their dedicated documentation.
 
-## Overview of Data Storage Components
+## Data Storage Components
 
 Below is a table view of many of the Kestra data storage components, where they are stored, and what they are.
 
