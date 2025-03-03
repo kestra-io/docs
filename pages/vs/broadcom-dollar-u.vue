@@ -1,8 +1,8 @@
 <template>
     <div>
         <Head>
-            <Title>Kestra Alternative to Azure Data Factory</Title>
-            <Meta name="description" content="What are the differences between Kestra and Azure Data Factory" />
+            <Title>Kestra Alternative to Dollar Universe Workload Automation</Title>
+            <Meta name="description" content="What are the differences between Kestra and Dollar Universe Workload Automation" />
         </Head>
 
         <Header />
