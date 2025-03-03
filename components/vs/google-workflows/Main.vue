@@ -1,10 +1,9 @@
 <template>
     <div class="container">
         <Section class="about">
-            <h1>The Differences Between Kestra and Google Workflows</h1>
 
 <div>
-    <h2>About Kestra & Google Workflows</h2>
+    <h2>About <span>Kestra</span> & Google Workflows</h2>
     <p>Kestra is an open-source orchestration platform that enables the automation of complex workflows across cloud, on-prem, and hybrid environments. It follows an everything-as-code approach, with YAML-based workflow definitions, an API-first architecture, and an extensible plugin ecosystem. Combining a no-code/low-code UI with direct YAML editing, Kestra provides flexibility for both technical and non-technical users.</p>
     <p>Google Workflows, a cloud-based orchestration service provided by Google Cloud, focuses on sequencing steps for Google Cloud services. While it offers a simple YAML or JSON definition for workflows, it lacks critical enterprise-grade orchestration features. With no built-in UI for workflow design, debugging, or real-time observability, and no native plugin ecosystem, Google Workflows is best suited for Google Cloud-centric tasks but struggles in multi-cloud or hybrid environments.</p>
 </div>
