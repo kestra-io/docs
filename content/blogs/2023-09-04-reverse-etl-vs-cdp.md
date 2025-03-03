@@ -130,7 +130,7 @@ The Sync task has properties such as fullResynchronization to run a full synchro
 
 This plugin allows you to build even more complex workflows and reduce latency between data sync. Just after running an Airbyte sync (ETL to extract your data from a source), you can apply some transformations using Kestra dbt plugin and at the end running an Hightouch sync to activate your data without waiting for the next schedule.
 
-Check out the full [plugin documentation](/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Baillet](https://github.com/aballiet) for the creation of this plugin!
+Check out the full [plugin documentation](/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Balliet](https://github.com/aballiet) for the creation of this plugin!
 
 ---
 
