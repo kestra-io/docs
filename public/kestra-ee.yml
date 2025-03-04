@@ -29811,6 +29811,7 @@ components:
       - APITOKEN
       - DASHBOARD
       - TENANT
+      - UNKNOWN
       x-deprecated:
       - TENANT
     Plugin:
@@ -30065,6 +30066,8 @@ components:
             DASHBOARD:
               $ref: "#/components/schemas/List_Action_"
             TENANT:
+              $ref: "#/components/schemas/List_Action_"
+            UNKNOWN:
               $ref: "#/components/schemas/List_Action_"
         isDefault:
           type: boolean
