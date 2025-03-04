@@ -1,3 +1,5 @@
+name: Deploy
+
 on:
   push:
     branches:
@@ -8,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   index-doc:
-    name: Build and publish
+    name: Build and publish production
     runs-on: ubuntu-latest
     steps:
       - name: Checkouts
