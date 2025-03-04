@@ -12,8 +12,6 @@ jobs:
   index-doc:
     name: Build and publish production
     runs-on: ubuntu-latest
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
     steps:
       - name: Checkouts
         uses: actions/checkout@v4
@@ -31,7 +29,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_TOKEN }}
-          command: pages deploy dist --project-name=docs
+          command: pages deploy dist --project-name=kestra-io
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
