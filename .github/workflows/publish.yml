@@ -33,8 +33,5 @@ jobs:
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: trigger docs deployment
-        run: curl -X GET https://kestra.io/docs --max-time 200
-
-      - name: trigger blog deployment
-        run: curl -X GET https://kestra.io/blog --max-time 200
+      - name: trigger docs & blogs deployment
+        run: curl --parallel --parallel-immediate --max-time 200 https://kestra.io/docs -o docs.html https://kestra.io/blogs -o blogs.html
