@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda.png
 ---
 
-We’re happy to announce Kestra 0.12.0. This release significantly improves **subflow** topology and logs, making navigating complex workflows a breeze. We've also added [Docker](https://kestra.io/plugins/plugin-docker) and [SurrealDB](https://kestra.io/plugins/plugin-surrealdb) plugins, and **new AWS integrations**, including [AWS Lambda](https://kestra.io/plugins/plugin-aws/tasks/lambda/io.kestra.plugin.aws.lambda.invoke), [Amazon EventBridge](https://kestra.io/plugins/plugin-aws/tasks/eventbridge/io.kestra.plugin.aws.eventbridge.putevents), and [Amazon Kinesis Data Streams](https://kestra.io/plugins/plugin-aws/tasks/kinesis/io.kestra.plugin.aws.kinesis.putrecords).
+We’re happy to announce Kestra 0.12.0. This release significantly improves **subflow** topology and logs, making navigating complex workflows a breeze. We've also added [Docker](/plugins/plugin-docker) and [SurrealDB](/plugins/plugin-surrealdb) plugins, and **new AWS integrations**, including [AWS Lambda](/plugins/plugin-aws/lambda/io.kestra.plugin.aws.lambda.invoke), [Amazon EventBridge](/plugins/plugin-aws/eventbridge/io.kestra.plugin.aws.eventbridge.putevents), and [Amazon Kinesis Data Streams](/plugins/plugin-aws/kinesis/io.kestra.plugin.aws.kinesis.putrecords).
 
 Here's a list of all enhancements in this release:
 

@@ -24,16 +24,16 @@ With technology partners like Airbyte, we're able to cover more use cases in our
 ---
 
 ### Kestra's Airbyte Plugin ###
-Kestra's [plugin for Airbyte](https://kestra.io/plugins/plugin-airbyte) enables users to trigger Airbyte syncs and optionally, wait for their completion. Whether you use the open-source Airbyte Server or Airbyte Cloud, Kestra can integrate your data ingestion process into an end-to-end data workflow.
+Kestra's [plugin for Airbyte](/plugins/plugin-airbyte) enables users to trigger Airbyte syncs and optionally, wait for their completion. Whether you use the open-source Airbyte Server or Airbyte Cloud, Kestra can integrate your data ingestion process into an end-to-end data workflow.
 
 ### Embracing Everything as Code with Kestra and Airbyte ###
 Our collaboration highlights an innovative approach to data management—treating everything as code. The partnership strengthens the ability to automate data operations and infrastructure deployment, which means you can now manage, modify, and scale your data pipelines more efficiently.
 
 - **Everything-as-Code Approach**: Manage data operations like code, fostering collaboration, and efficient scaling. More insights can be found in this detailed blog post on everything-as-code for data infrastructure.
 
-- **Terraform Providers Integration**: Both platforms offer strong Terraform support, enabling you to manage and provision resources using declarative configuration files. 
+- **Terraform Providers Integration**: Both platforms offer strong Terraform support, enabling you to manage and provision resources using declarative configuration files.
 
---- 
+---
 
 ## End-to-End Data Orchestration with Airbyte and Kestra ##
 
@@ -45,7 +45,7 @@ The collaborative efforts offer a unified platform for end-to-end data orchestra
 
 - **Robust Orchestration Capabilities**: From triggering multiple Airbyte Cloud syncs to running complex dbt jobs, Kestra's flexibility empowers users to control and automate their data processes.
 
-![dbt-airbyte-jobs](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png) 
+![dbt-airbyte-jobs](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png)
 
 - **Efficient Data Management**: Learn how this collaboration supports an end-to-end data orchestration approach in [this blog post](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
 
@@ -60,7 +60,7 @@ With the Kestra-Airbyte collaboration, users can perform a wide range of tasks:
 
 ### What’s Next ##
 
-This partnership provides a versatile toolkit for data professionals, extending the possibilities of data handling. The potential applications are large, aligning with various organizational needs and ensuring data-driven success. Discover more about this integration through our [documentation](https://kestra.io/plugins/plugin-airbyte).
+This partnership provides a versatile toolkit for data professionals, extending the possibilities of data handling. The potential applications are large, aligning with various organizational needs and ensuring data-driven success. Discover more about this integration through our [documentation](/plugins/plugin-airbyte).
 
 If you want to go further with Kestra and Airbyte capabilities you can read this article about [Everything as Code for Data Infrastructure with Airbyte and Kestra Terraform Providers](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers) or [how to create an End-to-End Data Ingestion, Transformation and Orchestration pipeline with Airbyte, dbt and Kestra](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration)
 

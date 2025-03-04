@@ -40,7 +40,7 @@ tasks:
       print(data)
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-r/tasks/io.kestra.plugin.scripts.r.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-r/io.kestra.plugin.scripts.r.script)
 
 ### Commands
 
@@ -90,7 +90,7 @@ tasks:
       - Rscript main.R
 ```
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-r/tasks/io.kestra.plugin.scripts.r.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-r/io.kestra.plugin.scripts.r.commands).
 
 ## Handling Outputs
 

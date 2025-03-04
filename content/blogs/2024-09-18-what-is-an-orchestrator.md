@@ -29,7 +29,7 @@ In software engineering and data management, an orchestrator is a tool that auto
 Think of it like a conductor of an orchestra, making sure all components perform in harmony, following a predefined sequence or set of rules. Whether you're dealing with data pipelines, microservices, or CI/CD systems, an orchestrator ensures everything runs reliably without manual intervention.
 
 
-## Orchestration vs. Automation 
+## Orchestration vs. Automation
 
 What's the difference between automation and orchestration? These two concepts are related but not quite the same:
 
@@ -37,7 +37,7 @@ What's the difference between automation and orchestration? These two concepts a
 
 - **Automation** refers to the execution of individual tasks or actions without manual intervention. For example, automatically triggering a test suite after a pull request is opened.
 
-  
+
 - **Orchestration** goes beyond automation by managing the flow of multiple interconnected tasks or processes. It defines not only what happens but also when and how things happen, ensuring that all tasks (whether automated or not) are executed in the correct order, with the right dependencies and error handling in place.
 
 In essence, while automation focuses on individual tasks, orchestration ensures all those tasks are arranged and managed within a broader, cohesive system. This matters if you need to reliably handle complex processes with many interdependent steps.
@@ -76,13 +76,13 @@ So, here are some key benefits of using an orchestrator:
 
 1. **Faster time to value**: With a consistent way to schedule and run workflows, you avoid reinventing the wheel each time. This speeds up execution and helps your team focus on delivering outcomes faster.
 
-  
+
 2. **Scalability**: Orchestrators can handle workflows across multiple systems and scale as your operations grow. Whether you’re managing thousands of microservices or large-scale data processing tasks, an orchestrator ensures smooth operation with built-in scaling features.
-  
+
 3. **Error handling and resiliency**: Orchestrators are designed to manage failures, retries, and dependencies. If a task fails, the orchestrator can automatically retry it, send alerts, or trigger a recovery process—ensuring resiliency in complex systems.
-  
+
 4. **Improved monitoring and control**: Most orchestrators provide real-time monitoring and logs, giving engineers insights into each task’s status, performance, and any bottlenecks. This visibility helps in troubleshooting and optimizing workflows.
-  
+
 5. **Process standardization**: Orchestrators allow companies to standardize processes across systems and services, improving consistency and making it easier to introduce and scale new processes.
 
 ## Common Use Cases for Orchestrators
@@ -112,7 +112,7 @@ import csv
 
 with open('revenues.csv', mode='r') as file:
     reader = csv.reader(file)
-    next(reader) 
+    next(reader)
     total = sum(int(row[0]) for row in reader)
 
 print(f"Total revenues: {total}")
@@ -130,11 +130,11 @@ your-repo/
 │
 ├── .github/
 │   └── workflows/
-│       └── analyze_csv.yml  
+│       └── analyze_csv.yml
 │
-├── process_data.py  
-├── requirements.txt 
-└── data.csv          
+├── process_data.py
+├── requirements.txt
+└── data.csv
 ```
 
 The `analyze_csv.yml` could be something like that:
@@ -145,7 +145,7 @@ name: Analyze CSV with Python
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 10 * * *' 
+    - cron: '0 10 * * *'
 
 jobs:
   analyze_csv:
@@ -169,7 +169,7 @@ jobs:
       - name: Run Python script to analyze CSV
         run: |
           python process_data.py
-          cat analysis_result.txt 
+          cat analysis_result.txt
 ```
 
 This YAML file uses `workflow_dispatch` for manual execution and a cron schedule for automated runs (the job is scheduled each day of the week, at 10 am.).
@@ -228,9 +228,9 @@ errors:
 **Note**: The YAML defines the following:
 
 - The `tutorial` namespace which is the subfolder where the Python file is stored.
-- The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
+- The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands).
 - `python process_data.py` executes the Python script.
-- The `triggers` section adds the trigger. 
+- The `triggers` section adds the trigger.
 - The `errors` section manages eventual errors and sends a Slack message (you have to set up a dedicated Slack channel to make it work).
 
 ::

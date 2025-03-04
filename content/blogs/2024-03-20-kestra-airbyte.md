@@ -15,7 +15,7 @@ Airbyte is an open-source data integration platform designed to simplify the pro
 
 Airbyte, introduced in 2020, stands out as an open-source data integration platform known for its user-friendly interface and large community. Airbyte has hundreds of connectors for extracting, transforming, and loading data from various sources to destinations. This extensive library of pre-built connectors ensures flexibility and efficiency in managing data pipelines, catering to the diverse needs of both technical and non-technical users.
 
-Airbyte also offers a fully managed product called Airbyte Cloud. 
+Airbyte also offers a fully managed product called Airbyte Cloud.
 
 ## Integrating Airbyte using Kestra ##
 
@@ -81,7 +81,7 @@ Let us now proceed to setup Kestra cluster on EC2 machine. You can follow the Ke
 
 ### Kestra workflows with Airbyte tasks ###
 
-We will be using the [Kestra Airbyte plugin](https://kestra.io/plugins/plugin-airbyte) in order to invoke the sync operation on Airbyte from Kestra.
+We will be using the [Kestra Airbyte plugin](/plugins/plugin-airbyte) in order to invoke the sync operation on Airbyte from Kestra.
 
 Firstly, let us add a couple more rows to the `employees` table. You can go to your MySQL client installed locally, connect to the RDS instance, and run the following commands:
 
@@ -91,7 +91,7 @@ INSERT INTO employees values(4, "Harry", "Davidson", "London");
 INSERT INTO employees values(5, "Kavita", "Malhotra", "Mumbai");
 ```
 
-Now, create a flow on the Kestra UI. We will be using the [Sync task](https://kestra.io/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.sync) which will invoke the sync on the corresponding connection. When you open the connection that you want to sync on Airbyte UI, you will have the URL in the format: `http://<hostname>:8000/workspaces/<workspace_id>/connections/<connection_id>/status`. Pick the connection_id from this URL. Use this in the Sycn task. The Kestra flow with the Sync task should appear like this:
+Now, create a flow on the Kestra UI. We will be using the [Sync task](/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.sync) which will invoke the sync on the corresponding connection. When you open the connection that you want to sync on Airbyte UI, you will have the URL in the format: `http://<hostname>:8000/workspaces/<workspace_id>/connections/<connection_id>/status`. Pick the connection_id from this URL. Use this in the Sycn task. The Kestra flow with the Sync task should appear like this:
 
 ```yaml
 id: airbyte-sync
@@ -109,7 +109,7 @@ When you run this task, the sync operation should be invoked on the connection. 
 
 ![kestra_airbyte_sync_flow_output](/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_sync_flow_output.png)
 
-Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](https://kestra.io/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus). 
+Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus).
 
 The flow should look as follows:
 

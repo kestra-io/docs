@@ -65,8 +65,9 @@ namespace: company.team
 tasks:
   - id: anyPythonScript
     type: io.kestra.plugin.scripts.python.Commands
-    runner: DOCKER
     containerImage: ghcr.io/kestra-io/pydata:latest
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
         - /Users/anna/gh/KESTRA_REPOS/scripts:/app
     commands:

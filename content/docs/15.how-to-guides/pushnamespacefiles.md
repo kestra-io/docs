@@ -16,7 +16,7 @@ Push files in your namespace to a Git Repository with the PushNamespaceFiles Tas
 
 ## How it works
 
-The [PushNamespaceFiles](/plugins/plugin-git/tasks/io.kestra.plugin.git.PushNamespaceFiles) task is a powerful integration that allows you to **push your namespace files to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.PushNamespaceFiles) task is a powerful integration that allows you to **push your namespace files to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can **build your flows and files** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 

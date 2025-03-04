@@ -55,8 +55,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
+    import {isEntryAPluginElementPredicate, slugify} from "@kestra-io/ui-libs";
 
     const DONT_CAPITALIZE_CATEGORIES = ["AI"];
     const currentPage = ref(1);
@@ -73,33 +74,25 @@
     const router = useRouter();
 
     if (props.plugins) {
-        let allTasks = [];
-        let allTriggers = [];
-        let allConditions = [];
-        let allTaskRunners = [];
+        const pluginElements = new Set();
 
         // avoid duplicate across groups and subgroups
         props.plugins.forEach(plugin => {
-            allTasks = [...allTasks, ...(plugin.tasks ?? [])];
-            allTriggers = [...allTriggers, ...(plugin.triggers ?? [])];
-            allConditions = [...allConditions, ...(plugin.conditions ?? [])];
-            allTaskRunners = [...allTaskRunners, ...(plugin.taskRunners ?? [])];
-            plugin.tooltipContent = '';
+            plugin.tooltipContent = "";
 
             // We only need this mapping for root plugin cards
             const subGroupsToSlugs = plugin.subGroup === undefined
                 ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
                 : undefined;
-            creatingTooltipContainer(plugin, 'Tasks', plugin.tasks, subGroupsToSlugs);
-            creatingTooltipContainer(plugin, 'Triggers', plugin.triggers, subGroupsToSlugs);
-            creatingTooltipContainer(plugin, 'Conditions', plugin.conditions, subGroupsToSlugs);
-            creatingTooltipContainer(plugin, 'Task Runners', plugin.taskRunners, subGroupsToSlugs);
+
+            Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                .forEach(([category, elements]) => {
+                    creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
+                    elements.forEach(element => pluginElements.add(element));
+                })
         });
 
-        totalPlugins.value = (new Set(allTasks)).size +
-            (new Set(allTriggers)).size +
-            (new Set(allConditions)).size +
-            (new Set(allTaskRunners)).size;
+        totalPlugins.value = pluginElements.size;
     }
 
     if (props.categories) {
@@ -116,15 +109,15 @@
             if (plugin.subGroup === undefined) {
                 const matchingSubGroupSlug = Object.entries(subGroupsToSlugs).filter(([subGroup]) => item.startsWith(subGroup)).sort(([subGroupA], [subGroupB]) => subGroupB.length - subGroupA.length)?.[0]?.[1];
                 if (matchingSubGroupSlug !== undefined) {
-                    subGroupQualifier = `/${matchingSubGroupSlug}`;
+                    subGroupQualifier = `/${slugify(matchingSubGroupSlug)}`;
                 }
             } else {
-                subGroupQualifier = `/${plugin.title}`
+                subGroupQualifier = `/${slugify(plugin.title)}`
             }
 
             return `
                       <li>
-                        <a href="${generateCategoryLink(plugin.name + subGroupQualifier, item)}">${item}</a>
+                        <a href="${generateCategoryLink(slugify(plugin.name) + subGroupQualifier, item)}">${item}</a>
                       </li>
                     `
         }).join("");
@@ -133,7 +126,7 @@
     function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
         if (categoryItems && categoryItems.length > 0) {
             plugin.tooltipContent += `
-            <p class="ks-plugin-card-${categoryName.toLowerCase().replaceAll(" ", "_")}">${categoryName}</p>
+            <p class="text-capitalize ks-plugin-card-${slugify(categoryName)}">${categoryName}</p>
             <ul>
               ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
             </ul>

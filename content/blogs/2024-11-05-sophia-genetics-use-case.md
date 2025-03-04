@@ -22,7 +22,7 @@ With Kestra, SOPHiA GENETICS streamlined the demultiplexing step, a mandatory st
 
 ## Azure Batch plugin in Kestra
 
-To deal with such a large amount of data, SOPHIA GENETICS team take advantage of the integration of [Azure Batch plugin in Kestra](https://kestra.io/plugins/plugin-azure). 
+To deal with such a large amount of data, SOPHIA GENETICS team take advantage of the integration of [Azure Batch plugin in Kestra](/plugins/plugin-azure).
 
 Azure Batch is a cloud-based job scheduling service that simplifies running large-scale parallel and high-performance computing applications. With its ability to automatically scale resources, Azure Batch can efficiently manage and process large volumes of data, making it an ideal choice when looking to optimize data processing capabilities. Indeed, SOPHiA GENETICS runs large-scale jobs efficiently in the cloud while coupling other steps together thanks to Kestra versatility.
 

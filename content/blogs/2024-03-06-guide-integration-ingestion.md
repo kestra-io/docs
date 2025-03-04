@@ -418,7 +418,7 @@ If your organization is adopting a data mesh architecture, Kestra instances can 
 
 **The architecture diagram below is actually the architecture I use in my startup company (I don't use every one of the CDWs shown). It is simple, clean, flexible, scalable, extremely capable and robust. Critically, it allows me to execute and monitor in real time.**
 
-You have the ability to quickly implement any of the best-in-class tools like [FiveTran](https://kestra.io/plugins/plugin-fivetran), [dlt](https://github.com/dlt-hub/dlt-kestra-demo), [Airbyte](https://kestra.io/plugins/plugin-airbyte) or [SQLMesh](https://kestra.io/plugins/plugin-sqlmesh).
+You have the ability to quickly implement any of the best-in-class tools like [FiveTran](/plugins/plugin-fivetran), [dlt](https://github.com/dlt-hub/dlt-kestra-demo), [Airbyte](/plugins/plugin-airbyte) or [SQLMesh](/plugins/plugin-sqlmesh).
 
 ![schema](/blogs/2024-03-06-guide-integration-ingestion/schema.png)
 
