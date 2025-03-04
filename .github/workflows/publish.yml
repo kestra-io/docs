@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
+  cancel-in-progress: true
+jobs:
+  index-doc:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkouts
+        uses: actions/checkout@v4
+
+      - name: Set up Node via nvm
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run pages:build
+
+      - name: Publish using wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_TOKEN }}
+          command: pages deploy dist --project-name=docs
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: trigger docs deployment
+        run: curl -X GET https://kestra.io/docs --max-time 200
+
+      - name: trigger blog deployment
+        run: curl -X GET https://kestra.io/blog --max-time 200
