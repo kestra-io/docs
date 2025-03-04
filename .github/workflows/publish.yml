@@ -12,6 +12,8 @@ jobs:
   index-doc:
     name: Build and publish production
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
     steps:
       - name: Checkouts
         uses: actions/checkout@v4
