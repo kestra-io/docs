@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - not-main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-publish
