@@ -2084,7 +2084,7 @@ kestra:
 
 Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the `kestra.mail-service` configuration.
 
-```yaml
+```yml
     host: host.smtp.io
     port: 587
     username: user
