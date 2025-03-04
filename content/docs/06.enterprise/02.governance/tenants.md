@@ -153,6 +153,12 @@ resource "kestra_tenant" "stage" {
 }
 ```
 
+### Deleting a tenant
+
+Deleting a tenant will delete all its resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs remain stored in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
+
+Key Value pairs and namespace files will not be deleted as they are persisted in internal storage.
+
 ### Admin Role Assignment
 
 Regardless of which of the above methods you use to create a tenant, the User who creates the tenant automatically gets the Admin Role assigned. That role grants admin rights to that user on that tenant.
