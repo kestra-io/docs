@@ -14,7 +14,7 @@ Start Kestra with a PostgreSQL database backend using a Docker Compose file.
 The quickest way to a production-ready, lightweight Kestra installation is to leverage Docker and Docker Compose. This guide helps you get started with Kestra using Docker.
 
 ::alert{type="info"}
-In order to run Kestra using `docker-compose.yml` file in production in rootless mode, please check out the `Launch Kestra in Rootless Mode` section in the [Podman Compose](../02.installation/14.podman-compose.md) page.
+In order to run Kestra using `docker-compose.yml` file in production in rootless mode, please check out the `Launch Kestra in Rootless Mode` section in the [Podman Compose](../../02.installation/06.podman-compose.md) page.
 ::
 
 ## Before you begin
@@ -54,10 +54,10 @@ Open the URL `http://localhost:8080` in your browser to launch the UI.
 The command from the previous section starts a *standalone* server (all architecture components in one JVM).
 
 
-The [configuration](../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
+The [configuration](../../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
 
 ::alert{type="info"}
-If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../09.administrator-guide/16.troubleshooting.md).
+If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../09.administrator-guide/16.troubleshooting.md).
 ::
 
 ### Use a configuration file
