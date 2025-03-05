@@ -18,7 +18,7 @@ Push your Flows to a Git Repository with the PushFlows Task.
 
 ## How it works
 
-The [PushFlows](/plugins/plugin-git/tasks/io.kestra.plugin.git.PushFlows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.PushFlows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
@@ -252,5 +252,6 @@ You can see that each child namespace is represented as a subfolder in the Git r
 - The `gitDirectory` property allows you to specify the directory to which flows should be pushed. If not set, flows will be pushed to a Git directory named `_flows` and will optionally also include subdirectories named after the child namespaces. If you prefer, you can specify an arbitrary path, e.g. `kestra/flows`, allowing you to push flows to that specific Git directory.
 - If you omit the `targetNamespace`, the `sourceNamespace` will be used as the `targetNamespace` by default. The `targetNamespace` is an optional mechanism to help you prepare your development flows to be merged into the production branch/namespace. If you set the `targetNamespace`, the `sourceNamespace` in the source code will be overwritten by the `targetNamespace` so that you can seamlessy sync the flows to production.
 - If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow.
+- Git does not guarantee the order of push operations to a remote repository, which can lead to potential conflicts when multiple users or flows attempt to push changes simultaneously. To minimize the risk of data loss and merge conflicts, it is strongly recommended to use sequential workflows or push changes to separate branches.
 
 ![git11_credential_detected.png](/docs/how-to-guides/pushflows/git11_credential_detected.png)

@@ -46,7 +46,35 @@ Kestra propagates the trace context so that traces are correlated:
 - The flow execution trace correlates with the parent flow when the `Subflow` or `ForEachItem` task is used.
 - External HTTP calls include the standard propagation header so correlation happens with downstream systems.
 
-The following screenshot displays traces created inside [Jaeger](https://www.jaegertracing.io), an OpenTelemetry compatible tracing platform.
+Enable [Jaeger](https://www.jaegertracing.io), and OpenTelemetry compatible tracing platform, with Kestra in a docker-compose configuration file with the following:
+
+```yaml
+services:
+  restart: on-failure
+
+  postgres:
+    image: postgres:14.13
+    environment:
+      POSTGRES_DB: kestra_unit
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: k3str4
+    ports:
+      - 5432:5432
+    restart: on-failure
+
+  jaeger-all-in-one:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Receive legacy OpenTracing traces, optional
+      - "4317:4317"    # OTLP gRPC receiver
+      - "4318:4318"    # OTLP HTTP receiver
+      - "14250:14250"  # Receive from external otel-collector, optional
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+```
+
+The following screenshot displays traces created inside Jaeger:
 
 You can see three traces, all correlated:
 - One created from the API call that creates the execution

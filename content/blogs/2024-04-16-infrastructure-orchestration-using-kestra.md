@@ -16,13 +16,13 @@ Kestra is a powerful orchestration engine that comes in with an extensive set of
 
 ## Using Ansible as IaC
 
-Ansible stands as a preeminent IaC solution, renowned for its simplicity, flexibility, and efficiency in automating IT tasks and managing infrastructure at scale. Developed by Red Hat, Ansible offers a radically simple approach to configuration management, orchestration, and application deployment, enabling organizations to define and manage their infrastructure through code. At its core, Ansible employs a declarative language called YAML (YAML Ain't Markup Language) to describe the desired state of systems, networks, and applications in a human-readable format, known as playbooks. 
+Ansible stands as a preeminent IaC solution, renowned for its simplicity, flexibility, and efficiency in automating IT tasks and managing infrastructure at scale. Developed by Red Hat, Ansible offers a radically simple approach to configuration management, orchestration, and application deployment, enabling organizations to define and manage their infrastructure through code. At its core, Ansible employs a declarative language called YAML (YAML Ain't Markup Language) to describe the desired state of systems, networks, and applications in a human-readable format, known as playbooks.
 
 Ansible has an agentless architecture, which eliminates the need for installing and managing client software on target systems. Leveraging SSH (Secure Shell) and Python, Ansible connects to remote hosts seamlessly, executing tasks efficiently and securely across distributed environments. Furthermore, Ansible's idempotent nature ensures that playbooks can be executed repeatedly without causing unintended changes, promoting reliability and consistency in infrastructure management. With its extensive library of modules and roles, Ansible empowers users to automate a diverse range of tasks, from system provisioning and configuration to application deployment and continuous integration. As organizations strive for agility and scalability in their IT operations, Ansible emerges as a foundational tool for driving automation and accelerating digital transformation initiatives.
 
 ## Orchestrating Ansible playbooks using Kestra
 
-Kestra has a plugin support for [Ansible CLI](https://kestra.io/plugins/plugin-ansible) using which you can easily orchestrate ansible playbooks via Kestra. Let us see how we can orchestrate a simple Ansible playbook that enables S3 bucket creation via Kestra using the following flow:
+Kestra has a plugin support for [Ansible CLI](/plugins/plugin-ansible) using which you can easily orchestrate ansible playbooks via Kestra. Let us see how we can orchestrate a simple Ansible playbook that enables S3 bucket creation via Kestra using the following flow:
 
 ```yaml
 id: ansible
@@ -55,7 +55,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The flow has tasks that are part of the [WorkingDirectory task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](https://kestra.io/plugins/plugin-ansible/tasks/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The flow has tasks that are part of the [WorkingDirectory task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 
@@ -65,7 +65,7 @@ With Terraform, infrastructure provisioning becomes predictable, reproducible, a
 
 ## Orchestrating Terraform using Kestra
 
-Kestra supports [Terraform plugin](https://kestra.io/plugins/plugin-terraform) making it seamless to integrate terraform scripts. The following examples shows how a simple Terraform script to create S3 bucket can be orchestrated using Kestra via the [TerraformCLI task](https://kestra.io/plugins/plugin-terraform/tasks/cli/io.kestra.plugin.terraform.cli.terraformcli):
+Kestra supports [Terraform plugin](/plugins/plugin-terraform) making it seamless to integrate terraform scripts. The following examples shows how a simple Terraform script to create S3 bucket can be orchestrated using Kestra via the [TerraformCLI task](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli):
 
 ```yaml
 id: terraform-cli
@@ -75,7 +75,7 @@ tasks:
     type: io.kestra.plugin.terraform.cli.TerraformCLI
     namespaceFiles:
       enabled: true
-    inputFiles: 
+    inputFiles:
       main.tf: |
         provider "aws" {
           region = "eu-central-1"
@@ -97,7 +97,7 @@ tasks:
 
 In the above examples, the files are written inline for giving a complete picture and for better understanding. You can also choose to define the files in the Editor and refer to those namespace files in the corresponding AnsibleCLI and Terraform CLI task. This helps in file reusability, and also makes the flow compact.
 
-This blog demonstrates how Kestra can be used for managing infrastructure orchestration with the help of its Terraform and Ansible plugins. Kestra also supports [Docker](https://kestra.io/plugins/plugin-docker) and [Kubernetes](https://kestra.io/plugins/plugin-kubernetes) plugins which help control the docker and kubernetes objects respectively.
+This blog demonstrates how Kestra can be used for managing infrastructure orchestration with the help of its Terraform and Ansible plugins. Kestra also supports [Docker](/plugins/plugin-docker) and [Kubernetes](/plugins/plugin-kubernetes) plugins which help control the docker and kubernetes objects respectively.
 
 ![](/ui.gif)
 

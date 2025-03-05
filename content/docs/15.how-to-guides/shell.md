@@ -28,7 +28,7 @@ tasks:
       echo "Downloads: ${downloads}"
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-shell/tasks/io.kestra.plugin.scripts.shell.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)
 
 ## Commands
 
@@ -75,7 +75,7 @@ tasks:
       - sh hello.sh
 ```
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-shell/tasks/io.kestra.plugin.scripts.shell.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands).
 
 ## Handling Outputs
 

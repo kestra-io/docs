@@ -65,7 +65,7 @@
                                     class="demo-btn"
                                     data-aos="zoom-in"
                                 >
-                                    Book a Call
+                                    Talk to us
                                 </NuxtLink>
                                 <ul>
                                     <li data-aos="fade-right" data-aos-delay="100">
@@ -102,7 +102,13 @@
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
-                                        <span>SLA & Customer Success Program</span>
+                                        <span>Customer Success Program</span>
+                                    </li>
+                                    <li data-aos="fade-right" data-aos-delay="150">
+                                        <div class="check-icon">
+                                            <Plus />
+                                        </div>
+                                        <span>Enterprise Support with SLA</span>
                                     </li>
                                 </ul>
                             </div>

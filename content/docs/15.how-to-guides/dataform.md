@@ -19,9 +19,9 @@ Similar to other ELT tools, Dataform handles the transformation on diffferent wa
 
 There are two ways in which you can create a Dataform project while running with Kestra:
 
-1. Create the Dataform project in GitHub, clone the GitHub project in Kestra and then run it using the [DataformCLI](/plugins/plugin-dataform/tasks/cli/io.kestra.plugin.dataform.cli.dataformcli) task.
+1. Create the Dataform project in GitHub, clone the GitHub project in Kestra and then run it using the [DataformCLI](/plugins/plugin-dataform/cli/io.kestra.plugin.dataform.cli.dataformcli) task.
 
-2. Create the Dataform project in Kestra using [Namespace Files](/docs/concepts/namespace-files), and then run it using the [DataformCLI](/plugins/plugin-dataform/tasks/cli/io.kestra.plugin.dataform.cli.dataformcli) task. You can later choose to push the Namespace Files into GitHub repository using [PushNamespaceFiles](/plugins/plugin-git/tasks/io.kestra.plugin.git.pushnamespacefiles) task.
+2. Create the Dataform project in Kestra using [Namespace Files](/docs/concepts/namespace-files), and then run it using the [DataformCLI](/plugins/plugin-dataform/cli/io.kestra.plugin.dataform.cli.dataformcli) task. You can later choose to push the Namespace Files into GitHub repository using [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) task.
 
 In this guide, we will see in detail both the above methods for transforming data using Dataform in Kestra for BigQuery.
 

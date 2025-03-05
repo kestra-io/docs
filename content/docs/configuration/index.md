@@ -55,6 +55,19 @@ datasources:
 
 to environment variable: `DATASOURCES_POSTGRES_USERNAME=kestra`
 
+To obtain more complex keys with camel case, separate the words with '-' (minus).
+
+The following example shows how to replace the s3 storage access key property from defining it in config file:
+
+```yaml
+kestra:
+  storage:
+    s3:
+      accessKey: myKey
+```
+
+to environment variable: `KESTRA_STORAGE_S3_ACCESS-KEY=myKey`
+
 ## Setup
 
 Kestra offers many configuration options and customization.

@@ -29,7 +29,7 @@ Data warehouse workloads are typically part of a larger technological stack. To 
 Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](/docs/tutorial/flowable) sequentially or in parallel.
 
 Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control.
-Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.download), [upload](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.upload), and [query](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.query) data by integrating with Snowflake's storage and compute resources.
+Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.download), [upload](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.upload), and [query](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.query) data by integrating with Snowflake's storage and compute resources.
 
 ### Kestra's Plugin System ###
 Besides the Snowflake plugin, Kestra offers numerous JDBC plugin integrations, including [ClickHouse](/plugins/plugin-jdbc-clickhouse), [DuckDb](/plugins/plugin-jdbc-duckdb), [MySQL](/plugins/plugin-jdbc-mysql), [Oracle](/plugins/plugin-jdbc-oracle), [Apache Pinot](/plugins/plugin-jdbc-pinot), [PostgreSQL](/plugins/plugin-jdbc-postgres), [Redshift](/plugins/plugin-jdbc-redshift), [Rockset](/plugins/plugin-jdbc-rockset/), [SQL Server](/plugins/plugin-jdbc-sqlserver), [Trino](/plugins/plugin-jdbc-trino), [Vectorwise](/plugins/plugin-jdbc-vectorwise), and [Vertica](/plugins/plugin-jdbc-vertica). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Snowflake.
@@ -39,7 +39,7 @@ Kestra's Snowflake plugin provides an efficient solution for creating intricate 
 ### Query Snowflake table ###
 Kestra can query the Snowflake server using this task to insert, update, and delete data. The *Query* task offers numerous properties, including auto-committing SQL statements, different fetching operations, specifying access-control roles, and storing fetch results. When the `store`value is `true`, Kestra allows storage of large results as an output of the *Query* task.
 
-The plugin allows the usage of multi-SQL statements in the same transaction as a full SQL script with isolation support. It allows simple queries and fetches results with `fetch` or `fetchOne` properties, enabling teams to reuse the output on the next tasks from tools like [Kafka Consume](/plugins/plugin-kafka/tasks/io.kestra.plugin.kafka.consume), [Elastic Search](/plugins/plugin-elasticsearch/tasks/io.kestra.plugin.elasticsearch.search), [Mongo Find](/plugins/plugin-mongodb/tasks/io.kestra.plugin.mongodb.find), and more. Some *Query* task instances are:
+The plugin allows the usage of multi-SQL statements in the same transaction as a full SQL script with isolation support. It allows simple queries and fetches results with `fetch` or `fetchOne` properties, enabling teams to reuse the output on the next tasks from tools like [Kafka Consume](/plugins/plugin-kafka/io.kestra.plugin.kafka.consume), [Elastic Search](/plugins/plugin-elasticsearch/io.kestra.plugin.elasticsearch.search), [Mongo Find](/plugins/plugin-mongodb/io.kestra.plugin.mongodb.find), and more. Some *Query* task instances are:
 
 -   Fetch a row from the database, and define multiple flows depending on the output
 -   Fetch the count of a store and iterate through the list. If an item doesn't exist, perform a particular task.
@@ -57,7 +57,7 @@ fetchType: FETCH
 ```
 
 ### Download from Snowflake stage
-This task downloads data from the Snowflake server to an internal Kestra stage which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The Download task provides the URL of the downloaded file available on the Kestra storage server. The [Download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.download) task offers properties such as data compression and access control role to streamline the download process of the connected database.
+This task downloads data from the Snowflake server to an internal Kestra stage which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The Download task provides the URL of the downloaded file available on the Kestra storage server. The [Download](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.download) task offers properties such as data compression and access control role to streamline the download process of the connected database.
 
 The following code snippet downloads the default database to the specified `fileName` location on the internal Kestra server.
 
@@ -69,7 +69,7 @@ fileName: prefix/destFile.csv
 ```
 
 ### Upload to Snowflake stage ###
-This task uploads data to an internal [Snowflake stage](https://docs.snowflake.com/en/user-guide/data-load-considerations-stage.html). Similar to *Download* task, [Upload](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.upload) can perform data compression and set access control role. Snowflake also support [data transformation](https://docs.snowflake.com/en/user-guide/data-load-transform.html) while loading data, which simplifies the ETL process.
+This task uploads data to an internal [Snowflake stage](https://docs.snowflake.com/en/user-guide/data-load-considerations-stage.html). Similar to *Download* task, [Upload](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.upload) can perform data compression and set access control role. Snowflake also support [data transformation](https://docs.snowflake.com/en/user-guide/data-load-transform.html) while loading data, which simplifies the ETL process.
 
 The following code snippet uploads data to the specified `fileName` location.
 

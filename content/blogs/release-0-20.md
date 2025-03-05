@@ -197,7 +197,7 @@ triggers:
 ::
 
 
-Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [plugin examples](https://kestra.io/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
+Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [plugin examples](/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
 
 ## Task conditions with `runIf`
 
@@ -299,7 +299,7 @@ The filter and search bars have been improved to better handle more complex filt
 
 Kestra can now persist the dbt manifest in the KV Store, which allows you to rebuild only those models that have changed since the last run.
 
-Check the [plugin example](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
+Check the [plugin example](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
 
 ## Thanks to Our Contributors
 

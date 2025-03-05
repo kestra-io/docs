@@ -42,7 +42,7 @@ The more sources and destinations CleverConnect has, the more difficult it gets.
 
 * Subflows: CleverConnect has implemented a level of abstraction, which allows them to recycle components across multiple use-cases. The strategic use of [input properties](../docs/developer-guide/inputs) ensures not only the easy transmission of metadata and parameters but also creates a library of highly composable elements.
 
-* Custom Scripting: they adeptly handle tasks such as API parsing, pagination, and rate limiting by employing custom [Groovy scripts](https://kestra.io/plugins/plugin-script-groovy). This flexibility in script execution enables CleverConnect to structure their codebase in a way that seamlessly integrates with their requirements, while maintaining a cohesive and well-orchestrated workflow.
+* Custom Scripting: they adeptly handle tasks such as API parsing, pagination, and rate limiting by employing custom [Groovy scripts](/plugins/plugin-script-groovy). This flexibility in script execution enables CleverConnect to structure their codebase in a way that seamlessly integrates with their requirements, while maintaining a cohesive and well-orchestrated workflow.
 
 
 > "Kestra's advanced low-code system streamlined Customer Integrations, it let us reduce time and costs significantly, marking a major efficiency and scalability leap for CleverConnect." - Patrick Ferreira, Product Manager CleverConnect
@@ -57,7 +57,7 @@ Before Kestra, crafting new connectors was a process that could stretch over sev
 Even less technical users can read visual flows easily and grasp most of the logic.
 
 As Kestra is API by design, it allows them to quickly build their custom front-end and automate the flow creation. Kestra orchestrates the data flow and application logic, tying all the components of their platform together.
-Regarding deployment, the CleverConnect team chose [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). 
+Regarding deployment, the CleverConnect team chose [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine).
 The development workflow is streamlined by using [GitLab CI/CD](../docs/developer-guide/cicd/gitlab) alongside [Terraform](../docs/developer-guide/cicd#deploy-flows-from-terraform) to deploy Kestra flows from development to production instances. Following the best practices of DevOps and craftsmanship.
 
 ## Conclusion

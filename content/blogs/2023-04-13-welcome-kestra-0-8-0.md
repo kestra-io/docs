@@ -22,7 +22,7 @@ This new release feature the first iteration of our low-code editor. The previou
 
 ### Task documentation in the editor
 
-Each task has exhaustive documentation in the [plugin documentation](https://kestra.io/plugins/) section of our website, but when you create a flow from the UI, switching from the editor to the plugin documentation site is not very convenient.
+Each task has exhaustive documentation in the [plugin documentation](/plugins/) section of our website, but when you create a flow from the UI, switching from the editor to the plugin documentation site is not very convenient.
 
 To limit context switching, we added a contextual panel in the flow editor displaying the current task documentation. So now you can keep your flow at hand while developing and still be close to the documentation.
 
@@ -30,7 +30,7 @@ To limit context switching, we added a contextual panel in the flow editor displ
 
 ### Improved EachSequential and EachParallel value definition
 
-[EachSequential](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential.html) and [EachParallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel.html) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
+[EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential.html) and [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel.html) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
 
 ## Task metrics
 
@@ -44,18 +44,18 @@ We now moved the storage of task metrics in a dedicated place out of the task at
 
 ### Log a message and fetch logs
 
-Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](https://kestra.io/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Echo.html) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
-That’s why we created a new [Log](https://kestra.io/plugins/core/tasks/log/io.kestra.plugin.core.log.Log.html) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
+Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Echo.html) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
+That’s why we created a new [Log](/plugins/core/tasks/log/io.kestra.plugin.core.log.Log.html) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
 
-We also added a new [Fetch](https://kestra.io/plugins/core/tasks/log/io.kestra.plugin.core.log.Fetch.html) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
+We also added a new [Fetch](/plugins/core/tasks/log/io.kestra.plugin.core.log.Fetch.html) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
 
 ### Fail task
 
-We added a [Fail](https://kestra.io/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail.html) task that can fail an execution unconditionally or with a condition. It allows, for example, to fail based on some switch value or on some condition on a flow input.
+We added a [Fail](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail.html) task that can fail an execution unconditionally or with a condition. It allows, for example, to fail based on some switch value or on some condition on a flow input.
 
 ### If task
 
-We added an [If](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If.html) task that can be used to process a set of tasks conditionally.
+We added an [If](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If.html) task that can be used to process a set of tasks conditionally.
 
 ## Documentation
 
@@ -67,12 +67,12 @@ We wrote a new page about flow [tasks](https://kestra.io/docs/developer-guide/ta
 
 We created a [tutorial](https://kestra.io/docs/tutorial/) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
 
-And we also improved the quality of the [plugin documentation](https://kestra.io/plugins/), we hope to find some time to improve it more in the upcoming weeks as we know that plugin documentation is sometimes sparse.
+And we also improved the quality of the [plugin documentation](/plugins/), we hope to find some time to improve it more in the upcoming weeks as we know that plugin documentation is sometimes sparse.
 
 
 ## Plugins
 
-Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](https://kestra.io/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](https://kestra.io/plugins/plugin-notifications/#teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](https://kestra.io/plugins/plugin-fs/tasks/ssh/io.kestra.plugin.fs.ssh.Command.html) task so send shell commands to a remote server with the SSH protocol.
+Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-notifications/#teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.Command.html) task so send shell commands to a remote server with the SSH protocol.
 
 ## Enterprise Edition
 
@@ -81,7 +81,7 @@ We made changes to the way triggers of type [Flow](https://kestra.io/docs/develo
 
 ## Some other goodies
 
-The [Pause](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause.html) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
+The [Pause](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause.html) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
 Flow executions have a new variable `originalId`, this identifier will not change between replays so can be used to uniquely identify a flow execution.
 Flows can now be executed at a revision, this allows the execution of an old version of a flow.
 If you use [helper functions](https://kestra.io/docs/developer-guide/cicd/helpers/) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.

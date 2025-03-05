@@ -28,18 +28,18 @@ function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     };
 }
 
-const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<string, JSONProperty>) => {
+const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<string, JSONProperty>, usePropertyTitle = false) => {
     const children = [];
 
-    const sortedKeys = Object.keys(properties).sort((a, b) => {
-        return (properties[b].$required || false) - (properties[a].$required || false);
+    const sortedProperties = Object.entries(properties).sort(([_, valueA], [__, valueB]) => {
+        return (valueB.$required || false) - (valueA.$required || false);
     });
 
-    for (const key of sortedKeys) {
+    for (const [key, property] of sortedProperties) {
         children.push({
             id: hrefPrefix + key,
             depth: 3,
-            text: key,
+            text: (usePropertyTitle ? property.title : undefined) ?? key.split("_")[0],
         });
     }
 
@@ -80,7 +80,7 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
             id: 'definitions',
             depth: 2,
             text: 'Definitions',
-            children: jsonSchemaPropertiesChildrenToc(undefined, schema.definitions)
+            children: jsonSchemaPropertiesChildrenToc(undefined, schema.definitions, true)
         });
     }
 
@@ -88,7 +88,7 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
 };
 
 function toNavTitle(title: string) {
-    let startCaseTitle = title;
+    let startCaseTitle = title.charAt(0).toUpperCase() + title.slice(1);
     if (title.match(/^[a-z]+[A-Z][a-z]/)) {
         startCaseTitle = title.replace(/[A-Z][a-z]/, match => " " + match);
     }
@@ -105,7 +105,7 @@ function subGroupWrapperNav(subGroupWrapper: Plugin, parentUrl: string) {
                 isPage: false,
                 path: parentUrl + "#" + slugify(key),
                 children: value.map(item => ({
-                    title: toNavTitle(item.substring(item.lastIndexOf('.') + 1)),
+                    title: item.substring(item.lastIndexOf('.') + 1),
                     path: `${parentUrl}/${slugify(item)}`
                 }))
             });

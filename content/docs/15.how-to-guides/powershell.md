@@ -40,7 +40,7 @@ tasks:
       $content
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-powershell/tasks/io.kestra.plugin.scripts.powershell.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script)
 
 ### Commands
 
@@ -90,7 +90,7 @@ tasks:
       - ./main.ps1
 ```
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-powershell/tasks/io.kestra.plugin.scripts.powershell.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands).
 
 ## Handling Outputs
 

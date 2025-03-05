@@ -54,11 +54,11 @@
                         </li>
                         <li>
                             <BallotOutline/>
-                            <span>Custom Blueprints</span>
+                            <span>Apps</span>
                         </li>
                         <li>
                             <FormatListGroupPlus/>
-                            <span>Custom Apps & Dashboards</span>
+                            <span>Custom Blueprints</span>
                         </li>
                     </ul>
                 </div>
@@ -83,7 +83,7 @@
                         </li>
                         <li>
                             <MonitorDashboard/>
-                            <span>Cluster Monitor</span>
+                            <span>Cluster Monitoring & Log Shipper</span>
                         </li>
                         <li>
                             <DatabaseLockOutline/>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="info-block">
-                    <span>Customer Success Program & Support</span>
+                    <span>Customer Success Program &  <br>Enterprise Support With SLA</span>
                 </div>
             </div>
         </div>
