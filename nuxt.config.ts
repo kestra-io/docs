@@ -299,6 +299,7 @@ export default defineNuxtConfig({
         '/docs/administrator-guide/server-cli': {redirect: '/docs/server-cli'},
         '/docs/configuration-guide': {redirect: '/docs/configuration'},
         '/docs/configuration-guide/**': {redirect: '/docs/configuration'},
+        '/docs/ui/dashboards': {redirect: '/docs/ui/dashboard'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
