@@ -36,4 +36,4 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: trigger docs & blogs deployment
-        run: curl --parallel --parallel-immediate --max-time 200 https://kestra.io/docs -o docs.html https://kestra.io/blogs -o blogs.html
+        run: curl --parallel --max-time 200 https://kestra.io/docs -o docs.html https://kestra.io/blogs -o blogs.html
