@@ -255,6 +255,7 @@ export default defineNuxtConfig({
         '/docs/installation/aws-ec2': {redirect: '/docs/installation/docker-compose/aws-ec2'},
         '/docs/installation/gcp-vm': {redirect: '/docs/installation/docker-compose/gcp-vm'},
         '/docs/installation/azure-vm': {redirect: '/docs/installtion/docker-compose/azure-vm'},
+        'docs/installation/digitalocean-droplet': {redirect: 'docs/installation/docker-compose/digitalocean-droplet'},
         '/docs/installation/kubernetes-aws-eks': {redirect: '/docs/installation/kubernetes/aws-eks'},
         '/docs/installation/kubernetes-gcp-gke': {redirect: '/docs/installation/kubernetes/gcp-gke'},
         '/docs/installation/kubernetes-azure-aks': {redirect: '/docs/installation/kubernetes/azure-aks'},
