@@ -1158,6 +1158,17 @@ The `urlencode` filter encodes a string for URLs.
 
 ---
 
+### string
+
+The `string` filter casts an object to string.
+
+```twig
+{{ 123 | string }}
+# output: "123"
+```
+
+---
+
 ## Temporal Filters
 
 Temporal filters are used for formatting, manipulating, and converting dates and timestamps.
