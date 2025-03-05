@@ -18,6 +18,8 @@ jobs:
 
       - name: Set up Node via nvm
         uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
 
       - name: Install dependencies
         run: npm install
