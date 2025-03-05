@@ -77,7 +77,7 @@ You can test this connection right away by clicking on "Sync now" on the connect
 
 ### Setup Kestra cluster ###
 
-Let us now proceed to setup Kestra cluster on EC2 machine. You can follow the Kestra [documentation page](../docs/02.installation/03.docker-compose/01.aws-ec2.md) that explains in detail how we can install Kestra on AWS EC2 machine. Post the installation, you should be able to access the Kestra UI using the EC2 machine's external IP address on port 8080.
+Let us now proceed to setup Kestra cluster on EC2 machine. You can follow the Kestra [documentation page](https://kestra.io/docs/installation/aws-ec2) that explains in detail how we can install Kestra on AWS EC2 machine. Post the installation, you should be able to access the Kestra UI using the EC2 machine's external IP address on port 8080.
 
 ### Kestra workflows with Airbyte tasks ###
 
