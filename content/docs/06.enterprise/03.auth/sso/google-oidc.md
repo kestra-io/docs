@@ -14,6 +14,8 @@ This guide provides step-by-step instructions to configure **OpenID Connect (OID
 - **Administrator Access**: You need sufficient permissions to configure Identity Platform and manage identity providers.
 - **Kestra Enterprise Edition**: Kestra SSO is available only in the Enterprise Edition.
 
+Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity-platform/docs/web/oidc) for more details.
+
 ---
 
 ## Step 1: Enable Identity Platform in Google Cloud
