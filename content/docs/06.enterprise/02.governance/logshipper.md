@@ -15,7 +15,7 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization queries logs and automatically batches them into optimal chunks. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers reliable, consistent log batches to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk and OpenTelemetry.
 
 ## Log Shipper properties
 
@@ -241,6 +241,33 @@ tasks:
         type: io.kestra.plugin.ee.newrelic.LogExporter
         basePath: https://log-api.newrelic.com
         apiKey: "{{ secret('NEWRELIC_API_KEY') }}"
+```
+
+### Splunk
+
+This example exports logs to [Splunk](https://www.splunk.com/). The following example flow triggers a daily batch and export to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html).
+
+```yaml
+id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+  tasks:
+    - id: log_export
+      type: io.kestra.plugin.ee.core.log.LogShipper
+      logLevelFilter: INFO
+      batchSize: 1000
+      lookbackPeriod: P1D
+      offsetKey: logShipperOffset
+      logExporters:
+        - id: SplunkLogExporter
+          type: io.kestra.plugin.ee.splunk.LogExporter
+          host: https://example.splunkcloud.com:8088
+          token: "{{ secret('SPLUNK_API_KEY') }}"
 ```
 
 ### OpenTelemetry
