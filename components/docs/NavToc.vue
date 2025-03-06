@@ -205,7 +205,7 @@
             border: 0;
             border-left-width: 1px;
             border-style: solid;
-            border-image: linear-gradient(to bottom, #181818, #cfcfcf, #181818) 1 100%;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
             background-color: rgba($black-4, .7);
             padding-bottom: 1rem;
         }
