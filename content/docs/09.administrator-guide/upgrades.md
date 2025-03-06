@@ -87,7 +87,7 @@ If you use Docker compose, adjust your Docker Compose file to use the desired [D
 If you use Helm, adjust the [Helm chart `tag` value](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L4) to point the installation to the desired version. For example, you can run the following command to upgrade the installation to the desired version:
 
 ```bash
-helm upgrade kestra kestra/kestra --set image.tag=v0.15.0-full
+helm upgrade kestra kestra/kestra --set image.tag=v0.20.0
 ```
 
 For more complex configurations that include multiple changes, consider using a custom values file:
