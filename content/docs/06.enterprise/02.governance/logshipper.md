@@ -102,7 +102,6 @@ tasks:
   - id: synchronize_logs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 2
     lookbackPeriod: P1D
     offsetKey: LogShipper-local-demo
     namespace: company.team
@@ -137,7 +136,6 @@ tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     logExporters:
       - id: DatadogLogExporter
@@ -167,7 +165,6 @@ tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: log_shipper_aws_cloudwatch_state
     logExporters:
@@ -201,7 +198,6 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
     logExporters:
@@ -227,7 +223,6 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
     logExporters:
@@ -258,7 +253,6 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
     logExporters:
@@ -290,7 +284,6 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
     logExporters:
@@ -317,7 +310,6 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
     logExporters:
