@@ -26,11 +26,11 @@
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
                                         :page="page"/>
                 <PluginIndex v-if="pluginType === undefined"
-                             class="plugin-index"
-                             :icons="icons"
-                             :plugins="page.body.plugins"
-                             :plugin-name="pluginName"
-                             :sub-group="subGroup">
+                            class="plugin-index"
+                            :icons="icons"
+                            :plugins="page.body.plugins"
+                            :plugin-name="pluginName"
+                            :sub-group="subGroup">
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content">
                             <template #default="{body}">
@@ -41,7 +41,7 @@
                 </PluginIndex>
                 <Suspense v-else>
                     <SchemaToHtml class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType"
-                                  :props-initially-expanded="true">
+                            :props-initially-expanded="true">
                         <template #markdown="{ content }">
                             <MDC :value="content">
                                 <template #default="{body}">
@@ -249,7 +249,7 @@
         }
 
         .bd-main {
-            gap: calc($spacer * 2) $spacer;
+            gap: calc($spacer * 2) calc($spacer * 4);
             @include media-breakpoint-down(sm) {
                 gap: calc($spacer * 2) calc($spacer * 7);
             }

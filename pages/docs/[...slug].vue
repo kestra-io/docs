@@ -156,7 +156,7 @@
         }
 
         .bd-main {
-            gap: 2rem 2rem;
+            gap: 2rem 4rem;
             @include media-breakpoint-down(sm) {
                 gap: 2rem 7rem;
             }
