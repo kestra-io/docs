@@ -81,7 +81,7 @@ tasks:
       END IF;
 ```
 
-Once your columns are configured, you can use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) to download the CSV file and copy it directly into our database. As we set up the database connection with our [Plugin Defaults](#connecting-supabase-to-kestra), the CopyIn task will connect directly and copy the CSV file into the database.
+Once your columns are configured, you can use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task to download the CSV file and copy it directly into our database. As we set up the database connection with our [Plugin Defaults](#connecting-supabase-to-kestra), the CopyIn task will connect directly and copy the CSV file into the database.
 
 ```yaml
 id: supabase_db
