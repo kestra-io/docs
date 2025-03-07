@@ -32,7 +32,19 @@ Once your project is created, you will now be able to access resources inside of
 
 Now we have a database set up in Supabase, we can move into Kestra to set up our connection. While there's no official Supabase plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres) which supports a number of tasks such as `Query`, `CopyIn` and `CopyOut`.
 
-By using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md), we can configure our connection to Supabase once for all tasks inside of our flow rather than individually for each task:
+Inside of Supabase, select the **Connect** button at the top to get information about our databases connection. This will give us 3 ways of connecting with a Connection String. As we're only connecting to the database when our workflow runs, the Transaction pooler is a good option to use. 
+
+The URL it provides is a good starting point, but select the **View parameters** option to get a breakdown of the configuration.
+
+![supabase-4](/docs/how-to-guides/supabase-db/supabase-4.png)
+
+To connect, we need 3 properties: `url`, `username` and `password`. By default, they are combined into one string, but we're going to configure it split into 3 separate properties inside of Kestra. For the URL, we'll need to add `jdbc:` to the start of the URL so Kestra knows what driver to use to initiate the connection.
+
+For our username and password, we can store these as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md) to prevent putting them directly into our workflow.
+
+By using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md), we can configure our connection to Supabase once for all tasks inside of our flow rather than individually for each task.
+
+Once configured, our connection in Kestra will look like the example below:
 
 ```yaml
 pluginDefaults:
@@ -99,4 +111,4 @@ pluginDefaults:
 
 Once this flow completes, we can view the contents of our database in Supabase:
 
-![supabase-4](/docs/how-to-guides/supabase-db/supabase-4.png)
+![supabase-5](/docs/how-to-guides/supabase-db/supabase-5.png)
