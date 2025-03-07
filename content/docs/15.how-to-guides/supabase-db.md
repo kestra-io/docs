@@ -68,17 +68,14 @@ tasks:
   - id: create_columns
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
-      IF NOT EXISTS (
-        ALTER TABLE kestra_example
-        ADD COLUMN order_id int,
-        ADD COLUMN customer_name text,
-        ADD COLUMN customer_email text,
-        ADD COLUMN product_id int,
-        ADD COLUMN price double precision,
-        ADD COLUMN quantity int,
-        ADD COLUMN total double precision;
-      )
-      END IF;
+      ALTER TABLE kestra_example
+      ADD COLUMN order_id int,
+      ADD COLUMN customer_name text,
+      ADD COLUMN customer_email text,
+      ADD COLUMN product_id int,
+      ADD COLUMN price double precision,
+      ADD COLUMN quantity int,
+      ADD COLUMN total double precision;
 ```
 
 Once your columns are configured, you can use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task to download the CSV file and copy it directly into our database. As we set up the database connection with our [Plugin Defaults](#connecting-supabase-to-kestra), the CopyIn task will connect directly and copy the CSV file into the database.
