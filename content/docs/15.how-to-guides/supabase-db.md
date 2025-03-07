@@ -52,7 +52,7 @@ pluginDefaults:
 ```
 
 ::alert{"info"}
-You can also use the `username` and `password` fields rather than combining it all into the `url` property:
+You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
 pluginDefaults:
@@ -63,6 +63,7 @@ pluginDefaults:
       username: "postgres.nqxaafovehwkjapsqqlk"
       password: "{{ kv('SUPABASE_PASSWORD') }}
 ```
+
 ::
 
 ## Copying a CSV file into Supabase DB inside of a Flow
