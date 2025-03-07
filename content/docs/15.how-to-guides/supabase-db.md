@@ -40,7 +40,7 @@ The URL it provides is a good starting point, but select the **View parameters**
 
 To connect, we need 3 properties: `url`, `username` and `password`. By default, they are combined into one string, but we're going to configure it split into 3 separate properties inside of Kestra. For the URL, we'll need to add `jdbc:` to the start of the URL so Kestra knows what driver to use to initiate the connection.
 
-For our username and password, we can store these as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md) to prevent putting them directly into our workflow.
+For our username and password, we can store these as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md) to prevent exposing them in our workflow.
 
 By using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md), we can configure our connection to Supabase once for all tasks inside of our flow rather than individually for each task.
 
