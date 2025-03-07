@@ -10,7 +10,7 @@ Connect your Supabase Database to your workflows using the PostgreSQL plugin.
 
 ## Overview
 
-Supabase is an open-source Backend-as-a-service (BaaS) platform that can help developers build applications quicker and more efficiently. They provide a number of services such as hosted PostgreSQL databases which we can use inside of Flows in Kestra.
+Supabase is an open-source Backend-as-a-service (BaaS) platform that helps developers build applications faster and more efficiently. They provide a number of services, including hosted PostgreSQL databases, which can be used within Flows in Kestra.
 
 To get started, make sure you have a [Supabase account](https://supabase.com/) set up and an [installation of Kestra](../02.installation/index.md) running.
 
@@ -24,13 +24,13 @@ Once your organization is created, you'll be prompted to create a new project. Y
 
 ![supabase-2](/docs/how-to-guides/supabase-db/supabase-2.png)
 
-Once your project is created, you will now be able to access resources inside of Supabase. Head to the menu on the left side and select **Database**. You will be promoted to create a new table inside of your database, as well as configure any columns you want to use. We can leave this blank for now and modify these later once we know what data we want to copy into our database.
+Once your project is created, you will now be able to access resources inside of Supabase. Head to the menu on the left side and select **Database**. You will be prompted to create a new table inside of your database, as well as configure any columns you want to use. We can leave the columns blank for now and modify these later once we know what data we want to copy into our database.
 
 ![supabase-3](/docs/how-to-guides/supabase-db/supabase-3.png)
 
 ## Connecting Supabase to Kestra
 
-Now we have a database set up in Supabase, we can move into Kestra to set up our connection. While there's no official Supabase plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres) which supports a number of tasks such as `Query`, `CopyIn` and `CopyOut`.
+Now that we have a database set up in Supabase, we can move into Kestra to set up our connection. While there's no official Supabase plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres), which supports a number of tasks such as `Query`, `CopyIn`, and `CopyOut`.
 
 Inside of Supabase, select the **Connect** button at the top to get information about our databases connection. This will give us 3 ways of connecting with a Connection String. As we're only connecting to the database when our workflow runs, the Transaction pooler is a good option to use. 
 
@@ -38,7 +38,7 @@ The URL it provides is a good starting point, but select the **View parameters**
 
 ![supabase-4](/docs/how-to-guides/supabase-db/supabase-4.png)
 
-To connect, we need 3 properties: `url`, `username` and `password`. By default, they are combined into one string, but we're going to configure it split into 3 separate properties inside of Kestra. For the URL, we'll need to add `jdbc:` to the start of the URL so Kestra knows what driver to use to initiate the connection.
+To connect, we need 3 properties: `url`, `username`, and `password`. By default, they are combined into one string, but we're going to configure it split into 3 separate properties inside of Kestra. For the URL, we'll need to add `jdbc:` to the start of the URL so Kestra knows what driver to use to initiate the connection.
 
 For our username and password, we can store these as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md) to prevent exposing them in our workflow.
 
@@ -58,7 +58,7 @@ pluginDefaults:
 
 ## Copying a CSV file into Supabase DB inside of a Flow
 
-Using this [example CSV](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), it can be copied into the database from Kestra. You can either set up the columns directly in Supabase or add a task in Kestra to add them automatically like this:
+Using this [example CSV](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), we can copy the data into our table directly from Kestra. You can either set up the columns directly in Supabase or add a task in Kestra to add them automatically like this:
 
 ```yaml
 id: supabase_db_add_columns
