@@ -51,7 +51,7 @@ pluginDefaults:
 
 ```
 
-::alert{"info"}
+::alert{type="info"}
 You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
