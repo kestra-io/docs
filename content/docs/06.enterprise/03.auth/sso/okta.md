@@ -39,7 +39,21 @@ We'll set the access to everyone in the organization, but you can set stricter a
 
 ![okta-4](/docs/enterprise/sso/okta-4.png)
 
-## Step 3: Connect to Kestra
+## Step 3: Add test user to Okta app integration
+
+To create a test user in your Okta Directory to test your app integration, in your Okta Admin Dashboard, navigate to **Directory > People**. Select **Add Person**.
+
+![okta-7](/docs/enterprise/sso/okta-7.png)
+
+Enter user test details, including a password, and save the test user.
+
+In the **Directory**, select the new user, and navigate to the **Applications** tab for the user and choose **Assign Applications**.
+
+![okta-8](/docs/enterprise/sso/okta-8.png)
+
+Select the Kestra application name you created and enter the added details for the user and hit **Save**.
+
+## Step 4: Connect to Kestra
 
 Now that Okta is set up as an OIDC provider, we need to link it to Kestra. After saving your settings in the previous step, Okta will automatically direct you to your integration. Here, you can collect your client credentials to connect to Kestra, **Client ID** and **Client Secret**.
 
@@ -65,8 +79,8 @@ After copying your Client Id and Client Secret, switch from the **General** tab 
           client-id: "{{ clientId }}"
           client-secret: "{{ clientSecret }}"
           openid:
-            issuer: 'https://dev-65896918.okta.com'
+            issuer: 'https://<your-domain-id>.okta.com'
 ```
 - Replace `clientId` and `clientSecret` with the values from the Okta App integration copied previously.
 - Replace `issuer` with your issuer URL from Application's sign on settings from before.
-- Restart Kestra to apply the changes.
+- Restart Kestra to apply the changes and log in.
