@@ -32,4 +32,4 @@ For more configuration details, refer to the [Micronaut OIDC configuration guide
 
 ## Provider guides
 
-Check out our guides for specific SSO providers [Google](../sso/google-oidc.md), [Microsoft](../sso/microsoft-oidc.md), [Keycloak](../sso/keycloak.md), and [authentik](../sso/authentik.md).
+Check out our guides for specific SSO providers [Google](./google-oidc.md), [Microsoft](./microsoft-oidc.md), [Keycloak](./keycloak.md), [Okta](./okta.md), and [authentik](./authentik.md).
