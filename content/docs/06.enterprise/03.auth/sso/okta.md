@@ -10,7 +10,7 @@ This guide provides step-by-step instructions to configure **OpenID Connect (OID
 
 ## Prerequisites
 
-- **Okta Developer Account**: Ensure you have an Okta Devloper Account or Organization.
+- **Okta Developer Account**: Ensure you have an Okta Developer Account or Organization.
 - **Administrator Access**: You need sufficient permissions to configure Identity Platform and manage identity providers.
 - **Kestra Enterprise Edition**: Kestra SSO is available only in the Enterprise Edition.
 
