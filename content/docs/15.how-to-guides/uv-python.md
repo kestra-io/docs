@@ -10,13 +10,13 @@ Manage your Python Dependecies inside of Kestra using `uv`.
 
 ## Overview
 
-`uv` is a new Python packaghe and project manager designed to be extremely fast. Written in rust, it aims to fix some of the pitfuls of pip while also combining multiple python dependency management tools like `virtualenv`, `poetry` and more into one unified tool.
+`uv` is a new Python package and project manager designed to be extremely fast. Written in rust, it aims to fix some of the pitfalls of pip while also combining multiple python dependency management tools like `virtualenv`, `poetry`, and more into one unified tool.
 
 `uv` can be used inside of Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../task-runners/04.types/01.process-task-runner.md).
 
 ## Install Dependencies
 
-By default, Kestra has `uv` installed to our default Python image `kestrapy` so anytime you use a Python `Commands` or `Script` task with the [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md), it will be preinstalled.
+By default, Kestra has `uv` installed to our default Python image `kestrapy`, so anytime you use a Python `Commands` or `Script` task with the [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md), it will be preinstalled.
 
 If you're using a different image or you'd prefer to use the [Process Task Runner](../task-runners/04.types/01.process-task-runner.md), you can also install `uv` using `beforeCommands` with `pip install uv`.
 
@@ -35,7 +35,7 @@ tasks:
       print("Hello, World!)
 ```
 
-By default, `uv` will look for a virtual environment to install dependencies into but this is not required when using the [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md) as that provides the isolation we would get from a virtual environment. To override this, we can add the `--system` flag to our install command.
+By default, `uv` will look for a virtual environment to install dependencies into, but this is not required when using the [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md) as that provides the isolation we would get from a virtual environment. To override this, we can add the `--system` flag to our install command.
 
 ```yaml
 id: python_example
@@ -56,7 +56,7 @@ namespace: company.team
       Kestra.outputs({"total": total_revenue})
 ```
 
-If you're using the [Process Task Runner](../task-runners/04.types/01.process-task-runner.md), you can use `uv` to create a virtual environment with `uv venv`. Once this has completed, you can run `uv pip install` and it will automatically install these dependencies to this virtual environment without needing to activate the virtual environment.
+If you're using the [Process Task Runner](../task-runners/04.types/01.process-task-runner.md), you can use `uv` to create a virtual environment with `uv venv`. Once this has completed, you can run `uv pip install`, and it will automatically install these dependencies to this virtual environment without needing to activate the virtual environment.
 
 ```yaml
 id: python_example
