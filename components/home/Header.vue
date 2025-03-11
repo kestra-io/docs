@@ -3,24 +3,15 @@
         <div class="hero container">
             <div class="text-block">
                 <h1>
-                    <text-scroller :texts="scrollingTexts" />
-                    <br>
-                    Smarter Not Harder
+                    Powerful orchestration.
+                    Simplified workflows.
                 </h1>
-                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows and Govern them as Code and from the UI.</p>
+                <p>Unify orchestration for all engineers.  Build and govern business-critical workflows as code and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-animated btn-purple-animated me-2 mb-2"
+                        class="btn btn-purple me-2 mb-2"
                     >
-                        <NuxtImg
-                            width="25px"
-                            height="25px"
-                            loading="lazy"
-                            format="webp"
-                            src="/landing/home/lightning-bolt.svg"
-                            alt="lightning"
-                        />
                         Get started
                     </NuxtLink>
 
@@ -30,15 +21,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
-                        <NuxtImg
-                            width="25px"
-                            height="25px"
-                            loading="lazy"
-                            format="webp"
-                            src="/landing/home/play.svg"
-                            alt="play"
-                        />
-                        Watch video
+                        Book a Demo
                     </a>
 
                 </div>
@@ -184,6 +167,10 @@
             @include media-breakpoint-down(md) {
                 margin: 2.5rem 0 1rem;
             }
+            p{
+                max-width: 500px;
+                font-weight: 300;
+            }
         }
 
         .hero {
@@ -203,6 +190,7 @@
             margin-bottom: 0;
             @include media-breakpoint-up(lg) {
                 margin: 0;
+                max-width: 800px;
                 font-size: 39pt;
                 line-height: 1em;
             }
@@ -382,7 +370,7 @@
                     margin-bottom: 100px;
                 }
             }
-            
+
             canvas {
                 width: 2000px;
                 margin-top: -650px;
