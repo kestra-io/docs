@@ -1,6 +1,6 @@
 ---
 title: "What is Orchestration? Understanding Data, Software & Infrastructure Orchestration"
-description: DDiscover what orchestration really means across data pipelines, software lifecycles, and infrastructure automation.
+description: Discover what orchestration really means across data pipelines, software lifecycles, and infrastructure automation.
 date: 2025-03-11T13:00:00
 category: Solutions
 author:
