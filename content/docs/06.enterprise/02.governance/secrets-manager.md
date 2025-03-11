@@ -113,7 +113,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       password:
         user: john
         password: foo
@@ -126,7 +126,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       token:
         token: your-secret-token
 ```
@@ -138,7 +138,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       appRole:
         path: approle
         roleId: your-role-id
