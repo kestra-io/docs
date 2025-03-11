@@ -15,14 +15,13 @@
                         Get started
                     </NuxtLink>
 
-                    <a
-                        href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                    <NuxtLink
+                        href="/demo"
                         class="btn btn-secondary mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#home-intro"
+                        target="_blank"
                     >
                         Book a Demo
-                    </a>
+                    </NuxtLink>
 
                 </div>
             </div>
@@ -39,41 +38,6 @@
                 />
                 <canvas v-else ref="canvas" height="1520" width="2000"/>
             </div>
-            <div class="companies-background">
-                <LayoutCompanies class="d-xl-none" />
-                <HomeCompanies class="mb-4 pb-4 companies container d-none d-xl-block" />
-            </div>
-        </div>
-
-    </div>
-    <div
-        v-on="{
-            'show.bs.modal': () => (videoVisible = true),
-            'hidden.bs.modal': () => (videoVisible = false),
-        }"
-        class="modal modal-full fade"
-        id="home-intro"
-        tabindex="-1"
-        aria-labelledby="home-intro"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="video-responsive">
-                        <iframe
-                            v-if="videoVisible"
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -81,7 +45,6 @@
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
     import { useMediaQuery } from "@vueuse/core";
-    import TextScroller from "~/components/layout/TextScroller.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -194,14 +157,6 @@
                 font-size: 39pt;
                 line-height: 1em;
             }
-
-
-            :deep(span) {
-                background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
         }
 
         p {
@@ -212,6 +167,7 @@
             color: $white;
             text-wrap: balance;
             margin:0;
+            margin-top: .5rem;
             @include media-breakpoint-down(md) {
                 font-size: 11pt;
             }
@@ -223,6 +179,7 @@
 
         .buttons {
             text-align: center;
+            margin-top: 1.5rem;
         }
 
         .companies {
@@ -257,99 +214,6 @@
             }
         }
 
-        .companies-background {
-            padding-bottom: 4rem;
-            position: relative;
-            z-index: 10;
-            margin-top: -170px;
-
-            @include media-breakpoint-down(xxl) {
-                margin-top: -80px;
-            }
-
-            @include media-breakpoint-down(xl) {
-                width: 100vw;
-                position: relative;
-                left: 50%;
-                right: 50%;
-                margin-left: -50vw;
-                margin-right: -50vw;
-            }
-            @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
-                width: unset;
-                position: unset;
-                left: unset;
-                right: unset;
-                margin-left: -15px;
-                margin-right: -15px;
-            }
-            @include media-breakpoint-down(md) {
-                margin-top: -40px;
-            }
-            :deep(.companies-container .companies img) {
-                @include media-breakpoint-down(md) {
-                    max-height: 30px;
-                    width: auto;
-                }
-                @include media-breakpoint-down(sm) {
-                    max-height: 15px;
-                    width: auto;
-                }
-
-            }
-        }
-
-        .activity-list {
-            border-radius: 8px;
-            border: 0.829px solid $black-6;
-            padding: 34px 122.5px;
-            background: url("/landing/home/bg.svg") no-repeat center;
-            background-size: 100% 100%;
-            text-align: center;
-            font-family: $font-family-sans-serif;
-            text-transform: uppercase;
-
-            p {
-                margin: 0;
-            }
-
-            .count {
-                color: $white;
-                font-size: 48.087px;
-                font-weight: 100;
-                line-height: 46px;
-            }
-
-            .description {
-                color: rgba(255, 255, 255, 0.70);
-                font-size: 11.607px;
-                font-weight: 500;
-            }
-
-            @include media-breakpoint-down(xl) {
-                padding: 30px 64px;
-            }
-
-            @include media-breakpoint-down(lg) {
-                padding: 30px 44px;
-                .count {
-                    font-size: 30px;
-                    line-height: 30px;
-                }
-
-                .description {
-                    font-size: 9px;
-                }
-            }
-
-            @include media-breakpoint-down(md) {
-                max-width: 330px;
-                flex-wrap: wrap;
-                justify-content: center !important;
-                gap: 25px;
-            }
-        }
-
         .img-block
         {
             display: flex;
@@ -373,7 +237,8 @@
 
             canvas {
                 width: 2000px;
-                margin-top: -650px;
+                margin-top: -700px;
+                margin-bottom: -200px;
             }
         }
 
