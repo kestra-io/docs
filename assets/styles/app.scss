@@ -97,7 +97,7 @@ blockquote.blockquote {
 .btn {
     font-weight: bold;
     border: 0;
-    border-radius: $border-radius;
+    border-radius: $border-radius-lg;
 }
 
 .btn:not(.btn-lg):not(.btn-sm) {
@@ -124,6 +124,36 @@ blockquote.blockquote {
 @keyframes rotate {
     100% {
         transform: rotate(1turn);
+    }
+}
+
+.btn-primary {
+    background-color: $purple-40;
+    color: $white;
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: -1px; right: -1px; bottom: -1px; left: -1px;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(to bottom, $purple-42, $purple-43);
+      }
+
+    &:hover {
+        background-color: $purple-41;
+    }
+}
+
+.btn-secondary {
+    background-color: $white;
+    color: $black-6;
+    border: 1px solid $purple-40;
+
+    &:hover {
+        background-color: $white-1;
+        color: $black-6;
     }
 }
 
@@ -267,10 +297,6 @@ blockquote.blockquote {
         text-transform: uppercase;
         font-weight: bold;
         margin-bottom: 1rem;
-    }
-
-    .btn-secondary {
-        background-color: rgba($white, 10%);
     }
 
     .dot {

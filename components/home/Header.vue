@@ -10,14 +10,14 @@
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-purple me-2 mb-2"
+                        class="btn btn-primary me-3 mb-2"
                     >
                         Get started
                     </NuxtLink>
 
                     <a
                         href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
-                        class="btn btn-animated btn-dark-animated  mb-2"
+                        class="btn btn-secondary mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
