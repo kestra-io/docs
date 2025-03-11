@@ -34,6 +34,7 @@ const langs = ['bash',
     'systemd',
     'twig',
     'typescript',
+    'powershell',
     'xml',
     'yaml'] as const
 let shiki: Promise<HighlighterGeneric<(typeof langs)[number], 'github-dark'>> | null = null

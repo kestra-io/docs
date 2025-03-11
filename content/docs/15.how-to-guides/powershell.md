@@ -60,7 +60,7 @@ tasks:
 
 The contents of the `main.ps1` file can be:
 
-```r
+```powershell
 Write-Output "Hello World"
 ```
 
