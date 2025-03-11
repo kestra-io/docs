@@ -1100,20 +1100,57 @@ For more information, check out the [dedicated guide](../15.how-to-guides/local-
 
 ## Plugins
 
-Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
+### Installing plugins
 
-Maven Central is mandatory for Kestra and its plugins. However, you can add your own (Maven) repository in order to download your custom plugins using the following configuration:
+Kestra plugins can be installed from Maven repositories using the `kestra plugins install` command.
+
+**Example:**
+
+The command below will install the latest version of the script-python plugin.
+
+```bash
+kestra plugins install io.kestra.plugin:plugin-script-python:LATEST
+```
+
+By default, Kestra retrieves plugins from Maven Central, but you can configure additional repositories (e.g., Google Artifact Registry) to install custom plugins.
+
+
+### Adding Custom Maven Repositories
+
+The repositories can be configured using the `kestra.plugins.repositories` configuration.
+
+You can add your own private Maven repositories, such as Google Artifact Registry, to install custom plugins.
+
+**Example Configuration (`application.yaml`):**
 
 ```yaml
 kestra:
   plugins:
     repositories:
+      # Configure Maven Central (Mandatory)
       central:
         url: https://repo.maven.apache.org/maven2/
-      jcenter:
-        url: https://jcenter.bintray.com/
-      kestra:
-        url: https://dl.bintray.com/kestra/maven
+      # Configure a Private Google Artifact Registry
+      google-artifact-registry:
+        url: https://${GCP_REGISTRY_LOCATION}-maven.pkg.dev/${GCP_PROJECT_ID}/${GCP_REPOSITORY}
+        basicAuth:
+          username: oauth2accesstoken
+          password: ${GCP_OAUTH_ACCESS_TOKEN}
+```
+
+### Installing Enterprise Edition (EE) plugins
+
+Enterprise Edition (EE) users can configure Kestra's artifact registry to install EE plugins, as described below:
+
+```yaml
+kestra:
+  plugins:
+    repositories:
+      kestra-io:
+        url: https://registry.kestra.io/maven
+        basicAuth:
+          username: ${kestra.ee.license.id:}
+          password: ${kestra.ee.license.fingerprint:}
 ```
 
 ### Enable or disable features
