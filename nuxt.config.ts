@@ -266,7 +266,7 @@ export default defineNuxtConfig({
         '/docs/enterprise/releases': {redirect: '/docs/enterprise/overview/releases'},
         '/docs/enterprise/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
         '/docs/enterprise/namespace-management': {redirect: '/docs/enterprise/governance/namespace-management'},
-        '/docs/enterprise/centralized-task-configuration': {redirect: 'https://kestra.io/docs/enterprise/governance/centralized-task-configuration'},
+        '/docs/enterprise/centralized-task-configuration': {redirect: 'https://kestra.io/docs/enterprise/governance/namespace-management#namespace-level-features'},
         '/docs/enterprise/custom-blueprints': {redirect: '/docs/enterprise/governance/custom-blueprints'},
         '/docs/enterprise/logshipper': {redirect: '/docs/enterprise/governance/logshipper'},
         '/docs/enterprise/secrets': {redirect: '/docs/enterprise/governance/secrets'},
