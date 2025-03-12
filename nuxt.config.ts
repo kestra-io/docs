@@ -287,6 +287,7 @@ export default defineNuxtConfig({
         '/docs/enterprise/announcements': {redirect: '/docs/enterprise/instance/announcements'},
         '/docs/enterprise/dashboard': {redirect: '/docs/enterprise/instance/dashboard'},
         '/docs/enterprise/maintenance-mode': {redirect: '/docs/enterprise/instance/maintenance-mode'},
+        '/docs/enterprise/governance/centralized-task-configuration': {redirect: '/docs/enterprise/governance/namespace-management'},
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
         '/docs/administrator-guide/server-cli': {redirect: '/docs/server-cli'},
