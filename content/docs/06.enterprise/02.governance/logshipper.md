@@ -27,6 +27,7 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
 - `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
 - `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
+- `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
 
 
 ## Log Shipper examples
@@ -45,9 +46,9 @@ tasks:
   - id: synchronize_logs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 2
     lookbackPeriod: P1D
     offsetKey: LogShipper-local-demo
+    delete: false
     namespace: company.team
     logExporters:
       - id: file
@@ -80,8 +81,8 @@ tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
+    delete: false
     logExporters:
       - id: DatadogLogExporter
         type: io.kestra.plugin.ee.datadog.LogExporter
@@ -110,9 +111,9 @@ tasks:
   - id: log_export
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: log_shipper_aws_cloudwatch_state
+    delete: false
     logExporters:
       - id: aws_cloudwatch
         type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
@@ -144,9 +145,9 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: googleOperationalSuite
         type: io.kestra.plugin.ee.gcp.operationalsuite.LogExporter
@@ -170,9 +171,9 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: azureMonitor
         type: io.kestra.plugin.ee.azure.LogExporter
@@ -201,9 +202,9 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: elasticsearch
         type: io.kestra.plugin.elasticsearch.LogExporter
@@ -233,9 +234,9 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: newRelic
         type: io.kestra.plugin.ee.newrelic.LogExporter
@@ -260,9 +261,9 @@ triggers:
     - id: log_export
       type: io.kestra.plugin.ee.core.log.LogShipper
       logLevelFilter: INFO
-      batchSize: 1000
       lookbackPeriod: P1D
       offsetKey: logShipperOffset
+      delete: false
       logExporters:
         - id: SplunkLogExporter
           type: io.kestra.plugin.ee.splunk.LogExporter
@@ -287,8 +288,9 @@ tasks:
   - id: logSync
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: OpensearchLogExporter
         type: io.kestra.plugin.ee.opensearch.LogExporter
@@ -315,9 +317,9 @@ tasks:
   - id: shipLogs
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
-    batchSize: 1000
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: openTelemetry
         type: io.kestra.plugin.ee.opentelemetry.LogExporter
@@ -335,6 +337,7 @@ The Audit Log Shipper uses the following properties similar to the execution Log
 - `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
 - `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
 - `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
+- `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
 
 The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
 
