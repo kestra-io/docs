@@ -73,12 +73,12 @@
     }
 
     .feature{
-        padding: 1rem 2rem;
+        padding: 1rem 2rem 0;
         border-right: 1px solid #e1e1e1;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: .5rem;
         .icon{
             margin-bottom: 1.2rem;
             font-size: 32px;
