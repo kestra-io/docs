@@ -41,7 +41,7 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
 }
 
 .logo-box{
-    background-color: white;
+    background-color: #FCFCFD;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +57,7 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     grid-row: 2 / 4;
     text-align: center;
     padding: 1rem;
-    background-color: white;
+    background-color: #FCFCFD;
     font-weight: 700;
     display: flex;
     justify-content: center;

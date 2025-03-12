@@ -6,9 +6,11 @@
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
         <HomeHeader/>
-        <div style="background-color: white; padding: 2rem;">
+        <div style="background-color: #FCFCFD; padding: 2rem;">
             <HomeLogosTable/>
-            <HomeFeatures/>
+        </div>
+        <div style="background-color: white; padding: 2rem;">
+            <HomeOss/>
             <NuxtLazyHydrate when-visible>
                 <HomeUI/>
             </NuxtLazyHydrate>
