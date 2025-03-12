@@ -5,4 +5,33 @@ editions: ["EE"]
 version: "0.22.0"
 ---
 
-Versioned Plugins placeholder
+Use multiple versions of a plugin depending on your instance requirements and upgrade path.
+
+Versioned plugins are an enterprise feature that simplifies the upgrade process. They allow you to pin older plugin versions to your production and legacy flows while using the latest version for newer flows, enabling granular version control in your Kestra instance.
+
+## Install versioned plugins
+
+Versioned plugins can be installed from the Kestra UI as well as programmatically.
+
+### From the UI
+
+Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. From here, you can click **+ Install** and open up the full library of available plugins.
+
+![versioned-plugins-1](/docs/enterprise/versioned-plugins-1.png)
+
+From the list, search and select the plugin to install and select the version.
+
+![versioned-plugins-2](/docs/enterprise/versioned-plugins-2.png)
+
+After installing some plugins, your full list of versioned plugins are displayed. Kestra alerts you that a newer version of your plugin is available and gives you the capability to upgrade singular plugins as needed rather than all plugins to their newest version.
+
+![versioned-plugins-3](/docs/enterprise/versioned-plugins-3.png)
+
+### From the CLI and API
+
+## Configuration
+
+## Other capabilities
+
+- add support for internal storage as plugin repository
+- add support for plugins auto-reloading

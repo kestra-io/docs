@@ -33,4 +33,4 @@ With the above configuration, where `secretPathPrefix: my-team-a` is specified, 
 
 To enable in the Kestra UI, go to **Namespace** and then to the Edit tab. From here, you can toggle on **Dedicated secrets manager**, select your Secret type, switch on Read-only mode, and enter your respective secret configuration for your secrets manager.
 
-![read-only-secrets-1](docs/enterprise/read-only-secrets-1.png)
+![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
