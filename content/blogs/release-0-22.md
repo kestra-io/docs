@@ -106,6 +106,10 @@ TBD
 ```
 ::
 
+### New MariaDB tasks
+
+- https://github.com/kestra-io/plugin-jdbc/commit/ab18b1bf14a656b8f469c5494b9f0d610d47c73e
+
 ### New ServiceNow tasks
 
 TBD
@@ -129,6 +133,8 @@ TBD
 ### New Pebble functions
 
 TBD
+
+- https://github.com/kestra-io/kestra/issues/6888
 
 ## Thanks to Our Contributors
 
