@@ -50,7 +50,7 @@
 
     .title-block{
         font-size: 2rem;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 2rem;
         span{
             display: block;
