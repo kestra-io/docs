@@ -12,11 +12,11 @@ In this guide, we will look at ways to implement dynamic flows in Kestra.
 
 ## Dynamic Flow using Inputs
 
-In this method, we will create flow as a template, and the dynamic values in the template can then filled using Kestra inputs generating the desired flow. Let us see this with the help of an example.
+In this method, we will create a flow as a template, and the dynamic values in the template can then be filled using Kestra inputs to generate the desired flow. Let us see this with the help of an example.
 
-Here, we will create a sample flow that will download the CSV data using HTTP Download task, and then load the data to postgres table. Such dynamic flow can be helpful when you have new HTTP URLs getting generated on regular cadence, and you need to pull in the latest data from the new HTTP URL and upload it to postgres table.
+Here, we will create a sample flow that downloads CSV data using the HTTP Download task and then loads the data to a PostgreSQL table. Such a dynamic flow can be helpful when you have new HTTP URLs getting generated on a regular cadence, and you need to pull in the latest data from the new HTTP URL to upload to a table.
 
-The flow will take the HTTP URL and the postgres database connection details as input. This leads to a dynamic flow as the same flow can then be utilized with different HTTP URLs, and different postgres databases and tables.
+The flow will take the HTTP URL and the PostgreSQL database connection details as inputs. This leads to a dynamic flow, as the same flow can then be utilized with different HTTP URLs and different PostgreSQL databases and tables.
 
 ```yaml
 id: dynamic_flow
@@ -70,7 +70,7 @@ As can be seen from the above flow, it is dynamic as all its important parameter
 
 We can write code in any language to generate the dynamic flow, and then upload the flow to Kestra. Let us understand this with the help of an example.
 
-We will create a dynamic flow using python which will download the CSV file using HTTP Download task, and upload the contents into postgres table. Say, we want to extract the data from multiple HTTP URLs, and upload the data to corresponding postgres table. We can parallely start the process of downloading the data from HTTP URL and uploading it to postgres table. For two items, products and orders, this is how our flow should look like:
+We will create a dynamic flow using python which downloads a CSV file using the HTTP Download task and upload the contents into PostgreSQL table. Say, we want to extract the data from multiple HTTP URLs and upload the data to corresponding a PostgreSQL table. We can, in parallel, start the process of downloading the data from HTTP URL and uploading it to PostgreSQL table. For two items, products and orders, this is how our flow should look like:
 
 ```yaml
 id: dynamic_flow
@@ -190,9 +190,9 @@ with open(output_path, "w") as f:
     yaml.dump(kestra_flow, f)
 ```
 
-The above python code will generate dynamic flow with multiple Sequential tasks that will download the data from HTTP URL and upload the CSV into the corresponding postgres table. You can write the above code in a namespace file, say `dynamic_flow.py`.
+The above python code will generate a dynamic flow with multiple Sequential tasks that will download the data from an HTTP URL and upload the CSV into the corresponding PostgreSQL table. You can write the above code in a namespace file, say `dynamic_flow.py`.
 
-Next, we will write a Kestra flow that will invoke the `dynamic_flow.py` python script, and will load the generated dynamic flow into Kestra.
+Next, we will write a Kestra flow that will invoke the `dynamic_flow.py` python script and load the generated dynamic flow into Kestra.
 
 ```yaml
 id: generate_dynamic_flow
@@ -259,14 +259,14 @@ tasks:
 
 The flow has the following tasks:
 
-1. generate_kestra_flow: This task invokes the `dynamic_flow.py` and generates the dynamic flow by running the Python code. The environment variables like `FLOW_ID`, `FLOW_NAMESPACE` and `EXTRACT_ITEMS` are provided in the task, which are then used by the Python script allowing it to dynamically generate the flow.
+1. generate_kestra_flow: This task invokes the `dynamic_flow.py` and generates the dynamic flow by running the Python code. The environment variables like `FLOW_ID`, `FLOW_NAMESPACE`, and `EXTRACT_ITEMS` are provided in the task, which are then used by the Python script to dynamically generate the flow.
 
 2. create_flow: This task creates the flow in Kestra by uploading the yaml file containing the dynamically generated flow.
 
 3. subflow: This task triggers the newly created dynamic flow.
 
-Thus, you can generate the dynamic flow by generating it in the language of your choice, and then loading it into Kestra.
+Thus, you can generate the dynamic flow by generating it in the language of your choice and then loading it into Kestra.
 
 ## Dynamic Flow using Terraform
 
-Yet another way of generating dynamic flows in Kestra is using Terraform templates. Detailed guide on implementing dynamic flows using Terraform can be found [here](/docs/how-to-guides/terraform-templating).
+Yet another way of generating dynamic flows in Kestra is using Terraform templates. Check out the detailed guide on implementing dynamic flows using [Terraform templating](/docs/how-to-guides/terraform-templating).
