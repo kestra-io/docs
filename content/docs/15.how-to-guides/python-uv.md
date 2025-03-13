@@ -41,6 +41,7 @@ By default, `uv` will look for a virtual environment to install dependencies int
 id: python_example
 namespace: company.team
 
+tasks:
   - id: code
     type: io.kestra.plugin.scripts.python.Script
     taskRunner:
