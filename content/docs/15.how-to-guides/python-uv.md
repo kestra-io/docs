@@ -32,7 +32,7 @@ tasks:
     beforeCommands:
       - pip install uv
     script: |
-      print("Hello, World!)
+      print("Hello, World!")
 ```
 
 By default, `uv` will look for a virtual environment to install dependencies into, but this is not required when using the [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md) as that provides the isolation we would get from a virtual environment. To override this, we can add the `--system` flag to our install command.
