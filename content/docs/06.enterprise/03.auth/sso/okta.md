@@ -35,7 +35,7 @@ In the General Settings, give your App integration a name and set your grant typ
 Here, you also set the **Sign-in redirect URIs** and **Sign-out redirect URIs** for your App integration. For this example connecting to Kestra, we set a Sign-in redirect URI as `http://localhost:8080/oauth/callback/okta` and sign-out as `http://localhost:8080/logout`, but you can customize this to your environment.
 Further down the page, you can configure optional **Trusted Origins** and then choose the **Assignments** and the access settings for the App integration. 
 
-We'll set the access to everyone in the organization, but you can set stricter access to only certain selected groups or skip for now. Lastly, we check the Okta-recommended setting to enable immediate access with Federation Broker Mode and hit **Save**.
+We'll set the access to everyone in the organization, but you can set stricter access to only certain selected groups or skip for now. Lastly, we uncheck the setting to enable immediate access with Federation Broker Mode because we will give manual app access for this basic example and hit **Save**.
 
 ![okta-4](/docs/enterprise/sso/okta-4.png)
 
@@ -84,3 +84,11 @@ After copying your Client Id and Client Secret, switch from the **General** tab 
 - Replace `clientId` and `clientSecret` with the values from the Okta App integration copied previously.
 - Replace `issuer` with your issuer URL from Application's sign on settings from before.
 - Restart Kestra to apply the changes and log in.
+
+On restart, you will now see Okta as an available login method.
+
+![okta-9](/docs/enterprise/sso/okta-9.png)
+
+After logging in with the created user, navigate to the **Administration > IAM** tab, and you can see un the **Users** tab that the user can sign in with basic authentication as well as Okta.
+
+![okta-10](/docs/enterprise/sso/okta-10.png)
