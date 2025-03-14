@@ -1724,6 +1724,10 @@ Example:
 
 ```yaml
 tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+  
   - id: fileSize
     type: io.kestra.plugin.core.log.Log
     message: "The file size is {{ fileSize(output.download.uri) }}"
@@ -1735,6 +1739,10 @@ The `fileExists` function returns true if the file is present at the given uri l
 
 ```yaml
 tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
   - id: fileExists
     type: io.kestra.plugin.core.log.Log
     message: "The file exists: {{ fileExists(output.download.uri) }}"
@@ -1746,6 +1754,10 @@ The `fileEmpty` function returns true if the file present at the given uri locat
 
 ```yaml
 tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
   - id: fileEmpty
     type: io.kestra.plugin.core.log.Log
     message: "Is the file empty: {{ fileEmpty(output.download.uri) }}"
