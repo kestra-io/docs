@@ -73,15 +73,16 @@ As with each release, there are more UI and UX enhancements:
 
 ## Other Features and Improvements
 
-- LDAP - https://github.com/kestra-io/kestra-ee/issues/687
-- Audit log shipper + Splunk LogShipper
-- Improvements to Queues 
-- DevContainer mention - https://github.com/kestra-io/kestra/pull/7507
-- pip package to read ION - https://github.com/kestra-io/libs/pull/16 (documentation already done by AJ)
-- Ansible outputs   
-- Many changes on the website: after nuxt 2 to 3 migration it's much faster, new plugin page
-- Tons of v2 properties bug fixes 
-- Inject taskrun and execution states in context (accessible via Pebble) - https://github.com/kestra-io/kestra/issues/7155
+- New LDAP integration. It provides streamlined authentication and user management for enterprise environments. NEED DOC LINK
+- New Log Shippers. Including Splunk, AWS S3, Google Cloud Storage, Azure Blob. This release also introduce AuditLogs Log Shipper allowing to export records for all activities performed in your Kestra instance by users and service accounts.
+- Improvements of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
+- [DevContainer support](https://github.com/kestra-io/kestra/pull/7507) simplifies developer onboarding with ready-to-use development environments. NEED DOC LINK ?
+- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. NEED DOC LINK (doc already done by AJ?)
+- Improvements Ansible outputs integration allows seamless connection between Ansible playbooks and Kestra workflows. NEED DOC/EXAMPLE LINK
+- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
+- Comprehensive bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows.
+- Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. NEED DOC
+
 
 ## Plugin enhancements
 
