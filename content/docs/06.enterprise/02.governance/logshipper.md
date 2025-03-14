@@ -15,7 +15,7 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization queries logs and automatically batches them into optimal chunks. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers reliable, consistent log batches to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
 
 ## Log Shipper properties
 
@@ -26,6 +26,7 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
 - `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
 - `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
+- `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
 
 ## How log shipper works
 
@@ -104,6 +105,7 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: LogShipper-local-demo
+    delete: false
     namespace: company.team
     logExporters:
       - id: file
@@ -137,6 +139,7 @@ tasks:
     type: io.kestra.plugin.ee.core.log.LogShipper
     logLevelFilter: INFO
     lookbackPeriod: P1D
+    delete: false
     logExporters:
       - id: DatadogLogExporter
         type: io.kestra.plugin.ee.datadog.LogExporter
@@ -167,6 +170,7 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: log_shipper_aws_cloudwatch_state
+    delete: false
     logExporters:
       - id: aws_cloudwatch
         type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
@@ -200,6 +204,7 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: googleOperationalSuite
         type: io.kestra.plugin.ee.gcp.operationalsuite.LogExporter
@@ -225,6 +230,7 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: azureMonitor
         type: io.kestra.plugin.ee.azure.LogExporter
@@ -255,6 +261,7 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: elasticsearch
         type: io.kestra.plugin.elasticsearch.LogExporter
@@ -286,11 +293,68 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: newRelic
         type: io.kestra.plugin.ee.newrelic.LogExporter
         basePath: https://log-api.newrelic.com
         apiKey: "{{ secret('NEWRELIC_API_KEY') }}"
+```
+
+### Splunk
+
+This example exports logs to [Splunk](https://www.splunk.com/). The following example flow triggers a daily batch and export to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html).
+
+```yaml
+id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+  tasks:
+    - id: log_export
+      type: io.kestra.plugin.ee.core.log.LogShipper
+      logLevelFilter: INFO
+      lookbackPeriod: P1D
+      offsetKey: logShipperOffset
+      delete: false
+      logExporters:
+        - id: SplunkLogExporter
+          type: io.kestra.plugin.ee.splunk.LogExporter
+          host: https://example.splunkcloud.com:8088
+          token: "{{ secret('SPLUNK_API_KEY') }}"
+```
+
+### OpenSearch
+
+This example exports logs to [OpenSearch](https://opensearch.org/) database. The following example flow triggers a daily batch and export to [OpenSearch Observability platform](https://opensearch.org/platform/observability/index.html).
+
+```yaml
+id: log_shipper
+namespace: system
+                
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: logSync
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
+    logExporters:
+      - id: OpensearchLogExporter
+        type: io.kestra.plugin.ee.opensearch.LogExporter
+        connection:
+          hosts:
+            - "http://localhost:9200/"
+        indexName: "logs"
 ```
 
 ### OpenTelemetry
@@ -312,10 +376,94 @@ tasks:
     logLevelFilter: INFO
     lookbackPeriod: P1D
     offsetKey: logShipperOffset
+    delete: false
     logExporters:
       - id: openTelemetry
         type: io.kestra.plugin.ee.opentelemetry.LogExporter
         otlpEndpoint: http://otel-collector:4318/v1/logs
         authorizationHeaderName: Authorization
         authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
+```
+
+## Audit Log Shipper
+
+To send [Audit Logs](06.audit-logs.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.
+
+The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except for the `resources` property replaces the `logLevelFilter` property.
+- `logExporters` - This property is required, and it specifies the plaform where the audit logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
+- `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
+- `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
+- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
+- `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
+
+The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
+
+```yaml
+id: Audit-logShipper
+namespace: system
+
+tasks:
+  - id: shipLogs
+    type: io.kestra.plugin.ee.core.log.AuditLogShipper
+    resources:
+      - FLOW
+      - EXECUTION
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    logExporters:
+      - id: file
+        type: io.kestra.plugin.ee.core.log.FileLogExporter
+
+      - id: awsCloudWatch
+        type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+        region: us-east-1
+        logGroupName: kestra
+        logStreamName: production
+
+      - id: googleOperationalSuite
+        type: io.kestra.plugin.ee.gcp.operationalsuite.LogExporter
+        projectId: my-gcp-project
+
+      - id: azureMonitor
+        type: io.kestra.plugin.ee.azure.monitor.LogExporter
+        endpoint: https://endpoint-host.ingest.monitor.azure.com
+        tenantId: "{{ secret('AZURE_TENANT_ID') }}"
+        clientId: "{{ secret('AZURE_CLIENT_ID') }}"
+        clientSecret: "{{ secret('AZURE_CLIENT_SECRET') }}"
+        ruleId: dcr-69f0b123041d4d6e9f2bf72aad0b62cf
+        streamName: kestraLogs
+
+      - id: datadog
+        type: io.kestra.plugin.ee.datadog.LogExporter
+        basePath: https://http-intake.logs.datadoghq.eu
+        apiKey: "{{ secret('DATADOG_API_KEY') }}"
+
+      - id: elasticsearch
+        type: io.kestra.plugin.elasticsearch.LogExporter
+        indexName: kestra-logs
+        connection:
+          basicAuth:
+            password: "{{ secret('ES_PASSWORD') }}"
+            username: kestra_user
+          hosts:
+            - https://elastic.example.com:9200
+
+      - id: newRelic
+        type: io.kestra.plugin.ee.newrelic.LogExporter
+        basePath: https://log-api.newrelic.com
+        apiKey: "{{ secret('NEWRELIC_API_KEY') }}"
+
+      - id: openTelemetry
+        type: io.kestra.plugin.ee.opentelemetry.LogExporter
+        otlpEndpoint: http://otel-collector:4318/v1/logs
+        authorizationHeaderName: Authorization
+        authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
+
+triggers:
+  - id: dailySchedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 0 * * *"
+    disabled: true
 ```
