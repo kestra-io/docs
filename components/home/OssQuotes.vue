@@ -3,7 +3,7 @@
         <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
         <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
         <div class="oss-quotes" ref="wrapper">
-            <template v-for="quote, index in quotes" :key="quote.text">
+            <template v-for="quote, index in randomizedQuotes" :key="quote.text">
                 <div class="quote-separator" v-if="index > 0"/>
                 <div class="quote" >
                     <quote class="quote-text">“{{ quote.text }}“</quote>
@@ -15,11 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import quotes from '@/data/oss-quotes.js'
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
 
 const wrapper = ref<HTMLElement | null>(null)
+
+const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes', () => {
+    return import('@/data/oss-quotes.json').then((quotes: any) => quotes.default.sort(() => Math.random() - 0.5))
+})
 
 const scrollLeft = () => {
     if(wrapper.value){
@@ -55,12 +58,14 @@ const scrollRight = () => {
             }
             .quote-author {
                 font-size: 1rem;
-                text-align: center;
+                text-align: right;
                 b {
-                    margin-right: .5rem
+                    white-space: nowrap;
+                    display: block;
                 }
                 span {
-                    color: #666;
+                    color: #646465;
+                    white-space: nowrap;
                 }
             }
         }

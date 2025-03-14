@@ -13,6 +13,7 @@
             <HomeOss/>
         </div>
         <HomeOssQuotes/>
+        <HomeFeatures/>
         <NuxtLazyHydrate when-visible>
             <HomeUI/>
         </NuxtLazyHydrate>

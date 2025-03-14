@@ -85,7 +85,7 @@
         font-size: 2rem;
         font-weight: 600;
         margin-bottom: 2rem;
-        span{
+        span.gradient{
             display: block;
             // font color gradient from #8C4BFF to #FF6A00
             background: linear-gradient(90deg, #8C4BFF 0%, #6fb0ff 100%) no-repeat center;
