@@ -1711,9 +1711,44 @@ Example:
 
 ```yaml
 tasks:
-  - id: uuid
+  - id: port
     type: io.kestra.plugin.core.log.Log
     message: "Generated Port: {{ randomPort() }}"
+```
+
+### fileSize
+
+The `fileSize` function returns the size of the file present at the given uri location.
+
+Example:
+
+```yaml
+tasks:
+  - id: fileSize
+    type: io.kestra.plugin.core.log.Log
+    message: "The file size is {{ fileSize(output.download.uri) }}"
+```
+
+### fileExists
+
+The `fileExists` function returns true if the file is present at the given uri location.
+
+```yaml
+tasks:
+  - id: fileExists
+    type: io.kestra.plugin.core.log.Log
+    message: "The file exists: {{ fileExists(output.download.uri) }}"
+```
+
+### fileEmpty
+
+The `fileEmpty` function returns true if the file present at the given uri location is empty.
+
+```yaml
+tasks:
+  - id: fileEmpty
+    type: io.kestra.plugin.core.log.Log
+    message: "Is the file empty: {{ fileEmpty(output.download.uri) }}"
 ```
 
 ---
