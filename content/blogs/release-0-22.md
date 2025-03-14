@@ -16,7 +16,7 @@ The table below highlights the key features of this release.
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
 |  Plugin Versioning       | TBD                 | Enterprise Edition |
-| External Secrets Manager        | TBD                 | Enterprise Edition |
+| Read-Only External Secrets Manager         | TBD                 | Enterprise Edition |
 | `afterExecution` property       | TBD                 | All Edition |
 | Sharing of Namespace Files and KV Store across namespaces       | TBD                 | All Edition |
 
@@ -42,18 +42,25 @@ You can access Plugin Versioning through the new dedicated page under Administra
 
 Plugins are now stored in internal storage and automatically synchronized across all workers, ensuring consistency throughout your environment. For organizations with custom plugins, we've added support for customer-specific artifact registries, allowing you to manage proprietary automation components with the same robust tools used for standard plugins.
 
+![](SCREENSHOT 1)
 
-### External Secrets Manager 
+![](SCREENSHOT 2)
 
-- New read-only mode for external secrets managers
-- Currently implemented for Vault with path prefix support
-- Secrets remain managed in external system
-- UI shows lock icon for read-only secrets
-- Cannot edit/create/delete read-only secrets through Kestra
-- Known limitations:
-    - UI caching issues
-    - Pagination needed for large secret sets
-    - Tenant-level implementation pending
+### Read-Only External Secrets Manager 
+
+Managing secrets securely across your automation environment is critical for maintaining compliance and security standards. Kestra 0.22 introduces External Secret Manager capabilities, enabling seamless integration with your established security infrastructure.
+
+The new read-only mode for external secrets managers allows you to reference secrets that remain managed in your external system. The integration currently supports HashiCorp Vault with path prefix capabilities, enabling you to precisely control which secrets are accessible to your workflows.
+
+TO CHECK: WHAT ABOUT GCP, AWS, Azure?
+
+The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
+
+MORE DETAILS TBD
+
+![](SCREENSHOT 2)
+
+
 
 ### `afterExecution` property
 
