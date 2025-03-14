@@ -909,7 +909,7 @@ You can change the log behavior in Kestra by adjusting the `logger` configuratio
 ```yaml
 logger:
   levels:
-    io.kestra.runner: TRACE
+    io.kestra.core.runners: TRACE
     org.elasticsearch.client: TRACE
     org.elasticsearch.client.sniffer: TRACE
     org.apache.kafka: DEBUG
