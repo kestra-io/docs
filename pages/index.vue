@@ -11,10 +11,11 @@
         </div>
         <div style="background-color: white; padding: 2rem;">
             <HomeOss/>
-            <NuxtLazyHydrate when-visible>
-                <HomeUI/>
-            </NuxtLazyHydrate>
         </div>
+        <HomeOssQuotes/>
+        <NuxtLazyHydrate when-visible>
+            <HomeUI/>
+        </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <HomeHow/>
         </NuxtLazyHydrate>

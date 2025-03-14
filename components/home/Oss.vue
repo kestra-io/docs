@@ -14,11 +14,18 @@
                 <p>{{ feature.description }}</p>
             </div>
         </div>
+
+        <div class="lead-indicators">
+            <div v-for="{title, value} of leadIndicators" :key="title" class="lead-indicator">
+                <h3>{{ value }}</h3>
+                <p>{{ title }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import {markRaw} from "vue";
+    import {markRaw, computed} from "vue";
     import XmlIcon from "vue-material-design-icons/Xml.vue";
     import WebhookIcon from "vue-material-design-icons/Webhook.vue";
     import LockOpenAlertOutlineIcon from "vue-material-design-icons/LockOpenAlertOutline.vue";
@@ -40,9 +47,35 @@
             icon: markRaw(LockOpenAlertOutlineIcon),
         }
     ]
+
+    // fetch the number of contributors from the GitHub API
+    const {data:numberOfContributors} = await useAsyncData('githubContrib', () => {
+        return fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
+            .then(res => res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1])
+
+    });
+
+    // fetch the number of stargazers from the GitHub API
+    const {data:numberOfStargazers} = await useAsyncData('githubStargazers', () => {
+        return $fetch("https://api.github.com/repos/kestra-io/kestra")
+            .then((data: any) => data.stargazers_count)
+    });
+
+    const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
+        notation: 'compact',
+        maximumFractionDigits: 1
+    }).format(numberOfStargazers.value).toLowerCase());
+
+    const leadIndicators = computed(() => [
+        {title: "Contributors", value: numberOfContributors.value},
+        {title: "GitHub Stars", value: numberOfStargazersFormatted.value},
+        {title: "Kestra Deployments", value: "70k"},
+        {title: "Workflows Executed", value: "300m+"},
+    ])
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/styles/_variable.scss";
     .container{
         padding: 2rem;
         text-align: center;
@@ -64,17 +97,24 @@
 
     .features{
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, minmax(350px, 1fr));
+            padding: 2rem 0;
+        }
         margin-top: 2rem;
         background-color: #f7f7f8;
-        padding: 2rem 0;
         border-radius: 10px;
         border: 1px solid #e1e1e1;
     }
 
     .feature{
-        padding: 1rem 2rem 0;
-        border-right: 1px solid #e1e1e1;
+        padding: 2rem;
+        border-bottom: 1px solid #e1e1e1;
+        @include media-breakpoint-up(xl) {
+            padding: 1rem 2rem 0;
+            border: none;
+            border-right: 1px solid #e1e1e1;
+        }
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -86,6 +126,45 @@
         }
         h3{
             white-space: nowrap;
+        }
+        &:last-child{
+            border: none;
+        }
+    }
+
+    .lead-indicators{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        margin-top: 2rem;
+        row-gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    .lead-indicator{
+        padding: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+        h3{
+            font-size: 3rem!important;
+            font-weight: 700;
+            margin: 0;
+            line-height: 3rem;
+        }
+        p{
+            font-size: 1rem;
+            line-height: 1rem;
+            color: #9C9C9C
+        }
+        &:nth-child(odd){
+            border-right: 1px solid #e1e1e1;
+        }
+        @include media-breakpoint-up(xl) {
+            border-right: 1px solid #e1e1e1;
         }
         &:last-child{
             border-right: none;

@@ -3,7 +3,12 @@
         <div class="center-text">
             Trusted by Industry Leaders
         </div>
-        <div class="logo-box" v-for="(img, index) in shuffledCompanies?.slice(0, 20)" :key="index">
+        <div
+            v-for="(img, index) in shuffledCompanies?.slice(0, 20)"
+            :key="img.name"
+            class="logo-box"
+            :class="{'hide-small': index > 17}"
+        >
             <img :src="img.url" :alt="img.name" />
         </div>
     </div>
@@ -31,12 +36,16 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/styles/_variable.scss";
 .logo-wrapper {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    @include media-breakpoint-up(xl) {
+        grid-template-columns: repeat(6, 1fr);
+        width: 1146px;
+    }
     gap: 1px;
     background: radial-gradient(#E1E1E1 0%, #E1E1E1 30%, #E1E1E101 80%, #E1E1E100 100%) no-repeat center;
-    width: 1146px;
     margin: 0 auto;
 }
 
@@ -46,6 +55,12 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     justify-content: center;
     align-items: center;
     height: 90px;
+    &.hide-small{
+        display: none;
+        @include media-breakpoint-up(xl) {
+            display: flex;
+        }
+    }
     img{
         max-width: 70%;
         max-height: 50%;
@@ -53,8 +68,12 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
 }
 
 .center-text{
-    grid-column: 3 / 5;
-    grid-row: 2 / 4;
+    grid-column: 1 / 4;
+    grid-row: 4 / 6;
+    @include media-breakpoint-up(xl) {
+        grid-column: 3 / 5;
+        grid-row: 2 / 4;
+    }
     text-align: center;
     padding: 1rem;
     background-color: #FCFCFD;
@@ -64,6 +83,6 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     align-items: center;
     font-size: 2rem;
     line-height: 2.5rem;
-    padding: 0 3rem;
+    padding: 2rem 3rem;
 }
 </style>
