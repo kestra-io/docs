@@ -2,7 +2,7 @@
     <div class="value-wrapper">
         <div class="card-block">
             <h3><span>Accelerate</span><br/> Time to Value</h3>
-            <p>Deliver in days what took once weeks</p>
+            <p class="description">Deliver in days what took once weeks</p>
             <div class="kpi-wrapper">
                 <div class="kpi" v-for="value in valueSet" :key="value.subject">
                     <span class="subject">{{ value.subject }}</span>
@@ -13,7 +13,7 @@
         </div>
         <div class="card-block">
             <img src="@/assets/images/homepage/any-spider.svg" alt="Any orchestration" class="spider" />
-            <h3><span>Any Orchestration</span><br/> use Case</h3>
+            <h3><span>Any Orchestration</span><br/> Use Case</h3>
         </div>
     </div>
 </template>
@@ -67,6 +67,9 @@ const valueSet = [
                 -webkit-text-fill-color: transparent;
             }
         }
+        .description{
+            margin-bottom: 3rem;
+        }
     }
     .spider {
         width: 100%;
@@ -84,14 +87,13 @@ const valueSet = [
         }
         position: relative;
         z-index: 1;
-        margin-top: 2rem;
         .kpi{
             padding: 1rem;
-            border-radius: 1rem;
+            border-radius: .5rem;
             border: 1px solid transparent;
             text-align: left;
             position: relative;
-            background-color: #080808EE;
+            background-color: rgb(26, 28, 35);
             background-clip: padding-box;
             &:before {
                 content: '';
