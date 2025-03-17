@@ -131,6 +131,7 @@ blockquote.blockquote {
     background-color: $purple-40;
     color: $white;
     position: relative;
+    background-clip: padding-box;
 
     &:before {
         content: '';
@@ -139,7 +140,7 @@ blockquote.blockquote {
         z-index: -1;
         border-radius: inherit;
         background: linear-gradient(to bottom, $purple-42, $purple-43);
-      }
+    }
 
     &:hover {
         background-color: $purple-41;
