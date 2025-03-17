@@ -1,7 +1,4 @@
 <template>
-    <svg>
-
-    </svg>
     <div class="card-block">
         <div v-for="feat, index of features" class="block-content">
             <div class="clipper">
