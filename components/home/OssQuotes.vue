@@ -6,7 +6,7 @@
             <template v-for="quote, index in randomizedQuotes" :key="quote.text">
                 <div class="quote-separator" v-if="index > 0"/>
                 <div class="quote" >
-                    <quote class="quote-text">“{{ quote.text }}“</quote>
+                    <q class="quote-text">{{ quote.text }}</q>
                     <div class="quote-author"><b>{{ quote.author.name }}</b><span>{{ quote.author.title }}</span></div>
                 </div>
             </template>
