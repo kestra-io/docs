@@ -2,7 +2,7 @@
     <div class="value-wrapper">
         <div class="card-block">
             <h3><span>Accelerate</span><br/> Time to Value</h3>
-            <p class="description">Deliver in days what took once weeks</p>
+            <p class="description">Deliver in days what once took weeks</p>
             <div class="kpi-wrapper">
                 <div class="kpi" v-for="value in valueSet" :key="value.subject">
                     <span class="subject">{{ value.subject }}</span>
@@ -34,7 +34,7 @@ const valueSet = [
     {
         subject: "Profitability",
         description: "Reduction in Operational Cost",
-        kpi: "100%"
+        kpi: "75%"
     },
     {
         subject: "Time to Market",
@@ -54,6 +54,12 @@ const valueSet = [
         border-radius: 1rem;
         box-shadow: 0px 12px 24px 8px #00000017;
         padding: 2rem 0 4rem;
+        &:hover{
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, .05) 0%, rgba(255, 255, 255, .05) 100%),
+                linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
+                linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
+        }
         h3 {
             margin: 2rem 0;
             font-size: 2.2rem;
@@ -107,9 +113,6 @@ const valueSet = [
             .subject{
                 display: block;
                 font-size: .7rem;
-                @include media-breakpoint-up(md){
-                    font-size: .9rem;
-                }
                 font-weight: 400;
                 text-transform: uppercase;
                 color: #8B8B8D;
@@ -117,10 +120,7 @@ const valueSet = [
             .kpi-number{
                 color: #817CFF;
                 font-size: 2.5rem;
-                @include media-breakpoint-up(md){
-                    font-size: 3.5rem;
-                }
-                font-weight: 700;
+                font-weight: 800;
                 margin: .5rem 0;
             }
             .kpi-description{
