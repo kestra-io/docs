@@ -14,6 +14,7 @@
         </div>
         <HomeOssQuotes/>
         <HomeFeatures/>
+        <HomeEveryDev/>
     </div>
 </template>
 
