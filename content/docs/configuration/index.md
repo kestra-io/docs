@@ -340,6 +340,11 @@ kestra:
       retention: 7d
 ```
 
+The properties are the following:
+- `initialDelay`: specifies the delay after the startup of the application where the job cleaner will start.
+- `fixedDelay`: specifies the delay of the initial delay between each clean.
+- `retention`: specifies the oldest entry to clean on the queue (i.e., a `7d` specification will keep 1 week of queue data as backup against a crash)
+
 ### Protecting against too big messages
 
 ::alert{type="info"}
