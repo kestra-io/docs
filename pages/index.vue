@@ -14,30 +14,6 @@
         </div>
         <HomeOssQuotes/>
         <HomeFeatures/>
-        <NuxtLazyHydrate when-visible>
-            <HomeUI/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeHow/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomePlugins/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeCompanyStories />
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeTestimonials/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeOpenSource/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <LayoutBlogs title="Blog"/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <LayoutNewsletter/>
-        </NuxtLazyHydrate>
     </div>
 </template>
 
