@@ -16,6 +16,7 @@
             </button>
         </div>
         <HomeFeaturesBlock/>
+        <HomeFeaturesValue />
     </div>
 </template>
 
