@@ -102,17 +102,20 @@ const features = [
         @include media-breakpoint-up(lg){
             grid-column: 2 / 3;
             grid-row: 1 / 3;
+            margin: 0;
         }
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        height: 280px;
+        margin: 5rem 0;
 
         .kestra-logo{
             position: absolute;
             width: 50px;
-            top: 39%;
+            @include media-breakpoint-up(lg){
+                top: 39%;
+            }
             left: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.2s;
@@ -142,9 +145,15 @@ const features = [
             position: absolute;
             width: 250px;
             height: 250px;
-            top: 50%;
-            left: 50%;
+            top: 190px;
+            left: 49.5%;
             transform: translate(-54%, -55%);
+            @include media-breakpoint-up(lg){
+                top:52%;
+            }
+            @include media-breakpoint-up(xxl){
+                top:50%;
+            }
         }
         .arrow {
             position: relative;
@@ -184,7 +193,7 @@ const features = [
                 position: absolute;
                 z-index: 1;
                 left: 50%;
-                top: 50%;
+                top: 52%;
                 // this polygon makes the image appear like they are
                 // coming out of the box
                 clip-path: polygon(-212% -128%, 201% -135%, 1.00% -8.00%);
