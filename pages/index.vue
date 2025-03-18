@@ -11,6 +11,7 @@
         <HomeOssQuotes/>
         <HomeFeatures/>
         <HomeEveryDev/>
+        <HomeExperience/>
     </div>
 </template>
 
