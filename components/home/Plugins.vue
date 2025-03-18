@@ -50,6 +50,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         margin: 1rem;
+        gap: 0;
         @include media-breakpoint-up(lg){
             margin: 2rem;
             max-width: 500px;
@@ -68,6 +69,8 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             }
             &:nth-child(2n){
                 background-color: #1A1C24;
+                // shadow inset
+                box-shadow: inset 1px 1px 1px #000;
             }
         }
         img{

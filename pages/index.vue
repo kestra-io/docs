@@ -13,6 +13,7 @@
         <HomeEveryDev/>
         <HomeExperience/>
         <HomePlugins/>
+        <HomeBlueprints/>
     </div>
 </template>
 
