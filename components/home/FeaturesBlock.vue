@@ -3,7 +3,7 @@
         <div v-for="feat, index of features" class="block-content">
             <div class="clipper">
                 <div class="img-block">
-                    <img :src="feat.icon" alt="Feature Icon"/>
+                    <NuxtImg :src="feat.icon" :width="feat.width" alt="Feature Icon"/>
                 </div>
             </div>
             <div class="arrow-box">
@@ -38,34 +38,33 @@
 </template>
 
 <script setup lang="ts">
-import APIIcon from "/landing/home/features-api.svg";
-import CloudIcon from "/landing/home/features-cloud.svg";
-import CogIcon from "/landing/home/features-cog.svg";
-import LogosIcon from "/landing/home/features-Logos.svg";
-
 const features = [
     {
         name: "Deploy Anywhere",
         description: "Run Kestra anywhere—on-prem, hybrid, or any cloud, no dependencies, no installation headaches.",
-        icon: CloudIcon,
+        icon: "/landing/home/features-cloud.svg",
         color: "#3991FF",
+        width: 69,
     },
     {
         name: "Connect to Any API or Service",
         description: "Automating everything from data pipelines, microservices, business processes to infrastructure provisioning.",
-        icon: APIIcon,
+        icon: "/landing/home/features-api.svg",
         color: "#E58238",
+        width: 50,
     },
     {
         name: "Write Business Logic in Any Language",
         description: "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language.",
-        icon: LogosIcon,
+        icon: "/landing/home/features-cog.svg",
         color: "#FCE07C",
+        width: 60,
     },
     {
         name: "Build Everything As Code & From the UI",
         description: "Empower every team members to collaborate from a single tool—code for developers, UI for everyone else, all in sync.",
-        icon: CogIcon,
+        icon: "/landing/home/features-logos.svg",
+        width: 123,
         color: "#21CE9C",
     },
 ]
