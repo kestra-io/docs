@@ -10,22 +10,41 @@
         </div>
         <div class="container">
             <div class="left-card card-block">
+                <img src="@/assets/images/homepage/every-software.png" alt="developers" class="img-natural"/>
+                <img src="@/assets/images/homepage/every-software-hover.png" alt="developers" class="img-hover"/>
                 <h3>Software Engineers</h3>
-                <p class="description">Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.</p>
+                <p class="description">
+                    Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
+                    <a href="#" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></a>
+                </p>
             </div>
 
             <div class="right-card card-block">
+                <img src="@/assets/images/homepage/every-platform.png" alt="developers" class="img-natural"/>
+                <img src="@/assets/images/homepage/every-platform-hover.png" alt="developers" class="img-hover"/>
                 <h3>Platform Engineers</h3>
-                <p class="description">Automate infrastructure tasks, manage dependencies, and ensure operational consistency.</p>
+                <p class="description">
+                    Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
+                    <a href="#" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></a>
+                </p>
             </div>
 
             <div class="bottom-card card-block">
+                <img src="@/assets/images/homepage/every-data.png" alt="developers" class="img-natural"/>
+                <img src="@/assets/images/homepage/every-data-hover.png" alt="developers" class="img-hover"/>
                 <h3>Data Engineers</h3>
-                <p class="description">Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.</p>
+                <p class="description">
+                    Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
+                    <a href="#" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></a>
+                </p>
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
+</script>
 
 
 <style lang="scss" scoped>
@@ -40,7 +59,8 @@
         color: white;
         .container{
             position: relative;
-            height: 300px;
+            height: 400px;
+            z-index: 1;
         }
     }
 
@@ -85,7 +105,7 @@
             position: absolute;
             top: 50%;
             right: 50%;
-            width: 150px;
+            width: 110px;
             transform: translate(-150px, 30px);
             height: 1px;
             background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to right, #190930 0%, #658AF9 100%);
@@ -96,7 +116,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 150px;
+            width: 110px;
             transform: translate(150px, 30px);
             height: 1px;
             background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to left, #190930 0%, #658AF9 100%);
@@ -115,20 +135,46 @@
         }
     }
 
+    @property --ks-card-border-color-start {
+        syntax: '<color>';
+        initial-value: #6B66D5;
+        inherits: false;
+    }
+
+    @property --ks-card-border-color-end {
+        syntax: '<color>';
+        initial-value: #2D344E;
+        inherits: false;
+    }
+
+    @property --ks-card-border-color-start-hover {
+        syntax: '<color>';
+        initial-value: #9C90D300;
+        inherits: false;
+    }
+
+    @property --ks-card-border-color-end-hover {
+        syntax: '<color>';
+        initial-value: #AC82D600;
+        inherits: false;
+    }
+
     .card-block{
         position: absolute;
-        bottom: 400px;
+        bottom: 450px;
         border-radius: 2rem;
         width: 300px;
-        padding: 2rem;
+        padding: 1rem;
+        padding-top: 1rem;
         text-align: center;
         background-color: rgb(26, 28, 35);
         background-image: linear-gradient(to bottom, #21242E99 0%, #1A1C2499 100%),
             linear-gradient(to right,#1A1C24 0%, #373a44 80%, #1A1C24 100%);
+        background-size: cover, cover;
         background-clip: padding-box;
         h3{
             font-size: 1.2rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: .5rem;
         }
         .description{
@@ -136,7 +182,27 @@
             font-size: .8rem;
             margin-top: .5em;
             margin-bottom: 0;
+            overflow: hidden;
         }
+
+        .main-link{
+            display: block;
+            white-space: nowrap;
+            margin-top: 1rem;
+            transform: translateX(-350px);
+            transition: all 0.3s;
+            opacity: 0;
+            font-size: 1rem;
+            color: #9C8FFF;
+        }
+
+        &:hover{
+            .main-link{
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         &:before {
             content: '';
             position: absolute;
@@ -144,17 +210,47 @@
             top: 0; right: 0; bottom: 0; left: 0;
             z-index: -1;
             margin: -1px;
-            background-image: linear-gradient(to bottom, #9C90D350 0%, #AC82D6 100%);
+            transition: --ks-card-border-color-start 0.3s, --ks-card-border-color-end 0.3s, --ks-card-border-color-end-hover 0.3s, --ks-card-border-color-start-hover 0.3s;
+            background-image:
+                linear-gradient(to left, var(--ks-card-border-color-start) -2.35%, var(--ks-card-border-color-end) 80.15%),
+                linear-gradient(to bottom, var(--ks-card-border-color-start-hover) 0%, var(--ks-card-border-color-end-hover) 100%);
+            background-size: cover;
+            background-position: center;
+        }
+        &:hover{
+            &:before{
+                // background-image: linear-gradient(to bottom, #9C90D350 0%, #AC82D6 100%);
+                --ks-card-border-color-start: #6B66D500;
+                --ks-card-border-color-end: #2D344E00;
+                --ks-card-border-color-start-hover: #9C90D350;
+                --ks-card-border-color-end-hover: #AC82D6;
+            }
+        }
+        .img-natural, .img-hover{
+            width: 60%;
+            margin: auto;
+            margin-bottom: .5rem;
+        }
+        .img-hover{
+            display: none;
+        }
+        &:hover{
+            .img-natural{
+                display: none;
+            }
+            .img-hover{
+                display: block;
+            }
         }
     }
     .left-card{
-        left: 0;
+        left: 1rem;
     }
     .right-card{
-        right: 0;
+        right: 1rem;
     }
     .bottom-card{
-        left: 39%;
-        bottom: 30px;
+        left: 37%;
+        bottom: 40px;
     }
 </style>
