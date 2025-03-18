@@ -60,7 +60,9 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         color: white;
         .container{
             position: relative;
-            height: 400px;
+            @include media-breakpoint-up(lg){
+                height: 400px;
+            }
             z-index: 1;
         }
         .center-block {

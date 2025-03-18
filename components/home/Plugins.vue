@@ -1,17 +1,15 @@
 <template>
     <div class="container">
-
         <div class="card-block">
-            <div class="plugin-logos-grid">
-                <div v-for="plugin in pluginLogos" :key="plugin.name">
-                    <img :src="plugin.logo" :alt="plugin.name" />
-                </div>
-            </div>
-
             <div class="plugin-text">
                 <h2 class="text-white"><span>600+</span> Plugins<wbr/> That Integrate With<wbr/> Your <span>Stack</span></h2>
                 <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
                 <a href="#" class="btn btn-primary">See All Plugins</a>
+            </div>
+            <div class="plugin-logos-grid">
+                <div v-for="plugin in pluginLogos" :key="plugin.name">
+                    <img :src="plugin.logo" :alt="plugin.name" />
+                </div>
             </div>
         </div>
     </div>
@@ -38,25 +36,39 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         border-radius: 1rem;
         box-shadow: 0px 12px 24px 8px #00000017;
         margin-top: 2rem;
-        padding: 2rem 3rem;
-        gap: 1rem;
         border: 1px solid #2C2E4B;
-        height: 500px;
-        display: flex;
         z-index: 1;
+        @include media-breakpoint-up(lg){
+            padding: 2rem 3rem;
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 1rem;
+        }
     }
 
     .plugin-logos-grid{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 3rem;
-        margin: 2rem;
-        width: 500px;
+        margin: 1rem;
+        @include media-breakpoint-up(lg){
+            margin: 2rem;
+            max-width: 500px;
+        }
         justify-content: center;
         align-items: center;
+        > div{
+            padding: 1rem;
+            text-align: center;
+            @include media-breakpoint-up(lg){
+                padding: 1.5rem;
+            }
+            &:nth-child(2n){
+                background-color: #1A1C24;
+            }
+        }
         img{
-            width: 80%;
-            height: auto;
+            width: 70%;
+            height: 70%;
             transition: all 0.2s;
             &:hover{
                 transform: scale(1.1);
@@ -69,7 +81,6 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         text-align: center;
         h2{
             max-width: 350px;
-            text-wrap: pretty;
             margin: 3rem auto;
             color: white;
             font-size: 2.5rem;
@@ -84,13 +95,20 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         }
         p{
             color: #ECEBEF;
-            width: 480px;
             margin: 0 auto;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: .8rem;
+            @include media-breakpoint-up(lg){
+                width: 480px;
+                font-size: 1.2rem;
+            }
         }
         .btn{
             margin: 1rem;
         }
+    }
+
+    .container{
+        margin-bottom: 2rem;
     }
 </style>
