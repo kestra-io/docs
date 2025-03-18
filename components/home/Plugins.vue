@@ -43,6 +43,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         border: 1px solid #2C2E4B;
         height: 500px;
         display: flex;
+        z-index: 1;
     }
 
     .plugin-logos-grid{
