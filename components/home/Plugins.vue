@@ -11,6 +11,7 @@
             <div class="plugin-text">
                 <h2 class="text-white"><span>600+</span> Plugins<wbr/> That Integrate With<wbr/> Your <span>Stack</span></h2>
                 <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
+                <a href="#" class="btn btn-primary">See All Plugins</a>
             </div>
         </div>
     </div>
@@ -64,6 +65,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
 
     .plugin-text{
         flex: 1;
+        text-align: center;
         h2{
             max-width: 350px;
             text-wrap: pretty;
@@ -85,6 +87,9 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             margin: 0 auto;
             text-align: center;
             font-size: 1.2rem;
+        }
+        .btn{
+            margin: 1rem;
         }
     }
 </style>
