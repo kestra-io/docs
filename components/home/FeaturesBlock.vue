@@ -31,17 +31,17 @@
             <p>{{ feat.description }}</p>
         </div>
         <div class="block-center-image">
-            <img src="@/assets/images/homepage/features-cube.svg" alt="Feature Container"/>
-            <img src="@/assets/images/homepage/features-kestra.svg" alt="Kestra Monogram" class="kestra-logo" />
+            <img src="/landing/home/features-cube.svg" alt="Feature Container"/>
+            <img src="/landing/home/features-kestra.svg" alt="Kestra Monogram" class="kestra-logo" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import APIIcon from "@/assets/images/homepage/features-api.svg";
-import CloudIcon from "@/assets/images/homepage/features-cloud.svg";
-import CogIcon from "@/assets/images/homepage/features-cog.svg";
-import LogosIcon from "@/assets/images/homepage/features-Logos.svg";
+import APIIcon from "/landing/home/features-api.svg";
+import CloudIcon from "/landing/home/features-cloud.svg";
+import CogIcon from "/landing/home/features-cog.svg";
+import LogosIcon from "/landing/home/features-Logos.svg";
 
 const features = [
     {
@@ -94,7 +94,7 @@ const features = [
     }
 
     .block-center-image{
-        background: url(@/assets/images/homepage/features-bg.svg) no-repeat center;
+        background: url(/landing/home/features-bg.svg) no-repeat center;
         grid-row: 1 / 2;
         @include media-breakpoint-up(lg){
             grid-column: 2 / 3;

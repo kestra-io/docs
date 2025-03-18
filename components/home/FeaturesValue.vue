@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="card-block">
-            <img src="@/assets/images/homepage/any-spider.svg" alt="Any orchestration" class="spider" />
+            <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
         </div>
     </div>

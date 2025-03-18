@@ -10,8 +10,8 @@
         </div>
         <div class="container">
             <div class="left-card card-block">
-                <img width="117" height="120" src="@/assets/images/homepage/every-software.png" alt="developers" class="img-natural"/>
-                <img width="117" height="120" src="@/assets/images/homepage/every-software-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-software.png" alt="developers" class="img-natural"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-software-hover.png" alt="developers" class="img-hover"/>
                 <h3>Software Engineers</h3>
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
@@ -20,8 +20,8 @@
             </div>
 
             <div class="right-card card-block">
-                <img width="117" height="120" src="@/assets/images/homepage/every-platform.png" alt="developers" class="img-natural"/>
-                <img width="117" height="120" src="@/assets/images/homepage/every-platform-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-platform.png" alt="developers" class="img-natural"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-platform-hover.png" alt="developers" class="img-hover"/>
                 <h3>Platform Engineers</h3>
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
@@ -30,8 +30,8 @@
             </div>
 
             <div class="bottom-card card-block">
-                <img width="117" height="120" src="@/assets/images/homepage/every-data.png" alt="developers" class="img-natural"/>
-                <img width="117" height="120" src="@/assets/images/homepage/every-data-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-data.png" alt="developers" class="img-natural"/>
+                <NuxtImg width="117" height="120" src="/landing/home/every-data-hover.png" alt="developers" class="img-hover"/>
                 <h3>Data Engineers</h3>
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
@@ -50,7 +50,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .wrapper-every-dev {
-        background-image: url(@/assets/images/homepage/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
+        background-image: url(/landing/home/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
         background-blend-mode: luminosity, normal;
         background-repeat: no-repeat, no-repeat;
         background-position: center bottom, center bottom;
