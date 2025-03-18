@@ -1,24 +1,26 @@
 <template>
-    <div class="container">
-        <h2 class="title-block">
-            <span class="gradient">Open Source</span>
-            Workflow Orchestration Platform
-        </h2>
+    <div class="oss-bg">
+        <div class="container">
+            <h2 class="title-block">
+                <span class="gradient">Open Source</span>
+                Workflow Orchestration Platform
+            </h2>
 
-        <a class="btn btn-primary" href="#">Kestra Live Demo</a>
+            <a class="btn btn-primary" href="#">Kestra Live Demo</a>
 
-        <div class="features">
-            <div v-for="feature in features" :key="feature.title" class="feature">
-                <component :is="feature.icon" class="icon"/>
-                <h3>{{ feature.title }}</h3>
-                <p>{{ feature.description }}</p>
+            <div class="features">
+                <div v-for="feature in features" :key="feature.title" class="feature">
+                    <component :is="feature.icon" class="icon"/>
+                    <h3>{{ feature.title }}</h3>
+                    <p>{{ feature.description }}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="lead-indicators">
-            <div v-for="{title, value} of leadIndicators" :key="title" class="lead-indicator">
-                <h3>{{ value }}</h3>
-                <p>{{ title }}</p>
+            <div class="lead-indicators">
+                <div v-for="{title, value} of leadIndicators" :key="title" class="lead-indicator">
+                    <h3>{{ value }}</h3>
+                    <p>{{ title }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -76,6 +78,12 @@
 
 <style lang="scss" scoped>
 @import "../../assets/styles/_variable.scss";
+    .oss-bg{
+        background-color: white;
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+        }
+    }
     .container{
         padding: 2rem;
         text-align: center;
@@ -144,7 +152,10 @@
     }
 
     .lead-indicator{
-        padding: 1rem 2rem;
+        padding: 1rem;
+        @include media-breakpoint-up(md) {
+            padding: 1rem 2rem;
+        }
         display: flex;
         flex-direction: column;
         align-items: center;

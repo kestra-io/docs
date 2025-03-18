@@ -1,15 +1,17 @@
 <template>
-    <div class="logo-wrapper">
-        <div class="center-text">
-            Trusted by Industry Leaders
-        </div>
-        <div
-            v-for="(img, index) in shuffledCompanies?.slice(0, 20)"
-            :key="img.name"
-            class="logo-box"
-            :class="{'hide-small': index > 17}"
-        >
-            <img :src="img.url" :alt="img.name" />
+    <div class="logos-bg">
+        <div class="logo-wrapper">
+            <div class="center-text">
+                Trusted by Industry Leaders
+            </div>
+            <div
+                v-for="(img, index) in shuffledCompanies?.slice(0, 20)"
+                :key="img.name"
+                class="logo-box"
+                :class="{'hide-small': index > 17}"
+            >
+                <img :src="img.url" :alt="img.name" />
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +39,13 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
 
 <style lang="scss" scoped>
 @import "../../assets/styles/_variable.scss";
+.logos-bg {
+    background-color: #FCFCFD;
+    @include media-breakpoint-up(md) {
+        padding: 2rem;
+    }
+}
+
 .logo-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

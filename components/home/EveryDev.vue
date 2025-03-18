@@ -107,6 +107,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         .line-top{
             content: '';
             position: absolute;
+            z-index: -1;
             top: 70px;
             transform: translateX(-50%);
             width: 1px;
@@ -254,7 +255,10 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         }
         .img-natural, .img-hover{
             float: left;
+            width: 80px;
+            height: 83px;
             @include media-breakpoint-up(lg){
+                width: auto;
                 float: none;
                 margin: auto;
                 margin-bottom: .5rem;

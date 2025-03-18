@@ -6,12 +6,8 @@
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
         <HomeHeader/>
-        <div style="background-color: #FCFCFD; padding: 2rem;">
-            <HomeLogosTable/>
-        </div>
-        <div style="background-color: white; padding: 2rem;">
-            <HomeOss/>
-        </div>
+        <HomeLogosTable/>
+        <HomeOss/>
         <HomeOssQuotes/>
         <HomeFeatures/>
         <HomeEveryDev/>
