@@ -153,7 +153,7 @@
 
     .lead-indicator{
         padding: 1rem;
-        @include media-breakpoint-up(md) {
+        @include media-breakpoint-up(sm) {
             padding: 1rem 2rem;
         }
         display: flex;
