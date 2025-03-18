@@ -10,8 +10,8 @@
         </div>
         <div class="container">
             <div class="left-card card-block">
-                <img src="@/assets/images/homepage/every-software.png" alt="developers" class="img-natural"/>
-                <img src="@/assets/images/homepage/every-software-hover.png" alt="developers" class="img-hover"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-software.png" alt="developers" class="img-natural"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-software-hover.png" alt="developers" class="img-hover"/>
                 <h3>Software Engineers</h3>
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
@@ -20,8 +20,8 @@
             </div>
 
             <div class="right-card card-block">
-                <img src="@/assets/images/homepage/every-platform.png" alt="developers" class="img-natural"/>
-                <img src="@/assets/images/homepage/every-platform-hover.png" alt="developers" class="img-hover"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-platform.png" alt="developers" class="img-natural"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-platform-hover.png" alt="developers" class="img-hover"/>
                 <h3>Platform Engineers</h3>
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
@@ -30,8 +30,8 @@
             </div>
 
             <div class="bottom-card card-block">
-                <img src="@/assets/images/homepage/every-data.png" alt="developers" class="img-natural"/>
-                <img src="@/assets/images/homepage/every-data-hover.png" alt="developers" class="img-hover"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-data.png" alt="developers" class="img-natural"/>
+                <img width="117" height="120" src="@/assets/images/homepage/every-data-hover.png" alt="developers" class="img-hover"/>
                 <h3>Data Engineers</h3>
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
@@ -227,7 +227,6 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             }
         }
         .img-natural, .img-hover{
-            width: 60%;
             margin: auto;
             margin-bottom: .5rem;
         }
