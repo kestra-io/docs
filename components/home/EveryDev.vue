@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper-every-dev">
-        <div class="center-block">
+        <div class="center-block container">
             <div class="line-top"/>
-            <h2>For <span>Every</span><br/> Developer</h2>
+            <h2>For <span>Every</span> Developer</h2>
             <div class="line-left"/>
             <div class="line-right"/>
             <div class="line-bottom"/>
@@ -48,6 +48,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 
 <style lang="scss" scoped>
+    @import "../../assets/styles/variable";
     .wrapper-every-dev {
         background-image: url(@/assets/images/homepage/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
         background-blend-mode: luminosity, normal;
@@ -62,21 +63,33 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             height: 400px;
             z-index: 1;
         }
+        .center-block {
+            height: auto;
+            padding-top: 4rem;
+            position: relative;
+            @include media-breakpoint-up(lg){
+                text-align: center;
+                padding-top: 240px;
+                height: 500px;
+                width: 500px;
+                margin: 0 auto;
+            }
+        }
     }
 
     .center-block {
-        text-align: center;
-        padding-top: 240px;
-        height: 500px;
-        width: 500px;
-        margin: 0 auto;
-        position: relative;
-        text-align: center;
+
+
         h2 {
             font-size: 2.2rem;
             line-height: 2.5rem;
             color: white;
             font-weight: 600;
+            @include media-breakpoint-up(lg){
+                width: 300px;
+                margin-left: auto;
+                margin-right: auto;
+            }
             span {
                 background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
                 background-size: 100px;
@@ -86,52 +99,60 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         }
         p{
             color: #B9B9BA;
-            max-width: 250px;
-            margin: auto;
+            @include media-breakpoint-up(lg){
+                margin: auto;
+                max-width: 250px;
+            }
         }
         .line-top{
             content: '';
             position: absolute;
             top: 70px;
-            left: 50%;
             transform: translateX(-50%);
             width: 1px;
-            height: 150px;
+            height: 700px;
+            left: 20%;
+            @include media-breakpoint-up(lg){
+                left: 50%;
+                height: 150px;
+            }
             background: linear-gradient(to bottom, transparent 50%, #191e27 50%), linear-gradient(to bottom, #190930 0%, #658AF9 100%);
             background-size: 4px 4px, 1px 100%;
         }
-        .line-left{
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 50%;
-            width: 110px;
-            transform: translate(-150px, 30px);
-            height: 1px;
-            background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to right, #190930 0%, #658AF9 100%);
-            background-size: 4px 4px, 100% 1px;
-        }
-        .line-right{
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 110px;
-            transform: translate(150px, 30px);
-            height: 1px;
-            background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to left, #190930 0%, #658AF9 100%);
-            background-size: 4px 4px, 100% 1px;
-        }
-        .line-bottom{
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1px;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent 50%, #191e27 50%), linear-gradient(to top, #190930 0%, #658AF9 100%);
-            background-size: 4px 4px, 1px 100%;
+        @include media-breakpoint-up(lg){
+            .line-left{
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 50%;
+                width: 110px;
+                transform: translate(-150px, 30px);
+                height: 1px;
+                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to right, #190930 0%, #658AF9 100%);
+                background-size: 4px 4px, 100% 1px;
+            }
+            .line-right{
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 110px;
+                transform: translate(150px, 30px);
+                height: 1px;
+                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to left, #190930 0%, #658AF9 100%);
+                background-size: 4px 4px, 100% 1px;
+            }
+            .line-bottom{
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 1px;
+                height: 100px;
+                background: linear-gradient(to bottom, transparent 50%, #191e27 50%), linear-gradient(to top, #190930 0%, #658AF9 100%);
+                background-size: 4px 4px, 1px 100%;
+            }
         }
     }
 
@@ -160,13 +181,17 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
     }
 
     .card-block{
-        position: absolute;
-        bottom: 450px;
+        position: relative;
+        @include media-breakpoint-up(lg){
+            position: absolute;
+            bottom: 450px;
+            width: 300px;
+            text-align: center;
+        }
         border-radius: 2rem;
-        width: 300px;
         padding: 1rem;
+        margin: 2rem 0;
         padding-top: 1rem;
-        text-align: center;
         background-color: rgb(26, 28, 35);
         background-image: linear-gradient(to bottom, #21242E99 0%, #1A1C2499 100%),
             linear-gradient(to right,#1A1C24 0%, #373a44 80%, #1A1C24 100%);
@@ -189,9 +214,11 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             display: block;
             white-space: nowrap;
             margin-top: 1rem;
-            transform: translateX(-350px);
+            @include media-breakpoint-up(lg){
+                transform: translateX(-250px);
+                opacity: 0;
+            }
             transition: all 0.3s;
-            opacity: 0;
             font-size: 1rem;
             color: #9C8FFF;
         }
@@ -219,7 +246,6 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         }
         &:hover{
             &:before{
-                // background-image: linear-gradient(to bottom, #9C90D350 0%, #AC82D6 100%);
                 --ks-card-border-color-start: #6B66D500;
                 --ks-card-border-color-end: #2D344E00;
                 --ks-card-border-color-start-hover: #9C90D350;
@@ -227,8 +253,12 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             }
         }
         .img-natural, .img-hover{
-            margin: auto;
-            margin-bottom: .5rem;
+            float: left;
+            @include media-breakpoint-up(lg){
+                float: none;
+                margin: auto;
+                margin-bottom: .5rem;
+            }
         }
         .img-hover{
             display: none;
@@ -242,14 +272,16 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             }
         }
     }
-    .left-card{
-        left: 1rem;
-    }
-    .right-card{
-        right: 1rem;
-    }
-    .bottom-card{
-        left: 37%;
-        bottom: 40px;
+    @include media-breakpoint-up(lg){
+        .left-card{
+            left: 1rem;
+        }
+        .right-card{
+            right: 1rem;
+        }
+        .bottom-card{
+            left: 39%;
+            bottom: 40px;
+        }
     }
 </style>
