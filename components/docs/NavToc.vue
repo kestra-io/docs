@@ -202,7 +202,10 @@
         @include media-breakpoint-up(lg) {
             margin-top: 4rem;
             max-height: 100%;
-            border-left: 1px solid $black-6;
+            border: 0;
+            border-left-width: 1px;
+            border-style: solid;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
             background-color: rgba($black-4, .7);
             padding-bottom: 1rem;
         }
