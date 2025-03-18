@@ -73,6 +73,11 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
+For Kestra instance deployed using the Kafka/Elastic backend, you can use the same configuration.
+
+Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
+
+
 ## Google Secret Manager Configuration
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
@@ -162,20 +167,6 @@ kestra:
   secret:
     type: jdbc
     jdbc:
-      secret: "your-secret-key"
-```
-
-Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
-
-## Elastic Secret Manager
-
-For Kestra instance deployed using the Kafka/Elastic backend, the secret backend can be configured like this:
-
-```yaml
-kestra:
-  secret:
-    type: elasticsearch
-    elasticsearch:
       secret: "your-secret-key"
 ```
 
