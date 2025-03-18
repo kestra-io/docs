@@ -54,13 +54,17 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             margin: 2rem;
             max-width: 500px;
         }
-        justify-content: center;
-        align-items: center;
         > div{
-            padding: 1rem;
-            text-align: center;
+            width: 55px;
+            height: 55px;
+            padding: .6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             @include media-breakpoint-up(lg){
-                padding: 1.5rem;
+                width: 80px;
+                height: 80px;
+                padding: .8rem;
             }
             &:nth-child(2n){
                 background-color: #1A1C24;
