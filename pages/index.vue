@@ -12,6 +12,7 @@
         <HomeFeatures/>
         <HomeEveryDev/>
         <HomeExperience/>
+        <HomePlugins/>
     </div>
 </template>
 
