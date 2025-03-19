@@ -12,7 +12,7 @@
                         href="/docs/getting-started/quickstart#start-kestra"
                         class="btn btn-primary me-3 mb-2"
                     >
-                        Get started
+                        Get Started!
                     </NuxtLink>
 
                     <NuxtLink
@@ -52,11 +52,6 @@
 
     const videoVisible = ref(false)
     const canvas = ref<HTMLCanvasElement>()
-    const scrollingTexts = [
-        { text: "Orchestrate", color: "#E500EA" },
-        { text: "Automate", color: "#4281FF" },
-        { text: "Schedule", color: "#9D40FB" },
-    ]
 
     const riveAnimation = ref()
 

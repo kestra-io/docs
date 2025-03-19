@@ -258,7 +258,6 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         .img-natural, .img-hover{
             float: left;
             width: 80px;
-            height: 83px;
             @include media-breakpoint-up(lg){
                 width: auto;
                 float: none;

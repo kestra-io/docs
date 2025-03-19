@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="arrow-box">
-                <svg class="arrow" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{transform: `rotate(${index * 90}deg)`, color: feat.color}">
+                <svg class="arrow" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{transform: `rotate(${(index-1) * 90}deg)`, color: feat.color}">
                     <defs>
                         <linearGradient :id="`paint0_linear_16542_24769-${index}`" x1="15.4718" y1="108.948" x2="16.5015"
                             y2="85.3637" gradientUnits="userSpaceOnUse">
@@ -54,18 +54,18 @@ const features = [
         width: 50,
     },
     {
-        name: "Write Business Logic in Any Language",
-        description: "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language.",
-        icon: "/landing/home/features-cog.svg",
-        color: "#FCE07C",
-        width: 60,
-    },
-    {
         name: "Build Everything As Code & From the UI",
         description: "Empower every team members to collaborate from a single tool—code for developers, UI for everyone else, all in sync.",
-        icon: "/landing/home/features-logos.svg",
-        width: 123,
+        icon: "/landing/home/features-cog.svg",
+        width: 60,
         color: "#21CE9C",
+    },
+    {
+        name: "Write Business Logic in Any Language",
+        description: "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language.",
+        icon: "/landing/home/features-logos.svg",
+        color: "#FCE07C",
+        width: 123,
     },
 ]
 </script>
@@ -170,14 +170,16 @@ const features = [
                 filter: grayscale(1);
             }
             &:nth-child(1){
-                text-align:right;
+                text-align: right;
+                grid-area: 2 / 1;
+            }
+            &:nth-child(2){
+                text-align: right;
+                grid-area: 1 / 1;
             }
             // move the third block to make a circle
-            &:nth-child(3){
-                grid-area: 2 / 3;
-            }
             &:nth-child(4){
-                text-align:right;
+                grid-area: 2 / 3;
             }
             &:hover{
                 h3{
