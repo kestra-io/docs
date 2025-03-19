@@ -128,9 +128,38 @@ The logs are viewable in the interface of the specified Log Group and can be exa
 
 ![AWS Cloud Watch Logs](/docs/enterprise/logshipper_aws_cloudwatch.png)
 
+### AWS S3
+
+This example exports logs to [AWS S3](https://aws.amazon.com/s3/). The following example flow triggers a daily batch and exports to AWS's S3 object storage:
+
+```yaml
+id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: S3LogExporter
+        type: io.kestra.plugin.ee.aws.s3.LogExporter
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+        region: "{{ vars.region }}"
+        format: JSON
+        bucket: logbucket
+        logFilePrefix: kestra-log-file
+        maxLinesPerFile: 1000000
+```
 ### Google Operational Suite
 
-This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability). The following example flow triggers a daily batch and exports to Google Cloud Platform's observability monitor.
+This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability). The following example flow triggers a daily batch and exports to Google Cloud Platform's observability monitor:
 
 ```yaml
 id: log_shipper
@@ -154,9 +183,35 @@ tasks:
         projectId: my-gcp-project
 ```
 
+This example exports logs to [Google Cloud Storage](https://cloud.google.com/storage?hl=en). The following example flow triggers a daily batch and exports to Google Cloud Storage:
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: GCPLogExporter
+        type: io.kestra.plugin.ee.gcp.gcs.LogExporter
+        projectId: myProjectId
+        format: JSON
+        maxLinesPerFile: 10000
+        bucket: my-bucket
+        logFilePrefix: kestra-log-file
+```
+
 ### Azure Monitor
 
-This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview). The following example flow triggers a daily batch and export to Azure Monitor.
+This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview). The following example flow triggers a daily batch and export to Azure Monitor:
 
 ```yaml
 id: log_shipper
@@ -183,6 +238,37 @@ tasks:
         clientSecret: "{{ secret('AZURE_CLIENT_SECRET') }}"
         ruleId: dcr-69f0b123041d4d6e9f2bf72aad0b62cf
         streamName: kestraLogs
+```
+
+### Azure Blob Storage
+
+This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/). The following example flow triggers a daily batch and export to Azure Blog Storage:
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: AzureLogExporter
+        type: io.kestra.plugin.ee.azure.storage.LogExporter
+        endpoint: https://myblob.blob.core.windows.net/
+        tenantId: tenant_id
+        clientId: client_id
+        clientSecret: client_secret
+        containerName: logs
+        format: JSON
+        logFilePrefix: kestra-log-file
+        maxLinesPerFile: 1000000
 ```
 
 ### Elasticsearch
