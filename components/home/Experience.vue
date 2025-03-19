@@ -12,8 +12,9 @@
                 {{ tab.label }}
             </button>
         </div>
-
-        <NuxtImg width="1296" height="686" v-for="tab, index in tabs" v-show="index === displayTab" :src="tab.imageSrc" alt="Experience" class="experience-image"/>
+        <Transition name="fade">
+            <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image"/>
+        </Transition>
     </div>
 </template>
 
@@ -44,6 +45,7 @@ const displayTab = ref(0)
 <style lang="scss" scoped>
     .container {
         text-align: center;
+        position: relative;
         h2 {
             color: white;
             font-size: 36px;
@@ -87,5 +89,17 @@ const displayTab = ref(0)
 
     .tabActive {
         color: white;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 1.5s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+        position: absolute;
+        left: .8rem;
     }
 </style>
