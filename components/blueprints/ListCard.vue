@@ -38,8 +38,10 @@
         },
         computed: {
             tagsList() {
-                if(this.tags && this.blueprint.tags) {
+                if(this.tags.length && this.blueprint.tags) {
                     return this.tags.filter(t => this.blueprint.tags.includes(t.id)).map(t => t.name).join(' ')
+                }else if(this.blueprint.tags.length) {
+                    return this.blueprint.tags.join(' ')
                 }
                 return ""
             }
