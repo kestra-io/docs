@@ -42,7 +42,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             padding: 2rem 3rem;
             display: flex;
             flex-direction: row-reverse;
-            gap: 1rem;
+            gap: 2rem;
         }
     }
 
@@ -50,21 +50,17 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         margin: 1rem;
-        gap: 0;
-        @include media-breakpoint-up(lg){
+        @include media-breakpoint-up(xl){
             margin: 2rem;
             max-width: 500px;
         }
         > div{
-            width: 55px;
-            height: 55px;
+            aspect-ratio: 1;
             padding: .6rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            @include media-breakpoint-up(lg){
-                width: 80px;
-                height: 80px;
+            @include media-breakpoint-up(xl){
                 padding: .8rem;
             }
             &:nth-child(2n){
@@ -88,7 +84,11 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         text-align: center;
         h2{
             max-width: 350px;
-            margin: 3rem auto;
+            margin: auto;
+            margin-top: 2rem;
+            @include media-breakpoint-up(xl){
+                margin: 3rem auto;
+            }
             color: white;
             font-size: 2.5rem;
             text-align: center;
@@ -105,7 +105,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             margin: 0 auto;
             text-align: center;
             font-size: .8rem;
-            @include media-breakpoint-up(lg){
+            @include media-breakpoint-up(xl){
                 width: 480px;
                 font-size: 1.2rem;
             }
