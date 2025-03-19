@@ -134,6 +134,9 @@ const features = [
         }
         .clipper img {
             height: 3rem;
+            @include media-breakpoint-down(lg){
+                width: auto;
+            }
             margin-left: -.5rem;
         }
 

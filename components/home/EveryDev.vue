@@ -217,9 +217,11 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             display: block;
             white-space: nowrap;
             margin-top: 1rem;
+            display: none;
             @include media-breakpoint-up(lg){
                 transform: translateX(-250px);
                 opacity: 0;
+                display: block;
             }
             transition: all 0.3s;
             font-size: 1rem;
@@ -258,6 +260,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         .img-natural, .img-hover{
             float: left;
             width: 80px;
+            height: auto;
             @include media-breakpoint-up(lg){
                 width: auto;
                 float: none;
