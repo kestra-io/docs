@@ -35,6 +35,9 @@ Let's dive into these highlights and other enhancements in more detail.
 ### Plugin Versioning
 
 
+ADD BETA FEATURE 0.22
+REMOVE BETA IN 1.0
+
 Managing plugin versions is essential for maintaining stability while enabling innovation in your automation workflows. This release introduces Plugin Versioning capabilities, giving you unprecedented control over your plugin ecosystem.
 With the new Plugin Versioning feature, you can now manage multiple versions of plugins simultaneously across your entire environment. This powerful capability allows teams to progressively adopt new features while maintaining critical production workflows.
 
@@ -68,11 +71,42 @@ MORE DETAILS TBD
 
 ### `afterExecution` property
 
-- https://github.com/kestra-io/kestra/pull/7791
+This release introduce a new flow property: `afterExecution`. This allows to run any set of tasks **after** the execution of the flow. It differs from the `finally` property that run tasks at the end of the flow while the execution is still in `RUNNING` state.
+
+You might use `afterExecution` to send notifications or update documentation after a flow completes, regardless of whether it succeeded or failed. Unlike `finally` which runs while the flow is still active, afterExecution ensures these tasks only begin after the entire execution finishes, providing cleaner separation between your core workflow and post-completion tasks.
+
+::collapse{title="Example of `afterExecution` vs `finally`"}
+```yaml
+id: state_demof
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.core.log.Log
+    message: Execution {{ execution.state }} # Execution RUNNING
+  
+  - id: fail
+    type: io.kestra.plugin.core.execution.Fail
+
+finally:
+  - id: log 
+    type: io.kestra.plugin.core.log.Log
+    message: Execution {{ execution.state }} # Execution RUNNING
+
+afterExecution:
+  - id: log_after
+    type: io.kestra.plugin.core.log.Log
+    message: Execution {{ execution.state }} # Execution FAILED
+```
+::
+
+
 
 ### Sharing of Namespace Files and KV Store across namespaces
 
 - https://github.com/kestra-io/kestra/issues/5467
+
+Explain difference with inherited
 
 ## User Interface & Experience Improvements
 
