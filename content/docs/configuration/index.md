@@ -1219,9 +1219,9 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 This is an [Enterprise Edition](../06.enterprise/index.md) feature available starting with Kestra 0.19.
 ::
 
-You can restrict which plugins can be used in a Kestra instance by configuring an allowlist / exclude list using regexes.
+You can restrict which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
 
-The following configuration only allow plugin from the `io.kestra` package and disallow the `io.kestra.plugin.core.debug.Echo` plugin.
+The following configuration only allows plugins from the `io.kestra` package and disallows the `io.kestra.plugin.core.debug.Echo` plugin.
 
 ```yaml
 kestra:
