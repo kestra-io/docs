@@ -42,6 +42,10 @@ You can access Plugin Versioning through the new dedicated page under Administra
 
 Plugins are now stored in internal storage and automatically synchronized across all workers, ensuring consistency throughout your environment. For organizations with custom plugins, we've added support for customer-specific artifact registries, allowing you to manage proprietary automation components with the same robust tools used for standard plugins.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ![](SCREENSHOT 1)
 
 ![](SCREENSHOT 2)
