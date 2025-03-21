@@ -53,6 +53,8 @@ Plugins are now stored in internal storage and automatically synchronized across
 
 ![](SCREENSHOT 2)
 
+> Note: The plugin versioning is a beta feature and it could change slightly in next release
+
 ### Read-Only External Secrets Manager 
 
 Managing secrets securely across your automation environment is critical for maintaining compliance and security standards. Kestra 0.22 introduces External Secret Manager capabilities, enabling seamless integration with your established security infrastructure.
@@ -77,7 +79,7 @@ You might use `afterExecution` to send notifications or update documentation aft
 
 ::collapse{title="Example of `afterExecution` vs `finally`"}
 ```yaml
-id: state_demof
+id: state_demo
 namespace: company.team
 
 tasks:
@@ -108,6 +110,29 @@ afterExecution:
 
 Explain difference with inherited
 
+
+NamespaceFiles
+
+```yaml
+id: hyena_375528
+namespace: dev.ben
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World! 🚀
+
+  - id: ns
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+      namespaces:
+        - "company"
+        - "dev.ben"
+    commands:
+      - python test.py
+```
+
 ## User Interface & Experience Improvements
 
 As with each release, there are more UI and UX enhancements:
@@ -130,6 +155,54 @@ As with each release, there are more UI and UX enhancements:
 
 
 ## Plugin enhancements
+
+
+### New GraalVM (beta)
+
+- In-memory python, javacript, ruby
+- Allows to parse object easily
+
+
+### DuckDB & SQLlite Improvements
+
+This release fix some issues and bring improved capabilities to persist operation coming from DuckDB and SQLlite databases.
+
+Thanks to the new `outputDbFile` boolean property, both plugin tasks fully support persisting operation across your tasks.
+
+::collapse{title="Example with DuckDB"}
+```yaml
+id: grouse_281947
+namespace: company.team
+
+tasks:
+  - id: write
+    type: io.kestra.plugin.core.storage.Write
+    content: |
+      field1,field2
+      1,A
+      2,A
+      3,B
+
+  - id: duckdb
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    inputFiles:
+      data.csv: "{{ outputs.write.uri }}"
+    sql: CREATE TABLE my_data AS (SELECT * FROM read_csv_auto('data.csv'));
+    outputDbFile: true
+
+  - id: downstream
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    databaseUri: "{{ outputs.duckdb.databaseUri }}"
+    sql: SELECT field2, SUM(field1) FROM my_data GROUP BY field2;
+    fetchType: STORE
+```
+::
+
+
+Also it's now possible to avoir using `workingDir()` Pebble method in DuckDB to read local files:
+
+EXAMPLE
+
 
 ### New Snowflake CLI plugin
 
