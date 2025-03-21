@@ -48,6 +48,24 @@ tasks:
 
 If the `workerGroup.key` property is not provided, all tasks and polling triggers are executed on the default worker group. That default worker group doesn't have a dedicated key.
 
+A `workerGroup.key` can also be assigned dynamically using inputs like in the following example where we specify a `STRING` input to name assign the key at execution:
+
+```yaml
+id: worker-group-dynamic
+namespace: company.team
+
+inputs:
+  - id: workerGroup
+    type: STRING
+
+tasks:
+  - id: worker-group
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{taskrun.startDate}}"
+    workerGroup:
+      key: "{{inputs.workerGroup}}"
+```
+
 ## Worker Group behavior
 
 ::badge{version=">=0.20" editions="EE"}
