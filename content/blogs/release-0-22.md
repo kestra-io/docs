@@ -53,7 +53,7 @@ Plugins are now stored in internal storage and automatically synchronized across
 
 ![](SCREENSHOT 2)
 
-> Note: The plugin versioning is a beta feature and it could change slightly in next release
+> Note: Plugin versioning is currently in beta and may undergo changes in upcoming releases.
 
 ### Read-Only External Secrets Manager 
 
@@ -108,7 +108,6 @@ afterExecution:
 
 - https://github.com/kestra-io/kestra/issues/5467
 
-Explain difference with inherited
 
 
 NamespaceFiles
@@ -140,6 +139,7 @@ As with each release, there are more UI and UX enhancements:
 - Improved Editor contrast in the light mode
 - Export topology view to PNG and JPG
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
+- As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
 
 ## Other Features and Improvements
 
@@ -159,15 +159,16 @@ As with each release, there are more UI and UX enhancements:
 
 ### New GraalVM (beta)
 
-- In-memory python, javacript, ruby
-- Allows to parse object easily
+We're pleased to introduce GraalVM integration to Kestra. GraalVM is a high-performance runtime that supports multiple programming languages, offering significant performance advantages through its advanced just-in-time compilation technology.
+This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations on your systems.
 
+EXAMPLE TBD
 
 ### DuckDB & SQLlite Improvements
 
-This release fix some issues and bring improved capabilities to persist operation coming from DuckDB and SQLlite databases.
+This release resolves several issues and enhances persistence capabilities for operations involving DuckDB and SQLite databases.
 
-Thanks to the new `outputDbFile` boolean property, both plugin tasks fully support persisting operation across your tasks.
+The new `outputDbFile` boolean property enables both plugin tasks to fully support data persistence across your workflow tasks.
 
 ::collapse{title="Example with DuckDB"}
 ```yaml
