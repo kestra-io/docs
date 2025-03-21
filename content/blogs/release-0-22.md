@@ -198,10 +198,28 @@ tasks:
 ```
 ::
 
+Also it's now possible to avoir using `workingDir()` Pebble method in DuckDB to read local files.
 
-Also it's now possible to avoir using `workingDir()` Pebble method in DuckDB to read local files:
+::collapse{title="Reading file without using workingDir in DuckDB"}
+```yaml
+id: grouse_281947
+namespace: company.team
 
-EXAMPLE
+tasks:
+
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+
+  - id: query
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    fetchType: STORE
+    inputFiles:
+      data.csv: "{{ outputs.download.uri }}"
+    sql: SELECT * FROM read_csv_auto('data.csv');
+```
+::
 
 
 ### New Snowflake CLI plugin
