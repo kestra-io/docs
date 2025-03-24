@@ -23,15 +23,15 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. From here, you can click **+ Install** and open up the full library of available plugins.
 
-![versioned-plugins-1](/docs/enterprise/versioned-plugins-1.png)
+![versioned-plugins-1](/docs/enterprise/version-plugins/versioned-plugins-1.png)
 
 From the list, search and select the plugin to install and select the version.
 
-![versioned-plugins-2](/docs/enterprise/versioned-plugins-2.png)
+![versioned-plugins-2](/docs/enterprise/version-plugins/versioned-plugins-2.png)
 
 After installing some plugins, your full list of versioned plugins are displayed. Kestra alerts you that a newer version of your plugin is available and gives you the capability to upgrade singular plugins as needed rather than all plugins to their newest version.
 
-![versioned-plugins-3](/docs/enterprise/versioned-plugins-3.png)
+![versioned-plugins-3](/docs/enterprise/version-plugins/versioned-plugins-3.png)
 
 ### From the CLI and API
 
