@@ -54,6 +54,17 @@ Currently, all the official Kestra plugins are safe to be whitelisted **except**
 
 ## Scripting isolation
 
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
+
+```yaml
+kestra:
+  plugins:
+    defaults:
+    - type: io.kestra.plugin.core.log.Log
+      values:
+        level: ERROR
+```
+
 For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster `pluginDefaults`:
 
 ```yaml
@@ -67,6 +78,10 @@ kestra:
           taskRunner:
             type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
+
+Forced plugin defaults:
+- ensure a property is set globally for a task, and no task can override it
+- are critical for security and governance, for example, to enforce Shell tasks to run as Docker containers.
 
 ::alert{type="warning"}
 You will need to add all script plugins tasks (like Python & Node) to be sure that no tasks can bypass the docker isolation.
