@@ -7,6 +7,12 @@ version: "0.22.0"
 
 Use multiple versions of a plugin depending on your instance requirements and upgrade path.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 Versioned plugins are an enterprise feature that simplifies the upgrade process. They allow you to pin older plugin versions to your production and legacy flows while using the latest version for newer flows, enabling granular version control in your Kestra instance.
 
 ## Install versioned plugins
