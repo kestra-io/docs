@@ -5,11 +5,11 @@ editions: ["EE"]
 version: ">= 0.19.0"
 ---
 
-How to configure Kestra with allowed and restricted plugins.
+How to configure Kestra with and without specified plugins.
 
 ## Allowed plugins
 
-You can restrict which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
+By default, Kestra comes with the full library of official plugins. In some cases, you may want to limit which plugins a user or team can use, for example there may be a team you want to only allow to query data specifically with BigQuery and not be able to run script tasks. You can govern which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
 
 To allow specific plugins, add the `includes` attribute in your Kestra configuration file and list the approved plugins or use a regex expression. Below is an example that `includes` all plugins from the `io.kestra` package using a regex expression.
 
