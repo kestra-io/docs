@@ -55,10 +55,10 @@ The webserver host the API so it's the one that must be stopped then started imm
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
 
-- `kestra/kestra:v0.14.4` includes the 0.14.4 release with the fourth patch version
-- `kestra/kestra:v0.14.4-full` includes the 0.14.4 release with all plugins
-- `kestra/kestra:v0.15.0` includes the 0.15 release without any plugins
-- `kestra/kestra:v0.15.0-full` includes the 0.15 release with all plugins.
+- `kestra/kestra:v0.21.4-no-plugins` includes the 0.21.4 release with the fourth patch version
+- `kestra/kestra:v0.21.4` includes the 0.21.4 release with all plugins
+- `kestra/kestra:v0.19.0-no-plugins` includes the 0.19 release without any plugins
+- `kestra/kestra:v0.19.0` includes the 0.19 release with all plugins.
 
 Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
 
@@ -87,7 +87,7 @@ If you use Docker compose, adjust your Docker Compose file to use the desired [D
 If you use Helm, adjust the [Helm chart `tag` value](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L4) to point the installation to the desired version. For example, you can run the following command to upgrade the installation to the desired version:
 
 ```bash
-helm upgrade kestra kestra/kestra --set image.tag=v0.15.0-full
+helm upgrade kestra kestra/kestra --set image.tag=v0.20.0
 ```
 
 For more complex configurations that include multiple changes, consider using a custom values file:

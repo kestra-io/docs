@@ -13,6 +13,10 @@ Kestra respects your privacy. Therefore, Secrets are persisted externally in a b
 
 You can add, modify, or delete secrets from the **Secrets** tab of any given namespace in the Kestra UI or programmatically via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/namespace_secret).
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/U0cNzNQ-bkw?si=20ltjCZBXJW8_QAe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## AWS Secret Manager Configuration
 
 In order to use [AWS Secret Manager](https://aws.amazon.com/secrets-manager/) as a secrets backend, make sure that your AWS IAM user or role have the required permissions including `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
@@ -73,6 +77,11 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
+For Kestra instance deployed using the Kafka/Elastic backend, you can use the same configuration.
+
+Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
+
+
 ## Google Secret Manager Configuration
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
@@ -103,7 +112,7 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 
 ### KV Secrets Engine - Version 2
 
-To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `root-engine` or `namespace` (_if you use Vault Enterprise_).
+To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
 
 
 1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
@@ -113,7 +122,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       password:
         user: john
         password: foo
@@ -126,7 +135,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       token:
         token: your-secret-token
 ```
@@ -138,7 +147,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       appRole:
         path: approle
         roleId: your-role-id
@@ -149,8 +158,8 @@ Additionally, you can configure the following properties:
 
 - **Address**: `kestra.secret.vault.address` is a fully qualified address with scheme and port to your Vault instance.
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
-- **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
-- **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+- **Engine Version**: `kestra.secret.vault.engineVersion` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
+- **Root Engine**: `kestra.secret.vault.rootEngine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
@@ -162,20 +171,6 @@ kestra:
   secret:
     type: jdbc
     jdbc:
-      secret: "your-secret-key"
-```
-
-Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
-
-## Elastic Secret Manager
-
-For Kestra instance deployed using the Kafka/Elastic backend, the secret backend can be configured like this:
-
-```yaml
-kestra:
-  secret:
-    type: elasticsearch
-    elasticsearch:
       secret: "your-secret-key"
 ```
 

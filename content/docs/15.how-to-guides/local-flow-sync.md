@@ -1,6 +1,10 @@
 ---
 title: Local Flow Synchronization
 icon: /docs/icons/admin.svg
+stage: Getting Started
+topics:
+  - Integrations
+  - Kestra Concepts
 ---
 
 Sync Flows from a local directory.

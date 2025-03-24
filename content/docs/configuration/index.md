@@ -340,6 +340,11 @@ kestra:
       retention: 7d
 ```
 
+The properties are the following:
+- `initialDelay`: specifies the delay after the startup of the application where the job cleaner will start.
+- `fixedDelay`: specifies the initial delay between each clean.
+- `retention`: specifies the oldest entry to clean on the queue (i.e., a `7d` specification will keep 1 week of queue data as backup against a crash)
+
 ### Protecting against too big messages
 
 ::alert{type="info"}
@@ -909,7 +914,7 @@ You can change the log behavior in Kestra by adjusting the `logger` configuratio
 ```yaml
 logger:
   levels:
-    io.kestra.runner: TRACE
+    io.kestra.core.runners: TRACE
     org.elasticsearch.client: TRACE
     org.elasticsearch.client.sniffer: TRACE
     org.apache.kafka: DEBUG
@@ -1100,20 +1105,57 @@ For more information, check out the [dedicated guide](../15.how-to-guides/local-
 
 ## Plugins
 
-Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
+### Installing plugins
 
-Maven Central is mandatory for Kestra and its plugins. However, you can add your own (Maven) repository in order to download your custom plugins using the following configuration:
+Kestra plugins can be installed from Maven repositories using the `kestra plugins install` command.
+
+**Example:**
+
+The command below will install the latest version of the script-python plugin.
+
+```bash
+kestra plugins install io.kestra.plugin:plugin-script-python:LATEST
+```
+
+By default, Kestra retrieves plugins from Maven Central, but you can configure additional repositories (e.g., Google Artifact Registry) to install custom plugins.
+
+
+### Adding Custom Maven Repositories
+
+The repositories can be configured using the `kestra.plugins.repositories` configuration.
+
+You can add your own private Maven repositories, such as Google Artifact Registry, to install custom plugins.
+
+**Example Configuration (`application.yaml`):**
 
 ```yaml
 kestra:
   plugins:
     repositories:
+      # Configure Maven Central (Mandatory)
       central:
         url: https://repo.maven.apache.org/maven2/
-      jcenter:
-        url: https://jcenter.bintray.com/
-      kestra:
-        url: https://dl.bintray.com/kestra/maven
+      # Configure a Private Google Artifact Registry
+      google-artifact-registry:
+        url: https://${GCP_REGISTRY_LOCATION}-maven.pkg.dev/${GCP_PROJECT_ID}/${GCP_REPOSITORY}
+        basicAuth:
+          username: oauth2accesstoken
+          password: ${GCP_OAUTH_ACCESS_TOKEN}
+```
+
+### Installing Enterprise Edition (EE) plugins
+
+Enterprise Edition (EE) users can configure Kestra's artifact registry to install EE plugins, as described below:
+
+```yaml
+kestra:
+  plugins:
+    repositories:
+      kestra-io:
+        url: https://registry.kestra.io/maven
+        basicAuth:
+          username: ${kestra.ee.license.id:}
+          password: ${kestra.ee.license.fingerprint:}
 ```
 
 ### Enable or disable features
@@ -1177,9 +1219,9 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 This is an [Enterprise Edition](../06.enterprise/index.md) feature available starting with Kestra 0.19.
 ::
 
-You can restrict which plugins can be used in a Kestra instance by configuring an allowlist / exclude list using regexes.
+You can restrict which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
 
-The following configuration only allow plugin from the `io.kestra` package and disallow the `io.kestra.plugin.core.debug.Echo` plugin.
+The following configuration only allows plugins from the `io.kestra` package and disallows the `io.kestra.plugin.core.debug.Echo` plugin.
 
 ```yaml
 kestra:

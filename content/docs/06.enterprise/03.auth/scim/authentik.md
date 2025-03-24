@@ -81,7 +81,7 @@ Configuring SCIM 2.0 requires a similar process to SSO — you'll need to create
 In the `Protocol settings` section, enter the `URL` and `Secret Token` obtained from Kestra.
 
 ::alert{type="info"}
-If you are running authentik on a Mac machine with [docker-compose installer](https://docs.goauthentik.io/docs/installation/docker-compose), make sure to replace `localhost` in your Kestra's SCIM endpoint with `docker.for.mac.localhost` since otherwise the sync won't work. Your URL should look as follows: `http://docker.for.mac.localhost:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
+If you are running authentik on a Mac machine with [docker-compose installer](https://docs.goauthentik.io/docs/installation/docker-compose), make sure to replace `localhost` in your Kestra's SCIM endpoint with `host.docker.internal` since otherwise the sync won't work. Your URL should look as follows: `http://host.docker.internal:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
 ::
 
 ![scim-for-authentik-8](/docs/enterprise/scim/authentik/authentik8.png)
