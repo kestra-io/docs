@@ -2,6 +2,7 @@
 title: Allowed & Restricted Plugins
 icon: /docs/icons/admin.svg
 editions: ["EE"]
+version: ">= 0.19.0"
 ---
 
 How to configure worker isolation in Kestra with allowed and restricted plugins.
