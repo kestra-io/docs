@@ -13,7 +13,7 @@ However, Kestra uses a database and internal storage that can be backed up and r
 Since version 0.19, Kestra [Enterprise Edition](/enterprise) provides __metadata__ backup & restore functionality.
 This backup feature can be used to back up metadata in a Kestra instance, and restore it in another instance that can be in a different Kestra version or using a different backend.
 
-We recommend to backup and restore metadata when Kestra is stopped, otherwise the backup may not be in a consistent state.
+We recommend to backup and restore metadata when Kestra is stopped, otherwise the backup may not be in a consistent state. Best practice is to leverage [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md), released in version 0.21, to pause the instance.
 
 Currently, the metadata backup will back up all data not related to Executions, including custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets manager backend), security integrations, settings, templates, tenants, triggers, users and access bindings.
 
