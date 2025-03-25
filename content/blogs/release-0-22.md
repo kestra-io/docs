@@ -143,12 +143,11 @@ TBD example
 ## Other Features and Improvements
 
 - New LDAP integration. It provides streamlined authentication and user management for enterprise environments. NEED DOC LINK https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
-
-- New Log Shippers. Including Splunk, AWS S3, Google Cloud Storage, Azure Blob. This release also introduce AuditLogs Log Shipper allowing to export records for all activities performed in your Kestra instance by users and service accounts.
+- New Log Shippers. Including Splunk, AWS S3, Google Cloud Storage, Azure Blob. This release also introduce AuditLogs Log Shipper allowing to export records for all activities performed in your Kestra instance by users and service accounts. https://github.com/kestra-io/docs/pull/2307/files#diff-70a3bf31ac506aa1a42355b8340a7af81a1ef3400b2e70fcb07af76622d50b5c
 - Improvements of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
 - [DevContainer support](https://github.com/kestra-io/kestra/pull/7507) simplifies developer onboarding with ready-to-use development environments. NEED DOC LINK ?
-- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. NEED DOC LINK (doc already done by AJ?)
-- Improvements Ansible outputs integration allows seamless connection between Ansible playbooks and Kestra workflows. NEED DOC/EXAMPLE LINK
+- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. https://github.com/kestra-io/docs/pull/2307/files#diff-a07a10ebe006ff8445184afa3467e3e0504bae68cceb4b6ec74e8e1a58838b50
+- Improvements Ansible outputs integration allows seamless connection between Ansible playbooks and Kestra workflows. You can find new blueprints
 - Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
 - Comprehensive bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows.
 - Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. NEED DOC
@@ -158,6 +157,7 @@ TBD example
 
 As with each release, there are more UI and UX enhancements:
 
+- Global View for Secrets and KV Store TBD (highlights?)
 - Improved Editor contrast in the light mode.
 - Add button to export the topology view to PNG or JPG.
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
@@ -295,6 +295,7 @@ TBD
 TBD
 
 - https://github.com/kestra-io/kestra/issues/6888
+- https://github.com/kestra-io/docs/pull/2307/files#diff-02828a7b2b26c3414fd3dd1de86d65d5d367fb99768c0dafe2a09a9256df512f
 
 ## Thanks to Our Contributors
 
