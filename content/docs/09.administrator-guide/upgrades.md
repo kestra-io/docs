@@ -22,7 +22,7 @@ Soemtimes you might need to downgrade Kestra to a previous version. Here are som
 3. Restore from a backup
 4. Restart from an older version
 
-Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra.
+Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
 ## Where you can find the release changelog
 
