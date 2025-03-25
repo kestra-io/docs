@@ -24,7 +24,7 @@ In order to use [AWS Secret Manager](https://aws.amazon.com/secrets-manager/) as
 You can configure the authentication to AWS Cloud in multiple ways:
 - Use `accessKeyId`, `secretKeyId`, and `region` properties.
 - Include a `sessionToken` alongside the above credentials.
-- If the above properties are not set, Kestra will use the default AWS authenticatio in the same way as AWS CLI handles it (i.e., trying to use the AWS CLI profile or the default environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION`).
+- If the above properties are not set, Kestra will use the default AWS authentication in the same way as AWS CLI handles it (i.e., trying to use the AWS CLI profile or the default environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION`).
 
 ```yaml
 kestra:
