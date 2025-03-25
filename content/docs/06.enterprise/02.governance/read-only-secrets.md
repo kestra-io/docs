@@ -14,23 +14,113 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 ## Configure read-only secrets
 
 Read-only secrets can be configured globally in the configuration file as well as enabled from the UI in the [Namespace](../../04.workflow-components/02.namespace.md) edit page.
-To configure globally, add `readOnly: true` to the configuration of your external secret manager. The following example is a configuration using [Vault](secrets-manager.md#vault-configuration):
-
-```yaml
-secret:
-    readOnly: true
-    type: vault # Replace with your external secret manager
-    vault:
-        secretPathPrefix: my-team-a # Specific property only for Vault
-```
-
-For Vault secret manager, there is an optional property, `secretPathPrefix`, that can be used when `readOnly: true`. This property restricts available secrets to only be those that follow the specified path. For example, consider a vault that contains the following two secrets:
-
-- `my-team-a/my-app/my-secret-1`
-- `my-team-b/my-app/my-secret-2`
-
-With the above configuration, where `secretPathPrefix: my-team-a` is specified, only the first secret, `my-team-a/my-app/my-secret-1` will be loaded into Kestra and accessible to the namespace.
-
-To enable in the Kestra UI, go to **Namespace** and then to the Edit tab. From here, you can toggle on **Dedicated secrets manager**, select your Secret type, switch on Read-only mode, and enter your respective secret configuration for your secrets manager.
+To configure globally, add `readOnly: true` to the configuration of your external secret manager or toggle on in the UI.
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
+
+### AWS Secret Manager
+ 
+The following example shows the configuration for AWS Secret Manager with read-only:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      accessKeyId: mysuperaccesskey
+      secretKeyId: mysupersecretkey
+      sessionToken: mysupersessiontoken
+      region: us-east-1
+```
+
+### Azure Key Vault
+
+The following example shows the configuration for Azure Key Vault with read-only:
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    readOnly: true
+    azureKeyVault:
+      clientSecret:
+        tenantId: "id"
+        clientId: "id"
+        clientSecret: "secret"
+```
+
+### Google Secret Manager
+
+The following example shows the configuration for Google Secret Manager with read-only:
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    readOnly: true
+    googleSecretManager:
+      project: gcp-project-id
+      serviceAccount: |
+        Paste here the contents of the service account JSON key file
+```
+
+### Vault
+
+With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization. This requires a couple of potentially different configuration properties depending on whether you are using Enterprise Vault. Typically, there is a Secret Engine that hosts different secrets with specific paths, and then those secrets have subkeys that are the actual key value pairs (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). The following demonstrates a visual representation of this structure:
+
+```
+secret/
+  ├── app1/
+  │   ├── db/ <-- SECRET
+  │   │   ├── credentials:  # Subkey
+  │   │   ├── config:  #  Subkey
+  │   ├── api/ <-- SECRET
+  │       ├── keys             #  Subkey
+  │       ├── tokens          # Subkey
+  ├── app2/
+      ├── config
+```
+
+- `secret`: This is the secret engine.
+- `app1` and `app2`: These are the path names to the secrets.
+- `db`, `api`, and `config`: These are the secret names visible in the Kestra UI.
+- `credentials`, `config`, `keys`, `tokens`: These are the `subkey` key value pairs that can be used in a Kestra flow.
+
+With the above example structure if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
+
+```yaml
+address: https://my-vault:8200/
+rootEngine: secret
+secretPathPrefix: app1
+token:
+  token: my-vault-access-token
+```
+
+## Vault full example
+
+The following steps walk through a full example configuring Vault as your secret manager with read-only secrets enabled. This example uses [KV Secrets Engine - Version 2 with Vault Enterprise](./secrets-manager.md#kv-secrets-engine---version-2) so `rootEngine` and `namespace` are used as optional properties.
+
+In Vault, we have a Secrets Engine named `business-unit` in the `admin` namespace that hosts the path to our database password that we want to use to [add a table and populate with data in Neon](../../15.how-to-guides/neon.md).
+
+![read-only-secrets-2](/docs/enterprise/read-only-secrets-2.png)
+
+In Kestra, we can now navigate to the Namespace we want to set up Vault as a secrets manager and enter the configuration details
+
+![read-only-secrets-3](/docs/enterprise/read-only-secrets-3.png)
+
+After saving, we can move over to the **Secrets** tab and see which paths we have access to. Notice the lock icon indicating that read only is successfully turned on. No new secrets can be created from Kestra, and existing secrets are not editable.
+
+![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
+
+In Vault, we know `my-app` is the secret that hosts the subkey we are looking for, in this case `NEON_PASSWORD`.
+
+![read-only-secrets-5](/docs/enterprise/read-only-secrets-5.png)
+
+Now to use in our flow, we need to use the `secret()` function with the name of our secret `my-app` and the `subkey` parameter set to the key of the secret value we want to use, which in this case is `NEON_PASSWORD`.
+
+![read-only-secrets-6](/docs/enterprise/read-only-secrets-6.png)
+
+After saving the flow and executing, we can see that the correct value was successfully accessed by Kestra from Vault and 100 rows were added to our Neon database.
+
+![read-only-secrets-7](/docs/enterprise/read-only-secrets-7.png)
