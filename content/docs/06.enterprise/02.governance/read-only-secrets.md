@@ -18,6 +18,10 @@ To configure globally, add `readOnly: true` to the configuration of your externa
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
 
+Secrets will now have a lock icon to show that they cannot be edited from Kestra, and the **Create New Secret** button in the top right corner that would otherwise be present is unavailable.
+
+![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
+
 ### AWS Secret Manager
  
 The following example shows the configuration for AWS Secret Manager with read-only:
