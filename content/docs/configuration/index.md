@@ -920,7 +920,21 @@ logger:
     org.apache.kafka: DEBUG
     io.netty.handler.logging: TRACE
 ```
+To disable logging to the server logs, you can configure the following:
 
+```yaml
+logger:
+  levels:
+    flow: 'OFF'
+```
+
+This disables all flow execution logs to go to the server logs. Similarly, the following configuration disables the execution logs for the `hello-world` flow:
+
+```yaml
+logger:
+  levels:
+    flow.hello-world: 'OFF'
+```
 
 ### Access Log configuration
 
