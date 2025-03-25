@@ -2229,3 +2229,83 @@ Checks if an integer is odd.
 {% endif %}
 ```
 
+---
+
+## Expressions FAQ
+
+
+::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
+In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters. 
+
+Here is a working example showing the recommended pattern:
+
+```yaml
+id: multiline_input_passed_to_json_body
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: This is my title
+
+  - id: message
+    type: STRING
+    defaults: |-
+      This is my long
+      multiline message.
+
+  - id: priority
+    type: INT
+    defaults: 5
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.http.Request
+    uri: https://reqres.in/api/test-request
+    method: POST
+    body: |
+      {{ {
+        "title": inputs.title,
+        "message": inputs.message,
+        "priority": inputs.priority
+      } }}    
+```
+
+You can also explicitly leverage the `toJson` filter at the end of the expression e.g. `{{ {'message':  inputs.message} | toJson }}`. 
+
+Here is an example usage in a flow:
+
+```yaml
+id: multiline_input_with_tojson_filter
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: This is my title
+
+  - id: message
+    type: STRING
+    defaults: |-
+      This is my long
+      multiline message.
+
+  - id: priority
+    type: INT
+    defaults: 5
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.http.Request
+    uri: https://reqres.in/api/test-request
+    method: POST
+    body: |
+      {{ {
+        "title": inputs.title,
+        "message": inputs.message,
+        "priority": inputs.priority
+      } | toJson }}  
+```
+
+::
+
