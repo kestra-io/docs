@@ -49,6 +49,8 @@ Plugins are now stored in internal storage and automatically synchronized across
 
 ![](SCREENSHOT 2)
 
+TBD ADD DOC LINK
+
 > Note: Plugin versioning is currently in beta and may undergo changes in upcoming releases.
 
 ### Read-Only External Secrets Manager 
@@ -61,7 +63,7 @@ TO CHECK: WHAT ABOUT GCP, AWS, Azure?
 
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
-MORE DETAILS TBD
+TBD ADD DOC LINK
 
 ![](SCREENSHOT 2)
 
@@ -99,6 +101,8 @@ afterExecution:
 ::
 
 
+TBD ADD DOC LINK
+
 
 ### Sharing of Namespace Files and KV Store across namespaces
 
@@ -128,18 +132,18 @@ tasks:
       - python test.py
 ```
 
-## User Interface & Experience Improvements
+KV
 
-As with each release, there are more UI and UX enhancements:
+TBD
 
-- Improved Editor contrast in the light mode
-- Export topology view to PNG and JPG
-- Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
-- As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
+
+TBD ADD DOC LINK
+
 
 ## Other Features and Improvements
 
-- New LDAP integration. It provides streamlined authentication and user management for enterprise environments. NEED DOC LINK
+- New LDAP integration. It provides streamlined authentication and user management for enterprise environments. NEED DOC LINK https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
+
 - New Log Shippers. Including Splunk, AWS S3, Google Cloud Storage, Azure Blob. This release also introduce AuditLogs Log Shipper allowing to export records for all activities performed in your Kestra instance by users and service accounts.
 - Improvements of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
 - [DevContainer support](https://github.com/kestra-io/kestra/pull/7507) simplifies developer onboarding with ready-to-use development environments. NEED DOC LINK ?
@@ -148,6 +152,16 @@ As with each release, there are more UI and UX enhancements:
 - Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
 - Comprehensive bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows.
 - Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. NEED DOC
+
+
+## User Interface & Experience Improvements
+
+As with each release, there are more UI and UX enhancements:
+
+- Improved Editor contrast in the light mode.
+- Add button to export the topology view to PNG or JPG.
+- Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
+- As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
 
 
 ## Plugin enhancements
@@ -229,31 +243,11 @@ TBD
 ```
 ::
 
-### New Supabase plugin
-
-TBD
-
-::collapse{title="Supabase task example"}
-```yaml
-
-```
-::
-
 ### New MariaDB tasks
 
 - https://github.com/kestra-io/plugin-jdbc/commit/ab18b1bf14a656b8f469c5494b9f0d610d47c73e
 
 ### New ServiceNow tasks
-
-TBD
-
-::collapse{title="Supabase task example"}
-```yaml
-
-```
-::
-
-### New Hubspot tasks
 
 TBD
 
