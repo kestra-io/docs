@@ -10,6 +10,9 @@
             <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="generateCardHref(blueprint)"/>
         </div>
     </div>
+    <div class="button-container">
+        <router-link to="/blueprints" class="btn btn-primary">Explore Blueprints</router-link>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -43,13 +46,14 @@ const scrollRight = () => {
     @import "../../assets/styles/variable";
     .container {
         text-align: center;
-        padding: 20px;
+        padding: 1rem;
     }
     h2 {
         color: white;
         span{
             color: $primary;
             background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
+            font-weight: 600;
             background-size: cover;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -88,6 +92,10 @@ const scrollRight = () => {
             flex: 1;
             min-width: 350px;
         }
+    }
+    .button-container{
+        text-align: center;
+        margin: 4rem 0 3rem;
     }
 </style>
 
