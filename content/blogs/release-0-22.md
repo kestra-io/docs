@@ -108,13 +108,14 @@ TBD ADD DOC LINK
 
 - https://github.com/kestra-io/kestra/issues/5467
 
+Nnamespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
 
+TBD ADD DOC LINK
 
-NamespaceFiles
-
+::collapse{title="NamespaceFiles inheritance"}
 ```yaml
-id: hyena_375528
-namespace: dev.ben
+id: namespace_files_inheritance
+namespace: company
 
 tasks:
   - id: hello
@@ -127,18 +128,17 @@ tasks:
       enabled: true
       namespaces:
         - "company"
-        - "dev.ben"
+        - "dev.team"
     commands:
-      - python test.py
+      - python test.py  # this file will be pulled from `dev.team` namespace
 ```
+::
 
-KV
-
-TBD
-
+For key-value stores, we've introduced inheritance that matches how other Kestra configurations work. KV pairs now automatically flow from parent to child namespaces, giving you more consistency out of the box.
 
 TBD ADD DOC LINK
 
+TBD example
 
 ## Other Features and Improvements
 
