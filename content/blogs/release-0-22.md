@@ -34,10 +34,6 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Plugin Versioning
 
-
-ADD BETA FEATURE 0.22
-REMOVE BETA IN 1.0
-
 Managing plugin versions is essential for maintaining stability while enabling innovation in your automation workflows. This release introduces Plugin Versioning capabilities, giving you unprecedented control over your plugin ecosystem.
 With the new Plugin Versioning feature, you can now manage multiple versions of plugins simultaneously across your entire environment. This powerful capability allows teams to progressively adopt new features while maintaining critical production workflows.
 
