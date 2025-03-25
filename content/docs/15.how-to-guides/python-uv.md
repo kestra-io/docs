@@ -30,7 +30,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     beforeCommands:
-      - pip install uv
+      - pip install uv 2> /dev/null
     script: |
       print("Hello, World!")
 ```
@@ -47,7 +47,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     beforeCommands:
-      - uv pip install pandas --system
+      - uv pip install pandas --system 2> /dev/null
     script: |
       import pandas as pd
       from kestra import Kestra
@@ -69,9 +69,9 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     beforeCommands:
-      - pip install uv
-      - uv venv
-      - uv pip install pandas kestra
+      - pip install uv 2> /dev/null
+      - uv venv 2> /dev/null
+      - uv pip install pandas kestra 2> /dev/null
       - . .venv/bin/activate
     script: |
       import pandas as pd
