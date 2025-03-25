@@ -176,6 +176,10 @@ tasks:
 
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
+::alert{type="info"}
+If your body message is multiple lines, best practice is to use a pebble expression to avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../expressions/index.md#expressions-faq).
+::
+
 When we execute this as a `POST` request, this is the response we receive using the same Debug Outputs option in the Outputs page:
 
 ![http_post_outputs](/docs/how-to-guides/http/http_post_outputs.png)
