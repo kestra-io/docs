@@ -172,7 +172,25 @@ As with each release, there are more UI and UX enhancements:
 We're pleased to introduce GraalVM integration to Kestra. GraalVM is a high-performance runtime that supports multiple programming languages, offering significant performance advantages through its advanced just-in-time compilation technology.
 This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations on your systems.
 
-EXAMPLE TBD
+::collapse{title="Example parsing data with Python"}
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri )}}
+      data["next_month"] = int(data["month"]) + 1
+```
+::
 
 ### DuckDB & SQLlite Improvements
 
@@ -235,11 +253,26 @@ tasks:
 
 ### New Snowflake CLI plugin
 
-TBD
+Developers can now streamline their Snowflake workflows using the new Snowflake CLI, enabling quick creation, management, and deployment of applications across Snowpark, Streamlit, native app frameworks and all the other possibilities offered by Snowflake. All of this with the automation power of Kestra!
 
 ::collapse{title="Snowflake CLI task example"}
 ```yaml
+id: run_snowpark_function
+namespace: company.team
 
+tasks:
+  - id: snowflake_cli
+    type: io.kestra.plugin.jdbc.snowflake.SnowflakeCLI
+    commands:
+      - snow --info
+      - snow snowpark execute function "process_data()"
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.snowflake
+    values:
+      account: "{{secret('SNOWFLAKE_ACCOUNT')}}"
+      username: "{{secret('SNOWFLAKE_USERNAME')}}"
+      password: "{{secret('SNOWFLAKE_PASSWORD')}}"
 ```
 ::
 
