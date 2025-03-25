@@ -14,6 +14,7 @@
         <HomeExperience/>
         <HomePlugins/>
         <HomeBlueprints/>
+        <HomeEnterprise/>
     </div>
 </template>
 
