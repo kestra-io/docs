@@ -13,14 +13,15 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 ## Configure read-only secrets
 
-Read-only secrets can be configured globally in the configuration file as well as enabled from the UI in the [Namespace](../../04.workflow-components/02.namespace.md) edit page.
-To configure globally, add `readOnly: true` to the configuration of your external secret manager or toggle on in the UI.
+Read-only secrets can be configured globally in the configuration file as well as enabled from the UI in the [Namespace](../../04.workflow-components/02.namespace.md) edit page. To turn on for a specific Namespace, toggle on in the UI.
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
 
 Secrets will now have a lock icon to show that they cannot be edited from Kestra, and the **Create New Secret** button in the top right corner that would otherwise be present is unavailable.
 
 ![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
+
+To configure globally, add `readOnly: true` to the configuration of your external secret manager like in the examples below.
 
 ### AWS Secret Manager
  
@@ -71,27 +72,27 @@ kestra:
 
 ### Vault
 
-With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization. This requires a couple of potentially different configuration properties depending on whether you are using Enterprise Vault. Typically, there is a Secret Engine that hosts different secrets with specific paths, and then those secrets have subkeys that are the actual key value pairs (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). The following demonstrates a visual representation of this structure:
+With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). The following demonstrates a visual representation of this structure:
 
 ```
 secret/
   ├── app1/
   │   ├── db/ <-- SECRET
-  │   │   ├── credentials:  # Subkey
-  │   │   ├── config:  #  Subkey
+  │   │   ├── DATBASE_USERNAME    # Subkey
+  │   │   ├── DATABASE_PASSWORD   # Subkey
   │   ├── api/ <-- SECRET
-  │       ├── keys             #  Subkey
-  │       ├── tokens          # Subkey
+  │       ├── keys                # Subkey
+  │       ├── API_TOKEN           # Subkey
   ├── app2/
       ├── config
 ```
 
 - `secret`: This is the secret engine.
-- `app1` and `app2`: These are the path names to the secrets.
-- `db`, `api`, and `config`: These are the secret names visible in the Kestra UI.
-- `credentials`, `config`, `keys`, `tokens`: These are the `subkey` key value pairs that can be used in a Kestra flow.
+- `app1` and `app2`: These are the path names to the secrets. This could be for example separate business units or applications.
+- `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
+- `DATBASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
-With the above example structure if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
+With the above example structure, if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
 
 ```yaml
 address: https://my-vault:8200/
@@ -101,7 +102,7 @@ token:
   token: my-vault-access-token
 ```
 
-In a flow, to access the value for the subkey `tokens`, you write the `secret()` function with the specified parameters `{{ secret('api', subkey='tokens') }}`.
+This configuration gives Kestra access to the `db` and `api` secrets as they are the secrets on the `app1` path. In a flow, to access the value for the subkey `API_TOKEN`, you write the `secret()` function with the specified parameters `{{ secret('api', subkey='API_TOKEN') }}`.
 
 ## Vault full example
 
