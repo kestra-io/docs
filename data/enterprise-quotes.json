@@ -1,0 +1,40 @@
+[{
+  "quote": "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+  "author": {
+    "name": "Julien Henrion",
+    "title":"Head of Data Engineering",
+    "company": "Leroy Merlin"
+  }
+},
+{
+  "quote": "Companies typically don't like to share their secret weapon but everyone in the data world needs to know about Kestra. It has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
+  "author": {
+    "name": "Michael Heidner",
+    "title": "CEO",
+    "company": "Foundation Direct"
+  }
+},
+{
+  "quote": "Companies typically don't like to share their secret weapon but everyone in the data world needs to know about Kestra. It has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
+  "author": {
+    "name": "Michael Heidner",
+    "title": "CEO",
+    "company": "Foundation Direct"
+  }
+},
+{
+  "quote": "Companies typically don't like to share their secret weapon but everyone in the data world needs to know about Kestra. It has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
+  "author": {
+    "name": "Michael Heidner",
+    "title": "CEO",
+    "company": "Foundation Direct"
+  }
+},
+{
+  "quote": "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop.",
+  "author": {
+    "name": "Sylvain L.",
+    "title": "Data Engineer",
+    "company": "Acxiom"
+  }
+}]

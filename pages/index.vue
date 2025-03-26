@@ -15,6 +15,7 @@
         <HomePlugins/>
         <HomeBlueprints/>
         <HomeEnterprise/>
+        <HomeEnterpriseQuotes />
     </div>
 </template>
 
