@@ -86,7 +86,7 @@ Note that it's possible to use the [Enterprise Edition](/pricing) with a JDBC da
 
 The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with **Internal Storage** to persist intermediary results and store the final task run outputs.
 
-All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communcating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently.
+All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communicating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently.
 
 The **Webserver** communicates with the (Elasticsearch/JDBC) Repository to serve data for Kestra UI and API.
 
