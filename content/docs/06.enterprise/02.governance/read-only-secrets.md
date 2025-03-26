@@ -13,7 +13,13 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 ## Configure read-only secrets
 
-Read-only secrets can be configured globally in the configuration file as well as enabled from the UI in the [Namespace](../../04.workflow-components/02.namespace.md) edit page. To turn on for a specific Namespace, toggle on in the UI.
+Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level. 
+
+To turn on for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
+
+![read-only-secrets-8](/docs/enterprise/read-only-secrets-8.png)
+
+To turn on for a specific Namespace, toggle the setting on in the **Dedicated secrets manager** configuration of the **Edit** tab.
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
 
@@ -35,7 +41,6 @@ kestra:
     awsSecretManager:
       accessKeyId: mysuperaccesskey
       secretKeyId: mysupersecretkey
-      sessionToken: mysupersessiontoken
       region: us-east-1
 ```
 
@@ -78,7 +83,7 @@ With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a 
 secret/
   ├── app1/
   │   ├── db/ <-- SECRET
-  │   │   ├── DATBASE_USERNAME    # Subkey
+  │   │   ├── DATABASE_USERNAME    # Subkey
   │   │   ├── DATABASE_PASSWORD   # Subkey
   │   ├── api/ <-- SECRET
   │       ├── keys                # Subkey
