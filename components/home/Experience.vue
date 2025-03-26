@@ -43,7 +43,12 @@ const displayTab = ref(0)
 </script>
 
 <style lang="scss" scoped>
+    @import "../../assets/styles/variable";
     .container {
+        display: none;
+        @include media-breakpoint-up(lg){
+            display: block;
+        }
         text-align: center;
         position: relative;
         h2 {
