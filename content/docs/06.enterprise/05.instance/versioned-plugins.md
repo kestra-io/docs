@@ -31,6 +31,7 @@ An example configuration looks as follows:
 kestra: 
   plugins:
       management:
+        enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
         remoteStorageEnabled: true
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
