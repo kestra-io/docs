@@ -101,6 +101,8 @@ token:
   token: my-vault-access-token
 ```
 
+In a flow, to access the value for the subkey `tokens`, you write the `secret()` function with the specified parameters `{{ secret('api', subkey='tokens') }}`.
+
 ## Vault full example
 
 The following steps walk through a full example configuring Vault as your secret manager with read-only secrets enabled. This example uses [KV Secrets Engine - Version 2 with Vault Enterprise](./secrets-manager.md#kv-secrets-engine---version-2) so `rootEngine` and `namespace` are used as optional properties.
@@ -122,6 +124,46 @@ In Vault, we know `my-app` is the secret that hosts the subkey we are looking fo
 ![read-only-secrets-5](/docs/enterprise/read-only-secrets-5.png)
 
 Now to use in our flow, we need to use the `secret()` function with the name of our secret `my-app` and the `subkey` parameter set to the key of the secret value we want to use, which in this case is `NEON_PASSWORD`.
+
+::collapse{title="Expand for a Flow yaml"}
+```yaml
+id: neon-db
+namespace: dv-aj
+
+tasks:
+  
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: create_columns
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      ALTER TABLE kestra_example_secret
+      ADD COLUMN order_id int,
+      ADD COLUMN customer_name text,
+      ADD COLUMN customer_email text,
+      ADD COLUMN product_id int,
+      ADD COLUMN price double precision,
+      ADD COLUMN quantity int,
+      ADD COLUMN total double precision;
+
+  - id: copy_in
+    type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    table: "kestra_example_secret"
+    from: "{{ outputs.download.uri }}"
+    header: true
+    columns: [order_id,customer_name,customer_email,product_id,price,quantity,total]
+    delimiter: ","
+
+
+pluginDefaults:
+  - forced: true
+    type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: jdbc:postgresql://ep-ancient-flower-a2e73um1-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password={{secret('my-app', subkey='NEON_PASSWORD')}}
+```
+::
 
 ![read-only-secrets-6](/docs/enterprise/read-only-secrets-6.png)
 
