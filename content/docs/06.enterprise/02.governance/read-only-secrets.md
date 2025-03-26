@@ -6,6 +6,10 @@ editions: ["EE"]
 
 Integrate external secrets managers in a read-only mode.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/CJYoGfWDIO8?si=b4z3MZaHf_uddM_0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Read-only secrets
 
 When integrating an external [secrets manager](secrets-manager.md) with Kestra, you may want to ensure that those secrets cannot be modified within Kestra, maintaining immutability.
