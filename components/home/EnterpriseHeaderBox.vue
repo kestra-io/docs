@@ -34,8 +34,11 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
+        justify-content: space-between;
         padding: 1rem;
         row-gap: 2rem;
+        max-width: 1140px;
+        margin: 0 auto;
         @include media-breakpoint-up(lg){
             padding: 4rem;
             flex-direction: row-reverse;
