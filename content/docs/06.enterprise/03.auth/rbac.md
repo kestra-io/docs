@@ -46,19 +46,25 @@ In short, Roles encapsulate permission boundaries that can be attached to Users,
 
 A Permission is a resource that can be accessed by a User or Group. Supported Permissions:
 - `FLOW`
-- `BLUEPRINT`
+- `EXECUTION`
 - `TEMPLATE`
 - `NAMESPACE`
-- `EXECUTION`
+- `KVSTORE`
+- `DASHBOARD`
 - `USER`
 - `GROUP`
 - `ROLE`
 - `BINDING`
 - `AUDITLOG`
 - `SECRET`
+- `BLUEPRINT`
+- `INFRASTRUCTURE`
 - `IMPERSONATE`
 - `SETTING`
-- `INFRASTRUCTURE`
+- `APP`
+- `APPEXECUTION`
+- `ME`
+- `APITOKEN`
 
 ### Actions
 
@@ -73,7 +79,9 @@ An Action is a specific operation that can be performed on a Permission. Support
 
 Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
 
-Apart from that, you can create additional Roles with custom permissions.
+Apart from that, you can create additional Roles with custom permission combinations. You can create roles and select the permissions and actions in the **IAM - Roles** tab.
+
+![role-creation](/docs/enterprise/role-creation.png)
 
 ## Super Admin and Admin
 
