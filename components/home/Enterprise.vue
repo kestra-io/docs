@@ -1,5 +1,18 @@
 <template>
-    <div>
-        <h2>Scale With Kestra <span>Enterprise Edition</span></h2>
+    <div class="home-enterprise">
+        <HomeEnterpriseHeaderBox />
+        <HomeEnterpriseStories />
     </div>
 </template>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+    .home-enterprise {
+        background-color: white;
+        padding: 2rem 1rem;
+        @include media-breakpoint-up(lg){
+            padding: 6rem;
+        }
+        text-align: center;
+    }
+</style>
