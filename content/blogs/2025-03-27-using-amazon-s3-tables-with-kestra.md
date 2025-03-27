@@ -7,6 +7,7 @@ author:
   name: Shruti Mantri
   image: smantri
   role: 
+image: /blogs/s3-table.jpg
 ---
 
 Amazon recently introduced S3 Tables, purpose-built for storing and querying tabular data directly on S3. Backed by built-in Apache Iceberg support, S3 Tables make data instantly accessible to popular AWS and third-party analytics engines like EMR and Athena.
