@@ -166,7 +166,7 @@ TBD ADD DOC LINK
 
 ### Enhanced Log Shippers
 
-This release significantly expands Kestra's logging capabilities with new integrations and features:
+This release significantly expands Kestra's LogShipper capabilities introduced in the previous release with new integrations and features:
 
 - **New Log Shipper Integrations**:
   - Splunk
@@ -174,7 +174,9 @@ This release significantly expands Kestra's logging capabilities with new integr
   - Google Cloud Storage
   - Azure Blob Storage
 
-- **AuditLogs Log Shipper**: A powerful new feature that captures and exports comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
+TBD LINK TO DOC - https://github.com/kestra-io/docs/pull/2307/files#diff-70a3bf31ac506aa1a42355b8340a7af81a1ef3400b2e70fcb07af76622d50b5c
+
+- **AuditLogs Log Shipper**: you can now captures and exports comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
   - Complete audit trail of system activities
   - Enhanced security monitoring
   - Compliance reporting capabilities
@@ -187,23 +189,24 @@ This release introduces new global views for managing secrets and key-value pair
 
 - **Key-Value Store Overview:** We've added a dedicated tab to the main navigation that shows all key-value pairs throughout your instance. This hub lets you track and adjust KV pairs across namespaces without switching contexts. You can check values, set expiration times, and sort your data efficiently in one location.
 
-- **Secrets Management:** Enterprise Edition users gain access to a new tabs on the left menu for managing secret.
-
-For Open Source users, the same intuitive interface is available with a clear upgrade path to Enterprise features, maintaining a consistent user experience across both editions.
-
-TBD ADD DOC LINK
-
+- **Secrets Overview:** Enterprise Edition users gain access to a new tabs on the left menu for managing secret.
 
 
 ## Other Features and Improvements
 
-- Improvements of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
-- [DevContainer support](https://github.com/kestra-io/kestra/pull/7507) simplifies developer onboarding with ready-to-use development environments. NEED DOC LINK ?
-- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. https://github.com/kestra-io/docs/pull/2307/files#diff-a07a10ebe006ff8445184afa3467e3e0504bae68cceb4b6ec74e8e1a58838b50
-- Improvements Ansible outputs integration allows seamless connection between Ansible playbooks and Kestra workflows. You can find new blueprints
-- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
+- [Improvements](https://github.com/kestra-io/kestra-ee/issues/2843) of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
+
+- [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments.
+
+- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. TBD LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-a07a10ebe006ff8445184afa3467e3e0504bae68cceb4b6ec74e8e1a58838b50
+
+- Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35), enabling seamless connection between Ansible playbooks and Kestra workflows.
+
 - Comprehensive bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows.
-- Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. NEED DOC
+
+- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
+
+- Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. The `{{ tasks.<your_task_name>.state }}` context return a task state while the `{{ execution.state }}` allows to get the flow execution state.
 
 
 ## User Interface & Experience Improvements
@@ -330,24 +333,22 @@ pluginDefaults:
 
 ### New MariaDB tasks
 
-- https://github.com/kestra-io/plugin-jdbc/commit/ab18b1bf14a656b8f469c5494b9f0d610d47c73e
+We've also introduced new tasks for MariaDB, including Query, Queries and Trigger, similar to other JDBC plugin-based tasks. These tasks allow you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details on how to use these tasks in your workflows.
 
 ### New ServiceNow tasks
 
-TBD
-
-::collapse{title="Supabase task example"}
-```yaml
-
-```
-::
+We've expanded our ServiceNow integration with a new Get task. This addition allows you to retrieve data from ServiceNow instances directly within your Kestra workflows. Check out the [ServiceNow plugin documentation](https://kestra.io/plugins/plugin-servicenow) for more details on how to use these tasks in your workflows.
 
 ### New Pebble functions
 
-TBD
+Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow capabilities:
 
-- https://github.com/kestra-io/kestra/issues/6888
-- https://github.com/kestra-io/docs/pull/2307/files#diff-02828a7b2b26c3414fd3dd1de86d65d5d367fb99768c0dafe2a09a9256df512f
+- **fileSize**: `{{ fileSize(output.download.uri) }}` — Returns the size of the file present at the given uri location.
+- **fileExists**: `{{ fileExists(output.download.uri) }}` — Returns true if file is present at the given uri location.
+- **fileEmpty**: `{{ fileEmpty(output.download.uri) }}` — Returns true if file present at the given uri location is empty.
+- **Environment Name**: `{{ kestra.environment.name }}` — Returns the name given to your environment. This value should be configured in the Kestra configuration.
+- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the Kestra configuration.
+
 
 ## Thanks to Our Contributors
 
