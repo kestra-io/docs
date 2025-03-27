@@ -99,7 +99,7 @@ secret/
 - `secret`: This is the secret engine.
 - `app1` and `app2`: These are the path names to the secrets. This could be for example separate business units or applications.
 - `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
-- `DATBASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
+- `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
 With the above example structure, if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
 
