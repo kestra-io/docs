@@ -60,6 +60,10 @@ The new read-only mode for external secrets managers allows you to reference sec
 
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
@@ -97,6 +101,10 @@ afterExecution:
 ```
 ::
 
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/9GoJhOPUZH8?si=oT89y6uhpDtGrcbl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 TBD ADD DOC LINK
 
