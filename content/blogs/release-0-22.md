@@ -224,6 +224,7 @@ As with each release, there are more UI and UX enhancements:
 
 - Improved Editor contrast in the light mode.
 - Add button to export the topology view to PNG or JPG.
+- Added one-click copy functionality for Pebble expressions (e.g., `{{ kv('my_value') }}`) in KV Store and Secret tables, making it easier to reference these values in your workflows
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
 - As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
 
