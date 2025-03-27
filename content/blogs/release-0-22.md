@@ -19,6 +19,9 @@ The table below highlights the key features of this release.
 | Read-Only External Secrets Manager         | TBD                 | Enterprise Edition |
 | `afterExecution` property       | TBD                 | All Edition |
 | Sharing of Namespace Files and KV Store across namespaces       | TBD                 | All Edition |
+| LDAP Integration         | Streamlined authentication and user management for enterprise environments | Enterprise Edition |
+| Enhanced Log Shippers    | New integrations including Splunk, AWS S3, Google Cloud Storage, Azure Blob, and exporting AuditLogs | Enterprise Edition |
+| Global View for Secrets and KV Store | Unified interface for managing secrets and key-value pairs across namespaces | All Edition |
 
 Check the video below for a quick overview of the new features.
 
@@ -45,10 +48,6 @@ Plugins are now stored in internal storage and automatically synchronized across
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-![](SCREENSHOT 1)
-
-![](SCREENSHOT 2)
-
 TBD ADD DOC LINK
 
 > Note: Plugin versioning is currently in beta and may undergo changes in upcoming releases.
@@ -57,17 +56,15 @@ TBD ADD DOC LINK
 
 Managing secrets securely across your automation environment is critical for maintaining compliance and security standards. Kestra 0.22 introduces External Secret Manager capabilities, enabling seamless integration with your established security infrastructure.
 
-The new read-only mode for external secrets managers allows you to reference secrets that remain managed in your external system. The integration currently supports HashiCorp Vault with path prefix capabilities, enabling you to precisely control which secrets are accessible to your workflows.
-
-TO CHECK: WHAT ABOUT GCP, AWS, Azure?
+The new read-only mode for external secrets managers allows you to reference secrets that remain managed in your external system.
 
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
 TBD ADD DOC LINK
 
-![](SCREENSHOT 2)
+![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
 
-
+![read only secret manager 2](/blogs/release-0-22/read-only-secret-manager-2.png)
 
 ### `afterExecution` property
 
@@ -140,10 +137,51 @@ TBD ADD DOC LINK
 
 TBD example
 
+### LDAP Integration
+
+Enterprise environments require robust authentication and user management capabilities. Kestra 0.22 introduces comprehensive LDAP integration, enabling seamless synchronization of users and groups from your existing LDAP infrastructure.
+
+Key features include:
+- Automatic user synchronization with LDAP directories
+- Group-based access control mapping
+- Support for multiple LDAP servers
+- Configurable attribute mapping for user profiles
+
+TBD ADD DOC LINK
+
+### Enhanced Log Shippers
+
+This release significantly expands Kestra's logging capabilities with new integrations and features:
+
+- **New Log Shipper Integrations**:
+  - Splunk
+  - AWS S3
+  - Google Cloud Storage
+  - Azure Blob Storage
+
+- **AuditLogs Log Shipper**: A powerful new feature that captures and exports comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
+  - Complete audit trail of system activities
+  - Enhanced security monitoring
+  - Compliance reporting capabilities
+
+TBD ADD DOC LINK
+
+### Global View for Secrets and KV Store
+
+This release introduces new global views for managing secrets and key-value pairs across your entire Kestra instance:
+
+- **Key-Value Store Overview:** We've added a dedicated tab to the main navigation that shows all key-value pairs throughout your instance. This hub lets you track and adjust KV pairs across namespaces without switching contexts. You can check values, set expiration times, and sort your data efficiently in one location.
+
+- **Secrets Management:** Enterprise Edition users gain access to a new tabs on the left menu for managing secret.
+
+For Open Source users, the same intuitive interface is available with a clear upgrade path to Enterprise features, maintaining a consistent user experience across both editions.
+
+TBD ADD DOC LINK
+
+
+
 ## Other Features and Improvements
 
-- New LDAP integration. It provides streamlined authentication and user management for enterprise environments. NEED DOC LINK https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
-- New Log Shippers. Including Splunk, AWS S3, Google Cloud Storage, Azure Blob. This release also introduce AuditLogs Log Shipper allowing to export records for all activities performed in your Kestra instance by users and service accounts. https://github.com/kestra-io/docs/pull/2307/files#diff-70a3bf31ac506aa1a42355b8340a7af81a1ef3400b2e70fcb07af76622d50b5c
 - Improvements of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
 - [DevContainer support](https://github.com/kestra-io/kestra/pull/7507) simplifies developer onboarding with ready-to-use development environments. NEED DOC LINK ?
 - [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. https://github.com/kestra-io/docs/pull/2307/files#diff-a07a10ebe006ff8445184afa3467e3e0504bae68cceb4b6ec74e8e1a58838b50
@@ -157,7 +195,6 @@ TBD example
 
 As with each release, there are more UI and UX enhancements:
 
-- Global View for Secrets and KV Store TBD (highlights?)
 - Improved Editor contrast in the light mode.
 - Add button to export the topology view to PNG or JPG.
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
@@ -308,3 +345,4 @@ This post covered new features and enhancements added in Kestra 0.22.0. Which of
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+
