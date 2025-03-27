@@ -72,9 +72,9 @@ TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a
 
 ### `afterExecution` property
 
-This release introduce a new flow property: `afterExecution`. This allows to run any set of tasks **after** the execution of the flow. It differs from the `finally` property that run tasks at the end of the flow while the execution is still in `RUNNING` state.
+This release introduces a new flow property: `afterExecution`. This allows you to run any set of tasks **after** the execution of the flow. It differs from the `finally` property that runs tasks at the end of the flow while the execution is still in `RUNNING` state.
 
-You might use `afterExecution` to send notifications or update documentation after a flow completes, regardless of whether it succeeded or failed. Unlike `finally` which runs while the flow is still active, afterExecution ensures these tasks only begin after the entire execution finishes, providing cleaner separation between your core workflow and post-completion tasks.
+You might use `afterExecution` to send notifications or update documentation after a flow completes, regardless of whether it succeeded or failed. Unlike `finally` which runs while the flow is still active, `afterExecution` ensures these tasks only begin after the entire execution finishes, providing cleaner separation between your core workflow and post-completion tasks.
 
 ::collapse{title="Example of `afterExecution` vs `finally`"}
 ```yaml
@@ -184,7 +184,7 @@ This release significantly expands Kestra's LogShipper capabilities introduced i
 
 TBD LINK TO DOC - https://github.com/kestra-io/docs/pull/2307/files#diff-70a3bf31ac506aa1a42355b8340a7af81a1ef3400b2e70fcb07af76622d50b5c
 
-- **AuditLogs Log Shipper**: you can now captures and exports comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
+- **AuditLogs Log Shipper**: you can now capture and export comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
   - Complete audit trail of system activities
   - Enhanced security monitoring
   - Compliance reporting capabilities
@@ -197,7 +197,7 @@ This release introduces new global views for managing secrets and key-value pair
 
 - **Key-Value Store Overview:** We've added a dedicated tab to the main navigation that shows all key-value pairs throughout your instance. This hub lets you track and adjust KV pairs across namespaces without switching contexts. You can check values, set expiration times, and sort your data efficiently in one location.
 
-- **Secrets Overview:** Enterprise Edition users gain access to a new tabs on the left menu for managing secret.
+- **Secrets Overview:** Enterprise Edition users gain access to a new tabs on the left menu for managing secrets.
 
 
 ## Other Features and Improvements
