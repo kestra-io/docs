@@ -16,6 +16,7 @@
         <HomeBlueprints/>
         <HomeEnterprise/>
         <HomeEnterpriseQuotes />
+        <HomeCTA/>
     </div>
 </template>
 

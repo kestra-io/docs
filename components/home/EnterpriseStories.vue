@@ -10,7 +10,7 @@
                     <q>{{ story.quote.replace(/[“”"]/g, "").trim() }}</q>
                     <p class="author">{{ story.quotePerson }}</p>
                     <p class="title">{{ story.quotePersonTitle }}</p>
-                    <a :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`" class="btn btn-secondary">Read the Story</a>
+                    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`" class="btn btn-secondary">Read the Story</NuxtLink>
                 </div>
             </div>
         </div>
