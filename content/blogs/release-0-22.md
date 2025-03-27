@@ -158,7 +158,11 @@ Key features include:
 - Support for multiple LDAP servers
 - Configurable attribute mapping for user profiles
 
+Once LDAP is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if the groups already exist, users will be automatically added to them.
+
 TBD ADD DOC LINK
+
+![ldap](/blogs/release-0-22/ldap.png)
 
 ### Enhanced Log Shippers
 
