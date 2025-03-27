@@ -47,3 +47,5 @@ security:
 For Kestra-specific configuration, `user-attributes` is the key property that links the attributes on the LDAP side to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
 
 With LDAP configured, when a user logs into Kestra for the first time, their login attributes will be checked against the LDAP directory. If they are a part of any groups specified in the directory, those groups will be added to Kestra, and if the group already exists in Kestra, then they will be added automatically. Any user authenticated through LDAP, will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
+
+![ldap-1](/docs/enterprise/sso/ldap-1.png)
