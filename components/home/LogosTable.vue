@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-const companies = import.meta.glob('~/public/landing/companies/*.{svg,png}', {
+const companies = import.meta.glob('~/public/landing/home/companies/*.{svg,png}', {
     import: "default",
     query: 'url',
 })
