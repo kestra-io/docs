@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes', () => {
+const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes-oss', () => {
     return import('@/data/oss-quotes.json').then((quotes: any) => quotes.default.sort(() => Math.random() - 0.5))
 })
 </script>
