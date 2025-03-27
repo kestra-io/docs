@@ -14,7 +14,7 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 ## Configuration
 
-YAML Example (TBD)
+LDAP is configured in the security context of your Kestra configuration file. Below is an example configuration that includes Kestra-specific properties on top of out of the box Micronaut configuration.
 
 ```yaml
 security:
@@ -41,3 +41,9 @@ security:
           filter: "{&(objectClass=posixGroup)(memberUid={0})}"
           filter-attribute: uid
 ```
+
+[LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) has `context`, `search`, and `groups` as basic configuration properties supported out of the box. They provide the connection context to the directory of users, user attributes to be linked to the Kestra instance, and filter information to sync the users' groups to Kestra based on your LDAP directory. 
+
+For Kestra-specific configuration, `user-attributes` is the key property that links the attributes on the LDAP side to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
+
+With LDAP configured, when a user logs into Kestra for the first time, their login attributes will be checked against the LDAP directory. If they are a part of any groups specified in the directory, those groups will be added to Kestra, and if the group already exists in Kestra, then they will be added automatically. Any user authenticated through LDAP, will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
