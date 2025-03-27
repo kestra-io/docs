@@ -12,7 +12,7 @@ image: /blogs/s3-table.jpg
 
 Amazon recently introduced S3 Tables, purpose-built for storing and querying tabular data directly on S3. Backed by built-in Apache Iceberg support, S3 Tables make data instantly accessible to popular AWS and third-party analytics engines like EMR and Athena.
 
-In this guide, we’ll show you how to orchestrate a complete workflow using Kestra—from downloading raw CSV files to converting them, uploading to S3, and creating Iceberg-backed S3 Tables. You’ll also learn how to query the data using Athena.
+In this post, we’ll show you how to orchestrate a complete workflow using Kestra—from downloading raw CSV files to converting them, uploading to S3, and creating Iceberg-backed S3 Tables. You’ll also learn how to query the data using Athena.
 
 ## Why S3 Tables and Kestra?
 
@@ -45,11 +45,11 @@ In order to get the end-to-end Kestra workflow that interacts with S3 table, we 
 
 ### Create general purpose S3 bucket
 
-Firstly, we will need a general purpose S3 bucket where we will store the data. For this, navigate to the [S3 service](https://console.aws.amazon.com/s3/home) on the AWS console. From the left navigation menu, select `General purpose buckets`. On the `General purpose buckets` page, click on the `Create bucket` button. On the `Create bukcet` page, provide a globally unique bucket name in the `Bucket name` text box. For the purpose of this blog, say we put the bucket name as `s3-general-purpose-ecommerce`. Rest of the configurations can be left as default, and click on the **Create bucket** button at the bottom of the page. This will create the new bucket.
+Firstly, we will need a general purpose S3 bucket where we will store the data. For this, navigate to the [S3 service](https://console.aws.amazon.com/s3/home) on the AWS console. From the left navigation menu, select `General purpose buckets`. On the `General purpose buckets` page, select the `Create bucket` button. On the `Create bucket` page, provide a globally unique bucket name in the `Bucket name` text box. For the purpose of this blog, for example we name the bucket as `s3-general-purpose-ecommerce`. Rest of the configurations can be left as default, and select the **Create bucket** button at the bottom of the page. This will create the new bucket.
 
 ![Create S3 General Purpose Bucket](/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_s3_general_purpose_bucket.png)
 
-From the `General purpose bukcets` page, search for the newly created bucket, and click on the bucket name. On the corresponding bucket's home page, click on the `Create folder` button. Provide the folder name, say `data`, and click on the `Create folder` button at the bottom of the page. We will be storing our data in this folder.
+From the `General purpose buckets` page, search for the newly created bucket, and select the bucket name. On the corresponding bucket's home page, select the `Create folder` button. Provide the folder name, for example `data`, and select the `Create folder` button at the bottom of the page. We will be storing our data in this folder.
 
 ### Getting the data into S3 bucket
 
@@ -101,11 +101,11 @@ tasks:
 
 On the [S3 service](https://console.aws.amazon.com/s3/home) page on the AWS console, navigate to `Table buckets` from the left navigation menu.
 
-In case, you are opening the table buckets page for the first time, you will see a box at the top of the page about `Integration with AWS analytics services - New` with the `Enable integration` button. Click on the button and enable the integration of S3 table buckets with AWS analytics services like Amazon EMR, Amazon Redshift and Amazon Athena.
+In case, you are opening the table buckets page for the first time, you will see a box at the top of the page about `Integration with AWS analytics services - New` with the `Enable integration` button. Select the button and enable the integration of S3 table buckets with AWS analytics services like Amazon EMR, Amazon Redshift and Amazon Athena.
 
 ![Enable Integration](/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/enable_integration.png)
 
-Next, we will create a table bucket. Click on the `Create table bucket` button at the top of the page. On the `Create table bucket` page, provide an appropriate name for the table bucket, say `ecommerce-lakehouse`. Click on the `Create table bucket` button at the bottom of the page. This will create the new table bucket.
+Next, we will create a table bucket. Select the `Create table bucket` button at the top of the page. On the `Create table bucket` page, provide an appropriate name for the table bucket, say `ecommerce-lakehouse`. Select the `Create table bucket` button at the bottom of the page. This will create the new table bucket.
 
 ![Create Table Bucket](/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_table_bucket.png)
 
@@ -113,11 +113,11 @@ Next, we will create a table bucket. Click on the `Create table bucket` button a
 
 Navigate to [IAM service](https://console.aws.amazon.com/iam/home) on the AWS console. Navigate to `Roles` from the left navigation menu. Using the search box on the top of the page, ensure that you have `EMR_DefualtRole` and `EMR_EC2_DefaultRole` roles already present. If the roles are missing, you can create these default roles using `create-default-roles` as described [here](https://docs.aws.amazon.com/cli/latest/reference/emr/create-default-roles.html). Both these roles will be required for creating the EMR cluster.
 
-On the `Roles` page with IAM, search for `EMR_EC2_DefaultRole`, and click the same. On the `EMR_EC2_DefaultRole` role page, click on the `Add permissions` button, and from the dropdown that appears, click on `Attach Policies`. On the `Attach policy for EMR_EC2_DefaultRole` page, search for `AmazonS3TablesFullAccess`, select the `AmazonS3TablesFullAccess` policy and click on `Add permissions` button. This provides full access to S3 tables from the EC2 machines of the EMR.
+On the `Roles` page with IAM, search for `EMR_EC2_DefaultRole`, and select the same. On the `EMR_EC2_DefaultRole` role page, select the `Add permissions` button, and from the dropdown that appears, select `Attach Policies`. On the `Attach policy for EMR_EC2_DefaultRole` page, search for `AmazonS3TablesFullAccess`, select the `AmazonS3TablesFullAccess` policy and select `Add permissions` button. This provides full access to S3 tables from the EC2 machines of the EMR.
 
 ### Creating EC2 key pair
 
-Navigate to [EC2 service](https://console.aws.amazon.com/ec2/home) on the AWS console. From the left navigation menu, navigate to `Key pairs`. On the `Key pairs` page, click on the `Create key pair` button at the top of the page. On the `Create key pair` page, provide an appropriate name for the key pair, say `emr-ec2-key-pair`, and click on the `Create key pair` button at the bottom of the page. This will download the pem file associated with the key pair to your machine, and the new key pair will be created.
+Navigate to [EC2 service](https://console.aws.amazon.com/ec2/home) on the AWS console. From the left navigation menu, navigate to `Key pairs`. On the `Key pairs` page, select the `Create key pair` button at the top of the page. On the `Create key pair` page, provide an appropriate name for the key pair, say `emr-ec2-key-pair`, and select the `Create key pair` button at the bottom of the page. This will download the pem file associated with the key pair to your machine, and the new key pair will be created.
 
 ![Create EC2 Key Pair](/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_ec2_key_pair.png)
 
@@ -281,7 +281,7 @@ tasks:
     wait: true
 ```
 
-Running this workflow will get the data loaded onto S3 table bucket which can then be queried using Iceberg table in query services like Amazon Athena.
+Running this workflow will get the data loaded onto the S3 table bucket which can then be queried using Iceberg table in query services like Amazon Athena.
 
 ### Querying S3 Table using Amazon Athena
 
@@ -305,4 +305,4 @@ Kestra workflows can be used to work with the S3 table buckets and create Iceber
 
 If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
