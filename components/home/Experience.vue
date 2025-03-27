@@ -8,13 +8,13 @@
 
         <div class="tabs">
             <div class="activeMarker" :style="{left:`${displayTab * 25}%`}"/>
-            <button v-for="tab, index in tabs" :key="tab.label" class="tab" :class="{tabActive: index === displayTab}" @click="displayTab = index">
+            <button v-for="tab, index in tabs" :key="tab.label" class="tab" :class="{tabActive: index === displayTab}" @click="setTab(index)">
                 {{ tab.label }}
             </button>
         </div>
-        <Transition name="fade">
-            <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image"/>
-        </Transition>
+        <TransitionGroup name="slide">
+            <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
+        </TransitionGroup>
     </div>
 </template>
 
@@ -40,6 +40,18 @@ const tabs = [
 ]
 
 const displayTab = ref(0)
+const isSlidingToLeft = ref(false)
+
+function setTab(index: number) {
+    if (index === displayTab.value) {
+        return;
+    }
+    isSlidingToLeft.value = index < displayTab.value;
+    nextTick(() => {
+        displayTab.value = index;
+    })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -51,6 +63,7 @@ const displayTab = ref(0)
         }
         text-align: center;
         position: relative;
+        overflow: hidden;
         h2 {
             color: white;
             font-size: 36px;
@@ -66,6 +79,11 @@ const displayTab = ref(0)
                 -webkit-text-fill-color: transparent;
             }
         }
+    }
+    .experience-image {
+        width:100%;
+        height: auto;
+        margin-top: 1rem;
     }
 
     .tabs {
@@ -96,15 +114,25 @@ const displayTab = ref(0)
         color: white;
     }
 
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity 1.5s ease;
+    .slide-enter-active,
+    .slide-leave-active {
+        transition: transform 1s ease;
     }
 
-    .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
+    .slide-leave-to,
+    .slide-enter-from{
         position: absolute;
-        left: .8rem;
+    }
+    .slide-leave-to{
+        transform: translateX(-100%);
+        &.isSlidingToLeft{
+            transform: translateX(100%);
+        }
+    }
+    .slide-enter-from{
+        transform: translateX(100%);
+        &.isSlidingToLeft{
+            transform: translateX(-100%);
+        }
     }
 </style>
