@@ -32,7 +32,7 @@
       "title": "Lead Software Engineer",
       "company": "Axciom"
     },
-    "logo": "/landing/companies/acxiom.svg"
+    "logo": "/landing/home/companies/acxiom.svg"
   },
   {
     "quote": "We're convinced we chose the right tool. The support and communication are great. Kestra adapts to any tool thanks to its plugins, and it's easy for anyone to understand.",
@@ -65,7 +65,7 @@
       "title": "Purple Team Cybersecurity",
       "company": "Orange"
     },
-    "logo": "/landing/companies/orange.svg"
+    "logo": "/landing/home/companies/orange.svg"
   },
   {
     "quote": "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes. Its strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines, including those in the field of genomics.",
@@ -114,7 +114,7 @@
       "title": "Product Manager",
       "company": "Clever Connect"
     },
-    "logo": "/landing/companies/clever-connect.svg"
+    "logo": "/landing/home/companies/clever-connect.svg"
   },
   {
     "quote": "Kestra is the first exciting thing I’ve seen in a long time.I’ve spent a huge part of my career looking for a solution that handle huge data sets.",
@@ -131,7 +131,7 @@
       "title": "IT Project Manager",
       "company": "Airpaz"
     },
-    "logo": "/landing/companies/airpaz.svg"
+    "logo": "/landing/home/companies/airpaz.svg"
   },
   {
     "quote": "I'd like to say the product is fantastic! I love it so far! […] With Kestra we run git pull, build dbt models, and run Elementary reports and send a notification over Slack for the Elementary report, and it’s a breeze!",
@@ -164,7 +164,7 @@
       "title": "Data Engineer",
       "company": "Decathlon"
     },
-    "logo": "/landing/companies/decathlon.svg"
+    "logo": "/landing/home/companies/decathlon.svg"
   },
   {
     "quote": "With Kestra, I got started in minutes, no complex deployment, no rate limits, no lock-in to Python. Triggers, logs, multi-language support, it all just works. Compared to Prefect, Kestra feels like everything is in the right place.",
