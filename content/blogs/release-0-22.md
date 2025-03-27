@@ -223,7 +223,7 @@ This release introduces new global views for managing secrets and key-value pair
 As with each release, there are more UI and UX enhancements:
 
 - Improved Editor contrast in the light mode.
-- Add button to export the topology view to PNG or JPG.
+- New export functionality for topology views, allowing you to save workflow diagrams as PNG or JPG files for documentation or sharing with stakeholders.
 - Added one-click copy functionality for Pebble expressions (e.g., `{{ kv('my_value') }}`) in KV Store and Secret tables, making it easier to reference these values in your workflows
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
 - As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
@@ -343,7 +343,7 @@ pluginDefaults:
 
 ### New MariaDB tasks
 
-We've also introduced new tasks for MariaDB, including Query, Queries and Trigger, similar to other JDBC plugin-based tasks. These tasks allow you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details on how to use these tasks in your workflows.
+We've also introduced a new plugin for MariaDB, including Query, Queries and Trigger, similar to other JDBC plugin-based tasks. These tasks allow you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details on how to use these tasks in your workflows.
 
 ### New ServiceNow tasks
 
