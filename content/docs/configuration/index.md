@@ -1304,7 +1304,22 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
 
 ## Secret Managers
 
-You can configure the [secret manager](../06.enterprise/02.governance/secrets-manager.md) backend using the `kestra.secret` configuration.
+You can configure the [secret manager](../06.enterprise/02.governance/secrets-manager.md) backend using the `kestra.secret` configuration. To isolate your secret manager from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.secret.isolation`:
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    azureKeyVault:
+      clientSecret:
+        tenantId: "id"
+        clientId: "id"
+        clientSecret: "secret"
+    isolation: # new
+      enabled: true # default: false
+      deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
+        - EXECUTOR        
+```
 
 ### AWS Secret Manager
 
@@ -1376,7 +1391,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       password:
         user: john
         password: foo
@@ -1393,7 +1408,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       token:
         token: your-secret-token
 ```
@@ -1405,7 +1420,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       appRole:
         path: approle
         roleId: your-role-id
@@ -1783,6 +1798,18 @@ Other internal storage types include:
 - [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
 - [Storage Minio](#minio) compatible with  others *S3 like* storage services
 - [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+
+To isolate your dedicated internal storage from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.storage.isolation`:
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    isolation:
+      enabled: true # default: false
+      deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
+        - EXECUTOR
+```
 
 ### S3
 
