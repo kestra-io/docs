@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <div class="left-box">
+        <div class="side-box">
             <p class="pre-title">Ready to see it in action?</p>
             <h2>Jump in</h2>
 
             <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5 minutes.</p>
             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-secondary">Get Started</NuxtLink>
         </div>
-        <div class="right-box">
+        <div class="side-box">
             <NuxtImg src="/landing/home/logo-cta.svg" alt="CTA" class="logo-cta"/>
             <p class="pre-title">Schedule a meeting</p>
             <h2>Let's meet</h2>
@@ -32,8 +32,7 @@
         text-transform: uppercase;
         font-weight: 300;
     }
-    .left-box,
-    .right-box{
+    .side-box{
         position: relative;
         padding: 4rem 2rem;
         border-radius: 1rem;
