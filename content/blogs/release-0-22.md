@@ -48,7 +48,7 @@ Plugins are now stored in internal storage and automatically synchronized across
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD ADD DOC LINK
+TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-3592cdca9708a236e1c992fd8495d6ad8af8204e4bafb7299a0503e37bebbe35
 
 > Note: Plugin versioning is currently in beta and may undergo changes in upcoming releases.
 
@@ -60,7 +60,7 @@ The new read-only mode for external secrets managers allows you to reference sec
 
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
-TBD ADD DOC LINK
+TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
 
@@ -105,7 +105,7 @@ TBD ADD DOC LINK
 
 Nnamespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
 
-TBD ADD DOC LINK
+TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-5c89e82dad60b4bf3bf26adfebf8c633d9b21c895de85f541427d2166443f5ff
 
 ::collapse{title="Example of NamespaceFiles inheritance"}
 ```yaml
@@ -130,7 +130,7 @@ You can still explicitly provide a namespace value to pull the corresponding key
 
 In the example below, the first task will be able to retrieve the key-value pair defined upstream in the `company` namespace (but not present in `company.team` namespace). The second task is able to get the key-value pair defined from another namespace explicitly provided in the `kv()` function.
 
-TBD ADD DOC LINK
+For more details on how to use and configure the KV Store, check out our [comprehensive documentation](https://kestra.io/docs/concepts/kv-store).
 
 ::collapse{title="Example of key-value inheritance"}
 ```yaml
@@ -160,7 +160,7 @@ Key features include:
 
 Once LDAP is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if the groups already exist, users will be automatically added to them.
 
-TBD ADD DOC LINK
+TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
 
 ![ldap](/blogs/release-0-22/ldap.png)
 
