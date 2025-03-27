@@ -345,7 +345,7 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 
 - **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given uri location.
 - **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given uri location.
-- **fileEmpty**: `{{ fileEmpty(outputs.download.uri) }}` — Returns true if file present at the given uri location is empty.
+- **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given uri location is empty.
 - **Environment Name**: `{{ kestra.environment.name }}` — Returns the name given to your environment. This value should be configured in the Kestra configuration.
 - **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the Kestra configuration.
 
