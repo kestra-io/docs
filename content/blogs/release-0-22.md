@@ -111,7 +111,7 @@ TBD ADD DOC LINK
 
 ### Sharing of Namespace Files and KV Store across namespaces
 
-Nnamespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
+Namespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
 
 TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-5c89e82dad60b4bf3bf26adfebf8c633d9b21c895de85f541427d2166443f5ff
 
