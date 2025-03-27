@@ -9,18 +9,25 @@ author:
   role: 
 ---
 
-Amazon has recently introduced S3 Tables which are purpose built for storing tabular data. It comes with in-built Iceberg support making the tabular data easily queryable with popular AWS and third-party query engines. You can leverage Kestra to ochestrate workflows that interacts with S3 Tables. In this blog, we will work on a detailed Kestra workflow that creates S3 Table and pushes data into the same.
+Amazon recently introduced S3 Tables, purpose-built for storing and querying tabular data directly on S3. Backed by built-in Apache Iceberg support, S3 Tables make data instantly accessible to popular AWS and third-party analytics engines like EMR and Athena.
 
-## An S3 Table Use-case
+In this guide, we’ll show you how to orchestrate a complete workflow using Kestra—from downloading raw CSV files to converting them, uploading to S3, and creating Iceberg-backed S3 Tables. You’ll also learn how to query the data using Athena.
 
-We will create a Kestra workflow that:
+## Why S3 Tables and Kestra?
 
-- Downloads a CSV file
-- Converts the CSV data into parquet format
-- Load the parquet file into S3 bucket
-- Create an S3 Table and load the data from parquet file into the S3 table (using EMR)
+Structured data is often stored in files across object storage systems like S3—but making it queryable usually requires manual setup, format conversion, and provisioning of compute engines.
 
-We will then use a query engine service, Athena, to query the S3 table.
+With Kestra, you can automate this entire process. Our declarative workflows handle data conversion, orchestration logic, infrastructure interactions, and job submission to EMR—all in a repeatable and trackable way.
+
+This walkthrough will help you:
+
+- Ingest and convert data into Parquet format
+
+- Upload the data into S3
+
+- Create an Iceberg table backed by S3 Table Buckets
+
+- Automate querying through Athena
 
 ## Prerequisites
 
