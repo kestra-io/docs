@@ -103,22 +103,16 @@ TBD ADD DOC LINK
 
 ### Sharing of Namespace Files and KV Store across namespaces
 
-- https://github.com/kestra-io/kestra/issues/5467
-
 Nnamespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
 
 TBD ADD DOC LINK
 
-::collapse{title="NamespaceFiles inheritance"}
+::collapse{title="Example of NamespaceFiles inheritance"}
 ```yaml
 id: namespace_files_inheritance
 namespace: company
 
 tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World! 🚀
-
   - id: ns
     type: io.kestra.plugin.scripts.python.Commands
     namespaceFiles:
@@ -132,10 +126,27 @@ tasks:
 ::
 
 For key-value stores, we've introduced inheritance that matches how other Kestra configurations work. KV pairs now automatically flow from parent to child namespaces, giving you more consistency out of the box.
+You can still explicitly provide a namespace value to pull the corresponding key-value pair.
+
+In the example below, the first task will be able to retrieve the key-value pair defined upstream in the `company` namespace (but not present in `company.team` namespace). The second task is able to get the key-value pair defined from another namespace explicitly provided in the `kv()` function.
 
 TBD ADD DOC LINK
 
-TBD example
+::collapse{title="Example of key-value inheritance"}
+```yaml
+id: key_value_inheritance
+namespace: company.team
+
+tasks:
+  - id: get_kv_from_parent
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ kv('root_value') }}"
+
+  - id: get_kv_from_another_namespace
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ kv('test_value', namespace='test') }}"
+```
+::
 
 ### LDAP Integration
 
