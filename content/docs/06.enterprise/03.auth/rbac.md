@@ -254,12 +254,14 @@ security:
     failed-attempts:
       threshold: 10
       time-window: PT15M
+      lock-duration: PT24H
 ```
 The key attributes are:
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
 - `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
+- `lockout-duration`: Defines how long the account remains locked. 
 
-In the above configuration, a user is allotted 10 failed login attemtpts in a 15 minutes window before they are locked out and must be unlocked by an Admin.
+In the above configuration, a user is allotted 10 failed login attemtpts in a 15 minutes window before they are locked out and must wait 24 hours to try again or be unlocked by an Admin.
 ::
 
 ### Users
