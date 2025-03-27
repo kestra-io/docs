@@ -1,6 +1,6 @@
 ---
-title: Kestra 0.22 introduces XXX
-description: TBD
+title: Kestra 0.22 introduces Plugin Versioning, External Secrets, and Namespace Sharing
+description: Kestra 0.22 brings powerful new features including Plugin Versioning, External Secrets, and enhanced namespace sharing capabilities. This release focuses on enterprise-grade management features while improving developer experience with new plugins and Pebble functions.
 date: 2025-04-01T17:00:00
 category: News & Products Updates
 author:
@@ -9,16 +9,16 @@ author:
 image: /blogs/release-0-22.jpg
 ---
 
-Kestra 0.22 introduces TBD and several other improvements.
+Kestra 0.22 introduces Plugin Versioning, External Secrets Manager, afterExecution property, Namespace Files and KV Store sharing, LDAP Integration, Enhanced Log Shippers, and Global View for Secrets and KV Store. This release focuses on enterprise-grade management features while improving developer experience with new plugins and Pebble functions.
 
 The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-|  Plugin Versioning       | TBD                 | Enterprise Edition |
-| Read-Only External Secrets Manager         | TBD                 | Enterprise Edition |
-| `afterExecution` property       | TBD                 | All Edition |
-| Sharing of Namespace Files and KV Store across namespaces       | TBD                 | All Edition |
+|  Plugin Versioning       | Manage multiple versions of plugins simultaneously across your environment | Enterprise Edition |
+| Read-Only External Secrets Manager         | Connect to external secret management systems to access credentials without duplicating sensitive data | Enterprise Edition |
+| `afterExecution` property       | Execute tasks after a flow completes, regardless of its status | All Edition |
+| Sharing of Namespace Files and KV Store across namespaces       | Share files and key-value pairs between namespaces for better resource management | All Edition |
 | LDAP Integration         | Streamlined authentication and user management for enterprise environments | Enterprise Edition |
 | Enhanced Log Shippers    | New integrations including Splunk, AWS S3, Google Cloud Storage, Azure Blob, and exporting AuditLogs | Enterprise Edition |
 | Global View for Secrets and KV Store | Unified interface for managing secrets and key-value pairs across namespaces | All Edition |
