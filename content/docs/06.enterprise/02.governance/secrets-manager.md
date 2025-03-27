@@ -39,8 +39,17 @@ kestra:
 
 Additionally, you can configure the following properties:
 
-- **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
-- **Endpoint Override**: `kestra.secret.aws-secret-manager.endpointOverride` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
+- **Prefix**: `kestra.secret.awsSecretManager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+- **Endpoint Override**: `kestra.secret.awsSecretManager.endpointOverride` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
+
+When adding a secret in AWS, you will need to specify the following tags:
+- `namespace`: the namespace this secret should appear in.
+- `key`: the key which you will use to access the secret inside of your workflow.
+- `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
+
+::alert{type="info"}
+The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets. 
+::
 
 ## Azure Key Vault Configuration
 
@@ -61,9 +70,9 @@ If no credentials are set in the above configuration, Kestra will use the defaul
 
 Additionally, you can configure the following properties:
 
-- **Vault Name**: `kestra.secret.azure-key-vault.vaultName` is the name of the Azure Key Vault.
-- **Key Vault URI**: `kestra.secret.azure-key-vault.keyVaultUri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
-- **Prefix**: `kestra.secret.azure-key-vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+- **Vault Name**: `kestra.secret.azureKeyVault.vaultName` is the name of the Azure Key Vault.
+- **Key Vault URI**: `kestra.secret.azureKeyVault.keyVaultUri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
+- **Prefix**: `kestra.secret.azureKeyVault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
 
 ## Elasticsearch Configuration
 
@@ -100,7 +109,7 @@ If you opt for authentication using the `GOOGLE_APPLICATION_CREDENTIALS` environ
 
 If no credentials are set in the above configuration, Kestra will use the default Google authentication akin to the Google Cloud SDK.
 
-Additionally, you can configure the `kestra.secret.google-secret-manager.prefix` property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+Additionally, you can configure the `kestra.secret.googleSecretManager.prefix` property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
 
 ## Vault Configuration
 
