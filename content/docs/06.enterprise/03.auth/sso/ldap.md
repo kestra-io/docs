@@ -46,6 +46,16 @@ security:
 
 For Kestra-specific configuration, `user-attributes` is the key property that links the attributes on the LDAP side to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
 
-With LDAP configured, when a user logs into Kestra for the first time, their login attributes will be checked against the LDAP directory. If they are a part of any groups specified in the directory, those groups will be added to Kestra, and if the group already exists in Kestra, then they will be added automatically. Any user authenticated through LDAP, will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
+## LDAP users in Kestra
+
+With LDAP configured, when a user logs into Kestra for the first time, their login attributes will be checked against the LDAP directory and a user will be created in Kestra. If Kestra finds an already existing matching account, then the user will be logged into Kestra with the LDAP account. 
+
+If they are a part of any groups specified in the directory, those groups will be added to Kestra, and if the group already exists in Kestra, then they will be added automatically. Any user authenticated through LDAP, will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
 
 ![ldap-1](/docs/enterprise/sso/ldap-1.png)
+
+Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization.
+
+::alert{type="warning"}
+If a user is deleted from the LDAP server, then that user will lose access to Kestra at the next scheduled sync or whenever the user next attempts to log in.
+::
