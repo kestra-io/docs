@@ -48,7 +48,9 @@ Plugins are now stored in internal storage and automatically synchronized across
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-3592cdca9708a236e1c992fd8495d6ad8af8204e4bafb7299a0503e37bebbe35
+
+TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-3592cdca9708a236e1c992fd8495d6ad8af8204e4bafb7299a0503e37bebbe35
+For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning]().
 
 > Note: Plugin versioning is currently in beta and may undergo changes in upcoming releases.
 
@@ -64,7 +66,8 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
+TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
+For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on External Secrets Manager]().
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
 
@@ -106,14 +109,14 @@ afterExecution:
     <iframe src="https://www.youtube.com/embed/9GoJhOPUZH8?si=oT89y6uhpDtGrcbl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD ADD DOC LINK
+TBD BELOW - LINK TO DOC
+For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution]().
 
 
 ### Sharing of Namespace Files and KV Store across namespaces
 
 Namespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
 
-TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-5c89e82dad60b4bf3bf26adfebf8c633d9b21c895de85f541427d2166443f5ff
 
 ::collapse{title="Example of NamespaceFiles inheritance"}
 ```yaml
@@ -132,6 +135,10 @@ tasks:
       - python test.py  # this file will be pulled from `dev.team` namespace
 ```
 ::
+
+TBD BELOW - LINK TO DOC - https://github.com/kestra-io/docs/pull/2307/files#diff-5c89e82dad60b4bf3bf26adfebf8c633d9b21c895de85f541427d2166443f5ff
+For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on Namespace Files](https://kestra.io/docs/concepts/namespace-files).
+
 
 For key-value stores, we've introduced inheritance that matches how other Kestra configurations work. KV pairs now automatically flow from parent to child namespaces, giving you more consistency out of the box.
 You can still explicitly provide a namespace value to pull the corresponding key-value pair.
@@ -168,7 +175,8 @@ Key features include:
 
 Once LDAP is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if the groups already exist, users will be automatically added to them.
 
-TBD ADD DOC LINK - https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
+TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
+For detailed information on setting up and configuring LDAP integration, check out our [comprehensive documentation on LDAP Authentication]().
 
 ![ldap](/blogs/release-0-22/ldap.png)
 
@@ -183,14 +191,16 @@ This release significantly expands Kestra's LogShipper capabilities introduced i
   - Google Cloud Storage
   - Azure Blob Storage
 
-TBD LINK TO DOC - https://github.com/kestra-io/docs/pull/2307/files#diff-70a3bf31ac506aa1a42355b8340a7af81a1ef3400b2e70fcb07af76622d50b5c
+For detailed information on setting up and configuring log shippers, check out our [comprehensive documentation on Log Shippers](https://kestra.io/docs/enterprise/governance/logshipper).
+
 
 - **AuditLogs Log Shipper**: you can now capture and export comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
   - Complete audit trail of system activities
   - Enhanced security monitoring
   - Compliance reporting capabilities
 
-TBD ADD DOC LINK
+TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-7abadd3de416eb87f13ffb69c817f842129a19d836a122b78904bb121afbde8b
+For detailed information on setting up and configuring audit log shippers, check out our [comprehensive documentation on Audit Log Shippers]().
 
 ### Global View for Secrets and KV Store
 
