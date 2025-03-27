@@ -2,7 +2,7 @@
     <HomeQuotes :quotes="randomizedQuotes">
         <template v-slot:default="{quote}">
             <div class="quote" >
-                <q class="quote-text" :title="quote.quote">{{ quote.quote }}</q>
+                <q class="quote-text">{{ quote.quote }}</q>
                 <div class="quote-author"><b>{{ quote.author.name }}</b> <span>{{ quote.author.title }}</span></div>
                 <NuxtImg v-if="quote.logo" height="36" :src="quote.logo" alt="Company Logo" />
             </div>

@@ -4,7 +4,7 @@
             The Orchestration Experience
             <span>You Have Been Looking For</span>
         </h2>
-        <a href="#" class="btn btn-primary">Kestra Live Demo</a>
+        <NuxtLink href="https://demo.kestra.io" target="_blank" class="btn btn-primary">Kestra Live Demo</NuxtLink>
 
         <div class="tabs">
             <div class="activeMarker" :style="{left:`${displayTab * 25}%`}"/>

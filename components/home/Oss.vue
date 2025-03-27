@@ -6,7 +6,7 @@
                 Workflow Orchestration Platform
             </h2>
 
-            <a class="btn btn-primary" href="#">Kestra Live Demo</a>
+            <a class="btn btn-primary" href="https://demo.kestra.io" target="_blank">Kestra Live Demo</a>
 
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">

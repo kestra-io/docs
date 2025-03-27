@@ -4,7 +4,7 @@
             <div class="plugin-text">
                 <h2 class="text-white"><span>600+</span> Plugins<wbr/> That Integrate With<wbr/> Your <span>Stack</span></h2>
                 <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
-                <a href="#" class="btn btn-primary">See All Plugins</a>
+                <NuxtLink href="/plugins" class="btn btn-primary">See All Plugins</NuxtLink>
             </div>
             <div class="plugin-logos-grid">
                 <div v-for="plugin in pluginLogos" :key="plugin.name">
