@@ -56,9 +56,14 @@
     }
     .logo-cta{
         position: absolute;
-        top: -40px;
-        right: -80px;
-        width: 180px;
+        top: -20px;
+        right: -70px;
+        width: 250px;
+        @include media-breakpoint-up(lg){
+            top: -40px;
+            right: -80px;
+            width: 220px;
+        }
     }
 }
 </style>
