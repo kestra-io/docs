@@ -1,15 +1,15 @@
 ---
-title: KV function now errors on missing key
+title: KV function errors on missing key
 icon: /docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
 ---
 
-Change in the default behavior of the KV function
+New default behavior of the KV function
 
 ## Overview
 
-Before Kestra 0.22, the `kv()` function had the property `errorOnMissing` set to `false` by default. We changed it to be `true` by default to align the behavior with the rest of the system e.g. the `secret()` function by default throws an error when the secret is missing.
+Before Kestra 0.22, the `kv()` function had the property `errorOnMissing` set to `false` by default. We changed it to `true` to align the behavior with the rest of the system e.g. the `secret()` function by default throws an error when the secret is missing.
 
 If you want to keep the previous behavior of returning `null` without an error when attempting to fetch non-existing KV-pairs, use the syntax `"{{kv('NON_EXISTING_KV_PAIR', errorOnMissing=false)}}"`.
 
@@ -40,6 +40,7 @@ tasks:
 ```
 
 To keep the previous behavior, use the `errorOnMissing=false` syntax:
+
 ```yaml
 id: myflow
 namespace: company.team

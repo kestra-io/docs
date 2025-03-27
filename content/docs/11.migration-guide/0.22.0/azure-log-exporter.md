@@ -17,6 +17,8 @@ This reflects that you can now export your log to Azure either using Azure Monit
 
 ## Before Kestra 0.22
 
+Before Kestra 0.22, the `io.kestra.plugin.ee.azure.LogExporter` plugin would export logs to Azure Monitor.
+
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -39,6 +41,8 @@ tasks:
 ```
 
 ## After Kestra 0.22
+
+In Kestra 0.22, you can now choose to export logs to Azure Monitor or Azure Blob Storage, or both.
 
 ```yaml
 id: log_shipper

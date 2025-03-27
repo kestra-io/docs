@@ -5,7 +5,7 @@ release: 0.22.0
 editions: ["OSS", "EE"]
 ---
 
-Renamed version property for a few plugins
+Renamed version property in many plugins
 
 ## Overview
 

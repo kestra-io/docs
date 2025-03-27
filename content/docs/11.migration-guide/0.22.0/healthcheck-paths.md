@@ -9,7 +9,7 @@ Change in the health check paths for Kestra's Helm Chart
 
 ## Overview
 
-Before [this PR](https://github.com/kestra-io/helm-charts/pull/62/files), both probes pointed to `/health`. This caused Kubernetes to restart the pod when an external component was unavailable.
+Before [this Helm Charts PR](https://github.com/kestra-io/helm-charts/pull/62/files), both probes pointed to `/health`. This caused Kubernetes to restart the pod when an external component was unavailable.
 
 To resolve this, we updated the value file to configure the liveness and readiness probes to use the health paths recommended by Micronaut:
 

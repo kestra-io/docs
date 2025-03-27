@@ -19,7 +19,7 @@ Prior to Kestra 0.22, `tenants.enabled` was by default set to `false` and `defau
 
 ## How to keep the default tenant for now
 
-To continue using the default tenant, set the `defaultTenant` configuration flag to `true`:
+To continue using the default tenant, set the `defaultTenant` configuration flag to `true` and `tenants.enabled` to `false` in your `kestra.yml` configuration file:
 
 ```yaml
 kestra:
@@ -28,7 +28,7 @@ kestra:
     defaultTenant: true
 ```
 
-Note that in Kestra 0.22 and higher, `defaultTenant` is no longer enabled by default, so **you must explicitly set that configuration option to `true` to keep using the default tenant**.
+Note that in Kestra 0.22 and higher, `defaultTenant` is **no longer enabled by default**, so you must explicitly set that configuration option to `true` to keep using the default tenant.
 
 
 ### Before 0.22.0
