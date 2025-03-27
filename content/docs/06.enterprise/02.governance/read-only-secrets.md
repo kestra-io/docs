@@ -35,7 +35,7 @@ To configure globally, add `readOnly: true` to the configuration of your externa
 
 ### AWS Secret Manager
  
-The following example shows the configuration for AWS Secret Manager with read-only:
+For compatibility with Kestra, ensure that your AWS screts are stored as plain text in AWS Secrets Manager and not as key value pairs. The following example shows the configuration for AWS Secret Manager with read-only:
 
 ```yaml
 kestra:

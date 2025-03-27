@@ -245,6 +245,23 @@ The following example show the creation of a Binding for a User. We are defining
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
 ::
 
+::collapse{title="How to configure a "locked" flag for too many failed login attempts."}
+To create a timeout period for users who attempt to login and fail too many times, you can add the following to your Kestra configuration file:
+
+```yaml
+security:
+  login:
+    failed-attempts:
+      threshold: 10
+      time-window: PT15M
+```
+The key attributes are:
+- `threshold`: Sets the number of allowed failed attempts before a user is locked out.
+- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
+
+In the above configuration, a user is allotted 10 failed login attemtpts in a 15 minutes window before they are locked out and must be unlocked by an Admin.
+::
+
 ### Users
 
 A User represents a **person** who can access Kestra, identified by an email address. Each user might have personal
