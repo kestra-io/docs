@@ -185,7 +185,10 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
     .card-block{
         position: relative;
+        display: grid;
+        grid-template-columns: 90px 1fr;
         @include media-breakpoint-up(lg){
+            display: block;
             position: absolute;
             bottom: 450px;
             width: 300px;
@@ -211,6 +214,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             margin-top: .5em;
             margin-bottom: 0;
             overflow: hidden;
+            grid-column: 2;
         }
 
         .main-link{
@@ -258,12 +262,11 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             }
         }
         .img-natural, .img-hover{
-            float: left;
             width: 80px;
             height: auto;
+            grid-row: 1 / span 2;
             @include media-breakpoint-up(lg){
                 width: auto;
-                float: none;
                 margin: auto;
                 margin-bottom: .5rem;
             }
@@ -288,8 +291,18 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             right: 1rem;
         }
         .bottom-card{
-            left: 39%;
+            left: 34%;
             bottom: 40px;
+        }
+    }
+    @include media-breakpoint-up(xl){
+        .bottom-card{
+            left: 37%;
+        }
+    }
+    @include media-breakpoint-up(xxl){
+        .bottom-card{
+            left: 39%;
         }
     }
 </style>
