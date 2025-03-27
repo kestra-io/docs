@@ -13,7 +13,7 @@ So far, users could create a `Flow` trigger without any conditions, which is usu
 
 To make the system safer, we now require at least one condition on the `Flow` trigger (PR [#971](https://github.com/kestra-io/kestra/issues/971)). If, for some reason, you created such an unconditional `Flow` trigger intentionally, you can add a condition that always evaluates to `true` to keep the previous behavior.
 
-## Example in Kestra 0.21
+## Before Kestra 0.22
 
 Here is an example of a `Flow` trigger without any conditions in Kestra 0.21:
 
@@ -34,7 +34,7 @@ triggers:
       - WARNING
 ```
 
-## Example in Kestra 0.22
+## After Kestra 0.22
 
 ```yaml
 id: myflow

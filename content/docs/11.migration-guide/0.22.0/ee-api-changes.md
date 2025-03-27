@@ -13,7 +13,7 @@ Before Kestra 0.22, the Service Account name had to be globally unique within th
 
 To support multiple service accounts with the same name, we’ve renamed the `username` property to `name` in the JSON payload for the following REST API endpoint: `POST /api/v1{/tenant}/users/service-accounts{/id}`.
 
-## Example in Kestra 0.21
+## Before Kestra 0.22
 
 Here is an example of a JSON payload returned by the REST API endpoint `POST /api/v1{/tenant}/users/service-accounts{/id}` in Kestra 0.21:
 
@@ -24,7 +24,7 @@ Here is an example of a JSON payload returned by the REST API endpoint `POST /ap
 }
 ```
 
-## Example in Kestra 0.22
+## After Kestra 0.22
 
 Here is an example of a JSON payload returned by the REST API endpoint `POST /api/v1{/tenant}/users/service-accounts{/id}` in Kestra 0.22:
 

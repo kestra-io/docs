@@ -16,12 +16,12 @@ To resolve this, we updated the value file to configure the liveness and readine
 - Liveness probe now points to `/health/liveness`
 - Readiness probe now points to `/health/readiness`.
 
-## Example in Kestra 0.21
+## Before Kestra 0.22
 
 - Liveness probe: `/health`
 - Readiness probe: `/health`
 
-## Example in Kestra 0.22
+## After Kestra 0.22
 
 - Liveness probe: `/health/liveness`
 - Readiness probe: `/health/readiness`

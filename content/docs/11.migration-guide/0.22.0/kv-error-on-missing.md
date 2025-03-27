@@ -13,7 +13,7 @@ Before Kestra 0.22, the `kv()` function had the property `errorOnMissing` set to
 
 If you want to keep the previous behavior of returning `null` without an error when attempting to fetch non-existing KV-pairs, use the syntax `"{{kv('NON_EXISTING_KV_PAIR', errorOnMissing=false)}}"`.
 
-## Example in Kestra 0.21
+## Before Kestra 0.22
 
 ```yaml
 id: myflow
@@ -25,7 +25,7 @@ tasks:
     message: Hello {{kv('NON_EXISTING_KV_PAIR')}} # Hello
 ```
 
-## Example in Kestra 0.22
+## After Kestra 0.22
 
 This flow will fail because the `kv()` function will throw an error when the key is missing:
 

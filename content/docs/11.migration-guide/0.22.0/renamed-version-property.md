@@ -18,5 +18,5 @@ With the introduction of plugin versioning, we reserve the `version` keyword for
 - `io.kestra.plugin.serdes.parquet.IonToParquet` → renamed as `parquetVersion`
 
 ::alert{type="warning"}
-If you use the Enterprise Edition, your **custom plugins** will need an equivalent approach of renaming any plugin that uses the `version` property, as this is now a core property reserved for plugin management.
+Note that your **custom plugins** will need an equivalent approach of renaming any plugin that uses the `version` property, as this is now a core property reserved for plugin management. If any of your custom plugins rely on a `version` property, they won't compile anymore unless you rename that property to a different name.
 ::
