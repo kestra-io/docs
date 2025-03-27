@@ -178,6 +178,7 @@ This release significantly expands Kestra's LogShipper capabilities introduced i
 
 - **New Log Shipper Integrations**:
   - Splunk
+  - OpenSearch
   - AWS S3
   - Google Cloud Storage
   - Azure Blob Storage
