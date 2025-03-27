@@ -7,6 +7,11 @@ docId: custom
 
 How to create and manage Custom Blueprints.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/qbGfK-FJi6s?si=UX6cOyT7nvlyd6zb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
 
 On top of the publicly available [Community Blueprints](../../05.concepts/07.blueprints.md), you can create custom Blueprints only available to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
 
