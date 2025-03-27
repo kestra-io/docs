@@ -33,6 +33,7 @@ kestra:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
         remoteStorageEnabled: true
+        customPluginsEnabled: true # setting to false will disable installing or uploading custom plugins
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s

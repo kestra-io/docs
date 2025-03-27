@@ -1274,6 +1274,30 @@ kestra:
           taskRunner:
             type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
+### Plugin Management
+
+As of Kestra 0.22.0, you can configure Plugins management properties for things like remote storage, custom plugins, and versioned plugins. An example configuration for managing plugins looks as follows:
+
+```yaml
+kestra: 
+  plugins:
+      management:
+        enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
+        remoteStorageEnabled: true
+        customPluginsEnabled: true # setting to false will disable installing or uploading custom plugins
+        localRepositoryPath: /tmp/kestra/plugins-repository
+        autoReloadEnabled: true
+        autoReloadInterval: 60s
+        defaultVersion: LATEST 
+```
+
+The following list of properties correspond to Versioned and remotely stored plugins:
+
+- `remoteStorageEnabled`: Specifies whether remote-storage is enabled (i.e., plugins are stored on the internal storage).
+- `localRepositoryPath`: The local-path where managed plugins will be synced.
+- `autoReloadEnabled`: The interval at which the Kestra server checks for new or removed plugins.
+- `autoReloadInterval`: The default version to be used when no version is specified for a plugin.
+- `defaultVersion`: Accepted are: 'latest', 'current', 'oldest', 'none', or a specific version (e.g., 0.20.0)
 
 ## Retries
 
