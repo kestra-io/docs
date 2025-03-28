@@ -15,7 +15,7 @@
                 <h3>Software Engineers</h3>
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
-                    <a href="#" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></a>
+                    <NuxtLink href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></NuxtLink>
                 </p>
             </div>
 
@@ -25,7 +25,7 @@
                 <h3>Platform Engineers</h3>
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
-                    <a href="#" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></a>
+                    <NuxtLink href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></NuxtLink>
                 </p>
             </div>
 
@@ -35,7 +35,7 @@
                 <h3>Data Engineers</h3>
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
-                    <a href="#" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></a>
+                    <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
                 </p>
             </div>
         </div>
@@ -191,8 +191,9 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             display: block;
             position: absolute;
             bottom: 450px;
-            width: 300px;
+            width: 320px;
             text-align: center;
+            padding: 1rem 2rem;
         }
         border-radius: 2rem;
         padding: 1rem;
@@ -218,18 +219,17 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         }
 
         .main-link{
-            display: block;
             white-space: nowrap;
             margin-top: 1rem;
+            transition: all 0.3s;
+            font-size: .8rem;
+            color: #9C8FFF;
             display: none;
             @include media-breakpoint-up(lg){
                 transform: translateX(-250px);
                 opacity: 0;
                 display: block;
             }
-            transition: all 0.3s;
-            font-size: 1rem;
-            color: #9C8FFF;
         }
 
         &:hover{
@@ -266,7 +266,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             height: auto;
             grid-row: 1 / span 2;
             @include media-breakpoint-up(lg){
-                width: auto;
+                width: 120px;
                 margin: auto;
                 margin-bottom: .5rem;
             }
