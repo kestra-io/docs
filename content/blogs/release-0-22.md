@@ -55,7 +55,7 @@ For detailed instructions on how to use and configure plugin versioning, check o
 Plugin versioning is currently in Beta and may change in upcoming releases.
 ::
 
-### Read-Only External Secrets Manager 
+### Read-Only External Secrets Manager
 
 Kestra 0.22 introduces Read-Only Secret backends, allowing you to use your existing secrets manager in a read-only mode without the ability to add or modify secrets in Kestra.
 
@@ -74,37 +74,49 @@ For detailed instructions on how to configure and use this feature, check out ou
 
 ![read only secret manager 2](/blogs/release-0-22/read-only-secret-manager-2.png)
 
-### `afterExecution` property
+### New flow-level property called `afterExecution`
 
-This release introduces a new flow property: `afterExecution`. This allows you to run any set of tasks **after** the execution of the flow. It differs from the `finally` property that runs tasks at the end of the flow while the execution is still in `RUNNING` state.
+This release introduces a new flow property called `afterExecution`, allowing you to run tasks **after** the execution of the flow e.g. to send different alerts depending on some condition. For instance, you can leverage this new property in combination with the `runIf` task property to send a different Slack message for successful and failed Executions — expand the example below to see it in action.
 
-You might use `afterExecution` to send notifications or update documentation after a flow completes, regardless of whether it succeeded or failed. Unlike `finally` which runs while the flow is still active, `afterExecution` ensures these tasks only begin after the entire execution finishes, providing cleaner separation between your core workflow and post-completion tasks.
-
-::collapse{title="Example of `afterExecution` vs `finally`"}
+::collapse{title="Example Flow using the new property"}
 ```yaml
-id: state_demo
+id: alerts_demo
 namespace: company.team
 
 tasks:
-  - id: run
+  - id: hello
     type: io.kestra.plugin.core.log.Log
-    message: Execution {{ execution.state }} # Execution RUNNING
-  
+    message: Hello World!
+
   - id: fail
     type: io.kestra.plugin.core.execution.Fail
 
-finally:
-  - id: log 
-    type: io.kestra.plugin.core.log.Log
-    message: Execution {{ execution.state }} # Execution RUNNING
-
 afterExecution:
-  - id: log_after
-    type: io.kestra.plugin.core.log.Log
-    message: Execution {{ execution.state }} # Execution FAILED
+  - id: onSuccess
+    runIf: "{{execution.state == 'SUCCESS'}}"
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: https://hooks.slack.com/services/xxxxx
+    payload: |
+      {
+        "text": "{{flow.namespace}}.{{flow.id}} finished successfully!"
+      }
+
+  - id: onFailure
+    runIf: "{{execution.state == 'FAILED'}}"
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: https://hooks.slack.com/services/xxxxx
+    payload: |
+      {
+        "text": "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
+      }
 ```
 ::
 
+The `afterExecution` differs from the `finally` property because:
+1. `finally` runs tasks at the end of the flow while the execution is still in a `RUNNING` state
+2. `afterExecution` runs tasks after the Execution finishes in a terminal state like `SUCCESS` or `FAILED`.
+
+You might use `afterExecution` to send custom notifications after a flow completes, regardless of whether it succeeded or failed. Unlike `finally`, which runs while the execution is still in progress, `afterExecution` ensures these tasks only begin after the entire execution finishes.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/9GoJhOPUZH8?si=oT89y6uhpDtGrcbl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
