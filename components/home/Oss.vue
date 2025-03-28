@@ -89,15 +89,15 @@
         text-align: center;
     }
 
-    .title-block{
-        font-size: 2rem;
+    h2{
+        font-size: 3rem;
         font-weight: 600;
         margin-bottom: 2rem;
         span.gradient{
             display: block;
             // font color gradient from #8C4BFF to #FF6A00
             background: linear-gradient(90deg, #8C4BFF 0%, #6fb0ff 100%) no-repeat center;
-            background-size: 500px;
+            background-size: cover;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }

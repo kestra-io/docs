@@ -44,7 +44,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         background: #20222A;
         h2{
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: 500;
             margin: 1rem 0;
         }

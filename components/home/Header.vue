@@ -186,10 +186,10 @@
         }
 
         h1 {
-            color: var(--bs-white);
+            color: white;
             text-align: center;
             max-width: 100%;
-            font-size: 24pt;
+            font-size: 3rem;
             font-weight: 400;
             padding: 0;
             margin-top: 2rem;
@@ -197,7 +197,7 @@
             @include media-breakpoint-up(lg) {
                 margin: 0;
                 max-width: 800px;
-                font-size: 39pt;
+                font-size: 3.875rem;
                 line-height: 1em;
             }
         }

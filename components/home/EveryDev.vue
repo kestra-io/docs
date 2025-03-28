@@ -83,8 +83,8 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 
         h2 {
-            font-size: 2.2rem;
-            line-height: 2.5rem;
+            font-size: 3rem;
+            line-height: 3rem;
             color: white;
             font-weight: 600;
             @include media-breakpoint-up(lg){

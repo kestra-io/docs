@@ -2,7 +2,8 @@
     <div class="container">
         <div class="card-block">
             <div class="plugin-text">
-                <h2 class="text-white"><span>600+</span> Plugins<wbr/> That Integrate With<wbr/> Your <span>Stack</span></h2>
+                <h2 class="text-white"><span>600+</span> Plugins<br/>That Integrate With<br/>Your <span>Stack</span></h2>
+                <h2 class="text-white mobile">Integrate With<br/>Your <span>Stack</span></h2>
                 <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
                 <NuxtLink href="/plugins" class="btn btn-primary">See All Plugins</NuxtLink>
             </div>
@@ -49,11 +50,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
     .plugin-logos-grid{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        margin: 1rem;
-        @include media-breakpoint-up(xl){
-            margin: 2rem;
-            max-width: 500px;
-        }
+        flex: 1;
         > div{
             aspect-ratio: 1;
             padding: .6rem;
@@ -82,15 +79,31 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
     .plugin-text{
         flex: 1;
         text-align: center;
+        margin: 2rem auto;
+        @include media-breakpoint-up(lg){
+            margin: 2rem 0;
+        }
+        max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
         h2{
-            max-width: 350px;
-            margin: auto;
-            margin-top: 2rem;
-            @include media-breakpoint-up(xl){
-                margin: 3rem auto;
+            display: none;
+            @include media-breakpoint-up(lg){
+                display: block;
             }
+            &.mobile{
+                display: block;
+                @include media-breakpoint-up(lg){
+                    display: none;
+                }
+            }
+            margin: auto;
             color: white;
-            font-size: 2.5rem;
+            font-size: 3rem;
+            font-weight: 600;
             text-align: center;
             span{
                 color: $primary;
@@ -104,10 +117,8 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             color: #ECEBEF;
             margin: 0 auto;
             text-align: center;
-            font-size: .8rem;
             @include media-breakpoint-up(xl){
-                width: 480px;
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
         }
         .btn{

@@ -93,5 +93,6 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     font-size: 2rem;
     line-height: 2.5rem;
     padding: 2rem 3rem;
+    color: black;
 }
 </style>

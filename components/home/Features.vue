@@ -67,13 +67,13 @@ const videoVisible = ref(false)
         padding-top: 4rem;
 
         h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 600;
             margin-bottom: .5rem;
             span {
                 color: $primary;
                 background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
-                background-size: 350px;
+                background-size: cover;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
