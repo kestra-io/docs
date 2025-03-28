@@ -81,9 +81,8 @@ function setTab(index: number) {
         }
     }
     .experience-image {
-        width:100%;
-        height: auto;
         margin-top: 1rem;
+        transform: translateX(0);
     }
 
     .tabs {
@@ -119,7 +118,7 @@ function setTab(index: number) {
 
     .slide-enter-active,
     .slide-leave-active {
-        transition: transform 1s ease;
+        transition: transform .5s ease-in-out;
     }
 
     .slide-leave-to,
