@@ -57,7 +57,7 @@ Plugin versioning is currently in Beta and may change in upcoming releases.
 
 ### Read-Only External Secrets Manager 
 
-Managing secrets securely across your automation environment is critical for maintaining compliance and security standards. Kestra 0.22 introduces External Secret Manager capabilities, enabling seamless integration with your established security infrastructure.
+Kestra 0.22 introduces Read-Only Secret backends, allowing you to use your existing secrets manager in a read-only mode without the ability to add or modify secrets in Kestra.
 
 The new read-only mode for external secrets managers allows you to reference secrets that remain managed in your external system.
 
