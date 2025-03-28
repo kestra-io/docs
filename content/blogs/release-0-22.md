@@ -18,7 +18,7 @@ The table below highlights the key features of this release.
 | Read-Only Secrets Backends         | Read secrets from an external secret manager backend without the ability to add or modify credentials from Kestra | Enterprise Edition |
 | New flow property       | Define tasks to run after the execution is finished (e.g. alerts) using the `afterExecution` property | All Edition |
 | Cross-Namespace File Sharing      | Use code and KV pairs from other namespaces in your tasks thanks to improved inheritance and Namespace Files sharing | All Edition |
-| LDAP Integration         | Streamlined authentication and user management for enterprise environments | Enterprise Edition |
+| LDAP Sync         | Securely fetch users and credentials from an existing LDAP directory to simplify authentication and user management in enterprise environments | Enterprise Edition |
 | Enhanced Log Shippers    | New integrations including Splunk, AWS S3, Google Cloud Storage, Azure Blob, and exporting AuditLogs | Enterprise Edition |
 | Global View for Secrets and KV Store | Unified interface for managing secrets and key-value pairs across namespaces | All Edition |
 
