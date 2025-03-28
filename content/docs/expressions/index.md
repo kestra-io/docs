@@ -127,7 +127,7 @@ Kestra provides access to environment variables prefixed with `KESTRA_` by defau
 
 To use an environment variable, such as `KESTRA_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `KESTRA_` prefix and converting the remainder to **lowercase**.
 
-To access [Environment configuration variables](../configuration/index.md#environment), you can use `{{ kestra.environment.name }}` to reference the name given to your environment or `{{ kestra.url }}` to reference the environment's configured URL.
+To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
 
 ### Global Variables
 
@@ -1720,7 +1720,7 @@ tasks:
 
 ### fileSize
 
-The `fileSize` function returns the size of the file present at the given uri location.
+The `fileSize` function returns the size of the file present at the given URI.
 
 Example:
 
@@ -1737,7 +1737,7 @@ tasks:
 
 ### fileExists
 
-The `fileExists` function returns true if the file is present at the given uri location.
+The `fileExists` function returns `true` if the file is present at the given URI.
 
 ```yaml
 tasks:
@@ -1752,7 +1752,7 @@ tasks:
 
 ### fileEmpty
 
-The `fileEmpty` function returns true if the file present at the given uri location is empty.
+The `fileEmpty` function returns true if the file present at the given URI is empty.
 
 ```yaml
 tasks:
@@ -1762,7 +1762,7 @@ tasks:
 
   - id: fileEmpty
     type: io.kestra.plugin.core.log.Log
-    message: "Is the file empty: {{ fileEmpty(output.download.uri) }}"
+    message: "Is the file empty? {{ fileEmpty(output.download.uri) }}"
 ```
 
 ---

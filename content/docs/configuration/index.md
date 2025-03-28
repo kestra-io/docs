@@ -1295,8 +1295,8 @@ kestra:
 
 The following list of properties correspond to Versioned and remotely stored plugins:
 
-- `remoteStorageEnabled`: Specifies whether remote-storage is enabled (i.e., plugins are stored on the internal storage).
-- `localRepositoryPath`: The local-path where managed plugins will be synced.
+- `remoteStorageEnabled`: Specifies whether remote storage is enabled (i.e., plugins are stored on the internal storage).
+- `localRepositoryPath`: The local path where managed plugins will be synced.
 - `autoReloadEnabled`: The interval at which the Kestra server checks for new or removed plugins.
 - `autoReloadInterval`: The default version to be used when no version is specified for a plugin.
 - `defaultVersion`: Accepted are: 'latest', 'current', 'oldest', 'none', or a specific version (e.g., 0.20.0)
@@ -1341,7 +1341,7 @@ kestra:
         tenantId: "id"
         clientId: "id"
         clientSecret: "secret"
-    isolation: # new
+    isolation: # available in Kestra >=0.22
       enabled: true # default: false
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
         - EXECUTOR        
@@ -1831,7 +1831,7 @@ To isolate your dedicated internal storage from specific [Kestra services](../07
 kestra:
   storage:
     type: gcs
-    isolation:
+    isolation: # available in Kestra >=0.22
       enabled: true # default: false
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
         - EXECUTOR
