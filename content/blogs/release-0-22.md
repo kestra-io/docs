@@ -16,7 +16,7 @@ The table below highlights the key features of this release.
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
 |  Plugin Versioning       | Manage multiple versions of plugins simultaneously across your environment | Enterprise Edition |
 | Read-Only Secrets Backends         | Read secrets from an external secret manager backend without the ability to add or modify credentials from Kestra | Enterprise Edition |
-| `afterExecution` property       | Execute tasks after a flow completes, regardless of its status | All Edition |
+| New flow property       | Define tasks to run after the execution is finished (e.g. alerts) using the `afterExecution` property | All Edition |
 | Sharing of Namespace Files and KV Store across namespaces       | Share files and key-value pairs between namespaces for better resource management | All Edition |
 | LDAP Integration         | Streamlined authentication and user management for enterprise environments | Enterprise Edition |
 | Enhanced Log Shippers    | New integrations including Splunk, AWS S3, Google Cloud Storage, Azure Blob, and exporting AuditLogs | Enterprise Edition |
