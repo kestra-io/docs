@@ -37,11 +37,11 @@ Let's dive into these highlights and other enhancements in more detail.
 ### Plugin Versioning
 
 Managing plugin versions is critical for the stability of your orchestration platform. That's why we are excited to introduce Plugin Versioning in the Enterprise Edition.
-With the new Plugin Versioning feature, you can now manage multiple versions of plugins simultaneously across your entire environment. This powerful capability allows teams to progressively adopt new features while maintaining critical production workflows.
+Versioned Plugins allow you to simultaneously use multiple versions of plugins across your environment. This powerful capability allows teams to progressively adopt new features while pinning the plugin version for critical production workflows.
 
-You can access Plugin Versioning through the new dedicated page under Administration > Instance > Versioned Plugin. Here you'll find an intuitive interface that displays all available versions and prompts to upload and manage plugins.
+You can access that feature from the new dedicated UI page under Administration → Instance → Versioned Plugin, showing all available versions and making it easy to gradually upgrade your plugins when new versions are available.
 
-Plugins are now stored in internal storage and automatically synchronized across all workers, ensuring consistency throughout your environment. For organizations with custom plugins, we've added support for customer-specific artifact registries, allowing you to manage proprietary automation components with the same robust tools used for standard plugins.
+To enable that capability, Kestra now stores plugins in internal storage and automatically synchronizes them across all workers, ensuring consistency throughout your environment. For organizations relying on custom plugins, we've added support for custom artifact registries.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
