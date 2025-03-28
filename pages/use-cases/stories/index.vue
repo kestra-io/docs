@@ -13,7 +13,7 @@
                 darkButtonText="Get started"
                 darkButtonHref="/docs/getting-started/quickstart#start-kestra"
                 purpleButtonText="Read the docs"
-                purpleButtonHref="/docs/getting-started"
+                purpleButtonHref="/docs"
             />
         </NuxtLazyHydrate>
     </div>
