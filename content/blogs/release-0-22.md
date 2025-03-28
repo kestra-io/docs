@@ -219,41 +219,32 @@ This release introduces new global views for managing secrets and key-value pair
 
 ## Other Features and Improvements
 
-- [Improvements](https://github.com/kestra-io/kestra-ee/issues/2843) of the queue system. Enhance performance and reliability for high-volume workflow orchestration.
+- We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up less space and perform better
+- [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
+- [New Python package](https://github.com/kestra-io/libs/pull/16) allow you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
+- Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35),of your Ansible playbooks
+- Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
+- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for easier navigation of plugin properties and outputs
+- Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155). The `{{tasks.your_task_id.state }}` context returns a task run's state while the `{{execution.state}}` allows to retrieve the flow execution state.
 
-- [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments.
+## UI Improvements
 
-- [New Python package](https://github.com/kestra-io/libs/pull/16) enables native reading of ION files for improved Python integration. TBD LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-a07a10ebe006ff8445184afa3467e3e0504bae68cceb4b6ec74e8e1a58838b50
-
-- Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35), enabling seamless connection between Ansible playbooks and Kestra workflows.
-
-- Comprehensive bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows.
-
-- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for better discoverability.
-
-- Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155), enabling more powerful dynamic workflows. The `{{ tasks.<your_task_name>.state }}` context return a task state while the `{{ execution.state }}` allows to get the flow execution state.
-
-
-## User Interface & Experience Improvements
-
-As with each release, there are more UI and UX enhancements:
-
-- Improved Editor contrast in the light mode.
-- New export functionality for topology views, allowing you to save workflow diagrams as PNG or JPG files for documentation or sharing with stakeholders.
-- Added one-click copy functionality for Pebble expressions (e.g., `{{ kv('my_value') }}`) in KV Store and Secret tables, making it easier to reference these values in your workflows
+Here are UI enhancements worth noting:
+- Improved Editor contrast in light mode
+- New export functionality for topology views, allowing you to save workflow diagrams as PNG or JPG files for documentation or sharing with stakeholders
+- Added one-click copy functionality for Pebble expressions (e.g., `{{kv('my_value')}}`) in KV Store and Secret tables for easier reference
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
-- As part of our continuous improvements to the No Code experience, we're releasing a Beta version of a multi-tab system in the editor. To enable this feature, navigate to Settings > Multi-tab Editor.
-
+- As part of our continuous improvements to the No-Code Editor, we're releasing a Beta version of a Multi-Panel Editor. To enable this Beta feature, navigate to `Settings` and toggle the `Multi Panel Editor` on.
 
 ## Plugin enhancements
 
-
-### New GraalVM (beta)
+### New GraalVM plugins (Beta)
 
 We're pleased to introduce GraalVM integration to Kestra. GraalVM is a high-performance runtime that supports multiple programming languages, offering significant performance advantages through its advanced just-in-time compilation technology.
-This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations on your systems.
 
-::collapse{title="Example parsing data with Python"}
+This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations or Docker images. The GraalVM plugin is currently in Beta, and we welcome your feedback on this exciting new feature.
+
+::collapse{title="Example parsing JSON data using Python in GraalVM"}
 ```yaml
 id: parse_json_data
 namespace: company.team
@@ -273,7 +264,7 @@ tasks:
 ```
 ::
 
-### DuckDB & SQLlite Improvements
+### DuckDB & SQLite Improvements
 
 This release resolves several issues and enhances persistence capabilities for operations involving DuckDB and SQLite databases.
 
@@ -281,7 +272,7 @@ The new `outputDbFile` boolean property enables both plugin tasks to fully suppo
 
 ::collapse{title="Example with DuckDB"}
 ```yaml
-id: grouse_281947
+id: duckdb_demo
 namespace: company.team
 
 tasks:
@@ -308,11 +299,11 @@ tasks:
 ```
 ::
 
-Also it's now possible to avoir using `workingDir()` Pebble method in DuckDB to read local files.
+Also, it's now possible to avoid using `workingDir()` Pebble method in DuckDB to read local files.
 
 ::collapse{title="Reading file without using workingDir in DuckDB"}
 ```yaml
-id: grouse_281947
+id: duckdb_no_working_dir
 namespace: company.team
 
 tasks:
@@ -359,26 +350,26 @@ pluginDefaults:
 
 ### New MariaDB tasks
 
-We've also introduced a new plugin for MariaDB, including Query, Queries and Trigger, similar to other JDBC plugin-based tasks. These tasks allow you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details on how to use these tasks in your workflows.
+We've also introduced a new plugin for MariaDB, including `Query`, `Queries` and `Trigger`, allowing you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details.
 
-### New ServiceNow tasks
+### New ServiceNow plugins
 
-We've expanded our ServiceNow integration with a new Get task. This addition allows you to retrieve data from ServiceNow instances directly within your Kestra workflows. Check out the [ServiceNow plugin documentation](https://kestra.io/plugins/plugin-servicenow) for more details on how to use these tasks in your workflows.
+We've expanded our ServiceNow integration with a new `Get` task and improvements to other ServiceNow plugins. This addition allows you to retrieve data from ServiceNow instances directly within your Kestra workflows. Check out the [ServiceNow plugin documentation](https://kestra.io/plugins/plugin-servicenow) to learn more.
 
 ### New Pebble functions
 
 Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow capabilities:
 
-- **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given uri location.
-- **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given uri location.
-- **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given uri location is empty.
+- **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given URI location.
+- **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given URI location.
+- **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given URI location is empty.
 - **Environment Name**: `{{ kestra.environment.name }}` — Returns the name given to your environment. This value should be configured in the Kestra configuration.
 - **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the Kestra configuration.
 
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues).
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
 
