@@ -50,11 +50,11 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .wrapper-every-dev {
-        background-image: url(/landing/home/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
-        background-blend-mode: luminosity, normal;
-        background-repeat: no-repeat, no-repeat;
-        background-position: center bottom, center bottom;
-        background-size: cover, cover;
+        background-image: linear-gradient(0deg, #0D0E13FF 0%, #0D0E1388 10%, #0D0E1300 30%, #0D0E1300 100%), url(/landing/home/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
+        background-blend-mode: normal, luminosity, normal;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        background-position: center bottom, center bottom, center bottom;
+        background-size: cover, cover, cover;
         padding: 2rem;
         margin-top: -4rem;
         color: white;
