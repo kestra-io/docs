@@ -26,6 +26,18 @@
                 </div>
             </div>
             <div class="img-block">
+                <button class="homepage-video">
+                    <div>
+                        <PlayCircleOutlineIcon class="play-icon"/>
+                        Kestra in 60 seconds
+                    </div>
+                    <NuxtImg
+                        src="/landing/home/video60sec.gif"
+                        alt="video"
+                        height="90"
+                        width="162"
+                    />
+                </button>
                 <NuxtImg
                     v-if="isMobile"
                     width="2991px"
@@ -45,6 +57,7 @@
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
     import { useMediaQuery } from "@vueuse/core";
+    import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -211,6 +224,35 @@
 
         .img-block
         {
+            .homepage-video {
+                position: absolute;
+                top: -70px;
+                right: 0;
+                z-index: 10;
+                padding: 0;
+                overflow: hidden;
+                border: 1px solid #5818D8;
+                border-radius: 1rem;
+                color: white;
+                height: 90px;
+                background-color: #5818D8;
+                > div {
+                    position: absolute;
+                    text-align: center;
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    font-size: 13px;;
+                    .play-icon{
+                        margin: .5rem;
+                        font-size: 32px;
+                    }
+                }
+            }
+            position: relative;
             display: flex;
             justify-content: center;
             .homepage-image{
