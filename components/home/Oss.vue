@@ -70,7 +70,8 @@
 
     const leadIndicators = computed(() => [
         {title: "Contributors", value: numberOfContributors.value},
-        {title: "GitHub Stars", value: numberOfStargazersFormatted.value},
+        {title: "GitHub Stars", value: numberOfStargazers.value},
+        {title: "GitHub Stars Formatted", value: numberOfStargazersFormatted.value},
         {title: "Kestra Deployments", value: "70k"},
         {title: "Workflows Executed", value: "300m+"},
     ])
