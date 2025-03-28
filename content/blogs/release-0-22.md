@@ -68,7 +68,7 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 </div>
 
 TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
-For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on External Secrets Manager]().
+For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation]().
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
 
