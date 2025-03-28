@@ -26,7 +26,12 @@
                 </div>
             </div>
             <div class="img-block">
-                <button class="homepage-video">
+                <a
+                    href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                    class="homepage-video"
+                    data-bs-toggle="modal"
+                    data-bs-target="#home-intro"
+                >
                     <div>
                         <PlayCircleOutlineIcon class="play-icon"/>
                         Kestra in 60 seconds
@@ -37,7 +42,7 @@
                         height="90"
                         width="162"
                     />
-                </button>
+                </a>
                 <NuxtImg
                     v-if="isMobile"
                     width="2991px"
@@ -49,6 +54,36 @@
                     class="homepage-image"
                 />
                 <canvas v-else ref="canvas" height="1520" width="2000"/>
+            </div>
+        </div>
+    </div>
+    <div
+        v-on="{
+            'show.bs.modal': () => (videoVisible = true),
+            'hidden.bs.modal': () => (videoVisible = false),
+        }"
+        class="modal modal-full fade"
+        id="home-intro"
+        tabindex="-1"
+        aria-labelledby="home-intro"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="video-responsive">
+                        <iframe
+                            v-if="videoVisible"
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
