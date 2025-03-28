@@ -92,6 +92,8 @@ Additionally, instead of installing a new plugin, you can **Upload** a plugin by
 
 ### From the CLI and API
 
+Only Super Admin users can install versioned plugins with the API.
+
 ## Configuration
 
 ## Other capabilities
