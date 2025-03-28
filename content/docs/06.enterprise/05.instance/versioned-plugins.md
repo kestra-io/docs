@@ -149,5 +149,5 @@ To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md)
 
 The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration where remote storage can be enabled. 
 
--`--locally=true` installs the plugin locally.
--`--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly. 
+- `--locally=true` installs the plugin locally.
+- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly. 
