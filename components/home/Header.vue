@@ -27,7 +27,7 @@
             </div>
             <div class="img-block">
                 <a
-                    href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                    href="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
                     class="homepage-video"
                     data-bs-toggle="modal"
                     data-bs-target="#home-intro"
@@ -76,7 +76,7 @@
                             v-if="videoVisible"
                             width="560"
                             height="315"
-                            src="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                            src="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
                             title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -249,8 +249,6 @@
         @include media-breakpoint-down(lg) {
             .hero {
                 padding-top: 6rem;
-                padding-bottom: 2rem;
-
                 .text-block {
                     margin-bottom: 0;
                 }
@@ -262,15 +260,12 @@
             .homepage-video {
                 position: absolute;
                 top: 30px;
+                left: 50%;
                 transform: translateX(-50%);
-                left: calc(50% + 50px);
-                @include media-breakpoint-up(md) {
-                    left: 50%;
-                }
                 @include media-breakpoint-up(lg) {
                     top: -70px;
-                    right: 0;
                     transform: none;
+                    right: 0;
                     left: auto;
                 }
                 z-index: 10;
@@ -306,13 +301,17 @@
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
-                left: -50px;
+                height: 270px;
+                overflow: hidden;
                 canvas {
                     display: none;
                 }
                 .homepage-image{
                     display: block;
                     height: 500px;
+                    margin-top: 50px;
+                    position: relative;
+                    left: -50px;
                     margin-bottom: 100px;
                 }
             }
