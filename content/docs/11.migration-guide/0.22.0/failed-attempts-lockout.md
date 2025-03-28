@@ -15,9 +15,9 @@ To improve the security of your Enterprise Edition instance, we now automaticall
 security:
   login:
     failed-attempts:
-      threshold: 10              # the number of failed attempts before lockout
-      monitoring-window: PT5M    # period to count failed attempts
-      lockout-duration: PT30M    # period the account remains locked
+      threshold: 10           # the number of failed attempts before lockout
+      monitoring-window: PT5M # period to count failed attempts
+      lock-duration: PT30M    # period the account remains locked
 ```
 
 Note that this change is only relevant for users who leverage LDAP or basic authentication (not relevant for SSO-users).
