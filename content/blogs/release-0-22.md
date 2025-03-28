@@ -22,7 +22,7 @@ The table below highlights the key features of this release.
 | Log Shipper plugins    | New log exporters for Splunk, AWS S3, Google Cloud and Azure Blob Storage, and a new log shipper plugin for Audit Logs | Enterprise Edition |
 | Secrets and KV Store UI | Unified interface for managing secrets and key-value pairs across namespaces | All Edition |
 
-Check the video below for a quick overview of the new features.
+Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
     <iframe src="LINK_TBD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
