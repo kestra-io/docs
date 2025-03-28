@@ -10,8 +10,10 @@
             <LayoutFooterContact
                 title="Getting started with Kestra"
                 subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-                darkButtonText="Get Started"
-                purpleButtonText="Get started!"
+                darkButtonText="Get started"
+                darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+                purpleButtonText="Read the docs"
+                purpleButtonHref="/docs/getting-started"
             />
         </NuxtLazyHydrate>
     </div>
