@@ -92,7 +92,7 @@ Additionally, instead of installing a new plugin, you can **Upload** a plugin by
 
 ### From the API
 
-Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the following API POST requests with either your username and password with `-u` or [API token](../03.auth/api-tokens.md).
+Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the following API POST request with either your username and password with `-u` or an [API token](../03.auth/api-tokens.md).
 
 With Kestra username and password:
 
@@ -112,9 +112,8 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install /
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
 ```
 
-To uninstall a versioned plugin, use the following DELETE request with either your username and password or API token:
+To uninstall a versioned plugin, use the following DELETE request:
 
-```bash
 ```bash
 curl -X DELETE http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/uninstall \
 -u 'admin@kestra.io:kestra' \
@@ -131,7 +130,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/resolve \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
 ```
 
-If you want to install a newer version of a plugin, use the install request with the specified version, or use `LATEST`. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
+If you want to install a newer version of a plugin, use the install request with the specified version, or use `LATEST` in place of the version number. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
 
 ```bash
 curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
