@@ -108,6 +108,9 @@ function setTab(index: number) {
         color: #B9B9BA;
         width: 25%;
         padding: 1rem 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .tabActive {

@@ -66,7 +66,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             &:nth-child(2n){
                 background-color: #1A1C24;
                 // shadow inset
-                box-shadow: inset 1px 1px 1px #000;
+                box-shadow: inset 1px 1px 1px #0D0E1388;
             }
         }
         img{
@@ -74,7 +74,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             height: 70%;
             transition: all 0.2s;
             &:hover{
-                transform: scale(1.1);
+                transform: scale(1.2);
             }
         }
     }
