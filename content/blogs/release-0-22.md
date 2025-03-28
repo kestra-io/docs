@@ -59,7 +59,7 @@ Plugin versioning is currently in Beta and may change in upcoming releases.
 
 Kestra 0.22 introduces Read-Only Secret backends, allowing you to use your existing secrets manager in a read-only mode without the ability to add or modify secrets in Kestra.
 
-The new read-only mode for external secrets managers allows you to reference secrets that remain managed in your external system.
+The read-only mode for secrets managers allows you to reference secrets entirely managed in an external system. This feature is particularly useful for customers with centralized secrets management in place who prefer to avoid managing secrets from the Kestra UI, e.g., for compliance reasons.
 
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
@@ -68,7 +68,7 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 </div>
 
 TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
-For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on External Secrets Manager]().
+For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation]().
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
 
