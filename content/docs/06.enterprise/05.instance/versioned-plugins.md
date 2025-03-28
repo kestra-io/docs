@@ -90,13 +90,37 @@ Additionally, instead of installing a new plugin, you can **Upload** a plugin by
 
 ![versioned-plugins-4](/docs/enterprise/versioned-plugins/versioned-plugins-5.png)
 
-### From the CLI and API
+### From the API
 
-Only Super Admin users can install versioned plugins with the API.
+Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the following API POST requests with either your username and password with `-u` or [API token](../03.auth/api-tokens.md).
 
-## Configuration
+With Kestra username and password:
 
-## Other capabilities
+```bash
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
+-u 'admin@kestra.io:kestra' \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
+```
 
-- add support for internal storage as plugin repository
-- add support for plugins auto-reloading
+With API Token:
+
+```bash
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install /
+-H "Authorization: Bearer YOUR-API-TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
+```
+
+### From the CLI
+
+To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md), you can use the following command:
+
+```bash
+./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2
+```
+
+The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration where remote storage can be enabled. 
+
+-`--locally=true` installs the plugin locally.
+-`--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly. 
