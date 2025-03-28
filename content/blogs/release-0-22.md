@@ -55,7 +55,7 @@ For detailed instructions on how to use and configure plugin versioning, check o
 Plugin versioning is currently in Beta and may change in upcoming releases.
 ::
 
-### Read-Only External Secrets Manager
+### Read-Only Secrets Backends
 
 Kestra 0.22 introduces Read-Only Secret backends, allowing you to use your existing secrets manager in a read-only mode without the ability to add or modify secrets in Kestra.
 
@@ -126,12 +126,12 @@ TBD BELOW - LINK TO DOC
 For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution]().
 
 
-### Sharing of Namespace Files and KV Store across namespaces
+### Sharing Namespace Files
 
-Namespace files now support a smart fetch mechanism – you can pull files from multiple namespaces in a cascading order, with later namespaces seamlessly overriding files from earlier ones.
+Namespace files can now be shared and reused simply by referencing a given `namespace` directly in your script task. If you define multiple namespaces, Kestra will fetch the corresponding namespace files in the same order the namespaces are listed. If you have the same file(s) defined in multiple namespaces, the later namespaces will override files from earlier ones.
 
 
-::collapse{title="Example of NamespaceFiles inheritance"}
+::collapse{title="Example of Namespace Files inheritance"}
 ```yaml
 id: namespace_files_inheritance
 namespace: company
@@ -143,22 +143,24 @@ tasks:
       enabled: true
       namespaces:
         - "company"
-        - "dev.team"
+        - "company.team"
+        - "company.team.myproject"
     commands:
-      - python test.py  # this file will be pulled from `dev.team` namespace
+      - python main.py
 ```
 ::
 
-TBD BELOW - LINK TO DOC - https://github.com/kestra-io/docs/pull/2307/files#diff-5c89e82dad60b4bf3bf26adfebf8c633d9b21c895de85f541427d2166443f5ff
-For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on Namespace Files](https://kestra.io/docs/concepts/namespace-files).
+For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files).
 
+### Sharing KV pairs across namespaces
 
-For key-value stores, we've introduced inheritance that matches how other Kestra configurations work. KV pairs now automatically flow from parent to child namespaces, giving you more consistency out of the box.
-You can still explicitly provide a namespace value to pull the corresponding key-value pair.
+We've introduced native inheritance for KV pairs so that the `kv('NAME')` function works the same way as `secret('NAME')` — first looking for the `NAME` key in the current namespace and then in the parent namespace if it's not found, then in the parent of the parent, and so on.
+
+You can still provide a `namespace` explicitly as follows: `kv('KEY_NAME', namespace='NAMESPACE_NAME')`.
 
 In the example below, the first task will be able to retrieve the key-value pair defined upstream in the `company` namespace (but not present in `company.team` namespace). The second task is able to get the key-value pair defined from another namespace explicitly provided in the `kv()` function.
 
-For more details on how to use and configure the KV Store, check out our [comprehensive documentation](https://kestra.io/docs/concepts/kv-store).
+For more details on how to use and configure the KV pairs, check our [KV Store documentation](https://kestra.io/docs/concepts/kv-store).
 
 ::collapse{title="Example of key-value inheritance"}
 ```yaml
@@ -168,7 +170,7 @@ namespace: company.team
 tasks:
   - id: get_kv_from_parent
     type: io.kestra.plugin.core.log.Log
-    message: "{{ kv('root_value') }}"
+    message: "{{ kv('my_key_from_company_namespace') }}"
 
   - id: get_kv_from_another_namespace
     type: io.kestra.plugin.core.log.Log
@@ -178,50 +180,41 @@ tasks:
 
 ### LDAP Integration
 
-Enterprise environments require robust authentication and user management capabilities. Kestra 0.22 introduces comprehensive LDAP integration, enabling seamless synchronization of users and groups from your existing LDAP infrastructure.
+Enterprise environments require robust authentication and user management capabilities. Kestra 0.22 introduces LDAP integration to synchronize users, groups and authentication credentials from your existing LDAP directory.
 
 Key features include:
-- Automatic user synchronization with LDAP directories
-- Group-based access control mapping
+- Automatic users and credentials sync from existing LDAP directories
+- Group mapping for simplified RBAC
 - Support for multiple LDAP servers
-- Configurable attribute mapping for user profiles
+- Configurable attribute mapping for user profiles.
 
-Once LDAP is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if the groups already exist, users will be automatically added to them.
+Once LDAP integration is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if a given group already exists in Kestra, LDAP users will be automatically added to it after login.
 
-TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-d8bd8bcd1663d7070204865e13c05aa4a24e6eca8890e48a6c36569c387b50bc
-For detailed information on setting up and configuring LDAP integration, check out our [comprehensive documentation on LDAP Authentication]().
+For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](/docs/enterprise/auth/sso/ldap).
 
 ![ldap](/blogs/release-0-22/ldap.png)
 
-### Enhanced Log Shippers
+### New Log Shipper plugins
 
-This release significantly expands Kestra's LogShipper capabilities introduced in the previous release with new integrations and features:
+This release adds a new `AuditLogShipper` and new log exporters plugins to the Enterprise Edition, including:
+- Splunk
+- OpenSearch
+- AWS S3
+- Google Cloud Storage
+- Azure Blob Storage.
 
-- **New Log Shipper Integrations**:
-  - Splunk
-  - OpenSearch
-  - AWS S3
-  - Google Cloud Storage
-  - Azure Blob Storage
+The cloud storage log exporters provide a cost-effective long-term storage solution for your logs.
 
-For detailed information on setting up and configuring log shippers, check out our [comprehensive documentation on Log Shippers](https://kestra.io/docs/enterprise/governance/logshipper).
+Additionally, the new `AuditLogShipper` plugin allows you to export audit trails to multiple destinations, providing a convenient way to analyze comprehensive record of all user and service account actions within your Kestra instance.
 
+For detailed information on setting up and configuring log shippers, check the [Log Shipper documentation](https://kestra.io/docs/enterprise/governance/logshipper).
 
-- **AuditLogs Log Shipper**: you can now capture and export comprehensive activity records for all user and service account actions within your Kestra instance. This enables:
-  - Complete audit trail of system activities
-  - Enhanced security monitoring
-  - Compliance reporting capabilities
-
-TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-7abadd3de416eb87f13ffb69c817f842129a19d836a122b78904bb121afbde8b
-For detailed information on setting up and configuring audit log shippers, check out our [comprehensive documentation on Audit Log Shippers]().
-
-### Global View for Secrets and KV Store
+### Unified Secrets and KV Store UI
 
 This release introduces new global views for managing secrets and key-value pairs across your entire Kestra instance:
 
-- **Key-Value Store Overview:** We've added a dedicated tab to the main navigation that shows all key-value pairs throughout your instance. This hub lets you track and adjust KV pairs across namespaces without switching contexts. You can check values, set expiration times, and sort your data efficiently in one location.
-
-- **Secrets Overview:** Enterprise Edition users gain access to a new tabs on the left menu for managing secrets.
+- **KV Store UI:** We've added a dedicated page listing all key-value pairs across all namespaces.
+- **Secrets UI:** Enterprise Edition users gain a unified view of all Secrets existing in your instance across all namespaces, simplifying governance and bringing visibility about which secrets exist and within which namespaces they are managed.
 
 
 ## Other Features and Improvements
