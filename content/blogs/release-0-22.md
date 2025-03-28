@@ -9,7 +9,6 @@ author:
 image: /blogs/release-0-22.jpg
 ---
 
-Kestra 0.22 introduces Plugin Versioning, External Secrets Manager, afterExecution property, Namespace Files and KV Store sharing, LDAP Integration, Enhanced Log Shippers, and Global View for Secrets and KV Store. This release focuses on enterprise-grade management features while improving developer experience with new plugins and Pebble functions.
 
 The table below highlights the key features of this release.
 
