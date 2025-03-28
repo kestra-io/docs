@@ -217,14 +217,13 @@ This release introduces new global views for managing secrets and key-value pair
 - **Secrets UI:** Enterprise Edition users gain a unified view of all Secrets existing in your instance across all namespaces, simplifying governance and bringing visibility about which secrets exist and within which namespaces they are managed.
 
 
-## Other Features and Improvements
+## Notable Backend Enhancements
 
-- We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up less space and perform better
+- We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up to 90% less database space due to aggresive cleaning and perform better. Queues can now sustain a much higher Executions throughput with lower database load. We also haven't forgotten about the Kafka runner, which also benefits from latency improvements due to configuration finetuning.
 - [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
 - [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
 - Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
-- Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for easier navigation of plugin properties and outputs
 - Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155). The `{{tasks.your_task_id.state }}` context returns a task run's state while the `{{execution.state}}` allows to retrieve the flow execution state.
 
 ## UI Improvements
@@ -235,6 +234,8 @@ Here are UI enhancements worth noting:
 - Added one-click copy functionality for Pebble expressions (e.g., `{{kv('my_value')}}`) in KV Store and Secret tables for easier reference
 - Improvements to flow filters in the UI (Filter flows by text, filter by multiple labels)
 - As part of our continuous improvements to the No-Code Editor, we're releasing a Beta version of a Multi-Panel Editor. To enable this Beta feature, navigate to `Settings` and toggle the `Multi Panel Editor` on.
+
+Our website performance has also significantly improved following Nuxt 2 to 3 migration, including a redesigned plugin page for easier navigation of plugin properties and outputs
 
 ## Plugin enhancements
 
