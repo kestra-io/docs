@@ -19,7 +19,7 @@ The table below highlights the key features of this release.
 | New flow property       | Define tasks to run after the execution is finished (e.g. alerts) using the `afterExecution` property | All Edition |
 | Cross-Namespace File Sharing      | Use code and KV pairs from other namespaces in your tasks thanks to improved inheritance and Namespace Files sharing | All Edition |
 | LDAP Sync         | Securely fetch users and credentials from an existing LDAP directory to simplify authentication and user management in enterprise environments | Enterprise Edition |
-| Enhanced Log Shippers    | New integrations including Splunk, AWS S3, Google Cloud Storage, Azure Blob, and exporting AuditLogs | Enterprise Edition |
+| Log Shipper plugins    | New log exporters for Splunk, AWS S3, Google Cloud and Azure Blob Storage, and a new log shipper plugin for Audit Logs | Enterprise Edition |
 | Global View for Secrets and KV Store | Unified interface for managing secrets and key-value pairs across namespaces | All Edition |
 
 Check the video below for a quick overview of the new features.
