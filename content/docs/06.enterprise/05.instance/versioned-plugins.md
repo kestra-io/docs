@@ -75,7 +75,7 @@ From the list, search and select the plugin to install and select the version.
 
 ![versioned-plugins-2](/docs/enterprise/versioned-plugins/versioned-plugins-2.png)
 
-After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade each plugin to its latest version as needed.
+After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the plugin's latest version. When upgrading, this preserves the previous version of the plugin and adds a separate, fresh installation of the latest version.
 
 ![versioned-plugins-3](/docs/enterprise/versioned-plugins/versioned-plugins-3.png)
 
@@ -110,6 +110,34 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install /
 -H "Authorization: Bearer YOUR-API-TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
+```
+
+To uninstall a versioned plugin, use the following DELETE request with either your username and password or API token:
+
+```bash
+```bash
+curl -X DELETE http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/uninstall \
+-u 'admin@kestra.io:kestra' \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
+```
+
+To check for all available versions of a plugin, you can use the following API request to resolve:
+
+```bash
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/resolve \
+-u 'admin@kestra.io:kestra' \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
+```
+
+If you want to install a newer version of a plugin, use the install request with the specified version, or use `LATEST`. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
+
+```bash
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
+-u 'admin@kestra.io:kestra' \
+-H "Content-Type: application/json" \
+-d '{"plugins":["io.kestra.plugin:plugin-airbyte:LATEST"]}'
 ```
 
 ### From the CLI
