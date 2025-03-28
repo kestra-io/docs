@@ -12,9 +12,11 @@
                 {{ tab.label }}
             </button>
         </div>
-        <TransitionGroup name="slide">
-            <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
-        </TransitionGroup>
+        <div class="slide-container">
+            <TransitionGroup name="slide">
+                <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
+            </TransitionGroup>
+        </div>
     </div>
 </template>
 
@@ -63,7 +65,6 @@ function setTab(index: number) {
         }
         text-align: center;
         position: relative;
-        overflow: hidden;
         h2 {
             color: white;
             font-size: 36px;
@@ -114,6 +115,10 @@ function setTab(index: number) {
 
     .tabActive {
         color: white;
+    }
+
+    .slide-container{
+        mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
     }
 
     .slide-enter-active,
