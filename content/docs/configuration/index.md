@@ -928,7 +928,9 @@ logger:
     flow: 'OFF'
 ```
 
-This disables all flow execution logs to go to the server logs. Similarly, the following configuration disables the execution logs for the `hello-world` flow:
+This disables all flow execution logs from being stored so that those logs will only show up in the server logs. 
+
+Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
 ```yaml
 logger:

@@ -4,7 +4,7 @@ icon: /docs/icons/tutorial.svg
 editions: ["EE"]
 ---
 
-Enable LDAP authentication in Kestra to improve security and streamline user access using existing LDAP credentials.
+Enable LDAP authentication in Kestra to streamline authentication using existing LDAP credentials.
 
 ## What is LDAP
 
@@ -14,7 +14,7 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 ## Configuration
 
-LDAP is configured in the security context of your Kestra configuration file. Below is an example configuration that includes Kestra-specific properties on top of out of the box Micronaut configuration.
+LDAP is configured in the security context of your Kestra configuration file. Below is an example configuration with Kestra-specific properties on top of the Micronaut configuration.
 
 ```yaml
 security:
@@ -54,7 +54,7 @@ If they are a part of any groups specified in the directory, those groups will b
 
 ![ldap-1](/docs/enterprise/sso/ldap-1.png)
 
-Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization.
+Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
 ::alert{type="warning"}
 If a user is deleted from the LDAP server, then that user will lose access to Kestra at the next scheduled sync or whenever the user next attempts to log in.

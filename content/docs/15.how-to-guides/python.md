@@ -100,7 +100,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 If you want to get a variable or file from your Python code, you can use an [output](../04.workflow-components/06.outputs.md).
 
-You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs, as well as executing/polling flows. For example, The Kestra ION (`kestra[ion]`) extra provides a method to read files and convert them to a list of dictionaries.
+You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs, as well as executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be easily converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
 
 Check out the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
 

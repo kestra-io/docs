@@ -245,23 +245,23 @@ The following example show the creation of a Binding for a User. We are defining
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
 ::
 
-::collapse{title="How to configure a "locked" flag for too many failed login attempts."}
-To create a timeout period for users who attempt to login and fail too many times, you can add the following to your Kestra configuration file:
+::collapse{title="How to change the lockout behavior after too many failed login attempts."}
+By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
 security:
   login:
     failed-attempts:
       threshold: 10
-      time-window: PT15M
-      lock-duration: PT24H
+      monitoring-window: PT5M
+      lock-duration: PT30M
 ```
 The key attributes are:
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
 - `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
-- `lockout-duration`: Defines how long the account remains locked. 
+- `lock-duration`: Defines how long the account remains locked. 
 
-In the above configuration, a user is allotted 10 failed login attemtpts in a 15 minutes window before they are locked out and must wait 24 hours to try again or be unlocked by an Admin.
+In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out and must wait 30 minutes to try again or be unlocked by an Admin or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
 ::
 
 ### Users
