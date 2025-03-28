@@ -226,8 +226,18 @@
         {
             .homepage-video {
                 position: absolute;
-                top: -70px;
-                right: 0;
+                top: 30px;
+                transform: translateX(-50%);
+                left: calc(50% + 50px);
+                @include media-breakpoint-up(md) {
+                    left: 50%;
+                }
+                @include media-breakpoint-up(lg) {
+                    top: -70px;
+                    right: 0;
+                    transform: none;
+                    left: auto;
+                }
                 z-index: 10;
                 padding: 0;
                 overflow: hidden;
