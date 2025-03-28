@@ -35,7 +35,7 @@ To configure globally, add `readOnly: true` to the configuration of your externa
 
 ### AWS Secret Manager
  
-For compatibility with Kestra, ensure that your AWS screts are stored as plain text in AWS Secrets Manager and not as key value pairs. The following example shows the configuration for AWS Secret Manager with read-only:
+For compatibility with Kestra, ensure that your AWS secrets are stored as plain text in AWS Secrets Manager and not as key-value pairs. The following example shows the configuration for AWS Secret Manager with a read-only secrets backend:
 
 ```yaml
 kestra:
@@ -50,7 +50,7 @@ kestra:
 
 ### Azure Key Vault
 
-The following example shows the configuration for Azure Key Vault with read-only:
+The following example shows the configuration for Azure Key Vault with a read-only secrets backend:
 
 ```yaml
 kestra:
@@ -66,7 +66,7 @@ kestra:
 
 ### Google Secret Manager
 
-The following example shows the configuration for Google Secret Manager with read-only:
+The following example shows the configuration for Google Secret Manager with a read-only secrets backend:
 
 ```yaml
 kestra:
@@ -121,7 +121,7 @@ In Vault, we have a Secrets Engine named `business-unit` in the `admin` namespac
 
 ![read-only-secrets-2](/docs/enterprise/read-only-secrets-2.png)
 
-In Kestra, we can now navigate to the Namespace we want to set up Vault as a secrets manager and enter the configuration details
+In Kestra, we can now navigate to the Namespace we want to set up Vault as a secrets manager for and enter the configuration details:
 
 ![read-only-secrets-3](/docs/enterprise/read-only-secrets-3.png)
 

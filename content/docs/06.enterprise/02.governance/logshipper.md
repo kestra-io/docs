@@ -475,12 +475,12 @@ tasks:
 
 To send [Audit Logs](06.audit-logs.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.
 
-The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except for the `resources` property replaces the `logLevelFilter` property.
-- `logExporters` - This property is required, and it specifies the plaform where the audit logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
+The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except that the `resources` property replaces the `logLevelFilter` property.
+- `logExporters` - This property is required, and it specifies the platform where the audit logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
 - `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
 - `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
-- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
-- `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
+- `offsetKey` - Specifies the [key](../../05.concepts/05.kv-store.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
+- `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra's database right after they are successfully exported, helping optimize storage space for logs that have already been exported and thus no longer need to occupy space in Kestra's metadata database. By default, this property is set to `false`.
 
 The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
 
