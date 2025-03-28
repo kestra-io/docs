@@ -196,7 +196,7 @@ For detailed information on setting up and configuring LDAP in Kestra, check our
 
 ### New Log Shipper plugins
 
-This release adds a new `AuditLogShipper` and new log exporters plugins to the Enterprise Edition, including:
+This release adds a new `AuditLogShipper` and new log exporter plugins to the Enterprise Edition, including:
 - Splunk
 - OpenSearch
 - AWS S3
@@ -221,8 +221,8 @@ This release introduces new global views for managing secrets and key-value pair
 
 - We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up less space and perform better
 - [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
-- [New Python package](https://github.com/kestra-io/libs/pull/16) allow you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
-- Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35),of your Ansible playbooks
+- [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
+- Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
 - Website performance dramatically improved following Nuxt 2 to 3 migration, including a redesigned plugin page for easier navigation of plugin properties and outputs
 - Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155). The `{{tasks.your_task_id.state }}` context returns a task run's state while the `{{execution.state}}` allows to retrieve the flow execution state.
