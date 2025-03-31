@@ -51,6 +51,13 @@
         }
     ]
 
+    // fetch the number of stargazers from the GitHub API
+    const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
+        return fetch("https://api.github.com/repos/kestra-io/kestra/stargazers?per_page=1")
+        .then(res => parseInt(res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1] ?? '0'))
+
+    });
+
     // fetch the number of contributors from the GitHub API
     const {data:numberOfContributors} = await useAsyncData('githubContrib', () => {
         return fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
@@ -58,12 +65,6 @@
 
     });
 
-    // fetch the number of stargazers from the GitHub API
-    const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
-        return fetch("https://api.github.com/repos/kestra-io/kestra/stargazers?per_page=1")
-        .then(res => parseInt(res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1] ?? '0'))
-
-    });
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
         notation: 'compact',
