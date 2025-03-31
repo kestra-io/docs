@@ -110,7 +110,7 @@ const features = [
             position: absolute;
             width: 50px;
             @include media-breakpoint-up(lg){
-                top: 39%;
+                top: 42%;
             }
             left: 50%;
             transform: translate(-50%, -50%);
@@ -208,7 +208,6 @@ const features = [
                     left: -45px;
                     width: 100%;
                     height: 100%;
-                    transition: transform 0.2s;
                     img{
                         height: auto;
                     }
@@ -217,6 +216,11 @@ const features = [
 
             &:hover{
                 .img-block{
+                    animation-duration: .5s;
+                    animation-name: bounce-up;
+                    animation-timing-function: ease;
+                    animation-delay: 0;
+                    animation-iteration-count: 1;
                     transform: translateY(-110px);
                 }
             }
@@ -226,6 +230,18 @@ const features = [
                 opacity: 0;
                 transform: translate(-50%, 0);
             }
+        }
+    }
+
+    @keyframes bounce-up {
+        0% {
+            transform: translateY(0);
+        }
+        85% {
+            transform: translateY(-117px);
+        }
+        100% {
+            transform: translateY(-110px);
         }
     }
 

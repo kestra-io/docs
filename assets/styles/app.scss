@@ -28,6 +28,12 @@ body {
     }
 }
 
+.container{
+    @include media-breakpoint-up(xl) {
+        max-width: 1140px;
+    }
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
