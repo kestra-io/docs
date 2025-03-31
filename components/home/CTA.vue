@@ -7,7 +7,7 @@
             <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5 minutes.</p>
             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-secondary">Get Started</NuxtLink>
         </div>
-        <div class="side-box">
+        <div class="side-box side-box-purple">
             <NuxtImg src="/landing/home/logo-cta.svg" alt="CTA" class="logo-cta"/>
             <p class="pre-title">Schedule a meeting</p>
             <h2>Let's meet</h2>
@@ -43,6 +43,7 @@
         margin: 2rem 0;
         border: 1px solid rgba(255, 255, 255, 0.1);
         background: #20222A;
+        z-index: 1;
         h2{
             font-size: 3rem;
             font-weight: 500;
@@ -51,6 +52,16 @@
         .description{
             font-size: 1.2rem;
             margin-bottom: 2rem;
+        }
+        .pre-title{
+            font-family: "Source Code Pro", monospace;
+            margin-bottom: .5rem;
+        }
+    }
+    .side-box-purple{
+        border-color: #A950FF;
+        .pre-title{
+            color: #CD88FF;
         }
     }
     .logo-cta{
