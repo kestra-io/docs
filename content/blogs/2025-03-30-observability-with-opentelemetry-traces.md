@@ -1,6 +1,6 @@
 ---
-title: "Observability inside your Kestra flows with OpenTelemetry traces"
-description: "TODO"
+title: "Enhancing Flow Observability in Kestra with OpenTelemetry Traces"
+description: "Learn how to integrate OpenTelemetry traces into Kestra workflows to gain deeper insights, track performance, and streamline monitoring for distributed systems."
 date: 2025-03-30T13:00:00
 category: Solutions
 author:
