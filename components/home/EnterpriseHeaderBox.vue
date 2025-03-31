@@ -1,5 +1,5 @@
 <template>
-    <div class="enterprise-header-box">
+    <div class="enterprise-header-box container">
 
         <NuxtImg class="box-right" width="558px" height="432px" src="/landing/home/EnterpriseHeader.svg" alt="enterprise"/>
         <div class="box-left">
@@ -37,7 +37,6 @@
         justify-content: space-between;
         padding: 1rem;
         row-gap: 2rem;
-        max-width: 1140px;
         margin: 0 auto;
         @include media-breakpoint-up(lg){
             padding: 4rem;
