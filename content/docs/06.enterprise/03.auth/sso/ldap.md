@@ -51,7 +51,7 @@ For Kestra-specific configuration, `user-attributes` is the key property that li
 
 With LDAP configured, when a user logs into Kestra for the first time, their login attributes are checked against the LDAP directory, and a user is created in Kestra. If Kestra finds an existing, matching account, the user is logged into Kestra with the LDAP account. 
 
-If they are a part of any groups specified in the directory, those groups will be added to Kestra. If the group already exists in Kestra, they will be automatically added. If a user is added to a group after already logging into Kestra once, that user must logout and log back into Kestra as the LDAP server only syncs at the point of logging in. Any user authenticated through LDAP will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
+If they are a part of any groups specified in the directory, those groups will be added to Kestra. If the group already exists in Kestra, they will be automatically added. If a user is added to a group after already logging into Kestra once, that user must log out and back into Kestra, as the LDAP server only syncs at the point of logging in. Any user authenticated through LDAP will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
 
 ![ldap-1](/docs/enterprise/sso/ldap-1.png)
 
