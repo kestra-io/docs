@@ -36,11 +36,11 @@ security:
           - "firstNameAttribute"
           - "lastNameAttribute"
           - "mailAttribute"
-        groups:
-          enabled: true
-          base: "dc=example,dc=org"
-          filter: "{&(objectClass=posixGroup)(memberUid={0})}"
-          filter-attribute: uid
+      groups:
+        enabled: true
+        base: "dc=example,dc=org"
+        filter: "{&(objectClass=posixGroup)(memberUid={0})}"
+        filter-attribute: uid
 ```
 
 [LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) has `context`, `search`, and `groups` as basic configuration properties supported out of the box. They provide the connection context to the directory of users, user attributes to be linked to the Kestra instance, and filter information to sync the users' groups to Kestra based on your LDAP directory. 
