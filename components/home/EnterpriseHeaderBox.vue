@@ -51,7 +51,9 @@
         .box-right{
             width: 100%;
             height: auto;
-            max-width: 558px;
+            @include media-breakpoint-up(xl){
+                max-width: 558px;
+            }
         }
 
         .box-left{
