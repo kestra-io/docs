@@ -24,8 +24,7 @@
             </div>
         </div>
     </div>
-    <pre style="background-color: hotpink;">{{ JSON.stringify(numberOfStargazers, null, 2) }}</pre>
-    <pre style="background-color: red;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
+    <pre style="padding: 1rem; background-color: red;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
 <script lang="ts" setup>
@@ -61,15 +60,15 @@
 
     // fetch the number of stargazers from the GitHub API
     const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
-        return fetch("https://api.github.com/repos/kestra-io/kestra")
-            .then((res) => res.json())
-            .then((data) => data.stargazers_count)
+        return fetch("https://api.github.com/repos/kestra-io/kestra/stargazers?per_page=1")
+        .then(res => parseInt(res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1] ?? '0'))
+
     });
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
         notation: 'compact',
         maximumFractionDigits: 1
-    }).format(numberOfStargazers.value).toLowerCase());
+    }).format(numberOfStargazers.value ?? 0).toLowerCase());
 
     const leadIndicators = computed(() => [
         {title: "Contributors", value: numberOfContributors.value},
