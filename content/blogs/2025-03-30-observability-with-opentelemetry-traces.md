@@ -10,16 +10,16 @@ author:
 image: TODO.png
 ---
 
-**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior.
+**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior. Having structured observability allows teams to debug, optimize, and maintain workflows more efficiently.
 
-OpenTelemetry is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data. It helps implement observability in software applications.
+OpenTelemetry is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data. It helps implement observability in software applications, making it easier to trace and understand system performance.
 
 OpenTelemetry defines three different kinds of telemetry data:
 - **Traces** provide a high-level view of what happens when a request is made to an application. A trace can contain multiple spans.
-- **Metrics** are measurements of a service captured at runtime.
-- **Logs** are timestamped text records, either structured (recommended) or unstructured, with optional metadata.
+- **Metrics** are measurements of a service captured at runtime, helping to quantify performance and resource usage.
+- **Logs** are timestamped text records, either structured (recommended) or unstructured, with optional metadata, useful for debugging and auditing.
 
-Starting with 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry compatible exporters.
+Starting with 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry-compatible exporters. This integration enhances visibility into flow executions and system behavior.
 
 In this blog post, we explore how to leverage OpenTelemetry traces to monitor flow executions. For Metrics and Logs, please have a look at our dedicated page: [OpenTelemetry](/docs/09.administrator-guide/open-telemetry).
 
@@ -50,7 +50,7 @@ kestra:
 
 ```
 
-You can enable OpenTelemetry traces without enabling it inside Kestra flows, in this case you will only have traces accessible through the Kestra API and not inside the context of your flow executions.
+You can enable OpenTelemetry traces without enabling it inside Kestra flows, in this case you will only have traces accessible through the Kestra API and not inside the context of your flow executions. This provides flexibility in monitoring strategies as needed.
 
 You can launch Jaeger with the following Docker compose snippet:
 
@@ -80,31 +80,31 @@ tasks:
     message: Hello World! 🚀
 ```
 
-After launching a flow execution, go to the Jaeger UI (http://localhost:16686/), select **Kestra** as a service and hit **Find Traces**.
+After launching a flow execution, go to the Jaeger UI (http://localhost:16686/), select **Kestra** as a service, and hit **Find Traces**.
 
-You will see traces for every API call.
+You will see traces for every API call, providing a detailed view of execution flows and interactions within the system.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-01.png)
 
-Most interesting, is the trace that starts an execution, its name is **POST /api/v1/executions/{namespace}/{id}** and you can see it has 7 spans. Click on it and you will see the detail of the span.
+Most interesting is the trace that starts an execution. Its name is **POST /api/v1/executions/{namespace}/{id}** and you can see it has 7 spans. Click on it to view span details, including execution order and timing.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-02.png
 
-The trace starts inside the API, then you can see 6 spans inside Kestra itself, those spans are children of the API span. Each span has a duration and is displayed as a timeline.
+The trace starts inside the API, then you can see 6 spans inside Kestra itself. Those spans are children of the API span, and each span has a duration that is displayed in a timeline, making it easy to analyze performance bottlenecks.
 
-Inside Kestra, there a multiple kinds of spans, but two to make special note of:
+Inside Kestra, there a multiple kinds of spans, but two are particularly relevant:
 - **EXECUTOR**: spans created inside the Executor each time an execution message is processed (for each change on the execution).
 - **WORKER** : spans created inside the Worker each time it executes a task or a trigger.
 
-If you click on a span, you will see additional information stored inside the span. Here I also clicked on **Tags** to see all tags.
+If you click on a span, you will see additional information stored inside the span. Here, clicking on **Tags** reveals execution details such as namespace, flow ID, execution ID, and task run ID. This metadata helps track executions and correlate logs with traces.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-03.png
 
-As you can see, retrievable inside the span is a multitude of useful execution information such as namespace, flow id, execution id and an uid, which for a task execution is the task run id.
-
 ## Correlation between a parent flow and a subflow
 
-Critical to orchestration, is the relationship between distributed workflows. To monitor the correlation of flows, let's define a flow that will start a subflow of the `hello-world` flow on each execution:
+A key aspect of workflow orchestration is monitoring relationships between flows. OpenTelemetry traces help visualize execution dependencies between a parent flow and its subflows.
+
+ To demonstrate, let's define a parent flow that triggers the `hello-world` flow as a subflow on each execution:
 
 ```yaml
 id: parent
@@ -120,26 +120,26 @@ tasks:
     flowId: hello-world
 ```
 
-If you start one execution and look for its trace, you will see 19 spans and a correlated sub-trace for the subflow execution.
+If you start an execution and inspect its trace, you will see 19 spans and a correlated sub-trace for the subflow execution.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-04.png
 
-You can see in the parent flow execution a span named **EXECUTOR - io.kestra.plugin.core.flow.Subflow**; this is the Subflow task that creates it. Next, you can see a correlated trace with the 7 spans of the subflow execution.
+The parent execution includes a span named **EXECUTOR - io.kestra.plugin.core.flow.Subflow**; this is the Subflow task that creates it. Following this span, you will see a correlated trace containing the 7 spans from the subflow execution. This structure helps track workflow dependencies across multiple flow executions.
 
 ## Correlation between incoming and outgoing HTTP calls
 
-As we already saw, all calls to the API will create new traces. But if the call is made by a system that instruments HTTP calls via the standard OpenTelemetry traces headers; they will be correlated to the call of the API.
+As we already saw, all API calls generate traces, but OpenTelemetry provides additional benefits when correlated across services. If an external system that supports OpenTelemetry makes an API call to Kestra, the trace will be linked to that external system's trace, offering end-to-end visibility.
 
-In the same manner, each HTTP call done by a Kestra task will send the standard OpenTelemetry traces headers. If the target HTTP server supports OpenTelemetry, its traces will be correlated with the traces started inside Kestra.
+In the same manner, any HTTP calls made by a Kestra task automatically include OpenTelemetry trace headers. If the receiving service is instrumented with OpenTelemetry, these traces are linked, enabling seamless observability across services.
 
-TODO find a sentence to explain that it's super cool to have a global monitoring of your system with traces...
+By leveraging OpenTelemetry traces, you gain a unified, end-to-end view of your entire system, making it easier than ever to track executions, diagnose issues, and optimize performance across distributed workflows.
 
 In the following screenshot, you can see a trace starting in an external service called **upstream**.
-This service will trigger a new flow execution via a webhook. Then this flow will use a `io.kestra.plugin.core.http.Request` task that will call the **downstream** external service.
-Finally, you can see a trace inside the **downstream** external service for the `/hello` HTTP endpoint.
+This service triggers a new flow execution via a webhook. The flow then makes an HTTP request using the `io.kestra.plugin.core.http.Request`, calling the **downstream** external service.
+Finally, you can see a trace inside the **downstream** external service for the `/hello` HTTP endpoint, linking all interactions together.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-05.png
 
 ## Conclusion
 
-TODO
+With OpenTelemetry traces, Kestra provides a powerful way to monitor, debug, and optimize flow executions. Traces help visualize execution timelines, correlate parent-child workflows, and track external interactions. By integrating OpenTelemetry into Kestra, teams gain deep insights into execution patterns, allowing them to improve performance, troubleshoot issues efficiently, and ensure reliable data processing workflows.
