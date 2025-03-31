@@ -1464,7 +1464,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: "#/components/schemas/ServiceType"
+            $ref: "#/components/schemas/Service.ServiceType"
       responses:
         "200":
           description: find_3 200 response
@@ -1491,199 +1491,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/cluster/versioned-plugins:
-    get:
-      tags:
-      - Plugins
-      summary: Get the list of installed Kestra's plugin artifact.
-      operationId: listVersionedPlugin
-      parameters:
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: q
-        in: query
-        description: The query
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: listVersionedPlugin 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_ClusterController.ApiPluginArtifact_"
-  /api/v1/cluster/versioned-plugins/available:
-    get:
-      tags:
-      - Plugins
-      summary: Get the list of available Kestra's plugin artifact.
-      operationId: listAvailableVersionedPlugins
-      responses:
-        "200":
-          description: listAvailableVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/cluster/versioned-plugins/install:
-    post:
-      tags:
-      - Plugins
-      summary: Install a specific Kestra's plugin artifact
-      operationId: installVersionedPlugins
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: installVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginArtifact_"
-  /api/v1/cluster/versioned-plugins/resolve:
-    post:
-      tags:
-      - Plugins
-      summary: Resolve a specific Kestra's plugin artifact
-      operationId: resolveVersionedPlugins
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: resolveVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginResolutionResult_"
-  /api/v1/cluster/versioned-plugins/uninstall:
-    delete:
-      tags:
-      - Plugins
-      summary: Uninstall Kestra's plugin artifacts
-      operationId: uninstallVersionedPlugins
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: uninstallVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginArtifact_"
-  /api/v1/cluster/versioned-plugins/upload:
-    post:
-      tags:
-      - Plugins
-      summary: Upload a Kestra's plugin artifact
-      operationId: uploadVersionedPlugins
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-            encoding:
-              file:
-                contentType: application/octet-stream
-        required: true
-      responses:
-        "200":
-          description: uploadVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginArtifact"
-  /api/v1/cluster/versioned-plugins/{groupId}/{artifactId}:
-    get:
-      tags:
-      - Plugins
-      summary: Get details about a Kestra's plugin artifact.
-      operationId: getVersionedPlugin
-      parameters:
-      - name: groupId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: artifactId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getVersionedPlugin 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginVersions"
-  /api/v1/cluster/versioned-plugins/{groupId}/{artifactId}/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get details about a specific Kestra's plugin artifact version.
-      operationId: getVersionedPlugin_1
-      parameters:
-      - name: groupId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: artifactId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getVersionedPlugin_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginVersionDetails"
   /api/v1/cluster/workergroups:
     get:
       tags:
@@ -1788,7 +1595,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MiscController.EEConfiguration"
+                $ref: "#/components/schemas/MiscController.ConfigurationEe"
   /api/v1/dashboards:
     get:
       tags:
@@ -2930,14 +2737,6 @@ paths:
       - Executions
       summary: Create new executions from old ones. Keep the flow revision
       operationId: replayByIds
-      parameters:
-      - name: latestRevision
-        in: query
-        description: If latest revision should be used
-        schema:
-          type: boolean
-          nullable: true
-          default: false
       requestBody:
         content:
           application/json:
@@ -3047,13 +2846,6 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      - name: latestRevision
-        in: query
-        description: If latest revision should be used
-        schema:
-          type: boolean
-          nullable: true
-          default: false
       responses:
         "200":
           description: replayByQuery 200 response
@@ -3336,25 +3128,15 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: scope
         in: query
         description: The scope of the executions to include
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -3363,21 +3145,18 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -3385,7 +3164,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -3393,7 +3171,6 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -3405,7 +3182,6 @@ paths:
       - name: state
         in: query
         description: A state filter
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -3414,7 +3190,6 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -3423,14 +3198,12 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: childFilter
         in: query
         description: A execution child filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -4447,19 +4220,6 @@ paths:
         schema:
           type: boolean
           default: true
-      - name: namespace
-        in: query
-        description: The namespace where to update flows
-        required: true
-        schema:
-          type: string
-      - name: allowNamespaceChild
-        in: query
-        description: If namespace child should are allowed to be updated
-        required: true
-        schema:
-          type: boolean
-          default: false
       requestBody:
         content:
           application/x-yaml:
@@ -4849,25 +4609,15 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: scope
         in: query
         description: The scope of the flows to include
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -4876,14 +4626,12 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -6644,6 +6392,12 @@ paths:
       summary: Search for logs
       operationId: find_10
       parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
       - name: page
         in: query
         description: The current page
@@ -6670,46 +6424,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
-      - name: q
-        in: query
-        description: A string filter
-        deprecated: true
-        schema:
-          type: string
-          nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: triggerId
         in: query
         description: A trigger id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: minLevel
         in: query
         description: The min log level filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -6717,7 +6452,6 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6725,7 +6459,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -7939,45 +7672,15 @@ paths:
         required: true
         schema:
           type: string
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: filters
-        in: query
-        description: Filters
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       responses:
         "200":
           description: listSecret 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiSecretListResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
     put:
       tags:
       - Namespaces
@@ -8054,10 +7757,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-              - $ref: "#/components/schemas/ApiSecretMeta_4"
-              - $ref: "#/components/schemas/ApiSecretMeta_2"
-            example: null
+              $ref: "#/components/schemas/ApiSecretMeta"
         required: true
       responses:
         "200":
@@ -8191,9 +7891,9 @@ paths:
       - name: arrayOf
         in: query
         description: If schema should be an array of requested type
-        required: true
         schema:
           type: boolean
+          nullable: true
           default: false
       responses:
         "200":
@@ -8226,59 +7926,6 @@ paths:
       responses:
         "200":
           description: pluginDocumentation 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/plugins/{cls}/versions:
-    get:
-      tags:
-      - Plugins
-      summary: Get all versions for a plugin
-      operationId: pluginVersions
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: pluginVersions 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
-  /api/v1/plugins/{cls}/versions/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: pluginVersions_1
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: The plugin version
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        schema:
-          type: boolean
-          default: false
-      responses:
-        "200":
-          description: pluginVersions_1 200 response
           content:
             application/json:
               schema:
@@ -8812,39 +8459,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -8852,7 +8487,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -8860,7 +8494,6 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -8872,7 +8505,6 @@ paths:
       - name: state
         in: query
         description: A state filter
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -8881,7 +8513,6 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -8890,14 +8521,12 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: childFilter
         in: query
         description: A execution child filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -10517,7 +10146,7 @@ paths:
     delete:
       tags:
       - Tenants
-      summary: "Delete a tenant and all its resources (flows, namespaces, apps, ..."
+      summary: Delete a tenant
       operationId: delete_22
       parameters:
       - name: id
@@ -12193,39 +11822,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: workerId
         in: query
         description: The identifier of the worker currently evaluating the trigger
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: The flow identifier
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -14412,7 +14029,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: "#/components/schemas/ServiceType"
+            $ref: "#/components/schemas/Service.ServiceType"
       - name: tenant
         in: path
         required: true
@@ -14449,244 +14066,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/{tenant}/cluster/versioned-plugins:
-    get:
-      tags:
-      - Plugins
-      summary: Get the list of installed Kestra's plugin artifact.
-      operationId: listVersionedPlugin_1
-      parameters:
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: q
-        in: query
-        description: The query
-        schema:
-          type: string
-          nullable: true
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listVersionedPlugin_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_ClusterController.ApiPluginArtifact_"
-  /api/v1/{tenant}/cluster/versioned-plugins/available:
-    get:
-      tags:
-      - Plugins
-      summary: Get the list of available Kestra's plugin artifact.
-      operationId: listAvailableVersionedPlugins_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listAvailableVersionedPlugins_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/{tenant}/cluster/versioned-plugins/install:
-    post:
-      tags:
-      - Plugins
-      summary: Install a specific Kestra's plugin artifact
-      operationId: installVersionedPlugins_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: installVersionedPlugins_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginArtifact_"
-  /api/v1/{tenant}/cluster/versioned-plugins/resolve:
-    post:
-      tags:
-      - Plugins
-      summary: Resolve a specific Kestra's plugin artifact
-      operationId: resolveVersionedPlugins_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: resolveVersionedPlugins_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginResolutionResult_"
-  /api/v1/{tenant}/cluster/versioned-plugins/uninstall:
-    delete:
-      tags:
-      - Plugins
-      summary: Uninstall Kestra's plugin artifacts
-      operationId: uninstallVersionedPlugins_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiPluginListRequest"
-        required: true
-      responses:
-        "200":
-          description: uninstallVersionedPlugins_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginArtifactList_PluginArtifact_"
-  /api/v1/{tenant}/cluster/versioned-plugins/upload:
-    post:
-      tags:
-      - Plugins
-      summary: Upload a Kestra's plugin artifact
-      operationId: uploadVersionedPlugins_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-            encoding:
-              file:
-                contentType: application/octet-stream
-        required: true
-      responses:
-        "200":
-          description: uploadVersionedPlugins_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginArtifact"
-  /api/v1/{tenant}/cluster/versioned-plugins/{groupId}/{artifactId}:
-    get:
-      tags:
-      - Plugins
-      summary: Get details about a Kestra's plugin artifact.
-      operationId: getVersionedPlugin_2
-      parameters:
-      - name: groupId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: artifactId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getVersionedPlugin_2 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginVersions"
-  /api/v1/{tenant}/cluster/versioned-plugins/{groupId}/{artifactId}/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get details about a specific Kestra's plugin artifact version.
-      operationId: getVersionedPlugin_3
-      parameters:
-      - name: groupId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: artifactId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getVersionedPlugin_3 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiPluginVersionDetails"
   /api/v1/{tenant}/cluster/workergroups:
     get:
       tags:
@@ -14824,7 +14203,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MiscController.EEConfiguration"
+                $ref: "#/components/schemas/MiscController.ConfigurationEe"
   /api/v1/{tenant}/dashboards:
     get:
       tags:
@@ -16101,13 +15480,6 @@ paths:
       summary: Create new executions from old ones. Keep the flow revision
       operationId: replayByIds_1
       parameters:
-      - name: latestRevision
-        in: query
-        description: If latest revision should be used
-        schema:
-          type: boolean
-          nullable: true
-          default: false
       - name: tenant
         in: path
         required: true
@@ -16222,13 +15594,6 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      - name: latestRevision
-        in: query
-        description: If latest revision should be used
-        schema:
-          type: boolean
-          nullable: true
-          default: false
       - name: tenant
         in: path
         required: true
@@ -16538,25 +15903,15 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: scope
         in: query
         description: The scope of the executions to include
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -16565,21 +15920,18 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -16587,7 +15939,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -16595,7 +15946,6 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -16607,7 +15957,6 @@ paths:
       - name: state
         in: query
         description: A state filter
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -16616,7 +15965,6 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -16625,14 +15973,12 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: childFilter
         in: query
         description: A execution child filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -17800,19 +17146,6 @@ paths:
         schema:
           type: boolean
           default: true
-      - name: namespace
-        in: query
-        description: The namespace where to update flows
-        required: true
-        schema:
-          type: string
-      - name: allowNamespaceChild
-        in: query
-        description: If namespace child should are allowed to be updated
-        required: true
-        schema:
-          type: boolean
-          default: false
       - name: tenant
         in: path
         required: true
@@ -18267,25 +17600,15 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: scope
         in: query
         description: The scope of the flows to include
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -18294,14 +17617,12 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -20241,6 +19562,12 @@ paths:
       summary: Search for logs
       operationId: find_36
       parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
       - name: page
         in: query
         description: The current page
@@ -20267,46 +19594,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
-      - name: q
-        in: query
-        description: A string filter
-        deprecated: true
-        schema:
-          type: string
-          nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: triggerId
         in: query
         description: A trigger id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: minLevel
         in: query
         description: The min log level filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -20314,7 +19622,6 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -20322,7 +19629,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -21758,38 +21064,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: filters
-        in: query
-        description: Filters
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: tenant
         in: path
         required: true
@@ -21801,7 +21075,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiSecretListResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
     put:
       tags:
       - Namespaces
@@ -21873,14 +21149,14 @@ paths:
       summary: Patch a secret metadata for a namespace
       operationId: patchSecret_1
       parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       - name: namespace
         in: path
         description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
         required: true
         schema:
           type: string
@@ -21893,10 +21169,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-              - $ref: "#/components/schemas/ApiSecretMeta_3"
-              - $ref: "#/components/schemas/ApiSecretMeta_1"
-            example: null
+              $ref: "#/components/schemas/ApiSecretMeta"
         required: true
       responses:
         "200":
@@ -22064,9 +21337,9 @@ paths:
       - name: arrayOf
         in: query
         description: If schema should be an array of requested type
-        required: true
         schema:
           type: boolean
+          nullable: true
           default: false
       - name: tenant
         in: path
@@ -22109,69 +21382,6 @@ paths:
       responses:
         "200":
           description: pluginDocumentation_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/{tenant}/plugins/{cls}/versions:
-    get:
-      tags:
-      - Plugins
-      summary: Get all versions for a plugin
-      operationId: pluginVersions_2
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: pluginVersions_2 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
-  /api/v1/{tenant}/plugins/{cls}/versions/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: pluginVersions_3
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: The plugin version
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        schema:
-          type: boolean
-          default: false
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: pluginVersions_3 200 response
           content:
             application/json:
               schema:
@@ -22771,39 +21981,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: A flow id filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: startDate
         in: query
         description: The start datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -22811,7 +22009,6 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
-        deprecated: true
         schema:
           type: string
           format: date-time
@@ -22819,7 +22016,6 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -22831,7 +22027,6 @@ paths:
       - name: state
         in: query
         description: A state filter
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -22840,7 +22035,6 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
-        deprecated: true
         schema:
           type: array
           nullable: true
@@ -22849,14 +22043,12 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: childFilter
         in: query
         description: A execution child filter
-        deprecated: true
         schema:
           nullable: true
           allOf:
@@ -24810,7 +24002,7 @@ paths:
     delete:
       tags:
       - Tenants
-      summary: "Delete a tenant and all its resources (flows, namespaces, apps, ..."
+      summary: Delete a tenant
       operationId: delete_50
       parameters:
       - name: id
@@ -26778,39 +25970,27 @@ paths:
           nullable: true
           items:
             type: string
-      - name: filters
-        in: query
-        description: Filters
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: workerId
         in: query
         description: The identifier of the worker currently evaluating the trigger
-        deprecated: true
         schema:
           type: string
           nullable: true
       - name: flowId
         in: query
         description: The flow identifier
-        deprecated: true
         schema:
           type: string
           nullable: true
@@ -27525,25 +26705,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /login:
-    post:
-      operationId: login
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/UsernamePasswordCredentials"
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UsernamePasswordCredentials"
-        required: true
-      responses:
-        "200":
-          description: login 200 response
-          content:
-            application/json:
-              schema:
-                type: object
 components:
   schemas:
     AbstractBindingController.BindingDetail:
@@ -27606,7 +26767,6 @@ components:
       enum:
       - ERROR
       - FINALLY
-      - AFTER_EXECUTION
     AbstractGroupController.GroupWithMembers:
       required:
       - deleted
@@ -27661,10 +26821,6 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
-        version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
-          type: string
         description:
           type: string
         conditions:
@@ -27709,10 +26865,6 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
-        version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
-          type: string
     AbstractUser:
       required:
       - email
@@ -27737,8 +26889,6 @@ components:
           type: string
         id:
           type: string
-        name:
-          type: string
         description:
           type: string
         firstName:
@@ -27752,7 +26902,6 @@ components:
     AbstractUser.GroupIdentifier:
       required:
       - groupId
-      - managedExternally
       - membership
       - tenantId
       type: object
@@ -27764,8 +26913,6 @@ components:
           type: string
         membership:
           $ref: "#/components/schemas/AbstractUser.GroupIdentifier.Membership"
-        managedExternally:
-          type: boolean
     AbstractUser.GroupIdentifier.Membership:
       type: string
       enum:
@@ -27844,85 +26991,21 @@ components:
           type: array
           items:
             type: string
-    ApiSecretListResponse:
-      required:
-      - readOnly
-      - results
-      - total
-      type: object
-      properties:
-        readOnly:
-          type: boolean
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/ApiSecretMeta"
-        total:
-          type: integer
-          format: int64
     ApiSecretMeta:
       required:
+      - description
       - key
+      - tags
       type: object
       properties:
         key:
           type: string
-    ApiSecretMeta_1:
-      required:
-      - description
-      - tags
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/ApiSecretMeta"
-      - properties:
-          description:
-            type: string
-          tags:
-            type: array
-            items:
-              $ref: "#/components/schemas/ApiSecretTag"
-    ApiSecretMeta_2:
-      required:
-      - description
-      - tags
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/ApiSecretMeta"
-      - properties:
-          description:
-            type: string
-          tags:
-            type: array
-            items:
-              $ref: "#/components/schemas/ApiSecretTag"
-    ApiSecretMeta_3:
-      required:
-      - description
-      - tags
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/ApiSecretMeta"
-      - properties:
-          description:
-            type: string
-          tags:
-            type: array
-            items:
-              $ref: "#/components/schemas/ApiSecretTag"
-    ApiSecretMeta_4:
-      required:
-      - description
-      - tags
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/ApiSecretMeta"
-      - properties:
-          description:
-            type: string
-          tags:
-            type: array
-            items:
-              $ref: "#/components/schemas/ApiSecretTag"
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiSecretTag"
     ApiSecretTag:
       required:
       - key
@@ -27958,19 +27041,19 @@ components:
       - description
       - groupList
       - id
-      - name
+      - username
       type: object
       properties:
         id:
           type: string
-          description: the identifier of this service account.
-        name:
+          description: the user's ID.
+        username:
           pattern: "^(?=.{1,63}$)[a-z0-9]+(?:-[a-z0-9]+)*$"
           type: string
-          description: the name of this service account.
+          description: the user's name.
         description:
           type: string
-          description: the description of this service account.
+          description: the user's description.
         groupList:
           type: array
           items:
@@ -28132,21 +27215,42 @@ components:
     AuditLog:
       required:
       - appliedPatch
+      - date
+      - deleted
+      - detail
+      - id
+      - impersonatedBy
+      - ipAddress
       - revertPatch
+      - type
+      - userId
       type: object
-      allOf:
-      - $ref: "#/components/schemas/BaseAuditLog"
-      - properties:
-          deleted:
-            type: boolean
-          appliedPatch:
-            type: array
-            items:
-              type: object
-          revertPatch:
-            type: array
-            items:
-              type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/CrudEventType"
+        detail:
+          $ref: "#/components/schemas/AuditLogDetail"
+        date:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        ipAddress:
+          type: string
+        impersonatedBy:
+          type: string
+        deleted:
+          type: boolean
+        appliedPatch:
+          type: array
+          items:
+            type: object
+        revertPatch:
+          type: array
+          items:
+            type: object
     AuditLogController.AuditLogDiff:
       required:
       - after
@@ -28308,35 +27412,6 @@ components:
       - INFO
       - WARNING
       - ERROR
-    BaseAuditLog:
-      required:
-      - date
-      - deleted
-      - detail
-      - id
-      - impersonatedBy
-      - ipAddress
-      - type
-      - userId
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: "#/components/schemas/CrudEventType"
-        detail:
-          $ref: "#/components/schemas/AuditLogDetail"
-        date:
-          type: string
-          format: date-time
-        userId:
-          type: string
-        ipAddress:
-          type: string
-        impersonatedBy:
-          type: string
-        deleted:
-          type: boolean
     BaseResource_PatchRequest_:
       type: object
       properties:
@@ -28524,7 +27599,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/ServiceType"
+          $ref: "#/components/schemas/Service.ServiceType"
         total:
           type: integer
           format: int64
@@ -28559,136 +27634,6 @@ components:
           items:
             type: string
       description: ApiCreateWorkerGroupRequest.
-    ClusterController.ApiPluginArtifact:
-      required:
-      - artifactId
-      - groupId
-      - icon
-      - title
-      - versions
-      type: object
-      properties:
-        title:
-          type: string
-        icon:
-          type: string
-        groupId:
-          type: string
-        artifactId:
-          type: string
-        versions:
-          type: array
-          items:
-            type: string
-    ClusterController.ApiPluginArtifactList_PluginArtifact_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        total:
-          type: integer
-          format: int32
-        results:
-          type: array
-          items:
-            type: object
-    ClusterController.ApiPluginArtifactList_PluginResolutionResult_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        total:
-          type: integer
-          format: int32
-        results:
-          type: array
-          items:
-            type: object
-    ClusterController.ApiPluginListRequest:
-      required:
-      - plugins
-      type: object
-      properties:
-        plugins:
-          type: array
-          items:
-            type: string
-    ClusterController.ApiPluginVersionDetails:
-      required:
-      - artifactId
-      - classes
-      - description
-      - groupId
-      - icon
-      - title
-      - version
-      type: object
-      properties:
-        artifactId:
-          type: string
-        groupId:
-          type: string
-        version:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        icon:
-          type: string
-        classes:
-          type: array
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiPluginVersionDetails.ApiPluginClasses"
-    ClusterController.ApiPluginVersionDetails.ApiPluginClass:
-      required:
-      - icon
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        icon:
-          type: string
-    ClusterController.ApiPluginVersionDetails.ApiPluginClasses:
-      required:
-      - classes
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-        classes:
-          type: array
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiPluginVersionDetails.ApiPluginClass"
-    ClusterController.ApiPluginVersions:
-      required:
-      - artifactId
-      - groupId
-      - versions
-      type: object
-      properties:
-        groupId:
-          type: string
-        artifactId:
-          type: string
-        versions:
-          type: array
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiPluginVersions.ApiPluginVersionAndMetadata"
-    ClusterController.ApiPluginVersions.ApiPluginVersionAndMetadata:
-      required:
-      - metadata
-      - version
-      type: object
-      properties:
-        version:
-          type: string
-        metadata:
-          $ref: "#/components/schemas/PluginArtifactMetadata"
     ClusterController.ApiServerInstance:
       required:
       - hostname
@@ -28718,7 +27663,7 @@ components:
         id:
           type: string
         type:
-          $ref: "#/components/schemas/ServiceType"
+          $ref: "#/components/schemas/Service.ServiceType"
         state:
           $ref: "#/components/schemas/Service.ServiceState"
         server:
@@ -28933,8 +27878,6 @@ components:
       - LOGIN
       - LOGOUT
       - IMPERSONATE
-      - LOGIN_FAILURE
-      - ACCOUNT_LOCKED
     DailyExecutionStatistics:
       required:
       - duration
@@ -29135,10 +28078,6 @@ components:
       - variables
       type: object
       properties:
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
         id:
           type: string
         namespace:
@@ -29158,6 +28097,10 @@ components:
         outputs:
           type: object
           additionalProperties: true
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
         variables:
           type: object
           additionalProperties: true
@@ -29463,10 +28406,6 @@ components:
             deprecated: true
             items:
               $ref: "#/components/schemas/Listener"
-          afterExecution:
-            type: array
-            items:
-              $ref: "#/components/schemas/Task"
           triggers:
             type: array
             items:
@@ -29516,10 +28455,6 @@ components:
             items:
               $ref: "#/components/schemas/TaskForExecution"
           finally:
-            type: array
-            items:
-              $ref: "#/components/schemas/TaskForExecution"
-          afterExecution:
             type: array
             items:
               $ref: "#/components/schemas/TaskForExecution"
@@ -29694,10 +28629,6 @@ components:
           type: object
           additionalProperties:
             type: string
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter"
     Group:
       required:
       - deleted
@@ -29875,7 +28806,6 @@ components:
       - sentAt
       - status
       - tenantId
-      - userType
       type: object
       properties:
         isExpired:
@@ -29908,8 +28838,6 @@ components:
           format: date-time
         deleted:
           type: boolean
-        userType:
-          $ref: "#/components/schemas/UserType"
         link:
           type: string
     Invitation.InvitationStatus:
@@ -29918,18 +28846,6 @@ components:
       - PENDING
       - ACCEPTED
       - EXPIRED
-    Isolation:
-      required:
-      - deniedServices
-      - enabled
-      type: object
-      properties:
-        deniedServices:
-          type: array
-          items:
-            $ref: "#/components/schemas/ServiceType"
-        enabled:
-          type: boolean
     KVController.ApiDeleteBulkRequest:
       required:
       - keys
@@ -30321,8 +29237,6 @@ components:
           type: boolean
         environment:
           $ref: "#/components/schemas/MiscController.Environment"
-        url:
-          type: string
         preview:
           $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
@@ -30333,11 +29247,7 @@ components:
           type: array
           items:
             type: string
-        resourceToFilters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.ResourceField"
-    MiscController.EEConfiguration:
+    MiscController.ConfigurationEe:
       type: object
       allOf:
       - $ref: "#/components/schemas/MiscController.Configuration"
@@ -30354,14 +29264,8 @@ components:
             type: array
             items:
               type: string
-          pluginManagementEnabled:
-            type: boolean
-          pluginCustomEnabled:
-            type: boolean
           banner:
             $ref: "#/components/schemas/Banner"
-          mailServiceEnabled:
-            type: boolean
     MiscController.Environment:
       required:
       - color
@@ -30445,10 +29349,6 @@ components:
             deprecated: true
             items:
               $ref: "#/components/schemas/Namespace.AllowedTrigger"
-          storageIsolation:
-            $ref: "#/components/schemas/Isolation"
-          secretIsolation:
-            $ref: "#/components/schemas/Isolation"
           description:
             type: string
           variables:
@@ -30471,8 +29371,6 @@ components:
             additionalProperties: true
           secretType:
             type: string
-          secretReadOnly:
-            type: boolean
           secretConfiguration:
             type: object
             additionalProperties: true
@@ -30634,19 +29532,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Blueprint"
-        total:
-          type: integer
-          format: int64
-    PagedResults_ClusterController.ApiPluginArtifact_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiPluginArtifact"
         total:
           type: integer
           format: int64
@@ -31012,64 +29897,6 @@ components:
             $ref: "#/components/schemas/PluginSubGroup.PluginCategory"
         subGroup:
           type: string
-    PluginArtifact:
-      required:
-      - artifactId
-      - classifier
-      - extension
-      - groupId
-      - uri
-      - version
-      type: object
-      properties:
-        groupId:
-          type: string
-        artifactId:
-          type: string
-        extension:
-          type: string
-        classifier:
-          type: string
-        version:
-          type: string
-        uri:
-          type: string
-          format: uri
-    PluginArtifactMetadata:
-      required:
-      - creationTime
-      - lastModifiedTime
-      - name
-      - size
-      - uri
-      type: object
-      properties:
-        uri:
-          type: string
-          format: uri
-        name:
-          type: string
-        size:
-          type: integer
-          format: int64
-        lastModifiedTime:
-          type: integer
-          format: int64
-        creationTime:
-          type: integer
-          format: int64
-    PluginController.ApiPluginVersions:
-      required:
-      - type
-      - versions
-      type: object
-      properties:
-        type:
-          type: string
-        versions:
-          type: array
-          items:
-            type: string
     PluginDefault:
       required:
       - forced
@@ -31126,89 +29953,6 @@ components:
           type: string
         value:
           type: string
-    QueryFilter:
-      required:
-      - field
-      - operation
-      - value
-      type: object
-      properties:
-        field:
-          $ref: "#/components/schemas/QueryFilter.Field"
-        operation:
-          $ref: "#/components/schemas/QueryFilter.Op"
-        value: {}
-    QueryFilter.Field:
-      type: string
-      enum:
-      - QUERY
-      - SCOPE
-      - NAMESPACE
-      - LABELS
-      - FLOW_ID
-      - START_DATE
-      - END_DATE
-      - STATE
-      - TIME_RANGE
-      - TRIGGER_EXECUTION_ID
-      - TRIGGER_ID
-      - CHILD_FILTER
-      - WORKER_ID
-      - EXISTING_ONLY
-      - MIN_LEVEL
-      x-type: String
-    QueryFilter.FieldOp:
-      required:
-      - name
-      - operations
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        operations:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.Operation"
-    QueryFilter.Op:
-      type: string
-      enum:
-      - EQUALS
-      - NOT_EQUALS
-      - GREATER_THAN
-      - LESS_THAN
-      - GREATER_THAN_OR_EQUAL_TO
-      - LESS_THAN_OR_EQUAL_TO
-      - IN
-      - NOT_IN
-      - STARTS_WITH
-      - ENDS_WITH
-      - CONTAINS
-      - REGEX
-    QueryFilter.Operation:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    QueryFilter.ResourceField:
-      required:
-      - fields
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        fields:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.FieldOp"
     Relation:
       required:
       - relationType
@@ -31226,7 +29970,6 @@ components:
       - CHOICE
       - ERROR
       - FINALLY
-      - AFTER_EXECUTION
       - PARALLEL
       - DYNAMIC
     ResourceType:
@@ -31467,13 +30210,21 @@ components:
     SchemaType:
       type: string
       enum:
-      - FLOW
-      - TEMPLATE
-      - TASK
-      - TRIGGER
-      - PLUGINDEFAULT
-      - APPS
-      - DASHBOARD
+      - flow
+      - template
+      - task
+      - trigger
+      - plugindefault
+      - apps
+      - dashboard
+      x-enum-varnames:
+      - flow
+      - template
+      - task
+      - trigger
+      - plugindefault
+      - apps
+      - dashboard
     Schema_1:
       type: object
       properties:
@@ -31711,6 +30462,14 @@ components:
       - NOT_RUNNING
       - EMPTY
       - MAINTENANCE
+    Service.ServiceType:
+      type: string
+      enum:
+      - EXECUTOR
+      - INDEXER
+      - SCHEDULER
+      - WEBSERVER
+      - WORKER
     ServiceInstance:
       required:
       - config
@@ -31737,7 +30496,7 @@ components:
         id:
           type: string
         type:
-          $ref: "#/components/schemas/ServiceType"
+          $ref: "#/components/schemas/Service.ServiceType"
         createdAt:
           type: string
           format: date-time
@@ -31845,14 +30604,6 @@ components:
       properties:
         supported:
           type: boolean
-    ServiceType:
-      type: string
-      enum:
-      - EXECUTOR
-      - INDEXER
-      - SCHEDULER
-      - WEBSERVER
-      - WORKER
     ServiceUsage:
       required:
       - dailyStatistics
@@ -32133,14 +30884,9 @@ components:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
         type:
-          title: The class name of this task.
           minLength: 1
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
-          type: string
-        version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
           type: string
         description:
           type: string
@@ -32173,14 +30919,9 @@ components:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
         type:
-          title: The class name of this task.
           minLength: 1
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
-          type: string
-        version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
           type: string
         tasks:
           type: array
@@ -32294,21 +31035,13 @@ components:
       - deleted
       - id
       - name
-      - requireExistingNamespace
       - secretConfiguration
-      - secretIsolation
-      - secretReadOnly
       - secretType
       - storageConfiguration
-      - storageIsolation
       - storageType
       - workerGroup
       type: object
       properties:
-        storageIsolation:
-          $ref: "#/components/schemas/Isolation"
-        secretIsolation:
-          $ref: "#/components/schemas/Isolation"
         id:
           pattern: "^[a-z0-9][a-z0-9_-]*"
           type: string
@@ -32325,13 +31058,9 @@ components:
           additionalProperties: true
         secretType:
           type: string
-        secretReadOnly:
-          type: boolean
         secretConfiguration:
           type: object
           additionalProperties: true
-        requireExistingNamespace:
-          type: boolean
     TenantUsage:
       type: object
       properties:
@@ -32602,24 +31331,6 @@ components:
         basicAuthCount:
           type: integer
           format: int64
-    UsernamePasswordCredentials:
-      required:
-      - password
-      - username
-      type: object
-      properties:
-        username:
-          minLength: 1
-          type: string
-        password:
-          minLength: 1
-          type: string
-        identity:
-          type: string
-          nullable: true
-        secret:
-          type: string
-          nullable: true
     ValidateConstraintViolation:
       required:
       - constraints
@@ -32668,6 +31379,7 @@ components:
       type: object
       properties:
         key:
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
         fallback:
           $ref: "#/components/schemas/WorkerGroup.Fallback"
