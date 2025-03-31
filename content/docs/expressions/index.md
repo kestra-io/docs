@@ -67,6 +67,7 @@ The following table lists the default execution context variables available in K
 | `{{ flow.revision }}`         | Revision number of the flow.                                                                                                 |
 | `{{ execution.id }}`          | Unique ID of the execution.                                                                                                  |
 | `{{ execution.startDate }}`   | Start date of the execution, which can be formatted using `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
+| `{{ execution.state }}`       | The state of the current execution.                                                                                          |
 | `{{ execution.originalId }}`  | Original execution ID, remains the same even during replay, retaining the first execution ID.                                |
 | `{{ task.id }}`               | ID of the current task.                                                                                                      |
 | `{{ task.type }}`             | Type of the current task (Java fully qualified class name).                                                                  |
