@@ -9,7 +9,7 @@ Enable LDAP authentication in Kestra to streamline authentication using existing
 
 ## What is LDAP
 
-Lightweight directory access protocol (LDAP) is a protocol that makes it possible for applications to quickly query user information. Organization store usernames, passwords, email addresses, and other static data within directories. LDAP is an open, vendor-neutral application protocol for accessing and maintaining that data.
+Lightweight directory access protocol (LDAP) allows applications to quickly query user information. Organizations store usernames, passwords, email addresses, and other static data within directories. LDAP is an open, vendor-neutral application protocol for accessing and maintaining that data.
 
 With Kestra, you can use an existing LDAP directory to authenticate users and sync them to groups with specific access permissions.
 
@@ -49,14 +49,14 @@ For Kestra-specific configuration, `user-attributes` is the key property that li
 
 ## LDAP users in Kestra
 
-With LDAP configured, when a user logs into Kestra for the first time, their login attributes will be checked against the LDAP directory and a user will be created in Kestra. If Kestra finds an already existing matching account, then the user will be logged into Kestra with the LDAP account. 
+With LDAP configured, when a user logs into Kestra for the first time, their login attributes are checked against the LDAP directory, and a user is created in Kestra. If Kestra finds an already existing matching account, the user is logged into Kestra with the LDAP account. 
 
-If they are a part of any groups specified in the directory, those groups will be added to Kestra, and if the group already exists in Kestra, then they will be added automatically. Any user authenticated through LDAP, will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
+If they are a part of any groups specified in the directory, those groups will be added to Kestra. If the group already exists in Kestra, they will be automatically added. Any user authenticated through LDAP will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
 
 ![ldap-1](/docs/enterprise/sso/ldap-1.png)
 
 Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
 ::alert{type="warning"}
-If a user is deleted from the LDAP server, then that user will lose access to Kestra at the next scheduled sync or whenever the user next attempts to log in.
+If a user is deleted from the LDAP server, then that user will lose access to Kestra at the next scheduled sync or login attempt.
 ::

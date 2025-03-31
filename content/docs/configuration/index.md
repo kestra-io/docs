@@ -929,7 +929,7 @@ logger:
     flow: 'OFF'
 ```
 
-This disables all flow execution logs from being stored so that those logs will only show up in the server logs. 
+This disables the storage of all flow execution logs, so they will only appear in the server logs. 
 
 Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
@@ -1279,7 +1279,7 @@ kestra:
 ```
 ### Plugin Management
 
-As of Kestra 0.22.0, you can configure Plugins management properties for things like remote storage, custom plugins, and versioned plugins. An example configuration for managing plugins looks as follows:
+As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
 
 ```yaml
 kestra: 

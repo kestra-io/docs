@@ -51,7 +51,7 @@ _plugins/repository/io_kestra_plugin__plugin-script-shell__0_20_0.jar
 
 Artifact files are renamed using the format: `<groupId>__<artifactId>__<version>` to be easily parseable (dots `.` are replaced with `_` for `groupId` and `version`).
 
-For locally stored plugins configured by the `localRepositoryPath` attribute, the file path looks like `/tmp/kestra/plugins-repository`. For example, the following plugins are stored locally where the local repository contains a JSON `plugins.meta` file that contains metadata about remote plugins. This file is used for the synchronization where only plugins with detected changes are synchronized.
+For locally stored plugins configured by the `localRepositoryPath` attribute, the file path looks like `/tmp/kestra/plugins-repository`. For example, the following plugins are stored locally, where the local repository contains a JSON `plugins.meta` file that contains metadata about remote plugins. This file is used for synchronization, where only plugins with detected changes are synchronized.
 
 ```bash
 ├── io_kestra_plugin__plugin-kafka__0_20_0.jar
@@ -67,7 +67,7 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. From here, you can click **+ Install** and open up the full library of available plugins.
+Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
 
 ![versioned-plugins-1](/docs/enterprise/versioned-plugins/versioned-plugins-1.png)
 
@@ -75,7 +75,7 @@ From the list, search and select the plugin to install and select the version.
 
 ![versioned-plugins-2](/docs/enterprise/versioned-plugins/versioned-plugins-2.png)
 
-After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the plugin's latest version. When upgrading, this preserves the previous version of the plugin and adds a separate, fresh installation of the latest version.
+After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the latest version. When upgrading, the previous version of the plugin is preserved, and a separate, fresh installation of the latest version is added.
 
 ![versioned-plugins-3](/docs/enterprise/versioned-plugins/versioned-plugins-3.png)
 
@@ -86,13 +86,13 @@ For a custom plugin, after clicking **+ Install**, switch from Official plugin t
 
 ![versioned-plugins-5](/docs/enterprise/versioned-plugins/versioned-plugins-4.png)
 
-Additionally, instead of installing a new plugin, you can **Upload** a plugin by choosing a valid Java archive file (`.jar`).
+Instead of installing a new plugin, you can **Upload** a plugin by choosing a valid Java archive file (`.jar`).
 
 ![versioned-plugins-4](/docs/enterprise/versioned-plugins/versioned-plugins-5.png)
 
 ### From the API
 
-Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the following API POST request with either your username and password with `-u` or an [API token](../03.auth/api-tokens.md).
+Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the API POST request with your username and password with `-u` or an [API token](../03.auth/api-tokens.md).
 
 With Kestra username and password:
 
@@ -130,7 +130,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/resolve \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
 ```
 
-If you want to install a newer version of a plugin, use the install request with the specified version, or use `LATEST` in place of the version number. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
+If you want to install a newer plugin version, use the install request with the specified version or use `LATEST` instead of the version number. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
 
 ```bash
 curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
@@ -147,7 +147,7 @@ To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md)
 ./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2
 ```
 
-The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration where remote storage can be enabled. 
+The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled. 
 
 - `--locally=true` installs the plugin locally.
 - `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly. 

@@ -112,11 +112,11 @@ token:
   token: my-vault-access-token
 ```
 
-This configuration gives Kestra access to the `db` and `api` secrets as they are the secrets on the `app1` path. In a flow, to access the value for the subkey `API_TOKEN`, you write the `secret()` function with the specified parameters `{{ secret('api', subkey='API_TOKEN') }}`.
+This configuration gives Kestra access to the `db` and `api` secrets, as they are the secrets on the `app1` path. In a flow, to access the value for the subkey `API_TOKEN`, you write the `secret()` function with the specified parameters `{{ secret('api', subkey='API_TOKEN') }}`.
 
 ## Vault full example
 
-The following steps walk through a full example configuring Vault as your secret manager with read-only secrets enabled. This example uses [KV Secrets Engine - Version 2 with Vault Enterprise](./secrets-manager.md#kv-secrets-engine---version-2) so `rootEngine` and `namespace` are used as optional properties.
+The following steps are a full example of configuring Vault as your secret manager with read-only secrets enabled. This example uses [KV Secrets Engine - Version 2 with Vault Enterprise](./secrets-manager.md#kv-secrets-engine---version-2), so `rootEngine` and `namespace` are used as optional properties.
 
 In Vault, we have a Secrets Engine named `business-unit` in the `admin` namespace that hosts the path to our database password that we want to use to [add a table and populate with data in Neon](../../15.how-to-guides/neon.md).
 
@@ -126,11 +126,11 @@ In Kestra, we can now navigate to the Namespace we want to set up Vault as a sec
 
 ![read-only-secrets-3](/docs/enterprise/read-only-secrets-3.png)
 
-After saving, we can move over to the **Secrets** tab and see which paths we have access to. Notice the lock icon indicating that read only is successfully turned on. No new secrets can be created from Kestra, and existing secrets are not editable.
+After saving, we can move to the Secrets tab and see which paths we have access to. Notice the lock icon indicating that read-only is successfully turned on. No new secrets can be created from Kestra, and existing secrets are not editable.
 
 ![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
 
-In Vault, we know `my-app` is the secret that hosts the subkey we are looking for, in this case `NEON_PASSWORD`.
+In Vault, we know `my-app` is the secret that hosts the subkey we are looking for, in this case, `NEON_PASSWORD`.
 
 ![read-only-secrets-5](/docs/enterprise/read-only-secrets-5.png)
 
@@ -178,6 +178,6 @@ pluginDefaults:
 
 ![read-only-secrets-6](/docs/enterprise/read-only-secrets-6.png)
 
-After saving the flow and executing, we can see that the correct value was successfully accessed by Kestra from Vault and 100 rows were added to our Neon database.
+After saving the flow and executing, we can see that Kestra successfully accessed the correct value from Vault and added 100 rows to our Neon database.
 
 ![read-only-secrets-7](/docs/enterprise/read-only-secrets-7.png)
