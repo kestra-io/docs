@@ -24,6 +24,7 @@
             </div>
         </div>
     </div>
+    <pre style="padding: 1rem; background-color: hotpink;" v-if="all">{{ JSON.stringify(all, null, 2) }}</pre>
     <pre style="padding: 1rem; background-color: red;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
@@ -50,6 +51,13 @@
             icon: markRaw(LockOpenAlertOutlineIcon),
         }
     ]
+
+    // fetch the number of stargazers from the GitHub API
+    const {data:all} = await useAsyncData('githubAll', () => {
+        return fetch("https://api.github.com/repos/kestra-io/kestra")
+        .then(res => res.json())
+
+    });
 
     // fetch the number of stargazers from the GitHub API
     const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
