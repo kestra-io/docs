@@ -6,7 +6,7 @@
                 Workflow Orchestration Platform
             </h2>
 
-            <a class="btn btn-primary" href="https://demo.kestra.io" target="_blank">Kestra Live Demo</a>
+            <a class="btn btn-primary btn-lg" href="https://demo.kestra.io" target="_blank">Kestra Live Demo</a>
 
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">
@@ -24,6 +24,8 @@
             </div>
         </div>
     </div>
+    <pre style="background-color: hotpink;">{{ JSON.stringify(numberOfStargazers, null, 2) }}</pre>
+    <pre style="background-color: red;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
 <script lang="ts" setup>
@@ -58,9 +60,10 @@
     });
 
     // fetch the number of stargazers from the GitHub API
-    const {data:numberOfStargazers} = await useAsyncData('githubStargazers', () => {
-        return $fetch("https://api.github.com/repos/kestra-io/kestra")
-            .then((data: any) => data.stargazers_count)
+    const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
+        return fetch("https://api.github.com/repos/kestra-io/kestra")
+            .then((res) => res.json())
+            .then((data) => data.stargazers_count)
     });
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
@@ -70,8 +73,7 @@
 
     const leadIndicators = computed(() => [
         {title: "Contributors", value: numberOfContributors.value},
-        {title: "GitHub Stars", value: numberOfStargazers.value},
-        {title: "GitHub Stars Formatted", value: numberOfStargazersFormatted.value},
+        {title: "GitHub Stars", value: numberOfStargazersFormatted.value},
         {title: "Kestra Deployments", value: "70k"},
         {title: "Workflows Executed", value: "300m+"},
     ])
@@ -88,6 +90,7 @@
     .container{
         padding: 2rem;
         text-align: center;
+        z-index: 1;
     }
 
     h2{
