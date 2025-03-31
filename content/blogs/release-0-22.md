@@ -49,7 +49,7 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
 
 
 TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-3592cdca9708a236e1c992fd8495d6ad8af8204e4bafb7299a0503e37bebbe35
-For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning]().
+For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
 
 ::alert{type="warning"}
 Plugin versioning is currently in Beta and may change in upcoming releases.
