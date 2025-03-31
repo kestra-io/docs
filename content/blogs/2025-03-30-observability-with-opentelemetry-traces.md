@@ -21,13 +21,13 @@ OpenTelemetry defines three different kinds of telemetry data:
 
 Starting with 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry compatible exporters.
 
-In this blog post, we will see how we can leverage OpenTelemetry traces to monitor flow executions. For Metrics and Logs, please have a look at our dedicated page: [OpenTelemetry](/docs/09.administrator-guide/open-telemetry).
+In this blog post, we explore how to leverage OpenTelemetry traces to monitor flow executions. For Metrics and Logs, please have a look at our dedicated page: [OpenTelemetry](/docs/09.administrator-guide/open-telemetry).
 
 ## OpenTelemetry traces
 
-First, we need to enable OpenTelemetry traces and configure an exporter. We will use [Jaeger](https://www.jaegertracing.io/) as an OpenTelemetry collector.
+First, we need to enable OpenTelemetry traces and configure an exporter. We will use [Jaeger](https://www.jaegertracing.io/) as an OpenTelemetry collector. Jaeger is an open-source, distributed tracing platform and an essential tool for monitoring distributed workflows.
 
-Configuring OpenTelemetry is done in three steps as it must be enabled globally, configured and enabled for Kestra flows:
+Configuring OpenTelemetry is done in three steps: enable globally, configure OTLP exporter, and enable for Kestra flows:
 
 ```yaml
 # 1. Enable OpenTelemetry traces globally
@@ -50,7 +50,7 @@ kestra:
 
 ```
 
-You can enable OpenTelemetry traces without enabling it inside Kestra flows, in this case you will only have traces inside the Kestra API and not inside your flow executions.
+You can enable OpenTelemetry traces without enabling it inside Kestra flows, in this case you will only have traces accessible through the Kestra API and not inside the context of your flow executions.
 
 You can launch Jaeger with the following Docker compose snippet:
 
@@ -86,25 +86,25 @@ You will see traces for every API call.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-01.png)
 
-What will be of interest is the trace that starts an execution, its name is **POST /api/v1/executions/{namespace}/{id}** and you can see it has 7 spans. Click on it and you will see the detail of the span.
+Most interesting, is the trace that starts an execution, its name is **POST /api/v1/executions/{namespace}/{id}** and you can see it has 7 spans. Click on it and you will see the detail of the span.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-02.png
 
-The trace starts inside the API, then you can see 6 spans inside Kestra itself, those spans are children of the span of the API. Each span has a duration and is displayed as a timeline.
+The trace starts inside the API, then you can see 6 spans inside Kestra itself, those spans are children of the API span. Each span has a duration and is displayed as a timeline.
 
-Inside Kestra, we have here two kinds of spans (more exist, but those are the two main kinds):
-- **EXECUTOR** which are spans created inside the Executor each time an execution message is processed (for each change on the execution).
-- **WORKER** which are spans created inside the Worker each time it executes a task or a trigger.
+Inside Kestra, there a multiple kinds of spans, but two to make special note of:
+- **EXECUTOR**: spans created inside the Executor each time an execution message is processed (for each change on the execution).
+- **WORKER** : spans created inside the Worker each time it executes a task or a trigger.
 
 If you click on a span, you will see additional information stored inside the span. Here I also clicked on **Tags** to see all tags.
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-03.png
 
-As you can see, you can retrieve inside the span useful execution information as namespace, flow id, execution id and an uid which for a task execution is the task run id.
+As you can see, retrievable inside the span is a multitude of useful execution information such as namespace, flow id, execution id and an uid, which for a task execution is the task run id.
 
 ## Correlation between a parent flow and a subflow
 
-Let's define this flow that will start a subflow of the `hello-world` flow on each execution:
+Critical to orchestration, is the relationship between distributed workflows. To monitor the correlation of flows, let's define a flow that will start a subflow of the `hello-world` flow on each execution:
 
 ```yaml
 id: parent
@@ -124,7 +124,7 @@ If you start one execution and look for its trace, you will see 19 spans and a c
 
 ![postgres](/blogs/2025-03-30-observability-with-opentelemetry-traces/opentelemetry-traces-04.png
 
-You can see in the parent flow execution a span named **EXECUTOR - io.kestra.plugin.core.flow.Subflow**, this is the Subflow task that creates it, and you can see a correlated trace with the 7 spans of the subflow execution.
+You can see in the parent flow execution a span named **EXECUTOR - io.kestra.plugin.core.flow.Subflow**; this is the Subflow task that creates it. Next, you can see a correlated trace with the 7 spans of the subflow execution.
 
 ## Correlation between incoming and outgoing HTTP calls
 
