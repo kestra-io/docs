@@ -2,6 +2,7 @@
 title: Read-only Secrets
 icon: /docs/icons/kestra.svg
 editions: ["EE"]
+version: "0.22.0"
 ---
 
 Integrate external secrets managers in a read-only mode.

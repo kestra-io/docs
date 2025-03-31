@@ -2,6 +2,7 @@
 title: LDAP
 icon: /docs/icons/tutorial.svg
 editions: ["EE"]
+version: "0.22.0"
 ---
 
 Enable LDAP authentication in Kestra to streamline authentication using existing LDAP credentials.
