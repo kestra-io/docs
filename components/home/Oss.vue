@@ -54,7 +54,7 @@
     ]
 
     // fetch the number of contributors from the GitHub API
-    const {data, error} = await useFetch<{contributors: number, stargazers: number}>(`${runtimeConfig.public.apiUrl}/github`, {
+    const {data, error} = await useFetch<{contributors: number, stargazers: number}>("/api/github", {
         pick:["stargazers", "contributors"],
     })
 
