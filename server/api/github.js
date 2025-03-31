@@ -7,6 +7,9 @@ export default defineEventHandler(async (event) => {
         return value
     }
 
+    const contribCount = await fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
+            .then(res => res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1])
+
     const headers = {'User-Agent': 'request'};
     const result = await $fetch(
         "https://api.github.com/repos/kestra-io/kestra",
@@ -20,6 +23,7 @@ export default defineEventHandler(async (event) => {
             'network': value.network_count,
             'subscribers': value.subscribers_count,
             'size': value.size,
+            'contributors': contribCount,
         };
     });
 

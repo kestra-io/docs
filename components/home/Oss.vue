@@ -24,8 +24,7 @@
             </div>
         </div>
     </div>
-    <pre style="padding: 1rem; background-color: hotpink;" v-if="all">{{ JSON.stringify(all, null, 2) }}</pre>
-    <pre style="padding: 1rem; background-color: red;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
+    <pre style="padding: 1rem; background-color: red;color: white;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
 <script lang="ts" setup>
@@ -33,6 +32,8 @@
     import XmlIcon from "vue-material-design-icons/Xml.vue";
     import WebhookIcon from "vue-material-design-icons/Webhook.vue";
     import LockOpenAlertOutlineIcon from "vue-material-design-icons/LockOpenAlertOutline.vue";
+
+    const runtimeConfig = useRuntimeConfig()
 
     const features = [
         {
@@ -52,35 +53,21 @@
         }
     ]
 
-    // fetch the number of stargazers from the GitHub API
-    const {data:all} = await useAsyncData('githubAll', () => {
-        return fetch("https://api.github.com/repos/kestra-io/kestra")
-        .then(res => res.json())
-
-    });
-
-    // fetch the number of stargazers from the GitHub API
-    const {data:numberOfStargazers, error} = await useAsyncData('githubStargazers', () => {
-        return fetch("https://api.github.com/repos/kestra-io/kestra/stargazers?per_page=1")
-        .then(res => parseInt(res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1] ?? '0'))
-
-    });
-
     // fetch the number of contributors from the GitHub API
-    const {data:numberOfContributors} = await useAsyncData('githubContrib', () => {
-        return fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
-            .then(res => res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1])
+    const {data, error} = await useFetch<{contributors: number, stargazers: number}>(`${runtimeConfig.public.apiUrl}/github`, {
+        pick:["stargazers", "contributors"],
+    })
 
-    });
+
 
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
         notation: 'compact',
         maximumFractionDigits: 1
-    }).format(numberOfStargazers.value ?? 0).toLowerCase());
+    }).format(data.value?.stargazers ?? 0).toLowerCase());
 
     const leadIndicators = computed(() => [
-        {title: "Contributors", value: numberOfContributors.value},
+        {title: "Contributors", value: data.value?.contributors},
         {title: "GitHub Stars", value: numberOfStargazersFormatted.value},
         {title: "Kestra Deployments", value: "70k"},
         {title: "Workflows Executed", value: "300m+"},
