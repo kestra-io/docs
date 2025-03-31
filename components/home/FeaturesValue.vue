@@ -10,15 +10,28 @@
                     <p class="kpi-description">{{ value.description }}</p>
                 </div>
             </div>
+            <NuxtLink
+                class="learn-more"
+                href="/use-cases"
+            >
+                Learn More<ArrowRightIcon/>
+            </NuxtLink>
         </div>
         <div class="card-block">
             <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
+            <NuxtLink
+                class="learn-more"
+                href="/use-cases"
+            >
+                Explore Use Cases<ArrowRightIcon/>
+            </NuxtLink>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 const valueSet = [
     {
@@ -75,6 +88,22 @@ const valueSet = [
         }
         .description{
             margin-bottom: 3rem;
+        }
+        .learn-more{
+            display: flex;
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            transform: translate(-50%, 0);
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        &:hover{
+            .learn-more{
+                opacity: 1;
+                transform: translate(0, 0);
+            }
         }
     }
     .spider {

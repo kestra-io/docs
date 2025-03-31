@@ -83,8 +83,8 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 
         h2 {
-            font-size: 3rem;
-            line-height: 3rem;
+            font-size: 2rem;
+            line-height: 2rem;
             color: white;
             font-weight: 600;
             @include media-breakpoint-up(lg){
@@ -94,7 +94,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             }
             span {
                 background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
-                background-size: 100px;
+                background-size: cover;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
