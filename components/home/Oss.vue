@@ -133,6 +133,7 @@
         }
         h3{
             white-space: nowrap;
+            font-size: 1.5rem;
         }
         &:last-child{
             border: none;
