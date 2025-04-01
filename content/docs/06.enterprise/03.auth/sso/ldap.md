@@ -22,7 +22,7 @@ security:
   ldap:
     default:
       user-attributes:
-        firstName: cn
+        firstName: givenName
         lastName: sn
         email: mail
       context:
@@ -34,7 +34,7 @@ security:
         filter: "(mail={0})"
         attributes:
           - "uid"
-          - "cn"
+          - "givenName"
           - "sn"
           - "mail"
       groups:
@@ -47,7 +47,7 @@ security:
 [LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) has `context`, `search`, and `groups` as basic configuration properties supported out of the box. They provide the connection context to the directory of users, user attributes to be linked to the Kestra instance, and filter information to sync the users' groups to Kestra based on your LDAP directory. 
 
 
-For Kestra-specific configuration, `user-attributes` is the key property that links specific LDAP attributes such as `cn`, `gn`, `sn`, and `mail` to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
+For Kestra-specific configuration, `user-attributes` is the key property that links specific LDAP attributes such as `cn`, `givenName`, `sn`, and `mail` to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
 
 ## LDAP users in Kestra
 
