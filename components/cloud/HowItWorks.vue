@@ -49,13 +49,23 @@ const columns = [
 .cloud {
     & .how-it-works::after {
         content: "";
-        position: absolute;
-        bottom: -45%;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        position: fixed;
+        bottom: 0;
+        left: -50%;
+        width: 100vw;
+        height: 100vh;
         background-image: url("./images/gradient_bottom.png");
+        background-size: cover;
+        background-position: bottom left;
         background-repeat: no-repeat;
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    @media (max-width: 991.98px) {
+        & .how-it-works::after {
+            display: none;
+        }
     }
 
     & .numbers {
