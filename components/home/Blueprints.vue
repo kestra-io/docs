@@ -69,11 +69,14 @@ const scrollRight = () => {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: black;
+            background-color: #444955;
             color: white;
             border-radius: 50%;
             z-index: 1;
-            border: 1px solid white;
+            height: 44px;
+            width: 44px;
+            border: none;
+            font-size: 24px;
             &-left{
                 left: 1rem;
             }

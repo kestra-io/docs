@@ -4,7 +4,7 @@
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
                     <div class="card-text">
-                        <p class="title">{{ tagsList }}</p>
+                        <span class="tag-box" v-for="tag in tagsList">{{ tag }}</span>
                     </div>
                     <h6 class="description" v-if="blueprint.title">
                         {{ blueprint.title.length > 150 ? blueprint.title.substring(0, 150) + '...' : blueprint.title }}
@@ -39,9 +39,9 @@
         computed: {
             tagsList() {
                 if(this.tags.length && this.blueprint.tags) {
-                    return this.tags.filter(t => this.blueprint.tags.includes(t.id)).map(t => t.name).join(' ')
+                    return this.tags.filter(t => this.blueprint.tags.includes(t.id)).map(t => t.name)
                 }else if(this.blueprint.tags.length) {
-                    return this.blueprint.tags.join(' ')
+                    return this.blueprint.tags
                 }
                 return ""
             }
@@ -56,6 +56,7 @@
         border-radius: 8px;
         border: $block-border;
         height: 100%;
+        background-image: linear-gradient(180deg, #21242EFF 0%, #1A1C2444 100%);
 
         .card-body {
             padding: 2rem !important;
@@ -85,5 +86,19 @@
             border-radius: 4px;
             border: 1px solid $black-6 !important;
         }
+
+        .card-text {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tag-box {
+            background-color: #444955;
+            color: $white;
+            padding: .3rem .7rem;
+            border-radius: 4px;
+            font-size: $font-size-sm;
+        }
+
     }
 </style>
