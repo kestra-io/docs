@@ -33,8 +33,6 @@
     import WebhookIcon from "vue-material-design-icons/Webhook.vue";
     import LockOpenAlertOutlineIcon from "vue-material-design-icons/LockOpenAlertOutline.vue";
 
-    const runtimeConfig = useRuntimeConfig()
-
     const features = [
         {
             title: "Declarative Orchestration",
@@ -86,6 +84,7 @@
         padding: 2rem;
         text-align: center;
         z-index: 1;
+        position: relative;
     }
 
     h2{
