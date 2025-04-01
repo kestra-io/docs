@@ -10,14 +10,14 @@
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-primary me-3 mb-2"
+                        class="btn btn-lg btn-primary me-3 mb-2"
                     >
                         Get Started!
                     </NuxtLink>
 
                     <NuxtLink
                         href="/demo"
-                        class="btn btn-secondary mb-2"
+                        class="btn btn-lg btn-secondary mb-2"
                         target="_blank"
                     >
                         Book a Demo

@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="button-container">
-        <router-link to="/blueprints" class="btn btn-primary">Explore Blueprints</router-link>
+        <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
     </div>
 </template>
 

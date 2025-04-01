@@ -6,10 +6,10 @@
             with a no-code interface that anyone can learn in minutes.
         </p>
         <div class="cta-buttons">
-            <NuxtLink class="btn btn-primary" href="/features">See All Features</NuxtLink>
+            <NuxtLink class="btn btn-primary btn-lg" href="/features">See All Features</NuxtLink>
             <a
                 href="https://www.youtube.com/embed/feC6-KQLYyA?autoplay=1"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-lg"
                 data-bs-toggle="modal"
                 data-bs-target="#full-video"
             >
