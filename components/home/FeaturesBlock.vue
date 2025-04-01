@@ -81,9 +81,10 @@ const features = [
         padding: 2rem 3rem;
         gap: 1rem;
         @include media-breakpoint-up(lg){
-            padding: 6rem;
-            grid-template-columns: 1fr 220px 1fr;
+            padding: 6rem 3rem;
+            grid-template-columns: 1fr 270px 1fr;
             gap: 3rem;
+            row-gap: 0;
         }
     }
 
@@ -103,9 +104,9 @@ const features = [
 
         .kestra-logo{
             position: absolute;
-            width: 50px;
+            width: 60px;
             @include media-breakpoint-up(lg){
-                top: 42%;
+                top: calc(50% - 30px);
             }
             left: 50%;
             transform: translate(-50%, -50%);
@@ -116,16 +117,18 @@ const features = [
     .block-content{
         text-align: left;
         h3{
-            font-size: 1.2rem;
-            line-height: 2rem;
+            font-size: 1.1rem;
+            line-height: 2em;
             text-underline-offset: 20%;
             text-decoration: underline;
             text-decoration-thickness: 4px;
             text-wrap: pretty;
+            font-weight: 400;
         }
         p{
             color: #B9B9BA;
             margin-top: .5em;
+            font-size: .8rem;
         }
         .clipper img {
             height: 3rem;
@@ -211,12 +214,11 @@ const features = [
 
             &:hover{
                 .img-block{
-                    animation-duration: .5s;
+                    animation-duration: .3s;
                     animation-name: bounce-up;
                     animation-timing-function: ease;
-                    animation-delay: 0;
                     animation-iteration-count: 1;
-                    transform: translateY(-110px);
+                    transform: translateY(-109px);
                 }
             }
 
@@ -232,11 +234,11 @@ const features = [
         0% {
             transform: translateY(0);
         }
-        85% {
-            transform: translateY(-117px);
+        80% {
+            transform: translateY(-120px);
         }
         100% {
-            transform: translateY(-110px);
+            transform: translateY(-109px);
         }
     }
 
