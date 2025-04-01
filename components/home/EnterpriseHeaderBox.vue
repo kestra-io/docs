@@ -89,7 +89,7 @@
         }
 
         h2 {
-            font-size: 3rem!important;
+            font-size: 2.5rem!important;
             font-weight: 600;
             margin-bottom: 1rem;
             max-width: 100%;
