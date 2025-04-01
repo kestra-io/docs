@@ -12,7 +12,7 @@
             </div>
             <NuxtLink
                 class="learn-more"
-                href="/use-cases"
+                href="/use-cases/stories"
             >
                 Learn More<ArrowRightIcon/>
             </NuxtLink>
