@@ -46,19 +46,25 @@ In short, Roles encapsulate permission boundaries that can be attached to Users,
 
 A Permission is a resource that can be accessed by a User or Group. Supported Permissions:
 - `FLOW`
-- `BLUEPRINT`
+- `EXECUTION`
 - `TEMPLATE`
 - `NAMESPACE`
-- `EXECUTION`
+- `KVSTORE`
+- `DASHBOARD`
 - `USER`
 - `GROUP`
 - `ROLE`
 - `BINDING`
 - `AUDITLOG`
 - `SECRET`
+- `BLUEPRINT`
+- `INFRASTRUCTURE`
 - `IMPERSONATE`
 - `SETTING`
-- `INFRASTRUCTURE`
+- `APP`
+- `APPEXECUTION`
+- `ME`
+- `APITOKEN`
 
 ### Actions
 
@@ -73,7 +79,9 @@ An Action is a specific operation that can be performed on a Permission. Support
 
 Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
 
-Apart from that, you can create additional Roles with custom permissions.
+Apart from that, you can create additional Roles with custom permission combinations. You can create roles and select the permissions and actions in the **IAM - Roles** tab.
+
+![role-creation](/docs/enterprise/role-creation.png)
 
 ## Super Admin and Admin
 
@@ -235,6 +243,25 @@ The following example show the creation of a Binding for a User. We are defining
 
 ::collapse{title="How many Roles can a User, a Service Account or Group have?"}
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
+::
+
+::collapse{title="How to change the lockout behavior after too many failed login attempts."}
+By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
+
+```yaml
+security:
+  login:
+    failed-attempts:
+      threshold: 10
+      monitoring-window: PT5M
+      lock-duration: PT30M
+```
+The key attributes are:
+- `threshold`: Sets the number of allowed failed attempts before a user is locked out.
+- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
+- `lock-duration`: Defines how long the account remains locked. 
+
+In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
 ::
 
 ### Users

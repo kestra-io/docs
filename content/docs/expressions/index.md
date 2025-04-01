@@ -67,6 +67,7 @@ The following table lists the default execution context variables available in K
 | `{{ flow.revision }}`         | Revision number of the flow.                                                                                                 |
 | `{{ execution.id }}`          | Unique ID of the execution.                                                                                                  |
 | `{{ execution.startDate }}`   | Start date of the execution, which can be formatted using `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
+| `{{ execution.state }}`       | The state of the current execution.                                                                                          |
 | `{{ execution.originalId }}`  | Original execution ID, remains the same even during replay, retaining the first execution ID.                                |
 | `{{ task.id }}`               | ID of the current task.                                                                                                      |
 | `{{ task.type }}`             | Type of the current task (Java fully qualified class name).                                                                  |
@@ -126,6 +127,8 @@ Use the `date` filter to format the `execution.startDate` variable as `yyyy-MM-d
 Kestra provides access to environment variables prefixed with `KESTRA_` by default, unless configured otherwise in the `variables` [configuration](../configuration/index.md).
 
 To use an environment variable, such as `KESTRA_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `KESTRA_` prefix and converting the remainder to **lowercase**.
+
+To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
 
 ### Global Variables
 
@@ -1711,9 +1714,56 @@ Example:
 
 ```yaml
 tasks:
-  - id: uuid
+  - id: port
     type: io.kestra.plugin.core.log.Log
     message: "Generated Port: {{ randomPort() }}"
+```
+
+### fileSize
+
+The `fileSize` function returns the size of the file present at the given URI.
+
+Example:
+
+```yaml
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+  
+  - id: fileSize
+    type: io.kestra.plugin.core.log.Log
+    message: "The file size is {{ fileSize(output.download.uri) }}"
+```
+
+### fileExists
+
+The `fileExists` function returns `true` if the file is present at the given URI.
+
+```yaml
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: fileExists
+    type: io.kestra.plugin.core.log.Log
+    message: "The file exists: {{ fileExists(output.download.uri) }}"
+```
+
+### fileEmpty
+
+The `fileEmpty` function returns true if the file present at the given URI is empty.
+
+```yaml
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: fileEmpty
+    type: io.kestra.plugin.core.log.Log
+    message: "Is the file empty? {{ fileEmpty(output.download.uri) }}"
 ```
 
 ---
