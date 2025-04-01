@@ -15,8 +15,8 @@
                 <h3>Software Engineers</h3>
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
-                    <NuxtLink href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></NuxtLink>
                 </p>
+                <NuxtLink href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></NuxtLink>
             </div>
 
             <div class="right-card card-block">
@@ -25,8 +25,8 @@
                 <h3>Platform Engineers</h3>
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
-                    <NuxtLink href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></NuxtLink>
                 </p>
+                <NuxtLink href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></NuxtLink>
             </div>
 
             <div class="bottom-card card-block">
@@ -35,8 +35,8 @@
                 <h3>Data Engineers</h3>
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
-                    <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
                 </p>
+                <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
             </div>
         </div>
     </div>
@@ -71,8 +71,8 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             position: relative;
             @include media-breakpoint-up(lg){
                 text-align: center;
-                padding-top: 240px;
-                height: 500px;
+                padding-top: 230px;
+                height: 540px;
                 width: 500px;
                 margin: 0 auto;
             }
@@ -80,11 +80,9 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
     }
 
     .center-block {
-
-
         h2 {
             font-size: 2rem;
-            line-height: 2rem;
+            line-height: 3rem;
             color: white;
             font-weight: 600;
             @include media-breakpoint-up(lg){
@@ -128,22 +126,22 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
                 position: absolute;
                 top: 50%;
                 right: 50%;
-                width: 110px;
-                transform: translate(-150px, 30px);
+                width: 95px;
+                transform: translate(-130px, 45px);
                 height: 1px;
-                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to right, #190930 0%, #658AF9 100%);
-                background-size: 4px 4px, 100% 1px;
+                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to left, #190930 0%, #658AF9 100%);
+                background-size: 4px 4px, cover;
             }
             .line-right{
                 content: '';
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 110px;
-                transform: translate(150px, 30px);
+                width: 100px;
+                transform: translate(128px, 45px);
                 height: 1px;
-                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to left, #190930 0%, #658AF9 100%);
-                background-size: 4px 4px, 100% 1px;
+                background: linear-gradient(to right, transparent 50%, #191e27 50%), linear-gradient(to right, #190930 0%, #658AF9 100%);
+                background-size: 4px 4px, cover;
             }
             .line-bottom{
                 content: '';
@@ -152,8 +150,8 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
                 left: 50%;
                 transform: translateX(-50%);
                 width: 1px;
-                height: 100px;
-                background: linear-gradient(to bottom, transparent 50%, #191e27 50%), linear-gradient(to top, #190930 0%, #658AF9 100%);
+                height: 130px;
+                background: linear-gradient(to bottom, transparent 50%, #191e27 50%), linear-gradient(to bottom, #190930 0%, #658AF9 100%);
                 background-size: 4px 4px, 1px 100%;
             }
         }
@@ -224,11 +222,15 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             transition: all 0.3s;
             font-size: .8rem;
             color: #9C8FFF;
-            display: none;
+            display: block;
+            @include media-breakpoint-up(sm){
+                text-align: right;
+                grid-column: 1 / 3;
+            }
             @include media-breakpoint-up(lg){
-                transform: translateX(-250px);
+                text-align: center;
+                transform: translateX(-100px);
                 opacity: 0;
-                display: block;
             }
         }
 
@@ -292,17 +294,12 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         }
         .bottom-card{
             left: 34%;
-            bottom: 40px;
+            bottom: 75px;
         }
     }
     @include media-breakpoint-up(xl){
         .bottom-card{
             left: 37%;
-        }
-    }
-    @include media-breakpoint-up(xxl){
-        .bottom-card{
-            left: 39%;
         }
     }
 </style>

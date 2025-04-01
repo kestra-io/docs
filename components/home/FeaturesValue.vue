@@ -91,8 +91,10 @@ const valueSet = [
             position: absolute;
             bottom: 2rem;
             right: 2rem;
-            transform: translate(-50%, 0);
-            opacity: 0;
+            @include media-breakpoint-up(md){
+                transform: translate(-50%, 0);
+                opacity: 0;
+            }
             transition: all 0.2s;
         }
 
