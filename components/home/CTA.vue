@@ -1,19 +1,19 @@
 <template>
     <div class="container">
-        <div class="side-box">
+        <HomeCard class="side-box">
             <p class="pre-title">Ready to see it in action?</p>
             <h2>Jump in</h2>
 
             <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5 minutes.</p>
             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-md btn-secondary">Get Started</NuxtLink>
-        </div>
-        <div class="side-box side-box-purple">
+        </HomeCard>
+        <HomeCard class="side-box side-box-purple">
             <NuxtImg src="/landing/home/logo-cta.svg" alt="CTA" class="logo-cta"/>
             <p class="pre-title">Schedule a meeting</p>
             <h2>Let's meet</h2>
             <p class="description">Connect with our product specialists and discuss your project requirements.</p>
             <NuxtLink href="/demo" class="btn btn-md btn-primary">Talk to us</NuxtLink>
-        </div>
+        </HomeCard>
     </div>
 </template>
 
@@ -34,16 +34,13 @@
     }
     .side-box{
         position: relative;
+        z-index: 1;
         padding: 4rem 2rem;
-        border-radius: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
         margin: 1.5rem 0;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: #20222A;
-        z-index: 1;
         h2{
             font-size: 1.5rem;
             font-weight: 500;

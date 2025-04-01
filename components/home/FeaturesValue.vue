@@ -1,6 +1,6 @@
 <template>
     <div class="value-wrapper">
-        <div class="card-block">
+        <HomeCard class="card-block">
             <h3><span>Accelerate</span><br/> Time to Value</h3>
             <p class="description">Deliver in days what once took weeks</p>
             <div class="kpi-wrapper">
@@ -16,8 +16,8 @@
             >
                 Learn More<ArrowRightIcon/>
             </NuxtLink>
-        </div>
-        <div class="card-block">
+        </HomeCard>
+        <HomeCard class="card-block">
             <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
             <NuxtLink
@@ -26,11 +26,12 @@
             >
                 Explore Use Cases<ArrowRightIcon/>
             </NuxtLink>
-        </div>
+        </HomeCard>
     </div>
 </template>
 
 <script setup lang="ts">
+import { HomeCard } from '#components';
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 const valueSet = [
@@ -61,11 +62,7 @@ const valueSet = [
     @import "../../assets/styles/variable";
     .card-block {
         position: relative;
-        background:
-            linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
-            linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
-        border-radius: 1rem;
-        box-shadow: 0px 12px 24px 8px #00000017;
+        z-index: 1;
         padding: 2rem 0 4rem;
         &:hover{
             background:

@@ -1,5 +1,5 @@
 <template>
-    <div class="card-block">
+    <HomeCard class="card-block">
         <div v-for="feat, index of features" class="block-content">
             <div class="clipper">
                 <div class="img-block">
@@ -34,7 +34,7 @@
             <img src="/landing/home/features-cube.svg" alt="Feature Container"/>
             <img src="/landing/home/features-kestra.svg" alt="Kestra Monogram" class="kestra-logo" />
         </div>
-    </div>
+    </HomeCard>
 </template>
 
 <script setup lang="ts">
@@ -74,11 +74,7 @@ const features = [
     @import "../../assets/styles/variable";
     .card-block {
         position: relative;
-        background:
-            linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
-            linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
-        border-radius: 1rem;
-        box-shadow: 0px 12px 24px 8px #00000017;
+        z-index: 1;
         margin-top: 2rem;
         display: grid;
         grid-template-columns: 1fr;
@@ -89,7 +85,6 @@ const features = [
             grid-template-columns: 1fr 220px 1fr;
             gap: 3rem;
         }
-        border: 1px solid #2C2E4B;
     }
 
     .block-center-image{

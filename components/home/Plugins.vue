@@ -1,19 +1,17 @@
 <template>
-    <div class="container">
-        <div class="card-block">
-            <div class="plugin-text">
-                <h2 class="text-white"><span>600+</span> Plugins<br/>That Integrate With<br/>Your <span>Stack</span></h2>
-                <h2 class="text-white mobile">Integrate With<br/>Your <span>Stack</span></h2>
-                <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
-                <NuxtLink href="/plugins" class="btn btn-md btn-primary">See All Plugins</NuxtLink>
-            </div>
-            <div class="plugin-logos-grid">
-                <div v-for="plugin in pluginLogos" :key="plugin.name">
-                    <img :src="plugin.logo" :alt="plugin.name" />
-                </div>
+    <HomeCard class="container card-block">
+        <div class="plugin-text">
+            <h2 class="text-white"><span>600+</span> Plugins<br/>That Integrate With<br/>Your <span>Stack</span></h2>
+            <h2 class="text-white mobile">Integrate With<br/>Your <span>Stack</span></h2>
+            <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
+            <NuxtLink href="/plugins" class="btn btn-md btn-primary">See All Plugins</NuxtLink>
+        </div>
+        <div class="plugin-logos-grid">
+            <div v-for="plugin in pluginLogos" :key="plugin.name">
+                <img :src="plugin.logo" :alt="plugin.name" />
             </div>
         </div>
-    </div>
+    </HomeCard>
 </template>
 
 <script setup lang="ts">
@@ -31,14 +29,8 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
     @import "../../assets/styles/variable";
     .card-block {
         position: relative;
-        background:
-            linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
-            linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
-        border-radius: 1rem;
-        box-shadow: 0px 12px 24px 8px #00000017;
-        margin-top: 2rem;
-        border: 1px solid #2C2E4B;
         z-index: 1;
+        margin-top: 2rem;
         @include media-breakpoint-up(xl){
             padding: 4rem;
             display: flex;
