@@ -254,13 +254,12 @@
       valid.value = false;
       message.value = "Invalid form, please review the fields.";
     } else {
-      hsq.push([
-        "identify",
-        {
-          email: form["email"].value,
-          kuid: localStorage.getItem("KUID"),
-        },
-      ]);
+        hsq.push(["identify", {
+                    email: form['email'].value,
+                    firstname: form['firstname'].value,
+                    lastname: form['lastname'].value,
+                    kuid: localStorage.getItem("KUID"),
+                }]);
   
       let ip = await axios.get("https://api.ipify.org?format=json");
       const formData = {
