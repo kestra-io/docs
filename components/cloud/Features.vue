@@ -123,7 +123,7 @@
                         />
                     </div>
                     <div class="col-12 mt-3">
-                        <label for="use_case_context">
+                        <label for="use_case">
                             <span class="text-danger">*</span>
                             What’s Your Orchestration Context
                         </label>
@@ -132,9 +132,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="Analytics Stack Orchestration"
-                                id="use_case"
+                                id="use_case_1"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_1">
                                 Analytics Stack Orchestration
                             </label>
                         </div>
@@ -144,9 +144,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="Data Product Orchestration"
-                                id="use_case"
+                                id="use_case_2"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_2">
                                 Data Product Orchestration
                             </label>
                         </div>
@@ -156,9 +156,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="Microservices Orchestration"
-                                id="use_case"
+                                id="use_case_3"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_3">
                                 Microservices Orchestration
                             </label>
                         </div>
@@ -168,9 +168,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="Business Process Management"
-                                id="use_case"
+                                id="use_case_4"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_4">
                                 Business Process Management
                             </label>
                         </div>
@@ -180,9 +180,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="Infrastructure Orchestration"
-                                id="use_case"
+                                id="use_case_5"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_5">
                                 Infrastructure Orchestration
                             </label>
                         </div>
@@ -192,9 +192,9 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 value="ML & AI Orchestration"
-                                id="use_case"
+                                id="use_case_6"
                             />
-                            <label class="form-check-label" for="use_case">
+                            <label class="form-check-label" for="use_case_6">
                                 ML & AI Orchestration
                             </label>
                         </div>
@@ -260,6 +260,16 @@ const onSubmit = async (e) => {
         ]);
 
         let ip = await axios.get("https://api.ipify.org?format=json");
+
+        const checkboxes = document.querySelectorAll(".form-check-input");
+        let selectedValues = [];
+
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                selectedValues.push(checkbox.value);
+            }
+        });
+
         const formData = {
             fields: [
                 {
@@ -280,7 +290,7 @@ const onSubmit = async (e) => {
                 {
                     objectTypeId: "0-1",
                     name: "use_case",
-                    value: form["use_case"].value,
+                    value: selectedValues.join(", "),
                 },
                 {
                     objectTypeId: "0-1",
