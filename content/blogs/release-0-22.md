@@ -47,6 +47,8 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+---
+
 For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
 
 ::alert{type="warning"}
@@ -64,6 +66,8 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
+---
 
 For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../docs/enterprise/governance/read-only-secrets).
 
@@ -119,6 +123,7 @@ You might use `afterExecution` to send custom notifications after a flow complet
     <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+---
 
 For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution](../docs/workflow-components/afterexecution).
 
@@ -186,6 +191,12 @@ Key features include:
 - Configurable attribute mapping for user profiles.
 
 Once LDAP integration is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if a given group already exists in Kestra, LDAP users will be automatically added to it after login.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
 
 For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](/docs/enterprise/auth/sso/ldap).
 

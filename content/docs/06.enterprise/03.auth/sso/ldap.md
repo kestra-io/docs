@@ -7,6 +7,10 @@ version: "0.22.0"
 
 Enable LDAP authentication in Kestra to streamline authentication using existing LDAP credentials.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## What is LDAP
 
 Lightweight directory access protocol (LDAP) allows applications to quickly query user information. Organizations store usernames, passwords, email addresses, and other static data within directories. LDAP is an open, vendor-neutral application protocol for accessing and maintaining that data.
