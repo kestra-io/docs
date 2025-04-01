@@ -92,7 +92,7 @@
                 name="firstname"
                 type="text"
                 class="form-control"
-                id="cloud-firstname"
+                id="firstname"
                 required
               />
             </div>
@@ -105,12 +105,12 @@
                 name="lastname"
                 type="text"
                 class="form-control"
-                id="cloud-lastname"
+                id="lastname"
                 required
               />
             </div>
             <div class="col-12 mt-3">
-              <label for="cloud-email">
+              <label for="email">
                 <span class="text-danger">*</span>
                 Company Email
               </label>
@@ -118,7 +118,7 @@
                 name="email"
                 type="email"
                 class="form-control"
-                id="cloud-email"
+                id="email"
                 required
               />
             </div>
@@ -133,11 +133,11 @@
                   class="form-check-input"
                   type="checkbox"
                   name="use_case"
-                  value="Analytics Stack Orchestration"
-                  id="use_case_analytics"
+                  value="Data Orchestration"
+                  id="use_case_Data_Orchestration"
                 />
                 <label class="form-check-label" for="use_case_analytics">
-                  Analytics Stack Orchestration
+                  Data Orchestration
                 </label>
               </div>
   
@@ -146,11 +146,11 @@
                   class="form-check-input"
                   type="checkbox"
                   name="use_case"
-                  value="Data Product Orchestration"
-                  id="use_case_data_product"
+                  value="IT & Infrastructure Orchestration"
+                  id="use_case_Infrastructure_Orchestration"
                 />
-                <label class="form-check-label" for="use_case_data_product">
-                  Data Product Orchestration
+                <label class="form-check-label" for="use_case_Infrastructure_Orchestration">
+                    IT & Infrastructure Orchestration
                 </label>
               </div>
   
@@ -159,11 +159,11 @@
                   class="form-check-input"
                   type="checkbox"
                   name="use_case"
-                  value="Microservices Orchestration"
-                  id="use_case_microservices"
+                  value="Business Process Orchestration"
+                  id="use_case_Business_Orchestration"
                 />
-                <label class="form-check-label" for="use_case_microservices">
-                  Microservices Orchestration
+                <label class="form-check-label" for="use_case_Business_Orchestration">
+                    Business Process Orchestration
                 </label>
               </div>
   
@@ -172,11 +172,11 @@
                   class="form-check-input"
                   type="checkbox"
                   name="use_case"
-                  value="Business Process Management"
-                  id="use_case_bpm"
+                  value="Event Driven Orchestration"
+                  id="use_case_Application_Data_Orchestration"
                 />
-                <label class="form-check-label" for="use_case_bpm">
-                  Business Process Management
+                <label class="form-check-label" for="use_case_Aplication_Data_Orchestration">
+                    Event Driven Orchestration
                 </label>
               </div>
   
@@ -185,24 +185,11 @@
                   class="form-check-input"
                   type="checkbox"
                   name="use_case"
-                  value="Infrastructure Orchestration"
-                  id="use_case_infra"
+                  value="AI Orchestration"
+                  id="use_case_ML_&_AI"
                 />
-                <label class="form-check-label" for="use_case_infra">
-                  Infrastructure Orchestration
-                </label>
-              </div>
-  
-              <div class="form-check mt-1">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  name="use_case"
-                  value="ML & AI Orchestration"
-                  id="use_case_ml"
-                />
-                <label class="form-check-label" for="use_case_ml">
-                  ML & AI Orchestration
+                <label class="form-check-label" for="use_case_ML_&_AI">
+                  AI Orchestration
                 </label>
               </div>
             </div>
@@ -296,7 +283,7 @@
           {
             objectTypeId: "0-1",
             name: "use_case",
-            value: getSelectedUseCases(form), // <--- updated to gather all checked
+            value: getSelectedUseCases(form),
           },
           {
             objectTypeId: "0-1",
