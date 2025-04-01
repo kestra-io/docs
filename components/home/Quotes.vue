@@ -58,6 +58,9 @@ const scrollRight = () => {
             background-color: black;
             color: white;
             border-radius: 50%;
+            height: 32px;
+            width: 32px;
+            border-style: none;
             &-left{
                 left: 1rem;
             }
