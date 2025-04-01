@@ -22,23 +22,24 @@ security:
   ldap:
     default:
       user-attributes:
-        firstName: firstNameAttribute
-        lastName: lastNameAttribute
-        email: mailAttribute
+        firstName: cn
+        lastName: sn
+        email: mail
       context:
-        server: "ldap://localhost"
+        server: "ldap://localhost:389"
         manager-dn: "cn=admin,dc=example,dc=org"
-        manager-password: "LDAP_PASSWORD"
+        manager-password: "LDAP_ADMIN_PASSWORD"
       search:
-        base: "dc=example,dc=org"
+        base: "ou=users,dc=example,dc=org"
+        filter: "(mail={0})"
         attributes:
           - "uid"
-          - "firstNameAttribute"
-          - "lastNameAttribute"
-          - "mailAttribute"
+          - "cn"
+          - "sn"
+          - "mail"
       groups:
         enabled: true
-        base: "dc=example,dc=org"
+        base: "ou=groups,dc=example,dc=org"
         filter: "{&(objectClass=posixGroup)(memberUid={0})}"
         filter-attribute: uid
 ```
