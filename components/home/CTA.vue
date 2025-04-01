@@ -5,14 +5,14 @@
             <h2>Jump in</h2>
 
             <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5 minutes.</p>
-            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-secondary">Get Started</NuxtLink>
+            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-md btn-secondary">Get Started</NuxtLink>
         </div>
         <div class="side-box side-box-purple">
             <NuxtImg src="/landing/home/logo-cta.svg" alt="CTA" class="logo-cta"/>
             <p class="pre-title">Schedule a meeting</p>
             <h2>Let's meet</h2>
             <p class="description">Connect with our product specialists and discuss your project requirements.</p>
-            <NuxtLink href="/demo" class="btn btn-primary">Talk to us</NuxtLink>
+            <NuxtLink href="/demo" class="btn btn-md btn-primary">Talk to us</NuxtLink>
         </div>
     </div>
 </template>

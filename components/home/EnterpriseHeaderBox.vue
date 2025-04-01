@@ -12,7 +12,7 @@
                 <li>Enterprise Support with SLA</li>
             </ul>
             <div class="cta">
-                <NuxtLink href="/demo" class="btn btn-primary">Talk to Sales</NuxtLink>
+                <NuxtLink href="/demo" class="btn btn-lg btn-primary">Talk to Sales</NuxtLink>
                 <NuxtLink href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></NuxtLink>
             </div>
         </div>
