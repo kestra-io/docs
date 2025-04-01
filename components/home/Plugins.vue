@@ -43,7 +43,7 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
             padding: 4rem;
             display: flex;
             flex-direction: row-reverse;
-            gap: 2rem;
+            gap: 4rem;
         }
     }
 
