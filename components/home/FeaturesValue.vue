@@ -64,12 +64,6 @@ const valueSet = [
         position: relative;
         z-index: 1;
         padding: 2rem 0 6rem;
-        &:hover{
-            background:
-                linear-gradient(90deg, rgba(255, 255, 255, .05) 0%, rgba(255, 255, 255, .05) 100%),
-                linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
-                linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
-        }
         h3 {
             margin: 2rem 0;
             font-size: 2.2rem;
