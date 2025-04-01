@@ -1,6 +1,6 @@
 ---
 title: Read-only Secrets
-icon: /docs/icons/kestra.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: "0.22.0"
 ---
