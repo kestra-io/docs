@@ -50,8 +50,8 @@ With the above Client ID and Secret, add the following in the `micronaut` config
               enabled: true
               clients:
                 authentik:
-                  client-id: "CLIENT_ID"
-                  client-secret: "CLIENT_SECRET"
+                  clientId: "CLIENT_ID"
+                  clientSecret: "CLIENT_SECRET"
                   openid:
                     issuer: "http://localhost:9000/application/o/kestra/"
 ```
@@ -88,5 +88,5 @@ kestra:
 ```
 
 ::alert{type="info"}
-⚠️ Make sure that your `default-role` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `default-role` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
+⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `default-role` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
 ::
