@@ -47,8 +47,6 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-
-TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-3592cdca9708a236e1c992fd8495d6ad8af8204e4bafb7299a0503e37bebbe35
 For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
 
 ::alert{type="warning"}
@@ -67,7 +65,6 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD BELOW - LINK TO DOC https://github.com/kestra-io/docs/pull/2307/files#diff-dcab1a99dbebda5decad563848369189d76c2f11ad4994d032472fd6091c239d
 For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../docs/enterprise/governance/read-only-secrets).
 
 ![read only secret manager](/blogs/release-0-22/read-only-secret-manager.png)
@@ -122,7 +119,7 @@ You might use `afterExecution` to send custom notifications after a flow complet
     <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-TBD BELOW - LINK TO DOC
+
 For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution](../docs/workflow-components/afterexecution).
 
 
