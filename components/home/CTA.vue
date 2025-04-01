@@ -40,17 +40,17 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
         border: 1px solid rgba(255, 255, 255, 0.1);
         background: #20222A;
         z-index: 1;
         h2{
-            font-size: 3rem;
+            font-size: 1.5rem;
             font-weight: 500;
-            margin: 1rem 0;
+            margin: .5rem 0;
         }
         .description{
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 2rem;
         }
         .pre-title{
