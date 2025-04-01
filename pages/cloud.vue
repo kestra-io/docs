@@ -29,6 +29,7 @@
         background-size: contain;
         background-repeat: no-repeat;
         transition: all 0.3s ease;
+        z-index: -1;
     }
 
     @media (max-width: 575.98px) {
@@ -104,6 +105,22 @@
 
     & :deep(div) {
         color: $white;
+    }
+
+    & :deep(.form) {
+        & h4,
+        & p,
+        & div {
+            color: black;
+        }
+
+        & div {
+            &.success {
+                padding-top: 100px;
+            }
+
+            font-size: $font-size-sm;
+        }
     }
 }
 </style>

@@ -69,20 +69,273 @@
                     </div>
                 </div>
             </div>
-            <div id="cloudForm" class="col-md-12 col-lg-5 form" />
+            <div class="col-md-12 col-lg-5 form">
+                <div v-if="valid" v-html="validMessage" class="success" />
+                <form
+                    v-else
+                    class="row needs-validation"
+                    ref="cloud-form"
+                    @submit="onSubmit"
+                    novalidate
+                    data-aos="fade-left"
+                >
+                    <div v-if="message" class="alert alert-danger mt-3 mb-0">
+                        {{ message }}
+                    </div>
+                    <h4 class="mb-4">Request Access to Kestra Cloud</h4>
+                    <div class="col-6">
+                        <label for="firstname">
+                            <span class="text-danger">*</span>
+                            First Name
+                        </label>
+                        <input
+                            name="firstname"
+                            type="text"
+                            class="form-control"
+                            id="cloud-firstname"
+                            required
+                        />
+                    </div>
+                    <div class="col-6">
+                        <label for="lastname">
+                            <span class="text-danger">*</span>
+                            Last Name
+                        </label>
+                        <input
+                            name="lastname"
+                            type="text"
+                            class="form-control"
+                            id="cloud-lastname"
+                            required
+                        />
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label for="cloud-email">
+                            <span class="text-danger">*</span>
+                            Company Email
+                        </label>
+                        <input
+                            name="email"
+                            type="email"
+                            class="form-control"
+                            id="cloud-email"
+                            required
+                        />
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label for="use_case_context">
+                            <span class="text-danger">*</span>
+                            What’s Your Orchestration Context
+                        </label>
+                        <div class="form-check mt-3">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="Analytics Stack Orchestration"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                Analytics Stack Orchestration
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-1">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="Data Product Orchestration"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                Data Product Orchestration
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-1">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="Microservices Orchestration"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                Microservices Orchestration
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-1">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="Business Process Management"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                Business Process Management
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-1">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="Infrastructure Orchestration"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                Infrastructure Orchestration
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-1">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="ML & AI Orchestration"
+                                id="use_case"
+                            />
+                            <label class="form-check-label" for="use_case">
+                                ML & AI Orchestration
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label for="use_case_context">
+                            <span class="text-danger">*</span>
+                            Tell us about your project and timeline - what makes
+                            it a perfect fit for early access?
+                        </label>
+                        <textarea
+                            name="use_case_context"
+                            class="form-control"
+                            id="cloud-use_case_context"
+                            required
+                        />
+                    </div>
+
+                    <div class="col-12 mt-4 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary w-100">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { hubspotFormCreate } from "~/utils/hubspot.js";
+import axios from "axios";
+import { getHubspotTracking } from "~/utils/hubspot.js";
+import posthog from "posthog-js";
 
-hubspotFormCreate("cloud_form", {
-    portalId: "27220195",
-    formId: "ceb64a26-1d2a-4335-b1bf-d856d1854ba8",
-    region: "eu1",
-    target: "#cloudForm",
-});
+const route = useRoute();
+const gtm = useGtm();
+const formRef = useTemplateRef("cloud-form");
+
+const valid = ref(false);
+const validMessage = ref("");
+const message = ref("");
+
+const hubSpotUrl =
+    "https://api.hsforms.com/submissions/v3/integration/submit/27220195/fbce3efa-1f99-4ab9-928c-26167aa51424";
+
+const onSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const form = formRef.value;
+    const hsq = (window._hsq = window._hsq || []);
+
+    if (!form.checkValidity()) {
+        valid.value = false;
+        message.value = "Invalid form, please review the fields.";
+    } else {
+        hsq.push([
+            "identify",
+            {
+                email: form["email"].value,
+                kuid: localStorage.getItem("KUID"),
+            },
+        ]);
+
+        let ip = await axios.get("https://api.ipify.org?format=json");
+        const formData = {
+            fields: [
+                {
+                    objectTypeId: "0-1",
+                    name: "firstname",
+                    value: form["firstname"].value,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "lastname",
+                    value: form["lastname"].value,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "email",
+                    value: form["email"].value,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "use_case",
+                    value: form["use_case"].value,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "use_case_context",
+                    value: form["use_case_context"].value,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "form_submission_identifier",
+                    value: "Contact for Cloud Edition",
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "kuid",
+                    value: localStorage.getItem("KUID"),
+                },
+            ],
+            context: {
+                hutk: getHubspotTracking(),
+                ipAddress: ip.data.ip,
+                pageUri: route.path,
+                pageName: document.title,
+            },
+        };
+
+        posthog.capture("cloud_form");
+        hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
+
+        gtm?.trackEvent({
+            event: "cloud_form",
+            noninteraction: false,
+        });
+
+        identify(form["email"].value);
+
+        axios
+            .post(hubSpotUrl, formData, {})
+            .then((response) => {
+                valid.value = true;
+                validMessage.value = response.data.inlineMessage;
+            })
+            .catch((error) => {
+                valid.value = false;
+                if (
+                    error.response.data.errors.filter(
+                        (e) => e.errorType === "BLOCKED_EMAIL",
+                    ).length > 0
+                ) {
+                    message.value = "Please use a professional email address";
+                } else {
+                    message.value = error.response.data.message;
+                }
+            });
+    }
+};
 </script>
 
 <style scoped lang="scss">
@@ -103,6 +356,10 @@ hubspotFormCreate("cloud_form", {
         padding: 60px 40px 0 40px;
         border-radius: 16px;
         background-color: white;
+
+        label:not(.form-check-label) {
+            font-weight: 600;
+        }
 
         &::after {
             @media (min-width: 992px) {
