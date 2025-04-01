@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
     const {value, addToCache} = await useDataCache('api-github-metrics', event);
 
     if (value) {
+        console.log('Cache hit');
         return value
     }
 
