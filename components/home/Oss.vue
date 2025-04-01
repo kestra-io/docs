@@ -142,38 +142,57 @@
     .lead-indicators{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        @include media-breakpoint-up(xl) {
+        row-gap: 1rem;
+        @include media-breakpoint-up(lg) {
             grid-template-columns: repeat(4, 1fr);
+            row-gap: 2rem;
         }
         margin-top: 2rem;
-        row-gap: 2rem;
         padding: 2rem 0;
     }
 
     .lead-indicator{
-        padding: 1rem;
+        padding: 0 1rem;
         @include media-breakpoint-up(sm) {
+            gap: .5rem;
             padding: 1rem 2rem;
         }
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: .5rem;
+        position: relative;
         h3{
-            font-size: 3rem!important;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 600;
             margin: 0;
-            line-height: 3rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem!important;
+                line-height: 3rem;
+            }
         }
         p{
-            font-size: 1rem;
+            font-size: .8rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 1rem;
+            }
             line-height: 1rem;
-            color: #9C9C9C
+            color: #9C9C9C;
+            white-space: nowrap;
         }
-        &:nth-child(odd){
-            border-right: 1px solid #e1e1e1;
+        &:nth-child(odd):after{
+            content: "";
+            display: block;
+            width: 1px;
+            height: 50%;
+            background-color: #e1e1e1;
+            position: absolute;
+            top: 15%;
+            right: 0;
+            @include media-breakpoint-up(lg) {
+                display: none;
+            }
         }
-        @include media-breakpoint-up(xl) {
+        @include media-breakpoint-up(lg) {
             border-right: 1px solid #e1e1e1;
         }
         &:last-child{

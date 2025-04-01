@@ -177,6 +177,11 @@ blockquote.blockquote {
         padding: .8rem 1.6rem;
         font-size: $font-size-lg;
         border-radius: $border-radius-lg;
+        @include media-breakpoint-down(lg) {
+            padding: .5rem 1.5rem;
+            font-size: $font-size-base;
+            border-radius: $border-radius;
+        }
     }
 }
 

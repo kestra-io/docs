@@ -14,7 +14,7 @@
         </div>
         <div class="slide-container">
             <TransitionGroup name="slide">
-                <NuxtImg width="1296" height="686" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
+                <NuxtImg width="1096" height="590" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
             </TransitionGroup>
         </div>
     </div>
@@ -119,6 +119,7 @@ function setTab(index: number) {
 
     .slide-container{
         mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+        padding: 0 1rem;
     }
 
     .slide-enter-active,

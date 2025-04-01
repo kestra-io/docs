@@ -189,12 +189,13 @@
             color: white;
             text-align: center;
             max-width: 100%;
-            font-size: 3rem;
-            font-weight: 400;
+            font-weight: 600;
+            font-size: 1.5rem;
             padding: 0;
             margin-top: 2rem;
             margin-bottom: 0;
             @include media-breakpoint-up(lg) {
+                font-size: 3rem;
                 margin: 0;
                 max-width: 800px;
                 font-size: 3.875rem;
@@ -206,13 +207,12 @@
             max-width: fit-content;
             text-align: center;
             font-weight: 500;
-            font-size: $h6-font-size;
-            color: $white;
+            color: #B9B9BA;
             text-wrap: balance;
             margin:0;
             margin-top: .5rem;
             @include media-breakpoint-down(md) {
-                font-size: 11pt;
+                font-size: 1rem;
             }
             @include media-breakpoint-up(lg) {
                 text-wrap: wrap;
@@ -223,6 +223,7 @@
         .buttons {
             text-align: center;
             margin-top: 1.5rem;
+            white-space: nowrap;
         }
 
         .companies {

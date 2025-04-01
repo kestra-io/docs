@@ -118,7 +118,7 @@ const features = [
         text-align: left;
         h3{
             font-size: 1.1rem;
-            line-height: 2em;
+            line-height: 1.5em;
             text-underline-offset: 20%;
             text-decoration: underline;
             text-decoration-thickness: 4px;
@@ -169,6 +169,8 @@ const features = [
         @include media-breakpoint-up(lg){
             h3{
                 filter: grayscale(1);
+                font-size: 1.1rem;
+                line-height: 2em;
             }
             &:nth-child(1){
                 text-align: right;

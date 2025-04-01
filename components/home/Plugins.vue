@@ -31,6 +31,10 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         position: relative;
         z-index: 1;
         margin-top: 2rem;
+        @include media-breakpoint-down(sm){
+            margin: 1rem;
+            width: auto;
+        }
         @include media-breakpoint-up(xl){
             padding: 4rem;
             display: flex;
@@ -43,9 +47,12 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         flex: 1;
-        margin: 2rem;
+        margin: 1rem;
+        @include media-breakpoint-up(sm){
+            margin: 2rem;
+        }
         @include media-breakpoint-up(xl){
-                margin: 0;
+            margin: 0;
         }
         > div{
             aspect-ratio: 1;

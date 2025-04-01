@@ -93,7 +93,15 @@ const videoVisible = ref(false)
                 display: flex;
                 align-items: center;
                 gap: .5rem;
+                white-space: nowrap;
+                > svg{
+                    display: none;
+                    @include media-breakpoint-up(lg){
+                        display: block;
+                    }
+                }
             }
+
         }
     }
 </style>
