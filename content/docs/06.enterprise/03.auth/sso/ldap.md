@@ -1,6 +1,6 @@
 ---
 title: LDAP
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: "0.22.0"
 ---
@@ -22,30 +22,32 @@ security:
   ldap:
     default:
       user-attributes:
-        firstName: firstNameAttribute
-        lastName: lastNameAttribute
-        email: mailAttribute
+        firstName: givenName
+        lastName: sn
+        email: mail
       context:
-        server: "ldap://localhost"
+        server: "ldap://localhost:389"
         manager-dn: "cn=admin,dc=example,dc=org"
-        manager-password: "LDAP_PASSWORD"
+        manager-password: "LDAP_ADMIN_PASSWORD"
       search:
-        base: "dc=example,dc=org"
+        base: "ou=users,dc=example,dc=org"
+        filter: "(mail={0})"
         attributes:
           - "uid"
-          - "firstNameAttribute"
-          - "lastNameAttribute"
-          - "mailAttribute"
+          - "givenName"
+          - "sn"
+          - "mail"
       groups:
         enabled: true
-        base: "dc=example,dc=org"
+        base: "ou=groups,dc=example,dc=org"
         filter: "{&(objectClass=posixGroup)(memberUid={0})}"
         filter-attribute: uid
 ```
 
 [LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) has `context`, `search`, and `groups` as basic configuration properties supported out of the box. They provide the connection context to the directory of users, user attributes to be linked to the Kestra instance, and filter information to sync the users' groups to Kestra based on your LDAP directory. 
 
-For Kestra-specific configuration, `user-attributes` is the key property that links the attributes on the LDAP side to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
+
+For Kestra-specific configuration, `user-attributes` is the key property that links specific LDAP attributes such as `cn`, `givenName`, `sn`, and `mail` to the attributes on the Kestra side. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
 
 ## LDAP users in Kestra
 
