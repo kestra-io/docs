@@ -1,7 +1,7 @@
 import {useDataCache} from '#nuxt-multi-cache/composables'
 
 export default defineEventHandler(async (event) => {
-    const {value, addToCache} = await useDataCache('api-github-metrics-v2', event);
+    const {value, addToCache} = await useDataCache('api-github-metrics', event);
 
     if (value) {
         return value
@@ -9,6 +9,10 @@ export default defineEventHandler(async (event) => {
 
     const contribCount = await fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
             .then(res => res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1])
+
+    if (!contribCount) {
+        throw Error('Failed to fetch contributors count');
+    }
 
     const headers = {'User-Agent': 'request'};
     const result = await $fetch(
