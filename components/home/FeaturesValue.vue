@@ -63,7 +63,7 @@ const valueSet = [
     .card-block {
         position: relative;
         z-index: 1;
-        padding: 2rem 0 4rem;
+        padding: 2rem 0 6rem;
         &:hover{
             background:
                 linear-gradient(90deg, rgba(255, 255, 255, .05) 0%, rgba(255, 255, 255, .05) 100%),

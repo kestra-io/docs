@@ -135,7 +135,7 @@ blockquote.blockquote {
 
 .btn-primary {
     background-color: $purple-40;
-    color: $white;
+    color: $white!important;
     position: relative;
     background-clip: padding-box;
 
@@ -155,7 +155,7 @@ blockquote.blockquote {
 
 .btn-secondary {
     background-color: $white;
-    color: $black-6;
+    color: $black-6!important;
     border: 1px solid #3c3c3c;
 
     &:hover {

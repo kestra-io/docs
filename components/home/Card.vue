@@ -4,6 +4,10 @@
     </div>
 </template>
 
+<script lang="ts" setup>
+
+</script>
+
 <style scoped>
 .home-card {
     background:
@@ -12,5 +16,11 @@
     border-radius: 1rem;
     box-shadow: 0px 12px 24px 8px #00000017;
     border: 1px solid #2C2E4B;
+}
+
+.home-card :deep(a){
+    color: #9C8FFF;
+    text-decoration: none;
+    font-size: .8rem;
 }
 </style>

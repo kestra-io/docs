@@ -51,6 +51,7 @@ const scrollRight = () => {
     h2 {
         color: white;
         font-size: 3rem;
+        font-weight: 600;
         span{
             color: $primary;
             background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
