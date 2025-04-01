@@ -198,7 +198,7 @@
                 margin: 0;
                 max-width: 800px;
                 font-size: 3.875rem;
-                line-height: 1em;
+                line-height: 1.2em;
             }
         }
 

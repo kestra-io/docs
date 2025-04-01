@@ -123,6 +123,6 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
     }
 
     .container{
-        margin-bottom: 2rem;
+        margin-bottom: 5rem;
     }
 </style>

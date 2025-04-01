@@ -108,7 +108,7 @@
             scroll-snap-align: end;
             h2{
                 font-weight: 600;
-                font-size: 3rem;
+                font-size: 2rem;
                 text-wrap: balance;
                 width: 90%;
                 span {
