@@ -7,17 +7,33 @@ export default defineEventHandler(async (event) => {
         return value
     }
 
-    const contribCount = await fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1")
-            .then(res => res.headers.get('link')?.match(/page=(\d+)>; rel="last"/)?.[1])
+    const contribCountRes = await fetch("https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1", {headers: {'User-Agent': 'request'}})
 
-    if (!contribCount) {
-        throw Error('Failed to fetch contributors count');
+    if (!contribCountRes.ok) {
+        if (contribCountRes.status === 404) {
+            return {
+                'stargazers': 0,
+                'watchers': 0,
+                'issues': 0,
+                'forks': 0,
+                'network': 0,
+                'subscribers': 0,
+                'size': 0,
+                'contributors': 0,
+            };
+        }
+        // Handle other errors
+        console.error('Error fetching contributors count:', contribCountRes.status, contribCountRes.statusText);
     }
 
-    const headers = {'User-Agent': 'request'};
+    const contributors = parseInt(contribCountRes.headers.get('Link').match(/page=(\d+)>; rel="last"/)[1], 10);
+    if (isNaN(contributors)) {
+        throw Error('Failed to parse contributors count' + contribCountRes.headers.get('Link'));
+    }
+
     const result = await $fetch(
         "https://api.github.com/repos/kestra-io/kestra",
-        {headers}
+        {headers: {'User-Agent': 'request'}}
     ).then(value => {
         return {
             'stargazers': value.stargazers_count,
@@ -27,7 +43,7 @@ export default defineEventHandler(async (event) => {
             'network': value.network_count,
             'subscribers': value.subscribers_count,
             'size': value.size,
-            'contributors': contribCount,
+            contributors,
         };
     });
 
