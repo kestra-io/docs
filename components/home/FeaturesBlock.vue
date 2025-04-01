@@ -78,7 +78,7 @@ const features = [
         margin-top: 2rem;
         display: grid;
         grid-template-columns: 1fr;
-        padding: 2rem 3rem;
+        padding: 2rem;
         gap: 1rem;
         @include media-breakpoint-up(lg){
             padding: 6rem 3rem;

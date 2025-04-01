@@ -64,13 +64,24 @@ const videoVisible = ref(false)
     .container {
         text-align: center;
         color: white;
-        padding-top: 4rem;
+        padding-top: 2rem;
+        @include media-breakpoint-up(lg){
+            padding-top: 4rem;
+        }
 
         h2 {
             font-size: 3rem;
+            line-height: 2.5rem;
+            @include media-breakpoint-up(lg){
+                line-height: 3rem;
+            }
             font-weight: 600;
             margin-bottom: .5rem;
             span {
+                display: block;
+                @include media-breakpoint-up(lg){
+                    display: inline;
+                }
                 color: $primary;
                 background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
                 background-size: cover;
@@ -83,6 +94,7 @@ const videoVisible = ref(false)
             margin: 0 auto;
             text-wrap: pretty;
             margin-bottom: 2rem;
+            color: #9797A6;
         }
         .cta-buttons{
             display: flex;
