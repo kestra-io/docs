@@ -50,7 +50,7 @@ diff --git a/node_modules/@nuxt/content/dist/runtime/internal/dump.js b/node_mod
 index 1eea93c..499b1c9 100644
 --- a/node_modules/@nuxt/content/dist/runtime/internal/dump.js
 +++ b/node_modules/@nuxt/content/dist/runtime/internal/dump.js
-@@ -1,7 +1,12 @@
+@@ -1,7 +1,15 @@
  export async function decompressSQLDump(base64Str, compressionType = "gzip") {
 -  const binaryData = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
 -  const response = new Response(new Blob([binaryData]));
