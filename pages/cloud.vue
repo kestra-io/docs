@@ -1,5 +1,5 @@
 <template>
-    <div class="m-3 cloud">
+    <div class="cloud">
         <Head>
             <Title>Kestra Cloud Early Adopter Program</Title>
             <Meta
