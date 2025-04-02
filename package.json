@@ -9,7 +9,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && patch-package",
     "pages:dev": "NITRO_PRESET=cloudflare-pages wrangler pages dev --compatibility-date=2023-10-25 --proxy 3000 -- npm run dev",
     "pages:build": "NITRO_PRESET=cloudflare-pages npm run build",
     "pages:deploy": "wrangler pages deploy --project-name docs ./dist",
