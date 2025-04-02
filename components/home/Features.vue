@@ -76,6 +76,7 @@ const videoVisible = ref(false)
                 line-height: 3rem;
             }
             font-weight: 600;
+            margin: 0 4rem;
             margin-bottom: .5rem;
             span {
                 display: block;
