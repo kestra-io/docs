@@ -38,7 +38,6 @@ jobs:
       - name: trigger docs & blogs deployment
         run: curl --parallel --max-time 200 https://kestra.io/docs -o docs.html https://kestra.io/blogs -o blogs.html
 
-      # Check downloaded files for HTTP 524 errors
       - name: Check docs.html for HTTP 524 errors
         run: |
           if grep -q "error code: 524" docs.html; then
