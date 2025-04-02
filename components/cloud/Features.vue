@@ -30,7 +30,7 @@
                         <p>
                             No infrastructure setup, deployment worries, or
                             ongoing maintenance. We handle the heavy lifting
-                            while you focus on your workflows.
+                            <br>while you focus on your workflows.
                         </p>
                     </div>
                     <div class="col-6 mt-3">
@@ -50,7 +50,7 @@
                         </h6>
                         <p>
                             Access enterprise features including enhanced
-                            security, RBAC, observability, and governance during
+                            security, RBAC, observability, and governance <br>during
                             your exclusive access.
                         </p>
                     </div>
