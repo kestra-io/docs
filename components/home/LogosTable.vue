@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-const companies = import.meta.glob('~/public/landing/home/companies/*.svg', {
+const companies = import.meta.glob('~/public/landing/home/trusted-companies/*.svg', {
     import: "default",
     query: 'url',
 })
@@ -33,8 +33,6 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
         })
     })).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
 })
-
-//
 </script>
 
 <style lang="scss" scoped>

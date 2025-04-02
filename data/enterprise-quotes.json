@@ -23,7 +23,7 @@
       "title": "CEO",
       "company": "Foundation Direct"
     },
-    "logo": "/landing/home/companies/foundation_direct.png"
+    "logo": "/landing/home/quotes-companies/foundation_direct.png"
   },
   {
     "quote": "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop",
@@ -32,7 +32,7 @@
       "title": "Lead Software Engineer",
       "company": "Axciom"
     },
-    "logo": "/landing/home/companies/acxiom.svg"
+    "logo": "/landing/home/trusted-companies/Acxiom.svg"
   },
   {
     "quote": "We're convinced we chose the right tool. The support and communication are great. Kestra adapts to any tool thanks to its plugins, and it's easy for anyone to understand.",
@@ -65,7 +65,7 @@
       "title": "Purple Team Cybersecurity",
       "company": "Orange"
     },
-    "logo": "/landing/home/companies/orange.svg"
+    "logo": "/landing/home/trusted-companies/Orange.svg"
   },
   {
     "quote": "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes. Its strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines, including those in the field of genomics.",
@@ -114,7 +114,7 @@
       "title": "Product Manager",
       "company": "Clever Connect"
     },
-    "logo": "/landing/home/companies/clever-connect.svg"
+    "logo": "/landing/home/trusted-companies/clever-connect.svg"
   },
   {
     "quote": "Kestra is the first exciting thing I’ve seen in a long time.I’ve spent a huge part of my career looking for a solution that handle huge data sets.",
@@ -164,7 +164,7 @@
       "title": "Data Engineer",
       "company": "Decathlon"
     },
-    "logo": "/landing/home/companies/decathlon.svg"
+    "logo": "/landing/home/trusted-companies/Decathlon.svg"
   },
   {
     "quote": "With Kestra, I got started in minutes, no complex deployment, no rate limits, no lock-in to Python. Triggers, logs, multi-language support, it all just works. Compared to Prefect, Kestra feels like everything is in the right place.",
