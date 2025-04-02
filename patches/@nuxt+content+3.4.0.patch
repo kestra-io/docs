@@ -42,7 +42,7 @@ index 0eab68b..cf49768 100644
          return Promise.resolve();
        }
      }
-+    log(`Executing SQL ${index + 1}/${dump.length}: ${hash}`);
++    log(`Executing SQL ${index + 1}/${dump.length}: ${collection} ${hash}`);
      await db2.exec(statement).catch((err) => {
        const message = err.message || "Unknown error";
        console.error(`Failed to execute SQL ${sql}: ${message}`);
