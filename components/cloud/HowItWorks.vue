@@ -7,7 +7,9 @@
                 :key="index"
                 class="col-md-12 col-lg"
             >
-                <div class="mb-3 numbers">{{ index + 1 }}</div>
+                <div class="numbers-wrapper mb-3">
+                    <div class="numbers">{{ index + 1 }}</div>
+                </div>
                 <h6 class="mb-3">{{ column.title }}</h6>
                 <p>{{ column.description }}</p>
             </div>
@@ -78,6 +80,23 @@ const columns = [
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
+    }
+
+    & .numbers-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    & .numbers-wrapper::after {
+        content: "";
+        flex-grow: 1;
+        border-top: 1px dotted white;
+        margin-left: 10px;
+        height: 0;
     }
 }
 </style>
