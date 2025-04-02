@@ -24,7 +24,6 @@ This post provides an overview of key optimizations introduced in version 0.22, 
 
 The Kestra Executor merges task outputs so that subsequent tasks can access previous task outputs via our expression language. This operation clones the entire output map, incurring high CPU and memory costs.
 
-
 With 0.22, we optimized this by only merging outputs for tasks that require it (e.g., ForEach tasks as they produce outputs from the same task identifier) among other enhancements.
 
 Preliminary benchmark tests conducted on a flow with 2,100 task runs using a 3-level `ForEach` task showed both CPU and memory improvements:
@@ -68,15 +67,13 @@ For more details, you can have a look at this pull request: [PR #7382](https://g
 
 ## Optimized Execution Processing
 
-When you start an execution from the UI, Kestra’s UI updates in real time using a Server-Sent Event (SSE) socket.
+When you start an execution from the UI, Kestra’s UI updates in real time using a Server-Sent Event (SSE) socket. This socket connects to our API, which consumes the execution queue and filters all execution messages to send only those related to the current execution to the UI. Thus, each connection spawned a new consumer on the execution queue, adding unnecessary load.
 
-This socket connects to our API, which consumes the execution queue and filters all execution messages to send only those related to the current execution to the UI.
-
-Thus, each connection spawned a new consumer on the execution queue, adding unnecessary load.
-
-We switched to a **shared consumer with a fan-out mechanism**, reducing queue backend (database or Kafka) stress when multiple users trigger executions simultaneously.
+In 0.22, we switched to a **shared consumer with a fan-out mechanism**, reducing queue backend (database or Kafka) stress when multiple users trigger executions simultaneously.
 
 For more details, you can have a look at this pull request: [PR #6777](https://github.com/kestra-io/kestra/issues/6777).
+
+### Improvements to Flowable Task Executions
 
 When the Kestra Executor executes an execution, it can handle two types of tasks: 
 - **runnable tasks** that are sent to the Worker for processing. 
@@ -127,7 +124,6 @@ We plan to discuss Kestra's performance further in a later blog post, but here i
 The benchmark scenario is a flow triggered by a Kafka Realtime Trigger that performs a JSON transformation for each message and returns the output in a second task.
 We generate 1000 executions by publishing messages to a Kafka topic at 10, 25, 50, 75, and 100 messages per second, then check the execution latency by looking at the last execution of the scenario run.
 
-::collapse{title="Expand to see the Benchmark Flow"}
 ::collapse{title="Expand to see the Benchmark Flow"}
 ```yaml
 id: realtime-kafka-json
