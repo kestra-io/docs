@@ -4,7 +4,7 @@
             <Title>Kestra Cloud Early Adopter Program</Title>
             <Meta
                 name="description"
-                content="Be among the first to experience Kestra Cloud with exclusive access before general availability."
+                content="Be among the first to experience Kestra Cloud with exclusive access <br>before general availability."
             />
         </Head>
 
@@ -75,11 +75,11 @@
     }
 
     & :deep(h1) {
-        font-size: $font-size-4xl;
+        font-size: $font-size-3xl;
     }
 
     & :deep(h2) {
-        font-size: $font-size-3xl;
+        font-size: $font-size-2xl;
     }
 
     & :deep(h3) {
@@ -96,11 +96,12 @@
 
     & :deep(h6) {
         font-size: $font-size-md;
-        font-weight: 700;
+        font-weight: 600;
     }
 
     & :deep(p) {
         font-size: 14px;
+        color: $white-1
     }
 
     & :deep(div) {

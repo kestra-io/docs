@@ -1,14 +1,14 @@
     <template>
         <div class="container mt-5 pt-5">
         <div class="row mt-5">
-            <div class="col-md-12 col-lg-8">
+            <div class="col-md-12 col-lg-7">
             <h2>
                 Kestra Cloud
                 <span class="highlight">Early Adopter Program</span>
             </h2>
             <h5 class="mt-3">
                 Be among the first to experience Kestra Cloud with exclusive
-                access before general availability.
+                access <br> before general availability.
             </h5>
             <div class="row mt-5">
                 <div class="col-6">
@@ -69,7 +69,7 @@
                 </div>
             </div>
             </div>
-            <div class="col-md-12 col-lg-4 form">
+            <div class="col-md-12 col-lg-5 form">
             <div v-if="valid" v-html="validMessage" class="success" />
             <form
                 v-else
@@ -401,6 +401,7 @@
         padding: 60px 40px 0 40px;
         border-radius: 16px;
         background-color: white;
+        
     
         label:not(.form-check-label) {
             font-weight: 600;
@@ -419,7 +420,20 @@
             background-repeat: no-repeat;
             }
         }
-        }
+        
+        &::before {
+  content: "";
+  position: absolute;
+  top: -55%;    
+  right: -77%;  
+  width: 400px; 
+  height: 400px;
+  background-image: url("./images/visual-bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+} 
     }
     </style>
     
