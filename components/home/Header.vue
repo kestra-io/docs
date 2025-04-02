@@ -206,13 +206,13 @@
         p {
             max-width: fit-content;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
             color: #B9B9BA;
             text-wrap: balance;
-            margin:0;
+            margin: 0;
             margin-top: .5rem;
             @include media-breakpoint-down(md) {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
             @include media-breakpoint-up(lg) {
                 text-wrap: wrap;
