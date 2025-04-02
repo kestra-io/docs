@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-5 pt-5">
       <div class="row mt-5">
-        <div class="col-md-12 col-lg-7">
+        <div class="col-md-12 col-lg-8">
           <h2>
             Kestra Cloud
             <span class="highlight">Early Adopter Program</span>
@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12 col-lg-5 form">
+        <div class="col-md-12 col-lg-4 form">
           <div v-if="valid" v-html="validMessage" class="success" />
           <form
             v-else
@@ -208,7 +208,7 @@
               />
             </div>
   
-            <div class="col-12 mt-4 d-flex justify-content-center">
+            <div class="col-12 mt-4 pb-5 d-flex justify-content-center">
               <button type="submit" class="btn btn-primary w-100">
                 Submit
               </button>
@@ -367,8 +367,8 @@
         @media (min-width: 992px) {
           content: "";
           position: absolute;
-          top: -20%;
-          right: -50%;
+          top: -30%;
+          right: -60%;
           width: 400px;
           height: 400px;
           background-image: url("./images/cloud_visual.png");
