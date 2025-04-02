@@ -57,6 +57,9 @@ index 1eea93c..499b1c9 100644
 -  const decompressedStream = response.body?.pipeThrough(new DecompressionStream(compressionType));
 -  const decompressedText = await new Response(decompressedStream).text();
 -  return decompressedText.split("\n");
++    if (!base64Str) {
++        throw new Error("Base64 string is empty");
++    }
 +    try {
 +        const binaryData = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
 +        const response = new Response(new Blob([binaryData]));
@@ -64,7 +67,7 @@ index 1eea93c..499b1c9 100644
 +        const decompressedText = await new Response(decompressedStream).text();
 +        return decompressedText.split("\n");
 +    }catch (error) {
-+        console.error("Error decompressing SQL dump:", error, base64Str.slice(0, 100));
++        console.error("Error decompressing SQL dump:", error, base64Str?.slice(0, 100));
 +        throw error;
 +    }
  }
