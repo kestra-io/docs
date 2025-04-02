@@ -9,9 +9,9 @@ index 0eab68b..1b71241 100644
 +
  async function _checkAndImportDatabaseIntegrity(event, collection, integrityVersion, structureIntegrityVersion, config) {
    const db2 = loadDatabaseAdapter(config);
-+  await db2.exec('CREATE TABLE IF NOT EXISTS _kestra_debug_logs (dateTime NUMBER, log TEXT)')
++  await db2.exec('CREATE TABLE IF NOT EXISTS _kestra_debug_logs (dateTime INTEGER, log TEXT)')
 +  async function log(text){
-+    db2.exec('INSERT INTO _kestra_debug_logs (dateTime, log) VALUES (?, ?)', [Date.now(), text])
++    db2.exec('INSERT INTO _kestra_debug_logs VALUES (?, ?)', [Date.now(), text])
 +  }
    const before = await db2.first(`SELECT * FROM ${tables.info} WHERE id = ?`, [`checksum_${collection}`]).catch(() => null);
    if (before?.version && !String(before.version)?.startsWith(`${config.databaseVersion}--`)) {
