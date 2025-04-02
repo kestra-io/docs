@@ -1,5 +1,5 @@
 diff --git a/node_modules/@nuxt/content/dist/runtime/internal/database.server.js b/node_modules/@nuxt/content/dist/runtime/internal/database.server.js
-index 0eab68b..1b71241 100644
+index 0eab68b..cf49768 100644
 --- a/node_modules/@nuxt/content/dist/runtime/internal/database.server.js
 +++ b/node_modules/@nuxt/content/dist/runtime/internal/database.server.js
 @@ -44,10 +44,16 @@ export async function checkAndImportDatabaseIntegrity(event, collection, config)
@@ -46,3 +46,25 @@ index 0eab68b..1b71241 100644
      await db2.exec(statement).catch((err) => {
        const message = err.message || "Unknown error";
        console.error(`Failed to execute SQL ${sql}: ${message}`);
+diff --git a/node_modules/@nuxt/content/dist/runtime/internal/dump.js b/node_modules/@nuxt/content/dist/runtime/internal/dump.js
+index 1eea93c..499b1c9 100644
+--- a/node_modules/@nuxt/content/dist/runtime/internal/dump.js
++++ b/node_modules/@nuxt/content/dist/runtime/internal/dump.js
+@@ -1,7 +1,12 @@
+ export async function decompressSQLDump(base64Str, compressionType = "gzip") {
+-  const binaryData = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
+-  const response = new Response(new Blob([binaryData]));
+-  const decompressedStream = response.body?.pipeThrough(new DecompressionStream(compressionType));
+-  const decompressedText = await new Response(decompressedStream).text();
+-  return decompressedText.split("\n");
++    try {
++        const binaryData = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
++        const response = new Response(new Blob([binaryData]));
++        const decompressedStream = response.body?.pipeThrough(new DecompressionStream(compressionType));
++        const decompressedText = await new Response(decompressedStream).text();
++        return decompressedText.split("\n");
++    }catch (error) {
++        console.error("Error decompressing SQL dump:", error, base64Str.slice(0, 100));
++        throw error;
++    }
+ }
