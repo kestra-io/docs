@@ -8,8 +8,7 @@
                 </h2>
                 <h5 class="mt-3">
                     Be among the first to experience Kestra Cloud with exclusive
-                    access <br />
-                    before general availability.
+                    access before general availability.
                 </h5>
                 <div class="row mt-5">
                     <div class="col-6">
@@ -30,7 +29,7 @@
                         <p>
                             No infrastructure setup, deployment worries, or
                             ongoing maintenance. We handle the heavy lifting
-                            <br>while you focus on your workflows.
+                            while you focus on your workflows.
                         </p>
                     </div>
                     <div class="col-6 mt-3">
@@ -50,7 +49,7 @@
                         </h6>
                         <p>
                             Access enterprise features including enhanced
-                            security, RBAC, observability, and governance <br>during
+                            security, RBAC, observability, and governance during
                             your exclusive access.
                         </p>
                     </div>
