@@ -1,5 +1,5 @@
 ---
-title: "Optimizing Performance in Kestra: A Look at Version 0.22"
+title: "Optimizing Performance in Kestra in Version 0.22"
 description: "Performance is a critical aspect of an orchestrator. Discover how Kestra 0.22 significantly enhances execution speed, reduces resource consumption, and improves overall system performance."
 date: 2025-04-08T13:00:00
 category: Solutions
@@ -160,13 +160,13 @@ tasks:
 
 ### JDBC backend
 
-| JDBC 0.21 - throughput  | JDBC 0.21 - latency | JDBC 0.22 - throughput | JDBC 0.22 - latency |
-|-------------------------|---------------------|------------------------|---------------------|
-| 10 exec/s               | 400ms               | 10 exec/s              | 150ms               |
-| 25 exec/s               | 26s                 | 25 exec/s              | 2.6s                |
-| 50 exec/s               | 43s                 | 50 exec/s              | 15s                 |
-| 75 exec/s               | 49s                 | 75 exec/s              | 22s                 |
-| 100 exec/s              | 59s                 | 100 exec/s             | 25s                 |
+| Throughput (exec/s) | Latency in 0.21 | Latency in 0.22 | Improvement |
+|--------------------|---------------|---------------|-------------|
+| 10               | 400ms         | 150ms         | 62% faster  |
+| 25               | 26s           | 2.6s          | 90% faster  |
+| 50               | 43s           | 15s           | 65% faster  |
+| 75               | 49s           | 22s           | 55% faster  |
+| 100              | 59s           | 25s           | 58% faster  |
 
 **Key takeaways**:
 - Performance has improved dramatically in 0.22, even when executions are not run concurrently (which is almost the case at 10 executions/s).
@@ -174,15 +174,15 @@ tasks:
 
 ### Kafka backend
 
-| Kafka 0.21 - throughput | Kafka 0.21 - latency | Kafka 0.22 - throughput | Kafka 0.22 - latency |
-|-------------------------|----------------------|-------------------------|----------------------|
-| 10 exec/s               | 800ms                | 10 exec/s               | 200ms                |
-| 25 exec/s               | 800ms                | 25 exec/s               | 225ms                |
-| 50 exec/s               | 900ms                | 50 exec/s               | 225ms                |
-| 75 exec/s               | 1s                   | 75 exec/s               | 300ms                |
-| 100 exec/s              | 1s                   | 100 exec/s              | 300ms                |
-| 150 exec/s              | 1.2s                 | 150 exec/s              | 750ms                |
-| 200 exec/s              | 2s                   | 200 exec/s              | 1.9s                 |
+| Throughput (exec/s) | Latency in 0.21 | Latency in 0.22 | Improvement |
+|--------------------|---------------|---------------|-------------|
+| 10               | 800ms         | 200ms         | 75% faster  |
+| 25               | 800ms         | 225ms         | 72% faster  |
+| 50               | 900ms         | 225ms         | 75% faster  |
+| 75               | 1s            | 300ms         | 70% faster  |
+| 100              | 1s            | 300ms         | 70% faster  |
+| 150              | 1.2s          | 750ms         | 38% faster  |
+| 200              | 2s            | 1.9s          | 5% faster   |
 
 **Key takeaways**:
 - In 0.21, our Kafka backend can sustain higher throughput than our JDBC backend, but on low throughput, latency is more than the JDBC backend.
