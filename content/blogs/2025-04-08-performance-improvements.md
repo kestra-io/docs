@@ -1,6 +1,6 @@
 ---
 title: "How Kestra engineers optimized orchestrator performance in 0.22"
-description: "Performance is a critical aspect of an orchestrator. Read how Kestra engineers improved the orchestrator's performance in 0.22."
+description: "Performance is a critical aspect of an orchestrator. Discover how Kestra 0.22 significantly enhances execution speed, reduces resource consumption, and improves overall system performance."
 date: 2025-04-08T13:00:00
 category: Solutions
 author:
