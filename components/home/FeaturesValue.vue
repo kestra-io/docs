@@ -67,7 +67,7 @@ const valueSet = [
         h3 {
             margin: 2rem 0;
             font-size: 2.2rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: .5rem;
             span {
                 color: $primary;
