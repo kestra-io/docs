@@ -47,27 +47,23 @@ In 0.22, we've enabled parallel processing for these two most critical queues. B
 
 This can be customized by the configuration property `kestra.jdbc.executor.thread-count`.
 
-This change would not change the performance of an executor when there is not a high number of concurrent executions and tasks, at low __throughput__ (number of executions or tasks processed by seconds), the execution __latency__ will not be improved.
-But it will significantly improve the execution __latency__ at high __throughput__!
+This change would not impact the performance of an executor when there is not a high number of concurrent executions and tasks; at low __throughput__ (number of executions or tasks processed per second), the execution __latency__ will not be improved. However, it will significantly improve the execution __latency__ at high __throughput__!
 
 In a benchmark running 10,000 executions over 5 minutes (**33 executions/s** throughput):
 
 - **Before**: Execution latency peaked at **9m 50s** (Takes into account the time to execute the last executions)
-
-As a single execution took 100ms, the Kestra Executor could not handle such a high load, and execution latency increased.
-
 - **After**: Execution latency dropped to **100ms** (executions processed in real-time!)
 
+Previously a single execution took 100ms, the Kestra Executor could not handle such a high load, and execution latency increased.
 Executions are now processed at the same speed the benchmark injects them!
-
 
 We plan to do more tests later to show how many executions can be processed in seconds with Kestra; keep posted!
 
-For more details, you can have a look at this pull request: [PR #7382](https://github.com/kestra-io/kestra/pull/7382).
+For more details on the work to achieve these results, have a look at this pull request: [PR #7382](https://github.com/kestra-io/kestra/pull/7382).
 
 ## Optimized Execution Processing
 
-When you start an execution from the UI, Kestra’s UI updates in real time using a Server-Sent Event (SSE) socket. This socket connects to our API, which consumes the execution queue and filters all execution messages to send only those related to the current execution to the UI. Thus, each connection spawned a new consumer on the execution queue, adding unnecessary load.
+When you start an execution from the UI, Kestra’s web interface updates in real time using a Server-Sent Event (SSE) socket. This socket connects to our API, which consumes the execution queue and filters all execution messages to send only those related to the current execution to the UI. Thus, each connection spawned a new consumer on the execution queue, adding unnecessary load.
 
 In 0.22, we switched to a **shared consumer with a fan-out mechanism**, reducing queue backend (database or Kafka) stress when multiple users trigger executions simultaneously.
 
@@ -83,7 +79,7 @@ Previously, flowable task processing created a Worker Task Result (to mimic a ta
 
 With Kestra 0.22, flowable tasks are no longer queued for later processing but handled immediately, eliminating unnecessary queue operations and reducing execution latency.
 
-For more details, you can have a look at this pull request: [PR #7250](https://github.com/kestra-io/kestra/pull/7250).
+Further details in this pull request: [PR #7250](https://github.com/kestra-io/kestra/pull/7250).
 
 ## Reduced Kafka Backend Latency
 
@@ -91,7 +87,7 @@ During benchmarking, we discovered that our default Kafka configuration was desi
 
 By fine-tuning our configuration (`poll.ms` and `commit.interval.ms reduced` from **100ms → 25ms**), we significantly improved execution speed.
 
-In a benchmark (a flow with two tasks, one doing JSON processing), this reduces latency:
+In a benchmark (a flow with two tasks, one processing JSON), this configuration update significantly reduces latency:
 
 - At **10 executions/s**, latency dropped from **1s → 200ms**
 - At **100 executions/s**, latency dropped from **8s → 250ms**
@@ -100,18 +96,17 @@ In a benchmark (a flow with two tasks, one doing JSON processing), this reduces 
 
 Last but not least, we reviewed how we clean the JDBC `queues` table.
 
-
 The JDBC queues table stores internal queue messages. Previously, the [JDBC Cleaner](/docs/configuration#jdbc-cleaner) only periodically cleaned the table. The default configuration was to clean the table each hour and keep 7 days of messages.
 
 Our internal queue is a multiple producer / multiple consumer queue; this means that the JDBC cleaner cannot know if all consumers have read a message, as not all components read the same message. In our Kafka backend, we rely on the Kafka topic and consumer group, so it doesn't suffer from the same issue.
 
 We received feedback from users processing a large number of executions per day that this `queues` table can grow big (tens or even hundreds of gigabytes) and sometimes induce a very high load on the database.
 
-We decided to improve our `queues` table cleaning in two ways:
+To mitigate this user issue, we decided to improve our `queues` table cleaning in two ways:
 - **On-execution purge**: Purging all execution-related messages at the end of the execution, keeping only the last execution message so late consumers can still be updated on the execution terminal state.
 - **Early cleanup of high-volume logs**: High cardinality messages such as logs, metrics, and audit logs (consumed by a single consumer) are now purged after 1 hour instead of 7 days.
 
-With these two changes, the number of records in the `queues` table was reduced to 95% on contrived benchmarks!
+With these two changes, the number of records in the `queues` table was reduced a staggering **95%** on contrived benchmarks!
 
 For more details, you can have a look at these two pull requests:
 - [PR #7286](https://github.com/kestra-io/kestra/pull/7286)
@@ -183,7 +178,7 @@ tasks:
 
 **Key takeaways**:
 - In 0.21, our Kafka backend can sustain higher throughput than our JDBC backend, but on low throughput, latency is more than the JDBC backend.
-- In 0.22, our Kafka backend achieves almost the same latency at low throughput as our JDBC backend. At up to 100 executions per second, latency didn't increase much, and in all cases, it stayed under the latency, which was achieved in 0.21.
+- In 0.22, our Kafka backend achieves almost the same latency at low throughput as our JDBC backend. At up to 100 executions per second, latency didn't increase much, and in all cases, it stayed under the latency seen in 0.21.
 
 
 ## Conclusion
