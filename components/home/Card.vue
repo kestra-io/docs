@@ -38,7 +38,6 @@ const relativeMouse = computed(() => {
 }
 
 .home-card {
-    position: relative;
     background:
         radial-gradient(circle at var(--x) var(--y), rgba(153,153,153, 0.1), #00000000 50%),
         linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
