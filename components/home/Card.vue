@@ -1,27 +1,26 @@
 <template>
-    <div class="home-card" ref="box" :style="{
-        '--x': `${relativeMouse.x}px`,
-        '--y': `${relativeMouse.y}px`
-    }">
+    <div class="home-card" ref="box">
         <slot/>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {useMouse, type UseMouseEventExtractor} from "@vueuse/core"
+import {useMouse} from "@vueuse/core"
 
 const box = ref<HTMLDivElement | null>(null)
 const {x:absX, y:absY} = useMouse()
 
-const relativeMouse = computed(() => {
+watch([absX, absY], ([xv, yv]) => {
     if (box.value) {
-        const rect = box.value.getBoundingClientRect()
-        return {
-            x: absX.value - (rect.left + window.scrollX),
-            y: absY.value - (rect.top + window.scrollY)
+        const {left, top, width, height} = box.value.getBoundingClientRect()
+        const x = xv - left - window.scrollX
+        const y = yv - top - window.scrollY
+        if(x < -200 || x > width + 100 || y < -100 || y > height + 100) {
+            return
         }
+        box.value.style.setProperty('--x', `${x}px`)
+        box.value.style.setProperty('--y', `${y}px`)
     }
-    return {x: 0, y: 0}
 })
 </script>
 
@@ -38,11 +37,10 @@ const relativeMouse = computed(() => {
 }
 
 .home-card {
-    background:
-        radial-gradient(circle at var(--x) var(--y), rgba(153,153,153, 0.1), #00000000 50%),
+    background-image:
+        radial-gradient(250px at var(--x) var(--y), rgba(153,153,255, 0.15), rgba(0,0,0,0) 100%),
         linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
         linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
-
     border-radius: 1rem;
     box-shadow: 0px 12px 24px 8px #00000017;
     border: 1px solid #2C2E4B;
