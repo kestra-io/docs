@@ -185,6 +185,10 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         position: relative;
         display: grid;
         grid-template-columns: 90px 1fr;
+        border-radius: 2rem;
+        padding: 1rem;
+        margin: 2rem 0;
+        border: none;
         @include media-breakpoint-up(lg){
             display: block;
             position: absolute;
@@ -193,9 +197,6 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             text-align: center;
             padding: 1rem 2rem;
         }
-        border-radius: 2rem;
-        padding: 1rem;
-        margin: 2rem 0;
         h3{
             font-size: 1.2rem;
             font-weight: 500;
