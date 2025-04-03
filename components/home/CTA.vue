@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <section class="container">
         <HomeCard class="side-box">
             <p class="pre-title">Ready to see it in action?</p>
             <h2>Jump in</h2>
@@ -14,7 +14,7 @@
             <p class="description">Connect with our product specialists and discuss your project requirements.</p>
             <NuxtLink href="/demo" class="btn btn-md btn-primary">Talk to us</NuxtLink>
         </HomeCard>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>

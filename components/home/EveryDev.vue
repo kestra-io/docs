@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper-every-dev">
+    <section class="wrapper-every-dev">
         <div class="center-block container">
             <div class="line-top"/>
             <h2>For <span>Every</span> Developer</h2>
@@ -39,7 +39,7 @@
                 <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
             </HomeCard>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup>

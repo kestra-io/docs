@@ -1,5 +1,5 @@
 <template>
-    <div class="oss-bg">
+    <section class="oss-bg">
         <div class="container">
             <h2 class="title-block">
                 <span class="gradient">Open Source</span>
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
     <pre style="padding: 1rem; background-color: red;color: white;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 

@@ -1,18 +1,20 @@
 <template>
-    <div class="container">
-        <h2><span>250+ Blueprints,</span> Ready to Build.</h2>
-        <p>Jump start your workflows with a growing library of workflow templates</p>
-    </div>
-    <div class="blueprints-container">
-        <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
-        <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
-        <div class="blueprints-carousel" ref="wrapper">
-            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="generateCardHref(blueprint)"/>
+    <section class="container">
+        <div>
+            <h2><span>250+ Blueprints,</span> Ready to Build.</h2>
+            <p>Jump start your workflows with a growing library of workflow templates</p>
         </div>
-    </div>
-    <div class="button-container">
-        <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
-    </div>
+        <div class="blueprints-container">
+            <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
+            <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
+            <div class="blueprints-carousel" ref="wrapper">
+                <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="generateCardHref(blueprint)"/>
+            </div>
+        </div>
+        <div class="button-container">
+            <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
+        </div>
+    </section>
 </template>
 
 <script lang="ts" setup>

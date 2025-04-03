@@ -7,16 +7,24 @@
         </Head>
         <HomeHeader/>
         <HomeLogosTable/>
-        <HomeOss/>
-        <HomeOssQuotes/>
-        <HomeFeatures/>
-        <HomeEveryDev/>
-        <HomeExperience/>
-        <HomePlugins/>
-        <HomeBlueprints/>
-        <HomeEnterprise/>
-        <HomeEnterpriseQuotes />
-        <HomeCTA/>
+        <HomeOpenSource/>
+        <HomeOpenSourceQuotes/>
+        <NuxtLazyHydrate when-visible>
+            <HomeFeatures/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeEveryDev/>
+            <HomeExperience/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomePlugins/>
+            <HomeBlueprints/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeEnterprise/>
+            <HomeEnterpriseQuotes />
+            <HomeCTA/>
+        </NuxtLazyHydrate>
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <section class="main-header">
         <div class="hero container">
             <div class="text-block">
                 <h1>
@@ -56,7 +56,7 @@
                 <canvas v-else ref="canvas" height="1520" width="2000"/>
             </div>
         </div>
-    </div>
+    </section>
     <div
         v-on="{
             'show.bs.modal': () => (videoVisible = true),
@@ -150,7 +150,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main {
+    .main-header {
         position: relative;
         &::before {
             position: absolute;

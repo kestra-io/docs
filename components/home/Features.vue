@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <section class="container">
         <h2><span>Simplicity Scales,</span> Complexity Fails</h2>
         <p>
             Mix the flexibility of code-based orchestration<br/>
@@ -22,7 +22,7 @@
         </div>
         <HomeFeaturesBlock/>
         <HomeFeaturesValue />
-    </div>
+    </section>
     <div
         v-on="{
             'show.bs.modal': () => (videoVisible = true),

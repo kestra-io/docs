@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <section class="container">
         <h2>
             The Orchestration Experience
             <span>You Have Been Looking For</span>
@@ -17,7 +17,7 @@
                 <NuxtImg width="1096" height="590" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
             </TransitionGroup>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>

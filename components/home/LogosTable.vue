@@ -1,5 +1,5 @@
 <template>
-    <div class="logos-bg">
+    <section class="logos-bg">
         <div class="logo-wrapper">
             <div class="center-text">
                 Trusted by Industry Leaders
@@ -13,7 +13,7 @@
                 <img :src="img.url" :alt="img.name" />
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>

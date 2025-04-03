@@ -1,8 +1,8 @@
 <template>
-    <div class="home-enterprise">
+    <section class="home-enterprise">
         <HomeEnterpriseHeaderBox />
         <HomeEnterpriseStories />
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>

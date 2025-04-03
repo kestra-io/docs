@@ -1,6 +1,5 @@
 <template>
-    <div class="enterprise-header-box container">
-
+    <section class="enterprise-header-box container">
         <NuxtImg class="box-right" width="558px" height="432px" src="/landing/home/EnterpriseHeader.svg" alt="enterprise"/>
         <div class="box-left">
             <h2>Scale With Kestra <span>Enterprise Edition</span></h2>
@@ -17,7 +16,7 @@
             </div>
         </div>
         <NuxtLink href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></NuxtLink>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>
