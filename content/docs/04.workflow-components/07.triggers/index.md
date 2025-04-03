@@ -256,9 +256,9 @@ Let's break down the above example:
 
 ## Locked triggers
 
-[Flow](./02.flow-trigger.md), [Schedule](./01.schedule-trigger.md) and [Polling triggers](./04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
+[Flow](./02.flow-trigger.md), [Schedule](./01.schedule-trigger.md), and [Polling triggers](./04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
-To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
+To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Note that doing so raises a risk of concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
 
 ## Setting inputs inside of triggers
 

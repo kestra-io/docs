@@ -24,7 +24,7 @@
                 </button>
             </div>
             <div class="row my-4" data-aos="fade-right">
-                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.id">
+                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.name + '-' + plugin.title">
                     <PluginsPluginCard :plugin="plugin" />
                 </div>
                 <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">

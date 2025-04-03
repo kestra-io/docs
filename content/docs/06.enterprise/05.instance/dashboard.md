@@ -1,6 +1,6 @@
 ---
 title: Instance Dashboard
-icon: /docs/icons/kestra.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.16.0"
 docId: instance
@@ -22,6 +22,7 @@ The **Overview** tab gives a high-level snapshot of your instance’s operationa
 - Check real-time metrics like uptime and service liveness.  
 - Access detailed configurations for each service (e.g., version, hostname, heartbeat intervals).  
 
+![Instance Overview Table](/docs/enterprise/instance-table.png)
 
 ## Monitoring Services
 
