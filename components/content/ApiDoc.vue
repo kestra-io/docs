@@ -25,5 +25,9 @@
     rapi-doc {
         background: transparent;
         width: 100%;
+
+        &::part(section-endpoint) {
+            white-space: nowrap;
+        }
     }
 </style>
