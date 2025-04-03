@@ -10,6 +10,7 @@
 
         <live-demoHeader />
         <live-demoFeatures />
+        <live-demoHowItWorks />
         
     </div>
 </template>
@@ -18,7 +19,7 @@
 @import "../assets/styles/variable";
 
 .livedemo {
-    &::before {
+    &::after {
         content: "";
         position: absolute;
         top: 0;
@@ -29,10 +30,8 @@
         background-size: contain;
         background-repeat: repeat;
         transition: all 0.3s ease;
-        z-index: -1;
-    
+        z-index: -3;
     }
-    
 
     @media (max-width: 575.98px) {
         &::after {
