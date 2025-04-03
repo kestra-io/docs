@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/optimized-performance.png
+image: /blogs/0.22-performance.png
 ---
 
 Kestra engineers are committed to making the orchestrater more efficient and scalable. With version 0.22, our engineering team focused on optimizing execution processing, reducing resource consumption, and improving latency. These changes significantly enhance Kestra’s performance, particularly for high-throughput workflows.
