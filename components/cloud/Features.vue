@@ -384,9 +384,9 @@ const onSubmit = async (e: Event) => {
 
         axios
             .post(hubSpotUrl, formData, {})
-            .then((response) => {
+            .then(() => {
                 valid.value = true;
-                validMessage.value = response.data.inlineMessage;
+                validMessage.value = "Thanks for your interest in the cloud version of Kestra we will come back to you as soon as possible!";
             })
             .catch((error) => {
                 valid.value = false;
