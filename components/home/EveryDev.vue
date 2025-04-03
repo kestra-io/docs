@@ -9,7 +9,7 @@
             <p>Kestra unify all engineers, breaking down silos.</p>
         </div>
         <div class="container">
-            <div class="left-card card-block">
+            <HomeCard class="left-card card-block">
                 <NuxtImg width="117" height="120" src="/landing/home/every-software.png" alt="developers" class="img-natural"/>
                 <NuxtImg width="117" height="120" src="/landing/home/every-software-hover.png" alt="developers" class="img-hover"/>
                 <h3>Software Engineers</h3>
@@ -17,9 +17,9 @@
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
                 </p>
                 <NuxtLink href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></NuxtLink>
-            </div>
+            </HomeCard>
 
-            <div class="right-card card-block">
+            <HomeCard class="right-card card-block">
                 <NuxtImg width="117" height="120" src="/landing/home/every-platform.png" alt="developers" class="img-natural"/>
                 <NuxtImg width="117" height="120" src="/landing/home/every-platform-hover.png" alt="developers" class="img-hover"/>
                 <h3>Platform Engineers</h3>
@@ -27,9 +27,9 @@
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
                 </p>
                 <NuxtLink href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></NuxtLink>
-            </div>
+            </HomeCard>
 
-            <div class="bottom-card card-block">
+            <HomeCard class="bottom-card card-block">
                 <NuxtImg width="117" height="120" src="/landing/home/every-data.png" alt="developers" class="img-natural"/>
                 <NuxtImg width="117" height="120" src="/landing/home/every-data-hover.png" alt="developers" class="img-hover"/>
                 <h3>Data Engineers</h3>
@@ -37,7 +37,7 @@
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
                 </p>
                 <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
-            </div>
+            </HomeCard>
         </div>
     </div>
 </template>
@@ -196,12 +196,6 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         border-radius: 2rem;
         padding: 1rem;
         margin: 2rem 0;
-        padding-top: 1rem;
-        background-color: rgb(26, 28, 35);
-        background-image: linear-gradient(to bottom, #21242E99 0%, #1A1C2499 100%),
-            linear-gradient(to right,#1A1C24 0%, #373a44 80%, #1A1C24 100%);
-        background-size: cover, cover;
-        background-clip: padding-box;
         h3{
             font-size: 1.2rem;
             font-weight: 500;
