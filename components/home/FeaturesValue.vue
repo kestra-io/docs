@@ -18,7 +18,24 @@
             </NuxtLink>
         </HomeCard>
         <HomeCard class="card-block">
-            <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
+            <div class="any-spider">
+                <div class="spider-box" style="top: 48px; left: 205px;">
+                    Business Automation
+                </div>
+                <div class="spider-box" style="top: 127px; left: 350px;">
+                    ML/AI Orchestration
+                </div>
+                <div class="spider-box" style="top: 237px; left: 290px;">
+                    Event-Driven Automation
+                </div>
+                <div class="spider-box" style="top: 237px; left: 126px;">
+                    Data & API Orchestration
+                </div>
+                <div class="spider-box" style="top: 127px; left: 65px;">
+                    Batch or<br/> Real-Time ETL
+                </div>
+                <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
+            </div>
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
             <NuxtLink
                 class="learn-more"
@@ -99,10 +116,32 @@ const valueSet = [
             }
         }
     }
-    .spider {
-        width: 100%;
+    .any-spider {
+        position: relative;
         margin: 0 auto;
-        display: block;
+        width: 100%;
+        z-index: 1;
+        .spider-box{
+            position: absolute;
+            width: 125px;
+            height: 53px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: .8rem;
+            font-weight: 600;
+            border-radius: .4rem;
+            border: 1px solid #9C90D3;
+            background-color: rgba(40, 40, 40, 1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, .3);
+            padding: 0 1rem;
+            z-index: 2;
+        }
+        .spider {
+            width: 100%;
+            margin: 0 auto;
+            display: block;
+        }
     }
 
     .kpi-wrapper{
