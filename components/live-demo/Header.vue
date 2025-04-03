@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5 pt-5 text-center">
-        <img src="./images/logo_kestra.png" class="d-lg-none flip" />
+        <img src="./images/logo_kestra.svg" class="d-lg-none flip" />
         <h5 class="highlight">Read-Only</h5>
         <h1>Access to Kestra Live Demo</h1>
     </div>

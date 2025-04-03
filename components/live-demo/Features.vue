@@ -30,7 +30,7 @@
             </div>
             <div class="col-6 mt-3">
               <h6>
-                <img src="./images/support_agent.png" />
+                <img src="./images/hammer_wrench.png" />
                 Discover Kestra Features
               </h6>
               <p>
@@ -206,11 +206,11 @@
         @media (min-width: 992px) {
           content: "";
           position: absolute;
-          top: -20%;
+          top: -40%;
           right: -10%;
-          width: 150px;
-          height: 150px;
-          background-image: url("./images/logo_kestra.png");
+          width: 200px;
+          height: 200px;
+          background-image: url("./images/logo_kestra.svg");
           background-size: contain;
           background-repeat: no-repeat;
           z-index: 1;
@@ -220,9 +220,9 @@
         content: "";
         position: absolute;
         top: -70%;
-        right: -46%;
-        width: 750px;
-        height: 750px;
+        right: -134%;
+        width: 1200px;
+        height: 1200px;
         background-image: url("./images/Topo-bg.png");
         background-size: contain;
         background-repeat: no-repeat;
