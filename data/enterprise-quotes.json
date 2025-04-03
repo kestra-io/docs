@@ -5,7 +5,8 @@
       "name": "Arthur Mills",
       "title": "Senior Data Engineer",
       "company": "EssenceMediacom"
-    }
+    },
+    "logo": "/landing/home/quotes-companies/EssenceMediacom.svg"
   },
   {
     "quote": "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
@@ -50,7 +51,7 @@
       "title": "Cybersecurity & Technology Controls",
       "company": "JPMorgan Chase & Co."
     },
-    "logo": "/landing/home/quotes-companies/JP Morgan Chase Co..svg"
+    "logo": "/landing/home/quotes-companies/JP-Morgan-Chase-Co.svg"
   },
   {
     "quote": "I'm very impressed with what your team has here in Kestra. I moved some of my automated jobs over from Apache NIFI to Kestra. Kestra is way easier to work with because of everything being in the UI.",
@@ -59,7 +60,7 @@
       "title": "Associate System Consultant",
       "company": "Union Pacific RailRoad"
     },
-    "logo": "/landing/home/quotes-companies/Union Pacific RailRoad.svg"
+    "logo": "/landing/home/quotes-companies/Union-Pacific-RailRoad.svg"
   },
   {
     "quote": "I ported 80% of the prefect workflow in about a week to kestra, learing the syntax as i go […] yeah the yaml definitions make it super approachable.",
@@ -77,7 +78,7 @@
       "title": "Bioinformatician",
       "company": "Sophia Genetics"
     },
-    "logo": "/landing/home/quotes-companies/Sophia Genetics.svg"
+    "logo": "/landing/home/quotes-companies/Sophia-Genetics.svg"
   },
   {
     "quote": "I've been using Kestra on data projects at Sopht, also a french company, and it's been amazing for data processes. The declarative approach really works well for easy scalable contexts.",
@@ -95,7 +96,7 @@
       "title": "Senior Data Engineer",
       "company": "Vyoma Space"
     },
-    "logo": "/landing/home/quotes-companies/Vyoma Space.svg"
+    "logo": "/landing/home/quotes-companies/Vyoma-Space.svg"
   },
   {
     "quote": "I’ve been really enjoying Kestra! It’s been much simpler to use than building Airflow DAGs or using Prefect, the plugins are incredibly handy.",
@@ -104,7 +105,7 @@
       "title": "Senior Data Engineer",
       "company": "Political Data"
     },
-    "logo": "/landing/home/quotes-companies/Political Data.svg"
+    "logo": "/landing/home/quotes-companies/Political-Data.svg"
   },
   {
     "quote": "Kestra is becoming mission critical.",
@@ -212,6 +213,6 @@
       "title": "Cybersecurity & Technology Controls",
       "company": "JPMorgan Chase & Co."
     },
-    "logo": "/landing/home/quotes-companies/JP Morgan Chase Co..svg"
+    "logo": "/landing/home/quotes-companies/JP-Morgan-Chase-Co.svg"
   }
 ]

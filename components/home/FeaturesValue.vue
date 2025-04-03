@@ -14,7 +14,7 @@
                 class="learn-more"
                 href="/use-cases/stories"
             >
-                Learn More<ArrowRightIcon/>
+                Discover our Customer Stories<ArrowRightIcon/>
             </NuxtLink>
         </HomeCard>
         <HomeCard class="card-block">
