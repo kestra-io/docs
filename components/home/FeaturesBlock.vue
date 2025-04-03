@@ -128,7 +128,7 @@ const features = [
         p{
             color: #B9B9BA;
             margin-top: .5em;
-            font-size: .8rem;
+            font-size: .9rem;
         }
         .clipper img {
             height: 3rem;

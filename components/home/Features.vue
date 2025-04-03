@@ -96,6 +96,9 @@ const videoVisible = ref(false)
             text-wrap: pretty;
             margin-bottom: 2rem;
             color: #9797A6;
+            @include media-breakpoint-up(lg){
+                font-size: 1.2rem;
+            }
         }
         .cta-buttons{
             display: flex;

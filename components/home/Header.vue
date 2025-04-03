@@ -170,13 +170,6 @@
             width: 100%;
             align-items: center;
             gap: $spacer;
-            @include media-breakpoint-down(md) {
-                margin: 2.5rem 0 1rem;
-            }
-            p{
-                max-width: 500px;
-                font-weight: 300;
-            }
         }
 
         .hero {
@@ -206,17 +199,16 @@
         p {
             max-width: fit-content;
             text-align: center;
-            font-weight: 600;
+            font-weight: 400;
             color: #B9B9BA;
             text-wrap: balance;
             margin: 0;
             margin-top: .5rem;
-            @include media-breakpoint-down(md) {
-                font-size: 1.2rem;
-            }
+            font-size: .9rem;
             @include media-breakpoint-up(lg) {
                 text-wrap: wrap;
                 width: 600px;
+                font-size: 1.2rem;
             }
         }
 
