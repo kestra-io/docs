@@ -220,9 +220,9 @@
         content: "";
         position: absolute;
         top: -70%;
-        right: -134%;
+        right: -135%;
         width: 1200px;
-        height: 1200px;
+        height: 1000px;
         background-image: url("./images/Topo-bg.png");
         background-size: contain;
         background-repeat: no-repeat;
