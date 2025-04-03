@@ -131,11 +131,23 @@ const valueSet = [
             font-size: .8rem;
             font-weight: 600;
             border-radius: .4rem;
-            border: 1px solid #9C90D3;
-            background-color: rgba(40, 40, 40, 1);
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            background-color: rgba(31, 32, 40, 1);
             box-shadow: 0 0 15px rgba(255, 255, 255, .3);
             padding: 0 1rem;
-            z-index: 2;
+            &:before {
+                content: "";
+                position: absolute;
+                border-radius: inherit;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                margin: -1px;
+                background-image: linear-gradient(to bottom, rgba(156, 144, 211, 0.3137254902) 0%, #AC82D6 100%);
+            }
         }
         .spider {
             width: 100%;
