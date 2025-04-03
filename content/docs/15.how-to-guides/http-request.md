@@ -105,7 +105,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.core.http.Request)
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request)
 
 ### GET Request
 
@@ -175,6 +175,10 @@ tasks:
 ```
 
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
+
+::alert{type="info"}
+If your body message input is multiple lines, the best practice is to use a pebble expression to converst to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../expressions/index.md#expressions-faq).
+::
 
 When we execute this as a `POST` request, this is the response we receive using the same Debug Outputs option in the Outputs page:
 

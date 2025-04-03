@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-03-12-introduction-to-cloudquery.png
 ---
 
-In the [previous article](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved), we've discussed why data ingestion is a challenging problem and how various tools have approached it. In this post, we'll introduce CloudQuery, an open-source, high-performance ELT framework for developers. We'll briefly cover the product's history and its main strengths. We'll also look at a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB, and how to put your CloudQuery syncs to production using Kestra. 
+In the [previous article](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved), we've discussed why data ingestion is a challenging problem and how various tools have approached it. In this post, we'll introduce CloudQuery, an open-source, high-performance ELT framework for developers. We'll briefly cover the product's history and its main strengths. We'll also look at a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB, and how to put your CloudQuery syncs to production using Kestra.
 
 ## What is CloudQuery
 
@@ -56,16 +56,16 @@ export CLOUDQUERY_API_KEY=<your-api-key>
 ```
 
 As an authenticated user, you get the following benefits:
-1. You can use **premium plugins** (up to certain limits) 
+1. You can use **premium plugins** (up to certain limits)
 2. You also have **higher rate limits** on plugin downloads than anonymous users.
 
 ## Monetization
 
-CloudQuery ingestion framework is open-source and free to use, but **premium plugins** require a paid subscription. The company behind CloudQuery offers a managed service called CloudQuery Cloud, allowing you to configure and schedule your CloudQuery syncs from a web interface. You can configure the desired amount of vCPU and vRAM for your syncs so that you don't have to worry about the infrastructure. 
+CloudQuery ingestion framework is open-source and free to use, but **premium plugins** require a paid subscription. The company behind CloudQuery offers a managed service called CloudQuery Cloud, allowing you to configure and schedule your CloudQuery syncs from a web interface. You can configure the desired amount of vCPU and vRAM for your syncs so that you don't have to worry about the infrastructure.
 
 ![cq_sync](/blogs/2024-03-12-introduction-to-cloudquery/cq_sync.png)
 
-The UI allows you to configure a new plugin by pointing to a Git repository containing your plugin code. 
+The UI allows you to configure a new plugin by pointing to a Git repository containing your plugin code.
 
 ![cq_new_plugin](/blogs/2024-03-12-introduction-to-cloudquery/cq_new_plugin.png)
 
@@ -126,8 +126,8 @@ PRAGMA table_info('hackernews_items');
 Let's say you want to find the most recent Hacker News articles about AI. You can run:
 
 ```sql
-SELECT title 
-FROM hackernews_items 
+SELECT title
+FROM hackernews_items
 WHERE title LIKE '%AI%'
 ORDER BY time DESC;
 ```
@@ -136,14 +136,14 @@ The above example demonstrates CloudQuery's main purpose: collecting data from v
 
 ## Benefits of CloudQuery
 
-What makes CloudQuery unique is its **declarative approach** to data integration. You define your sources and destinations in a YAML file, and then you can run the ingestion process using a single CLI command `cloudquery sync spec.yml`. This is similar to how you define Kubernetes resources in YAML files and then run `kubectl apply -f spec.yml` to deploy them. 
+What makes CloudQuery unique is its **declarative approach** to data integration. You define your sources and destinations in a YAML file, and then you can run the ingestion process using a single CLI command `cloudquery sync spec.yml`. This is similar to how you define Kubernetes resources in YAML files and then run `kubectl apply -f spec.yml` to deploy them.
 
-Speaking of deployments: CloudQuery is **stateless**, so you can **deploy** your syncs **anywhere**. This is in contrast to traditional ELT tools, where you have to use their cloud service or operate multiple backend components to run the syncs. With CloudQuery, you can run the syncs on your local machine, on a server in your data center, or in the cloud. You can also run the syncs on a schedule using a cron job or a workflow orchestrator such as Kestra. In the last section, we'll demonstrate how you can put your CloudQuery syncs to production using [Kestra's CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery/tasks/io.kestra.plugin.cloudquery.cloudquerycli).
+Speaking of deployments: CloudQuery is **stateless**, so you can **deploy** your syncs **anywhere**. This is in contrast to traditional ELT tools, where you have to use their cloud service or operate multiple backend components to run the syncs. With CloudQuery, you can run the syncs on your local machine, on a server in your data center, or in the cloud. You can also run the syncs on a schedule using a cron job or a workflow orchestrator such as Kestra. In the last section, we'll demonstrate how you can put your CloudQuery syncs to production using [Kestra's CloudQuery plugin](/plugins/plugin-cloudquery/io.kestra.plugin.cloudquery.cloudquerycli).
 
 CloudQuery is also **fast** thanks to:
 - Go concurrency model with light-weight goroutines for performance and low memory usage
-- Apache Arrow for [in-memory type system](https://www.cloudquery.io/blog/adopting-apache-arrow-at-cloudquery) 
-- gRPC for decoupled communication between plugins: 
+- Apache Arrow for [in-memory type system](https://www.cloudquery.io/blog/adopting-apache-arrow-at-cloudquery)
+- gRPC for decoupled communication between plugins:
 
 ```
 API ---> [Source Plugin] ----->  [Destination Plugin]
@@ -155,7 +155,7 @@ Another great aspect is the **versioning** of all source and destination plugins
 
 ## Limitations of CloudQuery
 
-CloudQuery doesn't support as many source and destination connectors as data integration tools such as Fivetran or Airbyte. However, due to the open-source nature of the framework, you can contribute your own plugins. 
+CloudQuery doesn't support as many source and destination connectors as data integration tools such as Fivetran or Airbyte. However, due to the open-source nature of the framework, you can contribute your own plugins.
 
 ## Moving your CloudQuery syncs to production using Kestra
 
@@ -180,7 +180,7 @@ tasks:
           path: cloudquery/hackernews
           version: v3.0.24
           tables: ["*"]
-          destinations: 
+          destinations:
             - duckdb
           backend_options:
             table_name: "cq_state"

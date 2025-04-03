@@ -88,7 +88,7 @@ tasks:
 
 You'll need to add your Python code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands).
 
 ## Handling Outputs
 
@@ -100,7 +100,9 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 If you want to get a variable or file from your Python code, you can use an [output](../04.workflow-components/06.outputs.md).
 
-You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra.
+You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be easily converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
+
+Check out the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
 
 ```bash
 pip install kestra
@@ -255,7 +257,7 @@ When we execute the above example, we can see Kestra correctly captures the log 
 
 ![logs](/docs/how-to-guides/python/logs.png)
 
-You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script)
+You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script)
 
 ## Handling Metrics
 
@@ -312,7 +314,7 @@ Read more about it on the [execution page](../04.workflow-components/03.executio
 You can combine your Python code with a trigger to automatically execute your code. There's a few key ways you can automate it:
 - Run on a schedule
 - Run when a webhook is called
-- Run when a file is available in a data lake or storage bucket 
+- Run when a file is available in a data lake or storage bucket
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FIOIvNwtKM8?si=l8NCFNKgE4cuY-Hn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -320,7 +322,7 @@ You can combine your Python code with a trigger to automatically execute your co
 
 ### Run on a schedule
 
-You can use the [Schedule Trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md) to run your flow on a routine. You can pass the date that the trigger executed to your code through an expression. This is useful when using backfills as it allows you to pass the date of when the execution was suppose to run from the schedule directly to your code, rather than the current time, for example useful when fetching a daily report from a specific date in the past:  
+You can use the [Schedule Trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md) to run your flow on a routine. You can pass the date that the trigger executed to your code through an expression. This is useful when using backfills as it allows you to pass the date of when the execution was suppose to run from the schedule directly to your code, rather than the current time, for example useful when fetching a daily report from a specific date in the past:
 
 ```yaml
 id: schedule_code
@@ -345,7 +347,7 @@ triggers:
 ```
 ### Run when a webhook is called
 
-You can use the [Webhook Trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) to run your flow when a webhook is called. You can also call the webhook with a body, which can be passed to your code through an expression or environment variable: 
+You can use the [Webhook Trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) to run your flow when a webhook is called. You can also call the webhook with a body, which can be passed to your code through an expression or environment variable:
 
 ```yaml
 id: python_webhook
@@ -368,7 +370,7 @@ triggers:
 
 ### Run when a file is available in a data lake or storage bucket
 
-You can use a [Polling Trigger](../04.workflow-components/07.triggers/04.polling-trigger.md), such as the [S3 Trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+You can use a [Polling Trigger](../04.workflow-components/07.triggers/04.polling-trigger.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
 
 ```yaml
 id: s3_trigger

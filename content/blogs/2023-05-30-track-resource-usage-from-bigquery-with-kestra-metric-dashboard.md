@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard.jpg
 ---
 
-Data Warehouse solutions can sometimes become costly, especially with an uptick in data processing demand. Cloud-based data warehouses like Google BigQuery offer significant advantages in terms of scalability and performance. Yet, with great scalability comes great responsibility, managing your ressources usage effectively. 
+Data Warehouse solutions can sometimes become costly, especially with an uptick in data processing demand. Cloud-based data warehouses like Google BigQuery offer significant advantages in terms of scalability and performance. Yet, with great scalability comes great responsibility, managing your resources usage effectively. 
 
 ## Track BigQuery usage ##
 

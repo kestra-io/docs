@@ -30,7 +30,7 @@ They offer two versions of their tools. dbt Core, the open-source command line t
 
 ## Kestra Plugin for dbt
 
-You can leverage the [dbt plugin](https://kestra.io/plugins/plugin-dbt) to orchestrate dbt Cloud and dbt Core jobs. After each scheduled or ad-hoc workflow execution, the Outputs tab in the Kestra UI allows you to download and preview all dbt build artifacts. The Gantt and Topology view additionally render the metadata to visualize dependencies and runtimes of your dbt models and tests. The dbt Cloud task provides convenient links to easily navigate Kestra and dbt Cloud UI.
+You can leverage the [dbt plugin](/plugins/plugin-dbt) to orchestrate dbt Cloud and dbt Core jobs. After each scheduled or ad-hoc workflow execution, the Outputs tab in the Kestra UI allows you to download and preview all dbt build artifacts. The Gantt and Topology view additionally render the metadata to visualize dependencies and runtimes of your dbt models and tests. The dbt Cloud task provides convenient links to easily navigate Kestra and dbt Cloud UI.
 
 ### Execute dbt CLI commands from Kestra
 
@@ -221,7 +221,7 @@ Kestra simplifies the orchestration of dbt workflows, making it easier for users
 
 If you want to learn more about the integrations between Kestra and dbt, you can check our [library of dbt blueprints](https://kestra.io/blueprints?page=1&size=24&q=dbt).
 
-Check out the [plugin](https://kestra.io/plugins/plugin-dbt) documentation for more information about the dbt plugin.
+Check out the [plugin](/plugins/plugin-dbt) documentation for more information about the dbt plugin.
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.

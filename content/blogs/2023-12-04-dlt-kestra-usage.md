@@ -63,7 +63,7 @@ Once you’ve opened http://localhost:8080/ in your browser, this is what you’
 
 Now, all you need to do is [create your flows](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/README.md) and execute them.
 
-The great thing about **`Kestra`** is its ease of use - it's UI-based, declarative, and language-agnostic. Unless you're using a task like a [Python script](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script), you don't even need to know how to code.
+The great thing about **`Kestra`** is its ease of use - it's UI-based, declarative, and language-agnostic. Unless you're using a task like a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script), you don't even need to know how to code.
 
 
 ::alert{type="info"}
@@ -109,7 +109,7 @@ This implementation doesn't handle email attachments, but if you need to analyze
 ### The AI part
 
 >💡 In this day and age, how can we not incorporate AI into everything? 😆
-But seriously, if you're familiar with OpenAI, it's a matter of an API call to the chat completion endpoint. What simplifies it even further is `Kestra`’s [OpenAI plugin](https://kestra.io/plugins/plugin-openai).
+But seriously, if you're familiar with OpenAI, it's a matter of an API call to the chat completion endpoint. What simplifies it even further is `Kestra`’s [OpenAI plugin](/plugins/plugin-openai).
 
 In my [subflow](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/subflow.yml), I used it to obtain both the summary and sentiment analysis of each email body. Here's a glimpse of how it's implemented:
 

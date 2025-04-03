@@ -4,9 +4,9 @@ description: Databricks simplifies big data and ML workflows but brings challeng
 date: 2024-12-18T13:00:00
 category: Solutions
 author:
-  name: Cyril Amsellem
-  image: camsellem
-  role: Solution Architect
+  name: Martin-Pierre Roset
+  image: mproset
+  role: 
 image: /blogs/kestra-over-databricks-workflows.jpg
 ---
 

@@ -14,9 +14,9 @@ We're excited to announce the release of Kestra 0.9. This latest update brings a
 
 ## Flow Metrics Dashboard
 
-In previous versions, [Kestra](https://github.com/kestra-io/kestra) provided metrics for flow execution. However, there was no user-friendly interface to explore and visualize these metrics. 
+In previous versions, [Kestra](https://github.com/kestra-io/kestra) provided metrics for flow execution. However, there was no user-friendly interface to explore and visualize these metrics.
 
-With Kestra 0.9.0, we've introduced a new Metrics tab at the flow-execution level. You can now easily track specific metrics, such as the number of rows processed, fine-grained processing times of specific steps within your task and more. 
+With Kestra 0.9.0, we've introduced a new Metrics tab at the flow-execution level. You can now easily track specific metrics, such as the number of rows processed, fine-grained processing times of specific steps within your task and more.
 There are two types of metrics that you can track: counter and timer. [This documentation page](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics) includes an example showing how you can leverage these two metric types to track how many rows get processed in each partition and how long this process took.
 
 
@@ -30,7 +30,7 @@ There are two types of metrics that you can track: counter and timer. [This docu
 We've introduced the ability to save flows as drafts even if there are errors in the flow declaration.
 This User Experience improvement allows you to save and return to your work at any time without losing progress on your flow creation.
 
-## User Experience Enhancements 
+## User Experience Enhancements
 
 We've focused on enhancing the user experience with the following improvements:
 * **Manage editor window size**: You can now resize the editor to simultaneously display the source and topology or source and documentation using a convenient slider.
@@ -44,9 +44,9 @@ We've focused on enhancing the user experience with the following improvements:
 ## Introducing New Plugins
 With Kestra 0.9.0, we're thrilled to introduce new plugins that extend the capabilities of the platform:
 
-* **Git Plugin**: this plugin allows you to pull code from any Git repository at runtime, making it easier to execute custom scripts in Python, SQL, or other languages. You can set a custom branch name and configure authentication to private repositories. See the example below and [learn more about the Git plugin.](https://kestra.io/plugins/plugin-git)
-* **Couchbase Plugin**: this plugin helps integrate Couchbase NoSQL database into your Kestra workflows. There is a task to query a database and fetch the data, or trigger a flow as a result of a specific query, allowing you to run a specific flow based on specific conditions in data (such as anomalies). [Learn more in the Couchbase plugin documentation](https://kestra.io/plugins/plugin-couchbase).
-* **NATS Plugin**: this plugin allows you to trigger flows based on new messages in the [nats.io](https://nats.io/) distributed system. There’s also a task to consume or produce new messages. See the [NATS plugin documentation](https://kestra.io/plugins/plugin-nats) for more details.
+* **Git Plugin**: this plugin allows you to pull code from any Git repository at runtime, making it easier to execute custom scripts in Python, SQL, or other languages. You can set a custom branch name and configure authentication to private repositories. See the example below and [learn more about the Git plugin.](/plugins/plugin-git)
+* **Couchbase Plugin**: this plugin helps integrate Couchbase NoSQL database into your Kestra workflows. There is a task to query a database and fetch the data, or trigger a flow as a result of a specific query, allowing you to run a specific flow based on specific conditions in data (such as anomalies). [Learn more in the Couchbase plugin documentation](/plugins/plugin-couchbase).
+* **NATS Plugin**: this plugin allows you to trigger flows based on new messages in the [nats.io](https://nats.io/) distributed system. There’s also a task to consume or produce new messages. See the [NATS plugin documentation](/plugins/plugin-nats) for more details.
 
 ```yaml
 id: gitPython
@@ -95,7 +95,7 @@ To take the new features for a spin, you can start Kestra using Docker Compose.
 
 ![git it a try](/blogs/2023-05-25-welcome-kestra-0-9-0/give_it_try.png)
 
-Kestra is continuously improving. While the [Git plugin](https://kestra.io/plugins/plugin-git) simplifies working with custom scripts, we are working on further improving the user experience in orchestrating custom business logic built in Python. Follow us on [Twitter](https://twitter.com/kestra_io) or [LinkedIn](https://fr.linkedin.com/company/kestra) to stay up to date with the new releases and updates. 
+Kestra is continuously improving. While the [Git plugin](/plugins/plugin-git) simplifies working with custom scripts, we are working on further improving the user experience in orchestrating custom business logic built in Python. Follow us on [Twitter](https://twitter.com/kestra_io) or [LinkedIn](https://fr.linkedin.com/company/kestra) to stay up to date with the new releases and updates.
 
 Your feedback is invaluable to us. Join [our Slack community](https://kestra.io/slack), and share your thoughts and suggestions. If you encounter any issues, you can also [open a GitHub issue](https://github.com/kestra-io/kestra/issues/new/choose). Your input helps us prioritize future enhancements.
 

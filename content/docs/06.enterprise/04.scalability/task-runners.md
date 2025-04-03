@@ -30,4 +30,4 @@ Enterprise Edition Task Runners:
 
 For instance, if you need to query an on-premise SQL Server database running on a different server than Kestra, your SQL Server Query task can target a worker with access to that server. Additionally, worker groups can fulfill the same use case as task runners by distributing the load of scripting tasks to dedicated workers with the necessary resources and dependencies (_incl. hardware, region, network, operating system_).
 
-You can read more about the differences on the [dedicated page](../../task-runners/03.task-runners-vs-worker-groups.md).
+You can read more about the differences on the [dedicated Task Runners vs. Worker Groups page](../../task-runners/03.task-runners-vs-worker-groups.md).

@@ -5,6 +5,9 @@
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
     import Mermaid from "~/components/content/Mermaid.vue";
+    import useShiki from "~/composables/useShiki";
+
+    const {highlightCodeBlocks} = useShiki();
 
     const props = defineProps({
             code: {
@@ -36,6 +39,13 @@
         const copyTooltip = ref(null);
 
         const codeBlock = ref(null);
+
+        onMounted(() => {
+            if(codeBlock.value){
+                highlightCodeBlocks(codeBlock.value);
+            }
+        })
+
 
         function hoverCode(){
             isHoveringCode.value = true;
@@ -101,7 +111,7 @@
             font-size: 0.75rem;
         }
 
-        :deep(pre) {
+        pre {
             overflow: hidden;
             margin-bottom: 0;
         }
@@ -153,9 +163,17 @@
         }
     }
 
-    :deep(pre code .line) {
+    pre :deep(code .line) {
         white-space: pre-wrap;
         display: block;
         min-height: 1rem;
+    }
+
+    pre :deep(code) {
+        opacity: 0;
+    }
+
+    pre.shiki :deep(code){
+        opacity: 1;
     }
 </style>

@@ -25,7 +25,7 @@ With Kestra, you can easily manage your files within Snowflake. Whether it's dow
 
 ### Querying Made Easy
 
-Kestra's [Snowflake plugin](https://kestra.io/plugins/plugin-jdbc-snowflake) allows you to perform a variety of SQL queries, from simple fetch operations to complex transactions, all within the same workflow. This level of flexibility is invaluable for developer teams looking to optimize their pipelines.
+Kestra's [Snowflake plugin](/plugins/plugin-jdbc-snowflake) allows you to perform a variety of SQL queries, from simple fetch operations to complex transactions, all within the same workflow. This level of flexibility is invaluable for developer teams looking to optimize their pipelines.
 
 ## Build Snowflake Data Pipelines with Kestra
 

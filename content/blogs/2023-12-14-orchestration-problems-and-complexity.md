@@ -42,7 +42,7 @@ Kestra UI offers an embedded code editor allowing you to seamlessly orchestrate 
 
 For business users, Kestra offers UI forms allowing to build workflows without requiring a programming experience. These UI-created pipelines generate human-readable YAML configuration files, organized into namespaces and automatically versioned, just as you would with Git.
 
-If that's your preference, you can make the built-in code editor and UI forms read-only. This is useful in production environments that rely on CI/CD-based deployments. Alternatively, you can use the [Git plugin](https://kestra.io/plugins/plugin-git/) to ensure that Kestra always uses the latest version of your code from your custom repository, keeping Git as the single source of truth for your workflows.
+If that's your preference, you can make the built-in code editor and UI forms read-only. This is useful in production environments that rely on CI/CD-based deployments. Alternatively, you can use the [Git plugin](/plugins/plugin-git/) to ensure that Kestra always uses the latest version of your code from your custom repository, keeping Git as the single source of truth for your workflows.
 
 
 ### Preventing New Silos
@@ -58,7 +58,7 @@ To solve silos without creating new ones, Kestra meets users where they are.
 
 To meet users where they are and remove the need for new silos, Kestra integrates with tools you already know and love. Because each plugin is a single binary file, there’s no package dependency hell, even without relying on Docker (_Docker is supported but not required_). These integrations reduce the complexity of orchestration, and in combination with blueprints, they enable hundreds of use cases out of the box.
 
-Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](https://kestra.io/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](https://kestra.io/docs/plugin-developer-guide) in minutes.
+Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](https://kestra.io/docs/plugin-developer-guide) in minutes.
 
 ![ui](/blogs/2023-12-14-orchestration-problems-and-complexity/ui.png)
 

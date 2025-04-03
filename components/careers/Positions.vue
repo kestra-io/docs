@@ -7,13 +7,12 @@
         >
             <ul class="list-unstyled d-flex flex-column gap-3">
                 <li data-aos="fade-left" v-for="doc in pageData">
-                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="doc.path">
+                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
                         <div class="d-flex align-items-center gap-3">
                             <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
                             <span>{{ doc.title }}</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
-                            <span>{{ doc.type }}</span>
                             <img src="/landing/careers/arrow_right.svg" alt="arrow_right" />
                         </div>
                     </NuxtLink>
@@ -26,7 +25,7 @@
 <script setup>
     const {data: pageData} = await useAsyncData(
         `Career-Positions`,
-        () => queryCollection("careers").all()
+        () => $fetch(`/api/careers`),
     );
 </script>
 

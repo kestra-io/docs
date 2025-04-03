@@ -61,9 +61,9 @@ tasks:
 
 Here we have three tasks:
 
-1. Consume data from a Kafka topic. Quite straightforward here, we just specify the topic and polling parameters. [You can find more details in the Kafka plugin documentation](https://kestra.io/plugins/plugin-kafka).
+1. Consume data from a Kafka topic. Quite straightforward here, we just specify the topic and polling parameters. [You can find more details in the Kafka plugin documentation](/plugins/plugin-kafka).
 
-2. Write a proper JSON file out of it. Kestra offers several ways to write and read data. [Check out the documentation for more details](https://kestra.io/plugins/plugin-serdes).
+2. Write a proper JSON file out of it. Kestra offers several ways to write and read data. [Check out the documentation for more details](/plugins/plugin-serdes).
 
 3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the `{{ outputs.consume_logs.uri }}`. Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
 

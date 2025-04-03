@@ -16,7 +16,7 @@ Push files in your namespace to a Git Repository with the PushNamespaceFiles Tas
 
 ## How it works
 
-The [PushNamespaceFiles](/plugins/plugin-git/tasks/io.kestra.plugin.git.PushNamespaceFiles) task is a powerful integration that allows you to **push your namespace files to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.PushNamespaceFiles) task is a powerful integration that allows you to **push your namespace files to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can **build your flows and files** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
@@ -139,3 +139,7 @@ Again, we can set the `dryRun` property to `true` to see what files will be adde
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three files being pushed to the `_files` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
 ![git8.png](/docs/how-to-guides/pushnamespacefiles/git8.png)
+
+## Extra notes
+
+- Git does not guarantee the order of push operations to a remote repository, which can lead to potential conflicts when multiple users or flows attempt to push changes simultaneously. To minimize the risk of data loss and merge conflicts, it is strongly recommended to use sequential workflows or push changes to separate branches.

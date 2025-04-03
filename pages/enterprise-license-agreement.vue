@@ -7,11 +7,10 @@
 </template>
 
 <script setup>
+const {public:{CollectionNames}} = useRuntimeConfig()
 const route = useRoute()
 const {data: page} = await useAsyncData(
     route.path,
-    () => queryCollection("misc").path(route.path).first()
+    () => queryCollection(CollectionNames.misc).path(route.path).first()
 );
 </script>
-
-
