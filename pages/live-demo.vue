@@ -19,19 +19,30 @@
 @import "../assets/styles/variable";
 
 .livedemo {
-    &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("../components/live-demo/images/Bg.svg");
-        background-size: contain;
-        background-repeat: repeat;
-        transition: all 0.3s ease;
-        z-index: -3;
-    }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../components/live-demo/images/Bg.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -3;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: -15%;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background-image: url("../components/live-demo/images/gradients_right.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 
     @media (max-width: 575.98px) {
         &::after {
