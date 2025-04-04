@@ -1,9 +1,9 @@
 <template>
     <section class="logos-bg">
         <div class="logo-wrapper">
-            <div class="center-text">
+            <h2 class="center-text">
                 Trusted by Industry Leaders
-            </div>
+            </h2>
             <div
                 v-for="(img, index) in shuffledCompanies?.slice(0, 20)"
                 :key="img.name"
@@ -88,9 +88,13 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    line-height: 2.5rem;
-    padding: 2rem 3rem;
+    font-size: 1.5rem;
+    @include media-breakpoint-up(md) {
+        font-size: 2rem;
+        padding: 2rem 3rem;
+        line-height: 2.5rem;
+    }
+    padding: 2rem 1rem;
     color: black;
 }
 </style>
