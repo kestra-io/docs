@@ -141,8 +141,12 @@
                     img{
                         object-fit: contain;
                         object-position: left;
-                        max-height: 65px;
-                        max-width: 150px;
+                        max-height: 50px;
+                        max-width: 100px;
+                        @include media-breakpoint-up(lg){
+                            max-height: 65px;
+                            max-width: 150px;
+                        }
                         margin: 0;
                         display: block;
                         border-radius: 0;

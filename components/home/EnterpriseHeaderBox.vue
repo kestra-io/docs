@@ -88,12 +88,19 @@
         }
 
         h2 {
-            font-size: 2.5rem!important;
+            font-size: 2rem;
+            @include media-breakpoint-up(lg){
+                font-size: 2.5rem!important;
+            }
             font-weight: 600;
             margin-bottom: 1rem;
             max-width: 100%;
 
             span {
+                display: block;
+                @include media-breakpoint-up(lg){
+                    display: inline;
+                }
                 background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
                 background-size: cover;
                 -webkit-background-clip: text;

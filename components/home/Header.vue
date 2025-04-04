@@ -45,11 +45,9 @@
                 </a>
                 <NuxtImg
                     v-if="isMobile"
-                    width="2991px"
-                    height="1257px"
+                    height="720"
                     loading="lazy"
-                    format="webp"
-                    src="/landing/home/homepage.jpg"
+                    src="/landing/home/homepage.png"
                     alt="homepage"
                     class="homepage-image"
                 />
@@ -242,6 +240,7 @@
         @include media-breakpoint-down(lg) {
             .hero {
                 padding-top: 6rem;
+                padding-bottom: 0;
                 .text-block {
                     margin-bottom: 0;
                 }
@@ -294,15 +293,16 @@
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
-                height: 270px;
+                height: 360px;
                 overflow: hidden;
+                width: 100vw;
                 canvas {
                     display: none;
                 }
                 .homepage-image{
                     display: block;
-                    height: 500px;
-                    margin-top: 50px;
+                    height: 400px;
+                    margin-top: 75px;
                     position: relative;
                     left: -50px;
                     margin-bottom: 100px;
@@ -313,6 +313,7 @@
                 width: 2000px;
                 margin-top: -700px;
                 margin-bottom: -200px;
+                background-image: url("/landing/home/homepage.png");
             }
         }
 

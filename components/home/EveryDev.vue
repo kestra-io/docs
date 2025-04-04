@@ -50,7 +50,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .wrapper-every-dev {
-        padding: 2rem;
+        padding: 1rem;
         margin-top: -4rem;
         color: white;
 
@@ -59,6 +59,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         background-position: center bottom;
         background-size: cover;
         @include media-breakpoint-up(md){
+            padding: 2rem;
             background-image: linear-gradient(0deg, #0D0E13FF 0%, #0D0E1388 10%, #0D0E1300 30%, #0D0E1300 100%), url(/landing/home/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
             background-blend-mode: normal, luminosity, normal;
             background-repeat: no-repeat, no-repeat, no-repeat;
@@ -119,7 +120,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             transform: translateX(-50%);
             width: 1px;
             height: 700px;
-            left: 20%;
+            left: 14%;
             @include media-breakpoint-up(lg){
                 left: 50%;
                 height: 150px;
@@ -225,11 +226,9 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
             font-size: .8rem;
             color: #9C8FFF;
             display: block;
-            @include media-breakpoint-up(sm){
-                text-align: right;
-                grid-column: 1 / 3;
-            }
+            grid-column: 2 / 3;
             @include media-breakpoint-up(lg){
+                grid-column: 1 / 3;
                 text-align: center;
                 transform: translateX(-100px);
                 opacity: 0;

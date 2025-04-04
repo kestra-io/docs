@@ -89,6 +89,7 @@ const {data: shuffledCompanies} = await useAsyncData(() => {
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
+    margin: 0;
     @include media-breakpoint-up(md) {
         font-size: 2rem;
         padding: 2rem 3rem;

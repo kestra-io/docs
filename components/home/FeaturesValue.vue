@@ -218,10 +218,12 @@ const valueSet = [
     }
 
     .value-wrapper{
-        margin-top: 2rem;
-        gap: 2rem;
+        margin-top: 1rem;
+        gap: 1rem;
         display: grid;
         @include media-breakpoint-up(lg){
+            margin-top: 2rem;
+            gap: 2rem;
             grid-template-columns: repeat(2, 1fr);
         }
     }
