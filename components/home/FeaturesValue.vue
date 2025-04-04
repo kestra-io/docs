@@ -130,6 +130,9 @@ const valueSet = [
             justify-content: center;
             align-items: center;
             font-size: .6rem;
+            @container (min-width: 410px) {
+                padding: 0 1rem;
+            }
             @container (min-width: 520px) {
                 font-size: .8rem;
             }
@@ -142,7 +145,7 @@ const valueSet = [
             background-clip: padding-box;
             background-color: rgba(31, 32, 40, 1);
             box-shadow: 0 0 15px rgba(255, 255, 255, .3);
-            padding: 0 1rem;
+
             &:before {
                 content: "";
                 position: absolute;
