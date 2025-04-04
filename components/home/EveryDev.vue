@@ -54,7 +54,7 @@ import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
         background-blend-mode: normal, luminosity, normal;
         background-repeat: no-repeat, no-repeat, no-repeat;
         background-position: center bottom, center bottom, center bottom;
-        background-size: cover, cover, cover;
+        background-size: cover, cover, 1140px 1140px;
         padding: 2rem;
         margin-top: -4rem;
         color: white;
