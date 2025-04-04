@@ -10,9 +10,7 @@ author:
 image: /blogs/optimized-performance-2.png
 ---
 
-Kestra engineers are committed to making the orchestrater more efficient and scalable. With version 0.22, our engineering team focused on optimizing execution processing, reducing resource consumption, and improving latency. These changes significantly enhance Kestra’s performance, particularly for high-throughput workflows.
-
-This post provides an overview of key optimizations introduced in version 0.22, including:
+The engineering team focused on improving Kestra's performance in version 0.22. Here’s a clear overview of the optimizations we've made:
 
 - Smarter output processing for better CPU and memory efficiency
 - Parallelization of execution queues in the JDBC backend
@@ -185,4 +183,8 @@ tasks:
 
 Version 0.22 brings major efficiency improvements, making Kestra faster and more scalable. As we continue to optimize performance, stay tuned for more updates on how far we can push Kestra’s execution capabilities in upcoming versions.
 
-For more details, visit our [GitHub repository](https://github.com/kestra-io/kestra).```
+::alert{type="info"}
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+::
