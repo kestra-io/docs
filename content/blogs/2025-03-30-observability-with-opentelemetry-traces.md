@@ -1,13 +1,13 @@
 ---
 title: "Enhancing Flow Observability in Kestra with OpenTelemetry Traces"
 description: "Learn how to integrate OpenTelemetry traces into Kestra workflows to gain deeper insights, track performance, and streamline monitoring for distributed systems."
-date: 2025-03-30T13:00:00
+date: 2025-04-04T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: TODO.png
+image: /blogs/kestra-observability.png
 ---
 
 **Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior. Having structured observability allows teams to debug, optimize, and maintain workflows more efficiently.
