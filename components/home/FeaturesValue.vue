@@ -19,19 +19,19 @@
         </HomeCard>
         <HomeCard class="card-block">
             <div class="any-spider">
-                <div class="spider-box" style="top: 48px; left: 205px;">
+                <div class="spider-box" style="top: 13.5%; left: 38.4%">
                     Business Automation
                 </div>
-                <div class="spider-box" style="top: 127px; left: 350px;">
+                <div class="spider-box" style="top: 37%; left: 65%;">
                     ML/AI Orchestration
                 </div>
-                <div class="spider-box" style="top: 237px; left: 290px;">
+                <div class="spider-box" style="top: 69%; left: 55%;">
                     Event-Driven Automation
                 </div>
-                <div class="spider-box" style="top: 237px; left: 126px;">
+                <div class="spider-box" style="top: 69%; left: 22%;">
                     Data & API Orchestration
                 </div>
-                <div class="spider-box" style="top: 127px; left: 65px;">
+                <div class="spider-box" style="top: 37%; left: 12%;">
                     Batch or<br/> Real-Time ETL
                 </div>
                 <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
@@ -121,14 +121,21 @@ const valueSet = [
         margin: 0 auto;
         width: 100%;
         z-index: 1;
+        container-type: inline-size;
         .spider-box{
             position: absolute;
-            width: 125px;
-            height: 53px;
+            width: 23%;
+            height: 16%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: .8rem;
+            font-size: .6rem;
+            @container (min-width: 520px) {
+                font-size: .8rem;
+            }
+            @container (min-width: 600px) {
+                font-size: 1rem;
+            }
             font-weight: 600;
             border-radius: .4rem;
             border: 1px solid transparent;
