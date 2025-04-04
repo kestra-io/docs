@@ -2,7 +2,7 @@
     <div class="container my-5 pt-5 text-center discover-cloud">
       <div class="row">
         <div class="col-md-12 col-lg-5 center">
-          <img src="./images/discover_cloud.svg" />
+          <img src="./images/discover_cloud.png" alt="Discover Cloud Logo" />
         </div>
         <div class="col-md-12 col-lg-7">
           <h2 class="highlight">Discover Kestra Cloud</h2>
@@ -63,6 +63,12 @@
       position: relative;
       z-index: 2;
       pointer-events: auto;
+    }
+  
+    img {
+      width: 350px; 
+      max-width: 80%;
+      height: auto;
     }
   }
   </style>
