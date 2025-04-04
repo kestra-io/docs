@@ -125,7 +125,7 @@
   const validMessage = ref("");
   const message = ref("");
   
-  const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/ceb64a26-1d2a-4335-b1bf-d856d1854ba8";
+  const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/230d0ed2-2484-4e9e-86c6-135a6398fac5";
   
   const onSubmit = async (e: Event) => {
     e.preventDefault();
@@ -151,7 +151,7 @@
           { objectTypeId: "0-1", name: "firstname", value: form["firstname"].value },
           { objectTypeId: "0-1", name: "lastname", value: form["lastname"].value },
           { objectTypeId: "0-1", name: "email", value: form["email"].value },
-          { objectTypeId: "0-1", name: "form_submission_identifier", value: "Live Demo Request access" },
+          { objectTypeId: "0-1", name: "form_submission_identifier", value: "Live Demo Request Access" },
           { objectTypeId: "0-1", name: "kuid", value: localStorage.getItem("KUID") },
         ],
         context: {
