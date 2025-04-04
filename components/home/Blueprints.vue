@@ -80,6 +80,7 @@ const scrollRight = () => {
             width: 44px;
             border: none;
             font-size: 24px;
+            padding: 0;
             &-left{
                 left: 1rem;
             }
