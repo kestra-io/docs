@@ -10,7 +10,7 @@
 
         <live-demoHeader />
         <live-demoFeatures />
-        <live-demoHowItWorks />
+        <live-demoDiscoverCloud />
         
     </div>
 </template>
