@@ -9,6 +9,7 @@
                     </NuxtLink>
                     <p class="mt-2">Open Source Declarative Data Orchestration</p>
                     <Socials class="mt-4 socials" />
+                    <LayoutNewsletter />
                 </div>
                 <div class="col-lg-9 mb-3">
                     <div class="row">

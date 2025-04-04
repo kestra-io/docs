@@ -1,11 +1,11 @@
 <template>
-    <ul class="list-unstyled">
-        <li class="list-inline-item">
+    <ul class="socials-wrapper list-inline">
+        <li>
             <a href="https://github.com/kestra-io" title="GitHub" target="_blank">
                 <Github title="" />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://twitter.com/kestra_io" title="Twitter" target="_blank">
                 <Twitter />
             </a>
@@ -15,17 +15,17 @@
                 <BlueSky />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://www.linkedin.com/company/kestra" title="LinkedIn" target="_blank">
                 <LinkedIn />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://www.youtube.com/@kestra-io" title="YouTube" target="_blank">
                 <Youtube />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://kestra.io/slack" title="Slack" target="_blank">
                 <Slack title="" />
             </a>
@@ -41,3 +41,16 @@
     import Twitter from "../icons/TwitterXIcon.vue";
     import BlueSky from "../icons/BlueSkyIcon.vue";
 </script>
+
+<style lang="scss" scoped>
+    .socials-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 1rem;
+        list-style: none;
+        a {
+            font-size: 2rem;
+        }
+    }
+</style>
