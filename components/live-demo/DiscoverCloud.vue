@@ -1,5 +1,5 @@
 <template>
-    <div class="container text-center discover">
+    <div class="container my-5 pt-5 text-center discover-cloud">
         <div class="row">
             <div class="col-md-12 col-lg-5 center">
                 <img src="./images/discover_cloud.png" />
@@ -19,12 +19,10 @@
     </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../../assets/styles/variable";
 
-.discover {
-    margin: 5rem;
-    padding: 3rem;
+.discover-cloud {
     border: 1px solid #282d43;
     border-radius: 1rem;
 
@@ -40,7 +38,7 @@
     }
 
     & p {
-        font-size: $font-size-lg;
+        font-size: $font-size-lg !important;
     }
 
     .highlight {
