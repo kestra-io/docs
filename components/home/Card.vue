@@ -10,7 +10,7 @@ import {useMouse} from "@vueuse/core"
 const box = ref<HTMLDivElement | null>(null)
 const {x:absX, y:absY} = useMouse()
 
-const SIZE_OF_GRADIENT = 250
+const SIZE_OF_GRADIENT = 500
 
 watch([absX, absY], ([xv, yv]) => {
     if (box.value) {
@@ -40,9 +40,9 @@ watch([absX, absY], ([xv, yv]) => {
 
 .home-card {
     background-image:
-        radial-gradient(250px at var(--x) var(--y), rgba(153,153,255, 0.15), rgba(0,0,0,0) 100%),
-        linear-gradient(180deg, #21242E99 0%, #1A1C2499 100%),
-        linear-gradient(90deg,#1A1C24 0%, #373a44 50%, #1A1C24 100%);
+        radial-gradient(500px at var(--x) var(--y),rgba(153,153,153,0.08),transparent 100%),
+        linear-gradient(180deg,#21242e99 0,#1a1c2499),
+        linear-gradient(90deg,#1A1C24 0,#373A44,#1A1C24);
     border-radius: 1rem;
     box-shadow: 0px 12px 24px 8px #00000017;
     border: 1px solid #2C2E4B;
