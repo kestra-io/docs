@@ -4,7 +4,7 @@
         <div class="col-md-12 col-lg-7">
           <h2>
             Kestra
-            <span class="highlight">Live Demo Read-Only</span>
+            <span class="highlight"> Preview Mode </span>
           </h2>
           <h5 class="mt-3">
             Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required.
@@ -13,10 +13,10 @@
             <div class="col-6">
               <h6>
                 <img src="./images/calendar_month.png" />
-                Exclusive Access to Kestra Demo
+                Access to Kestra interface
               </h6>
               <p>
-                Enter your details  to immediately receive your  read-only demo link.
+                Enter your details  to immediately receive your read-only demo environment.
               </p>
             </div>
             <div class="col-6">
@@ -61,7 +61,7 @@
             <div v-if="message" class="alert alert-danger mt-3 mb-0">
               {{ message }}
             </div>
-            <h4 class="mb-4">Request Access to Kestra Live Demo</h4>
+            <h4 class="mb-4">Request Access to Kestra Preview Environment</h4>
             <div class="col-6">
               <label for="firstname">
                 <span class="text-danger">*</span>

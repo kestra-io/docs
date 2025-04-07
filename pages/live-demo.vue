@@ -1,7 +1,7 @@
 <template>
     <div class="livedemo">
         <Head>
-            <Title>Kestra Live Demo Read-Only</Title>
+            <Title>Kestra Preview Mode</Title>
             <Meta
                 name="description"
                 content="Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required."
