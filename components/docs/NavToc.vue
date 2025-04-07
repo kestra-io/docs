@@ -210,13 +210,6 @@
             padding-bottom: 1rem;
         }
 
-        > .btn.d-lg-none {
-            color: $white;
-            font-weight: 900;
-            font-size: $font-size-sm;
-            background-color: $black-4;
-        }
-
         nav {
             padding-bottom: 1.5rem;
             border-bottom: 1px solid $black-6;

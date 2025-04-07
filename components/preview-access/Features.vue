@@ -111,22 +111,22 @@
       </div>
     </div>
   </template>
-  
+
   <script setup lang="ts">
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
   import posthog from "posthog-js";
-  
+
   const route = useRoute();
   const gtm = useGtm();
   const formRef = useTemplateRef("cloud-form");
-  
+
   const valid = ref(false);
   const validMessage = ref("");
   const message = ref("");
-  
+
   const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/230d0ed2-2484-4e9e-86c6-135a6398fac5";
-  
+
   const onSubmit = async (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
@@ -182,7 +182,7 @@
     }
   };
   </script>
-  
+
   <style scoped lang="scss">
   .livedemo {
     & img {
@@ -210,7 +210,7 @@
           right: -10%;
           width: 200px;
           height: 200px;
-          background-image: url("./images/logo_kestra.svg");
+          background-image: url("./images/Logo_kestra.svg");
           background-size: contain;
           background-repeat: no-repeat;
           z-index: 1;
@@ -231,4 +231,3 @@
     }
   }
   </style>
-  

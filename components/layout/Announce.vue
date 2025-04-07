@@ -116,19 +116,6 @@
                 z-index: -1;
                 background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 filter: blur(80px);
-                animation-name: example;
-                animation-direction: normal, alternate;
-                animation-duration: 6.5s;
-                animation-iteration-count: infinite;
-            }
-
-            @keyframes example  {
-                60% {
-                    transform: translateX(233vw);
-                }
-                to {
-                    transform: translateX(233vw);
-                }
             }
 
             a {

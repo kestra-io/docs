@@ -6,30 +6,24 @@
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
         <HomeHeader/>
-        <HomeFeatures/>
+        <HomeLogosTable/>
+        <HomeOpenSource/>
+        <HomeOpenSourceQuotes/>
         <NuxtLazyHydrate when-visible>
-            <HomeUI/>
+            <HomeFeatures/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <HomeHow/>
+            <HomeEveryDev/>
+            <HomeExperience/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <HomePlugins/>
+            <HomeBlueprints/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <HomeCompanyStories />
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeTestimonials/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <HomeOpenSource/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <LayoutBlogs title="Blog"/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <LayoutNewsletter/>
+            <HomeEnterprise/>
+            <HomeEnterpriseQuotes />
+            <HomeCTA/>
         </NuxtLazyHydrate>
     </div>
 </template>
