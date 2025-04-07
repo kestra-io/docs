@@ -83,7 +83,7 @@
                                         <CloudOutline />
                                         <p>
                                             <span>Cloud Edition</span>
-                                            <strong class="tag">Private Alpha</strong>
+                                            <strong class="tag">Early Adopter</strong>
                                             <br />
                                             Register for the Cloud Edition
                                         </p>
@@ -485,7 +485,7 @@
                                                 <CloudOutline />
                                                 <p>
                                                     <span>Cloud Edition</span>
-                                                    <strong class="tag">Private Alpha</strong>
+                                                    <strong class="tag">Early Adopter</strong>
                                                     <br />
                                                     Register for the Cloud Edition
                                                 </p>

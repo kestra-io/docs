@@ -1,6 +1,6 @@
 ---
 title: Custom Blueprints
-icon: /docs/icons/kestra.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 docId: custom
 ---

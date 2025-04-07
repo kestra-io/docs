@@ -38,6 +38,34 @@ jobs:
       - name: trigger docs & blogs deployment
         run: curl --parallel --max-time 200 https://kestra.io/docs -o docs.html https://kestra.io/blogs -o blogs.html
 
+      - name: Check docs.html for HTTP 524 errors
+        run: |
+          if grep -q "error code: 524" docs.html; then
+            echo "HTTP 524 error found in docs.html"
+            exit 1
+          fi
+
+      - name: Check blogs.html for HTTP 524 errors
+        run:  |
+          if grep -q "error code: 524" blogs.html; then
+            echo "HTTP 524 error found in blogs.html"
+            exit 1
+          fi
+
+      - name: Check docs.html contains the expected content
+        run: |
+          if ! grep -q "What is Kestra?" docs.html; then
+            echo "Expected content not found in docs.html"
+            exit 1
+          fi
+
+      - name: Check blogs.html contains the expected content
+        run: |
+          if ! grep -q "All things Kestra" blogs.html; then
+            echo "Expected content not found in blogs.html"
+            exit 1
+          fi
+
       - name: upload docs.html to artifacts
         uses: actions/upload-artifact@v4
         with:

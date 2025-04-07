@@ -1,6 +1,6 @@
 ---
 title: Instance Dashboard
-icon: /docs/icons/kestra.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.16.0"
 docId: instance
