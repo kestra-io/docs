@@ -51,7 +51,9 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else ref="canvas" height="1520" width="2000"/>
+                <canvas v-else ref="canvas" height="1520" width="2000" :class="{
+                    loading: !riveLoaded,
+                }"/>
             </div>
         </div>
     </section>
@@ -100,6 +102,7 @@
     const canvas = ref<HTMLCanvasElement>()
 
     const riveAnimation = ref()
+    const riveLoaded = ref(false)
 
     function setupRiveAnimation(){
         if(!canvas.value) return
@@ -110,6 +113,7 @@
             stateMachines: "kestra",
             isTouchScrollEnabled: true,
             onLoad: () => {
+                riveLoaded.value = true
                 anim.resizeDrawingSurfaceToCanvas();
             },
         });
@@ -314,6 +318,13 @@
                 margin-top: -700px;
                 margin-bottom: -200px;
                 background-image: url("/landing/home/homepage.png");
+                background-position: 237px 596px;
+                background-size: 1600px;
+                background-repeat: no-repeat;
+            }
+
+            canvas.loading{
+                opacity: .5;
             }
         }
 
