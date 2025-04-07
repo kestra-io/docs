@@ -10,12 +10,14 @@ import {useMouse} from "@vueuse/core"
 const box = ref<HTMLDivElement | null>(null)
 const {x:absX, y:absY} = useMouse()
 
+const SIZE_OF_GRADIENT = 250
+
 watch([absX, absY], ([xv, yv]) => {
     if (box.value) {
         const {left, top, width, height} = box.value.getBoundingClientRect()
         const x = xv - left - window.scrollX
         const y = yv - top - window.scrollY
-        if(x < -200 || x > width + 100 || y < -100 || y > height + 100) {
+        if(x < -SIZE_OF_GRADIENT || x > width + SIZE_OF_GRADIENT || y < -SIZE_OF_GRADIENT || y > height + SIZE_OF_GRADIENT) {
             return
         }
         box.value.style.setProperty('--x', `${x}px`)
@@ -28,12 +30,12 @@ watch([absX, absY], ([xv, yv]) => {
 @property --x{
     syntax: '<length>';
     inherits: false;
-    initial-value: 0;
+    initial-value: -250px;
 }
 @property --y{
     syntax: '<length>';
     inherits: false;
-    initial-value: 0;
+    initial-value: -250px;
 }
 
 .home-card {

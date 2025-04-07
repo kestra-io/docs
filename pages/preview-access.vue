@@ -27,7 +27,7 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../components/preview-access/images/Bg.svg?no-inline");
+    background-image: url("../components/preview-access/images/Bg.svg");
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -3;
