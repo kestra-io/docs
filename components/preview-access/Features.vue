@@ -210,7 +210,7 @@
           right: -10%;
           width: 200px;
           height: 200px;
-          background-image: url("./images/logo_kestra.svg?no-inline");
+          background-image: url("./images/Logo_kestra.svg");
           background-size: contain;
           background-repeat: no-repeat;
           z-index: 1;
