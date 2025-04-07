@@ -7,20 +7,20 @@
                 </div>
             </div>
             <div class="arrow-box">
-                <svg class="arrow" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{transform: `rotate(${(index-1) * 90}deg)`, color: feat.color}">
+                <svg class="arrow" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{transform: `rotate(${(index-1) * 90}deg)`}">
                     <defs>
                         <linearGradient :id="`paint0_linear_16542_24769-${index}`" x1="15.4718" y1="108.948" x2="16.5015"
                             y2="85.3637" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="currentColor" />
-                            <stop offset="1" stop-color="currentColor" stop-opacity="0" />
+                            <stop :stop-color="feat.color" />
+                            <stop offset="1" :stop-color="feat.color" stop-opacity="0" />
                         </linearGradient>
                     </defs>
-                    <g style="mix-blend-mode:luminosity">
+                    <g>
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M103.188 5.98243C103.642 6.2968 103.755 6.91975 103.441 7.37383L98.3178 14.7736C98.0034 15.2276 97.3804 15.3409 96.9264 15.0265C96.4723 14.7122 96.359 14.0892 96.6734 13.6351L100.399 8.25395C80.4858 12.3632 62.2087 22.2643 47.8782 36.7393C34.1996 50.5557 24.724 67.9259 20.4905 86.8298C22.447 87.6201 23.8274 89.5373 23.8274 91.7769C23.8274 94.7225 21.4396 97.1103 18.4941 97.1103C15.5486 97.1103 13.1608 94.7225 13.1608 91.7769C13.1608 88.8314 15.5486 86.4436 18.4941 86.4436C18.5052 86.4436 18.5164 86.4436 18.5275 86.4437C22.8373 67.154 32.5012 49.4286 46.4569 35.3321C61.0892 20.5524 79.7579 10.4505 100.096 6.2744L94.6495 2.50392C94.1954 2.18956 94.0822 1.56661 94.3965 1.11252C94.7109 0.658437 95.3339 0.545173 95.7879 0.859539L103.188 5.98243Z"
-                            fill="currentColor" />
+                            :fill="feat.color" />
                     </g>
-                    <g style="mix-blend-mode:luminosity">
+                    <g>
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.0312 82.6158C5.86929 86.7375 5.02598 94.2633 9.14763 99.4253C13.2693 104.587 20.7951 105.431 25.9571 101.309C31.119 97.1872 31.9623 89.6614 27.8406 84.4994C23.719 79.3375 16.1932 78.4942 11.0312 82.6158ZM10.4073 81.8344C4.81374 86.3006 3.89992 94.4557 8.36618 100.049C12.8324 105.643 20.9875 106.557 26.581 102.09C32.1745 97.624 33.0884 89.469 28.6221 83.8755C24.1558 78.2819 16.0008 77.3681 10.4073 81.8344Z"
                             :fill="`url(#paint0_linear_16542_24769-${index})`" />
