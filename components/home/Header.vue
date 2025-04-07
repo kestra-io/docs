@@ -6,7 +6,7 @@
                     Powerful orchestration.
                     Simplified workflows.
                 </h1>
-                <p>Unify orchestration for all engineers.  Build and govern business-critical workflows as code and from the UI.</p>
+                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — everything as code, and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
