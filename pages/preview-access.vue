@@ -8,9 +8,9 @@
             />
         </Head>
 
-        <live-demoHeader />
-        <live-demoFeatures />
-        <live-demoDiscoverCloud />
+        <preview-accessHeader />
+        <preview-accessFeatures />
+        <preview-accessDiscoverCloud />
         
     </div>
 </template>
