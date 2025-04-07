@@ -8,10 +8,10 @@
             />
         </Head>
 
-        <preview-accessHeader />
-        <preview-accessFeatures />
-        <preview-accessDiscoverCloud />
-        
+        <PreviewAccessHeader />
+        <PreviewAccessFeatures />
+        <PreviewAccessDiscoverCloud />
+
     </div>
 </template>
 
@@ -27,7 +27,7 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../components/live-demo/images/Bg.svg");
+    background-image: url("../components/preview-access/images/Bg.svg?no-inline");
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -3;
@@ -39,7 +39,7 @@
     right: 0;
     width: 40%;
     height: 100%;
-    background-image: url("../components/live-demo/images/gradients_right.png");
+    background-image: url("../components/preview-access/images/gradients_right.png");
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -123,7 +123,7 @@
     & :deep(.form) {
         & h4,
         & p,
-        & div 
+        & div
         {
             color: #000;
         }
