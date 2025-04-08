@@ -308,6 +308,7 @@
                     height: 400px;
                     margin-top: 75px;
                     position: relative;
+                    width: 900px;
                     left: -50px;
                     margin-bottom: 100px;
                 }
