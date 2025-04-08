@@ -5,93 +5,18 @@
                 <p>Explore Blueprints</p>
             </div>
             <div class="mt-3">
-                <Carousel v-bind="settings" :breakpoints="breakpoints">
-                    <Slide v-for="blueprint in blueprints" :key="blueprint.id" >
-                        <div class="carousel--item">
-                            <BlueprintsListCard :blueprint="blueprint" :tags="tags ?? []" :href="generateCardHref(blueprint)" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <navigation>
-                            <template #next>
-                                <div class="carousel-control carousel-control-next">
-                                    <ChevronRight />
-                                </div>
-                            </template>
-                            <template #prev>
-                                <div class="carousel-control carousel-control-prev">
-                                    <ChevronLeft />
-                                </div>
-                            </template>
-                        </navigation>
-                    </template>
-                </Carousel>
+                <HomeBlueprintsCarousel :blueprints="blueprintsData?.results ?? []" />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-  import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-  import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
-
   const config = useRuntimeConfig();
-  const blueprints = ref<Blueprint[]>([])
   const props = defineProps<{tag:string}>()
-  const {data: blueprintsData} = await useAsyncData<{results:Blueprint[]}>('blueprints', () => {
+  const {data: blueprintsData} = await useAsyncData<{results:any[]}>('blueprints', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${props.tag}`)
   });
-  const {data: tags} = await useAsyncData<{id:string}[]>('blueprints-tags', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
-  })
-
-  interface Blueprint {
-    id: string;
-    tags: string[];
-  }
-
-  const generateCardHref = (blueprint: Blueprint) => {
-    let tag = tags.value?.find(f => f?.id == blueprint.tags[0]);
-    if (!tag || !tag.id) {
-        return `/blueprints/${blueprint.id}`;
-    }
-    return `/blueprints/${blueprint.id}`
-  }
-  if (blueprintsData.value) {
-    blueprints.value = blueprintsData.value.results
-  }
-
-  const breakpoints = {
-          800: {
-            itemsToShow: 2,
-            snapAlign: 'start',
-          },
-          900: {
-            itemsToShow: 2,
-            snapAlign: 'start',
-          },
-          990: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1024: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1300: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1500: {
-            itemsToShow: 4,
-            snapAlign: 'start',
-          },
-        }
-
-    const settings = {
-          itemsToShow: 1,
-          snapAlign: 'center',
-        }
 </script>
 
 <style lang="scss" scoped>

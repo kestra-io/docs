@@ -3,7 +3,7 @@
         <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
         <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
         <div class="blueprints-carousel" ref="wrapper">
-            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="generateCardHref(blueprint)"/>
+            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`"/>
         </div>
     </div>
 </template>
@@ -15,10 +15,6 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
 defineProps<{
     blueprints: {id: string}[]
 }>()
-
-const generateCardHref = (blueprint: {id: string}) => {
-  return `/blueprints/${blueprint.id}`
-}
 
 const wrapper = ref<HTMLElement | null>(null)
 
