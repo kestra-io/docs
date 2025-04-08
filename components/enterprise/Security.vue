@@ -11,7 +11,7 @@
                             while end-to-end encryption protects your data at all times.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                             automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                             while end-to-end encryption protects your data at all times.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                             automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                             insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
                         <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                            <span>Get a Demo</span>
+                            <span>Get a demo</span>
                         </NuxtLink>
                     </div>
                 </div>
