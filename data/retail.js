@@ -8,7 +8,7 @@ export default {
             " language-agnostic orchestration platform that scales as you grow.",
         cta: [
             {
-                text: "get a demo",
+                text: "Get a demo",
                 href: "/demo",
                 style: "btn btn-dark",
             },
