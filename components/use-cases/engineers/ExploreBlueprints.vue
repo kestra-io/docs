@@ -8,7 +8,7 @@
                 <Carousel v-bind="settings" :breakpoints="breakpoints">
                     <Slide v-for="blueprint in blueprints" :key="blueprint.id" >
                         <div class="carousel--item">
-                            <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)" />
+                            <BlueprintsListCard :blueprint="blueprint" :tags="tags ?? []" :href="generateCardHref(blueprint)" />
                         </div>
                     </Slide>
                     <template #addons>
@@ -30,23 +30,28 @@
         </div>
     </div>
 </template>
-<script setup>
+
+<script lang="ts" setup>
+  import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
+  import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
+
   const config = useRuntimeConfig();
-  const blueprints = ref([])
-  const props = defineProps({
-    tag: {
-      type: String,
-      required: false
-    }
-  })
-  const { data: blueprintsData } = await useAsyncData('blueprints', () => {
+  const blueprints = ref<Blueprint[]>([])
+  const props = defineProps<{tag:string}>()
+  const {data: blueprintsData} = await useAsyncData<{results:Blueprint[]}>('blueprints', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${props.tag}`)
   });
-  const {data: tags} = await useAsyncData('blueprints-tags', () => {
+  const {data: tags} = await useAsyncData<{id:string}[]>('blueprints-tags', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
   })
-  const generateCardHref = (blueprint) => {
-    let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
+
+  interface Blueprint {
+    id: string;
+    tags: string[];
+  }
+
+  const generateCardHref = (blueprint: Blueprint) => {
+    let tag = tags.value?.find(f => f?.id == blueprint.tags[0]);
     if (!tag || !tag.id) {
         return `/blueprints/${blueprint.id}`;
     }
@@ -55,25 +60,8 @@
   if (blueprintsData.value) {
     blueprints.value = blueprintsData.value.results
   }
-</script>
 
-<script>
-  import Section from '../../layout/Section.vue';
-  import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-  import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
-  export default {
-    components: {
-      ChevronLeft,
-      ChevronRight,
-      Section,
-    },
-    data() {
-      return {
-        settings: {
-          itemsToShow: 1,
-          snapAlign: 'center',
-        },
-        breakpoints: {
+  const breakpoints = {
           800: {
             itemsToShow: 2,
             snapAlign: 'start',
@@ -98,10 +86,12 @@
             itemsToShow: 4,
             snapAlign: 'start',
           },
-        },
-      };
-    },
-  }
+        }
+
+    const settings = {
+          itemsToShow: 1,
+          snapAlign: 'center',
+        }
 </script>
 
 <style lang="scss" scoped>
