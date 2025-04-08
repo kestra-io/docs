@@ -42,8 +42,8 @@
                                          alt="Carousel img"/>
                                     <span>{{slide.message}}</span>
                                     <div class="person">
-                                        <div class="fila-svg">
-                                            <img src="/landing/enterprise/fila.svg" alt="fila"/>
+                                        <div class="company-logo">
+                                            <img :src="slide.logo" :alt="`${slide.name} company logo`"/>
                                         </div>
                                         <div class="person-info">
                                             <p>{{slide.name}}</p>
@@ -146,8 +146,37 @@
           {
             message: "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
             name: "John Kim",
-            designation: "Manager Corporate Strategy",
-            alt: " Manager Corporate Strategy",
+            designation: "IT Lead",
+            alt: "IT Lead",
+            logo: "/landing/enterprise/fila.svg",
+          },
+          {
+            message: "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop.",
+            name: "Kyle Hanson",
+            designation: "Lead Software Engineer",
+            alt: "Lead Software Engineer",
+            logo: "/landing/companies/acxiom.svg",
+          },
+          {
+            message: "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
+            name: "Amy King",
+            designation: "Cybersecurity & Technology Controls",
+            alt: "Cybersecurity & Technology Controls",
+            logo: "/landing/home/trusted-companies/JP Morgan Chase Co..svg",
+          },
+          {
+            message: "Kestra’s UI and speed of development is brilliant. Very quick to prototype a new pipeline, continuously iterate, and test things out. Love the replay feature. It has very clear separation of pipeline and processing code.",
+            name: "Ollie Steiner",
+            designation: "Senior Data Engineer",
+            alt: "Senior Data Engineer",
+            logo: "/landing/home/quotes-companies/Vyoma-space.svg",
+          },
+          {
+            message: "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
+            name: "Pattrick Ferreira",
+            designation: "Product Manager",
+            alt: "Product Manager",
+            logo: "/landing/enterprise/CleverConnect.svg",
           },
         ],
       };
@@ -434,7 +463,7 @@
                         gap: 17px;
                         max-width: 264px;
 
-                        .fila-svg {
+                        .company-logo {
                             padding: 6px 0;
 
                             img {
