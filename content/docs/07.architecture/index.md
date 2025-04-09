@@ -19,7 +19,7 @@ Here are the components and their interactions:
 1. **JDBC Backend**: the data storage layer used for orchestration metadata
 
 2. **Server**: the central part of the system, composed of:
-   - [**Webserver**](./08.webserver.md): serves both an API and a User Interface
+   - [**Webserver**](./08.webserver.md): serves both the API and the User Interface
    - [**Scheduler**](./06.scheduler.md): schedules workflows and handles all triggers except for the flow triggers (see below)
    - [**Executor**](./04.executor.md): responsible for the orchestration logic including flow triggers
    - [**Worker**](./05.worker.md): one or multiple processes that carry out the heavy computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
