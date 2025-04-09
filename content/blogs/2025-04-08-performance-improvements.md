@@ -151,12 +151,12 @@ tasks:
 ### JDBC backend
 
 | Throughput (exec/s) | Latency in 0.21 | Latency in 0.22 | Improvement |
-|--------------------|---------------|---------------|-------------|
-| 10               | 400ms         | 150ms         | 62% faster  |
-| 25               | 26s           | 2.6s          | 90% faster  |
-| 50               | 43s           | 15s           | 65% faster  |
-| 75               | 49s           | 22s           | 55% faster  |
-| 100              | 59s           | 25s           | 58% faster  |
+|--------------------|---------------|-----------------|-------------|
+| 10               | 400ms         | 150ms           | 62% faster  |
+| 25               | 26s           | 200s            | 99% faster  |
+| 50               | 43s           | 5s              | 88% faster  |
+| 75               | 49s           | 10s             | 80% faster  |
+| 100              | 59s           | 12s             | 80% faster  |
 
 **Key takeaways**:
 - Performance has improved dramatically in 0.22, even when executions are not run concurrently (which is almost the case at 10 executions/s).
