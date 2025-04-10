@@ -153,7 +153,7 @@ tasks:
 | Throughput (exec/s) | Latency in 0.21 | Latency in 0.22 | Improvement |
 |--------------------|---------------|-----------------|-------------|
 | 10               | 400ms         | 150ms           | 62% faster  |
-| 25               | 26s           | 200s            | 99% faster  |
+| 25               | 26s           | 200ms            | 99% faster  |
 | 50               | 43s           | 5s              | 88% faster  |
 | 75               | 49s           | 10s             | 80% faster  |
 | 100              | 59s           | 12s             | 80% faster  |
