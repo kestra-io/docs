@@ -150,4 +150,36 @@ To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md)
 The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled. 
 
 - `--locally=true` installs the plugin locally.
-- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly. 
+- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly.
+
+## `version` property in a Flow
+
+In Flow tasks or triggers, you can specify the version of the plugin to use with the `version` property. For example, if the instance has both 0.22.0 and 0.21.0 versions installed of the Shell script plugin, the version to use can be specified in the flow as follows:
+
+```yaml
+id: legacy_shell_script
+namespace: company.team
+tasks:
+  -id: script
+   type: io.kestra.plugin.scripts.shell.Script
+   version: 0.21.0
+```
+
+The `version` property also accepts specific, non-case-sensitive values like in the configuration file:
+
+- `LATEST` (or `latest`): To use the latest available version of a Kestra plugin.
+- `OLDEST` (or `oldest`): To use the oldest available version of a Kestra plugin.
+
+When there are multiple versions of a plugin available, Kestra resolves the version of a plugin by following this priority order:
+1. **Task-Level**: Using the version specified in the `version` property.
+2. **Flow-Level**: Using the plugin’s default version.
+3. **Namespace-Level**: Using the plugin’s default version for the namespace.
+4. **Instance-Level**: Using the value set in `kestra.plugins.management.defaultVersion` (default: `LATEST`).
+    - This property can be configured to `NONE` to enforce that a version is always explicitly defined.
+
+**Note**: By default, Kestra defaults to `LATEST` for core plugins if no version can be resolved. For other plugins, if no version can be resolved, the Flow will be considered invalid.
+
+::alert{type="info"}
+The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.
+::
+
