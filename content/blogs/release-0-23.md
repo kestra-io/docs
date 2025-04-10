@@ -66,7 +66,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Notable Enhancements
 
-- [ENHANCEMENT 1]
+- Sync Apps & Dashboard - https://github.com/kestra-io/plugin-git/issues/122 and https://github.com/kestra-io/plugin-git/issues/121
 - [ENHANCEMENT 2]
 - [ENHANCEMENT 3]
 - [ENHANCEMENT 4]
