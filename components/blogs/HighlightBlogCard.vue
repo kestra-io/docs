@@ -8,7 +8,7 @@
                     {{ blog.title }}
                 </h3>
                 <p class="text">{{ blog.description }}</p>
-                <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
+                <BlogCardDetails :name="authorName" :date="blog.date"/>
             </div>
         </NuxtLink>
     </div>
@@ -16,6 +16,7 @@
 
 <script>
     import BlogCardDetails from "./BlogCardDetails.vue";
+    import { useBlogAuthors } from "~/composables/useBlogAuthors";
 
     export default {
         name: "HighlightBlogCard",
@@ -25,6 +26,12 @@
                 type: Object,
                 required: true,
             },
+        },
+        computed: {
+            authorName() {
+                const { getFirstAuthorName } = useBlogAuthors(this.blog);
+                return getFirstAuthorName();
+            }
         }
     }
 </script>
