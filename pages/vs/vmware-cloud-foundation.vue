@@ -2,7 +2,7 @@
     <div>
         <Head>
             <Title>Kestra Alternative to VmWare Cloud Foundation</Title>
-            <Meta name="description" content="What are the differences between Kestra and Dollar Universe Workload Automation" />
+            <Meta name="description" content="What are the differences between Kestra and VmWare Cloud Foundation" />
         </Head>
 
         <Header />
