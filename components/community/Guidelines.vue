@@ -58,10 +58,10 @@
 
           title: "Make it easy to help you",
           descriptionHtml: "<ul>\n" +
-            "                   <li>Please share relevant flows(YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>\n" +
+            "                   <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>\n" +
             "                   <li>Please share how you have deployed Kestra:\n" +
             "                   <ol type='a'>\n" +
-            "                       <li>Deployment choice (Standalone, Docker, Kubernetes etc).</li>\n" +
+            "                       <li>Deployment choices (Standalone, Docker, Kubernetes, etc.).</li>\n" +
             "                       <li>The version of Kestra.</li>\n" +
             "                       <li>Your OS and its version.</li>\n" +
             "                       </ul>\n" +
