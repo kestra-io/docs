@@ -13,7 +13,7 @@ Additional permissions were introduced for creating Users and Groups, allowing b
 
 ## After 0.21
 
-The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, make sure to update any custom roles with these permissions as needed by the users. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, Admins must make sure to update any custom roles with these permissions as needed. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
 
 `ME:READ` permission is added to all Kestra-managed roles. All users will be able to access profile information. Only the Admin role will be configured with:
 
