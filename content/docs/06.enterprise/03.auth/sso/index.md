@@ -1,7 +1,7 @@
 ---
 title: Single Sign-On (SSO)
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 How to enable and setup SSO in your Kestra Enterprise instance.

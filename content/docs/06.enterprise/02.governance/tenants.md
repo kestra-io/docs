@@ -1,7 +1,7 @@
 ---
 title: Tenants
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.13.0"
 docId: tenants
 ---

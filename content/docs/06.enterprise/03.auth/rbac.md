@@ -1,7 +1,7 @@
 ---
 title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 docId: iam
 ---
 
@@ -259,7 +259,7 @@ security:
 The key attributes are:
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
 - `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
-- `lock-duration`: Defines how long the account remains locked. 
+- `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
 ::

@@ -1,7 +1,7 @@
 ---
 title: Secrets Manager
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 How to configure the secrets manager.
@@ -48,7 +48,7 @@ When adding a secret in AWS, you will need to specify the following tags:
 - `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
 
 ::alert{type="info"}
-The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets. 
+The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
 ::
 
 ## Azure Key Vault Configuration

@@ -1,7 +1,7 @@
 ---
 title: Secrets
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 docId: secrets
 ---
 
