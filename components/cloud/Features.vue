@@ -123,7 +123,7 @@
                         />
                     </div>
                     <div class="col-12 mt-3">
-                        <label for="use_case_context">
+                        <label for="use_case">
                             <span class="text-danger">*</span>
                             What’s Your Orchestration Context
                         </label>
@@ -241,21 +241,6 @@
                             </label>
                         </div>
                     </div>
-
-                    <div class="col-12 mt-3">
-                        <label for="use_case_context">
-                            <span class="text-danger">*</span>
-                            Tell us about your project and timeline - what makes
-                            it a perfect fit for early access?
-                        </label>
-
-                        <textarea
-                            name="use_case_context"
-                            class="form-control"
-                            id="cloud-use_case_context"
-                            required
-                        ></textarea>
-                    </div>
                     <div class="col-12 mt-4 pb-5 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary w-100">
                             Submit
@@ -347,11 +332,6 @@ const onSubmit = async (e: Event) => {
                     objectTypeId: "0-1",
                     name: "have_you_used_kestra_open_source",
                     value: getUsedKestraStatus(form),
-                },
-                {
-                    objectTypeId: "0-1",
-                    name: "use_case_context",
-                    value: form["use_case_context"].value,
                 },
                 {
                     objectTypeId: "0-1",
