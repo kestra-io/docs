@@ -1,7 +1,7 @@
 <template>
     <div>
         <Head>
-            <Title>Kestra Alternative to VmWare Cloud Foundation</Title>
+            <Title>Kestra Alternative to VmWare Cloud Foundation & Aria Automation</Title>
             <Meta name="description" content="What are the differences between Kestra and VmWare Cloud Foundation" />
         </Head>
 
