@@ -66,6 +66,10 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `ME`
 - `APITOKEN`
 
+::alert{type="warning"}
+The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, make sure to update any custom roles with these permissions as needed by the users. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+::
+
 ### Actions
 
 An Action is a specific operation that can be performed on a Permission. Supported Actions:
