@@ -1,7 +1,7 @@
 ---
 title: Microsoft Entra ID SCIM Provisioning
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 

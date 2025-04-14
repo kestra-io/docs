@@ -60,7 +60,7 @@ tasks:
       - perl main.pl
 ```
 
-You can read more about the Shell Commands type in the [Plugin documentation](/plugins/plugin-script-shell/tasks/io.kestra.plugin.scripts.shell.commands).
+You can read more about the Shell Commands type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands).
 
 ## Handling Outputs
 

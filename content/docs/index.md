@@ -4,7 +4,7 @@ isHomepage: true
 ---
 
 ::HomePageHeader{title="What is Kestra?"}
-Kestra is an open-source infinitely-scalable **orchestration platform** enabling all engineers to manage **business-critical workflows** declaratively in code.
+Kestra is an open-source, infinitely-scalable **orchestration platform** that enables all engineers to manage **business-critical workflows** declaratively in code.
 
 Thanks to 600+ plugins and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven workflows easy.
 

@@ -1,7 +1,7 @@
 ---
 title: Enterprise Namespace Pages
 icon: /docs/icons/ui.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Manage specific enterprise features within a namespace.
@@ -27,7 +27,7 @@ Manage the namespace description, [worker group](../../06.enterprise/04.scalabil
 
 Variables defined at the namespace level can be used in any flow defined under the same namespace using the syntax: `{{ namespace.variable_name }}`.
 
-Read more about [Variables](../../06.enterprise/02.governance/08.centralized-task-configuration.md#variables).
+Read more about [Variables](../../06.enterprise/02.governance/07.namespace-management.md#variables).
 
 ![Variables](/docs/user-interface-guide/variables.png)
 
@@ -37,7 +37,7 @@ Plugin defaults can also be defined at the namespace level. These plugin default
 
 ![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png).
 
-Read more about [Plugin defaults](../../06.enterprise/02.governance/08.centralized-task-configuration.md#plugin-defaults)
+Read more about [Plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults)
 
 ## Secrets
 

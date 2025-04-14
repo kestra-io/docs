@@ -1,66 +1,59 @@
 <template>
-    <div class="row card-group mb-2">
-        <div class="p-0 row filters">
-            <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
-                <SelectMultiSelect
-                    name="topic"
-                    :selectedValue="topic"
-                    :options="topicOptions"
-                    :removeItem="removeTopicItem"
-                    :selectItem="selectTopicItem"
-                    :toggleDropdown="toggleTopicDropdown"
-                    :showDropdown="showTopicDropdown"
-                />
-            </div>
-            <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
-                <SelectMultiSelect
-                    name="stage"
-                    :selectedValue="stage"
-                    :options="stageOptions"
-                    :removeItem="removeStageItem"
-                    :selectItem="selectStageItem"
-                    :toggleDropdown="toggleStageDropdown"
-                    :showDropdown="showStageDropdown"
-                />
-            </div>
-            <div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
-                <Magnify />
-                <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
-            </div>
-            <div class="col-xl-auto col-md-6 pb-3 pb-xl-0">
-                <div class="clear-filter" @click="removeFilter" v-if="stage?.length || topic?.length || search">
-                    <DeleteOutline/>
-                    <span>Clear filters</span>
-                </div>
+    <div class="p-0 row filters">
+        <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
+            <SelectMultiSelect
+                name="topic"
+                :selectedValue="topic"
+                :options="topicOptions"
+                :removeItem="removeTopicItem"
+                :selectItem="selectTopicItem"
+                :toggleDropdown="toggleTopicDropdown"
+                :showDropdown="showTopicDropdown"
+            />
+        </div>
+        <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
+            <SelectMultiSelect
+                name="stage"
+                :selectedValue="stage"
+                :options="stageOptions"
+                :removeItem="removeStageItem"
+                :selectItem="selectStageItem"
+                :toggleDropdown="toggleStageDropdown"
+                :showDropdown="showStageDropdown"
+            />
+        </div>
+        <div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
+            <Magnify />
+            <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
+        </div>
+        <div class="col-xl-auto col-md-6 pb-3 pb-xl-0">
+            <div class="clear-filter" @click="removeFilter" v-if="stage?.length || topic?.length || search">
+                <DeleteOutline/>
+                <span>Clear filters</span>
             </div>
         </div>
-        <NuxtLink :href="item.path" class="col-12 col-md-4 mb-lg-4 mb-2" v-for="item in navigation" :key="item.path">
-            <div class="card">
-                <div class="card-body">
-                    <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
-                        {{item.stage}}
-                    </span>
-                    <div class="card-icon">
-                        <img :src="item.icon" :alt="item.title" width="50px" height="50px"/>
-                    </div>
-                    <div>
-                        <h4 class="card-title">{{ item.title }}</h4>
-                        <p class="card-text">{{item.description}}</p>
-                    </div>
-                    <div class="topics">
-                        <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{topic}}</span>
-                    </div>
-                </div>
+    </div>
+    <div class="card-grid mb-2">
+        <NuxtLink class="card" :href="item.path" v-for="item in navigation" :key="item.path">
+            <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
+                {{item.stage}}
+            </span>
+            <div>
+                <img class="card-icon" :src="item.icon" :alt="item.title" width="50px" height="50px"/>
+                <h4 class="card-title">{{ item.title }}</h4>
+            </div>
+            <p class="card-text">{{item.description}}</p>
+            <div class="topics">
+                <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{topic}}</span>
             </div>
         </NuxtLink>
     </div>
 </template>
 
 <script setup>
-    import {hash} from "ohash";
-    import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
+    const {public:{CollectionNames}} = useRuntimeConfig()
 
 
     const props = defineProps({
@@ -72,7 +65,6 @@
 
     const route = useRoute();
 
-    const navigation = ref([]);
     const stage = ref([]);
     const topic = ref([]);
     const showStageDropdown = ref(false);
@@ -133,32 +125,32 @@
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
 
-    const fetchChildDocs = async () => {
-      const {data: result} = await useAsyncData(
-        `ChildCard-${hash(currentPage)}`,
-        () => {
-          let query = queryCollection('docs').where('path', 'LIKE', `${currentPage}/%`);
+    function fetchChildDocs(){
+        let query = queryCollection(CollectionNames.docs)
+            .where('path', 'LIKE', `${currentPage}/%`)
+            // only take direct children
+            .where('path', 'NOT LIKE', `${currentPage}/%/%`)
 
-          if (Array.isArray(stage.value) && stage.value?.length > 0) {
+        if (Array.isArray(stage.value) && stage.value?.length > 0) {
             query = query.where('stage', 'IN', stage.value);
-          }
+        }
 
-          if (Array.isArray(topic.value) && topic.value?.length > 0) {
+        if (Array.isArray(topic.value) && topic.value?.length > 0) {
             for (const soloTopic of topic.value) {
-              query = query.where('topics', 'LIKE', `%${soloTopic}%`);
+                query = query.where('topics', 'LIKE', `%${soloTopic}%`);
             }
-          }
+        }
 
-          if (search.value) {
+        if (search.value) {
             query = query.where('title', 'LIKE', `%${search.value}%`);
-          }
+        }
 
-          return query.all();
-        });
-      navigation.value = result.value;
-    };
+        return query.all();
+    }
 
-    fetchChildDocs();
+    const navigation = ref([])
+    navigation.value = await fetchChildDocs()
+
 
     function debounce(func, delay) {
       let timeout;
@@ -172,8 +164,8 @@
       };
     }
 
-    const debouncedFilterPlugins = debounce(() => {
-      fetchChildDocs()
+    const debouncedFilterPlugins = debounce(async () => {
+        navigation.value = await fetchChildDocs()
     }, 1000);
 
     watch([currentPage, search, () => stage.value, () => topic.value], () => {
@@ -185,12 +177,19 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/_variable.scss";
 
-    .card {
-        padding: 8px;
+    .card-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: .5rem;
     }
+
+    .card {
+        padding: 1rem;
+    }
+
     .card-title {
-        font-size: calc($font-size-base * 1.5);;
-        line-height: calc($font-size-base * 2.25);;
+        font-size: calc($font-size-base * 1);
+        line-height: calc($font-size-base * 1.5);
         font-weight: 600;
     }
 
@@ -198,7 +197,9 @@
         font-size: $font-size-sm !important;
         line-height: 1rem !important;
         color: $white-3;
+        flex: 1;
     }
+
     .card-stage {
         border-radius: 4px;
         height: 28px;
@@ -206,16 +207,14 @@
         color: $white;
         font-weight: 400;
         font-size: $font-size-xs;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 18px;
-        right: 17px;
+        align-self: flex-start;
+        margin-bottom: 1rem;
     }
     .topics {
         margin-top: 1rem;
         display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
         .topic-item {
             background-color: #3D3D3F;
             color: #FFFFFF;
@@ -224,25 +223,19 @@
             height: 28px;
             padding: 4px 8px;
             border-radius: 4px;
-            margin-right: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            white-space: nowrap;
         }
     }
 
     .card-icon {
-        border: 2px solid $black-6;
-        width: 83px;
-        height: 64px;
-        float: unset;
-        background-color: #111113;
-        img {
-            max-width: unset;
-            width: 32px !important;
-            height: 33px !important;
-        }
+        padding: .5rem;
+        border-radius: .5rem;
+        border: 1px solid $black-3;
+        max-width: unset;
+        width: 48px;
+        height: 48px;
     }
+
     .filters {
         margin-bottom: 2rem;
         .form-select {

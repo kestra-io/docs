@@ -5,7 +5,7 @@ date: 2024-10-08T13:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
-  role: 
+  role:
   image: mproset
 image: /blogs/2024-10-08-dbt-kestra.jpg
 ---
@@ -70,7 +70,7 @@ tasks:
       - dbt build
 ```
 
-## Scale Compute for dbt with Task Runners 
+## Scale Compute for dbt with Task Runners
 
 In the example above:
 
@@ -135,7 +135,7 @@ With Kestra’s logging, you can drill down into logs in real-time and avoid dig
 
 With Kestra, you get a complete platform for orchestrating and scaling dbt workflows. From syncing code with Git and scaling runs dynamically to event-driven triggers and reliable code versioning, Kestra provides the tools you need to handle even the most complex dbt projects.
 
-Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our [dbt plugin documentation](https://kestra.io/plugins/plugin-dbt) for more details.
+Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our [dbt plugin documentation](/plugins/plugin-dbt) for more details.
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).

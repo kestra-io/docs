@@ -1,7 +1,7 @@
 ---
 title: Overview
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Overview of the Enterprise Edition with an introduction to our enterprise-level features and initial setup guide.

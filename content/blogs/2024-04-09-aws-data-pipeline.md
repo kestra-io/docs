@@ -15,7 +15,7 @@ This blog post dives into [Kestra's](https://github.com/kestra-io/kestra) integr
 
 AWS offers a vast array of cloud services, including computing power, storage, database solutions, networking and more. This extensive portfolio of service offerings is one of the key advantages of using AWS. AWS also offers a pay-as-you-go pricing model, allowing organizations to pay only for the resources they consume, thereby reducing costs and optimizing resource utilization. With these features, AWS has become the backbone of many businesses, from startups to enterprises, providing them with scalable and reliable infrastructure to innovate and grow.
 
-Kestra is a powerful orchestration engine with a rich set of plugins. Kestra seamlessly integrates with multiple [AWS services](https://kestra.io/plugins/plugin-aws) making it easy to orchestrate AWS services based data pipelines.
+Kestra is a powerful orchestration engine with a rich set of plugins. Kestra seamlessly integrates with multiple [AWS services](/plugins/plugin-aws) making it easy to orchestrate AWS services based data pipelines.
 
 ## Use case
 

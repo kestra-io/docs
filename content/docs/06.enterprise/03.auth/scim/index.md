@@ -1,11 +1,15 @@
 ---
 title: SCIM Directory Sync
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 
 Sync users and groups from your Identity Provider to Kestra using SCIM.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/WQBWxt7ruM4?si=wEYUyO5kJuWxQMft" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## What is SCIM
 

@@ -1,4 +1,5 @@
 import * as sass from "sass";
+import { CollectionNames } from "./content.config.names";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -83,43 +84,9 @@ export default defineNuxtConfig({
                         rootDir: process.cwd()
                     },
                 },
-                highlight: {
-                    // Theme used in all color schemes.
-                    theme: 'github-dark',
-                    langs: [
-                        'bash',
-                        'c',
-                        'cpp',
-                        'csv',
-                        'css',
-                        'dockerfile',
-                        'go',
-                        'groovy',
-                        'handlebars',
-                        'hcl',
-                        'ini',
-                        'java',
-                        'javascript',
-                        'json',
-                        'markdown',
-                        'mermaid',
-                        'perl',
-                        'php',
-                        'python',
-                        'r',
-                        'ruby',
-                        'rust',
-                        'scala',
-                        'sql',
-                        'systemd',
-                        'twig',
-                        'typescript',
-                        'xml',
-                        'yaml'
-                    ]
-                },
+                highlight: false,
             },
-        },
+        }
     },
 
     devServer: {
@@ -147,9 +114,7 @@ export default defineNuxtConfig({
         },
         optimizeDeps: {
             include: [
-                "humanize-duration",
                 "lodash",
-                "dagre",
                 "debug",
             ],
             exclude: [
@@ -201,7 +166,7 @@ export default defineNuxtConfig({
                         "How-to Guides"
                     ],
                     "Scale with Kestra": [
-                        "Enterprise Edition",
+                        "Cloud & Enterprise Edition",
                         "Task Runners",
                         // "Worker Groups",
                         "Best Practices"
@@ -219,7 +184,11 @@ export default defineNuxtConfig({
                         "Kestra EE CLI"
                     ]
                 }
-            }
+            },
+            CollectionNames,
+            posthog: {
+                enabled: process.env.POSTHOG_ENABLED !== "false"
+            },
         },
     },
 
@@ -281,6 +250,7 @@ export default defineNuxtConfig({
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
         '/docs/how-to-guides/local-file-sync': {redirect: '/docs/how-to-guides/local-flow-sync'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
+        '/docs/how-to-guides/ssl-configuration': {redirect: '/docs/administrator-guide/ssl-configuration'},
         '/docs/how-to-guide': {redirect: '/docs/how-to-guides'},
         '/docs/developer-guide/': {redirect: '/docs'},
         '/docs/developer-guide/storage': {redirect: '/docs/concepts/storage'},
@@ -296,7 +266,7 @@ export default defineNuxtConfig({
         '/docs/enterprise/releases': {redirect: '/docs/enterprise/overview/releases'},
         '/docs/enterprise/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
         '/docs/enterprise/namespace-management': {redirect: '/docs/enterprise/governance/namespace-management'},
-        '/docs/enterprise/centralized-task-configuration': {redirect: 'https://kestra.io/docs/enterprise/governance/centralized-task-configuration'},
+        '/docs/enterprise/centralized-task-configuration': {redirect: '/docs/enterprise/governance/namespace-management'},
         '/docs/enterprise/custom-blueprints': {redirect: '/docs/enterprise/governance/custom-blueprints'},
         '/docs/enterprise/logshipper': {redirect: '/docs/enterprise/governance/logshipper'},
         '/docs/enterprise/secrets': {redirect: '/docs/enterprise/governance/secrets'},
@@ -313,15 +283,18 @@ export default defineNuxtConfig({
         '/docs/enterprise/apps': {redirect: '/docs/enterprise/scalability/apps'},
         '/docs/enterprise/task-runners': {redirect: '/docs/enterprise/scalability/task-runners'},
         '/docs/enterprise/worker-group': {redirect: '/docs/enterprise/scalability/worker-group'},
-        '/docs/enterprise/worker-isolation': {redirect: '/docs/enterprise/scalability/worker-isolation'},
+        '/docs/enterprise/worker-isolation': {redirect: '/docs/enterprise/governance/worker-isolation'},
+        '/docs/enterprise/scalability/worker-isolation': {redirect: '/docs/enterprise/governance/worker-isolation'},
         '/docs/enterprise/announcements': {redirect: '/docs/enterprise/instance/announcements'},
         '/docs/enterprise/dashboard': {redirect: '/docs/enterprise/instance/dashboard'},
         '/docs/enterprise/maintenance-mode': {redirect: '/docs/enterprise/instance/maintenance-mode'},
+        '/docs/enterprise/governance/centralized-task-configuration': {redirect: '/docs/enterprise/governance/namespace-management'},
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
         '/docs/administrator-guide/server-cli': {redirect: '/docs/server-cli'},
         '/docs/configuration-guide': {redirect: '/docs/configuration'},
         '/docs/configuration-guide/**': {redirect: '/docs/configuration'},
+        '/docs/ui/dashboards': {redirect: '/docs/ui/dashboard'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
@@ -334,6 +307,7 @@ export default defineNuxtConfig({
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
+        '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
     },
 
@@ -362,7 +336,7 @@ export default defineNuxtConfig({
 
     multiCache: {
         data: {
-            enabled: true,
+            enabled: process.env.NUXT_CACHE_ENABLED !== 'false',
         },
     },
 

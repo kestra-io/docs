@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+const {public:{CollectionNames}} = useRuntimeConfig()
 defineProps({
   title: {
     type: String,
@@ -33,7 +34,7 @@ const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
 
 const {data: posts} = await useAsyncData(
     `Blog-Page-Short-List`,
-    () => queryCollection("blogs").order("date", "DESC").limit(4).all()
+    () => queryCollection(CollectionNames.blogs).order("date", "DESC").limit(4).all()
 );
 </script>
 

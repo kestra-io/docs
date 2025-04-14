@@ -55,6 +55,19 @@ datasources:
 
 to environment variable: `DATASOURCES_POSTGRES_USERNAME=kestra`
 
+To obtain more complex keys with camel case, separate the words with '-' (minus).
+
+The following example shows how to replace the s3 storage access key property from defining it in config file:
+
+```yaml
+kestra:
+  storage:
+    s3:
+      accessKey: myKey
+```
+
+to environment variable: `KESTRA_STORAGE_S3_ACCESS-KEY=myKey`
+
 ## Setup
 
 Kestra offers many configuration options and customization.
@@ -327,6 +340,11 @@ kestra:
       retention: 7d
 ```
 
+The properties are the following:
+- `initialDelay`: specifies the delay after the startup of the application where the job cleaner will start.
+- `fixedDelay`: specifies the initial delay between each clean.
+- `retention`: specifies the oldest entry to clean on the queue (i.e., a `7d` specification will keep 1 week of queue data as backup against a crash)
+
 ### Protecting against too big messages
 
 ::alert{type="info"}
@@ -512,9 +530,10 @@ kestra:
 
 To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kstra.io).
 
-The license is set up using two configuration properties: `id` and `key`.
+The license is set up using three configuration properties: `id`, `fingerprint` and `key`.
 
 - `kestra.ee.license.id`: license identifier.
+- `kestra.ee.license.fingerprint`: license authentication.
 - `kestra.ee.license.key`: license key.
 
 When you launch Kestra Enterprise Edition, it will check the license and display the validation step in the log.
@@ -896,13 +915,29 @@ You can change the log behavior in Kestra by adjusting the `logger` configuratio
 ```yaml
 logger:
   levels:
-    io.kestra.runner: TRACE
+    io.kestra.core.runners: TRACE
     org.elasticsearch.client: TRACE
     org.elasticsearch.client.sniffer: TRACE
     org.apache.kafka: DEBUG
     io.netty.handler.logging: TRACE
 ```
+To disable logging to the server logs, you can configure the following:
 
+```yaml
+logger:
+  levels:
+    flow: 'OFF'
+```
+
+This disables the storage of all flow execution logs, so they will only appear in the server logs. 
+
+Similarly, the following configuration disables the execution logs for the `hello-world` flow:
+
+```yaml
+logger:
+  levels:
+    flow.hello-world: 'OFF'
+```
 
 ### Access Log configuration
 
@@ -1087,20 +1122,57 @@ For more information, check out the [dedicated guide](../15.how-to-guides/local-
 
 ## Plugins
 
-Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
+### Installing plugins
 
-Maven Central is mandatory for Kestra and its plugins. However, you can add your own (Maven) repository in order to download your custom plugins using the following configuration:
+Kestra plugins can be installed from Maven repositories using the `kestra plugins install` command.
+
+**Example:**
+
+The command below will install the latest version of the script-python plugin.
+
+```bash
+kestra plugins install io.kestra.plugin:plugin-script-python:LATEST
+```
+
+By default, Kestra retrieves plugins from Maven Central, but you can configure additional repositories (e.g., Google Artifact Registry) to install custom plugins.
+
+
+### Adding Custom Maven Repositories
+
+The repositories can be configured using the `kestra.plugins.repositories` configuration.
+
+You can add your own private Maven repositories, such as Google Artifact Registry, to install custom plugins.
+
+**Example Configuration (`application.yaml`):**
 
 ```yaml
 kestra:
   plugins:
     repositories:
+      # Configure Maven Central (Mandatory)
       central:
         url: https://repo.maven.apache.org/maven2/
-      jcenter:
-        url: https://jcenter.bintray.com/
-      kestra:
-        url: https://dl.bintray.com/kestra/maven
+      # Configure a Private Google Artifact Registry
+      google-artifact-registry:
+        url: https://${GCP_REGISTRY_LOCATION}-maven.pkg.dev/${GCP_PROJECT_ID}/${GCP_REPOSITORY}
+        basicAuth:
+          username: oauth2accesstoken
+          password: ${GCP_OAUTH_ACCESS_TOKEN}
+```
+
+### Installing Enterprise Edition (EE) plugins
+
+Enterprise Edition (EE) users can configure Kestra's artifact registry to install EE plugins, as described below:
+
+```yaml
+kestra:
+  plugins:
+    repositories:
+      kestra-io:
+        url: https://registry.kestra.io/maven
+        basicAuth:
+          username: ${kestra.ee.license.id:}
+          password: ${kestra.ee.license.fingerprint:}
 ```
 
 ### Enable or disable features
@@ -1164,9 +1236,9 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 This is an [Enterprise Edition](../06.enterprise/index.md) feature available starting with Kestra 0.19.
 ::
 
-You can restrict which plugins can be used in a Kestra instance by configuring an allowlist / exclude list using regexes.
+You can restrict which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
 
-The following configuration only allow plugin from the `io.kestra` package and disallow the `io.kestra.plugin.core.debug.Echo` plugin.
+The following configuration only allows plugins from the `io.kestra` package and disallows the `io.kestra.plugin.core.debug.Echo` plugin.
 
 ```yaml
 kestra:
@@ -1205,6 +1277,30 @@ kestra:
           taskRunner:
             type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
+### Plugin Management
+
+As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
+
+```yaml
+kestra: 
+  plugins:
+      management:
+        enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
+        remoteStorageEnabled: true
+        customPluginsEnabled: true # setting to false will disable installing or uploading custom plugins
+        localRepositoryPath: /tmp/kestra/plugins-repository
+        autoReloadEnabled: true
+        autoReloadInterval: 60s
+        defaultVersion: LATEST 
+```
+
+The following list of properties correspond to Versioned and remotely stored plugins:
+
+- `remoteStorageEnabled`: Specifies whether remote storage is enabled (i.e., plugins are stored on the internal storage).
+- `localRepositoryPath`: The local path where managed plugins will be synced.
+- `autoReloadEnabled`: The interval at which the Kestra server checks for new or removed plugins.
+- `autoReloadInterval`: The default version to be used when no version is specified for a plugin.
+- `defaultVersion`: Accepted are: 'latest', 'current', 'oldest', 'none', or a specific version (e.g., 0.20.0)
 
 ## Retries
 
@@ -1235,7 +1331,22 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
 
 ## Secret Managers
 
-You can configure the [secret manager](../06.enterprise/02.governance/secrets-manager.md) backend using the `kestra.secret` configuration.
+You can configure the [secret manager](../06.enterprise/02.governance/secrets-manager.md) backend using the `kestra.secret` configuration. To isolate your secret manager from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.secret.isolation`:
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    azureKeyVault:
+      clientSecret:
+        tenantId: "id"
+        clientId: "id"
+        clientSecret: "secret"
+    isolation: # available in Kestra >=0.22
+      enabled: true # default: false
+      deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
+        - EXECUTOR        
+```
 
 ### AWS Secret Manager
 
@@ -1307,7 +1418,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       password:
         user: john
         password: foo
@@ -1324,7 +1435,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       token:
         token: your-secret-token
 ```
@@ -1336,7 +1447,7 @@ kestra:
   secret:
     type: vault
     vault:
-      address: "http://localhostt:8200"
+      address: "http://localhost:8200"
       appRole:
         path: approle
         roleId: your-role-id
@@ -1714,6 +1825,18 @@ Other internal storage types include:
 - [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
 - [Storage Minio](#minio) compatible with  others *S3 like* storage services
 - [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+
+To isolate your dedicated internal storage from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.storage.isolation`:
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    isolation: # available in Kestra >=0.22
+      enabled: true # default: false
+      deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
+        - EXECUTOR
+```
 
 ### S3
 

@@ -125,9 +125,19 @@
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/ntico.svg" class="card-img-top" alt="Ntico's logo">
                         <div class="card-body">
-                            <p class="card-text"> Data Consulting Partner</p>
+                            <p class="card-text">Data Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
                             <a href="https://www.ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/pandata.svg" class="card-img-top" alt="Pandata Group's logo">
+                        <div class="card-body">
+                            <p class="card-text">Data Consulting Partner</p>
+                            <h5 class="card-title">Pandata Group</h5>
+                            <a href="https://www.pandatagroup.com/" target="_blank">Visit Pandata Group's website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>

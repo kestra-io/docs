@@ -232,4 +232,4 @@ This option enables logs of very high verbosity.
 
 ### Server port
 
-`--port`: The server port, the default is `8080`.
+`--port`: The server port. The default is `8080`.

@@ -5,103 +5,18 @@
                 <p>Explore Blueprints</p>
             </div>
             <div class="mt-3">
-                <Carousel v-bind="settings" :breakpoints="breakpoints">
-                    <Slide v-for="blueprint in blueprints" :key="blueprint.id" >
-                        <div class="carousel--item">
-                            <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <navigation>
-                            <template #next>
-                                <div class="carousel-control carousel-control-next">
-                                    <ChevronRight />
-                                </div>
-                            </template>
-                            <template #prev>
-                                <div class="carousel-control carousel-control-prev">
-                                    <ChevronLeft />
-                                </div>
-                            </template>
-                        </navigation>
-                    </template>
-                </Carousel>
+                <HomeBlueprintsCarousel :blueprints="blueprintsData?.results ?? []" />
             </div>
         </div>
     </div>
 </template>
-<script setup>
+
+<script lang="ts" setup>
   const config = useRuntimeConfig();
-  const blueprints = ref([])
-  const props = defineProps({
-    tag: {
-      type: String,
-      required: false
-    }
-  })
-  const { data: blueprintsData } = await useAsyncData('blueprints', () => {
+  const props = defineProps<{tag:string}>()
+  const {data: blueprintsData} = await useAsyncData<{results:any[]}>('blueprints', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${props.tag}`)
   });
-  const {data: tags} = await useAsyncData('blueprints-tags', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
-  })
-  const generateCardHref = (blueprint) => {
-    let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-    if (!tag || !tag.id) {
-        return `/blueprints/${blueprint.id}`;
-    }
-    return `/blueprints/${blueprint.id}`
-  }
-  if (blueprintsData.value) {
-    blueprints.value = blueprintsData.value.results
-  }
-</script>
-
-<script>
-  import Section from '../../layout/Section.vue';
-  import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-  import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
-  export default {
-    components: {
-      ChevronLeft,
-      ChevronRight,
-      Section,
-    },
-    data() {
-      return {
-        settings: {
-          itemsToShow: 1,
-          snapAlign: 'center',
-        },
-        breakpoints: {
-          800: {
-            itemsToShow: 2,
-            snapAlign: 'start',
-          },
-          900: {
-            itemsToShow: 2,
-            snapAlign: 'start',
-          },
-          990: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1024: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1300: {
-            itemsToShow: 3,
-            snapAlign: 'start',
-          },
-          1500: {
-            itemsToShow: 4,
-            snapAlign: 'start',
-          },
-        },
-      };
-    },
-  }
 </script>
 
 <style lang="scss" scoped>

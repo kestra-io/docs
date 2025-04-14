@@ -104,4 +104,4 @@ Here is the output of executing the above Kestra flow:
 
 ![gsheet_read_output](/docs/how-to-guides/google-sheets/gsheet_read_output.png)
 
-This is how Kestra's Google Workspace plugin can be used to read the spreadsheet with its Sheet's [`Read`](/plugins/plugin-googleworkspace/tasks/sheets/io.kestra.plugin.googleworkspace.sheets.read) task.
+This is how Kestra's Google Workspace plugin can be used to read the spreadsheet with its Sheet's [`Read`](/plugins/plugin-googleworkspace/sheets/io.kestra.plugin.googleworkspace.sheets.read) task.

@@ -18,6 +18,8 @@
             const {pageUrl, max} = toRefs(props);
             const route = useRoute()
 
+            const {public:{CollectionNames}} = useRuntimeConfig()
+
             let currentPage = null;
 
             if (pageUrl.value) {
@@ -30,7 +32,7 @@
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => queryCollectionNavigation('docs').andWhere(query =>
+                () => queryCollectionNavigation(CollectionNames.docs).andWhere(query =>
                     query
                         .where('path', 'LIKE', `${currentPage}/%`)
                         .where('path', '<>', currentPage)

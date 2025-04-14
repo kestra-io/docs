@@ -1,41 +1,56 @@
 <template>
-    <ul class="list-unstyled">
-        <li class="list-inline-item">
+    <ul class="socials-wrapper list-inline">
+        <li>
             <a href="https://github.com/kestra-io" title="GitHub" target="_blank">
-                <github title="" />
+                <Github title="" />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://twitter.com/kestra_io" title="Twitter" target="_blank">
-                <twitter />
+                <Twitter />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
+            <a href="https://web-cdn.bsky.app/profile/kestra.io" title="BlueSky" target="_blank">
+                <BlueSky />
+            </a>
+        </li>
+        <li>
             <a href="https://www.linkedin.com/company/kestra" title="LinkedIn" target="_blank">
-                <linkedin />
+                <LinkedIn />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://www.youtube.com/@kestra-io" title="YouTube" target="_blank">
-                <youtube />
+                <Youtube />
             </a>
         </li>
-        <li class="list-inline-item ml-1">
+        <li>
             <a href="https://kestra.io/slack" title="Slack" target="_blank">
-                <slack title="" />
+                <Slack title="" />
             </a>
         </li>
     </ul>
 </template>
 
-<script>
-    import Linkedin from "vue-material-design-icons/Linkedin.vue";
+<script setup>
+    import LinkedIn from "vue-material-design-icons/Linkedin.vue";
     import Slack from "vue-material-design-icons/Slack.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import Twitter from "../icons/TwitterXIcon.vue";
-
-    export default {
-        components: {Github, Slack, Twitter, Linkedin, Youtube}
-    }
+    import BlueSky from "../icons/BlueSkyIcon.vue";
 </script>
+
+<style lang="scss" scoped>
+    .socials-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 1rem;
+        list-style: none;
+        a {
+            font-size: 1.4rem;
+        }
+    }
+</style>

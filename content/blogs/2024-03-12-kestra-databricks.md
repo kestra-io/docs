@@ -29,7 +29,7 @@ Kestra can execute workflows based on event-based, time-based, and API-based sch
 
 ### Kestra's Plugin System ###
 
-Besides the [Databricks plugin](https://kestra.io/plugins/plugin-databricks), Kestra offers numerous other plugin integrations which you can check on the Kestra’s [plugins page](https://kestra.io/plugins). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Databricks.
+Besides the [Databricks plugin](/plugins/plugin-databricks), Kestra offers numerous other plugin integrations which you can check on the Kestra’s [plugins page](https://kestra.io/plugins). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Databricks.
 
 Kestra's Databricks plugin provides an efficient solution for creating intricate data pipelines. You can perform the create and delete cluster tasks, DBFS download and upload file tasks, query tasks, and create and submit job tasks. Let's dive into the key functionalities provided by the plugin.
 
@@ -43,7 +43,7 @@ Do ensure that you save the generated token with you before hitting "Done" on th
 
 ### Create Compute Cluster ###
 
-Using Kestra, you can create the Databricks Compute cluster with the [CreateCluster task](https://kestra.io/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.createcluster). We can provide parameters like the name of the cluster, the node type, number of nodes that should be present in the cluster, and the Spark version with which the cluster should be initialized. This task is a longer running task, as it waits for the cluster to be up and running. The task returns the clusterId, the state of the cluster, and its URI as the output.
+Using Kestra, you can create the Databricks Compute cluster with the [CreateCluster task](/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.createcluster). We can provide parameters like the name of the cluster, the node type, number of nodes that should be present in the cluster, and the Spark version with which the cluster should be initialized. This task is a longer running task, as it waits for the cluster to be up and running. The task returns the clusterId, the state of the cluster, and its URI as the output.
 
 The following code snippet creates the Databricks Compute cluster.
 
@@ -68,7 +68,7 @@ Post running this flow, you can check that the newly created compute cluster sho
 
 ### Upload file to Databricks File System ###
 
-Now that the compute cluster is running, let us upload a file to DBFS. Using the [upload task](https://kestra.io/plugins/tasks/dbfs/io.kestra.plugin.databricks.dbfs.upload) of the Kestra’s Databricks plugin, we can upload a file from Kestra’s internal storage onto DBFS. There is no restriction on the size of the file. The task will upload the file in chunks of 1 MB.
+Now that the compute cluster is running, let us upload a file to DBFS. Using the [upload task](/plugins/tasks/dbfs/io.kestra.plugin.databricks.dbfs.upload) of the Kestra’s Databricks plugin, we can upload a file from Kestra’s internal storage onto DBFS. There is no restriction on the size of the file. The task will upload the file in chunks of 1 MB.
 
 The following code snippet will first download a CSV file from the HTTP URL into Kestra’s internal storage. This file from Kestra’s internal storage will then be uploaded onto DBFS on the path specified in the `to` attribute of the Databricks' Upload task.
 
@@ -92,7 +92,7 @@ Once the flow is successfully run, you can open the DBFS Browser on your Databri
 
 ### Running Query on Databricks ###
 
-Let us now perform a couple of query operations on Databricks. Kestra’s Databricks plugin provides a [dedicated task](https://kestra.io/plugins/tasks/sql/io.kestra.plugin.databricks.sql.query) for querying data from Databricks. This task requires you to mention the `httpPath`. In order to get the `httpPath`, you need to go to the compute cluster using which you need to perform this query. On the compute cluster’s page, go to `JDBC/ODBC` tab under the Advanced options. This is where you will get the `HTTP Path`, which you can use in the `httpPath` attribute of your query task.
+Let us now perform a couple of query operations on Databricks. Kestra’s Databricks plugin provides a [dedicated task](/plugins/tasks/sql/io.kestra.plugin.databricks.sql.query) for querying data from Databricks. This task requires you to mention the `httpPath`. In order to get the `httpPath`, you need to go to the compute cluster using which you need to perform this query. On the compute cluster’s page, go to `JDBC/ODBC` tab under the Advanced options. This is where you will get the `HTTP Path`, which you can use in the `httpPath` attribute of your query task.
 
 The first query task that we will perform will be to load the data from the DBFS file into a table. The query in this task will read the CSV file from the DBFS. It will create the table in Databricks by inferring the schema from the CSV file, and the data will be filled in the table from this CSV file.
 
@@ -134,7 +134,7 @@ Once you run this flow, take a look at the Outputs tab of this execution. The Ou
 
 ### Delete Compute Cluster ###
 
-Now that we have performed all the tasks on the Databricks cluster, we can delete it to avoid unnecessary compute costs. Kestra’s Databricks plugin provides the [DeleteCluster task](https://kestra.io/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.deletecluster)  that will delete the compute cluster. This task takes the `clusterId` to pick the corresponding cluster for deletion.
+Now that we have performed all the tasks on the Databricks cluster, we can delete it to avoid unnecessary compute costs. Kestra’s Databricks plugin provides the [DeleteCluster task](/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.deletecluster)  that will delete the compute cluster. This task takes the `clusterId` to pick the corresponding cluster for deletion.
 
 The following code snippet will delete the cluster from your Databricks workspace:
 

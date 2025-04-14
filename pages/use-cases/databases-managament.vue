@@ -39,7 +39,7 @@
                 title="Ready to take your Infrastructure to the next level?"
                 purpleButtonText="Get Started"
                 purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
-                darkButtonText="get a demo"
+                darkButtonText="Get a demo"
                 darkButtonHref="/demo"
             />
         </NuxtLazyHydrate>

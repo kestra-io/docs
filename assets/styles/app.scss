@@ -2,13 +2,14 @@
 
 html {
     height: 100%;
+    scroll-padding-top: var(--top-bar-height);
 }
 
 body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
-    background-color: #0a0a0c;
+    background-color: #0A0B0D;
 }
 .nuxt-loading-indicator {
     background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
@@ -24,6 +25,12 @@ body {
         .container-min {
             min-width: $container-max-width;
         }
+    }
+}
+
+.container{
+    @include media-breakpoint-up(xl) {
+        max-width: 1140px;
     }
 }
 
@@ -59,17 +66,6 @@ h1 {
 
 h2 {
     font-weight: 800
-}
-
-// Offsets anchor headers to scroll past the top-bar
-.container {
-    h1, h2, h3, h4, h5, h6 {
-        &[id] {
-            --anchor-offset: calc(var(--top-bar-height) + var(--spacer));
-            margin-top: calc(var(--anchor-offset) * -1);
-            padding-top: var(--anchor-offset);
-        }
-    }
 }
 
 main {
@@ -134,6 +130,58 @@ blockquote.blockquote {
 @keyframes rotate {
     100% {
         transform: rotate(1turn);
+    }
+}
+
+.btn-primary {
+    background-color: $purple-40;
+    color: $white!important;
+    position: relative;
+    background-clip: padding-box;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: -1px; right: -1px; bottom: -1px; left: -1px;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(to bottom, $purple-42, $purple-43);
+    }
+
+    &:hover {
+        background-color: $purple-41;
+    }
+}
+
+.btn-secondary {
+    background-color: $white;
+    color: $black-6!important;
+    border: 1px solid #3c3c3c;
+
+    &:hover {
+        background-color: $white-1;
+        color: $black-6;
+    }
+}
+
+.btn.btn-primary,
+.btn.btn-secondary{
+    font-weight: 700;
+    line-height: 1.5;
+    &.btn-md{
+        padding: .5rem 1rem;
+        font-size: $font-size-base;
+        border-radius: $border-radius;
+    }
+    &.btn-lg {
+        padding: .8rem 1.6rem;
+        font-size: $font-size-lg;
+        border-radius: $border-radius-lg;
+        @include media-breakpoint-down(lg) {
+            padding: .5rem 1.5rem;
+            font-size: $font-size-base;
+            border-radius: $border-radius;
+        }
     }
 }
 
@@ -277,10 +325,6 @@ blockquote.blockquote {
         text-transform: uppercase;
         font-weight: bold;
         margin-bottom: 1rem;
-    }
-
-    .btn-secondary {
-        background-color: rgba($white, 10%);
     }
 
     .dot {

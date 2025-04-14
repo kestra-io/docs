@@ -9,6 +9,7 @@
                     </NuxtLink>
                     <p class="mt-2">Open Source Declarative Data Orchestration</p>
                     <Socials class="mt-4 socials" />
+                    <LayoutNewsletter />
                 </div>
                 <div class="col-lg-9 mb-3">
                     <div class="row">
@@ -34,6 +35,7 @@
                                 <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/prefect">Prefect vs Kestra</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/dagster">Dagster vs Kestra</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/vs/aws-step-functions"> AWS Step Functions vs Kestra</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">

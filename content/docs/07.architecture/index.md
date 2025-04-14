@@ -19,7 +19,7 @@ Here are the components and their interactions:
 1. **JDBC Backend**: the data storage layer used for orchestration metadata
 
 2. **Server**: the central part of the system, composed of:
-   - [**Webserver**](./08.webserver.md): serves both an API and a User Interface
+   - [**Webserver**](./08.webserver.md): serves both the API and the User Interface
    - [**Scheduler**](./06.scheduler.md): schedules workflows and handles all triggers except for the flow triggers (see below)
    - [**Executor**](./04.executor.md): responsible for the orchestration logic including flow triggers
    - [**Worker**](./05.worker.md): one or multiple processes that carry out the heavy computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
@@ -86,7 +86,7 @@ Note that it's possible to use the [Enterprise Edition](/pricing) with a JDBC da
 
 The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with **Internal Storage** to persist intermediary results and store the final task run outputs.
 
-All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communcating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently.
+All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communicating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently.
 
 The **Webserver** communicates with the (Elasticsearch/JDBC) Repository to serve data for Kestra UI and API.
 

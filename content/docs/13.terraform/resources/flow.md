@@ -26,12 +26,12 @@ variables:
 
 tasks:
   - id: t2
-    type: io.kestra.plugin.core.log.Log
+    type: io.kestra.core.tasks.log.Log
     message: first {{task.id}}
     level: TRACE
 
 pluginDefaults:
-  - type: io.kestra.plugin.core.log.Log
+  - type: io.kestra.core.tasks.log.Log
     values:
       message: third {{flow.id}}
 EOT

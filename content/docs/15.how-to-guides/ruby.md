@@ -41,7 +41,7 @@ tasks:
     message: "{{ read(outputs.ruby_outputs_task.outputFiles['output.txt']) }}"
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-ruby/tasks/io.kestra.plugin.scripts.ruby.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-ruby/io.kestra.plugin.scripts.ruby.script)
 
 ### Commands
 
@@ -91,7 +91,7 @@ tasks:
       - ruby main.rb
 ```
 
-You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-ruby/tasks/io.kestra.plugin.scripts.ruby.commands).
+You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-ruby/io.kestra.plugin.scripts.ruby.commands).
 
 ## Handling Outputs
 

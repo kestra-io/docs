@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/plugins/${plugin.name}`">
+    <NuxtLink :href="href">
         <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip"
              data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
             <div class="icon-content">
@@ -12,7 +12,9 @@
     </NuxtLink>
 </template>
 <script setup>
-    const {$bootstrap} = useNuxtApp()
+    import {slugify} from "@kestra-io/ui-libs"
+
+    const {$bootstrap} = useNuxtApp();
     const props = defineProps({
         plugin: {
             type: Object,
@@ -25,6 +27,8 @@
     });
 
     const root = ref(null);
+
+    const href = `/plugins/${props.plugin.name}${props.plugin.subGroup === undefined ? '' : ('/' + slugify(props.plugin.title))}`
 
     onMounted(() => {
       if (process.client) {

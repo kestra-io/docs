@@ -1,68 +1,62 @@
 <template>
-    <div class="main">
+    <section class="main-header">
         <div class="hero container">
             <div class="text-block">
                 <h1>
-                    <text-scroller :texts="scrollingTexts" />
-                    <br>
-                    Smarter Not Harder
+                    Powerful orchestration.
+                    Simplified workflows.
                 </h1>
-                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows and Govern them as Code and from the UI.</p>
+                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-animated btn-purple-animated me-2 mb-2"
+                        class="btn btn-lg btn-primary me-3 mb-2"
                     >
-                        <NuxtImg
-                            width="25px"
-                            height="25px"
-                            loading="lazy"
-                            format="webp"
-                            src="/landing/home/lightning-bolt.svg"
-                            alt="lightning"
-                        />
-                        Get started
+                        Get Started!
                     </NuxtLink>
 
-                    <a
-                        href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
-                        class="btn btn-animated btn-dark-animated  mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#home-intro"
+                    <NuxtLink
+                        href="/demo"
+                        class="btn btn-lg btn-secondary mb-2"
+                        target="_blank"
                     >
-                        <NuxtImg
-                            width="25px"
-                            height="25px"
-                            loading="lazy"
-                            format="webp"
-                            src="/landing/home/play.svg"
-                            alt="play"
-                        />
-                        Watch video
-                    </a>
+                        Book a Demo
+                    </NuxtLink>
 
                 </div>
             </div>
             <div class="img-block">
+                <a
+                    href="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
+                    class="homepage-video"
+                    data-bs-toggle="modal"
+                    data-bs-target="#home-intro"
+                >
+                    <div>
+                        <PlayCircleOutlineIcon class="play-icon"/>
+                        Kestra in 60 seconds
+                    </div>
+                    <NuxtImg
+                        src="/landing/home/video60sec.gif"
+                        alt="video"
+                        height="90"
+                        width="162"
+                    />
+                </a>
                 <NuxtImg
                     v-if="isMobile"
-                    width="2991px"
-                    height="1257px"
+                    height="720"
                     loading="lazy"
-                    format="webp"
-                    src="/landing/home/homepage.jpg"
+                    src="/landing/home/homepage.png"
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else ref="canvas" height="1520" width="2000"/>
-            </div>
-            <div class="companies-background">
-                <LayoutCompanies class="d-xl-none" />
-                <HomeCompanies class="mb-4 pb-4 companies container d-none d-xl-block" />
+                <canvas v-else ref="canvas" height="1520" width="2000" :class="{
+                    loading: !riveLoaded,
+                }"/>
             </div>
         </div>
-
-    </div>
+    </section>
     <div
         v-on="{
             'show.bs.modal': () => (videoVisible = true),
@@ -82,7 +76,7 @@
                             v-if="videoVisible"
                             width="560"
                             height="315"
-                            src="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
+                            src="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
                             title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -98,7 +92,7 @@
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
     import { useMediaQuery } from "@vueuse/core";
-    import TextScroller from "~/components/layout/TextScroller.vue";
+    import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -106,13 +100,9 @@
 
     const videoVisible = ref(false)
     const canvas = ref<HTMLCanvasElement>()
-    const scrollingTexts = [
-        { text: "Orchestrate", color: "#E500EA" },
-        { text: "Automate", color: "#4281FF" },
-        { text: "Schedule", color: "#9D40FB" },
-    ]
 
     const riveAnimation = ref()
+    const riveLoaded = ref(false)
 
     function setupRiveAnimation(){
         if(!canvas.value) return
@@ -123,6 +113,7 @@
             stateMachines: "kestra",
             isTouchScrollEnabled: true,
             onLoad: () => {
+                riveLoaded.value = true
                 anim.resizeDrawingSurfaceToCanvas();
             },
         });
@@ -161,7 +152,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main {
+    .main-header {
         position: relative;
         &::before {
             position: absolute;
@@ -181,9 +172,6 @@
             width: 100%;
             align-items: center;
             gap: $spacer;
-            @include media-breakpoint-down(md) {
-                margin: 2.5rem 0 1rem;
-            }
         }
 
         .hero {
@@ -193,48 +181,43 @@
         }
 
         h1 {
-            color: var(--bs-white);
+            color: white;
             text-align: center;
             max-width: 100%;
-            font-size: 24pt;
-            font-weight: 400;
+            font-weight: 600;
+            font-size: 1.5rem;
             padding: 0;
             margin-top: 2rem;
             margin-bottom: 0;
             @include media-breakpoint-up(lg) {
+                font-size: 3rem;
                 margin: 0;
-                font-size: 39pt;
-                line-height: 1em;
-            }
-
-
-            :deep(span) {
-                background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                max-width: 800px;
+                font-size: 3.875rem;
+                line-height: 1.2em;
             }
         }
 
         p {
             max-width: fit-content;
             text-align: center;
-            font-weight: 500;
-            font-size: $h6-font-size;
-            color: $white;
+            font-weight: 400;
+            color: #B9B9BA;
             text-wrap: balance;
-            margin:0;
-            @include media-breakpoint-down(md) {
-                font-size: 11pt;
-            }
+            margin: 0;
+            margin-top: .5rem;
+            font-size: .9rem;
             @include media-breakpoint-up(lg) {
                 text-wrap: wrap;
                 width: 600px;
+                font-size: 1.2rem;
             }
         }
 
         .buttons {
             text-align: center;
+            margin-top: 1.5rem;
+            white-space: nowrap;
         }
 
         .companies {
@@ -261,109 +244,51 @@
         @include media-breakpoint-down(lg) {
             .hero {
                 padding-top: 6rem;
-                padding-bottom: 2rem;
-
+                padding-bottom: 0;
                 .text-block {
                     margin-bottom: 0;
                 }
             }
         }
 
-        .companies-background {
-            padding-bottom: 4rem;
-            position: relative;
-            z-index: 10;
-            margin-top: -170px;
-
-            @include media-breakpoint-down(xxl) {
-                margin-top: -80px;
-            }
-
-            @include media-breakpoint-down(xl) {
-                width: 100vw;
-                position: relative;
-                left: 50%;
-                right: 50%;
-                margin-left: -50vw;
-                margin-right: -50vw;
-            }
-            @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
-                width: unset;
-                position: unset;
-                left: unset;
-                right: unset;
-                margin-left: -15px;
-                margin-right: -15px;
-            }
-            @include media-breakpoint-down(md) {
-                margin-top: -40px;
-            }
-            :deep(.companies-container .companies img) {
-                @include media-breakpoint-down(md) {
-                    max-height: 30px;
-                    width: auto;
-                }
-                @include media-breakpoint-down(sm) {
-                    max-height: 15px;
-                    width: auto;
-                }
-
-            }
-        }
-
-        .activity-list {
-            border-radius: 8px;
-            border: 0.829px solid $black-6;
-            padding: 34px 122.5px;
-            background: url("/landing/home/bg.svg") no-repeat center;
-            background-size: 100% 100%;
-            text-align: center;
-            font-family: $font-family-sans-serif;
-            text-transform: uppercase;
-
-            p {
-                margin: 0;
-            }
-
-            .count {
-                color: $white;
-                font-size: 48.087px;
-                font-weight: 100;
-                line-height: 46px;
-            }
-
-            .description {
-                color: rgba(255, 255, 255, 0.70);
-                font-size: 11.607px;
-                font-weight: 500;
-            }
-
-            @include media-breakpoint-down(xl) {
-                padding: 30px 64px;
-            }
-
-            @include media-breakpoint-down(lg) {
-                padding: 30px 44px;
-                .count {
-                    font-size: 30px;
-                    line-height: 30px;
-                }
-
-                .description {
-                    font-size: 9px;
-                }
-            }
-
-            @include media-breakpoint-down(md) {
-                max-width: 330px;
-                flex-wrap: wrap;
-                justify-content: center !important;
-                gap: 25px;
-            }
-        }
-
         .img-block
         {
+            .homepage-video {
+                position: absolute;
+                top: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                @include media-breakpoint-up(lg) {
+                    top: -70px;
+                    transform: none;
+                    right: 0;
+                    left: auto;
+                }
+                z-index: 10;
+                padding: 0;
+                overflow: hidden;
+                border: 1px solid #5818D8;
+                border-radius: 1rem;
+                color: white;
+                height: 90px;
+                background-color: #5818D8;
+                > div {
+                    position: absolute;
+                    text-align: center;
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    font-size: 13px;;
+                    .play-icon{
+                        margin: .5rem;
+                        font-size: 32px;
+                    }
+                }
+            }
+            position: relative;
             display: flex;
             justify-content: center;
             .homepage-image{
@@ -372,20 +297,35 @@
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
-                left: -50px;
+                height: 360px;
+                overflow: hidden;
+                width: 100vw;
                 canvas {
                     display: none;
                 }
                 .homepage-image{
                     display: block;
-                    height: 500px;
+                    height: 400px;
+                    margin-top: 75px;
+                    position: relative;
+                    width: 900px;
+                    left: -50px;
                     margin-bottom: 100px;
                 }
             }
-            
+
             canvas {
                 width: 2000px;
-                margin-top: -650px;
+                margin-top: -700px;
+                margin-bottom: -200px;
+                background-image: url("/landing/home/homepage.png");
+                background-position: 237px 596px;
+                background-size: 1600px;
+                background-repeat: no-repeat;
+            }
+
+            canvas.loading{
+                opacity: .5;
             }
         }
 

@@ -62,7 +62,7 @@ triggers:
         prefix: true
 ```
 
-You can read more about it on this [page](https://kestra.io/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow).
+You can read more about it on this [page](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow).
 
 ## 6. Backfill
 

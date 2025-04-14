@@ -13,7 +13,7 @@ It's been a year since ChatGPT, an advanced form of a large language model, has 
 
 Large language models rely on vector embeddings, which is a type of data that's perfectly suited for storing in vector databases. You can also store common data objects just like you would in document databases. The main benefit of a vector database is the fact you can scale virtually infinitely, provided you have the hardware prerequisites covered.
 
-One of the most popular vector database vendors is [Weaviate](https://weaviate.io/), and we're happy to introduce our new [Kestra Weaviate plugin](https://kestra.io/plugins/plugin-weaviate) that allows you to interact with this vector database with a wide array of functionalities.
+One of the most popular vector database vendors is [Weaviate](https://weaviate.io/), and we're happy to introduce our new [Kestra Weaviate plugin](/plugins/plugin-weaviate) that allows you to interact with this vector database with a wide array of functionalities.
 
 Today's article will briefly refresh your memory on vector databases, and show you hands-on how to use our new plugin to **create a schema, insert, and query records** stored in a Weaviate vector database.
 

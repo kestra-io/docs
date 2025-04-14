@@ -96,7 +96,7 @@
                                     href="/demo"
                                     class="btn text-white btn-animated btn-purple-animated mt-2"
                                 >
-                                    get a demo
+                                    Get a demo
                                 </NuxtLink>
                             </div>
                         </div>
