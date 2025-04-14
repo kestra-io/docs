@@ -2,7 +2,7 @@
 title: Sync Users Access to a Default Tenant
 icon: /docs/icons/migration-guide.svg
 release: 0.13.0
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Adjusting users' access to the default tenant.

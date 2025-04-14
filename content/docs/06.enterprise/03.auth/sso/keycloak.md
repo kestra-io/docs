@@ -1,7 +1,7 @@
 ---
 title: Configure KeyCloak SSO
 icon: /docs/icons/tutorial.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Setup KeyCloak SSO to manage authentication for users.

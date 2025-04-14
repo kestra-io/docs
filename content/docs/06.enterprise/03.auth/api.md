@@ -1,7 +1,7 @@
 ---
 title: Kestra EE API
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 How to interact with Kestra Enterprise Edition using the API.

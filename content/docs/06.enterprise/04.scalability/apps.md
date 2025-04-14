@@ -1,7 +1,7 @@
 ---
 title: Apps
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
 docId: apps
 ---

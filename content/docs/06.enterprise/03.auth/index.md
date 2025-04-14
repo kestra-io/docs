@@ -1,7 +1,7 @@
 ---
 title: Authentication & Users
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 Features for managing Authentication, Role-based Access Control, Users, and more in Kestra.
 

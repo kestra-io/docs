@@ -1,7 +1,7 @@
 ---
 title: Enterprise Namespace Pages
 icon: /docs/icons/ui.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Manage specific enterprise features within a namespace.

@@ -1,7 +1,7 @@
 ---
 title: Google as an OIDC SSO Provider
 icon: /docs/icons/tutorial.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 # Setting Up OpenID Connect (OIDC) with Google Identity Platform and Integrating with Kestra

@@ -1,7 +1,7 @@
 ---
 title: Microsoft as an OIDC SSO Provider
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 ## Using Microsoft as an OIDC SSO Provider

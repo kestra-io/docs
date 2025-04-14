@@ -1,7 +1,7 @@
 ---
 title: Custom Blueprints
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 docId: custom
 ---
 

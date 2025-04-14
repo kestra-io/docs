@@ -6,7 +6,7 @@ topics:
   - Kestra Concepts
   - DevOps
   - Integrations
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
@@ -28,7 +28,7 @@ To follow this guide you will need the following
   - [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/)
   - [User-assigned managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
 
-This guide is based on the official Azure documentation on Workload Identity — it's best to read [this Azure guide](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) first for full context. Here, we'll focus on enabling this feature in Kestra. 
+This guide is based on the official Azure documentation on Workload Identity — it's best to read [this Azure guide](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) first for full context. Here, we'll focus on enabling this feature in Kestra.
 
 ## Variables
 
@@ -58,24 +58,24 @@ FEDERATED_IDENTITY_CREDENTIAL_NAME="kestra-fed-cred"
 First, create the following main resources:
 1. The Key Vault
 2. The Managed Identity
-3. The AKS cluster. 
+3. The AKS cluster.
 
 Once these have been provisioned, there are several identifiers we must capture for later use.
 
 ### Azure Key Vault
 
-This creates an Azure Key Vault. By default this will be created with RBAC (role-based access control) enabled which is the recommended configuration. 
+This creates an Azure Key Vault. By default this will be created with RBAC (role-based access control) enabled which is the recommended configuration.
 
 ```shell
 az keyvault create \
   --name $KEYVAULT_NAME \
   --resource-group $RESOURCE_GROUP \
-  --location $LOCATION 
+  --location $LOCATION
 ```
 
 ### Managed Identity
 
-This creates the user-assigned managed identity we will use to provision access to resources within the Kubernetes cluster. 
+This creates the user-assigned managed identity we will use to provision access to resources within the Kubernetes cluster.
 
 ```shell
 az identity create --name $ID_NAME \
@@ -106,11 +106,11 @@ AKS_OIDC_ISSUER="$(az aks show --name "${AKS_NAME}" --resource-group "${RESOURCE
 
 ## Link Identity Resources
 
-One of the more challenging aspects of this setup is correctly linking together the various resources. This section covers how to tie the managed identities to the resources to allow access by the Kestra application. 
+One of the more challenging aspects of this setup is correctly linking together the various resources. This section covers how to tie the managed identities to the resources to allow access by the Kestra application.
 
-### Create role assignment for created user 
+### Create role assignment for created user
 
-This is one of the most critical steps as it sets the permission the resource has on the Key Vault. As Kestra needs to read and write secrets to the vault, the "Key Vault Secrets Officer" provides least priviledged access for this operation. Further details on this role can be found [in Azure's RBAC guide](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations). 
+This is one of the most critical steps as it sets the permission the resource has on the Key Vault. As Kestra needs to read and write secrets to the vault, the "Key Vault Secrets Officer" provides least priviledged access for this operation. Further details on this role can be found [in Azure's RBAC guide](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
 
 ```shell
 az role assignment create \
@@ -128,7 +128,7 @@ First, we must switch context to the newly created AKS cluster:
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_NAME
 ```
 
-Next, create a service account in the same namespace where you deploy Kestra. 
+Next, create a service account in the same namespace where you deploy Kestra.
 
 ```shell
 cat <<EOF | kubectl apply -f -
@@ -156,7 +156,7 @@ az identity federated-credential create \
 
 ## Deploying Kestra
 
-Before we deploy Kestra, we need to modify the `values.yaml` of the helm chart using some of the information above. 
+Before we deploy Kestra, we need to modify the `values.yaml` of the helm chart using some of the information above.
 
 ### Configure Secrets Manager
 
@@ -172,7 +172,7 @@ configuration:
 
 ### Service Account
 
-Make sure to add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with your value defined above. 
+Make sure to add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with your value defined above.
 
 ```yaml
 ### Global Deployement

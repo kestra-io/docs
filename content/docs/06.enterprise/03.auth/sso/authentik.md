@@ -1,7 +1,7 @@
 ---
 title: Configure authentik SSO
 icon: /docs/icons/tutorial.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Setup authentik SSO to manage authentication for users.

@@ -1,7 +1,7 @@
 ---
 title: Read-only Secrets
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
 
@@ -18,7 +18,7 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 ## Configure read-only secrets
 
-Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level. 
+Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level.
 
 To turn on for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
 
@@ -35,7 +35,7 @@ Secrets will now have a lock icon to show that they cannot be edited from Kestra
 To configure globally, add `readOnly: true` to the configuration of your external secret manager like in the examples below.
 
 ### AWS Secret Manager
- 
+
 For compatibility with Kestra, ensure that your AWS secrets are stored as plain text in AWS Secrets Manager and not as key-value pairs. The following example shows the configuration for AWS Secret Manager with a read-only secrets backend:
 
 ```yaml
@@ -142,7 +142,7 @@ id: neon-db
 namespace: dv-aj
 
 tasks:
-  
+
   - id: download
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
