@@ -1,5 +1,5 @@
 ---
-title: Enterprise Edition and Kestra Cloud
+title: Cloud & Enterprise Edition
 editions: ["EE", "Cloud"]
 ---
 
