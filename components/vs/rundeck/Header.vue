@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="zoom-in">
-                    <img class="zoom img-fluid" src="/landing/vs/kestra-vs-rundeck.svg" alt="header Kestra vs Aria Automation"/>
+                    <img class="zoom img-fluid" src="/landing/vs/Kestra-vs-rundeck.svg" alt="header Kestra vs Aria Automation"/>
                 </div>
             </div>
         </div>
