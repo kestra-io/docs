@@ -105,9 +105,13 @@ You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin typ
 
 ### Fallback Behaviour at the Namespace Level
 
+Namespaces can be configured to have a default `fallback` behaviour. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
+
 ![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
 
 ### Fallback Behaviour at the Tenant Level
+
+Tenants can be configured to have a default `fallback` behaviour. It can be configured when creating a tenant on in the tenant's properties.
 
 ![Configure Worker Group for a Tenant](/docs/enterprise/worker-group-tenant.png)
 
@@ -118,6 +122,36 @@ Here are common use cases in which Worker Groups can be beneficial:
 - Execute tasks and polling triggers on a worker with a specific Operating System (e.g., a Windows server).
 - Restrict backend access to a set of workers (firewall rules, private networks, etc.).
 - Execute tasks and polling triggers close to a remote backend (region selection).
+
+
+You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../04.workflow-components/01.tasks/02.scripts/index.md) are set to run on the `gpu` worker group:
+
+```yaml
+id: worker_group
+namespace: company.team
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - sleep 10
+    
+  - id: python_gpu
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - python ml_on_gpu.py
+
+pluginDefaults:
+  - forced: false
+    type: io.kestra.plugin.scripts
+    values:
+      workerGroup:
+        key: gpu
+```
 
 ### Distant Workers
 
