@@ -1435,7 +1435,16 @@ export default {
                     transition: background-color 250ms ease-in-out;
                 }
             }
+            &.open {
+                @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                    & {
+                        background-color: $black-9;
+                    }
+                }
+            }
         }
+
+
 
         &::before {
             content: "";
