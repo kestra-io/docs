@@ -54,16 +54,13 @@ export default {
 
     .meta {
         font-size: $font-size-sm;
-        
-        .category, .date {	       
-            color: $purple;	         
+        .category, .date {
+            color: $purple;
             font-size: $font-size-sm;
-            font-weight: 100;	
+            font-weight: 100;
         }
-        
-        .date {	        
+        .date {
             color: $white;
-            font-weight: 400;
         }
     }
 
@@ -80,14 +77,14 @@ export default {
         min-width: 250px;
 
         .name {
-            color: $purple-36;
+            color: $white;
             font-size: $font-size-md;
             font-weight: 600;
             margin: 0;
         }
         
         .role {
-            color: $white;
+            color: $white-1;
             font-size: $font-size-sm;
             font-weight: 400;
         }
