@@ -17,13 +17,17 @@ Worker Group is a set of workers that can be targeted specifically for a task ex
 
 To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
 
+![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
+
 ## Starting Workers for a Worker Group
 
 Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
 
+![Worker Group UI](/docs/enterprise/worker-group-ui.png)
+
 The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
 
-![Worker Group UI](/docs/enterprise/worker-group-ui.png)
+![Worker Group UI Details](/docs/enterprise/worker-group-details.png)
 
 ::alert{type="info"}
 In order to run the command at startup, you need to run each component independently and use this for the worker component. To set this up, read more [here](../../server-cli/index.md#kestra-with-server-components-in-different-services). 
