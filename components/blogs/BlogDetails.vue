@@ -55,12 +55,13 @@ export default {
     .meta {
         font-size: $font-size-sm;
         
-        .category {
-            color: $purple;
-            font-weight: 500;
+        .category, .date {	       
+            color: $purple;	         
+            font-size: $font-size-sm;
+            font-weight: 100;	
         }
         
-        .date, .read-time {
+        .date {	        
             color: $white;
             font-weight: 400;
         }

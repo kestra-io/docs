@@ -16,7 +16,6 @@
 
 <script>
     import BlogCardDetails from "./BlogCardDetails.vue";
-    import { useBlogAuthors } from "~/composables/useBlogAuthors";
 
     export default {
         name: "HighlightBlogCard",
@@ -26,12 +25,6 @@
                 type: Object,
                 required: true,
             },
-        },
-        computed: {
-            authorName() {
-                const { getFirstAuthorName } = useBlogAuthors(this.blog);
-                return getFirstAuthorName();
-            }
         }
     }
 </script>
