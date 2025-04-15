@@ -76,7 +76,7 @@ tasks:
       key: "{{ inputs.my_worker_group }}"
 ```
 
-## Worker Group Behavior
+## Worker Group Fallback Behavior
 
 ::badge{version=">=0.20" editions="EE"}
 ::
@@ -102,6 +102,14 @@ Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CAN
 - `CANCEL`: The task run will be gracefully terminated and execution will be marked as `KILLED` without an error.
 
 You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
+
+### Fallback Behaviour at the Namespace Level
+
+![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
+
+### Fallback Behaviour at the Tenant Level
+
+![Configure Worker Group for a Tenant](/docs/enterprise/worker-group-tenant.png)
 
 ## When to use Worker Groups
 
