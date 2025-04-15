@@ -1175,9 +1175,46 @@ kestra:
           password: ${kestra.ee.license.fingerprint:}
 ```
 
-### Enable or disable features
+### Plugin Defaults
 
-The `configuration` of `plugins` section can be also used to enable or disable some features of specific Kestra plugins, or to set some default values for them.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined as a default value for these tasks.
+
+```yaml
+kestra:
+  plugins:
+    defaults:
+    - type: io.kestra.plugin.core.log.Log
+      values:
+        level: ERROR
+```
+
+For greater granularity, you can use the flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level) property, which overrides global defaults for the given flow.
+
+::alert{type="info"}
+For more information, you can see the dedicated [Plugin ​Defaults](../04.workflow-components/09.plugin-defaults.md) section.
+::
+
+#### Forced Plugin Defaults
+
+The `forced` flag ensures a property is set globally for a task, and no task can override it.
+
+You can use this to isolate tasks in containers, such as scripting tasks. For Bash tasks and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to provide global cluster configuration:
+
+```yaml
+kestra:
+  plugins:
+    defaults:
+      - type: io.kestra.plugin.scripts.shell.Commands
+        forced: true
+        values:
+          containerImage: ubuntu:latest
+          taskRunner:
+            type: io.kestra.plugin.scripts.runner.docker.Docker
+```
+
+### Enable or Disable Features
+
+The `kestra.plugins.configuration` section can be used to enable or disable specific Kestra plugin features or to set default values for them.
 
 Here is an example of how to enable outputs for `Subflow` and `Flow` tasks:
 
@@ -1197,9 +1234,11 @@ kestra:
 
 By default, the `outputs` property of a parent flow's `Subflow` task is deprecated in favor of flow `outputs` in Kestra 0.15.0 and higher. However, setting such configuration will keep the old behavior with the `outputs` property.
 
-### Set default values
+#### Set Default Values
 
-You can also set default values for a plugin. For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
+You can also set default values for a plugin. Unlike the [`defaults` section](./#plugin-defaults), the `configuration` section defines features that are not accessible through the standard plugin properties used in flows.
+
+For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
 
 ```yaml
 kestra:
@@ -1214,6 +1253,7 @@ kestra:
 Before 0.15, Kestra was always recovering missed schedules. This means that if your server was down for a few hours, Kestra would recover all missed schedules when it was back up. This behavior was not always desirable, as often the recovery of missed schedules is not necessary e.g. during a planned maintenance window. This is why, starting from Kestra 0.15 release, you can customize the `recoverMissedSchedules` property and choose whether you want to recover missed schedules or not.
 
 The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
+
 - `ALL`: Kestra will recover all missed schedules. This is the default value.
 - `NONE`: Kestra will not recover any missed schedules.
 - `LAST`: Kestra will recover only the last missed schedule for each flow.
@@ -1229,6 +1269,19 @@ triggers:
 ```
 
 In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
+
+### Volume Enabled for Docker Task Runner
+
+Volume mounts are disabled by default for security reasons; you can enable them with these configurations:
+
+```yaml
+kestra:
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.scripts.runner.docker.Docker
+        values:
+          volumeEnabled: true
+```
 
 ### Allowed plugins
 
@@ -1250,33 +1303,7 @@ kestra:
         - io.kestra.plugin.core.debug.Echo
 ```
 
-### Plugin defaults
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-    - type: io.kestra.plugin.core.log.Log
-      values:
-        level: ERROR
-```
-
-Forced plugin defaults:
-- ensure a property is set globally for a task, and no task can override it
-- are critical for security and governance, e.g. to enforce Shell tasks to run as Docker containers.
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.scripts.shell.Script
-        forced: true
-        values:
-          taskRunner:
-            type: io.kestra.plugin.scripts.runner.docker.Docker
-```
 ### Plugin Management
 
 As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
@@ -1983,37 +2010,6 @@ kestra:
 
 Using the `kestra.tasks` configuration, you can set up multiple task-specific features.
 
-### Plugin Default Configuration
-
-You can set defaults for specific tasks using the `kestra.plugins.defaults` configuration. These defaults will be applied to all tasks on your cluster if a property is not defined on flows or tasks.
-
-You can use this to isolate tasks in containers, such as scripting tasks. For Bash tasks and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster pluginDefaults:
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.scripts.shell.Commands
-        forced: true
-        values:
-          containerImage: ubuntu:latest
-          taskRunner:
-            type: io.kestra.plugin.scripts.runner.docker.Docker
-```
-
-### Volume Enabled for Docker Task Runner
-
-Volumes mount are disabled by default for security reasons, you can enabled it with this configurations:
-
-```yaml
-kestra:
-  plugins:
-    configurations:
-      - type: io.kestra.plugin.scripts.runner.docker.Docker
-        values:
-          volumeEnabled: true
-```
-
 ### Temporary storage configuration
 
 Kestra writes temporary files during task processing. By default, files will be created on `/tmp`, but you can change the location with this configuration:
@@ -2025,7 +2021,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-**Note:** The `tmpDir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory.
+Note that the `tmpDir` path must be aligned with the volume path; otherwise, Kestra will not know what directory to mount for the `tmp` directory.
 
 ```yaml
 volumes:
@@ -2033,6 +2029,7 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
+
 In this example, `/home/kestra:/home/kestra` matches the tasks `tmpDir` field.
 
 ### Tutorial Flows
