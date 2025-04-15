@@ -1,8 +1,8 @@
 <template>
     <div class="blog-details">
         <div class="meta mb-4">
-            <span class="category">{{ blog.category }}</span>
-            <span class="date ms-3">{{ date }}</span>
+            <span class="date">{{ date }}</span>
+            <span class="category ms-3">{{ blog.category }}</span>
         </div>
         <div class="authors d-flex flex-wrap gap-4">
             <div v-for="author in authorsList" :key="author.name" 

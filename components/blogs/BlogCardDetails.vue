@@ -1,5 +1,15 @@
 <template>
-    <p>{{ name }} - {{ timesAgo(date) }}</p>
+    <p>
+        <template v-if="Array.isArray(authors)">
+            <span v-for="(author, index) in authors" :key="author.name">
+                {{ author.name }}<span v-if="index < authors.length - 1">, </span>
+            </span>
+            - {{ timesAgo(date) }}
+        </template>
+        <template v-else>
+            {{ name }} - {{ timesAgo(date) }}
+        </template>
+    </p>
 </template>
 
 <script>
@@ -9,7 +19,13 @@
         props: {
             name: {
                 type: String,
-                required: true,
+                required: false,
+                default: '',
+            },
+            authors: {
+                type: Array,
+                required: false,
+                default: null,
             },
             date: {
                 type: String,

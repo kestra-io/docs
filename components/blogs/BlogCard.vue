@@ -20,7 +20,11 @@
             <div class="mt-1">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h6 class="my-1">{{ blog.title }}</h6>
-                <BlogsBlogCardDetails :name="blog.authors?.[0]?.name || blog.author?.name" :date="blog.date"/>
+                <BlogsBlogCardDetails 
+                    :name="blog.author?.name" 
+                    :authors="blog.authors"
+                    :date="blog.date"
+                />
             </div>
         </NuxtLink>
     </div>
