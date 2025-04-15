@@ -11,7 +11,7 @@
                                     <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                     <h4 class="card-title">{{ blog.title }}</h4>
                                     <p class="author">
-                                        {{ blog.author.name }}  {{ timesAgo(blog.date) }}
+                                        {{ getAuthors(blog).map(author => author.name).join(', ') }} - {{ timesAgo(blog.date) }}
                                     </p>
                                 </div>
                             </NuxtLink>
@@ -27,6 +27,8 @@
 </template>
 <script setup>
     import Section from './Section.vue';
+    import { timesAgo } from "~/utils/times.js";
+    import { useBlogAuthors } from "~/composables/useBlogAuthors";
     const {public:{CollectionNames}} = useRuntimeConfig()
 
     const props = defineProps({
@@ -35,6 +37,8 @@
             required: true
         },
     })
+
+    const { getAuthors } = useBlogAuthors();
 
     const {data: blogs} = await useAsyncData(
         `layout-blog`,

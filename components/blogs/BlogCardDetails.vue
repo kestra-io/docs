@@ -1,15 +1,5 @@
 <template>
-    <p>
-        <template v-if="Array.isArray(authors)">
-            <span v-for="(author, index) in authors" :key="author.name">
-                {{ author.name }}<span v-if="index < authors.length - 1">, </span>
-            </span>
-            - {{ timesAgo(date) }}
-        </template>
-        <template v-else>
-            {{ name }} - {{ timesAgo(date) }}
-        </template>
-    </p>
+    <p>{{ authorName }} - {{ timesAgo(date) }}</p>
 </template>
 
 <script>
@@ -17,20 +7,20 @@
     export default {
         name: "BlogCardDetails",
         props: {
-            name: {
-                type: String,
-                required: false,
-                default: '',
-            },
             authors: {
                 type: Array,
-                required: false,
-                default: null,
+                required: true,
             },
             date: {
                 type: String,
                 required: true,
             },
+        },
+        computed: {
+            authorName() {
+                if (!this.authors.length) return '';
+                return this.authors.map(author => author.name).join(', ');
+            }
         },
         methods: {
             timesAgo,
