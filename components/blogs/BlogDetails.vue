@@ -65,8 +65,7 @@ export default {
     }
 
     img {
-        max-width: 48px;
-        border: 1px solid $black-3;
+        max-width: 68px;
     }
 
     .authors {
@@ -86,7 +85,6 @@ export default {
         .role {
             color: $white-1;
             font-size: $font-size-sm;
-            font-weight: 400;
         }
     }
 </style>
