@@ -6,8 +6,6 @@
                 Workflow Orchestration Platform
             </h2>
 
-            <NuxtLink class="btn btn-primary btn-lg" href="/preview-access" target="_blank">Kestra Live Demo</NuxtLink>
-
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">
                     <component :is="feature.icon" class="icon"/>
