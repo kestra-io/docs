@@ -19,9 +19,15 @@ To create a new Worker Group, navigate to the **Instance** page under the **Admi
 
 ## Starting Workers for a Worker Group
 
-Once a worker group key is created, you can start a worker with the `--worker-group workerGroupKey` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
+Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
 
 The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
+
+![Worker Group UI](/docs/enterprise/worker-group-ui.png)
+
+::alert{type="info"}
+In order to run the command at startup, you need to run each component independently and use this for the worker component. To set this up, read more [here](../../server-cli/index.md#kestra-with-server-components-in-different-services). 
+::
 
 ## Using Worker Groups
 
@@ -51,19 +57,19 @@ If the `workerGroup.key` property is not provided, all tasks and polling trigger
 A `workerGroup.key` can also be assigned dynamically using `inputs` like in the following example:
 
 ```yaml
-id: workerGroupDynamic
+id: worker_group_dynamic
 namespace: company.team
 
 inputs:
-  - id: myWorkerGroup
+  - id: my_worker_group
     type: STRING
 
 tasks:
   - id: workerGroup
     type: io.kestra.plugin.core.debug.Return
-    format: "{{taskrun.startDate}}"
+    format: "{{ taskrun.startDate }}"
     workerGroup:
-      key: "{{inputs.myWorkerGroup}}"
+      key: "{{ inputs.my_worker_group }}"
 ```
 
 ## Worker Group behavior
