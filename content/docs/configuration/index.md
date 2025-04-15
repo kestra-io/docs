@@ -1177,7 +1177,7 @@ kestra:
 
 ### Plugin Defaults
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those provide default values for plugins properties and will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined as a default value for these tasks.
 
 ```yaml
 kestra:
@@ -1214,7 +1214,7 @@ kestra:
 
 ### Enable or Disable Features
 
-The `kestra.plugins.configuration` configuration section can be used to enable or disable some features of specific Kestra plugins, or to set some default values for them.
+The `kestra.plugins.configuration` section can be used to enable or disable specific Kestra plugin features or to set default values for them.
 
 Here is an example of how to enable outputs for `Subflow` and `Flow` tasks:
 
@@ -1272,7 +1272,7 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 
 ### Volume Enabled for Docker Task Runner
 
-Volumes mount are disabled by default for security reasons, you can enabled it with this configurations:
+Volume mounts are disabled by default for security reasons; you can enable them with these configurations:
 
 ```yaml
 kestra:
@@ -2021,7 +2021,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-Note that the `tmpDir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory.
+Note that the `tmpDir` path must be aligned with the volume path; otherwise, Kestra will not know what directory to mount for the `tmp` directory.
 
 ```yaml
 volumes:
