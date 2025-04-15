@@ -956,30 +956,40 @@ export default {
 
         globalClick(close) {
           if (window.innerWidth < 992) {
-            this.collapse.toggle();
+            if(close === true){
+                this.collapse.hide();
+                this.isOpen = false;
+            } else if (close === false){
+                this.collapse.show()
+                this.isOpen = true;
+            }else{
+                this.collapse.toggle();
+                this.isOpen = !this.isOpen;
+            }
+            return
           }
           if (close) {
-                this.showMenu = false
-                this.mouseoverMenu = false
-                this.showMenuId = null
-                this.headerMenuPointerEvents = 'none'
-                if (this.$refs.navbar.classList.contains("open")) {
-                    this.isOpen = false;
-                    document.body.style.overflow = 'unset';
-                    document.body.style.position = 'unset';
-                    document.body.style.width = 'unset';
-                }
-                const element = document.querySelector('.nav-link.show');
-                if (element) {
-                  element.classList.remove('show');
-                  element.nextElementSibling.classList.remove('show');
-                }
-            } else {
-              document.body.style.overflow = 'hidden';
-              document.body.style.position = 'fixed';
-              document.body.style.width = '100%';
-              this.isOpen = !this.isOpen;
+            this.showMenu = false
+            this.mouseoverMenu = false
+            this.showMenuId = null
+            this.headerMenuPointerEvents = 'none'
+            if (this.$refs.navbar.classList.contains("open")) {
+                this.isOpen = false;
+                document.body.style.overflow = 'unset';
+                document.body.style.position = 'unset';
+                document.body.style.width = 'unset';
             }
+            const element = document.querySelector('.nav-link.show');
+            if (element) {
+                element.classList.remove('show');
+                element.nextElementSibling.classList.remove('show');
+            }
+          } else {
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            this.isOpen = !this.isOpen;
+          }
         },
         logoClick() {
             if (this.$route.path === "/") {
@@ -1425,7 +1435,16 @@ export default {
                     transition: background-color 250ms ease-in-out;
                 }
             }
+            &.open {
+                @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                    & {
+                        background-color: $black-9;
+                    }
+                }
+            }
         }
+
+
 
         &::before {
             content: "";
