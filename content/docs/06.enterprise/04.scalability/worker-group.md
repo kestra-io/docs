@@ -15,7 +15,7 @@ Worker Group is a set of workers that can be targeted specifically for a task ex
 ::badge{version=">=0.19" editions="EE"}
 ::
 
-To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key`, a **Description** and optionally **Allowed Tenants**) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
 
 ![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 
@@ -30,7 +30,7 @@ The Worker Groups UI tracks the health of worker groups, showing how many worker
 ![Worker Group UI Details](/docs/enterprise/worker-group-details.png)
 
 ::alert{type="info"}
-In order to run the command at startup, you need to run each component independently and use this for the worker component. To set this up, read more [here](../../server-cli/index.md#kestra-with-server-components-in-different-services). 
+In order to run the command at startup, you need to run each component independently and and use the command for the worker component startup. To set this up, read more [here](../../server-cli/index.md#kestra-with-server-components-in-different-services). 
 ::
 
 ## Using Worker Groups
@@ -76,7 +76,7 @@ tasks:
       key: "{{ inputs.my_worker_group }}"
 ```
 
-## Worker Group behavior
+## Worker Group Behavior
 
 ::badge{version=">=0.20" editions="EE"}
 ::
@@ -139,11 +139,11 @@ In the below architecture, it is not possible to execute tasks on worker 1 from 
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
 ::
 
-## Load balancing
+## Load Balancing
 
 Whether you leverage worker groups or not, Kestra will balance the load across all available workers. The primary difference is that with worker groups, you can target **specific** workers for task execution or polling trigger evaluation.
 
-A worker is part of a worker group if it is started with `--worker-group workerGroupKey`.
+A worker is part of a worker group if it is started with the `--worker-group workerGroupKey` argument.
 
 There's a slight difference between Kafka and JDBC architectures in terms of load balancing:
 - The Kafka architecture relies on Kafka consumer group protocol — each worker group will use a different consumer group protocol, therefore each worker group will balance the load independently.
