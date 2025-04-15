@@ -166,7 +166,7 @@ export default defineNuxtConfig({
                         "How-to Guides"
                     ],
                     "Scale with Kestra": [
-                        "Enterprise Edition",
+                        "Cloud & Enterprise Edition",
                         "Task Runners",
                         // "Worker Groups",
                         "Best Practices"

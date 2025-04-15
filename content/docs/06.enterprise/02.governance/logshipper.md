@@ -1,7 +1,7 @@
 ---
 title: Log Shipper
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: "0.21.0"
 ---
 
@@ -421,7 +421,7 @@ This example exports logs to [OpenSearch](https://opensearch.org/) database. The
 ```yaml
 id: log_shipper
 namespace: system
-                
+
 triggers:
   - id: daily
     type: io.kestra.plugin.core.trigger.Schedule

@@ -5,85 +5,130 @@ description: Review our privacy policy, which outlines our commitment to protect
 
 # Privacy Policy
 
-*Last updated: 4th of May 2023*
+**Last updated: April 14, 2025**
 
-This Privacy Policy describes how Kestra collects, uses, and discloses your personal information when you visit or use our website [kestra.io](http://kestra.io) (the "Website"). By using our Website, you agree to the collection and use of information in accordance with this Privacy Policy.
+This Privacy Policy describes how Kestra Technologies ("Kestra", "we", "us", or "our") collects, uses, and discloses your personal information when you visit or use our website [kestra.io](https://kestra.io/) (the "Website"). By using our Website, you agree to the terms of this Privacy Policy.
 
-## What information do we collect?
+---
 
-We collect personal information that you voluntarily provide to us when you use our Website or contact us through various channels, such as:
+## 1. Who is responsible for your data?
 
--   Name
--   Email address
--   Company name
--   Job title
--   Any other personal information you choose to provide
+Kestra Technologies, located at 81 rue du Pré Catelan, 59110 La Madeleine, France, is the data controller for the purposes of this Privacy Policy.
 
-We also automatically collect certain non-personal information when you use our Website, such as:
+---
 
--   IP address
--   Browser type and version
--   Operating system
--   Pages viewed and time spent on our Website
--   Referring website or source
+## 2. What information do we collect?
 
-## How do we use your information?
+We may collect the following types of personal data:
 
-We use your personal information for various purposes, including:
+**Information you provide to us voluntarily:**
 
--   To provide and improve our Website and services
--   To respond to your inquiries and requests for support
--   To communicate with you about our products, services, and events
--   To monitor and analyze usage and trends of our Website
--   To maintain the security and integrity of our Website
--   To comply with legal obligations and protect our rights
--   To promote your open source usage of Kestra towards our community
+- Name
+- Email address
+- Company name
+- Job title
+- Any other information you choose to submit (e.g., via forms or emails)
 
-## How do we share your information?
+**Information collected automatically:**
 
-We may share your personal information with third-party service providers who assist us in operating our Website and providing our services, such as:
+- IP address
+- Browser type and version
+- Operating system
+- Pages visited and time spent on the Website
+- Referring URL or source
 
--   Website hosting and content delivery providers
--   Analytics and marketing service providers
--   Customer support and communication tools providers
+We may also use cookies or similar technologies for tracking and analytics purposes. For more details, please refer to our [Cookie Policy](https://kestra.io/cookie-policy).
 
-We require these third parties to maintain the confidentiality and security of your personal information and to use it only for the purposes for which it was provided to them.
+---
 
-We may also disclose your personal information if required by law or in response to a court order, subpoena, or similar legal process, or if we believe that such disclosure is necessary to protect our rights or the rights of others.
+## 3. Legal basis for processing
 
-## How do we protect your information?
+We process your personal data based on the following legal grounds:
 
-We take the security of your personal information seriously and use appropriate technical and organizational measures to protect it from unauthorized access, disclosure, alteration, or destruction. However, please note that no method of electronic transmission or storage is 100% secure, and we cannot guarantee the absolute security of your personal information.
+- **Your consent** (e.g., for marketing communications)
+- **Our legitimate interest** (e.g., to improve our Website and services)
+- **Performance of a contract** (when applicable)
+- **Compliance with legal obligations**
 
-## International data transfers
+---
 
-Your personal information may be transferred to and processed in countries other than your country of residence. These countries may have data protection laws that are different from the laws of your country. We take appropriate measures to ensure that your personal information is treated securely and in accordance with this Privacy Policy and applicable data protection laws.
+## 4. How do we use your information?
 
-## How long do we retain your information?
+We use your personal information for the following purposes:
 
-We retain your personal information for as long as necessary to fulfill the purposes for which it was collected, to comply with our legal obligations, and to enforce our agreements. The retention period may vary depending on the type of information and the specific purposes for which it was collected.
+- To operate, maintain, and improve our Website and services
+- To respond to your inquiries and support requests
+- To communicate with you about our products, events, and updates
+- To analyze Website usage and performance
+- To maintain security and prevent fraud
+- To comply with applicable laws and regulations
+- With your consent, to highlight your use of Kestra in community communications (e.g., case studies or open source showcases)
 
-## Your rights and choices
+---
 
-Depending on your country of residence, you may have certain rights regarding your personal information, such as:
+## 5. Who do we share your information with?
 
--   The right to access, update, or delete your personal information
--   The right to object to or restrict the processing of your personal information
--   The right to withdraw your consent to the processing of your personal information, if applicable
--   The right to lodge a complaint with a supervisory authority
+We may share your personal data with trusted third parties that support us in operating our Website or providing our services, such as:
 
-To exercise any of these rights, please contact us using the contact information provided below.
+- Website hosting and infrastructure providers
+- Analytics and marketing service providers
+- Customer communication and support platforms
 
-## Changes to our Privacy Policy
+These service providers are bound by contractual obligations (including data processing agreements, when required) to protect your information and use it solely for the intended purpose.
 
-We may update our Privacy Policy from time to time. If we make any changes, we will notify you by revising the "Last updated" date at the top of this policy. Your continued use of our Website constitutes your acceptance of the updated Privacy Policy.
+We may also disclose your information:
 
-## Contact us
+- If required by law, court order, or governmental request
+- To protect our legal rights or the safety of others
 
-If you have any questions or concerns regarding this Privacy Policy or our handling of your personal information, please contact us at:
+---
 
-<hello@kestra.io>
+## 6. International data transfers
 
-81 RUE DU PRE CATELAN 59110 LA MADELEINE Nord France
+Your personal information may be transferred to countries outside your country of residence, including countries that may not offer the same level of data protection. In such cases, we implement appropriate safeguards to ensure the protection of your data, such as standard contractual clauses approved by the European Commission.
 
-We will make every effort to address your concerns and resolve any issues you may have with our privacy practices.
+---
+
+## 7. How do we protect your data?
+
+We implement appropriate technical and organizational measures to safeguard your personal data against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.
+
+---
+
+## 8. How long do we retain your data?**
+
+We retain personal data only as long as necessary for the purposes outlined in this Privacy Policy, or as required to comply with legal obligations or resolve disputes. The exact retention period depends on the nature of the information and its use.
+
+---
+
+## 9. Your rights and choices**
+
+Depending on your country of residence, you may have the following rights regarding your personal data:
+
+- The right to access and obtain a copy of your data
+- The right to correct or update inaccurate information
+- The right to request the deletion of your data
+- The right to object to or restrict data processing
+- The right to withdraw your consent at any time (where applicable)
+- The right to data portability
+- The right to lodge a complaint with a supervisory authority
+
+To exercise your rights, please contact us at: **hello@kestra.io**
+
+---
+
+## 10. Changes to this Privacy Policy
+
+We may update this Privacy Policy from time to time. When we do, we will revise the "Last updated" date. We encourage you to review this page periodically to stay informed about our privacy practices. Your continued use of the Website constitutes acceptance of any changes.
+
+---
+
+## 11. Contact us
+
+If you have any questions or concerns about this Privacy Policy or our handling of your personal information, please contact us at:
+
+**Email:** hello@kestra.io
+
+**Address:** 81 rue du Pré Catelan, 59110 La Madeleine, France
+
+We will make every effort to address your inquiry promptly and transparently.
