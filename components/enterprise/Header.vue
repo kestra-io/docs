@@ -30,8 +30,8 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/GORGIAS.svg"
-                                    alt="Gorgias"
+                                    src="/landing/enterprise/teams/BHP.svg"
+                                    alt="BHP"
                                     data-aos="fade-left"
                                 />
                             </div>
@@ -52,8 +52,30 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
+                                    src="/landing/enterprise/teams/ITZ.svg"
+                                    alt="itzbund"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
                                     src="/landing/enterprise/teams/T-SYSTEM.svg"
                                     alt="L'Oréal"
+                                    data-aos="fade-left"
+                                />
+                            </div>
+                            <div>
+                                <NuxtImg
+                                    width="100%"
+                                    loading="lazy"
+                                    format="webp"
+                                    class="img-fluid"
+                                    src="/landing/enterprise/teams/COE.svg"
+                                    alt="European Council"
                                     data-aos="fade-left"
                                 />
                             </div>
@@ -261,10 +283,10 @@
                     padding: 0 14px;
 
                     img {
-                        height: 74px;
-                        @include media-breakpoint-down(lg) {
-                            height: 50px;
-                        }
+                        height: 75px;       // Fixed height for uniformity
+                        width: auto;        // Let the width adjust automatically
+                        object-fit: contain; 
+                        
                     }
 
                     @include media-breakpoint-down(sm) {
