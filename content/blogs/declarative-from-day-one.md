@@ -12,19 +12,15 @@ image: /blogs/declarative-orchestration.jpg
 
 Kestra committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.
 
-Kestra is fully **declarative by design**. It provides a clean foundation for orchestrating complex workflows with clarity and scale. This means every pipeline in Kestra is defined in a straightforward YAML format, and every action is driven by an API call rather than hard-coded logic. 
-
-In this post, we’ll explore how Kestra’s declarative foundation – from its YAML-based workflows and dual UI+code interface to its plugin-driven, event‑oriented architecture.
-
- You’ll see why this approach reduces friction, enables true flexibility, and empowers both data engineers and business users alike.
+Kestra is fully **declarative by design**. It provides a clean foundation for orchestrating complex workflows with clarity and scale. You’ll see why this approach reduces friction, enables true flexibility, and empowers both data engineers and business users alike.
 
 ## Declarative Foundation: YAML Workflows by Design
 
-From the very beginning, Kestra embraced **Infrastructure-as-Code principles** for workflow orchestration. At its core, Kestra uses YAML to define workflows – a human-readable configuration that describes how tasks and processes connect, without locking you into any specific programming language. This declarative YAML foundation brings multiple benefits:
+We embraced **Infrastructure-as-Code principles** for workflow orchestration. At its core, Kestra uses YAML to define workflows – a human-readable configuration that describes how tasks and processes connect, without locking you into any specific programming language. This declarative YAML foundation brings multiple benefits:
 
 **Clarity and Readability:** A Kestra workflow is essentially a YAML document describing what needs to happen (tasks, dependencies, triggers) rather than imperative code on *how* to do it. This makes workflows easy to read and reason about, even for those who aren’t familiar with the underlying code. As one comparison noted, in code-first tools like Airflow you must read Python to understand the DAG, whereas Kestra’s YAML flows “don’t require programming skills to be readable. The syntax is simple enough that more people in an organization can collaborate on building and reviewing workflows.
 
-**Abstraction & Flexibility:** By declaring ***what* the workflow should do** in YAML, Kestra cleanly separates orchestration logic from business logic. Your data transformation code (SQL, Python, Java, etc.) lives in tasks or external scripts, and Kestra orchestrates these pieces from the YAML plan. This means you can swap out or modify task implementations without rewriting the orchestration layer. The business logic remains in the language of your choice while the workflow’s **coordination** is handled in Kestra’s config. It’s a powerful separation of concerns that keeps pipelines flexible and maintainable.
+**Abstraction & Flexibility:** By declaring ***what* the workflow should do** in YAML, we separate orchestration logic from business logic. Your data transformation code (SQL, Python, Java, etc.) lives in tasks or external scripts, and Kestra orchestrates these pieces from the YAML plan. This means you can swap out or modify task implementations without rewriting the orchestration layer. The business logic remains in the language of your choice while the workflow’s **coordination** is handled in Kestra’s config. It’s a powerful separation of concerns that keeps pipelines flexible and maintainable.
 
 **Versionability and Governance:** Workflows as YAML files can be treated just like code in version control. Kestra fully supports Git integration and even has an official Terraform provider to manage flows as code. Every change is a diff in YAML, enabling peer reviews and audit trails. Unlike code-first systems where a pipeline change might mean pushing a new code deploy, Kestra allows updating the YAML via UI or API and the change takes effect immediately. No need to redeploy application servers for a simple workflow tweak. This dramatically shortens the feedback loop for developing and improving workflows.
 
@@ -32,7 +28,7 @@ Even if you use Kestra’s UI to modify a workflow, the platform is still genera
 
 ## Visual + Code: A Dual Interface for All Skill Levels
 
-One of Kestra’s guiding principles is to **meet users where they are.** Not everyone on a data team codes Python, and not every engineer wants to click through GUIs – so Kestra provides the best of both worlds. We offer a **dual interface**: a rich visual **web UI** and a full code-as-config experience, tightly integrated.
+One of our core guiding principles is to **meet users where they are.** Not everyone on a data team codes Python, and not every engineer wants to click through GUIs – so we provide the best of both worlds. We offer a **dual interface**: a rich visual **web UI** and a full code-as-config experience, tightly integrated.
 
 For those who prefer low-code or no-code interaction, Kestra’s **UI** allows building and managing workflows visually. You can click to add tasks, adjust parameters, set up triggers and see the DAG (topology) update in real time as you design your flow. The UI provides a live topology view of your workflow as a DAG that updates as you edit, plus integrated documentation and even a built-in code editor. This makes it accessible for analysts or less-technical users – for example, a data analyst can modify a SQL query or tweak a parameter directly in the browser without touching a git repo or Python script. Kestra encourages this kind of cross-role collaboration: business stakeholders can contribute through the UI, while the platform still captures those changes in the YAML config behind the scenes. Unlike older tools (e.g. Airflow) where only developers can author workflows in code, Kestra allows workflows to be built collaboratively in the UI, opening orchestration to a much wider audience.
 
