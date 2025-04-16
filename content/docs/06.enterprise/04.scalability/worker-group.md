@@ -8,7 +8,7 @@ version: ">= 0.10.0"
 How to configure Worker Groups in Kestra Enterprise Edition.
 
 
-Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
+A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/C-539c3UVJM?si=3USIb1F7OiW9AQVp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -19,7 +19,7 @@ Worker Group is a set of workers that can be targeted specifically for a task ex
 ::badge{version=">=0.19" editions="EE"}
 ::
 
-To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key`, a **Description** and optionally **Allowed Tenants**) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
 
 ![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 
