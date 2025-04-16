@@ -278,9 +278,9 @@
 
                 .teams-logos {
                     display: flex;
-                    column-gap: 43px;
+                    column-gap: 8px;
                     row-gap: 20px;
-                    padding: 0 14px;
+                    padding: 0 8px;
 
                     img {
                         height: 75px;       // Fixed height for uniformity
