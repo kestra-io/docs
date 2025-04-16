@@ -42,7 +42,7 @@ File created locally should use `<namespace>.<flow_id>.yml` or `<namespace>_<flo
 Flow created inside the UI will be created at the root of the first path supplied in the configuration.
 
 
-::alert{type="note"}
+::alert{type="info"}
 If you are using the docker-compose installation, you will need to mount a volume so Kestra container can access your local folder.
 
 ```yaml
