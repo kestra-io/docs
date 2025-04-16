@@ -300,6 +300,7 @@ const onSubmit = async (e: Event) => {
     }
 
     & .form {
+        align-self: flex-start;
         position: relative;
         padding: 60px 40px 0 40px;
         border-radius: 16px;
