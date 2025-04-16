@@ -10,7 +10,7 @@ author:
 image: /blogs/declarative-orchestration.jpg
 ---
 
-Kestra committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.
+[Kestra](https://github.com/kestra-io/kestra) committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.
 
 Kestra is fully **declarative by design**. It provides a clean foundation for orchestrating complex workflows with clarity and scale. You’ll see why this approach reduces friction, enables true flexibility, and empowers both data engineers and business users alike.
 
