@@ -10,9 +10,9 @@ author:
 image: /blogs/orchestrations-differences.jpg
 ---
 
-We committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.
+Kestra committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.
 
-Built from day one as a universal orchestrator, Kestra is fully **declarative by design**. It provides a clean foundation for orchestrating complex workflows with clarity and scale. This means every pipeline in Kestra is defined in a straightforward YAML format, and every action is driven by an API call rather than hard-coded logic. 
+Kestra is fully **declarative by design**. It provides a clean foundation for orchestrating complex workflows with clarity and scale. This means every pipeline in Kestra is defined in a straightforward YAML format, and every action is driven by an API call rather than hard-coded logic. 
 
 In this post, we’ll explore how Kestra’s declarative foundation – from its YAML-based workflows and dual UI+code interface to its plugin-driven, event‑oriented architecture.
 
