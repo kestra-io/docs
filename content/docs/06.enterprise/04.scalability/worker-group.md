@@ -107,15 +107,20 @@ Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CAN
 
 You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
 
-### Fallback Behaviour at the Namespace Level
+When Fallback behavior is set in multiple places, Kestra resolves which action to take by following this priority order:
+1. **Flow-Level**: Uses the behavior specified in the `fallback` property of the Flow task.
+2. **Namespace-Level**: Uses the behavior set in the the Namespace settings.
+3. **Tenant-Level**: Uses the behavior set in the the Tenant settings.
 
-Namespaces can be configured to have a default `fallback` behaviour. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
+### Fallback Behavior at the Namespace Level
+
+Namespaces can be configured to have a default `fallback` behavior. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
 
 ![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
 
-### Fallback Behaviour at the Tenant Level
+### Fallback Behavior at the Tenant Level
 
-Tenants can be configured to have a default `fallback` behaviour. It can be configured when creating a tenant on in the tenant's properties.
+Tenants can be configured to have a default `fallback` behavior. It can be configured when creating a tenant on in the tenant's properties.
 
 ![Configure Worker Group for a Tenant](/docs/enterprise/worker-group-tenant.png)
 
