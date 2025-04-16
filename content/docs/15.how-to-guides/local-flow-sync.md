@@ -48,7 +48,7 @@ If you are using the docker-compose installation, you will need to mount a volum
 ```yaml
     volumes:
       # ... other volumes
-      - ./local_folder:/local_folder
+      - ./local_folder:/docker_folder
     environment:
       KESTRA_CONFIGURATION: |
         micronaut:
@@ -56,7 +56,7 @@ If you are using the docker-compose installation, you will need to mount a volum
             watch:
               enabled: true
               paths:
-                - /local_folder
+                - /docker_folder
 ```
 ::
 
