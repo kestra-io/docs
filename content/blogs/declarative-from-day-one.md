@@ -4,9 +4,9 @@ description: Many platforms are now touting declarative configurations or visual
 date: 2025-04-16T13:00:00
 category: Solutions
 author:
-  name: Emmanuel Darras
-  image: edarras
-  role: CEO & Co-Founder
+  name: Martin-Pierre Roset
+  image: mproset
+  role:
 image: /blogs/declarative-orchestration.jpg
 ---
 
