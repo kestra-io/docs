@@ -198,10 +198,14 @@ editions: ["OSS", "EE"]
 
 ### Customized text
 
-We use a couple of components to add customized text presentation in the documentation. To differentiate important information and stand out from average text, we use three different levels of alert types: "infor", "error", and "warning".
+We use a couple of components to add customized text presentation in the documentation. To differentiate important information and stand out from average text, we use three different levels of alert types: "info", "success", "error", and "warning".
 
 ::alert{type="info"}
 This is something to make note of.
+::
+
+::alert{type="success"}
+Yippee, it worked.
 ::
 
 ::alert{type="error"}
