@@ -208,12 +208,32 @@ This is something to make note of.
 Yippee, it worked.
 ::
 
+::alert{type="killed"}
+This is a test for killed.
+::
+
+::alert{type="link"}
+This is a test for link.
+::
+
+::alert{type="restarted"}
+This is a test for restarted.
+::
+
+::alert{type="primary"}
+This is a test for primary.
+::
+
+::alert{type="cancelled"}
+This is a test for cancelled.
+::
+
 ::alert{type="error"}
 This is a possible error you might see.
 ::
 
 ::alert{type="warning"}
-This is fine, fire burning and dog chilling
+![this is fine](/docs/docs-contributor-guide/this-is-fine.png)
 ::
 
 ```markdown
