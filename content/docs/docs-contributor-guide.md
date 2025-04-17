@@ -3,6 +3,8 @@ title: Contribute to Kestra Documentation
 icon: /docs/icons/contributing.svg
 ---
 
+Contribute to the Kestra Documentation.
+
 ## Overview
 
 We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes. We'll happily review and merge your suggestions into the documentation set as quickly as we can.
@@ -174,13 +176,41 @@ version: ">= 0.10.0"
 
 #### docId
 
-One of the major benefits to Kestra is its in-app contextual docs. This means, when constructing flows in the platform, you can access the documentation in the same interface without having to navigate to the browser to check against our documentation. Kestra knows that you are working with Apps, and it can show you the relevant documentation without a task switch.
+One of the major benefits to Kestra is its in-app contextual docs. This means, when constructing flows in the platform, you can access the documentation in the same interface without having to navigate to the browser to check against our documentation. This is done through the `docId` front matter.
+Kestra knows that you are working with Apps, and it can show you the relevant documentation without a task switch.
 
 ![In-App Docs](/docs/docs-contributor-guide/in-app-docs.gif)
 
+The same is done for all the main components of Kestra (e.g., Namespace, Flow, Blueprints, Plugins, etc.).
+
 #### release
 
+`release` is a front matter property only relevant for our [Migration Guides](11.migration-guide/index.md). These guides outline the need-to-know information for upgrading from one version of Kestra to another. This includes the renaming of a feature or "Before and After" examples of an action in Kestra. Example configuration looks like this:
+
+```markdown
+---
+title: Restarting parent flow
+icon: /docs/icons/migration-guide.svg
+release: 0.21.0
+editions: ["OSS", "EE"]
+---
+```
+
 ### Customized text
+
+We use a couple of components to add customized text presentation in the documentation. To differentiate important information and stand out from average text, we use three different levels of alert types: "infor", "error", and "warning".
+
+::alert{type="info"}
+This is something to make note of.
+::
+
+::alert{type="error"}
+This is a possible error you might see.
+::
+
+::alert{type="warning"}
+This is fine, fire burning and dog chilling
+::
 
 ```markdown
 ::alert
@@ -188,7 +218,11 @@ One of the major benefits to Kestra is its in-app contextual docs. This means, w
 
 ::collapse
 ::
+
+::badge
 ```
+
+
 ### Video Container
 
 ### How to use Images
