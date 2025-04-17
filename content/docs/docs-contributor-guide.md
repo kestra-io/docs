@@ -5,13 +5,43 @@ icon: /docs/icons/contributing.svg
 
 ## Overview
 
-We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes. We'll happily review and get your suggestions in the documentation set as quickly as we can.
+We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes. We'll happily review and merge your suggestions into the documentation set as quickly as we can.
 
-For building the site locally check out the [Contributing Guide](./01.getting-started/03.contributing.md#contribute-to-the-documentation) to see the `npm` installation steps.
+## Build the Documentation Locally
+
+The following dependencies are required to build Kestra docs locally:
+- Node 14+ and npm
+- an IDE
+
+To start contributing:
+- [Fork](https://github.com/kestra-io/docs/fork) the repository
+- Clone the fork on your workstation:
+
+```shell
+$ git clone git@github.com:{YOUR_USERNAME}/docs.git
+$ cd docs
+```
+
+
+Use the following commands to serve the docs locally:
+
+```shell
+# install dependencies
+$ npm install
+
+# serve with hot reload at localhost:3001
+$ npm run dev
+
+# to generate static pages
+$ npm run generate
+
+# making a production build
+$ npm run build
+```
 
 Aside from contributing to the text, understanding the documentation's general structure, and building the site locally, there are many custom implementations and markdown elements that we use across the documentation set you should become familiar with. Additionally, contributing to the Kestra Plugin documentation requires a basic understanding of their structure and basic Java for doc strings. This page aims to cover all of the components you might come across when contributing to the Kestra Docs.
 
-## Contribute to the Kestra Documentation page
+## Contribute to the Kestra Documentation
 
 ### ChildCard
 
@@ -42,7 +72,7 @@ Start Kestra in a Docker container and create your first flow.
 
 It is ideal to keep this first sentence as clear and concise as possible to not clutter the view on the card.
 
-### FrontMatter
+### Front Matter
 
 There are several key front matter properties that are expected with each page in the documentation. We briefly mentioned one of them, icon, in the last section. As an example, take our [Apps](./06.enterprise/04.scalability/apps.md) page. This is the front matter specified on the markdown page:
 
@@ -58,7 +88,7 @@ docId: apps
 
 And this is the resulting view:
 
-![Apps Frontmatter](/docs/docs-contributor-guide/apps-frontmatter.png)
+![Apps Front Matter](/docs/docs-contributor-guide/apps-frontmatter.png)
 
 Let's discuss each property in more detail.
 
@@ -82,22 +112,75 @@ topics:
 
 And appears on the site like so:
 
-![Neon Icon Display](docs/docs-contributor-guide/neon-icon.png)
+![Neon Icon Display](/docs/docs-contributor-guide/neon-icon.png)
 
-The icon lives in the `public/docs/icons` folder path and is specified as [Neon](https://neon.tech/home) so the correct logo shows for the tool. There are also general icons available in the folder such as `api.svg` or `installation.svg`. If contributing a guide incorporating a tool without an existing icon, place the appropriate SVG file in this folder and reference it in the frontmatter.
+The icon lives in the `public/docs/icons` folder path and is specified as [Neon](https://neon.tech/home) so the correct logo shows for the tool. There are also general icons available in the folder such as `api.svg` or `installation.svg`. If you contribute a guide incorporating a tool without an existing icon, place the appropriate SVG file in this folder and reference it in the front matter.
 
 #### topics & stage
 
+Our How To Guides require a couple of extra front matter properties to provide clarity to the site visitor what the topic of the guide is and the level; these being `topics` and `stage`. Using the same examle as above, you can see that the properties are set as `stage: Intermediate` and `topics: - Integrations`.
+
+```markdown
+---
+title: Connect Neon Database to Kestra
+icon: /docs/icons/neon.svg
+stage: Intermediate
+topics:
+  - Integrations
+---
+```
+
+These properties are `const` variables set in the `GuidesChildCard.vue` file of the repository. They have a set list to choose from when classifying a guide. For example, `stage` can be "Getting Started", "Intermediate", or "Advanced". `topics` can be a multitude of different concepts such as "Scripting", "Kestra Concepts", "Best Practices", and more. If your guide doesn't fit into any of these topics, add it there, and we can review it.
 
 #### editions
 
+Kestra has three editions: Open Source, Enterprise, and Cloud. A feature or guide may be relevant only to one, two, or all editions, so we have a front matter property to specify that right away at the top of a page. For example, depending on the Kestra edition, there are different pages relevant to handling secrets. We have a [Kubernetes Secrets How-to Guide](15.how-to-guides/kubernetes-secrets.md) where we set the edition as OSS in the front matter:
+
+```markdown
+---
+title: Set Up Secrets from a Helm Chart
+icon: /docs/icons/helm.svg
+stage: Getting Started
+topics:
+  - Kestra Concepts
+  - DevOps
+editions: ["OSS"]
+---
+```
+
+And we have a page for [Secrets](06.enterprise/02.governance/secrets.md) that is specifically for Enterprise and Cloud users.
+
+```markdown
+---
+title: Secrets
+icon: /docs/icons/admin.svg
+editions: ["EE", "Cloud"]
+docId: secrets
+---
+```
+
 #### version
 
-#### release
+Like editions, some Kestra features are only available in specific Kestra versions and onwards. To identify this in the documentation, we use the `version` property in the front matter. For example, [Worker Groups](06.enterprise/04.scalability/worker-group.md) are only available starting in Kestra version 0.10.0. This is specified as follows:
+
+```markdown
+---
+title: Worker Group
+icon: /docs/icons/admin.svg
+editions: ["EE"]
+version: ">= 0.10.0"
+---
+```
 
 #### docId
 
-### Customizd text
+One of the major benefits to Kestra is its in-app contextual docs. This means, when constructing flows in the platform, you can access the documentation in the same interface without having to navigate to the browser to check against our documentation. Kestra knows that you are working with Apps, and it can show you the relevant documentation without a task switch.
+
+![In-App Docs](/docs/docs-contributor-guide/in-app-contextual-docs.gif)
+
+#### release
+
+### Customized text
 
 ```markdown
 ::alert
@@ -105,10 +188,8 @@ The icon lives in the `public/docs/icons` folder path and is specified as [Neon]
 
 ::collapse
 ::
-
-::div
-::
 ```
+### Video Container
 
 ### How to use Images
 
