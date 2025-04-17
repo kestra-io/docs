@@ -176,7 +176,7 @@ version: ">= 0.10.0"
 
 One of the major benefits to Kestra is its in-app contextual docs. This means, when constructing flows in the platform, you can access the documentation in the same interface without having to navigate to the browser to check against our documentation. Kestra knows that you are working with Apps, and it can show you the relevant documentation without a task switch.
 
-![In-App Docs](/docs/docs-contributor-guide/in-app-contextual-docs.gif)
+![In-App Docs](/docs/docs-contributor-guide/in-app-docs.gif)
 
 #### release
 
