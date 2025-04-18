@@ -1375,7 +1375,6 @@ export default {
 
                 a.nav-link {
                     border-radius: $border-radius;
-                    color: $black-1 !important;
                     span.material-design-icon {
                         transition: all .2s cubic-bezier(1,.25,.25,.8);
                         will-change: scaleY, top;
