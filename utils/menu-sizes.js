@@ -1,25 +1,25 @@
 let menuSizes = {
     product : {
         xxl: {
-            width: '780px',
+            width: '390px',
             height: '560px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
             headerArrowTranslateX: -347
         },
         xl: {
-            width: '780px',
+            width: '390px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -348
         },
         lg: {
-            width: '780px',
+            width: '390px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -335
         },
         md: {
-            width: '780px',
+            width: '390px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -310
@@ -27,13 +27,13 @@ let menuSizes = {
     },
     solutions: {
         xxl: {
-            width: '1560px',
+            width: 'calc(1560px - 390px)',
             height: '690px',
             headerMenuTranslateX: 'calc(50vw - 780px)',
             headerArrowTranslateX: -262
         },
         xl: {
-            width: '1347px',
+            width: 'calc(1347px - 390px)',
             height: '653px',
             headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
             headerArrowTranslateX: -270
@@ -53,19 +53,19 @@ let menuSizes = {
     },
     resources: {
         xxl: {
-            width: '1200px',
+            width: '780px',
             height: '580px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
             headerArrowTranslateX: -173
         },
         xl: {
-            width: '1200px',
+            width: '780px',
             height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
             headerArrowTranslateX: -177
         },
         lg: {
-            width: '1000px',
+            width: '780px',
             height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1000px) / 2)',
             headerArrowTranslateX: -165
