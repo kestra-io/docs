@@ -17,7 +17,7 @@
     </div>
 
     <div class="dots">
-        <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+        <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex - 1 === activeStory}" @click="scrollTo(storyIndex - 1)" />
     </div>
 
 </template>
@@ -25,6 +25,9 @@
 <script lang="ts" setup>
     import {slugify} from "@kestra-io/ui-libs";
     const config = useRuntimeConfig();
+
+    const AUTO_SCROLL = 3000;
+    const SCROLL = 500;
 
     interface Story {
         id: string;
@@ -39,39 +42,87 @@
         logoDark: string;
     }
 
-    const activeStory = ref<number>(1);
+    const activeStory = ref<number>(0);
     const scroller = ref<HTMLDivElement | null>(null);
+    const timers = ref<{ auto: NodeJS.Timeout | null; user: NodeJS.Timeout | null }>({ auto: null, user: null });
+    const isScrolling = ref(false);
 
-    const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`)
-
+    const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
     const stories = computed(() => data.value?.results);
 
-    function scrollHandler(e: Event) {
+    const clearTimers = () => {
+        if (timers.value.auto) clearInterval(timers.value.auto);
+        if (timers.value.user) clearTimeout(timers.value.user);
+        timers.value = { auto: null, user: null };
+    };
+
+    const startAutoScroll = (delay: number = AUTO_SCROLL) => {
+        if (isScrolling.value || !stories.value?.length) return;
+        clearTimers();
+
+        timers.value.auto = setInterval(() => {
+            if (!stories.value?.length) {
+                clearTimers();
+                return;
+            }
+            scrollTo((activeStory.value + 1) % stories.value.length);
+        }, delay);
+    };
+
+    const handleScrollReset = () => {
+        clearTimeout(timers.value.user);
+        timers.value.user = setTimeout(() => startAutoScroll(), SCROLL);
+    };
+
+    const scrollHandler = (e: Event) => {
+        if (isScrolling.value || !stories.value?.length) return;
+        clearTimers();
+
         const target = e.target as HTMLElement;
-        const scroll = target.scrollLeft;
-        const width = target.scrollWidth
-        const story = Math.round(scroll / width * (stories.value?.length ?? 0));
-        activeStory.value = story + 1;
-    }
+        if (target.scrollWidth === 0) return;
 
-    function scrollTo(index: number) {
-        if (!scroller.value) {
-            return;
+        const storyWidth = target.scrollWidth / stories.value.length;
+        const newActiveStory = Math.max(0, Math.min(
+            Math.round(target.scrollLeft / storyWidth),
+            stories.value.length - 1
+        ));
+
+        if (newActiveStory !== activeStory.value) {
+            activeStory.value = newActiveStory;
         }
 
-        // get the scroll
-        const story = scroller.value.childNodes[index]
-        if (!story || !(story instanceof HTMLElement)) {
-            return;
-        }
+        handleScrollReset();
+    };
 
-        // get the scroll position of this story element
-        const scroll = story.getBoundingClientRect().left - scroller.value.getBoundingClientRect().left + scroller.value.scrollLeft;
+    const scrollTo = (index: number) => {
+        if (!scroller.value || !stories.value?.length || 
+            index < 0 || index >= stories.value.length || 
+            isScrolling.value) return;
+
+        clearTimers();
+        isScrolling.value = true;
+        activeStory.value = index;
+
         scroller.value.scrollTo({
-            left: scroll,
+            left: (scroller.value.scrollWidth / stories.value.length) * index,
             behavior: 'smooth'
         });
-    }
+
+        setTimeout(() => {
+            isScrolling.value = false;
+            handleScrollReset();
+        }, SCROLL);
+    };
+
+    watchEffect(() => {
+        if (stories.value?.length && scroller.value) {
+            startAutoScroll();
+        } else {
+            clearTimers();
+        }
+    });
+
+    onUnmounted(clearTimers);
 </script>
 
 <style lang="scss" scoped>
@@ -114,6 +165,7 @@
                 span {
                     background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
                     background-size: cover;
+                    background-clip: text;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
