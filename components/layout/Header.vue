@@ -1119,8 +1119,11 @@ export default {
                                 flex-shrink: 0;
                                 font-size: 25px;
                                 margin-right: .5rem;
-                                align-self: unset;
-                                color: #8405FF;
+                                align-self: start;
+                            }
+                            :deep(.material-design-icon__svg) {
+                                    fill: #8405FF;
+                                    bottom: 0 !important;
                             }
                             p {
                                 font-weight: 400;
@@ -1305,7 +1308,7 @@ export default {
         }
 
         a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a, div.nav-items a {
-            color: var(--gray-white, #FFF) !important;
+            color: var(--gray-900, #FFF);
             box-shadow: none !important;
         }
 
@@ -1354,6 +1357,14 @@ export default {
             overflow-x: hidden;
             background-color: $white;
             height: calc(100vh - 3.3rem);
+        }
+
+        &.show {
+            .nav-item {
+                a.nav-link {
+                    color: $black-1 !important;
+                }
+            }
         }
 
         ul.navbar-nav {
@@ -1435,10 +1446,9 @@ export default {
                     }
 
                     .dropdown-column {
-                        margin-bottom: 2rem;
+                        margin-bottom: 1rem;
                         display: flex;
                         flex-direction: column;
-                        gap: 1rem;
                         list-style: none;
                         padding-left: 0;
                         min-width: 312px;
@@ -1449,8 +1459,8 @@ export default {
                             font-size: 1rem;
                             font-weight: 600;
                             line-height: 24px;
-                            padding-bottom: 9px;
-                            margin: 0;
+                            margin: 0 !important;
+                            margin-top: 10px !important;
                         }
                     }
 
@@ -1493,7 +1503,8 @@ export default {
                                 margin-right: .5rem;
 
                                 :deep(.material-design-icon__svg) {
-                                    fill: #A396FF;
+                                    fill: #8405FF;
+                                    bottom: 0;
                                 }
                             }
 
@@ -1627,11 +1638,7 @@ export default {
         }
 
         @include media-breakpoint-down(lg) {
-            &.open {
-                background: #200149;
-            }
-
-            .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
+        .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
                 color: var(--bs-white);
                 --bs-dropdown-link-hover-bg: #{rgba($gray-100, 5%)};
                 --bs-dropdown-link-active-bg: #{rgba($gray-100, 5%)};

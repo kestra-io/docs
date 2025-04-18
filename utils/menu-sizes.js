@@ -53,26 +53,26 @@ let menuSizes = {
     },
     resources: {
         xxl: {
-            width: '780px',
-            height: '580px',
+            width: '726px',
+            height: 'calc(384px + 7rem)',
             headerMenuTranslateX: 'calc(50vw - 600px)',
             headerArrowTranslateX: -173
         },
         xl: {
-            width: '780px',
-            height: '580px',
+            width: '726px',
+            height: 'calc(384px + 8rem)',
             headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
             headerArrowTranslateX: -177
         },
         lg: {
-            width: '780px',
-            height: '580px',
+            width: '726px',
+            height: 'calc(384px + 8rem)',
             headerMenuTranslateX: 'calc((100vw - 1000px) / 2)',
             headerArrowTranslateX: -165
         },
         md: {
-            width: '780px',
-            height: '560px',
+            width: '726px',
+            height: 'calc(384px + 8rem)',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -165
         }
