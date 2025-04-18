@@ -18,11 +18,8 @@ export default defineNuxtConfig({
     ],
     target: 'static',
     image: {
-        formats: {
-            webp: {
-                quality: 80
-            }
-        },
+        formats: ['webp', 'avif', 'png'],
+        quality: 80,
         densities: [1, 2],
         domains: ['kestra.io']
     },
