@@ -30,8 +30,15 @@ export default defineContentConfig({
         author: z.object({
             name: z.string(),
             image: z.string(),
-            twitter: z.string(),
-        }),
+            twitter: z.string().optional(),
+            role: z.string().optional(),
+        }).optional(),
+        authors: z.array(z.object({
+            name: z.string(),
+            image: z.string(),
+            twitter: z.string().optional(),
+            role: z.string(),
+        })).optional(),
         image: z.string(),
       })
     }),

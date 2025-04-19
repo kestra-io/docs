@@ -10,9 +10,10 @@
                                 <div class="card-body">
                                     <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                     <h4 class="card-title">{{ blog.title }}</h4>
-                                    <p class="author">
-                                        {{ blog.author.name }}  {{ timesAgo(blog.date) }}
-                                    </p>
+                                    <BlogsBlogCardDetails 
+                                        :authors="blog.authors || (blog.author ? [blog.author] : [])"
+                                        :date="blog.date"
+                                    />
                                 </div>
                             </NuxtLink>
                         </div>
@@ -27,6 +28,7 @@
 </template>
 <script setup>
     import Section from './Section.vue';
+    import BlogsBlogCardDetails from '~/components/blogs/BlogCardDetails.vue';
     const {public:{CollectionNames}} = useRuntimeConfig()
 
     const props = defineProps({

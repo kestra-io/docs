@@ -8,7 +8,7 @@
                     {{ blog.title }}
                 </h3>
                 <p class="text">{{ blog.description }}</p>
-                <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
+                <BlogCardDetails :authors="blog.authors || (blog.author ? [blog.author] : [])" :date="blog.date"/>
             </div>
         </NuxtLink>
     </div>
