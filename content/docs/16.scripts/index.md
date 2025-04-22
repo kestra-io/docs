@@ -1,5 +1,5 @@
 ---
-title: Script Tasks (Code in Any Language)
+title: Multi-Language Script Tasks
 icon: /docs/icons/dev.svg
 ---
 
@@ -17,7 +17,7 @@ There are dedicated plugins for `Python`, `R`, `Julia`, `Ruby`,  `Node.js`, `Pow
 
 By default, these tasks run in individual Docker containers (taskRunner type: `io.kestra.plugin.scripts.runner.docker.Docker`). You can overwrite that default behavior if you prefer that your scripts run in a local process (taskRunner type: `io.kestra.plugin.core.runner.Process`) instead.
 
-If you use a [commercial version of Kestra](../../../06.enterprise/index.md), you can also run your scripts on [dedicated remote workers](../../../06.enterprise/04.scalability/worker-group.md) by specifying a `workerGroup` property or using other [Task Runner types](../../../task-runners/04.types/index.md) for AWS, GCP, Azure, and Kubernetes.
+If you use a [commercial version of Kestra](../06.enterprise/index.md), you can also run your scripts on [dedicated remote workers](../06.enterprise/04.scalability/worker-group.md) by specifying a `workerGroup` property or using other [Task Runner types](../task-runners/04.types/index.md) for AWS, GCP, Azure, and Kubernetes.
 
 The following pages dive into details of each task runner, supported programming languages, and how to manage dependencies.
 
