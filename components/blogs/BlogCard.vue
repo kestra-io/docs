@@ -9,7 +9,7 @@
                 :src="blog.image"
                 class="card-image w-100 rounded-3"
             />
-            <NuxtPicture
+            <NuxtImg
                 v-else
                 width="300"
                 loading="lazy"

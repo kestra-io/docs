@@ -101,6 +101,14 @@
         data: () => ({
             toggled: [],
         }),
+        mounted() {
+            this.$nextTick(() => {
+                const activeItem = document.querySelector('.bd-sidebar a.active');
+                if (activeItem) {
+                    activeItem.scrollIntoView({ behavior: 'instant', block: 'center' });
+                }
+            });
+        },
         methods: {
             toggleWithChildrenHandling(path) {
                 this.items.filter(i => i.path.startsWith(path))
