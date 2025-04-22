@@ -21,9 +21,6 @@ export default defineNuxtConfig({
         formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
-        cloudflare: {
-            baseURL: '/'
-        }
     },
     sitemap: {
         sitemaps: {
