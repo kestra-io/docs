@@ -305,9 +305,9 @@ The `video-container` is maintained in the `docs.scss` file in the repository. C
 
 ### Code Blocks
 
-When including code blocks in the documentation, make sure to specify which language the example is written in. With Kestra, very often example flows are included in the documentation page, and they are specified as `yaml`. For example:
+When including code blocks in the documentation, make sure to specify which language the example is written in. Typically in the Kestra documentation, example flows are included to demonstrate a feature; they are specified as a `yaml` code block. For example, see the following flow in markdown:
 
-<pre> ~~~markdown
+<pre>
 ```yaml
 id: getting_started
 namespace: company.team
@@ -316,7 +316,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: Hello World!
 ```
-~~~</pre>
+</pre>
 
 The supported languages for code blocks are fully listed in the `useShiki.ts` file in the repository, and if you need something new added, that is where an addition can be made.
 
@@ -332,7 +332,91 @@ The image has a clear title, and it is located in an image folder called `docs-c
 
 ## Contribute to Kestra Plugin Documentation
 
+Kestra Plugins each have their own documentation page found on the website in [Plugins](/plugins). Each plugin also has in-app contextual documentation so that task and property definitions are easily usable while building flows. Plugin docs are maintained in their own separate repositories rather than the product documentation.
 
+For example, if you are looking to contribute to the [OpenAI Plugin](/plugins/plugin-openai), you can find the documentation in the [OpenAI Plugin Repository](https://github.com/kestra-io/plugin-openai).
 
+::alert{type="info"}
+All plugin repos are searchable from the main [Kestra GitHub](https://github.com/kestra-io). The name of the repository is in the URL of the plugin documentation page. For example, the OpenAI repo is called `plugin-openai` which is in the URL path `https://kestra.io/plugins/plugin-openai/io.kestra.plugin.openai.chatcompletion`. Simply searching the tool's name should suffice, but this always works just in case.
+::
 
+To contribute to a plugin's documentation, clone the repository. Once cloned, there are four key components to plugin task's documentation that contributions are more than welcome: title, description, examples, and properties. 
 
+Continuing with [OpenAI](/plugins/plugin-openai), the tasks include [ChatCompletion](/plugins/plugin-openai/io.kestra.plugin.openai.chatcompletion) and [CreateImage](/plugins/plugin-openai/io.kestra.plugin.openai.createimage).
+
+![OpenAI Plugin Tasks](/docs/docs-contributor-guide/open-ai-plugin-tasks.png)
+
+Each task can be located in the path `src/main/java/io/kestra/plugin/openai`. This will be similar for all other plugins (i.e., `src/main/java/io/kestra/plugin/<insert-plugin-name>`). To improve or add to the documentation, open the Java file of the task and look for the `@Schema`, `@Plugin`, and `@Example` doc strings.
+
+::alert{type="info"}
+You do not need to be well-versed in Java to contribute to the plugin documentation. The doc strings are organized so that they are easy to work with, and we will review any contributions anyways so have no fear.
+::
+
+The plugin documentation will generally look like the following:
+
+```java
+@Schema(
+    title = "Given a prompt, get a response from an LLM using the OpenAI’s Chat Completions API.",
+    description = "For more information, refer to the [Chat Completions API docs](https://platform.openai.com/docs/guides/gpt/chat-completions-api)."
+)
+@Plugin(
+    examples = {
+        @Example(
+            full = true,
+            title = "Based on a prompt input, generate a completion response and pass it to a downstream task.",
+            code = """
+                id: openai
+                namespace: company.team
+
+                inputs:
+                  - id: prompt
+                    type: STRING
+                    defaults: What is data orchestration?
+
+                tasks:
+                  - id: completion
+                    type: io.kestra.plugin.openai.ChatCompletion
+                    apiKey: "yourOpenAIapiKey"
+                    model: gpt-4o
+                    prompt: "{{ inputs.prompt }}"
+
+                  - id: response
+                    type: io.kestra.plugin.core.debug.Return
+                    format: {{ outputs.completion.choices[0].message.content }}"
+                """
+        ),
+```
+
+The key properties to consider are:
+- `title`: A concise single sentence describing the task's objective that is displayed in the Kestra in-app contextual docs.
+- `description`: Additional information such as links to the external tool's documentation or best practices for using the task.
+- `examples`: Flow examples that demonstrate the task in use. Best if it is a logical use case utilizing multiple Kestra features (e.g., [Triggers](04.workflow-components/07.triggers/index.md), [Inputs](04.workflow-components/05.inputs.md), [Outputs](04.workflow-components/06.outputs.md), etc).
+
+Similarly to the main plugin attributes, the properties are also documented with a `title` and a `description`. For example, the [OpenAI ChatCompletion properties](https://kestra.io/plugins/plugin-openai/io.kestra.plugin.openai.chatcompletion#properties-body):
+
+```java
+public class ChatCompletion extends AbstractTask implements RunnableTask<ChatCompletion.Output> {
+    @Schema(
+        title = "A list of messages comprising the conversation so far.",
+        description = "Required if prompt is not set."
+    )
+    private Property<List<ChatMessage>> messages;
+
+    @Schema(
+        title = "The function call(s) the API can use when generating completions."
+    )
+    private Property<List<PluginChatFunction>> functions;
+
+    @Schema(
+        title = "The name of the function OpenAI should generate a call for.",
+        description = "Enter a specific function name, or 'auto' to let the model decide. The default is auto."
+    )
+    private Property<String> functionCall;
+
+    @Schema(
+        title = "The prompt(s) to generate completions for. By default, this prompt will be sent as a `user` role.",
+        description = "If not provided, make sure to set the `messages` property."
+    )
+```
+
+If any titles, descriptions, or examples could be improved or added, create a pull request, and we will happily review and merge it into the set.
