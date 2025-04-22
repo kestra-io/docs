@@ -198,7 +198,7 @@ editions: ["OSS", "EE"]
 
 ### Customized text
 
-We use a couple of components to add customized text presentation in the documentation. To differentiate important information and stand out from average text, we use three different levels of alert types: "info", "success", and "warning".
+We use a couple of components to add customized text presentation in the documentation. To differentiate important information from average text, we use three different levels of alert types: "info", "success", and "warning".
 
 ::alert{type="info"}
 This is something to make note of.
@@ -214,16 +214,84 @@ This is a warning, but it's fine.
 ![this is fine](/docs/docs-contributor-guide/this-is-fine.png)
 ::
 
+Another useful component we use is `::collapse`. This tag is used to keep the documentation space-efficient and to hide long examples or other information that does not need to be seen immediately scrolling the page, but it can be opened up by the reader to reveal its content. This is particularly useful for example flows that could otherwise take up a lot of space on a page or FAQ Answers that may not be relevant to every reader and can be selected as needed.
+
+Use the following syntax with whatever should be collapsed within the colons and the title inline with `::collapse`:
+
 ```markdown
-::alert
-::
+::collapse{title="Introduction to whatever is collapsed"}
 
-::collapse
-::
+Here is where the collapsed text goes.
 
-::badge
+::
+```
+Here is a full example using an example flow:
+
+::collapse{title="Full Example"}
+
+Subflow:
+
+```yaml
+id: subflow
+namespace: company.team
+
+inputs:
+  - id: items
+    type: STRING
+
+tasks:
+  - id: for_each_item
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - cat "{{ inputs.items }}"
+
+  - id: read
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(inputs.items) }}"
 ```
 
+Below is a Flow that uses the `ForEachItem` task to iterate over a list of items and run the `subflow` for a batch of 10 items at a time:
+
+```yaml
+id: each_parent
+namespace: company.team
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
+      SELECT *
+      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
+    store: true
+
+  - id: each
+    type: io.kestra.plugin.core.flow.ForEachItem
+    items: "{{ outputs.extract.uri }}"
+    batch:
+      rows: 10
+    namespace: company.team
+    flowId: subflow
+    wait: true
+    transmitFailed: true
+    inputs:
+      items: "{{ taskrun.items }}"
+```
+::
+
+While a feature may be available after a certain Kestra version and indicated in the Front Matter, an additional function may be added to it in later versions that doesn't match the Front Matter. To indicate this in the documentation for only a certain section of a page, we use the `::badge` component. This component can be used at any point in the page rather than solely at the top.
+
+The component has the following syntax, able to include both `version` and `editions` like the Front Matter:
+
+```markdown
+::badge{version=">=0.15" editions="OSS,EE,Cloud"}
+```
+
+::badge{version=">=0.15" editions="OSS,EE,Cloud"}
+::
 
 ### Video Container
 
