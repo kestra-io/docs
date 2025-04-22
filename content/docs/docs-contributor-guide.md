@@ -5,8 +5,6 @@ icon: /docs/icons/contributing.svg
 
 Contribute to the Kestra Documentation.
 
-## Overview
-
 We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes. We'll happily review and merge your suggestions into the documentation set as quickly as we can.
 
 ## Build the Documentation Locally
@@ -309,20 +307,28 @@ The `video-container` is maintained in the `docs.scss` file in the repository. C
 
 When including code blocks in the documentation, make sure to specify which language the example is written in. With Kestra, very often example flows are included in the documentation page, and they are specified as `yaml`. For example:
 
-```markdown
-
-#```yaml
+<pre> ~~~markdown
+```yaml
 id: getting_started
 namespace: company.team
 tasks:
   - id: hello_world
     type: io.kestra.plugin.core.log.Log
     message: Hello World!
-#```
 ```
+~~~</pre>
+
 The supported languages for code blocks are fully listed in the `useShiki.ts` file in the repository, and if you need something new added, that is where an addition can be made.
 
-### How to use Images
+### How to Use Images
+
+Images are a core part documentation. We try to organize images by topic and section in the documentation so that they are easy to find and add to. Taking this guide as an example, an image we used earlier in the guide appears in the markdown as follows:
+
+```markdown
+![Apps Front Matter](/docs/docs-contributor-guide/apps-frontmatter.png)
+```
+
+The image has a clear title, and it is located in an image folder called `docs-contributor-guide` in the `public/docs` directory of the repository. For this guide, all images are placed in this folder path so the organization is clear and easily worked with by another contributor. This same practice is used for our blog and other parts of the website kept in the repository.
 
 ## Contribute to Kestra Plugin Documentation
 
