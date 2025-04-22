@@ -212,7 +212,6 @@ $bd-gutter-x: 3rem;
         }
     }
 
-
     .video-container {
         position: relative;
         padding-top: 35.25%;
@@ -241,9 +240,8 @@ $bd-gutter-x: 3rem;
 
     }
 
-
     img:not(h2 img) {
-        width: 100%;
+        max-width: 100%;
     }
     video, iframe {
         max-width: 100%;
