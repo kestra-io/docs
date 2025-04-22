@@ -19,7 +19,7 @@
                                 </NavToc>
                             </div>
                         </div>
-                        <NuxtImg
+                        <NuxtPicture
                             loading="lazy"
                             data-aos="fade-right"
                             class="mb-2 rounded-3 img"
