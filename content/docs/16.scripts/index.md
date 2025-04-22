@@ -1,5 +1,5 @@
 ---
-title: Script Tasks (Code in Any Language)
+title: Multi-Language Script Tasks
 icon: /docs/icons/dev.svg
 ---
 
