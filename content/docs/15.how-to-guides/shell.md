@@ -123,7 +123,7 @@ _This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kes
 
 ### File Output
 
-Inside of your Shell script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
+Inside of your Shell script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found in [Script Output Metrics](../16.scripts/06.outputs-metrics.md).
 
 The example below writes a `output.txt` file containing the "Hello world" text, similar the output we used earlier. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -149,7 +149,7 @@ _This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kes
 
 ## Handling Metrics
 
-You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../16.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml
 id: shell_metrics

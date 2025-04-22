@@ -10,7 +10,7 @@ How to migrate from `runner` to `taskRunner`.
 
 Task Runners is a pluggable system that allows you to offload the execution of your tasks to different environments.
 
-With the general availability of `taskRunner` in Kestra 0.18.0, the [runner](../../04.workflow-components/01.tasks/02.scripts/03.runners.md) property is deprecated. Task Runners provide more flexibility and control over how your tasks are executed, allowing you to run your code in various remote environments by:
+With the general availability of `taskRunner` in Kestra 0.18.0, the [runner](../../16.scripts/03.runners.md) property is deprecated. Task Runners provide more flexibility and control over how your tasks are executed, allowing you to run your code in various remote environments by:
 1. Leveraging task runner plugins [managed by Kestra](/demo)
 2. Building your own task runner plugins customized to your needs.
 
