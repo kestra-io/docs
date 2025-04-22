@@ -419,4 +419,50 @@ public class ChatCompletion extends AbstractTask implements RunnableTask<ChatCom
     )
 ```
 
-If any titles, descriptions, or examples could be improved or added, create a pull request, and we will happily review and merge it into the set.
+If any titles, descriptions, or examples could be improved or added, create a pull request or an issue on the specific plugin repo, and we will happily review and merge it into the set.
+
+## Contribute to Kestra Blueprints
+
+The official Kestra Blueprints library can be found under [kestra.io/blueprints](/blueprints).
+Blueprints are a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow.
+Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
+
+To contribute a blueprint or modify an existing one, clone the [Blueprints repository](https://github.com/kestra-io/blueprints). Within the repository, there are blueprints for [Apps](https://github.com/kestra-io/blueprints/tree/main/apps), [Dashboards](https://github.com/kestra-io/blueprints/tree/main/dashboards), and [Flows](https://github.com/kestra-io/blueprints/tree/main/flows).
+
+All Blueprints are `yaml` files composed of the example Flow, App, or Dashboard, and an `extend` property that specifies attributes such as `title` and `description` to propagate onto the website. For example, this [Getting Started with Kestra – a Data Engineering Pipeline](https://kestra.io/blueprints/data-engineering-pipeline) has the following `extend` property:
+
+```yaml
+extend:
+  title: Getting started with Kestra — a Data Engineering Pipeline example
+  description: |
+    This flow is a simple example of a Kestra flow used for a data engineering
+    use case. It downloads a JSON file, filters the data, and calculates the
+    average price per brand.
+
+    The flow has three tasks:
+    1. The first task downloads a JSON file.
+    2. The second task filters the data and writes it to a new JSON file.
+    3. The third task reads the filtered data, calculates the average price per
+    brand using DuckDB, and stores the result as a Kestra output which can be
+    previewed and downloaded from the UI.
+  tags:
+    - Getting Started
+    - API
+    - Python
+    - SQL
+  ee: false
+  demo: true
+  meta_description: This flow represents a data engineering use case. It downloads
+    a JSON file, filters the data in Python, and calculates the KPIs in SQL
+    using DuckDB.
+```
+
+Check out the [full file](https://github.com/kestra-io/blueprints/blob/main/flows/data-engineering-pipeline.yaml) to see the flow YAML. 
+
+It is important to include the appropriate `tags` for the blueprint, so that it is easily searchable. A full list of tags is available on the [Blueprints homepage](/blueprints).
+
+With the proper YAML and extension, the Flow's topology will display interactively on the blueprint page along with a **Copy source code** button and task icons.
+
+![Blueprint Page](/docs/docs-contributor-guide/blueprint-page.png)
+
+If you have any ideas for new blueprints, or any existing titles, descriptions, or examples could be improved, create a pull request or an issue on the Blueprints repo. We will happily review and merge it into the set.
