@@ -161,7 +161,7 @@ export default defineNuxtConfig({
                     "Build with Kestra": [
                         "Concepts",
                         "Workflow Components",
-                        "Script Tasks (Code in Any Language)",
+                        "Multi-Language Script Tasks",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
