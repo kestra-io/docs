@@ -10,7 +10,7 @@
             </span>
         </p>
         <div class="py-3 author d-flex align-items-center gap-3">
-            <NuxtImg loading="lazy" width="48" class="rounded-circle"
+            <NuxtPicture loading="lazy" width="48" class="rounded-circle"
                 :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name" /><br />
             <div>
                 <p>{{ blog.author.name }}</p>
