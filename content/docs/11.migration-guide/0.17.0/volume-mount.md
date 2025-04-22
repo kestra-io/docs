@@ -60,4 +60,4 @@ It is recommended to make the following change in the [Docker Compose file](http
                   volume-enabled: true # 👈 this is the relevant setting
 ```
 
-For more information, you can refer the [Bind mount](../../04.workflow-components/01.tasks/02.scripts/bind-mount.md) page.
+For more information, you can refer the [Bind mount](../../16.scripts/index.md) page.
