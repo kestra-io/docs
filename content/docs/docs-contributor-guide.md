@@ -282,7 +282,7 @@ tasks:
 ```
 ::
 
-While a feature may be available after a certain Kestra version and indicated in the Front Matter, an additional function may be added to it in later versions that doesn't match the Front Matter. To indicate this in the documentation for only a certain section of a page, we use the `::badge` component. This component can be used at any point in the page rather than solely at the top.
+While a feature may be available after a certain Kestra version and indicated in the front matter, an additional function may be added to it in later versions that doesn't match the front matter. To indicate this in the documentation for only a certain section of a page, we use the `::badge` component. This component can be used at any point in the page rather than solely at the top.
 
 The component has the following syntax, able to include both `version` and `editions` like the Front Matter:
 
@@ -294,6 +294,33 @@ The component has the following syntax, able to include both `version` and `edit
 ::
 
 ### Video Container
+
+In the documentation, we try to always have an accompanying video for the discussed feature. To make sure the Youtube video is embedded and displaying correctly and consistently on every page, we use a custom `video-container` div class. On each page the div is added with the following embedding after the page's introductory sentence and before the rest of the content. 
+
+```
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/97xvcAMf888?si=y9vEEtGvoHfLxsK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+```
+
+The `video-container` is maintained in the `docs.scss` file in the repository. Check out the [Contributing Guide](01.getting-started/03.contributing.md) to see a page with a video embedded.
+
+### Code Blocks
+
+When including code blocks in the documentation, make sure to specify which language the example is written in. With Kestra, very often example flows are included in the documentation page, and they are specified as `yaml`. For example:
+
+```markdown
+
+#```yaml
+id: getting_started
+namespace: company.team
+tasks:
+  - id: hello_world
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+#```
+```
+The supported languages for code blocks are fully listed in the `useShiki.ts` file in the repository, and if you need something new added, that is where an addition can be made.
 
 ### How to use Images
 
