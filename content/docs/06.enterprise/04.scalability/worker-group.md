@@ -133,7 +133,7 @@ Here are common use cases in which Worker Groups can be beneficial:
 - Execute tasks and polling triggers close to a remote backend (region selection).
 
 
-You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../04.workflow-components/01.tasks/02.scripts/index.md) are set to run on the `gpu` worker group:
+You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../16.scripts/index.md) are set to run on the `gpu` worker group:
 
 ```yaml
 id: worker_group
