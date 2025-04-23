@@ -66,13 +66,13 @@ And the page displays the following with all the sub topics of "Getting Started"
 
 ![Getting Started ChildCard](/docs/docs-contributor-guide/child-card.png)
 
-Important to note when writing a standalone documentation page, the first sentence appears in the ChildCard view to introduce the topic. In the above example for [Quickstart Guide](01.getting-started/01.quickstart.md) this sentence is:
+Important to note when writing a standalone documentation page, the first sentence appears in the ChildCard view to introduce the topic. In the above example for [Quickstart Guide](01.getting-started/01.quickstart.md) this sentence is visible:
 
 ```markdown
 Start Kestra in a Docker container and create your first flow.
 ```
 
-Ideally, keep this first sentence as clear and concise as possible so as not to clutter the view on the card.
+Ideally, keep this first sentence as clear and concise as possible to not clutter the view on the card.
 
 ### Front Matter
 
@@ -422,7 +422,7 @@ public class ChatCompletion extends AbstractTask implements RunnableTask<ChatCom
     )
 ```
 
-If any titles, descriptions, or examples could be improved or added, create a pull request or an issue on the specific plugin repo, and we will happily review and merge it into the set.
+If any titles, descriptions, or examples could be improved or added, create a pull request or an issue on the specific plugin repository, and we will happily review and merge it into the set.
 
 ## Contribute to Kestra Blueprints
 
@@ -468,4 +468,4 @@ With the proper YAML and extension, the Flow's topology will display interactive
 
 ![Blueprint Page](/docs/docs-contributor-guide/blueprint-page.png)
 
-If you have ideas for new blueprints or existing titles, descriptions, or examples that could be improved, create a pull request or an issue on the Blueprints repo. We will happily review and merge it into the set.
+If you have ideas for new blueprints or existing titles, descriptions, or examples that could be improved, create a pull request or an issue on the [Blueprints repository](http://github.com/kestra-io/blueprints). We will happily review and merge it into the set.
