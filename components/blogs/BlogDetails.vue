@@ -90,6 +90,7 @@ export default {
 
         .role {
             color: $white-3;
+            line-height: 1.8em;
             font-size: $font-size-xs;
             margin-bottom: 0;
         }
