@@ -67,7 +67,7 @@ https://github.com/kestra-io/plugin-git/issues/121
 
 ## Notable Enhancements
 
-- IonToParquet and IonToAvro tasks
+- Enhanced Ion data format support with new `IonToParquet` and `IonToAvro` tasks for efficient data conversion, plus `InferAvroSchemaFromIon` task for schema generation, all enabling more flexible data transformations
 - Pause task enhancement - https://github.com/kestra-io/kestra/issues/8242
 
 > add pauseDuration
@@ -89,6 +89,22 @@ Here are UI enhancements worth noting:
 - [UI IMPROVEMENT 5]
 
 ## Plugin enhancements
+
+
+### Go scripts
+
+Added two new Go script tasks:
+
+- `Script` task (io.kestra.plugin.scripts.go.Script) - Executes multi-line Go scripts
+- `Commands` task (io.kestra.plugin.scripts.go.Commands) - Runs multiple Go scripts using `go run`
+
+https://github.com/kestra-io/plugin-scripts/pull/239
+
+::collapse{title="Example using Go scripts"}
+```yaml
+[EXAMPLE_YAML]
+```
+::
 
 ### Databricks CLI
 
