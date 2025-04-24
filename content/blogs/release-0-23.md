@@ -67,7 +67,7 @@ Let's dive into these highlights and other enhancements in more detail.
 ## Notable Enhancements
 
 - Sync Apps & Dashboard - https://github.com/kestra-io/plugin-git/issues/122 and https://github.com/kestra-io/plugin-git/issues/121
-- [ENHANCEMENT 2]
+- IonToParquet and IonToAvro tasks
 - [ENHANCEMENT 3]
 - [ENHANCEMENT 4]
 - [ENHANCEMENT 5]
@@ -83,19 +83,22 @@ Here are UI enhancements worth noting:
 
 ## Plugin enhancements
 
-### [PLUGIN 1 TITLE]
+### Databricks CLI
 
-[PLUGIN 1 DESCRIPTION]
+- Databricks CLI
+> Access Databricks functionality using the Databricks command-line interface (CLI). The CLI wraps the Databricks REST API, so instead of sending REST API calls directly using curl or Postman, you can use the Databricks CLI to interact with Databricks.
 
-::collapse{title="Example using [PLUGIN 1]"}
+- Databricks SQL CLI - https://docs.databricks.com/aws/en/dev-tools/databricks-sql-cli
+
+::collapse{title="Example using Databricks CLI"}
 ```yaml
 [EXAMPLE_YAML]
 ```
 ::
 
-### [PLUGIN 2 TITLE]
+### Redis improvement
 
-[PLUGIN 2 DESCRIPTION]
+https://github.com/kestra-io/plugin-redis/issues/98
 
 ::collapse{title="Example with [PLUGIN 2]"}
 ```yaml
