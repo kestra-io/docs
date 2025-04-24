@@ -59,14 +59,14 @@ Let's dive into these highlights and other enhancements in more detail.
 
 
 
-### [FEATURE 6 TITLE]
+### Manage Apps & Dashboard with Git
 
-[FEATURE 6 DESCRIPTION]
+https://github.com/kestra-io/plugin-git/issues/122
+https://github.com/kestra-io/plugin-git/issues/121
 
 
 ## Notable Enhancements
 
-- Sync Apps & Dashboard - https://github.com/kestra-io/plugin-git/issues/122 and https://github.com/kestra-io/plugin-git/issues/121
 - IonToParquet and IonToAvro tasks
 - [ENHANCEMENT 3]
 - [ENHANCEMENT 4]
