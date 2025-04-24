@@ -4,8 +4,8 @@
             <span class="date">{{ date }}</span>
             <span class="category ms-3">{{ blog.category }}</span>
         </div>
-        <div class="authors d-flex flex-wrap gap-4">
-            <div v-for="author in authorsList" :key="author.name" 
+        <div class="authors">
+            <div v-for="author in authorsList" :key="author.name"
                  class="author d-flex align-items-center gap-3">
                 <NuxtImg loading="lazy" width="48" class="rounded-circle"
                     :src="'/landing/company/teams/' + author.image + '-sm.png'" :alt="author.name" />
@@ -70,10 +70,15 @@ export default {
 
     .authors {
         margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
     .author {
-        min-width: 250px;
+        img {
+            max-width: 48px;
+        }
 
         .name {
             color: $white;
@@ -81,10 +86,11 @@ export default {
             font-weight: 600;
             margin: 0;
         }
-        
+
         .role {
             color: $white-1;
             font-size: $font-size-sm;
+            margin-bottom: 0;
         }
     }
 </style>
