@@ -1823,7 +1823,7 @@ kestra:
 Other internal storage types include:
 - [Storage S3](#s3) for [AWS S3](https://aws.amazon.com/s3/)
 - [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
-- [Storage Minio](#minio) compatible with  others *S3 like* storage services
+- [Storage MinIO](#minio) compatible with  others *S3 like* storage services
 - [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 To isolate your dedicated internal storage from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.storage.isolation`:
@@ -1897,9 +1897,9 @@ kestra:
 ```
 ::
 
-### Minio
+### MinIO
 
-If you use Minio or similar S3-compatible storage options, you can follow the same process as shown above to install the Minio storage plugin. Then, make sure to include the Minio's `endpoint` and `port` in the storage configuration:
+If you use MinIO or similar S3-compatible storage options, you can follow the same process as shown above to install the MinIO storage plugin. Then, make sure to include the MinIO's `endpoint` and `port` in the storage configuration:
 
 ```yaml
 kestra:
@@ -1916,9 +1916,19 @@ kestra:
       partSize: your_part_size_for_multipart_uploads # syntax: <number><unit> without space e.g. 100KB, 5MB, 1GB — defaults to 5MB
 ```
 
-Optionally and if the Minio configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on Minio server), you can also use the `kestra.storage.minio.vhost: true` property to make Minio client to use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
+Optionally and if the MinIO configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on MinIO server), you can also use the `kestra.storage.minio.vhost: true` property to make the MinIO client use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
 
 Please note that the endpoint should always be your base domain (even if you use the virtual host syntax). In the above example, `endpoint: my.domain.com`, `bucket: my-bucket`. Setting `endpoint: my-bucket.my.domain.com` will lead to failure.
+
+To add a proxy in your MinIO configuration, take the following example:
+
+```yaml
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    ports:
+      - "8888:8080"  # MITM proxy listens on 8080 inside container by default
+    command: mitmdump --mode regular --listen-port 8080
+```
 
 ### Azure
 
