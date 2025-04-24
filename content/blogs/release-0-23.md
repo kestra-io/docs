@@ -33,7 +33,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Feature Highlights
 
-### [FEATURE 1 TITLE]
+### No Code, Multi Pane Editor
 
 [FEATURE 1 DESCRIPTION]
 
@@ -68,7 +68,14 @@ https://github.com/kestra-io/plugin-git/issues/121
 ## Notable Enhancements
 
 - IonToParquet and IonToAvro tasks
-- [ENHANCEMENT 3]
+- Pause task enhancement - https://github.com/kestra-io/kestra/issues/8242
+
+> add pauseDuration
+> deprecate delay (copy to pauseDuration if set)
+> remove timeout from Pause (if used and pauseDuration is not set, copy it to pauseDuration with behavior = FAIL)
+> we can't fully remove timeout as it's used by the abstract class, but it will not be exposed to the user
+> add behavior Enum field: RESUME, WARN, FAIL, CANCEL → default RESUME
+
 - [ENHANCEMENT 4]
 - [ENHANCEMENT 5]
 
@@ -99,6 +106,16 @@ Here are UI enhancements worth noting:
 ### Redis improvement
 
 https://github.com/kestra-io/plugin-redis/issues/98
+
+::collapse{title="Example with [PLUGIN 2]"}
+```yaml
+[EXAMPLE_YAML]
+```
+::
+
+### InfluxDB
+
+- https://github.com/kestra-io/plugin-influxdb/issues/2
 
 ::collapse{title="Example with [PLUGIN 2]"}
 ```yaml
