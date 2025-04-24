@@ -11,10 +11,10 @@
                                 <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
                             </p>
                             <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                            <BlogDetails :blog="page" class="mt-3"/>
                             <div class="d-lg-none d-block" data-aos="fade-zoom">
-                                <NavToc :page="page" >
+                                <NavToc :page="page">
                                     <template #header>
-                                        <BlogDetails :blog="page"/>
                                     </template>
                                 </NavToc>
                             </div>
@@ -43,7 +43,6 @@
                     </div>
                     <NavToc class="d-lg-block d-none right-menu" :page="page">
                         <template #header>
-                            <BlogDetails :blog="page"/>
                         </template>
                     </NavToc>
                 </article>
@@ -128,8 +127,9 @@
         }
 
         page.value = data.value;
-        const {title,author,description,image,date} = page.value
+        const {title, description, image, date} = page.value
         const { origin } = useRequestURL()
+        const { getAuthors } = useBlogAuthors(page.value);
 
         const setContentHead = async () => {
             await useContentHead(page);
@@ -140,8 +140,7 @@
 
           setContentHead()
 
-
-
+        const authors = getAuthors();
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary_large_image' },
@@ -162,10 +161,9 @@
                         "headline": title,
                         "image": [image ],
                         "datePublished": date,
-                        "author": { "@type": "Person", "name": `${author.name}` },
+                        "author": authors.map(author => ({ "@type": "Person", "name": author.name })),
                         "publisher": { "@type": "Organization", "name": "Kestra", "logo": { "@type": "ImageObject", "url": "https://kestra.io/logo.svg" } },
                         "description": description,
-
                     }),
                     type  : "application/ld+json"
                 }]

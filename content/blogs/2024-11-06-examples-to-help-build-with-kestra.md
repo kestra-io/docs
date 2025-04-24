@@ -166,7 +166,7 @@ Orchestrating your code is useful, but being able to sync that with your Git rep
 
 Starting with **Clone**, we can clone our repository and then have other tasks access it as if we were using it on our local machine.
 
-This example also uses the [WorkingDirectory task](../docs/04.workflow-components/01.tasks/02.scripts/working-directory.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files](../docs/04.workflow-components/01.tasks/02.scripts/07.input-output-files.md) which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
+This example also uses the [WorkingDirectory task](../docs/16.scripts/working-directory.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files]((../docs/16.scripts/input-output-files.md), which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
 
 ```yaml
 id: git-python
