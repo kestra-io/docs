@@ -83,7 +83,7 @@ Further details in this pull request: [PR #7250](https://github.com/kestra-io/ke
 
 During benchmarking, we discovered that our default Kafka configuration was designed for throughput, not latency. By default, Kafka is optimized to process messages in batch.
 
-By fine-tuning our configuration (`poll.ms` and `commit.interval.ms reduced` from **100ms → 25ms**), we significantly improved execution speed.
+By fine-tuning our configuration (`poll.ms` and `commit.interval.ms` reduced from **100ms → 25ms**), we significantly improved execution speed.
 
 In a benchmark (a flow with two tasks, one processing JSON), this configuration update significantly reduces latency:
 
