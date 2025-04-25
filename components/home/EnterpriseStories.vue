@@ -1,7 +1,7 @@
 <template>
     <pre v-if="error">{{ error }}</pre>
     <div class="enterprise-stories" @scroll="scrollHandler" ref="scroller">
-        <div v-for="story of stories" class="story">
+        <div v-for="story of stories" class="story" @mouseenter="isHovering = true" @mouseleave="isHovering = false">
             <h2><span>{{ story.companyName }}</span> & Kestra: {{ story.title }}</h2>
             <div class="use-case">
                 <NuxtImg width="538" :src="story.heroImage" alt="Hero Image"/>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="dots">
-        <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex - 1 === activeStory}" @click="scrollTo(storyIndex - 1)" />
+        <button v-for="storyIndex of (stories?.length ?? 0)" :key="storyIndex" :class="{active: storyIndex - 1 === activeStory}" @click="manualScrollTo(storyIndex - 1)" />
     </div>
 
 </template>
@@ -26,8 +26,8 @@
     import {slugify} from "@kestra-io/ui-libs";
     const config = useRuntimeConfig();
 
-    const AUTO_SCROLL = 3000;
-    const SCROLL = 500;
+    const AUTO_SCROLL = 2000;
+    const SCROLL_TRANSITION = 1000;
 
     interface Story {
         id: string;
@@ -46,22 +46,24 @@
     const scroller = ref<HTMLDivElement | null>(null);
     const timers = ref<{ auto: NodeJS.Timeout | null; user: NodeJS.Timeout | null }>({ auto: null, user: null });
     const isScrolling = ref(false);
+    const isHovering = ref(false);
+    const isManualChange = ref(false);
 
     const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
     const stories = computed(() => data.value?.results);
 
     const clearTimers = () => {
         if (timers.value.auto) clearInterval(timers.value.auto);
-        if (timers.value.user) clearTimeout(timers.value.user);
+        if (timers.value.user) clearTimeout(timers.value.user as NodeJS.Timeout);
         timers.value = { auto: null, user: null };
     };
 
     const startAutoScroll = (delay: number = AUTO_SCROLL) => {
-        if (isScrolling.value || !stories.value?.length) return;
+        if (isScrolling.value || !stories.value?.length || isHovering.value || isManualChange.value) return;
         clearTimers();
 
         timers.value.auto = setInterval(() => {
-            if (!stories.value?.length) {
+            if (!stories.value?.length || isHovering.value) {
                 clearTimers();
                 return;
             }
@@ -70,12 +72,15 @@
     };
 
     const handleScrollReset = () => {
-        clearTimeout(timers.value.user);
-        timers.value.user = setTimeout(() => startAutoScroll(), SCROLL);
+        if (timers.value.user) clearTimeout(timers.value.user as NodeJS.Timeout);
+        timers.value.user = setTimeout(() => {
+            isManualChange.value = false;
+            startAutoScroll();
+        }, AUTO_SCROLL);
     };
 
     const scrollHandler = (e: Event) => {
-        if (isScrolling.value || !stories.value?.length) return;
+        if (isScrolling.value || !stories.value?.length || isManualChange.value) return;
         clearTimers();
 
         const target = e.target as HTMLElement;
@@ -111,14 +116,20 @@
         setTimeout(() => {
             isScrolling.value = false;
             handleScrollReset();
-        }, SCROLL);
+        }, SCROLL_TRANSITION);
     };
 
-    watchEffect(() => {
-        if (stories.value?.length && scroller.value) {
-            startAutoScroll();
-        } else {
+    const manualScrollTo = (index: number) => {
+        isManualChange.value = true;
+        clearTimers();
+        scrollTo(index);
+    };
+
+    watch(isHovering, (newValue) => {
+        if (newValue) {
             clearTimers();
+        } else if (!isManualChange.value) {
+            startAutoScroll(AUTO_SCROLL);
         }
     });
 
