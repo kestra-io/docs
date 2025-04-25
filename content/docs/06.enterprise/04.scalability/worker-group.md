@@ -7,8 +7,11 @@ version: ">= 0.10.0"
 
 How to configure Worker Groups in Kestra Enterprise Edition.
 
-
 A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
+
+::alert{type="info"}
+Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+::
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/C-539c3UVJM?si=3USIb1F7OiW9AQVp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
