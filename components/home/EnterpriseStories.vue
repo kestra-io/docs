@@ -133,6 +133,10 @@
         }
     });
 
+    onMounted(() => {
+        startAutoScroll();
+    });
+
     onUnmounted(clearTimers);
 </script>
 
