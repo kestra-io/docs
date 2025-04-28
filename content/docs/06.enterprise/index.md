@@ -15,15 +15,15 @@ While Kestra Cloud provides a fully managed, hassle-free experience, it differs 
 
 | Feature / Area                    | Kestra Cloud                                       | Kestra Enterprise                        |
 | :--------------------------------- | :------------------------------------------------ | :--------------------------------------- |
-| **Infrastructure Control**         | Fully managed by Kestra (no access)               | Full control and customization          |
-| **Backend Technology**             | Postgres JDBC only                                | Kafka, Postgres, MySQL, SQL Server, H2 (testing)   |
-| **Workers**                        | Fixed number of managed workers                  | Remote [Worker Groups](04.scalability/worker-group.md), autoscaling        |
-| **Storage & Secrets**              | Managed, **tenant/namespace-level only**             | Fully customizable backends              |
-| **Network Configuration**          | Public Internet only                             | Private networking (VPC peering, etc.)   |
-| **Backup Access**                  | Not available (managed by Kestra)                 | Customer-controlled backups              |
-| **Plugins**                        | No custom plugins                                | Full plugin customization                |
-| **Identity Providers (IdP)**        | Google, Microsoft, Basic Auth only                | Custom SSO/SCIM supported                 |
-| **Log Retention**                  | Limited (with optional add-on for extension)      | Unlimited (based on customer setup)      |
+| **Infrastructure Control**         | Fully managed by Kestra for simplicity and reliability               | Full control and customization          |
+| **Backend Technology**             | Postgres JDBC only                                | Customizable Kafka, Postgres, MySQL, SQL Server, H2 (testing)   |
+| **Workers**                        | Managed worker pools sized for stability                  | Remote [Worker Groups](04.scalability/worker-group.md), autoscaling        |
+| **Custom Internal Storage & Secrets**              | No instance-level control, **tenant/namespace-level only** backends            | Fully customizable backends              |
+| **Network Configuration**          | Secure access over public Internet                             | Private networking (self-hosted, VPC peering, etc.)   |
+| **Backup Access**                  | Automatic backups handled by Kestra                 | Customer-controlled backups              |
+| **Plugins**                        | Curated plugin environment                                | Full plugin customization                |
+| **Identity Providers (IdP)**        | Built-in Google, Microsoft, or Basic Authentication                | Custom SSO/SCIM supported                 |
+| **Log Retention**                  | Automatic retention protocol managed by Kestra      | Unlimited (based on customer setup)      |
 | **Deployment Regions**             | US & EU (Belgium) on GCP                          | Any cloud, any region                    |
 
 This section describes those features in detail and explains how to configure them.
