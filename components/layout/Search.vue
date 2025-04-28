@@ -37,9 +37,8 @@
                                         <div class="result">
                                             <div class="w-100">
                                                 <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
-                                                <h5>
-                                                    {{ result.title }}
-                                                </h5>
+                                                <h5 v-if="result.highlightTitle" v-html="result.highlightTitle"></h5>
+                                                <h5 v-else>{{ result.title }}</h5>
                                                 <div class="slug">
                                                 <span
                                                     :class="{first: index === 0}"
@@ -149,9 +148,25 @@
                     cancelToken: this.cancelToken.token
                 }).then(response => {
                     if (response?.data?.results && response.data.results.length) {
-                        this.searchResults = response.data.results;
+                        this.searchResults = response.data.results.map(result => {
+                            if (value && value.trim()) {
+                                const searchTerm = value.trim().toLowerCase();
+                                const title = result.title;
+                                const titleLower = title.toLowerCase();
+                                
+                                if (titleLower.includes(searchTerm)) {
+                                    const position = titleLower.indexOf(searchTerm);
+                                    result.highlightTitle = 
+                                        title.substring(0, position) + 
+                                        '<mark>' + title.substring(position, position + searchTerm.length) + '</mark>' + 
+                                        title.substring(position + searchTerm.length);
+                                }
+                            }
+                            return result;
+                        });
+                        
                         this.selectedIndex = 0;
-                        this.selectedItem = response.data.results[0];
+                        this.selectedItem = this.searchResults[0];
                         this.loading = false;
                     } else {
                         this.resetData();
@@ -533,14 +548,6 @@
                     white-space: pre;
                     word-break: break-all;
                 }
-
-                mark {
-                    background-color: transparent;
-                    color: $white;
-                    font-family: $font-family-sans-serif;
-                    font-size: $font-size-xs;
-                    font-weight: 800;
-                }
             }
         }
 
@@ -550,6 +557,15 @@
 
         .search-results {
             border-top: 1px solid $black-6;
+        }
+
+        mark {
+            background-color: transparent;
+            color: $purple-36;
+            font-family: $font-family-sans-serif;
+            font-weight: 800;
+            padding: 0;
+            margin: 0;
         }
     }
 </style>
