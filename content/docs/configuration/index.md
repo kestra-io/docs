@@ -2142,17 +2142,29 @@ Using the `kestra.variables` configuration, you can determine how variables are 
 
 ### Environment Variables Prefix
 
-Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
+Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `ENV_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
 
 ```yaml
 kestra:
   variables:
-    envVarsPrefix: KESTRA_
+    envVarsPrefix: ENV_
 ```
 
-These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**.
+These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**. Your Docker Compose might look something like this:
 
-For example, an environment variable with the name `KESTRA_MY_ENV` can be accessed using `{{ envs.my_env }}`.
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    environment:
+      ENV_MY_VARIABLE: extra variable value
+      ENV_NEW_VARIABLE: new variable value
+      KESTRA_CONFIGURATION:
+        kestra:
+          variables:
+            env-vars-prefix: "ENV_" # this is the default as of version 0.23
+```
+
+An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.MY_VARIABLE }}`.
 
 ### Global Variables
 
