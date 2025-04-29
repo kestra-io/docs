@@ -1722,7 +1722,6 @@ nav {
                 background: #F7F7F8;
                 border: 1px solid $white-2 !important;
                 padding: calc($spacer * 0.25) $spacer;
-                border-radius: $border-radius-lg;
             }
 
             :deep(.github .btn-outline-dark) {

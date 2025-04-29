@@ -12,15 +12,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Github from "vue-material-design-icons/Github.vue"
 
-const props = defineProps({
-    small: {
-        type: Boolean,
-        default: false
+const props = withDefaults(
+    defineProps<{
+        small?: boolean
+    }>(),
+    {
+        small: false
     }
-});
+)
 </script>
 
 <style lang="scss" scoped>
