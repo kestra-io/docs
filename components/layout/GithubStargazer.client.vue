@@ -3,16 +3,23 @@
     <span v-else class="placeholder" style="width: 39px"></span>
 </template>
 
-<script>
-    import axios from "axios";
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from "axios";
 
-    export default {
-        data: () => ({
-            stargazersText: undefined
-        }),
-        async mounted() {
-            const response = await axios.get('/api/github')
-            this.stargazersText = Intl.NumberFormat('en-US').format(response.data.stargazers);
-        },
-    };
+const stargazersText = ref(null);
+
+const formatStargazers = (count) => {
+    if (count >= 1000000) {
+        return (count / 1000000).toFixed(1) + 'M';
+    } else if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'K';
+    }
+    return count.toString();
+}
+
+onMounted(async () => {
+    const response = await axios.get('/api/github');
+    stargazersText.value = formatStargazers(response.data.stargazers);
+});
 </script>

@@ -207,6 +207,7 @@ blockquote.blockquote {
 .btn.btn-secondary{
     font-weight: 700;
     line-height: 1.5;
+    border-radius: $border-radius-lg !important;
     &.btn-md{
         padding: .5rem 1rem;
         font-size: $font-size-base;
