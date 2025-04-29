@@ -243,3 +243,29 @@ Kestra.timer('duration', end - start);
 
 Once this has executed, `duration` will be viewable under **Metrics**.
 ![metrics](/docs/how-to-guides/nodejs/metrics.png)
+
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
+- [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
+
+In this example, the `Eval` is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use `int()` to convert the string into an integer:  
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri )}}
+      data["next_month"] = int(data["month"]) + 1
+```
