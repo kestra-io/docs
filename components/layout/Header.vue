@@ -1520,7 +1520,7 @@ nav {
                 a.dropdown-item {
                     white-space: unset;
                     text-transform: capitalize;
-                    padding: 1rem 0;
+                    padding: 1rem 5px;
                 }
 
                 @include media-breakpoint-between(lg, xxl) {
@@ -1547,24 +1547,16 @@ nav {
                         background-color: $white;
                         color: $black-1 !important;
                         font-size: $font-size-xl !important;
-                        font-weight: 600 !important;
+                        font-weight: 600;
+                        border-bottom: 1px solid $white-1;
+                        padding: 1.5rem 0;
+                        line-height: 26px;
                     }
 
                     @include media-breakpoint-down(xl) {
                         padding-right: 5px;
                         padding-left: 5px;
                         font-size: 14px;
-                    }
-
-                    @include media-breakpoint-down(lg) {
-                        background-color: $white;
-                        border-radius: 0;
-                        border-bottom: 1px solid $white-1;
-                        display: flex;
-                        justify-content: space-between;
-                        padding: 1.5rem 0;
-                        font-weight: 500;
-                        line-height: 26px;
                     }
 
                     &:after {
@@ -1620,6 +1612,7 @@ nav {
                             line-height: 24px;
                             margin: 0;
                             text-transform: uppercase;
+                            padding-left: 5px;
                         }
                     }
 
@@ -1640,12 +1633,24 @@ nav {
                         }
 
                         .dropdown-item {
+                            --bs-dropdown-link-hover-color: #5A3ABC;
+                            --bs-dropdown-link-hover-bg: #F9F5FF;
+                            --bs-dropdown-link-active-color: #5A3ABC;
+                            --bs-dropdown-link-active-bg: #F9F5FF;
+
                             &:last-child {
                                 margin-bottom: 0;
                             }
 
+                            &:hover,
+                            &.active {
+                                span {
+                                    color: #5A3ABC;
+                                }
+                            }
+
                             span {
-                                color: $black !important;
+                                color: $black;
                                 display: inline-block;
                                 font-size: 1rem;
                                 font-weight: 700;
@@ -1664,7 +1669,6 @@ nav {
                                 font-weight: 700;
                                 color: #134ECC;
                             }
-
 
 
                             :deep(.material-design-icon__svg) {
