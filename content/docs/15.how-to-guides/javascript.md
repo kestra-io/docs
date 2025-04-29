@@ -250,7 +250,7 @@ Kestra also supports GraalVM integration, allowing you to execute JavaScript cod
 - [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
 - [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
 
-In this example, the `Eval` is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use `int()` to convert the string into an integer:  
+In this example, the `Eval` is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use `int()` to convert the string into an integer. Additionally, the use of the `outputs` property simplies the process of fetching variables from JavaScript and being able to access them inside of Kestra. Useful if you want to manipulate data and pass the new format to another task.
 
 ```yaml
 id: parse_json_data
