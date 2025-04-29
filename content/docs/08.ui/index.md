@@ -40,5 +40,9 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
 
 ---
 
+Test this video thing
+
+<div style="position: relative; padding-bottom: calc(54.82804232804233% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/hx6QGginLPZnpJjIpxhS?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="business-processes | Kestra EE - dev" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ::ChildCard
 ::
