@@ -1176,8 +1176,6 @@ export default {
                             margin: 0;
 
                             li {
-                                margin-bottom: 1rem;
-
                                 &:last-child {
                                     margin-bottom: 0;
                                 }
