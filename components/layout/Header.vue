@@ -1398,7 +1398,6 @@ nav {
     @include media-breakpoint-down(lg) {
         padding: 0;
         padding-top: 0;
-        background-color: $black-9;
     }
 
     &.scrolled,
