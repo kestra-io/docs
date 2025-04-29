@@ -1661,10 +1661,9 @@ nav {
                             strong.tag {
                                 background-color: #C7F0FF;
                                 border: 1px solid #7FBBFF;
-                                padding: 4px 6px;
+                                padding: 0px 6px;
                                 border-radius: 4px;
                                 font-size: $font-size-md;
-                                margin-left: 8px;
                                 font-weight: 700;
                                 color: #134ECC;
                             }
