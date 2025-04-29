@@ -147,19 +147,13 @@
                     },
                     cancelToken: this.cancelToken.token
                 }).then(response => {
-                    if (response?.data?.results && response.data.results.length) {
+                    if (response?.data?.results?.length) {
                         this.searchResults = response.data.results.map(result => {
-                            if (value && value.trim()) {
-                                const searchTerm = value.trim().toLowerCase();
-                                const title = result.title;
-                                const titleLower = title.toLowerCase();
-                                
-                                if (titleLower.includes(searchTerm)) {
-                                    const position = titleLower.indexOf(searchTerm);
-                                    result.highlightTitle = 
-                                        title.substring(0, position) + 
-                                        '<mark>' + title.substring(position, position + searchTerm.length) + '</mark>' + 
-                                        title.substring(position + searchTerm.length);
+                            const searchTerm = value?.trim()?.toLowerCase();
+                            if (searchTerm) {
+                                const index = result.title.toLowerCase().indexOf(searchTerm);
+                                if (index !== -1) {
+                                    result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`;
                                 }
                             }
                             return result;
