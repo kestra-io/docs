@@ -30,17 +30,6 @@
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/BHP.svg"
-                                    alt="BHP"
-                                    data-aos="fade-left"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
                                     src="/landing/enterprise/teams/ACXIOM.svg"
                                     alt="Acxiom"
                                     data-aos="fade-left"
