@@ -266,6 +266,6 @@ tasks:
     outputs:
       - data
     script: |
-      data = {{ read(outputs.download.uri )}}
+      data = {{ read(outputs.download.uri) }}
       data["next_month"] = int(data["month"]) + 1
 ```

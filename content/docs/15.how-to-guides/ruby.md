@@ -187,3 +187,31 @@ tasks:
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](/docs/how-to-guides/ruby/metrics.png)
+
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
+- [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
+
+In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy for us to generate outputs from variables in Python with the use of the `outputs` property. Useful if you want to manipulate data and pass the new format to another task.
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri) }}
+      data["next_month"] = '{{ read(outputs.download.uri) | jq(".month") | first }}'.to_i + 1
+      return {data: data}
+```
+
