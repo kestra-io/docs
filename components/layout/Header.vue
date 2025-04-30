@@ -1512,6 +1512,13 @@ nav {
             background-color: $white;
             height: calc(100vh - 3.3rem);
             padding: 0 2rem;
+            transition: all 0.15s ease-in-out;
+
+            &.collapsing {
+                height: 0;
+                opacity: 0;
+                transition: all 0.1s ease-in-out;
+            }
         }
 
         ul.navbar-nav {
