@@ -50,7 +50,7 @@
     "@nuxtjs/sitemap": "^7.2.10",
     "@types/node": "^22.14.1",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
-    "nuxt": "^3.16.2",
+    "nuxt": "^3.17.1",
     "nuxt-aos": "^1.2.5",
     "nuxt-multi-cache": "^3.4.0",
     "patch-package": "^8.0.0",
