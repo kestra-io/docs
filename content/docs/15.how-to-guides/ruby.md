@@ -190,7 +190,7 @@ Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ## Execute GraalVM Task
 
-Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM. There are currently two tasks:
+Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
 - [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
 - [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
 

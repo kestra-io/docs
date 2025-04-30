@@ -409,7 +409,7 @@ triggers:
 
 ## Execute GraalVM Task
 
-Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM. There are currently two tasks:
+Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
 - [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
 - [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
 

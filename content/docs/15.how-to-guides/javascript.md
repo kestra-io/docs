@@ -246,7 +246,7 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 
 ## Execute GraalVM Task
 
-Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM. There are currently two tasks:
+Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
 - [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
 - [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
 
