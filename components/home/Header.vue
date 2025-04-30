@@ -115,6 +115,7 @@
             onLoad: () => {
                 riveLoaded.value = true
                 anim.resizeDrawingSurfaceToCanvas();
+                anim.delete();
             },
         });
         riveAnimation.value = anim
