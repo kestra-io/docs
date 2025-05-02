@@ -64,6 +64,8 @@
     import NavToc from "~/components/docs/NavToc.vue";
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
+    console.log("plugins")
+
     const route = useRoute()
     const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
@@ -72,6 +74,7 @@
 
     const fetchNavigation = async () => {
         const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
+        console.log({navigationFetch})
         const navigation = navigationFetch.data.value;
 
         const pageList = recursivePages(navigation[0]);
@@ -148,6 +151,7 @@
     const dataKey = computed(() => pluginType.value === undefined ? splitRouteSlug[0] : pluginType.value);
 
     const {data: page} = await useAsyncData(`Container-${dataKey.value}`, () => {
+        console.log('page fetch', pageUrl.value)
         return $fetch(pageUrl.value)
     });
 

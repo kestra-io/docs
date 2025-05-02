@@ -12,15 +12,32 @@
         purpleButtonText="Create one"
         purpleButtonHref="/docs/plugin-developer-guide"
     />
+    <pre v-if="error">
+        {{ error }}
+    </pre>
 </template>
 
-<script setup>
+<script setup lang="ts">
     const config = useRuntimeConfig();
 
-    const {data: plugins} = await useFetch(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`);
+    const {data: plugins, error} = await useFetch<{title:string}[]>(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`, {
+        onResponse({response}) {
+            if (response.status !== 200) {
+                console.error("Error in plugins page - response", response);
+                return Promise.reject(new Error('Failed to load plugins'));
+            }else {
+                console.log("Plugins page - response", response);
+                return response;
+            }
+        },
+    });
+
+    if(error){
+        console.error("Error in plugins page - blob", error)
+    }
 
     const pluginsList = computed(() => {
-        return plugins.value
+        return error || !plugins.value ? [] : plugins.value
             .sort((a, b) => {
                 const nameA = a.title.toLowerCase(),
                     nameB = b.title.toLowerCase();
