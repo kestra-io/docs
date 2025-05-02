@@ -4,7 +4,7 @@
         <Meta name="description"
               content="Connect Kestra with tools you already know and love"/>
     </Head>
-    <PluginsLists :plugins="pluginsList" :categories="categories" />
+    <PluginsLists :plugins="pluginsList" :categories="categories ?? []" />
     <LayoutFooterContact
         title="Didn’t find the plugin you were looking for?"
         darkButtonText="Ask on slack"
@@ -12,7 +12,7 @@
         purpleButtonText="Create one"
         purpleButtonHref="/docs/plugin-developer-guide"
     />
-    <pre v-if="error">
+    <pre v-if="status !== 'success'">
         {{ error }}
     </pre>
 </template>
@@ -20,24 +20,14 @@
 <script setup lang="ts">
     const config = useRuntimeConfig();
 
-    const {data: plugins, error} = await useFetch<{title:string}[]>(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`, {
-        onResponse({response}) {
-            if (response.status !== 200) {
-                console.error("Error in plugins page - response", response);
-                return Promise.reject(new Error('Failed to load plugins'));
-            }else {
-                console.log("Plugins page - response", response);
-                return response;
-            }
-        },
-    });
+    const {data: plugins, error, status} = await useFetch<{title:string}[]>(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`);
 
-    if(error){
+    if(status.value !== 'success'){
         console.error("Error in plugins page - blob", error)
     }
 
     const pluginsList = computed(() => {
-        return error || !plugins.value ? [] : plugins.value
+        return status.value !== 'success' || !plugins.value ? [] : plugins.value
             .sort((a, b) => {
                 const nameA = a.title.toLowerCase(),
                     nameB = b.title.toLowerCase();
