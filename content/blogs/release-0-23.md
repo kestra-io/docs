@@ -141,8 +141,6 @@ https://github.com/kestra-io/plugin-redis/issues/98
 
 ## Thanks to Our Contributors
 
-- Add mention to https://github.com/V-Rico about the PR he made for XSS resolution https://github.com/kestra-io/kestra/pull/7662
-
 Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
