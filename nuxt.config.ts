@@ -21,11 +21,8 @@ export default defineNuxtConfig({
         formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
-        provider: 'cloudflare',
+        provider: 'ipx',
         domains: ['kestra.io', '*.kestra-io.pages.dev'],
-        cloudflare: {
-            baseURL: '/'
-        }
     },
     sitemap: {
         sitemaps: {
