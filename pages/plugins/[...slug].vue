@@ -33,8 +33,9 @@
                             :sub-group="subGroup">
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content">
-                            <template #default="{body}">
-                                <ContentRenderer class="markdown" :value="body"/>
+                            <template #default="mdcProps">
+                                <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
+                                <ContentRenderer v-else class="markdown" :value="mdcProps?.body"/>
                             </template>
                         </MDC>
                     </template>
@@ -44,8 +45,9 @@
                             :props-initially-expanded="true">
                         <template #markdown="{ content }">
                             <MDC :value="content">
-                                <template #default="{body}">
-                                    <ContentRenderer class="markdown" :value="body"/>
+                                <template #default="mdcProps">
+                                    <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
+                                    <ContentRenderer v-else class="markdown" :value="mdcProps?.body"/>
                                 </template>
                             </MDC>
                         </template>
@@ -70,17 +72,9 @@
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);
 
-    const fetchNavigation = async () => {
-        const navigationFetch = await useFetch(`/api/plugins?type=navigation`);
-        const navigation = navigationFetch.data.value;
-
-        const pageList = recursivePages(navigation[0]);
-        const pageNames = generatePageNames(navigation[0]);
-
-        return {navigation, pageList, pageNames};
-    }
-
-    const {navigation, pageList, pageNames} = await fetchNavigation();
+    const {data: navigation} = await useFetch(`/api/plugins?type=navigation`);
+    const pageList = computed(() => recursivePages(navigation.value?.[0]));
+    const pageNames = computed(() => generatePageNames(navigation.value?.[0]));
 
     const pluginType = computed(() => {
         const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
@@ -90,17 +84,19 @@
 
         let splitPluginType = lowerCasePluginType.split(".");
         const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
-        return `${packageName}.${pageNames[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
+        return `${packageName}.${pageNames.value[slug.value] ?? splitPluginType[splitPluginType.length - 1]}`;
     });
 
-    if (pluginType.value !== undefined && !pageList.includes(slug.value)) {
-        const redirect = pageList.find(page => page.endsWith("/" + pluginType.value));
-        if (redirect !== undefined) {
-            await navigateTo({
-                path: redirect
-            });
+    onMounted(async () => {
+        if (pluginType.value !== undefined && !pageList.value.includes(slug.value)) {
+            const redirect = pageList.value.find(page => page.endsWith("/" + pluginType.value));
+            if (redirect !== undefined) {
+                await navigateTo({
+                    path: redirect
+                });
+            }
         }
-    }
+    })
 
     function pluginToc(subGroupsWrappers: Plugin[]) {
         return subGroupsWrappers.filter(subGroupWrapper => subGroupWrapper.subGroup !== undefined)
@@ -147,15 +143,37 @@
     const pageUrl = computed(() => pluginType.value === undefined ? `/api/plugins?page=${splitRouteSlug[0]}&type=plugin` : `/api/plugins?page=${pluginType.value}&type=definitions`);
     const dataKey = computed(() => pluginType.value === undefined ? splitRouteSlug[0] : pluginType.value);
 
-    const {data: page} = await useAsyncData(`Container-${dataKey.value}`, () => {
-        return $fetch(pageUrl.value)
+    const {data: pageData} = await useFetch<{
+        body: {
+            group: string,
+            plugins: any[],
+            toc: {links: any[]}
+        }
+        title?: string,
+        description?: string,
+        error?: boolean,
+        message?: string,
+    }>(pageUrl.value, {key:`Container-${dataKey.value}`});
+
+    const page = computed(() => {
+        return pageData.value ?? {
+            body: {
+                group: "",
+                plugins: [],
+                toc: {links: []}
+            },
+            title: "",
+            description: "",
+            error: false,
+            message: ""
+        }
     });
 
     if (page?.value?.error) {
         throw createError({statusCode: 404, message: page?.value?.message, fatal: true})
     }
 
-    if (page.value.body.toc === undefined) {
+    if (page.value?.body && page.value.body?.toc === undefined) {
         let links;
         if (subGroup.value !== undefined) {
             links = pluginSubGroupToc(page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
@@ -169,10 +187,10 @@
         }
     }
 
-    const pluginWrapper = computed(() => page.value.body.plugins.find(p => p.subGroup === undefined));
+    const pluginWrapper = computed(() => page.value?.body.plugins.find(p => p.subGroup === undefined));
     const subGroupWrapper = computed(() => subGroup.value === undefined || pluginType.value !== undefined ? undefined : page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
 
-    if (pluginType.value === undefined) {
+    if (pluginType.value === undefined && page.value) {
         page.value.title = pluginWrapper.value.title.charAt(0).toUpperCase() + pluginWrapper.value.title.slice(1) + (subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`);
 
         page.value.description = subGroup.value === undefined ? pluginWrapper.value.description : subGroupWrapper.value.description;
@@ -185,9 +203,9 @@
         await useContentHead(page);
     }
 
-    const pageName = computed(() => pageNames[route.path]);
+    const pageName = computed(() => pageNames.value[route.path]);
 
-    let {data: icons} = await useAsyncData(`PluginSubgroupsIcon-${pluginName.value}`, () => {
+    let {data: iconsData} = await useAsyncData(`PluginSubgroupsIcon-${pluginName.value}`, () => {
         try {
             return $fetch(`/api/plugins?page=${pluginName.value}&type=subGroupsIcons`);
         } catch (error) {
@@ -202,20 +220,21 @@
             throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
         }
     });
-    icons = ref({
-        ...icons.value,
+
+    const icons = computed<Record<string, any>>(() => ({
+        ...iconsData.value,
         ...elementsIcons.value
-    });
+    }));
 
     const pageIcon = computed(() => {
         let icon;
         if (pluginType.value !== undefined) {
             icon = icons.value[pluginType.value];
             if (icon === undefined) {
-                icon = Object.entries(icons.value).filter(([key]) => pluginType.value.includes(key))
+                icon = Object.entries(icons.value).filter(([key]) => pluginType.value?.includes(key))
                     .sort(([key1], [key2]) => key2.length - key1.length)?.[0]?.[1];
             }
-        } else if (subGroup.value === undefined) {
+        } else if (subGroup.value === undefined && page.value?.body.group) {
             icon = icons.value[page.value.body.group];
         } else {
             icon = icons.value[subGroupWrapper.value.subGroup]
@@ -544,5 +563,29 @@
                 }
             }
         }
+    }
+
+    :deep(.alert-info) {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        background-color: var(--ks-background-info);
+        border: 1px solid var(--ks-border-info);
+        border-left-width: 5px;
+        border-radius: 8px;
+
+        &::before {
+            content: '!';
+            min-width: 20px;
+            height: 20px;
+            margin-top: 4px;
+            border-radius: 50%;
+            background: var(--ks-content-info);
+            color: $black;
+            font: 600 13px/20px sans-serif;
+            text-align: center;
+        }
+
+        p { color: var(--ks-content-info); }
     }
 </style>

@@ -51,7 +51,7 @@
                 {
                     "binding": "DB",
                     "database_name": "nuxt-content-preview",
-                    "database_id": "8ef30986-0c08-4155-86e7-36a78b8f4cd7"
+                    "database_id": "d65b1553-56e9-444e-9f3b-811e87a22f32"
                 }
             ],
             "vars": { "NITRO_PRESET": "cloudflare-pages" }
