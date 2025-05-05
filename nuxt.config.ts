@@ -18,10 +18,10 @@ export default defineNuxtConfig({
     ],
     image: {
         dir: 'public',
+        provider: 'ipx',
         formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
-        provider: 'ipx',
         domains: ['kestra.io', '*.kestra-io.pages.dev'],
     },
     sitemap: {
