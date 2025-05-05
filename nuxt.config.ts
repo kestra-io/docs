@@ -21,8 +21,9 @@ export default defineNuxtConfig({
         formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
+        domains: ['kestra.io', 'spike-optimize-blog-images-l.kestra-io.pages.dev'],
         cloudflare: {
-            baseURL: '/'
+            baseURL: 'https://spike-optimize-blog-images-l.kestra-io.pages.dev/'
         }
     },
     sitemap: {
