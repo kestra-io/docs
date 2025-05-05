@@ -34,7 +34,8 @@
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content">
                             <template #default="mdcProps">
-                                <ContentRenderer class="markdown" :value="mdcProps?.body"/>
+                                <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
+                                <ContentRenderer v-else class="markdown" :value="mdcProps?.body"/>
                             </template>
                         </MDC>
                     </template>
@@ -45,7 +46,8 @@
                         <template #markdown="{ content }">
                             <MDC :value="content">
                                 <template #default="mdcProps">
-                                    <ContentRenderer class="markdown" :value="mdcProps?.body"/>
+                                    <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
+                                    <ContentRenderer v-else class="markdown" :value="mdcProps?.body"/>
                                 </template>
                             </MDC>
                         </template>
