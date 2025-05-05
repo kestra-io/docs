@@ -564,4 +564,28 @@
             }
         }
     }
+
+    :deep(.alert-info) {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        background-color: var(--ks-background-info);
+        border: 1px solid var(--ks-border-info);
+        border-left-width: 5px;
+        border-radius: 8px;
+
+        &::before {
+            content: '!';
+            min-width: 20px;
+            height: 20px;
+            margin-top: 4px;
+            border-radius: 50%;
+            background: var(--ks-content-info);
+            color: $black;
+            font: 600 13px/20px sans-serif;
+            text-align: center;
+        }
+
+        p { color: var(--ks-content-info); }
+    }
 </style>
