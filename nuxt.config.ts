@@ -18,13 +18,13 @@ export default defineNuxtConfig({
     ],
     image: {
         dir: 'public',
-        formats: ['webp', 'png', 'jpg'],
+        formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
         provider: 'cloudflare',
-        domains: ['kestra.io', 'spike-optimize-blog-images-l.kestra-io.pages.dev'],
+        domains: ['kestra.io', '*.kestra-io.pages.dev'],
         cloudflare: {
-            baseURL: 'https://spike-optimize-blog-images-l.kestra-io.pages.dev/'
+            baseURL: '/'
         }
     },
     sitemap: {
