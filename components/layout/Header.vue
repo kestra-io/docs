@@ -445,6 +445,7 @@
                 <div
                     class="header-menu"
                     @mouseover="mouseOverMenu()"
+                    @mouseleave="mouseLeaveMenu()"
                     :style="{
                         transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
                         width: headerMenuSize.width,
@@ -455,7 +456,7 @@
                     <div
                         class="header-menu-card"
                     >
-                        <div @mouseleave="mouseLiveMenu()" id="product" class="header-menu-card-section">
+                        <div @mouseleave="mouseLeaveMenu()" id="product" class="header-menu-card-section">
                             <div class="header-menu-left">
                                 <div class="header-menu-card-section-column">
                                     <div class="menu-title">
@@ -533,7 +534,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div @mouseleave="mouseLiveMenu()" id="solutions" class="header-menu-card-section">
+                        <div @mouseleave="mouseLeaveMenu()" id="solutions" class="header-menu-card-section">
                             <div class="row m-0 w-100 flex-nowrap">
                                 <div class="header-menu-left col-12 col-xl">
                                     <div class="header-menu-card-section-column col-lg-6">
@@ -678,7 +679,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div @mouseleave="mouseLiveMenu()" id="resources" class="header-menu-card-section">
+                        <div @mouseleave="mouseLeaveMenu()" id="resources" class="header-menu-card-section">
                             <div class="header-menu-left">
                                 <div class="header-menu-card-section-column">
                                     <div class="menu-title">
@@ -902,7 +903,7 @@ export default {
           this.mouseoverMenu = true
           this.headerMenuPointerEvents = 'auto'
         },
-        mouseLiveMenu() {
+        mouseLeaveMenu() {
           this.showMenu = false
           this.mouseoverMenu = false
           this.showMenuId = null
