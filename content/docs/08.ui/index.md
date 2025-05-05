@@ -31,7 +31,7 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
   - **IAM** for managing Users, Groups, and Roles.
   - **Audit Logs** to access Kestra audit logs.
   - **Instance** to have an overview of Kestra server component statuses, make announcements, and enable maintenance mode.
-  - The **Tenants** page to manage your tenants (page accessible only by users with admin permissions).
+  - **Tenants** to manage your tenants (page accessible only by users with admin permissions).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
