@@ -1,23 +1,27 @@
 <template>
     <pre v-if="error">{{ error }}</pre>
     <div class="enterprise-stories" @scroll="scrollHandler" ref="scroller">
-        <div v-for="story of stories" class="story">
-            <h2><span>{{ story.companyName }}</span> & Kestra: {{ story.title }}</h2>
-            <div class="use-case">
-                <NuxtImg width="538" :src="story.heroImage" alt="Hero Image"/>
-                <div class="quote-box">
-                    <img :src="story.logoDark" alt="Logo"/>
-                    <q>{{ story.quote.replace(/[“”"]/g, "").trim() }}</q>
-                    <p class="author">{{ story.quotePerson }}</p>
-                    <p class="title">{{ story.quotePersonTitle }}</p>
-                    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`" class="btn btn-lg btn-secondary">Read the Story</NuxtLink>
+        <ClientOnly>
+            <div v-for="story of stories" class="story">
+                <h2><span>{{ story.companyName }}</span> & Kestra: {{ story.title }}</h2>
+                <div class="use-case">
+                    <NuxtImg width="538" :src="story.heroImage" alt="Hero Image"/>
+                    <div class="quote-box">
+                        <img :src="story.logoDark" alt="Logo"/>
+                        <q>{{ story.quote.replace(/[“”"]/g, "").trim() }}</q>
+                        <p class="author">{{ story.quotePerson }}</p>
+                        <p class="title">{{ story.quotePersonTitle }}</p>
+                        <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`" class="btn btn-lg btn-secondary">Read the Story</NuxtLink>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ClientOnly>
     </div>
 
     <div class="dots">
-        <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+        <ClientOnly>
+            <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+        </ClientOnly>
     </div>
 
 </template>
