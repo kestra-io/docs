@@ -14,7 +14,7 @@
         <div class="container bd-gutter">
             <div class="mt-5" data-aos="fade-left">
                 <button
-                    v-for="category in categories"
+                    v-for="category in augmentedCategories"
                     :key="category"
                     :class="{ 'active': category === activeCategory }"
                     @click="setActiveCategory(category)"
@@ -24,7 +24,7 @@
                 </button>
             </div>
             <div class="row my-4" data-aos="fade-right">
-                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.name + '-' + plugin.title">
+                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in pluginsSlice" :key="plugin.name + '-' + plugin.title">
                     <PluginsPluginCard :plugin="plugin" />
                 </div>
                 <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">
@@ -62,42 +62,40 @@
     const DONT_CAPITALIZE_CATEGORIES = ["AI"];
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
-    const plugins = ref([]);
     const activeCategory = ref('All Categories');
-    const categories = ref([]);
     const props = defineProps(["plugins", "categories"]);
-    const totalPages = ref(0);
-    const totalGroups = ref(0);
-    const totalPlugins = ref(0);
     const searchQuery = ref('');
     const route = useRoute();
     const router = useRouter();
 
-    if (props.plugins) {
-        const pluginElements = new Set();
+    const pluginElements = computed<Set<any>>(() => {
+        if (props.plugins) {
+            const pluginElementsLocal = new Set();
+            // avoid duplicate across groups and subgroups
+            props.plugins.forEach(plugin => {
+                plugin.tooltipContent = "";
 
-        // avoid duplicate across groups and subgroups
-        props.plugins.forEach(plugin => {
-            plugin.tooltipContent = "";
+                // We only need this mapping for root plugin cards
+                const subGroupsToSlugs = plugin.subGroup === undefined
+                    ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
+                    : undefined;
 
-            // We only need this mapping for root plugin cards
-            const subGroupsToSlugs = plugin.subGroup === undefined
-                ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
-                : undefined;
+                Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                    .forEach(([category, elements]) => {
+                        creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
+                        elements.forEach(element => pluginElementsLocal.add(element));
+                    })
+                return pluginElementsLocal;
+            });
+        }
+        return new Set();
+    });
 
-            Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                .forEach(([category, elements]) => {
-                    creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
-                    elements.forEach(element => pluginElements.add(element));
-                })
-        });
+    const totalPlugins = computed(() => {
+            return pluginElements.value.size;
+    });
 
-        totalPlugins.value = pluginElements.size;
-    }
-
-    if (props.categories) {
-        categories.value = ['All Categories', ...props.categories];
-    }
+    const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
     function generateCategoryLink(pluginQualifier, item) {
         return `plugins/${pluginQualifier}/${item}`
@@ -142,11 +140,16 @@
         return name[0].toUpperCase() + name.slice(1).toLowerCase();
     };
 
-    const setPlugins = (allPlugins, total) => {
-        plugins.value = allPlugins
-        totalGroups.value = total;
-        totalPages.value = Math.ceil(total / itemsPerPage.value)
-    };
+    const totalGroups = computed(() => props.plugins.length);
+    const pluginsSlice = computed(() => {
+        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
+        const endIndex = startIndex + itemsPerPage.value;
+        return props.plugins.slice(startIndex, endIndex);
+    });
+
+    const totalPages = computed(() => {
+        return Math.ceil(totalGroups.value / itemsPerPage.value);
+    });
 
     const setSearchPlugins = (search, allPlugins) => {
         let searchPluginsList = [...allPlugins];
@@ -160,24 +163,9 @@
         });
     };
 
-    if (props.plugins) {
-        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
-        const endIndex = startIndex + itemsPerPage.value;
-
-        const pluginsData = props.plugins.slice(startIndex, endIndex);
-
-        setPlugins(pluginsData, props.plugins.length);
-    }
-
     const changePage = (pageNo) => {
         currentPage.value = pageNo;
         window.scrollTo(0, 0)
-    };
-
-    const breadcrumb = (slug) => {
-        return [...new Set(slug.split(".")
-            .filter(r => r !== ""))
-        ]
     };
 
     const filterPlugins = (pageVal, itemVal, categoryVal, searchVal) => {
@@ -214,7 +202,7 @@
     if (route.query.page) currentPage.value = parseInt(route.query.page);
     if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
     if (route.query.category) {
-        activeCategory.value = categories.value.find(c => c === route.query.category);
+        activeCategory.value = augmentedCategories.value.find(c => c === route.query.category);
         filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
     }
     if (route.query.q) {
