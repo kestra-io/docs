@@ -16,8 +16,8 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
     ],
-    target: 'static',
     image: {
+        dir: 'public',
         formats: ['webp', 'png', 'jpg'],
         quality: 80,
         densities: [1, 2],
