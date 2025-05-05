@@ -188,7 +188,7 @@
     },
     {
       id: 7,
-      title: "Custom Plugins",
+      title: "Plugin Development Support",
       isOpenSource: false,
       enterpriseText: 'On Request',
     },
@@ -438,7 +438,7 @@
         },
         {
           id: 7,
-          title: "Custom Plugins",
+          title: "Plugin Development Support",
           openSourceText: false,
           enterpriseText: 'On-Demand',
         },
