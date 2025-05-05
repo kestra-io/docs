@@ -194,7 +194,7 @@ Kestra also supports GraalVM integration, allowing you to execute Ruby code dire
 - [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
 - [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
 
-In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy for us to generate outputs from variables in Python with the use of the `outputs` property. Useful if you want to manipulate data and pass the new format to another task.
+In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 
 ```yaml
 id: parse_json_data
