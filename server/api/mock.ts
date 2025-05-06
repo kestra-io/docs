@@ -3,6 +3,7 @@ import url from "node:url";
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
     const code = event.node.res.statusCode;
+    const createdAt = new Date().toISOString();
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
     
     let responseData = {
@@ -10,6 +11,7 @@ export default defineEventHandler(async (event) => {
         method: method,
         params: requestUrl.searchParams,
         code: code,
+        createdAt: createdAt,
         body: "Request processed successfully",
     };
 
