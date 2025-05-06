@@ -1,10 +1,35 @@
 import url from "node:url";
 
 export default defineEventHandler(async (event) => {
+    const method = event.node.req.method;
+    const code = event.node.res.statusCode;
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
-    return {
+    
+    let responseData = {
         title: "Success",
-        message: "Mock request processed successfully",
+        method: method,
         params: requestUrl.searchParams,
+        code: code,
+        body: "Request processed successfully",
     };
+
+    switch (method) {
+        case "GET":
+            return responseData;
+        case "POST":
+            const body = await readBody(event);
+            event.node.res.statusCode = 201;
+            return {
+                ...responseData,
+                code: 201,
+                body
+            };
+        default:
+            event.node.res.statusCode = 405;
+            return {
+                ...responseData,
+                title: "Method Not Allowed",
+                body: "The requested method is not allowed for this endpoint."
+            };
+    }
 })
