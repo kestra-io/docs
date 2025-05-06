@@ -419,10 +419,13 @@ paths:
         schema:
           type: string
       requestBody:
+        description: "The filters to apply, some can override chart definition like\
+          \ labels & namespace"
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/GlobalFilter"
+        required: true
       responses:
         "200":
           description: dashboardChart 200 response
