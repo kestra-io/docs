@@ -336,7 +336,7 @@ variables:
 tasks:
   - id: send_approval_request
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: https://reqres.in/api/slack
+    url: https://kestra.io/api/mock
     payload: |
       {
         "channel": "#devops",
@@ -358,7 +358,7 @@ tasks:
 
   - id: approve
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/resources
+    uri: https://kestra.io/api/mock
     method: POST
     contentType: application/json
     body: "{{ inputs }}"
