@@ -72,7 +72,7 @@
         if (!props.plugins) {
             return new Set();
         }
-        
+
         const pluginElementsLocal = new Set();
         // avoid duplicate across groups and subgroups
         props.plugins.forEach(plugin => {
@@ -89,7 +89,7 @@
                     elements.forEach(element => pluginElementsLocal.add(element));
                 });
         });
-        
+
         return pluginElementsLocal;
     });
 
@@ -141,11 +141,15 @@
     };
 
     const totalGroups = computed(() => props.plugins.length);
+
+    const filteredPluginsData = ref()
     const pluginsSlice = computed(() => {
         const startIndex = (currentPage.value - 1) * itemsPerPage.value;
         const endIndex = startIndex + itemsPerPage.value;
-        return props.plugins.slice(startIndex, endIndex);
+        return (searchQuery.value?.length || activeCategory.value !== 'All Categories') ? filteredPluginsData.value : props.plugins.slice(startIndex, endIndex);
     });
+
+
 
     const totalPages = computed(() => {
         return Math.ceil(totalGroups.value / itemsPerPage.value);
@@ -163,7 +167,7 @@
         });
     };
 
-    const changePage = (pageNo) => {
+    const changePage = (pageNo: number) => {
         currentPage.value = pageNo;
         window.scrollTo(0, 0)
     };
@@ -188,8 +192,7 @@
         }
         const startIndex = (page - 1) * itemVal;
         const endIndex = startIndex + itemVal;
-        const pluginsData = searchResults.slice(startIndex, endIndex);
-        setPlugins(pluginsData, searchResults.length);
+        filteredPluginsData.value = searchResults.slice(startIndex, endIndex);
 
         return {
             page,
@@ -199,23 +202,25 @@
         }
     };
 
-    if (route.query.page) currentPage.value = parseInt(route.query.page);
-    if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
-    if (route.query.category) {
-        activeCategory.value = augmentedCategories.value.find(c => c === route.query.category);
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
-    if (route.query.q) {
-        searchQuery.value = route.query.q.trim();
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
+    onMounted(() => {
+        if (route.query.page) currentPage.value = parseInt(route.query.page);
+        if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
+        if (route.query.category) {
+            activeCategory.value = augmentedCategories.value.find(c => c === route.query.category);
+            filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
+        }
+        if (route.query.q) {
+            searchQuery.value = route.query.q.trim();
+            filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
+        }
+    })
 
-    let timer;
+    const timer = ref<NodeJS.Timeout>();
     watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
         if (timer) {
-            clearTimeout(timer)
+            clearTimeout(timer.value);
         }
-        timer = setTimeout(async () => {
+        timer.value = setTimeout(async () => {
             router.push({
                 query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
             })
