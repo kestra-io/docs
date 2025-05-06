@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     let responseData = {
         title: "Success",
         method: method,
-        params: requestUrl.searchParams,
+        params: Object.fromEntries(requestUrl.searchParams),
         code: code,
         createdAt: createdAt,
         body: "Request processed successfully",
