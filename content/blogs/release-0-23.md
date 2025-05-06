@@ -14,12 +14,13 @@ The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-| No Code, Multi Pane Editor       | [DESCRIPTION TBD] | [TBD] |
-| Improved Filtering capabilities         | [DESCRIPTION TBD] | [TBD] |
+| No Code, Multi Pane Editor       | [DESCRIPTION TBD] | All Edition |
 | Unit Test Flows       | Built-in testing framework for validating workflow behavior | [TBD] |
-| Outputs in Internal Storage      | Store and manage workflow outputs directly in Kestra's internal storage | [TBD] |
+| Improved Filtering capabilities         | [DESCRIPTION TBD] | All Edition |
+| Outputs in Internal Storage      | Store and manage workflow outputs directly in Kestra's internal storage | Enterprise Edition |
 | Improved dashboard management         | [DESCRIPTION TBD] | [TBD] |
-| Caching dependencies    | [DESCRIPTION TBD] | [TBD] |
+| Caching dependencies    | [DESCRIPTION TBD] | All Edition |
+| Manage Apps & Dashboard with Git | [DESCRIPTIONO TBD] | All Edition |
 
 Check the video below for a quick overview of all enhancements.
 
@@ -38,28 +39,40 @@ Let's dive into these highlights and other enhancements in more detail.
 [FEATURE 1 DESCRIPTION]
 
 
-### [FEATURE 2 TITLE]
+### Unit Test Flows
 
 [FEATURE 2 DESCRIPTION]
 
 
-### [FEATURE 3 TITLE]
+### Outputs in Internal Storage
 
 [FEATURE 3 DESCRIPTION]
 
 
-### [FEATURE 4 TITLE]
+### Improved dashboard management
 
 [FEATURE 4 DESCRIPTION]
 
 
-### [FEATURE 5 TITLE]
+### Caching dependencies
 
 [FEATURE 5 DESCRIPTION]
 
 
-
 ### Manage Apps & Dashboard with Git
+
+Kestra 0.23.0 introduces powerful new Git integration tasks that allow you to version control your dashboards and applications, bringing the benefits of Git workflows to your Kestra assets.
+
+With the new Git integration for dashboards and apps, you can now:
+
+- **Version control your dashboards and apps** using `gitSyncDashboard`, `gitPushDashboard`, `gitSyncApps`, and `gitPushApps` tasks
+- **Track changes** to configurations over time
+- **Collaborate** with team members using familiar Git workflows
+- **Roll back** to previous versions when needed
+
+::collapse{title="Dashboard Git integration example"}
+
+::
 
 https://github.com/kestra-io/plugin-git/issues/122
 https://github.com/kestra-io/plugin-git/issues/121
@@ -88,7 +101,11 @@ Here are UI enhancements worth noting:
 - [UI IMPROVEMENT 4]
 - [UI IMPROVEMENT 5]
 
-## Plugin enhancements
+## Plugin development
+
+### Langchain (beta)
+
+- Mention RAG capabilities?
 
 
 ### Go scripts
