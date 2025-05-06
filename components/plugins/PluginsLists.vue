@@ -3,10 +3,10 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our +{{ totalPlugins }} plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }}+ plugins</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg"
-                           :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
+                        :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -69,31 +69,31 @@
     const router = useRouter();
 
     const pluginElements = computed<Set<any>>(() => {
-        if (props.plugins) {
-            const pluginElementsLocal = new Set();
-            // avoid duplicate across groups and subgroups
-            props.plugins.forEach(plugin => {
-                plugin.tooltipContent = "";
-
-                // We only need this mapping for root plugin cards
-                const subGroupsToSlugs = plugin.subGroup === undefined
-                    ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
-                    : undefined;
-
-                Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                    .forEach(([category, elements]) => {
-                        creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
-                        elements.forEach(element => pluginElementsLocal.add(element));
-                    })
-                return pluginElementsLocal;
-            });
+        if (!props.plugins) {
+            return new Set();
         }
-        return new Set();
+        
+        const pluginElementsLocal = new Set();
+        // avoid duplicate across groups and subgroups
+        props.plugins.forEach(plugin => {
+            plugin.tooltipContent = "";
+
+            // We only need this mapping for root plugin cards
+            const subGroupsToSlugs = plugin.subGroup === undefined
+                ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
+                : undefined;
+
+            Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                .forEach(([category, elements]) => {
+                    creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
+                    elements.forEach(element => pluginElementsLocal.add(element));
+                });
+        });
+        
+        return pluginElementsLocal;
     });
 
-    const totalPlugins = computed(() => {
-            return pluginElements.value.size;
-    });
+    const totalPlugins = computed(() => pluginElements.value.size);
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
