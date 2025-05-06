@@ -74,7 +74,7 @@ inputs:
 
   - id: slack_webhook_uri
     type: URI
-    defaults: https://reqres.in/api/slack
+    defaults: https://kestra.io/api/mock
 
 tasks:
   - id: sendApprovalRequest
@@ -100,7 +100,7 @@ tasks:
 
   - id: approve
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/products
+    uri: https://kestra.io/api/mock
     method: POST
     contentType: application/json
     body: "{{ inputs.request }}"
