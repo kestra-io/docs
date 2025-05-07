@@ -2311,7 +2311,7 @@ inputs:
 tasks:
   - id: hello
     type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
+    uri: https://reqres.in/api/test-request
     method: POST
     body: |
       {{ {
@@ -2347,7 +2347,7 @@ inputs:
 tasks:
   - id: hello
     type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
+    uri: https://reqres.in/api/test-request
     method: POST
     body: |
       {{ {

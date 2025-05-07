@@ -188,7 +188,7 @@
     },
     {
       id: 7,
-      title: "Plugin Development Support",
+      title: "Custom Plugins",
       isOpenSource: false,
       enterpriseText: 'On Request',
     },
@@ -295,12 +295,6 @@
       isEnterprise: true,
     },
     {
-          id: 24,
-          title: "Log Shipper",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-    {
       id: 25,
       title: "Productivity",
       isFullLine: true,
@@ -338,7 +332,7 @@
     },
     {
       id: 28,
-      title: "Custom Apps",
+      title: "Custom Apps & Dashboard Views",
       isOpenSource: false,
       isEnterprise: true,
     },
@@ -438,8 +432,8 @@
         },
         {
           id: 7,
-          title: "Plugin Development Support",
-          openSourceText: false,
+          title: "Custom Plugins",
+          openSourceText: 'Priority in plugin roadmap',
           enterpriseText: 'On-Demand',
         },
         {
@@ -543,12 +537,6 @@
         {
           id: 24,
           title: "SCIM Directory Sync",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 24,
-          title: "Log Shipper",
           isOpenSource: false,
           isEnterprise: true,
         },

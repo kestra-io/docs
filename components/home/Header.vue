@@ -20,7 +20,7 @@
                         class="btn btn-lg btn-secondary mb-2"
                         target="_blank"
                     >
-                        Talk to us
+                        Book a Demo
                     </NuxtLink>
 
                 </div>
