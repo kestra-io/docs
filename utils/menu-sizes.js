@@ -1,68 +1,80 @@
 let menuSizes = {
     product : {
         xxl: {
-            width: '440px',
+            width: '420px',
             height: '435px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
+            headerArrowTranslateX: -360
         },
         xl: {
-            width: '440px',
+            width: '420px',
             height: '435px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
+            headerArrowTranslateX: -360
         },
         lg: {
-            width: '440px',
+            width: '420px',
             height: '435px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
+            headerArrowTranslateX: -300
         },
         md: {
-            width: '440px',
+            width: '420px',
             height: '435px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
+            headerArrowTranslateX: -300
         },
     },
     solutions: {
         xxl: {
-            width: '1320px',
+            width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc(50vw - 600px)',
+            headerMenuTranslateX: 'calc(50vw - 780px)',
+            headerArrowTranslateX: -250
         },
         xl: {
-            width: '1300px',
+            width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerArrowTranslateX: -250
         },
         lg: {
-            width: '1250px',
+            width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1120px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerArrowTranslateX: -180
         },
         md: {
-            width: '1200px',
+            width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 380px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerArrowTranslateX: -170
         },
     },
     resources: {
         xxl: {
-            width: '900px',
+            width: '815px',
             height: '410px',
             headerMenuTranslateX: 'calc(50vw - 450px)',
+            headerArrowTranslateX: -150
         },
         xl: {
-            width: '900px',
+            width: '815px',
             height: '410px',
             headerMenuTranslateX: 'calc((100vw - 900px) / 2)',
+            headerArrowTranslateX: -150
         },
         lg: {
-            width: '800px',
+            width: '760px',
             height: '410px',
             headerMenuTranslateX: 'calc((100vw - 800px) / 2)',
+            headerArrowTranslateX: -80
         },
         md: {
             width: '580px',
             height: '410px',
-            headerMenuTranslateX: 'calc((100vw - 580px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
+            headerArrowTranslateX: -80
         }
     }
 };
