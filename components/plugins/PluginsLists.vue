@@ -63,161 +63,111 @@
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
     const activeCategory = ref('All Categories');
-    const props = defineProps(["plugins", "categories"]);
+    const props = defineProps<{
+            plugins: {
+                group: string
+                title: string,
+                description: string,
+            }[],
+            categories: string[],
+        }>();
     const searchQuery = ref('');
     const route = useRoute();
     const router = useRouter();
 
-    const pluginElements = computed<Set<any>>(() => {
-        if (!props.plugins) {
-            return new Set();
-        }
-        
-        const pluginElementsLocal = new Set();
-        // avoid duplicate across groups and subgroups
-        props.plugins.forEach(plugin => {
-            plugin.tooltipContent = "";
-
-            // We only need this mapping for root plugin cards
-            const subGroupsToSlugs = plugin.subGroup === undefined
-                ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
-                : undefined;
-
-            Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                .forEach(([category, elements]) => {
-                    creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
-                    elements.forEach(element => pluginElementsLocal.add(element));
-                });
-        });
-        
-        return pluginElementsLocal;
+    const totalPlugins = computed(() => {
+        const pluginsList = props.plugins.map(p => `${p.group}-${p.title}-${p.description}`);
+        return new Set(pluginsList).size;
     });
-
-    const totalPlugins = computed(() => pluginElements.value.size);
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
-    function generateCategoryLink(pluginQualifier, item) {
-        return `plugins/${pluginQualifier}/${item}`
-    }
-
-    function generateCategoryList(plugin, categoryItems, subGroupsToSlugs) {
-        return categoryItems.map(item => {
-            let subGroupQualifier = "";
-            if (plugin.subGroup === undefined) {
-                const matchingSubGroupSlug = Object.entries(subGroupsToSlugs).filter(([subGroup]) => item.startsWith(subGroup)).sort(([subGroupA], [subGroupB]) => subGroupB.length - subGroupA.length)?.[0]?.[1];
-                if (matchingSubGroupSlug !== undefined) {
-                    subGroupQualifier = `/${slugify(matchingSubGroupSlug)}`;
-                }
-            } else {
-                subGroupQualifier = `/${slugify(plugin.title)}`
-            }
-
-            return `
-                      <li>
-                        <a href="${generateCategoryLink(slugify(plugin.name) + subGroupQualifier, item)}">${item}</a>
-                      </li>
-                    `
-        }).join("");
-    }
-
-    function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
-        if (categoryItems && categoryItems.length > 0) {
-            plugin.tooltipContent += `
-            <p class="text-capitalize ks-plugin-card-${slugify(categoryName)}">${categoryName}</p>
-            <ul>
-              ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
-            </ul>
-        `
-        }
-    }
-
-    const setActiveCategory = (category) => {
+    const setActiveCategory = (category: string) => {
         activeCategory.value = category
     };
 
-    const capitalize = (name) => {
+    const capitalize = (name: string) => {
         return name[0].toUpperCase() + name.slice(1).toLowerCase();
     };
 
-    const totalGroups = computed(() => props.plugins.length);
+    const totalGroups = computed(() => filteredPluginsData.value.length);
+
+    const filteredPluginsData = computed(() => {
+        let pluginsList = [...props.plugins];
+        let searchResults = [];
+        if (searchQuery.value) {
+            searchResults = setSearchPlugins(searchQuery.value, pluginsList);
+        } else {
+            searchResults = pluginsList;
+        }
+        if (activeCategory.value !== 'All Categories') {
+            currentPage.value = 1;
+            searchResults = searchResults.filter((item) => {
+                if (item.categories?.includes(activeCategory.value)) {
+                    return item;
+                }
+            })
+        }
+        return searchResults;
+    });
+
     const pluginsSlice = computed(() => {
         const startIndex = (currentPage.value - 1) * itemsPerPage.value;
         const endIndex = startIndex + itemsPerPage.value;
-        return props.plugins.slice(startIndex, endIndex);
+        return filteredPluginsData.value.slice(startIndex, endIndex);
     });
+
+
 
     const totalPages = computed(() => {
         return Math.ceil(totalGroups.value / itemsPerPage.value);
     });
 
-    const setSearchPlugins = (search, allPlugins) => {
+    const setSearchPlugins = (search: string, allPlugins: any[]) => {
         let searchPluginsList = [...allPlugins];
-        const searchLowercase = search ? search.trim().toLowerCase() : null;
+        const searchLowercase = search?.trim().toLowerCase();
         return searchPluginsList.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
-                (item.tasks ?? []).some(task => task.toLowerCase().includes(searchLowercase)) ||
-                (item.triggers ?? []).some(trigger => trigger.toLowerCase().includes(searchLowercase)) ||
-                (item.conditions ?? []).some(condition => condition.toLowerCase().includes(searchLowercase)) ||
-                (item.taskRunners ?? []).some(taskRunner => taskRunner.toLowerCase().includes(searchLowercase))
+                (item.tasks ?? []).some((task: string) => task.toLowerCase().includes(searchLowercase)) ||
+                (item.triggers ?? []).some((trigger: string) => trigger.toLowerCase().includes(searchLowercase)) ||
+                (item.conditions ?? []).some((condition: string) => condition.toLowerCase().includes(searchLowercase)) ||
+                (item.taskRunners ?? []).some((taskRunner: string) => taskRunner.toLowerCase().includes(searchLowercase))
         });
     };
 
-    const changePage = (pageNo) => {
+    const changePage = (pageNo: number) => {
         currentPage.value = pageNo;
         window.scrollTo(0, 0)
     };
 
-    const filterPlugins = (pageVal, itemVal, categoryVal, searchVal) => {
-        let pluginsList = [...props.plugins];
-        let searchResults = [];
-        if (searchVal) {
-            searchResults = setSearchPlugins(searchVal, pluginsList);
-        } else {
-            searchResults = pluginsList;
-        }
-        let page = pageVal;
-        if (categoryVal !== 'All Categories') {
-            page = 1;
-            currentPage.value = page;
-            searchResults = searchResults.filter((item) => {
-                if (item.categories?.includes(categoryVal)) {
-                    return item;
-                }
-            })
-        }
-        const startIndex = (page - 1) * itemVal;
-        const endIndex = startIndex + itemVal;
-        const pluginsData = searchResults.slice(startIndex, endIndex);
-        setPlugins(pluginsData, searchResults.length);
-
+    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string){
         return {
-            page,
+            page: pageVal,
             size: itemVal,
             category: categoryVal,
             q: searchVal,
         }
     };
 
-    if (route.query.page) currentPage.value = parseInt(route.query.page);
-    if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
-    if (route.query.category) {
-        activeCategory.value = augmentedCategories.value.find(c => c === route.query.category);
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
-    if (route.query.q) {
-        searchQuery.value = route.query.q.trim();
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
+    onMounted(() => {
+        if (route.query.page) currentPage.value = parseInt(route.query.page as string);
+        if (route.query.size) itemsPerPage.value = parseInt(route.query.size as string);
+        if (route.query.category) {
+            activeCategory.value = augmentedCategories.value.find(c => c === route.query.category) ?? "";
+        }
+        if (typeof route.query.q === 'string') {
+            searchQuery.value = route.query.q.trim();
+        }
+    })
 
-    let timer;
+    const timer = ref<NodeJS.Timeout>();
     watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
         if (timer) {
-            clearTimeout(timer)
+            clearTimeout(timer.value);
         }
-        timer = setTimeout(async () => {
+        timer.value = setTimeout(async () => {
             router.push({
-                query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
+                query: getFilterPluginsQuery(pageVal, itemVal, categoryVal, searchVal)
             })
 
         }, 500);
