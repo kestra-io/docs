@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     ],
     image: {
         dir: 'public',
-        provider: 'ipx',
+        provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
         formats: ['webp', 'png'],
         quality: 80,
         densities: [1, 2],
