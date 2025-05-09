@@ -11,6 +11,12 @@ Starting in 0.18.0, Kestra has introduced the Namespaces tab in the Kestra UI fo
     <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+## Interactive Demo
+
+Below is an interactive demo through the Namespace UI from Kestra version 0.23:
+
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/5CbeQf4naMpPJvz8mNbk?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ## Overview
 
 This is the default landing page of the Namespace. This page contains the dashboards and summary about the executions of different flows in this namespace.
@@ -19,7 +25,7 @@ This is the default landing page of the Namespace. This page contains the dashbo
 
 ## Editor
 
-The built-in editor is where you can add/edit namespace files. This acess makes it easier to edit just your namespace files without needing to select a flow inside of the namespace.
+The built-in editor is where you can add/edit namespace files. This access makes it easier to edit just your namespace files without needing to select a flow inside of the namespace.
 
 ![Editor](/docs/user-interface-guide/editor-namespaces.png)
 
