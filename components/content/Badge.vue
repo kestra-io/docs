@@ -1,7 +1,7 @@
 <template>
     <div class="fw-bold d-flex gap-2 flex-wrap mb-3">
         <p class="mb-0">Available on:</p>
-        <span class="badge d-flex align-items-center bg-body-tertiary">{{version}}</span>
+        <span v-if="version" class="badge d-flex align-items-center bg-body-tertiary">{{version}}</span>
         <span
             v-for="edition in editions.split(',').filter(edition => edition.trim())"
             :key="edition"
@@ -11,48 +11,28 @@
             {{ editionInfo(edition).label }}
         </span>
     </div>
-
 </template>
 
-<script>
-  export default {
-    components: {},
-    props: {
-      version: {
-        type: String,
-        default: ''
-      },
-      editions: {
-        type: String,
-        default: ''
-      }
-    },
-    data() {
-      return {
-        color: 'secondary',
-        editionLabelAndColorByPrefix: {
-          OSS: {label: "Open Source Edition", color: "primary"},
-          EE: {label: "Enterprise Edition", color: "secondary"},
-          CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
-          CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
-        }
-      }
-    },
-    methods: {
-      editionInfo(edition) {
-        return this.editionLabelAndColorByPrefix?.[edition] ?? {
-          label: edition,
-          color: "dark-3"
-        }
-      }
-    },
-    computed: {
-      title() {
-        if (this.type === 'editions') {
-          return this.editionLabelAndColorByPrefix.EE.label
-        }
-        return this.$props.type
-      }
-    },
+<script setup lang="ts">
+import { ref } from 'vue';
+
+type EditionInfo = Record<string, { label: string; color: string }>;
+
+defineProps({ version: { type: String, default: '' }, editions: { type: String, default: '' } })
+
+const color = ref('secondary')
+
+const editionLabelAndColorByPrefix: EditionInfo = {
+  OSS: {label: "Open Source Edition", color: "primary"},
+  EE: {label: "Enterprise Edition", color: "secondary"},
+  CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
+  CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
+}
+
+const editionInfo = (edition: string): { label: string; color: string } => {
+  return editionLabelAndColorByPrefix?.[edition] ?? {
+    label: edition,
+    color: "dark-3"
   }
+}
 </script>
