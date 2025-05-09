@@ -1,8 +1,9 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen, scrolled: scrolled }">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
+         :class="{open: isOpen, scrolled: scrolled }">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
-                <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration"/>
             </NuxtLink>
 
             <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
@@ -40,13 +41,14 @@
             <div class="nav-items d-flex align-items-center">
                 <a @click="globalClick(true)" href="#" class="btn btn-sm  icon-button p-0 d-lg-none"
                    data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
-                    <Magnify />
+                    <Magnify/>
                 </a>
-                <button class="navbar-toggler d-flex d-lg-none align-items-center gap-2" @click="globalClick(isOpen)" type="button" aria-controls="main-header"
+                <button class="navbar-toggler d-flex d-lg-none align-items-center gap-2" @click="globalClick(isOpen)"
+                        type="button" aria-controls="main-header"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="menu-text">{{ isOpen ? "Close" : "Menu" }}</span>
-                    <Segment v-if="!isOpen" />
-                    <Close v-if="isOpen" />
+                    <Segment v-if="!isOpen"/>
+                    <Close v-if="isOpen"/>
                 </button>
             </div>
 
@@ -56,44 +58,44 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Product
-                            <ChevronDown class="d-inline-block d-lg-none" />
+                            <ChevronDown class="d-inline-block d-lg-none"/>
                         </a>
                         <ul class="dropdown-menu d-lg-none">
                             <div class="d-flex flex-column w-100 gap-3 py-lg-0 py-1">
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
-                                        <NoteSearchOutline />
+                                        <NoteSearchOutline/>
                                         <p>
-                                            <span>Open Source</span><br />
+                                            <span>Open Source</span><br/>
                                             Explore Kestra's Core Capabilities
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
-                                        <Security />
+                                        <Security/>
                                         <p>
-                                            <span>Enterprise Edition</span><br />
+                                            <span>Enterprise Edition</span><br/>
                                             Security and Governance for Enterprise Needs
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
-                                        <CloudOutline />
+                                        <CloudOutline/>
                                         <p>
                                             <span>Cloud Edition</span>
                                             <strong class="tag">Early Adopter</strong>
-                                            <br />
+                                            <br/>
                                             Register for the Cloud Edition
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
-                                        <RefreshAuto />
+                                        <RefreshAuto/>
                                         <p>
-                                            <span>Platform Overview</span><br />
+                                            <span>Platform Overview</span><br/>
                                             Powerful capabilities from the UI
                                         </p>
                                     </NuxtLink>
@@ -107,24 +109,26 @@
                                         <p class="title"> Start orchestrating your first workflows. </p>
                                         <span class="link">
                                             Quickstart Guide
-                                            <ChevronRight />
+                                            <ChevronRight/>
                                         </span>
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
-                                                <TimelineTextOutline />
+                                            <NuxtLink class="dropdown-item" href="/docs/workflow-components"
+                                                      @click="globalClick(true)">
+                                                <TimelineTextOutline/>
                                                 <p>
-                                                    <span>Workflow components</span><br />
+                                                    <span>Workflow components</span><br/>
                                                     Get to know the main orchestration components of a Kestra workflow
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                                <VideoOutline />
+                                            <NuxtLink class="dropdown-item" href="/tutorial-videos"
+                                                      @click="globalClick(true)">
+                                                <VideoOutline/>
                                                 <p>
-                                                    <span>Videos tutorials</span><br />
+                                                    <span>Videos tutorials</span><br/>
                                                     Get started with our video tutorials
                                                 </p>
                                             </NuxtLink>
@@ -134,11 +138,12 @@
                             </div>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown" @mouseover="mouseOver('solutions')" @mouseleave="mouseOut('solutions')">
+                    <li class="nav-item dropdown" @mouseover="mouseOver('solutions')"
+                        @mouseleave="mouseOut('solutions')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Solutions
-                            <ChevronDown class="d-inline-block d-lg-none" />
+                            <ChevronDown class="d-inline-block d-lg-none"/>
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
@@ -146,9 +151,9 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features/declarative-data-orchestration"
                                               @click="globalClick(true)">
-                                        <CodeNotEqualVariant />
+                                        <CodeNotEqualVariant/>
                                         <p>
-                                            <span>Declarative Orchestration</span><br />
+                                            <span>Declarative Orchestration</span><br/>
                                             Infrastructure as Code for All Your Workflows
                                         </p>
                                     </NuxtLink>
@@ -156,9 +161,9 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
                                               @click="globalClick(true)">
-                                        <Sync />
+                                        <Sync/>
                                         <p>
-                                            <span>Automation Platform</span><br />
+                                            <span>Automation Platform</span><br/>
                                             Scheduling and Automation Made Easy
                                         </p>
                                     </NuxtLink>
@@ -166,9 +171,9 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
                                               @click="globalClick(true)">
-                                        <CodeTags />
+                                        <CodeTags/>
                                         <p>
-                                            <span>Language Agnostic</span><br />
+                                            <span>Language Agnostic</span><br/>
                                             Separate your Business Logic from Orchestration Logic
                                         </p>
                                     </NuxtLink>
@@ -176,18 +181,19 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"
                                               @click="globalClick(true)">
-                                        <RefreshAuto />
+                                        <RefreshAuto/>
                                         <p>
-                                            <span>Kestra's Terraform Provider</span><br />
+                                            <span>Kestra's Terraform Provider</span><br/>
                                             Deploy and manage all Kestra resources with Terraform
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
-                                        <Earth />
+                                    <NuxtLink class="dropdown-item" href="/features/api-first"
+                                              @click="globalClick(true)">
+                                        <Earth/>
                                         <p>
-                                            <span>API-First</span><br />
+                                            <span>API-First</span><br/>
                                             Learn more about Kestra’s API features
                                         </p>
                                     </NuxtLink>
@@ -198,25 +204,28 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
                                               @click="globalClick(true)">
-                                        <ChartBar />
+                                        <ChartBar/>
                                         <p>
-                                            <span>For Data Engineers</span><br />
-                                            Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
+                                            <span>For Data Engineers</span><br/>
+                                            Orchestrate your Data Pipelines, Automate Processes, and Harness the Power
+                                            of Your Data
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
                                               @click="globalClick(true)">
-                                        <Api />
+                                        <Api/>
                                         <p>
-                                            <span>For Software Engineers</span><br />
-                                            Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
+                                            <span>For Software Engineers</span><br/>
+                                            Boost Productivity, Simplify Processes, and Accelerate Microservice
+                                            Deployment
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers"
+                                              @click="globalClick(true)">
                                         <ServerNetworkOutline/>
                                         <p>
                                             <span>For Platform Engineers</span><br/>
@@ -230,25 +239,28 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/retail"
                                               @click="globalClick(true)">
-                                        <BasketOutline />
+                                        <BasketOutline/>
                                         <p>
-                                            <span>For Retail</span><br />
-                                            Empower retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                            <span>For Retail</span><br/>
+                                            Empower retail businesses with an event-driven, language-agnostic
+                                            orchestration platform that scales
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
                                               @click="globalClick(true)">
-                                        <PillMultiple />
+                                        <PillMultiple/>
                                         <p>
-                                            <span>For Healthcare</span><br />
-                                            Streamline data processing, accelerate research, and enhance collaboration in healthcare
+                                            <span>For Healthcare</span><br/>
+                                            Streamline data processing, accelerate research, and enhance collaboration
+                                            in healthcare
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" href="/use-cases/automotive"
+                                              @click="globalClick(true)">
                                         <CarHatchback/>
                                         <p>
                                             <span>For Automotive
@@ -258,10 +270,14 @@
                                     </NuxtLink>
                                 </li>
                                 <li class="w-100 bg-transparent">
-                                    <NuxtLink class="d-flex d-xl-block header-menu-right-banner blueprints-banner-mobile" href="/blueprints" @click="globalClick(true)">
-                                        <img src="/landing/header-menu/platform-blueprints-mobile.png" alt="Explore blueprints" />
+                                    <NuxtLink
+                                        class="d-flex d-xl-block header-menu-right-banner blueprints-banner-mobile"
+                                        href="/blueprints" @click="globalClick(true)">
+                                        <img src="/landing/header-menu/platform-blueprints-mobile.png"
+                                             alt="Explore blueprints"/>
                                         <div>
-                                            <p class="title">Explore blueprints <br/> to kick-start <br/> your next flow. </p>
+                                            <p class="title">Explore blueprints <br/> to kick-start <br/> your next
+                                                flow. </p>
                                             <span class="link">
                                                 Explore
                                                 <ChevronRight/>
@@ -273,38 +289,39 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item dropdown" @mouseover="mouseOver('resources')" @mouseleave="mouseOut('resources')">
+                    <li class="nav-item dropdown" @mouseover="mouseOver('resources')"
+                        @mouseleave="mouseOut('resources')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Resources
-                            <ChevronDown class="d-inline-block d-lg-none" />
+                            <ChevronDown class="d-inline-block d-lg-none"/>
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <p class="column-caption">RESOURCES</p>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                        <PostOutline />
+                                        <PostOutline/>
                                         <p>
-                                            <span>Blog</span><br />
+                                            <span>Blog</span><br/>
                                             Company news, product updates, and engineering deep dives
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                        <VideoOutline />
+                                        <VideoOutline/>
                                         <p>
-                                            <span>Video Tutorials</span><br />
+                                            <span>Video Tutorials</span><br/>
                                             Get started with our video tutorials
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
-                                        <MessageQuestionOutline />
+                                        <MessageQuestionOutline/>
                                         <p>
-                                            <span>FAQ</span><br />
+                                            <span>FAQ</span><br/>
                                             FAQ about the product and the company
                                         </p>
                                     </NuxtLink>
@@ -314,34 +331,36 @@
                                 <p class="column-caption">DISCOVER</p>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
-                                        <AccountGroupOutline />
+                                        <AccountGroupOutline/>
                                         <p>
-                                            <span>Community Overview</span><br />
+                                            <span>Community Overview</span><br/>
                                             Ask any questions and share your feedback
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
-                                        <HandshakeOutline />
+                                        <HandshakeOutline/>
                                         <p>
-                                            <span>Partners</span><br />
+                                            <span>Partners</span><br/>
                                             Use our partner ecosystem to accelerate your Kestra adoption
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
-                                        <HandshakeOutline />
+                                        <HandshakeOutline/>
                                         <p>
-                                            <span>About Us</span><br />
+                                            <span>About Us</span><br/>
                                             Discover the team and values behind Kestra
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li class="w-100 bg-transparent">
-                                    <NuxtLink class="header-menu-right-banner gorgias-banner-mobile" href="/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra" @click="globalClick(true)">
-                                        <img src="/landing/header-menu/executions-mobile.png" alt="Platform Overview" />
+                                    <NuxtLink class="header-menu-right-banner gorgias-banner-mobile"
+                                              href="/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra"
+                                              @click="globalClick(true)">
+                                        <img src="/landing/header-menu/executions-mobile.png" alt="Platform Overview"/>
                                         <div>
                                             <p class="title">
                                                 Gorgias, Using Declarative<br>
@@ -356,10 +375,11 @@
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
-                                                <BookOpenVariantOutline />
+                                            <NuxtLink class="dropdown-item" href="/use-cases/stories"
+                                                      @click="globalClick(true)">
+                                                <BookOpenVariantOutline/>
                                                 <p>
-                                                    <span>Customer Stories</span><br />
+                                                    <span>Customer Stories</span><br/>
                                                     Learn how Enterprises orchestrate their business-critical workflows
                                                 </p>
                                             </NuxtLink>
@@ -391,7 +411,8 @@
                         </NuxtLink>
                     </li>
                     <li class="nav-item">
-                        <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button" @click="globalClick(true)">
+                        <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button"
+                                  @click="globalClick(true)">
                             <span>
                                 Pricing
                             </span>
@@ -401,7 +422,7 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button nav-footer">
                     <li class="nav-item">
-                        <GithubButton :small="true" />
+                        <GithubButton :small="true"/>
 
                         <NuxtLink @click="globalClick(true)"
                                   class="d-none mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-lg-inline-block talk-us"
@@ -413,8 +434,8 @@
                         </NuxtLink>
 
                         <NuxtLink @click="globalClick(true)"
-                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
-                            href="/docs/getting-started/quickstart#start-kestra">
+                                  class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
+                                  href="/docs/getting-started/quickstart#start-kestra">
                             <span>
                                 <Flash class="d-none d-xl-inline-flex"/>
                                 Get Started
@@ -425,14 +446,15 @@
                                   class="d-lg-none d-sm-inline-block d-xs-block mb-1 mn-sm-0 btn btn-animated btn-dark-animated btn-md"
                                   href="/demo">
                             <span>
-                                <CalendarOutline />
+                                <CalendarOutline/>
                                 Talk to Us
                             </span>
                         </NuxtLink>
 
-                        <a @click="globalClick(true)" href="#" id="header-search-button" class="btn btn-sm d-none d-lg-inline-block icon-button"
-                            data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
-                            <Magnify />
+                        <a @click="globalClick(true)" href="#" id="header-search-button"
+                           class="btn btn-sm d-none d-lg-inline-block icon-button"
+                           data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
+                            <Magnify/>
                         </a>
                     </li>
                 </ul>
@@ -440,7 +462,8 @@
         </div>
 
         <div class="d-lg-block d-none menu-container" :style="{ opacity: showMenu || mouseoverMenu ? 100 : 0 }">
-            <div class="header-arrow" :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
+            <div class="header-arrow"
+                 :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
             <div class="menu-shadow-container">
                 <div
                     class="header-menu"
@@ -465,38 +488,39 @@
                                     <ul class="d-flex flex-column w-100 gap-3 py-lg-0 py-1">
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
-                                                <NoteSearchOutline />
+                                                <NoteSearchOutline/>
                                                 <p>
-                                                    <span>Open Source</span><br />
+                                                    <span>Open Source</span><br/>
                                                     Explore Kestra's Core Capabilities
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
-                                                <Security />
+                                            <NuxtLink class="dropdown-item" href="/enterprise"
+                                                      @click="globalClick(true)">
+                                                <Security/>
                                                 <p>
-                                                    <span>Enterprise Edition</span><br />
+                                                    <span>Enterprise Edition</span><br/>
                                                     Security and Governance for Enterprise Needs
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
-                                                <CloudOutline />
+                                                <CloudOutline/>
                                                 <p>
                                                     <span>Cloud Edition</span>
                                                     <strong class="tag">Early Adopter</strong>
-                                                    <br />
+                                                    <br/>
                                                     Register for the Cloud Edition
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
-                                                <RefreshAuto />
+                                                <RefreshAuto/>
                                                 <p>
-                                                    <span>Platform Overview</span><br />
+                                                    <span>Platform Overview</span><br/>
                                                     Powerful capabilities from the UI
                                                 </p>
                                             </NuxtLink>
@@ -505,7 +529,8 @@
                                 </div>
                             </div>
                             <div class="header-menu-right">
-                                <NuxtLink class="header-menu-right-banner" href="/docs/getting-started/quickstart" @click="globalClick(true)">
+                                <NuxtLink class="header-menu-right-banner" href="/docs/getting-started/quickstart"
+                                          @click="globalClick(true)">
                                     <p class="title"> Start <br> orchestrating your <br> first workflows. </p>
                                     <span class="link">
                                         Quickstart Guide
@@ -514,19 +539,21 @@
                                 </NuxtLink>
                                 <ul class="header-menu-right-menu">
                                     <li>
-                                        <NuxtLink class="dropdown-item" href="/docs/workflow-components" @click="globalClick(true)">
-                                            <TimelineTextOutline />
+                                        <NuxtLink class="dropdown-item" href="/docs/workflow-components"
+                                                  @click="globalClick(true)">
+                                            <TimelineTextOutline/>
                                             <p>
-                                                <span>Workflow components</span><br />
+                                                <span>Workflow components</span><br/>
                                                 Get to know the main orchestration components of a Kestra workflow
                                             </p>
                                         </NuxtLink>
                                     </li>
                                     <li>
-                                        <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                            <VideoOutline />
+                                        <NuxtLink class="dropdown-item" href="/tutorial-videos"
+                                                  @click="globalClick(true)">
+                                            <VideoOutline/>
                                             <p>
-                                                <span>Videos tutorials</span><br />
+                                                <span>Videos tutorials</span><br/>
                                                 Get started with our video tutorials
                                             </p>
                                         </NuxtLink>
@@ -543,50 +570,53 @@
                                         </div>
                                         <ul>
                                             <li>
-                                                <NuxtLink class="dropdown-item" href="/features/declarative-data-orchestration"
-                                                            @click="globalClick(true)">
-                                                    <CodeNotEqualVariant />
+                                                <NuxtLink class="dropdown-item"
+                                                          href="/features/declarative-data-orchestration"
+                                                          @click="globalClick(true)">
+                                                    <CodeNotEqualVariant/>
                                                     <p>
-                                                        <span>Declarative Orchestration</span><br />
+                                                        <span>Declarative Orchestration</span><br/>
                                                         Infrastructure as Code for All Your Workflows
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
-                                                <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
-                                                            @click="globalClick(true)">
-                                                    <Sync />
+                                                <NuxtLink class="dropdown-item"
+                                                          href="/features/scheduling-and-automation"
+                                                          @click="globalClick(true)">
+                                                    <Sync/>
                                                     <p>
-                                                        <span>Automation Platform</span><br />
+                                                        <span>Automation Platform</span><br/>
                                                         Scheduling and Automation Made Easy
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
-                                                            @click="globalClick(true)">
-                                                    <CodeTags />
+                                                          @click="globalClick(true)">
+                                                    <CodeTags/>
                                                     <p>
-                                                        <span>Language Agnostic</span><br />
+                                                        <span>Language Agnostic</span><br/>
                                                         Separate your Business Logic from Orchestration Logic
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"
-                                                            @click="globalClick(true)">
-                                                    <RefreshAuto />
+                                                          @click="globalClick(true)">
+                                                    <RefreshAuto/>
                                                     <p>
-                                                        <span>Kestra's Terraform Provider</span><br />
+                                                        <span>Kestra's Terraform Provider</span><br/>
                                                         Deploy and manage all Kestra resources with Terraform
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
-                                                <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
-                                                    <Earth />
+                                                <NuxtLink class="dropdown-item" href="/features/api-first"
+                                                          @click="globalClick(true)">
+                                                    <Earth/>
                                                     <p>
-                                                        <span>API-First</span><br />
+                                                        <span>API-First</span><br/>
                                                         Learn more about Kestra’s API features
                                                     </p>
                                                 </NuxtLink>
@@ -600,26 +630,29 @@
                                         <ul>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
-                                                            @click="globalClick(true)">
-                                                    <ChartBar />
+                                                          @click="globalClick(true)">
+                                                    <ChartBar/>
                                                     <p>
-                                                        <span>For Data Engineers</span><br />
-                                                        Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
+                                                        <span>For Data Engineers</span><br/>
+                                                        Orchestrate your Data Pipelines, Automate Processes, and Harness
+                                                        the Power of Your Data
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
-                                                            @click="globalClick(true)">
-                                                    <Api />
+                                                          @click="globalClick(true)">
+                                                    <Api/>
                                                     <p>
-                                                        <span>For Software Engineers</span><br />
-                                                        Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
+                                                        <span>For Software Engineers</span><br/>
+                                                        Boost Productivity, Simplify Processes, and Accelerate
+                                                        Microservice Deployment
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
-                                                <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers"
+                                                          @click="globalClick(true)">
                                                     <ServerNetworkOutline/>
                                                     <p>
                                                         <span>For Platform Engineers</span><br/>
@@ -636,31 +669,35 @@
                                         <ul>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/use-cases/retail"
-                                                            @click="globalClick(true)">
-                                                    <BasketOutline />
+                                                          @click="globalClick(true)">
+                                                    <BasketOutline/>
                                                     <p>
-                                                        <span>For Retail</span><br />
-                                                        Empower retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                                        <span>For Retail</span><br/>
+                                                        Empower retail businesses with an event-driven,
+                                                        language-agnostic orchestration platform that scales
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
                                                 <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
-                                                            @click="globalClick(true)">
-                                                    <PillMultiple />
+                                                          @click="globalClick(true)">
+                                                    <PillMultiple/>
                                                     <p>
-                                                        <span>For Healthcare</span><br />
-                                                        Streamline data processing, accelerate research, and enhance collaboration in healthcare
+                                                        <span>For Healthcare</span><br/>
+                                                        Streamline data processing, accelerate research, and enhance
+                                                        collaboration in healthcare
                                                     </p>
                                                 </NuxtLink>
                                             </li>
                                             <li>
-                                                <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" href="/use-cases/automotive"
+                                                          @click="globalClick(true)">
                                                     <CarHatchback/>
                                                     <p>
                                             <span>For Automotive
                                             </span><br/>
-                                                        Ensure seamless operations and optimized performance across all processes.
+                                                        Ensure seamless operations and optimized performance across all
+                                                        processes.
                                                     </p>
                                                 </NuxtLink>
                                             </li>
@@ -668,8 +705,10 @@
                                     </div>
                                 </div>
                                 <div class="header-menu-right col-12 col-xl-auto">
-                                    <NuxtLink class="d-flex d-xl-block header-menu-right-banner" href="/blueprints" @click="globalClick(true)">
-                                        <img class="mb-4" src="/landing/header-menu/platform-blueprints.png" alt="Explore blueprints" />
+                                    <NuxtLink class="d-flex d-xl-block header-menu-right-banner" href="/blueprints"
+                                              @click="globalClick(true)">
+                                        <img class="mb-4" src="/landing/header-menu/platform-blueprints.png"
+                                             alt="Explore blueprints"/>
                                         <p class="title">Explore blueprints to kick-start <br/> your next flow. </p>
                                         <span class="link">
                                         Explore
@@ -688,27 +727,48 @@
                                     <ul>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                                <PostOutline />
+                                                <PostOutline/>
                                                 <p>
-                                                    <span>Blog</span><br />
+                                                    <span>Blog</span><br/>
                                                     Company news, product updates, and engineering deep dives
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                                <VideoOutline />
+                                            <NuxtLink class="dropdown-item" href="/api-docs/oss"
+                                                      @click="globalClick(true)">
+                                                <Api/>
                                                 <p>
-                                                    <span>Video Tutorials</span><br />
+                                                    <span>API Docs (OSS)</span><br/>
+                                                    API reference for Open-source edition
+                                                </p>
+                                            </NuxtLink>
+                                        </li>
+                                        <li>
+                                            <NuxtLink class="dropdown-item" href="/api-docs/ee"
+                                                      @click="globalClick(true)">
+                                                <Api/>
+                                                <p>
+                                                    <span>API Docs (EE & Cloud)</span><br/>
+                                                    API reference for Enterprise edition
+                                                </p>
+                                            </NuxtLink>
+                                        </li>
+                                        <li>
+                                            <NuxtLink class="dropdown-item" href="/tutorial-videos"
+                                                      @click="globalClick(true)">
+                                                <VideoOutline/>
+                                                <p>
+                                                    <span>Video Tutorials</span><br/>
                                                     Get started with our video tutorials
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
-                                                <MessageQuestionOutline />
+                                                <MessageQuestionOutline/>
                                                 <p>
-                                                    <span>FAQ</span><br />
+                                                    <span>FAQ</span><br/>
                                                     FAQ about the product and the company
                                                 </p>
                                             </NuxtLink>
@@ -721,28 +781,29 @@
                                     </div>
                                     <ul>
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
-                                                <AccountGroupOutline />
+                                            <NuxtLink class="dropdown-item" href="/community"
+                                                      @click="globalClick(true)">
+                                                <AccountGroupOutline/>
                                                 <p>
-                                                    <span>Community Overview</span><br />
+                                                    <span>Community Overview</span><br/>
                                                     Ask any questions and share your feedback
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
-                                                <HandshakeOutline />
+                                                <HandshakeOutline/>
                                                 <p>
-                                                    <span>Partner</span><br />
+                                                    <span>Partner</span><br/>
                                                     Use our partner ecosystem to accelerate your Kestra adoption
                                                 </p>
                                             </NuxtLink>
                                         </li>
                                         <li>
                                             <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
-                                                <HandshakeOutline />
+                                                <HandshakeOutline/>
                                                 <p>
-                                                    <span>About Us</span><br />
+                                                    <span>About Us</span><br/>
                                                     Discover the team and values behind Kestra
                                                 </p>
                                             </NuxtLink>
@@ -753,8 +814,10 @@
                             </div>
                             <div class="header-menu-right">
                                 <div class="features">
-                                    <NuxtLink class="header-menu-right-banner" href="/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra" @click="globalClick(true)">
-                                        <img src="/landing/header-menu/executions.png" alt="Platform Overview" />
+                                    <NuxtLink class="header-menu-right-banner"
+                                              href="/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra"
+                                              @click="globalClick(true)">
+                                        <img src="/landing/header-menu/executions.png" alt="Platform Overview"/>
                                         <p class="title">
                                             Gorgias, <br>
                                             Using Declarative
@@ -767,10 +830,11 @@
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
-                                                <BookOpenVariantOutline />
+                                            <NuxtLink class="dropdown-item" href="/use-cases/stories"
+                                                      @click="globalClick(true)">
+                                                <BookOpenVariantOutline/>
                                                 <p>
-                                                    <span>Customer Stories</span><br />
+                                                    <span>Customer Stories</span><br/>
                                                     Learn how Enterprises orchestrate their business-critical workflows
                                                 </p>
                                             </NuxtLink>
@@ -787,233 +851,221 @@
 </template>
 
 <script setup>
-import Email from "vue-material-design-icons/Email.vue";
-import NoteSearchOutline from "vue-material-design-icons/NoteSearchOutline.vue"
-import ViewDashboardOutline from "vue-material-design-icons/ViewDashboardOutline.vue"
-import Security from "vue-material-design-icons/Security.vue"
-import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
-import MessageQuestionOutline from "vue-material-design-icons/MessageQuestionOutline.vue"
-import CommentQuestionOutline from "vue-material-design-icons/CommentQuestionOutline.vue"
-import PostOutline from "vue-material-design-icons/PostOutline.vue"
-import VideoOutline from "vue-material-design-icons/VideoOutline.vue"
-import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
-import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
-import Segment from "vue-material-design-icons/Segment.vue"
-import Close from "vue-material-design-icons/Close.vue"
-import Magnify from "vue-material-design-icons/Magnify.vue"
-import Flash from "vue-material-design-icons/Flash.vue"
-import Domain from "vue-material-design-icons/Domain.vue"
-import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
-import CodeNotEqualVariant from "vue-material-design-icons/CodeNotEqualVariant.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
-import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
-import Slack from "vue-material-design-icons/Slack.vue"
-import Graph from "vue-material-design-icons/Graph.vue"
-import Ballot from "vue-material-design-icons/Ballot.vue"
-import ChartBar from "vue-material-design-icons/ChartBar.vue"
-import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
-import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
-import Sync from "vue-material-design-icons/Sync.vue"
-import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
-import BankOutline from "vue-material-design-icons/BankOutline.vue"
-import PillMultiple from "vue-material-design-icons/PillMultiple.vue"
-import Translate from "vue-material-design-icons/Translate.vue"
-import Earth from "vue-material-design-icons/Earth.vue"
-import CodeTags from "vue-material-design-icons/CodeTags.vue"
-import Api from "vue-material-design-icons/Api.vue"
-import CarHatchback from "vue-material-design-icons/CarHatchback.vue"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import TimelineTextOutline from "vue-material-design-icons/TimelineTextOutline.vue"
-import BookOpenVariantOutline from "vue-material-design-icons/BookOpenVariantOutline.vue"
+    import NoteSearchOutline from "vue-material-design-icons/NoteSearchOutline.vue"
+    import Security from "vue-material-design-icons/Security.vue"
+    import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
+    import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+    import MessageQuestionOutline from "vue-material-design-icons/MessageQuestionOutline.vue"
+    import PostOutline from "vue-material-design-icons/PostOutline.vue"
+    import VideoOutline from "vue-material-design-icons/VideoOutline.vue"
+    import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
+    import Segment from "vue-material-design-icons/Segment.vue"
+    import Close from "vue-material-design-icons/Close.vue"
+    import Magnify from "vue-material-design-icons/Magnify.vue"
+    import Flash from "vue-material-design-icons/Flash.vue"
+    import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
+    import CodeNotEqualVariant from "vue-material-design-icons/CodeNotEqualVariant.vue"
+    import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
+    import ChartBar from "vue-material-design-icons/ChartBar.vue"
+    import Sync from "vue-material-design-icons/Sync.vue"
+    import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
+    import PillMultiple from "vue-material-design-icons/PillMultiple.vue"
+    import Earth from "vue-material-design-icons/Earth.vue"
+    import CodeTags from "vue-material-design-icons/CodeTags.vue"
+    import Api from "vue-material-design-icons/Api.vue"
+    import CarHatchback from "vue-material-design-icons/CarHatchback.vue"
+    import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
+    import TimelineTextOutline from "vue-material-design-icons/TimelineTextOutline.vue"
+    import BookOpenVariantOutline from "vue-material-design-icons/BookOpenVariantOutline.vue"
 </script>
 
 <script>
-import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-import GithubButton from "../layout/GithubButton.vue";
-import {menuSize} from "~/utils/menu-sizes.js";
-export default {
-    components: {
-        ChevronDown,
-        GithubButton
-    },
-    data() {
-        return {
-            transparentHeader: false,
-            transparentClass: false,
-            isOpen: false,
-            showDownloadLogos: false,
-            showMenu: false,
-            showMenuId: null,
-            headerArrowTranslateX: 0,
-            headerMenuTranslateX: '50vw',
-            mouseoverMenu: false,
-            headerMenuSize: {
-              width: 0,
-              height: 0,
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+    import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
+    import GithubButton from "../layout/GithubButton.vue";
+    import {menuSize} from "~/utils/menu-sizes.js";
+
+    export default {
+        components: {
+            ChevronDown,
+            GithubButton
+        },
+        data() {
+            return {
+                transparentHeader: false,
+                transparentClass: false,
+                isOpen: false,
+                showDownloadLogos: false,
+                showMenu: false,
+                showMenuId: null,
+                headerArrowTranslateX: 0,
+                headerMenuTranslateX: '50vw',
+                mouseoverMenu: false,
+                headerMenuSize: {
+                    width: 0,
+                    height: 0,
+                },
+                headerMenuPointerEvents: 'none',
+            }
+        },
+        props: {
+            scrolled: {
+                type: Boolean,
+                required: true
+            }
+        },
+        collapse: undefined,
+        created() {
+            const route = useRoute();
+            this.transparentHeader = route.meta.transparentHeader === true;
+            this.transparentClass = route.meta.transparentHeader === true;
+
+            if (process.client) {
+                window.addEventListener('scroll', this.handleScroll);
+            }
+
+            if (process.client) {
+                this.collapse = new this.$bootstrap.Collapse('#main-header', {
+                    toggle: false
+                })
+            }
+
+        },
+        watch: {
+            $route(to) {
+                this.transparentHeader = to.meta.transparentHeader === true;
+                this.transparentClass = to.meta.transparentHeader === true;
+                // on route change always close the menu
+                this.globalClick(true)
+            }
+        },
+        mounted() {
+            if (process.client) {
+                document.documentElement.style.setProperty("--top-bar-height", this.$refs.navbar.offsetHeight + "px");
+            }
+        },
+        unmounted() {
+            if (process.client) {
+                window.removeEventListener('scroll', this.handleScroll);
+                document.documentElement.style.removeProperty("--top-bar-height");
+            }
+        },
+        methods: {
+            mouseOverMenu() {
+                this.mouseoverMenu = true
+                this.headerMenuPointerEvents = 'auto'
             },
-            headerMenuPointerEvents: 'none',
-        }
-    },
-    props: {
-      scrolled: {
-        type: Boolean,
-        required: true
-      }
-    },
-    collapse: undefined,
-    created() {
-        const route = useRoute();
-        this.transparentHeader = route.meta.transparentHeader === true;
-        this.transparentClass = route.meta.transparentHeader === true;
-
-        if (process.client) {
-            window.addEventListener('scroll', this.handleScroll);
-        }
-
-        if (process.client) {
-            this.collapse = new this.$bootstrap.Collapse('#main-header', {
-                toggle: false
-            })
-        }
-
-    },
-    watch: {
-        $route(to) {
-            this.transparentHeader = to.meta.transparentHeader === true;
-            this.transparentClass = to.meta.transparentHeader === true;
-            // on route change always close the menu
-            this.globalClick(true)
-        }
-    },
-    mounted() {
-        if (process.client) {
-            document.documentElement.style.setProperty("--top-bar-height", this.$refs.navbar.offsetHeight + "px");
-        }
-    },
-    unmounted() {
-        if (process.client) {
-            window.removeEventListener('scroll', this.handleScroll);
-            document.documentElement.style.removeProperty("--top-bar-height");
-        }
-    },
-    methods: {
-        mouseOverMenu() {
-          this.mouseoverMenu = true
-          this.headerMenuPointerEvents = 'auto'
-        },
-        mouseLeaveMenu() {
-          this.showMenu = false
-          this.mouseoverMenu = false
-          this.showMenuId = null
-          this.headerMenuPointerEvents = 'none'
-        },
-        mouseElement(element) {
-            if (element.classList.contains("nav-link")) {
-                return element;
-            } else {
-                return element.closest(".nav-item").firstElementChild;
-            }
-        },
-        mouseOver(id) {
-          if (window.innerWidth > 991) {
-            document.querySelectorAll('.header-menu-card-section').forEach(obj=>{
-              obj.classList.remove("opacity-100")
-              obj.classList.remove("z-1")
-            });
-            let menu = document.getElementById(id);
-            if (menu) {
-              this.mouseoverMenu = false
-              this.showMenu = true
-              this.showMenuId = id
-              this.headerMenuSize = menuSize(id, window.innerWidth).size;
-              this.headerMenuTranslateX = menuSize(id, window.innerWidth).headerMenuTranslateX;
-              this.headerArrowTranslateX = menuSize(id, window.innerWidth).headerArrowTranslateX;
-              menu.classList.add('z-1');
-              menu.classList.add('opacity-100');
-              this.headerMenuPointerEvents = 'auto'
-            }
-          }
-        },
-        mouseOut(id) {
-          if (window.innerWidth > 991) {
-            let menu = document.getElementById(id);
-            if (menu) {
-              this.headerMenuPointerEvents = 'none'
-              this.showMenu = false
-            }
-          }
-        },
-        handleScroll() {
-            if (this.transparentHeader) {
-                if (window.scrollY > 30) {
-                    this.transparentClass = false;
+            mouseLeaveMenu() {
+                this.showMenu = false
+                this.mouseoverMenu = false
+                this.showMenuId = null
+                this.headerMenuPointerEvents = 'none'
+            },
+            mouseElement(element) {
+                if (element.classList.contains("nav-link")) {
+                    return element;
                 } else {
-                    this.transparentClass = true;
+                    return element.closest(".nav-item").firstElementChild;
                 }
-            }
-        },
+            },
+            mouseOver(id) {
+                if (window.innerWidth > 991) {
+                    document.querySelectorAll('.header-menu-card-section').forEach(obj => {
+                        obj.classList.remove("opacity-100")
+                        obj.classList.remove("z-1")
+                    });
+                    let menu = document.getElementById(id);
+                    if (menu) {
+                        this.mouseoverMenu = false
+                        this.showMenu = true
+                        this.showMenuId = id
+                        this.headerMenuSize = menuSize(id, window.innerWidth).size;
+                        this.headerMenuTranslateX = menuSize(id, window.innerWidth).headerMenuTranslateX;
+                        this.headerArrowTranslateX = menuSize(id, window.innerWidth).headerArrowTranslateX;
+                        menu.classList.add('z-1');
+                        menu.classList.add('opacity-100');
+                        this.headerMenuPointerEvents = 'auto'
+                    }
+                }
+            },
+            mouseOut(id) {
+                if (window.innerWidth > 991) {
+                    let menu = document.getElementById(id);
+                    if (menu) {
+                        this.headerMenuPointerEvents = 'none'
+                        this.showMenu = false
+                    }
+                }
+            },
+            handleScroll() {
+                if (this.transparentHeader) {
+                    if (window.scrollY > 30) {
+                        this.transparentClass = false;
+                    } else {
+                        this.transparentClass = true;
+                    }
+                }
+            },
 
-        globalClick(close) {
-          if (window.innerWidth < 992) {
-            if(close === true){
-                this.collapse.hide();
-                this.isOpen = false;
-            } else if (close === false){
-                this.collapse.show()
-                this.isOpen = true;
-            }else{
-                this.collapse.toggle();
-                this.isOpen = !this.isOpen;
-            }
-            return
-          }
-          if (close) {
-            this.showMenu = false
-            this.mouseoverMenu = false
-            this.showMenuId = null
-            this.headerMenuPointerEvents = 'none'
-            if (this.$refs.navbar.classList.contains("open")) {
-                this.isOpen = false;
-                document.body.style.overflow = 'unset';
-                document.body.style.position = 'unset';
-                document.body.style.width = 'unset';
-            }
-            const element = document.querySelector('.nav-link.show');
-            if (element) {
-                element.classList.remove('show');
-                element.nextElementSibling.classList.remove('show');
-            }
-          } else {
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            this.isOpen = !this.isOpen;
-          }
+            globalClick(close) {
+                if (window.innerWidth < 992) {
+                    if (close === true) {
+                        this.collapse.hide();
+                        this.isOpen = false;
+                    } else if (close === false) {
+                        this.collapse.show()
+                        this.isOpen = true;
+                    } else {
+                        this.collapse.toggle();
+                        this.isOpen = !this.isOpen;
+                    }
+                    return
+                }
+                if (close) {
+                    this.showMenu = false
+                    this.mouseoverMenu = false
+                    this.showMenuId = null
+                    this.headerMenuPointerEvents = 'none'
+                    if (this.$refs.navbar.classList.contains("open")) {
+                        this.isOpen = false;
+                        document.body.style.overflow = 'unset';
+                        document.body.style.position = 'unset';
+                        document.body.style.width = 'unset';
+                    }
+                    const element = document.querySelector('.nav-link.show');
+                    if (element) {
+                        element.classList.remove('show');
+                        element.nextElementSibling.classList.remove('show');
+                    }
+                } else {
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.position = 'fixed';
+                    document.body.style.width = '100%';
+                    this.isOpen = !this.isOpen;
+                }
+            },
+            logoClick() {
+                if (this.$route.path === "/") {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }
+                this.globalClick(true);
+            },
+            showDownloadLogosModal(event) {
+                event.preventDefault();
+                this.showDownloadLogos = true;
+            },
+            closeDownloadLogosModal() {
+                this.showDownloadLogos = false;
+            },
         },
-        logoClick() {
-            if (this.$route.path === "/") {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
-            this.globalClick(true);
-        },
-        showDownloadLogosModal(event) {
-          event.preventDefault();
-          this.showDownloadLogos = true;
-        },
-        closeDownloadLogosModal() {
-          this.showDownloadLogos = false;
-        },
-    },
-}
+    }
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
     ::deep(body) {
         @include media-breakpoint-down(lg) {
@@ -1032,6 +1084,7 @@ export default {
         transition-property: opacity;
         transition: 450ms;
         pointer-events: none;
+
         .header-arrow {
             position: absolute;
             top: -12px;
@@ -1046,6 +1099,7 @@ export default {
             z-index: 2;
             background-image: linear-gradient(135deg, $black-6 50%, transparent 50%);
         }
+
         .menu-shadow-container {
             position: absolute;
             inset: 0;
@@ -1062,6 +1116,7 @@ export default {
                 left: 0;
                 pointer-events: none;
                 max-width: 100vw;
+
                 .header-menu-card {
                     width: 100%;
                     height: 100%;
@@ -1080,10 +1135,12 @@ export default {
                         position: absolute;
                         top: 0;
                         bottom: 0;
+
                         &.opacity-100 {
                             transition: opacity 700ms ease;
                         }
-                        &>.row {
+
+                        & > .row {
                             &::-webkit-scrollbar {
                                 width: 4px;
                                 height: 4px;
@@ -1100,6 +1157,7 @@ export default {
                             &::-webkit-scrollbar-thumb:hover {
                                 background: #454445;
                             }
+
                             @media only screen and (max-width: 1570px) {
                                 overflow: auto;
                             }
@@ -1118,6 +1176,7 @@ export default {
                             @media only screen and (min-width: 1570px) {
                                 column-gap: 5.5rem;
                             }
+
                             &::-webkit-scrollbar {
                                 width: 4px;
                                 height: 4px;
@@ -1190,15 +1249,19 @@ export default {
                             margin-bottom: .5rem;
                             padding: .875rem .75rem !important;
                             white-space: unset;
+
                             &:hover {
                                 background: $black-2;
+
                                 .material-design-icon {
                                     color: $purple-35 !important;
                                 }
+
                                 span {
                                     color: $purple-35 !important;
                                 }
                             }
+
                             .material-design-icon {
                                 flex-shrink: 0;
                                 font-size: 25px;
@@ -1206,12 +1269,14 @@ export default {
                                 align-self: unset;
                                 color: #a396ff;
                             }
+
                             p {
                                 font-weight: 400;
                                 font-size: $font-size-sm;
                                 color: $white-1;
                                 line-height: 21px;
                                 margin-bottom: 0;
+
                                 span {
                                     color: $white;
                                     display: inline-block;
@@ -1219,6 +1284,7 @@ export default {
                                     font-weight: 700;
                                     margin-bottom: 4px;
                                 }
+
                                 strong.tag {
                                     background-color: #5A3ABC;
                                     border: 1px solid $purple-35;
@@ -1249,6 +1315,7 @@ export default {
                                 }
                             }
                         }
+
                         .header-menu-right {
                             background: #252526f7;
                             padding: 32px;
@@ -1268,15 +1335,19 @@ export default {
                                 li {
                                     a.dropdown-item {
                                         margin: 0;
+
                                         &:hover {
                                             background: $black-2;
+
                                             .material-design-icon {
                                                 color: $purple-35 !important;
                                             }
+
                                             span {
                                                 color: $purple-35 !important;
                                             }
                                         }
+
                                         p {
                                             margin: 0;
                                         }
@@ -1284,10 +1355,12 @@ export default {
                                     }
                                 }
                             }
+
                             .features {
                                 a.header-menu-right-banner {
                                     font-family: $font-family-sans-serif;
                                     padding: 15px 17px 18px 26px;
+
                                     span.link {
                                         color: #FFFFFF99;
                                         font-weight: 400;
@@ -1295,6 +1368,7 @@ export default {
                                     }
                                 }
                             }
+
                             &-banner {
                                 background-image: url(/landing/header-menu/menu-right.png);
                                 background-repeat: no-repeat;
@@ -1305,15 +1379,18 @@ export default {
                                 padding: 47px 28px 42px 26px;
                                 width: 312px;
                                 max-height: 370px;
+
                                 &:hover {
                                     background-image: url(/landing/header-menu/menu-right-hover.png);
                                 }
+
                                 .title {
                                     font-size: 26px;
                                     line-height: 27px;
                                     font-weight: 500;
                                     color: $white;
                                 }
+
                                 .count-text {
                                     font-weight: 800;
                                     color: $white;
@@ -1322,12 +1399,15 @@ export default {
                                     margin-bottom: 0;
                                     margin-top: 0;
                                 }
+
                                 img {
                                     width: 100%;
                                 }
+
                                 p {
                                     margin-bottom: 10px;
                                 }
+
                                 span.link {
                                     color: #CDD5EF;
                                 }
@@ -1348,6 +1428,7 @@ export default {
         right: 0;
         height: 100vh;
         z-index: 4;
+
         .download-logos {
             position: fixed;
             top: 100%;
@@ -1416,6 +1497,7 @@ export default {
             }
         }
     }
+
     nav {
         background: $black-4;
         transform: translateY(0);
@@ -1436,6 +1518,7 @@ export default {
                     transition: background-color 250ms ease-in-out;
                 }
             }
+
             &.open {
                 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
                     & {
@@ -1444,7 +1527,6 @@ export default {
                 }
             }
         }
-
 
 
         &::before {
@@ -1486,7 +1568,7 @@ export default {
         }
 
         a.talk-us {
-            border:1px solid $black-6;
+            border: 1px solid $black-6;
             background-color: $black-4;
 
             &:hover {
@@ -1498,10 +1580,12 @@ export default {
             a {
                 margin-top: calc($spacer * 0.4);
             }
+
             a, button {
                 :deep(.material-design-icon) {
                     width: calc($spacer * 1.5);
                     height: calc($spacer * 1.5);
+
                     .material-design-icon__svg {
                         width: calc($spacer * 1.5);
                         height: calc($spacer * 1.5);
@@ -1510,317 +1594,330 @@ export default {
             }
         }
 
-    .navbar-toggler {
-        border: 0;
-        font-family: var(--bs-font-monospace);
-        text-transform: uppercase;
-        font-size: var(--bs-font-size-sm);
-    }
-
-    .navbar-collapse {
-        max-width: 100%;
-
-        @include media-breakpoint-down(lg) {
-            max-height: calc(100vh + 4.1rem);
-            overflow-y: auto;
-            overflow-x: hidden;
-            background-color: $black-2;
-            height: calc(100vh - 3.3rem);
+        .navbar-toggler {
+            border: 0;
+            font-family: var(--bs-font-monospace);
+            text-transform: uppercase;
+            font-size: var(--bs-font-size-sm);
         }
 
-        ul.navbar-nav {
-            li {
+        .navbar-collapse {
+            max-width: 100%;
 
-                a.dropdown-item {
-                    white-space: unset;
-                }
+            @include media-breakpoint-down(lg) {
+                max-height: calc(100vh + 4.1rem);
+                overflow-y: auto;
+                overflow-x: hidden;
+                background-color: $black-2;
+                height: calc(100vh - 3.3rem);
+            }
 
-                @include media-breakpoint-between(lg, xxl) {
-                    font-size: 1rem;
-                }
+            ul.navbar-nav {
+                li {
 
-                &:last-child {
-                    @include media-breakpoint-down(lg) {
-                        border-bottom: 1px solid $black-6;
-                    }
-                }
-
-                a.nav-link {
-                    border-radius: $border-radius;
-                    span.material-design-icon {
-                        transition: all .2s cubic-bezier(1,.25,.25,.8);
-                        will-change: scaleY, top;
-                        &.show {
-                            top: 4px;
-                            transform: scaleY(-1);
-                        }
+                    a.dropdown-item {
+                        white-space: unset;
                     }
 
-                    @include media-breakpoint-down(lg) {
-                        display: flex;
-                        justify-content: space-between;
-                        border-radius: 0;
-                        background-color: $black-9;
-                        border-top: 1px solid $black-6;
-                    }
-                    @include media-breakpoint-down(xl) {
-                        padding-right: 5px;
-                        padding-left: 5px;
-                        font-size: 14px;
+                    @include media-breakpoint-between(lg, xxl) {
+                        font-size: 1rem;
                     }
 
-                    @include media-breakpoint-down(lg) {
-                        background-color: #1d1d1e;
-                        border-radius: 0;
-                        border-top: 1px solid #3d3d3f;
-                        display: flex;
-                        justify-content: space-between;
-                        padding: 1.6rem 2rem;
-                        font-weight: 500;
-                        line-height: 26px;
-                    }
-
-
-
-                    &:after {
-                        display: none;
-                    }
-
-                    &.show, &:hover {
-                        @include media-breakpoint-up(lg) {
-                            color: #CDD5EF !important;
-                        }
-                    }
-
-                    &.show {
+                    &:last-child {
                         @include media-breakpoint-down(lg) {
-                            background-color: #161617;
+                            border-bottom: 1px solid $black-6;
                         }
                     }
-                }
 
-                .dropdown-menu {
-                    padding: 0 calc($spacer * 1.875)  calc($spacer * 1.875) !important;
-                    &.show {
+                    a.nav-link {
+                        border-radius: $border-radius;
+
+                        span.material-design-icon {
+                            transition: all .2s cubic-bezier(1, .25, .25, .8);
+                            will-change: scaleY, top;
+
+                            &.show {
+                                top: 4px;
+                                transform: scaleY(-1);
+                            }
+                        }
+
                         @include media-breakpoint-down(lg) {
-                            background-color: #161617;
-                            border-radius: 0;
-                            display: block;
-                        }
-                    }
-
-                    .dropdown-column {
-                        margin-bottom: 2rem;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1rem;
-                        list-style: none;
-                        padding-left: 0;
-                        min-width: 312px;
-
-
-                        .column-caption {
-                            color: #B9B9BA;
-                            font-size: 1rem;
-                            font-weight: 600;
-                            line-height: 24px;
-                            border-bottom: 1.11px solid #3D3D3F;
-                            padding-bottom: 9px;
-                            margin: 0;
-                        }
-                    }
-
-                    li {
-                        background-color: #252526;
-                        border: 0 !important;
-                        border-radius: .25rem;
-
-                        .header-menu-right-banner {
-                            background-image: url(/landing/header-menu/menu-right.png);
-                            background-repeat: no-repeat;
-                            background-size: 100% 100%;
-                            border: 1px solid rgba(255, 255, 255, 0.3);
-                            border-radius: 4px;
-                            width: 100%;
-
-                            &.overview-banner-mobile {
-                                display: inline-block;
-                                padding: 17px 32px 14px 21px;
-                                min-height: 125px;
-
-                                p.title {
-                                    text-align: left;
-                                    font-weight: 600;
-                                    font-size: 27px;
-                                    line-height: 30px;
-                                    margin-bottom: 5px;
-                                }
-
-                                span {
-                                    text-align: center;
-                                    font-weight: 600;
-                                    font-size: 16px;
-                                }
-                            }
-                            &.blueprints-banner-mobile {
-                                display: flex;
-                                justify-content: space-around;
-                                align-items: center;
-                                padding: 16px 3px 16px 3px;
-                                img {
-                                    width: 144px;
-                                    height: auto;
-                                }
-                                p.title {
-                                    text-align: left;
-                                    font-size: $h6-font-size;
-                                    line-height: calc($font-size-base * 1.5);
-                                    margin-bottom: 4px;
-                                }
-                                span {
-                                    font-size: $font-size-sm;
-                                }
-                            }
-                            &.gorgias-banner-mobile {
-                                display: flex;
-                                justify-content: space-around;
-                                align-items: center;
-                                padding: 16px 3px 16px 3px;
-                                img {
-                                    width: 144px;
-                                    height: auto;
-                                }
-                                p.title {
-                                    text-align: left;
-                                    font-size: $font-size-sm;
-                                    margin-bottom: 4px;
-                                }
-                                span {
-                                    font-size: $font-size-sm;
-                                }
-                            }
-                        }
-                        .header-menu-right-menu {
-                            background: transparent;
-                            padding-left: 0;
-                            list-style: none;
-                            li {
-                                margin-top: 1rem;
-                            }
-                        }
-                        .dropdown-item {
-                            align-items: flex-start;
-                            border-radius: .5rem;
                             display: flex;
-                            flex-direction: row;
-                            margin-bottom: .5rem;
-                            padding: .5rem 1rem;
+                            justify-content: space-between;
+                            border-radius: 0;
+                            background-color: $black-9;
+                            border-top: 1px solid $black-6;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            padding-right: 5px;
+                            padding-left: 5px;
+                            font-size: 14px;
+                        }
 
-                            p {
-                                color: #e1e1e1 !important;
-                                font-size: .813rem;
-                                font-weight: 300;
-                                line-height: 1rem;
-                                margin-bottom: 0;
+                        @include media-breakpoint-down(lg) {
+                            background-color: #1d1d1e;
+                            border-radius: 0;
+                            border-top: 1px solid #3d3d3f;
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 1.6rem 2rem;
+                            font-weight: 500;
+                            line-height: 26px;
+                        }
+
+
+                        &:after {
+                            display: none;
+                        }
+
+                        &.show, &:hover {
+                            @include media-breakpoint-up(lg) {
+                                color: #CDD5EF !important;
+                            }
+                        }
+
+                        &.show {
+                            @include media-breakpoint-down(lg) {
+                                background-color: #161617;
+                            }
+                        }
+                    }
+
+                    .dropdown-menu {
+                        padding: 0 calc($spacer * 1.875) calc($spacer * 1.875) !important;
+
+                        &.show {
+                            @include media-breakpoint-down(lg) {
+                                background-color: #161617;
+                                border-radius: 0;
+                                display: block;
+                            }
+                        }
+
+                        .dropdown-column {
+                            margin-bottom: 2rem;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 1rem;
+                            list-style: none;
+                            padding-left: 0;
+                            min-width: 312px;
+
+
+                            .column-caption {
+                                color: #B9B9BA;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                line-height: 24px;
+                                border-bottom: 1.11px solid #3D3D3F;
+                                padding-bottom: 9px;
+                                margin: 0;
+                            }
+                        }
+
+                        li {
+                            background-color: #252526;
+                            border: 0 !important;
+                            border-radius: .25rem;
+
+                            .header-menu-right-banner {
+                                background-image: url(/landing/header-menu/menu-right.png);
+                                background-repeat: no-repeat;
+                                background-size: 100% 100%;
+                                border: 1px solid rgba(255, 255, 255, 0.3);
+                                border-radius: 4px;
+                                width: 100%;
+
+                                &.overview-banner-mobile {
+                                    display: inline-block;
+                                    padding: 17px 32px 14px 21px;
+                                    min-height: 125px;
+
+                                    p.title {
+                                        text-align: left;
+                                        font-weight: 600;
+                                        font-size: 27px;
+                                        line-height: 30px;
+                                        margin-bottom: 5px;
+                                    }
+
+                                    span {
+                                        text-align: center;
+                                        font-weight: 600;
+                                        font-size: 16px;
+                                    }
+                                }
+
+                                &.blueprints-banner-mobile {
+                                    display: flex;
+                                    justify-content: space-around;
+                                    align-items: center;
+                                    padding: 16px 3px 16px 3px;
+
+                                    img {
+                                        width: 144px;
+                                        height: auto;
+                                    }
+
+                                    p.title {
+                                        text-align: left;
+                                        font-size: $h6-font-size;
+                                        line-height: calc($font-size-base * 1.5);
+                                        margin-bottom: 4px;
+                                    }
+
+                                    span {
+                                        font-size: $font-size-sm;
+                                    }
+                                }
+
+                                &.gorgias-banner-mobile {
+                                    display: flex;
+                                    justify-content: space-around;
+                                    align-items: center;
+                                    padding: 16px 3px 16px 3px;
+
+                                    img {
+                                        width: 144px;
+                                        height: auto;
+                                    }
+
+                                    p.title {
+                                        text-align: left;
+                                        font-size: $font-size-sm;
+                                        margin-bottom: 4px;
+                                    }
+
+                                    span {
+                                        font-size: $font-size-sm;
+                                    }
+                                }
+                            }
+
+                            .header-menu-right-menu {
+                                background: transparent;
+                                padding-left: 0;
+                                list-style: none;
+
+                                li {
+                                    margin-top: 1rem;
+                                }
+                            }
+
+                            .dropdown-item {
+                                align-items: flex-start;
+                                border-radius: .5rem;
+                                display: flex;
+                                flex-direction: row;
+                                margin-bottom: .5rem;
+                                padding: .5rem 1rem;
+
+                                p {
+                                    color: #e1e1e1 !important;
+                                    font-size: .813rem;
+                                    font-weight: 300;
+                                    line-height: 1rem;
+                                    margin-bottom: 0;
+
+                                    span {
+                                        color: #fff !important;
+                                        display: inline-block;
+                                        font-size: .875rem;
+                                        font-weight: 600;
+                                        line-height: 1.37rem;
+                                    }
+
+                                    strong.tag {
+                                        background-color: #5A3ABC;
+                                        border: 1px solid $purple-35;
+                                        padding: 2px 4px;
+                                        border-radius: 4px;
+                                        font-size: $font-size-sm;
+                                        font-weight: 400;
+                                        color: $white;
+                                    }
+                                }
 
                                 span {
-                                    color: #fff !important;
-                                    display: inline-block;
-                                    font-size: .875rem;
-                                    font-weight: 600;
-                                    line-height: 1.37rem;
+                                    flex-shrink: 0;
+                                    font-size: 135%;
+                                    margin-right: .5rem;
+
+                                    :deep(.material-design-icon__svg) {
+                                        fill: #A396FF;
+                                    }
                                 }
 
-                                strong.tag {
-                                    background-color: #5A3ABC;
-                                    border: 1px solid $purple-35;
-                                    padding: 2px 4px;
-                                    border-radius: 4px;
-                                    font-size: $font-size-sm;
-                                    font-weight: 400;
-                                    color: $white;
+                                &:last-child {
+                                    margin-bottom: 0;
                                 }
                             }
+                        }
+                    }
 
-                            span {
-                                flex-shrink: 0;
-                                font-size: 135%;
-                                margin-right: .5rem;
+                }
+            }
 
-                                :deep(.material-design-icon__svg) {
-                                    fill: #A396FF;
-                                }
-                            }
+            .nav-button {
+                white-space: nowrap;
 
-                            &:last-child {
-                                margin-bottom: 0;
-                            }
+                li {
+                    vertical-align: center;
+                }
+
+                .btn {
+                    &.icon-button {
+                        font-size: 1.5rem;
+
+                        &:hover {
+                            color: $purple-36 !important;
                         }
                     }
                 }
 
+                :deep(.btn) {
+                    font-weight: normal;
+                }
             }
         }
 
-        .nav-button {
-            white-space: nowrap;
+        .nav-footer {
+            @include media-breakpoint-down(lg) {
+                display: flex;
+                width: 100%;
+                padding: 2rem 2rem 30%;
 
-            li {
-                vertical-align: center;
+                li {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    border: 0 !important;
+                }
+
+                .get-started {
+                    padding: calc($spacer * 0.6) $spacer !important;
+                }
             }
+            @include media-breakpoint-down(md) {
 
-            .btn {
-                &.icon-button {
-                    font-size: 1.5rem;
 
-                    &:hover {
-                        color: $purple-36 !important;
+                li {
+                    flex-direction: column-reverse;
+                    gap: $spacer;
+                    align-items: center;
+
+                    a {
+                        width: 100%;
                     }
                 }
             }
-
-            :deep(.btn) {
-                font-weight: normal;
-            }
         }
-    }
 
-    .nav-footer {
-        @include media-breakpoint-down(lg) {
-            display: flex;
-            width: 100%;
-            padding: 2rem 2rem 30%;
-
-            li {
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                border: 0 !important;
-            }
-
-            .get-started {
-                padding: calc($spacer * 0.6) $spacer !important;
-            }
+        :deep(.github .btn) {
+            font-weight: bold !important;
+            font-size: 12px !important;
         }
-        @include media-breakpoint-down(md) {
-
-
-            li {
-                flex-direction: column-reverse;
-                gap: $spacer;
-                align-items: center;
-
-                a {
-                    width: 100%;
-                }
-            }
-        }
-    }
-
-    :deep(.github .btn) {
-        font-weight: bold !important;
-        font-size: 12px !important;
-    }
 
         &:not(.transparent) {
             :deep(.github) {
@@ -1836,6 +1933,7 @@ export default {
                     }
                 }
             }
+
             :deep(.github .btn-dark) {
                 color: $white-6;
             }
@@ -1846,87 +1944,87 @@ export default {
             }
         }
 
-    .btn:hover {
-        color: $purple-36;
-    }
-
-    &.transparent {
-        background: transparent;
-        box-shadow: none;
-
-        a,
-        a.nav-link,
-        button.navbar-toggler,
-        &.btn.search {
-            color: var(--bs-white);
+        .btn:hover {
+            color: $purple-36;
         }
 
+        &.transparent {
+            background: transparent;
+            box-shadow: none;
 
-        :deep(.github .btn-outline-dark) {
-            color: var(--bs-white);
-        }
+            a,
+            a.nav-link,
+            button.navbar-toggler,
+            &.btn.search {
+                color: var(--bs-white);
+            }
 
-        .navbar-collapse {
-            ul.navbar-nav {
-                li {
-                    a.nav-link {
 
-                        &.show,
-                        &:hover {
-                            color: $secondary;
-                            background: rgba($gray-100, 5%);
+            :deep(.github .btn-outline-dark) {
+                color: var(--bs-white);
+            }
+
+            .navbar-collapse {
+                ul.navbar-nav {
+                    li {
+                        a.nav-link {
+
+                            &.show,
+                            &:hover {
+                                color: $secondary;
+                                background: rgba($gray-100, 5%);
+                            }
                         }
                     }
                 }
             }
-        }
 
-        @include media-breakpoint-down(lg) {
-            &.open {
-                background: #200149;
-            }
+            @include media-breakpoint-down(lg) {
+                &.open {
+                    background: #200149;
+                }
 
-            .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
-                color: var(--bs-white);
-                --bs-dropdown-link-hover-bg: #{rgba($gray-100, 5%)};
-                --bs-dropdown-link-active-bg: #{rgba($gray-100, 5%)};
+                .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
+                    color: var(--bs-white);
+                    --bs-dropdown-link-hover-bg: #{rgba($gray-100, 5%)};
+                    --bs-dropdown-link-active-bg: #{rgba($gray-100, 5%)};
 
-                &:hover {
+                    &:hover {
+
+                        .material-design-icon,
+                        span {
+                            color: var(--bs-white);
+                        }
+                    }
 
                     .material-design-icon,
                     span {
                         color: var(--bs-white);
                     }
-                }
 
-                .material-design-icon,
-                span {
-                    color: var(--bs-white);
-                }
+                    p {
+                        color: var(--bs-gray-400);
 
-                p {
-                    color: var(--bs-gray-400);
-
-                    span {
-                        color: var(--bs-white);
+                        span {
+                            color: var(--bs-white);
+                        }
                     }
                 }
-            }
 
-            .dropdown-menu {
-                background: transparent;
+                .dropdown-menu {
+                    background: transparent;
+                }
             }
         }
     }
-}
 </style>
 
 <style lang="scss">
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.wrapper.announce {
-    nav {
-        top: 3rem;
+    .wrapper.announce {
+        nav {
+            top: 3rem;
+        }
     }
-}
 </style>
