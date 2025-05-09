@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     image: {
         dir: 'public',
         provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
-        formats: ['webp', 'png'],
+        format: ['webp', 'avif', 'png'],
         quality: 80,
         densities: [1, 2],
         domains: ['kestra.io', '*.kestra-io.pages.dev'],
