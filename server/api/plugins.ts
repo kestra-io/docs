@@ -14,8 +14,8 @@ function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
                 links: tocFromJsonSchema(jsonSchema)
             },
         },
-        description: jsonSchema.properties.description,
-        title: jsonSchema.properties.title
+        description: jsonSchema.properties?.description,
+        title: jsonSchema.properties?.title
     };
 }
 
@@ -32,7 +32,7 @@ const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<str
     const children = [];
 
     const sortedProperties = Object.entries(properties).sort(([_, valueA], [__, valueB]) => {
-        return (valueB.$required || false) - (valueA.$required || false);
+        return Boolean(valueB.$required) === Boolean(valueA.$required) ? 0 :  Boolean(valueA.$required) ? 1 : -1;
     });
 
     for (const [key, property] of sortedProperties) {

@@ -1,7 +1,7 @@
 <template>
     <pre v-if="error">{{ error }}</pre>
     <div class="enterprise-stories" @scroll="scrollHandler" ref="scroller">
-        <div v-for="story of stories" class="story">
+        <div v-for="story of stories" class="story" @mouseenter="isHovering = true" @mouseleave="isHovering = false">
             <h2><span>{{ story.companyName }}</span> & Kestra: {{ story.title }}</h2>
             <div class="use-case">
                 <NuxtImg width="538" :src="story.heroImage" alt="Hero Image"/>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="dots">
-        <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+        <button v-for="storyIndex of (stories?.length ?? 0)" :key="storyIndex" :class="{active: storyIndex - 1 === activeStory}" @click="manualScrollTo(storyIndex - 1)" />
     </div>
 
 </template>
@@ -25,6 +25,9 @@
 <script lang="ts" setup>
     import {slugify} from "@kestra-io/ui-libs";
     const config = useRuntimeConfig();
+
+    const AUTO_SCROLL = 2000;
+    const SCROLL_TRANSITION = 1000;
 
     interface Story {
         id: string;
@@ -39,39 +42,102 @@
         logoDark: string;
     }
 
-    const activeStory = ref<number>(1);
+    const activeStory = ref<number>(0);
     const scroller = ref<HTMLDivElement | null>(null);
+    const timers = ref<{ auto: NodeJS.Timeout | null; user: NodeJS.Timeout | null }>({ auto: null, user: null });
+    const isScrolling = ref(false);
+    const isHovering = ref(false);
+    const isManualChange = ref(false);
 
-    const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`)
-
+    const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
     const stories = computed(() => data.value?.results);
 
-    function scrollHandler(e: Event) {
+    const clearTimers = () => {
+        if (timers.value.auto) clearInterval(timers.value.auto);
+        if (timers.value.user) clearTimeout(timers.value.user as NodeJS.Timeout);
+        timers.value = { auto: null, user: null };
+    };
+
+    const startAutoScroll = (delay: number = AUTO_SCROLL) => {
+        if (isScrolling.value || !stories.value?.length || isHovering.value || isManualChange.value) return;
+        clearTimers();
+
+        timers.value.auto = setInterval(() => {
+            if (!stories.value?.length || isHovering.value) {
+                clearTimers();
+                return;
+            }
+            scrollTo((activeStory.value + 1) % stories.value.length);
+        }, delay);
+    };
+
+    const handleScrollReset = () => {
+        if (timers.value.user) clearTimeout(timers.value.user as NodeJS.Timeout);
+        timers.value.user = setTimeout(() => {
+            isManualChange.value = false;
+            startAutoScroll();
+        }, AUTO_SCROLL);
+    };
+
+    const scrollHandler = (e: Event) => {
+        if (isScrolling.value || !stories.value?.length || isManualChange.value) return;
+        clearTimers();
+
         const target = e.target as HTMLElement;
-        const scroll = target.scrollLeft;
-        const width = target.scrollWidth
-        const story = Math.round(scroll / width * (stories.value?.length ?? 0));
-        activeStory.value = story + 1;
-    }
+        if (target.scrollWidth === 0) return;
 
-    function scrollTo(index: number) {
-        if (!scroller.value) {
-            return;
+        const storyWidth = target.scrollWidth / stories.value.length;
+        const newActiveStory = Math.max(0, Math.min(
+            Math.round(target.scrollLeft / storyWidth),
+            stories.value.length - 1
+        ));
+
+        if (newActiveStory !== activeStory.value) {
+            activeStory.value = newActiveStory;
         }
 
-        // get the scroll
-        const story = scroller.value.childNodes[index]
-        if (!story || !(story instanceof HTMLElement)) {
-            return;
-        }
+        handleScrollReset();
+    };
 
-        // get the scroll position of this story element
-        const scroll = story.getBoundingClientRect().left - scroller.value.getBoundingClientRect().left + scroller.value.scrollLeft;
+    const scrollTo = (index: number) => {
+        if (!scroller.value || !stories.value?.length || 
+            index < 0 || index >= stories.value.length || 
+            isScrolling.value) return;
+
+        clearTimers();
+        isScrolling.value = true;
+        activeStory.value = index;
+
         scroller.value.scrollTo({
-            left: scroll,
+            left: (scroller.value.scrollWidth / stories.value.length) * index,
             behavior: 'smooth'
         });
-    }
+
+        setTimeout(() => {
+            isScrolling.value = false;
+            handleScrollReset();
+        }, SCROLL_TRANSITION);
+    };
+
+    const manualScrollTo = (index: number) => {
+        isManualChange.value = true;
+        clearTimers();
+        scrollTo(index);
+    };
+
+    watch(isHovering, (newValue) => {
+        if (newValue) {
+            clearTimers();
+        } else if (!isManualChange.value) {
+            startAutoScroll(AUTO_SCROLL);
+        }
+    });
+
+    onMounted(() => {
+        startAutoScroll();
+    });
+
+    onUnmounted(clearTimers);
 </script>
 
 <style lang="scss" scoped>
@@ -114,6 +180,7 @@
                 span {
                     background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
                     background-size: cover;
+                    background-clip: text;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }

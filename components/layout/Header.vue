@@ -192,15 +192,16 @@
             <div class="header-arrow" :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
             <div class="menu-shadow-container">
                 <div 
-                class="header-menu" 
-                @mouseover="mouseOverMenu()"
-                @mouseleave="mouseLeaveMenu()"  
-                :style="{
-                    transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
-                    width: headerMenuSize.width,
-                    height: headerMenuSize.height,
-                    pointerEvents: headerMenuPointerEvents,
-                }">
+                  class="header-menu" 
+                  @mouseover="mouseOverMenu()"
+                  @mouseleave="mouseLeaveMenu()"  
+                  :style="{
+                      transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
+                      width: headerMenuSize.width,
+                      height: headerMenuSize.height,
+                      pointerEvents: headerMenuPointerEvents,
+                  }"
+                >
                     <div class="header-menu-card">
                         <div @mouseleave="mouseLeaveMenu()" id="product" class="header-menu-card-section">
                             <div class="header-menu-content">
