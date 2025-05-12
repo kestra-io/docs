@@ -75,10 +75,18 @@
     const route = useRoute();
     const router = useRouter();
 
-    const totalPlugins = computed(() => {
-        const pluginsList = props.plugins.map(p => `${p.group}-${p.title}-${p.description}`);
-        return new Set(pluginsList).size;
-    });
+    const GROUPS = ["tasks", "triggers", "conditions", "taskRunners"];
+
+    const totalPlugins = computed(() => props.plugins.reduce((acc, plugin) => {
+        for (const group of GROUPS) {
+            if (plugin[group]) {
+                for(const item of plugin[group]) {
+                    acc.add(item);
+                }
+            }
+        }
+        return acc;
+    }, new Set()).size);
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
