@@ -2279,3 +2279,34 @@ kestra:
       auth: true # default
       starttlsEnable: true # default
 ```
+
+## Outputs
+
+::badge{version=">=0.23" editions="EE,Cloud"}
+::
+
+Outputs can be configured to be stored in your Kestra Internal Storage option rather than in the database. This is useful for instances with multiple teams or segments using Kestra where outputs should only be accessible to that segment rather than in the shared database storage.
+
+To configure, add the following to your Kestra configuration file:
+
+```yaml
+kestra:
+  ee:
+    outputs:
+      store:
+        enabled: true # the default is false
+```
+
+To set this globally, rather than just in a specific Tenant or Namespace, use the following instead:
+
+```yaml
+kestra:
+  ee:
+    outputs:
+      store:
+        force-globally: true # the default is false
+```
+
+::alert{type="info"}
+Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
+::
