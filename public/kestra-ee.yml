@@ -10565,14 +10565,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiTenant"
-  /api/v1/tenants/{ressourceTenant}/bindings:
+  /api/v1/tenants/{resourceTenant}/bindings:
     post:
       tags:
       - Bindings
       summary: Create a binding
       operationId: create_20
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10590,14 +10590,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AbstractBindingController.BindingDetail"
-  /api/v1/tenants/{ressourceTenant}/bindings/bulk:
+  /api/v1/tenants/{resourceTenant}/bindings/bulk:
     post:
       tags:
       - Bindings
       summary: Create multiple bindings
       operationId: bulkCreate_2
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10619,7 +10619,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AbstractBindingController.BindingDetail"
-  /api/v1/tenants/{ressourceTenant}/bindings/search:
+  /api/v1/tenants/{resourceTenant}/bindings/search:
     get:
       tags:
       - Bindings
@@ -10675,7 +10675,7 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10687,7 +10687,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_"
-  /api/v1/tenants/{ressourceTenant}/bindings/{id}:
+  /api/v1/tenants/{resourceTenant}/bindings/{id}:
     get:
       tags:
       - Bindings
@@ -10700,7 +10700,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10724,7 +10724,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10732,14 +10732,14 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/tenants/{ressourceTenant}/groups:
+  /api/v1/tenants/{resourceTenant}/groups:
     post:
       tags:
       - Groups
       summary: Create a group
       operationId: create_21
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10757,14 +10757,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Group"
-  /api/v1/tenants/{ressourceTenant}/groups/autocomplete:
+  /api/v1/tenants/{resourceTenant}/groups/autocomplete:
     post:
       tags:
       - Groups
       summary: List groups for autocomplete
       operationId: autocomplete_7
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10784,14 +10784,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Group"
-  /api/v1/tenants/{ressourceTenant}/groups/ids:
+  /api/v1/tenants/{resourceTenant}/groups/ids:
     post:
       tags:
       - Groups
       summary: List groups by ids
       operationId: ids_4
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10811,7 +10811,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Group"
-  /api/v1/tenants/{ressourceTenant}/groups/search:
+  /api/v1/tenants/{resourceTenant}/groups/search:
     get:
       tags:
       - Groups
@@ -10848,7 +10848,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10860,7 +10860,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Group_"
-  /api/v1/tenants/{ressourceTenant}/groups/{id}:
+  /api/v1/tenants/{resourceTenant}/groups/{id}:
     get:
       tags:
       - Groups
@@ -10873,7 +10873,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10897,7 +10897,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10927,7 +10927,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10935,7 +10935,7 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/tenants/{ressourceTenant}/groups/{id}/members:
+  /api/v1/tenants/{resourceTenant}/groups/{id}/members:
     get:
       tags:
       - Groups
@@ -10978,7 +10978,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -10990,7 +10990,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/tenants/{ressourceTenant}/groups/{id}/members/{userId}:
+  /api/v1/tenants/{resourceTenant}/groups/{id}/members/{userId}:
     put:
       tags:
       - Groups
@@ -11009,7 +11009,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11039,7 +11039,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11051,14 +11051,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/invitations:
+  /api/v1/tenants/{resourceTenant}/invitations:
     post:
       tags:
       - Invitations
       summary: Create an invitation
       operationId: create_22
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11076,7 +11076,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Invitation"
-  /api/v1/tenants/{ressourceTenant}/invitations/email/{email}:
+  /api/v1/tenants/{resourceTenant}/invitations/email/{email}:
     get:
       tags:
       - Invitations
@@ -11089,7 +11089,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11103,7 +11103,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Invitation"
-  /api/v1/tenants/{ressourceTenant}/invitations/search:
+  /api/v1/tenants/{resourceTenant}/invitations/search:
     get:
       tags:
       - Invitations
@@ -11147,7 +11147,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11159,7 +11159,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Invitation_"
-  /api/v1/tenants/{ressourceTenant}/invitations/{id}:
+  /api/v1/tenants/{resourceTenant}/invitations/{id}:
     get:
       tags:
       - Invitations
@@ -11172,7 +11172,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11196,7 +11196,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11204,7 +11204,7 @@ paths:
       responses:
         "200":
           description: delete_25 200 response
-  /api/v1/tenants/{ressourceTenant}/namespaces/autocomplete:
+  /api/v1/tenants/{resourceTenant}/namespaces/autocomplete:
     post:
       tags:
       - Namespaces
@@ -11217,7 +11217,7 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11236,14 +11236,14 @@ paths:
                 type: array
                 items:
                   type: string
-  /api/v1/tenants/{ressourceTenant}/roles:
+  /api/v1/tenants/{resourceTenant}/roles:
     post:
       tags:
       - Roles
       summary: Create a role
       operationId: create_23
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11261,14 +11261,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Role"
-  /api/v1/tenants/{ressourceTenant}/roles/autocomplete:
+  /api/v1/tenants/{resourceTenant}/roles/autocomplete:
     post:
       tags:
       - Roles
       summary: List roles for autocomplete
       operationId: autocomplete_9
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11288,14 +11288,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Role"
-  /api/v1/tenants/{ressourceTenant}/roles/ids:
+  /api/v1/tenants/{resourceTenant}/roles/ids:
     post:
       tags:
       - Roles
       description: List roles by ids
       operationId: ids_5
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11315,7 +11315,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Role"
-  /api/v1/tenants/{ressourceTenant}/roles/search:
+  /api/v1/tenants/{resourceTenant}/roles/search:
     get:
       tags:
       - Roles
@@ -11352,7 +11352,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11364,7 +11364,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Role_"
-  /api/v1/tenants/{ressourceTenant}/roles/{id}:
+  /api/v1/tenants/{resourceTenant}/roles/{id}:
     get:
       tags:
       - Roles
@@ -11377,7 +11377,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11401,7 +11401,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11431,7 +11431,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11439,14 +11439,14 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/tenants/{ressourceTenant}/users:
+  /api/v1/tenants/{resourceTenant}/users:
     post:
       tags:
       - Users
       summary: Create a standard user
       operationId: create_24
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11464,14 +11464,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/users/autocomplete:
+  /api/v1/tenants/{resourceTenant}/users/autocomplete:
     post:
       tags:
       - Users
       summary: List users for autocomplete
       operationId: autocomplete_10
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11491,7 +11491,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/users/instance:
+  /api/v1/tenants/{resourceTenant}/users/instance:
     get:
       tags:
       - Users
@@ -11535,7 +11535,7 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/UserType"
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11547,7 +11547,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/tenants/{ressourceTenant}/users/search:
+  /api/v1/tenants/{resourceTenant}/users/search:
     get:
       tags:
       - Users
@@ -11591,7 +11591,7 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/UserType"
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11603,14 +11603,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/tenants/{ressourceTenant}/users/service-accounts:
+  /api/v1/tenants/{resourceTenant}/users/service-accounts:
     post:
       tags:
       - Users
       summary: Create a user service account
       operationId: createServiceAccount_1
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11628,7 +11628,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiServiceAccount"
-  /api/v1/tenants/{ressourceTenant}/users/service-accounts/{id}:
+  /api/v1/tenants/{resourceTenant}/users/service-accounts/{id}:
     put:
       tags:
       - Users
@@ -11641,7 +11641,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11655,7 +11655,7 @@ paths:
       responses:
         "404":
           description: On user not found
-  /api/v1/tenants/{ressourceTenant}/users/{id}:
+  /api/v1/tenants/{resourceTenant}/users/{id}:
     get:
       tags:
       - Users
@@ -11668,7 +11668,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11688,7 +11688,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11714,7 +11714,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11724,7 +11724,7 @@ paths:
           description: On success
         "404":
           description: On user not found
-  /api/v1/tenants/{ressourceTenant}/users/{id}/api-tokens:
+  /api/v1/tenants/{resourceTenant}/users/{id}/api-tokens:
     get:
       tags:
       - Users
@@ -11737,7 +11737,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11761,7 +11761,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11779,7 +11779,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/tenants/{ressourceTenant}/users/{id}/api-tokens/{tokenId}:
+  /api/v1/tenants/{resourceTenant}/users/{id}/api-tokens/{tokenId}:
     delete:
       tags:
       - Users
@@ -11798,7 +11798,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11810,7 +11810,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/tenants/{ressourceTenant}/users/{id}/auths/{uid}:
+  /api/v1/tenants/{resourceTenant}/users/{id}/auths/{uid}:
     delete:
       tags:
       - Users
@@ -11829,7 +11829,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11837,7 +11837,7 @@ paths:
       responses:
         "404":
           description: On user not found
-  /api/v1/tenants/{ressourceTenant}/users/{id}/impersonate:
+  /api/v1/tenants/{resourceTenant}/users/{id}/impersonate:
     post:
       tags:
       - Users
@@ -11850,7 +11850,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11862,7 +11862,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/tenants/{ressourceTenant}/users/{id}/password:
+  /api/v1/tenants/{resourceTenant}/users/{id}/password:
     put:
       tags:
       - Users
@@ -11875,7 +11875,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11893,7 +11893,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/users/{id}/refresh-token:
+  /api/v1/tenants/{resourceTenant}/users/{id}/refresh-token:
     delete:
       tags:
       - Users
@@ -11906,7 +11906,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -11918,7 +11918,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/users/{id}/set-superadmin:
+  /api/v1/tenants/{resourceTenant}/users/{id}/set-superadmin:
     put:
       tags:
       - Users
@@ -11931,7 +11931,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -24870,14 +24870,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiTenant"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/bindings:
+  /api/v1/{tenant}/tenants/{resourceTenant}/bindings:
     post:
       tags:
       - Bindings
       summary: Create a binding
       operationId: create_45
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -24900,14 +24900,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AbstractBindingController.BindingDetail"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/bindings/bulk:
+  /api/v1/{tenant}/tenants/{resourceTenant}/bindings/bulk:
     post:
       tags:
       - Bindings
       summary: Create multiple bindings
       operationId: bulkCreate_5
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -24934,7 +24934,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AbstractBindingController.BindingDetail"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/bindings/search:
+  /api/v1/{tenant}/tenants/{resourceTenant}/bindings/search:
     get:
       tags:
       - Bindings
@@ -24990,7 +24990,7 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25007,7 +25007,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/bindings/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/bindings/{id}:
     get:
       tags:
       - Bindings
@@ -25020,7 +25020,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25049,7 +25049,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25062,14 +25062,14 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups:
     post:
       tags:
       - Groups
       summary: Create a group
       operationId: create_46
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25092,14 +25092,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Group"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/autocomplete:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/autocomplete:
     post:
       tags:
       - Groups
       summary: List groups for autocomplete
       operationId: autocomplete_19
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25124,14 +25124,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Group"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/ids:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/ids:
     post:
       tags:
       - Groups
       summary: List groups by ids
       operationId: ids_10
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25156,7 +25156,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Group"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/search:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/search:
     get:
       tags:
       - Groups
@@ -25193,7 +25193,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25210,7 +25210,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Group_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/{id}:
     get:
       tags:
       - Groups
@@ -25223,7 +25223,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25252,7 +25252,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25287,7 +25287,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25300,7 +25300,7 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/{id}/members:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/{id}/members:
     get:
       tags:
       - Groups
@@ -25343,7 +25343,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25360,7 +25360,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/groups/{id}/members/{userId}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/groups/{id}/members/{userId}:
     put:
       tags:
       - Groups
@@ -25379,7 +25379,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25414,7 +25414,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25431,14 +25431,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/invitations:
+  /api/v1/{tenant}/tenants/{resourceTenant}/invitations:
     post:
       tags:
       - Invitations
       summary: Create an invitation
       operationId: create_47
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25461,7 +25461,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Invitation"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/invitations/email/{email}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/invitations/email/{email}:
     get:
       tags:
       - Invitations
@@ -25474,7 +25474,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25493,7 +25493,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Invitation"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/invitations/search:
+  /api/v1/{tenant}/tenants/{resourceTenant}/invitations/search:
     get:
       tags:
       - Invitations
@@ -25537,7 +25537,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25554,7 +25554,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Invitation_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/invitations/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/invitations/{id}:
     get:
       tags:
       - Invitations
@@ -25567,7 +25567,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25596,7 +25596,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25609,7 +25609,7 @@ paths:
       responses:
         "200":
           description: delete_53 200 response
-  /api/v1/{tenant}/tenants/{ressourceTenant}/namespaces/autocomplete:
+  /api/v1/{tenant}/tenants/{resourceTenant}/namespaces/autocomplete:
     post:
       tags:
       - Namespaces
@@ -25622,7 +25622,7 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25646,14 +25646,14 @@ paths:
                 type: array
                 items:
                   type: string
-  /api/v1/{tenant}/tenants/{ressourceTenant}/roles:
+  /api/v1/{tenant}/tenants/{resourceTenant}/roles:
     post:
       tags:
       - Roles
       summary: Create a role
       operationId: create_48
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25676,14 +25676,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Role"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/roles/autocomplete:
+  /api/v1/{tenant}/tenants/{resourceTenant}/roles/autocomplete:
     post:
       tags:
       - Roles
       summary: List roles for autocomplete
       operationId: autocomplete_21
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25708,14 +25708,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Role"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/roles/ids:
+  /api/v1/{tenant}/tenants/{resourceTenant}/roles/ids:
     post:
       tags:
       - Roles
       description: List roles by ids
       operationId: ids_11
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25740,7 +25740,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Role"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/roles/search:
+  /api/v1/{tenant}/tenants/{resourceTenant}/roles/search:
     get:
       tags:
       - Roles
@@ -25777,7 +25777,7 @@ paths:
           nullable: true
           items:
             type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25794,7 +25794,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Role_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/roles/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/roles/{id}:
     get:
       tags:
       - Roles
@@ -25807,7 +25807,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25836,7 +25836,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25871,7 +25871,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25884,14 +25884,14 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users:
     post:
       tags:
       - Users
       summary: Create a standard user
       operationId: create_49
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25914,14 +25914,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/autocomplete:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/autocomplete:
     post:
       tags:
       - Users
       summary: List users for autocomplete
       operationId: autocomplete_22
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -25946,7 +25946,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/instance:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/instance:
     get:
       tags:
       - Users
@@ -25990,7 +25990,7 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/UserType"
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26007,7 +26007,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/search:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/search:
     get:
       tags:
       - Users
@@ -26051,7 +26051,7 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/UserType"
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26068,14 +26068,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_ApiUser_"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/service-accounts:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/service-accounts:
     post:
       tags:
       - Users
       summary: Create a user service account
       operationId: createServiceAccount_4
       parameters:
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26098,7 +26098,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiServiceAccount"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/service-accounts/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/service-accounts/{id}:
     put:
       tags:
       - Users
@@ -26111,7 +26111,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26130,7 +26130,7 @@ paths:
       responses:
         "404":
           description: On user not found
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}:
     get:
       tags:
       - Users
@@ -26143,7 +26143,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26168,7 +26168,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26199,7 +26199,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26214,7 +26214,7 @@ paths:
           description: On success
         "404":
           description: On user not found
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/api-tokens:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/api-tokens:
     get:
       tags:
       - Users
@@ -26227,7 +26227,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26256,7 +26256,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26279,7 +26279,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/api-tokens/{tokenId}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/api-tokens/{tokenId}:
     delete:
       tags:
       - Users
@@ -26298,7 +26298,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26315,7 +26315,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/auths/{uid}:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/auths/{uid}:
     delete:
       tags:
       - Users
@@ -26334,7 +26334,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26347,7 +26347,7 @@ paths:
       responses:
         "404":
           description: On user not found
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/impersonate:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/impersonate:
     post:
       tags:
       - Users
@@ -26360,7 +26360,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26377,7 +26377,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/password:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/password:
     put:
       tags:
       - Users
@@ -26390,7 +26390,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26413,7 +26413,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/refresh-token:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/refresh-token:
     delete:
       tags:
       - Users
@@ -26426,7 +26426,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
@@ -26443,7 +26443,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/set-superadmin:
+  /api/v1/{tenant}/tenants/{resourceTenant}/users/{id}/set-superadmin:
     put:
       tags:
       - Users
@@ -26456,7 +26456,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ressourceTenant
+      - name: resourceTenant
         in: path
         required: true
         schema:
