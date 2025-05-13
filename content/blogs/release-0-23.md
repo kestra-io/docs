@@ -125,8 +125,6 @@ https://github.com/kestra-io/plugin-scripts/pull/239
 
 ### Databricks CLI
 
-- Databricks CLI
-> Access Databricks functionality using the Databricks command-line interface (CLI). The CLI wraps the Databricks REST API, so instead of sending REST API calls directly using curl or Postman, you can use the Databricks CLI to interact with Databricks.
 
 - Databricks SQL CLI - https://docs.databricks.com/aws/en/dev-tools/databricks-sql-cli
 
