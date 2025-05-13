@@ -14,13 +14,13 @@ The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-| No Code, Multi Pane Editor       | [DESCRIPTION TBD] | All Edition |
+| Multi Panel Editor       | Enhanced visual editor with split-screen capabilities for simultaneous code and visual editing | All Edition |
 | Unit Test Flows       | Built-in testing framework for validating workflow behavior | [TBD] |
-| Improved Filtering capabilities         | [DESCRIPTION TBD] | All Edition |
+| Improved Filtering capabilities         | Enhanced search experience with fixed and improved filters | All Edition |
 | Outputs in Internal Storage      | Store and manage workflow outputs directly in Kestra's internal storage | Enterprise Edition |
-| Improved dashboard management         | [DESCRIPTION TBD] | [TBD] |
-| Caching dependencies    | [DESCRIPTION TBD] | All Edition |
-| Manage Apps & Dashboard with Git | [DESCRIPTIONO TBD] | All Edition |
+| Improved dashboard management         | Configure your own default dashboard to customize your experience | All Edition |
+| Caching dependencies    | Speed up your workflows by caching script dependencies across executions | All Edition |
+| Manage Apps & Dashboard with Git | Version control your dashboards and applications with Git integration tasks | All Edition |
 
 Check the video below for a quick overview of all enhancements.
 
@@ -34,10 +34,21 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Feature Highlights
 
-### No Code, Multi Pane Editor
+### Multi Panel Editor
 
-[FEATURE 1 DESCRIPTION]
+The Multi Panel Editor transforms how you design and manage workflows by introducing a unified interface with split-screen capabilities. This powerful enhancement allows you to simultaneously view and edit your workflows in multiple formats - YAML code, visual no-code editor, topology view, and documentation - all within a single, integrated workspace.
 
+With this flexible interface, you can:
+- Edit YAML directly while previewing the visual representation in real-time
+- Switch between code and no-code approaches based on your preference or task complexity
+- Visualize task dependencies through the topology view while making edits
+- Reference documentation without leaving your editing environment
+
+You can customize your experience by opening only the panels you need, creating a workspace tailored to your workflow development style. This enhancement significantly improves productivity by reducing context switching and providing multiple perspectives on your workflows simultaneously.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ### Unit Test Flows
 
@@ -46,13 +57,27 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Outputs in Internal Storage
 
-[FEATURE 3 DESCRIPTION]
+Kestra 0.23 introduces a powerful configuration-based capability to move task outputs from in-memory context (by default stored in the database) to Kestra's Internal Storage. This Enterprise Edition feature addresses critical scalability challenges for data-intensive workflows.
 
+
+By offloading task outputs to Internal Storage, Kestra can maintain execution context for complex workflows with large intermediate data while keeping the database footprint minimal. This configuration-based approach gives administrators fine-grained control over resource utilization and performance optimization.
+
+This feature is particularly valuable for data-focused workflows that process large volumes of data between tasks, as it removes previous limitations on output size while preserving Kestra's robust execution semantics.
+
+#TODO: Add example of configuration
 
 ### Improved dashboard management
 
-[FEATURE 4 DESCRIPTION]
+This new release enhances the dashboard experience with the ability to configure your own default dashboard - putting you in control of what you see when you first log in. This feature allows you to personalize your monitoring and operational view to match your specific workflow requirements.
 
+With improved dashboard management, you can:
+- Set any custom-built dashboard as your default view
+- Tailor your monitoring experience to focus on the metrics that matter most to you
+- Access your most important information immediately upon login
+- Switch between different dashboards based on your current needs
+
+
+#TODO: screenshots?
 
 ### Caching dependencies
 
@@ -70,7 +95,9 @@ With the new Git integration for dashboards and apps, you can now:
 - **Collaborate** with team members using familiar Git workflows
 - **Roll back** to previous versions when needed
 
-::collapse{title="Dashboard Git integration example"}
+
+#TODO: add example of GitSyncApps task
+::collapse{title="Dashboard GitSyncApps integration example"}
 
 ::
 
