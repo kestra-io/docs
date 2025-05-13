@@ -1238,7 +1238,7 @@ By default, the `outputs` property of a parent flow's `Subflow` task is deprecat
 
 You can also set default values for a plugin. Unlike the [`defaults` section](./#plugin-defaults), the `configuration` section defines features that are not accessible through the standard plugin properties used in flows.
 
-For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE`,avoiding recovering unnecessary missed scheduled executions after a server restart (e.g., missed runs during a planned [maintenance window](../06.enterprise/05.instance/maintenance-mode.md)):
+For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE`, avoiding recovering unnecessary missed scheduled executions after a server restart (e.g., missed runs during a planned [maintenance window](../06.enterprise/05.instance/maintenance-mode.md)):
 
 ```yaml
 kestra:
