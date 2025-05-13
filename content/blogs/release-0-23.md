@@ -108,8 +108,8 @@ https://github.com/kestra-io/plugin-git/issues/121
 ## Notable Enhancements
 
 - Enhanced Ion data format support with new `IonToParquet` and `IonToAvro` tasks for efficient data conversion, plus `InferAvroSchemaFromIon` task for schema generation, all enabling more flexible data transformations
-- Pause task enhancement - https://github.com/kestra-io/kestra/issues/8242
 
+- Pause task enhancement - https://github.com/kestra-io/kestra/issues/8242
 > add pauseDuration
 > deprecate delay (copy to pauseDuration if set)
 > remove timeout from Pause (if used and pauseDuration is not set, copy it to pauseDuration with behavior = FAIL)
@@ -118,6 +118,7 @@ https://github.com/kestra-io/plugin-git/issues/121
 
 
 - **Enhanced Plugin Usage Metrics**: Kestra now provides detailed plugin usage metrics based on the number of executions. These metrics are fully compatible with Kestra [internal metrics](..docs/09.administrator-guide/03.monitoring) (exposable through Prometheus), enabling comprehensive monitoring and analytics of your workflow patterns. This enhancement allows you to track which plugins are most frequently used, identify performance bottlenecks, and make data-driven decisions about resource allocation and optimization. 
+
 - **Enhanced Data Backup**: Building on our previous metadata backup functionality, Kestra now supports comprehensive execution data backup and restoration. This complete backup solution ensures you can recover not just metadata but all execution-related information, providing robust disaster recovery capabilities for your mission-critical workflows.
 
 ## UI Improvements
@@ -136,10 +137,12 @@ Here are UI enhancements worth noting:
 
 - https://github.com/kestra-io/plugin-ee-salesforce/pull/7
 
+### HubSpot
 
-### Hubspot
+We've introduced a comprehensive HubSpot plugin with tasks for managing companies, contacts, and deals. The plugin provides a complete set of operations (Create, Get, Update, Delete, Search) for each entity type, allowing you to seamlessly integrate HubSpot CRM operations into your Kestra workflows with proper authentication and consistent property handling.
 
-- https://github.com/kestra-io/plugin-hubspot/issues/21
+::collapse{title="Example of HubSpot integration"}
+::
 
 
 ### OpenAI Response
