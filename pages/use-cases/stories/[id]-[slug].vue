@@ -155,7 +155,7 @@
       }
     });
 
-    const {data} = await useAsyncData('stories', () => {
+    const {data} = await useAsyncData(`useCases/stories/${route.params.id}`, () => {
         return $fetch(`${config.public.apiUrl}/customer-stories-v2/${route.params.id}`)
     })
 
