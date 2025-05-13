@@ -116,7 +116,8 @@ https://github.com/kestra-io/plugin-git/issues/121
 > we can't fully remove timeout as it's used by the abstract class, but it will not be exposed to the user
 > add behavior Enum field: RESUME, WARN, FAIL, CANCEL → default RESUME
 
-- [ENHANCEMENT 4]
+
+- **Enhanced Plugin Usage Metrics**: Kestra now provides detailed plugin usage metrics based on the number of executions. These metrics are fully compatible with Kestra [internal metrics](..docs/09.administrator-guide/03.monitoring) (exposable through Prometheus), enabling comprehensive monitoring and analytics of your workflow patterns. This enhancement allows you to track which plugins are most frequently used, identify performance bottlenecks, and make data-driven decisions about resource allocation and optimization. 
 - [ENHANCEMENT 5]
 
 ## UI Improvements
@@ -129,6 +130,22 @@ Here are UI enhancements worth noting:
 - [UI IMPROVEMENT 5]
 
 ## Plugin development
+
+
+### Salesforce
+
+- https://github.com/kestra-io/plugin-ee-salesforce/pull/7
+
+
+### Hubspot
+
+- https://github.com/kestra-io/plugin-hubspot/issues/21
+
+
+### OpenAI Response
+
+- https://github.com/kestra-io/plugin-openai/issues/45
+
 
 ### Langchain (beta)
 
@@ -180,6 +197,12 @@ https://github.com/kestra-io/plugin-redis/issues/98
 [EXAMPLE_YAML]
 ```
 ::
+
+### GraphQL
+
+- https://github.com/kestra-io/kestra/issues/2478
+
+
 
 ## Thanks to Our Contributors
 
