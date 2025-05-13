@@ -1105,7 +1105,7 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
-### Configure Local Flow Syncronization
+### Configure Local Flow Synchronization
 
 Below is the minimal configuration to enable local flow synchronization:
 
