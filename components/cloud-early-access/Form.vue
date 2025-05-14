@@ -34,24 +34,24 @@
             <label for="company"><span class="required-field">*</span> Company Name</label>
             <input type="text" class="form-control" name="company" id="company" required>
           </div>
-          
+
           <div class="form-group">
             <label><span class="required-field">*</span> When would you like to start your free trial?</label>
             <div class="radio-options">
               <div class="radio-option">
-                <input type="radio" id="immediately" value="Immediately" name="start_trial" checked required>
+                <input type="radio" id="immediately" value="immediately" name="start_date_select" checked required>
                 <label for="immediately">Immediately</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="in1-2weeks" value="In 1-2 weeks" name="start_trial" required>
+                <input type="radio" id="in1-2weeks" value="1-2weeks" name="start_date_select" required>
                 <label for="in1-2weeks">In 1-2 weeks</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within1month" value="Within 1 month" name="start_trial" required>
+                <input type="radio" id="within1month" value="1month" name="start_date_select" required>
                 <label for="within1month">Within 1 month</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="later" value="Later (3 months+)" name="start_trial" required>
+                <input type="radio" id="later" value="later" name="start_date_select" required>
                 <label for="later">Later (3 months+)</label>
               </div>
             </div>
@@ -61,41 +61,41 @@
             <label><span class="required-field">*</span> Expected Production Timeline</label>
             <div class="radio-options">
               <div class="radio-option">
-                <input type="radio" id="asap" value="As soon as possible" name="production_timeline" checked required>
+                <input type="radio" id="asap" value="assoonaspossible" name="production" checked required>
                 <label for="asap">As soon as possible</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within1month-timeline" value="Within 1 month" name="production_timeline" required>
+                <input type="radio" id="within1month-timeline" value="1month" name="production" required>
                 <label for="within1month-timeline">Within 1 month</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within3months" value="Within 3 months" name="production_timeline" required>
+                <input type="radio" id="within3months" value="within3months" name="production" required>
                 <label for="within3months">Within 3 months</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within6months" value="Within 6 months" name="production_timeline" required>
+                <input type="radio" id="within6months" value="within6months" name="production" required>
                 <label for="within6months">Within 6 months</label>
               </div>
             </div>
           </div>
-          
+
           <div class="form-group">
             <label><span class="required-field">*</span> How many users will need access?</label>
             <div class="radio-options">
               <div class="radio-option">
-                <input type="radio" id="1user" value="1" name="user_count" checked required>
+                <input type="radio" id="1user" value="1" name="number_of_users" checked required>
                 <label for="1user">1</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="2-5users" value="2-5" name="user_count" required>
+                <input type="radio" id="2-5users" value="2-5" name="number_of_users" required>
                 <label for="2-5users">2-5</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="5-15users" value="5-15" name="user_count" required>
+                <input type="radio" id="5-15users" value="5-15" name="number_of_users" required>
                 <label for="5-15users">5-15</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="15plus" value="15+" name="user_count" required>
+                <input type="radio" id="15plus" value="15+" name="number_of_users" required>
                 <label for="15plus">15+</label>
               </div>
             </div>
@@ -198,18 +198,18 @@ const onSubmit = async (e: Event) => {
         },
         {
           objectTypeId: "0-1",
-          name: "start_trial",
-          value: getRadioValue(form, "start_trial"),
+          name: "start_date_select",
+          value: getRadioValue(form, "start_date_select"),
         },
         {
           objectTypeId: "0-1",
-          name: "production_timeline",
-          value: getRadioValue(form, "production_timeline"),
+          name: "production",
+          value: getRadioValue(form, "production"),
         },
         {
           objectTypeId: "0-1",
-          name: "user_count",
-          value: getRadioValue(form, "user_count"),
+          name: "number_of_users",
+          value: getRadioValue(form, "number_of_users"),
         },
         {
           objectTypeId: "0-1",
