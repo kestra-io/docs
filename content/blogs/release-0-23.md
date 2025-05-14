@@ -181,11 +181,22 @@ We've added a new Databricks SQL CLI task that allows you to execute SQL command
 
 ### Redis improvement
 
-https://github.com/kestra-io/plugin-redis/issues/98
+We've enhanced our Redis plugin with a new `Increment` task that allows you to atomically increment the value of a key in a Redis database and return the new value. This is particularly useful for implementing counters, rate limiters, or any scenario where you need atomic incrementation of numeric values stored in Redis.
+
 
 ::collapse{title="Example with [PLUGIN 2]"}
 ```yaml
-[EXAMPLE_YAML]
+id: redis_increment
+namespace: company.team
+inputs:
+    - id: key_name
+      type: STRING
+      displayName: Key name to increment
+tasks:
+  - id: increment
+    type: io.kestra.plugin.redis.string.Increment
+    url: redis://:redis@localhost:6379/0
+    key: "{{ inputs.key_name }}"
 ```
 ::
 
