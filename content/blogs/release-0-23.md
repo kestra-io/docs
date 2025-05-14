@@ -222,8 +222,29 @@ This integration is particularly useful for IoT data processing, monitoring metr
 
 ### GraphQL
 
-- https://github.com/kestra-io/kestra/issues/2478
+We've introduced a new GraphQL plugin that enables integration with GraphQL APIs in your data workflows. The plugin features a `Request` task that allows you to execute GraphQL queries and mutations against any GraphQL endpoint, with full support for authentication headers, variables, and complex queries.
 
+This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
+
+::collapse{title="Example of GraphQL integration"}
+```yaml
+id: graphql_with_auth
+namespace: company.team
+tasks:
+  - id: get_data
+    type: io.kestra.plugin.graphql.Request
+    uri: https://example.com/graphql
+    headers:
+      Authorization: "Bearer {{ secret('API_TOKEN') }}"
+    query: |
+      query {
+        viewer {
+          name
+          email
+        }
+      }
+```
+::
 
 
 ## Thanks to Our Contributors
