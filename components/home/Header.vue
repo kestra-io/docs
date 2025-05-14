@@ -25,7 +25,7 @@
 
                 </div>
             </div>
-            <div class="img-block">
+            <div class="img-block" ref="imgBlock">
                 <a
                     href="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
                     class="homepage-video"
@@ -51,7 +51,7 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else ref="canvas" height="1520" width="2000" :class="{
+                <canvas v-else ref="riveCanvas" height="1520" width="2000" :class="{
                     loading: !riveLoaded,
                 }"/>
             </div>
@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted } from "vue";
+    import { ref } from "vue";
     import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
@@ -99,13 +99,17 @@
     import { Rive } from "@rive-app/canvas";
 
     const videoVisible = ref(false)
-    const canvas = ref<HTMLCanvasElement>()
+    const canvas = useTemplateRef<HTMLCanvasElement>('riveCanvas')
+    const imgBlock = useTemplateRef<HTMLDivElement>('imgBlock')
 
     const riveAnimation = ref()
     const riveLoaded = ref(false)
+    const riveDisabled = ref(false)
 
     function setupRiveAnimation(){
-        if(!canvas.value) return
+        if(!canvas.value) {
+            return
+        }
         const anim = new Rive({
             src: "/landing/home/homepage.riv",
             canvas: canvas.value,
@@ -115,25 +119,29 @@
             onLoad: () => {
                 riveLoaded.value = true
                 anim.resizeDrawingSurfaceToCanvas();
-                anim.stop();
             },
         });
         riveAnimation.value = anim
     }
 
     const showImage = computed(() => {
-        return isMobile.value || riveLoaded.value
+        return isMobile.value || riveDisabled.value
     })
 
-    useIntersectionObserver(canvas, ([{ isIntersecting }]) => {
-        if (isIntersecting && riveAnimation.value) {
-            riveLoaded.value = true
-            riveAnimation.value.play();
-        } else if (riveAnimation.value) {
-            riveLoaded.value = false
-            riveAnimation.value.pause();
+    useIntersectionObserver(imgBlock, ([{ isIntersecting }]) => {
+        if (!riveAnimation.value) {
+            return;
         }
-    }, { threshold: 0.5 });
+        if (isIntersecting) {
+            riveDisabled.value = false
+            nextTick(() => {
+                setupRiveAnimation();
+            })
+        } else {
+            riveDisabled.value = true
+            cleanupRiveAnimation()
+        }
+    });
 
     function cleanupRiveAnimation(){
         try{
@@ -152,7 +160,13 @@
                 setupRiveAnimation();
             })
         }
-    }, { immediate: true })
+    })
+
+    onMounted(() => {
+        if(!isMobile.value){
+            setupRiveAnimation();
+        }
+    })
 
     onUnmounted(() => {
         cleanupRiveAnimation();
