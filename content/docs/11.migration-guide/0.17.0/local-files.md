@@ -25,7 +25,6 @@ tasks:
     containerImage: python:3.11-slim
     beforeCommands:
       - pip install requests kestra > /dev/null
-    warningOnStdErr: false
     outputFiles:
       - output.json
     inputFiles:
@@ -82,7 +81,6 @@ tasks:
       image: python:slim
     beforeCommands:
       - pip install polars
-    warningOnStdErr: false
     script: |
       import polars as pl
       data = {{outputs.api.body | jq('.products') | first}}
@@ -113,7 +111,6 @@ tasks:
     containerImage: python:slim
     beforeCommands:
       - pip install polars
-    warningOnStdErr: false
     outputFiles:
       - "products.csv"
     script: |
@@ -150,7 +147,6 @@ tasks:
         image: python:3.11-slim
       beforeCommands:
         - pip install -r requirements.txt > /dev/null
-      warningOnStdErr: false
       script: |
         import requests
         import kestra
@@ -183,7 +179,6 @@ tasks:
       containerImage: python:3.11-slim
       beforeCommands:
         - pip install -r requirements.txt > /dev/null
-      warningOnStdErr: false
       script: |
         import requests
         import kestra
