@@ -44,7 +44,7 @@
                     />
                 </a>
                 <NuxtImg
-                    v-if="isMobile"
+                    v-if="showImage"
                     height="720"
                     loading="lazy"
                     src="/landing/home/homepage.png"
@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted } from "vue";
-    import { useMediaQuery } from "@vueuse/core";
+    import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
@@ -115,17 +115,26 @@
             onLoad: () => {
                 riveLoaded.value = true
                 anim.resizeDrawingSurfaceToCanvas();
-                anim.delete();
+                anim.stop();
             },
         });
         riveAnimation.value = anim
     }
 
-    onMounted(() => {
-        if(!isMobile.value){
-            setupRiveAnimation()
-        }
+    const showImage = computed(() => {
+        return isMobile.value || riveLoaded.value
     })
+
+    useIntersectionObserver(canvas, ([{ isIntersecting }]) => {
+        if (isIntersecting && riveAnimation.value) {
+            riveLoaded.value = true
+            riveAnimation.value.play();
+        } else if (riveAnimation.value) {
+            riveLoaded.value = false
+            riveAnimation.value.pause();
+        }
+    }, { threshold: 0.5 });
+
     function cleanupRiveAnimation(){
         try{
             riveAnimation.value?.cleanup();
@@ -143,7 +152,7 @@
                 setupRiveAnimation();
             })
         }
-    })
+    }, { immediate: true })
 
     onUnmounted(() => {
         cleanupRiveAnimation();
