@@ -44,16 +44,19 @@
                     />
                 </a>
                 <NuxtImg
-                    v-if="showImage"
+                    v-if="isMobile"
                     height="720"
                     loading="lazy"
                     src="/landing/home/homepage.png"
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else ref="riveCanvas" height="1520" width="2000" :class="{
+                <canvas v-else-if="!riveDisabled" ref="riveCanvas" height="1520" width="2000" :class="{
                     loading: !riveLoaded,
                 }"/>
+                <div class="canvas-placeholder" v-else>
+                    Loading...
+                </div>
             </div>
         </div>
     </section>
@@ -108,6 +111,7 @@
 
     function setupRiveAnimation(){
         if(!canvas.value) {
+            console.error("canvas not found")
             return
         }
         const anim = new Rive({
@@ -124,14 +128,7 @@
         riveAnimation.value = anim
     }
 
-    const showImage = computed(() => {
-        return isMobile.value || riveDisabled.value
-    })
-
     useIntersectionObserver(imgBlock, ([{ isIntersecting }]) => {
-        if (!riveAnimation.value) {
-            return;
-        }
         if (isIntersecting) {
             riveDisabled.value = false
             nextTick(() => {
@@ -315,6 +312,9 @@
             position: relative;
             display: flex;
             justify-content: center;
+            .homepage-image {
+                display: none;
+            }
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
@@ -335,7 +335,7 @@
                 }
             }
 
-            canvas {
+            canvas, .canvas-placeholder {
                 width: 2000px;
                 margin-top: -700px;
                 margin-bottom: -200px;
@@ -343,6 +343,10 @@
                 background-position: 237px 596px;
                 background-size: 1600px;
                 background-repeat: no-repeat;
+            }
+
+            .canvas-placeholder{
+                height: 1520px;
             }
 
             canvas.loading{
