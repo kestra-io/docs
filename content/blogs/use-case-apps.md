@@ -153,7 +153,6 @@ tasks:
 
   - id: chart
     type: io.kestra.plugin.scripts.python.Script
-    warningOnStdErr: false
     inputFiles:
       data.csv: "{{ outputs.ion_to_csv.uri }}"
     outputFiles:
