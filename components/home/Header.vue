@@ -315,9 +315,6 @@
             position: relative;
             display: flex;
             justify-content: center;
-            .homepage-image{
-                display: none;
-            }
             @include media-breakpoint-down(md) {
                 position: relative;
                 justify-content: flex-start;
