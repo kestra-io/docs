@@ -202,9 +202,19 @@ tasks:
 
 ### InfluxDB
 
-- https://github.com/kestra-io/plugin-influxdb/issues/2
+We're excited to introduce our new InfluxDB plugin, which provides comprehensive integration with InfluxDB time series database. This plugin enables you to write data to InfluxDB and query it using both Flux and InfluxQL languages, making it perfect for time series data processing and monitoring workflows.
 
-::collapse{title="Example with [PLUGIN 2]"}
+The plugin includes several powerful tasks:
+
+- **Write** task (`io.kestra.plugin.influxdb.Write`) - Write data to InfluxDB using InfluxDB line protocol format.
+- **Load** task (`io.kestra.plugin.influxdb.Load`) - Load data points to InfluxDB from an ION file where each record becomes a data point.
+- **FluxQuery** task (`io.kestra.plugin.influxdb.FluxQuery`) - Queries InfluxDB using the Flux language, with options to output results as ION internal storage or directly in the execution.
+- **InfluxQLQuery** task (`io.kestra.plugin.influxdb.InfluxQLQuery`) - Queries InfluxDB using the InfluxQL language, with the same output options as FluxQuery
+- **FluxTrigger** (`io.kestra.plugin.influxdb.FluxTrigger`) - Automatically triggers workflow executions when a Flux query returns results
+
+This integration is particularly useful for IoT data processing, monitoring metrics, and any workflow that involves time series data analysis.
+
+::collapse{title="InfluxDB example"}
 ```yaml
 [EXAMPLE_YAML]
 ```
