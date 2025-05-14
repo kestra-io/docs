@@ -16,15 +16,23 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
     ],
-    target: 'static',
     image: {
-        formats: {
-            webp: {
-                quality: 80
-            }
+        dir: 'public',
+        provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
+        format: ['webp', 'avif', 'png'],
+        cloudflare: {
+            modifiers: {
+                format: 'webp'
+            },
         },
+        ipx: {
+            modifiers: {
+                format: 'webp'
+            },
+        },
+        quality: 80,
         densities: [1, 2],
-        domains: ['kestra.io']
+        domains: ['kestra.io', '*.kestra-io.pages.dev'],
     },
     sitemap: {
         sitemaps: {
@@ -161,6 +169,7 @@ export default defineNuxtConfig({
                     "Build with Kestra": [
                         "Concepts",
                         "Workflow Components",
+                        "Multi-Language Script Tasks",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -308,6 +317,7 @@ export default defineNuxtConfig({
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
         '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
         '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
+        '/docs/workflow-components/tasks/scripts': {redirect: '/docs/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
     },
 

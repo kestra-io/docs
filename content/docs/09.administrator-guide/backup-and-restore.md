@@ -5,8 +5,7 @@ icon: /docs/icons/admin.svg
 
 Backup Kestra.
 
-Kestra offers a backup functionality for Kestra __metadata__ i.e. all data not related to workflow executions. Executions are not included in the backup as capturing them can be costly and the resulting backup file could be excessively large.
-However, Kestra uses a database and internal storage that can be backed up and restored if a metadata backup is not sufficient.
+Kestra offers a backup functionality for Kestra __metadata__. Additionally, Kestra uses a database and internal storage that can be backed up and restored if a metadata backup is not sufficient.
 
 ## Metadata only Backup & Restore in the Enterprise Edition
 
@@ -15,7 +14,7 @@ This backup feature can be used to back up metadata in a Kestra instance, and re
 
 We recommend to backup and restore metadata when Kestra is stopped, otherwise the backup may not be in a consistent state. Best practice is to leverage [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md), released in version 0.21, to pause the instance.
 
-Currently, the metadata backup will back up all data not related to Executions, including custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets manager backend), security integrations, settings, templates, tenants, triggers, users and access bindings.
+Currently, the metadata backup will back up all data not related to Executions, including custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets manager backend), security integrations, settings, templates, tenants, triggers, users and access bindings. Refer to the `--include-data` flag for including execution-related data and more.
 
 ### Metadata backup
 
@@ -33,6 +32,13 @@ You can use the following command line parameters:
 - `--tenant`: only when backup type is `TENANT`, use it to specify the name of the tenant to backup. If not set, the default tenant will be used.
 - `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
 - `--no-encryption`: use it to bypass backup encryption. Metadata backup may contain sensitive information so make sure you are aware of the risk when bypassing the encryption.
+
+::badge{version=">=0.22" editions="OSS,EE"}
+::
+
+- `--include-data`: includes execution data in the backup (executions, logs, metrics, auditlogs). By default execution data is not included due to the potential size of the file.
+- `--internal-log`: change the log level for internal logs to be backed up.
+- `-l , --log-level`: change the log level to back up (values: TRACE, DEBUG, INFO, WARN, ERROR) The default is set to INFO.
 
 When you start the backup process from the command line, you will see the following logs which include a backup summary and the URI to the Kestra internal storage file where the backup will be stored.
 
@@ -52,6 +58,7 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 
 You can use the following command line parameters:
 - `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
+- `--to-tenant`: specify the Tenant to restore the backup to when you want to restore to another Tenant.
 
 Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
 
@@ -63,7 +70,7 @@ Starting the restore process from the command line will display the following lo
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 ```
 
-## Full Backup & Restore
+## Full Backup & Restore with Backend Tools
 
 ### Backup & Restore with the JDBC Backend
 

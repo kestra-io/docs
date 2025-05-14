@@ -21,14 +21,14 @@ id: beverage_order
 namespace: company.team
 
 inputs:
-  - name: beverage
+  - id: beverage
     type: STRING
     defaults: coffee
 
 tasks:
   - id: order_beverage
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/products
+    uri: https://kestra.io/api/mock
     method: POST
     contentType: application/json
     formData:
@@ -44,15 +44,15 @@ triggers:
   - id: workday
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
-    scheduleConditions:
-      - type: io.kestra.plugin.core.condition.NotCondition
+    conditions:
+      - type: io.kestra.plugin.core.condition.Not
         conditions:
-          - type: io.kestra.plugin.core.condition.WeekendCondition
+          - type: io.kestra.plugin.core.condition.Weekend
   - id: weekend
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 20 * * *"
-    scheduleConditions:
-      - type: io.kestra.plugin.core.condition.WeekendCondition
+    conditions:
+      - type: io.kestra.plugin.core.condition.Weekend
     inputs:
       beverage: beer
 ```
@@ -78,7 +78,7 @@ inputs:
 tasks:
   - id: order_beverage
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/products
+    uri: https://kestra.io/api/mock
     method: POST
     contentType: application/json
     formData:
@@ -95,15 +95,15 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
     conditions:
-      - type: io.kestra.plugin.core.condition.NotCondition
+      - type: io.kestra.plugin.core.condition.Not
         conditions:
-          - type: io.kestra.plugin.core.condition.WeekendCondition
+          - type: io.kestra.plugin.core.condition.Weekend
 
   - id: weekend
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 20 * * *"
     conditions:
-      - type: io.kestra.plugin.core.condition.WeekendCondition
+      - type: io.kestra.plugin.core.condition.Weekend
     inputs:
       beverage: beer
 ```

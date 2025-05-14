@@ -8,6 +8,9 @@ docId: tenants
 
 How to enable multi-tenancy in your Kestra instance.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/z4uzAyjKeoc?si=vy-CPQKNYXYZMwoo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## What is Multi-Tenancy
 A tenant represents an **isolated environment within a single Kestra instance**.

@@ -58,6 +58,17 @@
             &::placeholder {
                 color: $white-1;
             }
+
+            &:focus {
+                background: $black-4;
+                color: $white-1;
+            }
+
+            &:-webkit-autofill{
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: $white-1;
+                transition: background-color 5000s ease-in-out 0s;
+            }
         }
 
         h3 {
