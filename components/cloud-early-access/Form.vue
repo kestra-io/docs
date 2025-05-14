@@ -61,19 +61,19 @@
             <label><span class="required-field">*</span> Expected Production Timeline</label>
             <div class="radio-options">
               <div class="radio-option">
-                <input type="radio" id="asap" value="assoonaspossible" name="production" checked required>
+                <input type="radio" id="asap" value="As soon as possible" name="production" checked required>
                 <label for="asap">As soon as possible</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within1month-timeline" value="1month" name="production" required>
+                <input type="radio" id="within1month-timeline" value="1 month" name="production" required>
                 <label for="within1month-timeline">Within 1 month</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within3months" value="within3months" name="production" required>
+                <input type="radio" id="within3months" value="Within 3 months" name="production" required>
                 <label for="within3months">Within 3 months</label>
               </div>
               <div class="radio-option">
-                <input type="radio" id="within6months" value="within6months" name="production" required>
+                <input type="radio" id="within6months" value="Within 6 months" name="production" required>
                 <label for="within6months">Within 6 months</label>
               </div>
             </div>
