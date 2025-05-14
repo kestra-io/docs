@@ -28,6 +28,7 @@ onMounted(() => {
         onLoad: () => {
             riveLoaded.value = true
             anim.resizeDrawingSurfaceToCanvas();
+            anim.delete();
         },
     });
 })
