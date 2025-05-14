@@ -135,7 +135,11 @@ Here are UI enhancements worth noting:
 
 ### Salesforce
 
-- https://github.com/kestra-io/plugin-ee-salesforce/pull/7
+We've introduced a new enterprise Salesforce plugin: the plugin includes tasks for creating, updating, deleting, and querying Salesforce objects, allowing you to seamlessly integrate Salesforce operations into your Kestra workflows.
+
+::collapse{title="Example of Salesforce integration"}
+EXAMPLE
+::
 
 ### HubSpot
 
