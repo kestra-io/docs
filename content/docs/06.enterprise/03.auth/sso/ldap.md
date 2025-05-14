@@ -22,30 +22,31 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 LDAP is configured in the security context of your Kestra configuration file. Below is an example configuration with Kestra-specific properties on top of the Micronaut configuration.
 
 ```yaml
-security:
-  ldap:
-    default:
-      user-attributes:
-        firstName: givenName
-        lastName: sn
-        email: mail
-      context:
-        server: "ldap://localhost:389"
-        manager-dn: "cn=admin,dc=example,dc=org"
-        manager-password: "LDAP_ADMIN_PASSWORD"
-      search:
-        base: "ou=users,dc=example,dc=org"
-        filter: "(mail={0})"
-        attributes:
-          - "uid"
-          - "givenName"
-          - "sn"
-          - "mail"
-      groups:
-        enabled: true
-        base: "ou=groups,dc=example,dc=org"
-        filter: "{&(objectClass=posixGroup)(memberUid={0})}"
-        filter-attribute: uid
+micronaut:
+  security:
+    ldap:
+      default:
+        user-attributes:
+          firstName: givenName
+          lastName: sn
+          email: mail
+        context:
+          server: "ldap://localhost:389"
+          manager-dn: "cn=admin,dc=example,dc=org"
+          manager-password: "LDAP_ADMIN_PASSWORD"
+        search:
+          base: "ou=users,dc=example,dc=org"
+          filter: "(mail={0})"
+          attributes:
+            - "uid"
+            - "givenName"
+            - "sn"
+            - "mail"
+        groups:
+          enabled: true
+          base: "ou=groups,dc=example,dc=org"
+          filter: "{&(objectClass=posixGroup)(memberUid={0})}"
+          filter-attribute: uid
 ```
 
 [LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) has `context`, `search`, and `groups` as basic configuration properties supported out of the box. They provide the connection context to the directory of users, user attributes to be linked to the Kestra instance, and filter information to sync the users' groups to Kestra based on your LDAP directory. 

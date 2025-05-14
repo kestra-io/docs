@@ -12,6 +12,8 @@ jobs:
   index-doc:
     name: Build and publish production
     runs-on: ubuntu-latest
+    env:
+      CF_PAGES_BRANCH: ${{ github.ref_name }}
     steps:
       - name: Checkouts
         uses: actions/checkout@v4

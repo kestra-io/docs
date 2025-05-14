@@ -1109,7 +1109,7 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
-### Configure Local Flow Syncronization
+### Configure Local Flow Synchronization
 
 Below is the minimal configuration to enable local flow synchronization:
 
@@ -1242,7 +1242,7 @@ By default, the `outputs` property of a parent flow's `Subflow` task is deprecat
 
 You can also set default values for a plugin. Unlike the [`defaults` section](./#plugin-defaults), the `configuration` section defines features that are not accessible through the standard plugin properties used in flows.
 
-For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
+For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE`, avoiding recovering unnecessary missed scheduled executions after a server restart (e.g., missed runs during a planned [maintenance window](../06.enterprise/05.instance/maintenance-mode.md)):
 
 ```yaml
 kestra:
@@ -1254,13 +1254,11 @@ kestra:
           recoverMissedSchedules: NONE
 ```
 
-Before 0.15, Kestra was always recovering missed schedules. This means that if your server was down for a few hours, Kestra would recover all missed schedules when it was back up. This behavior was not always desirable, as often the recovery of missed schedules is not necessary e.g. during a planned maintenance window. This is why, starting from Kestra 0.15 release, you can customize the `recoverMissedSchedules` property and choose whether you want to recover missed schedules or not.
-
-The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
+The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE`, or `LAST`:
 
 - `ALL`: Kestra will recover all missed schedules. This is the default value.
 - `NONE`: Kestra will not recover any missed schedules.
-- `LAST`: Kestra will recover only the last missed schedule for each flow.
+- `LAST`: Kestra will recover only the **last** missed schedule for each flow.
 
 Note that this is a global configuration that will apply to all flows, unless explicitly overwritten within the flow definition:
 
@@ -1269,10 +1267,10 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
-    recoverMissedSchedules: NONE
+    recoverMissedSchedules: LAST
 ```
 
-In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
+In this example, the `recoverMissedSchedules` is set to `LAST`, which means that Kestra will recover only the **last** missed schedules for this specific flow regardless of the global configuration being set to `NONE`.
 
 ### Volume Enabled for Docker Task Runner
 
