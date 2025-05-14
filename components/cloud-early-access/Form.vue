@@ -16,23 +16,23 @@
           </div>
 
           <div class="form-group">
-            <label><span class="required-field">*</span> First Name</label>
-            <input type="text" class="form-control" name="firstName" required>
+            <label for="firstname"><span class="required-field">*</span> First Name</label>
+            <input type="text" class="form-control" name="firstname" id="firstname" required>
           </div>
           
           <div class="form-group">
-            <label><span class="required-field">*</span> Last Name</label>
-            <input type="text" class="form-control" name="lastName" required>
+            <label for="lastname"><span class="required-field">*</span> Last Name</label>
+            <input type="text" class="form-control" name="lastname" id="lastname" required>
           </div>
           
           <div class="form-group">
-            <label><span class="required-field">*</span> Company Mail</label>
-            <input type="email" class="form-control" name="companyMail" required>
+            <label for="email"><span class="required-field">*</span> Company Mail</label>
+            <input type="email" class="form-control" name="email" id="email" required>
           </div>
           
           <div class="form-group">
-            <label><span class="required-field">*</span> Company Name</label>
-            <input type="text" class="form-control" name="companyName" required>
+            <label for="company"><span class="required-field">*</span> Company Name</label>
+            <input type="text" class="form-control" name="company" id="company" required>
           </div>
           
           <div class="form-group">
@@ -144,7 +144,7 @@ const valid = ref(false);
 const validMessage = ref("");
 const message = ref("");
 
-const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/{formId}";
+const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/7d9519e3-4b96-42c8-9e54-251be6668cca";
 
 function getRadioValue(formEl: HTMLFormElement, name: string) {
   const radio = formEl.querySelector(`input[name="${name}"]:checked`) as HTMLInputElement | null;
@@ -165,10 +165,10 @@ const onSubmit = async (e: Event) => {
     hsq.push([
       "identify",
       {
-        email: form["companyMail"].value,
-        firstname: form["firstName"].value,
-        lastname: form["lastName"].value,
-        company: form["companyName"].value,
+        email: form["email"].value,
+        firstname: form["firstname"].value,
+        lastname: form["lastname"].value,
+        company: form["company"].value,
         kuid: localStorage.getItem("KUID"),
       },
     ]);
@@ -179,22 +179,22 @@ const onSubmit = async (e: Event) => {
         {
           objectTypeId: "0-1",
           name: "firstname",
-          value: form["firstName"].value,
+          value: form["firstname"].value,
         },
         {
           objectTypeId: "0-1",
           name: "lastname",
-          value: form["lastName"].value,
+          value: form["lastname"].value,
         },
         {
           objectTypeId: "0-1",
           name: "email",
-          value: form["companyMail"].value,
+          value: form["email"].value,
         },
         {
           objectTypeId: "0-1",
           name: "company",
-          value: form["companyName"].value,
+          value: form["company"].value,
         },
         {
           objectTypeId: "0-1",
@@ -213,8 +213,8 @@ const onSubmit = async (e: Event) => {
         },
         {
           objectTypeId: "0-1",
-          name: "kuid",
-          value: localStorage.getItem("KUID"),
+          name: "form_submission_identifier",
+          value: "Cloud Early Access Form",
         },
       ],
       context: {
@@ -233,7 +233,7 @@ const onSubmit = async (e: Event) => {
       noninteraction: false,
     });
 
-    identify(form["companyMail"].value);
+    identify(form["email"].value);
 
     axios
       .post(hubSpotUrl, formData, {})
