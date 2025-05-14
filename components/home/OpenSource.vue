@@ -8,7 +8,7 @@
 
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">
-                    <component :is="feature.icon" class="icon"/>
+                    <img :src="feature.image" :alt="feature.title" class="feature-image"/>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
                 </div>
@@ -26,26 +26,23 @@
 </template>
 
 <script lang="ts" setup>
-    import {markRaw, computed} from "vue";
-    import XmlIcon from "vue-material-design-icons/Xml.vue";
-    import WebhookIcon from "vue-material-design-icons/Webhook.vue";
-    import LockOpenAlertOutlineIcon from "vue-material-design-icons/LockOpenAlertOutline.vue";
+    import {computed} from "vue";
 
     const features = [
         {
             title: "Declarative Orchestration",
-            description: "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra’s declarative syntax.",
-            icon: markRaw(XmlIcon),
+            description: "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra's declarative syntax.",
+            image: "/landing/home/declarative-orchestration.png",
         },
         {
             title: "Event Based Triggers",
             description: "Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.",
-            icon: markRaw(WebhookIcon),
+            image: "/landing/home/event-triggers.png",
         },
         {
             title: "No vendor Lock-in",
             description: "Define your flow in YAML from the embedded Code Editor, run them directly from the UI, scale to any infrastructure.",
-            icon: markRaw(LockOpenAlertOutlineIcon),
+            image: "/landing/home/lock-in.png",
         }
     ]
 
@@ -53,9 +50,6 @@
     const {data, error} = await useFetch<{contributors: number, stargazers: number}>("/api/github", {
         pick:["stargazers", "contributors"],
     })
-
-
-
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
         notation: 'compact',
@@ -123,10 +117,11 @@
         flex-direction: column;
         align-items: center;
         gap: .5rem;
-        .icon{
+        .feature-image {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
             margin-bottom: 1.2rem;
-            font-size: 32px;
-            color: #8250DF;
         }
         h3{
             white-space: nowrap;
