@@ -21,13 +21,13 @@ Running workflows in isolated environments reduces the blast radius of a malicio
 - **Ephemeral compute** - use Kestra's native [Task Runners](../06.enterprise/04.scalability/task-runners.md) to auto-scale ephemeral compute nodes that are destroyed after each run, ensuring no residual state.
 - **Minimum host permissions** - grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
-### Pre-execution script guards
+### Plugin and code validation
 
-For teams that need an extra check before running untrusted code:
+To prevent the execution of malicious code, you can implement several strategies:
 
-- **Plugin configuration** - use Kestra’s flexible plugin architecture incl. [Plugin Versioning](../06.enterprise/05.instance/versioned-plugins.md) to control which plugins do you want to be used within the platform and [which should be prohibites](../06.enterprise/02.governance/worker-isolation.md).
-- **Java Security (EE only)** - Enterprise Edition users can define Security policies to prohibit access to untrusted files or network resources.
+- **Plugin configuration** - use Kestra’s flexible plugin architecture incl. [Plugin Versioning](../06.enterprise/05.instance/versioned-plugins.md) to control which plugins do you want to be used within the platform and [which should be prohibited](../06.enterprise/02.governance/worker-isolation.md).
 - **CI/CD validation** - implement a custom [CI/CD check within Flow Validation step](../version-control-cicd/cicd/index.md) that scans task definitions for disallowed patterns (e.g., `169.254.169.254`) and disallow merging flow code if detected.
+- **Java Security (EE-only)** - Enterprise Edition users can define Security policies to prohibit access to untrusted files, plugins or network resources.
 
 ### Documentation and audit
 
