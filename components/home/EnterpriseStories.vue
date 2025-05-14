@@ -17,7 +17,9 @@
     </div>
 
     <div class="dots">
-        <button v-for="storyIndex of (stories?.length ?? 0)" :key="storyIndex" :class="{active: storyIndex - 1 === activeStory}" @click="manualScrollTo(storyIndex - 1)" />
+        <ClientOnly>
+            <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+        </ClientOnly>
     </div>
 
 </template>
@@ -100,8 +102,8 @@
     };
 
     const scrollTo = (index: number) => {
-        if (!scroller.value || !stories.value?.length || 
-            index < 0 || index >= stories.value.length || 
+        if (!scroller.value || !stories.value?.length ||
+            index < 0 || index >= stories.value.length ||
             isScrolling.value) return;
 
         clearTimers();

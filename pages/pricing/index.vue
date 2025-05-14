@@ -31,7 +31,6 @@
   const handleScroll = () => {
     const rect = tableRef.value?.$refs.tableContentRef?.getBoundingClientRect();
     const orchestraCoreElement = orchestraCoreRef.value.$refs.orchestraCoreDOMElement?.getBoundingClientRect();
-    console.log('rect.top', rect.top)
     if (rect.top <= 60 && orchestraCoreElement.top >= 60) {
       if (!isInView.value) {
         isInView.value = true;
