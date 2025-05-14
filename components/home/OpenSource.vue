@@ -8,7 +8,7 @@
 
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">
-                    <img :src="feature.image" :alt="feature.title" class="feature-image"/>
+                    <NuxtImg :src="feature.image" :alt="feature.title" class="feature-image"/>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
                 </div>
@@ -26,7 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-    import {computed} from "vue";
+    import { NuxtImg } from "#components";
+import {computed} from "vue";
 
     const features = [
         {
