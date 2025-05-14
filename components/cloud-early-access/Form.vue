@@ -192,8 +192,8 @@ const onSubmit = async (e: Event) => {
           value: form["email"].value,
         },
         {
-          objectTypeId: "0-1",
-          name: "company",
+          objectTypeId: "0-2",
+          name: "name",
           value: form["company"].value,
         },
         {
