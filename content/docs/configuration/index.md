@@ -143,6 +143,10 @@ Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a p
 - H2 can be convenient for local **development**.
 - For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL and SQL Server can be used as well.
 
+::alert{type="info"}
+Note that the SQL Server backend is removed in Kestra Version 0.23.
+::
+
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
 ::alert{type="info"}
