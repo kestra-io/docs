@@ -151,8 +151,41 @@ We've introduced a comprehensive HubSpot plugin with tasks for managing companie
 
 ### OpenAI Response
 
-- https://github.com/kestra-io/plugin-openai/issues/45
+We've enhanced our OpenAI plugin with a new `Responses` task that integrates OpenAI's latest Responses API – their newest agentic API primitive. This task allows you to create AI-generated responses with built-in tools and structured outputs directly within your workflows.
 
+The Responses API combines the simplicity of Chat Completions with powerful agentic capabilities, making it ideal for creating action-oriented applications. The task supports all of OpenAI's built-in tools, including:
+
+- Web search for retrieving real-time information
+- File search for analyzing documents
+- Computer use for more complex interactions
+
+You can also format outputs as structured JSON, making it easy to parse and use the generated content in downstream tasks. This is particularly valuable for transforming unstructured requests into structured data that can be directly utilized in your data pipelines.
+
+::collapse{title="Example of OpenAI Responses integration"}
+```yaml
+id: responses_json_search
+namespace: company.team
+inputs:
+  - id: prompt
+    type: STRING
+    defaults: "List recent trends in workflow orchestration. Return as JSON."
+tasks:
+  - id: trends
+    type: io.kestra.plugin.openai.Responses
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4.1
+    input: "{{ inputs.prompt }}"
+    text:
+      format:
+        type: json_object
+    toolChoice: required
+    tools:
+      - type: web_search_preview
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.trends.outputText }}"
+```
+::
 
 ### Langchain (beta)
 
