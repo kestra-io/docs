@@ -16,15 +16,23 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
     ],
-    target: 'static',
     image: {
-        formats: {
-            webp: {
-                quality: 80
-            }
+        dir: 'public',
+        provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
+        format: ['webp', 'avif', 'png'],
+        cloudflare: {
+            modifiers: {
+                format: 'webp'
+            },
         },
+        ipx: {
+            modifiers: {
+                format: 'webp'
+            },
+        },
+        quality: 80,
         densities: [1, 2],
-        domains: ['kestra.io']
+        domains: ['kestra.io', '*.kestra-io.pages.dev'],
     },
     sitemap: {
         sitemaps: {

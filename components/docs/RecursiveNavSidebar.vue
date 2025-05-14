@@ -15,7 +15,7 @@
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
                         :href="item.path">
-                           {{ item.emoji }}
+                            {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
                     <NuxtLink
@@ -142,7 +142,12 @@
                     return true;
                 }
 
-                return item.path.match(/[^/]*\.[^/]*$/) ? this.activeSlug === item.path : this.activeSlug.startsWith(item.path);
+                if (item.path.match(/[^/]*\.[^/]*$/)) {
+                    return this.activeSlug === item.path;
+                }
+
+                const normalizePath = (path) => `${path}${path.endsWith('/') ? '' : '/'}`;
+                return normalizePath(this.activeSlug).startsWith(normalizePath(item.path));
             },
             isActiveOrExpanded(item) {
                 if (this.isActive(item)) {

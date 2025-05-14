@@ -34,8 +34,7 @@
     </div>
     <div class="container">
         <div class="row">
-
-            <Section
+            <LayoutSection
                 subtitle="Join the community"
             >
                 <div class="metrics">
@@ -51,7 +50,7 @@
                         <ContentRenderer :value="kpi3Content" />
                     </div>
                 </div>
-            </Section>
+            </LayoutSection>
         </div>
     </div>
 </template>

@@ -91,45 +91,6 @@ table.table {
     > *:last-child {
         margin-bottom: 0;
     }
-
-    &.alert-info {
-        display: flex;
-        gap: 12px;
-        background-color: rgba(99, 153, 255, 0.1);
-        border: 1px solid rgb(99, 153, 255);
-        border-left: 4px solid rgb(99, 153, 255);
-        border-radius: 8px;
-        padding: 16px;
-
-        &::before {
-            content: 'i';
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            background-color: rgb(181, 206, 252);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: system-ui;
-            font-size: 13px;
-            font-weight: 600;
-            color: $black;
-            margin-top: 2px;
-        }
-
-        p {
-            color: rgb(181, 206, 252);
-        }
-
-        a {
-            text-decoration: none;
-            
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
 }
 
 blockquote.blockquote {

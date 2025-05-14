@@ -67,7 +67,11 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
+Below is an video demonstration walking through each step from installation to application in a flow.
+
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+Here are the steps again, listed one by one. Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
 
 ![versioned-plugins-1](/docs/enterprise/versioned-plugins/versioned-plugins-1.png)
 
@@ -157,12 +161,23 @@ The `--locally` flag specifies whether the plugin should be installed locally or
 In Flow tasks or triggers, you can specify the version of the plugin to use with the `version` property. For example, if the instance has both 0.22.0 and 0.21.0 versions installed of the Shell script plugin, the version to use can be specified in the flow as follows:
 
 ```yaml
-id: legacy_shell_script
+id: shell_script_example
 namespace: company.team
+
 tasks:
-  -id: script
-   type: io.kestra.plugin.scripts.shell.Script
-   version: 0.21.0
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: shell_script_task
+    type: io.kestra.plugin.scripts.shell.Script
+    version: "0.21.0"
+    outputFiles:
+      - first.txt
+    script: |
+      echo "The current execution is : {{ execution.id }}"
+      echo "1" >> first.txt
+      cat {{ outputs.http_download.uri }}
 ```
 
 The `version` property also accepts specific, non-case-sensitive values like in the configuration file:
