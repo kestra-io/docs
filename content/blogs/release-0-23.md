@@ -63,6 +63,12 @@ Key components of the Unit Testing include:
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
 
 
+#TODO: add example of unit test with a flow and corresponding test suite
+::collapse{title="Unit test example"}
+
+::
+
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
