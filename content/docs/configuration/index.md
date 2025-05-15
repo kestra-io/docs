@@ -691,6 +691,12 @@ Example:
 export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
+To configure a proxy each time your Kestra instance is up, set the `JAVA_FLAGS` at the JVM level in your configuration. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
+
+```yaml
+JAVA_FLAGS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
+```
+
 ### Timezone
 
 By default, Kestra will handle all dates using your system's timezone. You can change the timezone using the `user.timezone` JVM option.
