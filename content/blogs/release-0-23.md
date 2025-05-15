@@ -251,6 +251,14 @@ tasks:
 ```
 ::
 
+
+### ServiceNow improvement
+
+We've expanded the ServiceNow plugin with two new tasks:
+
+- **Update** task to update a record in a ServiceNow table.
+- **Delete** task to delete a record from a ServiceNow table.
+
 ### InfluxDB
 
 We're excited to introduce our new InfluxDB plugin, which provides comprehensive integration with InfluxDB time series database. This plugin enables you to write data to InfluxDB and query it using both Flux and InfluxQL languages, making it perfect for time series data processing and monitoring workflows.
