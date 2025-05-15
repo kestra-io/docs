@@ -212,6 +212,11 @@ const onSubmit = async (e: Event) => {
           value: getRadioValue(form, "number_of_users"),
         },
         {
+                            objectTypeId: "0-1",
+                            name: "kuid",
+                            value: localStorage.getItem("KUID")
+                        },
+        {
           objectTypeId: "0-1",
           name: "form_submission_identifier",
           value: "Cloud Early Access Form",
