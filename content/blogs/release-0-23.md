@@ -52,8 +52,20 @@ You can customize your experience by opening only the panels you need, creating 
 
 ### Unit Test Flows
 
-[FEATURE 2 DESCRIPTION]
+As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Testing, giving users powerful new capabilities to validate their flows with confidence and precision.
+Until now, users relied on manual execution or external scripting to verify behavior. With Unit Test support, you can now define expected outcomes, isolate tasks, and detect regressions early—directly inside your development environment.
 
+Key components of the Unit Testing include:
+
+- **Test Suites**: Create test suites targeting individual tasks or full sections of your flows. Each suite encapsulates a set of test cases, allowing you to cover multiple paths and edge cases without executing the full logic end-to-end.
+- **Fixtures**: Define fixtures to simulate inputs or task outputs. This skips real execution for mocked tasks, making your tests faster, deterministic, and easier to isolate.
+- **Assertions**: Each test can include assertions to check for expected outcomes—task results, flow variables, execution paths, or any output produced by the flow. This helps ensure your flow behaves correctly under different conditions.
+- **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
+
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ### Outputs in Internal Storage
 
