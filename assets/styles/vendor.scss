@@ -2,6 +2,7 @@
 
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
+
 @import "bootstrap/scss/type";
 @import "bootstrap/scss/images";
 @import "bootstrap/scss/containers";
@@ -32,10 +33,14 @@
 @import "bootstrap/scss/offcanvas";
 @import "bootstrap/scss/placeholders";
 @import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/utilities/api";
 
-@import  "@kestra-io/ui-libs/src/scss/vendor.scss";
+body > :not(.scalar-app) {
+    @import "bootstrap/scss/utilities";
+    @import "bootstrap/scss/utilities/api";
+
+    @import "@kestra-io/ui-libs/src/scss/vendor.scss";
+}
+
 
 @import "vue-material-design-icons/styles.css";
 @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;400;600;700;800&family=Source+Code+Pro:wght@400;700&display=swap");
@@ -44,4 +49,3 @@
 @import "@vue-flow/core/dist/style.css";
 @import "@vue-flow/core/dist/theme-default.css";
 @import "@vue-flow/controls/dist/style.css";
-
