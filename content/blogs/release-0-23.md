@@ -285,21 +285,34 @@ We've introduced a new GraphQL plugin that enables integration with GraphQL APIs
 
 This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
 
-::collapse{title="Example of GraphQL integration"}
+::collapse{title="Example using GraphQL to query Github API"}
 ```yaml
-id: graphql_with_auth
-namespace: company.team
+id: graphql-query-github
+namespace: blueprints
 tasks:
-  - id: get_data
+  - id: get_github_issues
     type: io.kestra.plugin.graphql.Request
-    uri: https://example.com/graphql
+    uri: https://api.github.com/graphql
     headers:
-      Authorization: "Bearer {{ secret('API_TOKEN') }}"
+      Authorization: "Bearer {{ secret('GITHUB_TOKEN') }}"
     query: |
       query {
-        viewer {
-          name
-          email
+        repository(owner: "kestra-io", name: "kestra") {
+          issues(last: 20, states: CLOSED) {
+            edges {
+              node {
+                title
+                url
+                labels(first: 5) {
+                  edges {
+                    node {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
 ```
