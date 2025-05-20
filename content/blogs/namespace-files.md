@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   image: mproset
   role: 
-image: /blogs/Namespace.jpg
+image: /blogs/namespace.jpg
 ---
 Engineering teams all face a familiar dilemma: strike the right balance between central governance and team autonomy or risk chaos. Centralization slows everyone down. Decentralization breeds inconsistency and risk. Most orchestration platforms force you to pick a side. **Kestra doesn’t.** Inspired by infrastructure best practices like Kubernetes, Kestra brings logical isolation, inheritance, and secure reusability to orchestration through a powerful feature called **Namespace Files**.
 
@@ -21,7 +21,7 @@ Other engineering disciplines solved similar problems decades ago. In 2002, Linu
 
 Yet, despite namespaces' success in software infrastructure, orchestration tools have mostly overlooked their potential until now.
 
-![namespace](/blogs/namespace-files/Namespace.jpg)
+![split](/blogs/namespace-files/split.jpg)
 
 ## How Kestra Leverages Namespaces
 
