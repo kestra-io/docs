@@ -2203,16 +2203,18 @@ kestra:
 
 ### Configuring a mail server
 
-Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the `kestra.mail-service` configuration.
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mail-service` configuration.
 
 ```yaml
-    host: host.smtp.io
-    port: 587
-    username: user
-    password: password
-    from: configurable@mail.com
-    fromName: Kestra
-    auth: true #default
-    starttlsEnable: true #default
-
+kestra:
+  ee:
+    mail-service:
+      host: host.smtp.io
+      port: 587
+      username: user
+      password: password
+      from: configurable@mail.com
+      fromName: Kestra
+      auth: true # default
+      starttlsEnable: true # default
 ```
