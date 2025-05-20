@@ -21,6 +21,8 @@ Other engineering disciplines solved similar problems decades ago. In 2002, Linu
 
 Yet, despite namespaces' success in software infrastructure, orchestration tools have mostly overlooked their potential until now.
 
+![namespace](/blogs/namespace-files/Namespace.jpg)
+
 ## How Kestra Leverages Namespaces
 
 Kestra brings this proven best practice into data and workflow orchestration. By adopting namespaces, Kestra allows you to logically organize and secure your workflows just like Kubernetes does for containers.
@@ -46,6 +48,8 @@ Here’s how it works:
 
 ## Namespace Files in Kestra
 
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/o0JhnzDc0tRNlNu5AIUR?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 One standout Kestra feature is **Namespace Files**. These are custom scripts, code snippets, or configuration files stored within namespaces, ready to be reused across multiple workflows. This dramatically simplifies collaboration and speeds up workflow development.
 
 For instance, you could store common Python scripts or SQL templates at the `company.team` namespace, instantly accessible and reusable by any project (`company.team.projectA`, `company.team.projectB`) within that team.
@@ -69,8 +73,8 @@ By following this pattern, teams avoid the chaos that often comes with scaling, 
 
  Namespace Files make it easy to scale orchestration without chaos. Reuse scripts, enforce standards, and give teams the flexibility they need—all from a single, organized structure.
 
-👉 Explore the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files)
-📺 Watch our [walkthrough on YouTube](https://youtu.be/BeQNI2XRddA)
+- 👉 Explore the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files)
+- 📺 Watch our [walkthrough on YouTube](https://youtu.be/BeQNI2XRddA)
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
