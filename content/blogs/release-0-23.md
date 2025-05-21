@@ -222,6 +222,30 @@ tasks:
 ```
 ::
 
+### Ollama
+
+We're excited to introduce the new Ollama plugin, which allows you to run Ollama CLI commands directly from your Kestra workflows. This integration makes it easy to automate tasks such as pulling models, running local LLMs, and capturing their outputs as part of your data and AI pipelines.
+
+With the Ollama CLI task, you can:
+- Pull and manage models using the Ollama CLI
+- Run local LLMs and capture their responses
+- Chain Ollama commands with other tasks in your workflow
+- Output results to files for downstream processing
+
+::collapse{title="Example using Ollama CLI"}
+```yaml
+id: ollama_flow
+namespace: company.team
+tasks:
+  - id: ollama_cli
+    type: io.kestra.plugin.ollama.cli.OllamaCLI
+    commands:
+      - ollama pull llama2
+      - ollama run llama2 "Tell me a joke about AI" > completion.txt
+    outputFiles:
+      - completion.txt
+```
+::
 
 ### OpenAI Response
 
