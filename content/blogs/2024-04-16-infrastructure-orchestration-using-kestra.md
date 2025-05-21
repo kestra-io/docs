@@ -54,7 +54,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The flow has tasks that are part of the [WorkingDirectory task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDirectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker task runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) uses the [Docker Task Runner](../docs/task-runners/04.types/02.docker-task-runner.md), and spins up the `cytopia/ansible:latest-tools` docker image. It also uses the `inputFiles` property to share the `inventory.ini` and `myplaybook.yml` files with the container. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 
