@@ -247,6 +247,32 @@ tasks:
 ```
 ::
 
+### Jenkins
+
+We're introducing a new Jenkins plugin that enables seamless integration with Jenkins CI/CD pipelines directly from your Kestra workflows. This integration is ideal for teams looking to unify their CI/CD automation and workflow orchestration, enabling end-to-end automation from code to deployment.
+
+With the Jenkins plugin, you can:
+- Trigger a Jenkins job build using the `io.kestra.plugin.jenkins.JobBuild` task
+- Retrieve detailed information about a Jenkins job with the `io.kestra.plugin.jenkins.JobInfo` task
+
+::collapse{title="Example using Jenkins JobBuild"}
+```yaml
+id: jenkins_job_trigger
+namespace: company.team
+tasks:
+  - id: build
+    type: io.kestra.plugin.jenkins.JobBuild
+    jobName: deploy-app
+    serverUri: http://localhost:8080
+    username: admin
+    api_token: my_api_token
+    parameters:
+      branch: main
+      environment:
+        - staging
+```
+::
+
 ### OpenAI Response
 
 We've enhanced our OpenAI plugin with a new `Responses` task that integrates OpenAI's latest Responses API – their newest agentic API primitive. This task allows you to create AI-generated responses with built-in tools and structured outputs directly within your workflows.
