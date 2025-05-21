@@ -2,25 +2,25 @@ let menuSizes = {
     product : {
         xxl: {
             width: '420px',
-            height: '435px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -360
         },
         xl: {
             width: '420px',
-            height: '435px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -360
         },
         lg: {
             width: '420px',
-            height: '435px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -300
         },
         md: {
             width: '420px',
-            height: '435px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -280
         },

@@ -1,7 +1,6 @@
 import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative.vue"
 import Security from "vue-material-design-icons/Security.vue"
 import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-import CursorDefault from "vue-material-design-icons/CursorDefault.vue"
 import Xml from "vue-material-design-icons/Xml.vue"
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
 import WebBox from "vue-material-design-icons/WebBox.vue"
@@ -48,12 +47,6 @@ export const menuItems = {
                 description: "Register for the Cloud Edition",
                 link: "/cloud",
                 tag: "Early Access"
-            },
-            {
-                icon: CursorDefault,
-                title: "Preview Access",
-                description: "Live Access in Read-Only",
-                link: "/preview-access"
             }
         ]
     },
@@ -179,19 +172,19 @@ export const menuItems = {
             {
                 icon: PostOutline,
                 title: "Blog",
-                description: "Tutorials, Guides, Market Trends and More!",
+                description: "Tutorials, Guides, Market Trends and More",
                 link: "/blogs"
             },
             {
                 icon: ViewList,
                 title: "Blueprints",
-                description: "A Library of ready to use Workflows.",
+                description: "A Library of ready to use Workflows",
                 link: "/blueprints"
             },
             {
                 icon: VideoCheckOutline,
                 title: "Video Tutorials",
-                description: "your favourite tutorials in video.",
+                description: "your favourite tutorials in video",
                 link: "/tutorial-videos"
             }
         ],
@@ -199,19 +192,19 @@ export const menuItems = {
             {
                 icon: LightbulbOn40,
                 title: "How to guides",
-                description: "Learn step by step how to address use-cases.",
+                description: "Learn step by step how to address use-cases",
                 link: "/docs/how-to-guides"
             },
             {
                 icon: HeadQuestion,
                 title: "Why kestra",
-                description: "Trust kestra as your unified orchestration tool.",
+                description: "Trust kestra as your unified orchestration tool",
                 link: "/docs/why-kestra"
             },
             {
                 icon: Flare,
                 title: "Quickstart installation guide.",
-                description: "Trust kestra as your unified orchestration tool.",
+                description: "Trust kestra as your unified orchestration tool",
                 link: "/docs/installation"
             }
         ]
