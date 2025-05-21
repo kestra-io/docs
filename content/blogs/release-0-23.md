@@ -158,7 +158,7 @@ We've introduced a new enterprise Salesforce plugin: the plugin includes tasks f
 ::collapse{title="Example to import contacts from Postgres to Salesforce"}
 ```yaml
 id: salesforce-postgres-sync
-namespace: blueprints
+namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
@@ -203,7 +203,23 @@ pluginDefaults:
 
 We've introduced a comprehensive HubSpot plugin with tasks for managing companies, contacts, and deals. The plugin provides a complete set of operations (Create, Get, Update, Delete, Search) for each entity type, allowing you to seamlessly integrate HubSpot CRM operations into your Kestra workflows with proper authentication and consistent property handling.
 
-::collapse{title="Example of HubSpot integration"}
+::collapse{title="Example of HubSpot integration to query companies"}
+```yaml
+id: hubspot-query-company
+namespace: company.team
+tasks:
+  - id: search_companies
+    type: io.kestra.plugin.hubspot.companies.Search
+    apiKey: "{{ secret('HUBSPOT_API_KEY') }}"
+    properties:
+      - name
+      - domain
+      - industry
+    limit: 10
+    sorts:
+      - propertyName: "createdate"
+        direction: "DESCENDING"
+```
 ::
 
 
