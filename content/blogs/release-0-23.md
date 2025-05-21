@@ -155,8 +155,48 @@ Here are UI enhancements worth noting:
 
 We've introduced a new enterprise Salesforce plugin: the plugin includes tasks for creating, updating, deleting, and querying Salesforce objects, allowing you to seamlessly integrate Salesforce operations into your Kestra workflows.
 
-::collapse{title="Example of Salesforce integration"}
-EXAMPLE
+::collapse{title="Example to import contacts from Postgres to Salesforce"}
+```yaml
+id: salesforce-postgres-sync
+namespace: blueprints
+tasks:
+  - id: each
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ trigger.rows }}"
+    tasks:
+      - id: create_contacts_in_salesforce
+        type: io.kestra.plugin.ee.salesforce.Create
+        connection:
+          username: "{{ secret('SALESFORCE_USERNAME') }}"
+          password: "{{ secret('SALESFORCE_PASSWORD') }}"
+          authEndpoint: "{{ secret('SALESFORCE_AUTH_ENDPOINT') }}"
+        objectName: "Contact"
+        records: 
+          - FirstName: "{{ json(taskrun.value).FirstName }}"
+            LastName: "{{ json(taskrun.value).LastName }}"
+            Email: "{{ json(taskrun.value).Email }}"
+
+triggers:
+  - id: postgres_trigger
+    type: io.kestra.plugin.jdbc.postgresql.Trigger
+    sql: |
+      SELECT 
+        first_name as "FirstName", 
+        last_name as "LastName", 
+        email as "Email"
+      FROM customers
+      WHERE updated_at > CURRENT_DATE - INTERVAL '1 day'
+      AND (processed_at IS NULL OR processed_at < updated_at)
+    interval: PT5M
+    fetchType: FETCH
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "{{ secret('POSTGRES_URL') }}"
+      username: "{{ secret('POSTGRES_USERNAME') }}"
+      password: "{{ secret('POSTGRES_PASSWORD') }}"
+```
 ::
 
 ### HubSpot
