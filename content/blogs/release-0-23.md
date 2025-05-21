@@ -247,32 +247,6 @@ tasks:
 ```
 ::
 
-### Jenkins
-
-We're introducing a new Jenkins plugin that enables seamless integration with Jenkins CI/CD pipelines directly from your Kestra workflows. This integration is ideal for teams looking to unify their CI/CD automation and workflow orchestration, enabling end-to-end automation from code to deployment.
-
-With the Jenkins plugin, you can:
-- Trigger a Jenkins job build using the `io.kestra.plugin.jenkins.JobBuild` task
-- Retrieve detailed information about a Jenkins job with the `io.kestra.plugin.jenkins.JobInfo` task
-
-::collapse{title="Example using Jenkins JobBuild"}
-```yaml
-id: jenkins_job_trigger
-namespace: company.team
-tasks:
-  - id: build
-    type: io.kestra.plugin.jenkins.JobBuild
-    jobName: deploy-app
-    serverUri: http://localhost:8080
-    username: admin
-    api_token: my_api_token
-    parameters:
-      branch: main
-      environment:
-        - staging
-```
-::
-
 ### OpenAI Response
 
 We've enhanced our OpenAI plugin with a new `Responses` task that integrates OpenAI's latest Responses API – their newest agentic API primitive. This task allows you to create AI-generated responses with built-in tools and structured outputs directly within your workflows.
@@ -316,6 +290,57 @@ tasks:
 - Mention RAG capabilities?
 
 
+### GitHub Workflow
+
+We're introducing a new GitHub Workflow plugin that allows you to trigger GitHub Actions workflows directly from your Kestra flows.
+
+With the GitHub Workflow plugin, you can:
+- Dispatch a GitHub Actions workflow using the `io.kestra.plugin.github.workflows.Dispatch` task
+- Pass custom inputs and parameters to your workflow
+- Integrate GitHub automation seamlessly with other tasks in your Kestra pipelines
+
+::collapse{title="Example using GitHub Workflow Dispatch"}
+```yaml
+id: github_workflow_dispatch_flow
+namespace: company.team
+tasks:
+  - id: dispatch_workflow
+    type: io.kestra.plugin.github.workflows.Dispatch
+    oauthToken: your_github_token
+    repository: your_owner/your_repository
+    workflowId: your_workflow_id
+    ref: your_branch_or_tag_name
+    inputs:
+      foo:bar
+```
+::
+
+### Jenkins
+
+We're introducing a new Jenkins plugin that enables seamless integration with Jenkins CI/CD pipelines directly from your Kestra workflows. This integration is ideal for teams looking to unify their CI/CD automation and workflow orchestration, enabling end-to-end automation from code to deployment.
+
+With the Jenkins plugin, you can:
+- Trigger a Jenkins job build using the `io.kestra.plugin.jenkins.JobBuild` task
+- Retrieve detailed information about a Jenkins job with the `io.kestra.plugin.jenkins.JobInfo` task
+
+::collapse{title="Example using Jenkins JobBuild"}
+```yaml
+id: jenkins_job_trigger
+namespace: company.team
+tasks:
+  - id: build
+    type: io.kestra.plugin.jenkins.JobBuild
+    jobName: deploy-app
+    serverUri: http://localhost:8080
+    username: admin
+    api_token: my_api_token
+    parameters:
+      branch: main
+      environment:
+        - staging
+```
+::
+
 ### Go scripts
 
 Added two new Go script tasks:
@@ -330,40 +355,6 @@ https://github.com/kestra-io/plugin-scripts/pull/239
 [EXAMPLE_YAML]
 ```
 ::
-
-### Databricks CLI
-
-We've added a new Databricks SQL CLI task that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
-
-
-### Redis improvement
-
-We've enhanced our Redis plugin with a new `Increment` task that allows you to atomically increment the value of a key in a Redis database and return the new value. This is particularly useful for implementing counters, rate limiters, or any scenario where you need atomic incrementation of numeric values stored in Redis.
-
-
-::collapse{title="Example with [PLUGIN 2]"}
-```yaml
-id: redis_increment
-namespace: company.team
-inputs:
-    - id: key_name
-      type: STRING
-      displayName: Key name to increment
-tasks:
-  - id: increment
-    type: io.kestra.plugin.redis.string.Increment
-    url: redis://:redis@localhost:6379/0
-    key: "{{ inputs.key_name }}"
-```
-::
-
-
-### ServiceNow improvement
-
-We've expanded the ServiceNow plugin with two new tasks:
-
-- **Update** task to update a record in a ServiceNow table.
-- **Delete** task to delete a record from a ServiceNow table.
 
 ### InfluxDB
 
@@ -424,30 +415,19 @@ tasks:
 ```
 ::
 
-### GitHub Workflow
+### Databricks CLI
 
-We're introducing a new GitHub Workflow plugin that allows you to trigger GitHub Actions workflows directly from your Kestra flows.
+We've added a new Databricks SQL CLI task that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
 
-With the GitHub Workflow plugin, you can:
-- Dispatch a GitHub Actions workflow using the `io.kestra.plugin.github.workflows.Dispatch` task
-- Pass custom inputs and parameters to your workflow
-- Integrate GitHub automation seamlessly with other tasks in your Kestra pipelines
 
-::collapse{title="Example using GitHub Workflow Dispatch"}
-```yaml
-id: github_workflow_dispatch_flow
-namespace: company.team
-tasks:
-  - id: dispatch_workflow
-    type: io.kestra.plugin.github.workflows.Dispatch
-    oauthToken: your_github_token
-    repository: your_owner/your_repository
-    workflowId: your_workflow_id
-    ref: your_branch_or_tag_name
-    inputs:
-      foo:bar
-```
-::
+### Improvements: Redis & ServiceNow
+
+We've enhanced our Redis plugin with a new `Increment` task that allows you to atomically increment the value of a key in a Redis database and return the new value. This is particularly useful for implementing counters, rate limiters, or any scenario where you need atomic incrementation of numeric values stored in Redis.
+
+We've expanded the ServiceNow plugin with two new tasks:
+
+- **Update** task to update a record in a ServiceNow table.
+- **Delete** task to delete a record from a ServiceNow table.
 
 ## Thanks to Our Contributors
 
