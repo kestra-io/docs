@@ -48,6 +48,7 @@
 
 <script setup>
 import Magnify from "vue-material-design-icons/Magnify.vue"
+import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
 
 const currentPage = ref(1)
 const itemsPerPage = ref(24)
@@ -95,9 +96,15 @@ if(route.query.tags) {
 }
 if(route.query.q) searchQuery.value = route.query.q;
 
-const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
-  return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTags.value.map(tag => tag.id).join(',')}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
-})
+const { data: blueprintsData, error } = await useAsyncData(
+  `blueprints`,
+  () => useBlueprintsList({
+    page: currentPage.value,
+    size: itemsPerPage.value,
+    tags: activeTags.value.map(tag => tag.id).join(','),
+    q: searchQuery.value
+  })
+)
 
 if ((error && error.value) || !activeTags) {
   throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
