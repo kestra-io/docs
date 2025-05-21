@@ -3,7 +3,7 @@ let menuSizes = {
         xxl: {
             width: '420px',
             height: '435px',
-            headerMenuTranslateX: 'calc(50vw - 600px)',
+            headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -360
         },
         xl: {
@@ -22,32 +22,32 @@ let menuSizes = {
             width: '420px',
             height: '435px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -300
+            headerArrowTranslateX: -280
         },
     },
     solutions: {
         xxl: {
             width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc(50vw - 780px)',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
             headerArrowTranslateX: -250
         },
         xl: {
             width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2 )',
             headerArrowTranslateX: -250
         },
         lg: {
             width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
             headerArrowTranslateX: -180
         },
         md: {
-            width: '1240px',
+            width: '900px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
+            headerMenuTranslateX: 'calc((100vw - 950px))',
             headerArrowTranslateX: -170
         },
     },
@@ -65,13 +65,13 @@ let menuSizes = {
             headerArrowTranslateX: -150
         },
         lg: {
-            width: '760px',
+            width: '800px',
             height: '410px',
             headerMenuTranslateX: 'calc((100vw - 800px) / 2)',
             headerArrowTranslateX: -80
         },
         md: {
-            width: '580px',
+            width: '780px',
             height: '410px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
             headerArrowTranslateX: -80
@@ -79,14 +79,12 @@ let menuSizes = {
     }
 };
 const getBreakpoint = (size) => {
-    if (size <= 1040) {
+    if (size <= 1024) {
         return 'md';
-    } else if  (size > 1040 && size < 1400) {
+    } else if  (size > 1024 && size < 1400) {
         return 'lg';
     } else if (size > 1400 && size < 1570) {
         return 'xl';
-    } else if (size >= 1570) {
-        return 'xxl';
     } else {
         return 'xxl';
     }

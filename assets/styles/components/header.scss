@@ -41,8 +41,8 @@
         .header-menu {
             display: inline-block;
             padding-top: 10px;
-            transform-origin: 50% -50px;            
-            transition: height 350ms, width 350ms;
+            transform-origin: 50% -50px;
+            transition: height 350ms, width 250ms;
             z-index: 2;
             position: absolute;
             top: -2px;
@@ -78,11 +78,30 @@
                         padding: 2rem;
                         width: 100%;
                         height: 100%;
-                        overflow: hidden;
+                        overflow-x: auto;
+                        overflow-y: hidden;
                         position: relative;
                         display: flex;
                         align-items: center;
                         justify-content: center;
+
+                        &::-webkit-scrollbar {
+                            height: 4px;
+                            width: 4px;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            background: $black-10;
+                            border-radius: 0;
+                        }
+
+                        &::-webkit-scrollbar-thumb:hover {
+                            background: $black-10;
+                        }
 
                         .menu-title {
                             margin-bottom: 1.5rem;
@@ -175,6 +194,7 @@
 
                         .header-solution-column {
                             position: relative;
+                            width: 400px;
 
                             &:first-child {
                                 padding-right: 2rem;
@@ -186,7 +206,7 @@
                             }
 
                             &:last-child {
-                                padding-left: 2rem;
+                                padding: 0 2rem;
                             }
 
                             &:not(:last-child)::after {
@@ -194,8 +214,8 @@
                                 position: absolute;
                                 right: 0;
                                 top: -2.5rem;
-                                bottom: -6rem;
-                                width: .5px;
+                                bottom: -2.5rem;
+                                width: 1px;
                                 background-color: $white-1;
                             }
 
