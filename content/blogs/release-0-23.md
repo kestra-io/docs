@@ -424,6 +424,30 @@ tasks:
 ```
 ::
 
+### GitHub Workflow
+
+We're introducing a new GitHub Workflow plugin that allows you to trigger GitHub Actions workflows directly from your Kestra flows.
+
+With the GitHub Workflow plugin, you can:
+- Dispatch a GitHub Actions workflow using the `io.kestra.plugin.github.workflows.Dispatch` task
+- Pass custom inputs and parameters to your workflow
+- Integrate GitHub automation seamlessly with other tasks in your Kestra pipelines
+
+::collapse{title="Example using GitHub Workflow Dispatch"}
+```yaml
+id: github_workflow_dispatch_flow
+namespace: company.team
+tasks:
+  - id: dispatch_workflow
+    type: io.kestra.plugin.github.workflows.Dispatch
+    oauthToken: your_github_token
+    repository: your_owner/your_repository
+    workflowId: your_workflow_id
+    ref: your_branch_or_tag_name
+    inputs:
+      foo:bar
+```
+::
 
 ## Thanks to Our Contributors
 
