@@ -442,7 +442,7 @@
       isOpenSource: false,
       isEnterprise: true,
       description: {
-        text: "Giv users restricted access or full control over your Kestra instance",
+        text: "Give users restricted access or full control over your Kestra instance",
         link: "/docs/enterprise/auth/rbac#permissions"
       }
     },
@@ -845,7 +845,7 @@
           isOpenSource: false,
           isEnterprise: true,
           description: {
-            text: "Giv users restricted access or full control over your Kestra instance",
+            text: "Give users restricted access or full control over your Kestra instance",
             link: "/docs/enterprise/auth/rbac#permissions"
           }
         },
@@ -1448,12 +1448,13 @@
         margin-left: 4px;
 
         .tooltip-content {
-            display: none;
             position: absolute;
+            opacity: 0;
+            visibility: hidden;
             top: calc(100% + 10px);
             left: 30%;
             transform: translateX(-30%);
-            background-color: #FFFFFF;
+            background-color: $white;
             border: 1px solid #9797A6;
             border-radius: 4px;
             padding: 8px 16px;
@@ -1463,6 +1464,7 @@
             font-size: $font-size-xs;
             line-height: 20px;
             white-space: normal;
+            transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
 
             &::before,
             &::after {
@@ -1470,7 +1472,9 @@
                 position: absolute;
                 left: 30%;
                 transform: translateX(-30%);
-            }            &::before {
+            }
+                        
+            &::before {
                 top: -8px;
                 border-left: 8px solid transparent;
                 border-right: 8px solid transparent;
@@ -1495,10 +1499,15 @@
             }
         }
 
-        &:hover {
-            .tooltip-content {
-                display: block;
-            }
+        &:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .tooltip-content:hover {
+            opacity: 1;
+            visibility: visible;
         }
     }
 </style>

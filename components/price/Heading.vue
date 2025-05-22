@@ -393,7 +393,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
     }
 
     .header {
-        margin-top: 40px;
+        padding-top: 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
