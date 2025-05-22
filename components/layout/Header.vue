@@ -351,8 +351,8 @@ import GithubButton from "../layout/GithubButton.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import Close from "vue-material-design-icons/Close.vue";
 import Segment from "vue-material-design-icons/Segment.vue";
-import { menuSize } from "~/utils/menu-sizes.js";
-import { menuItems } from '~/utils/menu-items.js';
+import { menuSize } from "~/utils/menu-sizes";
+import { menuItems } from '~/utils/menu-items';
 
 interface Props {
     scrolled: boolean;
@@ -370,13 +370,19 @@ const headerArrowTranslateX = ref(0);
 const headerMenuTranslateX = ref('50vw');
 const mouseoverMenu = ref(false);
 const headerMenuSize = ref({
-    width: 0,
-    height: 0,
+    width: '0px',
+    height: '0px',
 });
 const headerMenuPointerEvents = ref('none');
 const navbar = ref<HTMLElement | null>(null);
 
-let collapse: any = undefined;
+interface Collapse {
+    hide: () => void;
+    show: () => void;
+    toggle: () => void;
+}
+
+let collapse: Collapse | undefined = undefined;
 
 const route = useRoute();
 const nuxtApp = useNuxtApp();
@@ -404,7 +410,14 @@ onUnmounted(() => {
     }
 });
 
-const headerMenuStyles = computed(() => {
+interface MenuStyles {
+    transform: string;
+    width: string;
+    height: string;
+    pointerEvents: string;
+}
+
+const headerMenuStyles = computed<MenuStyles>(() => {
     return {
         transform: `translateX(${headerMenuTranslateX.value}) rotateX(-15deg)`,
         width: headerMenuSize.value.width,
