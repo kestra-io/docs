@@ -532,6 +532,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../../assets/styles/components/header.scss";
-</style>
+<style lang="scss" src="../../assets/styles/components/header.scss" scoped />
