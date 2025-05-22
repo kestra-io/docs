@@ -206,7 +206,7 @@ tasks:
     uri: http://xkcd.com/info.0.json
 
   - id: graal
-    type: io.kestra.plugin.graalvm.python.Eval
+    type: io.kestra.plugin.graalvm.ruby.Eval
     outputs:
       - data
     script: |
