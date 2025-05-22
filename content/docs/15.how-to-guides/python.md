@@ -407,3 +407,29 @@ triggers:
 ```
 
 
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
+
+In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri) }}
+      data["next_month"] = int(data["month"]) + 1
+```
+
