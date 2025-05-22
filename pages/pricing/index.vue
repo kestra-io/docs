@@ -18,10 +18,14 @@
   import Faq from "../../components/price/Faq.vue"
   import Slider from "../../components/price/Slider.vue"
   const isInView = ref(false);
+  const isInitialScroll = ref(true);
   const tableRef = ref(null);
   const orchestraCoreRef = ref(null);
+  
   onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll);
+    changeTopBarBackground(false);
+    isInitialScroll.value = window.scrollY === 0;
   });
 
   onBeforeUnmount(() => {
@@ -29,6 +33,7 @@
   });
 
   const handleScroll = () => {
+    isInitialScroll.value = window.scrollY === 0;
     const rect = tableRef.value?.$refs.tableContentRef?.getBoundingClientRect();
     const orchestraCoreElement = orchestraCoreRef.value.$refs.orchestraCoreDOMElement?.getBoundingClientRect();
     if (rect.top <= 60 && orchestraCoreElement.top >= 60) {
@@ -37,19 +42,24 @@
         changeTopBarBackground(true)
       }
     } else {
-      if (isInView.value) {
+      if (isInView.value || isInitialScroll.value) {
         isInView.value = false;
         changeTopBarBackground(false)
       }
     }
   };
+
   const changeTopBarBackground = (isInView) => {
     const topBar = document.getElementById('top-bar');
     if (topBar) {
-      topBar.style.backgroundColor = isInView ? "black" : ""
+        topBar.classList.toggle('scrolled', isInView);
+        if (isInitialScroll.value && !isInView) {
+            topBar.style.backgroundColor = "#121217";
+        } else {
+            topBar.style.backgroundColor = "";
+        }
     }
   }
-
 </script>
 
 <style lang="scss" scoped>
