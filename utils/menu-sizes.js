@@ -29,19 +29,19 @@ let menuSizes = {
         xxl: {
             width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
+            headerMenuTranslateX: 'calc(((100vw - 1240px) / 2))',
             headerArrowTranslateX: -250
         },
         xl: {
             width: '1240px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1240px) / 2 )',
+            headerMenuTranslateX: 'calc(((100vw - 1240px) / 2))',
             headerArrowTranslateX: -250
         },
         lg: {
-            width: '1240px',
+            width: '1000px',
             height: '630px',
-            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
+            headerMenuTranslateX: 'calc(((100vw - 1000px) / 2))',
             headerArrowTranslateX: -180
         },
         md: {
