@@ -1,6 +1,6 @@
 <template>
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
-        :class="{open: isOpen, scrolled: scrolled }">
+        :class="{open: isOpen, scrolled: props.scrolled }">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
                 <img :src="isOpen ? '/logo-black.svg' : '/logo-white.svg'"
@@ -39,7 +39,8 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Product
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'product'" class="d-inline-block dropdown-chevron" />
+                            <ChevronDown v-if="!showMenuId || showMenuId !== 'product'"
+                                class="d-inline-block dropdown-chevron" />
                             <ChevronUp v-else class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
@@ -61,7 +62,8 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Solutions
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'solutions'" class="d-inline-block dropdown-chevron" />
+                            <ChevronDown v-if="!showMenuId || showMenuId !== 'solutions'"
+                                class="d-inline-block dropdown-chevron" />
                             <ChevronUp v-else class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
@@ -116,7 +118,8 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Learn
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'resources'" class="d-inline-block dropdown-chevron" />
+                            <ChevronDown v-if="!showMenuId || showMenuId !== 'resources'"
+                                class="d-inline-block dropdown-chevron" />
                             <ChevronUp v-else class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
@@ -157,9 +160,11 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button nav-footer">
                     <li class="nav-item">
-                        <GithubButton :small="true" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm" />
+                        <GithubButton :small="true"
+                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm" />
                         <NuxtLink @click="globalClick(true)"
-                            class="d-none mb-1 mn-sm-0 btn btn-sm btn-secondary btn-sm me-0 me-sm-2 d-lg-inline-block" href="/demo">
+                            class="d-none mb-1 mn-sm-0 btn btn-sm btn-secondary btn-sm me-0 me-sm-2 d-lg-inline-block"
+                            href="/demo">
                             <span>
                                 Talk to us
                             </span>
@@ -189,26 +194,18 @@
         </div>
 
         <div class="d-lg-block d-none menu-container" :style="{ opacity: showMenu || mouseoverMenu ? 100 : 0 }">
-            <div class="header-arrow" :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
+            <div class="header-arrow"
+                :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
             <div class="menu-shadow-container">
-                <div 
-                  class="header-menu" 
-                  @mouseover="mouseOverMenu()"
-                  @mouseleave="mouseLeaveMenu()"  
-                  :style="{
-                      transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
-                      width: headerMenuSize.width,
-                      height: headerMenuSize.height,
-                      pointerEvents: headerMenuPointerEvents,
-                  }"
-                >
+                <div class="header-menu" @mouseover="mouseOverMenu()" @mouseleave="mouseLeaveMenu()" :style="headerMenuStyles">
                     <div class="header-menu-card">
                         <div @mouseleave="mouseLeaveMenu()" id="product" class="header-menu-card-section">
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100 gap-2 py-lg-0">
                                         <li v-for="item in menuItems.product.items" :key="item.link">
-                                            <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">  
+                                            <NuxtLink class="dropdown-item" :href="item.link"
+                                                @click="globalClick(true)">
                                                 <div>
                                                     <div class="same-row">
                                                         <component :is="item.icon" />
@@ -232,7 +229,8 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.capabilities" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -250,7 +248,8 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.roles" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -265,7 +264,8 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -282,7 +282,8 @@
                                         </div>
                                         <ul class="d-flex flex-column w-100 list-unstyled">
                                             <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -302,7 +303,8 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -317,7 +319,8 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.additionalItems" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                    @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
                                                             <component :is="item.icon" />
@@ -339,196 +342,199 @@
     </nav>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+import { useRoute, useNuxtApp } from '#app';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import GithubButton from "../layout/GithubButton.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import Close from "vue-material-design-icons/Close.vue";
 import Segment from "vue-material-design-icons/Segment.vue";
-import {menuSize} from "~/utils/menu-sizes.js";
-import {menuItems} from '~/utils/menu-items.js';
+import { menuSize } from "~/utils/menu-sizes.js";
+import { menuItems } from '~/utils/menu-items.js';
 
-export default {
-    components: {
-        ChevronDown,
-        ChevronUp,
-        GithubButton,
-        Magnify,
-        Close,
-        Segment
-    },
-    data() {
-        return {
-            transparentHeader: false,
-            transparentClass: false,
-            isOpen: false,
-            showDownloadLogos: false,
-            showMenu: false,
-            showMenuId: null,
-            headerArrowTranslateX: 0,
-            headerMenuTranslateX: '50vw',
-            mouseoverMenu: false,
-            headerMenuSize: {
-              width: 0,
-              height: 0,
-            },
-            headerMenuPointerEvents: 'none',
-        }
-    },
-    props: {
-      scrolled: {
-        type: Boolean,
-        required: true
-      }
-    },
-    collapse: undefined,
-    created() {
-        const route = useRoute();
-        this.transparentHeader = route.meta.transparentHeader === true;
-        this.transparentClass = route.meta.transparentHeader === true;
+interface Props {
+    scrolled: boolean;
+}
 
-        if (process.client) {
-            window.addEventListener('scroll', this.handleScroll);
-        }
+const props = defineProps<Props>();
 
-        if (process.client) {
-            this.collapse = new this.$bootstrap.Collapse('#main-header', {
-                toggle: false
-            })
-        }
+const transparentHeader = ref(false);
+const transparentClass = ref(false);
+const isOpen = ref(false);
+const showDownloadLogos = ref(false);
+const showMenu = ref(false);
+const showMenuId = ref<string | null>(null);
+const headerArrowTranslateX = ref(0);
+const headerMenuTranslateX = ref('50vw');
+const mouseoverMenu = ref(false);
+const headerMenuSize = ref({
+    width: 0,
+    height: 0,
+});
+const headerMenuPointerEvents = ref('none');
+const navbar = ref<HTMLElement | null>(null);
 
-    },
-    watch: {
-        $route(to) {
-            this.transparentHeader = to.meta.transparentHeader === true;
-            this.transparentClass = to.meta.transparentHeader === true;
-            // on route change always close the menu
-            this.globalClick(true)
-        }
-    },
-    mounted() {
-        if (process.client) {
-            document.documentElement.style.setProperty("--top-bar-height", this.$refs.navbar.offsetHeight + "px");
-        }
-    },
-    unmounted() {
-        if (process.client) {
-            window.removeEventListener('scroll', this.handleScroll);
-            document.documentElement.style.removeProperty("--top-bar-height");
-        }
-    },
-    methods: {
-        mouseOverMenu() {
-          this.mouseoverMenu = true
-          this.headerMenuPointerEvents = 'auto'
-        },
-        mouseLeaveMenu() {
-          this.showMenu = false
-          this.mouseoverMenu = false
-          this.showMenuId = null
-          this.headerMenuPointerEvents = 'none'
-        },
-        mouseElement(element) {
-            if (element.classList.contains("nav-link")) {
-                return element;
-            } else {
-                return element.closest(".nav-item").firstElementChild;
-            }
-        },
-        mouseOver(id) {
-          if (window.innerWidth > 991) {
-            document.querySelectorAll('.header-menu-card-section').forEach(obj=>{
-              obj.classList.remove("opacity-100")
-              obj.classList.remove("z-1")
-            });
-            let menu = document.getElementById(id);
-            if (menu) {
-              this.mouseoverMenu = false
-              this.showMenu = true
-              this.showMenuId = id
-              this.headerMenuSize = menuSize(id, window.innerWidth).size;
-              this.headerMenuTranslateX = menuSize(id, window.innerWidth).headerMenuTranslateX;
-              this.headerArrowTranslateX = menuSize(id, window.innerWidth).headerArrowTranslateX;
-              menu.classList.add('z-1');
-              menu.classList.add('opacity-100');
-              this.headerMenuPointerEvents = 'auto'
-            }
-          }
-        },
-        mouseOut(id) {
-          if (window.innerWidth > 991) {
-            let menu = document.getElementById(id);
-            if (menu) {
-              this.headerMenuPointerEvents = 'none'
-              this.showMenu = false
-            }
-          }
-        },
-        handleScroll() {
-            if (this.transparentHeader) {
-                if (window.scrollY > 30) {
-                    this.transparentClass = false;
-                } else {
-                    this.transparentClass = true;
-                }
-            }
-        },
+let collapse: any = undefined;
 
-        globalClick(close) {
-          if (window.innerWidth < 992) {
-            if(close === true){
-                this.collapse.hide();
-                this.isOpen = false;
-            } else if (close === false){
-                this.collapse.show()
-                this.isOpen = true;
-            }else{
-                this.collapse.toggle();
-                this.isOpen = !this.isOpen;
-            }
-            return
-          }
-          if (close) {
-            this.showMenu = false
-            this.mouseoverMenu = false
-            this.showMenuId = null
-            this.headerMenuPointerEvents = 'none'
-            if (this.$refs.navbar.classList.contains("open")) {
-                this.isOpen = false;
-                document.body.style.overflow = 'unset';
-                document.body.style.position = 'unset';
-                document.body.style.width = 'unset';
-            }
-            const element = document.querySelector('.nav-link.show');
-            if (element) {
-                element.classList.remove('show');
-                element.nextElementSibling.classList.remove('show');
-            }
-          } else {
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            this.isOpen = !this.isOpen;
-          }
-        },
-        logoClick() {
-            if (this.$route.path === "/") {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            }
-            this.globalClick(true);
-        },
-        showDownloadLogosModal(event) {
-          event.preventDefault();
-          this.showDownloadLogos = true;
-        },
-        closeDownloadLogosModal() {
-          this.showDownloadLogos = false;
-        },
-    },
+const route = useRoute();
+const nuxtApp = useNuxtApp();
+transparentHeader.value = route.meta.transparentHeader === true;
+transparentClass.value = route.meta.transparentHeader === true;
+
+if (process.client) {
+    window.addEventListener('scroll', handleScroll);
+}
+
+onMounted(() => {
+    if (process.client) {
+        collapse = new nuxtApp.$bootstrap.Collapse('#main-header', {
+            toggle: false
+        });
+
+        document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");
+    }
+});
+
+onUnmounted(() => {
+    if (process.client) {
+        window.removeEventListener('scroll', handleScroll);
+        document.documentElement.style.removeProperty("--top-bar-height");
+    }
+});
+
+const headerMenuStyles = computed(() => {
+    return {
+        transform: `translateX(${headerMenuTranslateX.value}) rotateX(-15deg)`,
+        width: headerMenuSize.value.width,
+        height: headerMenuSize.value.height,
+        pointerEvents: headerMenuPointerEvents.value
+    };
+});
+
+watch(() => route, (to) => {
+    transparentHeader.value = to.meta.transparentHeader === true;
+    transparentClass.value = to.meta.transparentHeader === true;
+    globalClick(true);
+}, { deep: true });
+
+function mouseOverMenu() {
+    mouseoverMenu.value = true;
+    headerMenuPointerEvents.value = 'auto';
+}
+
+function mouseLeaveMenu() {
+    showMenu.value = false;
+    mouseoverMenu.value = false;
+    showMenuId.value = null;
+    headerMenuPointerEvents.value = 'none';
+}
+
+function mouseElement(element: HTMLElement) {
+    if (element.classList.contains("nav-link")) {
+        return element;
+    } else {
+        return element.closest(".nav-item")?.firstElementChild as HTMLElement;
+    }
+}
+
+function mouseOver(id: string) {
+    if (window.innerWidth > 991) {
+        document.querySelectorAll('.header-menu-card-section').forEach(obj => {
+            obj.classList.remove("opacity-100");
+            obj.classList.remove("z-1");
+        });
+        let menu = document.getElementById(id);
+        if (menu) {
+            mouseoverMenu.value = false;
+            showMenu.value = true;
+            showMenuId.value = id;
+            headerMenuSize.value = menuSize(id, window.innerWidth).size;
+            headerMenuTranslateX.value = menuSize(id, window.innerWidth).headerMenuTranslateX;
+            headerArrowTranslateX.value = menuSize(id, window.innerWidth).headerArrowTranslateX;
+            menu.classList.add('z-1');
+            menu.classList.add('opacity-100');
+            headerMenuPointerEvents.value = 'auto';
+        }
+    }
+}
+
+function mouseOut(id: string) {
+    if (window.innerWidth > 991) {
+        let menu = document.getElementById(id);
+        if (menu) {
+            headerMenuPointerEvents.value = 'none';
+            showMenu.value = false;
+        }
+    }
+}
+
+function handleScroll() {
+    if (transparentHeader.value) {
+        if (window.scrollY > 30) {
+            transparentClass.value = false;
+        } else {
+            transparentClass.value = true;
+        }
+    }
+}
+
+function globalClick(close?: boolean) {
+    if (window.innerWidth < 992) {
+        if (close === true) {
+            collapse?.hide();
+            isOpen.value = false;
+        } else if (close === false) {
+            collapse?.show();
+            isOpen.value = true;
+        } else {
+            collapse?.toggle();
+            isOpen.value = !isOpen.value;
+        }
+        return;
+    }
+    if (close) {
+        showMenu.value = false;
+        mouseoverMenu.value = false;
+        showMenuId.value = null;
+        headerMenuPointerEvents.value = 'none';
+        if (navbar.value?.classList.contains("open")) {
+            isOpen.value = false;
+            document.body.style.overflow = 'unset';
+            document.body.style.position = 'unset';
+            document.body.style.width = 'unset';
+        }
+        const element = document.querySelector('.nav-link.show');
+        if (element) {
+            element.classList.remove('show');
+            (element.nextElementSibling as HTMLElement)?.classList.remove('show');
+        }
+    } else {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        isOpen.value = !isOpen.value;
+    }
+}
+
+function logoClick() {
+    if (route.path === "/") {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+    globalClick(true);
+}
+
+function showDownloadLogosModal(event: Event) {
+    event.preventDefault();
+    showDownloadLogos.value = true;
+}
+
+function closeDownloadLogosModal() {
+    showDownloadLogos.value = false;
 }
 </script>
 
