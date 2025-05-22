@@ -1,92 +1,90 @@
 let menuSizes = {
     product : {
         xxl: {
-            width: '780px',
-            height: '560px',
-            headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -347
+            width: '420px',
+            height: '350px',
+            headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
+            headerArrowTranslateX: -360
         },
         xl: {
-            width: '780px',
-            height: '560px',
+            width: '420px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -348
+            headerArrowTranslateX: -360
         },
         lg: {
-            width: '780px',
-            height: '560px',
+            width: '420px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -335
+            headerArrowTranslateX: -300
         },
         md: {
-            width: '780px',
-            height: '560px',
+            width: '420px',
+            height: '350px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -310
+            headerArrowTranslateX: -280
         },
     },
     solutions: {
         xxl: {
-            width: '1560px',
-            height: '690px',
-            headerMenuTranslateX: 'calc(50vw - 780px)',
-            headerArrowTranslateX: -262
+            width: '1240px',
+            height: '630px',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
+            headerArrowTranslateX: -250
         },
         xl: {
-            width: '1347px',
-            height: '653px',
-            headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
-            headerArrowTranslateX: -270
+            width: '1240px',
+            height: '630px',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2 )',
+            headerArrowTranslateX: -250
         },
         lg: {
-            width: '950px',
-            height: '653px',
-            headerMenuTranslateX: 'calc((100vw - 950px) / 2)',
-            headerArrowTranslateX: -255
+            width: '1240px',
+            height: '630px',
+            headerMenuTranslateX: 'calc((100vw - 1240px) / 2)',
+            headerArrowTranslateX: -180
         },
         md: {
-            width: '780px',
-            height: '560px',
-            headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -240
+            width: '900px',
+            height: '630px',
+            headerMenuTranslateX: 'calc((100vw - 950px))',
+            headerArrowTranslateX: -170
         },
     },
     resources: {
         xxl: {
-            width: '1200px',
-            height: '580px',
-            headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -173
+            width: '815px',
+            height: '410px',
+            headerMenuTranslateX: 'calc(50vw - 450px)',
+            headerArrowTranslateX: -150
         },
         xl: {
-            width: '1200px',
-            height: '580px',
-            headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
-            headerArrowTranslateX: -177
+            width: '815px',
+            height: '410px',
+            headerMenuTranslateX: 'calc((100vw - 900px) / 2)',
+            headerArrowTranslateX: -150
         },
         lg: {
-            width: '1000px',
-            height: '580px',
-            headerMenuTranslateX: 'calc((100vw - 1000px) / 2)',
-            headerArrowTranslateX: -165
+            width: '800px',
+            height: '410px',
+            headerMenuTranslateX: 'calc((100vw - 800px) / 2)',
+            headerArrowTranslateX: -80
         },
         md: {
             width: '780px',
-            height: '560px',
+            height: '410px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -165
+            headerArrowTranslateX: -80
         }
     }
 };
 const getBreakpoint = (size) => {
-    if (size <= 1040) {
+    if (size <= 1024) {
         return 'md';
-    } else if  (size > 1040 && size < 1400) {
+    } else if  (size > 1024 && size < 1400) {
         return 'lg';
     } else if (size > 1400 && size < 1570) {
         return 'xl';
-    } else if (size >= 1570) {
-        return 'xxl';
     } else {
         return 'xxl';
     }
