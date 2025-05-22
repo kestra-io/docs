@@ -225,7 +225,7 @@
                         </div>
                         <div @mouseleave="mouseLeaveMenu()" id="solutions" class="header-menu-card-section">
                             <div class="header-menu-content">
-                                <div class="row m-0 w-100 pt-2">
+                                <div class="row m-0 w-100 pt-2 flex-nowrap">
                                     <div class="col-lg-4 header-solution-column">
                                         <div class="menu-title">
                                             <p>Capabilities</p>
