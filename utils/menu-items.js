@@ -84,9 +84,9 @@ export const menuItems = {
             },
             {
                 icon: Binoculars,
-                title: "Platform Capabilities",
+                title: "Platform Overview",
                 description: "Powerful Capabilities from the UI",
-                link: "/features/api-first"
+                link: "/overview"
             }
         ],
         roles: [
