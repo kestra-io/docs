@@ -39,7 +39,7 @@ Let's dive into these highlights and other enhancements in more detail.
 The Multi Panel Editor transforms how you design and manage workflows by introducing a unified interface with split-screen capabilities. This powerful enhancement allows you to simultaneously view and edit your workflows in multiple formats - YAML code, visual no-code editor, topology view, and documentation - all within a single, integrated workspace.
 
 With this flexible interface, you can:
-- Edit YAML directly while previewing the visual representation in real-time
+- Edit the flow both as Code and No-Code form at the same time while previewing the visual representation in real-time in the live-updating Topology view
 - Switch between code and no-code approaches based on your preference or task complexity
 - Visualize task dependencies through the topology view while making edits
 - Reference documentation without leaving your editing environment
