@@ -5,7 +5,7 @@ editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
 ---
 
-Build Tests to insure proper Flow behavior.
+Build Tests to ensure proper Flow behavior.
 
 Unit tests are an efficient and productive way to test the different aspects of your flow in isolation without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. 
 
@@ -19,7 +19,7 @@ Unit tests are connected to the specific flows they are configured for. To creat
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Addtionally, tests can be run from this view with expandable results.
+Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
 ![Tests Interface](/docs/enterprise/unit-tests-interface.png)
 
@@ -30,7 +30,7 @@ Unit tests are written in YAML like flows, and they are comprised of `testCases`
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
 
-For example, take the following flow that does the thest listed tasks:
+For example, take the following flow that does the these listed tasks:
 1. Sends a message to Slack to alert a channel that it is running
 2. Extracts data from an API
 3. Transforms the returned data to match a certain format
@@ -107,7 +107,7 @@ testCases:
         contains: "MY-PRODUCT-1"
 ```
 
-The `id` is unique to the test suite, and the `namespace` and `flowId` must match the intended flow to be tested against. These will automatically pipe into the test when creating from a flow. The `testCases` property is composed with the aforementioned `fixtures` and `assertions`. You can design multiple tests with their own specific designs.
+The `id` is unique to the test suite, and the `namespace` and `flowId` must match the intended flow to be tested against. They will automatically pipe into the test when creating from a flow. The `testCases` property is composed with the aforementioned `fixtures` and `assertions`. You can design multiple tests with their own specific designs.
 
 In the first test case, `extract_should_return_data`, the `fixtures` include tasks to replace the Slack alert and BigQuery data load so as to not clutter a Slack channel with test alert messages or a BigQuery table with test data but still test the overall design of the flow.
 
