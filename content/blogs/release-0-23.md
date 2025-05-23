@@ -159,6 +159,13 @@ testCases:
   <iframe src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+
+### New UI Filter
+
+The new UI Filter introduces a modern and flexible way to filter the interface in Kestra. Filters are now written in plain text making it easy to express complex filtering logic directly in the interface. The filter component is designed for a seamless user experience, featuring keyboard pattern support and fast autocompletion to help you build filters quickly and efficiently. This update brings a more intuitive and powerful filtering experience to all users.
+
+TODO: screenshot
+
 ### Outputs in Internal Storage
 
 Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage instead of the default database. This feature is especially valuable for organizations with multiple teams or business units, as it ensures that outputs are only accessible to the relevant segment, providing stronger data separation and privacy.
