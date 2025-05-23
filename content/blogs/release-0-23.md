@@ -161,11 +161,36 @@ testCases:
 
 ### Outputs in Internal Storage
 
-By default, all inputs and outputs processed across all Kestra's workflow executions are stored in the same metadata database. However, some of our Enterprise customers require a higher degree of separation across business units (split by tenants). To address this need for separation, Kestra 0.23 introduces a powerful configuration allowing you to store all execution inputs and outputs in internal storage configured for each tenant. This way, each tenant can store that metadata in separate cloud storage buckets, enabling full data separation across tenants when needed.
+Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage instead of the default database. This feature is especially valuable for organizations with multiple teams or business units, as it ensures that outputs are only accessible to the relevant segment, providing stronger data separation and privacy.
 
+By default, all flow outputs are stored in the shared metadata database. With this new configuration, you can isolate outputs for each tenant or namespace, making sure that sensitive data is not accessible outside its intended scope.
 
+To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your Kestra configuration file:
 
-#TODO: Add example of configuration
+```yaml
+kestra:
+  ee:
+    outputs:
+      store:
+        enabled: true # the default is false
+```
+
+If you want to enforce this setting globally for all tenants and namespaces, use the following configuration instead:
+
+```yaml
+kestra:
+  ee:
+    outputs:
+      store:
+        force-globally: true # the default is false
+```
+
+With these options, you can control where flow outputs are stored, improving data governance and compliance for organizations with strict separation requirements.
+
+::alert{type="info"}
+Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
+::
+
 
 ### Improved dashboard management
 
