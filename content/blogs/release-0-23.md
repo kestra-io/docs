@@ -58,8 +58,8 @@ Until now, users relied on manual execution or external scripting to verify beha
 Key components of the Unit Testing include:
 
 - **Test Suites**: Create test suites targeting individual flows. Each test suite consists of one or more test cases, allowing you to unit test the same tasks multiple times, e.g., using different flow inputs or different fixtures.
-- **Fixtures**: Define fixtures to simulate inputs or task outputs. This skips real execution for mocked tasks, making your tests faster, deterministic, and easier to isolate.
-- **Assertions**: Each test can include assertions to check for expected outcomes—task results, flow variables, execution paths, or any output produced by the flow. This helps ensure your flow behaves correctly under different conditions.
+- **Fixtures**: Add fixtures for specific inputs or tasks by mocking specific task states and input values and avoid running tasks that might be computationally expensive or not required to run as part of a given test case.
+- **Assertions**: Each test case can contain multiple assertions that check if the given task outputs match the expected outputs. There are many assertion operations such as `equalTo`, `notEqualTo`, `greaterThan`, `startsWith`, and more. This helps ensure your flow behaves correctly under different conditions.
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
 
 
@@ -75,12 +75,9 @@ Key components of the Unit Testing include:
 
 ### Outputs in Internal Storage
 
-Kestra 0.23 introduces a powerful configuration-based capability to move task outputs from in-memory context (by default stored in the database) to Kestra's Internal Storage. This Enterprise Edition feature addresses critical scalability challenges for data-intensive workflows.
+By default, all inputs and outputs processed across all Kestra's workflow executions are stored in the same metadata database. However, some of our Enterprise customers require a higher degree of separation across business units (split by tenants). To address this need for separation, Kestra 0.23 introduces a powerful configuration allowing you to store all execution inputs and outputs in internal storage configured for each tenant. This way, each tenant can store that metadata in separate cloud storage buckets, enabling full data separation across tenants when needed.
 
 
-By offloading task outputs to Internal Storage, Kestra can maintain execution context for complex workflows with large intermediate data while keeping the database footprint minimal. This configuration-based approach gives administrators fine-grained control over resource utilization and performance optimization.
-
-This feature is particularly valuable for data-focused workflows that process large volumes of data between tasks, as it removes previous limitations on output size while preserving Kestra's robust execution semantics.
 
 #TODO: Add example of configuration
 
@@ -97,21 +94,21 @@ With improved dashboard management, you can:
 
 #TODO: screenshots?
 
-### Caching dependencies
+### Python dependency caching
 
 [FEATURE 5 DESCRIPTION]
 
 
-### Manage Apps & Dashboard with Git
+### Git Sync for Apps & Dashboards
 
-Kestra 0.23.0 introduces powerful new Git integration tasks that allow you to version control your dashboards and applications, bringing the benefits of Git workflows to your Kestra assets.
+Kestra 0.23.0 introduces a powerful Git Sync, allowing you to version control your Dashboards and Apps code and thus manage all your resources as code.
 
 With the new Git integration for dashboards and apps, you can now:
 
-- **Version control your dashboards and apps** using `gitSyncDashboard`, `gitPushDashboard`, `gitSyncApps`, and `gitPushApps` tasks
-- **Track changes** to configurations over time
+- **Version control your dashboards and apps** using `git.SyncDashboard`, `git.PushDashboard`, `git.SyncApps`, and `git.PushApps` tasks
+- **Track configuration changes** over time, managing all your resources as code.
 - **Collaborate** with team members using familiar Git workflows
-- **Roll back** to previous versions when needed
+- **Roll back** to previous versions when needed.
 
 
 #TODO: add example of GitSyncApps task
@@ -224,7 +221,7 @@ tasks:
 
 ### Ollama
 
-We're excited to introduce the new Ollama plugin, which allows you to run Ollama CLI commands directly from your Kestra workflows. This integration makes it easy to automate tasks such as pulling models, running local LLMs, and capturing their outputs as part of your data and AI pipelines.
+We're excited to introduce the new Ollama plugin, which allows you to run Ollama CLI commands directly from your Kestra workflows. This integration can help you pull open-source LLMs into your local environment, interact with them via prompts in your AI pipelines, and shut them down when no longer needed.
 
 With the Ollama CLI task, you can:
 - Pull and manage models using the Ollama CLI
@@ -249,40 +246,39 @@ tasks:
 
 ### OpenAI Response
 
-We've enhanced our OpenAI plugin with a new `Responses` task that integrates OpenAI's latest Responses API – their newest agentic API primitive. This task allows you to create AI-generated responses with built-in tools and structured outputs directly within your workflows.
+We've added a new `Responses` task integrating OpenAI's latest Responses API, allowing you to use tools such as e.g. web search, function calling and structured outputs directly within your AI workflows.
 
-The Responses API combines the simplicity of Chat Completions with powerful agentic capabilities, making it ideal for creating action-oriented applications. The task supports all of OpenAI's built-in tools, including:
+The task supports all of OpenAI's built-in tools, including:
 
 - Web search for retrieving real-time information
 - File search for analyzing documents
-- Computer use for more complex interactions
+- Persistence for stateful chat interactions
 
 You can also format outputs as structured JSON, making it easy to parse and use the generated content in downstream tasks. This is particularly valuable for transforming unstructured requests into structured data that can be directly utilized in your data pipelines.
 
 ::collapse{title="Example of OpenAI Responses integration"}
 ```yaml
-id: responses_json_search
+id: web_search
 namespace: company.team
+
 inputs:
   - id: prompt
     type: STRING
-    defaults: "List recent trends in workflow orchestration. Return as JSON."
+    defaults: List recent trends in workflow orchestration
+
 tasks:
   - id: trends
     type: io.kestra.plugin.openai.Responses
     apiKey: "{{ secret('OPENAI_API_KEY') }}"
-    model: gpt-4.1
+    model: gpt-4.1-mini
     input: "{{ inputs.prompt }}"
-    text:
-      format:
-        type: json_object
-    toolChoice: required
+    toolChoice: REQUIRED
     tools:
       - type: web_search_preview
+
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.trends.outputText }}"
-```
 ::
 
 ### Langchain (beta)
@@ -305,7 +301,7 @@ id: github_workflow_dispatch_flow
 namespace: company.team
 tasks:
   - id: dispatch_workflow
-    type: io.kestra.plugin.github.workflows.Dispatch
+    type: io.kestra.plugin.github.workflows.RunWorkflow
     oauthToken: your_github_token
     repository: your_owner/your_repository
     workflowId: your_workflow_id
@@ -380,7 +376,6 @@ This integration is particularly useful for IoT data processing, monitoring metr
 
 We've introduced a new GraphQL plugin that enables integration with GraphQL APIs in your data workflows. The plugin features a `Request` task that allows you to execute GraphQL queries and mutations against any GraphQL endpoint, with full support for authentication headers, variables, and complex queries.
 
-This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
 
 ::collapse{title="Example using GraphQL to query Github API"}
 ```yaml
