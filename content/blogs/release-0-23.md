@@ -52,7 +52,7 @@ You can customize your experience by opening only the panels you need, creating 
 
 ### Unit Test Flows
 
-As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Testing, giving users powerful new capabilities to validate their flows with confidence and precision.
+As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Tests, allowing you to validate your flows and detect regressions early.
 Until now, users relied on manual execution or external scripting to verify behavior. With Unit Test support, you can now define expected outcomes, isolate tasks, and detect regressions early—directly inside your development environment.
 
 Key components of the Unit Testing include:
