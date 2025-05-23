@@ -167,7 +167,6 @@ inputs:
 tasks:
   - id: check_if_business_date
     type: io.kestra.plugin.scripts.python.Commands
-    warningOnStdErr: false
     namespaceFiles:
       enabled: true
     commands:

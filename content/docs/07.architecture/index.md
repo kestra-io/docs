@@ -10,10 +10,6 @@ The following diagram shows the main components of Kestra using the JDBC backend
 
 ![Kestra JDBC Architecture](/docs/architecture/jdbc.png "Kestra Architecture")
 
-::alert{type="info"}
-While it's not captured in the diagram above, the JDBC backend in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) also supports Microsoft SQL Server starting from Kestra 0.18.0.
-::
-
 Here are the components and their interactions:
 
 1. **JDBC Backend**: the data storage layer used for orchestration metadata
@@ -33,6 +29,10 @@ Here are the components and their interactions:
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
 (../api-reference/index.md)
 For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) and [Microsoft SQL Server JDBC Driver](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver16) can provide an encrypted connection with some configuration.
+
+::alert{type="info"}
+Note that the SQL Server backend is removed in Kestra Version 0.23.
+::
 
 ### Scalability with JDBC
 
