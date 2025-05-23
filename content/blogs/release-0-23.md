@@ -71,14 +71,87 @@ Until now, users could write unit tests in Java, but with the new YAML-based Uni
 Key components of the Unit Testing include:
 
 - **Test Suites**: Create test suites targeting individual flows. Each test suite consists of one or more test cases, allowing you to unit test the same tasks multiple times, e.g., using different flow inputs or different fixtures.
-- **Fixtures**: Add fixtures for specific inputs or tasks by mocking specific task states and input values and avoid running tasks that might be computationally expensive or not required to run as part of a given test case.
+- **Fixtures**: Add fixtures for specific inputs or tasks by mocking specific task states, input values, and namespace files for internal storage files. This allows you to avoid running tasks that might be computationally expensive or not required to run as part of a given test case.
 - **Assertions**: Each test case can contain multiple assertions that check if the given task outputs match the expected outputs. There are many assertion operations such as `equalTo`, `notEqualTo`, `greaterThan`, `startsWith`, and more. This helps ensure your flow behaves correctly under different conditions.
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
 
 
-#TODO: add example of unit test with a flow and corresponding test suite
-::collapse{title="Unit test example"}
+::collapse{title="Unit Test example"}
 
+This example demonstrates a simple ETL (Extract, Transform, Load) flow. It sends a Slack notification at the start, downloads order data, extracts and transforms product names to uppercase, and then sends the results back to Slack.
+
+```yaml
+id: etl_toBigQuery
+namespace: company.team
+
+tasks:
+  - id: send_slack_message_started
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "https://hooks.slack.com/services/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"  # _int_test channel https://kestra-io.slack.com/archives/C08LHK1D5EE
+    payload: |
+      {
+        "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
+      }
+
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/orders.json
+
+  - id: transform_to_products_name
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+
+  - id: transform_to_uppercase
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
+
+  - id: send_slack_message_with_data
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "https://hooks.slack.com/services/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"  # _int_test channel https://kestra-io.slack.com/archives/C08LHK1D5EE
+    payload: |
+      {
+        "text": "{{ flow.namespace }}.{{ flow.id }}: Here are all the daily products: {{ outputs.transform_to_uppercase.value }}"
+      }
+```
+
+The following test suite demonstrates how we can mock Slack messages and assert the results of the transformations. This allows you to validate the flow's behavior without sending real notifications or fetching live data.
+
+```yaml
+id: etl_toBigQuery_extract_testsuite
+namespace: company.team
+flowId: etl_toBigQuery
+testCases:
+  - id: extract_should_return_data
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      tasks:
+        - id: send_slack_message_started
+          description: "dont send begin slack message"
+        - id: send_slack_message_with_data
+          description: "dont send end output slack message"
+    assertions:
+      - value: "{{outputs.transform_to_uppercase.value}}"
+        isNotNull: true        
+  - id: extract_should_transform_productNames_to_uppercase_mocked
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      tasks:
+        - id: send_slack_message_started
+          description: "dont send begin slack message"
+        - id: send_slack_message_with_data
+          description: "dont send end output slack message"
+        - id: extract
+          description: "dont fetch data from API"
+        - id: transform_to_products_name
+          outputs:
+            value: |
+              [
+                "my-product-1"
+              ]
+    assertions:
+      - value: "{{outputs.transform_to_uppercase.value}}"
+        contains: "MY-PRODUCT-1"
+```
 ::
 
 
