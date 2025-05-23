@@ -42,7 +42,7 @@ With this flexible interface, you can:
 - Edit the flow both as Code and No-Code form at the same time while previewing the visual representation in real-time in the live-updating Topology view
 - Switch between code and no-code views based on your preference or task complexity
 - Visualize task dependencies through the topology view while making edits
-- Reference documentation without leaving your editing environment
+- Reference documentation or blueprints without leaving the Editor
 
 You can customize your experience by opening only the panels you need, creating a workspace tailored to your workflow development style. This enhancement significantly improves productivity by reducing context switching and providing multiple perspectives on your workflows simultaneously.
 
