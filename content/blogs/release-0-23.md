@@ -87,7 +87,7 @@ namespace: company.team
 tasks:
   - id: send_slack_message_started
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/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"  # _int_test channel https://kestra-io.slack.com/archives/C08LHK1D5EE
+    url: "https://hooks.slack.com/services/XXXX
     payload: |
       {
         "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
