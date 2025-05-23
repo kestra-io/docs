@@ -40,7 +40,7 @@ The Multi Panel Editor transforms how you design and manage workflows by introdu
 
 With this flexible interface, you can:
 - Edit the flow both as Code and No-Code form at the same time while previewing the visual representation in real-time in the live-updating Topology view
-- Switch between code and no-code approaches based on your preference or task complexity
+- Switch between code and no-code views based on your preference or task complexity
 - Visualize task dependencies through the topology view while making edits
 - Reference documentation without leaving your editing environment
 
