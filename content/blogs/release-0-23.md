@@ -390,12 +390,65 @@ tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.trends.outputText }}"
+```
 ::
 
 ### Langchain (beta)
 
-- Mention RAG capabilities?
+We are excited to announce the beta release of several Langchain plugins for Kestra. We encourage you to try them out and share your feedback via GitHub issues or on our Slack community.
 
+These plugins introduce a wide range of AI-powered tasks, including:
+- **Chat Completion**: Generate conversational responses using large language models.
+- **Classification**: Automatically classify text into categories.
+- **Image Generation**: Create images from text prompts using supported providers.
+- **RAG (Retrieval-Augmented Generation) Chat**: Combine LLMs with document retrieval for more accurate and context-aware answers.
+- **RAG IngestDocument**: Ingest and index documents for use in RAG workflows (see example below).
+
+For embeddings, you can choose from several backends, including Elasticsearch, KVStore, and pgvector, allowing you to tailor your RAG workflows to your infrastructure. More embedding backends will be added in future releases.
+
+The plugins support multiple providers, such as OpenAI, Google Gemini, and others, giving you flexibility to select the best model for your use case.
+
+::collapse{title="Example using Langchain RAG capabilities"}
+```yaml
+id: rag_demo
+namespace: company.team
+
+tasks:
+  - id: ingest
+    type: io.kestra.plugin.langchain4j.rag.IngestDocument
+    provider:
+      type: io.kestra.plugin.langchain4j.provider.GoogleGemini
+      modelName: gemini-embedding-exp-03-07
+      apiKey: xxx
+    embeddings:
+      type: io.kestra.plugin.langchain4j.embeddings.KestraKVStore
+    drop: true
+    fromExternalURLs:
+      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/content/blogs/release-0-22.md
+
+  - id: hallucinated_answer
+    type: io.kestra.plugin.langchain4j.TextCompletion
+    provider:
+      type: io.kestra.plugin.langchain4j.provider.GoogleGemini
+      modelName: gemini-1.5-flash
+      apiKey: xxx
+    prompt: Which features were released in Kestra 0.22?
+
+  - id: correct_response_with_rag
+    type: io.kestra.plugin.langchain4j.rag.Chat
+    chatProvider:
+      type: io.kestra.plugin.langchain4j.provider.GoogleGemini
+      modelName: gemini-1.5-flash
+      apiKey: xxx
+    embeddingProvider:
+      type: io.kestra.plugin.langchain4j.provider.GoogleGemini
+      modelName: gemini-embedding-exp-03-07
+      apiKey: xxx
+    embeddings:
+      type: io.kestra.plugin.langchain4j.embeddings.KestraKVStore
+    prompt: Which features were released in Kestra 0.22?
+```
+::
 
 ### GitHub Workflow
 
