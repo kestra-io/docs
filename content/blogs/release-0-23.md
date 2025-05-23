@@ -50,6 +50,19 @@ You can customize your experience by opening only the panels you need, creating 
   <iframe src="https://www.youtube.com/embed/PLACEHOLDER" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+
+### No-Code Flow Editor
+
+The No-Code Flow Editor has received a major redesign, making it easier and more intuitive to create and manage your workflows without writing any YAML code. This new version introduces a modern, streamlined interface that improves usability and accelerates flow creation for all users.
+
+Key improvements include:
+- **New design**: A refreshed, user-friendly layout that simplifies navigation and editing, making it easier to build complex workflows visually.
+- **Fixed issues around arrays and uncovered elements**: The editor now properly handles array fields and previously unsupported or hard-to-edit elements, ensuring you can configure all aspects of your flows directly from the UI.
+- **Enhanced functionality and reliability**: The No-Code Editor has been comprehensively improved with robust validation, intelligent default configurations, and expanded support across all Kestra features. These enhancements deliver increased stability, improved error handling, and a more refined user experience for users at all skill levels.
+
+TODO: screenshot
+
+
 ### Unit Test Flows
 
 As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Tests in YAML, allowing you to validate your flows and detect regressions early.
