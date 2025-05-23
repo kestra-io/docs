@@ -15,12 +15,13 @@ The table below highlights the key features of this release.
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
 | Multi Panel Editor       | Enhanced visual editor with split-screen capabilities for simultaneous code and visual editing | All Edition |
-| Unit Test Flows       | Built-in testing framework for validating workflow behavior | [TBD] |
-| Improved Filtering capabilities         | Enhanced search experience with fixed and improved filters | All Edition |
-| Outputs in Internal Storage      | Store and manage workflow outputs directly in Kestra's internal storage | Enterprise Edition |
-| Improved dashboard management         | Configure your own default dashboard to customize your experience | All Edition |
-| Caching dependencies    | Speed up your workflows by caching script dependencies across executions | All Edition |
-| Manage Apps & Dashboard with Git | Version control your dashboards and applications with Git integration tasks | All Edition |
+| No-Code Flow Editor | Create Kestra flows from the new form-based UI without writing code | All Edition |
+| Unit Test Flows       | Built-in testing framework for validating workflow behavior | Enterprise Edition |
+| New Filters         | New UI Filters with faster autocompletion and editable as plain text | All Edition |
+| Outputs in Internal Storage      | Store and manage workflow outputs in isolated tenant storage for complete data separation | Enterprise Edition |
+| Improved dashboard management         | Configure your own default dashboard with new customizable KPI charts and adjustable chart widths | All Edition |
+| Python Dependency Caching    | Speed up your workflows with automatic caching of script dependencies across executions - just define your dependencies and Kestra handles the rest | All Edition |
+| Manage Apps & Dashboard with Git | Version control your dashboards and apps with Git tasks | All Edition |
 
 Check the video below for a quick overview of all enhancements.
 
