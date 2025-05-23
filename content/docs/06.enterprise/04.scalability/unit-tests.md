@@ -43,7 +43,7 @@ namespace: company.team
 tasks:
   - id: send_slack_message_started
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/XXXX-mywebhook-XXXXX"
+    url: "https://hooks.slack.com/services/XXXX-mywebhook-XXXXX" # To use this example, replace the url with your own Slack webhook
     payload: |
       {
         "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
