@@ -36,13 +36,12 @@ Let's dive into these highlights and other enhancements in more detail.
 ## Feature Highlights
 
 ### Multi Panel Editor
-
-The Multi Panel Editor transforms how you design and manage workflows by introducing a unified interface with split-screen capabilities. This powerful enhancement allows you to simultaneously view and edit your workflows in multiple formats - YAML code, visual no-code editor, topology view, and documentation - all within a single, integrated workspace.
+The Multi Panel Editor transforms how you design and manage workflows by introducing a unified interface with split-screen capabilities. This powerful enhancement allows you to simultaneously view and edit your workflows in multiple formats - YAML code, form-based no-code editor, topology view, and documentation - all within a single, integrated workspace.
 
 With this flexible interface, you can:
-- Edit the flow both as Code and No-Code form at the same time while previewing the visual representation in real-time in the live-updating Topology view
-- Switch between code and no-code views based on your preference or task complexity
-- Visualize task dependencies through the topology view while making edits
+- Edit the flow using both Code and form-based editors simultaneously while seeing your changes reflected in real-time in the topology view
+- Switch between code and form-based views based on your preference or task complexity
+- Track task dependencies through the topology view while making edits
 - Reference documentation or blueprints without leaving the Editor
 
 You can customize your experience by opening only the panels you need, creating a workspace tailored to your workflow development style. This enhancement significantly improves productivity by reducing context switching and providing multiple perspectives on your workflows simultaneously.
@@ -53,8 +52,8 @@ You can customize your experience by opening only the panels you need, creating 
 
 ### Unit Test Flows
 
-As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Tests, allowing you to validate your flows and detect regressions early.
-Until now, users relied on manual execution or external scripting to verify behavior. With Unit Test support, you can now define expected outcomes, isolate tasks, and detect regressions early—directly inside your development environment.
+As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Tests in YAML, allowing you to validate your flows and detect regressions early.
+Until now, users could write unit tests in Java, but with the new YAML-based Unit Test support, you can now define expected outcomes, isolate tasks, and detect regressions early—directly inside Kestra using the same YAML format as your flows.
 
 Key components of the Unit Testing include:
 
