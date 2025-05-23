@@ -57,7 +57,7 @@ Until now, users relied on manual execution or external scripting to verify beha
 
 Key components of the Unit Testing include:
 
-- **Test Suites**: Create test suites targeting individual tasks or full sections of your flows. Each suite encapsulates a set of test cases, allowing you to cover multiple paths and edge cases without executing the full logic end-to-end.
+- **Test Suites**: Create test suites targeting individual flows. Each test suite consists of one or more test cases, allowing you to unit test the same tasks multiple times, e.g., using different flow inputs or different fixtures.
 - **Fixtures**: Define fixtures to simulate inputs or task outputs. This skips real execution for mocked tasks, making your tests faster, deterministic, and easier to isolate.
 - **Assertions**: Each test can include assertions to check for expected outcomes—task results, flow variables, execution paths, or any output produced by the flow. This helps ensure your flow behaves correctly under different conditions.
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
