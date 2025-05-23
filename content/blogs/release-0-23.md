@@ -583,7 +583,7 @@ tasks:
 
 ### Databricks CLI
 
-We've added a new Databricks SQL CLI task that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
+We've added a new [Databricks SQL CLI task](https://kestra.io/plugins/plugin-databricks) that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
 
 
 ### Improvements: Redis & ServiceNow
