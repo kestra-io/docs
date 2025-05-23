@@ -1,3 +1,4 @@
+import type { Component } from 'vue'
 import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative.vue"
 import Security from "vue-material-design-icons/Security.vue"
 import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
@@ -26,7 +27,31 @@ import LightbulbOn40 from "vue-material-design-icons/LightbulbOn40.vue"
 import HeadQuestion from "vue-material-design-icons/HeadQuestion.vue"
 import Flare from "vue-material-design-icons/Flare.vue"
 
-export const menuItems = {
+interface MenuItem {
+    icon: Component;
+    title: string;
+    description?: string;
+    link: string;
+    tag?: string;
+}
+
+interface MenuItems {
+    product: {
+        items: MenuItem[];
+    };
+    solutions: {
+        capabilities: MenuItem[];
+        roles: MenuItem[];
+        industries: MenuItem[];
+        resources: MenuItem[];
+    };
+    resources: {
+        mainItems: MenuItem[];
+        additionalItems: MenuItem[];
+    };
+}
+
+export const menuItems: MenuItems = {
     product: {
         items: [
             {
