@@ -207,7 +207,10 @@ With improved dashboard management, you can:
 
 ### Python dependency caching
 
-[FEATURE 5 DESCRIPTION]
+Kestra 0.23 introduces Python dependency caching, bringing significant improvements to the execution of Python tasks. With this feature, execution times for Python tasks are reduced, as dependencies are cached and reused across runs. You can now use official Python Docker images, and multiple executions of the same task will consistently use the same library versions. There is no need to use virtual environments (venv) for installing requirements, simplifying setup and maintenance.
+
+TODO: add uv mention and explanation?
+TODO: add example
 
 
 ### Git Sync for Apps & Dashboards
@@ -226,9 +229,6 @@ With the new Git integration for dashboards and apps, you can now:
 ::collapse{title="Dashboard GitSyncApps integration example"}
 
 ::
-
-https://github.com/kestra-io/plugin-git/issues/122
-https://github.com/kestra-io/plugin-git/issues/121
 
 
 ## Notable Enhancements
