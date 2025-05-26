@@ -4,17 +4,13 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 
-const stargazersText = ref<string | null>(null);
-
-const formatStargazers = (count: number): string => 
-    new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 })
-    .format(count).toLowerCase();
+const stargazersText = ref<string | undefined>(undefined)
 
 onMounted(async () => {
-    const response = await axios.get<{ stargazers: number }>('/api/github');
-    stargazersText.value = formatStargazers(response.data.stargazers);
-});
+    const response = await axios.get('/api/github')
+    stargazersText.value = Intl.NumberFormat('en-US').format(response.data.stargazers);
+})
 </script>

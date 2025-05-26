@@ -703,15 +703,9 @@ nav {
                 padding: calc($spacer * 0.65) $spacer !important;
             }
 
-            .github {
-                background: #F7F7F8;
-                border: 1px solid $white-2 !important;
-                padding: calc($spacer * 0.25) $spacer;
-            }
-
             :deep(.github .btn-outline-dark) {
                 background: transparent;
-                color: $black-1;
+                color: $black-1 !important;
             }
         }
 
@@ -732,11 +726,6 @@ nav {
         }
     }
 
-    :deep(.github .btn) {
-        font-weight: bold !important;
-        font-size: 12px !important;
-    }
-
     &:not(.transparent) {
         :deep(.github) {
             &:hover {
@@ -748,10 +737,6 @@ nav {
                     background: transparent !important;
                 }
             }
-        }
-
-        :deep(.github .btn-dark) {
-            color: $white-6;
         }
 
         :deep(.github .btn-outline-dark) {
