@@ -734,7 +734,8 @@ nav {
                 }
 
                 .btn-outline-dark {
-                    background: transparent !important;
+                    background: transparent;
+                    color: $white-1 !important;
                 }
             }
         }

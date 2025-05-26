@@ -45,7 +45,7 @@ withDefaults(defineProps<{ small?: boolean }>(), { small: false })
             }
         }
         .btn-outline-dark:hover {
-            background: transparent;
+            background: $black-5 !important;
         }
     }
 </style>
