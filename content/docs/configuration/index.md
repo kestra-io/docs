@@ -1205,9 +1205,9 @@ kestra:
 ```
 
 ::alert{type="warning"}
-Note that the `kestra.plugins.defaults` **must be the same for all kestra servers**. Plugin defaults are **always rendered by the Executor**, not the Worker -- this is by design. You should think of Workers as unintelligent processes that simply run the task or trigger and report back on the result. The Executor is responsible for rendering the task properties, including plugin defaults, and sending them to the Worker for execution. The Worker doesn't perform any logic like rendering plugin defaults, it simply does what it's told to by the Executor. This means that trying to use dedicated template files for each Worker to define different plugin defaults will not work as expected.
+⚠️ Note that the `kestra.plugins.defaults` **must be the same for all kestra servers**. Plugin defaults are **always rendered by the Executor**, not the Worker -- this is by design. You should think of Workers as minimal processes that simply run the task or trigger and report the processing state and outputs. This means that trying to use dedicated template files for each Worker to define different plugin defaults will not work as expected.
 
-The Executor will always render the plugin defaults, and the Worker simply executes the task with the rendered properties.
+The Executor is responsible for rendering the task properties, including plugin defaults, and sending them to the Worker for execution. The Worker doesn't perform any logic like rendering plugin defaults, it simply executes the task or trigger with the rendered properties according to the instructions given by the Executor and reports back on the results.
 ::
 
 For greater granularity, you can use the flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level) property, which overrides global defaults for the given flow.
