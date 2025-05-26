@@ -123,6 +123,104 @@ After running, we can see that the assertion was successful and the actual resul
 
 ![Test case 2 results](/docs/enterprise/test-case-2.png)
 
+## Unit Test with Namespace File
+
+You can also simulate flows with namespace files that are scripts, test data, or any other sort of file content. Taking the previous example, we can include a namespace file that includes sample data from the production API endpoint, so that we do not need to make any API calls simply to test the flow. This prevents accumulating cost for requests or any sort of limit on calls a service might have.
+
+With the following flow:
+
+```yaml
+id: etl_download_file
+namespace: company.team
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/orders.json
+    method: GET
+
+  - id: transform_to_products_name
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+
+  - id: transform_to_uppercase
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper}}"
+
+  - id: load_result_to_outgoing_api
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.transform_to_uppercase.this_task_should_not_be_run }}"
+```
+
+we can add a namespace file in the `company.team` namespace that mimics the format of the API request's return.
+
+```json
+# my-namespace-file-with-products.json to add to company.team namespace
+{
+  "Account": {
+    "Account Name": "Firefly",
+    "Order": [
+      {
+        "OrderID": "order103",
+        "Product": [
+          {
+            "Product Name": "Bowler Hat",
+            "ProductID": 858383,
+            "SKU": "0406654608",
+            "Description": {
+              "Colour": "Purple",
+              "Width": 300,
+              "Height": 200,
+              "Depth": 210,
+              "Weight": 0.75
+            },
+            "Price": 34.45,
+            "Quantity": 2
+          },
+          {
+            "Product Name": "Trilby hat",
+            "ProductID": 858236,
+            "SKU": "0406634348",
+            "Description": {
+              "Colour": "Orange",
+              "Width": 300,
+              "Height": 200,
+              "Depth": 210,
+              "Weight": 0.6
+            },
+            "Price": 21.67,
+            "Quantity": 1
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This way, in our mock test, we can set the following configuration to test the transformation on sample data rather than making the API request:
+
+```yaml
+id: etl_mockfile
+namespace: company.team
+flowId: etl_download_file
+testCases:
+  - id: extract_should_transform_productNames_to_uppercase_with_mocked_file
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      tasks:
+        - id: extract
+          description: "mock extract data file"
+          outputs:
+            uri: "my-namespace-file-with-products.json" # this file is a namespace file in the same namespace
+        - id: load_result_to_outgoing_api
+          description: "dont send end output"
+    assertions:
+      - value: "{{outputs.transform_to_uppercase.value}}"
+        equalsTo: "[BOWLER HAT, TRILBY HAT]"
+```
+With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
+
 ## Operators
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The full list is as follows:
