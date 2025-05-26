@@ -74,23 +74,74 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ## Microsoft Entra ID SCIM Setup
 
-1. **Register Kestra as an Enterprise Application**:
+### 1. Register Kestra as an Enterprise Application:
    - Navigate to Microsoft Entra ID → Enterprise Applications.
    - Click on the `+ New application` button to create a new custom application. You can name the app "KestraSCIM" or any other relevant name.
   ![scim6](/docs/enterprise/scim6.png)
 
-2. **Configure SCIM Provisioning**:
+### 2. Configure SCIM Provisioning:
    - Go to the newly created Kestra application.
    - Select "Provisioning" and set the Provisioning Mode to "Automatic".
    - Enter the SCIM endpoint URL and the Secret Token provided by Kestra. Paste kestra's SCIM endpoint URL into the Tenant URL field and the Secret Token into the Secret Token field.
    - Finally, click on `Test Connection` and on the `Save` button.
   ![scim7](/docs/enterprise/scim7.png)
 
-3. **Map User and Group Attributes**:
-   - Configure attribute mappings for users and groups to match Kestra’s schema requirements.
-   - Test the configuration and ensure that users and groups are synchronized correctly.
+### 3. Map User and Group Attributes:
 
-4. **Enable Provisioning**:
+After entering and saving the **Admin Credentials** for SCIM provisioning connection in Microsoft Entra ID (i.e., the Tenant URL and Secret Token), Azure will **enable the `Mappings` section** under the Provisioning settings.
+
+The **Mappings** section allows you to define how user and group attributes should flow between Microsoft Entra ID and Kestra.
+
+#### SCIM Schema Support in Kestra
+Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ietf.org/doc/html/rfc7643#section-4), specifically supporting the following resource types:
+
+- **User Resource**:
+  - Example attributes: `userName`, `name.givenName`, `name.familyName`, `emails`, `active`
+- **Group Resource**:
+  - Example attributes: `displayName`, `members`
+
+#### Retrieve Supported Schemas
+
+Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes.
+
+```text
+GET /api/v1/<tenant>/integrations/<integration_id>/scim/v2/Schemas
+```
+
+::alert{type="info"}
+Replace `<tenant>` with your actual tenant, and `<integration_id>` with your actual Kestra SCIM integration ID.
+::
+
+This endpoint returns a list of supported schemas and their attributes. Use it as a reference when configuring attribute mappings in Entra ID.
+
+#### Configure User and Group mapping
+
+To configure mappings:
+
+1. Go to:
+   **Microsoft Entra Admin Center** → **Enterprise Applications** → *Your Kestra App* → **Provisioning** → **Mappings**
+
+2. Configure attribute mappings:
+  - **For Users**:
+    - Map source attributes such as `userPrincipalName`, `mail` to their SCIM equivalents.
+  - **For Groups**:
+    - Map attributes such as `displayName`
+    - Ensure group `members` are synchronized properly.
+3. Refer to the `/Schemas` endpoint response from Kestra to guide accurate mapping.
+4. Use attribute expressions or transformations in Entra ID if needed (e.g., to format names or emails).
+
+::alert{type="info"}
+By default, Azure will pre-populate the mapping with many Microsoft Entra ID attributes. You may need to **remove or simplify** some of these mappings if you encounter synchronization issues with Users or Groups in Kestra.
+::
+
+#### Test the Configuration
+After mappings are configured:
+
+- Trigger a **manual provisioning cycle** from the **Provisioning** tab.
+- Verify that **users and groups** are correctly created or updated in Kestra.
+- Review **provisioning logs** in Entra ID for any errors or warnings.
+
+### 4. Enable Provisioning:
    - Now that everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
 
 ## Additional Resources
