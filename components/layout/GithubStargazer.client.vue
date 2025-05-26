@@ -15,7 +15,7 @@ const formatStargazers = (count) => {
         compactDisplay: 'short'
     });
 
-    return formatter.format(count);
+    return formatter.format(count).toLowerCase();
 }
 
 onMounted(async () => {
