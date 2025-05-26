@@ -15,14 +15,7 @@
 <script setup lang="ts">
 import Github from "vue-material-design-icons/Github.vue"
 
-const props = withDefaults(
-    defineProps<{
-        small?: boolean
-    }>(),
-    {
-        small: false
-    }
-)
+withDefaults(defineProps<{ small?: boolean }>(), { small: false })
 </script>
 
 <style lang="scss" scoped>
