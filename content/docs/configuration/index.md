@@ -945,7 +945,7 @@ logger:
     flow: 'OFF'
 ```
 
-This disables the storage of all flow execution logs, so they will only appear in the server logs. 
+This disables the storage of all flow execution logs, so they will only appear in the server logs.
 
 Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
@@ -1193,7 +1193,7 @@ kestra:
 
 ### Plugin Defaults
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined as a default value for these tasks.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **unless that flow explicitly defines that property**. Plugin defaults ensure a property is defined as a default value for these tasks.
 
 ```yaml
 kestra:
@@ -1203,6 +1203,12 @@ kestra:
       values:
         level: ERROR
 ```
+
+::alert{type="warning"}
+Note that the `kestra.plugins.defaults` **must be the same for all kestra servers**. Plugin defaults are **always rendered by the Executor**, not the Worker -- this is by design. You should think of Workers as unintelligent processes that simply run the task or trigger and report back on the result. The Executor is responsible for rendering the task properties, including plugin defaults, and sending them to the Worker for execution. The Worker doesn't perform any logic like rendering plugin defaults, it simply does what it's told to by the Executor. This means that trying to use dedicated template files for each Worker to define different plugin defaults will not work as expected.
+
+The Executor will always render the plugin defaults, and the Worker simply executes the task with the rendered properties.
+::
 
 For greater granularity, you can use the flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level) property, which overrides global defaults for the given flow.
 
@@ -1323,7 +1329,7 @@ kestra:
 As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
 
 ```yaml
-kestra: 
+kestra:
   plugins:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
@@ -1332,7 +1338,7 @@ kestra:
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s
-        defaultVersion: LATEST 
+        defaultVersion: LATEST
 ```
 
 The following list of properties correspond to Versioned and remotely stored plugins:
@@ -1386,7 +1392,7 @@ kestra:
     isolation: # available in Kestra >=0.22
       enabled: true # default: false
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
-        - EXECUTOR        
+        - EXECUTOR
 ```
 
 ### AWS Secret Manager
