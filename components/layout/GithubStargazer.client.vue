@@ -11,7 +11,7 @@ const stargazersText = ref<string | null>(null);
 
 const formatStargazers = (count: number): string => 
     new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 })
-    .format(count);
+    .format(count).toLowerCase();
 
 onMounted(async () => {
     const response = await axios.get<{ stargazers: number }>('/api/github');
