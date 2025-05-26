@@ -286,7 +286,8 @@ To add users to your Kestra instance, you can do one of the following:
 
 #### Change password
 
-If a user wants to change their password, they can do it on their profile. This page can be accessed through the person icon in top right corner of the UI.
+If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
+
 ::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
 ::
