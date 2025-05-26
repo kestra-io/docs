@@ -35,9 +35,9 @@ Read more about [Variables](../../06.enterprise/02.governance/07.namespace-manag
 
 Plugin defaults can also be defined at the namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same namespace.
 
-![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png).
+![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png)
 
-Read more about [Plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults)
+Read more about [Plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults).
 
 ## Secrets
 
