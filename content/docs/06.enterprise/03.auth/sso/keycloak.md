@@ -1,7 +1,7 @@
 ---
 title: Configure KeyCloak SSO
 icon: /docs/icons/tutorial.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Setup KeyCloak SSO to manage authentication for users.
@@ -37,7 +37,7 @@ micronaut:
           client-id: "{{clientId}}"
           client-secret: "{{clientSecret}}"
           openid:
-            issuer: "https://{{keyCloakServer}}/auth/realms/{{yourRealm}}"
+            issuer: "https://{{keyCloakServer}}/realms/{{yourRealm}}"
     endpoints:
       logout:
         get-allowed: true
@@ -51,7 +51,7 @@ You can retrieve `clientId` and `clientSecret` via KeyCloak user interface
 
 Don't forget to set a default role in your Kestra configuration to streamline the process of adding new users.
 
-```
+```yaml
 kestra:
   security:
     defaultRole:

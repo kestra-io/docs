@@ -25,7 +25,7 @@ Note that your **custom plugins** will need an equivalent approach of renaming a
 
 Upgrading to Kestra 0.22.0 requires a change in the way plugins are stored and managed. The [plugin versioning system](../../06.enterprise/05.instance/versioned-plugins.md) requires a global internal storage configuration, because plugins are now stored in a global internal storage location. This is true even if you are using a dedicated internal storage backend for each tenant.
 
-Under the hood, plugins are now stored in the internal storage under the path `_plugins/repository/`. Therefore, the service account or credentials you use in your [Internal Storage configuration](../../configuration/index.md#internal-storage) **must have permissions to access the `_plugins` directory in the global instance internal storage (e.g. your S3 bucket)**. If you are using a service account or an IAM role, make sure that it has access to this resources. Alternatively you can temporarily disable this feature using the following configuration:
+Under the hood, plugins are now stored in the [Internal Storage](../../07.architecture/09.internal-storage.md) under the path `_plugins/repository/`. Therefore, the service account or credentials you use in your [Internal Storage configuration](../../configuration/index.md#internal-storage) **must have permissions to access the `_plugins` directory in the global instance internal storage (e.g. your S3 bucket)**. If you are using a service account or an IAM role, make sure that it has access to this resources. Alternatively you can temporarily disable this feature using the following configuration:
 
 ```yaml
 kestra:

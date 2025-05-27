@@ -139,7 +139,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ### File Output
 
-Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
+Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found in [Script Output Metrics](../16.scripts/06.outputs-metrics.md).
 
 The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -167,7 +167,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../16.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml
 id: ruby_metrics
@@ -187,3 +187,31 @@ tasks:
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](/docs/how-to-guides/ruby/metrics.png)
+
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
+- [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
+
+In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.ruby.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri) }}
+      data["next_month"] = '{{ read(outputs.download.uri) | jq(".month") | first }}'.to_i + 1
+      return {data: data}
+```
+

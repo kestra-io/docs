@@ -20,12 +20,12 @@
                         class="btn btn-lg btn-secondary mb-2"
                         target="_blank"
                     >
-                        Book a Demo
+                        Talk to us
                     </NuxtLink>
 
                 </div>
             </div>
-            <div class="img-block">
+            <div class="img-block" ref="imgBlock">
                 <a
                     href="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
                     class="homepage-video"
@@ -51,9 +51,12 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else ref="canvas" height="1520" width="2000" :class="{
+                <canvas v-else-if="!riveDisabled" ref="riveCanvas" height="1520" width="2000" :class="{
                     loading: !riveLoaded,
                 }"/>
+                <div class="canvas-placeholder" v-else>
+                    Loading...
+                </div>
             </div>
         </div>
     </section>
@@ -90,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted } from "vue";
-    import { useMediaQuery } from "@vueuse/core";
+    import { ref } from "vue";
+    import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
@@ -99,13 +102,18 @@
     import { Rive } from "@rive-app/canvas";
 
     const videoVisible = ref(false)
-    const canvas = ref<HTMLCanvasElement>()
+    const canvas = useTemplateRef<HTMLCanvasElement>('riveCanvas')
+    const imgBlock = useTemplateRef<HTMLDivElement>('imgBlock')
 
     const riveAnimation = ref()
     const riveLoaded = ref(false)
+    const riveDisabled = ref(false)
 
     function setupRiveAnimation(){
-        if(!canvas.value) return
+        if(!canvas.value) {
+            console.error("canvas not found")
+            return
+        }
         const anim = new Rive({
             src: "/landing/home/homepage.riv",
             canvas: canvas.value,
@@ -120,11 +128,18 @@
         riveAnimation.value = anim
     }
 
-    onMounted(() => {
-        if(!isMobile.value){
-            setupRiveAnimation()
+    useIntersectionObserver(imgBlock, ([{ isIntersecting }]) => {
+        if (isIntersecting) {
+            riveDisabled.value = false
+            nextTick(() => {
+                setupRiveAnimation();
+            })
+        } else {
+            riveDisabled.value = true
+            cleanupRiveAnimation()
         }
-    })
+    });
+
     function cleanupRiveAnimation(){
         try{
             riveAnimation.value?.cleanup();
@@ -141,6 +156,12 @@
             nextTick(() => {
                 setupRiveAnimation();
             })
+        }
+    })
+
+    onMounted(() => {
+        if(!isMobile.value){
+            setupRiveAnimation();
         }
     })
 
@@ -291,7 +312,7 @@
             position: relative;
             display: flex;
             justify-content: center;
-            .homepage-image{
+            .homepage-image {
                 display: none;
             }
             @include media-breakpoint-down(md) {
@@ -314,7 +335,7 @@
                 }
             }
 
-            canvas {
+            canvas, .canvas-placeholder {
                 width: 2000px;
                 margin-top: -700px;
                 margin-bottom: -200px;
@@ -322,6 +343,10 @@
                 background-position: 237px 596px;
                 background-size: 1600px;
                 background-repeat: no-repeat;
+            }
+
+            .canvas-placeholder{
+                height: 1520px;
             }
 
             canvas.loading{

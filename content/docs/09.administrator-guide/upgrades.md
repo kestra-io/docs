@@ -16,7 +16,8 @@ To upgrade Kestra, follow these steps:
 
 ## How to rollback Kestra to a previous version
 
-Soemtimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+Sometimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+
 1. Perform a database backup (optional but recommended)
 2. Stop all Kestra components
 3. Restore from a backup
@@ -26,7 +27,7 @@ Check the [Backup and Restore](./backup-and-restore.md) section for more informa
 
 ## Where you can find the release changelog
 
-You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](/blogs).
+You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level explanation of the changes, you can also check release [blog posts](/blogs).
 
 ## How to identify breaking changes in a release
 
@@ -36,9 +37,10 @@ Next to all bug fixes and enhancements, you can find a dedicated section called 
 ⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
 ::
 
-## How to minimise downtime when updating Kestra
+## How to minimize downtime when updating Kestra
 
 If running Kestra in separate components you should:
+
 - Stop the executors and the scheduler
 - Stop the workers - there is a graceful shutdown period to finish active jobs before closing the worker. This is set by default to be: `kestra.server.terminateGracePeriod = '5m'` but is adjustable in your [Kestra Configuration](../configuration/index.md).
   - If the job in progress is shorter than five minutes, then the worker will shutdown immediately when completed. If not, the task will be killed and restart when the worker is restarted.

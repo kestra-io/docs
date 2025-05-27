@@ -123,92 +123,6 @@
                         />
                     </div>
                     <div class="col-12 mt-3">
-                        <label for="use_case_context">
-                            <span class="text-danger">*</span>
-                            What’s Your Orchestration Context
-                        </label>
-
-                        <div class="form-check mt-3">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="use_case"
-                                value="Data Orchestration"
-                                id="use_case_Data_Orchestration"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="use_case_analytics"
-                            >
-                                Data Orchestration
-                            </label>
-                        </div>
-
-                        <div class="form-check mt-1">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="use_case"
-                                value="IT & Infrastructure Orchestration"
-                                id="use_case_Infrastructure_Orchestration"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="use_case_Infrastructure_Orchestration"
-                            >
-                                IT & Infrastructure Orchestration
-                            </label>
-                        </div>
-
-                        <div class="form-check mt-1">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="use_case"
-                                value="Business Process Orchestration"
-                                id="use_case_Business_Orchestration"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="use_case_Business_Orchestration"
-                            >
-                                Business Process Orchestration
-                            </label>
-                        </div>
-
-                        <div class="form-check mt-1">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="use_case"
-                                value="Event Driven Orchestration"
-                                id="use_case_Application_Data_Orchestration"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="use_case_Aplication_Data_Orchestration"
-                            >
-                                Event Driven Orchestration
-                            </label>
-                        </div>
-
-                        <div class="form-check mt-1">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="use_case"
-                                value="AI Orchestration"
-                                id="use_case_ML_&_AI"
-                            />
-                            <label
-                                class="form-check-label"
-                                for="use_case_ML_&_AI"
-                            >
-                                AI Orchestration
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-12 mt-3">
                         <label class="mb-2">
                             <span class="text-danger">*</span>
                             Have you already used Kestra Open Source?
@@ -241,21 +155,6 @@
                             </label>
                         </div>
                     </div>
-
-                    <div class="col-12 mt-3">
-                        <label for="use_case_context">
-                            <span class="text-danger">*</span>
-                            Tell us about your project and timeline - what makes
-                            it a perfect fit for early access?
-                        </label>
-
-                        <textarea
-                            name="use_case_context"
-                            class="form-control"
-                            id="cloud-use_case_context"
-                            required
-                        ></textarea>
-                    </div>
                     <div class="col-12 mt-4 pb-5 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary w-100">
                             Submit
@@ -282,15 +181,6 @@ const message = ref("");
 
 const hubSpotUrl =
     "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
-
-function getSelectedUseCases(formEl: HTMLFormElement) {
-    const checkboxes = formEl.querySelectorAll(
-        'input[name="use_case"]:checked',
-    );
-    return Array.from(checkboxes)
-        .map((cb: HTMLInputElement) => cb.value)
-        .join("; ");
-}
 
 function getUsedKestraStatus(formEl: HTMLFormElement) {
     const radio = formEl.querySelector(
@@ -340,18 +230,8 @@ const onSubmit = async (e: Event) => {
                 },
                 {
                     objectTypeId: "0-1",
-                    name: "use_case",
-                    value: getSelectedUseCases(form),
-                },
-                {
-                    objectTypeId: "0-1",
                     name: "have_you_used_kestra_open_source",
                     value: getUsedKestraStatus(form),
-                },
-                {
-                    objectTypeId: "0-1",
-                    name: "use_case_context",
-                    value: form["use_case_context"].value,
                 },
                 {
                     objectTypeId: "0-1",
@@ -420,6 +300,7 @@ const onSubmit = async (e: Event) => {
     }
 
     & .form {
+        align-self: flex-start;
         position: relative;
         padding: 60px 40px 0 40px;
         border-radius: 16px;

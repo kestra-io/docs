@@ -34,10 +34,7 @@
     </div>
     <div class="container">
         <div class="row">
-
-            <Section
-                subtitle="Join the community"
-            >
+            <section>
                 <div class="metrics">
                     <div class="counter-box text-center">
                         <ContentRenderer :value="kpi1Content" />
@@ -51,7 +48,7 @@
                         <ContentRenderer :value="kpi3Content" />
                     </div>
                 </div>
-            </Section>
+            </section>
         </div>
     </div>
 </template>

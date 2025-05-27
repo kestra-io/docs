@@ -1,7 +1,7 @@
 ---
 title: Allowed & Restricted Plugins
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.19.0"
 ---
 

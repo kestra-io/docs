@@ -160,7 +160,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ### File Output
 
-Inside of your JavaScript code, write a file to the system. You'll need to add `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
+Inside of your JavaScript code, write a file to the system. You'll need to add `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found in [Script Output Metrics](../16.scripts/06.outputs-metrics.md).
 
 The example below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
 
@@ -213,7 +213,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](../16.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
 ```javascript
 const Kestra = require('@kestra-io/libs');
@@ -243,3 +243,29 @@ Kestra.timer('duration', end - start);
 
 Once this has executed, `duration` will be viewable under **Metrics**.
 ![metrics](/docs/how-to-guides/nodejs/metrics.png)
+
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
+- [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
+
+In this example, the `Eval` task is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use the `int()` function to convert the string into an integer. Additionally, using the `outputs` property simplifies the process of fetching variables from JavaScript and accessing them inside Kestra. It is useful if you want to manipulate data and pass the new format to another task.
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri) }}
+      data["next_month"] = int(data["month"]) + 1
+```

@@ -12,9 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-const config = useRuntimeConfig()
-const { data } = await useFetch<{results: any[]}>(`${config.public.apiUrl}/blueprints/versions/latest?page=1&size=20`)
-const blueprints = computed(() => data.value?.results ?? [])
+import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+const { data: blueprintsData } = await useAsyncData(
+  `blueprints`,
+  () => useBlueprintsList({ page: 1, size: 20 })
+)
+const blueprints = computed(() => blueprintsData.value?.results ?? [])
 </script>
 
 <style lang="scss" scoped>
@@ -32,6 +35,7 @@ const blueprints = computed(() => data.value?.results ?? [])
             background: linear-gradient(90deg, #7C2EEA 0%, #658AF9 100%) no-repeat center;
             font-weight: 600;
             background-size: cover;
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -44,4 +48,3 @@ const blueprints = computed(() => data.value?.results ?? [])
         margin: 4rem 0 3rem;
     }
 </style>
-

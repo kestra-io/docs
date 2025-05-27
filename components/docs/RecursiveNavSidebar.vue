@@ -15,7 +15,7 @@
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
                         :href="item.path">
-                           {{ item.emoji }}
+                            {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
                     <NuxtLink
@@ -101,6 +101,14 @@
         data: () => ({
             toggled: [],
         }),
+        mounted() {
+            this.$nextTick(() => {
+                const activeItem = document.querySelector('.bd-sidebar a.active');
+                if (activeItem) {
+                    activeItem.scrollIntoView({ behavior: 'instant', block: 'center' });
+                }
+            });
+        },
         methods: {
             toggleWithChildrenHandling(path) {
                 this.items.filter(i => i.path.startsWith(path))
@@ -134,7 +142,12 @@
                     return true;
                 }
 
-                return item.path.match(/[^/]*\.[^/]*$/) ? this.activeSlug === item.path : this.activeSlug.startsWith(item.path);
+                if (item.path.match(/[^/]*\.[^/]*$/)) {
+                    return this.activeSlug === item.path;
+                }
+
+                const normalizePath = (path) => `${path}${path.endsWith('/') ? '' : '/'}`;
+                return normalizePath(this.activeSlug).startsWith(normalizePath(item.path));
             },
             isActiveOrExpanded(item) {
                 if (this.isActive(item)) {

@@ -7,21 +7,38 @@ version: ">= 0.10.0"
 
 How to configure Worker Groups in Kestra Enterprise Edition.
 
+A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
 
-Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
+::alert{type="info"}
+Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+::
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/C-539c3UVJM?si=3USIb1F7OiW9AQVp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Creating Worker Groups from the UI
 
 ::badge{version=">=0.19" editions="EE"}
 ::
 
-To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab and click on the `+ Add Worker Group` button. Then, set a `key` (and optionally, also a `description` and `fallback` behavior) for that worker group. You can accomplish the same via the API, CLI, or Terraform.
+To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
+
+![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 
 ## Starting Workers for a Worker Group
 
-Once a worker group key is created, you can start a worker with the `--worker-group workerGroupKey` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
+Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
+
+![Worker Group UI](/docs/enterprise/worker-group-ui.png)
 
 The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
+
+![Worker Group UI Details](/docs/enterprise/worker-group-details.png)
+
+::alert{type="info"}
+In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../server-cli/index.md#kestra-with-server-components-in-different-services). 
+::
 
 ## Using Worker Groups
 
@@ -51,22 +68,22 @@ If the `workerGroup.key` property is not provided, all tasks and polling trigger
 A `workerGroup.key` can also be assigned dynamically using `inputs` like in the following example:
 
 ```yaml
-id: workerGroupDynamic
+id: worker_group_dynamic
 namespace: company.team
 
 inputs:
-  - id: myWorkerGroup
+  - id: my_worker_group
     type: STRING
 
 tasks:
   - id: workerGroup
     type: io.kestra.plugin.core.debug.Return
-    format: "{{taskrun.startDate}}"
+    format: "{{ taskrun.startDate }}"
     workerGroup:
-      key: "{{inputs.myWorkerGroup}}"
+      key: "{{ inputs.my_worker_group }}"
 ```
 
-## Worker Group behavior
+## Worker Group Fallback Behavior
 
 ::badge{version=">=0.20" editions="EE"}
 ::
@@ -88,10 +105,27 @@ tasks:
 
 Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CANCEL`:
 - `WAIT`: The task will wait for the worker to be available and will remain in a `CREATED` state until the worker picks it up.
-- `FAIL`: The task run will be terminated immediately if the worker is not available and the execution will be marked as `FAILED`.
-- `CANCEL`: The task run will be gracefully terminated and execution will be marked as `KILLED` without an error.
+- `FAIL`: The task run will be terminated immediately if the worker is not available, and the execution will be marked as `FAILED`.
+- `CANCEL`: The task run will be gracefully terminated, and the execution will be marked as `KILLED` without an error.
 
 You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
+
+When Fallback behavior is set in multiple places, Kestra resolves which action to take by following this priority order:
+1. **Flow-Level**: Uses the behavior specified in the `fallback` property of the Flow task.
+2. **Namespace-Level**: Uses the behavior set in the the Namespace settings.
+3. **Tenant-Level**: Uses the behavior set in the the Tenant settings.
+
+### Fallback Behavior at the Namespace Level
+
+Namespaces can be configured to have a default `fallback` behavior. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
+
+![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
+
+### Fallback Behavior at the Tenant Level
+
+Tenants can be configured to have a default `fallback` behavior. It can be configured when creating a tenant on in the tenant's properties.
+
+![Configure Worker Group for a Tenant](/docs/enterprise/worker-group-tenant.png)
 
 ## When to use Worker Groups
 
@@ -100,6 +134,36 @@ Here are common use cases in which Worker Groups can be beneficial:
 - Execute tasks and polling triggers on a worker with a specific Operating System (e.g., a Windows server).
 - Restrict backend access to a set of workers (firewall rules, private networks, etc.).
 - Execute tasks and polling triggers close to a remote backend (region selection).
+
+
+You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../16.scripts/index.md) are set to run on the `gpu` worker group:
+
+```yaml
+id: worker_group
+namespace: company.team
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - sleep 10
+    
+  - id: python_gpu
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - python ml_on_gpu.py
+
+pluginDefaults:
+  - forced: false
+    type: io.kestra.plugin.scripts
+    values:
+      workerGroup:
+        key: gpu
+```
 
 ### Distant Workers
 
@@ -129,11 +193,11 @@ In the below architecture, it is not possible to execute tasks on worker 1 from 
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
 ::
 
-## Load balancing
+## Load Balancing
 
 Whether you leverage worker groups or not, Kestra will balance the load across all available workers. The primary difference is that with worker groups, you can target **specific** workers for task execution or polling trigger evaluation.
 
-A worker is part of a worker group if it is started with `--worker-group workerGroupKey`.
+A worker is part of a worker group if it is started with the `--worker-group workerGroupKey` argument.
 
 There's a slight difference between Kafka and JDBC architectures in terms of load balancing:
 - The Kafka architecture relies on Kafka consumer group protocol — each worker group will use a different consumer group protocol, therefore each worker group will balance the load independently.

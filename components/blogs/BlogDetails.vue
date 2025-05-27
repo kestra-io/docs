@@ -1,29 +1,27 @@
 <template>
     <div class="blog-details">
-        <p>
-            <span class="category">
-                {{ blog.category }}
-            </span>
-            <br />
-            <span class="date">
-                {{ date }}
-            </span>
-        </p>
-        <div class="py-3 author d-flex align-items-center gap-3">
-            <NuxtImg loading="lazy" width="48" class="rounded-circle"
-                :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name" /><br />
-            <div>
-                <p>{{ blog.author.name }}</p>
-                <span>{{ blog.author.role }}</span>
+        <div class="meta mb-4">
+            <span class="date">{{ date }}</span>
+            <span class="category ms-3">{{ blog.category }}</span>
+        </div>
+        <div class="authors">
+            <div v-for="author in authorsList" :key="author.name"
+                 class="author d-flex align-items-center gap-3">
+                <NuxtImg loading="lazy" width="48" class="rounded-circle"
+                    :src="'/landing/company/teams/' + author.image + '-sm.png'" :alt="author.name" />
+                <div>
+                    <p class="name">{{ author.name }}</p>
+                    <p v-if="author.role" class="role">{{ author.role }}</p>
+                </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat"
+import { useBlogAuthors } from "~/composables/useBlogAuthors";
 
 export default {
     name: "BlogDetails",
@@ -38,6 +36,10 @@ export default {
             dayjs.extend(customParseFormat)
             return dayjs(this.blog.date).format("MMMM D YYYY");
         },
+        authorsList() {
+            const { getAuthors } = useBlogAuthors(this.blog);
+            return getAuthors();
+        }
     },
 }
 </script>
@@ -46,19 +48,17 @@ export default {
     @import "../../assets/styles/variable";
 
     .blog-details {
-        margin-left: 2rem !important;
-        margin-right: 2rem !important;
+        margin: 0 !important;
+        padding: 1rem 0;
     }
 
-    p {
+    .meta {
         font-size: $font-size-sm;
-
         .category, .date {
             color: $purple;
             font-size: $font-size-sm;
             font-weight: 100;
         }
-
         .date {
             color: $white;
         }
@@ -68,19 +68,31 @@ export default {
         max-width: 68px;
     }
 
-    .author {
-        border-top: $block-border;
-        border-bottom: $block-border;
+    .authors {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
 
-        p {
+    .author {
+        img {
+            max-width: 48px;
+        }
+
+        .name {
             color: $white;
+            line-height: 1.8em;
             font-size: $font-size-md;
             font-weight: 600;
             margin: 0;
         }
-        span {
-            color: $white-1;
-            font-size: $font-size-sm;
+
+        .role {
+            color: $white-3;
+            line-height: 1.8em;
+            font-size: $font-size-xs;
+            margin-bottom: 0;
         }
     }
 </style>

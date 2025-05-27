@@ -1,7 +1,7 @@
 ---
 title: SCIM Directory Sync
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 

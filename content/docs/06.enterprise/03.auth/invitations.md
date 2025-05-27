@@ -1,7 +1,7 @@
 ---
 title: Invitations
 icon: /docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
 docId: users
 ---
@@ -16,7 +16,7 @@ Add new users to your tenant or instance by using the invitation process.
 
 Administrators can invite users with pre-configured RBAC permissions. Invitations can be emailed directly, and users can set up their accounts upon acceptance.
 
-By default, if the email server is configured in Kestra EE, we send an email with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
+By default, if the [email server is configured in Kestra EE](../../configuration/index.md#configuring-a-mail-server), we send an email with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
 
 ## How to Invite Users
 

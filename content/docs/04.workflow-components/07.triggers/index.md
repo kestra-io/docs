@@ -148,6 +148,10 @@ If your trigger is locked due to an execution in progress, you can unlock it by 
 
 The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
+::alert{type="info"}
+Only scheduled-based triggers (triggers handled by the Scheduler) will be visible in the UI. Triggers handled by the Executor and Webserver will not be displayed. This also applies when fetching triggers from the API.
+::
+
 ### Toggle or unlock triggers from the Administation page
 
 You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:

@@ -4,7 +4,7 @@
             The Orchestration Experience
             <span>You Have Been Looking For</span>
         </h2>
-        <NuxtLink href="/preview-access" target="_blank" class="btn btn-md btn-primary">Kestra Live Demo</NuxtLink>
+        <NuxtLink href="docs/getting-started/quickstart#start-kestra" target="_blank" class="btn btn-md btn-primary">Get Started</NuxtLink>
 
         <div class="tabs">
             <div class="activeMarker" :style="{left:`${displayTab * 25}%`}"/>
