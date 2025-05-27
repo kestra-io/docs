@@ -216,9 +216,64 @@ With improved dashboard management, you can:
 
 Kestra 0.23 introduces Python dependency caching, bringing significant improvements to the execution of Python tasks. With this feature, execution times for Python tasks are reduced, as dependencies are cached and reused across runs. You can now use official Python Docker images, and multiple executions of the same task will consistently use the same library versions. There is no need to use virtual environments (venv) for installing requirements, simplifying setup and maintenance.
 
-TODO: add uv mention and explanation?
-TODO: add example
+Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and cachingu. This ensures both speed and compatibility with the Python ecosystem.
 
+Previously, users needed to install Python dependencies manually using the `beforeCommands` property or using a customer Docker image. For example:
+
+```yaml
+id: python
+namespace: company.team
+
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    beforeCommands:
+      - pip install pandas
+    script: |
+      from kestra import Kestra
+      import pandas as pd
+      data = {
+        'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35]
+      }
+      df = pd.DataFrame(data)
+      print(df)
+      print("Average age:", df['Age'].mean())
+      Kestra.outputs({"average_age": df['Age'].mean()})
+```
+
+With the new release, you can simply use the `dependencies` property to declare your required libraries. Kestra will handle installation and caching automatically:
+
+```yaml
+id: python
+namespace: company.team
+
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: python:3.13-slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    dependencies:
+      - pandas
+      - kestra
+    script: |
+      from kestra import Kestra
+      import pandas as pd
+      data = {
+        'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35]
+      }
+      df = pd.DataFrame(data)
+      print(df)
+      print("Average age:", df['Age'].mean())
+      Kestra.outputs({"average_age": df['Age'].mean()})
+```
+
+A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs. The `beforeCommands` property is still supported for advanced use cases or custom installation steps.
 
 ### Git Sync for Apps & Dashboards
 
@@ -514,95 +569,3 @@ Added two new Go script tasks:
 
 - `Script` task (io.kestra.plugin.scripts.go.Script) - Executes multi-line Go scripts
 - `Commands` task (io.kestra.plugin.scripts.go.Commands) - Runs multiple Go scripts using `go run`
-
-https://github.com/kestra-io/plugin-scripts/pull/239
-
-::collapse{title="Example using Go scripts"}
-```yaml
-[EXAMPLE_YAML]
-```
-::
-
-### InfluxDB
-
-We're excited to introduce our new InfluxDB plugin, which provides comprehensive integration with InfluxDB time series database. This plugin enables you to write data to InfluxDB and query it using both Flux and InfluxQL languages, making it perfect for time series data processing and monitoring workflows.
-
-The plugin includes several powerful tasks:
-
-- **Write** task (`io.kestra.plugin.influxdb.Write`) - Write data to InfluxDB using InfluxDB line protocol format.
-- **Load** task (`io.kestra.plugin.influxdb.Load`) - Load data points to InfluxDB from an ION file where each record becomes a data point.
-- **FluxQuery** task (`io.kestra.plugin.influxdb.FluxQuery`) - Queries InfluxDB using the Flux language, with options to output results as ION internal storage or directly in the execution.
-- **InfluxQLQuery** task (`io.kestra.plugin.influxdb.InfluxQLQuery`) - Queries InfluxDB using the InfluxQL language, with the same output options as FluxQuery
-- **FluxTrigger** (`io.kestra.plugin.influxdb.FluxTrigger`) - Automatically triggers workflow executions when a Flux query returns results
-
-This integration is particularly useful for IoT data processing, monitoring metrics, and any workflow that involves time series data analysis.
-
-::collapse{title="InfluxDB example"}
-```yaml
-[EXAMPLE_YAML]
-```
-::
-
-### GraphQL
-
-We've introduced a new GraphQL plugin that enables integration with GraphQL APIs in your data workflows. The plugin features a `Request` task that allows you to execute GraphQL queries and mutations against any GraphQL endpoint, with full support for authentication headers, variables, and complex queries.
-
-
-::collapse{title="Example using GraphQL to query Github API"}
-```yaml
-id: graphql-query-github
-namespace: blueprints
-tasks:
-  - id: get_github_issues
-    type: io.kestra.plugin.graphql.Request
-    uri: https://api.github.com/graphql
-    headers:
-      Authorization: "Bearer {{ secret('GITHUB_TOKEN') }}"
-    query: |
-      query {
-        repository(owner: "kestra-io", name: "kestra") {
-          issues(last: 20, states: CLOSED) {
-            edges {
-              node {
-                title
-                url
-                labels(first: 5) {
-                  edges {
-                    node {
-                      name
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-```
-::
-
-### Databricks CLI
-
-We've added a new [Databricks SQL CLI task](https://kestra.io/plugins/plugin-databricks) that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
-
-
-### Improvements: Redis & ServiceNow
-
-We've enhanced our Redis plugin with a new `Increment` task that allows you to atomically increment the value of a key in a Redis database and return the new value. This is particularly useful for implementing counters, rate limiters, or any scenario where you need atomic incrementation of numeric values stored in Redis.
-
-We've expanded the ServiceNow plugin with two new tasks:
-
-- **Update** task to update a record in a ServiceNow table.
-- **Delete** task to delete a record from a ServiceNow table.
-
-## Thanks to Our Contributors
-
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
-
-## Next Steps
-
-This post covered new features and enhancements added in Kestra 0.23.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
-
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack). 
