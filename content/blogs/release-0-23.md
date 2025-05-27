@@ -581,11 +581,42 @@ tasks:
 
 ### Go scripts
 
-Added two new Go script tasks:
+Kestra 0.23 introduces powerful new capabilities for running Go code with the addition of two dedicated Go script tasks:
 
 - `Script` task (io.kestra.plugin.scripts.go.Script) - Executes multi-line Go scripts
 - `Commands` task (io.kestra.plugin.scripts.go.Commands) - Runs multiple Go scripts using `go run`
 
+::collapse{title="Example using Go Script task"}
+```yaml
+id: go_script
+namespace: company.team
+tasks:
+  - id: script
+    type: io.kestra.plugin.scripts.go.Script
+    allowWarning: true # cause golang redirect ALL to stderr even false positives
+    script: |
+        package main
+        import (
+            "os"
+            "github.com/go-gota/gota/dataframe"
+            "github.com/go-gota/gota/series"
+        )
+        func main() {
+            names := series.New([]string{"Alice", "Bob", "Charlie"}, series.String, "Name")
+            ages := series.New([]int{25, 30, 35}, series.Int, "Age")
+            df := dataframe.New(names, ages)
+            file, _ := os.Create("output.csv")
+            df.WriteCSV(file)
+            defer file.Close()
+        }
+    outputFiles:
+      - output.csv
+    beforeCommands:
+      - go mod init go_script
+      - go get github.com/go-gota/gota/dataframe
+      - go mod tidy
+```
+::
 
 ## Thanks to Our Contributors
 
