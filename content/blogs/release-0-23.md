@@ -1,6 +1,6 @@
 ---
-title: Kestra 0.23 introduces [TITLE TBD]
-description: Kestra 0.23 brings powerful new features including [DESCRIPTION TBD]
+title: Kestra 0.23 introduces Multi-Panel Editor, No-Code Redesign, and Unit Testing
+description: Kestra 0.23 delivers a multi-panel editor, revamped no-code flow editor, YAML unit testing, new filters, and new plugins for a more productive orchestration experience.
 date: 2025-06-03T17:00:00
 category: News & Products Updates
 author:
@@ -214,6 +214,8 @@ With improved dashboard management, you can:
 
 ### Python dependency caching
 
+TODO: beta + VALID WITH ANNA/LUDO
+
 Kestra 0.23 introduces Python dependency caching, bringing significant improvements to the execution of Python tasks. With this feature, execution times for Python tasks are reduced, as dependencies are cached and reused across runs. You can now use official Python Docker images, and multiple executions of the same task will consistently use the same library versions. There is no need to use virtual environments (venv) for installing requirements, simplifying setup and maintenance.
 
 Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and cachingu. This ensures both speed and compatibility with the Python ecosystem.
@@ -330,6 +332,10 @@ Tasks that are manually resumed before their duration (for example, from the UI)
 - **Pebble Function Autocompletion**: When editing Pebble expressions (inside `{{ ... }}`), function names now autocomplete as you type, making it faster and easier to use Pebble functions in your flows.
 
 - **Worker Information in Task Execution**: Task execution details now include information about the worker that ran the task, such as worker ID, hostname, version, and state. For example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
+
+- Filter secrets EE (on label cc Florian/Loic)  
+
+- Security OIDC (cc Florian/Loic)
 
 ## Plugin development
 
