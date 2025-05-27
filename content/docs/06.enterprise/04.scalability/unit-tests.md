@@ -37,7 +37,7 @@ For example, take the following flow that does the these listed tasks:
 4. Loads the transformed data to a BigQuery table
 
 ```yaml
-id: etl_dailyProducts_toBigQuery
+id: etl_daily_products_bigquery
 namespace: company.team
 
 tasks:
@@ -71,9 +71,9 @@ tasks:
 A comprehensive unit test for this flow might look like the following:
 
 ```yaml
-id: etl_dailyProducts_toBigQuery_testsuite
+id: etl_daily_products_bigquery_testsuite
 namespace: company.team
-flowId: etl_dailyProducts_toBigQuery
+flowId: etl_daily_products_bigquery
 testCases:
   - id: extract_should_return_data
     type: io.kestra.core.tests.flow.UnitTest
@@ -86,7 +86,7 @@ testCases:
     assertions:
       - value: "{{outputs.transform_to_uppercase.value}}"
         isNotNull: true
-  - id: extract_should_transform_productNames_to_uppercase_mocked
+  - id: extract_should_transform_product_names_to_uppercase_mocked
     type: io.kestra.core.tests.flow.UnitTest
     fixtures:
       tasks:
@@ -117,7 +117,7 @@ The `assertions` property contains the conditions for success or failure. In the
 
 The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see the returned product names were also transformed successfully to uppercase in the assertion's actual result.
 
-Because we wrote the test suite with two test cases, both executed during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the previous test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this and solely test the transformation, we added the `extract` and `transform_to_products_name` fixtures in the second test case, `extract_should_transform_productNames_to_uppercase_mocked`. The `extract` fixture prevents the API call, and the `transform_to_products_name` fixture simulates the return of the flow task with a mock output, `my-product-1`, all in lowercase.
+Because we wrote the test suite with two test cases, both executed during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the previous test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this and solely test the transformation, we added the `extract` and `transform_to_products_name` fixtures in the second test case, `extract_should_transform_product_names_to_uppercase_mocked`. The `extract` fixture prevents the API call, and the `transform_to_products_name` fixture simulates the return of the flow task with a mock output, `my-product-1`, all in lowercase.
 
 After running, we can see that the assertion was successful and the actual result `MY-PRODUCT-1` was successfully transformed and matches the expected result defined in the `assertions` property of the test.
 
@@ -205,7 +205,7 @@ id: etl_mockfile
 namespace: company.team
 flowId: etl_download_file
 testCases:
-  - id: extract_should_transform_productNames_to_uppercase_with_mocked_file
+  - id: extract_should_transform_product_names_to_uppercase_with_mocked_file
     type: io.kestra.core.tests.flow.UnitTest
     fixtures:
       tasks:
@@ -219,6 +219,7 @@ testCases:
       - value: "{{outputs.transform_to_uppercase.value}}"
         equalsTo: "[BOWLER HAT, TRILBY HAT]"
 ```
+
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
 
 ## Operators
