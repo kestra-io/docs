@@ -311,31 +311,27 @@ triggers:
 
 ## Notable Enhancements
 
-- Enhanced Ion data format support with new `IonToParquet` and `IonToAvro` tasks for efficient data conversion, plus `InferAvroSchemaFromIon` task for schema generation, all enabling more flexible data transformations
+- **Ion data format support** with new `IonToParquet` and `IonToAvro` tasks for efficient data conversion, plus `InferAvroSchemaFromIon` task for schema generation, all enabling more flexible data transformations
 
-- Pause task enhancement - https://github.com/kestra-io/kestra/issues/8242
-> add pauseDuration
-> deprecate delay (copy to pauseDuration if set)
-> remove timeout from Pause (if used and pauseDuration is not set, copy it to pauseDuration with behavior = FAIL)
-> we can't fully remove timeout as it's used by the abstract class, but it will not be exposed to the user
-> add behavior Enum field: RESUME, WARN, FAIL, CANCEL → default RESUME
+- **Pause Task**: We've improved the Pause task by introducing a new `pauseDuration` property that replaces the deprecated `delay` property and removes the `timeout` property from the Pause task interface. When a pause task reaches its duration, it will automatically proceed based on the configured `behavior` property, which can be set to:
+  - `RESUME`: Continue with the execution (default)
+  - `WARN`: Resume but mark the task as warning
+  - `FAIL`: Fail the task and the execution
+  - `CANCEL`: Cancel the whole execution
+Tasks that are manually resumed before their duration (for example, from the UI) will always succeed.
 
 
-- **Enhanced Plugin Usage Metrics**: Kestra now provides detailed plugin usage metrics based on the number of executions. These metrics are fully compatible with Kestra [internal metrics](..docs/09.administrator-guide/03.monitoring) (exposable through Prometheus), enabling comprehensive monitoring and analytics of your workflow patterns. This enhancement allows you to track which plugins are most frequently used, identify performance bottlenecks, and make data-driven decisions about resource allocation and optimization. 
+- **Plugin Usage Metrics**: Kestra now provides detailed plugin usage metrics based on the number of executions. These metrics are fully compatible with Kestra [internal metrics](..docs/09.administrator-guide/03.monitoring) (exposable through Prometheus), enabling comprehensive monitoring and analytics of your workflow patterns. This enhancement allows you to track which plugins are most frequently used, identify performance bottlenecks, and make data-driven decisions about resource allocation and optimization. 
 
-- **Enhanced Data Backup**: Building on our previous metadata backup functionality, Kestra now supports comprehensive execution data backup and restoration. This complete backup solution ensures you can recover not just metadata but all execution-related information, providing robust disaster recovery capabilities for your mission-critical workflows.
+- **Data Backup**: Building on our previous metadata backup functionality, Kestra now supports comprehensive execution data backup and restoration. This complete backup solution ensures you can recover not just metadata but all execution-related information, providing robust disaster recovery capabilities for your mission-critical workflows.
 
-## UI Improvements
+- **Account Navigation**: Settings and User Profile are now grouped under the Account section in the bottom left corner, just below the Tenant switcher. This change reflects that these settings are user-specific rather than instance-level, making the navigation more intuitive and organized.
 
-Here are UI enhancements worth noting:
-- [UI IMPROVEMENT 1]
-- [UI IMPROVEMENT 2]
-- [UI IMPROVEMENT 3]
-- [UI IMPROVEMENT 4]
-- [UI IMPROVEMENT 5]
+- **Pebble Function Autocompletion**: When editing Pebble expressions (inside `{{ ... }}`), function names now autocomplete as you type, making it faster and easier to use Pebble functions in your flows.
+
+- **Worker Information in Task Execution**: Task execution details now include information about the worker that ran the task, such as worker ID, hostname, version, and state. For example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
 ## Plugin development
-
 
 ### Salesforce
 
