@@ -585,3 +585,16 @@ Added two new Go script tasks:
 
 - `Script` task (io.kestra.plugin.scripts.go.Script) - Executes multi-line Go scripts
 - `Commands` task (io.kestra.plugin.scripts.go.Commands) - Runs multiple Go scripts using `go run`
+
+
+## Thanks to Our Contributors
+
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+
+## Next Steps
+
+This post covered new features and enhancements added in Kestra 0.23.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
+
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack). 
