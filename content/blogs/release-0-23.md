@@ -286,10 +286,26 @@ With the new Git integration for dashboards and apps, you can now:
 - **Collaborate** with team members using familiar Git workflows
 - **Roll back** to previous versions when needed.
 
+::collapse{title="Pull Apps from Git to Kestra instance example"}
 
-#TODO: add example of GitSyncApps task
-::collapse{title="Dashboard GitSyncApps integration example"}
+The following flow allows to pull an Apps from a GitHub repository and deploy it to the Kestra instance:
 
+```yaml
+id: sync_apps_from_git
+namespace: system
+tasks:
+  - id: git
+    type: io.kestra.plugin.ee.git.SyncApps
+    delete: true # optional; by default, it's set to false to avoid destructive behavior
+    url: https://github.com/kestra-io/apps # required
+    branch: main
+    username: "{{ secret('GITHUB_USERNAME') }}"
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
 ::
 
 
