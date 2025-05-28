@@ -253,16 +253,19 @@ There is no limit to the number of Roles that can be bound to an entity. They ca
 By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
-security:
-  login:
-    failed-attempts:
-      threshold: 10
-      monitoring-window: PT5M
-      lock-duration: PT30M
+kestra:
+  security:
+    login:
+      failed-attempts:
+        threshold: 10
+        monitoring-window: PT5M
+        lock-duration: PT30M
 ```
+
 The key attributes are:
+
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
-- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
+- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Super Admin can unlock the user manually by resetting their password from the user's detail page.
 - `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
