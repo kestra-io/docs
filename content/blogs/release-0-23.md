@@ -87,7 +87,7 @@ namespace: company.team
 tasks:
   - id: send_slack_message_started
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/XXXX
+    url: "https://hooks.slack.com/services/XXXX"
     payload: |
       {
         "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
@@ -216,7 +216,7 @@ With improved dashboard management, you can:
 
 Kestra 0.23 introduces Python dependency caching, bringing significant improvements to the execution of Python tasks. With this feature, execution times for Python tasks are reduced, as dependencies are cached and reused across runs. You can now use official Python Docker images, and multiple executions of the same task will consistently use the same library versions. There is no need to use virtual environments (venv) for installing requirements, simplifying setup and maintenance.
 
-Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and cachingu. This ensures both speed and compatibility with the Python ecosystem.
+Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and caching. This ensures both speed and compatibility with the Python ecosystem.
 
 Previously, users needed to install Python dependencies manually using the `beforeCommands` property or using a customer Docker image. For example:
 
