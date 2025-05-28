@@ -217,7 +217,7 @@ It's also worth mentioning that DuckDB integrates exceptionally well with Polars
 ![dataframes_polars_duckdb](/blogs/2023-08-11-dataframes/dataframes_polars_duckdb.png)
 
 
-**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes, let's cover Modin, Ponder, Fugue, and Daft next.
 
@@ -497,7 +497,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 [Kestra](https://kestra.io/docs/getting-started) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
 
-The [following blueprint](https://demo.kestra.io/ui/blueprints/community/113) shows how you can easily orchestrate your SQL and Pandas data transformations.
+The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how you can easily orchestrate your SQL and Pandas data transformations.
 
 ![dataframes_kestra](/blogs/2023-08-11-dataframes/dataframes_kestra.png)
 

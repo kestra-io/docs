@@ -24,7 +24,7 @@ Building reliable data integrations is time-consuming and often tedious. The tea
 - The data volume grows and shrinks unexpectedly
 - The cloud infrastructure hosting the underlying APIs and connectors has its own reliability and scaling issues.
 
-When those issues happen, data engineers are on the hook to fix broken pipelines manually, e.g. using [backfills](https://demo.kestra.io/ui/blueprints/community/1), and they often perform that hard work without much recognition.
+When those issues happen, data engineers are on the hook to fix broken pipelines manually, e.g. using [backfills](/blueprints/every-monday), and they often perform that hard work without much recognition.
 - When everything works, people ask "what do we even pay data engineers for?".
 - When something breaks, people ask "what do we even pay data engineers for?".
 
@@ -56,7 +56,7 @@ All of these tools work in a similar way:
 3. Finally, you can directly add a schedule or trigger from the same UI so that the process runs on a regular basis.
 
 ::alert{type="info"}
-To see how you can orchestrate Fivetran connectors with [kestra](https://github.com/kestra-io/kestra), check our [Fivetran blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=fivetran) and the [plugin documentation](/plugins/plugin-fivetran).
+To see how you can orchestrate Fivetran connectors with [kestra](https://github.com/kestra-io/kestra), check our [Fivetran blueprints](/blueprints?q=fivetran) and the [plugin documentation](/plugins/plugin-fivetran).
 ::
 
 ### Why no-code is often not enough
@@ -78,7 +78,7 @@ When commercial no-code tools don't cut it, you'll likely "just" write a script.
 [Stitch](https://www.stitchdata.com/) tried to solve that problem by building a universal data ingestion **standard** called [Singer spec](https://hub.meltano.com/singer/spec/). That spec aimed to improve standardization and community collaboration to avoid reinventing the wheel across companies.
 
 ::alert{type="info"}
-To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](https://demo.kestra.io/ui/blueprints/community/70) and the [Singer plugin documentation](/plugins/plugin-singer).
+To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](/blueprints/postgres-to-bigquery) and the [Singer plugin documentation](/plugins/plugin-singer).
 ::
 
 A typical [Singer](https://www.singer.io/) project consists of **taps**, **targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.
@@ -119,7 +119,7 @@ Airbyte's monorepo allows it to centrally govern the connectors and ensure that 
 **How does Airbyte monetize?** [Airbyte Cloud](https://airbyte.com/solutions/airbyte-cloud) is a managed ELT platform in the Cloud. Apart from that, Airbyte offers a self-managed Enterprise plan as well as [Powered by Airbyte](https://airbyte.com/solutions/powered-by-airbyte) solution.
 
 ::alert{type="info"}
-To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
+To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](/blueprints?q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
 ::
 
 <video autoplay muted loop>
@@ -133,23 +133,23 @@ This brings us to [CloudQuery](https://www.cloudquery.io/) and [dltHub](https://
 
 ### CloudQuery
 
-[CloudQuery](https://github.com/cloudquery/cloudquery) is an open-source ELT framework for developers. Data ingestion syncs can be executed from the terminal independently of the platform. You can maintain source and destination configuration in individual YAML files, and run those connectors locally, on a remote server, Kubernetes, serverless function, or from [kestra](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
+[CloudQuery](https://github.com/cloudquery/cloudquery) is an open-source ELT framework for developers. Data ingestion syncs can be executed from the terminal independently of the platform. You can maintain source and destination configuration in individual YAML files, and run those connectors locally, on a remote server, Kubernetes, serverless function, or from [kestra](/blueprints?q=cloudquery).
 
-We'll discuss CloudQuery in more detail in another blog post. For now, make sure to check out our [CloudQuery plugin](https://github.com/kestra-io/plugin-cloudquery) and [blueprints](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
+We'll discuss CloudQuery in more detail in another blog post. For now, make sure to check out our [CloudQuery plugin](https://github.com/kestra-io/plugin-cloudquery) and [blueprints](/blueprints?q=cloudquery).
 
 **How does CloudQuery monetize?** CloudQuery offers [premium connectors](https://www.cloudquery.io/integrations) for more advanced integrations, and there's also a plan for a [managed service](https://www.cloudquery.io/register-for-cloud) for running CloudQuery connectors in the cloud.
 
 
 ### dltHub
 
-[dltHub](https://github.com/dlt-hub/dlt) is a fairly new open-source data integration library. Note that it's not a platform but a library that you can use to build your own platform. This offers an unmatched level of flexibility, but it also requires a little more work to figure out the right deployment patterns. As a Python library, you can use dlt anywhere you can use Python. You can run dlt integration jobs from your laptop, remote server, cloud function, or from [kestra](https://demo.kestra.io/ui/blueprints/community?q=dlt&page=1). dltHub connectors are distributed as extensions to the main dlt library.
+[dltHub](https://github.com/dlt-hub/dlt) is a fairly new open-source data integration library. Note that it's not a platform but a library that you can use to build your own platform. This offers an unmatched level of flexibility, but it also requires a little more work to figure out the right deployment patterns. As a Python library, you can use dlt anywhere you can use Python. You can run dlt integration jobs from your laptop, remote server, cloud function, or from [kestra](/blueprints?q=dlt). dltHub connectors are distributed as extensions to the main dlt library.
 
 One of the main selling points of dlt is that it's a lightweight Python-based framework, allowing you to create new connectors with automatic schema inference and schema evolution. You can transform your data along the way e.g. add a pseudomization step before loading data to the target destination. And there are custom decorators to configure incremental and merge loads in Python.
 
 **How does dltHub monetize?** dlt plans to offer an [integration hub](https://dlthub.com/) that might resemble a connector marketplace and a managed service for data integration. The monetization model looks similar to the one of CloudQuery, but it's too early to tell how the two products will compare commercially.
 
 ::alert{type="info"}
-To see end-to-end examples of orchestrating dlt data ingestion with Kestra, check our [dltHub blueprints](https://demo.kestra.io/ui/blueprints/community?q=dlt&page=1).
+To see end-to-end examples of orchestrating dlt data ingestion with Kestra, check our [dltHub blueprints](/blueprints?q=dlt).
 ::
 
 ---

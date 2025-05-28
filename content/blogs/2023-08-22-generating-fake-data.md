@@ -19,7 +19,7 @@ Shiny Rocks is a fictional company creating smartphones. "Those shiny rocks in o
 
 ![topology](/blogs/2023-08-22-generating-fake-data/screenshot_topology.png)
 
-You can find the whole use case in our [live demo in the shiny_rocks namespace](https://demo.kestra.io/ui/flows?namespace=shiny_rocks).
+You can find the whole use case in our [live demo in the shiny_rocks namespace](https://github.com/kestra-io/shiny_rocks).
 
 ## Generating fake data ##
 
@@ -417,6 +417,6 @@ triggers:
 For those who wish to dive deeper, we have made the entire [Shiny Rocks project available for your exploration and usage](https://github.com/kestra-io/shiny_rocks).
 
 Feel free to access the data and use it as a base for your projects or demos. These "plausible" datasets can be invaluable for learning, testing, and showcasing various tools and concepts.
-You can also look at [our live demo](https://demo.kestra.io/ui/flows?namespace=shiny_rocks) where you could find all Flow showcased here running everyday in the shiny_rocks namespace.
+You can also look at [our live demo](https://github.com/kestra-io/shiny_rocks) where you could find all Flow showcased here running everyday in the shiny_rocks namespace.
 
 Stay tuned, as Shiny Rocks will make appearances in some of our future posts, giving you even more real-world-like scenarios to delve into with Kestra.
