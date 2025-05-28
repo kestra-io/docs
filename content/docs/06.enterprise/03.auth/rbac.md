@@ -298,10 +298,13 @@ Kestra does not provide any "forgot password" feature yet. Currently only a supe
 
 ### Groups
 
-Each `Group` is a collection of `Users` or `Service Accounts`.
+Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 
+- Each `Owner` can add users to a group without being a Kestra Admin.
 - Each `User` can be assigned to zero, one, or more `Groups`.
 - Each `Service Account` can also be assigned to zero, one, or more `Groups`.
+
+![Group Owner](/docs/enterprise/group-owner.png)
 
 Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
 
