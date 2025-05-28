@@ -207,18 +207,18 @@ we can add a namespace file in the `company.team` namespace that mimics the form
 This way, in our mock test, we can set the following configuration to test the transformation on sample data rather than making the API request:
 
 ```yaml
-id: etl_mockfile
+id: etl_mockfile_from_ns
 namespace: company.team
 flowId: etl_download_file
 testCases:
-  - id: extract_should_transform_product_names_to_uppercase_with_mocked_file
+  - id: extract_should_transform_productNames_to_uppercase_with_mocked_file
     type: io.kestra.core.tests.flow.UnitTest
     fixtures:
       tasks:
         - id: extract
           description: "mock extract data file"
           outputs:
-            uri: "my-namespace-file-with-products.json" # this file is a namespace file in the same namespace
+            uri: "{{ fileURI('my-namespace-file-with-products.json') }}" # this file is a namespace file in the same namespace
         - id: load_result_to_outgoing_api
           description: "dont send end output"
     assertions:
@@ -227,6 +227,68 @@ testCases:
 ```
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
+
+## Inline File Fixture
+
+If you prefer not to use a namespace file for the file fixture in the test, you can also write the file contents inline with the `files` property to achieve the same result:
+
+```yaml
+id: etl_mockfile_from_ns
+namespace: company.team
+flowId: etl_download_file
+testCases:
+  - id: extract_should_transform_product_names_to_uppercase_with_mocked_file
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      files:
+        products.json: |
+          {
+            "Account": {
+              "Account Name": "Firefly",
+              "Order": [
+                {
+                  "OrderID": "order103",
+                  "Product": [
+                    {
+                      "Product Name": "Bowler Hat",
+                      "ProductID": 858383,
+                      "SKU": "0406654608",
+                      "Description": {
+                        "Colour": "Purple",
+                        "Width": 300,
+                        "Height": 200,
+                        "Depth": 210,
+                        "Weight": 0.75
+                      },
+                      "Price": 34.45,
+                      "Quantity": 2
+                    },
+                    {
+                      "Product Name": "Trilby hat",
+                      "ProductID": 858236,
+                      "SKU": "0406634348",
+                      "Description": {
+                        "Colour": "Orange",
+                        "Width": 300,
+                        "Height": 200,
+                        "Depth": 210,
+                        "Weight": 0.6
+                      },
+                      "Price": 21.67,
+                      "Quantity": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+      tasks:
+        - id: extract
+          description: "mock extract data file"
+          outputs:
+            # this file is a namespace file in the same namespace, the fileURI() function will return its URI.
+            uri: "{{files['products.json']}}"
+```
 
 ## Available Assertions Operators
 
