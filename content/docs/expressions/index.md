@@ -1434,7 +1434,7 @@ tasks:
 errors:
   - id: alert
     type: io.kestra.plugin.core.log.Log
-    message: list of error logs — {{ errorLogs() }}>
+    message: list of error logs — {{ errorLogs() }}
 ```
 
 ---
@@ -1764,6 +1764,33 @@ tasks:
   - id: fileEmpty
     type: io.kestra.plugin.core.log.Log
     message: "Is the file empty? {{ fileEmpty(output.download.uri) }}"
+```
+
+### tasksWithState
+
+The `tasksWithState` function returns a map of tasks and their states.
+
+Used the in the following flow:
+
+```yaml
+id: error_logs_demo
+namespace: company.team
+
+tasks:
+  - id: fail
+    type: io.kestra.plugin.core.execution.Fail
+    errorMessage: Something went wrong, make sure to fix it asap ⚠️
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.core.log.Log
+    message: List of tasks that failed - {{ tasksWithState('failed') }}
+```
+
+will produce the following return
+
+```json
+[{"state":"FAILED","taskId":"fail"}]
 ```
 
 ---
