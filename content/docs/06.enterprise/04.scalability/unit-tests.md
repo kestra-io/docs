@@ -7,7 +7,7 @@ version: ">= 0.23.0"
 
 Build Tests to ensure proper Flow behavior.
 
-Unit tests are an efficient and productive way to test the different aspects of your flow in isolation without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. 
+Tests let you verify that your flow behaves as expected without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task rather than the executing the entire flow.
 
 <div class="video-container">
   <iframe src="VIDEO_URL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -15,7 +15,9 @@ Unit tests are an efficient and productive way to test the different aspects of 
 
 ## Flow Unit Tests
 
-Unit tests are connected to the specific flows they are configured for. To create a new Unit Test, access them either through the **Tests** tab on the lefthand side panel of the Kestra UI or via the **Tests** tab of a flow.
+Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. Use **fixtures** to mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
+
+Unit tests are configured for and connected to their respective flows. To create a new Unit Test, access them either through the **Tests** tab on the lefthand side panel of the Kestra UI or via the **Tests** tab of a flow.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -43,7 +45,7 @@ namespace: company.team
 tasks:
   - id: send_slack_message_started
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/XXXX-mywebhook-XXXXX" # To use this example, replace the url with your own Slack webhook
+    url: "https://kestra.io/api/mock" # To use this example, replace the url with your own Slack webhook
     payload: |
       {
         "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
@@ -222,20 +224,22 @@ testCases:
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
 
-## Operators
+## Available Assertions Operators
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The full list is as follows:
 
-- endsWith
-- startsWith
-- contains
-- equalsTo
-- notEqualsTo
-- greaterThan
-- greaterThanOrEqualTo
-- lessThan
-- lesThanOrEqualTo
-- in
-- notIn
-- isNull
-- isNotNull
+| Operator | Description |
+|----------|-------------|
+| isNotNull | Asserts that the value is not null |
+| isNull | Asserts that the value is null |
+| equalsTo | Asserts that the value is equal to the expected value |
+| notEqualsTo | Asserts that the value is not equal to the specified value |
+| endsWith | Asserts that the value ends with the specified suffix |
+| startsWith | Asserts that the value starts with the specified prefix |
+| contains | Asserts that the value contains the specified substring |
+| greaterThan | Asserts that the value is greater than the specified value |
+| greaterThanOrEqualTo | Asserts that the value is greater than or equal to the specified value |
+| lessThan | Asserts that the value is less than the specified value |
+| lessThanOrEqualTo | Asserts that the value is less than or equal to the specified value |
+| in | Asserts that the value is in the specified list of values |
+| notIn | Asserts that the value is not in the specified list of values |
