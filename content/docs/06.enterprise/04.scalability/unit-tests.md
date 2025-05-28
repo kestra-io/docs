@@ -125,6 +125,10 @@ After running, we can see that the assertion was successful and the actual resul
 
 ![Test case 2 results](/docs/enterprise/test-case-2.png)
 
+Execution details are not stored in the Executions page like normally run flows to protect cluttering that space with unneccesary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
+
+![Test Execution Details](/docs/enterprise/test-execution.png)
+
 ## Unit Test with Namespace File
 
 You can also simulate flows with namespace files that are scripts, test data, or any other sort of file content. Taking the previous example, we can include a namespace file that includes sample data from the production API endpoint, so that we do not need to make any API calls simply to test the flow. This prevents accumulating cost for requests or any sort of limit on calls a service might have.
