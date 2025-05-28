@@ -37,7 +37,7 @@
     "sharp": "^0.34.1",
     "slugify": "^1.6.6",
     "vanilla-cookieconsent": "^3.1.0",
-    "vue": "^3.5.13",
+    "vue": "^3.5.15",
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel-nuxt": "^1.1.5",
     "vue3-count-to": "^1.1.2",
