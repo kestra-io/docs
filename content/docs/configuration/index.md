@@ -2314,3 +2314,5 @@ kestra:
 ::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
 ::
+
+You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
