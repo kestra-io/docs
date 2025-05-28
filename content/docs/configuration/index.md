@@ -554,6 +554,10 @@ When you launch Kestra Enterprise Edition, it will check the license and display
 
 ## Multi-tenancy
 
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
+
 By default, multi-tenancy is disabled. To enable it, add the `kestra.ee.tenants` configuration:
 
 ```yaml
@@ -564,6 +568,10 @@ kestra:
 ```
 
 ## Default Tenant
+
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
 
 By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.defaultTenant` configuration:
 
@@ -576,7 +584,6 @@ kestra:
 ```
 
 This will enable multi-tenancy and disable the default tenant (best practice). It is **recommended** to disable it so that your Kestra instance includes only the tenants you explicitly create.
-
 
 ## Encryption
 
