@@ -528,7 +528,7 @@ kestra:
 
 ## EE License
 
-To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kstra.io).
+To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
 
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
