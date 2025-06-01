@@ -2,7 +2,7 @@
 title: Kestra 0.21 introduces Custom Dashboards, No-Code Forms, Log Shipper, and New Flow Property
 description: Elevate your orchestration platform with improved no-code forms, custom operational dashboards, log forwarding, and a new flow property for cleanup tasks called finally.
 date: 2025-02-04T17:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud

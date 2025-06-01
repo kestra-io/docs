@@ -2,7 +2,7 @@
 title: "Introducing new Kestra light architecture for open source data orchestration."
 description: "A new very light architecture for Kestra, open-source orchestration and scheduling platform."
 date: 2022-06-21T07:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Ludovic Dehon
   image: "ldehon"

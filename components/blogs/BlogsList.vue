@@ -128,7 +128,7 @@ export default {
                     name: "Company News",
                 },
                 {
-                    name: "News & Products Updates",
+                    name: "News & Product Updates",
                 },
                 {
                     name: "Solutions",
