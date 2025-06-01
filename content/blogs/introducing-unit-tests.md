@@ -55,8 +55,8 @@ The image below visualizes the relationship between a flow, its tests, test case
 Fixtures let you control mock data injected into your flow during a test. You can mock:
 
 - **Inputs**: set specific test values for any flow input
-- **Files**: add an inline file content, or reference a namespace file
-- **Tasks**: mock any task by specifying `outputs` (and optionally a `state`), which skips execution and immediately returns your output values —  this is ideal for tasks that interact with external systems and produce side effects.
+- **Files**: add inline file content, or reference a namespace file
+- **Tasks**: mock any task by specifying `outputs` (and optionally a `state`), which skips execution and immediately returns your output values; this is ideal for tasks that interact with external systems and produce side effects.
 
 Here is an example of a task fixture with outputs:
 
@@ -272,7 +272,7 @@ testCases:
 
 ### Using Inline Files Fixtures
 
-Let's assume that you want to add a Unit Tests for the [data-engineering-pipeline](https://kestra.io/blueprints/data-engineering-pipeline) tutorial flow.
+Let's assume that you want to add a Unit Test for the [data-engineering-pipeline](https://kestra.io/blueprints/data-engineering-pipeline) tutorial flow.
 
 This flow uses multiple file operations:
 - the first task **extracts** data and passes it as a file to the `transform` task
@@ -350,7 +350,7 @@ Define your test cases in YAML and save the test.
 
 ![unittest2.png](/blogs/introducing_unittests/unittest2.png)
 
-Now if you navigate back to the **Tests** tab, you can see your test listed. Click on the **Run** button to execute it. If you have multiple tests, you can click on the **Run All** button to execute all tests in parallel.
+Now if you navigate back to the **Tests** tab, you can see your test listed. Click on the **Run** button to execute it. If you have multiple tests, you can use the **Run All** button to execute all tests in parallel.
 
 ![unittest3.png](/blogs/introducing_unittests/unittest3.png)
 
