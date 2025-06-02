@@ -2,7 +2,7 @@
 title: Kestra 0.19.0 is here with a new Dashboard, Conditional Inputs, Backup & Restore, and In-App Docs
 description: This release makes your workflows more dynamic with Conditional Inputs, simplifies administrative tasks via Backup & Restore and System Flows, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra UI now supports 12 languages!
 date: 2024-10-01T17:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller

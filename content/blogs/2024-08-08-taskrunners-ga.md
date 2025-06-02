@@ -2,7 +2,7 @@
 title: Task Runners are now Generally Available and Ready to Handle Your Most Demanding Workflows
 description: Run your code anywhere with dynamically-provisioned resources.
 date: 2024-08-08T13:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller
