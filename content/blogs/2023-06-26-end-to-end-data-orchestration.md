@@ -66,7 +66,7 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/de
 
 Then, run `docker compose up -d` and navigate to the UI under `http://localhost:8080/`. You can start [building your first flows](https://kestra.io/docs/getting-started) using the integrated code editor in the UI.
 
-The UI ships with Blueprints, which provide ready-to-use flow examples. For instance, you can use [the following Blueprint](https://demo.kestra.io/ui/blueprints/community/30) that combines all steps needed to orchestrate Airbyte, dbt, and Kestra:
+The UI ships with Blueprints, which provide ready-to-use flow examples. For instance, you can use [the following Blueprint](/blueprints/airbyte-sync-parallel-with-dbt) that combines all steps needed to orchestrate Airbyte, dbt, and Kestra:
 
 ![airbyte2](/blogs/2023-06-26-end-to-end-data-orchestration/airbyte2.png)
 

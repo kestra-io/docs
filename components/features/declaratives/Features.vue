@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Live demo</a>
+                        <a href="/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Get a demo</a>
                     </div>
                 </div>
             </div>

@@ -38,9 +38,9 @@
         },
         computed: {
             tagsList() {
-                if(this.tags.length && this.blueprint.tags) {
+                if(this.tags?.length && this.blueprint.tags) {
                     return this.tags.filter(t => this.blueprint.tags.includes(t.id)).map(t => t.name)
-                }else if(this.blueprint.tags.length) {
+                }else if(this.blueprint.tags?.length) {
                     return this.blueprint.tags
                 }
                 return ""

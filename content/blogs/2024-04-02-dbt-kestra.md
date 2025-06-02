@@ -219,7 +219,7 @@ By using a declarative language syntax, everyone can readily understand data pip
 
 Kestra simplifies the orchestration of dbt workflows, making it easier for users to manage and automate their data transformation processes. As we continue to witness the adoption and utilization of dbt within Kestra, we look forward to further improving our dbt plugin capabilities.
 
-If you want to learn more about the integrations between Kestra and dbt, you can check our [library of dbt blueprints](https://kestra.io/blueprints?page=1&size=24&q=dbt).
+If you want to learn more about the integrations between Kestra and dbt, you can check our [library of dbt blueprints](/blueprints?page=1&size=24&q=dbt).
 
 Check out the [plugin](/plugins/plugin-dbt) documentation for more information about the dbt plugin.
 

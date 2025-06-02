@@ -64,7 +64,7 @@ This partnership provides a versatile toolkit for data professionals, extending 
 
 If you want to go further with Kestra and Airbyte capabilities you can read this article about [Everything as Code for Data Infrastructure with Airbyte and Kestra Terraform Providers](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers) or [how to create an End-to-End Data Ingestion, Transformation and Orchestration pipeline with Airbyte, dbt and Kestra](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration)
 
-You can also kickstart you Airbyte & Kestra Journey with our [Community Blueprints](https://demo.kestra.io/ui/blueprints/community?q=airbyte&page=1)
+You can also kickstart you Airbyte & Kestra Journey with our [Community Blueprints](/blueprints?q=airbyte)
 
 If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
