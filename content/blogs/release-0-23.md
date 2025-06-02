@@ -2,7 +2,7 @@
 title: Kestra 0.23 introduces Multi-Panel Editor, No-Code Redesign, and Unit Testing
 description: Kestra 0.23 delivers a multi-panel editor, revamped no-code flow editor, YAML unit testing, new filters, and new plugins for a more productive orchestration experience.
 date: 2025-06-03T17:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
