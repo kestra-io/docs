@@ -1,42 +1,13 @@
 ---
-title: Migration Guide from defaultTenant to Multitenancy
+title: Enterprise Migration Guide from defaultTenant to Multitenancy
 icon: /docs/icons/migration-guide.svg
 release: 0.23.0
-editions: ["OSS", "EE"]
+editions: ["EE"]
 ---
 
 ## Overview
 
 Kestra now requires a tenant context across both the OSS and EE versions.
-
-## Open Source Edition Changes
-
-### Default Tenant
-
-A fixed, non-configurable tenant named "main" is always used now in the open-source version. The tenant is not stored in the database and does not impact the user experience in the UI or building flows.
-
-### Breaking change
-
-All Open-source API URIs now include the tenantId:
-
-**Before**: `/api/v1/...`
-
-**0.23 & onwards**: `/api/v1/main/...`
-
-Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to `/api/v1/main/...` to ease the transition, but this compatibility layer will eventually be removed in a future Kestra version.
-
-### Migration Script
-
-To add the tenantId field across your existing database (flows, executions, logs, etc.), use:
-
-```shell
-kestra migrate defaultTenant --dry-run
-```
-
-::alert{type="info"}
-- Use `--dry-run` to preview changes without modifying data.
-- Re-run without the flag to execute the migration.
-::
 
 ## Enterprise Edition (EE) Changes
 
@@ -68,74 +39,6 @@ kestra migrate tenant \
 ### Kafka Queue Handling
 
 If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
-
-## Internal Storage Migration Guide for S3 and GCS users to fix double slash
-
-Enterprise users who don’t use the `defaultTenant` but use S3 or GCS as internal storage need to run the `root_slash_migration.bash` script for their provider to fix the double slash issue. This is required due to a breaking change that has been introduced in v0.23 for **GCS** and **S3** storage to remove the leading root slash. 
-
-Example of how the storage path looks like before and after the change:
-
-- Before 0.23: `gs://ee-default-22//company/team/_files/test.txt`
-- After 0.23: `gs://ee-default-22/company/team/_files/test.txt`
-
-Make sure to run the script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore:
-
-### GCS storage root slash migration script:
-
-```bash
-#!/bin/bash
-
-BUCKET="gs://mybucket"
-
-echo "Starting GCS root slash cleanup on bucket $BUCKET"
-
-# List all objects starting with /
-gsutil ls "$BUCKET/**" | grep "$BUCKET//" | while read -r full_path; do
-    # Extract just the key (remove bucket prefix)
-    key="${full_path#${BUCKET}/}"
-
-    # Skip folder markers (if any)
-    if [[ "$key" == */ ]]; then
-        echo "Skipping folder marker: $key"
-        continue
-    fi
-
-    # Remove leading slash
-    clean_key="${key#/}"
-
-    echo "Copying $BUCKET/$key → $BUCKET/$clean_key"
-
-    # Copy to clean location
-    gsutil cp "$BUCKET/$key" "$BUCKET/$clean_key"
-done
-
-echo "Cleanup finished!"
-```
-
-### S3 root slash migration script:
-
-```bash
-#!/bin/bash
-
-BUCKET="mybucket"
-
-aws s3 ls s3://$BUCKET --recursive | awk '{print $4}' | grep '^/' | grep -v '/$' | while read -r key; do
-    # Strip the leading slash
-    clean_key="${key#/}"
-
-    echo "Copying s3://$BUCKET/$key → s3://$BUCKET/$clean_key"
-
-    # Copy to new key without leading slash
-    aws s3 cp "s3://$BUCKET/$key" "s3://$BUCKET/$clean_key"
-
-    # Optional: Delete original after copy succeeds
-    # aws s3 rm "s3://$BUCKET/$key"
-done
-
-echo "Migration finished!"
-```
-
----
 
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
 
@@ -183,17 +86,6 @@ done
 ## MinIO Storage
 
 For MinIO, we recommend keeping the `undefined` option due to the different handling of storage paths.
-
-### OSS Users
-
-```bash
-for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
-    if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then
-        echo "Moving $f → main/"
-        mc mv --recursive "myminio/mybucket/$f" "myminio/mybucket/main/"
-    fi
-done
-```
 
 ### Enterprise Users
 
