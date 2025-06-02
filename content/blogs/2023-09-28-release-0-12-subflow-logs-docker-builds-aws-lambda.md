@@ -2,7 +2,7 @@
 title: "Kestra 0.12 simplifies building modular, event-driven and containerized workflows"
 description: "Kestra 0.12.0 is now available, featuring an enhanced subflow UX, allowing you to zoom in and out across modular workflows and their logs. With the new Docker and AWS EventBridge integration, you can automate any process across platforms and programming languages."
 date: 2023-09-28T14:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: "ageller"

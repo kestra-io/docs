@@ -2,7 +2,7 @@
 title: Kestra 0.22 introduces support for LDAP, Plugin Versioning, Read-Only Secrets Backends and Cross-Namespace File Sharing
 description: Kestra 0.22 brings powerful new features including Plugin Versioning, External Secrets, and enhanced namespace sharing capabilities. This release focuses on enterprise-grade management features while improving developer experience with new plugins and Pebble functions.
 date: 2025-04-01T17:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
