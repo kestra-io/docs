@@ -528,7 +528,7 @@ kestra:
 
 ## EE License
 
-To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kstra.io).
+To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
 
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
@@ -926,6 +926,8 @@ kestra:
 
 ## Logger
 
+### Server log
+
 You can change the log behavior in Kestra by adjusting the `logger` configuration parameters:
 
 ```yaml
@@ -937,7 +939,7 @@ logger:
     org.apache.kafka: DEBUG
     io.netty.handler.logging: TRACE
 ```
-To disable logging to the server logs, you can configure the following:
+By default, server logs also contain flow execution logs. To disable them, you can configure the following:
 
 ```yaml
 logger:
@@ -945,7 +947,7 @@ logger:
     flow: 'OFF'
 ```
 
-This disables the storage of all flow execution logs, so they will only appear in the server logs.
+This disables the inclusion of all flow execution logs into the server log, so they will only be stored inside the Kestra database.
 
 Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
@@ -953,6 +955,37 @@ Similarly, the following configuration disables the execution logs for the `hell
 logger:
   levels:
     flow.hello-world: 'OFF'
+```
+
+Inside the server logs, there are 3 specific loggers that log execution related information:
+- The `execution` logger logs the start and end of each execution.
+- The `task` logger logs the start and end of each task run.
+- The `trigger` logger logs the start and end of each trigger evaluation.
+
+See them in action in the following log snippet:
+```text
+10:20:47.355 INFO  jdbc-execution-executor_0 execution.hello-world [tenant: main] [namespace: company.team] [flow: hello-world] [execution: 4cQNlX5ZBpOAHJeexSHojx] Flow started
+10:20:48.035 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log started
+10:20:48.371 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log with state SUCCESS completed in 00:00:00.514
+10:20:48.677 INFO  jdbc-execution-executor_2 execution.hello-world [tenant: main] [namespace: company.team] [flow: hello-world] [execution: 4cQNlX5ZBpOAHJeexSHojx] Flow completed with state SUCCESS in 00:00:01.543
+```
+
+You can disable them via the following configuration:
+```yaml
+logger:
+  levels:
+    execution: 'OFF'
+    task: 'OFF'
+    trigger: 'OFF'
+```
+
+You can also disable them only for specific flows, for example for the `hello-world` flow:
+```yaml
+logger:
+  levels:
+    execution.hello-world: 'OFF'
+    task.hello-world: 'OFF'
+    trigger.hello-world: 'OFF'
 ```
 
 ### Access Log configuration
