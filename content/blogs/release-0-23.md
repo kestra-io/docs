@@ -164,7 +164,7 @@ testCases:
 
 The new UI Filter introduces a modern and flexible way to filter the interface in Kestra. Filters are now written in plain text making it easy to express complex filtering logic directly in the interface. The filter component is designed for a seamless user experience, featuring keyboard pattern support and fast autocompletion to help you build filters quickly and efficiently. This update brings a more intuitive and powerful filtering experience to all users.
 
-TODO: screenshot
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OFBpLz9IX1O2UtxuXeKi?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ### Outputs in Internal Storage
 
@@ -208,9 +208,6 @@ With improved dashboard management, you can:
 - Tailor your monitoring experience to focus on the metrics that matter most to you
 - Access your most important information immediately upon login
 - Switch between different dashboards based on your current needs
-
-
-#TODO: screenshots?
 
 ### Python dependency caching
 
