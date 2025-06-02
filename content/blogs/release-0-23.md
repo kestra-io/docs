@@ -215,7 +215,7 @@ Kestra 0.23 introduces Python dependency caching, bringing significant improveme
 
 Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and caching. This ensures both speed and compatibility with the Python ecosystem.
 
-Previously, users needed to install Python dependencies manually using the `beforeCommands` property or using a customer Docker image. For example:
+Previously, users needed to install Python dependencies manually using the `beforeCommands` property or using a custom Docker image. For example:
 
 ```yaml
 id: python
