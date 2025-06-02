@@ -1,5 +1,5 @@
 ---
-title: Kestra Tenant Migration & Compatibility Guide
+title: Migration Guide from defaultTenant to Multitenancy
 icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
@@ -30,7 +30,7 @@ Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to 
 To add the tenantId field across your existing database (flows, executions, logs, etc.), use:
 
 ```shell
-kestra migrate tenant --dry-run
+kestra migrate defaultTenant --dry-run
 ```
 
 ::alert{type="info"}
@@ -38,23 +38,25 @@ kestra migrate tenant --dry-run
 - Re-run without the flag to execute the migration.
 ::
 
-## Enterprise Edition Changes
+## Enterprise Edition (EE) Changes
 
 ### Tenant System Now Always Enabled
 
-The configuration properties `kestra.ee.tenants.enabled` and `kestra.ee.tenants.defaultTenant` have been removed. Tenants are now mandatory, and must be created manually.
+The configuration properties `kestra.ee.tenants.enabled` and `kestra.ee.tenants.defaultTenant` have been removed, as tenants are now mandatory and must be manually created.
 
 ### New Configuration Property
 
 With this change, there is a new configuration property: `kestra.ee.tenants.fallbackTenant: tenant-id`.
 
-This property is used to route non-tenant-specific API calls to a fallback tenant. This does not rewrite the route but internally assigns the tenant.
+This property used to route non-tenant-specific API calls to a fallback tenant. This does not rewrite the route but internally assigns the tenant.
 
-Unlike OSS, no compatibility layer is added to map `/api/v1/...` to `/api/v1/fllbackTenant/...`. The manual fallback tenant assignment will be removed in a future version, so make sure to create tenants in your instance.
+### Compatibility Layer
+
+While in OSS we transform URI to a different one including the main `tenantId` directly into the API routes, in EE we inject the fallback tenant into the request header instead without rerouting the API endpoints themselves. Thus, we won’t map `/api/v1/...` to `/api/v1/fallbackTenant/...`, but instead we only inject tenantId into the header. Note that this manual tenant header injection will be removed in a future version.
 
 ### Migration Script
 
-To successfully migrate, use the following script
+The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration.
 
 ```shell
 kestra migrate tenant \
@@ -63,35 +65,20 @@ kestra migrate tenant \
     [--dry-run]
 ```
 
-- `--tenant-id` is required.
-- If the tenant does not exist, you must provide `--tenant-name`.
-- Use `--dry-run` to simulate the migration.
-
 ### Kafka Queue Handling
 
-If you are using Kafka for queues, queues will be recreated after migration.
+If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
 
+## Internal Storage Migration Guide for S3 and GCS users to fix double slash
 
-## Tenant Migration Guide
+Enterprise users who don’t use the `defaultTenant` but use S3 or GCS as internal storage need to run the `root_slash_migration.bash` script for their provider to fix the double slash issue. This is required due to a breaking change that has been introduced in v0.23 for **GCS** and **S3** storage to remove the leading root slash. 
 
-This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the storage platform's user interface.
+Example of how the storage path looks like before and after the change:
 
-### Important Notes
+- Before 0.23: `gs://ee-default-22//company/team/_files/test.txt`
+- After 0.23: `gs://ee-default-22/company/team/_files/test.txt`
 
-A breaking change has been introduced for **GCS** and **S3** storage to remove the leading root slash. Example:
-
-  - **Before**: `gs://ee-default-22//company/team/_files/test.txt`
-  - **After**: `gs://ee-default-22/company/team/_files/test.txt`
-
-All Kestra users using **GCS** or **S3** must migrate their internal storage to remove the root slash.
-
-Migration is required for all **OSS users** and all **Enterprise users** using the `default-tenant` configuration.
-
-Enterprise users who already use tenants without `default-tenant` enabled do **not** need to migrate.
-
-::alert{type="info"}
-The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
-::
+Make sure to run the script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore:
 
 ### GCS storage root slash migration script:
 
@@ -150,9 +137,22 @@ echo "Migration finished!"
 
 ---
 
-## Local Storage Migration
+## Internal Storage Migration Guide from `defaultTenant` to a tenant
 
-To add the tenant ID in local storage:
+This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
+
+### **Who needs to perform this migration?**
+- All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
+- Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
+- Enterprise users who **do not** use the `defaultTenant` but use S3 or GCS as internal storage also need to run the migration script to fix the double slash issue.
+
+::alert{type="info"}
+The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
+::
+
+## Local Storage
+
+If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID (in OSS, the tenantID is always main, this is not configurable).
 
 ```bash
 for f in base-path/*; do
@@ -163,13 +163,26 @@ for f in base-path/*; do
 done
 ```
 
-- `base-path` is configured under `kestra.storage.local.base-path`.
-- For OSS users, the destination is always `base-path/main/`.
-- For Enterprise users, replace `main` with the appropriate tenant folder.
+If you used to rely on `defaultTenant` with no multitenancy enabled, use the following script:
+
+```bash
+for f in base-path/*; do
+    bn=$(basename "$f")
+    [[ "$bn" == "main" ]] || {
+        rsync -a "$f/" base-path/main/"$bn"/ && rm -rf "$f"
+    };
+done
+```
+
+- Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
+- For OSS users, the destination tenant ID is always `main`, thus you should keep the `base-path/main/` intact.
+- For Enterprise users, replace `main` with the appropriate tenant ID.
 
 ---
 
 ## MinIO Storage
+
+For MinIO, we recommend keeping the `undefined` option due to the different handling of storage paths.
 
 ### OSS Users
 
@@ -186,7 +199,7 @@ done
 
 ```bash
 for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
-    if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then
+    if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main) and undefined.
         echo "Moving $f → tenantId/"
         mc mv --recursive "myminio/mybucket/$f" "myminio/mybucket/tenantId/"
     fi
@@ -210,7 +223,7 @@ BUCKET_NAME="mybucket"
 DEST_TENANT="${1:-main}"
 
 # List of tenant folders to skip (don't move)
-TENANTS=("main" "tenant1" "tenant2")
+TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
 
 # Get all blob names
 blob_names=$(az storage blob list --account-name "$ACCOUNT_NAME" --container-name "$BUCKET_NAME" --query "[].name" --output tsv)
@@ -302,7 +315,7 @@ echo "Migration finished!"
 
 BUCKET="mybucket"
 DEST_TENANT="${1:-main}"
-TENANTS=("main" "tenant1" "tenant2")
+TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
 
 echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
 
@@ -345,7 +358,7 @@ echo "Tenant migration finished!"
 
 BUCKET="gs://bucket"
 DEST_TENANT="${1:-main}"  # Default tenant is 'main' if not specified
-TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders
+TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
 
 echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
 
