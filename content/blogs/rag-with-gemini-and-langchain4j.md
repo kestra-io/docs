@@ -12,27 +12,27 @@ image: /blogs/TODO.png
 
 Generative AI tools are great. However, relying purely on generative models can lead to outputs that feel generic, inaccurate, or outdated. This is where **Retrieval-Augmented Generation (RAG)** comes in, combining the creativity of Generative AI with real-time, accurate context sourced from custom data.
 
-We just introduced the [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) that allows creating complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline. 
+We just introduced the [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) that allows users to create complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline. 
 
 In this post, you'll learn how to build an advanced RAG pipeline using Google Gemini AI and Kestra’s new Langchain4J plugin, which leverages precise, context-aware AI generation. We'll cover document ingestion, embedding creation, retrieval strategies, and finally, demonstrate a full end-to-end RAG example.
 
-## Creating Powerful AI Workflows with Kestra’s Langchain4J
+## Create Powerful AI Workflows with Kestra’s Langchain4J
 
-The new [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) simplifies the implementation of RAG, handling document ingestion, embeddings creation, retrieval, and generation tasks.
+The new [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) simplifies the implementation of RAG by handling document ingestion, embedding creation, retrieval, and generation tasks.
 
 Here's a high-level overview of the workflows you'll create:
 
-- **Document Ingestion and Embedding Creation:** You’ll ingest documents, splitting them into manageable segments and generating embeddings.
+- **Document Ingestion and Embedding Creation:** You’ll ingest documents, split them into manageable segments, and generate embeddings.
 - **Embedding Storage:**  Store embeddings in a vector store, optimizing retrieval.
 - **Retrieval and Augmented Generation:** Build workflows that retrieve the most relevant embeddings based on user prompts and generate context-rich, accurate responses with Gemini AI.
 
-## Embedding creation via document ingestion
+## Create Embeddings through Document Ingestion
 
 The first step is to create embeddings based on our own document. These embeddings will be stored to be retrieved later at generation time.
 
 But first, what is an embedding?
 
-To ingest a document, you will split it into segments, then call an embedding AI model for each segment, transforming each into a vector representation stored in an embedding store, typically a vector database. An embedding is basically a vector representation of a segment of a document.
+To ingest a document, you split it into segments and call an embedding AI model for each segment, transforming each into a vector representation stored in an embedding store, typically a vector database. Simply put, an embedding is a vector representation of a segment of a document.
 
 The `io.kestra.plugin.langchain4j.rag.IngestDocument` task will do this for you!
 
@@ -57,35 +57,35 @@ tasks:
     drop: true #4
 ```
 
-1. We use the `io.kestra.plugin.langchain4j.provider.GoogleGemini` model provider to use the embedding model from **Google Gemini**. We must use the same model at generation time. Kestra supports a large variety of large language models (LLM) and more will be supported soon.
-2. We use the `io.kestra.plugin.langchain4j.embeddings.KestraKVStore` embedding store. This is a convenient store that will store embeddings inside a [KeyValue store](https://kestra.io/doc/concepts/kv-store) and load them all in memory at generation time. For a large number of documents, you would typically use a vector database instead like PGVector or Elasticsearch.
-3. We use `fromExternalURLs` to defines a list of documents to ingest from external URLs, here the blog posts for Kestra release 0.19 to 0.22. We will go into details for other ways to define documents to ingest later.
-4. We use `drop: true` so that the embedding store is recreated each time the flow is executed.
+1. We use the `io.kestra.plugin.langchain4j.provider.GoogleGemini` model provider to use the embedding model from **Google Gemini**. We must use the same model at generation time. Kestra supports many large language models (LLM), and more will be supported soon.
+2. We use the `io.kestra.plugin.langchain4j.embeddings.KestraKVStore` embedding store. This is a convenient store that will store embeddings inside a [KeyValue store](https://kestra.io/doc/concepts/kv-store) and load them all in memory at generation time. For a large number of documents, you would typically use a vector database instead, like PGVector or Elasticsearch.
+3. We use `fromExternalURLs` to define a list of documents to ingest from external URLs; here, the blog posts for Kestra releases 0.19 to 0.22. We will go into detail for other ways to define documents to ingest later.
+4. We use `drop: true` to recreate the embedding store each time the flow is executed.
 
 After executing the flow, you will be able to see a new KV store entry with the serialized form of the computed embeddings.
 
 ![Embedding Store KV Entry](/blogs/rag-with-gemini-and-langchain4j/embedding-store-kv.png)
 
-### Defines document from multiple sources
+### Define documents from multiple sources
 
-You can define documents from multiple sources:
-- `fromPath`: from a working directory path, usually used withing a [WorkingDirectory](https://kestra.io/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) task, each file in the directory will create a document.
+Depending on your use case, you can use different task properties to define documents from multiple types of sources:
+- `fromPath`: from a working directory path, usually used in tandem with a [WorkingDirectory](https://kestra.io/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) task, each file in the directory will create a document.
 - `fromInternalURIs`: from a list of internal storage URIs.
 - `fromExternalURLs`: from a list of external URLs.
 - `fromDocuments`: from a list of documents defined inside the task itself.
 
-Document metadata allows defining additional information to the large language model, some metadata is automatically added to documents at ingestion time. For example, the URL of the document if using `fromExternalURLs` or the name of the file if using `fromPath`.
+Document metadata allows the defining of additional information to the large language model. Some metadata is automatically added to documents at ingestion time, such as the URL of the document if using `fromExternalURLs` or the name of the file if using `fromPath`.
 You can set additional metadata via the `metadata` property.
 
 ### Advanced document splitting
 
-Documents are split in segments to feed the large language model. Document splitting is an important step as each segment will create an embedding vector, so the embedding retrieval performance and accuracy will depend on how documents are split.
+Documents are split into segments to feed the large language model. Document splitting is an important step, as each segment will create an embedding vector, so the embedding retrieval performance and accuracy will depend on how you split the documents.
 
-By default, we split documents using a `RECURSIVE` splitter that tries to split documents into paragraphs first and fits as many paragraphs into a single text segment as possible. If some paragraphs are too long, they are recursively split into lines, then sentences, then words, and then characters until they fit into a segment. This is usually a good strategy, but you can use specifically a `PARAGRAPH`, `LINE`, `SENTENCE` or `WORD` splitter if needed.
+By default, we split documents using a `RECURSIVE` splitter that tries to split documents into paragraphs first and fits as many paragraphs into a single text segment as possible. If some paragraphs are too long, they are recursively split into lines, then sentences, then words, and then characters until they fit into a segment. This is usually a good strategy, but you can specifically declare to split at the `PARAGRAPH`, `LINE`, `SENTENCE`, or `WORD` level as needed.
 
-When splitting, you can define the maximum size of the segments using the `maxSegmentSizeInChars` property and the maximum size of the overlap to feed full sentence into a segment even if it overlaps the maximum segment size using the `maxOverlapSizeInChars` property.
+When splitting, you can define the maximum size of the segments using the `maxSegmentSizeInChars` property and the maximum size of the overlap to feed a full sentence into a segment even if it overlaps the maximum segment size using the `maxOverlapSizeInChars` property.
 
-Here is an example to split documents by paragraph only and with a maximum size of 4KB.
+Here is an example that splits documents by paragraph only and with a maximum size of 4KB.
 
 ```yaml
 id: ingest-documents
@@ -102,7 +102,7 @@ tasks:
 
 ## Retrieval augmented generation
 
-This second flow will use the embedding store created by the first flow to retrieve documents based on the prompt passed into the flow inputs and use these documents to augment the large language model contextual information.
+This second flow will use the embedding store created by the first flow to retrieve documents based on the prompt passed into the flow inputs and use these documents to augment the large language model contextual information. The flow components are described in detail below and designated by a numbered comment in the YAML.
 
 ```yaml
 id: rag-completion
@@ -133,16 +133,16 @@ tasks:
     prompt: "{{ inputs.prompt }}" #5
 ```
 
-1. We're using here the same embedding store as the one used in the `ingest-documents` flow. We must set the name of the KV entry as we are not in the same flow and the name of the KV entry is by default the name of the flow suffixed by `embedding-store`.
-2. We're using here the `io.kestra.plugin.langchain4j.provider.GoogleGemini` large language model provider configured to use the Google Gemini Flash 2.5 model.
-3. We're using here the `io.kestra.plugin.langchain4j.provider.GoogleGemini` large language model provider for embeddings, this must be the same as the one used to ingest documents into the embedding store.
-4. We configure the content retriever to return 3 results and filter results with a minimal score of 0.5 to avoid having non-accurate results returned by the embedding store.
+1. Here, we're using the same embedding store used in the `ingest-documents` flow. We must set the name of the KV entry, as we are not in the same flow, and the name of the KV entry is, by default, the name of the flow suffixed by `embedding-store`.
+2. We're using the `io.kestra.plugin.langchain4j.provider.GoogleGemini` large language model provider configured to use the Google Gemini Flash 2.5 model.
+3. We're using the `io.kestra.plugin.langchain4j.provider.GoogleGemini` large language model provider for embeddings; this must be the same as the one used to ingest documents into the embedding store.
+4. We configure the content retriever to return three results and filter them with a minimal score of 0.5 to avoid having inaccurate results returned by the embedding store.
 5. The prompt sent to the large language model for completion.
 
-We use here the Google Gemini 2.5 Flash model, this model is convenient for such use cases as it has a large context window of one million tokens, this is important for retrieval augmented generation as retrieved documents will be added to the context window.
+We use the Google Gemini 2.5 Flash model. This model is convenient for such use cases as it has a large context window of one million tokens. This is important for retrieval augmented generation, as retrieved documents will be added to the context window.
 This model is also cost-effective and quick to answer, making it a good fit for automated workflows.
 
-If you execute this flow with the default prompt, it will answer something like that:
+If you execute this flow with the default prompt, it will answer something like the following:
 
 ```markdown
 Kestra 0.22 introduces several powerful new features and enhancements focused on enterprise-grade management, developer experience, and new plugin capabilities.
@@ -152,13 +152,13 @@ Here's what's new in Kestra 0.22:
 [...].
 ```
 
-With a long list of features taken from the 0.22 blog post.
+We'll spare you the long list of 0.22 features here, but if you missed it, they can be seen in the [0.22 blog post](https://kestra.io/blogs/release-0-22). Or, take the example above with your own Gemini API Key and enjoy the results!
 
-But more interestingly, we can ask it for information cross-documents, and to include its sources!
+Moving on, even more interestingly, we can ask it for information across documents and include its sources!
 
-For example, try the following prompt: `What's the most interesting new features in Kestra. Include your sources with links.`
+For example, try the following prompt: `What are the most interesting new features in Kestra? Include your sources with links.`
 
-It should answer something like that, with the source of each new feature!
+It should answer something like the response below, with the source of each new feature!
 
 ```markdown
 Kestra has introduced several interesting new features across its recent releases (0.20, 0.21, and 0.22), focusing on enhancing enterprise-grade management, developer experience, and operational capabilities.
@@ -174,15 +174,15 @@ Here are some of the most interesting new features:
 
 ### How it works
 
-The prompt is first used to create an embedding vector. This vector will be used to search for the most relevant segments into the embedding store. Here we ask to retrieve three documents with a minimal score of 0.5.
+The prompt is first used to create an embedding vector. This vector will be used to search for the most relevant segments in the embedding store. Here, we ask that three documents be retrieved with a minimal score of 0.5.
 
 Then, these documents are sent into the context window of the LLM with the prompt for generation.
 
-At ingestion time, each document will be indexed with metadata, including the URL of the document as they have been retrieved via external URLs. The LLM is then capable of including these URLs as the source of the information used for the generation.
+At ingestion time, each document will be indexed with metadata, including the document URL, as the external URLs property retrieved it. The LLM can then include these URLs as the source of the information used for the generation.
 
 ## Conclusion
 
-Retrieval-Augmented Generation (RAG) significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s Langchain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
+RAG significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s Langchain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
