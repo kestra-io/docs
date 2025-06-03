@@ -21,13 +21,14 @@ Unit tests are configured for and connected to their respective flows. To create
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
+
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
-![Tests Interface](/docs/enterprise/unit-tests/unit-tests-interface.png)
+![Tests Interface](/docs/enterprise/unit-tests/unit-test-interface.png)
 
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
-![Tests Tree Diagram](/docs/enterprise/unit-tests/unittests.png)
+![Tests Tree Diagram](/docs/enterprise/unit-tests/unittest.png)
 
 ## Configuration
 
@@ -35,6 +36,10 @@ Unit tests are written in YAML like flows, and they are comprised of `testCases`
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
+
+::alert{type="warning"}
+Running a Test will execute a Flow normally without constructing any mocks. Make sure to write test cases into your test's YAML. 
+::
 
 For example, take the following flow that does the these listed tasks:
 1. Sends a message to Slack to alert a channel that it is running
@@ -119,7 +124,7 @@ In the first test case, `extract_should_return_data`, the `fixtures` include tas
 
 The `assertions` property contains the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
 
-![Test case 1 results](/docs/enterprise/test-case-1.png)
+![Test case 1 results](/docs/enterprise/unit-tests/test-case-1.png)
 
 The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see the returned product names were also transformed successfully to uppercase in the assertion's actual result.
 
@@ -127,11 +132,11 @@ Because we wrote the test suite with two test cases, both executed during the ru
 
 After running, we can see that the assertion was successful and the actual result `MY-PRODUCT-1` was successfully transformed and matches the expected result defined in the `assertions` property of the test.
 
-![Test case 2 results](/docs/enterprise/test-case-2.png)
+![Test case 2 results](/docs/enterprise/unit-tests/test-case-2.png)
 
 Execution details are not stored in the Executions page like normally run flows to protect cluttering that space with unneccesary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
 
-![Test Execution Details](/docs/enterprise/test-execution.png)
+![Test Execution Details](/docs/enterprise/unit-tests/test-execution.png)
 
 ## Unit Test with Namespace File
 
@@ -298,18 +303,18 @@ testCases:
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The full list is as follows:
 
-| Operator | Description |
-|----------|-------------|
-| isNotNull | Asserts that the value is not null |
-| isNull | Asserts that the value is null |
-| equalsTo | Asserts that the value is equal to the expected value |
-| notEqualsTo | Asserts that the value is not equal to the specified value |
-| endsWith | Asserts that the value ends with the specified suffix |
-| startsWith | Asserts that the value starts with the specified prefix |
-| contains | Asserts that the value contains the specified substring |
-| greaterThan | Asserts that the value is greater than the specified value |
-| greaterThanOrEqualTo | Asserts that the value is greater than or equal to the specified value |
-| lessThan | Asserts that the value is less than the specified value |
-| lessThanOrEqualTo | Asserts that the value is less than or equal to the specified value |
-| in | Asserts that the value is in the specified list of values |
-| notIn | Asserts that the value is not in the specified list of values |
+| **Operator**         | **Description of the assertion operator**                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| isNotNull            | Asserts the value is not null, e.g. `isNotNull: true`                                             |
+| isNull               | Asserts the value is null, e.g. `isNull: true`                                                    |
+| equalTo              | Asserts the value is equal to the expected value, e.g. `equalTo: 200`                             |
+| notEqualTo           | Asserts the value is not equal to the specified value, e.g. `notEqualTo: 200`                     |
+| endsWith             | Asserts the value ends with the specified suffix, e.g. `endsWith: .json`                          |
+| startsWith           | Asserts the value starts with the specified prefix, e.g. `startsWith: prod-`                      |
+| contains             | Asserts the value contains the specified substring, e.g. `contains: success`                      |
+| greaterThan          | Asserts the value is greater than the specified value, e.g. `greaterThan: 10`                     |
+| greaterThanOrEqualTo | Asserts the value is greater than or equal to the specified value, e.g. `greaterThanOrEqualTo: 5` |
+| lessThan             | Asserts the value is less than the specified value, e.g. `lessThan: 100`                          |
+| lessThanOrEqualTo    | Asserts the value is less than or equal to the specified value, e.g. `lessThanOrEqualTo: 20`      |
+| in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
+| notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
