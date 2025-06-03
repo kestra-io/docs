@@ -10,11 +10,11 @@ author:
 image: /blogs/introducing_unittests.png
 ---
 
-The 0.23 release introduces a major addition to the Kestra platform: **Unit Tests for Flows**. With this new feature, you can verify the logic of your flows in isolation, detect regressions early, and maintain confidence in your automations as they change and grow.
+The 0.23 release introduces a major addition to the Kestra platform: **Unit Tests for Flows**. With this new feature, you can verify the logic of your flows in isolation, helping you catch regressions early and maintain reliability as your automations evolve.
 
 ## Why Unit Tests?
 
-Automated testing is critical for any robust workflow automation. Flows often touch external systems, such as APIs, databases, or messaging tools, which can create side effects when you test changes. Running production flows for testing might unintentionally update data, send messages, or trigger alerts. Unit Tests make it possible to safely verify workflow logic without touching external dependencies or polluting your execution history.
+Automated testing is critical for any robust workflow automation. Flows often touch external systems, such as APIs, databases, or messaging tools, which can create side effects when you test changes. Running production flows for testing might unintentionally update data, send messages, or trigger alerts. Unit Tests make it possible to safely verify workflow logic without triggering side effects or cluttering your main execution history.
 
 With Unit Tests, you can:
 
@@ -69,8 +69,7 @@ Here is an example of a task fixture with outputs:
             uri: "{{ fileURI('products.json') }}"
 ```
 
-Simply listing task IDs under `tasks` without specifying outputs will cause those tasks to be marked as `SUCCESS` and skipped during the test:
-
+Simply listing task IDs under `tasks` (without specifying outputs) will cause those tasks to be skipped and immediately marked as `SUCCESS` during the test, without executing their logic:
 ```yaml
     fixtures:
       tasks: # those tasks won't run
@@ -81,7 +80,7 @@ Simply listing task IDs under `tasks` without specifying outputs will cause thos
 
 ### Assertions
 
-Assertions are conditions tested against outputs or states to ensure that your tasks behave as intended. Supported operators include `equalTo`, `notEqualTo`, `contains`, `startsWith`, `isNull`, `isNotNull`, and many more (see the full table below).
+Assertions are conditions tested against outputs or states to ensure that your tasks behave as intended. Supported operators include `equalTo`, `notEqualTo`, `contains`, `startsWith`, `isNull`, `isNotNull`, and many more (see the table below).
 
 Each assertion can specify:
 - The `value` to check (usually a Pebble expression)
@@ -92,21 +91,22 @@ Each assertion can specify:
 
 If any assertion fails, Kestra provides clear feedback showing the actual versus expected value.
 
-| Operator | Description of the assertion operator                                         |
-| --- |-------------------------------------------------------------------------------|
-| isNotNull | Asserts the value is not null e.g. `isNotNull: true`                          |
-| isNull | Asserts the value is null e.g. `isNull: true`                                 |
-| equalTo | Asserts the value is equal to the expected value e.g. `equalTo: 200`          |
-| notEqualTo | Asserts the value is not equal to the specified value  e.g. `notEqualTo: 200` |
-| endsWith | Asserts the value ends with the specified suffix                              |
-| startsWith | Asserts the value starts with the specified prefix                            |
-| contains | Asserts the value contains the specified substring                            |
-| greaterThan | Asserts the value is greater than the specified value                         |
-| greaterThanOrEqualTo | Asserts the value is greater than or equal to the specified value             |
-| lessThan | Asserts the value is less than the specified value                            |
-| lessThanOrEqualTo | Asserts the value is less than or equal to the specified value                |
-| in | Asserts the value is in the specified list of values                          |
-| notIn | Asserts the value is not in the specified list of values                      |
+| **Operator**         | **Description of the assertion operator**                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| isNotNull            | Asserts the value is not null, e.g. `isNotNull: true`                                             |
+| isNull               | Asserts the value is null, e.g. `isNull: true`                                                    |
+| equalTo              | Asserts the value is equal to the expected value, e.g. `equalTo: 200`                             |
+| notEqualTo           | Asserts the value is not equal to the specified value, e.g. `notEqualTo: 200`                     |
+| endsWith             | Asserts the value ends with the specified suffix, e.g. `endsWith: .json`                          |
+| startsWith           | Asserts the value starts with the specified prefix, e.g. `startsWith: prod-`                      |
+| contains             | Asserts the value contains the specified substring, e.g. `contains: success`                      |
+| greaterThan          | Asserts the value is greater than the specified value, e.g. `greaterThan: 10`                     |
+| greaterThanOrEqualTo | Asserts the value is greater than or equal to the specified value, e.g. `greaterThanOrEqualTo: 5` |
+| lessThan             | Asserts the value is less than the specified value, e.g. `lessThan: 100`                          |
+| lessThanOrEqualTo    | Asserts the value is less than or equal to the specified value, e.g. `lessThanOrEqualTo: 20`      |
+| in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
+| notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
+
 
 If some operator you need is missing, let us know via [a GitHub issue](https://github.com/kestra-io/kestra/issues/new?template=feature.yml).
 
@@ -274,13 +274,12 @@ testCases:
 
 Let's assume that you want to add a Unit Test for the [data-engineering-pipeline](https://kestra.io/blueprints/data-engineering-pipeline) tutorial flow.
 
-This flow uses multiple file operations:
+This flow uses multiple **file operations**:
 - the first task **extracts** data and passes it as a file to the `transform` task
 - the second task **transforms** that data and passes it to the `query` task
 - the final task runs a DuckDB query on that transformed data.
 
-For such use cases, you can leverage the `files` fixtures allowing you to mock the file content inline and reference it in `tasks` fixtures or in `assertions` using the `{{files['filename']}}` Pebble expression:
-
+With the `files` fixtures, you can mock file content inline and reference it in `tasks` fixtures or `assertions` using the `{{files['filename']}}` Pebble expression:
 ```yaml
 id: test-data-engineering-pipeline
 flowId: data-engineering-pipeline
