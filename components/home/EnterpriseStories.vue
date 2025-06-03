@@ -18,7 +18,12 @@
 
     <div class="dots">
         <ClientOnly>
-            <button v-for="storyIndex of (stories?.length ?? 0)" :class="{active: storyIndex === activeStory}" @click="scrollTo(storyIndex)"/>
+           <button 
+  v-for="(story, index) in stories"
+  :key="story.id" 
+  :class="{ active: index === activeStory }"
+  @click="manualScrollTo(index)"
+/>
         </ClientOnly>
     </div>
 
@@ -247,21 +252,21 @@
         }
     }
 
-    .dots{
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1rem;
-        > button{
-            width: 10px;
-            height: 10px;
-            background-color: #E3E3E3;
-            border-radius: 50%;
-            border: none;
-            padding: 0;
-        }
-        > button.active{
-            background-color: #969393;
-        }
+    .dots {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    > button {
+        width: 10px;
+        height: 10px;
+        background-color: #E3E3E3;
+        border-radius: 50%;
+        border: none;
+        padding: 0;
     }
+    button.active {
+        background-color: #969393;
+    }
+}
 </style>
