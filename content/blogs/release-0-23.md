@@ -47,7 +47,7 @@ With this flexible interface, you can:
 You can customize your experience by opening only the panels you need, creating a workspace tailored to your workflow development style. This enhancement significantly improves productivity by reducing context switching and providing multiple perspectives on your workflows simultaneously.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/SGlzRmJqFBI" title="Multi Panel Editor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI" title="Multi Panel Editor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -156,7 +156,7 @@ testCases:
 
 
 <div class="video-container">
-  <iframe src="https://youtu.be/jMZ9Cs3xxpo" title="Unit Test Flows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo" title="Unit Test Flows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -271,6 +271,11 @@ tasks:
 ```
 
 A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs. The `beforeCommands` property is still supported for advanced use cases or custom installation steps.
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/g9Jt5zt9wI4" title="Python Dependency Caching" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 
 ### Git Sync for Apps & Dashboards
 
