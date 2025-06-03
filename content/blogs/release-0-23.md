@@ -359,6 +359,9 @@ tasks:
 triggers:
   - id: postgres_trigger
     type: io.kestra.plugin.jdbc.postgresql.Trigger
+    url: "{{ secret('POSTGRES_URL') }}"
+    username: "{{ secret('POSTGRES_USERNAME') }}"
+    password: "{{ secret('POSTGRES_PASSWORD') }}"
     sql: |
       SELECT 
         first_name as "FirstName", 
@@ -369,13 +372,6 @@ triggers:
       AND (processed_at IS NULL OR processed_at < updated_at)
     interval: PT5M
     fetchType: FETCH
-
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.postgresql
-    values:
-      url: "{{ secret('POSTGRES_URL') }}"
-      username: "{{ secret('POSTGRES_USERNAME') }}"
-      password: "{{ secret('POSTGRES_PASSWORD') }}"
 ```
 ::
 
@@ -527,7 +523,7 @@ tasks:
 We're introducing a new GitHub Actions Workflow plugin that allows you to trigger GitHub Actions workflows directly from your Kestra flows.
 
 With the GitHub Actions Workflow plugin, you can:
-- Dispatch a GitHub Actions workflow using the `io.kestra.plugin.github.workflows.RunWorkflow` task
+- Dispatch a GitHub Actions workflow using the `io.kestra.plugin.github.actions.RunWorkflow` task
 - Pass custom inputs and parameters to your workflow
 - Integrate GitHub automation seamlessly with other tasks in your Kestra pipelines
 
@@ -537,7 +533,7 @@ id: github_runworkflow_flow
 namespace: company.team
 tasks:
   - id: run_workflow
-    type: io.kestra.plugin.github.workflows.RunWorkflow
+    type: io.kestra.plugin.github.actions.RunWorkflow
     oauthToken: "{{ secret('OAUTH_TOKEN ')}}"
     repository: owner/repository
     workflowId: your_workflow_id
