@@ -7,7 +7,7 @@ editions: ["OSS"]
 
 ## Overview
 
-Kestra now requires a tenant context across both the OSS and EE versions.
+Kestra now requires a tenant context in the OSS version.
 
 ## Open Source Edition Changes
 
@@ -30,7 +30,7 @@ Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to 
 To add the tenantId field across your existing database (flows, executions, logs, etc.), use:
 
 ```shell
-kestra migrate defaultTenant --dry-run
+kestra migrate default-tenant --dry-run
 ```
 
 ::alert{type="info"}
@@ -48,8 +48,6 @@ This section explains how to migrate internal storage data to ensure the tenant 
 
 ### **Who needs to perform this migration?**
 - All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
-- Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
-- Enterprise users who **do not** use the `defaultTenant` but use S3 or GCS as internal storage also need to run the migration script to fix the double slash issue.
 
 ::alert{type="info"}
 The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
@@ -81,7 +79,6 @@ done
 
 - Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
 - For OSS users, the destination tenant ID is always `main`, thus you should keep the `base-path/main/` intact.
-- For Enterprise users, replace `main` with the appropriate tenant ID.
 
 ---
 
@@ -96,17 +93,6 @@ for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
     if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then
         echo "Moving $f → main/"
         mc mv --recursive "myminio/mybucket/$f" "myminio/mybucket/main/"
-    fi
-done
-```
-
-### Enterprise Users
-
-```bash
-for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
-    if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main) and undefined.
-        echo "Moving $f → tenantId/"
-        mc mv --recursive "myminio/mybucket/$f" "myminio/mybucket/tenantId/"
     fi
 done
 ```
