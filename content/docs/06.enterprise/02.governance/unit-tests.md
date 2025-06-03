@@ -38,7 +38,7 @@ Unit tests are written in YAML like flows, and they are comprised of `testCases`
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
 
 ::alert{type="warning"}
-Running a Test will execute a Flow normally without constructing any mocks. Make sure to write test cases into your test's YAML. 
+If you don't specify any fixtures, the test will run the entire flow as in production, executing all tasks and producing outputs as usual.
 ::
 
 For example, take the following flow that does the these listed tasks:
