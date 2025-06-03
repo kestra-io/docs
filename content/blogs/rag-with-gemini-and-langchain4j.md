@@ -10,14 +10,21 @@ author:
 image: /blogs/TODO.png
 ---
 
-Generative AI are great tools, but their generation can sometimes be too generic or outdated.
-Entering **Retrieval Augmented Generation** or RAG, which is the process of AI generation, augmented by contextual and up-to-date information retrieved from an embedding store.
+Generative AI tools are great. However, relying purely on generative models can lead to outputs that feel generic, inaccurate, or outdated. This is where **Retrieval-Augmented Generation (RAG)** comes in, combining the creativity of Generative AI with real-time, accurate context sourced from custom data.
 
-In version 0.23, Kestra introduces the [Langchain4J plugin](https://kestra.io/plugins/plugin-langchain4j) that allows creating complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline. Let's see it in action.
+We just introduced the [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) that allows creating complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline. 
 
-This plugin is based on the awesome [Langchain4J](https://docs.langchain4j.dev) framework!
+In this post, you'll learn how to build an advanced RAG pipeline using Google Gemini AI and Kestra’s new Langchain4J plugin, which leverages precise, context-aware AI generation. We'll cover document ingestion, embedding creation, retrieval strategies, and finally, demonstrate a full end-to-end RAG example.
 
-TODO high level explanation of the workflows we will create
+## Creating Powerful AI Workflows with Kestra’s Langchain4J
+
+The new [Langchain4J plugin](https://blog-lanchain4j.kestra-io.pages.dev/plugins/plugin-langchain4j) simplifies the implementation of RAG, handling document ingestion, embeddings creation, retrieval, and generation tasks.
+
+Here's a high-level overview of the workflows you'll create:
+
+- **Document Ingestion and Embedding Creation:** You’ll ingest documents, splitting them into manageable segments and generating embeddings.
+- **Embedding Storage:**  Store embeddings in a vector store, optimizing retrieval.
+- **Retrieval and Augmented Generation:** Build workflows that retrieve the most relevant embeddings based on user prompts and generate context-rich, accurate responses with Gemini AI.
 
 ## Embedding creation via document ingestion
 
@@ -25,7 +32,7 @@ The first step is to create embeddings based on our own document. These embeddin
 
 But first, what is an embedding?
 
-To ingest a document, you will split it in segments, then call an embedding AI model for each segment that embeds this segment into a vector that will then be stored into an embedding store: usually a vector database. So an embedding is a vector representation of a segment of a document.
+To ingest a document, you will split it into segments, then call an embedding AI model for each segment, transforming each into a vector representation stored in an embedding store, typically a vector database. An embedding is basically a vector representation of a segment of a document.
 
 The `io.kestra.plugin.langchain4j.rag.IngestDocument` task will do this for you!
 
@@ -50,7 +57,7 @@ tasks:
     drop: true #4
 ```
 
-1. We use the `io.kestra.plugin.langchain4j.provider.GoogleGemini` model provider to use the embedding model from Google Gemini. We must use the same model at generation time. Kestra supports a large variety of large language models (LLM) and more will be supported soon.
+1. We use the `io.kestra.plugin.langchain4j.provider.GoogleGemini` model provider to use the embedding model from **Google Gemini**. We must use the same model at generation time. Kestra supports a large variety of large language models (LLM) and more will be supported soon.
 2. We use the `io.kestra.plugin.langchain4j.embeddings.KestraKVStore` embedding store. This is a convenient store that will store embeddings inside a [KeyValue store](https://kestra.io/doc/concepts/kv-store) and load them all in memory at generation time. For a large number of documents, you would typically use a vector database instead like PGVector or Elasticsearch.
 3. We use `fromExternalURLs` to defines a list of documents to ingest from external URLs, here the blog posts for Kestra release 0.19 to 0.22. We will go into details for other ways to define documents to ingest later.
 4. We use `drop: true` so that the embedding store is recreated each time the flow is executed.
@@ -175,4 +182,11 @@ At ingestion time, each document will be indexed with metadata, including the UR
 
 ## Conclusion
 
-TODO
+Retrieval-Augmented Generation (RAG) significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s Langchain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
+
+::alert{type="info"}
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+::
+
