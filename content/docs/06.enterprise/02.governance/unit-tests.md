@@ -23,7 +23,11 @@ Unit tests are configured for and connected to their respective flows. To create
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
-![Tests Interface](/docs/enterprise/unit-tests-interface.png)
+![Tests Interface](/docs/enterprise/unit-tests/unit-tests-interface.png)
+
+The following diagram illustrates the structure of flows and unit tests together in Kestra:
+
+![Tests Tree Diagram](/docs/enterprise/unit-tests/unittests.png)
 
 ## Configuration
 
