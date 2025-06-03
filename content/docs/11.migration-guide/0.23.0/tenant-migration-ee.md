@@ -19,7 +19,7 @@ The configuration properties `kestra.ee.tenants.enabled` and `kestra.ee.tenants.
 
 With this change, there is a new configuration property: `kestra.ee.tenants.fallbackTenant: tenant-id`.
 
-This property used to route non-tenant-specific API calls to a fallback tenant. This does not rewrite the route but internally assigns the tenant.
+This property is used to route non-tenant-specific API calls to a fallback tenant. This does not rewrite the route but internally assigns the tenant.
 
 ### Compatibility Layer
 
@@ -36,6 +36,17 @@ kestra migrate tenant \
     [--dry-run]
 ```
 
+::alert{type="warning"}
+The migration command is also required for customers that have the following configuration:
+
+```yaml
+kestra:
+   tenants:
+      defaultTenant: false
+      enabled: false
+```
+::
+
 ### Kafka Queue Handling
 
 If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
@@ -45,9 +56,8 @@ If your queue is Kafka, queues will be recreated after migration. You don’t ne
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
 ### **Who needs to perform this migration?**
-- All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
 - Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
-- Enterprise users who **do not** use the `defaultTenant` but use S3 or GCS as internal storage also need to run the migration script to fix the double slash issue.
+- Enterprise users who **do not** use the `defaultTenant` but use [S3 or GCS as internal storage](internal-storage-migration.md) also need to run the migration script to fix the double slash issue.
 
 ::alert{type="info"}
 The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
@@ -55,7 +65,7 @@ The provided commands use a list of existing tenant names (`main`, `tenant1`, `t
 
 ## Local Storage
 
-If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID (in OSS, the tenantID is always main, this is not configurable).
+If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, and replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID.
 
 ```bash
 for f in base-path/*; do
@@ -78,7 +88,6 @@ done
 ```
 
 - Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
-- For OSS users, the destination tenant ID is always `main`, thus you should keep the `base-path/main/` intact.
 - For Enterprise users, replace `main` with the appropriate tenant ID.
 
 ---
@@ -196,7 +205,6 @@ echo "Migration finished!"
 ```
 
 - `BUCKET_NAME` is configured under `kestra.storage.azure.container`.
-- For OSS users, the destination tenant is always `main`.
 
 ---
 
@@ -238,7 +246,6 @@ echo "Tenant migration finished!"
 ```
 
 - `BUCKET` is configured under `kestra.storage.s3.bucket`.
-- For OSS users, the destination tenant is always `main`.
 
 ---
 
@@ -316,4 +323,3 @@ echo "Tenant migration finished!"
 ```
 
 - `BUCKET` is configured under `kestra.storage.gcs.bucket`.
-- For OSS users, the destination tenant is always `main`.
