@@ -22,7 +22,7 @@ Previously, `LoopUntil` capped executions at 100 iterations and 1 hour duration 
 
 **What’s changed**:
 - The default configuration no longer enforces arbitrary limits on iterations and duration.
-- The new default uses a 1-minute interval (PT1M), which greatly reduces the risk of instance performance issues, even with no iteration or duration limits.
+- The new default uses a 1-minute interval (`PT1M`), which greatly reduces the risk of instance performance issues, even with no iteration or duration limits.
 
 **Backwards compatibility**: If you want to retain the previous default limits to prevent potentially long-running loops, add the following to your global plugin defaults:
 

@@ -7,7 +7,9 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-To make it easier to get started, we used a custom `ghcr.io/kestra-io/kestrapy:latest` image to contain `kestra` and `amazon-ion` pip packages. The tasks now use the official `python:3-13-slim` image by default. If you want to maintain the previous behavior, simply add those using the new `dependencies` property and they will be installed at runtime (and cached):
+To make it easier to get started, we used a custom `ghcr.io/kestra-io/kestrapy:latest` image to contain `kestra` and `amazon-ion` pip packages. The tasks now use the official `python:3-13-slim` image by default. 
+
+If you want to maintain the previous behavior, simply add those packages using the new `dependencies` property and they will be installed at runtime (and cached):
 
 ```yaml
 id: python_demo

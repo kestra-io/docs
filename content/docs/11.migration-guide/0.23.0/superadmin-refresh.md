@@ -1,5 +1,5 @@
 ---
-title: Manual User Refresh to Migrate Superadmin Property
+title: Manual user refresh to migrate Superadmin property
 icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE", "Cloud"]
@@ -20,7 +20,7 @@ This command migrates and refreshes user data to correctly assign Superadmin sta
 
 ## Impact
 
-- Existing Enterprise and Cloud users with the type SUPER_ADMIN will not automatically have the new isSuperAdmin property set unless you run the migration command after upgrading to 0.23.
-- This may result in users unexpectedly losing Superadmin privileges. If you see this happening, run kestra auths users refresh from the CLI.
+- Existing Enterprise and Cloud users with the type `SUPER_ADMIN` will not automatically have the new `isSuperAdmin` property set unless you run the migration command after upgrading to 0.23.
+- This may result in users unexpectedly losing Superadmin privileges. If you see this happening, run `kestra auths users refresh` from the CLI to resolve the missing access.
 
 

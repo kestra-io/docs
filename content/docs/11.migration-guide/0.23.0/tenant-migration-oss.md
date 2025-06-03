@@ -1,5 +1,5 @@
 ---
-title: Open-Source Migration Guide from defaultTenant to Multitenancy
+title: Open-Source Migration Guide to introduce defaultTenant
 icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]
@@ -9,7 +9,7 @@ editions: ["OSS"]
 
 Kestra now requires a tenant context in the OSS version.
 
-## Open Source Edition Changes
+## Open-Source Edition Changes
 
 ### Default Tenant
 
@@ -99,7 +99,7 @@ BUCKET_NAME="mybucket"
 DEST_TENANT="${1:-main}"
 
 # List of tenant folders to skip (don't move)
-TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
+TENANTS=("main")
 
 # Get all blob names
 blob_names=$(az storage blob list --account-name "$ACCOUNT_NAME" --container-name "$BUCKET_NAME" --query "[].name" --output tsv)
@@ -191,7 +191,7 @@ echo "Migration finished!"
 
 BUCKET="mybucket"
 DEST_TENANT="${1:-main}"
-TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
+TENANTS=("main")
 
 echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
 
@@ -234,7 +234,7 @@ echo "Tenant migration finished!"
 
 BUCKET="gs://bucket"
 DEST_TENANT="${1:-main}"  # Default tenant is 'main' if not specified
-TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
+TENANTS=("main")
 
 echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
 
