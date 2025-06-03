@@ -608,6 +608,73 @@ tasks:
 ```
 ::
 
+
+### InfluxDB
+
+We're excited to introduce our new InfluxDB plugin, which provides comprehensive integration with InfluxDB time series database. This plugin enables you to write data to InfluxDB and query it using both Flux and InfluxQL languages, making it perfect for time series data processing and monitoring workflows.
+
+The plugin includes several powerful tasks:
+
+- **Write** task (`io.kestra.plugin.influxdb.Write`) - Write data to InfluxDB using InfluxDB line protocol format.
+- **Load** task (`io.kestra.plugin.influxdb.Load`) - Load data points to InfluxDB from an ION file where each record becomes a data point.
+- **FluxQuery** task (`io.kestra.plugin.influxdb.FluxQuery`) - Queries InfluxDB using the Flux language, with options to output results as ION internal storage or directly in the execution.
+- **InfluxQLQuery** task (`io.kestra.plugin.influxdb.InfluxQLQuery`) - Queries InfluxDB using the InfluxQL language, with the same output options as FluxQuery
+- **FluxTrigger** (`io.kestra.plugin.influxdb.FluxTrigger`) - Automatically triggers workflow executions when a Flux query returns results
+
+This integration is particularly useful for IoT data processing, monitoring metrics, and any workflow that involves time series data analysis.
+
+### GraphQL
+
+We've introduced a new GraphQL plugin that enables integration with GraphQL APIs in your data workflows. The plugin features a `Request` task that allows you to execute GraphQL queries and mutations against any GraphQL endpoint, with full support for authentication headers, variables, and complex queries.
+
+This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
+
+::collapse{title="Example using GraphQL to query Github API"}
+```yaml
+id: graphql-query-github
+namespace: blueprints
+tasks:
+  - id: get_github_issues
+    type: io.kestra.plugin.graphql.Request
+    uri: https://api.github.com/graphql
+    headers:
+      Authorization: "Bearer {{ secret('GITHUB_TOKEN') }}"
+    query: |
+      query {
+        repository(owner: "kestra-io", name: "kestra") {
+          issues(last: 20, states: CLOSED) {
+            edges {
+              node {
+                title
+                url
+                labels(first: 5) {
+                  edges {
+                    node {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+```
+::
+
+### Databricks CLI
+
+We've added a new Databricks SQL CLI task that allows you to execute SQL commands directly against Databricks SQL warehouses. This task leverages the official Databricks SQL CLI tool to provide seamless integration with your Databricks environment, enabling you to run queries, manage data, and automate SQL operations within your Kestra workflows.
+
+### Improvements: Redis & ServiceNow
+
+We've enhanced our Redis plugin with a new `Increment` task that allows you to atomically increment the value of a key in a Redis database and return the new value. This is particularly useful for implementing counters, rate limiters, or any scenario where you need atomic incrementation of numeric values stored in Redis.
+
+We've expanded the ServiceNow plugin with two new tasks:
+
+- **Update** task to update a record in a ServiceNow table.
+- **Delete** task to delete a record from a ServiceNow table.
+
 ## Thanks to Our Contributors
 
 Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
