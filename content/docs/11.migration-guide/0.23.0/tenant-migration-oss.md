@@ -49,24 +49,9 @@ This section explains how to migrate internal storage data to ensure the tenant 
 ### **Who needs to perform this migration?**
 - All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
 
-::alert{type="info"}
-The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
-::
-
 ## Local Storage
 
-If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID (in OSS, the tenantID is always main, this is not configurable).
-
-```bash
-for f in base-path/*; do
-    bn=$(basename "$f")
-    [[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]] || {
-        rsync -a "$f/" base-path/main/"$bn"/ && rm -rf "$f"
-    };
-done
-```
-
-If you used to rely on `defaultTenant` with no multitenancy enabled, use the following script:
+The following script ensures that the `main` tenand ID is added to the internal storage path for your configuration. For OSS, this ID is immutable, so there is no need to adjust the name or path.
 
 ```bash
 for f in base-path/*; do
