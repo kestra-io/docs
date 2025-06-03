@@ -199,7 +199,7 @@ Currently, the UI is limited and outputs will not be directly visible if using i
 ::
 
 
-### Improved dashboard management
+### Improved Dashboard Management
 
 This new release enhances the dashboard experience with the ability to configure your own default dashboard - putting you in control of what you see when you first log in. This feature allows you to personalize your monitoring and operational view to match your specific workflow requirements.
 
@@ -209,7 +209,7 @@ With improved dashboard management, you can:
 - Access your most important information immediately upon login
 - Switch between different dashboards based on your current needs
 
-### Python dependency caching
+### Python Dependency Caching
 
 Kestra 0.23 introduces Python dependency caching, bringing significant improvements to the execution of Python tasks. With this feature, execution times for Python tasks are reduced, as dependencies are cached and reused across runs. You can now use official Python Docker images, and multiple executions of the same task will consistently use the same library versions. There is no need to use virtual environments (venv) for installing requirements, simplifying setup and maintenance.
 
@@ -329,7 +329,7 @@ triggers:
 
 **Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filterOnTags` property lets you filter secrets by tags and sync only those that match.
 
-## Plugin development
+## Plugin Development
 
 ### Salesforce
 
@@ -569,7 +569,7 @@ tasks:
 ```
 ::
 
-### Go scripts
+### Go Scripts
 
 Kestra 0.23 introduces powerful new capabilities for running Go code with the addition of two dedicated Go script tasks:
 
