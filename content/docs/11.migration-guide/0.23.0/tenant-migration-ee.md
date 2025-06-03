@@ -30,7 +30,7 @@ While in OSS we transform URI to a different one including the main `tenantId` d
 The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration.
 
 ```shell
-kestra migrate tenant \
+kestra migrate default-tenant \
     --tenant-id=tenant \
     --tenant-name="Tenant Name" \
     [--dry-run]
