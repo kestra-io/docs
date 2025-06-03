@@ -9,12 +9,12 @@ editions: ["OSS","EE"]
 
 For users of S3 or GCS as internal storage, Kestra now removes the leading root slash in all storage paths. Storage keys now have a single slash separator, not a double slash. This helps display internal storage objects [in various cloud storage interfaces](https://github.com/kestra-io/kestra/issues/3933).
 
-Example of how the storage path looks like before and after the change:
+Below is an example of how the storage path looks like before and after the change (note the double slash before the namespace `company`):
 
 - Before 0.23: `gs://ee-default-22//company/team/_files/test.txt`
 - After 0.23: `gs://ee-default-22/company/team/_files/test.txt`
 
-Make sure to run the script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore:
+Make sure to run the followings script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore.
 
 ### GCS storage root slash migration script:
 

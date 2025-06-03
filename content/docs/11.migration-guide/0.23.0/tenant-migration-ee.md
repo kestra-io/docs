@@ -7,7 +7,7 @@ editions: ["EE"]
 
 ## Overview
 
-Kestra now requires a tenant context across both the OSS and EE versions.
+Kestra now requires a tenant context across both the OSS and EE versions. For Enterprise users, this affects default tenants and their associated configuration properties.
 
 ## Enterprise Edition (EE) Changes
 
