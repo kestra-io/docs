@@ -25,6 +25,10 @@ Sometimes you might need to downgrade Kestra to a previous version. Here are som
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
+::alert{type="warning"}
+We strongly recommend to avoid downgrading to a previous version if possible. To avoid any surprises, before upgrading, test out the newer version on a non-production environment to ensure expected functionality with your existing instance. If you must rollback, closely follow the recommended actions above.
+::
+
 ## Where you can find the release changelog
 
 You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level explanation of the changes, you can also check release [blog posts](/blogs).
