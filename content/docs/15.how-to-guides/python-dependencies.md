@@ -14,7 +14,7 @@ Manage your Python dependencies inside of Kestra.
 
 ---
 
-Managing Python Dependencies can be frustrating. There's 3 ways you can manage your dependencies in Kestra.
+Managing Python Dependencies can be frustrating. There's several ways you can manage your dependencies in Kestra.
 
 ## Install with pip using `beforeCommands`
 
@@ -43,6 +43,46 @@ tasks:
 ```
 
 By using a [Process Task Runner](../task-runners/04.types/01.process-task-runner.md), we can speed up the execution time so that our task isn't pulling a container image to run the task inside of a container.
+
+## Cache dependencies (Beta)
+
+::badge{version=">=0.23" editions="OSS,EE"}
+::
+
+In version 0.23, we added the Python dependency caching as a Beta feature.
+
+<div class="video-container">
+  <iframe src="https://youtu.be/embed/g9Jt5zt9wI4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+With this feature, Python dependencies are cached and reused across executions of different flows. The [uv package manager](python-uv.md) installs the dependencies on the [worker](../07.architecture/05.worker.md) under the hood. These cached dependencies will be available for subsequent executions, leading to performance improvements. This method is recommended for smaller tasks that require only a few dependencies, which you don't want to add each time. For more complex workflows, you can continue to use `beforeCommands`.
+
+The added properties are `dependencies`, which lists the dependencies (e.g., pandas), and `dependencyCacheEnabled`, which, when set to true, enables caching of dependencies across tasks. An example flow is as follows: the first execution installs the dependencies, but each subsequent execution of this flow, or any other flow relying on these packages, will show improved performance.
+
+```yaml
+id: python_dependencies
+namespace: company-team
+tasks:
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: python:3.13-slim
+    dependencies:
+      - pandas
+      - kestra
+    script: |
+      from kestra import Kestra
+      import pandas as pd
+      data = {
+        'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35]
+      }
+      df = pd.DataFrame(data)
+      print(df)
+      print("Average age:", df['Age'].mean())
+      Kestra.outputs({"average_age": df['Age'].mean()})
+```
 
 ## Set Container Image with Docker Task Runner
 
