@@ -328,29 +328,60 @@ echo "Tenant migration finished!"
 
 For users who prefer not to use command-line scripts or are limited by their environment (e.g., Windows Server without shell access), migration can be accomplished with graphical tools. Below are guidelines for each storage type.
 
+---
+
 #### Windows: Using File Explorer
 
-If your internal storage is a local directory (or a network drive), you can manually move or copy files:
+If your internal storage is a local directory (or a network drive), you can manually move or copy files to migrate them to the right tenant folder:
 
-1. **Open File Explorer** and navigate to your storage directory.
-2. **Locate files or folders** with a double leading slash (e.g., `\\company\team\_files\test.txt`).
-3. **Rename or move** files to remove the extra slash, so the path matches the new structure (e.g., `\company\team\_files\test.txt`).
-4. Verify that no double slashes remain in the directory paths.
+1. **Open File Explorer** and go to your base storage path (as configured in `kestra.storage.local.base-path`).
+2. **Identify all folders and files** at the root level that are *not* already under a tenant folder (e.g., “main”, “tenant1”, “tenant2”).
+   Example: If your structure is
 
-#### S3/Cloudflare R2: Using Management Console
+   ```
+   base-path/
+     main/
+     tenant1/
+     foo/
+     bar/
+   ```
 
-Most S3-compatible providers (including AWS S3, MinIO and Cloudflare R2) allow you to move or copy files directly in their web interfaces:
+   You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+3. **Select** the folders and files to migrate, right-click, and choose **Cut** (or **Copy** if you want to keep the original temporarily).
+4. **Paste** them into the appropriate tenant folder (e.g., `main/`).
+   The result should be:
 
-1. **Log in** to the AWS S3, MinIO or Cloudflare R2 management console.
+   ```
+   base-path/
+     main/
+       foo/
+       bar/
+     tenant1/
+   ```
+5. **Delete** the original folders/files from the root after confirming the migration.
+
+---
+
+#### Local Storage on MacOS
+
+1. **Open Finder** and navigate to your base storage directory.
+2. **Locate folders and files** at the root level not already under your tenant folders.
+3. **Drag and drop** each folder or file into the appropriate tenant folder (e.g., “main”).
+4. **Verify** the migration by checking that only tenant folders exist at the root.
+5. **Remove** the original files/folders if you used Copy.
+
+---
+
+#### S3/MinIO/Cloudflare R2: Using Management Console for S3-compatible Storage
+
+Most S3-compatible providers (including AWS S3, MinIO, and Cloudflare R2) allow you to move or copy files directly in their web interfaces:
+
+1. **Open** the management console for your S3-compatible storage provider.
 2. **Navigate** to your bucket.
-3. Use the console’s object browser to **locate files** with leading double slashes in the key name (may appear as objects or folders starting with `/`).
-4. Use the **copy or move action** to duplicate the object to the correct key (without the leading slash), then **delete the original** if needed.
+3. **Locate all objects** at the root of the bucket (not under any tenant folder such as “main” or “tenant1”).
+4. For each object or folder:
+   * In S3 console, use the **Move** function to relocate it into the correct tenant folder (e.g., move `foo/bar.txt` → `main/foo/bar.txt`).
+   * If your R2/MinIO/Ceph console does not support move/rename in-place, you may need to copy the object to the new location and then delete the original.
+5. **Verify** that all data now resides under the tenant folder.
 
-*Note: Some consoles may hide leading slashes or display objects as folders. Double-check object keys if you're unsure.*
-
-#### Azure Blob Storage: Using Azure Portal
-
-1. **Open Azure Portal** and go to your Blob Storage account.
-2. In the **container**, browse for blobs with key names starting with a slash (`/`).
-3. Use the **Azure Portal’s copy/move feature** (or Azure Storage Explorer app) to rename blobs without the leading slash.
-4. Delete the original blobs after confirming a successful copy.
+![s3 migration](/docs/migration-guide/0.23.0/s3_migrate.png)
