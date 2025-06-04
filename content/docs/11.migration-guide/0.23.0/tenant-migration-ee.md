@@ -88,7 +88,7 @@ done
 ```
 
 - Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
-- For Enterprise users, replace `main` with the appropriate tenant ID.
+- Replace `main` with the appropriate tenant ID.
 
 ---
 
