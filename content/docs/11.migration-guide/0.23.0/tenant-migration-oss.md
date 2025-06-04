@@ -301,3 +301,57 @@ echo "Tenant migration finished!"
 
 - `BUCKET` is configured under `kestra.storage.gcs.bucket`.
 - For OSS users, the destination tenant is always `main`.
+
+
+
+### Migrating Files Using Graphical User Interfaces (GUI)
+
+For users who prefer not to use command-line scripts or are limited by their environment (e.g., Windows Server without shell access), migration can be accomplished with graphical tools. Below are guidelines for each storage type.
+
+---
+
+#### Windows: Using File Explorer
+
+If your internal storage is a local directory (or a network drive), you can manually move or copy files to migrate them into the `main` tenant folder:
+
+1. **Open File Explorer** and navigate to your storage root directory as configured in `kestra.storage.local.base-path`.
+2. **Identify all folders and files** at the root level that are *not* already under the `main` folder.
+
+   * Example:
+
+     ```
+     base-path/
+       main/
+       foo/
+       bar/
+     ```
+
+     You need to move `foo/` and `bar/` into `main/`.
+3. **Select** all such folders/files, right-click and **Cut** (or **Copy**).
+4. **Paste** into the `main` folder, e.g., `base-path/main/`.
+5. **Delete** the originals from the root after confirming successful migration.
+
+---
+
+#### Local Storage on MacOS
+
+1. **Open Finder** and go to your base storage directory.
+2. **Select all files and folders** at the root that are not already in the `main` directory.
+3. **Drag and drop** them into the `main` folder.
+4. **Verify** that only the `main` folder remains at the root (along with its content).
+5. Remove the originals if you used Copy instead of Move.
+
+---
+
+#### S3/MinIO/Cloudflare R2: Using Management Console for S3-compatible Storage
+
+Most S3-compatible providers (AWS S3, MinIO, Cloudflare R2) allow file operations through their web UI:
+
+1. **Log in** to your S3-compatible storage console and open the bucket (`kestra.storage.s3.bucket` or `kestra.storage.minio.bucket`).
+2. **Locate all objects** at the root level (not under the `main` prefix/folder).
+3. For each such file or folder:
+
+   * Use the **Move** or **Rename** function to move it to the `main/` prefix (e.g., move `foo/file.txt` → `main/foo/file.txt`).
+   * If your console only allows copy, use **Copy** then delete the original.
+4. **Verify** that all files are now organized under the `main/` folder.
+
