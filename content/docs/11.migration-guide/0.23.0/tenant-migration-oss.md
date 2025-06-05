@@ -34,6 +34,7 @@ kestra migrate default-tenant --dry-run
 ```
 
 ::alert{type="info"}
+Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
 - Use `--dry-run` to preview changes without modifying data.
 - Re-run without the flag to execute the migration.
 ::
