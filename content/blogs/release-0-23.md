@@ -60,7 +60,7 @@ Key improvements include:
 - **Fixed issues around arrays and uncovered elements**: The editor now properly handles array fields and previously unsupported or hard-to-edit elements, ensuring you can configure all aspects of your flows directly from the UI.
 - **Enhanced functionality and reliability**: The No-Code Editor has been comprehensively improved with robust validation, intelligent default configurations, and expanded support across all Kestra features. These enhancements deliver increased stability, improved error handling, and a more refined user experience for users at all skill levels.
 
-![No-Code Flow Editor](/blogs/no-code.png)
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/99kb4bVvCDnir4V4SxjT?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="no_code | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ### Unit Test Flows
 
@@ -676,6 +676,7 @@ We've expanded the ServiceNow plugin with two new tasks:
 ### Migration and Breaking Changes
 
 With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our dedicated migration guide.
+
 
 **Key changes include:**
 
