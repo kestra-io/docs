@@ -60,8 +60,7 @@ Key improvements include:
 - **Fixed issues around arrays and uncovered elements**: The editor now properly handles array fields and previously unsupported or hard-to-edit elements, ensuring you can configure all aspects of your flows directly from the UI.
 - **Enhanced functionality and reliability**: The No-Code Editor has been comprehensively improved with robust validation, intelligent default configurations, and expanded support across all Kestra features. These enhancements deliver increased stability, improved error handling, and a more refined user experience for users at all skill levels.
 
-TODO: screenshot
-
+![No-Code Flow Editor](/blogs/no-code.png)
 
 ### Unit Test Flows
 
