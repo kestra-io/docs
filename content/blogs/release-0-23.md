@@ -1,7 +1,7 @@
 ---
 title: Kestra 0.23 introduces Multi-Panel Editor, No-Code Redesign, and Unit Testing
 description: Kestra 0.23 delivers a multi-panel editor, revamped no-code flow editor, YAML unit testing, new filters, and new plugins for a more productive orchestration experience.
-date: 2025-06-03T17:00:00
+date: 2025-06-17T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
@@ -278,16 +278,14 @@ A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable ca
 
 ### Git Sync for Apps & Dashboards
 
-Kestra 0.23.0 introduces a powerful Git Sync, allowing you to version control your Dashboards and Apps code and thus manage all your resources as code.
-
-With the new Git integration for dashboards and apps, you can now:
+Kestra 0.23.0 introduces Git integration for Dashboards and Apps, enabling version control and collaborative management of these resources through familiar Git workflows. You can now:
 
 - **Version control your dashboards and apps** using `git.SyncDashboard`, `git.PushDashboard`, `git.SyncApps`, and `git.PushApps` tasks
 - **Track configuration changes** over time, managing all your resources as code.
 - **Collaborate** with team members using familiar Git workflows
 - **Roll back** to previous versions when needed.
 
-::collapse{title="Pull Apps from Git to Kestra instance example"}
+::collapse{title="Example of Pulling Apps from Git to Kestra"}
 
 The following flow allows to pull an Apps from a GitHub repository and deploy it to the Kestra instance:
 
@@ -673,6 +671,31 @@ We've expanded the ServiceNow plugin with two new tasks:
 
 - **Update** task to update a record in a ServiceNow table.
 - **Delete** task to delete a record from a ServiceNow table.
+
+
+### Migration and Breaking Changes
+
+With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our dedicated migration guide.
+
+**Key changes include:**
+
+- **All editions:**
+  - `LoopUntil` task: Changed default values for `checkFrequency` for more predictable behavior.
+  - Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions.
+  - Internal storage path: Fixed double slash issue for S3/GCS backends.
+  - The `BOOLEAN`-type input is deprecated in favor of `BOOL`.
+  - Default environment variable prefix changed from `KESTRA_` to `ENV_` for improved security.
+  - Default `pullPolicy` for Docker-based tasks has changed.
+  - Flow triggers now also react to the `PAUSED` state by default.
+  - Python script tasks now use the official `python:3-13-slim` image.
+  - Script tasks will no longer enter a `WARNING` state when `ERROR` logs are present—these are now treated as errors.
+  - The `autocommit` property has been removed from JDBC `Query` and `Queries` tasks.
+
+- **Enterprise Edition:**
+  - SQL Server backend is no longer supported.
+  - Manual user refresh is required to migrate the `Superadmin` property.
+
+For a complete list of changes and migration instructions, please see the [migration documentation](https://kestra.io/docs/migration-guide/0.23.0).
 
 ## Thanks to Our Contributors
 
