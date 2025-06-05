@@ -96,7 +96,7 @@ ACCOUNT_NAME="myaccount"
 BUCKET_NAME="mybucket"
 
 # Configurable destination tenant (default: 'main')
-DEST_TENANT="${1:-main}"
+DEST_TENANT="main"
 
 # List of tenant folders to skip (don't move)
 TENANTS=("main")
@@ -190,7 +190,7 @@ echo "Migration finished!"
 #!/bin/bash
 
 BUCKET="mybucket"
-DEST_TENANT="${1:-main}"
+DEST_TENANT="main"
 TENANTS=("main")
 
 echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
@@ -233,7 +233,7 @@ echo "Tenant migration finished!"
 
 
 BUCKET="gs://bucket"
-DEST_TENANT="${1:-main}"  # Default tenant is 'main' if not specified
+DEST_TENANT="main"
 TENANTS=("main")
 
 echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
