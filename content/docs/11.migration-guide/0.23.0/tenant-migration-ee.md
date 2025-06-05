@@ -42,7 +42,7 @@ The migration command is also required for customers that have the following con
 ```yaml
 kestra:
    tenants:
-      defaultTenant: false
+      defaultTenant: true
       enabled: false
 ```
 ::
