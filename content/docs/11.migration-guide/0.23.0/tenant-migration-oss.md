@@ -75,7 +75,7 @@ For MinIO, we recommend keeping the `undefined` option due to the different hand
 
 ```bash
 for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
-    if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then
+    if [[ "$f" != "main" && "$f" != "undefined" ]]; then
         echo "Moving $f → main/"
         mc mv --recursive "myminio/mybucket/$f" "myminio/mybucket/main/"
     fi
