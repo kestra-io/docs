@@ -142,6 +142,12 @@ kestra auths users create <username> <password> \
 --tenant=<tenant-id> --superadmin
 ```
 
+To set or revoke Super Admin privileges, use the following in the CLI:
+
+```bash
+/kestra auths users set-superadmin user@email.com true # (use false to revoke)
+```
+
 #### Through the Configuration
 
 A Super Admin can also be created from the configuration file using the configuration below:
