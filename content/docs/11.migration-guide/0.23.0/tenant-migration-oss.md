@@ -38,10 +38,6 @@ kestra migrate default-tenant --dry-run
 - Re-run without the flag to execute the migration.
 ::
 
-### Kafka Queue Handling
-
-If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
-
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.

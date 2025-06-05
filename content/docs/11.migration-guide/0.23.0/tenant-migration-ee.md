@@ -57,7 +57,6 @@ This section explains how to migrate internal storage data to ensure the tenant 
 
 ### **Who needs to perform this migration?**
 - Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
-- Enterprise users who **do not** use the `defaultTenant` but use [S3 or GCS as internal storage](internal-storage-migration.md) also need to run the migration script to fix the double slash issue.
 
 ::alert{type="info"}
 The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
