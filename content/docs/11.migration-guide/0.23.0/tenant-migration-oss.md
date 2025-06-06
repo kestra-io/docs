@@ -43,6 +43,10 @@ Before running the migrate script, we recommend to do a complete database dump t
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
+::alert{type="warning"}
+Before taking any action to migrate your internal storage, S3 and GCS users **MUST** follow the [Internal Storage Double Slash guide](internal-storage-migration.md) to prevent any issues with the below scripts.
+::
+
 ### **Who needs to perform this migration?**
 - All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
 
