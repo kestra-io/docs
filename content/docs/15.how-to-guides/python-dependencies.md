@@ -52,7 +52,7 @@ By using a [Process Task Runner](../task-runners/04.types/01.process-task-runner
 In version 0.23, we added the Python dependency caching as a Beta feature.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/embed/g9Jt5zt9wI4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://youtube/embed/g9Jt5zt9wI4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
