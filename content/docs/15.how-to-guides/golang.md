@@ -9,7 +9,7 @@ topics:
 Run Go code directly inside of your Flows and generate outputs.
 
 <div class="video-container">
-    <iframe src="https://youtube/embed/flGQZeP1MmA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://youtube.com/embed/flGQZeP1MmA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Go is a powerful programming language often used for cloud-native development, CLI utilities and more. As Go is complied, it's often much more performant than Python making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows.
