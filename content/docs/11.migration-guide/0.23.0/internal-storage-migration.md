@@ -72,4 +72,16 @@ echo "Migration finished!"
 ```
 
 
+### Migrating Files Using Graphical User Interfaces (GUI)
+
+For users who prefer not to use command-line scripts, migration can be accomplished with graphical tools. 
+
+Most S3-compatible providers (including AWS S3 and Cloudflare R2) allow you to move or copy files directly in their web interfaces:
+
+1. **Log in** to the AWS S3 or Cloudflare R2 management console.
+2. **Navigate** to your bucket.
+3. Use the console’s object browser to **locate files** with leading double slashes in the key name (may appear as objects or folders starting with `/`).
+4. Use the **copy or move action** to duplicate the object to the correct key (without the leading slash), then **delete the original** if needed.
+
+*Note: Some consoles may hide leading slashes or display objects as folders. Double-check object keys if you're unsure.*
 
