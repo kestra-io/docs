@@ -43,7 +43,7 @@ For the examples below, we will not have authentication enabled.
 
 ## Create a Flow
 
-To create a flow using the API, we can first go to the Flows section of the API Reference and see the `/api/v1/flows` [POST Request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows) which takes a YAML body with the Flow in it.
+To create a flow using the API, we can first go to the Flows section of the API Reference and see the `/api/v1/main/flows` [POST Request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows) which takes a YAML body with the Flow in it.
 
 Our body of Content-Type `application/x-yaml` will look like the example below:
 ```yaml
@@ -108,7 +108,7 @@ tasks:
     message: "{{ inputs.greeting }}"
 ```
 
-As our input has a default value, we can execute it by simply making a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/executions/-namespace-/-id-) `/api/v1/executions/{namespace}/{id}` like below:
+As our input has a default value, we can execute it by simply making a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/executions/-namespace-/-id-) `/api/v1/main/executions/{namespace}/{id}` like below:
 
 ```bash
 curl -X POST \
@@ -165,7 +165,7 @@ For more examples on executing with the API, check out the [Executions documenta
 
 ## Get Information from an Execution
 
-When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution with the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/executions/-executionId-) `/api/v1/executions/{executionId}`:
+When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution with the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/executions/-executionId-) `/api/v1/main/executions/{executionId}`:
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/executions/MYkTmLrI36s10iVXHwRbR
@@ -392,7 +392,7 @@ When we fetch the data from an Execution of this flow with Execution ID `59uQXHb
 
 Kestra has a [KV Store](../05.concepts/05.kv-store.md) which is useful for making your flows stateful. We can fetch, modify and delete data in the KV Store using the API. This can be useful if you want to modify the KV Store directly inside of your code being executed by Kestra, or by an external system.
 
-To start with, we can add a KV pair to the KV Store with the following [PUT request](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
+To start with, we can add a KV pair to the KV Store with the following [PUT request](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"Hello, World"'
@@ -414,7 +414,7 @@ When we open the key, we will see the value has also been modified to reflect ou
 
 ![modified_value_kv](/docs/how-to-guides/api/modified_value_kv.png)
 
-If we want to fetch the value from the KV Store, we will do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
+If we want to fetch the value from the KV Store, we will do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/namespaces/company.team/kv/my_key
@@ -435,7 +435,7 @@ You can read more about using the KV Store with the API in the [KV Store documen
 
 Along with managing your Flows with the API, you can also manage your Namespace Files.
 
-Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
+Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/main/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
 
 ![files](/docs/how-to-guides/api/files.png)
 
@@ -487,7 +487,7 @@ Our response contains an array containing information about the files:
 ]
 ```
 
-With this information, we can make a request to get the content of a specific file using a [GET request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files) `/api/v1/namespaces/{namespace}/files`.
+With this information, we can make a request to get the content of a specific file using a [GET request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files) `/api/v1/main/namespaces/{namespace}/files`.
 
 We will make the following request to fetch the content of `example.txt`:
 
@@ -501,7 +501,7 @@ which returns:
 Hello, World!
 ```
 
-We can also upload files using a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/namespaces/-namespace-/files) `/api/v1/namespaces/{namespace}/files`. In this example, we will upload a Python file called `api_example.py` with the following content:
+We can also upload files using a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/namespaces/-namespace-/files) `/api/v1/main/namespaces/{namespace}/files`. In this example, we will upload a Python file called `api_example.py` with the following content:
 
 ```python
 import requests
