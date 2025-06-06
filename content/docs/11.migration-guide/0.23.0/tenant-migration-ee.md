@@ -55,10 +55,6 @@ If your queue is Kafka, queues will be recreated after migration. You don’t ne
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
-::alert{type="warning"}
-Before taking any action to migrate your internal storage, S3 and GCS users **MUST** follow the [Internal Storage Double Slash guide](internal-storage-migration.md) to prevent any issues with the below scripts.
-::
-
 ### **Who needs to perform this migration?**
 - Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
 
