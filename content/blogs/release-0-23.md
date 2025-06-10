@@ -500,7 +500,7 @@ tasks:
     prompt: Which features were released in Kestra 0.22?
 
   - id: correct_response_with_rag
-    type: io.kestra.plugin.langchain4j.rag.Chat
+    type: io.kestra.plugin.langchain4j.rag.ChatCompletion
     chatProvider:
       type: io.kestra.plugin.langchain4j.provider.GoogleGemini
       modelName: gemini-1.5-flash
