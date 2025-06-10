@@ -1787,7 +1787,7 @@ errors:
     message: List of tasks that failed - {{ tasksWithState('failed') }}
 ```
 
-will produce the following return
+will produce the following return:
 
 ```json
 [{"state":"FAILED","taskId":"fail"}]
