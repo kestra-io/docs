@@ -145,7 +145,7 @@ kestra auths users create <username> <password> \
 To set or revoke Super Admin privileges, use the following in the CLI:
 
 ```bash
-/kestra auths users set-superadmin user@email.com true # (use false to revoke)
+kestra auths users set-superadmin user@email.com true # (use false to revoke)
 ```
 
 #### Through the Configuration
