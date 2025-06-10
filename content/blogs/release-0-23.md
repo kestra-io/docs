@@ -260,7 +260,7 @@ triggers:
 
 **Pebble Function Autocompletion**: When editing Pebble expressions (`{{ ... }}`), function names autocomplete as you type.
 
-![image](https://github.com/user-attachments/assets/baa5d52a-a5b6-48f4-9177-de76f20f4f24)
+![pebble function autocompletion](/blogs/pebble_auto_completion.png)
 
 **Worker Information in Task Execution**: Task execution details now show the worker ID, hostname, version, and state. Example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
