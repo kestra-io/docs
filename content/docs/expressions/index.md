@@ -1770,7 +1770,7 @@ tasks:
 
 The `tasksWithState` function returns a map of tasks and their states.
 
-Used the in the following flow:
+Used in the following flow:
 
 ```yaml
 id: error_logs_demo
