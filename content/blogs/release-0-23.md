@@ -1,5 +1,5 @@
 ---
-title: Kestra 0.23 introduces Multi-Panel Editor, No-Code Redesign, and Unit Testing
+title: Kestra 0.23 introduces Unit Tests for Flows, Multi-Panel Editor with No-Code Forms, and More Powerful UI Filters
 description: Kestra 0.23 delivers a multi-panel editor, revamped no-code flow editor, YAML unit testing, new filters, and new plugins for a more productive orchestration experience.
 date: 2025-06-17T17:00:00
 category: News & Product Updates
@@ -14,12 +14,12 @@ The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-| Multi Panel Editor       | Enhanced visual editor with split-screen capabilities for simultaneous code and visual editing | All Edition |
-| No-Code Flow Editor | Create Kestra flows from the new form-based UI without writing code | All Edition |
-| Unit Test Flows       | Built-in testing framework for validating workflow behavior | Enterprise Edition |
-| New Filters         | New UI Filters with faster autocompletion and editable as plain text | All Edition |
-| Outputs in Internal Storage      | Store and manage workflow outputs in isolated tenant storage for complete data separation | Enterprise Edition |
-| Improved dashboard management         | Configure your own default dashboard with new customizable KPI charts and adjustable chart widths | All Edition |
+| Multi-Panel Editor       | New split-screen Flow Editor that lets you open, reorder, and close multiple panels, including Code, No-Code, Files, Docs, and more side by side | All Edition |
+| No-Code Forms | Create Kestra flows from the new form-based UI tabs without writing code — included as a dedicated view in the new Multi-Panel Editor | All Edition |
+| Unit Tests for Flows       | With Unit Tests, we're introducing a language-agnostic, declarative syntax to test your flows with fixtures and assertions, allowing you to run tests directly from the UI and catch regressions before they reach production. | Enterprise Edition |
+| New UI Filters         | UI filters now have a faster autocompletion and are editable as plain text | All Edition |
+| Tenant-based Storage Isolation      | Persist workflow outputs and inputs in isolated internal storage for complete data separation across tenants — a highly requested feature for Enterprise environments with strict isolation requirements. | Enterprise Edition |
+| Customizable dashboards         | Configure your own default dashboard with new customizable KPI charts and adjustable chart widths | All Edition |
 | Python Dependency Caching    | Speed up your workflows with automatic caching of script dependencies across executions - just define your dependencies and Kestra handles the rest | All Edition |
 | Manage Apps & Dashboard with Git | Version control your dashboards and apps with Git tasks | All Edition |
 
@@ -33,124 +33,54 @@ Check the video below for a quick overview of all enhancements.
 
 Let's dive into these highlights and other enhancements in more detail.
 
-## Feature Highlights
 
-### Multi Panel Editor
-The Multi Panel Editor transforms how you design and manage workflows by introducing a unified interface with split-screen capabilities. This powerful enhancement allows you to simultaneously view and edit your workflows in multiple formats - YAML code, form-based no-code editor, topology view, and documentation - all within a single, integrated workspace.
+## Multi-Panel Editor
 
-With this flexible interface, you can:
-- Edit the flow using both Code and form-based editors simultaneously while seeing your changes reflected in real-time in the topology view
-- Switch between code and form-based views based on your preference or task complexity
-- Track task dependencies through the topology view while making edits
-- Reference documentation or blueprints without leaving the Editor
+We're excited to introduce the new split-screen Flow Editor that lets you open, reorder, and close multiple panels, including Code, No-Code, Files, Docs, Topology, and Blueprints side by side.
 
-You can customize your experience by opening only the panels you need, creating a workspace tailored to your workflow development style. This enhancement significantly improves productivity by reducing context switching and providing multiple perspectives on your workflows simultaneously.
+Since everything is a view that you can open in a tab, this feature enables using Code and No-Code at the same time. The familiar topology view, and built-in documentation and blueprints are integrated in the same way — you simply open them as tabs and reorder or close them however you like.
+
+With this flexible Editor interface, you can:
+- Edit the flow using No-Code forms and see your changes reflected in real-time in both Code and the Topology views
+- Seamlessly switch between Code and No-Code views based on your preference or task complexity and track dependencies in the topology view live while making edits
+- Reference documentation or blueprints without leaving the Editor.
+
+You can customize your experience by opening only the panels you need, creating a fully personalized workspace that matches your workflow development style.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI" title="Multi Panel Editor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
-### No-Code Flow Editor
+## No-Code Forms
 
-The No-Code Flow Editor has received a major redesign, making it easier and more intuitive to create and manage your workflows without writing any YAML code. This new version introduces a modern, streamlined interface that improves usability and accelerates flow creation for all users.
+The new Multi-Panel editor ships with a significant update to the No-Code Forms. When you open the No-Code view, you can add new tasks, triggers, or flow properties from form-based tabs without writing any YAML code. 
+
+Adding any new task or trigger opens a new No-Code tab, allowing you to edit multiple workflow components at the same time.
 
 Key improvements include:
-- **New design**: A refreshed, user-friendly layout that simplifies navigation and editing, making it easier to build complex workflows visually.
-- **Fixed issues around arrays and uncovered elements**: The editor now properly handles array fields and previously unsupported or hard-to-edit elements, ensuring you can configure all aspects of your flows directly from the UI.
-- **Enhanced functionality and reliability**: The No-Code Editor has been comprehensively improved with robust validation, intelligent default configurations, and expanded support across all Kestra features. These enhancements deliver increased stability, improved error handling, and a more refined user experience for users at all skill levels.
+- **New design**: the new layout simplifies navigation and editing, e.g. adding a task runner configuration to your script task will open a new No-Code tab allowing you to edit the main script and its runtime configuration side-by-side.
+- **Improved editing of complex objects**: we've taken great care to ensure that complex objects, such as nested properties and arrays are easy to edit from No-Code forms. 
+- **Sensible defaults**: the new No-Code forms make it easy to edit properties that have default values. If you want to revert to a default behavior, the "Clear selection" feature will help you remove your custom overrides.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/99kb4bVvCDnir4V4SxjT?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="no_code | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-### Unit Test Flows
+## Unit Tests for Flows (Beta)
 
 As workflows grow in complexity, so does the need to test them reliably. Kestra introduces native support for Unit Tests in YAML, allowing you to validate your flows and detect regressions early.
 Until now, users could write unit tests in Java, but with the new YAML-based Unit Test support, you can now define expected outcomes, isolate tasks, and detect regressions early—directly inside Kestra using the same YAML format as your flows.
 
-Key components of the Unit Testing include:
+Key components of a Unit Test:
 
-- **Test Suites**: Create test suites targeting individual flows. Each test suite consists of one or more test cases, allowing you to unit test the same tasks multiple times, e.g., using different flow inputs or different fixtures.
-- **Fixtures**: Add fixtures for specific inputs or tasks by mocking specific task states, input values, and namespace files for internal storage files. This allows you to avoid running tasks that might be computationally expensive or not required to run as part of a given test case.
+- **Test Cases**: Each test can consist of one or more test cases, allowing you to verify specific functionality multiple times using different flow inputs, tasks, or file fixtures.
+- **Fixtures**: Add fixtures for specific inputs, tasks or files and avoid running tasks that might be computationally expensive or not required to run as part of a given test case.
 - **Assertions**: Each test case can contain multiple assertions that check if the given task outputs match the expected outputs. There are many assertion operations such as `equalTo`, `notEqualTo`, `greaterThan`, `startsWith`, and more. This helps ensure your flow behaves correctly under different conditions.
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
 
 
 ::collapse{title="Unit Test example"}
 
-This example demonstrates a simple ETL (Extract, Transform, Load) flow. It sends a Slack notification at the start, downloads order data, extracts and transforms product names to uppercase, and then sends the results back to Slack.
 
-```yaml
-id: etl_toBigQuery
-namespace: company.team
-
-tasks:
-  - id: send_slack_message_started
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/XXXX"
-    payload: |
-      {
-        "text": "{{ flow.namespace }}.{{ flow.id }}: Daily products flow has started"
-      }
-
-  - id: extract
-    type: io.kestra.plugin.core.http.Download
-    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/orders.json
-
-  - id: transform_to_products_name
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
-
-  - id: transform_to_uppercase
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
-
-  - id: send_slack_message_with_data
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "https://hooks.slack.com/services/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"  # _int_test channel https://kestra-io.slack.com/archives/C08LHK1D5EE
-    payload: |
-      {
-        "text": "{{ flow.namespace }}.{{ flow.id }}: Here are all the daily products: {{ outputs.transform_to_uppercase.value }}"
-      }
-```
-
-The following test suite demonstrates how we can mock Slack messages and assert the results of the transformations. This allows you to validate the flow's behavior without sending real notifications or fetching live data.
-
-```yaml
-id: etl_toBigQuery_extract_testsuite
-namespace: company.team
-flowId: etl_toBigQuery
-testCases:
-  - id: extract_should_return_data
-    type: io.kestra.core.tests.flow.UnitTest
-    fixtures:
-      tasks:
-        - id: send_slack_message_started
-          description: "dont send begin slack message"
-        - id: send_slack_message_with_data
-          description: "dont send end output slack message"
-    assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
-        isNotNull: true        
-  - id: extract_should_transform_productNames_to_uppercase_mocked
-    type: io.kestra.core.tests.flow.UnitTest
-    fixtures:
-      tasks:
-        - id: send_slack_message_started
-          description: "dont send begin slack message"
-        - id: send_slack_message_with_data
-          description: "dont send end output slack message"
-        - id: extract
-          description: "dont fetch data from API"
-        - id: transform_to_products_name
-          outputs:
-            value: |
-              [
-                "my-product-1"
-              ]
-    assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
-        contains: "MY-PRODUCT-1"
-```
 ::
 
 
@@ -159,13 +89,17 @@ testCases:
 </div>
 
 
-### New UI Filter
+## New UI Filters
 
-The new UI Filter introduces a modern and flexible way to filter the interface in Kestra. Filters are now written in plain text making it easy to express complex filtering logic directly in the interface. The filter component is designed for a seamless user experience, featuring keyboard pattern support and fast autocompletion to help you build filters quickly and efficiently. This update brings a more intuitive and powerful filtering experience to all users.
+UI filters now have faster autocompletion and are editable as plain text!
+
+We've heard your feedback that the prior filtering experience has sometimes been a bit slow and tedious to configure. The new filters have been rebuilt from the ground up and are now built on top of our workflow editor. You can now configure even complex filters as simple text with super-fast autocompletion and immediate feedback on syntax errors. 
+
+Since the filter configuration is just text, you can easily copy-paste a filter configuration from one flow or namespace to another, and it will just work! 
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OFBpLz9IX1O2UtxuXeKi?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-### Outputs in Internal Storage
+## Internal Storage Persistence for Inputs and Outputs 
 
 Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage instead of the default database. This feature is especially valuable for organizations with multiple teams or business units, as it ensures that outputs are only accessible to the relevant segment, providing stronger data separation and privacy.
 
@@ -191,20 +125,22 @@ kestra:
         force-globally: true # the default is false
 ```
 
-With these options, you can control where flow outputs are stored, improving data governance and compliance for organizations with strict separation requirements.
+With these configuration options, you can control where flow outputs and inputs are stored, improving data governance and compliance for organizations with strict separation requirements.
+
+Note that this comes with some tradeoffs — storing that data in the internal storage backend such as S3 rather than in the backend database (like Postgres or Elasticsearch) introduces some additional latency,  especially visible with inputs stored and fetched from internal storage. 
 
 ::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
 ::
 
 
-### Improved Dashboard Management
+## Customizable Dashboards
 
-This new release enhances the dashboard experience with the ability to configure your own default dashboard - putting you in control of what you see when you first log in. This feature allows you to personalize your monitoring and operational view to match your specific workflow requirements.
+This release allows you to personalize your default dashboard with new customizable KPI charts and adjustable chart widths. You can now control what charts and metrics you see when you first log in. 
 
-With improved dashboard management, you can:
+With improved custom dashboards, you can:
 - Set any custom-built dashboard as your default view
-- Tailor your monitoring experience to focus on the metrics that matter most to you
+- Display only metrics and charts that matter most to you
 - Access your most important information immediately upon login
 - Switch between different dashboards based on your current needs
 
@@ -214,7 +150,7 @@ Kestra 0.23 introduces Python dependency caching, bringing significant improveme
 
 Under the hood, Kestra uses [uv](https://docs.astral.sh/uv/) for fast dependency resolution and caching. This ensures both speed and compatibility with the Python ecosystem.
 
-Previously, users needed to install Python dependencies manually using the `beforeCommands` property or using a custom Docker image. For example:
+Before this release, the only way to dynamically install Python dependencies at runtime was to use the `beforeCommands` property or a custom Docker image. For example:
 
 ```yaml
 id: python
@@ -241,7 +177,7 @@ tasks:
       Kestra.outputs({"average_age": df['Age'].mean()})
 ```
 
-With the new release, you can simply use the `dependencies` property to declare your required libraries. Kestra will handle installation and caching automatically:
+With the new release, you can still use `beforeCommands` as above, but on top of that, you have one more tool at your disposal — the new `dependencies` property, allowing you to declaratively define your required Python packages and let Kestra handle installation and caching automatically:
 
 ```yaml
 id: python
@@ -269,7 +205,9 @@ tasks:
       Kestra.outputs({"average_age": df['Age'].mean()})
 ```
 
-A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs. The `beforeCommands` property is still supported for advanced use cases or custom installation steps.
+A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs. 
+
+Again, the `beforeCommands` property is still supported for advanced use cases or custom installation steps.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/g9Jt5zt9wI4" title="Python Dependency Caching" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -287,7 +225,7 @@ Kestra 0.23.0 introduces Git integration for Dashboards and Apps, enabling versi
 
 ::collapse{title="Example of Pulling Apps from Git to Kestra"}
 
-The following flow allows to pull an Apps from a GitHub repository and deploy it to the Kestra instance:
+The following flow allows pulling the configuration of Apps from a GitHub repository and deploying it to the Kestra instance:
 
 ```yaml
 id: sync_apps_from_git
@@ -312,21 +250,23 @@ triggers:
 
 **Ion data format support** with new `IonToParquet` and `IonToAvro` tasks for data conversion, plus `InferAvroSchemaFromIon` for schema generation.
 
-**Pause Task**: The Pause task now uses a `pauseDuration` property, replacing `delay` and removing `timeout`. When the duration ends, the task proceeds based on the `behavior` property: `RESUME` (default), `WARN`, `FAIL`, or `CANCEL`. Manually resumed tasks always succeed.
+**Pause Task**: The Pause task now uses a `pauseDuration` property, replacing `delay` and removing `timeout` because `timeout` is a core property available to all tasks incl. `Pause`. When the `pauseDuration` ends, the task proceeds based on the `behavior` property: `RESUME` (default), `WARN`, `FAIL`, or `CANCEL`. Manually resumed tasks always succeed. Finally, the new `onPause` property allows you to easily define a task that should run whenever the task enters a `PAUSED` state, which is especially useful for sending alerts on paused workflows waiting for approval (i.e. waiting to be manually resumed). 
 
-**Plugin Usage Metrics**: Kestra now provides plugin usage metrics based on execution count. These metrics are compatible with [internal metrics](..docs/09.administrator-guide/03.monitoring) and Prometheus, helping you track plugin usage and performance.
+**Plugin Usage Metrics**: Kestra now provides plugin usage metrics based on an execution count. These metrics are compatible with [internal metrics](..docs/09.administrator-guide/03.monitoring) and Prometheus, helping you track how plugins are used in your organization.
 
-**Data Backup**: Kestra now supports full execution data backup and restoration, ensuring you can recover all execution-related information for disaster recovery.
+**Data Backup**: We now support full Backup & Restore, including backup of executions and logs data, ensuring you can recover all execution-related information for disaster recovery.
 
-**Account Navigation**: Settings and User Profile are now under Account in the bottom left, below the Tenant switcher. These are user-specific settings.
+**Account Navigation**: Settings and User Profile are now located under the Account settings in the bottom left corner, just below the Tenant switcher. 
 
 **Pebble Function Autocompletion**: When editing Pebble expressions (`{{ ... }}`), function names autocomplete as you type.
+
+![image](https://github.com/user-attachments/assets/baa5d52a-a5b6-48f4-9177-de76f20f4f24)
 
 **Worker Information in Task Execution**: Task execution details now show the worker ID, hostname, version, and state. Example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
 **Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filterOnTags` property lets you filter secrets by tags and sync only those that match.
 
-## Plugin Development
+## Plugin Enhancements
 
 ### Salesforce
 
@@ -458,9 +398,9 @@ tasks:
 ```
 ::
 
-### Langchain (beta)
+### LangChain4j (Beta)
 
-We are excited to announce the beta release of several Langchain plugins for Kestra. We encourage you to try them out and share your feedback via GitHub issues or on our Slack community.
+We are excited to announce the Beta release of several LangChain4j plugins. We encourage you to try them and share your feedback via GitHub issues or our Slack community.
 
 These plugins introduce a wide range of AI-powered tasks, including:
 - **Chat Completion**: Generate conversational responses using large language models.
