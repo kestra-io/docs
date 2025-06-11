@@ -510,8 +510,8 @@ tasks:
 
 Kestra 0.23 introduces powerful new capabilities for running Go code with the addition of two dedicated Go script tasks:
 
-- `Script` task (io.kestra.plugin.scripts.go.Script) - Executes multi-line Go scripts
-- `Commands` task (io.kestra.plugin.scripts.go.Commands) - Runs multiple Go scripts using `go run`
+- `Script` task (io.kestra.plugin.scripts.go.Script) - for inline code
+- `Commands` task (io.kestra.plugin.scripts.go.Commands) - for code stored in Namespace Files or passed from a local directory (e.g. cloned from a Git repository) which can be executed using the `go run` command.
 
 ::collapse{title="Example using Go Script task"}
 ```yaml
@@ -544,6 +544,10 @@ tasks:
       - go mod tidy
 ```
 ::
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/flGQZeP1MmA?si=BU3kZr2Z6-cBojox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 
 ### InfluxDB
@@ -615,7 +619,7 @@ We've expanded the ServiceNow plugin with two new tasks:
 
 ### Migration and Breaking Changes
 
-With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our dedicated migration guide.
+With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our [dedicated migration guide](https://kestra.io/docs/migration-guide/0.23.0).
 
 
 **Key changes include:**
@@ -636,7 +640,7 @@ With this release, we've taken the opportunity to introduce several important br
   - SQL Server backend is no longer supported.
   - Manual user refresh is required to migrate the `Superadmin` property.
 
-For a complete list of changes and migration instructions, please see the [migration documentation](https://kestra.io/docs/migration-guide/0.23.0).
+For a complete list of changes and migration instructions, check the [migration guide](https://kestra.io/docs/migration-guide/0.23.0) and the Breaking Changes section in [Release Notes on GitHub](https://github.com/kestra-io/kestra/releases/tag/v0.23.0).
 
 ## Thanks to Our Contributors
 
