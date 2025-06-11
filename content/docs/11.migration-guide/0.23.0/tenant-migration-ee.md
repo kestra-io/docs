@@ -56,7 +56,7 @@ If your queue is Kafka, queues will be recreated after migration. You don’t ne
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
 ### **Who needs to perform this migration?**
-- Enterprise users who used to rely on the `defaultTenant` need to run this script as well. 
+- Enterprise users who used to rely on the `defaultTenant` need to run this script as well.
 
 ::alert{type="info"}
 The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
@@ -67,6 +67,7 @@ The provided commands use a list of existing tenant names (`main`, `tenant1`, `t
 If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, and replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID.
 
 ```bash
+#!/bin/bash
 for f in base-path/*; do
     bn=$(basename "$f")
     [[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]] || {
@@ -78,6 +79,7 @@ done
 If you used to rely on `defaultTenant` with no multitenancy enabled, use the following script:
 
 ```bash
+#!/bin/bash
 for f in base-path/*; do
     bn=$(basename "$f")
     [[ "$bn" == "main" ]] || {
@@ -98,6 +100,7 @@ For MinIO, we recommend keeping the `undefined` option due to the different hand
 ### Enterprise Users
 
 ```bash
+#!/bin/bash
 for f in $(mc ls myminio/mybucket | awk '{print $NF}' | sed 's|/$||'); do
     if [[ "$f" != "main" && "$f" != "tenant" && "$f" != "undefined" ]]; then # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main) and undefined.
         echo "Moving $f → tenantId/"
@@ -252,8 +255,6 @@ echo "Tenant migration finished!"
 
 ```bash
 #!/bin/bash
-
-
 BUCKET="gs://bucket"
 DEST_TENANT="${1:-main}"  # Default tenant is 'main' if not specified
 TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
