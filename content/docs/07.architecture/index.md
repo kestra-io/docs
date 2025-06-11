@@ -28,11 +28,8 @@ Here are the components and their interactions:
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
 (../api-reference/index.md)
-For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) and [Microsoft SQL Server JDBC Driver](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver16) can provide an encrypted connection with some configuration.
+For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) can provide an encrypted connection with some configuration.
 
-::alert{type="info"}
-Note that the SQL Server backend is removed in Kestra Version 0.23.
-::
 
 ### Scalability with JDBC
 
