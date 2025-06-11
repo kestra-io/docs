@@ -49,7 +49,7 @@ By using a [Process Task Runner](../task-runners/04.types/01.process-task-runner
 ::badge{version=">=0.23" editions="OSS,EE"}
 ::
 
-In version 0.23, we added the Python dependency caching as a Beta feature.
+Since Kestra 0.23, you can also use the Beta `dependencies` property allowing you to cache Python dependencies across multiple executions.
 
 <div class="video-container">
   <iframe src="https://youtube.com/embed/g9Jt5zt9wI4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -109,7 +109,7 @@ tasks:
 
 ## Build Docker Image and set it with Docker Task Runner
 
-If we can't find an image with the dependencies we need readily available, we can build our own using the `docker.Build` task. 
+If we can't find an image with the dependencies we need readily available, we can build our own using the `docker.Build` task.
 We can specify a Dockerfile that uses a `python:3.10` image as the base, and then install our specific dependencies on top of that.
 
 In the example below, we are using `pip install` to install both `kestra` and `pandas`. Once our image has been built, we can reference it in an expression in our Python task:

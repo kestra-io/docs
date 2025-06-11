@@ -10,7 +10,7 @@ editions: ["OSS", "EE"]
 
 The default behavior of the `LoopUntil` core task [has changed](https://github.com/kestra-io/kestra/issues/9152#issuecomment-2929847060) as follows:
 
-```yaml
+```json
 { "maxIterations": null, "maxDuration": null, "interval": "PT1M" }
 ```
 
