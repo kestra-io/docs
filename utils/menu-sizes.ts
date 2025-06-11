@@ -1,5 +1,27 @@
-let menuSizes = {
-    product : {
+interface MenuSizeConfig {
+    [key: string]: {
+        [breakpoint in 'md' | 'lg' | 'xl' | 'xxl']: {
+            width: string;
+            height: string;
+            headerMenuTranslateX: string;
+            headerArrowTranslateX: number;
+        }
+    }
+}
+
+type Breakpoint = 'md' | 'lg' | 'xl' | 'xxl';
+
+interface MenuSizeResult {
+    size: {
+        width: string;
+        height: string;
+    };
+    headerArrowTranslateX: number;
+    headerMenuTranslateX: string;
+}
+
+const menuSizes: MenuSizeConfig = {
+    product: {
         xxl: {
             width: '420px',
             height: '350px',
@@ -78,10 +100,10 @@ let menuSizes = {
         }
     }
 };
-const getBreakpoint = (size) => {
+const getBreakpoint = (size: number): Breakpoint => {
     if (size <= 1024) {
         return 'md';
-    } else if  (size > 1024 && size < 1400) {
+    } else if (size > 1024 && size < 1400) {
         return 'lg';
     } else if (size > 1400 && size < 1570) {
         return 'xl';
@@ -90,7 +112,7 @@ const getBreakpoint = (size) => {
     }
 }
 
-export function menuSize(name, size) {
+export function menuSize(name: string, size: number): MenuSizeResult {
     return {
         size: {
             width: menuSizes[name][getBreakpoint(size)].width,
