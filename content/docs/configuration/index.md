@@ -139,13 +139,9 @@ kestra:
     type: postgres
 ```
 
-Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a preview in the Enterprise Edition since Kestra 0.18.0).
+Currently, Kestra supports Postgres, H2, and MySQL.
 - H2 can be convenient for local **development**.
-- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL and SQL Server can be used as well.
-
-::alert{type="info"}
-Note that the SQL Server backend is removed in Kestra Version 0.23.
-::
+- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL can be used as well.
 
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
@@ -204,33 +200,6 @@ Note that we currently don't support the `8.0.31` version of MySQL. If possible,
 ::
 ::
 
-::collapse{title="SQL Server"}
-
-Here is a minimal configuration for a SQL Server database, currently available in preview in the Enterprise Edition since Kestra 0.18.0:
-
-```yaml
-kestra:
-  repository:
-    type: sqlserver
-  queue:
-    type: sqlserver
-
-datasources:
-  sqlserver:
-    url: jdbc:sqlserver://localhost:1433
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: kestra
-    password: k3str4
-    dialect: SQL_SERVER
-# Uncomment only if your database is not encrypted
-#    dataSourceProperties:
-#      encrypt: false
-```
-
-::alert{type="warning"}
-Note that this feature is currently in preview and only available in the Enterprise Edition. If you want to try it, please [reach out](/demo) to get access.
-::
-::
 
 ::collapse{title="H2"}
 
