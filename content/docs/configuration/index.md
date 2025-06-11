@@ -940,7 +940,7 @@ logger:
     flow: 'OFF'
 ```
 
-This disables the storage of all flow execution logs, so they will only appear in the server logs. 
+This disables the storage of all flow execution logs, so they will only appear in the server logs.
 
 Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
@@ -1318,7 +1318,7 @@ kestra:
 As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
 
 ```yaml
-kestra: 
+kestra:
   plugins:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
@@ -1327,7 +1327,7 @@ kestra:
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s
-        defaultVersion: LATEST 
+        defaultVersion: LATEST
 ```
 
 The following list of properties correspond to Versioned and remotely stored plugins:
@@ -1381,7 +1381,7 @@ kestra:
     isolation: # available in Kestra >=0.22
       enabled: true # default: false
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
-        - EXECUTOR        
+        - EXECUTOR
 ```
 
 ### AWS Secret Manager
@@ -2234,32 +2234,36 @@ Kestra can send emails for invitations and forgotten passwords. You can configur
 
 ```
 
-## Outputs
+## Store Execution Data in Internal Storage
 
 ::badge{version=">=0.23" editions="EE,Cloud"}
 ::
 
-Outputs can be configured to be stored in your Kestra Internal Storage option rather than in the database. This is useful for instances with multiple teams or segments using Kestra where outputs should only be accessible to that segment rather than in the shared database storage.
+If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
 
-To configure, add the following to your Kestra configuration file:
+To configure this option on an instance level, add the following to your Kestra configuration file:
 
 ```yaml
 kestra:
   ee:
-    outputs:
-      store:
+    execution-data:
+      internal-storage:
         enabled: true # the default is false
 ```
 
-To set this globally, rather than just in a specific Tenant or Namespace, use the following instead:
+Once you set the above configuration and your Tenant or Namespace has a "Dedicated internal storage" configured and the toggle "Execution data in internal storage" is enabled in the UI, all workflow outputs and inputs will be stored in the internal storage instead of the central database.
+
+To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `force-globally` property to `true`:
 
 ```yaml
 kestra:
   ee:
-    outputs:
-      store:
+    execution-data:
+      internal-storage:
         force-globally: true # the default is false
 ```
+
+If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
 
 ::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
