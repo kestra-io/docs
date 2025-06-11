@@ -18,7 +18,7 @@ inputs:
     defaults: true
     displayName: "A boolean input"
 
- - id: bool
+  - id: bool
     type: BOOL # Included in version 0.23.0 and later
     defaults: true
     displayName: "A boolean input displayed as a toggle."

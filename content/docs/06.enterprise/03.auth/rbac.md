@@ -300,7 +300,7 @@ If a user wants to change their password, they can do it on their profile. This 
 
 #### Reset password (by a Super Admin)
 
-Kestra does not provide any "forgot password" feature yet. Currently only a super admin can update a user password through its User Edit page.
+Kestra provides a "forgot password" functionality that your users could leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page.
 
 ### Groups
 
