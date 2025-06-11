@@ -79,8 +79,70 @@ Key components of a Unit Test:
 
 
 ::collapse{title="Unit Test example"}
+Let’s look at a simple flow checking if a server is up and sending a Slack alert if it’s not:
 
+```yaml
+id: microservices-and-apis
+namespace: tutorial
+description: Microservices and APIs
+inputs:
+  - id: server_uri
+    type: URI
+    defaults: https://kestra.io
+  - id: slack_webhook_uri
+    type: URI
+    defaults: https://kestra.io/api/mock
+tasks:
+  - id: http_request
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ inputs.server_uri }}"
+    options:
+      allowFailed: true
+  - id: check_status
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.http_request.code != 200 }}"
+    then:
+      - id: server_unreachable_alert
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ inputs.slack_webhook_uri }}"
+        payload: |
+          {
+            "channel": "#alerts",
+            "text": "The server {{ inputs.server_uri }} is down!"
+          }
+    else:
+      - id: healthy
+        type: io.kestra.plugin.core.log.Log
+        message: Everything is fine!
+```
 
+Here’s how you might write tests for it:
+
+```yaml
+id: test_microservices_and_apis
+flowId: microservices-and-apis
+namespace: tutorial
+testCases:
+  - id: server_should_be_reachable
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        server_uri: https://kestra.io
+    assertions:
+      - value: "{{outputs.http_request.code}}"
+        equalTo: 200
+  - id: server_should_be_unreachable
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        server_uri: https://kestra.io/bad-url
+      tasks:
+        - id: server_unreachable_alert
+          description: no Slack message from tests
+    assertions:
+      - value: "{{outputs.http_request.code}}"
+        notEqualTo: 200
+```
 ::
 
 
