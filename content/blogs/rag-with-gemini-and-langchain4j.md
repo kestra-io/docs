@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/TODO.png
+image: /blogs/rag.jpg
 ---
 
 Generative AI tools are great. However, relying purely on generative models can lead to outputs that feel generic, inaccurate, or outdated. This is where **Retrieval-Augmented Generation (RAG)** comes in, combining the creativity of Generative AI with real-time, accurate context sourced from custom data.
