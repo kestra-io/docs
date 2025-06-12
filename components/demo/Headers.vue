@@ -185,12 +185,12 @@
   
                       meetingUrl.value =
                           continent === "EU"
-                              ? "https://meetings.hubspot.com/david76/website?embed=true"
-                              : "https://meetings.hubspot.com/luke-lipan/website?embed=true";
+                              ? "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b?embed=true"
+                              : "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c?embed=true";
                   } catch (error) {
                       console.error("❌ Geo lookup failed:", error);
                       meetingUrl.value =
-                          "https://meetings.hubspot.com/luke-lipan/website?embed=true";
+                          "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06cembed=true";
                   }
               })
               .catch((error) => {
