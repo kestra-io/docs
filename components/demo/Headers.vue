@@ -168,9 +168,14 @@
           hsq.push(["refreshPageHandlers"]);
           hsq.push(["trackPageView"]);
 
-          if (Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("America") !== 0) {
-            meetingUrl.value = "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-          }
+          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+if (timezone.startsWith("America")) {
+  // North or South America
+  meetingUrl.value = "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
+} else {
+  // Everyone else
+  meetingUrl.value = "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true";
+}
         })
         .catch((error) => {
           valid.value = false;
