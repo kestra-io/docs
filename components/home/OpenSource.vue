@@ -22,7 +22,6 @@
             </div>
         </div>
     </section>
-    <pre style="padding: 1rem; background-color: red;color: white;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
 <script lang="ts" setup>
