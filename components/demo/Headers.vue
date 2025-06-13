@@ -61,14 +61,14 @@
                 </div>
               </form>
             </div>
-  
+
             <div v-else class="custom-meetings-iframe-container embed-responsive">
               <div class="iframe-wrapper">
                 <iframe
                   v-if="meetingUrl"
                   :src="meetingUrl"
                   class="embed-responsive-item"
-                  style="min-height: 650px; border: none; width: 100%;"
+                  style="min-height: 700px; border: none; width: 100%;"
                   allowtransparency="true"
                   sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                 ></iframe>
@@ -79,41 +79,41 @@
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import posthog from "posthog-js";
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
-  
+
   const route = useRoute();
   const gtm = useGtm();
   const formRef = useTemplateRef("demo-form");
-  
+
   const valid = ref(false);
   const message = ref("");
-  const meetingUrl = ref(null);
-  
+  const meetingUrl = ref("https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true");
+
   const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
-  
+
   const onSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-  
+
     const script = document.createElement("script");
     script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
     script.defer = true;
     document.body.appendChild(script);
-  
+
     script.addEventListener("load", async () => {
       const form = formRef.value;
       const hsq = (window._hsq = window._hsq || []);
-  
+
       if (!form.checkValidity()) {
         valid.value = false;
         message.value = "Invalid form, please review the fields.";
         return;
       }
-  
+
       hsq.push([
         "identify",
         {
@@ -123,7 +123,7 @@
           kuid: localStorage.getItem("KUID"),
         },
       ]);
-  
+
       const ip = await axios.get("https://api.ipify.org?format=json");
       const formData = {
         fields: [
@@ -155,37 +155,20 @@
           pageName: document.title,
         },
       };
-  
+
       posthog.capture("bookdemo_form");
       hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }]);
       gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
       identify(form["email"].value);
-  
+
       axios
         .post(hubSpotUrl, formData, {})
         .then(async () => {
           valid.value = true;
           hsq.push(["refreshPageHandlers"]);
           hsq.push(["trackPageView"]);
-  
-          try {
-            let continent = null;
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has("region")) {
-              continent = urlParams.get("region").toUpperCase();
-              console.log("🔧 Using override region:", continent);
-            } else {
-              const geoData = await axios.get("https://ipapi.co/json/");
-              continent = geoData.data?.continent_code;
-              console.log("🌍 Geo-detected continent:", continent);
-            }
-  
-            meetingUrl.value =
-              ["EU", "AS"].includes(continent)
-                ? "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true"
-                : "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-          } catch (error) {
-            console.error("❌ Geo lookup failed:", error);
+
+          if (Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("America") !== 0) {
             meetingUrl.value = "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
           }
         })
@@ -202,8 +185,8 @@
     });
   };
   </script>
-  
-  
+
+
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .container-fluid {
