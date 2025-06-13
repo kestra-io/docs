@@ -25,7 +25,7 @@
     "@vue-flow/core": "^1.42.5",
     "@vueuse/core": "^13.1.0",
     "axios": "^1.8.4",
-    "bootstrap": "^5.3.5",
+    "bootstrap": "^5.3.6",
     "dayjs": "^1.11.13",
     "ipx": "^3.0.3",
     "medium-zoom": "^1.1.0",
