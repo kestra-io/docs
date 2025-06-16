@@ -1,340 +1,141 @@
 <template>
-    <div class="container">
-        <Section
-            subtitle="Meet the"
-            subtitle-after="team"
+  <div class="container">
+    <Section
+      subtitle="An International Team"
+      baseline="Kestra is led by experienced founders and industry veterans dedicated to innovation, quality, and customer success."
+      data-aos="fade-up"
+    >
+      <div class="team-grid" data-aos="fade-up" data-aos-delay="200">
+        <div
+          v-for="(member, index) in teamMembers"
+          :key="member.name"
+          class="team-card"
+          data-aos="zoom-in"
+          :data-aos-delay="50 + (index * 50)"
         >
-            <div class="justify-content-center row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 px-md-5 px-sm-0 mx-md-5 mx-sm-0">
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/edarras.png" alt="Emmanuel Darras Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Emmanuel Darras</div>
-                        <div class="team-title font-small">CEO</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/emmanuel-darras" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://twitter.com/DarrasEmmanuel" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ldehon.png" alt="Ludovic Dehon Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Ludovic Dehon</div>
-                        <div class="team-title font-small">CTO</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/ludovic-dehon" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/tchiotludo" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/tchiotludo" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ageller.png" alt="Anna Geller Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Anna Geller</div>
-                        <div class="team-title font-small">Product Lead</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/anna-geller-12a86811a" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/anna-geller" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/anna__geller" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.png" alt="David Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">David Khan</div>
-                        <div class="team-title font-small">Sales Leader</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/david-khan-40399419" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.png" alt="Florian Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Florian Hussonnois</div>
-                        <div class="team-title font-small">Lead Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/florian-hussonnois" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/fhussonnois" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/fhussonnois" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/lmathieu.png" alt="Loïc Mathieu Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Loïc Mathieu</div>
-                        <div class="team-title font-small">Lead Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/loicmathieu" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/loicmathieu" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ycoornaert.png" alt="Yann Coornaert Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Yann Coornaert</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/yannc" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/Skraye" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mulier Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Brian Mulier</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/brian-mulier-326869150" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/nkwiatkowski.png" alt="Nicolas Kwiatkowski Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Nicolas Kwiatkowski</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/nicolas-kwiatkowski-a75217169/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/nkwiatkowski" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mgabelle.png" alt="Mathieu Gabelle Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Mathieu Gabelle</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/mgabelle/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/mgabelle" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/msabatini.png" alt="Marco Sabatini Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Marco Sabatini</div>
-                        <div class="team-title font-small">Platform Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/marco-sabatini-69b127152/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/MarcoSaba" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
-                         alt="Nicolas Callens Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Nicolas Callens</div>
-                        <div class="team-title font-small">Lead Product Designer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/todobai" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/Nico-Kestra" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Benoît Pimpaud</div>
-                        <div class="team-title font-small">Product Owner & Data Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/pimpaudben" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/ben8t" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/Ben8t" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mproset.png" alt="Martin Roset Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">Martin-Pierre Roset</div>
-                        <div class="team-title font-small">Lead Growth & Marketing</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/martin-pierre-roset" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://twitter.com/martin_roset" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/wrussell.png" alt="Will Russell"/>
-                    <div class="w-100">
-                        <div class="team-name">Will Russell</div>
-                        <div class="team-title font-small">Developer Advocate</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/wrussell1999" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/wrussell1999" target="_blank" class="me-2"><github /></a>
-                        <a href="https://twitter.com/wrussell1999" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/pgrainger.png" alt="Paul Grainger"/>
-                    <div class="w-100">
-                        <div class="team-name">Paul Grainger</div>
-                        <div class="team-title font-small">Lead Field Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/paul-grainger-65653115" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/paulgrainger85" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
-                    <div class="w-100">
-                        <div class="team-name">Miloš Paunović</div>
-                        <div class="team-title font-small">Senior Frontend Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/paunovicmilos" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/MilosPaunovic" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/elevatebart.png" alt="Bart Ledoux"/>
-                    <div class="w-100">
-                        <div class="team-name">Bart Ledoux</div>
-                        <div class="team-title font-small">Senior Frontend Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/bartledoux/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/elevatebart" target="_blank" class="me-2"><github /></a>
-                        <a href="https://piaille.fr/@elevatebart" target="_blank" class="me-2"><mastodon /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
-                    <div class="w-100">
-                        <div class="team-name">Stefan Muntean</div>
-                        <div class="team-title font-small">Senior QA Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/asouid.png" alt="Ala Eddine Souid"/>
-                    <div class="w-100">
-                        <div class="team-name">Ala Eddine Souid</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/alaa-eddine-souid-354987134/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/alin.png" alt="Antoine Lin"/>
-                    <div class="w-100">
-                        <div class="team-name">Antoine Lin</div>
-                        <div class="team-title font-small">Lead Finance & Admin</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/antoine-lin-a49aaa74/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/aemerich.png" alt="Alex Emerich"/>
-                    <div class="w-100">
-                        <div class="team-name">Alex Emerich</div>
-                        <div class="team-title font-small">Technical Writer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/alex-emerich/" target="_blank" class="me-2"><linkedin /></a>
-                    </span>
-                </div>
-            </div>
-        </Section>
-    </div>
+          <NuxtImg :src="member.image" :alt="member.name" />
+          <div class="team-info">
+            <div class="team-name" :class="{ 'mb-3': member.isOpenPosition }" v-html="member.name" />
+            <div v-if="member.title" class="team-title">{{ member.title }}</div>
+            <NuxtLink v-if="member.isOpenPosition" href="/careers" class="btn btn-sm btn-secondary">
+              Open Positions
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </Section>
+  </div>
 </template>
 
-<script>
-    import Section from '../../components/layout/Section.vue';
-    import Github from "vue-material-design-icons/Github.vue";
-    import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "../components/icons/TwitterXIcon.vue";
-    import Mastodon from "vue-material-design-icons/Mastodon.vue";
+<script setup lang="ts">
+import Section from '../layout/Section.vue';
 
-    export default {
-        components: {Twitter, Linkedin, Github, Section, Mastodon}
-    }
+const teamMembers = [
+  { name: "Emmanuel Darras", title: "CEO", image: "/landing/company/teams/edarras-round.png" },
+  { name: "Ludovic Dehon", title: "CTO", image: "/landing/company/teams/ldehon-round.png" },
+  { name: "Anna Geller", title: "Product Lead", image: "/landing/company/teams/ageller-round.png" },
+  { name: "David Khan", title: "Sales Leader", image: "/landing/company/teams/dkhan-round.png" },
+  { name: "Florian Hussonnois", title: "Lead Software Engineer", image: "/landing/company/teams/fhussonois-round.png" },
+  { name: "Loïc Mathieu", title: "Lead Software Engineer", image: "/landing/company/teams/lmathieu-round.png" },
+  { name: "Martin-Pierre Roset", title: "Lead Growth & Marketing", image: "/landing/company/teams/mproset-round.png" },
+  { name: "Paul Grainger", title: "Lead Field Engineer", image: "/landing/company/teams/pgrainger-round.png" },
+  { name: "Antoine Lin", title: "Lead Finance & Admin", image: "/landing/company/teams/alin-round.png" },
+  { name: "Benoît Pimpaud", title: "Product & Data Engineer", image: "/landing/company/teams/bpimpaud-round.png" },
+  { name: "Will Russell", title: "Developer Advocate", image: "/landing/company/teams/wrussel-round.png" },
+  { name: "Nicolas Callens", title: "Lead Product Designer", image: "/landing/company/teams/ncallens-round.png" },
+  { name: "Yann Coornaert", title: "Software Engineer", image: "/landing/company/teams/ycoornaert-round.png" },
+  { name: "Brian Mulier", title: "Software Engineer", image: "/landing/company/teams/bmulier-round.png" },
+  { name: "Nicolas Kwiatkowski", title: "Software Engineer", image: "/landing/company/teams/nkwiatkowski-round.png" },
+  { name: "Mathieu Gabelle", title: "Software Engineer", image: "/landing/company/teams/mgabelle-round.png" },
+  { name: "Roman Acevedo", title: "Software Engineer", image: "/landing/company/teams/racevedo-round.png" },
+  { name: "Miloš Paunović", title: "Senior Frontend Engineer", image: "/landing/company/teams/mpaunovic-round.png" },
+  { name: "Bart Ledoux", title: "Senior Frontend Engineer", image: "/landing/company/teams/elevatebart.png" },
+  { name: "Marco Sabatini", title: "Platform Engineer", image: "/landing/company/teams/msabatini-round.png" },
+  { name: "Gilles Perreymond", title: "Platform Engineer", image: "/landing/company/teams/gperreymond-round.png" },
+  { name: "Alex Emerich", title: "Technical Writer", image: "/landing/company/teams/aemerich-round.png" },
+  { name: "Izaac Carcenac Sautron", title: "QA Software Engineer", image: "/landing/company/teams/izaac-round.png" },
+  { name: "Rok Grabnar", title: "Data Analyst", image: "/landing/company/teams/rgrabnar-round.png" },
+  { name: "Wish to see <br />your photo here?", title: null, image: "/landing/company/teams/portrait-round.png", isOpenPosition: true }
+]
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+@import "../../assets/styles/variable";
 
-    :deep(section) {
-        .subtitle p {
-            margin-bottom: 0;
-        }
-    }
+:deep(section) {
+  padding: 0 !important;
+  @include media-breakpoint-up(md) { padding: 2rem !important; }
+    
+  .subtitle p, p.baseline {
+    margin-bottom: 0;
+    color: $black-2 !important;
+  }
 
-    .container {
-        .row {
-            padding-bottom: calc($spacer * 2);
-        }
-    }
+  p.baseline {
+    font-size: 18px;
+    line-height: 26px;
+    max-width: 100%;
+  }
+}
 
+.container {
+  max-width: 100%;
+  background-color: $white;
+  padding: 80px 0;
+
+  @include media-breakpoint-up(md) { padding: 80px; }
+  @include media-breakpoint-up(xxl) { padding: 80px 100px; }
+}
+
+.team-grid {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 500px) and (max-width: 765px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+  @include media-breakpoint-up(lg) { grid-template-columns: repeat(4, 1fr); }
+  @include media-breakpoint-up(xl) { grid-template-columns: repeat(5, 1fr); }
+  @include media-breakpoint-up(xxl) { grid-template-columns: repeat(6, 1fr); }
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $rem-1;
+  gap: $rem-1;
+
+  img {
+    width: 116px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+
+  .team-info {
+    text-align: center;
+    
     .team-name {
-        color: $white;
-        font-size: $font-size-lg;
-        font-weight: 700;
-    }
-
-    img {
-        width: 248px;
+      color: $black;
+      font-size: $font-size-md;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.2;
     }
 
     .team-title {
-        color: $white-3;
-        font-size: $font-size-md;
-        font-weight: 400;
+      color: $black-10;
+      font-size: $font-size-xs;
+      line-height: 20px;
     }
 
-    .team-card {
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-
-
-        > span {
-            font-size: 1.25rem;
-
-            a {
-                :deep(.material-design-icon) {
-                    color: $white-3;
-                }
-
-                &:hover {
-                    :deep(.material-design-icon) {
-                        color: $purple-36;
-                    }
-
-                }
-            }
-
-        }
-    }
+  }
+}
 </style>
