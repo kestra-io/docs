@@ -54,9 +54,9 @@
       </div>
       <div class="media d-none d-md-flex">
         <NuxtImg 
-          src="/landing/company/teams/assetdownload.png" 
+          src="/landing/company/teams/assets-download.svg" 
           alt="Brand Assets" 
-          class="img" 
+          class="img"
         />
       </div>
     </section>
