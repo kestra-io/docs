@@ -71,10 +71,10 @@
 <script setup lang="ts">
 const companyLogos = [
   { name: "Apple", src: "/landing/company/teams/apple.svg", width: 38, height: 45 },
-  { name: "Fila", src: "/landing/company/teams/fila.svg", width: 60, height: 22 },
+  { name: "Fila", src: "/landing/companies/fila.svg", width: 60, height: 22 },
   { name: "Axiom", src: "/landing/company/teams/acxiom.svg", width: 102, height: 23 },
   { name: "Battelle", src: "/landing/company/teams/battelle.svg", width: 101, height: 17 },
-  { name: "L'Oreal", src: "/landing/company/teams/L'Oréal.svg", width: 115, height: 20 },
+  { name: "L'Oreal", src: "/landing/company/teams/loreal.svg", width: 115, height: 20 },
   { name: "JP Morgan", src: "/landing/company/teams/jpmorgan.svg", width: 105, height: 21 }
 ]
 </script>
