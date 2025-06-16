@@ -73,7 +73,7 @@ const companyLogos = [
   { name: "Apple", src: "/landing/company/teams/apple.svg", width: 38, height: 45 },
   { name: "Fila", src: "/landing/companies/fila.svg", width: 60, height: 22 },
   { name: "Axiom", src: "/landing/company/teams/acxiom.svg", width: 102, height: 23 },
-  { name: "Battelle", src: "/landing/home/trusted-companies/Battelle.svg", width: 101, height: 17 },
+  { name: "Battelle", src: "/landing/company/teams/Battelle.svg", width: 101, height: 17 },
   { name: "L'Oreal", src: "/landing/company/teams/loreal.svg", width: 115, height: 20 },
   { name: "JP Morgan", src: "/landing/company/teams/jpmorgan.svg", width: 105, height: 21 }
 ]
