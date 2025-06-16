@@ -140,7 +140,7 @@
             <CustomDetails title="How can I get access to the Kestra Enterprise Edition?">
                 <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank"
                                                                                                     href="/slack">Slack
-                    channel</a> or <a target="_blank" href="/demo">book a demo</a>. We will provide you with the
+                    channel</a> or <a target="_blank" href="/demo">Talk to us</a>. We will provide you with the
                     necessary information and guide you through the process of setting up the Enterprise Edition.</p>
             </CustomDetails>
             <CustomDetails title="Are there additional costs associated with the Enterprise Edition?">

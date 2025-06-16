@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## How to upgrade Kestra
 
 To upgrade Kestra, follow these steps:
@@ -24,6 +28,10 @@ Sometimes you might need to downgrade Kestra to a previous version. Here are som
 4. Restart from an older version
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
+
+::alert{type="warning"}
+We strongly recommend to avoid downgrading to a previous version if possible. To avoid any surprises, before upgrading, test out the newer version on a non-production environment to ensure expected functionality with your existing instance. If you must rollback, closely follow the recommended actions above.
+::
 
 ## Where you can find the release changelog
 

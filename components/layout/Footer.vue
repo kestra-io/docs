@@ -68,6 +68,10 @@
                                 <li class="mb-2"><NuxtLink href="/use-cases/stories">Customer Stories</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/partners">Partners Ecosystem</NuxtLink></li>
                             </ul>
+
+                            <div>
+                                <Certifications class="mt-4 mb-4" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,10 +100,11 @@
 
 <script>
     import Socials from "./Socials.vue";
+    import Certifications from "./Certifications.vue";
     import Heart from "vue-material-design-icons/Heart.vue";
 
     export default {
-        components: {Heart, Socials},
+        components: {Heart, Socials, Certifications},
     }
 </script>
 

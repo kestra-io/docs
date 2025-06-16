@@ -6,11 +6,17 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from 'vue';
+import { defineEmits } from 'vue';
 
+const emit = defineEmits(['apiError']);
 const stargazersText = ref<string | undefined>(undefined)
 
 onMounted(async () => {
-    const response = await axios.get('/api/github')
-    stargazersText.value = Intl.NumberFormat('en-US').format(response.data.stargazers);
+    try {
+        const response = await axios.get('/api/github')
+        stargazersText.value = Intl.NumberFormat('en-US').format(response.data.stargazers);
+    } catch (error) {
+        emit('apiError');
+    }
 })
 </script>

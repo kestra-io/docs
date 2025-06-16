@@ -31,8 +31,8 @@
                     </tr>
                 </thead>
                 <tbody class="t-head-body">
-                    <tr v-for="item in tableData"
-                        :key="item.id"
+                    <tr v-for="(item, index)  in tableData"
+                        :key="index"
                         :class="!item.textBold ? '' : 'sticky-tr'"
                     >
                         <td class="ps-5 t-border-data-first-block"
@@ -164,16 +164,14 @@
       },
     },
   ]);
-  
+
   const tableData = ref([
     {
-      id: 1,
       title: "Core Features",
       isFullLine: true,
       textBold: true,
     },
     {
-      id: 3,
       title: "Workflow Creation and Execution",
       isOpenSource: true,
       isEnterprise: true,
@@ -183,7 +181,6 @@
       }
     },
     {
-      id: 4,
       title: "Multi-Cloud or On-Prem Deployment Options",
       isOpenSource: true,
       isEnterprise: true,
@@ -193,7 +190,6 @@
       }
     },
     {
-      id: 5,
       title: "Embedded Code Editor",
       isOpenSource: true,
       isEnterprise: true,
@@ -203,7 +199,6 @@
       }
     },
     {
-      id: 6,
       title: "Plugins",
       isOpenSource: true,
       isEnterprise: true,
@@ -213,7 +208,6 @@
       }
     },
     {
-      id: 7,
       title: "Plugin Development Support",
       isOpenSource: false,
       enterpriseText: 'On Request',
@@ -223,7 +217,6 @@
       }
     },
     {
-      id: 8,
       title: "Code Versioning & Git Integration",
       isOpenSource: true,
       isEnterprise: true,
@@ -233,7 +226,6 @@
       }
     },
     {
-      id: 9,
       title: "Autocompletion & Syntax Validation",
       isOpenSource: true,
       isEnterprise: true,
@@ -243,7 +235,6 @@
       }
     },
     {
-      id: 10,
       title: "Live-Updated Topology View",
       isOpenSource: true,
       isEnterprise: true,
@@ -253,7 +244,6 @@
       }
     },
     {
-      id: 11,
       title: "Task & Subflow Dependency Management",
       isOpenSource: true,
       isEnterprise: true,
@@ -263,7 +253,6 @@
       }
     },
     {
-      id: 12,
       title: "Flexible Scheduling System",
       isOpenSource: true,
       isEnterprise: true,
@@ -273,7 +262,6 @@
       }
     },
     {
-      id: 13,
       title: "Event-Driven Data Processing",
       isOpenSource: true,
       isEnterprise: true,
@@ -283,7 +271,6 @@
       }
     },
     {
-      id: 14,
       title: "Embedded Task & Trigger Documentation",
       isOpenSource: true,
       isEnterprise: true,
@@ -293,13 +280,11 @@
       }
     },
     {
-      id: 15,
       title: "Security & Governance",
       isFullLine: true,
       textBold: true,
     },
     {
-      id: 16,
       title: "Users Management",
       isOpenSource: false,
       isEnterprise: false,
@@ -311,7 +296,6 @@
       }
     },
     {
-      id: 17,
       title: "SSO & OIDC Authentication",
       isOpenSource: false,
       isEnterprise: true,
@@ -321,7 +305,6 @@
       }
     },
     {
-      id: 18,
       title: "Role-Based Access Control (RBAC)",
       isOpenSource: false,
       isEnterprise: true,
@@ -331,7 +314,6 @@
       }
     },
     {
-      id: 19,
       title: "Multi-Tenancy Support",
       isOpenSource: false,
       isEnterprise: true,
@@ -341,7 +323,6 @@
       }
     },
     {
-      id: 20,
       title: "Audit Logs & Revision History",
       isOpenSource: false,
       isEnterprise: true,
@@ -351,7 +332,6 @@
       }
     },
     {
-      id: 21,
       title: "Secret Manager Integrations",
       isOpenSource: false,
       isEnterprise: true,
@@ -361,7 +341,6 @@
       }
     },
     {
-      id: 22,
       title: "Namespace-Level Permissions",
       isOpenSource: false,
       isEnterprise: true,
@@ -371,7 +350,6 @@
       }
     },
     {
-      id: 23,
       title: "Worker Security Isolation",
       isOpenSource: false,
       isEnterprise: true,
@@ -381,7 +359,6 @@
       }
     },
     {
-      id: 24,
       title: "Encryption & Fault Tolerance",
       isOpenSource: false,
       isEnterprise: true,
@@ -391,7 +368,6 @@
       }
     },
     {
-      id: 25,
       title: "SCIM Directory Sync",
       isOpenSource: false,
       isEnterprise: true,
@@ -401,7 +377,6 @@
       }
     },
     {
-      id: 26,
       title: "Log Shipper",
       isOpenSource: false,
       isEnterprise: true,
@@ -411,13 +386,20 @@
       }
     },
     {
-      id: 27,
+      title: "SOC 2",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "SOC 2 compliance",
+        link: "/trust"
+      }
+    },
+    {
       title: "Productivity",
       isFullLine: true,
       textBold: true,
     },
     {
-      id: 28,
       title: "Custom Blueprints & Templates",
       isOpenSource: false,
       isEnterprise: true,
@@ -427,7 +409,6 @@
       }
     },
     {
-      id: 29,
       title: "Full-Text Search on Task Runs",
       isOpenSource: false,
       isEnterprise: true,
@@ -437,7 +418,6 @@
       }
     },
     {
-      id: 30,
       title: "Centralized User & Permission Management",
       isOpenSource: false,
       isEnterprise: true,
@@ -447,7 +427,6 @@
       }
     },
     {
-      id: 31,
       title: "Onboarding & Training Support",
       isOpenSource: false,
       isEnterprise: true,
@@ -457,7 +436,6 @@
       }
     },
     {
-      id: 32,
       title: "Customer Success Program with SLAs",
       isOpenSource: false,
       isEnterprise: true,
@@ -467,7 +445,6 @@
       }
     },
     {
-      id: 33,
       title: "Apps",
       isOpenSource: false,
       isEnterprise: true,
@@ -477,7 +454,6 @@
       }
     },
     {
-      id: 34,
       title: "Namespace-Level Secrets Management",
       isOpenSource: false,
       isEnterprise: true,
@@ -487,13 +463,11 @@
       }
     },
     {
-      id: 35,
       title: "Scalability & Infrastructure",
       isFullLine: true,
       textBold: true,
     },
     {
-      id: 36,
       title: "High Availability (No Single Point of Failure)",
       isOpenSource: false,
       isEnterprise: true,
@@ -503,7 +477,6 @@
       }
     },
     {
-      id: 37,
       title: "Worker Groups for Distributed Tasks",
       isOpenSource: false,
       isEnterprise: true,
@@ -513,7 +486,6 @@
       }
     },
     {
-      id: 38,
       title: "Task Runners",
       isOpenSource: false,
       isEnterprise: true,
@@ -523,7 +495,6 @@
       }
     },
     {
-      id: 39,
       title: "Service Accounts & API Tokens",
       isOpenSource: false,
       isEnterprise: true,
@@ -533,7 +504,6 @@
       }
     },
     {
-      id: 40,
       title: "Dedicated Storage & Tenant Isolation",
       isOpenSource: false,
       isEnterprise: true,
@@ -543,7 +513,6 @@
       }
     },
     {
-      id: 41,
       title: "Cluster Monitoring & Custom Storage",
       isOpenSource: false,
       isEnterprise: true,
@@ -553,7 +522,6 @@
       }
     },
     {
-      id: 42,
       title: "High-Throughput Event Handling",
       isOpenSource: false,
       isEnterprise: true,
@@ -566,13 +534,11 @@
 
   const tableSortedData = ref([
     {
-      id: 1,
       title: "Core Features",
       isFullLine: true,
       textBold: true,
       children: [
         {
-          id: 1,
           title: "Workflow Creation and Execution",
           isOpenSource: true,
           isEnterprise: true,
@@ -582,7 +548,6 @@
           }
         },
         {
-          id: 2,
           title: "Multi-Cloud or On-Prem Deployment Options",
           isOpenSource: true,
           isEnterprise: true,
@@ -592,7 +557,6 @@
           }
         },
         {
-          id: 3,
           title: "Embedded Code Editor",
           isOpenSource: true,
           isEnterprise: true,
@@ -602,7 +566,6 @@
           }
         },
         {
-          id: 4,
           title: "Plugins",
           isOpenSource: true,
           isEnterprise: true,
@@ -612,7 +575,6 @@
           }
         },
         {
-          id: 5,
           title: "Plugin Development Support",
           openSourceText: false,
           enterpriseText: 'On-Demand',
@@ -622,7 +584,6 @@
           }
         },
         {
-          id: 6,
           title: "Code Versioning & Git Integration",
           isOpenSource: true,
           isEnterprise: true,
@@ -632,7 +593,6 @@
           }
         },
         {
-          id: 7,
           title: "Autocompletion & Syntax Validation",
           isOpenSource: true,
           isEnterprise: true,
@@ -642,7 +602,6 @@
           }
         },
         {
-          id: 8,
           title: "Live-Updated Topology View",
           isOpenSource: true,
           isEnterprise: true,
@@ -652,7 +611,6 @@
           }
         },
         {
-          id: 9,
           title: "Task & Subflow Dependency Management",
           isOpenSource: true,
           isEnterprise: true,
@@ -662,7 +620,6 @@
           }
         },
         {
-          id: 10,
           title: "Flexible Scheduling System",
           isOpenSource: true,
           isEnterprise: true,
@@ -672,7 +629,6 @@
           }
         },
         {
-          id: 11,
           title: "Event-Driven Data Processing",
           isOpenSource: true,
           isEnterprise: true,
@@ -682,7 +638,6 @@
           }
         },
         {
-          id: 12,
           title: "Embedded Task & Trigger Documentation",
           isOpenSource: true,
           isEnterprise: true,
@@ -694,13 +649,11 @@
       ]
     },
     {
-      id: 2,
       title: "Security & Governance",
       isFullLine: true,
       textBold: true,
       children: [
         {
-          id: 1,
           title: "Users Management",
           isOpenSource: false,
           isEnterprise: false,
@@ -712,7 +665,6 @@
           }
         },
         {
-          id: 2,
           title: "SSO & OIDC Authentication",
           isEnterprise: true,
           isOpenSource: false,
@@ -722,7 +674,6 @@
           }
         },
         {
-          id: 3,
           title: "Role-Based Access Control (RBAC)",
           isOpenSource: false,
           isEnterprise: true,
@@ -732,7 +683,6 @@
           }
         },
         {
-          id: 4,
           title: "Multi-Tenancy Support",
           isOpenSource: false,
           isEnterprise: true,
@@ -742,7 +692,6 @@
           }
         },
         {
-          id: 5,
           title: "Audit Logs & Revision History",
           isOpenSource: false,
           isEnterprise: true,
@@ -752,7 +701,6 @@
           }
         },
         {
-          id: 6,
           title: "Secret Manager Integrations",
           isOpenSource: false,
           isEnterprise: true,
@@ -762,7 +710,6 @@
           }
         },
         {
-          id: 7,
           title: "Namespace-Level Permissions",
           isOpenSource: false,
           isEnterprise: true,
@@ -772,7 +719,6 @@
           }
         },
         {
-          id: 8,
           title: "Worker Security Isolation",
           isOpenSource: false,
           isEnterprise: true,
@@ -782,7 +728,6 @@
           }
         },
         {
-          id: 9,
           title: "Encryption & Fault Tolerance",
           isOpenSource: false,
           isEnterprise: true,
@@ -792,7 +737,6 @@
           }
         },
         {
-          id: 10,
           title: "SCIM Directory Sync",
           isOpenSource: false,
           isEnterprise: true,
@@ -802,7 +746,6 @@
           }
         },
         {
-          id: 11,
           title: "Log Shipper",
           isOpenSource: false,
           isEnterprise: true,
@@ -814,13 +757,11 @@
       ]
     },
     {
-      id: 3,
       title: "Productivity",
       isFullLine: true,
       textBold: true,
       children: [
         {
-          id: 1,
           title: "Custom Blueprints & Templates",
           isOpenSource: false,
           isEnterprise: true,
@@ -830,7 +771,6 @@
           }
         },
         {
-          id: 2,
           title: "Full-Text Search on Task Runs",
           isOpenSource: false,
           isEnterprise: true,
@@ -840,7 +780,6 @@
           }
         },
         {
-          id: 3,
           title: "Centralized User & Permission Management",
           isOpenSource: false,
           isEnterprise: true,
@@ -850,7 +789,6 @@
           }
         },
         {
-          id: 4,
           title: "Onboarding & Training Support",
           isOpenSource: false,
           isEnterprise: true,
@@ -860,7 +798,6 @@
           }
         },
         {
-          id: 5,
           title: "Customer Success Program with SLAs",
           isOpenSource: false,
           isEnterprise: true,
@@ -870,7 +807,6 @@
           }
         },
         {
-          id: 6,
           title: "Apps",
           isOpenSource: false,
           isEnterprise: true,
@@ -880,7 +816,6 @@
           }
         },
         {
-          id: 7,
           title: "Namespace-Level Secrets Management",
           isOpenSource: false,
           isEnterprise: true,
@@ -892,13 +827,11 @@
       ]
     },
     {
-      id: 4,
       title: "Scalability & Infrastructure",
       isFullLine: true,
       textBold: true,
       children: [
         {
-          id: 1,
           title: "High Availability (No Single Point of Failure)",
           isOpenSource: false,
           isEnterprise: true,
@@ -908,7 +841,6 @@
           }
         },
         {
-          id: 2,
           title: "Worker Groups for Distributed Tasks",
           isOpenSource: false,
           isEnterprise: true,
@@ -918,7 +850,6 @@
           }
         },
         {
-          id: 3,
           title: "Task Runners",
           isOpenSource: false,
           isEnterprise: true,
@@ -928,7 +859,6 @@
           }
         },
         {
-          id: 4,
           title: "Service Accounts & API Tokens",
           isOpenSource: false,
           isEnterprise: true,
@@ -938,7 +868,6 @@
           }
         },
         {
-          id: 5,
           title: "Dedicated Storage & Tenant Isolation",
           isOpenSource: false,
           isEnterprise: true,
@@ -948,7 +877,6 @@
           }
         },
         {
-          id: 6,
           title: "Cluster Monitoring & Custom Storage",
           isOpenSource: false,
           isEnterprise: true,
@@ -958,7 +886,6 @@
           }
         },
         {
-          id: 7,
           title: "High-Throughput Event Handling",
           isOpenSource: false,
           isEnterprise: true,
@@ -970,7 +897,7 @@
       ]
     },
   ]);
-  
+
   const changeSelectedType = (type) => {
     selectedType.value = type
   }
@@ -1387,8 +1314,8 @@
                         font-size: 14px;
                         font-weight: 400;
                         color: #000000;
-                    }                    
-                    
+                    }
+
                     .tooltip-container {
                         position: relative;
 
@@ -1473,7 +1400,7 @@
                 left: 30%;
                 transform: translateX(-30%);
             }
-                        
+
             &::before {
                 top: -8px;
                 border-left: 8px solid transparent;
@@ -1492,7 +1419,7 @@
                 display: inline-block;
                 color: #8405FF;
                 text-decoration: none;
-                
+
                 &:hover {
                     text-decoration: underline;
                 }
