@@ -8,20 +8,21 @@
         </div>
       </div>
       <div
-        v-for="(post, index) in filteredPosts"
-        :key="post.path"
+        v-for="(news, index) in newsItems"
+        :key="news.id"
         class="news-card"
         data-aos="fade-up"
         :data-aos-delay="200 + (index * 100)"
       >
-        <NuxtLink :to="post.path">
+        <NuxtLink :to="news.url" :external="news.external">
           <div class="card-content">
-            <span class="card-category">News & Product Updates</span>
-            <h3 class="card-title">{{ post.title }}</h3>
+            <span class="card-category">{{ news.source }}</span>
+            <h3 class="card-title">{{ news.title }}</h3>
             <NuxtImg
-              src="/landing/usecases/stories/monograme-kestra.svg"
-              alt="monograme-kestra"
-              class="logo-placeholder"
+              :src="news.logo"
+              :alt="news.source"
+              :width="news.width"
+              :height="news.height"
             />
           </div>
         </NuxtLink>
@@ -31,18 +32,58 @@
 </template>
 
 <script setup lang="ts">
-const { public: { CollectionNames } } = useRuntimeConfig()
-
-const { data: filteredPosts } = await useAsyncData('news-grid-posts', async () => {
-  const posts = await queryCollection(CollectionNames.blogs)
-    .order("date", "DESC")
-    .limit(50)
-    .all()
-  
-  return posts
-    .filter(post => post.category === 'News & Product Updates')
-    .slice(0, 5)
-})
+const newsItems = [
+  {
+    id: 1,
+    title: "Kestra raises another $8M for its open source orchestration platform",
+    source: "TechCrunch",
+    url: "#",
+    external: true,
+    logo: "/landing/company/teams/techcrunch.svg",
+    width: 56,
+    height: 51
+  },
+  {
+    id: 2,
+    title: "How Kestra Raised $8M: Our Seed Deck, Now Public",
+    source: "Medium",
+    url: "#",
+    external: true,
+    logo: "/landing/company/teams/medium.svg",
+    width: 52,
+    height: 52
+  },
+  {
+    id: 3,
+    title: "Kestra is an open source data orchestration platform for complex workflows",
+    source: "TechCrunch",
+    url: "#",
+    external: true,
+    logo: "/landing/company/teams/techcrunch.svg",
+    width: 56,
+    height: 51
+  },
+  {
+    id: 4,
+    title: "Kestra: a Scalable Open-Source Orchestration and Scheduling Platform",
+    source: "InfoQ",
+    url: "#",
+    external: true,
+    logo: "/landing/company/teams/infoq.svg",
+    width: 65,
+    height: 19
+  },
+  {
+    id: 5,
+    title: "How Kestra Raised $8M: Our Seed Deck, Now Public",
+    source: "Medium",
+    url: "#",
+    external: true,
+    logo: "/landing/company/teams/medium.svg",
+    width: 52,
+    height: 52
+  }
+]
 </script>
 
 <style lang="scss" scoped>
@@ -152,10 +193,11 @@ $white-color: #F0F0F0;
   flex-direction: column;
   position: relative;
   gap: 1rem;
+  justify-content: space-between;
 
   img {
-    width: 50px;
-    height: 50px;
+    margin-top: auto;
+    align-self: flex-start;
   }
 }
 

@@ -13,7 +13,7 @@
           data-aos="zoom-in"
           :data-aos-delay="50 + (index * 50)"
         >
-          <NuxtImg :src="member.image" :alt="member.name" />
+          <NuxtImg :src="member.image" :alt="member.name" width="110px" height="110px" />
           <div class="team-info">
             <div class="team-name" :class="{ 'mb-3': member.isOpenPosition }" v-html="member.name" />
             <div v-if="member.title" class="team-title">{{ member.title }}</div>
@@ -108,12 +108,10 @@ const teamMembers = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: $rem-1;
+  padding: 0 $rem-1;
   gap: $rem-1;
 
   img {
-    width: 116px;
-    height: 110px;
     border-radius: 50%;
     object-fit: cover;
     filter: grayscale(100%);

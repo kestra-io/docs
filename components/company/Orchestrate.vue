@@ -30,7 +30,7 @@
     <section class="trust">
       <div class="divider">
         <NuxtImg src="/landing/company/teams/Logo_EE.svg" alt="Kestra Logo" class="logo" width="119" height="109" />
-        <NuxtImg src="/landing/company/teams/black-ellipse.svg" alt="Section Divider" class="ellipse" width="228" height="135" />
+        <NuxtImg src="/landing/company/teams/black-ellipse.svg" alt="Section Divider" width="228" height="135" />
       </div>
 
       <div class="container" data-aos="fade-up">
@@ -292,13 +292,6 @@ const companyLogos = [
         height: 109.57px;
         object-fit: contain;
         z-index: 12;
-      }
-
-      .ellipse {
-        object-fit: contain;
-        backdrop-filter: blur(38.82px);
-        border-radius: 50%;
-        z-index: 11;
       }
     }
 

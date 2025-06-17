@@ -218,7 +218,6 @@ const lifeCards = [
       width: min(358px, 100%);
       height: 422px;
       border-radius: $border-radius-lg;
-      border: 1px solid $purple-30;
       overflow: hidden;
       margin: 0 auto;
 
