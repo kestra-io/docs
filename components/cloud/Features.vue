@@ -64,7 +64,7 @@
                         </p>
                         <p class="mb-0">
                             <strong>
-                                Michael Heidner - CEO & Kestra Cloud Early
+                                Michael Heidner - SVP of Analytics and Business Intelligence & Kestra Cloud Early
                                 Adopter
                             </strong>
                         </p>
