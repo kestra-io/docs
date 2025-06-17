@@ -26,7 +26,9 @@ This property is used to route non-tenant-specific API calls to a fallback tenan
 While in OSS we transform URI to a different one including the main `tenantId` directly into the API routes, in EE we inject the fallback tenant into the request header instead without rerouting the API endpoints themselves. Thus, we won’t map `/api/v1/...` to `/api/v1/fallbackTenant/...`, but instead we only inject tenantId into the header. Note that this manual tenant header injection will be removed in a future version.
 
 ### Migration Script
-
+::alert{type="warning"}
+Before running the following migration scripts, you must completely shut down the main Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
+::
 The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration. Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
 
 ```shell
