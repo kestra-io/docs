@@ -142,6 +142,12 @@ kestra auths users create <username> <password> \
 --tenant=<tenant-id> --superadmin
 ```
 
+To set or revoke Super Admin privileges, use the following in the CLI:
+
+```bash
+kestra auths users set-superadmin user@email.com true # (use false to revoke)
+```
+
 #### Through the Configuration
 
 A Super Admin can also be created from the configuration file using the configuration below:
@@ -286,21 +292,25 @@ To add users to your Kestra instance, you can do one of the following:
 
 #### Change password
 
-If a user wants to change their password, they can do it on their profile. This page can be accessed through the person icon in top right corner of the UI.
+If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
+
 ::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
 ::
 
 #### Reset password (by a Super Admin)
 
-Kestra does not provide any "forgot password" feature yet. Currently only a super admin can update a user password through its User Edit page.
+Kestra provides a "forgot password" functionality that your users could leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page.
 
 ### Groups
 
-Each `Group` is a collection of `Users` or `Service Accounts`.
+Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 
+- Each `Owner` can add users to a group without being a Kestra Admin.
 - Each `User` can be assigned to zero, one, or more `Groups`.
 - Each `Service Account` can also be assigned to zero, one, or more `Groups`.
+
+![Group Owner](/docs/enterprise/group-owner.png)
 
 Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
 

@@ -226,7 +226,6 @@ tasks:
       FLOW_ID: "{{ inputs.flow_id }}"
       FLOW_NAMESPACE: "{{ inputs.flow_namespace }}"
       EXTRACT_ITEMS: "{{ inputs.extract_items }}"
-    warningOnStdErr: false
     beforeCommands: 
       - pip install -q ruamel.yaml
     namespaceFiles:

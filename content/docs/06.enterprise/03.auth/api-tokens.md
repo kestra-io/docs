@@ -27,7 +27,7 @@ Currently, we support API tokens as authentication mechanism for the following s
 
 ## How to create a User API token
 
-To create an API token, navigate to the person icon in the top right corner of the Kestra UI and click on **Get a token**.
+To create an API token, navigate to your profile in the bottom left corner of the Kestra UI and click on **+ Create API Token**.
 
 ![user-api-token](/docs/enterprise/user-api-token.png)
 

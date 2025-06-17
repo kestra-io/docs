@@ -110,6 +110,8 @@ tasks:
     logExporters:
       - id: file
         type: io.kestra.plugin.ee.core.log.FileLogExporter
+        format: JSON # default ION
+        maxLinesPerFile: 100
 
   - id: upload
     type: io.kestra.plugin.aws.s3.Upload

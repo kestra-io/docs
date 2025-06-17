@@ -139,9 +139,9 @@ kestra:
     type: postgres
 ```
 
-Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a preview in the Enterprise Edition since Kestra 0.18.0).
+Currently, Kestra supports Postgres, H2, and MySQL.
 - H2 can be convenient for local **development**.
-- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL and SQL Server can be used as well.
+- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL can be used as well.
 
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
@@ -200,33 +200,6 @@ Note that we currently don't support the `8.0.31` version of MySQL. If possible,
 ::
 ::
 
-::collapse{title="SQL Server"}
-
-Here is a minimal configuration for a SQL Server database, currently available in preview in the Enterprise Edition since Kestra 0.18.0:
-
-```yaml
-kestra:
-  repository:
-    type: sqlserver
-  queue:
-    type: sqlserver
-
-datasources:
-  sqlserver:
-    url: jdbc:sqlserver://localhost:1433
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: kestra
-    password: k3str4
-    dialect: SQL_SERVER
-# Uncomment only if your database is not encrypted
-#    dataSourceProperties:
-#      encrypt: false
-```
-
-::alert{type="warning"}
-Note that this feature is currently in preview and only available in the Enterprise Edition. If you want to try it, please [reach out](/demo) to get access.
-::
-::
 
 ::collapse{title="H2"}
 
@@ -550,6 +523,10 @@ When you launch Kestra Enterprise Edition, it will check the license and display
 
 ## Multi-tenancy
 
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
+
 By default, multi-tenancy is disabled. To enable it, add the `kestra.ee.tenants` configuration:
 
 ```yaml
@@ -560,6 +537,10 @@ kestra:
 ```
 
 ## Default Tenant
+
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
 
 By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.defaultTenant` configuration:
 
@@ -572,7 +553,6 @@ kestra:
 ```
 
 This will enable multi-tenancy and disable the default tenant (best practice). It is **recommended** to disable it so that your Kestra instance includes only the tenants you explicitly create.
-
 
 ## Encryption
 
@@ -1916,7 +1896,7 @@ kestra:
 Other internal storage types include:
 - [Storage S3](#s3) for [AWS S3](https://aws.amazon.com/s3/)
 - [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
-- [Storage Minio](#minio) compatible with  others *S3 like* storage services
+- [Storage MinIO](#minio) compatible with  others *S3 like* storage services
 - [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 To isolate your dedicated internal storage from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.storage.isolation`:
@@ -1990,9 +1970,9 @@ kestra:
 ```
 ::
 
-### Minio
+### MinIO
 
-If you use Minio or similar S3-compatible storage options, you can follow the same process as shown above to install the Minio storage plugin. Then, make sure to include the Minio's `endpoint` and `port` in the storage configuration:
+If you use MinIO or similar S3-compatible storage options, you can follow the same process as shown above to install the MinIO storage plugin. Then, make sure to include the MinIO's `endpoint` and `port` in the storage configuration:
 
 ```yaml
 kestra:
@@ -2009,9 +1989,19 @@ kestra:
       partSize: your_part_size_for_multipart_uploads # syntax: <number><unit> without space e.g. 100KB, 5MB, 1GB — defaults to 5MB
 ```
 
-Optionally and if the Minio configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on Minio server), you can also use the `kestra.storage.minio.vhost: true` property to make Minio client to use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
+Optionally and if the MinIO configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on MinIO server), you can also use the `kestra.storage.minio.vhost: true` property to make the MinIO client use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
 
 Please note that the endpoint should always be your base domain (even if you use the virtual host syntax). In the above example, `endpoint: my.domain.com`, `bucket: my-bucket`. Setting `endpoint: my-bucket.my.domain.com` will lead to failure.
+
+To add a proxy in your MinIO configuration, take the following example:
+
+```yaml
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    ports:
+      - "8888:8080"  # MITM proxy listens on 8080 inside container by default
+    command: mitmdump --mode regular --listen-port 8080
+```
 
 ### Azure
 
@@ -2145,17 +2135,29 @@ Using the `kestra.variables` configuration, you can determine how variables are 
 
 ### Environment Variables Prefix
 
-Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
+Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `ENV_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
 
 ```yaml
 kestra:
   variables:
-    envVarsPrefix: KESTRA_
+    envVarsPrefix: ENV_
 ```
 
-These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**.
+These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**. Your Docker Compose might look something like this:
 
-For example, an environment variable with the name `KESTRA_MY_ENV` can be accessed using `{{ envs.my_env }}`.
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    environment:
+      ENV_MY_VARIABLE: extra variable value
+      ENV_NEW_VARIABLE: new variable value
+      KESTRA_CONFIGURATION:
+        kestra:
+          variables:
+            env-vars-prefix: "ENV_" # this is the default as of version 0.23
+```
+
+An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.MY_VARIABLE }}`.
 
 ### Global Variables
 
@@ -2270,3 +2272,40 @@ kestra:
       auth: true # default
       starttlsEnable: true # default
 ```
+
+## Store Execution Data in Internal Storage
+
+::badge{version=">=0.23" editions="EE,Cloud"}
+::
+
+If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
+
+To configure this option on an instance level, add the following to your Kestra configuration file:
+
+```yaml
+kestra:
+  ee:
+    execution-data:
+      internal-storage:
+        enabled: true # the default is false
+```
+
+Once you set the above configuration and your Tenant or Namespace has a "Dedicated internal storage" configured and the toggle "Execution data in internal storage" is enabled in the UI, all workflow outputs and inputs will be stored in the internal storage instead of the central database.
+
+To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `force-globally` property to `true`:
+
+```yaml
+kestra:
+  ee:
+    execution-data:
+      internal-storage:
+        force-globally: true # the default is false
+```
+
+If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
+
+::alert{type="info"}
+Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
+::
+
+You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
