@@ -8,7 +8,7 @@
                         <p class="baseline" data-aos="fade-left">Discover the differences between Kestra and Rundeck for IT Automation</p>
                         <div class="cta">
                             <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
-                                Get a demo
+                                Talk to us
                             </NuxtLink>
                         </div>
                     </div>
