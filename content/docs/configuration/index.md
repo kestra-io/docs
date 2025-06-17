@@ -1654,6 +1654,19 @@ kestra:
       expireAfter: P30D
 ```
 
+### Basic Authentication Password Rules
+
+You can configure password validation rules for user passwords using a regular expression pattern. This allows you to enforce password complexity requirements when users set or change their passwords.
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-regexp: "<regexp-rule>"
+```
+
+The `password-regexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
+
 ## Server
 
 Using the `kestra.server` configuration, you can set up multiple server-specific functionalities.
