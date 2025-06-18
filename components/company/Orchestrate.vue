@@ -29,7 +29,7 @@
 
     <section class="trust">
       <div class="divider">
-        <NuxtImg src="/landing/company/teams/Logo_ee.png" alt="Kestra Logo" class="logo" width="119" height="109" />
+        <NuxtImg src="/landing/company/teams/Logo_EE.png" alt="Kestra Logo" class="logo" width="119" height="109" />
         <NuxtImg src="/landing/company/teams/black-ellipse.svg" alt="Section Divider" width="228" height="135" />
       </div>
 
