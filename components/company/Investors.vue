@@ -52,7 +52,7 @@ const investorsLogos = [
 ];
 
 const investorsProfiles = [
-  { name: "Nicolas Dessaigne", title: "founder at Algolia & partner Y Combinator", image: "/landing/company/teams/nico-algolia.svg" },
+  { name: "Nicolas Dessaigne", title: "Founder at Algolia & partner Y Combinator", image: "/landing/company/teams/nico-algolia.svg" },
   { name: "Olivier Pomel", title: "Founder & CEO at Datadog", image: "/landing/company/teams/olivier-datadog.svg" },
   { name: "Tristan Handy", title: "Founder & CEO at dbt Labs", image: "/landing/company/teams/tristian-dbt.svg" },
   { name: "Michel Tricot", title: "Founder & CEO at Airbyte", image: "/landing/company/teams/michel-airbyte.svg" },
