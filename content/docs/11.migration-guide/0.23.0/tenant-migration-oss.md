@@ -27,10 +27,10 @@ Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to 
 
 ### Migration Script
 
-To add the tenantId field across your existing database (flows, executions, logs, etc.), use:
+To add the tenantId field across your existing database (flows, executions, logs, etc.), use (with migrated being customizable):
 
 ```shell
-kestra migrate default-tenant --dry-run
+kestra migrate default-tenant --tenant-id migrated --tenant-name migrated --dry-run
 ```
 
 ::alert{type="info"}
