@@ -390,9 +390,6 @@ nav {
 
         @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
             & {
-                -webkit-backdrop-filter: $menu-backdrop-filter;
-                backdrop-filter: $menu-backdrop-filter;
-
                 @include media-breakpoint-down(lg) {
                     content: none;
                 }

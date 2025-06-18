@@ -1,23 +1,16 @@
 <template>
-    <div>
+    <div class="about-us">
         <Head>
             <Title>About Us</Title>
             <Meta name="description"
-                  content="Discover the team and values behind our mission to empower data-driven organizations worldwide"/>
+                content="Discover the team and values behind our mission to empower data-driven organizations worldwide"/>
         </Head>
-
-        <CompanyHeader/>
-        <CompanyOrchestration/>
-        <CompanyPlatform/>
-        <CompanyLaunch/>
-        <CompanyValue/>
+        <CompanyOrchestrate/>
+        <CompanyMission/>
         <CompanyTeam/>
-        <CompanyPress/>
-        <LayoutFooterContact
-            title="Join Our Team and Contribute to the Future of Data Orchestration"
-            purpleButtonText="See open roles"
-            purpleButtonHref="/careers"
-        />
+        <CompanyInvestors/>
+        <CompanyNewsGrid/>
+        <CompanyLife/>
     </div>
 </template>
 
@@ -44,3 +37,24 @@
     })
 
 </script>
+<style lang="scss" scoped>
+.container {
+    overflow-y: hidden;
+}
+
+.about-us {
+    position: relative;
+    min-height: 100vh;
+
+    &::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: url("/landing/company/teams/gridbg.svg") center/cover no-repeat fixed;
+        z-index: -1;
+    }
+}
+</style>
