@@ -1,7 +1,7 @@
 ---
 title: "Introducing Unit Tests for Flows: Ensure Reliability with Every Change"
 description: "Automated, isolated tests for your Kestra flows."
-date: 2025-06-12T13:00:00
+date: 2025-06-18T16:30:00
 category: News & Products Updates
 author:
   name: Anna Geller
