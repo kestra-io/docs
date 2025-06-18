@@ -12,14 +12,18 @@
 
     <div class="logos" data-aos="fade-up" data-aos-delay="200">
       <div
-        v-for="(logo, index) in investorsLogos"
-        :key="logo.name"
-        class="logo"
-        data-aos="zoom-in"
-        :data-aos-delay="300 + (index * 100)"
-      >
-        <NuxtImg :src="logo.src" :alt="logo.name" class="logo-image" />
-      </div>
+  v-for="(logo, index) in investorsLogos"
+  :key="logo.name"
+  class="logo"
+  data-aos="zoom-in"
+  :data-aos-delay="300 + (index * 100)"
+>
+  <a :href="logo.link" target="_blank" rel="noopener noreferrer" class="logo-link">
+    <NuxtImg :src="logo.src" :alt="logo.name" class="logo-image" />
+  </a>
+</div>
+
+
     </div>
 
     <div class="profiles" data-aos="fade-up" data-aos-delay="600">
@@ -42,20 +46,20 @@
 
 <script setup lang="ts">
 const investorsLogos = [
-  { name: "Alven", src: "/landing/company/teams/alven-sm.svg" },
-  { name: "Isai", src: "/landing/company/teams/isai-sm.svg" },
-  { name: "Axeleo Capital", src: "/landing/company/teams/axeleo-sm.svg" }
-]
+{ name: "Alven", src: "/landing/company/teams/alven-sm.svg", link: "https://www.alven.co" },
+{ name: "Isai", src: "/landing/company/teams/isai-sm.svg", link: "https://isai.vc" },
+{ name: "Axeleo Capital", src: "/landing/company/teams/axeleo-sm.svg", link: "https://www.axeleo.com" }
+];
 
 const investorsProfiles = [
-  { name: "Nicolas Dessaigne", title: "CEO at Algolia", image: "/landing/company/teams/nico-algolia.svg" },
-  { name: "Olivier Pomel", title: "CEO at Datadog", image: "/landing/company/teams/olivier-datadog.svg" },
-  { name: "Tristan Handy", title: "CEO at dbt Labs", image: "/landing/company/teams/tristian-dbt.svg" },
-  { name: "Michel Tricot", title: "CEO at Airbyte", image: "/landing/company/teams/michel-airbyte.svg" },
-  { name: "Frédéric Plais", title: "Tech Entrepreneur, investor", image: "/landing/company/teams/fred-invest.svg" },
-  { name: "Clément Delangue", title: "CEO at Hugging Face", image: "/landing/company/teams/clement-hugface.svg" },
-  { name: "Bertrand Diard", title: "Co-Founder & Chairman at Sysoco", image: "/landing/company/teams/bert-syroco.svg" },
-  { name: "Pierre Burgy", title: "CEO at Strapi", image: "/landing/company/teams/pierre-strapi.svg" }
+  { name: "Nicolas Dessaigne", title: "founder at Algolia & partner Y Combinator", image: "/landing/company/teams/nico-algolia.svg" },
+  { name: "Olivier Pomel", title: "Founder & CEO at Datadog", image: "/landing/company/teams/olivier-datadog.svg" },
+  { name: "Tristan Handy", title: "Founder & CEO at dbt Labs", image: "/landing/company/teams/tristian-dbt.svg" },
+  { name: "Michel Tricot", title: "Founder & CEO at Airbyte", image: "/landing/company/teams/michel-airbyte.svg" },
+  { name: "Frédéric Plais", title: "Founder & CEO at Platform.sh", image: "/landing/company/teams/fred-invest.svg" },
+  { name: "Clément Delangue", title: "Founder & CEO at Hugging Face", image: "/landing/company/teams/clement-hugface.svg" },
+  { name: "Bertrand Diard", title: "Co-Founder & former CEO at Talend", image: "/landing/company/teams/bert-syroco.svg" },
+  { name: "Pierre Burgy", title: "Founder & CEO at Strapi", image: "/landing/company/teams/pierre-strapi.svg" }
 ]
 </script>
 
@@ -138,8 +142,19 @@ const investorsProfiles = [
       height: 60px;
       object-fit: contain;
     }
+
+    .logo-link {  // ← Correctly nested and targeted
+      display: inline-block;
+      transition: transform 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 }
+
+
 
 .profiles {
   width: 1140px;
