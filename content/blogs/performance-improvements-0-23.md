@@ -1,6 +1,6 @@
 ---
-title: "Optimizing Performance in Kestra in Version 0.23"
-description: "Performance is a critical aspect of an orchestrator. Discover how Kestra 0.23 significantly enhances execution speed, reduces resource consumption, and improves overall system performance."
+title: "Performance Upgrades Fueled by Contributions from Xiaomi Engineering"
+description: "Kestra 0.23 levels up with faster execution, smarter scheduling, and reduced resource usage—powered by contributions from Xiaomi Engineering and insights from the open-source community."
 date: 2025-06-18T13:00:00
 category: Solutions
 author:
@@ -10,19 +10,21 @@ author:
 image: TODO
 ---
 
-In 0.22, the engineering team focused on performance in multiple areas, you can find the details in the blog post [Optimizing Performance in Kestra in Version 0.22](https://kestra.io/blogs/2025-04-08-performance-improvements).
+In 0.22, the engineering team focused on performance in multiple areas, you can find the details in this blog post [Optimizing Performance in Kestra in Version 0.22](https://kestra.io/blogs/2025-04-08-performance-improvements).
 
-Even if in 0.23 we didn't focus on performance, we still made some pretty interesting optimization that we will introduce in this article.
+One of our most advanced power users, the Xiaomi's Engineering team, leverage Kestra extensively at massive scale, Xiaomi's continuous insights and active contributions have significantly accelerated our performance optimization efforts in Kestra 0.23. This latest version delivers even more substantial enhancements in speed, efficiency, and system responsiveness thanks to their help.
 
 ## Smarter Output Processing
 
-The Kestra Executor merges task outputs so that subsequent tasks can access previous task outputs via our expression language. This operation clones the entire output map, incurring high CPU and memory costs.
+The Kestra Executor merges task outputs, enabling subsequent tasks to access previous outputs through our expression language. Historically, this merging process involved cloning the entire output map, consuming significant CPU and memory resources.
 
-With 0.22, we optimized this by only merging outputs for tasks that require it (e.g., ForEach tasks as they produce outputs from the same task identifier) among other enhancements.
+In Kestra 0.22, we limited merges exclusively to tasks that explicitly required it, notably improving efficiency. Kestra 0.23 further refines this process by:
 
-We continue further on improvements in this area by avoiding merging empty task outputs and improving the way we iteratively merge the outputs.
+- Avoiding unnecessary merges for empty task outputs.
 
-For example, the following flow goes down from 44s to 13s to process the 160 loop iterations!
+- Enhancing iterative output merging methods.
+
+For example, a workflow with 160 loop iterations improved dramatically from 44 seconds down to just 13 seconds.
 
 ::collapse{title="Expand to see the Benchmark Flow"}
 ```yaml
@@ -50,9 +52,7 @@ Further details on these two pull requests: [PR #8914](https://github.com/kestra
 
 Flowable tasks provide the orchestration logic of Kestra; they are run by the Executor, not the Worker.
 
-But for simplicity, we mimic a task execution by the Worker for all flowable tasks, sending them unnecessarily to our internal queue, leading to another update then processing of the execution. This was suboptimal.
-
-In 0.23, we directly record flowable tasks results inside the execution when processing them in the Executor, avoiding unnecessary work by both our internal queue and the Executor.
+Historically, for simplicity, we mimicked task execution by the Worker for all flowable tasks, unnecessarily adding them to our internal queue, causing redundant overhead. Kestra 0.23 now directly records flowable task results within the Executor, significantly reducing overhead.
 
 Further details on this pull request: [PR #8236](https://github.com/kestra-io/kestra/pull/8236).
 
@@ -132,7 +132,7 @@ tasks:
 ```
 ::
 
-When launching a single execution, this would not make any noticeable difference. But under a load of 10 executions per second, performance is increased by x3: from 12 seconds by execution in 0.22 to 4 seconds in 0.23.
+In high-load scenarios (e.g., 10 executions per second), performance improved dramatically, reducing execution times from 12 seconds per task in 0.22 to just 4 seconds in 0.23.
 
 ## Missing indices on the JDBC backend
 
@@ -142,24 +142,20 @@ The `service_instance` table was missing and index, and a purge mechanism! We ad
 
 The `queues` table, which is at the heart of our internal queue, was missing an index on the `key` column which is used since 0.22 to purge queue messages at the end of an execution. We added one in 0.23, see [PR #8243](https://github.com/kestra-io/kestra/pull/8243).
 
-## Scheduler improvements on the JDBC backend
+## Outstanding Scheduler improvements from Xiaomi
 
-[Wei Bo](https://github.com/gluttonweb), an external contributor from Xiaomi, implement two improvements to our JDBC Scheduler:
-- A missing index on the `next_execution_date` column of the `triggers` table, this column is queried on each scheduler evaluation loop so it brings a nice improvement. See [PR #8387](https://github.com/kestra-io/kestra/pull/8387)
-- An improvement to move triggered execution monitoring out of the main evaluation loop. See [PR #8741](https://github.com/kestra-io/kestra/pull/8741).
+[Wei Bo](https://github.com/gluttonweb) from Xiaomi significantly contributed two major improvements to our JDBC Scheduler:
 
-The later improvement is the most interesting one.
+- A missing index on the `next_execution_date` column of the `triggers` table, which drastically accelerates scheduler evaluation times. See [PR #8387](https://github.com/kestra-io/kestra/pull/8387).
+- A huge enhancement that extracts triggered execution monitoring from the main scheduler evaluation loop, dramatically improving efficiency. Before this change, the evaluation loop could take as long as 1 minute under heavy workloads. With Xiaomi’s contribution, the execution time plummeted to just 40 milliseconds! See [PR #8741](https://github.com/kestra-io/kestra/pull/8741).
 
-The Kestra Scheduler has an evaluation loop executed each second. This evaluation loop first selects all triggers that should be evaluated based on their next evaluation date and the triggers for which an execution has been triggered but not yet terminated, what we called locked triggers.
-For each trigger, if there is no triggered execution, it checks the trigger conditions then sends it to the Worker for evaluation if the conditions pass.
-If there is a triggered execution, the Scheduler check if the execution is already created or not, and log a WARNING if it's not the case. This monitoring functionality is important but has nothing to do inside the main evaluation loop!
+The latter enhancement, championed by Xiaomi, represents a leap forward in performance. Previously, the Kestra Scheduler ran a single evaluation loop every second, performing a variety of tasks—from checking triggers' next execution dates to verifying pending executions and logging warnings. While crucial, these monitoring checks unnecessarily slowed down the main loop, severely impacting performance in large-scale scenarios like those experienced at Xiaomi.
 
-A new monitoring loop has been implemented to extract the monitoring of triggered execution from the main evaluation loop. On installations with a high number of triggers and executions, this can dramatically improve the Scheduler evaluation loop, the external contributor reports an improvement from 1mn to 40ms!
+Xiaomi’s engineering team re-engineered the scheduler by introducing a dedicated monitoring loop. This separation improved efficiency and responsiveness. Xiaomi’s benchmarks at their massive scale showed a remarkable decrease in loop execution time—from roughly 1 minute down to an astonishing 40 milliseconds!
 
-Why is it important? Because if we evaluate each second but the evaluation loop took more than 1s, this means we may miss some trigger executions. Imagine you want to poll a database each 10s, you will use, for example, a Postgres Trigger with a polling interval of 10s, but if the Scheduler took more than 20s to evaluate all triggers, you would not be able to trigger a flow more than each 20s!
+This breakthrough is especially impactful in large-scale deployments. If a scheduler loop exceeds 1 second, scheduled triggers could be missed entirely, severely impacting operational reliability. For instance, imagine needing to poll a database every 10 seconds: if scheduler evaluations took longer than intended, the trigger frequency would be compromised.
 
-This is the kind of issues that was encountered by installation with a lot of triggers and a lot of executions, and is now greatly improved thanks to this contribution.
-We really want to thank Weibo and the whole Xiaomi team here as they give us awesome feedback on Kestra and such great contributions to improve the Scheduler!.
+Xiaomi tackled these issues head-on, contributing profoundly to Kestra’s capabilities. We extend our deepest appreciation to Wei Bo and the entire Xiaomi Engineering team, whose detailed feedback, and substantial contributions continue to improve Kestra's performance benchmarks.
 
 ## Changed the way we parallelized JDBC Backend Queues
 
@@ -173,7 +169,11 @@ These slightly decrease performance on low throughput but have an overall neutra
 
 ## Conclusion
 
-Version 0.23 brings efficiency improvements, making Kestra faster and more scalable. As we continue to optimize performance, stay tuned for more updates on how far we can push Kestra’s execution capabilities in upcoming versions.
+Version 0.23 brings major upgrades in performance and scalability, thanks in no small part to the Xiaomi Engineering team. Their production-scale usage, diagnostics, and highly targeted contributions—like the scheduler improvements, continue to shape the way Kestra evolves.
+
+We're incredibly grateful for their collaboration and the broader open-source community that makes Kestra better with every release. As Xiaomi pushes the platform to its limits, they help us unlock new levels of efficiency for everyone.
+
+Stay tuned—there’s even more to come as we double down on performance, resilience, and scale.
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
