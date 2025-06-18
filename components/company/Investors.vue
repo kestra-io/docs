@@ -59,7 +59,8 @@ const investorsProfiles = [
   { name: "Frédéric Plais", title: "Founder & CEO at Platform.sh", image: "/landing/company/teams/fred-invest.svg" },
   { name: "Clément Delangue", title: "Founder & CEO at Hugging Face", image: "/landing/company/teams/clement-hugface.svg" },
   { name: "Bertrand Diard", title: "Co-Founder & former CEO at Talend", image: "/landing/company/teams/bert-syroco.svg" },
-  { name: "Pierre Burgy", title: "Founder & CEO at Strapi", image: "/landing/company/teams/pierre-strapi.svg" }
+  { name: "Pierre Burgy", title: "Founder & CEO at Strapi", image: "/landing/company/teams/pierre-strapi.svg" },
+  { name: "Stijn Christiaens", title: "Co-founder & Chief Data Citizen at Collibra", image: "/landing/company/teams/schristiaens.png" }
 ]
 </script>
 
@@ -143,7 +144,7 @@ const investorsProfiles = [
       object-fit: contain;
     }
 
-    .logo-link {  // ← Correctly nested and targeted
+    .logo-link {
       display: inline-block;
       transition: transform 0.3s ease-in-out;
 
@@ -161,25 +162,15 @@ const investorsProfiles = [
   max-width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-
-  @media (min-width: 500px) and (max-width: 767px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1rem;
-  }
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
 
   @include media-breakpoint-up(md) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 3rem 2rem;
   }
 
   @include media-breakpoint-up(lg) {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  @include media-breakpoint-up(xl) {
-    grid-template-columns: repeat(4, 1fr);
   }
 
   .profile {
@@ -212,4 +203,5 @@ const investorsProfiles = [
     }
   }
 }
+
 </style>
