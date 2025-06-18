@@ -21,7 +21,7 @@ With Unit Tests, you can:
 - **Prevent regressions**: identify unexpected changes before they reach production
 - **Mock external systems**: mock API calls, database writes, and other I/O operations with fixtures
 - **Run tests from the UI**: create tests declaratively in YAML, and run them directly from the UI
-- **Keep your execution list clean**: all test runs are transient and don't appear in the regular Executions list for a clean separation between test runs and production workflow executions; to view an execution made from a test, you can open the test case in the UI and click on the link for the `ExecutionId`
+- **Keep your execution list clean**: test runs don't appear in the regular Executions list for a clean separation between test runs and production workflow executions; to view an execution made from a test, you can open the test case in the UI and click on the link for the `ExecutionId`
 - **Test at scale**: Isolated executions created for each test case allow running hundreds of tests in parallel with no degradation to the system performance.
 
 ## What Are Unit Tests in Kestra?
