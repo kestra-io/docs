@@ -27,6 +27,10 @@ Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to 
 
 ### Migration Script
 
+::alert{type="warning"}
+Before running the following migration scripts, you must completely shut down the main Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
+::
+
 To add the tenantId field across your existing database (flows, executions, logs, etc.), use (with migrated being customizable):
 
 ```shell
