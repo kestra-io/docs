@@ -48,7 +48,7 @@
 const investorsLogos = [
 { name: "Alven", src: "/landing/company/teams/alven-sm.svg", link: "https://www.alven.co" },
 { name: "Isai", src: "/landing/company/teams/isai-sm.svg", link: "https://isai.vc" },
-{ name: "Axeleo Capital", src: "/landing/company/teams/axeleo-sm.svg", link: "https://www.axeleo.com" }
+{ name: "Axeleo Capital", src: "/landing/company/teams/axeleo-sm.svg", link: "https://www.axc.vc/" }
 ];
 
 const investorsProfiles = [
