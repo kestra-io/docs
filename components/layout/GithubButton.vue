@@ -1,21 +1,24 @@
 <template>
-    <div class="btn-group mb-1 mn-sm-0 me-sm-2 github" :class="{'btn-group-sm' : small}">
+    <div v-if="!hasError" class="btn-group mb-1 mn-sm-0 me-sm-2 github" :class="{'btn-group-sm' : small}">
         <a class="btn btn-dark" :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
             <Github /> <span class="d-none d-xl-inline-block"> Star</span>
         </a>
         <a class="btn btn-outline-dark " :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
             <ClientOnly>
-                <template v-slot:fallback>
+                <template #fallback>
                     <span class="placeholder" style="width: 39px"></span>
                 </template>
-                <LayoutGithubStargazer />
+                <LayoutGithubStargazer @api-error="!hasError" />
             </ClientOnly>
         </a>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import Github from "vue-material-design-icons/Github.vue"
+
+const hasError = ref(false)
 
 withDefaults(defineProps<{ small?: boolean }>(), { small: false })
 </script>

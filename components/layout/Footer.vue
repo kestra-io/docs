@@ -1,6 +1,5 @@
-
 <template>
-    <footer class="bg-dark-4">
+    <footer :class="['bg-dark-4', { 'about-us': isAboutUsPage }]">
         <div class="container py-4 py-md-5 px-4 px-md-3">
             <div class="row">
                 <div class="col-lg-3 mb-3">
@@ -68,6 +67,10 @@
                                 <li class="mb-2"><NuxtLink href="/use-cases/stories">Customer Stories</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/partners">Partners Ecosystem</NuxtLink></li>
                             </ul>
+
+                            <div>
+                                <Certifications class="mt-4 mb-4" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,48 +97,53 @@
     </footer>
 </template>
 
-<script>
-    import Socials from "./Socials.vue";
-    import Heart from "vue-material-design-icons/Heart.vue";
+<script setup>
+import Socials from "./Socials.vue";
+import Certifications from "./Certifications.vue";
+import Heart from "vue-material-design-icons/Heart.vue";
+import { useRoute } from 'vue-router';
 
-    export default {
-        components: {Heart, Socials},
-    }
+const route = useRoute();
+const isAboutUsPage = computed(() => route.path === '/about-us');
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+@import "../../assets/styles/variable";
 
-    footer {
-        position: relative;
-        font-size: var(--bs-font-size-sm);
-
-        h5, a, p{
-            color: var(--bs-white);
-            font-size: var(--bs-badge-font-size);
-        }
-
-        h5 {
-            text-transform: uppercase;
-            font-weight: bold;
-            font-family: var(--bs-font-monospace);
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-        }
-
-        .bottom {
-            border-top: 1px solid rgba(#FFF, 0.1);
-        }
-
-        .socials {
-            font-size: calc($font-size-base * 1.4);
-        }
-
-        :deep(.socials) a {
-            color: var(--bs-white);
-        }
+footer {
+    position: relative;
+    font-size: var(--bs-font-size-sm);
+    
+    h5, a, p{
+        color: var(--bs-white);
+        font-size: var(--bs-badge-font-size);
     }
+
+    h5 {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: var(--bs-font-monospace);
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .bottom {
+        border-top: 1px solid rgba(#FFF, 0.1);
+    }
+
+    .socials {
+        font-size: calc($font-size-base * 1.4);
+    }
+
+    :deep(.socials) a {
+        color: var(--bs-white);
+    }
+
+    &.about-us {
+        background-color: #15171e;
+    }
+}
 </style>

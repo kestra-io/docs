@@ -22,4 +22,4 @@ The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgradin
 
 `ME:DELETE` is currently not supported. A user cannot delete its own account.
 
-In the [Kestra API](../../api-reference/enterprise.md), the Users API `/api/v1/users/password` changed to `/api/v1/me/password`.
+In the [Kestra API](../../api-reference/enterprise.md), the Users API `/api/v1/main/users/password` changed to `/api/v1/main/me/password`.

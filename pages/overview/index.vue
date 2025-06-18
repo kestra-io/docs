@@ -18,7 +18,7 @@
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 title="Get Started With Kestra"
-                darkButtonText="Get a demo"
+                darkButtonText="Talk to us"
                 darkButtonHref="/demo"
                 purpleButtonText="Get started"
             />

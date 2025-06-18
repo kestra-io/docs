@@ -53,6 +53,9 @@
                             your exclusive access.
                         </p>
                     </div>
+
+                    <Certifications />
+
                     <div class="col-12 mt-5 testimonial">
                         <p class="mb-2">
                             “Kestra Cloud has been a pivotal part of giving us
@@ -61,7 +64,7 @@
                         </p>
                         <p class="mb-0">
                             <strong>
-                                Michael Heidner - CEO & Kestra Cloud Early
+                                Michael Heidner - SVP of Analytics and Business Intelligence & Kestra Cloud Early
                                 Adopter
                             </strong>
                         </p>
@@ -170,6 +173,7 @@
 import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import posthog from "posthog-js";
+import Certifications from "~/components/layout/Certifications.vue";
 
 const route = useRoute();
 const gtm = useGtm();

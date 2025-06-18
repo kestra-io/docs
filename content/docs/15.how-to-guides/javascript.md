@@ -37,7 +37,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: node:slim
-    warningOnStdErr: false
     script: |
       const requestify = require('requestify');
 
@@ -79,7 +78,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: node:slim
-    warningOnStdErr: false
     beforeCommands:
       - npm install requestify
     commands:
@@ -144,7 +142,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: node:slim
-    warningOnStdErr: false
     beforeCommands:
       - npm install requestify
       - npm install @kestra-io/libs
@@ -178,7 +175,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: node:slim
-    warningOnStdErr: false
     outputFiles:
       - downloads.txt
     script: |

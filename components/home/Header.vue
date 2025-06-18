@@ -51,7 +51,7 @@
                     alt="homepage"
                     class="homepage-image"
                 />
-                <canvas v-else-if="!riveDisabled" ref="riveCanvas" height="1520" width="2000" :class="{
+                <canvas v-else-if="!riveDisabled" ref="riveCanvas" id="rive-dev" height="1520" width="2000" :class="{
                     loading: !riveLoaded,
                 }"/>
                 <div class="canvas-placeholder" v-else>
@@ -102,21 +102,22 @@
     import { Rive } from "@rive-app/canvas";
 
     const videoVisible = ref(false)
-    const canvas = useTemplateRef<HTMLCanvasElement>('riveCanvas')
+    const riveCanvas = useTemplateRef<HTMLCanvasElement>('riveCanvas')
     const imgBlock = useTemplateRef<HTMLDivElement>('imgBlock')
 
     const riveAnimation = ref()
     const riveLoaded = ref(false)
     const riveDisabled = ref(false)
 
-    function setupRiveAnimation(){
-        if(!canvas.value) {
+    function setupRiveAnimation() {
+        const canvas = riveCanvas.value;
+         if(!canvas) {
             console.error("canvas not found")
             return
         }
         const anim = new Rive({
             src: "/landing/home/homepage.riv",
-            canvas: canvas.value,
+            canvas,
             autoplay: true,
             stateMachines: "kestra",
             isTouchScrollEnabled: true,
@@ -129,7 +130,7 @@
     }
 
     useIntersectionObserver(imgBlock, ([{ isIntersecting }]) => {
-        if (isIntersecting) {
+        if (isIntersecting && !isMobile.value) {
             riveDisabled.value = false
             nextTick(() => {
                 setupRiveAnimation();
@@ -156,12 +157,6 @@
             nextTick(() => {
                 setupRiveAnimation();
             })
-        }
-    })
-
-    onMounted(() => {
-        if(!isMobile.value){
-            setupRiveAnimation();
         }
     })
 

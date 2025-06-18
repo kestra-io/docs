@@ -44,7 +44,7 @@ tasks:
     offsetKey: logShipperOffset
     logExporters:
       - id: awsCloudWatch
-        type: io.kestra.plugin.ee.aws.LogExporter
+        type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
         region: us-east-1
@@ -53,12 +53,12 @@ tasks:
         chunk: 5000
 
       - id: googleOperationalSuite
-        type: io.kestra.plugin.ee.gcp.LogExporter
+        type: io.kestra.plugin.ee.gcp.gcs.LogExporter
         projectId: my-gcp-project
         chunk: 2000
 
       - id: azureMonitor
-        type: io.kestra.plugin.ee.azure.LogExporter
+        type: io.kestra.plugin.ee.azure.monitor.LogExporter
         endpoint: https://endpoint-host.ingest.monitor.azure.com
         tenantId: "{{ secret('AZURE_TENANT_ID') }}"
         clientId: "{{ secret('AZURE_CLIENT_ID') }}"
@@ -110,6 +110,8 @@ tasks:
     logExporters:
       - id: file
         type: io.kestra.plugin.ee.core.log.FileLogExporter
+        format: JSON # default ION
+        maxLinesPerFile: 100
 
   - id: upload
     type: io.kestra.plugin.aws.s3.Upload
@@ -288,7 +290,7 @@ tasks:
     delete: false
     logExporters:
       - id: azureMonitor
-        type: io.kestra.plugin.ee.azure.LogExporter
+        type: io.kestra.plugin.ee.azure.monitor.LogExporter
         endpoint: https://endpoint-host.ingest.monitor.azure.com
         tenantId: "{{ secret('AZURE_TENANT_ID') }}"
         clientId: "{{ secret('AZURE_CLIENT_ID') }}"

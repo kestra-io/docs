@@ -74,7 +74,7 @@
                         to drive growth without compromise.
                     </span>
                     <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                        <span>Get a demo</span>
+                        <span>Talk to us</span>
                     </NuxtLink>
 
                 </div>

@@ -44,7 +44,9 @@ System Labels are labels prefixed with `system.` that serve specific purposes. B
 
 For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` displays all related executions.
 
-**Note:** The Execution API supports setting this label at execution creation but not modification.
+::alert{type="info"}
+The Execution API supports setting this label at execution creation but not modification.
+::
 
 ---
 
@@ -79,5 +81,6 @@ Once this label is set, the editor for this flow will be disabled in the UI.
 
 ![readOnly](/docs/concepts/system-labels/readOnly.png)
 
-**Note:** In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
-
+::alert{type="info"}
+In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
+::

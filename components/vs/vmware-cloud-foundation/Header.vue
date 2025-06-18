@@ -8,7 +8,7 @@
                         <p class="baseline" data-aos="fade-left">Pick the right choice for your company</p>
                         <div class="cta">
                             <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
-                                Get a demo
+                                Talk to us
                             </NuxtLink>
                         </div>
                     </div>
