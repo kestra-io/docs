@@ -45,7 +45,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     script: |
       import requests
 
@@ -79,7 +78,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     beforeCommands:
       - pip install requests
     commands:
@@ -150,7 +148,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     beforeCommands:
       - pip install requests kestra
     commands:
@@ -181,7 +178,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     outputFiles:
       - downloads.txt
     script: |
@@ -231,7 +227,6 @@ tasks:
   - id: python_logger
     type: io.kestra.plugin.scripts.python.Script
     allowFailure: true
-    warningOnStdErr: false
     script: |
       import time
       from kestra import Kestra

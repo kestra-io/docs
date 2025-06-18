@@ -169,4 +169,4 @@ Kestra’s goal is to remove the barriers that keep orchestration locked away in
 
 If you’re tired of the old trade-offs—heavy code frameworks vs. limited no-code apps—Kestra stands ready to help. Get started by installing our forever-free open-source edition. You get to keep your favorite languages, empower non-technical teams, and orchestrate everything from small daily tasks to multi-stage, event-driven pipelines.
 
-If you have questions or want to see how Kestra fits into your environment, [book a demo](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.
+If you have questions or want to see how Kestra fits into your environment, [Talk to us](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.

@@ -13,7 +13,7 @@
                         </p>
                         <div class="cta">
                             <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
-                                Get a demo
+                                Talk to us
                             </NuxtLink>
                             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started

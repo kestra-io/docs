@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## How to upgrade Kestra
 
 To upgrade Kestra, follow these steps:

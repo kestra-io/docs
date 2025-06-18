@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Get a demo</a>
+                        <a href="/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to us</a>
                     </div>
                 </div>
             </div>

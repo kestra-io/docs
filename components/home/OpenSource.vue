@@ -22,7 +22,6 @@
             </div>
         </div>
     </section>
-    <pre style="padding: 1rem; background-color: red;color: white;" v-if="error">{{ JSON.stringify(error, null, 2) }}</pre>
 </template>
 
 <script lang="ts" setup>
@@ -58,10 +57,10 @@ import {computed} from "vue";
     }).format(data.value?.stargazers ?? 0).toLowerCase());
 
     const leadIndicators = computed(() => [
-        {title: "Contributors", value: "750+"},
-        {title: "GitHub Stars", value: numberOfStargazersFormatted.value},
-        {title: "Kestra Deployments", value: "80k"},
-        {title: "Workflows Executed", value: "400m+"},
+        { title: "Contributors", value: "750+" },
+        ...(!error.value ? [{ title: "GitHub Stars", value: numberOfStargazersFormatted.value }] : []),
+        { title: "Kestra Deployments", value: "80k" },
+        { title: "Workflows Executed", value: "400m+" }
     ])
 </script>
 
@@ -137,12 +136,18 @@ import {computed} from "vue";
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         row-gap: 1rem;
+        margin-top: 2rem;
+        
         @include media-breakpoint-up(lg) {
             grid-template-columns: repeat(4, 1fr);
             row-gap: 2rem;
+            width: 100%;
+            
+            &:has(.lead-indicator:nth-child(3):last-child) {
+                grid-template-columns: repeat(3, minmax(200px, 300px));
+                justify-content: center;
+            }
         }
-        margin-top: 2rem;
-        padding: 2rem 0;
     }
 
     .lead-indicator{
