@@ -52,6 +52,10 @@ done
 echo "Cleanup finished!"
 ```
 
+After running the script, the old files can be removed using:
+```bash
+gsutil rm -r "gs://mybucket//**
+```
 ### S3 root slash migration script
 
 ```bash
@@ -78,7 +82,7 @@ echo "Migration finished!"
 
 ### Migrating Files Using Graphical User Interfaces (GUI)
 
-For users who prefer not to use command-line scripts, migration can be accomplished with graphical tools. 
+For users who prefer not to use command-line scripts, migration can be accomplished with graphical tools.
 
 Most S3-compatible providers (including AWS S3 and Cloudflare R2) allow you to move or copy files directly in their web interfaces:
 
