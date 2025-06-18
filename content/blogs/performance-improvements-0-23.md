@@ -1,5 +1,5 @@
 ---
-title: "Performance Upgrades Fueled by Contributions from Xiaomi Engineering"
+title: "Performance Upgrades Fueled by Contributions from Xiaomi Engineers"
 description: "Kestra 0.23 levels up with faster execution, smarter scheduling, and reduced resource usage—powered by contributions from Xiaomi Engineering and insights from the open-source community."
 date: 2025-06-18T13:00:00
 category: Solutions
