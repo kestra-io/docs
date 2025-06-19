@@ -687,8 +687,8 @@ With this release, we've taken the opportunity to introduce several important br
 **Key changes include:**
 
 - **All editions:**
+  - Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A [migration](../docs/11.migration-guide/0.23.0/index.md) is required to upgrade.
   - `LoopUntil` task: Changed default values for `checkFrequency` for more predictable behavior.
-  - Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions.
   - Internal storage path: Fixed double slash issue for S3/GCS backends.
   - The `BOOLEAN`-type input is deprecated in favor of `BOOL`.
   - Default environment variable prefix changed from `KESTRA_` to `ENV_` for improved security.
