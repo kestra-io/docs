@@ -49,6 +49,17 @@ kestra:
 ```
 ::
 
+::alert{type="info"}
+If you are using Helm for deployment, you can use an init container to run the migration:
+
+```yaml
+initContainers:
+  - name: kestra-migrate
+    image: kestra/kestra:v0.23.0
+    command: ['sh', '-c', 'exec', '/app/kestra', 'migrate', 'default-tenant', '--tenant-id', 'migrated', '--tenant-name', 'migrated']
+```
+::
+
 ### Kafka Queue Handling
 
 If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
