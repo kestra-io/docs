@@ -52,6 +52,8 @@ initContainers:
     image: kestra/kestra:v0.23.0
     command: ['sh', '-c', 'exec', '/app/kestra', 'migrate', 'default-tenant', '--tenant-id', 'migrated', '--tenant-name', 'migrated']
 ```
+
+You can remove it after successful run (it has to be only executed once).
 ::
 
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
