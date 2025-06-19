@@ -34,7 +34,7 @@ Before running the following migration scripts, you must completely shut down th
 To add the tenantId field across your existing database (flows, executions, logs, etc.), use (with migrated being customizable):
 
 ```shell
-kestra migrate default-tenant --tenant-id migrated --tenant-name migrated --dry-run
+kestra migrate default-tenant --dry-run
 ```
 
 ::alert{type="info"}
