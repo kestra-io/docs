@@ -36,24 +36,24 @@ const teamMembers = [
   { name: "Anna Geller", title: "Product Lead", image: "/landing/company/teams/ageller-round.png" },
   { name: "David Khan", title: "Sales Leader", image: "/landing/company/teams/dkhan-round.png" },
   { name: "Luke Lipan", title: "Sales Leader", image: "/landing/company/teams/llipan-round.png" },
+  { name: "Paul Grainger", title: "Lead Field Engineer", image: "/landing/company/teams/pgrainger-round.png" },
   { name: "Florian Hussonnois", title: "Lead Software Engineer", image: "/landing/company/teams/fhussonois-round.png" },
   { name: "Loïc Mathieu", title: "Lead Software Engineer", image: "/landing/company/teams/lmathieu-round.png" },
   { name: "François Delbrayelle", title: "Lead Software Engineer", image: "/landing/company/teams/fdelbrayelle-round.png" },
   { name: "Martin-Pierre Roset", title: "Lead Growth & Marketing", image: "/landing/company/teams/mproset-round.png" },
-  { name: "Paul Grainger", title: "Lead Field Engineer", image: "/landing/company/teams/pgrainger-round.png" },
-  { name: "Faizan Qazi", title: "Lead Field Engineer", image: "/landing/company/teams/fqazi-round.png" },
-  { name: "Antoine Lin", title: "Lead Finance & Admin", image: "/landing/company/teams/alin-round.png" },
-  { name: "Benoît Pimpaud", title: "Product & Data Engineer", image: "/landing/company/teams/bpimpaud-round.png" },
-  { name: "Will Russell", title: "Developer Advocate", image: "/landing/company/teams/wrussel-round.png" },
   { name: "Nicolas Callens", title: "Lead Product Designer", image: "/landing/company/teams/ncallens-round.png" },
+  { name: "Faizan Qazi", title: "Solution Engineer", image: "/landing/company/teams/fqazi-round.png" },
+  { name: "Antoine Lin", title: "Lead Finance & Admin", image: "/landing/company/teams/alin-round.png" },
+  { name: "Benoît Pimpaud", title: "Product Owner", image: "/landing/company/teams/bpimpaud-round.png" },
+  { name: "Will Russell", title: "Developer Advocate", image: "/landing/company/teams/wrussel-round.png" },
   { name: "Yann Coornaert", title: "Software Engineer", image: "/landing/company/teams/ycoornaert-round.png" },
   { name: "Brian Mulier", title: "Software Engineer", image: "/landing/company/teams/bmulier-round.png" },
-  { name: "Malay Dewangan", title: "Plugins Engineer", image: "/landing/company/teams/mdewangan-round.png" },
+  { name: "Malay Dewangan", title: "Software Engineer", image: "/landing/company/teams/mdewangan-round.png" },
   { name: "Nicolas Kwiatkowski", title: "Software Engineer", image: "/landing/company/teams/nkwiatkowski-round.png" },
   { name: "Roman Acevedo", title: "Software Engineer", image: "/landing/company/teams/racevedo-round.png" },
-  { name: "Miloš Paunović", title: "Senior Frontend Engineer", image: "/landing/company/teams/mpaunovic-round.png" },
-  { name: "Bart Ledoux", title: "Senior Frontend Engineer", image: "/landing/company/teams/elevatebart.png" },
-  { name: "Piyush Bhaskar", title: "Frontend Engineer", image: "/landing/company/teams/pbhaskar-round.png" },
+  { name: "Miloš Paunović", title: "Software Engineer", image: "/landing/company/teams/mpaunovic-round.png" },
+  { name: "Bart Ledoux", title: "Software Engineer", image: "/landing/company/teams/elevatebart.png" },
+  { name: "Piyush Bhaskar", title: "Software Engineer", image: "/landing/company/teams/pbhaskar-round.png" },
   { name: "Marco Sabatini", title: "Platform Engineer", image: "/landing/company/teams/msabatini-round.png" },
   { name: "Gilles Perreymond", title: "Platform Engineer", image: "/landing/company/teams/gperreymond-round.png" },
   { name: "Alex Emerich", title: "Technical Writer", image: "/landing/company/teams/aemerich-round.png" },
@@ -96,7 +96,7 @@ const teamMembers = [
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1rem 2rem;
 
   @media (min-width: 500px) and (max-width: 765px) {
     grid-template-columns: repeat(3, 1fr);
