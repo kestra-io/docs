@@ -96,7 +96,7 @@ const teamMembers = [
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 2rem;
+  gap: 4rem 2rem;
 
   @media (min-width: 500px) and (max-width: 765px) {
     grid-template-columns: repeat(3, 1fr);
