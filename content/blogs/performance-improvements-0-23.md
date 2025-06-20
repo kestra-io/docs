@@ -138,7 +138,7 @@ In high-load scenarios (e.g., 10 executions per second), performance improved dr
 
 Thanks to user feedback, we discover that we miss some indices on tables on our JDBC backend.
 
-The `service_instance` table was missing and index, and a purge mechanism! We added both and queries on this table show not to be an issue anymore. This table is used to monitor Kestra services liveness and is queried periodically by all the Kestra components. See [PR #8319](https://github.com/kestra-io/kestra/pull/8319).
+The `service_instance` table was missing a few indices and a purge mechanism! We added both and queries on this table show not to be an issue anymore. This table is used to monitor Kestra services liveness and is queried periodically by all the Kestra components. See [PR #8319](https://github.com/kestra-io/kestra/pull/8319) and [PR #8505](https://github.com/kestra-io/kestra/pull/8505) which was a contribution from [lw-yang](https://github.com/lw-yang) from Xiaomi.
 
 The `queues` table, which is at the heart of our internal queue, was missing an index on the `key` column which is used since 0.22 to purge queue messages at the end of an execution. We added one in 0.23, see [PR #8243](https://github.com/kestra-io/kestra/pull/8243).
 
