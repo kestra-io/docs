@@ -60,7 +60,7 @@
     const {public:{CollectionNames}} = useRuntimeConfig()
 
     const route = useRoute()
-    const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
+    const slug = computed(() => "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
     const externalNews = ref()
     const page = ref([]);
     const config = useRuntimeConfig();
@@ -83,9 +83,8 @@
       }
     }
 
-    if (slug === "/blogs/" || slug === '/blogs/community') {
-
-        if (slug === "/blogs/") {
+    if (slug.value === "/blogs/" || slug.value === '/blogs/community') {
+        if (slug.value === "/blogs/") {
             const {data: pageData} = await useAsyncData(
                 `Blog-Page-List`,
                 () => queryCollection(CollectionNames.blogs).order("date", "ASC").all()
@@ -93,9 +92,7 @@
             page.value = pageData.value;
         }
 
-        const {data: externalNewsData} = await useAsyncData(`blog-external-news`, () => {
-            return $fetch(`${config.public.apiUrl}/external-blogs${slug === '/blogs/' ? '?size=4' : ''}`)
-        });
+        const {data: externalNewsData} = await useFetch(() => `${config.public.apiUrl}/external-blogs${slug.value === '/blogs/' ? '?size=4' : ''}`);
 
         externalNews.value = externalNewsData.value.results.map((data) => {
             return {
@@ -114,9 +111,9 @@
             description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
         })
     } else {
-        const {data, error} = await useAsyncData(`Blog-Page-Item-${slug}`, () => {
+        const {data, error} = await useAsyncData(`Blog-Page-Item-${slug.value}`, () => {
             try {
-                return queryCollection(CollectionNames.blogs).path(slug).first();
+                return queryCollection(CollectionNames.blogs).path(slug.value).first();
             } catch (error) {
                 throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
             }
@@ -156,7 +153,7 @@
                         "@type" : "BlogPosting",
                         "mainEntityofPage" : {
                             "@type" : "Webpage",
-                            "@id" : slug,
+                            "@id" : slug.value,
                         },
                         "headline": title,
                         "image": [image ],
