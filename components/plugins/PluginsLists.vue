@@ -75,16 +75,11 @@
     const route = useRoute();
     const router = useRouter();
 
-    const GROUPS = ["tasks", "triggers", "conditions", "taskRunners"];
-
     const totalPlugins = computed(() => props.plugins.reduce((acc, plugin) => {
-        for (const group of GROUPS) {
-            if (plugin[group]) {
-                for(const item of plugin[group]) {
-                    acc.add(item);
-                }
-            }
-        }
+        Object.entries(plugin)
+            .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
+            .flatMap(([_, elements]) => elements)
+            .forEach(e => acc.add(e));
         return acc;
     }, new Set()).size);
 
@@ -136,10 +131,10 @@
         const searchLowercase = search?.trim().toLowerCase();
         return searchPluginsList.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
-                (item.tasks ?? []).some((task: string) => task.toLowerCase().includes(searchLowercase)) ||
-                (item.triggers ?? []).some((trigger: string) => trigger.toLowerCase().includes(searchLowercase)) ||
-                (item.conditions ?? []).some((condition: string) => condition.toLowerCase().includes(searchLowercase)) ||
-                (item.taskRunners ?? []).some((taskRunner: string) => taskRunner.toLowerCase().includes(searchLowercase))
+                Object.entries(item)
+                    .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
+                    .flatMap(([_, elements]) => elements as string[])
+                    .some(e => e.toLowerCase().includes(searchLowercase));
         });
     };
 
