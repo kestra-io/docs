@@ -152,7 +152,7 @@
 <script setup>
   const {$bootstrap} = useNuxtApp()
   const config = useRuntimeConfig();
-  const activeTag = ref({ name: 'All videos' });
+  const activeTag = ref();
   const videos = ref([]);
   const youtubeVideoModal = ref(null);
   const totalPages = ref(0);
@@ -160,12 +160,9 @@
   const featuredVideo = ref(null);
   const videoVisible = ref(false);
   const visibleVideoData = ref({});
-  const itemsPerPage = ref(25);
-  const currentPage = ref(1);
   const route = useRoute();
   const router = useRouter();
   const { start } = useLoadingIndicator()
-
   const tags = {
     "all": "All videos",
     "deep-dive": "Deep Dive Tutorials",
@@ -173,19 +170,33 @@
     "feature-highlight": "Feature Highlight"
   };
 
-  if(route.query.page) currentPage.value = parseInt(route.query.page)
-  if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-  if(route.params.slug) activeTag.value = { name: tags[route.params.slug] ? tags[route.params.slug] :  "All videos" }
+  const page = computed(() => route.query.page ? parseInt(route.query.page) : 1);
+  const itemsPerPage = ref(route.query.size ? parseInt(route.query.size) : 25);
 
-  const {data: tutorialVideo} = await useAsyncData(`tutorial-videos`, () => {
-    const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
-    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}&category=${category}`);
-  });
+  watch(() => route.params.slug, (newVal) => {
+      activeTag.value = { name: tags[newVal] ? tags[newVal] :  "All videos" }
+  }, { immediate: true });
+
+  const {data: tutorialVideo} = await useFetch(() => `${config.public.apiUrl}/tutorial-videos?page=${page.value}&size=${itemsPerPage.value}&category=${route.params.slug === "all" ? "" : tags[route.params.slug]}`);
 
   const changePage = (pageNo) => {
-    currentPage.value = pageNo;
-    window.scrollTo(0, 0);
+    router.push({
+        query: {
+            ...route.query,
+            page: pageNo,
+        }
+    });
   }
+
+  watch(itemsPerPage, (newVal) => {
+      router.push({
+            query: {
+                ...route.query,
+                size: newVal,
+                page: 1
+            }
+      });
+  })
 
   const closeModal = () => {
     if (process.client && youtubeVideoModal.value) {
@@ -230,41 +241,32 @@
     return "https://www.youtube.com/embed/" + videoId;
   }
 
-  if(tutorialVideo.value && tutorialVideo.value.total) {
-    setVideos(tutorialVideo.value.results, tutorialVideo.value.total);
-  }
-
   const findKeyByValue = (obj, value) => {
     return Object.entries(obj).find(([key, val]) => val === value)?.[0];
   };
 
   const setCatVideos = (tagVal) => {
     start();
-    activeTag.value = tagVal;
-    itemsPerPage.value = 25;
-    currentPage.value = 1;
-    router.push(findKeyByValue(tags, tagVal.name))
+    router.push({
+        query: {
+            ...route.query,
+            page: 1,
+        },
+        params: {
+            ...route.params,
+            slug: findKeyByValue(tags, tagVal.name)
+        }
+    })
   }
 
-  let timer;
-  watch([currentPage, itemsPerPage], ([pageVal, itemVal], [__, oldItemVal, oldTagVal]) => {
-    if(timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(async () => {
-      const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
-      const { data } = await useFetch(`${config.public.apiUrl}/tutorial-videos?page=${(itemVal != oldItemVal) || (tagVal.name != oldTagVal.name) ? 1 : pageVal}&size=${itemVal}&category=${category}`);
-      setVideos(data.value.results, data.value.total);
-
-      router.push({
-        query: {
-          page: pageVal,
-          size: itemVal,
-        }
-      })
-
-    }, 500)
-  })
+  watch(tutorialVideo, (newVal) => {
+      if(newVal?.total) {
+          setVideos(newVal.results, newVal.total);
+          if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+          }
+      }
+  }, { immediate: true });
 </script>
 
 <script>
@@ -293,11 +295,6 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
-
-    ::deep(main) {
-        position: absolute;
-    }
 
     .modal-header {
         background-color: $black-2;
