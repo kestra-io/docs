@@ -38,13 +38,9 @@
     const description = ref()
     const flowAsMd = ref("")
 
-    const {data: tags} = await useAsyncData('blueprints-tags', () => {
-        return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
-    })
+    const {data: tags} = await useFetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`);
 
-    const {data: blueprintInformations, error} = await useAsyncData('blueprints-informations', () => {
-        return $fetch(`/api/blueprint?query=${route.params.id}`)
-    })
+    const {data: blueprintInformations, error} = await useFetch(`/api/blueprint?query=${route.params.id}`);
 
     if (error && error.value) {
       throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
