@@ -113,6 +113,13 @@ export default defineNuxtConfig({
         }
     },
     vite: {
+        server: {
+            fs: {
+                allow: [
+                    "../ui-libs"
+                ]
+            }
+        },
         build: {
             rollupOptions: {
                 external: [
@@ -361,6 +368,8 @@ export default defineNuxtConfig({
             enabled: true
         }
     },
+
+
 
     compatibilityDate: '2024-07-16'
 })
