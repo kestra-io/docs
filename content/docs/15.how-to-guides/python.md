@@ -27,7 +27,7 @@ Managing Python Dependencies can be frustrating. There's 3 ways you can manage y
 
 For more information, check out the [dedicated guide here](./python-dependencies.md).
 
-## Script
+## Script Task
 
 If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
 
@@ -60,7 +60,43 @@ tasks:
       downloads = get_docker_image_downloads()
 ```
 
-## Commands
+You can also include expressions directly inside of your Python code too. In this example, an input is used inside of the Python method:
+
+```yaml
+id: python_scripts_expression_input
+namespace: company.team
+
+description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
+
+inputs:
+  - id: image_name
+    type: STRING
+    defaults: kestra/kestra
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    script: |
+      import requests
+
+      def get_docker_image_downloads():
+          """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+          url = f"https://hub.docker.com/v2/repositories/{{ inputs.image_name }}/"
+          response = requests.get(url)
+          data = response.json()
+
+          downloads = data.get('pull_count', 'Not available')
+          return downloads
+
+      downloads = get_docker_image_downloads()
+```
+
+## Commands Task
 
 If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
 

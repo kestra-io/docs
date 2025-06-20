@@ -16,9 +16,9 @@ Go is a powerful programming language often used for cloud-native development, C
 
 This guide is going to walk you through how to get Go running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-## Executing Go inside Kestra
+## Commands Task
 
-There is an official Go plugin with an inline `Script` task and `Commands` task. This example executes a Namespace file using `Commands`:
+There is an official Go plugin with a `Commands` task and an inline `Script` task. This example executes a Namespace file using `Commands`:
 
 ```yaml
 id: golang_commands
@@ -45,6 +45,10 @@ func main() {
 
 You'll need to add your Golang code using the built-in Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
+You can read more about the Go Commands type in the [Plugin documentation](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.commands).
+
+## Script
+
 You can also add your Golang code inline using the `Script` task.
 
 ```yaml
@@ -63,7 +67,36 @@ tasks:
       }
 ```
 
-You can read more about the Go Commands type in the [Plugin documentation](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.commands).
+You can also use expressions directly inside of your Go code. In this example, inputs are embedded directly into the code:
+
+```yaml
+id: golang_script_expression
+namespace: company.team
+
+inputs:
+  - id: message
+    type: STRING
+    defaults: "Hello, World!"
+
+  - id: number
+    type: INT
+    defaults: 4
+
+tasks:
+  - id: go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("Message: {{ inputs.message }}")
+          fmt.Println("Number: {{ inputs.number }}")
+      }
+```
+
+You can read more about the Go Script type in the [Plugin documentation](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.script).
+
 
 ## Handling Outputs
 
