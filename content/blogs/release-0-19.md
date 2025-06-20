@@ -435,10 +435,12 @@ This configuration step is critical to ensure that Kestra EE operates correctly 
 ```yaml
 kestra:
   encryption:
-    secretKey: pleaseChangeThisSecret # ✅ mandatory!
+    secretKey: BASE64_ENCODED_STRING_OF_32_CHARCTERS # ✅ mandatory!
 ```
 
-The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `pleaseChangeThisSecret` with a secure, custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
+The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `BASE64_ENCODED_STRING_OF_32_CHARCTERS` with a secure, base64-encoded custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
+
+For more details, see the [Configuration article](../docs/configuration/index.md#encryption).
 
 If you want to use a separate secret for your JWT refresh token signature, you can **optionally** customize that as follows:
 
@@ -456,7 +458,6 @@ micronaut:
 In case you ever need to revoke a refresh token, it's easy to do with a simple `DELETE` request to `/users/{id}/refresh-token` — this can be useful in emergency situations, e.g., when you suspect your computer has been compromised.
 
 As always, if you have any questions or run into issues during the upgrade, our support team is here to help — just reach out via the Customer Portal or through your dedicated Slack channel.
-
 
 ### Keeping You Logged In
 
