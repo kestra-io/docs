@@ -46,7 +46,7 @@ gsutil ls "$BUCKET/**" | grep "$BUCKET//" | while read -r full_path; do
     echo "Copying $BUCKET/$key → $BUCKET/$clean_key"
 
     # Copy to clean location
-    gsutil cp "$BUCKET/$key" "$BUCKET/$clean_key"
+    gsutil -m cp -r "$BUCKET/$key" "$BUCKET/$clean_key"
 done
 
 echo "Cleanup finished!"
