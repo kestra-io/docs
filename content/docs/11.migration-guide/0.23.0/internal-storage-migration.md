@@ -23,33 +23,7 @@ Before taking any action to fix the double slash issue, Open-source users **MUST
 ### GCS storage root slash migration script
 
 ```bash
-#!/bin/bash
-
-BUCKET="gs://mybucket"
-
-echo "Starting GCS root slash cleanup on bucket $BUCKET"
-
-# List all objects starting with /
-gsutil ls "$BUCKET/**" | grep "$BUCKET//" | while read -r full_path; do
-    # Extract just the key (remove bucket prefix)
-    key="${full_path#${BUCKET}/}"
-
-    # Skip folder markers (if any)
-    if [[ "$key" == */ ]]; then
-        echo "Skipping folder marker: $key"
-        continue
-    fi
-
-    # Remove leading slash
-    clean_key="${key#/}"
-
-    echo "Copying $BUCKET/$key → $BUCKET/$clean_key"
-
-    # Copy to clean location
-    gsutil cp "$BUCKET/$key" "$BUCKET/$clean_key"
-done
-
-echo "Cleanup finished!"
+gcloud storage cp -r "gs://mybucket//*" gs://mybucket/
 ```
 
 After running the script, the old files can be removed using:
