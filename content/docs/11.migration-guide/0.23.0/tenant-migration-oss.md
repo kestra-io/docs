@@ -43,6 +43,19 @@ Before running the migrate script, we recommend to do a complete database dump t
 - Re-run without the flag to execute the migration.
 ::
 
+::alert{type="info"}
+If you are using Helm for deployment, you can use an init container to run the migration:
+
+```yaml
+initContainers:
+  - name: kestra-migrate
+    image: kestra/kestra:v0.23.0
+    command: ['sh', '-c', 'exec', '/app/kestra', 'migrate', 'default-tenant', '--tenant-id', 'migrated', '--tenant-name', 'migrated']
+```
+
+You can remove it after successful run (it has to be only executed once).
+::
+
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
