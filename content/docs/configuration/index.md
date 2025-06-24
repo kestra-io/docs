@@ -2122,7 +2122,7 @@ kestra:
 
 ## Kestra URL
 
-Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use a full URI here with a trailing `/` (without `ui` or `api`).
+Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use the full URI, but omit `/ui` and `/api` segments:
 
 ```yaml
 kestra:
