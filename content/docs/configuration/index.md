@@ -2157,7 +2157,7 @@ These variables will be accessible in a flow with `{{ envs.your_env }}` in **low
             env-vars-prefix: "ENV_" # this is the default as of version 0.23
 ```
 
-An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.MY_VARIABLE }}`.
+An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.my_variable }}`.
 
 ### Global Variables
 
