@@ -226,14 +226,11 @@
 
   const getYMD = (dateString) => {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    const formattedMonth = month < 10 ? '0' + month : month;
-    const formattedDay = day < 10 ? '0' + day : day;
-
-    return `${formattedMonth}.${formattedDay}.${year}`;
+    return new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).format(date);
   }
 
   const embedUrl = (url) => {
