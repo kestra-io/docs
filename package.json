@@ -49,7 +49,7 @@
     "@nuxt/image": "^1.10.0",
     "@nuxtjs/mdc": "^0.17.0",
     "@nuxtjs/robots": "^5.2.10",
-    "@nuxtjs/sitemap": "^7.2.10",
+    "@nuxtjs/sitemap": "^7.4.2",
     "@types/node": "^22.14.1",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "nuxt": "^3.17.2",
