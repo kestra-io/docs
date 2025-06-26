@@ -50,7 +50,7 @@
                 </li>
                     <RecursiveNavSidebar
                         v-if="!item.hideSubMenus && filterChildren(item).length > 0"
-                        :id="`childSideBar-${pathToId(item.path)}`"
+                        :ref="`childSideBar-${pathToId(item.path)}`"
                         :items="filterChildren(item)"
                         :depth-level="depthLevel+1"
                         :active-slug="activeSlug"
