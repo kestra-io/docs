@@ -69,3 +69,49 @@ kestra:
 > Note: depending of the KeyCloak configuration you might want to tune the issuer url.
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).
+
+## Manage Groups via OIDC Claims
+
+If unable to use [SCIM with Keycloak](../scim/keycloak.md), you can use oauth claims to source user roles. This method uses the OIDC provider as the single source of truth for user membership and role. Keycloak has an existing `roles` claim that can be used to source roles.
+
+To get started, you must first add this `roles` claim to the ID Token—Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by the following steps:
+
+1. Select **Client Scopes**
+2. Click on the **roles** scope
+3. Select **Mappers**
+4. Click on **client roles**
+5. Enable **Add to ID Token**
+
+In case the interface changes to Keycloak, check out their documentation for [managing resources and scopes](https://www.keycloak.org/docs/latest/authorization_services/#_resource_overview).
+
+### Configure Kestra
+
+After adding or updating your roles, configure Kestra to fetch the `roles` scope with like in following Micronaut configuration; make note of the added `scopes` parameter where the information must be added:
+
+```yaml
+micronaut:
+  security:
+    oauth2:
+      enabled: true
+      clients:
+        keycloak:
+          client-id: "kestra"
+          client-secret: "my-secret"
+          openid:
+            issuer: "http://localhost:8088/realms/kestra"
+          scopes: ["openid", "profile", "email", "roles"] # <-- needs to be added
+      endpoints:
+        logout:
+          get-allowed: true
+```
+
+With this configured, you then need to update the `kestra` configuration to synchronize groups from this claim with the `groups-claim-path`:
+
+```yaml
+kestra:
+  security:    
+    oidc:
+      groups-claim-path: "resource_access.kestra.roles"
+```
+
+Once the connection is made, you are now able to use oauth claims to source user roles with Keycloak as the single source of truth.
