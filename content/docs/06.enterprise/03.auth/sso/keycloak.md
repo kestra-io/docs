@@ -72,9 +72,9 @@ For more configuration details, refer to the [Keycloak OIDC configuration guide]
 
 ## Manage Groups via OIDC Claims
 
-If unable to use [SCIM with Keycloak](../scim/keycloak.md), you can use oauth claims to source user roles. This method uses the OIDC provider as the single source of truth for user membership and role. Keycloak has an existing `roles` claim that can be used to source roles.
+If unable to use [SCIM with Keycloak](../scim/keycloak.md), you can use oauth claims to source user roles. This method uses the OIDC provider as the single source of truth for user membership and roles. Keycloak has an existing `roles` claim that can be used to source roles.
 
-To get started, you must first add this `roles` claim to the ID Token—Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by the following steps:
+To get started, you must first add the `roles` claim to the ID Token—Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by taking the following steps:
 
 1. Select **Client Scopes**
 2. Click on the **roles** scope
@@ -86,7 +86,7 @@ In case the interface changes to Keycloak, check out their documentation for [ma
 
 ### Configure Kestra
 
-After adding or updating your roles, configure Kestra to fetch the `roles` scope with like in following Micronaut configuration; make note of the added `scopes` parameter where the information must be added:
+After adding or updating your roles, configure Kestra to fetch the `roles` scope like in following Micronaut configuration; make note of the added `scopes` parameter where the information must be added:
 
 ```yaml
 micronaut:
@@ -105,7 +105,7 @@ micronaut:
           get-allowed: true
 ```
 
-With this configured, you then need to update the `kestra` configuration to synchronize groups from this claim with the `groups-claim-path`:
+With this configured, you then need to update the `kestra` property in your configuration file to synchronize groups from this claim with the `groups-claim-path`:
 
 ```yaml
 kestra:
@@ -114,4 +114,4 @@ kestra:
       groups-claim-path: "resource_access.kestra.roles"
 ```
 
-Once the connection is made, you are now able to use oauth claims to source user roles with Keycloak as the single source of truth.
+Once the synchronization connection is made, you are now able to use oauth claims to source user roles with Keycloak as the single source of truth
