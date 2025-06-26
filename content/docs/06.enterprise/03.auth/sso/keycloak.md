@@ -74,7 +74,7 @@ For more configuration details, refer to the [Keycloak OIDC configuration guide]
 
 If unable to use [SCIM with Keycloak](../scim/keycloak.md), you can use oauth claims to source user roles. This method uses the OIDC provider as the single source of truth for user membership and roles. Keycloak has an existing `roles` claim that can be used to source roles.
 
-To get started, you must first add the `roles` claim to the ID Token—Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by taking the following steps:
+To get started, you must first have a `kestra` realm and `kestra` client configured in Keycloak. Once complete, you must add the `roles` claim to the ID Token; Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by taking the following steps:
 
 1. Select **Client Scopes**
 2. Click on the **roles** scope
