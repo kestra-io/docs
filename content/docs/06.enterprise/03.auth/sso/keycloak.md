@@ -72,7 +72,7 @@ For more configuration details, refer to the [Keycloak OIDC configuration guide]
 
 ## Manage Groups via OIDC Claims
 
-If unable to use [SCIM with Keycloak](../scim/keycloak.md), you can use oauth claims to source user roles. This method uses the OIDC provider as the single source of truth for user membership and roles. Keycloak has an existing `roles` claim that can be used to source roles.
+If you are unable to use [SCIM with Keycloak](../scim/keycloak.md), you can configure Kestra to source user roles and groups from OIDC claims. In this setup, your OIDC provider (e.g., Keycloak) acts as the source of truth for user membership and roles. This method requires exposing roles via a claim in the ID Token.
 
 To get started, you must first have a `kestra` realm and `kestra` client configured in Keycloak. Once complete, you must add the `roles` claim to the ID Token; Kestra uses the ID Token so this must be enabled. This can be done in Keycloak by taking the following steps:
 
@@ -114,4 +114,4 @@ kestra:
       groups-claim-path: "resource_access.kestra.roles"
 ```
 
-Once the synchronization connection is made, you are now able to use oauth claims to source user roles with Keycloak as the single source of truth
+Once the synchronization connection is made, you can use OAuth claims to source user roles with Keycloak as the single source of truth.
