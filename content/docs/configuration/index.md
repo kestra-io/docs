@@ -506,7 +506,7 @@ To use Kestra Enterprise Edition, you will need a valid license configured under
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
-- `kestra.ee.license.fingerprint`: license authentication.
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md).
 - `kestra.ee.license.key`: license key.
 
 ```yaml
