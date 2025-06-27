@@ -28,7 +28,7 @@ Versioned plugins support several properties that can be modified in your Kestra
 An example configuration looks as follows:
 
 ```yaml
-kestra: 
+kestra:
   plugins:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
@@ -37,7 +37,7 @@ kestra:
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s
-        defaultVersion: LATEST 
+        defaultVersion: LATEST
 ```
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
@@ -60,6 +60,10 @@ For locally stored plugins configured by the `localRepositoryPath` attribute, th
 ├── io_kestra_plugin__plugin-transform-grok__0_20_0.jar
 └── plugins.meta
 ```
+
+## Configuration for EE-specific plugins
+
+Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your Kestra configuration has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
 
 ## Install versioned plugins
 
@@ -151,7 +155,7 @@ To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md)
 ./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2
 ```
 
-The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled. 
+The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled.
 
 - `--locally=true` installs the plugin locally.
 - `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly.
