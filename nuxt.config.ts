@@ -15,6 +15,7 @@ export default defineNuxtConfig({
         '@nuxtjs/sitemap',
         '@nuxtjs/robots',
         '@nuxt/content',
+        "nitro-cloudflare-dev",
     ],
     image: {
         dir: 'public',
