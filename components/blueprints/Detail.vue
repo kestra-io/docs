@@ -9,7 +9,7 @@
                 />
                 <div class="show-more" :class="{ hide: !hideCode }">
                     <a href="" @click.prevent="hideCode = !hideCode">
-                        See more
+                        {{ hideCode ? 'See more' : 'See less' }}
                         <ChevronDown v-if="hideCode"/>
                         <ChevronUp v-else/>
                     </a>
