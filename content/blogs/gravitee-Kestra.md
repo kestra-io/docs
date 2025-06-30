@@ -1,6 +1,6 @@
 ---
-title: "Gravitee.io API Documentation at the Click of a Button Thanks to Kestra"
-description: Discover how Gravitee.io automates API documentation using Kestra's orchestration engine and generative AI — from SQL triggers to LLM-powered content.
+title: "Gravitee: API Documentation at the Click of a Button Thanks to Kestra"
+description: Discover how Gravitee automates API documentation using Kestra's orchestration engine and generative AI — from SQL triggers to LLM-powered content.
 date: 2025-07-01T13:00:00
 category: Solutions
 author:
@@ -71,13 +71,13 @@ Gravitee.io’s experience reflects a broader shift in API management toward aut
 
 ## Lessons from Gravitee.io’s Approach
 
-Their success offers insights for teams facing similar challenges. Automating repetitive tasks, such as documentation, allows developers to focus on more impactful work. Integrating modular tools, like those within Kestra’s plugin ecosystem, helps teams build complex workflows without custom development. Additionally, prioritizing user-friendly solutions made implementation efficient, as Gravitee.io achieved results with just two developers within six months.
+Their success offers insights for teams facing similar challenges. Automating repetitive tasks, such as documentation, allows developers to focus on more impactful work. Integrating modular tools, like those within Kestra’s plugin ecosystem, helps teams build complex workflows without custom development. Additionally, prioritizing user-friendly solutions made implementation efficient, as Gravitee achieved results with just two developers within six months.
 
 ## Final Thoughts
 
-By blending orchestration with generative AI, Gravitee.io resolved a key developer pain point, empowering users to focus on building APIs rather than managing documentation. Their journey showcases how automation, thoughtful tooling, and developer-first design can transform API management for the future.
+By blending orchestration with generative AI, Gravitee resolved a key developer pain point, empowering users to focus on building APIs rather than managing documentation. Their journey showcases how automation, thoughtful tooling, and developer-first design can transform API management for the future.
 
-But it doesn’t stop there. Gravitee.io’s experience with Kestra goes well beyond documentation. They’ve adopted Kestra to orchestrate the full lifecycle of their **SpecGen system**, which uses machine learning and generative AI to generate OpenAPI specs and augment them with clear, human-readable summaries. This includes champion/challenger model comparisons, real-world usage validation, and resilient automation strategies.
+But it doesn’t stop there. Gravitee's experience with Kestra goes well beyond documentation. They’ve adopted Kestra to orchestrate the full lifecycle of their **SpecGen system**, which uses machine learning and generative AI to generate OpenAPI specs and augment them with clear, human-readable summaries. This includes champion/challenger model comparisons, real-world usage validation, and resilient automation strategies.
 
 > "Kestra addressed all of these pain points effectively. It’s great to go with solutions that open-source their code—it builds confidence. Kestra is super easy to use, works with any code, and comes with tons of ready-made connectors.”
 > 
@@ -93,9 +93,9 @@ If you're exploring orchestration solutions for AI, data workflows, or API tooli
 
 ---
 
-## 👉 Go Try Gravitee.io
+## 👉 Go Try Gravitee
 
-Gravitee.io's integration of Kestra is live, real-world, and developer-friendly. Check out [Gravitee.io](https://www.gravitee.io/) to see how they're rethinking API management with automation and AI at the core.
+Gravitee's integration of Kestra is live, real-world, and developer-friendly. Check out [Gravitee.io](https://www.gravitee.io/) to see how they're rethinking API management with automation and AI at the core.
 
 ::alert{type="info"}
 Have a similar challenge? Reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
