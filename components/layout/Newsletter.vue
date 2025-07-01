@@ -1,5 +1,5 @@
 <template>
-    <form class="submit-form wrapper" id="newsletter" @submit="checkForm" novalidate>
+    <form ref="newsletter" class="submit-form wrapper" id="newsletter" @submit="checkForm" novalidate>
         <h3>Get Kestra updates</h3>
         <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
         <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
@@ -14,15 +14,14 @@
 </template>
 
 <script setup>
-    import Twitter from "../components/icons/TwitterXIcon.vue";
-    import Youtube from "vue-material-design-icons/Youtube.vue";
     import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
     const valid = ref(false);
     const message = ref(null);
+    const newsletter = ref(null);
 
     function checkForm(e) {
-        newsletterSubmit(this, e);
+        newsletterSubmit({ newsletter, valid, message }, e);
     }
 </script>
 
