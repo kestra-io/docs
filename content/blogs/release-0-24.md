@@ -14,7 +14,13 @@ The table below highlights the key features of this release.
 
 | Feature                                   | Description                                                                | Edition |
 |-------------------------------------------|----------------------------------------------------------------------------| --- |
-| XXX     | XXX | All Edition |
+| Java, Python, JavaScript, and Go SDKs     | Official Software Development Kits for multiple programming languages to interact with Kestra APIs and build integrations | All Edition |
+| Basic Authentication Default     | User authentication and management capabilities now enforced in the open source version | Open Source Edition |
+| Apps catalog for Enterprise Edition     | Display and listing of pre-built applications and integrations designed specifically for enterprise workflows and use cases | Enterprise Edition |
+| HTTP function improvements     | Enhanced HTTP-based functions with improved performance, better error handling, and expanded functionality | All Edition |
+| Playground feature (initial release)     | Shortened feedback loop with a new Playground mode for faster task editing and execution | All Edition |
+| Dependency handling improvements     | Better management and resolution of workflow dependencies with enhanced visualization | All Edition |
+| CSV export functionality for workflow data     | Export workflow metadata to CSV format for analysis and reporting | All Edition |
 
 
 Check the video below for a quick overview of all enhancements.
