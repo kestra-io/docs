@@ -64,6 +64,10 @@ const isExiting = ref(false)
 const lastExitTime = ref(0)
 const hasCompletedSteps = ref(false)
 
+const touchStartY = ref(0)
+const touchStartX = ref(0)
+const isTouching = ref(false)
+
 const { y: scrollY } = useWindowScroll()
 
 const { top, bottom, height } = useElementBounding(workflowContainer)
@@ -145,6 +149,7 @@ const resetScrollState = () => {
     document.body.style.overflow = ''
     isExiting.value = true
     lastExitTime.value = Date.now()
+    isTouching.value = false
 
     setTimeout(() => {
         isExiting.value = false
@@ -178,13 +183,12 @@ const handleStepNavigation = (deltaY: number) => {
 }
 
 const handleKeyboardEvent = (event: KeyboardEvent) => {
-    if (isExiting.value) return
+    if (isExiting.value || window.innerWidth <= 992 || isTouching.value) return
 
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         const inSection = isSectionCentered.value
-        const timeSinceExit = Date.now() - lastExitTime.value
 
-        if (inSection && !isInWorkflowSection.value && timeSinceExit > 2000 && !hasCompletedSteps.value) {
+        if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
             event.preventDefault()
             event.stopPropagation()
 
@@ -219,12 +223,11 @@ const handleKeyboardEvent = (event: KeyboardEvent) => {
 }
 
 const handleWheelEvent = (event: WheelEvent) => {
-    if (isExiting.value) return
+    if (isExiting.value || window.innerWidth <= 992 || isTouching.value) return
 
     const inSection = isSectionCentered.value
-    const timeSinceExit = Date.now() - lastExitTime.value
 
-    if (inSection && !isInWorkflowSection.value && timeSinceExit > 2000 && !hasCompletedSteps.value) {
+    if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
         event.preventDefault()
         event.stopPropagation()
 
@@ -259,8 +262,76 @@ const handleWheelEvent = (event: WheelEvent) => {
     }
 }
 
+const handleTouchStart = (event: TouchEvent) => {
+    if (isExiting.value || window.innerWidth <= 992) return
+
+    const touch = event.touches[0]
+    touchStartY.value = touch.clientY
+    touchStartX.value = touch.clientX
+    isTouching.value = true
+}
+
+const handleTouchMove = (event: TouchEvent) => {
+    if (isExiting.value || window.innerWidth <= 992 || !isTouching.value) return
+
+    const inSection = isSectionCentered.value
+    
+    if (inSection || isInWorkflowSection.value) {
+        event.preventDefault()
+    }
+}
+
+const handleTouchEnd = (event: TouchEvent) => {
+    if (isExiting.value || window.innerWidth <= 992 || !isTouching.value) return
+
+    const touch = event.changedTouches[0]
+    const deltaY = touchStartY.value - touch.clientY
+    const deltaX = Math.abs(touchStartX.value - touch.clientX)
+    
+    const minSwipeDistance = 50
+    
+    if (Math.abs(deltaY) < minSwipeDistance || deltaX > Math.abs(deltaY)) {
+        isTouching.value = false
+        return
+    }
+
+    const inSection = isSectionCentered.value
+
+    if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
+        event.preventDefault()
+        event.stopPropagation()
+
+        if (!isScrolling.value) {
+            isInWorkflowSection.value = true
+            document.body.style.overflow = 'hidden'
+            setInitialStep(deltaY)
+
+            isScrolling.value = true
+
+            setTimeout(() => {
+                isScrolling.value = false
+            }, 400)
+        }
+    } else if (isInWorkflowSection.value) {
+        event.preventDefault()
+        event.stopPropagation()
+
+        if (!isScrolling.value) {
+            handleStepNavigation(deltaY)
+
+            isScrolling.value = true
+
+            setTimeout(() => {
+                isScrolling.value = false
+            }, 400)
+        }
+    }
+
+    isTouching.value = false
+}
+
 const handlePageScroll = () => {
-    if (isInWorkflowSection.value && !isSectionCentered.value && !isExiting.value) {
+    if (isInWorkflowSection.value && !isSectionCentered.value && !isExiting.value && !isTouching.value) {
         resetScrollState()
     }
 }
@@ -271,10 +342,14 @@ watch(scrollY, () => {
 
 useEventListener('wheel', handleWheelEvent, { passive: false })
 useEventListener('keydown', handleKeyboardEvent)
+useEventListener('touchstart', handleTouchStart, { passive: false })
+useEventListener('touchmove', handleTouchMove, { passive: false })
+useEventListener('touchend', handleTouchEnd, { passive: false })
 
 onUnmounted(() => {
     resetScrollState()
     isExiting.value = false
+    isTouching.value = false
 })
 </script>
 
@@ -329,7 +404,9 @@ $label-colors: (
         height: 31.25rem;
         overflow: hidden;
         transition: all 0.3s ease;
-        padding: 0 1.25rem;
+        @media screen and (min-width: 992px) {
+            padding: 0 1.25rem;
+        }
     }
 
     .scroll-hint {
@@ -425,6 +502,10 @@ $label-colors: (
                 transform: translate(-50%, -50%);
                 z-index: 1;
             }
+
+            @media (max-width: 992px) {
+                height: 12rem;
+            }
         }
 
         .step-content {
@@ -457,7 +538,7 @@ $label-colors: (
 
             h4 {
                 font-weight: 600;
-                font-size: 2rem;
+                font-size: 1.875rem;
                 line-height: 3rem;
                 color: $white;
                 margin: 0 0 1.25rem 0;
@@ -531,8 +612,26 @@ $label-colors: (
     }
 
     @media (max-width: 992px) {
+        .workflow-steps {
+            height: auto;
+            overflow: visible;
+            touch-action: pan-y;
+        }
+
+        .workflow-track {
+            transform: none !important;
+            height: auto;
+        }
+
         .workflow-step {
             gap: 2.5rem;
+            height: auto;
+            opacity: 1 !important;
+            margin-bottom: 1rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
 
             .step-content {
                 flex: 1;
@@ -540,17 +639,20 @@ $label-colors: (
 
                 .step-label {
                     font-size: 1rem;
+                    margin-bottom: -0.25rem;
                 }
 
                 h4 {
                     font-size: 1.75rem;
                     line-height: 2.25rem;
+                    margin: 0 0 0.75rem 0;
                 }
 
                 p {
                     font-size: 1rem;
                     line-height: 1.5rem;
                     color: #DEE0E4;
+                    margin: 0;
                 }
             }
 
