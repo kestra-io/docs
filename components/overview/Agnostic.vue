@@ -18,20 +18,30 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="workflow-track" :style="{ transform: `translateY(-${currentStep * 100}%)` }">
-                    <div v-for="(step, index) in workflowSteps" :key="step.id" class="workflow-step"
-                        :data-step="index + 1" :class="{ active: index === currentStep }">
-                        <div class="gradient-border" :class="`${step.id}-border`"></div>
-                        <div class="step-content">
-                            <span class="step-label" :class="`${step.id}-label`">{{ step.label }}</span>
-                            <h4>{{ step.title }}</h4>
-                            <p>{{ step.description }}</p>
+                <div class="workflow-track">
+                    <div v-if="!isMobile" class="workflow-step">
+                        <div class="gradient-border" :class="`${workflowSteps[currentStep].id}-border`"></div>
+                        <div class="step-content" :key="`content-${currentStep}`" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+                            <span class="step-label" :class="`${workflowSteps[currentStep].id}-label`">{{ workflowSteps[currentStep].label }}</span>
+                            <h4>{{ workflowSteps[currentStep].title }}</h4>
+                            <p>{{ workflowSteps[currentStep].description }}</p>
                         </div>
                         <div class="step-image">
-                            <NuxtImg :src="step.image" :alt="step.alt" width="600" height="371" />
+                            <NuxtImg :src="workflowSteps[currentStep].image" :alt="workflowSteps[currentStep].alt" width="600" height="371" />
                         </div>
                     </div>
+                    
+                    <template v-else>
+                        <div v-for="(step, index) in workflowSteps" :key="step.id" class="workflow-step"
+                            :data-step="index + 1" :class="{ active: index === currentStep }">
+                            <div class="gradient-border" :class="`${step.id}-border`"></div>
+                            <div class="step-content">
+                                <span class="step-label" :class="`${step.id}-label`">{{ step.label }}</span>
+                                <h4>{{ step.title }}</h4>
+                                <p>{{ step.description }}</p>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -54,7 +64,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted } from 'vue'
-import { useWindowScroll, useEventListener, useElementBounding } from '@vueuse/core'
+import { useWindowScroll, useEventListener, useElementBounding, useWindowSize } from '@vueuse/core'
 
 const workflowContainer = ref<HTMLElement>()
 const currentStep = ref(0)
@@ -69,6 +79,7 @@ const touchStartX = ref(0)
 const isTouching = ref(false)
 
 const { y: scrollY } = useWindowScroll()
+const { width: windowWidth } = useWindowSize()
 
 const { top, bottom, height } = useElementBounding(workflowContainer)
 
@@ -126,6 +137,10 @@ const stepColors = {
 const currentStepColor = computed(() => {
     const currentStepId = workflowSteps[currentStep.value]?.id
     return stepColors[currentStepId as keyof typeof stepColors] || '#F4C951'
+})
+
+const isMobile = computed(() => {
+    return windowWidth.value <= 992
 })
 
 const isSectionCentered = computed(() => {
@@ -448,8 +463,10 @@ $label-colors: (
     }
 
     .workflow-track {
-        transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
         height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .workflow-step {
@@ -458,12 +475,7 @@ $label-colors: (
         gap: 3.125rem;
         position: relative;
         height: 31.25rem;
-        opacity: 0.6;
-        transition: opacity 0.8s ease;
-
-        &.active {
-            opacity: 1;
-        }
+        width: 100%;
 
         .gradient-border {
             width: 0.5rem;
@@ -471,6 +483,7 @@ $label-colors: (
             border-radius: 0.5rem;
             position: relative;
             border: 4px solid;
+            transition: border-image 0.5s ease;
 
             @each $step, $color in $step-colors {
                 &.#{$step}-border {
@@ -511,6 +524,7 @@ $label-colors: (
         .step-content {
             flex: 1;
             max-width: 29.75rem;
+
 
             .step-label {
                 font-weight: 600;
@@ -621,13 +635,13 @@ $label-colors: (
         .workflow-track {
             transform: none !important;
             height: auto;
+            flex-direction: column;
         }
 
         .workflow-step {
             gap: 2.5rem;
             height: auto;
             opacity: 1 !important;
-            margin-bottom: 1rem;
 
             &:last-child {
                 margin-bottom: 0;
