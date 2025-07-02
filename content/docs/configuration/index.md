@@ -1582,7 +1582,7 @@ kestra:
 
 ### Default Role
 
-The default role is the role that will be assigned to a new user when it is created.
+The default role is the role that will be assigned to a new user when it is created. This is particularly helpful when syncing users via [SCIM](../06.enterprise/03.auth/scim/index.md). Note that this doesn't apply to Service Accounts, which don't have any roles assigned by default.
 
 You can define the default role using the `kestra.security.defaultRole` configuration.
 Whenever you start Kestra, the default role will be checked and created if it doesn't exist.
