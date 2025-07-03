@@ -48,7 +48,27 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Notable Enhancements
 
-**XXX** xxx
+**Universal `from`**: 
+
+The `from` property is now universal across many tasks. Each file can be defined in two ways: inline with its content, or as a URI with supported schemes including `kestra:///` for internal storage files, `file:///` for host local files, and `nsfile:///` for namespace files.
+Here is an example to read from Namespace Files:
+
+```yaml
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    script: '{{ read("nsfile:///main.py") }}'
+```
+
+or in the same way with `inputFiles` property
+
+```yaml
+  - id: python
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      main.py: nsfile:///main.py
+    commands:
+      - python main.py
+```
 
 ## Plugin Enhancements
 
