@@ -70,6 +70,19 @@ or in the same way with `inputFiles` property
       - python main.py
 ```
 
+For local files on the host, you can use the `file:///` scheme:
+
+or with `inputFiles`:
+
+```yaml
+  - id: python
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      main.py: file:///tmp/scripts/main.py
+    commands:
+      - python main.py
+```
+
 ## Plugin Enhancements
 
 ### Plugin Name
