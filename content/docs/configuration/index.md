@@ -1005,13 +1005,13 @@ We provide some predefined configuration, and some example of the `logback.xml` 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-    <include resource="logback/base.xml" />
-    <include resource="logback/gcp.xml" />
+  <include resource="logback/base.xml" />
+  <include resource="logback/gcp.xml" />
 
-    <root level="WARN">
-        <appender-ref ref="CONSOLE_JSON_OUT" />
-        <appender-ref ref="CONSOLE_JSON_ERR" />
-    </root>
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_JSON_OUT" />
+    <appender-ref ref="CONSOLE_JSON_ERR" />
+  </root>
 </configuration>
 ```
 
