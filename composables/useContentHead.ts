@@ -17,10 +17,10 @@ export default function useContentHead(page: Ref<undefined | {title?:string, des
         title: title.value,
         meta: [
             {name: 'description', content: description.value},
-            {name: 'og:title', content: title.value},
-            {name: 'og:description', content: description.value},
+            {name: 'title', property: 'og:title', content: title.value},
+            {name: 'description', property: 'og:description', content: description.value},
             // this would be needed for linkedin
-            {name: 'og:image', content: `${origin}${image.value}`},
+            {name: 'image', property: 'og:image', content: `${origin}${image.value}`},
             {name: 'og:image:type', content: "image/svg+xml"},
             {name: 'og:image:alt', content: title.value},
             {name: 'og:url', content: `${origin}/${path.value}`},
