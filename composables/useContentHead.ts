@@ -19,7 +19,7 @@ export default function useContentHead(page: Ref<undefined | {title?:string, des
             {name: 'description', content: description.value},
             {name: 'og:title', content: title.value},
             {name: 'og:description', content: description.value},
-            {name: 'og:image', content: image},
+            {name: 'og:image', content: `${origin}${image.value}`},
             {name: 'og:image:type', content: "image/svg+xml"},
             {name: 'og:image:alt', content: title.value},
             {name: 'og:url', content: `${origin}/${path.value}`},
