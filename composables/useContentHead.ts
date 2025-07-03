@@ -14,22 +14,21 @@ export default function useContentHead(page: Ref<undefined | {title?:string, des
     const {origin} = useRequestURL()
 
     useHead({
+        title: title.value
+    })
+
+    useSeoMeta({
         title: title.value,
-        meta: [
-            {name: 'description', content: description.value},
-            {name: 'title', property: 'og:title', content: title.value},
-            {name: 'description', property: 'og:description', content: description.value},
-            // this would be needed for linkedin
-            {name: 'image', property: 'og:image', content: `${origin}${image.value}`},
-            {name: 'og:image:type', content: "image/svg+xml"},
-            {name: 'og:image:alt', content: title.value},
-            {name: 'og:url', content: `${origin}/${path.value}`},
-            {name: 'twitter:card', content: 'summary_large_image'},
-            {name: 'twitter:site', content: '@kestra_io'},
-            {name: 'twitter:title', content: title.value},
-            {name: 'twitter:description', content: description.value},
-            {name: 'twitter:image', content: image},
-            {name: 'twitter:image:alt', content: title.value}
-        ]
+        description: description.value,
+        ogTitle: title.value,
+        ogDescription: description.value,
+        ogImage: image.value,
+        ogUrl: `${origin}/${path.value}`,
+        twitterCard: 'summary_large_image',
+        twitterSite: '@kestra_io',
+        twitterTitle: title.value,
+        twitterDescription: description.value,
+        twitterImage: image.value,
+        twitterImageAlt: title.value
     })
 }
