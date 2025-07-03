@@ -6,7 +6,6 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from 'vue';
-import { defineEmits } from 'vue';
 
 const emit = defineEmits(['apiError']);
 const stargazersText = ref<string | undefined>(undefined)
