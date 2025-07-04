@@ -10,6 +10,10 @@ Interact with JSONs using expressions.
 
 APIs often use JSON bodies to send data. Being able to interact with them inside of your workflows is crucial to any API related orchestration.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/OaZ5t5lqKO4?si=jf7opiGXlBho9JPj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Making a Request Inside of Your Workflow
 
 Thw API `https://kestra.io/api/mock` will return a JSON body that looks like the following:
@@ -121,6 +125,6 @@ The log message returns `My response: test`.
 
 ## Debugging Expressions
 
-You can use [Debug Expressions](../04.workflow-components/06.outputs.md#using-debug-outputs) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
+You can use [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-outputs) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
 
 ![debug_outputs](/docs/how-to-guides/json/json1.png)
