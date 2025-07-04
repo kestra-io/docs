@@ -121,6 +121,6 @@ The log message returns `My response: test`.
 
 ## Debugging Expressions
 
-You can use [Debug Outputs](../04.workflow-components/06.outputs.md#using-debug-outputs) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
+You can use [Debug Expressions](../04.workflow-components/06.outputs.md#using-debug-outputs) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
 
 ![debug_outputs](/docs/how-to-guides/json/json1.png)
