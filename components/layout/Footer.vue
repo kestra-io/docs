@@ -1,5 +1,5 @@
 <template>
-    <footer :class="['bg-dark-4', { 'about-us': isAboutUsPage }]">
+    <footer>
         <div class="container py-4 py-md-5 px-4 px-md-3">
             <div class="row">
                 <div class="col-lg-3 mb-3">
@@ -101,18 +101,16 @@
 import Socials from "./Socials.vue";
 import Certifications from "./Certifications.vue";
 import Heart from "vue-material-design-icons/Heart.vue";
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
-const isAboutUsPage = computed(() => route.path === '/about-us');
 </script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
+
 footer {
     position: relative;
     font-size: var(--bs-font-size-sm);
+    background-color: #15171e !important;
     
     h5, a, p{
         color: var(--bs-white);
@@ -140,10 +138,6 @@ footer {
 
     :deep(.socials) a {
         color: var(--bs-white);
-    }
-
-    &.about-us {
-        background-color: #15171e;
     }
 }
 </style>
