@@ -31,7 +31,7 @@ export const useYoutube = (): YouTubeThumbnail => {
     if (!urlOrId) return null
     
     const videoId = isValidVideoId(urlOrId) ? urlOrId : extractVideoId(urlOrId)
-    return videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : null
+    return videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null
   }
 
   return {
