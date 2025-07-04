@@ -16,7 +16,7 @@ APIs often use JSON bodies to send data. Being able to interact with them inside
 
 ## Making a Request Inside of Your Workflow
 
-Thw API `https://kestra.io/api/mock` will return a JSON body that looks like the following:
+The API `https://kestra.io/api/mock` will return a JSON body that looks like the following:
 
 ```json
 {
