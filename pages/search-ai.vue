@@ -54,14 +54,31 @@
                             v-model="inputMessage"
                         ></textarea>
                     </div>
-                    <button
-                        type="submit"
-                        class="btn btn-primary w-100"
-                        @click="sendMessage"
-                        :disabled="isLoading || !inputMessage.trim()"
-                    >
-                        Send
-                    </button>
+
+                    <div class="row ">
+                        <div class="col-6">
+                            <button
+                                type="submit"
+                                class="btn btn-dark"
+                                @click="messages = []"
+                                v-if="messages.length !== 0 && messages[0]"
+                            >
+                                <Backspace />
+                                Clear
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                @click="sendMessage"
+                                :disabled="isLoading || !inputMessage.trim()"
+                            >
+                                <Send />
+                                Ask Kestra AI
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,17 +96,24 @@
 <script setup>
     import {EventSourceParserStream} from 'eventsource-parser/stream'
     import Account from "vue-material-design-icons/Account.vue";
+    import { useMagicKeys } from '@vueuse/core'
+    import Send from "vue-material-design-icons/Send.vue";
+    import Backspace from "vue-material-design-icons/Backspace.vue";
+
     const { parseMarkdown } = await import("@nuxtjs/mdc/runtime");
     const {highlightCodeBlocks} = useShiki();
-
+    const keys = useMagicKeys()
+    const ctrlEnter = keys['Ctrl+Enter']
 
     const messages = ref([]);
     const inputMessage = ref("");
     const isLoading = ref(false);
 
-    // onMounted(() => {
-    //     sendMessage();
-    // })
+    watch(ctrlEnter, (v) => {
+        if (v) {
+            sendMessage();
+        }
+    })
 
     const sendMessage = async () => {
         if (!inputMessage.value.trim()) {
@@ -312,6 +336,19 @@
                 code {
                     display: flex;
                     flex-direction: column;
+                }
+            }
+
+            :deep(table) {
+                background: $black-2;
+                padding: 0.25rem;
+                border-radius: var(--bs-border-radius-lg);
+                border: 1px solid var(--kestra-io-token-color-border-secondary);
+                font-size: 90%;
+                margin-bottom: 1rem;
+                th, td {
+                    padding: 0.5rem;
+                    border-bottom: 1px solid var(--kestra-io-token-color-border-secondary);
                 }
             }
         }
