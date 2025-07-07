@@ -23,7 +23,7 @@ Flows, tasks, executions, triggers, and schedules come with built-in expressions
 - `{{ inputs.myinput }}` retrieves an input value passed to the execution
 - `{{ outputs.mytask.myoutput }}` fetches a task's output.
 
-To debug expressions, use the **Debug Outputs** console as demonstrated in the video below:
+To debug expressions, use the **Debug Expression** console as demonstrated in the video below:
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/SPGmXSJN3VE?si=rCoWNDEq14LYvPdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -49,7 +49,7 @@ The execution context includes these variables:
 - `globals` — global variables.
 
 ::alert{type="info"}
-To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Outputs console.
+To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Expression console.
 ![printContext](/docs/expressions/printContext.png)
 ::
 

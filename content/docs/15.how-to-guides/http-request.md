@@ -139,7 +139,7 @@ However if we want to view the outputs from tasks without needing to use Log tas
 
 ![http_get_outputs](/docs/how-to-guides/http/http_get_outputs.png)
 
-Here, we are using the [Debug Outputs](../04.workflow-components/06.outputs.md#using-render-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
+Here, we are using the [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
 
 ### POST Request
 
@@ -180,7 +180,7 @@ We can define the request body as an input so it's easier to remember what it is
 If your body message input is multiple lines, the best practice is to use a pebble expression to converst to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../expressions/index.md#expressions-faq).
 ::
 
-When we execute this as a `POST` request, this is the response we receive using the same Debug Outputs option in the Outputs page:
+When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:
 
 ![http_post_outputs](/docs/how-to-guides/http/http_post_outputs.png)
 
