@@ -62,7 +62,7 @@ However, if the body is large, we may only want to access a certain part of it. 
 
 This will access the key `title` from the JSON and return that inside of an array. The additional function `first` is added to return it as a string, removing it from the array.
 
-We can put that into the example 
+We can put that into the example:
 
 ```yaml
 id: json_demo
