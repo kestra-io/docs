@@ -8,18 +8,20 @@ description: |-
 
 # Provider configurations
 
-## Kestra 0.23.x compatibility
+## Kestra 0.24.x compatibility
 
 ::alert{type="danger"}
-**Warning:** Kestra Terraform provider 0.23.x is only compatible with Kestra 0.23.x and above.
+**Warning:** Kestra Terraform provider 0.24.x is only compatible with Kestra 0.24.x and above.
 ::
 
-Additionally, if you want to terraform Kestra 0.23.x you need to use Kestra Terraform provider 0.23.x
+Additionally, if you want to terraform Kestra 0.24.x you need to use Kestra Terraform provider 0.24.x
 
-### Breaking changes from 0.23.x
+### Breaking changes from 0.24.x
 
-`kestra_service_account` resource field `username` was renamed to `name` (see [service_account.md](resources/service_account.md)) 
+1) Service account API token were extracted to a dedicated Resource [kestra_service_account_api_token](resources/service_account_api_token.md) and DataSource [kestra_service_account_api_tokens](data-sources/service_account_api_tokens.md).
+Using Users Resource `kestra_user_api_token` and DataSource `kestra_user_api_tokens` will not work anymore on Service Accounts
 
+2) Service account `group` property was replaced by `groups` containing only the `id` property. (see [kestra_service_account](resources/service_account.md))
 
 ## Example Usage
 

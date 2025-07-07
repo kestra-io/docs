@@ -34,22 +34,19 @@ resource "kestra_service_account" "example" {
 ### Optional
 
 - `description` (String) The service account description.
-- `group` (Block Set) The service account group. (see [below for nested schema](#nestedblock--group))
+- `groups` (Block Set) The service account group. (see [below for nested schema](#nestedblock--groups))
+- `super_admin` (Boolean) Is the service account a super admin.
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
 
-<a id="nestedblock--group"></a>
-### Nested Schema for `group`
+<a id="nestedblock--groups"></a>
+### Nested Schema for `groups`
 
 Required:
 
-- `group_id` (String) The group id.
-
-Read-Only:
-
-- `tenant_id` (String) The tenant id for this group.
+- `id` (String) The group id.
 
 ## Import
 
