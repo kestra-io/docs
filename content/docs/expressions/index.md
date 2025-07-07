@@ -910,10 +910,11 @@ The `split` filter divides a string into a list based on a delimiter.
 ```
 
 **Arguments**:
-- `delimiter`: the string to split on.
+- `delimiter`: the regex to split on. Escape special characters (e.g. `split('\\.')`)
 - `limit`: limits the number of splits:
   - **Positive**: limits the array size, with the last entry containing the remaining content.
-  - **Zero or negative**: no limit on splits.
+  - **Zero**: no limit on splits, trailing empty strings will be discarded.
+  - **Negative**: no limit on splits, trailing empty strings will be included.
 
 ```twig
 {{ 'apple,banana,cherry,grape' | split(',', 2) }}
