@@ -59,6 +59,8 @@ We can start the Prometheus server using the following docker command in the sam
 docker run -d -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 
+Note, in this last command you may have to add `--add-host=host.docker.internal:host-gateway` to ensure your Prometheus endpoint is shown as `UP` (you can check it in the [targets](localhost:9090/targets)).
+
 You can now go to `http://localhost:9090/graph` and try out visualizing some metrics using the PromQL. Here is one of the graphs for `kestra_executor_execution_started_count_total` metric:
 
 ![promql_graph](/docs/how-to-guides/setup-monitoring/promql_graph.png)
