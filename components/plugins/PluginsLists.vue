@@ -6,7 +6,7 @@
                 <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }}+ plugins</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg"
-                        :placeholder="`Search across ${totalPlugins}+ plugins`" v-model="searchQuery">
+                           :placeholder="`Search across ${totalPlugins}+ plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -20,7 +20,7 @@
                     @click="setActiveCategory(category)"
                     class="m-1 rounded-button"
                 >
-                    {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category) }}
+                    {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category.toLowerCase()) }}
                 </button>
             </div>
             <div class="row my-4" data-aos="fade-right">
@@ -57,20 +57,16 @@
 
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import {isEntryAPluginElementPredicate, slugify} from "@kestra-io/ui-libs";
+    import {isEntryAPluginElementPredicate, type Plugin, type PluginElement} from "@kestra-io/ui-libs";
 
-    const DONT_CAPITALIZE_CATEGORIES = ["AI"];
+    const DONT_CAPITALIZE_CATEGORIES = ["AI", "BI"];
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
     const activeCategory = ref('All Categories');
     const props = defineProps<{
-            plugins: {
-                group: string
-                title: string,
-                description: string,
-            }[],
-            categories: string[],
-        }>();
+        plugins: Plugin[],
+        categories: string[],
+    }>();
     const searchQuery = ref('');
     const route = useRoute();
     const router = useRouter();
@@ -78,10 +74,10 @@
     const totalPlugins = computed(() => props.plugins.reduce((acc, plugin) => {
         Object.entries(plugin)
             .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
-            .flatMap(([_, elements]) => elements)
+            .flatMap(([_, elements]) => elements as PluginElement[])
             .forEach(e => acc.add(e));
         return acc;
-    }, new Set()).size);
+    }, new Set<PluginElement>()).size);
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
@@ -90,19 +86,41 @@
     };
 
     const capitalize = (name: string) => {
-        return name[0].toUpperCase() + name.slice(1).toLowerCase();
+        return name[0].toUpperCase() + name.slice(1);
     };
 
     const totalGroups = computed(() => filteredPluginsData.value.length);
 
+    function tooltipContent(plugin: Plugin, filteredPluginElementsEntries: [string, PluginElement[]][]) {
+        return filteredPluginElementsEntries.map(([elementType, elements]) =>
+            `<p>${capitalize(elementType).replaceAll(/[A-Z]/g, match => ` ${match}`)}</p>
+<ul>
+${elements.map(({cls}) => `<li>
+                <a href="plugins/${plugin.title}/${cls}">${cls}</a>
+              </li>`).join("")}
+</ul>`).join("");
+    }
+
     const filteredPluginsData = computed(() => {
-        let pluginsList = [...props.plugins];
-        let searchResults = [];
-        if (searchQuery.value) {
-            searchResults = setSearchPlugins(searchQuery.value, pluginsList);
-        } else {
-            searchResults = pluginsList;
-        }
+        const filteredPlugins = props.plugins.flatMap(plugin => {
+            const filteredPluginElementsEntries = Object.entries(plugin)
+                .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
+                .map(([elementType, elements]) => [elementType, (elements as PluginElement[]).filter(({deprecated}) => !deprecated)])
+                .filter(([, elements]) => elements.length > 0) as [string, PluginElement[]][];
+
+            if (filteredPluginElementsEntries.length === 0) {
+                return []
+            }
+
+            return [{
+                ...plugin,
+                tooltipContent: tooltipContent(plugin, filteredPluginElementsEntries),
+                ...
+                    Object.fromEntries(filteredPluginElementsEntries)
+            }]
+        });
+
+        let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
         if (activeCategory.value !== 'All Categories') {
             currentPage.value = 1;
             searchResults = searchResults.filter((item) => {
@@ -120,30 +138,30 @@
         return filteredPluginsData.value.slice(startIndex, endIndex);
     });
 
-
-
     const totalPages = computed(() => {
         return Math.ceil(totalGroups.value / itemsPerPage.value);
     });
 
-    const setSearchPlugins = (search: string, allPlugins: any[]) => {
-        let searchPluginsList = [...allPlugins];
+    function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
+        if (!search) {
+            return allPlugins;
+        }
         const searchLowercase = search?.trim().toLowerCase();
-        return searchPluginsList.filter((item) => {
+        return allPlugins.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
                 Object.entries(item)
                     .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
-                    .flatMap(([_, elements]) => elements as string[])
-                    .some(e => e.toLowerCase().includes(searchLowercase));
+                    .flatMap(([_, elements]) => elements as PluginElement[])
+                    .some(({cls}) => cls.toLowerCase().includes(searchLowercase));
         });
-    };
+    }
 
     const changePage = (pageNo: number) => {
         currentPage.value = pageNo;
         window.scrollTo(0, 0)
     };
 
-    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string){
+    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string) {
         return {
             page: pageVal,
             size: itemVal,
