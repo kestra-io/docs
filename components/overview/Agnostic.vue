@@ -48,7 +48,7 @@
             <footer class="footer">
                 <p>With native triggers, declarative flows, and built-in monitoring, Kestra gives you a clear path from
                     workflow creation to reliable execution across your stack.</p>
-                <div>
+                <div class="buttons">
                     <NuxtLink href="/demo" class="btn btn-secondary mb-2" target="_blank">
                         Talk to us
                     </NuxtLink>
@@ -604,9 +604,14 @@ $label-colors: (
             max-width: 48.313rem;
             margin: 0;
         }
-
-        .btn {
-            border-radius: 8px;
+        
+        .buttons {
+            text-align: center;
+            white-space: nowrap;
+        
+            .btn {
+                border-radius: 8px;
+            }
         }
     }
 

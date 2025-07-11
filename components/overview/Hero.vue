@@ -6,8 +6,8 @@
                 <h1>Overview</h1>
 
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/a2BZ7vOihjg" title="Getting Started with Kestra in 15 minutes" frameborder="0"
-                        allowfullscreen />
+                    <iframe src="https://www.youtube.com/embed/a2BZ7vOihjg"
+                        title="Getting Started with Kestra in 15 minutes" frameborder="0" allowfullscreen />
                 </div>
 
                 <div class="buttons">
@@ -48,22 +48,31 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        background-image:
-            url("/landing/overview/overview-top.png"),
-            url("/landing/overview/mix.svg");
-        background-position:
-            35% 0%,
-            top right;
+        background-image: url("/landing/overview/mix.svg");
+        background-position: top center;
         background-repeat: no-repeat;
-        background-size:
-            0,
-            cover contain;
+        background-size: cover;
         z-index: -3;
+        mix-blend-mode: normal;
+
+        @include media-breakpoint-up(md) {
+            background-image:
+                url("/landing/overview/overview-top.png"),
+                url("/landing/overview/mix.svg");
+            background-position:
+                35% 0%,
+                top right;
+            background-size:
+                0,
+                cover contain;
+        }
+
         @include media-breakpoint-up(lg) {
             background-size:
                 35% auto,
                 cover;
         }
+
         @media (max-width: 768px) {
             mix-blend-mode: screen;
         }
@@ -81,18 +90,32 @@
         flex-direction: column;
         width: 100%;
         align-items: center;
-        gap: 1rem;
+        gap: 10px;
+
+        @media screen and (min-width: 768px) {
+            gap: 1rem;
+        }
+
         padding: 0 20px;
 
         .highlight {
             font-weight: 600;
             font-size: 1.15rem;
             line-height: 1.75rem;
-            background: linear-gradient(89.75deg, #9F79F3 0.22%, #658AF9 99.78%);
+            background: linear-gradient(94.69deg, #51CFF7 57.35%, #4782F5 95.94%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             margin-bottom: 0;
+
+            @include media-breakpoint-up(md) {
+                background: linear-gradient(89.75deg, #9F79F3 0.22%, #658AF9 99.78%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+            }
         }
     }
 
@@ -102,11 +125,11 @@
         max-width: 100%;
         font-weight: 600;
         padding: 0;
-        margin: 1rem 0 0;
+        margin: 0;
+        font-size: 35px;
 
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(md) {
             font-size: 4rem;
-            margin: 0;
             max-width: 800px;
         }
     }
