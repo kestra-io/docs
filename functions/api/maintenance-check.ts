@@ -8,7 +8,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const currentSHA = searchParams.get('sha')
 
     try {
-        // Get KV storage from the event context (Cloudflare binding)
+        // Get KV storage from the event context (Cloudflare binding) s
         const kvStorage = context.env.CLOUDFLARE_KVSTORAGE
 
         console.log('Checking maintenance mode with currentSHA:', currentSHA)
