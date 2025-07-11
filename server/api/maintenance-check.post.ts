@@ -20,7 +20,11 @@ export default defineEventHandler(async (event) => {
         // Get KV storage from the event context (Cloudflare binding)
         const kvStorage = event.context.cloudflare?.env?.CLOUDFLARE_KVSTORAGE
 
+        console.log('Checking maintenance mode with currentSHA:', currentSHA)
+
         if (!kvStorage) {
+
+            console.warn('KV storage not available, assuming no maintenance mode')
             // If KV storage is not available, assume no maintenance mode
             return {
                 maintenanceMode: false,
@@ -31,8 +35,10 @@ export default defineEventHandler(async (event) => {
         // Get the stored SHA from KV storage
         const storedSHA = await kvStorage.get('currentSHA')
 
-        // Check if maintenance mode should be enabled
-        const maintenanceMode = storedSHA && storedSHA !== currentSHA
+        console.log('Stored SHA from KV:', storedSHA)
+
+        // Check if maintenance mode should be enabled (start in maintenance mode)
+        const maintenanceMode = !storedSHA || storedSHA !== currentSHA
 
         return {
             maintenanceMode,
