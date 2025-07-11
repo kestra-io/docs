@@ -22,7 +22,7 @@
       </div>
       <div class="img-block">
         <NuxtImg src="/landing/features/application.png" width="100%" height="100%" alt="Kestra" class="img-fluid d-none d-sm-block" />
-        <img src="/landing/features/sm-app.svg" width="100%" height="260px" alt="Kestra" class="ps-5 d-sm-none sm-app-border" />
+        <img src="/landing/features/sm-app.svg" width="100%" height="260px" alt="Kestra" class="d-sm-none sm-app-border" />
       </div>
     </div>
   </section>
@@ -147,6 +147,7 @@ const isScrolled = computed(() => y.value > 50)
         #6B66D5 44.15%, 
         #2D344E 100%
       );
+      padding-left: 36px;
     }
 
     @include media-breakpoint-up(lg) {
