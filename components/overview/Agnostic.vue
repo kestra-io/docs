@@ -8,16 +8,6 @@
 
             <div id="workflow-steps" class="workflow-steps" ref="workflowContainer"
                 :class="{ 'section-active': isInWorkflowSection }">
-                <div v-if="isInWorkflowSection" class="scroll-hint">
-                    <div class="hint-content">
-                        <span class="hint-text" :style="{ color: currentStepColor }">Use ↑↓ or Scroll:</span>
-                        <div class="progress">
-                            <span class="current" :style="{ color: currentStepColor }">{{ currentStep + 1 }}</span>
-                            <span class="separator">/</span>
-                            <span class="total">{{ workflowSteps.length }}</span>
-                        </div>
-                    </div>
-                </div>
                 <div class="workflow-track">
                     <div v-if="!isMobile" class="workflow-step">
                         <div class="gradient-border" :class="`${workflowSteps[currentStep].id}-border`"></div>
