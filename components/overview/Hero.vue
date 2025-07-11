@@ -48,12 +48,8 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        background-image: url("/landing/overview/mix.svg");
-        background-position: top center;
-        background-repeat: no-repeat;
-        background-size: cover;
+        background: url("/landing/overview/sm-platform-hero.png") right/cover no-repeat;
         z-index: -3;
-        mix-blend-mode: normal;
 
         @include media-breakpoint-up(md) {
             background-image:
