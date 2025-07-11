@@ -11,9 +11,6 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         // Get KV storage from the event context (Cloudflare binding)
         const kvStorage = context.env.CLOUDFLARE_KVSTORAGE
 
-        if(!event.context.cloudflare)
-            console.warn('no cloudflare context found, this might not be running on Cloudflare')
-
         console.log('Checking maintenance mode with currentSHA:', currentSHA)
 
         if (!kvStorage) {

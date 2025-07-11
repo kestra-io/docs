@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "lib": ["esnext"],
-    "types": ["./types.d.ts"]
+    "types": ["./types.d.ts"],
+    "outDir": "../dist/functions",
   }
 }

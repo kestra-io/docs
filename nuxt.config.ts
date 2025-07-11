@@ -216,7 +216,6 @@ export default defineNuxtConfig({
             ],
             autoSubfolderIndex: false,
         },
-        preset: "cloudflare-pages",
     },
 
     routeRules: {
