@@ -20,10 +20,12 @@ export default defineEventHandler(async (event) => {
         // Get KV storage from the event context (Cloudflare binding)
         const kvStorage = event.context.cloudflare?.env?.CLOUDFLARE_KVSTORAGE
 
+        if(!event.context.cloudflare)
+            console.warn('no cloudflare context found, this might not be running on Cloudflare', Object.keys(event.context))
+
         console.log('Checking maintenance mode with currentSHA:', currentSHA)
 
         if (!kvStorage) {
-
             console.warn('KV storage not available, assuming no maintenance mode')
             // If KV storage is not available, assume no maintenance mode
             return {
