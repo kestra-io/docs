@@ -1,24 +1,15 @@
-export default defineEventHandler(async (event) => {
-    if (event.node.req.method !== 'POST') {
-        throw createError({
-            statusCode: 405,
-            statusMessage: 'Method Not Allowed'
-        })
-    }
+interface Env {
+  CLOUDFLARE_KVSTORAGE: KVNamespace;
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+
+    const {searchParams} = new URL(context.request.url)
+    const currentSHA = searchParams.get('sha')
 
     try {
-        const body = await readBody(event)
-        const { currentSHA } = body
-
-        if (!currentSHA) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'Missing currentSHA parameter'
-            })
-        }
-
         // Get KV storage from the event context (Cloudflare binding)
-        const kvStorage = event.context.cloudflare?.env?.CLOUDFLARE_KVSTORAGE
+        const kvStorage = context.env.CLOUDFLARE_KVSTORAGE
 
         console.log('Checking maintenance mode with currentSHA:', currentSHA)
 
@@ -26,10 +17,10 @@ export default defineEventHandler(async (event) => {
 
             console.warn('KV storage not available, assuming no maintenance mode')
             // If KV storage is not available, assume no maintenance mode
-            return {
+            return new Response(JSON.stringify({
                 maintenanceMode: false,
                 message: 'KV storage not available'
-            }
+            }))
         }
 
         // Get the stored SHA from KV storage
@@ -40,21 +31,21 @@ export default defineEventHandler(async (event) => {
         // Check if maintenance mode should be enabled (start in maintenance mode)
         const maintenanceMode = !storedSHA || storedSHA !== currentSHA
 
-        return {
+        return new Response(JSON.stringify({
             maintenanceMode,
             storedSHA,
             currentSHA,
             message: maintenanceMode
                 ? `Maintenance mode: KV SHA (${storedSHA}) !== Runtime SHA (${currentSHA})`
                 : 'No maintenance mode'
-        }
+        }))
     } catch (error) {
         console.error('Error in maintenance check API:', error)
 
         // Return maintenance mode false on error to avoid blocking the site
-        return {
+        return new Response(JSON.stringify({
             maintenanceMode: false,
             error: error instanceof Error ? error.message : 'Unknown error'
-        }
+        }))
     }
-})
+}
