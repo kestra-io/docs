@@ -1,24 +1,17 @@
-export default defineEventHandler(async (event) => {
-    if (event.node.req.method !== 'POST') {
-        throw createError({
-            statusCode: 405,
-            statusMessage: 'Method Not Allowed'
-        })
-    }
+interface Env {
+  CLOUDFLARE_KVSTORAGE: KVNamespace;
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+
+    const {searchParams} = new URL(context.request.url)
+    const sha = searchParams.get('sha')
+    const action = searchParams.get('action') || 'get'
 
     try {
-        const body = await readBody(event)
-        const { sha, action } = body
-
-        if (!action || !['set', 'clear', 'get'].includes(action)) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'Invalid action. Must be "set", "clear", or "get"'
-            })
-        }
 
         // Get KV storage from the event context (Cloudflare binding)
-        const kvStorage = event.context.cloudflare?.env?.CLOUDFLARE_KVSTORAGE
+        const kvStorage = context.env?.CLOUDFLARE_KVSTORAGE
 
         if (!kvStorage) {
             throw createError({
@@ -63,4 +56,4 @@ export default defineEventHandler(async (event) => {
         console.error('Error in maintenance control API:', error)
         throw error
     }
-})
+}
