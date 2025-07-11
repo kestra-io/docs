@@ -32,7 +32,6 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
         z-index: 1;
         margin-top: 2rem;
         @include media-breakpoint-down(sm){
-            margin: 1rem;
             width: auto;
         }
         @include media-breakpoint-up(xl){

@@ -30,12 +30,19 @@
                 <NuxtImg src="/landing/features/pinkish.png" class="coil-border-2" width="156px" height="39px"></NuxtImg>
                 <div class="list list-3">
                     <h5>Everything As Code</h5>
-                    <ul class="list-unstyled">
-                        <li><ArrowRightThick />Autocompletion & Synthax Validation</li>
-                        <li><ArrowRightThick />Git Sync</li>
-                        <li><ArrowRightThick />CI/CD Integrations</li>
-                        <li><ArrowRightThick />Multi-Language Script Tasks</li>
-                        <li><ArrowRightThick />Automatic Revision History & Rollback</li>
+                    <ul class="list-unstyled mt-1">
+                        <div class="d-flex flex-column align-items-center justify-center">
+                            <div class="d-flex flex-row align-items-center justify-center gap-3">
+                                <li><ArrowRightThick />Autocompletion & Synthax Validation</li>
+                                <li><ArrowRightThick />Git Sync</li>
+                                <li><ArrowRightThick />CI/CD Integrations</li>
+                            </div>
+                        <div class="d-flex flex-row align-items-center justify-center ps-5 gap-4">
+                            <li><ArrowRightThick />Multi-Language Script Tasks</li>
+                            <li><ArrowRightThick />Automatic Revision History & Rollback</li>
+                        </div>
+                        </div>
+                        
                     </ul>
                 </div>
                 <NuxtImg src="/landing/features/yellowish.png" class="coil-border-3" width="123px" height="39px"></NuxtImg>
@@ -80,12 +87,10 @@ const featureCardsFirst: FeatureCard[] = [
     {
         title: 'Orchestration & Business Logic Separation',
         description: 'Kestra lets you define workflow logic (conditions, loops, error handling) independently from business logic. This separation keeps orchestration lightweight, modular, and easy to scale. Business logic stays decoupled from the orchestrator.',
-        class: 'orchestration'
     },
     {
         title: 'Built-In Execution Controls',
         description: 'Every task in Kestra has a built-in orchestration powerhouse: conditional branching logic, retry policies, error handling, concurrency and timeout, worker group assignment, automatic log management and more. No custom code needed to benefit from those capabilities.',
-        class: 'execution-controls'
     }
 ]
 
@@ -252,7 +257,7 @@ const featureCardsSecond: FeatureCard[] = [
                 left: 0;
                 right: 0;
                 bottom: -2rem;
-                border-radius: .25rem;
+                border-radius: .5rem;
                 padding: 1px;
                 background: linear-gradient(180deg, #7830EC 0%, #A5CFF1 51.92%, #15D1F6 100%);
                 mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
@@ -315,8 +320,8 @@ const featureCardsSecond: FeatureCard[] = [
 
             .list-3 {
                 position: absolute;
-                bottom: 0px;
-                left: 270px;
+                bottom: -10px;
+                left: 320px;
                 text-align: center;
 
                 ul {

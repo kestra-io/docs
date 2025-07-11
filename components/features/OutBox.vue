@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="images-container d-none d-xl-block">
+        <div class="images-container">
             <div class="fivetran-image">
                 <NuxtImg src="/landing/features/fivetran.png" alt="Fivetran" />
             </div>
@@ -28,7 +28,7 @@
                 <NuxtImg src="/landing/features/code.png" alt="Code" />
             </div>
         </div>
-        <div class="ellipse-container  d-none d-xl-block">
+        <div class="ellipse-container">
             <NuxtImg src="/landing/features/ellipse_box.png" alt="Ellipse Box" />
         </div>
     </section>
@@ -67,13 +67,16 @@ const features: Feature[] = [
     background-color: #15171e;
     overflow: hidden;
     position: relative;
-    height: 100vh;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: start;
     margin-top: -1.5rem;
+    
 
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
         height: 681px;
+        flex-direction: row;
     }
 
     .container {
@@ -147,37 +150,72 @@ const features: Feature[] = [
     }
 
     .images-container {
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 2;
-        width: 800px;
-        height: 100%;
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        padding: 4rem 0 0 1rem;
+        top: 4rem;
+        
+        @include media-breakpoint-up(xl) {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 2;
+            width: 800px;
+            height: 100%;
+            padding: 0;
+        }
 
         .fivetran-image,
         .code-image {
-            position: absolute;
-            right: 0;
+            position: relative;
+            z-index: 2;
+            
+            @include media-breakpoint-up(xl) {
+                position: absolute;
+                right: 0;
+                margin-bottom: 0;
+            }
 
             img {
-                width: 600px;
-                max-width: none;
+                max-width: 100%;
+                height: 100%;
+                
+                @include media-breakpoint-up(xl) {
+                    max-width: 600px;
+                }
             }
         }
 
         .fivetran-image {
-            top: 120px;
-
-            img {
-                height: 254.54px;
+            @include media-breakpoint-up(xl) {
+                top: 120px;
+                
+                img {
+                    height: 230.54px;
+                }
             }
         }
 
         .code-image {
-            top: 320px;
-
-            img {
-                height: 417.65px;
+            @media screen and (max-width: 768px) {
+                margin-top: -3rem;
+            }
+            @media screen and (min-width: 769px) and (max-width: 1200px) {
+                margin-top: -7rem;
+                
+            }
+            @include media-breakpoint-up(xl) {
+                top: 320px;
+                
+                img {
+                    height: 490px;
+                    width: 550px;
+                    margin-top: -4rem;
+                }
             }
         }
     }
@@ -186,6 +224,12 @@ const features: Feature[] = [
         position: absolute;
         right: 0;
         top: 0;
+        @media screen and (max-width: 768px) {
+            top: 750px;
+        }
+        @media screen and (min-width: 769px) and (max-width: 1200px) {
+            top: 400px;
+        }
         z-index: 0;
 
         img {

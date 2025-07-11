@@ -367,6 +367,7 @@ h2 {
     font-weight: 600;
     line-height: 100%;
     margin-top: 2rem;
+    margin-bottom: -1rem;
 }
 
 .highlight {
@@ -393,7 +394,6 @@ h2 {
 
 .card {
     width: 100%;
-    min-width: 378px;
     height: 260px;
     min-height: 260px;
     padding: 32px;
@@ -497,6 +497,10 @@ h2 {
         }
         margin: 2rem 0;
     }
+}
+
+div:not(:first-child) .section-subtitle h3 {
+    margin-top: 3rem;
 }
 
 [data-section-index="0"] {

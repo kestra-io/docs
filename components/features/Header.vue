@@ -3,18 +3,26 @@
     <div class="hero container">
       <div class="text-block">
         <h6 class="highlight">Core Features</h6>
-        <h1 data-aos="zoom-in">Fast, Scalable, Declarative Orchestrator</h1>
+        <h1 data-aos="zoom-in">
+          <span class="d-none d-lg-inline">Fast, Scalable, Declarative Orchestrator</span>
+          <span class="d-lg-none">
+            Fast, Scalable,<br>
+            Declarative<br>
+            Orchestrator
+          </span>
+        </h1>
         <div class="buttons">
-          <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-lg btn-primary me-3 mb-2">
-            Get Started!
-          </NuxtLink>
-          <NuxtLink href="/demo" class="btn btn-lg btn-secondary mb-2" target="_blank">
+          <NuxtLink href="/demo" class="btn btn-lg btn-secondary me-3" target="_blank">
             Talk to us
+          </NuxtLink>
+          <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-lg btn-primary">
+            Get Started!
           </NuxtLink>
         </div>
       </div>
       <div class="img-block">
-        <NuxtImg src="/landing/features/application.png" width="100%" height="100%" alt="Kestra" class="img-fluid d-none d-lg-block" />
+        <NuxtImg src="/landing/features/application.png" width="100%" height="100%" alt="Kestra" class="img-fluid d-none d-sm-block" />
+        <img src="/landing/features/sm-app.svg" width="100%" height="260px" alt="Kestra" class="ps-5 d-sm-none sm-app-border" />
       </div>
     </div>
   </section>
@@ -44,11 +52,13 @@ const isScrolled = computed(() => y.value > 50)
   @media screen and (max-width: 991px) {
     &::after {
       content: "";
-      position: absolute;
+      position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
-      background: url("/landing/features/cpt.png") center/contain no-repeat;
+      background: 
+        url("/landing/features/sm-gradient.png") right/cover no-repeat,
+        url("/landing/features/cpt.png") center/contain no-repeat;
       z-index: -1;
     }
   }
@@ -65,8 +75,10 @@ const isScrolled = computed(() => y.value > 50)
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin: 4rem 0;
-    gap: $spacer;
+    @include media-breakpoint-up(md) {
+      margin: 4rem 0;
+    }
+    gap: 20px;
   }
 
   .highlight {
@@ -78,17 +90,22 @@ const isScrolled = computed(() => y.value > 50)
     z-index: 12;
   }
 
+  h6 {
+    font-size: 18.4px !important;
+    margin: 0;
+  }
+
   h1 {
     color: white;
     text-align: center;
     font-weight: 600;
-    font-size: 2rem;
+    font-size: 35px;
     max-width: 100%;
     padding: 0;
     margin: 0;
 
-    @include media-breakpoint-up(lg) {
-      font-size: 3.875rem;
+    @include media-breakpoint-up(md) {
+      font-size: 4rem;
       line-height: 1.2;
       max-width: 800px;
     }
@@ -96,14 +113,24 @@ const isScrolled = computed(() => y.value > 50)
 
   .buttons {
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 3rem;
+    @media screen and (min-width: 380px) {
+      margin: 1.5rem 0;
+    }
     white-space: nowrap;
+
+    .btn {
+      border-radius: 8px;
+    }
   }
 
   .img-block {
     position: relative;
     display: flex;
-    justify-content: center;
+    @include media-breakpoint-up(sm) {
+      justify-content: center;
+    }
+    justify-content: end;
     border: 1px solid;
     border-image-source: radial-gradient(
       46.16% 31.1% at 73.05% 39.82%, 
@@ -112,7 +139,18 @@ const isScrolled = computed(() => y.value > 50)
       #2D344E 100%
     );
 
-    &::after {
+    .sm-app-border {
+      border: 0.39px solid;
+      border-image-source: radial-gradient(
+        46.16% 31.1% at 73.05% 39.82%, 
+        #2B313E 0%, 
+        #6B66D5 44.15%, 
+        #2D344E 100%
+      );
+    }
+
+    @include media-breakpoint-up(lg) {
+      &::after {
       content: "";
       position: absolute;
       bottom: -12.5rem;
@@ -122,6 +160,7 @@ const isScrolled = computed(() => y.value > 50)
       background: url("/landing/features/overlay_ellipse.png") bottom center/cover no-repeat;
       opacity: 0.85;
       pointer-events: none;
+    }
     }
   }
 }
