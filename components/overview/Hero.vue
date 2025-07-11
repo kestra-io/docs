@@ -79,7 +79,10 @@
     }
 
     .hero {
-        padding: 6.2rem 0 2rem;
+        @include media-breakpoint-up(md) {
+            padding: 6.2rem 0 2rem;
+        }
+        padding: 3.5rem 0;
         position: relative;
     }
 
