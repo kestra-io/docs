@@ -210,6 +210,18 @@ export default defineNuxtConfig({
     },
 
     nitro: {
+        storage: {
+            db: {
+                driver: "cloudflare-kv-binding",
+                binding: "CLOUDFLARE_KVSTORAGE"
+            }
+        },
+        devStorage: {
+            db: {
+                driver: 'fs',
+                base: './data/db'
+            }
+        },
         prerender: {
             routes: [
                 '/rss.xml',

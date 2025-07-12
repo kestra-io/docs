@@ -1,3 +1,5 @@
+const KEY_CURRENT_SHA = 'currentSha'
+
 export default defineNuxtRouteMiddleware(async (to) => {
     // Skip middleware on server during build/generation
     if (process.prerender) {
@@ -5,6 +7,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // Don't apply middleware to the maintenance page itself
+    // TODO: skip all pages that don't need content
     if (to.path === '/maintenance') {
         return
     }
@@ -12,12 +15,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     // Skip API routes and assets
     if (to.path.startsWith('/api/') ||
         to.path.startsWith('/_nuxt/') ||
-        to.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
-        return
-    }
-
-    // Only run on server side to avoid hydration issues
-    if (process.client) {
+        to.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
         return
     }
 
@@ -25,19 +23,21 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const config = useRuntimeConfig()
         const currentSHA = config.public.currentSHA
 
+        // Use the API endpoint to set the SHA
+        const storedSha = await useStorage().getItem(KEY_CURRENT_SHA)
+
+        if(!storedSha || storedSha === currentSHA) {
+            console.log('SHA matches, skipping maintenance check')
+
+            return
+        }
+
         // Check for sha query parameter
         const shaParam = to.query.sha as string
-        if (shaParam) {
-            // Use the API endpoint to set the SHA
-            await $fetch('/api/maintenance-control', {
-                method: 'POST',
-                body: { 
-                    action: 'set', 
-                    sha: shaParam 
-                }
-            }).catch((error) => {
-                console.error('Failed to set SHA via query parameter:', error)
-            })
+        if(shaParam && shaParam !== currentSHA) {
+            console.log('SHA parameter does not match, setting it in storage')
+
+            await useStorage().setItem(KEY_CURRENT_SHA, shaParam)
 
             // Redirect to the same URL without the sha parameter
             const newQuery = { ...to.query }
@@ -48,22 +48,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
             }, { redirectCode: 302 })
         }
 
-        // For Cloudflare Pages, check if KV storage is available
-        if (process.env.NITRO_PRESET === 'cloudflare-pages') {
-            // The server middleware should handle this, but this is a fallback
-            // We'll use a simple fetch to our own API endpoint
-            const response = await $fetch<{maintenanceMode: boolean}>('/api/maintenance-check', {
-                method: 'POST',
-                body: { currentSHA }
-            }).catch(() => null)
 
-            if (response?.maintenanceMode) {
-                console.log('Maintenance mode detected via API check')
-                return navigateTo('/maintenance', {
-                    redirectCode: 503
-                })
-            }
-        }
+        return navigateTo('/maintenance', {
+            redirectCode: 503
+        })
     } catch (error) {
         // Log error but don't block the request if check fails
         console.error('Error checking maintenance mode:', error)
