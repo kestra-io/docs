@@ -37,6 +37,21 @@ jobs:
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      # check the return of /api/current-sha to avoid starting update too early
+      - name: Compare current-sha to github.sha
+        run: |
+          for i in {1..30}; do
+            response=$(curl -s https://kestra.io/api/current-sha)
+
+            if [[ "$response" == "${{ github.sha }}" ]]; then
+              echo "Current SHA matches: $response starting initialization"
+              break
+            fi
+
+            echo "Current SHA not available yet, retrying in 10 seconds..."
+            sleep 10
+          done
+
       - name: trigger docs & blogs deployment
         run: curl --parallel --max-time 200 https://kestra.io/docs?sha=${{ github.sha }} -o docs.html https://kestra.io/blogs?sha=${{ github.sha }} -o blogs.html
 
