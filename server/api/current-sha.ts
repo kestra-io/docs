@@ -1,8 +1,8 @@
 const KEY_CURRENT_SHA = 'currentSha'
 
 export default defineEventHandler(async (event) => {
-     const storage = useStorage()
-    // deal with only get and put of currentSha using useStorage
+    const storage = useStorage('kv')
+
     if (event.method === 'GET') {
         const currentSha = await storage.getItem(KEY_CURRENT_SHA)
         return { sha: currentSha }

@@ -163,7 +163,10 @@ export default defineNuxtConfig({
         public: {
             siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
             apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
-            currentSHA: process.env.NUXT_PUBLIC_CURRENT_SHA || process.env.CF_PAGES_COMMIT_SHA || 'dev',
+            // currentSHA: process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main'
+            //     ? 'dev'
+            //     : (process.env.CF_PAGES_COMMIT_SHA || 'dev'),
+            currentSHA: process.env.CF_PAGES_COMMIT_SHA ?? 'dev',
             docs: {
                 sections: {
                     "Get Started with Kestra": [
@@ -211,9 +214,15 @@ export default defineNuxtConfig({
 
     nitro: {
         storage: {
-            db: {
+            kv: {
                 driver: "cloudflare-kv-binding",
                 binding: "CLOUDFLARE_KVSTORAGE"
+            }
+        },
+        devStorage: {
+            kv: {
+                driver: "fs",
+                base: './.data/db'
             }
         },
         prerender: {
