@@ -36,7 +36,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
         // Check for sha query parameter
         const shaParam = to.query.sha as string
-        if(shaParam && shaParam !== storedSha) {
+        if(!shaParam){
+            // go directly to maintenance mode
+        } else if (shaParam !== currentSHA) {
+            console.warn(`SHA parameter ${shaParam} does not match current SHA ${currentSHA}; this can happen when call is run before world deploy`)
+        } else if (shaParam !== storedSha) {
             console.log('SHA parameter does not match, setting it in storage')
 
             await $fetch('/api/current-sha', {
