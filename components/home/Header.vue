@@ -71,6 +71,17 @@
         aria-labelledby="home-intro"
         aria-hidden="true"
     >
+        <button 
+        v-if="videoVisible"
+        type="button" 
+        class="floating-close-btn"
+        @click="closeVideoModal"
+        aria-label="Close video"
+        >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -108,6 +119,22 @@
     const riveAnimation = ref()
     const riveLoaded = ref(false)
     const riveDisabled = ref(false)
+
+    function closeVideoModal() {
+        const modal = document.getElementById('home-intro');
+        const modalInstance = (window as any).bootstrap?.Modal?.getInstance(modal);
+        
+        if (modalInstance) {
+            modalInstance.hide();
+        } else {
+            const closeBtn = document.createElement('button');
+            closeBtn.setAttribute('data-bs-dismiss', 'modal');
+            modal?.appendChild(closeBtn);
+            closeBtn.click();
+            modal?.removeChild(closeBtn);
+        }
+        videoVisible.value = false;
+    }
 
     function setupRiveAnimation() {
         const canvas = riveCanvas.value;
@@ -167,6 +194,40 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+
+    .floating-close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        width: 48px;
+        height: 48px;
+        border: none;
+        border-radius: 50%;
+        background: white;
+        color: #000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.05);
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 35px;
+            height: 35px;
+            top: 5px;
+            right: 10px;
+
+            svg {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
 
     .main-header {
         position: relative;
