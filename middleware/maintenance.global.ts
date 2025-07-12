@@ -24,17 +24,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const currentSHA = config.public.currentSHA
 
         // Use the API endpoint to set the SHA
-        const storedSha = await $fetch('/api/current-sha', {
+        const {sha:storedSha} = await $fetch<{sha:string}>('/api/current-sha', {
             method: 'GET'
         })
 
-        if(!storedSha || storedSha === currentSHA) {
+        if(storedSha && storedSha === currentSHA) {
             return
         }
 
         // Check for sha query parameter
         const shaParam = to.query.sha as string
-        if(shaParam && shaParam !== currentSHA) {
+        if(shaParam && shaParam !== storedSha) {
             console.log('SHA parameter does not match, setting it in storage')
 
             await $fetch('/api/current-sha', {
@@ -45,13 +45,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
             // Redirect to the same URL without the sha parameter
             const newQuery = { ...to.query }
             delete newQuery.sha
+            console.log(`Redirecting to ${to.path} without sha parameter`, newQuery)
             return navigateTo({
                 path: to.path,
                 query: newQuery
             }, { redirectCode: 302 })
         }
 
-        console.log('Maintenance detected, redirecting')
+        console.log(`Maintenance detected on SHA ${currentSHA}, redirecting`)
         return navigateTo('/maintenance', {
             redirectCode: 503
         })

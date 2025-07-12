@@ -30,6 +30,7 @@ dist
 .obsidian/**/*
 .vercel
 .data
+dev-kvstorage
 
 ## Cloudflare
 .wrangler
