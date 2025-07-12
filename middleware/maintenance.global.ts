@@ -33,7 +33,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             return
 
         // Use the API endpoint to set the SHA
-        const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-sha`, {
+        const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-kv-sha`, {
             method: 'POST',
             body: {scope}
         })
@@ -57,7 +57,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
                     query: { shaSkip: currentSHA }
                 })
 
-            await $fetch('/api/current-sha', {
+            await $fetch('/api/current-kv-sha', {
                 method: 'PUT',
                 body: {
                     sha: currentSHA,
