@@ -1,5 +1,3 @@
-
-
 export default defineNuxtRouteMiddleware(async (to) => {
     // Skip middleware on server during build/generation
     if (process.prerender) {
@@ -22,10 +20,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const config = useRuntimeConfig()
         const currentSHA = config.public.currentSHA
 
-        // no need for maintenance in dev
-        if(currentSHA === 'dev')
-            return
+        // Check for sha query parameter
+        const shaSkipParam = to.query.shaSkip as string
 
+        // no need for maintenance in dev
+        if(currentSHA === 'dev' || shaSkipParam === currentSHA)
+            return
 
         // Use the API endpoint to set the SHA
         const {sha:storedSha} = await $fetch<{sha:string}>('/api/current-sha', {
@@ -44,6 +44,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
             console.warn(`SHA parameter ${shaParam} does not match current SHA ${currentSHA}; this can happen when call is run before world deploy`)
         } else if (shaParam !== storedSha) {
             console.log('SHA parameter does not match, setting it in storage')
+
+            // make sure the initialization finishes properly before we free up maintenance mode
+            await $fetch(to.path,{
+                    method: 'GET',
+                    query: { shaSkip: currentSHA }
+                })
 
             await $fetch('/api/current-sha', {
                 method: 'PUT',
