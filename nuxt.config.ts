@@ -216,12 +216,6 @@ export default defineNuxtConfig({
                 binding: "CLOUDFLARE_KVSTORAGE"
             }
         },
-        devStorage: {
-            db: {
-                driver: 'fs',
-                base: './dev-kvstorage'
-            }
-        },
         prerender: {
             routes: [
                 '/rss.xml',
