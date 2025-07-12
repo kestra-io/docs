@@ -1,4 +1,4 @@
-const KEY_CURRENT_SHA = 'currentSha'
+
 
 export default defineNuxtRouteMiddleware(async (to) => {
     // Skip middleware on server during build/generation
@@ -24,7 +24,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const currentSHA = config.public.currentSHA
 
         // Use the API endpoint to set the SHA
-        const storedSha = await useStorage().getItem(KEY_CURRENT_SHA)
+        const storedSha = await $fetch('/api/current-sha', {
+            method: 'GET'
+        })
 
         if(!storedSha || storedSha === currentSHA) {
             console.log('SHA matches, skipping maintenance check')
@@ -37,7 +39,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if(shaParam && shaParam !== currentSHA) {
             console.log('SHA parameter does not match, setting it in storage')
 
-            await useStorage().setItem(KEY_CURRENT_SHA, shaParam)
+        await $fetch('/api/current-sha', {
+            method: 'PUT',
+            body: { sha: currentSHA }
+        })
 
             // Redirect to the same URL without the sha parameter
             const newQuery = { ...to.query }
