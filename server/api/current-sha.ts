@@ -1,4 +1,6 @@
-const KEY_CURRENT_SHA = 'currentSha'
+import { contentPrefix } from "~/content.config.names"
+
+const KEY_CURRENT_SHA = contentPrefix + 'currentSha'
 
 export default defineEventHandler(async (event) => {
     const storage = useStorage('kv')
