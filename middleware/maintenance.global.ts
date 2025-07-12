@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
     // Don't apply middleware to the maintenance page itself
     // TODO: skip all pages that don't need content
-    if (to.path === '/maintenance') {
+    if (!to.path.startsWith('/docs') && !to.path.startsWith('/blog')) {
         return
     }
 
@@ -29,8 +29,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         })
 
         if(!storedSha || storedSha === currentSHA) {
-            console.log('SHA matches, skipping maintenance check')
-
             return
         }
 
@@ -39,10 +37,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if(shaParam && shaParam !== currentSHA) {
             console.log('SHA parameter does not match, setting it in storage')
 
-        await $fetch('/api/current-sha', {
-            method: 'PUT',
-            body: { sha: currentSHA }
-        })
+            await $fetch('/api/current-sha', {
+                method: 'PUT',
+                body: { sha: currentSHA }
+            })
 
             // Redirect to the same URL without the sha parameter
             const newQuery = { ...to.query }
@@ -53,7 +51,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             }, { redirectCode: 302 })
         }
 
-
+        console.log('Maintenance detected, redirecting')
         return navigateTo('/maintenance', {
             redirectCode: 503
         })
