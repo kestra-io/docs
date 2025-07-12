@@ -1,4 +1,4 @@
-export default function ({ route, redirect }) {
+export default defineNuxtRouteMiddleware((to) => {
     const plugins = [
         { base: 'kubernetes', taskRunners: ['kubernetes'] },
         { base: 'aws', taskRunners: ['batch'] },
@@ -6,14 +6,14 @@ export default function ({ route, redirect }) {
         { base: 'azure', taskRunners: ['batch'] },
     ];
 
-    plugins.forEach(plugin => {
-        plugin.taskRunners.forEach(taskRunner => {
+    for (const plugin of plugins) {
+        for (const taskRunner of plugin.taskRunners) {
             const standardPath = `/plugins/plugin-${plugin.base}/io.kestra.plugin.${plugin.base}.runner.${taskRunner}`;
             const eePath = `/plugins/plugin-ee-${plugin.base}/io.kestra.plugin.ee.${plugin.base}.runner.${taskRunner}`;
 
-            if (route?.path === standardPath) {
-                return redirect(eePath);
+            if (to?.path === standardPath) {
+                return eePath;
             }
-        });
-    });
-}
+        }
+    }
+})

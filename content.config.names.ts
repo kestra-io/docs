@@ -8,7 +8,7 @@ export function slugify(text:string) {
     });
 }
 
-const contentPrefix = process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main' ? `c${slugify(process.env.CF_PAGES_BRANCH)}_` : ''
+export const contentPrefix = process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main' ? `c${slugify(process.env.CF_PAGES_BRANCH)}_` : ''
 
 export const CollectionNames = {
     docs: `${contentPrefix}docs`,
