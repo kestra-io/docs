@@ -4,8 +4,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
         return
     }
 
-    // Don't apply middleware to the maintenance page itself
-    if (!to.path.startsWith('/docs') && !to.path.startsWith('/blog')) {
+    const scope = to.path.startsWith('/docs') ? 'docs' : to.path.startsWith('/blog') ? 'blogs' : null
+
+    // Don't apply middleware on anything that does not need content
+    if (scope === null) {
         return
     }
 
@@ -28,7 +30,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             return
 
         // Use the API endpoint to set the SHA
-        const {sha:storedSha} = await $fetch<{sha:string}>('/api/current-sha', {
+        const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-sha?scope=${scope}`, {
             method: 'GET'
         })
 
@@ -46,14 +48,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
             console.log('SHA parameter does not match, setting it in storage')
 
             // make sure the initialization finishes properly before we free up maintenance mode
-            await $fetch(to.path,{
+            await $fetch(to.path, {
                     method: 'GET',
                     query: { shaSkip: currentSHA }
                 })
 
             await $fetch('/api/current-sha', {
                 method: 'PUT',
-                body: { sha: currentSHA }
+                body: {
+                    sha: currentSHA,
+                    scope
+                }
             })
 
             // Redirect to the same URL without the sha parameter
