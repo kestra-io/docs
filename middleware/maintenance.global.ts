@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const scope = to.path.startsWith('/docs') ? 'docs' : to.path.startsWith('/blog') ? 'blogs' : null
 
     // Don't apply middleware on anything that does not need content
-    if (scope === null) {
+    if (!scope) {
         return
     }
 
@@ -25,13 +25,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
         // Check for sha query parameter
         const shaSkipParam = to.query.shaSkip as string
 
+        if(shaSkipParam === currentSHA)
+            return
+
         // no need for maintenance in dev
-        if(currentSHA === 'dev' || shaSkipParam === currentSHA)
+        if(currentSHA === 'dev')
             return
 
         // Use the API endpoint to set the SHA
-        const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-sha?scope=${scope}`, {
-            method: 'GET'
+        const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-sha`, {
+            method: 'POST',
+            body: {scope}
         })
 
         if(storedSha && storedSha === currentSHA)
