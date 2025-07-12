@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // Don't apply middleware to the maintenance page itself
-    // TODO: skip all pages that don't need content
     if (!to.path.startsWith('/docs') && !to.path.startsWith('/blog')) {
         return
     }
