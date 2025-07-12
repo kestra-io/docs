@@ -9,6 +9,3 @@
     description="The site is currently undergoing maintenance. Please check back later."
   />
 </template>
-
-<script lang="ts" setup>
-</script>
