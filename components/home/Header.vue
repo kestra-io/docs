@@ -78,9 +78,7 @@
         @click="closeVideoModal"
         aria-label="Close video"
         >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <Close />
         </button>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -107,6 +105,7 @@
     import { ref } from "vue";
     import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
+    import Close from "vue-material-design-icons/Close.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -197,11 +196,11 @@
 
     .floating-close-btn {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 10px;
+        right: 10px;
         z-index: 99999;
-        width: 48px;
-        height: 48px;
+        width: 30px;
+        height: 30px;
         border: none;
         border-radius: 50%;
         background: white;
@@ -217,15 +216,14 @@
         }
 
         @include media-breakpoint-down(md) {
-            width: 35px;
-            height: 35px;
-            top: 5px;
-            right: 10px;
+            width: 25px;
+            height: 25px;
+        }
+    }
 
-            svg {
-                width: 15px;
-                height: 15px;
-            }
+    @include media-breakpoint-down(md) {
+        .modal-dialog{
+            top: 28px;
         }
     }
 
