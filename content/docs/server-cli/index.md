@@ -42,6 +42,11 @@ For more information on troubleshooting CLI options, see the dedicated [Troubles
 
 `./kestra server webserver`
 
+Or
+
+`./kestra server webserver --no-indexer` to start independently from the Indexer.
+
+
 ## Kestra standalone, all server components in one process
 
 `./kestra server standalone`

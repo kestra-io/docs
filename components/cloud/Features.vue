@@ -318,13 +318,14 @@ const onSubmit = async (e: Event) => {
             @media (min-width: 992px) {
                 content: "";
                 position: absolute;
-                top: -30%;
-                right: -60%;
+                top: 0;
+                right: 0;
                 width: 400px;
                 height: 400px;
                 background-image: url("./images/cloud_visual.png");
                 background-size: contain;
                 background-repeat: no-repeat;
+                transform: translateX(70%) translateY(-52%);
             }
         }
 

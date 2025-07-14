@@ -14,7 +14,8 @@
                     <NuxtLink
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
-                        :href="item.path">
+                        :href="item.path"
+                        @click="handleNavClick($event, item.path)">
                             {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
@@ -62,121 +63,115 @@
     </div>
 </template>
 
-<script>
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+<script setup lang="ts">
+import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
-    export default {
-        name: "RecursiveNavSidebar",
-        components: {
-            ChevronDown,
-            ChevronRight
-        },
-        props: {
-            items: {
-                type: Array,
-                required: true
-            },
-            depthLevel: {
-                type: Number,
-                required: true
-            },
-            activeSlug: {
-                type: String,
-                required: true
-            },
-            parentSlug: {
-                type: String,
-                required: true
-            },
-            disabledPages: {
-                type: Array,
-                required: false
-            },
-            type: {
-                type: String,
-                required: false
-            }
-        },
-        data: () => ({
-            toggled: [],
-        }),
-        mounted() {
-            this.$nextTick(() => {
-                const activeItem = document.querySelector('.bd-sidebar a.active');
-                if (activeItem) {
-                    activeItem.scrollIntoView({ behavior: 'instant', block: 'center' });
-                }
-            });
-        },
-        methods: {
-            toggleWithChildrenHandling(path) {
-                this.items.filter(i => i.path.startsWith(path))
-                    .forEach(i => {
-                        if (this.isActiveOrExpanded(i) || i.path === path) {
-                            this.$refs["childSideBar-" + this.pathToId(i.path)]?.[0]?.toggleWithChildrenHandling(i.path);
-                        }
+interface Props {
+    items: Array<any>
+    depthLevel: number
+    activeSlug: string
+    parentSlug: string
+    disabledPages?: Array<string>
+    type?: string
+}
 
-                        if (this.isActiveOrExpanded(i) && i.path !== path) {
-                            this.rawToggle(i.path);
-                        }
-                    });
+const props = defineProps<Props>()
 
-                this.rawToggle(path);
-            },
-            rawToggle(path) {
-                if (this.toggled.includes(path)) {
-                    this.toggled = this.toggled.filter(p => p !== path);
-                } else {
-                    this.toggled.push(path);
-                }
-            },
-            pathToId(path) {
-                return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__");
-            },
-            filterChildren(item) {
-                return (item.children || []).filter(r => item.path !== r.path);
-            },
-            isActive(item) {
-                if (item.path.includes("#") && item.children?.some(c => this.isActive(c))) {
-                    return true;
-                }
+const toggled = ref<string[]>([])
 
-                if (item.path.match(/[^/]*\.[^/]*$/)) {
-                    return this.activeSlug === item.path;
-                }
-
-                const normalizePath = (path) => `${path}${path.endsWith('/') ? '' : '/'}`;
-                return normalizePath(this.activeSlug).startsWith(normalizePath(item.path));
-            },
-            isActiveOrExpanded(item) {
-                if (this.isActive(item)) {
-                    return !this.toggled.includes(item.path);
-                }
-
-                return this.toggled.includes(item.path);
-            },
-            isPage(item) {
-                if (item.isPage === false) {
-                    return false;
-                }
-
-                if (this.disabledPages) {
-                    return !this.disabledPages.includes(item.path)
-                }
-
-                return item.isPage ?? true;
-            },
-            getClass(item, depthLevel, disabled) {
-                return {
-                    bold: depthLevel === 1,
-                    section: item.isSection,
-                    active: this.isActive(item),
-                    disabled: disabled
-                }
-            }
+onMounted(() => {
+    const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
+    
+    nextTick(() => {
+        const wasRestored = restoreScrollPosition()
+        
+        if (!wasRestored) {
+            scrollToActiveIfNeeded()
         }
+    })
+})
+
+const handleNavClick = (event: Event, path: string) => {
+    const { preserveScrollPosition } = useSidebarScroll()
+    preserveScrollPosition()
+}
+
+const toggleWithChildrenHandling = (path: string) => {
+    props.items.filter(i => i.path.startsWith(path))
+        .forEach(i => {
+            if (isActiveOrExpanded(i) || i.path === path) {
+                const childRef = document.querySelector(`#childSideBar-${pathToId(i.path)}`)
+                if (childRef && 'toggleWithChildrenHandling' in childRef) {
+                    (childRef as any).toggleWithChildrenHandling(i.path)
+                }
+            }
+
+            if (isActiveOrExpanded(i) && i.path !== path) {
+                rawToggle(i.path)
+            }
+        })
+
+    rawToggle(path)
+}
+
+const rawToggle = (path: string) => {
+    if (toggled.value.includes(path)) {
+        toggled.value = toggled.value.filter(p => p !== path)
+    } else {
+        toggled.value.push(path)
     }
+}
+
+const pathToId = (path: string) => {
+    return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__")
+}
+
+const filterChildren = (item: any) => {
+    return (item.children || []).filter((r: any) => item.path !== r.path)
+}
+
+const isActive = (item: any) => {
+    if (item.path.includes("#") && item.children?.some((c: any) => isActive(c))) {
+        return true
+    }
+
+    if (item.path.match(/[^/]*\.[^/]*$/)) {
+        return props.activeSlug === item.path
+    }
+
+    const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
+    return normalizePath(props.activeSlug).startsWith(normalizePath(item.path))
+}
+
+const isActiveOrExpanded = (item: any) => {
+    if (isActive(item)) {
+        return !toggled.value.includes(item.path)
+    }
+
+    return toggled.value.includes(item.path)
+}
+
+const isPage = (item: any) => {
+    if (item.isPage === false) {
+        return false
+    }
+
+    if (props.disabledPages) {
+        return !props.disabledPages.includes(item.path)
+    }
+
+    return item.isPage ?? true
+}
+
+const getClass = (item: any, depthLevel: number, disabled: boolean) => {
+    return {
+        bold: depthLevel === 1,
+        section: item.isSection,
+        active: isActive(item),
+        disabled: disabled
+    }
+}
 </script>
 
 <style lang="scss" scoped>

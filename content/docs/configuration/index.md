@@ -506,7 +506,7 @@ To use Kestra Enterprise Edition, you will need a valid license configured under
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
-- `kestra.ee.license.fingerprint`: license authentication.
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md).
 - `kestra.ee.license.key`: license key.
 
 ```yaml
@@ -1005,13 +1005,13 @@ We provide some predefined configuration, and some example of the `logback.xml` 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-    <include resource="logback/base.xml" />
-    <include resource="logback/gcp.xml" />
+  <include resource="logback/base.xml" />
+  <include resource="logback/gcp.xml" />
 
-    <root level="WARN">
-        <appender-ref ref="CONSOLE_JSON_OUT" />
-        <appender-ref ref="CONSOLE_JSON_ERR" />
-    </root>
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_JSON_OUT" />
+    <appender-ref ref="CONSOLE_JSON_ERR" />
+  </root>
 </configuration>
 ```
 
@@ -1582,7 +1582,7 @@ kestra:
 
 ### Default Role
 
-The default role is the role that will be assigned to a new user when it is created.
+The default role is the role that will be assigned to a new user when it is created. This is particularly helpful when syncing users via [SCIM](../06.enterprise/03.auth/scim/index.md). Note that this doesn't apply to Service Accounts, which don't have any roles assigned by default.
 
 You can define the default role using the `kestra.security.defaultRole` configuration.
 Whenever you start Kestra, the default role will be checked and created if it doesn't exist.
@@ -2122,7 +2122,7 @@ kestra:
 
 ## Kestra URL
 
-Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use a full URI here with a trailing `/` (without `ui` or `api`).
+Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use the full URI, but omit `/ui` and `/api` segments:
 
 ```yaml
 kestra:
@@ -2157,7 +2157,7 @@ These variables will be accessible in a flow with `{{ envs.your_env }}` in **low
             env-vars-prefix: "ENV_" # this is the default as of version 0.23
 ```
 
-An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.MY_VARIABLE }}`.
+An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.my_variable }}`.
 
 ### Global Variables
 

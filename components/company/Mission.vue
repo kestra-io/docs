@@ -30,10 +30,9 @@
           curtain"
         </p>
         <footer>
-          <span>Amy King</span>
           <NuxtImg
-            src="/landing/company/teams/jpmorgan.svg"
-            alt="JP Morgan"
+            src="/landing/company/teams/acxiom.svg"
+            alt="Acxiom"
           />
         </footer>
       </blockquote>

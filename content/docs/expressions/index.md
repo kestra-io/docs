@@ -23,7 +23,7 @@ Flows, tasks, executions, triggers, and schedules come with built-in expressions
 - `{{ inputs.myinput }}` retrieves an input value passed to the execution
 - `{{ outputs.mytask.myoutput }}` fetches a task's output.
 
-To debug expressions, use the **Debug Outputs** console as demonstrated in the video below:
+To debug expressions, use the **Debug Expression** console as demonstrated in the video below:
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/SPGmXSJN3VE?si=rCoWNDEq14LYvPdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -49,7 +49,7 @@ The execution context includes these variables:
 - `globals` — global variables.
 
 ::alert{type="info"}
-To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Outputs console.
+To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Expression console.
 ![printContext](/docs/expressions/printContext.png)
 ::
 
@@ -910,10 +910,11 @@ The `split` filter divides a string into a list based on a delimiter.
 ```
 
 **Arguments**:
-- `delimiter`: the string to split on.
+- `delimiter`: the regex to split on. Escape special characters (e.g. `split('\\.')`)
 - `limit`: limits the number of splits:
   - **Positive**: limits the array size, with the last entry containing the remaining content.
-  - **Zero or negative**: no limit on splits.
+  - **Zero**: no limit on splits, trailing empty strings will be discarded.
+  - **Negative**: no limit on splits, trailing empty strings will be included.
 
 ```twig
 {{ 'apple,banana,cherry,grape' | split(',', 2) }}
