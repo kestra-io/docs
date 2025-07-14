@@ -65,23 +65,22 @@
             'show.bs.modal': () => (videoVisible = true),
             'hidden.bs.modal': () => (videoVisible = false),
         }"
-        class="modal modal-full fade"
+        class="modal fade"
         id="home-intro"
         tabindex="-1"
         aria-labelledby="home-intro"
         aria-hidden="true"
     >
-        <button 
-        v-if="videoVisible"
-        type="button" 
-        class="floating-close-btn"
-        @click="closeVideoModal"
-        aria-label="Close video"
-        >
-            <Close />
-        </button>
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button 
+                        type="button" 
+                        class="btn-close"
+                        data-bs-dismiss="modal" 
+                        aria-label="Close"
+                    ></button>
+                </div>
                 <div class="modal-body">
                     <div class="video-responsive">
                         <iframe
@@ -105,7 +104,6 @@
     import { ref } from "vue";
     import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
-    import Close from "vue-material-design-icons/Close.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -118,22 +116,6 @@
     const riveAnimation = ref()
     const riveLoaded = ref(false)
     const riveDisabled = ref(false)
-
-    function closeVideoModal() {
-        const modal = document.getElementById('home-intro');
-        const modalInstance = (window as any).bootstrap?.Modal?.getInstance(modal);
-        
-        if (modalInstance) {
-            modalInstance.hide();
-        } else {
-            const closeBtn = document.createElement('button');
-            closeBtn.setAttribute('data-bs-dismiss', 'modal');
-            modal?.appendChild(closeBtn);
-            closeBtn.click();
-            modal?.removeChild(closeBtn);
-        }
-        videoVisible.value = false;
-    }
 
     function setupRiveAnimation() {
         const canvas = riveCanvas.value;
@@ -193,39 +175,6 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
-    .floating-close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 99999;
-        width: 30px;
-        height: 30px;
-        border: none;
-        border-radius: 50%;
-        background: white;
-        color: #000;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: scale(1.05);
-        }
-
-        @include media-breakpoint-down(md) {
-            width: 25px;
-            height: 25px;
-        }
-    }
-
-    @include media-breakpoint-down(md) {
-        .modal-dialog{
-            top: 28px;
-        }
-    }
 
     .main-header {
         position: relative;
@@ -416,6 +365,17 @@
                     content: none;
                 }
             }
+        }
+    }
+
+    .modal {
+        &-xl {
+            max-width: 90vw;
+        }
+
+        &-header {
+            border: none;
+            padding: 1rem 1rem 0;
         }
     }
 </style>
