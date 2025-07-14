@@ -16,7 +16,7 @@ How to enable multi-tenancy in your Kestra instance.
 
 A tenant represents an **isolated environment within a single Kestra instance**.
 
-Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy, security along with separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
+Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy and security along with separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
 
 ::alert{type="info"}
 You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.overview/01.enterprise-edition.md).
@@ -30,7 +30,7 @@ End-users can use the tenant selection dropdown menu from the [UI](../08.ui/inde
 
 ![Tenants selection dropdown](/docs/enterprise/tenants.png)
 
-Most of [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that are instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require a Superadmin access.
+Most [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require a Superadmin access.
 
 For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../api-reference/enterprise.md) for more information.
 
@@ -38,8 +38,8 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 ## Key Benefits of Multi-Tenancy
 
-1. **Data Isolation**: each tenant's data, configuration, and code are isolated and inaccessible to other tenants.
-2. **Resource Isolation**: each tenant's resources are isolated from other tenants — incl. flows, triggers, executions, logs, audit logs, secrets, etc.
+1. **Data Isolation**: each tenant's data, configuration, and code is isolated and inaccessible to other tenants.
+2. **Resource Isolation**: each tenant's resources are isolated from other tenants — including flows, triggers, executions, logs, audit logs, secrets, etc.
 3. **Simple Configuration**: you can easily create new tenants instantly giving you a fresh, fully-isolated workspace accessible from your existing Kestra instance.
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
@@ -122,13 +122,13 @@ resource "kestra_tenant" "stage" {
 
 Deleting a tenant will delete all its resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs remain stored in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
 
-Key Value pairs and namespace files will not be deleted as they are persisted in internal storage.
+Key-value pairs and namespace files will not be deleted as they are persisted in internal storage.
 
 ### Admin Role Assignment
 
 Regardless of which of the above methods you use to create a tenant, the User who creates the tenant automatically gets the Admin Role assigned. That role grants admin rights to that user on that tenant.
 
-Note that there is an exception to this rule if tenant is created by a Superadmin. In that case, the Superadmin has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
+Note that there is an exception to this rule if a tenant is created by a Superadmin. In that case, the Superadmin has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
 
 ### Dedicated Storage and Secrets backend per Tenant
 

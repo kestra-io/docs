@@ -13,33 +13,33 @@
                         role="tablist"
                     >
                         <li
-                            v-for="cat in categories"
-                            :key="cat.name"
+                            v-for="category in categories"
+                            :key="category.name"
                             class="nav-item text-nowrap"
                             role="presentation"
                         >
                             <button
                                 class="nav-link"
-                                :class="{ 'active': activeTag.name === cat.name }"
+                                :class="{ 'active': activeTag.name === category.name }"
                                 id="home-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#home"
                                 type="button"
-                                @click="setCatVideos(cat)"
+                                @click="setCatVideos(category)"
                             >
-                                {{ cat.name }}
+                                {{ category.name }}
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div
-                            v-for="cat in categories"
-                            :key="cat.name"
+                            v-for="category in categories"
+                            :key="category.name"
                             class="tab-pane fade"
-                            :class="{ 'show active': activeTag.name === cat.name }"
-                            :id="cat.name"
+                            :class="{ 'show active': activeTag.name === category.name }"
+                            :id="category.name"
                             role="tabpanel"
-                            :aria-labelledby="`${cat.name}-tab`"
+                            :aria-labelledby="`${category.name}-tab`"
                         >
                             <div class="tutorials-container">
                                 <div class="row" v-if="featuredVideo">
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="tutorials-list">
                                     <div class="row">
-                                        <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="video in videos">
+                                        <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="video in videos" :key="video.title">
                                             <VideosTutorialVideo
                                                 :video="video"
                                                 :getYMD="getYMD"
@@ -149,145 +149,171 @@
     </div>
 </template>
 
-<script setup>
-  const {$bootstrap} = useNuxtApp()
-  const config = useRuntimeConfig();
-  const activeTag = ref();
-  const videos = ref([]);
-  const youtubeVideoModal = ref(null);
-  const totalPages = ref(0);
-  const totalVideos = ref(0);
-  const featuredVideo = ref(null);
-  const videoVisible = ref(false);
-  const visibleVideoData = ref({});
-  const route = useRoute();
-  const router = useRouter();
-  const { start } = useLoadingIndicator()
-  const tags = {
-    "all": "All videos",
-    "deep-dive": "Deep Dive Tutorials",
-    "quick-start": "Quick Start Tutorials",
-    "feature-highlight": "Feature Highlight"
-  };
+<script setup lang="ts">
+interface Category {
+  name: string
+}
 
-  const page = computed(() => route.query.page ? parseInt(route.query.page) : 1);
-  const itemsPerPage = ref(route.query.size ? parseInt(route.query.size) : 25);
+interface VideoData {
+  title: string
+  category: string
+  url: string
+  publicationDate?: string
+  author: string
+  isFeatured?: boolean
+  iframeUrl?: string
+  youtubeUrl?: string
+}
 
-  watch(() => route.params.slug, (newVal) => {
-      activeTag.value = { name: tags[newVal] ? tags[newVal] :  "All videos" }
-  }, { immediate: true });
+interface TutorialVideoResponse {
+  results: VideoData[]
+  total: number
+}
 
-  const {data: tutorialVideo} = await useFetch(() => `${config.public.apiUrl}/tutorial-videos?page=${page.value}&size=${itemsPerPage.value}&category=${route.params.slug === "all" ? "" : tags[route.params.slug]}`);
+const { $bootstrap } = useNuxtApp()
+const config = useRuntimeConfig()
+const route = useRoute()
+const router = useRouter()
+const { start } = useLoadingIndicator()
+const { extractVideoId } = useYoutube()
 
-  const changePage = (pageNo) => {
-    router.push({
-        query: {
-            ...route.query,
-            page: pageNo,
-        }
-    });
+const youtubeVideoModal = ref<HTMLElement | null>(null)
+const activeTag = ref<Category>({ name: 'All videos' })
+const videos = ref<VideoData[]>([])
+const featuredVideo = ref<VideoData | null>(null)
+const videoVisible = ref(false)
+const visibleVideoData = ref<VideoData>({} as VideoData)
+const totalPages = ref(0)
+const totalVideos = ref(0)
+const itemsPerPage = ref(25)
+
+const categories: Category[] = [
+  { name: 'All videos' },
+  { name: 'Deep Dive Tutorials' },
+  { name: 'Quick Start Tutorials' },
+  { name: 'Feature Highlight' }
+]
+
+const tags = new Map([
+  ['all', 'All videos'],
+  ['deep-dive', 'Deep Dive Tutorials'],
+  ['quick-start', 'Quick Start Tutorials'],
+  ['feature-highlight', 'Feature Highlight']
+])
+
+const page = computed(() => 
+  route.query.page ? parseInt(route.query.page as string) : 1
+)
+
+const currentCategory = computed(() => {
+  const slug = route.params.slug as string
+  return slug === 'all' ? '' : tags.get(slug) || ''
+})
+
+function getYMD(dateString: string): string {
+  const date = new Date(dateString)
+  return new Intl.DateTimeFormat('de-DE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(date)
+}
+
+function embedUrl(url: string): string {
+  const videoId = extractVideoId(url)
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : ''
+}
+
+function findKeyByValue(map: Map<string, string>, value: string): string | undefined {
+  for (const [key, val] of map.entries()) {
+    if (val === value) return key
+  }
+}
+
+function setVideos(data: VideoData[], total: number): void {
+  const videoData = data.map(item => ({
+    ...item,
+    iframeUrl: embedUrl(item.url),
+    youtubeUrl: item.url
+  }))
+
+  if (activeTag.value.name === 'All videos') {
+    featuredVideo.value = videoData.find(item => item.isFeatured) || null
+    videos.value = videoData.filter(video => !video.isFeatured)
+  } else {
+    featuredVideo.value = null
+    videos.value = [...videoData]
   }
 
-  watch(itemsPerPage, (newVal) => {
-      router.push({
-            query: {
-                ...route.query,
-                size: newVal,
-                page: 1
-            }
-      });
+  totalVideos.value = total
+  totalPages.value = Math.ceil(total / itemsPerPage.value)
+}
+
+function changePage(pageNo: number): void {
+  router.push({
+    query: {
+      ...route.query,
+      page: pageNo
+    }
   })
+}
 
-  const closeModal = () => {
-    if (process.client && youtubeVideoModal.value) {
-      const modal = $bootstrap.Modal.getInstance(youtubeVideoModal.value);
-      if (modal) {
-        modal.hide();
-      }
-    }
+function closeModal(): void {
+  if (process.client && youtubeVideoModal.value) {
+    const modal = $bootstrap.Modal.getInstance(youtubeVideoModal.value)
+    modal?.hide()
   }
+}
 
-  const openVideoModal = (video) => {
-    visibleVideoData.value = video;
-  }
+function openVideoModal(video: VideoData): void {
+  visibleVideoData.value = video
+}
 
-  const setVideos = (data, total) => {
-    const videoData = data.map(item => ({ ...item, iframeUrl: embedUrl(item.url) }));
-    if (activeTag.value.name === 'All videos') {
-      featuredVideo.value = videoData.find((item) => item.isFeatured);
-      videos.value = videoData.filter((video) => !video.isFeatured);
-    } else {
-      featuredVideo.value = null;
-      videos.value = [ ...videoData ];
-    }
-    totalVideos.value = total;
-    totalPages.value = Math.ceil(total / itemsPerPage.value);
-  }
-
-  const getYMD = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).format(date);
-  }
-
-  const embedUrl = (url) => {
-    const videoId = url.split('v=')[1];
-    return "https://www.youtube.com/embed/" + videoId;
-  }
-
-  const findKeyByValue = (obj, value) => {
-    return Object.entries(obj).find(([key, val]) => val === value)?.[0];
-  };
-
-  const setCatVideos = (tagVal) => {
-    start();
-    router.push({
-        query: {
-            ...route.query,
-            page: 1,
-        },
-        params: {
-            ...route.params,
-            slug: findKeyByValue(tags, tagVal.name)
-        }
-    })
-  }
-
-  watch(tutorialVideo, (newVal) => {
-      if(newVal?.total) {
-          setVideos(newVal.results, newVal.total);
-          if (typeof window !== 'undefined') {
-            window.scrollTo(0, 0);
-          }
-      }
-  }, { immediate: true });
-</script>
-
-<script>
-  export default {
-    name: "TutorialsList",
-    data() {
-      return {
-        categories: [
-          {
-            name: "All videos",
-          },
-          {
-            name: "Deep Dive Tutorials",
-          },
-          {
-            name: "Quick Start Tutorials",
-          },
-          {
-            name: "Feature Highlight",
-          },
-        ],
-      };
+function setCatVideos(category: Category): void {
+  start()
+  router.push({
+    query: {
+      ...route.query,
+      page: 1
     },
-  };
+    params: {
+      ...route.params,
+      slug: findKeyByValue(tags, category.name)
+    }
+  })
+}
+
+watch(() => route.params.slug, (newSlug) => {
+  const slug = newSlug as string
+  activeTag.value = { name: tags.get(slug) || 'All videos' }
+}, { immediate: true })
+
+watch(() => route.query.size, (newSize) => {
+  itemsPerPage.value = newSize ? parseInt(newSize as string) : 25
+}, { immediate: true })
+
+watch(itemsPerPage, (newVal) => {
+  router.push({
+    query: {
+      ...route.query,
+      size: newVal,
+      page: 1
+    }
+  })
+})
+
+const { data: tutorialVideo } = await useFetch<TutorialVideoResponse>(
+  () => `${config.public.apiUrl}/tutorial-videos?page=${page.value}&size=${itemsPerPage.value}&category=${currentCategory.value}`
+)
+
+watch(tutorialVideo, (newVal) => {
+  if (newVal?.total) {
+    setVideos(newVal.results, newVal.total)
+    if (process.client) {
+      window.scrollTo(0, 0)
+    }
+  }
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>

@@ -36,6 +36,7 @@ const teamMembers = [
   { name: "Anna Geller", title: "Product Lead", image: "/landing/company/teams/ageller-round.png" },
   { name: "David Khan", title: "Sales Leader", image: "/landing/company/teams/dkhan-round.png" },
   { name: "Luke Lipan", title: "Sales Leader", image: "/landing/company/teams/llipan-round.png" },
+  { name: "Jesse Martin", title: "Cloud Go To Market Lead", image: "/landing/company/teams/jmartin-round.png" },
   { name: "Paul Grainger", title: "Lead Field Engineer", image: "/landing/company/teams/pgrainger-round.png" },
   { name: "Florian Hussonnois", title: "Lead Software Engineer", image: "/landing/company/teams/fhussonois-round.png" },
   { name: "Loïc Mathieu", title: "Lead Software Engineer", image: "/landing/company/teams/lmathieu-round.png" },
@@ -57,7 +58,6 @@ const teamMembers = [
   { name: "Marco Sabatini", title: "Platform Engineer", image: "/landing/company/teams/msabatini-round.png" },
   { name: "Gilles Perreymond", title: "Platform Engineer", image: "/landing/company/teams/gperreymond-round.png" },
   { name: "Alex Emerich", title: "Technical Writer", image: "/landing/company/teams/aemerich-round.png" },
-  { name: "Izaac Carcenac Sautron", title: "QA Software Engineer", image: "/landing/company/teams/izaac-round.png" },
   { name: "Rok Grabnar", title: "Data Analyst", image: "/landing/company/teams/rgrabnar-round.png" },
   { name: "Wish to see <br />your photo here?", title: null, image: "/landing/company/teams/portrait-round.png", isOpenPosition: true }
 ]

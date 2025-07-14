@@ -20,15 +20,15 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level.
 
-To turn on for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
+To enable for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
 
 ![read-only-secrets-8](/docs/enterprise/read-only-secrets-8.png)
 
-To turn on for a specific Namespace, toggle the setting on in the **Dedicated secrets manager** configuration of the **Edit** tab.
+To enable for a specific Namespace, toggle the setting on in the **Dedicated secrets manager** configuration of the **Edit** tab.
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
 
-Secrets will now have a lock icon to show that they cannot be edited from Kestra, and the **Create New Secret** button in the top right corner that would otherwise be present is unavailable.
+Secrets will display a lock icon to indicate read-only status, and the **Create New Secret** button will no longer be visible.
 
 ![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
 
@@ -77,12 +77,14 @@ kestra:
     googleSecretManager:
       project: gcp-project-id
       serviceAccount: |
-        Paste here the contents of the service account JSON key file
+        Paste the contents of the service account JSON key file here.
 ```
 
 ### Vault
 
-With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). The following demonstrates a visual representation of this structure:
+With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). 
+
+Here’s an example directory structure of a Vault secret engine used with Kestra:
 
 ```
 secret/
@@ -102,7 +104,7 @@ secret/
 - `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
 - `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
-With the above example structure, if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
+To configure access to secrets under `app1`, use the following Kestra configuration with the added property `secretPathPrefix`:
 
 ```yaml
 address: https://my-vault:8200/
