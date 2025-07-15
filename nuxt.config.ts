@@ -163,10 +163,9 @@ export default defineNuxtConfig({
         public: {
             siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
             apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
-            // currentSHA: process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main'
-            //     ? 'dev'
-            //     : (process.env.CF_PAGES_COMMIT_SHA || 'dev'),
-            currentSHA: process.env.CF_PAGES_COMMIT_SHA ?? 'dev',
+            currentSHA: process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main'
+                ? 'dev'
+                : (process.env.CF_PAGES_COMMIT_SHA || 'dev'),
             docs: {
                 sections: {
                     "Get Started with Kestra": [
