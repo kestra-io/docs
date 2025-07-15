@@ -54,10 +54,11 @@ jobs:
           done
 
       - name: trigger docs & blogs deployment
-        run: curl --parallel --max-time 200 https://kestra.io/docs?sha=${{ github.sha }} -o docs.html https://kestra.io/blogs?sha=${{ github.sha }} -o blogs.html
+        run: curl --parallel --max-time 200 https://kestra.io/docs?sha=${{ github.sha }} https://kestra.io/blogs?sha=${{ github.sha }}
 
       - name: Check docs.html for HTTP 524 errors
         run: |
+          curl https://kestra.io/docs -o docs.html
           if grep -q "error code: 524" docs.html; then
             echo "HTTP 524 error found in docs.html"
             exit 1
@@ -65,6 +66,7 @@ jobs:
 
       - name: Check blogs.html for HTTP 524 errors
         run:  |
+          curl https://kestra.io/blogs -o blogs.html
           if grep -q "error code: 524" blogs.html; then
             echo "HTTP 524 error found in blogs.html"
             exit 1
