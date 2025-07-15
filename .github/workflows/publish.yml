@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
+      CF_PAGES_COMMIT_SHA: ${{ github.sha }}
     steps:
       - name: Checkouts
         uses: actions/checkout@v4
