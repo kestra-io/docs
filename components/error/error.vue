@@ -35,16 +35,25 @@
     />
 </template>
 
-<script>
-    export default {
+<script lang="ts" setup>
+    import {ref} from 'vue'
+
+    defineOptions({
         name: "error",
-        props: ['error', 'title', 'description'],
-        data() {
-            return {
-                visible: false
-            }
-        }
-    }
+    })
+
+    defineProps<{
+        error: {
+            statusCode: number,
+            message: string,
+            stack?: string
+        },
+        title: string,
+        description: string
+    }>()
+
+    const visible = ref(false)
+
 </script>
 
 <style lang="scss" scoped>
