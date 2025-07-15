@@ -5,12 +5,12 @@ editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 
-Sync Users and Groups from Keycloak to Kestra using SCIM.
+Sync users and groups from Keycloak to Kestra using SCIM.
 
 ## Prerequisites
 
-- **Keycloak Account**: an account with administrative privileges to configure SCIM provisioning.
-- **Enable multi-tenancy in Kestra**: tenants MUST be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
+- **Keycloak Account**: An account with administrative privileges is required to configure SCIM provisioning.
+- **Enable multi-tenancy in Kestra**: Tenants must be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
 
 ```yaml
 kestra:
@@ -18,6 +18,10 @@ kestra:
     tenants:
       enabled: true
 ```
+
+::alert{type="info"}
+As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/0.23.0/tenant-migration-ee.md) to assist with upgrading.
+::
 
 ## Kestra SCIM Setup: Create a New Provisioning Integration
 
@@ -30,7 +34,7 @@ kestra:
 
 ![scim1](/docs/enterprise/scim1_keycloak.png)
 
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Keycloak with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
+The steps above will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Keycloak with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
 
 ![scim2](/docs/enterprise/scim2.png)
 
@@ -40,11 +44,11 @@ The endpoint should look as follows:
 https://your_kestra_host/api/v1/your_tenant/integrations/integration_id/scim/v2
 ```
 
-The Secret Token will be a long string (ca. 200 characters) that will authenticate requests from Keycloak to Kestra.
+The Secret Token is a long string (approx. 200 characters) used to authenticate requests from Keycloak to Kestra.
 
 ### Enable or Disable SCIM Integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
+Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
 
 ![scim3](/docs/enterprise/scim3.png)
 
@@ -63,18 +67,18 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
   ![scim4](/docs/enterprise/scim4.png)
 
-2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
+2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
 ::alert{type="info"}
-Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
+Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user using our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 ::
 
 ---
 
 ## Keycloak SCIM Setup
 
-Keycloak [doesn’t provide](https://github.com/keycloak/keycloak/issues/13484) any built-in support for SCIM v2.0. Some [open-source solutions](https://github.com/mitodl/keycloak-scim/) support groups synchronization but not users and membership synchronization.
+Keycloak [does not provide](https://github.com/keycloak/keycloak/issues/13484) any built-in support for SCIM v2.0. Some [open-source solutions](https://github.com/mitodl/keycloak-scim/) support groups synchronization but not users and membership synchronization.
 
 However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-keycloak.de/) that allow you to extend Keycloak with SCIM. The setup shown below was validated with Kestra 0.18.0 and Keyclock 25.0.2 — best if you use the same or higher versions.
 
@@ -85,7 +89,7 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
 2. **Install the SCIM Provider Plugin**:
    - Download the plugin JAR file from the `Downloads` section in your Account (e.g. `scim-for-keycloak-kc-25-2.2.1-free.jar`).
   ![scim-for-keycloak-download](/docs/enterprise/keycloak2.png)
-   - Place the JAR file in the `./providers` directory of your Keycloak installation (or in the current folder if Keycloack is deployed with Docker).
+   - Place the JAR file in the `./providers` directory of your Keycloak installation (or in the current folder if Keycloak is deployed with Docker).
    - More information: [SCIM for Keycloak Installation](https://scim-for-keycloak.de/documentation/installation/install)
 3. **Deploy Keycloak**:
    - Create a simple `docker-compose.yaml` file:
@@ -113,7 +117,7 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
   ![scim-for-keycloak-3](/docs/enterprise/keycloak3.png)
    - Enable SCIM for the Realm
   ![scim-for-keycloak-4](/docs/enterprise/keycloak4.png)
-   - Note that `Bulk` and `Password synchronization` operations are currently not supported by Kestra and must disabled in Keycloak.
+   - Note that `Bulk` and `Password synchronization` operations are currently not supported by Kestra and must be disabled in Keycloak.
 5. **Create a SCIM Client**:
    - Navigate to the `Remote SCIM Provider` section
    - Fill the `Base URL` field with your Kestra `SCIM Endpoint`:

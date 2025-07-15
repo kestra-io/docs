@@ -5,12 +5,12 @@ editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 
-Sync Users and Groups from Microsoft Entra ID to Kestra using SCIM.
+Sync users and groups from Microsoft Entra ID to Kestra using SCIM.
 
 ## Prerequisites
 
-- **Microsoft Entra ID Account**: an account with administrative privileges to configure SCIM provisioning.
-- **Enable multi-tenancy in Kestra**: tenants MUST be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
+- **Microsoft Entra ID Account**: An account with administrative privileges is required to configure SCIM provisioning.
+- **Enable multi-tenancy in Kestra**: Tenants must be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
 
 ```yaml
 kestra:
@@ -30,7 +30,7 @@ kestra:
 
 ![scim1](/docs/enterprise/scim1.png)
 
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Microsoft Entra ID with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
+The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Microsoft Entra ID with the SCIM integration in Kestra. Save those details as they will be needed in the next steps.
 
 ![scim2](/docs/enterprise/scim2.png)
 
@@ -40,11 +40,11 @@ The endpoint should look as follows:
 https://your_kestra_host/api/v1/your_tenant/integrations/integration_id/scim/v2
 ```
 
-The Secret Token will be a long string (ca. 200 characters) that will authenticate requests from Microsoft Entra ID to Kestra.
+The Secret Token is a long string (approx. 200 characters) used to authenticate requests from Microsoft Entra ID to Kestra.
 
 ### Enable or Disable SCIM Integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
+Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
 
 ![scim3](/docs/enterprise/scim3.png)
 
@@ -63,7 +63,7 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
   ![scim4](/docs/enterprise/scim4.png)
 
-2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
+2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
 ::alert{type="info"}
@@ -82,13 +82,13 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 ### 2. Configure SCIM Provisioning:
    - Go to the newly created Kestra application.
    - Select "Provisioning" and set the Provisioning Mode to "Automatic".
-   - Enter the SCIM endpoint URL and the Secret Token provided by Kestra. Paste kestra's SCIM endpoint URL into the Tenant URL field and the Secret Token into the Secret Token field.
+   - Enter the SCIM endpoint URL and the Secret Token provided by Kestra. Paste Kestra's SCIM endpoint URL into the Tenant URL field and the Secret Token into the Secret Token field.
    - Finally, click on `Test Connection` and on the `Save` button.
   ![scim7](/docs/enterprise/scim7.png)
 
 ### 3. Map User and Group Attributes:
 
-After entering and saving the **Admin Credentials** for SCIM provisioning connection in Microsoft Entra ID (i.e., the Tenant URL and Secret Token), Azure will **enable the `Mappings` section** under the Provisioning settings.
+After entering and saving the **Admin Credentials** for the SCIM provisioning connection in Microsoft Entra ID (i.e., the Tenant URL and Secret Token), Azure will **enable the `Mappings` section** under the Provisioning settings.
 
 The **Mappings** section allows you to define how user and group attributes should flow between Microsoft Entra ID and Kestra.
 
@@ -102,7 +102,7 @@ Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ie
 
 #### Retrieve Supported Schemas
 
-Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes.
+Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes automatically.
 
 ```text
 GET /api/v1/<tenant>/integrations/<integration_id>/scim/v2/Schemas
@@ -131,7 +131,7 @@ To configure mappings:
 4. Use attribute expressions or transformations in Entra ID if needed (e.g., to format names or emails).
 
 ::alert{type="info"}
-By default, Azure will pre-populate the mapping with many Microsoft Entra ID attributes. You may need to **remove or simplify** some of these mappings if you encounter synchronization issues with Users or Groups in Kestra.
+By default, Azure will pre-populate the mapping with many Microsoft Entra ID attributes. You may need to **remove or simplify** some of these mappings if synchronization issues occur with users or groups in Kestra.
 ::
 
 #### Test the Configuration
@@ -142,7 +142,7 @@ After mappings are configured:
 - Review **provisioning logs** in Entra ID for any errors or warnings.
 
 ### 4. Enable Provisioning:
-   - Now that everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
+   - Once everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
 
 ## Additional Resources
 
