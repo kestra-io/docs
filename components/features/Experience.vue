@@ -94,22 +94,22 @@ const sections: Section[] = [
                     {
                         title: "Everything From the UI",
                         description: "Create and run workflows from the all-in-one built-in YAML editor, syntax validation, autocompletion, and file I/O.",
-                        cta: "More the code editor",
-                        link: "#",
+                        cta: "Discover the editor",
+                        link: "http://kestra.io/docs/concepts/editor",
                         icon: FitToScreen
                     },
                     {
                         title: "Everything as Code",
                         description: "Manage versioned flows through Git or the YAML-based format that's easy to read, edit, and maintain.",
-                        cta: "How flows manage code",
-                        link: "#",
+                        cta: "Learn more",
+                        link: "https://kestra.io/docs/version-control-cicd",
                         icon: Speedometer
                     },
                     {
                         title: "Declarative Configuration",
                         description: "Define your workflows in a portable, YAML-based format that's easy to read, edit, and maintain.",
                         cta: "Declarative Configuration",
-                        link: "#",
+                        link: "https://kestra.io/docs/workflow-components/flow#flow-sample",
                         icon: Speedometer
                     }
                 ]
@@ -121,21 +121,21 @@ const sections: Section[] = [
                         title: "Built-in Documentation",
                         description: "Always up-to-date plugin documentation directly in the editor.",
                         cta: "Editor documentation",
-                        link: "#",
+                        link: "https://kestra.io/docs/ui",
                         icon: FitToScreen
                     },
                     {
                         title: "Autocompletion & Syntax Validation",
                         description: "Get real-time feedback while typing and auto-completing validations.",
                         cta: "Editor features",
-                        link: "#",
+                        link: "https://kestra.io/docs/concepts/editor",
                         icon: Speedometer
                     },
                     {
                         title: "Live Debugging Tools",
                         description: "Use the live variables client to debug your tasks and preview inputs and outputs quickly.",
-                        cta: "Execution monitoring tools",
-                        link: "#",
+                        cta: "Live monitoring",
+                        link: "https://kestra.io/docs/administrator-guide/monitoring#monitoring",
                         icon: Speedometer
                     }
                 ]
@@ -147,21 +147,21 @@ const sections: Section[] = [
                         title: "Scripting Support",
                         description: "Write tasks in Python, Bash, NodeJS, SQL, R, all from your browser.",
                         cta: "Supported languages",
-                        link: "#",
+                        link: "https://kestra.io/docs/tutorial/scripts",
                         icon: FitToScreen
                     },
                     {
                         title: "Modular by Design",
                         description: "Log outputs and observe configurations to manage better flows.",
                         cta: "Writing modular workflows",
-                        link: "#",
+                        link: "https://kestra.io/docs/workflow-components/subflows",
                         icon: Speedometer
                     },
                     {
                         title: "Strong Typing and Validation",
                         description: "Define and enforce validation for schema-driven workflows.",
                         cta: "Schema validation",
-                        link: "#",
+                        link: "https://kestra.io/docs/tutorial/inputs",
                         icon: Speedometer
                     }
                 ]
@@ -172,15 +172,15 @@ const sections: Section[] = [
                     {
                         title: "Built-in Versioning",
                         description: "Every change is tracked. Preview diffs or roll back when things go wrong.",
-                        cta: "Track changes",
-                        link: "#",
+                        cta: "Version control all your workflows",
+                        link: "https://kestra.io/docs/best-practices/git",
                         icon: FitToScreen
                     },
                     {
                         title: "CI/CD Friendly",
                         description: "Run any task from your CI/CD pipeline to automate deployments and builds.",
                         cta: "CI/CD integration",
-                        link: "#",
+                        link: "https://kestra.io/docs/version-control-cicd/cicd",
                         icon: Speedometer
                     },
                     {
@@ -204,21 +204,21 @@ const sections: Section[] = [
                         title: "Trigger System",
                         description: "Start workflows based on file arrivals, webhooks, or scheduled times.",
                         cta: "Types of triggers",
-                        link: "#",
+                        link: "https://kestra.io/docs/tutorial/triggers",
                         icon: FitToScreen
                     },
                     {
                         title: "Real-time Events",
                         description: "React to new data instantly - no polling, database changes, message queues.",
                         cta: "Real-time processing",
-                        link: "#",
+                        link: "https://kestra.io/docs/workflow-components/triggers/realtime-trigger",
                         icon: Speedometer
                     },
                     {
                         title: "API First",
                         description: "Start flows programmatically via API, CLI, or Kestra UI.",
                         cta: "Kestra API reference",
-                        link: "#",
+                        link: "https://kestra.io/docs/api-reference",
                         icon: Speedometer
                     }
                 ]
@@ -230,21 +230,21 @@ const sections: Section[] = [
                         title: "Process Data at Scale",
                         description: "Use distributed mapping to handle large datasets efficiently.",
                         cta: "Distributed executions",
-                        link: "#",
+                        link: "https://kestra.io/docs/workflow-components/execution",
                         icon: FitToScreen
                     },
                     {
                         title: "Micro-Batch CDC",
                         description: "Capture and process change data in small, manageable batches.",
                         cta: "Change data capture",
-                        link: "#",
+                        link: "https://kestra.io/use-cases/change-data-capture",
                         icon: Speedometer
                     },
                     {
                         title: "Horizontal and Vertical Scaling",
                         description: "Kestra's engine scales automatically with your workloads.",
                         cta: "Scaling architecture",
-                        link: "#",
+                        link: "https://kestra.io/docs/enterprise/scalability",
                         icon: Speedometer
                     }
                 ]
@@ -254,15 +254,15 @@ const sections: Section[] = [
                     {
                         title: "Built on the JVM",
                         description: "Benefit from high performance and memory efficiency.",
-                        cta: "Kestra tech stack",
-                        link: "#",
+                        cta: "Kestra Architecture",
+                        link: "https://kestra.io/docs/architecture",
                         icon: FitToScreen
                     },
                     {
                         title: "No Single Point of Failure",
                         description: "Designed for fault tolerant, reliable execution.",
                         cta: "System reliability",
-                        link: "#",
+                        link: "https://kestra.io/docs/architecture/deployment-architecture#high-availability-deployment",
                         icon: Speedometer
                     }
                 ]
@@ -279,14 +279,14 @@ const sections: Section[] = [
                         title: "Dashboards and Metrics",
                         description: "Monitor performance and usage directly in the UI.",
                         cta: "Metrics and observability",
-                        link: "#",
+                        link: "https://kestra.io/docs/ui/dashboard",
                         icon: FitToScreen
                     },
                     {
                         title: "Execution Details",
                         description: "Access full logs and task-level status in real time.",
                         cta: "Inspecting logs",
-                        link: "#",
+                        link: "https://kestra.io/docs/ui/logs",
                         icon: Speedometer
                     }
                 ]
@@ -298,21 +298,21 @@ const sections: Section[] = [
                         title: "Automatic Retries",
                         description: "Recover from transient failures with built-in retry logic.",
                         cta: "Retry logic",
-                        link: "#",
+                        link: "https://kestra.io/docs/workflow-components/retries",
                         icon: FitToScreen
                     },
                     {
                         title: "Smart Alerts",
                         description: "Get notified on completion, delay, or failure via Slack, email, or custom webhooks.",
                         cta: "Alerting triggers",
-                        link: "#",
+                        link: "https://kestra.io/docs/administrator-guide/monitoring",
                         icon: Speedometer
                     },
                     {
                         title: "Replay Executions",
                         description: "Fix logic and rerun failed workflows without costly re-computation of tasks that have already been completed.",
                         cta: "Rerun workflows",
-                        link: "#",
+                        link: "https://kestra.io/docs/concepts/replay",
                         icon: Speedometer
                     }
                 ]
