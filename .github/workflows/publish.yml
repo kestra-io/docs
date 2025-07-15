@@ -71,6 +71,7 @@ jobs:
           fi
 
       - name: Check docs.html contains the expected content
+        if: always()
         run: |
           if ! grep -q "What is Kestra?" docs.html; then
             echo "Expected content not found in docs.html"
@@ -78,6 +79,7 @@ jobs:
           fi
 
       - name: Check blogs.html contains the expected content
+        if: always()
         run: |
           if ! grep -q "All things Kestra" blogs.html; then
             echo "Expected content not found in blogs.html"
@@ -86,12 +88,14 @@ jobs:
 
       - name: upload docs.html to artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: docs.html
           path: docs.html
 
       - name: upload blogs.html to artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: blogs.html
           path: blogs.html
