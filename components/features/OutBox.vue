@@ -22,14 +22,35 @@
         </div>
         <div class="images-container">
             <div class="fivetran-image">
-                <NuxtImg src="/landing/features/fivetran.png" alt="Fivetran" />
+                <NuxtImg 
+                    src="/landing/features/fivetran.png" 
+                    alt="Fivetran" 
+                    width="600"
+                    height="231"
+                    loading="lazy"
+                    format="webp"
+                    class="img-fluid"
+                />
             </div>
             <div class="code-image">
-                <NuxtImg src="/landing/features/code.png" alt="Code" />
+                <NuxtImg 
+                    src="/landing/features/code.png" 
+                    alt="Code" 
+                    width="550"
+                    height="490"
+                    loading="lazy"
+                    format="webp"
+                    class="img-fluid"
+                />
             </div>
         </div>
         <div class="ellipse-container">
-            <NuxtImg src="/landing/features/ellipse_box.png" alt="Ellipse Box" />
+            <NuxtImg 
+                src="/landing/features/ellipse_box.png" 
+                alt="Ellipse Box" 
+                loading="lazy"
+                format="webp"
+            />
         </div>
     </section>
 </template>
@@ -182,7 +203,9 @@ const features: Feature[] = [
 
             img {
                 max-width: 100%;
-                height: 100%;
+                height: auto;
+                width: auto;
+                object-fit: contain;
                 
                 @include media-breakpoint-up(xl) {
                     max-width: 600px;
@@ -195,7 +218,8 @@ const features: Feature[] = [
                 top: 120px;
                 
                 img {
-                    height: 230.54px;
+                    max-height: 230.54px;
+                    height: auto;
                 }
             }
         }
@@ -212,8 +236,10 @@ const features: Feature[] = [
                 top: 320px;
                 
                 img {
-                    height: 490px;
-                    width: 550px;
+                    max-height: 490px;
+                    max-width: 550px;
+                    height: auto;
+                    width: auto;
                     margin-top: -4rem;
                 }
             }
