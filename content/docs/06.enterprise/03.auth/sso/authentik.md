@@ -4,7 +4,7 @@ icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 
-Setup authentik SSO to manage authentication for users.
+Set up authentik SSO to manage authentication for users.
 
 In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
 
@@ -18,7 +18,7 @@ Authentik provides a simple docker-compose installer for testing purposes. Follo
 
 ### Create Application and SSO Provider in authentik
 
-On the left-hand side select `Applications` → `Applications`. For simplicity we’ll use the `Create with Wizard` button as this will create both an application and a provider.
+On the left-hand side, select `Applications` → `Applications`. For simplicity, we’ll use the `Create with Wizard` button, as this will create both an application and a provider.
 
 ![scim-for-authentik-2](/docs/enterprise/scim/authentik/authentik2.png)
 
@@ -31,10 +31,10 @@ On the `Provider Type` screen, select `OAuth2/OIDC` and click `Next`.
 ![scim-for-authentik-4](/docs/enterprise/scim/authentik/authentik4.png)
 
 On the `Provider Configuration` screen:
-1. In the `Authentication flow` field, select “default-authentication-flow (Welcome to authentik!)”
-2. In the `Authorization flow` field, select “default-provider-authorization-explicit-consent (Authorize Application)”
+1. In the `Authentication flow` field, select “default-authentication-flow (Welcome to authentik!)”.
+2. In the `Authorization flow` field, select “default-provider-authorization-explicit-consent (Authorize Application)”.
 ![scim-for-authentik-5](/docs/enterprise/scim/authentik/authentik5.png)
-3. Keep the Client type as `Confidential` and under the `Redirect URIs/Origins (RegEx)`, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` e.g. http://localhost:8080/oauth/callback/authentik and then `Submit` the Application:
+3. Keep the Client type as `Confidential`. Under the `Redirect URIs/Origins (RegEx)`, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and then `Submit` the Application.
 ![scim-for-authentik-6](/docs/enterprise/scim/authentik/authentik6.png)
 
 Note the `Client ID` and `Client Secret` as you will need these to configure Kestra in the next step.
@@ -60,7 +60,7 @@ You may need to adjust the above `issuer` URL if you named your application some
 
 ### Configure a Default Role for your SSO users in Kestra Settings
 
-To ensure that your SSO users have some initial permissions within Kestra UI, it's useful to set up a default role for them. You can do this by adding the following configuration under the `kestra.security` section:
+To ensure that your SSO users have initial permissions within the Kestra UI, set up a default role for them. Achieve this by adding the following configuration under the `kestra.security` section:
 
 ```yaml
 kestra:
@@ -88,5 +88,5 @@ kestra:
 ```
 
 ::alert{type="info"}
-⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `default-role` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
+⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `defaultRole` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
 ::
