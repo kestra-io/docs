@@ -1664,7 +1664,7 @@ kestra:
       password: kestra
 ```
 
-If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your OSS instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
