@@ -19,8 +19,8 @@
                     <div class="features-grid">
                         <div v-for="(card, cardIndex) in subsection.cards" :key="`card-${sectionIndex}-${subsectionIndex}-${cardIndex}`" class="card">
                             <h3>
-                                <component :is="card.icon || 'Speedometer'" class="icon" />
-                                <span>{{ card.title }}</span>
+                                <component :is="card.icon" class="icon" />
+                                <span class="text-truncate">{{ card.title }}</span>
                             </h3>
                             <p>{{ card.description }}</p>
                             <NuxtLink :to="card.link" class="cta">
@@ -36,9 +36,32 @@
 </template>
 
 <script setup lang="ts">
-import Speedometer from "vue-material-design-icons/Speedometer.vue";
-import FitToScreen from "vue-material-design-icons/FitToScreen.vue";
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
+import Monitor from "vue-material-design-icons/Monitor.vue";
+import CodeBrackets from "vue-material-design-icons/CodeBrackets.vue";
+import TuneVariant from "vue-material-design-icons/TuneVariant.vue";
+import BookOpenPageVariantOutline from "vue-material-design-icons/BookOpenPageVariantOutline.vue";
+import CheckCircleOutline from "vue-material-design-icons/CheckCircleOutline.vue";
+import Bug from "vue-material-design-icons/Bug.vue";
+import Console from "vue-material-design-icons/Console.vue";
+import Connection from "vue-material-design-icons/Connection.vue";
+import ShieldCheck from "vue-material-design-icons/ShieldCheck.vue";
+import SourceCommit from "vue-material-design-icons/SourceCommit.vue";
+import SyncCircle from "vue-material-design-icons/SyncCircle.vue";
+import CloudUploadOutline from "vue-material-design-icons/CloudUploadOutline.vue";
+import CalendarTodayOutline from "vue-material-design-icons/CalendarTodayOutline.vue";
+import LightningBolt from "vue-material-design-icons/LightningBolt.vue";
+import Api from "vue-material-design-icons/Api.vue";
+import SineWave from "vue-material-design-icons/SineWave.vue";
+import DatabaseCogOutline from "vue-material-design-icons/DatabaseCogOutline.vue";
+import UnfoldLessVertical from "vue-material-design-icons/UnfoldLessVertical.vue";
+import CoffeeOutline from "vue-material-design-icons/CoffeeOutline.vue";
+import BackupRestore from "vue-material-design-icons/BackupRestore.vue";
+import ViewDashboardEdit from "vue-material-design-icons/ViewDashboardEdit.vue";
+import ReceiptTextClockOutline from "vue-material-design-icons/ReceiptTextClockOutline.vue";
+import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue";
+import BellRing from "vue-material-design-icons/BellRing.vue";
+import Replay from "vue-material-design-icons/Replay.vue";
 
 interface Card {
     title: string;
@@ -96,21 +119,21 @@ const sections: Section[] = [
                         description: "Create and run workflows from the all-in-one built-in YAML editor, syntax validation, autocompletion, and file I/O.",
                         cta: "Discover the editor",
                         link: "http://kestra.io/docs/concepts/editor",
-                        icon: FitToScreen
+                        icon: Monitor
                     },
                     {
                         title: "Everything as Code",
                         description: "Manage versioned flows through Git or the YAML-based format that's easy to read, edit, and maintain.",
                         cta: "Learn more",
                         link: "https://kestra.io/docs/version-control-cicd",
-                        icon: Speedometer
+                        icon: CodeBrackets
                     },
                     {
                         title: "Declarative Configuration",
                         description: "Define your workflows in a portable, YAML-based format that's easy to read, edit, and maintain.",
                         cta: "Declarative Configuration",
                         link: "https://kestra.io/docs/workflow-components/flow#flow-sample",
-                        icon: Speedometer
+                        icon: TuneVariant
                     }
                 ]
             },
@@ -122,21 +145,21 @@ const sections: Section[] = [
                         description: "Always up-to-date plugin documentation directly in the editor.",
                         cta: "Editor documentation",
                         link: "https://kestra.io/docs/ui",
-                        icon: FitToScreen
+                        icon: BookOpenPageVariantOutline
                     },
                     {
                         title: "Autocompletion & Syntax Validation",
                         description: "Get real-time feedback while typing and auto-completing validations.",
                         cta: "Editor features",
                         link: "https://kestra.io/docs/concepts/editor",
-                        icon: Speedometer
+                        icon: CheckCircleOutline
                     },
                     {
                         title: "Live Debugging Tools",
                         description: "Use the live variables client to debug your tasks and preview inputs and outputs quickly.",
                         cta: "Live monitoring",
                         link: "https://kestra.io/docs/administrator-guide/monitoring#monitoring",
-                        icon: Speedometer
+                        icon: Bug
                     }
                 ]
             },
@@ -148,21 +171,21 @@ const sections: Section[] = [
                         description: "Write tasks in Python, Bash, NodeJS, SQL, R, all from your browser.",
                         cta: "Supported languages",
                         link: "https://kestra.io/docs/tutorial/scripts",
-                        icon: FitToScreen
+                        icon: Console
                     },
                     {
                         title: "Modular by Design",
                         description: "Log outputs and observe configurations to manage better flows.",
                         cta: "Writing modular workflows",
                         link: "https://kestra.io/docs/workflow-components/subflows",
-                        icon: Speedometer
+                        icon: Connection
                     },
                     {
                         title: "Strong Typing and Validation",
                         description: "Define and enforce validation for schema-driven workflows.",
                         cta: "Schema validation",
                         link: "https://kestra.io/docs/tutorial/inputs",
-                        icon: Speedometer
+                        icon: ShieldCheck
                     }
                 ]
             },
@@ -174,21 +197,21 @@ const sections: Section[] = [
                         description: "Every change is tracked. Preview diffs or roll back when things go wrong.",
                         cta: "Version control all your workflows",
                         link: "https://kestra.io/docs/best-practices/git",
-                        icon: FitToScreen
+                        icon: SourceCommit
                     },
                     {
                         title: "CI/CD Friendly",
                         description: "Run any task from your CI/CD pipeline to automate deployments and builds.",
                         cta: "CI/CD integration",
                         link: "https://kestra.io/docs/version-control-cicd/cicd",
-                        icon: Speedometer
+                        icon: SyncCircle
                     },
                     {
                         title: "No Deploy Headaches",
                         description: "Deploy directly from the UI or use CLI to automate everything.",
                         cta: "Deploy workflows",
                         link: "#",
-                        icon: Speedometer
+                        icon: CloudUploadOutline
                     }
                 ]
             }
@@ -205,21 +228,21 @@ const sections: Section[] = [
                         description: "Start workflows based on file arrivals, webhooks, or scheduled times.",
                         cta: "Types of triggers",
                         link: "https://kestra.io/docs/tutorial/triggers",
-                        icon: FitToScreen
+                        icon: CalendarTodayOutline
                     },
                     {
                         title: "Real-time Events",
                         description: "React to new data instantly - no polling, database changes, message queues.",
                         cta: "Real-time processing",
                         link: "https://kestra.io/docs/workflow-components/triggers/realtime-trigger",
-                        icon: Speedometer
+                        icon: LightningBolt
                     },
                     {
                         title: "API First",
                         description: "Start flows programmatically via API, CLI, or Kestra UI.",
                         cta: "Kestra API reference",
                         link: "https://kestra.io/docs/api-reference",
-                        icon: Speedometer
+                        icon: Api
                     }
                 ]
             },
@@ -231,21 +254,21 @@ const sections: Section[] = [
                         description: "Use distributed mapping to handle large datasets efficiently.",
                         cta: "Distributed executions",
                         link: "https://kestra.io/docs/workflow-components/execution",
-                        icon: FitToScreen
+                        icon: SineWave
                     },
                     {
                         title: "Micro-Batch CDC",
                         description: "Capture and process change data in small, manageable batches.",
                         cta: "Change data capture",
                         link: "https://kestra.io/use-cases/change-data-capture",
-                        icon: Speedometer
+                        icon: DatabaseCogOutline
                     },
                     {
                         title: "Horizontal and Vertical Scaling",
                         description: "Kestra's engine scales automatically with your workloads.",
                         cta: "Scaling architecture",
                         link: "https://kestra.io/docs/enterprise/scalability",
-                        icon: Speedometer
+                        icon: UnfoldLessVertical
                     }
                 ]
             },
@@ -256,14 +279,14 @@ const sections: Section[] = [
                         description: "Benefit from high performance and memory efficiency.",
                         cta: "Kestra Architecture",
                         link: "https://kestra.io/docs/architecture",
-                        icon: FitToScreen
+                        icon: CoffeeOutline
                     },
                     {
                         title: "No Single Point of Failure",
                         description: "Designed for fault tolerant, reliable execution.",
                         cta: "System reliability",
                         link: "https://kestra.io/docs/architecture/deployment-architecture#high-availability-deployment",
-                        icon: Speedometer
+                        icon: BackupRestore
                     }
                 ]
             }
@@ -280,14 +303,14 @@ const sections: Section[] = [
                         description: "Monitor performance and usage directly in the UI.",
                         cta: "Metrics and observability",
                         link: "https://kestra.io/docs/ui/dashboard",
-                        icon: FitToScreen
+                        icon: ViewDashboardEdit
                     },
                     {
                         title: "Execution Details",
                         description: "Access full logs and task-level status in real time.",
                         cta: "Inspecting logs",
                         link: "https://kestra.io/docs/ui/logs",
-                        icon: Speedometer
+                        icon: ReceiptTextClockOutline
                     }
                 ]
             },
@@ -299,21 +322,21 @@ const sections: Section[] = [
                         description: "Recover from transient failures with built-in retry logic.",
                         cta: "Retry logic",
                         link: "https://kestra.io/docs/workflow-components/retries",
-                        icon: FitToScreen
+                        icon: RefreshAuto
                     },
                     {
                         title: "Smart Alerts",
                         description: "Get notified on completion, delay, or failure via Slack, email, or custom webhooks.",
                         cta: "Alerting triggers",
                         link: "https://kestra.io/docs/administrator-guide/monitoring",
-                        icon: Speedometer
+                        icon: BellRing
                     },
                     {
                         title: "Replay Executions",
                         description: "Fix logic and rerun failed workflows without costly re-computation of tasks that have already been completed.",
                         cta: "Rerun workflows",
                         link: "https://kestra.io/docs/concepts/replay",
-                        icon: Speedometer
+                        icon: Replay
                     }
                 ]
             }
@@ -446,7 +469,7 @@ h2 {
     
     .material-design-icon {
         font-size: 24px;
-        margin-top: -0.30rem;
+        margin-top: -0.40rem;
     }
     
     p {
