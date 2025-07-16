@@ -18,23 +18,23 @@ Authentik provides a simple docker-compose installer for testing purposes. Follo
 
 ### Create Application and SSO Provider in authentik
 
-On the left-hand side, select `Applications` → `Applications`. For simplicity, we’ll use the `Create with Wizard` button, as this will create both an application and a provider.
+On the left-hand side, select **Applications → Applications**. For simplicity, we’ll use the **Create with Wizard** button, as this will create both an application and a provider.
 
 ![scim-for-authentik-2](/docs/enterprise/scim/authentik/authentik2.png)
 
-On the `Application Details` screen, fill in the application `name` and `slug`. Set both here to `kestra` and click `Next`.
+On the **Application Details** screen, fill in the application `name` and `slug`. Set both here to `kestra` and click `Next`.
 
 ![scim-for-authentik-3](/docs/enterprise/scim/authentik/authentik3.png)
 
-On the `Provider Type` screen, select `OAuth2/OIDC` and click `Next`.
+On the **Provider Type** screen, select **OAuth2/OIDC** and click **Next**.
 
 ![scim-for-authentik-4](/docs/enterprise/scim/authentik/authentik4.png)
 
-On the `Provider Configuration` screen:
-1. In the `Authentication flow` field, select “default-authentication-flow (Welcome to authentik!)”.
-2. In the `Authorization flow` field, select “default-provider-authorization-explicit-consent (Authorize Application)”.
+On the **Provider Configuration** screen:
+1. In the **Authentication flow** field, select “default-authentication-flow (Welcome to authentik!)”.
+2. In the **Authorization flow** field, select “default-provider-authorization-explicit-consent (Authorize Application)”.
 ![scim-for-authentik-5](/docs/enterprise/scim/authentik/authentik5.png)
-3. Keep the Client type as `Confidential`. Under the `Redirect URIs/Origins (RegEx)`, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and then `Submit` the Application.
+3. Keep the Client type as **Confidential**. Under the **Redirect URIs/Origins (RegEx)**, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and then `Submit` the Application.
 ![scim-for-authentik-6](/docs/enterprise/scim/authentik/authentik6.png)
 
 Note the `Client ID` and `Client Secret` as you will need these to configure Kestra in the next step.
