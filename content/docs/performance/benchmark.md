@@ -3,16 +3,16 @@ title: Benchmark
 icon: TODO
 ---
 
-Kestra is an orchestration platform, you write a flow, and Kestra does the orchestration for you.
+Kestra is an orchestration platform; you write a flow, and Kestra does the orchestration for you.
 
-But a flow can execute any type of tasks, from tiny tasks that execute in a few milliseconds to complex scripts that start a container and runs for tens of minutes.
+However, a flow can execute any type of task, from tiny tasks that execute in a few milliseconds to complex scripts that start a container and run for tens of minutes.
 
-To benchmark Kestra, we would want to benchmark the **orchestration capability**, including dispatching to the Kestra Worker, not the ability to execute a workload, which are different for each use case.
-For this, we will use typical workflows with tasks that are quick to execute like the `io.kestra.plugin.core.log.Log` task that log a single message or the `io.kestra.plugin.core.output.OutputValues` task that create a single output to mimic data-oriented workflow.
+To benchmark Kestra, we would want to benchmark the **orchestration capability**, including dispatching to the Kestra Worker, not the ability to execute a workload, which is different for each use case.
+For this, we will use typical workflows with quick-to-execute tasks, like the `io.kestra.plugin.core.log.Log` task that logs a single message or the `io.kestra.plugin.core.output.OutputValues` task that creates a single output to mimic a data-oriented workflow.
 
 Test results are with a Google Cloud VM instance **e2-standard-4** (4 vCPUs, 16 GB RAM) with two different Kestra installations:
-1. Kestra Open Source Edition (OSS) with a Postgres 16 backend (4 vCPUs, 16 GB RAM). Note that the database is not run locally to be closer to what you would typically do in production.
-2. Kestra Enterprise Edition (EE) with a Kafka backend (4vCPU, 16GB RAM). Again, we start Kafka and Elasticsearch on a separate VMs.
+1. Kestra Open Source Edition (OSS) with a Postgres 16 backend (4 vCPUs, 16 GB RAM). Note that the database is not run locally, so the test simulates what you would typically do in production.
+2. Kestra Enterprise Edition (EE) with a Kafka backend (4vCPU, 16GB RAM). Again, we start Kafka and Elasticsearch on separate VMs.
 
 ::alert{type="info"}
 Benchmark results are for Kestra 0.23.4.
@@ -20,7 +20,7 @@ Benchmark results are for Kestra 0.23.4.
 
 ## A simple flow
 
-This flow will be triggered by a Webhook, it has two tasks: one that outputs a variable and another one that uses this variable and logs it.
+A Webhook will trigger this flow; it has two tasks: one that outputs a variable and another that uses and logs it.
 
 ```yaml
 id: benchmark01
@@ -73,13 +73,13 @@ tasks:
 
 **Key takeaways**
 - At 250 executions or 500 tasks per minute, execution latency is around 300ms. This is more or less the duration of the execution when launched unitary.
-- Kestra OSS with the JDBC backend can sustain up to 1500 executions or 3000 tasks per minute with an execution duration of less than 1s which is what we could realistically target for such workflow.
+- Kestra OSS with the JDBC backend can sustain up to 1500 executions or 3000 tasks per minute with an execution duration of less than 1s, which is what we could realistically target for such a workflow.
 - Kestra EE with the Kafka backend can sustain up to 2000 executions or 4000 tasks per minute.
 - Kestra EE performance degradation under load is less than Kestra OSS until it reaches 2500 executions or 5000 tasks per minute.
 
 ## A complex flow
 
-This flow will be triggered by a Webhook, it has 5 `If` tasks, each one having two `Log` as subtasks, only one will be executed on each run.
+A Webhook will trigger this flow; it has 5 `If` tasks, each with two `Log` as subtasks, only one will be executed on each run.
 This is an example of a flow with a lot of orchestration tasks in it that will put pressure on the Kestra Executor.
 It will create 10 task runs (5 `If` and 5 `Log`) for each execution.
 
@@ -181,9 +181,9 @@ tasks:
 
 **Key takeaways**
 - At 250 executions or 500 tasks per minute, execution latency is around 300ms. This is more or less the duration of the execution when launched unitary.
-- Kestra OSS with the JDBC backend can sustain up to 300 executions or 3000 tasks per minute with an execution duration of less than 3s which is what we could realistically target for such workflow.
+- Kestra OSS with the JDBC backend can sustain up to 300 executions or 3000 tasks per minute with an execution duration of less than 3s, which is what we could realistically target for such a workflow.
 - Kestra EE with the Kafka backend can sustain up to 400 executions or 4000 tasks per minute.
-- The Kestra Executor processing capability is independent of the type of tasks to process, the number of tasks per minute sustained in this benchmark is the same as in the first benchmark.,
+- The Kestra Executor processing capability is independent of the type of tasks to process; the number of tasks per minute sustained in this benchmark is the same as in the first benchmark.
 
 ## A big `ForEach` loop
 
@@ -206,15 +206,15 @@ tasks:
 ```
 
 On average, the execution time for the OSS JDBC backend is around 11s, and for the EE Kafka is around 10s.
-That is about 20 tasks/s as the `ForEach` task itself is executed on each iteration so we will ends up with 200 task execution.
+That is about 20 tasks/s, as the `ForEach` task is executed on each iteration, so we will end up with 200 task executions.
 
-This may seem less that what was sustained by Kestra in the previous benchmarks.
-This is because a single flow with a lot of task runs creates a big execution context which is costly to orchestrate.
+This may seem less than what was sustained by Kestra in the previous benchmarks.
+This is because a single flow with many task runs creates a large execution context, which is costly to orchestrate.
 
 ## A realtime trigger with JSON transformation
 
-This flow will consume a Kafka topic and create executions in realtime for each message received in this topic.
-Each message will then be process but the JSONata `TransformValue` task that will map it to a different JSON format and be used in an `OutputValues` task to create a new output. Doing this will triple the size of the data inside the execution context.
+This flow will consume a Kafka topic and create executions in real-time for each message received in this topic.
+Each message will then be processed by a JSONata `TransformValue` task, which will map it to a different JSON format and be used in an `OutputValues` task to create a new output. Doing this will triple the size of the data inside the execution context.
 
 ```yaml
 id: benchmark04
@@ -328,22 +328,22 @@ With big messages of 160k.
 | 625	| 1250	| 104 |
 
 **Key takeaways**
-- With small messages, we have approximately the same results as the one of the first benchmark which is expected.
-- With medium messages, Kestra can sustain up to 1250 executions or 2500 tasks per minute with an execution duration of less than 1s which is what we could realistically target for such workflow.
-- With big messages, performance starts to degrade vastly which is expected as the Worker would have more work to do, and the Executor is sensible to the size of the execution message.
-- Realtime triggers will create executions at a high rate, we see here that Kestra EE particularly shine in such scenario as it could sustain way more tasks per minutes (4000) than Kestra OSS (2500) for small messages.
+- With small messages, we have approximately the same results as the first benchmark, which is expected.
+- With medium messages, Kestra can sustain up to 1250 executions or 2500 tasks per minute with an execution duration of less than 1s, which is what we could realistically target for such a workflow.
+- With big messages, performance starts to degrade vastly, which is expected as the Worker would have more work to do, and the Executor is sensitive to the size of the execution message.
+- Real-time triggers will create executions at a high rate. Here, Kestra EE particularly shines in such scenarios, as it could sustain way more tasks per minute (4000) than Kestra OSS (2500) for small messages.
 
 ## Conclusion
 
-Kestra is a platform not a framework, it comes bundled with logs, metrics, retry, SLA, error handling, a rich UI, governance, observability, ... This of course has a cost if you compare it with a framework or a lighter tool but we try to balance a rich features platform with good workflow execution performance.
+Kestra is a platform, not a framework. It comes bundled with logs, metrics, retry, SLA, error handling, a rich UI, governance, observability, etc. Of course, this has a cost if you compare it with a framework or a lighter tool, but we try to balance a rich features platform with good workflow execution performance.
 
-Kestra has been designed from the ground up with performance in mind, and the engineering team keep investing in performance optimization, this made Kestra one of the most performant workflow orchestrators.
+Kestra has been designed from the ground up with performance in mind, and the engineering team keeps investing in performance optimization, making it one of the most performant workflow orchestrators.
 
-Kestra performance focuses on workflow orchestration and task dispatching so your workflow would not loose time inside the orchestrator but spent most time inside your own workflow: the task execution.
+Kestra performance focuses on workflow orchestration and task dispatching, so your workflow will not lose time inside the orchestrator but spend most of its time inside your own workflow: task execution.
 
-Keep in mind that Kestra has been designed to scale horizontally, this means that you could expect Kestra's performance to increase nicely by adding more nodes (Executor or Worker) to your deployment.
+Keep in mind that Kestra has been designed to scale horizontally. This means that adding more nodes (Executor or Worker) to your deployment could increase Kestra's performance nicely.
 
 ::alert{type="info"}
-We will try to make our best to align this page with each new Kestra release.
-You can find details on how to run this benchmark by yourself in our [benchmarks](https://github.com/kestra-io/benchmarks) repository on GitHub.
+We will try our best to align this page with each new Kestra release.
+Details on how to run this benchmark yourself are in our [benchmarks](https://github.com/kestra-io/benchmarks) repository on GitHub.
 ::
