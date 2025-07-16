@@ -54,7 +54,7 @@
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "nuxt": "^3.17.2",
     "nuxt-aos": "^1.2.5",
-    "nuxt-multi-cache": "^3.4.0",
+    "nuxt-multi-cache": "^4.0.0",
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
