@@ -350,7 +350,7 @@ const sections: Section[] = [
 
 .experience {
     max-height: 4283px;
-    padding-top: 6rem;
+    padding-top: 4rem;
     padding-bottom: 6rem;
     max-height: 100%;
     background: $white;
@@ -389,7 +389,7 @@ h2 {
     }
     font-weight: 600;
     line-height: 100%;
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: -1rem;
 }
 
