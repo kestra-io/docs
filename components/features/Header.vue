@@ -22,7 +22,7 @@
       </div>
       <div class="img-block">
         <NuxtImg src="/landing/features/application.png" width="100%" height="100%" alt="Kestra" class="img-fluid d-none d-sm-block" />
-        <NuxtImg src="/landing/features/mob-app.png" alt="Kestra" class="d-sm-none sm-app-border img-fluid" loading="lazy" />
+        <NuxtImg src="/landing/features/mobile-app.png" alt="Kestra" class="d-sm-none sm-app-border img-fluid" loading="lazy" />
       </div>
     </div>
   </section>
