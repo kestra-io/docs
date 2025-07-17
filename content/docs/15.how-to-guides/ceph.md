@@ -12,6 +12,10 @@ MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as it
 
 ---
 
+::alert{type="warning"}
+This guide is intended for **local testing only**. It sets up a single-node Ceph cluster using `cephadm` and exposes it via MinIO in gateway mode. This configuration is **not suitable for production** use.
+::
+
 ## Install `cephadm`
 
 Install `cephadm` and dependencies:
