@@ -1259,6 +1259,20 @@ The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ---
 
+### timestampMilli
+
+The `timestampMilli` filter converts a date to a Unix timestamp in milliseconds.
+
+```twig
+{{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
+# output: 1720505821135
+```
+
+**Arguments**:
+- Same as `timestamp`.
+
+---
+
 ### timestampNano
 
 The `timestampNano` filter converts a date to a Unix timestamp in nanoseconds.
@@ -1291,6 +1305,7 @@ tasks:
       - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
       - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
       - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"      
       - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
 ```
 
@@ -1303,6 +1318,7 @@ Previous day: 2024-07-08T06:17:01.174686Z
 Next day: 2024-07-10T06:17:01.176138Z
 Timezone (seconds): 1720505821
 Timezone (microseconds): 1720505821000180275
+Timezone (milliseconds): 1720505821135
 Timezone (nanoseconds): 1720505821182413000
 ```
 

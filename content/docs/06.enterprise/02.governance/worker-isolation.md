@@ -6,11 +6,11 @@ editions: ["EE"]
 
 How to configure worker isolation in Kestra.
 
-When dealing with multiple teams, you can add extra security measures to your Kestra instance to isolate access so that there is no shared file system, only certain plugins can create worker threads, and that script tasks are isolated.
+When dealing with multiple teams, you can add extra security measures to your Kestra instance to isolate access so that there is no shared file system, only certain plugins can create worker threads, and script tasks are isolated.
 
 ## Java security
 
-By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when you are using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/io.kestra.plugin.scripts.jython.eval), and more. This is because the worker shares the same file system.
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance across multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/io.kestra.plugin.scripts.jython.eval), and more. This is because the worker shares the same file system.
 
 You can use the following to opt-in to real isolation of file systems using advanced Kestra EE Java security:
 
@@ -25,11 +25,11 @@ kestra:
         - io.kestra.plugin.core
         - io.kestra.plugin.gcp
 ```
-To only limit access to certain plugins on a Worker without the need for file path protection, you can also consider configuring Kestra with [Allowed & Restricted plugins](allowed-plugins.md).
+To only limit access to certain plugins on a Worker without requiring file path protection, you can also consider configuring Kestra with [Allowed & Restricted plugins](allowed-plugins.md).
 
 ### `kestra.ee.java-security.forbidden-paths`
 
-This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
+This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect Kestra configuration files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
 
 ### `kestra.ee.java-security.authorized-class-prefix`
 
@@ -39,7 +39,7 @@ For example, [GCP plugins](/plugins/plugin-gcp) will need to create a thread in 
 
 ### `kestra.ee.java-security.forbidden-class-prefix`
 
-This is a list of classes that can't create any threads. Others plugins will be authorized.
+This is a list of classes that can't create any threads. Other plugins will be authorized.
 
 ```yaml
 kestra:
@@ -56,7 +56,7 @@ Currently, all the official Kestra plugins are safe to be whitelisted **except**
 
 ## Scripting isolation
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined at a default value for these tasks.
 
 ```yaml
 kestra:
@@ -83,8 +83,8 @@ kestra:
 
 Forced plugin defaults:
 - ensure a property is set globally for a task, and no task can override it
-- are critical for security and governance, for example, to enforce Shell tasks to run as Docker containers.
+- are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
 
 ::alert{type="warning"}
-You will need to add all script plugins tasks (like Python & Node) to be sure that no tasks can bypass the docker isolation.
+You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.
 ::
