@@ -1261,11 +1261,11 @@ The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ### timestampMilli
 
-The `timestampMilli` filter converts a date to a Unix timestamp in microseconds.
+The `timestampMilli` filter converts a date to a Unix timestamp in milliseconds.
 
 ```twig
 {{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
-# output: 1720505821000
+# output: 1720505821135
 ```
 
 **Arguments**:
