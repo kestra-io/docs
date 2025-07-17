@@ -1,11 +1,10 @@
 ---
-title: Configure Local MinIO Storage for Kestra QA  
-icon: /docs/icons/minio.svg  
-stage: Intermediate  
+title: Configure Local MinIO Storage for Kestra
+icon: /docs/icons/minio.svg
+stage: Intermediate
 topics:
-- DevOps  
-- Storage  
-- QA Automation  
+- DevOps
+- Object Storage
 ---
 
 Set up and verify local [MinIO](https://min.io/) storage for Kestra using `mc` CLI and Docker.
