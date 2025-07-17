@@ -31,9 +31,9 @@ server:
     password: Admin1234
 ```
 In this case, the following will occur:
-- The `enabled` flag will be ignored regardless of `true` or `false`—authentication is required.
-- The user setup page **will not** appear when starting Kestra because `username` and `password` are set. You will be prompted to login with those credentials.
-- If `username` or `password` is missing, Kestra will start with setup page instead, and there will be a prompt to create a username and password. These credentials will be how you log in for future sessions.
+- The `enabled` flag will be ignored regardless of `true` or `false`, as authentication is required.
+- The user Setup page **will not** appear when starting Kestra because `username` and `password` are set. You will be prompted to login with those credentials.
+- If `username` or `password` is missing, Kestra will start with the Setup page instead, and there will be a prompt to create a username and password. These credentials will be how you log in for future sessions.
 - If `username` or `password` is invalid, Kestra will show and error and prompt you to update the credentials to valid values.
 
 ### Scenario 2: The `enabled` flag is set to `false`
@@ -44,14 +44,15 @@ server:
     enabled: false
 ```
 
+In this case, the following will occur:
 - The `enabled` flag will be ignored, as basic authentication is now required.
-- The setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
+- The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
 ### Scenario 3: No `basicAuth` configuration is added
 
 If there is no `basicAuth` set in the configuration file then:
-- The setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
+- The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
 ::alert{type="info"}
-For all users, if you forget your credentials, you can always update `username` and `password` in the configuration file, as the configuration file will always take precedence over the values stored in your Kestra database after the setup page.
+For all users, if you forget your credentials, you can always update `username` and `password` in the configuration file, as the configuration file will always take precedence over the values stored in your Kestra database after the Setup page.
 ```
