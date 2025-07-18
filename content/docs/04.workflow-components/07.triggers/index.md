@@ -235,11 +235,7 @@ tasks:
   - id: slack
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
-    payload: |
-      {
-        "channel": "#price-alerts",
-        "text": "The price is now: {{ json(trigger.body).price }}"
-      }
+    messageText: "The price is now: {{ json(trigger.body).price }}"
 
 triggers:
   - id: http
@@ -254,7 +250,7 @@ triggers:
 Let's break down the above example:
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
 2. If the condition is met, the Execution will be created
-3. Within that execution, the `slack` task will send a Slack message to the `#price-alerts` channel to notify about the price change
+3. Within that execution, the `slack` task will send a Slack message to notify about the price change
 4. After that execution finishes successfully, the `stopAfter` property condition is met — it will disable the trigger ensuring that you don't get alerted every 30 seconds about the same condition.
 
 
