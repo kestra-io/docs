@@ -23,6 +23,8 @@ Using Users Resource `kestra_user_api_token` and DataSource `kestra_user_api_tok
 
 2) Service account `group` property was replaced by `groups` containing only the `id` property. (see [kestra_service_account](resources/service_account.md))
 
+3) User `username` now, is a read only (computed) property. You just need to input the `email`. (see [kestra_user](resources/user.md))
+
 ## Example Usage
 
 ```hcl
