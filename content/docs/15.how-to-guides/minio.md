@@ -7,19 +7,19 @@ topics:
 - Object Storage
 ---
 
-Set up and verify local [MinIO](https://min.io/) storage for Kestra using `mc` CLI and Docker.
+Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra using the `mc` CLI and Docker.
 
 ---
 
 ::alert{type="warning"}
 This guide is intended for **local development and testing only**.  
 MinIO is configured in gateway mode and exposed on `localhost`, without TLS or public access.  
-**Do not use this setup in production** without additional security measures (e.g. HTTPS, access controls, isolation).
+**Do not use this setup in production** without additional security measures (e.g., HTTPS, access controls, and network isolation).
 ::
 
 ## Install and Configure `mc` (MinIO Client)
 
-Download and install the MinIO Client tool using the following command:
+Download and install the MinIO Client (`mc`) tool using the following command:
 
 ```sh
 curl https://dl.min.io/client/mc/release/linux-amd64/mc --create-dirs -o $HOME/minio-binaries/mc && \
@@ -35,7 +35,7 @@ Remove any existing local alias:
 mc alias remove local
 ```
 
-Recreate the alias with your access credentials:
+Recreate the alias with your MinIO access credentials:
 
 ```sh
 mc alias set local http://localhost:9000 YOUR_ACCESS_KEY YOUR_SECRET_KEY
@@ -51,7 +51,7 @@ mc mb local/your_bucket
 
 ## Start MinIO Server
 
-Run the MinIO Docker container using the dedicated CI compose file from `storage-minio` for instance:
+Run the MinIO Docker container using the dedicated CI Compose file (e.g., from storage-minio):
 
 ```sh
 docker compose -f docker-compose-ci.yml up
@@ -59,7 +59,7 @@ docker compose -f docker-compose-ci.yml up
 
 ## Configure Kestra for MinIO Storage
 
-Update your `application-psql.yml` (or any other configuration file) file under the `kestra:` section:
+Update your `application-psql.yml` (or other relevant configuration file) under the `kestra:` section:
 
 ```yaml
 storage:
@@ -74,11 +74,13 @@ storage:
 
 ## Launch Kestra
 
-Start Kestra as usual, ensuring it's picking up the updated config.
+Start Kestra as usual. Ensure the updated configuration file is correctly mounted or included.
+
+
 
 ## Test with a Flow that Produces Outputs
 
-Here is a sample flow to generate outputs:
+Here is a sample flow that generates output files and logs intermediate data:
 
 ```yaml
 id: alligator_743987
@@ -125,7 +127,7 @@ You can now validate that the output file is stored in the MinIO bucket:
 mc cat local/your_bucket/main/company/team/alligator-743987/executions/23z9cJWEa23kNAxu6sm0CT/tasks/py-outputs/5kxYRM7UqUurvnpVNvHca7/1noPFEiCFGPf2hcqjVzywu-myoutput.json
 ```
 
-Note that for this command you may have to replace by the values of your own:
+Note that you may need to replace the following placeholders with your own values:
 - the bucket name (here `your_bucket`)
 - the path (namespace) (here `company/team`)
 - the flow id (here `alligator-743987`)
@@ -139,4 +141,4 @@ The result should look like:
 {"mykey": "from Kestra"}%
 ```
 
-You have now successfully set up and verified MinIO as a local storage backend for Kestra.
+You have successfully configured and validated MinIO as a local storage backend for Kestra.

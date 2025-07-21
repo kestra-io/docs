@@ -7,13 +7,13 @@ topics:
 - Object Storage
 ---
 
-This guide shows how to use **Cloudflare R2** as an object storage backend through an S3-compatible interface, exposed to **Kestra** via a **MinIO Gateway**.  
-This setup allows Kestra to continue using S3 storage without modifying its configuration.
+This guide demonstrates how to use **Cloudflare R2** as an object storage backend through an S3-compatible interface, exposed to **Kestra** via a **MinIO Gateway**.  
+This setup enables Kestra to continue using S3 storage without requiring configuration changes.
 
 ---
 
 ::alert{type="warning"}
-This guide assumes that **MinIO runs locally in gateway mode** to access Cloudflare R2. It is designed for **local development and QA environments**, and is **not optimized for production deployments**.
+This guide assumes that **MinIO runs locally in gateway mode** to access Cloudflare R2. It is intended for **local development and QA environments**, and is **not optimized for production deployments**.
 ::
 
 ## Create an R2 Bucket
@@ -32,13 +32,13 @@ Go to **API Tokens → R2 Keys** and create a new key pair:
 - `access_key_id`: Your user access key
 - `secret_access_key`: Your secret key
 
-Save these securely.
+Be sure to save these credentials securely.
 
 ---
 
 ## Retrieve the R2 Endpoint
 
-Cloudflare R2 uses a static S3-compatible endpoint:
+Cloudflare R2 provides a static S3-compatible endpoint:
 
 ```
 https://<ACCOUNT_ID>.r2.cloudflarestorage.com
@@ -70,7 +70,7 @@ services:
     restart: always
 ```
 
-> Replace `<ACCOUNT_ID>`, `<R2_ACCESS_KEY>`, and `<R2_SECRET_KEY>` with your actual values.
+> Replace `<ACCOUNT_ID>`, `<R2_ACCESS_KEY>`, and `<R2_SECRET_KEY>` with your actual Cloudflare and access values.
 
 ---
 
@@ -88,7 +88,7 @@ mc ls r2
 
 ## Configure Kestra (No Changes Required)
 
-Since Kestra already supports MinIO-compatible S3 endpoints, no changes are needed:
+Since Kestra supports MinIO-compatible S3 endpoints, no changes to your configuration are required:
 
 ```yaml
 storage:
@@ -128,7 +128,7 @@ tasks:
           json.dump(data, f)
 ```
 
-Then verify with:
+Then, verify the file was stored correctly using:
 
 ```sh
 mc cat r2/kestra-bucket/main/company/team/r2_test_flow/...
@@ -150,4 +150,4 @@ Expected output:
 
 ---
 
-You now have Cloudflare R2 as your object storage backend for Kestra, fully integrated via MinIO Gateway.
+You now have Cloudflare R2 configured as your object storage backend for Kestra, fully integrated via MinIO Gateway.

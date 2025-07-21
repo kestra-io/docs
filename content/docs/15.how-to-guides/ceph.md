@@ -7,7 +7,7 @@ topics:
 - Object Storage
 ---
 
-This guide shows how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).  
+This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).  
 MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as its object storage.
 
 ---
@@ -39,7 +39,7 @@ cephadm version
 
 ## Enable SSH locally
 
-Cephadm uses SSH to manage hosts, even for local single-node setups. Make sure `sshd` is running:
+`cephadm` uses SSH to manage hosts, even in local single-node setups. Make sure `sshd` is running:
 
 ```sh
 sudo apt install openssh-server
@@ -91,7 +91,7 @@ First, find your actual hostname:
 hostname
 ```
 
-Then deploy RGW on that hostname (e.g. `kestra`):
+Then deploy RGW on that hostname (e.g., `kestra`):
 
 ```sh
 sudo cephadm shell -- ceph orch apply rgw default kestra
@@ -155,7 +155,7 @@ services:
     restart: always
 ```
 
-> Replace `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` with the values from the RGW user you just created.
+> Replace `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` with the credentials from the RGW user you just created.
 
 ---
 
@@ -227,7 +227,7 @@ Expected:
 
 ## Cleanup a Broken Cluster
 
-If bootstrap fails and the cluster is partially created, you can remove it with:
+If the bootstrap process fails and the cluster is partially created, you can remove it with:
 
 ```sh
 sudo cephadm rm-cluster --force --zap-osds --fsid <fsid>
