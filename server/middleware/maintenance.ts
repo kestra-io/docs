@@ -1,20 +1,28 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+export default fromNodeMiddleware(async (req, _res, next) => {
+    if(!req.url){
+        next()
+        return
+    }
+    const to = new URL(req.url)
     // Skip middleware on server during build/generation
     if (process.prerender) {
+        next()
         return
     }
 
-    const scope = to.path.startsWith('/docs') ? 'docs' : to.path.startsWith('/blog') ? 'blogs' : null
+    const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
 
     // Don't apply middleware on anything that does not need content
     if (!scope) {
+        next()
         return
     }
 
     // Skip API routes and assets
-    if (to.path.startsWith('/api/') ||
-        to.path.startsWith('/_nuxt/') ||
-        to.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
+    if (to.pathname.startsWith('/api/') ||
+        to.pathname.startsWith('/_nuxt/') ||
+        to.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
+        next()
         return
     }
 
@@ -23,14 +31,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const currentSHA = config.public.currentSHA
 
         // Check for sha query parameter
-        const shaSkipParam = to.query.shaSkip as string
+        const shaSkipParam = to.searchParams.get('shaSkip') as string
 
-        if(shaSkipParam === currentSHA)
+        if(shaSkipParam === currentSHA){
+            next()
             return
+        }
 
         // no need for maintenance in dev
-        if(currentSHA === 'dev')
+        if(currentSHA === 'dev'){
+            next()
             return
+        }
 
         // Use the API endpoint to set the SHA
         const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-kv-sha`, {
@@ -43,7 +55,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
 
         // Check for sha query parameter
-        const shaParam = to.query.sha as string
+        const shaParam = to.searchParams.get('sha') as string
         if(!shaParam){
             // go directly to maintenance mode
         } else if (shaParam !== currentSHA) {
@@ -52,7 +64,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             console.log('SHA parameter does not match, setting it in storage')
 
             // make sure the initialization finishes properly before we free up maintenance mode
-            await $fetch(to.path, {
+            await $fetch(to.pathname, {
                     method: 'GET',
                     query: { shaSkip: currentSHA }
                 })
@@ -66,12 +78,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
             })
 
             // Redirect to the same URL without the sha parameter
-            const newQuery = { ...to.query }
-            delete newQuery.sha
-            console.log(`Redirecting to ${to.path} without sha parameter`, newQuery)
+            const newQuery = { ...to.searchParams }
+            newQuery.delete('sha')
+            console.log(`Redirecting to ${to.pathname} without sha parameter`, newQuery)
             return navigateTo({
-                path: to.path,
-                query: newQuery
+                path: to.pathname,
+                query: Object.fromEntries(newQuery.entries()),
             }, { redirectCode: 302 })
         }
 
