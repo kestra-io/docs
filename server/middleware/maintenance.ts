@@ -39,10 +39,10 @@ export default fromNodeMiddleware(async (req, _res, next) => {
         }
 
         // no need for maintenance in dev
-        if(currentSHA === 'dev'){
-            next()
-            return
-        }
+        // if(currentSHA === 'dev'){
+        //     next()
+        //     return
+        // }
 
         // Use the API endpoint to set the SHA
         const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-kv-sha`, {
