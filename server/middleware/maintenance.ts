@@ -30,19 +30,19 @@ export default defineEventHandler(async (event) => {
 
     try {
         const config = useRuntimeConfig()
-        const currentSHA = config.public.currentSHA
+        const { currentSHA } = config.public
+
+        console.log("currentSHA", currentSHA)
 
         // Check for sha query parameter
         const shaSkipParam = to.searchParams.get('shaSkip') as string
 
-        if(shaSkipParam === currentSHA){
+        if(shaSkipParam === currentSHA)
             return
-        }
 
         // no need for maintenance in dev
-        // if(currentSHA === 'dev'){
-        //     //     return
-        // }
+        // if(currentSHA === 'dev')
+        //     return
 
         // Use the API endpoint to set the SHA
         const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-kv-sha`, {
@@ -50,9 +50,10 @@ export default defineEventHandler(async (event) => {
             body: {scope}
         })
 
+        console.log(`Stored SHA for scope "${scope}":`, storedSha)
+
         if(storedSha && storedSha === currentSHA)
             return
-
 
         // Check for sha query parameter
         const shaParam = to.searchParams.get('sha') as string
