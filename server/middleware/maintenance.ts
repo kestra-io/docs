@@ -10,6 +10,7 @@ export default fromNodeMiddleware(async (req, _res, next) => {
         return
     }
 
+    console.log('Checking maintenance mode for', req.url, Object.keys(req))
     const to = new URL(req.url)
 
     const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
