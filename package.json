@@ -59,7 +59,7 @@
     "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
     "sass": "^1.86.3",
-    "wrangler": "^4.11.1"
+    "wrangler": "^4.25.1"
   },
   "engines": {
     "node": ">= 14",
