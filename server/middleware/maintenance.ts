@@ -79,19 +79,18 @@ export default defineEventHandler(async (event) => {
             })
 
             // Redirect to the same URL without the sha parameter
-            const newQuery = { ...to.searchParams }
-            newQuery.delete('sha')
-            console.log(`Redirecting to ${to.pathname} without sha parameter`, newQuery)
-            return navigateTo({
-                path: to.pathname,
-                query: Object.fromEntries(newQuery.entries()),
-            }, { redirectCode: 302 })
+            to.searchParams.delete('sha')
+            console.log(`Redirecting to ${to.pathname} without sha parameter`, to.searchParams)
+
+            const res = event.node.res
+            res.writeHead(302, { location: to.pathname + to.search })
+            res.end()
         }
 
         console.log(`Maintenance detected on SHA ${currentSHA}, redirecting`)
-        return navigateTo('/maintenance', {
-            redirectCode: 503
-        })
+        const res = event.node.res
+        res.writeHead(503, { location: '/maintenance' })
+        res.end()
     } catch (error) {
         // Log error but don't block the request if check fails
         console.error('Error checking maintenance mode:', error)
