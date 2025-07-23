@@ -1,14 +1,16 @@
 export default fromNodeMiddleware(async (req, _res, next) => {
-    if(!req.url){
-        next()
-        return
-    }
-    const to = new URL(req.url)
     // Skip middleware on server during build/generation
     if (process.prerender) {
         next()
         return
     }
+
+    if(!req.url){
+        next()
+        return
+    }
+
+    const to = new URL(req.url)
 
     const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
 
