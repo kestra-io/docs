@@ -9,8 +9,10 @@ export default defineEventHandler(async (event) => {
     if(!req.originalUrl){
         return
     }
-    console.log("Checking maintenance mode for", req.originalUrl)
-    const to = new URL(req.originalUrl)
+
+    const to = /^https?:\/\//.test(req.originalUrl)
+        ? new URL(req.originalUrl)
+        : new URL(`http://localhost${req.originalUrl}`)
 
     const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
 
