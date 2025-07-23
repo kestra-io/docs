@@ -41,8 +41,8 @@ export default defineEventHandler(async (event) => {
             return
 
         // no need for maintenance in dev
-        // if(currentSHA === 'dev')
-        //     return
+        if(currentSHA === 'dev')
+            return
 
         // Use the API endpoint to set the SHA
         const {sha:storedSha} = await $fetch<{sha:string}>(`/api/current-kv-sha`, {
