@@ -1,23 +1,21 @@
-export default fromNodeMiddleware(async (req, _res, next) => {
+export default defineEventHandler(async (event) => {
     // Skip middleware on server during build/generation
     if (process.prerender) {
-        next()
         return
     }
 
-    if(!req.url){
-        next()
+    const req = event.node.req
+
+    if(!req.originalUrl){
         return
     }
-
-    console.log('Checking maintenance mode for', req.url, Object.keys(req))
-    const to = new URL(req.url)
+    console.log("Checking maintenance mode for", req.originalUrl)
+    const to = new URL(req.originalUrl)
 
     const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
 
     // Don't apply middleware on anything that does not need content
     if (!scope) {
-        next()
         return
     }
 
@@ -25,7 +23,6 @@ export default fromNodeMiddleware(async (req, _res, next) => {
     if (to.pathname.startsWith('/api/') ||
         to.pathname.startsWith('/_nuxt/') ||
         to.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
-        next()
         return
     }
 
@@ -37,14 +34,12 @@ export default fromNodeMiddleware(async (req, _res, next) => {
         const shaSkipParam = to.searchParams.get('shaSkip') as string
 
         if(shaSkipParam === currentSHA){
-            next()
             return
         }
 
         // no need for maintenance in dev
         // if(currentSHA === 'dev'){
-        //     next()
-        //     return
+        //     //     return
         // }
 
         // Use the API endpoint to set the SHA
