@@ -10,10 +10,11 @@ Troubleshoot issues with Basic Authentication.
 Starting from version 0.24, each open-source instance of Kestra requires basic authentication (`username` and `password`). The credentials can be configured from the Setup Page in the UI (http://localhost:8080/ui/main/setup) or you can set them manually in the Kestra configuration file under `basicAuth` (recommended for production):
 
 ```yaml
-server:
-  basicAuth:
-    username: admin@kestra.io
-    password: Admin1234
+kestra:
+  server:
+    basicAuth:
+      username: admin@kestra.io
+      password: Admin1234
 ```
 
 Now that basic authentication is required, the `enabled` flag is ignored (ideally don't use it anymore), and credentials must be set in order to interact with Kestra UI or API. For new users, simply follow the Setup Page that will show up when you start Kestra UI. 
@@ -25,12 +26,14 @@ If you're upgrading to version 0.24, there are three possible scenarios for exis
 ### Scenario 1: The `enabled` flag is set to `true`
 
 ```yaml
-server:
-  basicAuth:
-    enabled: true
-    username: admin@kestra.io
-    password: Admin1234
+kestra:
+  server:
+    basicAuth:
+      enabled: true
+      username: admin@kestra.io
+      password: Admin1234
 ```
+
 In this case, the following will occur:
 - The `enabled` flag will be ignored regardless of `true` or `false`, as authentication is required.
 - The user Setup page **will not** appear when starting Kestra because `username` and `password` are set. You will be prompted to log in with those credentials.
@@ -40,9 +43,10 @@ In this case, the following will occur:
 ### Scenario 2: The `enabled` flag is set to `false`
 
 ```yaml
-server:
-  basicAuth:
-    enabled: false
+kestra:
+  server:
+    basicAuth:
+      enabled: false
 ```
 
 In this case, the following will occur:
@@ -56,4 +60,4 @@ If there is no `basicAuth` set in the configuration file then:
 
 ::alert{type="info"}
 For all users, if you forget your credentials, you can always update `username` and `password` in the configuration file, as the configuration file will always take precedence over the values configured from the Setup page.
-```
+::
