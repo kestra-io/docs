@@ -1,10 +1,20 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineEventHandler(async (event) => {
     // Skip middleware on server during build/generation
     if (process.prerender) {
         return
     }
 
-    const scope = to.path.startsWith('/docs') ? 'docs' : to.path.startsWith('/blog') ? 'blogs' : null
+    const req = event.node.req
+
+    if(!req.originalUrl){
+        return
+    }
+
+    const to = /^https?:\/\//.test(req.originalUrl)
+        ? new URL(req.originalUrl)
+        : new URL(`http://localhost${req.originalUrl}`)
+
+    const scope = to.pathname.startsWith('/docs') ? 'docs' : to.pathname.startsWith('/blog') ? 'blogs' : null
 
     // Don't apply middleware on anything that does not need content
     if (!scope) {
@@ -12,18 +22,20 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // Skip API routes and assets
-    if (to.path.startsWith('/api/') ||
-        to.path.startsWith('/_nuxt/') ||
-        to.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
+    if (to.pathname.startsWith('/api/') ||
+        to.pathname.startsWith('/_nuxt/') ||
+        to.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|xml|riv)$/)) {
         return
     }
 
     try {
         const config = useRuntimeConfig()
-        const currentSHA = config.public.currentSHA
+        const { currentSHA } = config.public
+
+        console.log("currentSHA", currentSHA)
 
         // Check for sha query parameter
-        const shaSkipParam = to.query.shaSkip as string
+        const shaSkipParam = to.searchParams.get('shaSkip') as string
 
         if(shaSkipParam === currentSHA)
             return
@@ -38,12 +50,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
             body: {scope}
         })
 
+        console.log(`Stored SHA for scope "${scope}":`, storedSha)
+
         if(storedSha && storedSha === currentSHA)
             return
 
-
         // Check for sha query parameter
-        const shaParam = to.query.sha as string
+        const shaParam = to.searchParams.get('sha') as string
         if(!shaParam){
             // go directly to maintenance mode
         } else if (shaParam !== currentSHA) {
@@ -52,7 +65,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             console.log('SHA parameter does not match, setting it in storage')
 
             // make sure the initialization finishes properly before we free up maintenance mode
-            await $fetch(to.path, {
+            await $fetch(to.pathname, {
                     method: 'GET',
                     query: { shaSkip: currentSHA }
                 })
@@ -66,19 +79,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
             })
 
             // Redirect to the same URL without the sha parameter
-            const newQuery = { ...to.query }
-            delete newQuery.sha
-            console.log(`Redirecting to ${to.path} without sha parameter`, newQuery)
-            return navigateTo({
-                path: to.path,
-                query: newQuery
-            }, { redirectCode: 302 })
+            to.searchParams.delete('sha')
+            console.log(`Redirecting to ${to.pathname} without sha parameter`, to.searchParams)
+
+            const res = event.node.res
+            res.writeHead(302, { location: to.pathname + to.search })
+            res.end()
         }
 
         console.log(`Maintenance detected on SHA ${currentSHA}, redirecting`)
-        return navigateTo('/maintenance', {
-            redirectCode: 503
-        })
+        const res = event.node.res
+        res.writeHead(503, { location: '/maintenance' })
+        res.end()
     } catch (error) {
         // Log error but don't block the request if check fails
         console.error('Error checking maintenance mode:', error)
