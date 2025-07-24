@@ -119,6 +119,8 @@ access:
   catalog: true
 ```
 
+The `catalog` property is set to `true` by default. If there is an App that should not be included in the catalog, explicitly set its `access.type.catalog` to `false` in the App's YAML.
+
 ---
 
 ## App Tags
