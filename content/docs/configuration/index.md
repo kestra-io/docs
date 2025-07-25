@@ -1664,7 +1664,7 @@ kestra:
       password: kestra
 ```
 
-HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your OSS instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
@@ -2309,3 +2309,19 @@ Currently, the UI is limited and outputs will not be directly visible if using i
 ::
 
 You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
+
+## Add Custom Links to Kestra UI (EE)
+
+In the Enterprise Edition, admins can add custom links as resources to Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. The configuration is managed in the YAML configuration file. See the example below:
+
+```yaml
+kestra:
+  ee:
+    custom-links:
+      link1:
+        title: "Internal Documentation"
+        url: "https://kestra.io/docs/"
+      link2:
+        title: "Internal Support Portal"
+        url: "https://kestra.io/support/"
+```
