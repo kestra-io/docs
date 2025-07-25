@@ -21,7 +21,7 @@ Let’s explore the key orchestration features this new plugin brings to your VM
 
 ## VM Lifecycle Management with vCenter and ESXi
 
-VM lifecycle operations such as starting, stopping, or deleting virtual machines are fundamental to managing any VMware environment. The Kestra VMware plugin provides direct orchestration of these tasks through both **vCenter-managed clusters** and standalone **ESXi hosts**.
+VM lifecycle operations such as starting, stopping, or deleting virtual machines are fundamental to managing any VMware environment. The Kestra VMware plugin directly orchestratesdirectly orchestrates these tasks through both **vCenter-managed clusters** and standalone **ESXi hosts**.
 
 ### Available Tasks
 
@@ -33,7 +33,7 @@ You can now automate:
 - **StartVm / StopVm / RebootVm / SuspendVm / ResetVm**: Control the VM state programmatically, essential for scheduled maintenance, load-based scaling, or cost-saving routines.
 - **UpdateVm**: Modify VM configurations such as CPU, memory, network name or disk size.
 
-These operations are **uniform across vCenter and ESXi**, allowing flexibility whether you operate in a managed cluster or a more lightweight, host-centric setup.
+These operations are **uniform across vCenter and ESXi**, providing flexibility whether you operate in a managed cluster or a more lightweight, host-centric setup.
 
 ---
 
@@ -63,13 +63,13 @@ For larger environments using **vCenter**, Kestra extends its orchestration to *
 - **ConvertTemplateToVm**: Deploy a virtual machine from a template.
 - **CloneVm**: Directly duplicate a VM and optionally convert it to a template.
 
-Templates are often the starting point for CI/CD pipelines or environment provisioning. With Kestra, these operations can now be tied into broader workflow orchestration such as automatically cloning a testing environment before a release cycle begins.
+Templates are often the starting point for CI/CD pipelines or environment provisioning. With Kestra, these operations can now be tied into broader workflow orchestration, such as automatically cloning a testing environment before a release cycle begins.
 
 ---
 
 ## Event-Driven Triggers on VM Activity
 
-One of the most powerful additions to the plugin is a **trigger for VM events**, usable with both **vCenter and ESXi**. This feature brings reactive automation to VMware operations.
+One of the plugin's most powerful additions is a **trigger for VM events**, usable with both **vCenter** and **ESXi**. This feature brings reactive automation to VMware operations.
 
 ### Trigger Capabilities
 
@@ -88,7 +88,7 @@ The plugin supports triggering workflows based on a wide range of VMware events,
 - **VM Failed to Suspend** — Indicates an error during suspension  
 - **VM Failed to Reset** — Captures failed attempts to reset a VM  
 
-These events can trigger downstream workflows such as sending alerts, updating configuration databases, or kicking off CI pipelines. For example, you can automatically notify a Slack channel when a new VM is created or start a backup workflow when a VM is powered down.
+These events can trigger downstream workflows such as [sending alerts](https://kestra.io/docs/how-to-guides/alerting), updating configuration databases, or kicking off CI pipelines. For example, you can automatically notify a Slack channel when a new VM is created or start a backup workflow when a VM is powered down.
 
 ```yaml
 id: vm-event-listen
@@ -134,9 +134,9 @@ Virtual machines are still the foundation of enterprise infrastructure—but man
 
 - Automate repetitive VM operations like provisioning, powering on/off, and cloning
 - Coordinate lifecycle management across environments in a version-controlled, declarative way
-- React to real-time changes and trigger downstream workflows without manual intervention
+- React to real-time changes and trigger downstream workflows without any manual intervention
 
-Infrastructure automation is about: speed, resilience, traceability, and making your platform team more effective. This plugin helps get you there.
+Infrastructure automation is about: speed, resilience, traceability, and making your platform team more effective. This plugin helps you to get there.
 
 **Start using the VMware plugin in Kestra EE and bring your virtual environments into the modern orchestration era.**
 
