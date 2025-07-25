@@ -1,8 +1,8 @@
 ---
-title: "Introducing the VMware Plugin for Kestra EE: Orchestrate Your Virtual Machines with vSphere"
-description: Kestra’s new VMware plugin brings native support for vSphere, vCenter, and ESXi—automating VM lifecycle management, snapshots, templates, and event-based triggers.
-date: 2025-07-24T13:00:00
-category: News & Products Updates
+title: "VMware Plugin for Kestra EE: Orchestrate Your Virtual Machines with vSphere"
+description: Kestra’s VMware plugin brings native support for vSphere, vCenter, and ESXi—automating VM lifecycle management, snapshots, templates, and event-based triggers.
+date: 2025-10-24T13:00:00
+category: Solutions
 author:
   name: François Delbrayelle
   image: fdelbrayelle
@@ -10,11 +10,12 @@ author:
 image: /blogs/control-vmware-with-kestra.png
 ---
 
-VMware is a cornerstone in enterprise infrastructure, powering virtualized environments with performance, scalability, and reliability. Whether it’s managing dev/test workloads, production environments, or hybrid-cloud deployments, VMware's virtualization platform remains a go-to solution for IT teams worldwide.
 
-With the release of the **new VMware plugin for Kestra Enterprise Edition (EE)**, teams can now **orchestrate the full lifecycle of their virtual machines** (VMs) directly from Kestra. This plugin integrates tightly with **vSphere**, supporting operations both **via vCenter** or **directly on ESXi hosts**. For organizations running mission-critical VMs, this plugin opens up seamless automation opportunities, reducing manual overhead and improving responsiveness.
+If you’re virtualizing your infrastructure, chances are **VMware** plays a key role in your stack. For many enterprise-grade environments, VMware is the trusted foundation—powering development, test, production, and hybrid-cloud workloads with performance, scalability, and rock-solid reliability. It’s a go-to solution platform for IT teams managing complex, mission-critical operations.
 
-Let’s dive into the key orchestration capabilities now available through this new plugin.
+With the launch of the **new VMware plugin for Kestra Enterprise Edition (EE)**, teams can now **orchestrate the entire lifecycle of their virtual machines (VMs)** directly within Kestra. The plugin offers deep integration with **vSphere**, enabling operations both **via vCenter** and **directly on ESXi hosts**. For organizations running large-scale virtual environments, this unlocks powerful automation capabilities—reducing manual tasks, improving responsiveness, and bringing infrastructure orchestration into the broader data and workflow ecosystem.
+
+Let’s explore the key orchestration features this new plugin brings to your VMware-powered infrastructure.
 
 ---
 
@@ -127,13 +128,17 @@ Until now, VMware automation often required custom scripts, separate tools, or m
 - **Event-Driven**: React to infrastructure changes as they happen.
 - **Scalable**: Tie VM operations into CI/CD, testing, and business process automation.
 
----
+## A Smarter Way to Orchestrate VMware
 
-## Conclusion
+Virtual machines are still the foundation of enterprise infrastructure—but managing them shouldn’t be stuck in the past. The VMware plugin for Kestra EE brings first-class orchestration to your virtualization stack, making it easy to:
 
-Virtual machines remain the backbone of many enterprise systems, and now, with Kestra’s new VMware plugin, orchestrating them is easier, faster, and more robust than ever. Whether you’re scaling environments with templates, managing snapshots for safety, or reacting to real-time VM events, Kestra brings orchestration simplicity to your VMware estate.
+- Automate repetitive VM operations like provisioning, powering on/off, and cloning
+- Coordinate lifecycle management across environments in a version-controlled, declarative way
+- React to real-time changes and trigger downstream workflows without manual intervention
 
-Try the plugin today in **Kestra Enterprise Edition**, and empower your platform teams with the automation they deserve! 🚀
+Infrastructure automation is about: speed, resilience, traceability, and making your platform team more effective. This plugin helps get you there.
+
+**Start using the VMware plugin in Kestra EE and bring your virtual environments into the modern orchestration era.**
 
 ::alert{type="info"}
 Have questions or feedback? Join our [Slack community](https://kestra.io/slack) or open [an issue on GitHub](https://github.com/kestra-io/kestra).
