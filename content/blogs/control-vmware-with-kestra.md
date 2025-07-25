@@ -88,7 +88,7 @@ The plugin supports triggering workflows based on a wide range of VMware events,
 - **VM Failed to Suspend** — Indicates an error during suspension  
 - **VM Failed to Reset** — Captures failed attempts to reset a VM  
 
-These events can trigger downstream workflows such as [sending alerts](https://kestra.io/docs/how-to-guides/alerting), updating configuration databases, or kicking off CI pipelines. For example, you can automatically notify a Slack channel when a new VM is created or start a backup workflow when a VM is powered down.
+These events can trigger downstream workflows such as [sending alerts](https://kestra.io/docs/how-to-guides/alerting), updating configuration databases, or kicking off CI pipelines. For example, you can automatically notify a Slack channel when a new VM is created or start a backup workflow when a VM is powered off.
 
 ```yaml
 id: vm-event-listen
@@ -102,17 +102,18 @@ triggers:
     port: 443
     username: "foo"
     password: "bar"
-    eventType: VM_CREATED
+    eventType: VM_POWERED_OFF
     vmNameRegex: "vm-.*"
 
 tasks:
-  - id: notify-slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    payload: |
-      {
-        "text": "A new VM named *{{ trigger.vmName }}* was created at {{ trigger.timestamp }}."
-      }
+  - id: foreach-event
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ trigger.events }}"
+    tasks:
+      - id: notify-slack
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_WEBHOOK') }}"
+        messageText: "A new VM named *{{ taskrun.value.vmName }}* was created at {{ taskrun.value.timestamp }}."
 ```
 
 This turns your Kestra workflows into **responsive infrastructure agents**, not just scheduled jobs.
