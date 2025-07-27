@@ -1,26 +1,33 @@
 ---
-title: Kestra 0.24 introduces XXX
-description: Kestra 0.24 XXX
+title: Kestra 0.24 introduces Playground Mode, Task Caching, Apps Catalog, and official SDKs
+description: We've introduced an iterative way of building workflows using the new Playground mode, a catalog for your apps, and official language SDKs for Java, Python, JavaScript, and Go.
 date: 2025-08-05T17:00:00
 category: News & Product Updates
-author:
-  name: Benoit Pimpaud
-  image: bpimpaud
+authors:
+  - name: Anna Geller
+    image: ageller
+    role: Product Lead
 image: /blogs/release-0-24.jpg
 ---
 
 
 The table below highlights the key features of this release.
 
-| Feature                                   | Description                                                                | Edition |
-|-------------------------------------------|----------------------------------------------------------------------------| --- |
-| Java, Python, JavaScript, and Go SDKs     | Official Software Development Kits for multiple programming languages to interact with Kestra APIs and build integrations | All Edition |
-| Basic Authentication Default     | User authentication and management capabilities now enforced in the open source version | Open Source Edition |
-| Apps catalog for Enterprise Edition     | Display and listing of pre-built applications and integrations designed specifically for enterprise workflows and use cases | Enterprise Edition |
-| HTTP function improvements     | Enhanced HTTP-based functions with improved performance, better error handling, and expanded functionality | All Edition |
-| Playground feature (initial release)     | Shortened feedback loop with a new Playground mode for faster task editing and execution | All Edition |
-| Dependency handling improvements     | Better management and resolution of workflow dependencies with enhanced visualization | All Edition |
-| CSV export functionality for workflow data     | Export workflow metadata to CSV format for analysis and reporting | All Edition |
+| Feature                               | Description                                                                      | Edition             |
+|---------------------------------------|----------------------------------------------------------------------------------|---------------------|
+| Playground                            | Create workflows iteratively, one task at a time.                                | All Editions        |
+| Task Caching                          | Cache the status and outputs of computationally expensive operations.            | All Editions        |
+| Dynamic dropdowns                     | Make your dropdowns more dynamic with the new HTTP function.                     | All Editions        |
+| Java, Python, JavaScript, and Go SDKs | Build on top of Kestra's API using the official language SDKs.                   | All Editions        |
+| Kestra Plugin                         | Interact with Kestra's API directly from your tasks.                             | All Editions        |
+| Improved Slack integration            | Send beautifully-formatted Slack updates with results from your tasks.           | All Editions        |
+| New Execution dependency view         | Follow execution dependencies from the first parent to the last child flow       | All Editions        |
+| CSV Export                            | Export tabular data from any dashboard into a CSV file for reporting             | All Editions        |
+| New universal file protocol           | Leverage the new protocol for consistent access to local and namespace files     | All Editions        |
+| Lots of new plugins!                  | New plugins for managing VMs, Notion, Mistral, Anthropic, Perplexity, and more.  | All Editions        |
+| Apps catalog                          | Showcase your Apps to the entire company in a new Catalog view.                  | Enterprise Edition  |
+| Unit Test Improvements                | Assert on execution outputs and view past test runs                              | Enterprise Edition  |
+| Mandatory Authentication in OSS       | Secure your open-source instance with basich auth and a new login screen         | Open Source Edition |
 
 
 Check the video below for a quick overview of all enhancements.
@@ -29,72 +36,518 @@ Check the video below for a quick overview of all enhancements.
     <iframe src="XXXX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-Let's dive into these highlights and other enhancements in more detail.
 
 
-## Feature 1
+## Playground
 
-::collapse{title="XXX"}
+We're excited to introduce the new **Playground mode** in Kestra, which allows you to build workflows iteratively, one task at a time. This feature is especially useful when building data processing flows, where you typically start with a task extracting data, and you need to inspect the output before knowing what kind of transformation might be required. Then, you can work on that transformation task without having to rerun the extraction task again.
 
-::
+If you've ever worked with a Jupyter notebook, you might be familiar with this pattern: you run the first cell to extract data, then you run the second cell to transform that data, and you can rerun the second cell multiple times to test different transformations without having to rerun the first cell again. Kestra's Playground mode allows you to do the same within your flows.
 
-<div class="video-container">
-    <iframe src="XXX" title="Multi Panel Editor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+**How does it work?**
+1. Enable the Playground mode.
+2. Add a task to your flow and hit "Play" to run it.
+3. Add a second task and hit "Play" to run it, reusing the output of the first task.
+4. Modify the second task and hit "Play" again to rerun only the second task.
+5. Add a third task and hit "Play" to run it, reusing the outputs of the first and second tasks.
+6. Keep iterating by adding more tasks and running them individually, or click on "Run all tasks" or "Run all downstream tasks" options to run multiple tasks at once.
 
+Kestra tracks up to 10 recent playground runs, so you can go back to inspect the outputs of previously executed tasks. Older runs are purged automatically. Playground runs won't show up in the regular execution list to avoid confusion with production executions.
 
+Note that Playground mode requires a DAG (Directed Acyclic Graph) structure. Therefore, you cannot run the second task before the first task has been played. Also, if you change the flow-level `inputs`, `variables`, `pluginDefaults`, or `outputs` properties while in Playground mode, the existing task runs will be automatically reset, and you will need to rerun them. Kestra does it to ensure that the outputs of the tasks are consistent with the flow-level properties.
 
-## Notable Enhancements
+To see Playground in action, check out the demo below.
 
-**Universal `from`**: 
+TODO GIF or video
 
-The `from` property is now universal across many tasks. Each file can be defined in two ways: inline with its content, or as a URI with supported schemes including `kestra:///` for internal storage files, `file:///` for host local files, and `nsfile:///` for namespace files.
-Here is an example to read from Namespace Files:
+## Task Caching
+
+The [new core task property](https://github.com/kestra-io/kestra/pull/10013) `taskCache` allows you to cache the status and outputs of computationally expensive operations. This is particularly useful for tasks extracting large amounts of data, performing complex computations, or for long-running scripts that don't need to be recomputed every time you run the flow.
+
+When you enable task caching, Kestra will store the task's status and outputs in the database. If you run the same task again with the same inputs, Kestra will skip the execution and return the cached outputs instead. This can significantly speed up your workflows and reduce resource consumption.
+
+The syntax of the `taskCache` property is as follows:
 
 ```yaml
-  - id: python
-    type: io.kestra.plugin.scripts.python.Script
-    script: '{{ read("nsfile:///main.py") }}'
+taskCache:
+  enabled: true
+  ttl: PT1H # Duration in ISO 8601 format, e.g., PT1H for 1 hour
 ```
 
-or in the same way with `inputFiles` property
+Note how the `ttl` (time-to-live) property allows you to specify how long the cached outputs should be kept before they are purged. You can set it to any duration in ISO 8601 format, such as `PT1H` for 1 hour, `PT24H` for 24 hours, or `P7D` for 7 days.
+
+Expand the block below for an example flow that caches the outputs of a computationally expensive task extracting a large dataset from a production database. The flow downloads the infrequently-changing data only once per day, caches it for 24 hours, and then uses it in subsequent tasks to join with frequently changing transaction data.
+
+::collapse{title="Example: Caching infrequently changing master data"}
+```yaml
+id: caching
+namespace: company.team
+
+tasks:
+  - id: transactions
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/transactions.csv
+
+  - id: products
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/products.csv
+    description: This task pulls the full product catalog once per day. Because the catalog changes infrequently and contains over 200k rows, running it only once per day avoids unnecessary strain on a production DB, while ensuring downstream joins always use up-to-date reference data.
+    taskCache:
+      enabled: true
+      ttl: PT24H
+
+  - id: duckdb
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    store: true
+    inputFiles:
+      products.csv: "{{ outputs.products.uri }}"
+      transactions.csv: "{{ outputs.transactions.uri }}"
+    sql: |-
+      SELECT
+        t.transaction_id,
+        t.timestamp,
+        t.quantity,
+        t.sale_price,
+        p.product_name,
+        p.category,
+        p.cost_price,
+        p.supplier_id,
+        (t.sale_price - p.cost_price) * t.quantity AS profit
+      FROM
+        read_csv_auto('transactions.csv') AS t
+      JOIN
+        read_csv_auto('products.csv') AS p
+      USING (product_id);
+```
+::
+
+
+## Dynamic dropdowns powered by HTTP function
+
+Kestra provides `SELECT` and `MULTISELECT` input types that allow you to create dropdowns in your flows. To dynamically populate these dropdowns, you can use the `expression` property to fetch options from your KV Store using the `{{ kv(...) }}` function. However, this approach requires a scheduled flow to regularly keep the KV Store updated with the latest options.
+
+With the new HTTP function, you can now make these dropdowns dynamic by fetching options from an external API directly.
+This is particularly useful when you want to populate dropdowns with data that changes very frequently.
+
+The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The categories are fetched from an external API, and the products are fetched based on the selected category.
 
 ```yaml
-  - id: python
+id: dynamic_dropdowns
+namespace: company.team
+
+inputs:
+  - id: category
+    type: SELECT
+    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
+
+  - id: product
+    type: SELECT
+    dependsOn:
+      inputs:
+        - category
+    expression: "{{ http(uri = 'https://dummyjson.com/products/category/' + inputs.category) | jq('.products[].title') }}"
+
+tasks:
+  - id: display_selection
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      You selected Category: {{ inputs.category }}
+      And Product: {{ inputs.product }}
+```
+
+## Java, Python, JavaScript, and Go SDKs
+
+We're excited to announce [the official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, Python, JavaScript, and Go. These SDKs provide a convenient way to interact with Kestra's API and build applications on top of Kestra.
+
+To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in `.env` file, e.g.:
+
+```
+KESTRA_HOST=http://localhost:48080
+KESTRA_USERNAME=admin@kestra.io
+KESTRA_PASSWORD=Admin1234
+```
+
+First, create a virtual environment and install the Python SDK:
+
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install "git+https://github.com/kestra-io/client-sdk.git@master#egg=kestra_api_client&subdirectory=python-sdk"
+uv pip install python-dotenv # For loading auth environment variables from .env file
+```
+
+Now, you can use the following Python script to create or update a flow that logs a message:
+
+```python
+import kestra_api_client
+from dotenv import load_dotenv
+import os
+import json
+
+load_dotenv()
+
+configuration = kestra_api_client.Configuration(
+    host = os.environ.get("KESTRA_HOST"),
+    username = os.environ.get("KESTRA_USERNAME"),
+    password = os.environ.get("KESTRA_PASSWORD")
+)
+
+api_client = kestra_api_client.ApiClient(configuration)
+api_instance = kestra_api_client.FlowsApi(api_client)
+
+tenant = 'main'
+flow_id = 'sdk'
+namespace = 'demo'
+
+body = f"""
+id: {flow_id}
+namespace: {namespace}
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello from the SDK! 👋
+"""
+
+try:
+    api_response = api_instance.create_flow(tenant, body)
+    print(api_response)
+except kestra_api_client.rest.ApiException as e:
+    if e.status == 422 and "Flow id already exists" in json.loads(e.body).get("message", ""):
+        try:
+            api_response = api_instance.update_flow(flow_id, namespace, tenant, body)
+            print(api_response)
+        except ValueError:
+            print("Flow updated successfully")
+    else:
+        print(e)
+```
+
+## Kestra plugin
+
+Based on the newly introduced Java SDK, we created a [dedicated Kestra plugin](https://github.com/kestra-io/kestra/issues/2867) that allows you to interact with flows and namespaces via tasks. This plugin provides tasks to interact with Kestra's own metadata, such as listing all flows in a namespace or exporting flow definitions. To see it in action, you can use the following example flow that lists all namespaces and their flows, and then logs the output.
+
+```yaml
+id: kestra_plugin
+namespace: demo
+
+tasks:
+  - id: list_namespaces
+    type: io.kestra.plugin.kestra.namespaces.List
+
+  - id: loop
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ outputs.list_namespaces.namespaces }}"
+    tasks:
+      - id: list_flows
+        type: io.kestra.plugin.kestra.flows.List
+        namespace: "{{ taskrun.value }}"
+
+  - id: log_output
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.list_flows | jq('[.[] .flows[] | {namespace: .namespace, id: .id}]') | first }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.kestra
+    values:
+      kestraUrl: http://host.docker.internal:8080
+      auth:
+        username: admin@kestra.io # pass your Kestra username as secret or KV pair
+        password: Admin1234 # pass your Kestra password as secret or KV pair
+```
+
+## Improved Slack integration
+
+The Slack plugin has been [enhanced](https://github.com/kestra-io/plugin-notifications/issues/227) to support sending well-formatted Slack updates with results from your tasks. The new `messageText` property in the `SlackIncomingWebhook` task accepts an arbitrary string, which can include markdown syntax with links, bold text or numbered lists — the plugin will render it without you having to worry about escaping special characters or manually constructing a JSON payload with Slack's blocks.
+
+The example below demonstrates how to use the new `messageText` property to send a message with AI-generated news summaries to a Slack channel.
+
+```yaml
+id: fetch_local_news
+namespace: demo
+
+inputs:
+  - id: prompt
+    type: STRING
+    defaults: Summarize top 5 news from my region.
+  - id: city
+    type: STRING
+    defaults: Berlin
+  - id: country_code
+    type: STRING
+    defaults: DE
+
+tasks:
+  - id: news
+    type: io.kestra.plugin.openai.Responses
+    apiKey: "{{ kv('OPENAI_API_KEY') }}"
+    model: gpt-4.1-mini
+    input: "Today is {{ now() }}. {{ inputs.prompt }}"
+    toolChoice: REQUIRED
+    tools:
+      - type: web_search_preview
+        search_context_size: low  # low, medium, high
+        user_location:
+          type: approximate
+          city: "{{ inputs.city }}"
+          region: "{{ inputs.city }}"
+          country: "{{ inputs.country_code }}"
+
+  - id: send_via_slack
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ kv('SLACK_WEBHOOK_URL') }}"
+    messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
+```
+
+## New Execution dependency view
+
+The new Execution dependency view allows you to follow runtime dependencies from the first parent to the last child flow. This is particularly useful for debugging long chains of executions, as it provides a clear overview of how each execution is related to others that came before or after it.
+
+![execution_dependencies](/blogs/release-0-24/execution_dependencies.png)
+
+## Listing all flow dependencies (EE only)
+
+Speaking of flow dependencies, we've also added a [new backend endpoint](https://github.com/kestra-io/kestra-ee/pull/4308) `/api/v1/dependencies` that lists all flow dependencies across all namespaces in a tenant. This is useful for understanding how flows are interconnected on a tenant-level and can help you identify dependencies across different projects or teams.
+
+When running Kestra locally, you can access the documentation for this endpoint at: http://localhost:8080/api#get-/api/v1/-tenant-/dependencies.
+
+## CSV Export
+
+The new [CSV Export](https://github.com/kestra-io/kestra/issues/9368) is a handy feature that allows you to export tabular data from any dashboard into a CSV file for reporting and daily operations. You can use it to analyze data in a simple Excel or Google Sheet, or for sharing data with stakeholders who work with spreadsheets.
+
+![csv_export](/blogs/release-0-24/csv_export.png)
+
+## New universal file protocol
+
+Starting from 0.24, Kestra supports a new universal file protocol that simplifies how you can reference files in your flows. This new protocol allows more consistent and flexible handling of local and namespace files in your flows.
+
+You can still reference files inline by defining the filename and its content directly in YAML, but you can now also use `nsfile:///` and `file:///` URIs to reference files stored as namespace files or on the host machine:
+```yaml
+id: protocol
+namespace: company.team
+
+tasks:
+  - id: inline_file
     type: io.kestra.plugin.scripts.python.Commands
     inputFiles:
-      main.py: nsfile:///main.py
-    commands:
-      - python main.py
+      hello.py: |
+        x = "Hello world!"
+        print(x)
+
+  - id: local_file
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      hello.py: file:///scripts/hello.py
+
+  - id: namespace_file_from_the_same_namespace
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      hello.py: nsfile:///scripts/hello.py
+
+  - id: namespace_file_from_other_namespace
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      hello.py: nsfile://company/scripts/hello.py
+
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python.Commands
+    values:
+      taskRunner:
+        type: io.kestra.plugin.core.runner.Process
+      commands:
+        - python hello.py
+```
+
+![universal_protocol](/blogs/release-0-24/universal_protocol.png)
+
+### Allowed paths
+
+Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from `/tmp/scripts` on your host machine, you can add the following to your `kestra.yml` configuration:
+
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    volumes:
+      - /Users/yourdir/scripts:/scripts # Bind-mount the host directory
+    ...
+    environment: # Allow access to the /scripts directory in Kestra container
+      KESTRA_CONFIGURATION: |
+        kestra:
+          local-files:
+            allowed-paths:
+              - /scripts
+```
+
+Keep in mind that if you see the following error:
+
+```
+java.lang.SecurityException: The path /scripts/hello.py is not authorized. Only files inside the working directory are allowed by default, other paths must be allowed either globally inside the Kestra configuration using the `kestra.local-files.allowed-paths` property, or by plugin using the `allowed-paths` plugin configuration.`.
+```
+
+Then it means that you have not configured the allowed paths correctly. If you are running Kestra in a Docker container, you need to ensure that the host directory is bind-mounted into the container and that the `kestra.local-files.allowed-paths` configuration property includes the path to that directory.
+
+### Protocol reference
+
+Here is a reference of the new file protocol:
+1. Use `file:///path/to/file.txt` to reference local files on the host machine from explicitly allowed paths.
+2. Use `nsfile:///path/to/file.txt` to reference files stored in the current namespace (or a parent namespace). Note that this protocol uses three slashes after `nsfile://` to indicate that you are referencing a file in the current namespace. The inheritance ensures that if you specify `nsfile:///path/to/file.txt` in a flow from `company.team` namespace and Kestra can't find it there, we look for that file in the parent namespace, i.e. the `company` namespace.
+3. Use `nsfile://your.infinitely.nested.namespace/path/to/file.txt` to reference files stored in another namespace, provided that the current namespace has permission to access it. Note how this protocol uses two slashes after `nsfile://`, followed by the namespace name, to indicate that you are referencing a file in a different namespace. Under the hood, Kestra EE uses the Allowed Namespaces concept to check permissions to read that file.
+4. Kestra also uses the `kestra:///` scheme for internal storage files. If you need to reference files stored in the internal storage, you can use `kestra:///path/to/file.txt` protocol.
+
+### Usage with `read()` function
+
+Note that you can also use the `read()` function to read namespace files or local files in tasks that expects a content rather than a path to a script or a SQL query. For example, if you want to read a SQL query from a namespace file, you can use the `read()` function as follows:
+
+```yaml
+id: query
+namespace: demo
+
+tasks:
+  - id: duckdb
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: "{{ read('nsfile:///query.sql') }}"
 ```
 
 For local files on the host, you can use the `file:///` scheme:
 
-or with `inputFiles`:
+```yaml
+id: query
+namespace: demo
+
+tasks:
+  - id: duckdb
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: "{{ read('file:///query.sql') }}"
+```
+
+### Namespace Files as default FILE-type inputs
+
+One of the benefits of this protocol that you can now reference Namespace Files as default FILE-type inputs in your flows! See the example below that reads a local file `hello.txt` from the `demo` namespace and logs its content.
 
 ```yaml
-  - id: python
-    type: io.kestra.plugin.scripts.python.Commands
-    inputFiles:
-      main.py: file:///tmp/scripts/main.py
-    commands:
-      - python main.py
+id: file_input
+namespace: demo
+
+inputs:
+  - id: myfile
+    type: FILE
+    defaults: nsfile:///hello.txt
+
+tasks:
+  - id: print_file_content
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(inputs.myfile) }}"
 ```
+
+
+## Apps catalog (EE only)
+
+We've introduced a new Apps Catalog to the Enterprise Edition, which allows you to showcase your Apps to the entire company in a new list or gallery view. This feature is designed to help teams discover and share Apps, making it easier to build workflows and automate processes across the organization.
+
+The Apps catalog is offered as a dedicated page without showing any typical Kestra UI elements, such as the sidebar or header. This makes it easy to share the catalog with non-technical users who may not be familiar with Kestra. The catalog is accessible via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`, which can be shared with anyone in your organization.
+
+![apps_catalog](/blogs/release-0-24/apps_catalog.png)
+
+## Unit Test Improvements (EE only)
+
+The Unit Tests feature has been enhanced with several improvements, including the ability to assert on execution outputs and view past test runs.
+
+To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that the outputs of your tasks match the expected values.
+
+Assuming you have a flow that outputs a value:
+```yaml
+id: flow_outputs_demo
+namespace: demo
+
+tasks:
+  - id: mytask
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      myvalue: kestra
+
+outputs:
+  - id: myvalue
+    type: STRING
+    value: "{{ outputs.mytask.values.myvalue }}"
+```
+
+You can then create a unit test for this flow that asserts the output value as follows:
+
+```yaml
+id: test_flow_outputs_demo
+flowId: flow_outputs_demo
+namespace: demo
+
+testCases:
+  - id: flow_output
+    type: io.kestra.core.tests.flow.UnitTest
+    assertions:
+      - value: "{{ execution.outputs.myvalue }}"
+        equalTo: kestra
+```
+
+When you run this test, Kestra will execute the flow and verify that the output value matches the expected value. If the assertion fails, the test will be marked as failed, and you can inspect the execution logs to see what went wrong.
+
+![flow_outputs_unit_tests](/blogs/release-0-24/flow_outputs_unit_tests.png)
+
+## Mandatory Authentication in OSS
+
+In this release, we introduced a [mandatory login screen](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting) for the open-source version of Kestra to improve security. This means that all users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment.
+
+This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows. The login screen is simple, requiring a username and password.
+
+If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](https://kestra.io/docs/migration-guide/0.24.0).
+
 
 ## Plugin Enhancements
 
-### Plugin Name
+The 0.24 release includes many plugin enhancements, incl. new plugins and improvements to existing ones. Here are some highlights:
 
+- (EE) [VMware](https://github.com/kestra-io/plugin-ee-vmware/) with the [following](https://github.com/kestra-io/kestra-ee/issues/3736) plugins for managing VMs:
+    - `CreateVm`, `DeleteVm`, `ListVms`, `RebootVm`, `ResetVm`, `StartVm`, `StopVm`, `SuspendVm`, `UpdateVm` tasks for both ESXi and vCenter
+    - `Trigger` for both ESXi and vCenter
+    - `CreateVmSnapshot`, `DeleteVmSnapshot`, `ListVmSnapshots`, `RestoreVmFromSnapshot` for both ESXi and vCenter
+    - `CloneTemplate`, `ConvertTemplateToVm`, `CloneVm`, `ConvertVmToTemplate` for vCenter only
+- (EE) [Cyberark](https://github.com/kestra-io/kestra-ee/issues/3231) Secret Manager plugin
+- (EE) [Salesforce](https://github.com/kestra-io/plugin-ee-salesforce/) plugin now has a new Trigger
+- New [Notion](https://github.com/kestra-io/plugin-notion/) plugin with the tasks to `Create`, `Read`, `Update`, and `Archive` pages
+- New [Mistral](https://github.com/kestra-io/plugin-mistral) plugin with the `ChatCompletion` task
+- New [Anthropic](https://github.com/kestra-io/plugin-anthropic) plugin with the `ChatCompletion` task
+- New [Perplexity](https://github.com/kestra-io/plugin-perplexity) plugin with the `ChatCompletion` task
+- New [Scripts](https://github.com/kestra-io/plugin-scripts) tasks (incl. both `Commands` and `Script`) for PHP, Perl, Lua, Deno, Groovy, and Bun
+- New [Databricks](https://github.com/kestra-io/plugin-databricks/issues/116) task `DatabricksCLI` for running Databricks CLI commands
 
-
-::collapse{title="xxxx"}
-```yaml
-xxx
-```
+::collapse{title="🧩 Improved Plugins"}
+- (EE) [GCP](https://github.com/kestra-io/plugin-ee-gcp/): better output handling for the Google Batch task runner
+- (EE) [Azure](https://github.com/kestra-io/plugin-ee-azure/): improved Azure Batch logs
+- (EE) [Kubernetes](https://github.com/kestra-io/plugin-ee-kubernetes/): suppress noisy 400 errors on the Kubernetes task runner
+- [Storage S3](https://github.com/kestra-io/storage-s3): allow to list and move more than 1000 objects
+- [Storage GCS](https://github.com/kestra-io/storage-gcs/): allow to list and move more than 1000 objects
+- [Scripts](https://github.com/kestra-io/plugin-scripts) with fixed documentation `python.Commands` (uv instead of Conda), and better support for Podman
+- [JDBC](https://github.com/kestra-io/plugin-jdbc) with fixed or improved tasks: DuckDB Query, Snowflake Query, Oracle Query, MariaDB Query, improved PostgreSQL tests with SSL
+- [Mongodb](https://github.com/kestra-io/plugin-mongodb) with fixed or improved tasks: `Find`
+- [Elasticsearch](https://github.com/kestra-io/plugin-elasticsearch) with fixed or improved tasks: `Get`
+- [AMQP](https://github.com/kestra-io/plugin-amqp/) with `Trigger` and `RealtimeTrigger`
+- [Weaviate](https://github.com/kestra-io/plugin-weaviate/) with following fixed or improved tasks: `Query` and `Delete`
+- [SurrealDB](https://github.com/kestra-io/plugin-surrealdb/) with following fixed or improved task: `Query`
+- [Notifications](https://github.com/kestra-io/plugin-notifications) with fixed or improved tasks: `SlackIncomingWebhook`, `TelegramExecution`, `TelegramSend`, `MailSend`, `SlackExecution`, `TwilioExecution`, `TeamsExecution`, `DiscordExecution`
+- [AI](https://github.com/kestra-io/plugin-ai/) (previously known as Langchain4J plugin ⚠️) with improved examples and indentation + Chat `Memory` support for RAG,`ChatCompletion`, `Classification` and `JSONStructuredExtraction` tasks
+- [Ollama](https://github.com/kestra-io/plugin-ollama/) with model cache support for `OllamaCLI`
+- [OpenAI](https://github.com/kestra-io/plugin-openai/) now uses the official OpenAI SDK (all tasks)
+- [Serdes](https://github.com/kestra-io/plugin-serdes) with fixed or improved tasks: `IonToJson`, `ExcelToIon`
+- [GCP](https://github.com/kestra-io/plugin-gcp) with fixed or improved tasks: `pubsub.Publish`,
+`pubsub.Consume`, `bigquery.Query`
+- [File System](https://github.com/kestra-io/plugin-fs) with fixed or improved tasks: `VfsService`, all `vfs` tasks
+- [Kubernetes](https://github.com/kestra-io/plugin-kubernetes) with fixed or improved tasks: `PodCreate` and default `apiGroup` for `Apply`, `Delete` and `Get`
+- [Compress](https://github.com/kestra-io/plugin-compress) with fixed or improved tasks: `ArchiveDecompress`
+- [dbt](https://github.com/kestra-io/plugin-dbt) with fixed or improved tasks: `DbtCLI`, tasks using YAML DSL have been deprecated
+- [Spark](https://github.com/kestra-io/plugin-spark) with fixed or improved tasks: `AbstractSubmit`
+- [CloudQuery](https://github.com/kestra-io/plugin-cloudquery/) with fixed or improved tasks: `Sync`
+- [Nats](https://github.com/kestra-io/plugin-nats/) with secure TLS support
+- [Git](http://github.com/kestra-io/plugin-git/) with following fixed or improved tasks: `PushNamespaceFiles`, `AbstractSyncTask` + allow self hosted repo for most tasks
+- [Template](https://github.com/kestra-io/plugin-template) with a bug fixed on doc/guides generation
+- [Singer](https://github.com/kestra-io/plugin-singer) has been deprecated ⚠️ as the technology is no longer maintained.
 ::
-
 
 ## Thanks to Our Contributors
 
@@ -106,4 +559,4 @@ This post covered new features and enhancements added in Kestra 0.24.0. Which of
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack). 
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
