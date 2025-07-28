@@ -62,7 +62,10 @@ TODO GIF or video
 
 ## Task Caching
 
-The [new core task property](https://github.com/kestra-io/kestra/pull/10013) `taskCache` allows you to cache the status and outputs of computationally expensive operations. This is particularly useful for tasks extracting large amounts of data, performing complex computations, or for long-running scripts that don't need to be recomputed every time you run the flow.
+The [new core task property](https://github.com/kestra-io/kestra/pull/10013) `taskCache` allows you to cache the status and outputs of computationally expensive operations. Tasks that benefit from caching include:
+- tasks extracting large amounts of data
+- tasks performing complex computations
+- long-running scripts that don't need to be recomputed every time you run the flow.
 
 When you enable task caching, Kestra will store the task's status and outputs in the database. If you run the same task again with the same inputs, Kestra will skip the execution and return the cached outputs instead. This can significantly speed up your workflows and reduce resource consumption.
 
@@ -124,12 +127,12 @@ tasks:
 
 ## Dynamic dropdowns powered by HTTP function
 
-Kestra provides `SELECT` and `MULTISELECT` input types that allow you to create dropdowns in your flows. To dynamically populate these dropdowns, you can use the `expression` property to fetch options from your KV Store using the `{{ kv(...) }}` function. However, this approach requires a scheduled flow to regularly keep the KV Store updated with the latest options.
+Kestra provides `SELECT` and `MULTISELECT` input types that turn into dropdown menus when executing the flow from the UI. To dynamically populate these dropdowns, you can use the `expression` property to fetch options from your KV Store using the `{{ kv(...) }}` function. However, this approach requires a scheduled flow that regularly updates the KV Store values to keep the dropdown menus fresh.
 
 With the new HTTP function, you can now make these dropdowns dynamic by fetching options from an external API directly.
-This is particularly useful when you want to populate dropdowns with data that changes very frequently.
+This is particularly valuable when you want to populate dropdowns with data that changes very frequently.
 
-The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The categories are fetched from an external API, and the products are fetched based on the selected category.
+The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching your selected category.
 
 ```yaml
 id: dynamic_dropdowns
@@ -157,7 +160,7 @@ tasks:
 
 ## Java, Python, JavaScript, and Go SDKs
 
-We're excited to announce [the official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, Python, JavaScript, and Go. These SDKs provide a convenient way to interact with Kestra's API and build applications on top of Kestra.
+We're excited to announce [the official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, Python, JavaScript, and Go. These SDKs provide a convenient way to interact with Kestra's API and build custom applications on top of it.
 
 To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in `.env` file, e.g.:
 
@@ -269,7 +272,7 @@ namespace: demo
 inputs:
   - id: prompt
     type: STRING
-    defaults: Summarize top 5 news from my region.
+    defaults: Summarize top 5 technology news from my region.
   - id: city
     type: STRING
     defaults: Berlin
@@ -299,9 +302,12 @@ tasks:
     messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
 ```
 
+![slack_formatting](/blogs/release-0-24/slack_formatting.png)
+
+
 ## New Execution dependency view
 
-The new Execution dependency view allows you to follow runtime dependencies from the first parent to the last child flow. This is particularly useful for debugging long chains of executions, as it provides a clear overview of how each execution is related to others that came before or after it.
+The new Execution dependency view allows you to follow runtime dependencies from the first parent to the last child flow. It simplifies troubleshooting long execution chains by providing a clear overview of the relationships between each execution and those that precede or follow it.
 
 ![execution_dependencies](/blogs/release-0-24/execution_dependencies.png)
 
@@ -444,9 +450,12 @@ tasks:
 
 We've introduced a new Apps Catalog to the Enterprise Edition, which allows you to showcase your Apps to the entire company in a new list or gallery view. This feature is designed to help teams discover and share Apps, making it easier to build workflows and automate processes across the organization.
 
-The Apps catalog is offered as a dedicated page without showing any typical Kestra UI elements, such as the sidebar or header. This makes it easy to share the catalog with non-technical users who may not be familiar with Kestra. The catalog is accessible via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`, which can be shared with anyone in your organization.
-
 ![apps_catalog](/blogs/release-0-24/apps_catalog.png)
+
+The Apps catalog is offered as a dedicated page without showing any typical Kestra UI elements, such as the sidebar or header. This makes it easy to share the catalog with non-technical users who may not be familiar with Kestra. The catalog is accessible via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`, which can be shared with anyone in your organization who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
+
+![apps_catalog_permissions](/blogs/release-0-24/apps_catalog_permissions.png)
+
 
 ## Unit Test Improvements (EE only)
 
@@ -549,9 +558,6 @@ The 0.24 release includes many plugin enhancements, incl. new plugins and improv
 - [Singer](https://github.com/kestra-io/plugin-singer) has been deprecated ⚠️ as the technology is no longer maintained.
 ::
 
-## Thanks to Our Contributors
-
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
 
