@@ -113,7 +113,7 @@ tasks:
       - id: notify-slack
         type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
-        messageText: "A new VM named *{{ taskrun.value.vmName }}* was created at {{ taskrun.value.timestamp }}."
+        messageText: "A new VM named *{{ json(taskrun.value).vmName }}* was created at {{ json(taskrun.value).timestamp }}."
 ```
 
 This turns your Kestra workflows into **responsive infrastructure agents**, not just scheduled jobs.
