@@ -15,7 +15,7 @@ The table below highlights the key features of this release.
 
 | Feature                               | Description                                                                     | Edition             |
 |---------------------------------------|---------------------------------------------------------------------------------|---------------------|
-| Playground                            | Create workflows iteratively, one task at a time.                               | All Editions        |
+| Playground (Beta)                     | Create workflows iteratively, one task at a time.                               | All Editions        |
 | Task Caching                          | Cache the status and outputs of computationally expensive operations.           | All Editions        |
 | Dynamic dropdowns                     | Make your dropdowns more dynamic with the new HTTP function.                    | All Editions        |
 | Java, Python, JavaScript, and Go SDKs | Build on top of Kestra's API using the official language SDKs.                  | All Editions        |
@@ -39,7 +39,7 @@ Check the video below for a quick overview of all enhancements.
 
 
 
-## Playground
+## Playground (Beta)
 
 We're excited to introduce the new **Playground mode** in Kestra, which allows you to build workflows iteratively, one task at a time. This feature is especially useful when building data processing flows, where you typically start with a task extracting data, and you need to inspect the output before knowing what kind of transformation might be required. Then, you can work on that transformation task without having to rerun the extraction task again.
 
@@ -60,6 +60,12 @@ Note that Playground mode requires a DAG (Directed Acyclic Graph) structure. The
 To see Playground in action, check out the demo below.
 
 TODO GIF or video
+
+::alert{type="warning"}
+Note that Playground mode is **currently in Beta**, so we welcome your feedback and suggestions for improvements. You can enable it directly from the Kestra UI from the **Settings** page simply by toggling on the `Playground` button:
+::
+
+![playground_toggle](/blogs/release-0-24/playground_toggle.png)
 
 ## Task Caching
 
