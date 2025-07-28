@@ -13,21 +13,22 @@ image: /blogs/release-0-24.jpg
 
 The table below highlights the key features of this release.
 
-| Feature                               | Description                                                                      | Edition             |
-|---------------------------------------|----------------------------------------------------------------------------------|---------------------|
-| Playground                            | Create workflows iteratively, one task at a time.                                | All Editions        |
-| Task Caching                          | Cache the status and outputs of computationally expensive operations.            | All Editions        |
-| Dynamic dropdowns                     | Make your dropdowns more dynamic with the new HTTP function.                     | All Editions        |
-| Java, Python, JavaScript, and Go SDKs | Build on top of Kestra's API using the official language SDKs.                   | All Editions        |
-| Kestra Plugin                         | Interact with Kestra's API directly from your tasks.                             | All Editions        |
-| Improved Slack integration            | Send beautifully-formatted Slack updates with results from your tasks.           | All Editions        |
-| New Execution dependency view         | Follow execution dependencies from the first parent to the last child flow       | All Editions        |
-| CSV Export                            | Export tabular data from any dashboard into a CSV file for reporting             | All Editions        |
-| New universal file protocol           | Leverage the new protocol for consistent access to local and namespace files     | All Editions        |
-| Lots of new plugins!                  | New plugins for managing VMs, Notion, Mistral, Anthropic, Perplexity, and more.  | All Editions        |
-| Apps catalog                          | Showcase your Apps to the entire company in a new Catalog view.                  | Enterprise Edition  |
-| Unit Test Improvements                | Assert on execution outputs and view past test runs                              | Enterprise Edition  |
-| Mandatory Authentication in OSS       | Secure your open-source instance with basich auth and a new login screen         | Open Source Edition |
+| Feature                               | Description                                                                     | Edition             |
+|---------------------------------------|---------------------------------------------------------------------------------|---------------------|
+| Playground                            | Create workflows iteratively, one task at a time.                               | All Editions        |
+| Task Caching                          | Cache the status and outputs of computationally expensive operations.           | All Editions        |
+| Dynamic dropdowns                     | Make your dropdowns more dynamic with the new HTTP function.                    | All Editions        |
+| Java, Python, JavaScript, and Go SDKs | Build on top of Kestra's API using the official language SDKs.                  | All Editions        |
+| Kestra Plugin                         | Interact with Kestra's API directly from your tasks.                            | All Editions        |
+| Improved Slack integration            | Send beautifully-formatted Slack updates with results from your tasks.          | All Editions        |
+| New Execution dependency view         | Follow execution dependencies from the first parent to the last child flow      | All Editions        |
+| CSV Export                            | Export tabular data from any dashboard into a CSV file for reporting            | All Editions        |
+| New universal file protocol           | Leverage the new protocol for consistent access to local and namespace files    | All Editions        |
+| Lots of new plugins!                  | New plugins for managing VMs, Notion, Mistral, Anthropic, Perplexity, and more. | All Editions        |
+| Apps catalog                          | Showcase your Apps to the entire company in a new Catalog view.                 | Enterprise Edition  |
+| Custom UI Links                       | Add custom UI links to the Kestra UI sidebar                                    | Enterprise Edition  |
+| Unit Test Improvements                | Assert on execution outputs and view past test runs                             | Enterprise Edition  |
+| Mandatory Authentication in OSS       | Secure your open-source instance with basich auth and a new login screen        | Open Source Edition |
 
 
 Check the video below for a quick overview of all enhancements.
@@ -367,7 +368,7 @@ pluginDefaults:
 
 ### Allowed paths
 
-Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from `/tmp/scripts` on your host machine, you can add the following to your `kestra.yml` configuration:
+Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
 
 ```yaml
   kestra:
@@ -389,13 +390,13 @@ Keep in mind that if you see the following error:
 java.lang.SecurityException: The path /scripts/hello.py is not authorized. Only files inside the working directory are allowed by default, other paths must be allowed either globally inside the Kestra configuration using the `kestra.local-files.allowed-paths` property, or by plugin using the `allowed-paths` plugin configuration.`.
 ```
 
-Then it means that you have not configured the allowed paths correctly. If you are running Kestra in a Docker container, you need to ensure that the host directory is bind-mounted into the container and that the `kestra.local-files.allowed-paths` configuration property includes the path to that directory.
+It means that you have not configured the allowed paths correctly. Make sure that the host directory is bind-mounted into the container and that the `kestra.local-files.allowed-paths` configuration property includes the path to that directory.
 
 ### Protocol reference
 
 Here is a reference of the new file protocol:
 1. Use `file:///path/to/file.txt` to reference local files on the host machine from explicitly allowed paths.
-2. Use `nsfile:///path/to/file.txt` to reference files stored in the current namespace (or a parent namespace). Note that this protocol uses three slashes after `nsfile://` to indicate that you are referencing a file in the current namespace. The inheritance ensures that if you specify `nsfile:///path/to/file.txt` in a flow from `company.team` namespace and Kestra can't find it there, we look for that file in the parent namespace, i.e. the `company` namespace.
+2. Use `nsfile:///path/to/file.txt` to reference files stored in the current namespace. Note that this protocol uses three slashes after `nsfile://` to indicate that you are referencing a file in the current namespace. The namespace inheritance doesn't apply here, i.e. if you specify `nsfile:///path/to/file.txt` in a flow from `company.team` namespace and Kestra can't find it there, Kestra won't look for that file in the parent namespace, i.e. the `company` namespace, unless you explicitly specify the parent namespace in the path, e.g. `nsfile://company/path/to/file.txt`.
 3. Use `nsfile://your.infinitely.nested.namespace/path/to/file.txt` to reference files stored in another namespace, provided that the current namespace has permission to access it. Note how this protocol uses two slashes after `nsfile://`, followed by the namespace name, to indicate that you are referencing a file in a different namespace. Under the hood, Kestra EE uses the Allowed Namespaces concept to check permissions to read that file.
 4. Kestra also uses the `kestra:///` scheme for internal storage files. If you need to reference files stored in the internal storage, you can use `kestra:///path/to/file.txt` protocol.
 
@@ -454,6 +455,40 @@ We've introduced a new Apps Catalog to the Enterprise Edition, which allows you 
 The Apps catalog is offered as a dedicated page without showing any typical Kestra UI elements, such as the sidebar or header. This makes it easy to share the catalog with non-technical users who may not be familiar with Kestra. The catalog is accessible via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`, which can be shared with anyone in your organization who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
 
 ![apps_catalog_permissions](/blogs/release-0-24/apps_catalog_permissions.png)
+
+## Custom UI Links (EE only)
+
+In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your Kestra configuration file as follows:
+
+```yaml
+kestra:
+  ee:
+    custom-links:
+      link1:
+        title: "Internal Documentation"
+        url: "https://kestra.io/docs/"
+      link2:
+        title: "Internal Support Portal"
+        url: "https://kestra.io/support/"
+```
+
+The `kestra.ee.custom-links` is an arbitrary map, so you can name the link properties as you like (as long as each of them includes the `title` and `url` properties):
+
+```yaml
+kestra:
+  ee:
+    custom-links:
+      internal-docs:
+        title: "Internal Docs"
+        url: "https://kestra.io/docs/"
+      support-portal:
+        title: "Support Portal"
+        url: "https://kestra.io/support/"
+```
+
+The links will show up in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
+
+![custom_links](/blogs/release-0-24/custom_links.png)
 
 
 ## Unit Test Improvements (EE only)
