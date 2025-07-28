@@ -2325,3 +2325,21 @@ kestra:
         title: "Internal Support Portal"
         url: "https://kestra.io/support/"
 ```
+
+## Allowed file paths
+
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme, must be bind-mount to the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    volumes:
+      - /Users/yourdir/scripts:/scripts # Bind-mount the host directory
+    ...
+    environment: # Allow access to the /scripts directory in Kestra container
+      KESTRA_CONFIGURATION: |
+        kestra:
+          local-files:
+            allowed-paths:
+              - /scripts
+```
