@@ -1796,7 +1796,6 @@ will produce the following return:
 
 ### http
 
-
 With the HTTP function, you can fetch from an external API directly
 
 ```yaml
