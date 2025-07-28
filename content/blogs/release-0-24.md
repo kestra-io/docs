@@ -129,8 +129,7 @@ tasks:
 
 Kestra provides `SELECT` and `MULTISELECT` input types that turn into dropdown menus when executing the flow from the UI. To dynamically populate these dropdowns, you can use the `expression` property to fetch options from your KV Store using the `{{ kv(...) }}` function. However, this approach requires a scheduled flow that regularly updates the KV Store values to keep the dropdown menus fresh.
 
-With the new HTTP function, you can now make these dropdowns dynamic by fetching options from an external API directly.
-This is particularly valuable when you want to populate dropdowns with data that changes very frequently.
+With the new HTTP function, you can now make these dropdowns dynamic by fetching options from an external API directly. This proves valuable when your data used in dropdowns changes very frequently, or when you already have an API serving that data for existing applications.
 
 The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching your selected category.
 
