@@ -124,9 +124,9 @@ Use the `date` filter to format the `execution.startDate` variable as `yyyy-MM-d
 
 ### Environment Variables
 
-Kestra provides access to environment variables prefixed with `KESTRA_` by default, unless configured otherwise in the `variables` [configuration](../configuration/index.md).
+Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the `variables` [configuration](../configuration/index.md).
 
-To use an environment variable, such as `KESTRA_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `KESTRA_` prefix and converting the remainder to **lowercase**.
+To use an environment variable, such as `ENV_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `ENV_` prefix and converting the remainder to **lowercase**.
 
 To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
 
