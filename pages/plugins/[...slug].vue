@@ -28,7 +28,7 @@
                 <PluginIndex v-if="pluginType === undefined"
                             class="plugin-index"
                             :icons="icons"
-                            :plugins="page.body.plugins"
+                            :plugins="pluginsWithoutDeprecated"
                             :plugin-name="pluginName"
                             :sub-group="subGroup">
                     <template v-slot:markdown="{ content }">
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify} from '@kestra-io/ui-libs'
+    import {SchemaToHtml, PluginIndex, isEntryAPluginElementPredicate, subGroupName, slugify, type PluginElement} from '@kestra-io/ui-libs'
     import type {Plugin} from "@kestra-io/ui-libs";
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -120,10 +120,10 @@
                     id: `section-${slugify(key)}`,
                     depth: 2,
                     text,
-                    children: value.map((element) => ({
-                        id: slugify(element),
+                    children: (value as PluginElement[]).filter(({deprecated}) => !deprecated).map(({cls}) => ({
+                        id: slugify(cls),
                         depth: 3,
-                        text: element.substring(element.lastIndexOf('.') + 1)
+                        text: cls.substring(cls.lastIndexOf('.') + 1)
                     }))
                 };
             });
@@ -173,22 +173,42 @@
         throw createError({statusCode: 404, message: page?.value?.message, fatal: true})
     }
 
+    const pluginsWithoutDeprecated = computed(() => {
+        return page.value?.body.plugins
+            .flatMap(p => {
+                let filteredElementsEntries = Object.entries(p).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                    .map(([elementType, elements]) => [elementType, (elements as PluginElement[]).filter(({deprecated}) => !deprecated)])
+                    .filter(([, elements]) => elements.length > 0);
+
+                if (filteredElementsEntries.length === 0) {
+                    return [];
+                }
+
+                return [{
+                    ...p,
+                    ...Object.fromEntries(
+                        filteredElementsEntries
+                    )
+                }];
+            })
+    });
+
     if (page.value?.body && page.value.body?.toc === undefined) {
         let links;
         if (subGroup.value !== undefined) {
-            links = pluginSubGroupToc(page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
-        } else if (page?.value.body.plugins.length === 1) {
-            links = pluginSubGroupToc(page.value.body.plugins[0]);
+            links = pluginSubGroupToc(pluginsWithoutDeprecated.value.find(p => slugify(subGroupName(p)) === subGroup.value));
+        } else if (pluginsWithoutDeprecated.value.length === 1) {
+            links = pluginSubGroupToc(pluginsWithoutDeprecated.value[0]);
         } else {
-            links = pluginToc(page.value.body.plugins)
+            links = pluginToc(pluginsWithoutDeprecated.value)
         }
         page.value.body.toc = {
             links
         }
     }
 
-    const pluginWrapper = computed(() => page.value?.body.plugins.find(p => p.subGroup === undefined));
-    const subGroupWrapper = computed(() => subGroup.value === undefined || pluginType.value !== undefined ? undefined : page.value.body.plugins.find(p => slugify(subGroupName(p)) === subGroup.value));
+    const pluginWrapper = computed(() => pluginsWithoutDeprecated.value.find(p => p.subGroup === undefined));
+    const subGroupWrapper = computed(() => subGroup.value === undefined || pluginType.value !== undefined ? undefined : pluginsWithoutDeprecated.value.find(p => slugify(subGroupName(p)) === subGroup.value));
 
     if (pluginType.value === undefined && page.value) {
         page.value.title = pluginWrapper.value.title.charAt(0).toUpperCase() + pluginWrapper.value.title.slice(1) + (subGroup.value === undefined ? "" : ` - ${subGroupName({title: subGroup.value})}`);
