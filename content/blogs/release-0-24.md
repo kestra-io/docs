@@ -140,6 +140,8 @@ With the new HTTP function, you can now make these dropdowns dynamic by fetching
 
 The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching your selected category.
 
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/1WN2IkuzMdc3ex1YpBq0?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dynamic Inputs 2 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ```yaml
 id: dynamic_dropdowns
 namespace: company.team
