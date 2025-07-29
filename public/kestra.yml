@@ -25,11 +25,28 @@ tags:
 - name: Metrics
   description: Metrics API
 paths:
+  /api/v1/basicAuthValidationErrors:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the instance configuration.
+      description: Global endpoint available to all users.
+      operationId: getBasicAuthConfigErrors
+      responses:
+        "200":
+          description: getBasicAuthConfigErrors 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /api/v1/configs:
     get:
       tags:
       - Misc
-      summary: Get current configurations
+      summary: Retrieve the instance configuration.
+      description: Global endpoint available to all users.
       operationId: getConfiguration
       responses:
         "200":
@@ -38,12 +55,271 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.Configuration"
-  /api/v1/main/basicAuth:
+  /api/v1/main/ai/generate/flow:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate a flow based on a prompt
+      operationId: generateFlow
+      requestBody:
+        description: Prompt and context required for flow generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FlowGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateFlow 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
+  /api/v1/plugins:
+    get:
+      tags:
+      - Plugins
+      summary: Get list of plugins
+      operationId: listPlugins
+      responses:
+        "200":
+          description: listPlugins 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
+  /api/v1/plugins/groups/subgroups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins group by subgroups
+      operationId: getPluginBySubgroups
+      responses:
+        "200":
+          description: getPluginBySubgroups 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
+  /api/v1/plugins/icons:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: getPluginIcons
+      responses:
+        "200":
+          description: getPluginIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/PluginIcon"
+  /api/v1/plugins/icons/groups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: getPluginGroupIcons
+      responses:
+        "200":
+          description: getPluginGroupIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/PluginIcon"
+  /api/v1/plugins/inputs:
+    get:
+      tags:
+      - Plugins
+      summary: Get all types for an inputs
+      operationId: getAllInputTypes
+      responses:
+        "200":
+          description: getAllInputTypes 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InputType"
+  /api/v1/plugins/inputs/{type}:
+    get:
+      tags:
+      - Plugins
+      summary: Get the JSON schema for an input type
+      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
+      operationId: getSchemaFromInputType
+      parameters:
+      - name: type
+        in: path
+        description: The schema needed
+        required: true
+        schema:
+          $ref: "#/components/schemas/Type"
+      responses:
+        "200":
+          description: getSchemaFromInputType 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
+  /api/v1/plugins/properties/{type}:
+    get:
+      tags:
+      - Plugins
+      summary: Get the properties part of the JSON schema for a type
+      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
+      operationId: getPropertiesFromType
+      parameters:
+      - name: type
+        in: path
+        description: The schema needed
+        required: true
+        schema:
+          $ref: "#/components/schemas/SchemaType"
+      responses:
+        "200":
+          description: getPropertiesFromType 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/plugins/schemas/{type}:
+    get:
+      tags:
+      - Plugins
+      summary: Get the JSON schema for a type
+      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
+      operationId: getSchemasFromType
+      parameters:
+      - name: type
+        in: path
+        description: The schema needed
+        required: true
+        schema:
+          $ref: "#/components/schemas/SchemaType"
+      - name: arrayOf
+        in: query
+        description: If schema should be an array of requested type
+        explode: false
+        schema:
+          type: boolean
+          nullable: true
+          default: false
+      responses:
+        "200":
+          description: getSchemasFromType 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/plugins/{cls}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugin documentation
+      operationId: getPluginDocumentation
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin full class name
+        required: true
+        schema:
+          type: string
+      - name: all
+        in: query
+        description: Include all the properties
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: getPluginDocumentation 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
+  /api/v1/plugins/{cls}/versions:
+    get:
+      tags:
+      - Plugins
+      summary: Get all versions for a plugin
+      operationId: getPluginVersions
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginVersions 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
+  /api/v1/plugins/{cls}/versions/{version}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugin documentation
+      operationId: getPluginDocumentationFromVersion
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin type
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: The plugin version
+        required: true
+        schema:
+          type: string
+      - name: all
+        in: query
+        description: Include all the properties
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: getPluginDocumentationFromVersion 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
+  /api/v1/{tenant}/basicAuth:
     post:
       tags:
       - Misc
-      summary: Create basic auth for the current instance
+      summary: Configure basic authentication for the instance.
+      description: Sets up basic authentication credentials.
       operationId: createBasicAuth
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -53,19 +329,6 @@ paths:
       responses:
         "200":
           description: createBasicAuth 200 response
-  /api/v1/main/usages/all:
-    get:
-      tags:
-      - Misc
-      summary: Get instance usage information
-      operationId: getUsages
-      responses:
-        "200":
-          description: getUsages 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Usage"
   /api/v1/{tenant}/blueprints/community/{kind}:
     get:
       tags:
@@ -76,18 +339,21 @@ paths:
       - name: q
         in: query
         description: A string filter
+        explode: false
         schema:
           type: string
           nullable: true
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: string
           nullable: true
       - name: tags
         in: query
         description: A tags filter
+        explode: false
         schema:
           type: array
           nullable: true
@@ -97,6 +363,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -106,6 +373,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -145,6 +413,7 @@ paths:
       - name: q
         in: query
         description: A string filter to get tags with matching blueprints only
+        explode: false
         schema:
           type: string
           nullable: true
@@ -224,7 +493,8 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: true
+                additionalProperties:
+                  type: object
   /api/v1/{tenant}/blueprints/community/{kind}/{id}/source:
     get:
       tags:
@@ -291,6 +561,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -300,6 +571,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -308,12 +580,14 @@ paths:
       - name: q
         in: query
         description: The filter query
+        explode: false
         schema:
           type: string
           nullable: true
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -356,6 +630,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dashboard"
+  /api/v1/{tenant}/dashboards/charts/export/to-csv:
+    post:
+      tags:
+      - Dashboards
+      summary: Export a table chart data to CSV
+      operationId: exportChartToCsv
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardController.PreviewRequest"
+        required: true
+      responses:
+        "200":
+          description: exportChartToCsv 200 response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
   /api/v1/{tenant}/dashboards/charts/preview:
     post:
       tags:
@@ -539,7 +839,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GlobalFilter"
+              $ref: "#/components/schemas/ChartFiltersOverrides"
         required: true
       responses:
         "200":
@@ -548,6 +848,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Map_String.Object__"
+  /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export/to-csv:
+    post:
+      tags:
+      - Dashboards
+      summary: Export a dashboard chart data to CSV
+      operationId: exportDashboardChartDataToCSV
+      parameters:
+      - name: id
+        in: path
+        description: The dashboard id
+        required: true
+        schema:
+          type: string
+      - name: chartId
+        in: path
+        description: The chart id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: "The filters to apply, some can override chart definition like\
+          \ labels & namespace"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChartFiltersOverrides"
+        required: true
+      responses:
+        "200":
+          description: exportDashboardChartDataToCSV 200 response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
   /api/v1/{tenant}/executions:
     get:
       tags:
@@ -559,18 +899,21 @@ paths:
         in: query
         description: The flow namespace
         required: true
+        explode: false
         schema:
           type: string
       - name: flowId
         in: query
         description: The flow id
         required: true
+        explode: false
         schema:
           type: string
       - name: page
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -580,6 +923,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -607,6 +951,7 @@ paths:
       - name: includeNonTerminated
         in: query
         description: Whether to delete non-terminated executions
+        explode: false
         schema:
           type: boolean
           nullable: true
@@ -615,6 +960,7 @@ paths:
         in: query
         description: Whether to delete execution logs
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -622,6 +968,7 @@ paths:
         in: query
         description: Whether to delete execution metrics
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -629,6 +976,7 @@ paths:
         in: query
         description: Whether to delete execution files in the internal storage
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -670,6 +1018,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -677,6 +1026,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -686,6 +1036,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -693,6 +1044,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -716,6 +1068,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -728,6 +1081,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -746,6 +1100,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -753,6 +1108,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -760,6 +1116,7 @@ paths:
       - name: includeNonTerminated
         in: query
         description: Whether to delete non-terminated executions
+        explode: false
         schema:
           type: boolean
           nullable: true
@@ -768,6 +1125,7 @@ paths:
         in: query
         description: Whether to delete execution logs
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -775,6 +1133,7 @@ paths:
         in: query
         description: Whether to delete execution metrics
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -782,6 +1141,7 @@ paths:
         in: query
         description: Whether to delete execution files in the internal storage
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -820,6 +1180,7 @@ paths:
         in: query
         description: The new state of the executions
         required: true
+        explode: false
         schema:
           $ref: "#/components/schemas/State.Type"
       - name: tenant
@@ -860,6 +1221,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -867,6 +1229,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -876,6 +1239,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -883,6 +1247,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -906,6 +1271,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -918,6 +1284,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -936,6 +1303,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -943,6 +1311,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -951,6 +1320,7 @@ paths:
         in: query
         description: The new state of the executions
         required: true
+        explode: false
         schema:
           $ref: "#/components/schemas/State.Type"
       - name: tenant
@@ -1005,6 +1375,7 @@ paths:
       - name: revision
         in: query
         description: The flow revision
+        explode: false
         schema:
           type: integer
           format: int32
@@ -1066,6 +1437,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1073,6 +1445,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1082,6 +1455,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1089,6 +1463,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1112,6 +1487,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1124,6 +1500,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1142,6 +1519,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1149,6 +1527,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -1222,6 +1601,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1229,6 +1609,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1238,6 +1619,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1245,6 +1627,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1268,6 +1651,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1280,6 +1664,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1298,6 +1683,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1305,6 +1691,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -1376,6 +1763,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1383,6 +1771,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1392,6 +1781,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1399,6 +1789,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1422,6 +1813,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1434,6 +1826,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1452,6 +1845,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1459,6 +1853,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -1490,6 +1885,35 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/{tenant}/executions/latest:
+    post:
+      tags:
+      - Executions
+      summary: Get the latest execution for given flows
+      operationId: getLatestExecutions
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ExecutionRepositoryInterface.FlowFilter"
+        required: true
+      responses:
+        "200":
+          description: getLatestExecutions 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionController.LastExecutionResponse"
   /api/v1/{tenant}/executions/namespaces:
     get:
       tags:
@@ -1585,6 +2009,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1592,6 +2017,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1601,6 +2027,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1608,6 +2035,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1631,6 +2059,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1643,6 +2072,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1661,6 +2091,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1668,6 +2099,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -1706,6 +2138,7 @@ paths:
       - name: latestRevision
         in: query
         description: If latest revision should be used
+        explode: false
         schema:
           type: boolean
           nullable: true
@@ -1749,6 +2182,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1756,6 +2190,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1765,6 +2200,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1772,6 +2208,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1795,6 +2232,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1807,6 +2245,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1825,6 +2264,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1832,6 +2272,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -1839,6 +2280,7 @@ paths:
       - name: latestRevision
         in: query
         description: If latest revision should be used
+        explode: false
         schema:
           type: boolean
           nullable: true
@@ -1912,6 +2354,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1919,6 +2362,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1928,6 +2372,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1935,6 +2380,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1958,6 +2404,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1970,6 +2417,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -1988,6 +2436,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -1995,6 +2444,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -2068,6 +2518,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2075,6 +2526,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2084,6 +2536,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2091,6 +2544,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2114,6 +2568,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2126,6 +2581,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2144,6 +2600,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2151,6 +2608,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -2190,6 +2648,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -2199,6 +2658,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -2207,6 +2667,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2216,6 +2677,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -2224,6 +2686,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2231,6 +2694,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2240,6 +2704,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2247,6 +2712,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2270,6 +2736,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2282,6 +2749,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2300,6 +2768,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2307,6 +2776,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -2355,12 +2825,14 @@ paths:
         in: query
         description: If the server will wait the end of the execution
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
       - name: revision
         in: query
         description: The flow revision or latest if null
+        explode: false
         schema:
           type: integer
           format: int32
@@ -2398,6 +2870,14 @@ paths:
       summary: Unqueue a list of executions
       operationId: unqueueExecutionsByIds
       parameters:
+      - name: state
+        in: query
+        description: The new state of the unqueued executions
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -2436,6 +2916,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2443,6 +2924,7 @@ paths:
         in: query
         description: The scope of the executions to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2452,6 +2934,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2459,6 +2942,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2482,6 +2966,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2494,6 +2979,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -2512,6 +2998,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -2519,10 +3006,19 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: newState
+        in: query
+        description: The new state of the unqueued executions
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -2583,7 +3079,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Execution"
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     put:
       tags:
       - Executions
@@ -2619,7 +3115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Execution"
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     post:
       tags:
       - Executions
@@ -2655,7 +3151,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Execution"
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -2697,6 +3193,7 @@ paths:
         in: query
         description: Whether to delete execution logs
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -2704,6 +3201,7 @@ paths:
         in: query
         description: Whether to delete execution metrics
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -2711,6 +3209,7 @@ paths:
         in: query
         description: Whether to delete execution files in the internal storage
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -2739,6 +3238,7 @@ paths:
         in: query
         description: The new state of the execution
         required: true
+        explode: false
         schema:
           $ref: "#/components/schemas/State.Type"
       - name: tenant
@@ -2808,6 +3308,7 @@ paths:
         in: query
         description: The internal storage uri
         required: true
+        explode: false
         schema:
           type: string
           format: uri
@@ -2841,6 +3342,7 @@ paths:
         in: query
         description: The internal storage uri
         required: true
+        explode: false
         schema:
           type: string
           format: uri
@@ -2873,12 +3375,14 @@ paths:
         in: query
         description: The internal storage uri
         required: true
+        explode: false
         schema:
           type: string
           format: uri
       - name: maxRows
         in: query
         description: The max row returns
+        explode: false
         schema:
           type: integer
           format: int32
@@ -2887,6 +3391,7 @@ paths:
         in: query
         description: The file encoding as Java charset name. Defaults to UTF-8
         required: true
+        explode: false
         schema:
           type: string
           default: UTF-8
@@ -2953,6 +3458,48 @@ paths:
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/Event_Execution_"
+  /api/v1/{tenant}/executions/{executionId}/follow-dependencies:
+    get:
+      tags:
+      - Executions
+      summary: Follow all execution dependencies executions
+      operationId: followDependenciesExecutions
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: destinationOnly
+        in: query
+        description: "If true, list only destination dependencies, otherwise list\
+          \ also source dependencies"
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: expandAll
+        in: query
+        description: "If true, expand all dependencies recursively"
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: followDependenciesExecutions 200 response
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/Event_ExecutionStatusEvent_"
   /api/v1/{tenant}/executions/{executionId}/force-run:
     post:
       tags:
@@ -2994,6 +3541,7 @@ paths:
       - name: subflows
         in: query
         description: The subflow tasks to display
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3029,6 +3577,7 @@ paths:
         description: Specifies whether killing the execution also kill all subflow
           executions.
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -3122,15 +3671,25 @@ paths:
       - name: taskRunId
         in: query
         description: The taskrun id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: revision
         in: query
         description: The flow revision to use for new execution
+        explode: false
         schema:
           type: integer
           format: int32
+          nullable: true
+      - name: breakpoints
+        in: query
+        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
+          \ by a coma."
+        explode: false
+        schema:
+          type: string
           nullable: true
       - name: tenant
         in: path
@@ -3160,6 +3719,7 @@ paths:
       - name: revision
         in: query
         description: The flow revision to use for new execution
+        explode: false
         schema:
           type: integer
           format: int32
@@ -3208,6 +3768,38 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
+  /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint:
+    post:
+      tags:
+      - Executions
+      summary: Resume an execution from a breakpoint (in the 'BREAKPOINT' state).
+      operationId: resumeExecutionFromBreakpoint
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: breakpoints
+        in: query
+        description: "\"Set a list of breakpoints at specific tasks 'id.value', separated\
+          \ by a coma."
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+        "409":
+          description: If the executions is not in the 'BREAKPOINT' state or has no
+            breakpoint
   /api/v1/{tenant}/executions/{executionId}/resume/validate:
     post:
       tags:
@@ -3285,6 +3877,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: state
+        in: query
+        description: The new state of the execution
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -3328,12 +3928,14 @@ paths:
         in: query
         description: If the server will wait the end of the execution
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
       - name: revision
         in: query
         description: The flow revision or latest if null
+        explode: false
         schema:
           type: integer
           format: int32
@@ -3341,10 +3943,27 @@ paths:
       - name: scheduleDate
         in: query
         description: Schedule the flow on a specific date
+        explode: false
         schema:
           type: string
           format: date-time
           nullable: true
+      - name: breakpoints
+        in: query
+        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
+          \ by a coma."
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: kind
+        in: query
+        description: Specific execution kind
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionKind"
       - name: tenant
         in: path
         required: true
@@ -3400,6 +4019,7 @@ paths:
       - name: revision
         in: query
         description: The flow revision or latest if null
+        explode: false
         schema:
           type: integer
           format: int32
@@ -3469,12 +4089,14 @@ paths:
         in: query
         description: If missing flow should be deleted
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
       - name: namespace
         in: query
         description: The namespace where to update flows
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3482,6 +4104,7 @@ paths:
         in: query
         description: If namespace child should are allowed to be updated
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
@@ -3545,6 +4168,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3552,6 +4176,7 @@ paths:
         in: query
         description: The scope of the flows to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3561,6 +4186,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3636,6 +4262,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3643,6 +4270,7 @@ paths:
         in: query
         description: The scope of the flows to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3652,6 +4280,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3698,6 +4327,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3754,6 +4384,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3761,6 +4392,7 @@ paths:
         in: query
         description: The scope of the flows to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3770,6 +4402,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3833,10 +4466,8 @@ paths:
           content:
             application/octet-stream:
               schema:
-                type: array
-                items:
-                  type: string
-                  format: byte
+                type: string
+                format: byte
   /api/v1/{tenant}/flows/export/by-query:
     get:
       tags:
@@ -3848,6 +4479,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -3856,6 +4488,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3863,6 +4496,7 @@ paths:
         in: query
         description: The scope of the flows to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3872,6 +4506,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -3895,10 +4530,8 @@ paths:
           content:
             application/octet-stream:
               schema:
-                type: array
-                items:
-                  type: string
-                  format: byte
+                type: string
+                format: byte
   /api/v1/{tenant}/flows/graph:
     post:
       tags:
@@ -3909,6 +4542,7 @@ paths:
       - name: subflows
         in: query
         description: The subflow tasks to display
+        explode: false
         schema:
           type: array
           nullable: true
@@ -3962,6 +4596,7 @@ paths:
             encoding:
               fileUpload:
                 contentType: application/octet-stream
+                explode: false
         required: true
       responses:
         "200":
@@ -3983,6 +4618,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -3992,6 +4628,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -4000,6 +4637,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4009,6 +4647,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -4017,6 +4656,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4024,6 +4664,7 @@ paths:
         in: query
         description: The scope of the flows to include
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4033,6 +4674,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4068,6 +4710,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -4077,6 +4720,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -4085,6 +4729,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4093,12 +4738,14 @@ paths:
       - name: q
         in: query
         description: A string filter
+        explode: false
         schema:
           type: string
           nullable: true
       - name: namespace
         in: query
         description: A namespace filter prefix
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4149,17 +4796,18 @@ paths:
       summary: Validate a task
       operationId: validateTask
       parameters:
+      - name: section
+        in: query
+        description: The type of task
+        required: true
+        explode: false
+        schema:
+          $ref: "#/components/schemas/FlowController.TaskValidationType"
       - name: tenant
         in: path
         required: true
         schema:
           type: string
-      - name: section
-        in: query
-        description: The type of task
-        required: true
-        schema:
-          $ref: "#/components/schemas/FlowController.TaskValidationType"
       requestBody:
         description: A task definition that can be from tasks or triggers
         content:
@@ -4250,6 +4898,7 @@ paths:
         in: query
         description: If missing flow should be deleted
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -4297,12 +4946,14 @@ paths:
         in: query
         description: Include the source code
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
       - name: revision
         in: query
         description: Get latest revision by default
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4311,6 +4962,7 @@ paths:
         in: query
         description: Get flow even if deleted
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
@@ -4413,6 +5065,15 @@ paths:
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
         required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: expandAll
+        in: query
+        description: "If true, expand all dependencies recursively"
+        required: true
+        explode: false
         schema:
           type: boolean
           default: false
@@ -4450,6 +5111,7 @@ paths:
       - name: revision
         in: query
         description: The flow revision
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4457,6 +5119,7 @@ paths:
       - name: subflows
         in: query
         description: The subflow tasks to display
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4535,6 +5198,7 @@ paths:
       - name: revision
         in: query
         description: The flow revision
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4608,6 +5272,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -4617,6 +5282,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -4625,6 +5291,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4633,6 +5300,7 @@ paths:
       - name: filters
         in: query
         description: Filters
+        explode: false
         schema:
           type: array
           nullable: true
@@ -4642,6 +5310,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4649,6 +5318,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4656,6 +5326,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4663,6 +5334,7 @@ paths:
         in: query
         description: A trigger id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4670,6 +5342,7 @@ paths:
         in: query
         description: The min log level filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -4718,6 +5391,7 @@ paths:
       - name: minLevel
         in: query
         description: The min log level filter
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -4725,18 +5399,21 @@ paths:
       - name: taskRunId
         in: query
         description: The taskrun id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: taskId
         in: query
         description: The task id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: attempt
         in: query
         description: The attempt number
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4770,6 +5447,7 @@ paths:
       - name: minLevel
         in: query
         description: The min log level filter
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -4777,18 +5455,21 @@ paths:
       - name: taskRunId
         in: query
         description: The taskrun id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: taskId
         in: query
         description: The task id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: attempt
         in: query
         description: The attempt number
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4817,6 +5498,7 @@ paths:
       - name: minLevel
         in: query
         description: The min log level filter
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -4824,18 +5506,21 @@ paths:
       - name: taskRunId
         in: query
         description: The taskrun id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: taskId
         in: query
         description: The task id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: attempt
         in: query
         description: The attempt number
+        explode: false
         schema:
           type: integer
           format: int32
@@ -4869,6 +5554,7 @@ paths:
       - name: minLevel
         in: query
         description: The min log level filter
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -4907,6 +5593,7 @@ paths:
       - name: triggerId
         in: query
         description: The trigger id
+        explode: false
         schema:
           type: string
           nullable: true
@@ -4961,6 +5648,7 @@ paths:
         in: query
         description: "The type of aggregation: avg, sum, min or max"
         required: true
+        explode: false
         schema:
           type: string
           default: sum
@@ -5025,6 +5713,7 @@ paths:
         in: query
         description: "The type of aggregation: avg, sum, min or max"
         required: true
+        explode: false
         schema:
           type: string
           default: sum
@@ -5157,6 +5846,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -5166,6 +5856,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -5174,6 +5865,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -5188,12 +5880,14 @@ paths:
       - name: taskRunId
         in: query
         description: The taskrun id
+        explode: false
         schema:
           type: string
           nullable: true
       - name: taskId
         in: query
         description: The task id
+        explode: false
         schema:
           type: string
           nullable: true
@@ -5219,6 +5913,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        explode: false
         schema:
           type: string
           nullable: true
@@ -5226,6 +5921,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -5235,6 +5931,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -5243,6 +5940,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -5251,6 +5949,7 @@ paths:
       - name: existing
         in: query
         description: Return only existing namespace
+        explode: false
         schema:
           type: boolean
           nullable: true
@@ -5310,6 +6009,7 @@ paths:
         description: "if true, list only destination dependencies, otherwise list\
           \ also source dependencies"
         required: true
+        explode: false
         schema:
           type: boolean
           default: false
@@ -5342,6 +6042,7 @@ paths:
         in: query
         description: The internal storage uri
         required: true
+        explode: false
         schema:
           type: string
       - name: tenant
@@ -5373,6 +6074,7 @@ paths:
         in: query
         description: The internal storage uri to move from
         required: true
+        explode: false
         schema:
           type: string
           format: uri
@@ -5380,6 +6082,7 @@ paths:
         in: query
         description: The internal storage uri to move to
         required: true
+        explode: false
         schema:
           type: string
           format: uri
@@ -5407,6 +6110,7 @@ paths:
         in: query
         description: The internal storage uri
         required: true
+        explode: false
         schema:
           type: string
       - name: tenant
@@ -5427,6 +6131,7 @@ paths:
             encoding:
               fileContent:
                 contentType: application/octet-stream
+                explode: false
         required: true
       responses:
         "200":
@@ -5447,6 +6152,7 @@ paths:
         in: query
         description: The internal storage uri of the file / directory to delete
         required: true
+        explode: false
         schema:
           type: string
       - name: tenant
@@ -5473,6 +6179,7 @@ paths:
       - name: path
         in: query
         description: The internal storage uri
+        explode: false
         schema:
           type: string
           nullable: true
@@ -5505,6 +6212,7 @@ paths:
       - name: path
         in: query
         description: The internal storage uri
+        explode: false
         schema:
           type: string
           nullable: true
@@ -5540,10 +6248,8 @@ paths:
           content:
             application/octet-stream:
               schema:
-                type: array
-                items:
-                  type: string
-                  format: byte
+                type: string
+                format: byte
   /api/v1/{tenant}/namespaces/{namespace}/files/search:
     get:
       tags:
@@ -5561,6 +6267,7 @@ paths:
         in: query
         description: The string the file path should contain
         required: true
+        explode: false
         schema:
           type: string
       - name: tenant
@@ -5594,6 +6301,7 @@ paths:
       - name: path
         in: query
         description: The internal storage uri
+        explode: false
         schema:
           type: string
           nullable: true
@@ -5810,6 +6518,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           type: integer
           format: int32
@@ -5818,6 +6527,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           type: integer
           format: int32
@@ -5825,6 +6535,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -5834,6 +6545,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -5850,275 +6562,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiSecretListResponse"
-  /api/v1/{tenant}/plugins:
-    get:
-      tags:
-      - Plugins
-      summary: Get list of plugins
-      operationId: listPlugins
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listPlugins 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Plugin"
-  /api/v1/{tenant}/plugins/groups/subgroups:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins group by subgroups
-      operationId: getPluginBySubgroups
-      parameters:
-      - name: includeDeprecated
-        in: query
-        description: Whether to include deprecated plugins
-        required: true
-        schema:
-          type: boolean
-          default: true
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginBySubgroups 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Plugin"
-  /api/v1/{tenant}/plugins/icons:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins icons
-      operationId: getPluginIcons
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginIcons 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/PluginIcon"
-  /api/v1/{tenant}/plugins/icons/groups:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins icons
-      operationId: getPluginGroupIcons
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginGroupIcons 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/PluginIcon"
-  /api/v1/{tenant}/plugins/inputs:
-    get:
-      tags:
-      - Plugins
-      summary: Get all types for an inputs
-      operationId: getAllInputTypes
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getAllInputTypes 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/InputType"
-  /api/v1/{tenant}/plugins/inputs/{type}:
-    get:
-      tags:
-      - Plugins
-      summary: Get json schemas for an input type
-      description: "The schema will be output as [http://json-schema.org/draft-07/schema](Json\
-        \ Schema Draft 7)"
-      operationId: getSchemaFromInputType
-      parameters:
-      - name: type
-        in: path
-        description: The schema needed
-        required: true
-        schema:
-          $ref: "#/components/schemas/Type"
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getSchemaFromInputType 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/{tenant}/plugins/schemas/{type}:
-    get:
-      tags:
-      - Plugins
-      summary: Get all json schemas for a type
-      description: "The schema will be output as [http://json-schema.org/draft-07/schema](Json\
-        \ Schema Draft 7)"
-      operationId: getSchemasFromType
-      parameters:
-      - name: type
-        in: path
-        description: The schema needed
-        required: true
-        schema:
-          $ref: "#/components/schemas/SchemaType"
-      - name: arrayOf
-        in: query
-        description: If schema should be an array of requested type
-        schema:
-          type: boolean
-          nullable: true
-          default: false
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getSchemasFromType 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: true
-  /api/v1/{tenant}/plugins/{cls}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: getPluginDocumentation
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin full class name
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        schema:
-          type: boolean
-          default: false
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginDocumentation 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/{tenant}/plugins/{cls}/versions:
-    get:
-      tags:
-      - Plugins
-      summary: Get all versions for a plugin
-      operationId: getPluginVersions
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginVersions 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
-  /api/v1/{tenant}/plugins/{cls}/versions/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: getPluginDocumentationFromVersion
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: The plugin version
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        schema:
-          type: boolean
-          default: false
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginDocumentationFromVersion 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
   /api/v1/{tenant}/taskruns/search:
     get:
       tags:
@@ -6130,6 +6573,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6139,6 +6583,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6147,6 +6592,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -6156,6 +6602,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -6164,6 +6611,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6171,6 +6619,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6178,6 +6627,7 @@ paths:
         in: query
         description: A flow id filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6201,6 +6651,7 @@ paths:
         in: query
         description: A time range filter relative to the current time
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6213,6 +6664,7 @@ paths:
         in: query
         description: A state filter
         deprecated: true
+        explode: false
         schema:
           type: array
           nullable: true
@@ -6231,6 +6683,7 @@ paths:
         in: query
         description: The trigger execution id
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6238,6 +6691,7 @@ paths:
         in: query
         description: A execution child filter
         deprecated: true
+        explode: false
         schema:
           nullable: true
           allOf:
@@ -6315,6 +6769,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6322,6 +6777,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6412,6 +6868,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6419,6 +6876,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6509,6 +6967,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6516,6 +6975,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6581,6 +7041,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6590,6 +7051,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6598,6 +7060,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -6607,6 +7070,7 @@ paths:
         in: query
         description: Filters
         required: true
+        explode: false
         schema:
           type: array
           items:
@@ -6615,6 +7079,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6622,6 +7087,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6629,6 +7095,7 @@ paths:
         in: query
         description: The identifier of the worker currently evaluating the trigger
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6636,6 +7103,7 @@ paths:
         in: query
         description: The flow identifier
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6662,6 +7130,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6669,6 +7138,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6676,6 +7146,7 @@ paths:
         in: query
         description: The disabled state
         required: true
+        explode: false
         schema:
           type: boolean
           default: true
@@ -6739,6 +7210,7 @@ paths:
         in: query
         description: A string filter
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6746,6 +7218,7 @@ paths:
         in: query
         description: A namespace filter prefix
         deprecated: true
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6811,6 +7284,7 @@ paths:
         in: query
         description: The current page
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6820,6 +7294,7 @@ paths:
         in: query
         description: The current page size
         required: true
+        explode: false
         schema:
           minimum: 1
           type: integer
@@ -6828,6 +7303,7 @@ paths:
       - name: sort
         in: query
         description: The sort of current page
+        explode: false
         schema:
           type: array
           nullable: true
@@ -6836,6 +7312,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        explode: false
         schema:
           type: string
           nullable: true
@@ -6937,6 +7414,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Trigger"
+  /api/v1/{tenant}/usages/all:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve instance usage information
+      operationId: getUsages
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getUsages 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usage"
 components:
   schemas:
     AbstractFlow:
@@ -6972,13 +7468,14 @@ components:
         disabled:
           type: boolean
         labels:
-          type: object
           oneOf:
           - type: array
           - $ref: "#/components/schemas/Map_Object.Object_"
         variables:
           type: object
           additionalProperties: true
+        workerGroup:
+          $ref: "#/components/schemas/WorkerGroup"
         deleted:
           type: boolean
     AbstractGraph:
@@ -7003,7 +7500,8 @@ components:
       properties:
         type:
           type: string
-        value: {}
+        value:
+          type: object
         name:
           type: string
         description:
@@ -7058,7 +7556,6 @@ components:
           $ref: "#/components/schemas/Level"
         labels:
           title: The labels to pass to the execution created.
-          type: object
           oneOf:
           - type: array
           - $ref: "#/components/schemas/Map_Object.Object_"
@@ -7069,6 +7566,8 @@ components:
           items:
             $ref: "#/components/schemas/State.Type"
         logToFile:
+          type: boolean
+        failOnTriggerError:
           type: boolean
     AbstractTriggerForExecution:
       required:
@@ -7138,7 +7637,8 @@ components:
         inputs:
           title: The inputs to pass to the backfilled executions.
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         labels:
           title: The labels to pass to the backfilled executions.
           type: array
@@ -7179,7 +7679,8 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/BlueprintController.ApiBlueprintItem"
-      - properties:
+      - type: object
+        properties:
           source:
             type: string
           kind:
@@ -7204,18 +7705,63 @@ components:
       - APP
       - DASHBOARD
       - FLOW
+    Breakpoint:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+          nullable: true
     BulkErrorResponse:
       type: object
       properties:
         message:
           type: string
-        invalids: {}
+        invalids:
+          type: object
     BulkResponse:
       type: object
       properties:
         count:
           type: integer
           format: int32
+    Cache:
+      required:
+      - enabled
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        ttl:
+          type: string
+    ChartFiltersOverrides:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        namespace:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
     Chart_ChartOption_:
       required:
       - id
@@ -7231,7 +7777,8 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
-        chartOptions: {}
+        chartOptions:
+          type: object
     Concurrency:
       required:
       - behavior
@@ -7286,6 +7833,7 @@ components:
         duration:
           $ref: "#/components/schemas/DailyExecutionStatistics.Duration"
         executionCounts:
+          type: object
           properties:
             CREATED:
               type: integer
@@ -7327,6 +7875,9 @@ components:
               type: integer
               format: int64
             SKIPPED:
+              type: integer
+              format: int64
+            BREAKPOINT:
               type: integer
               format: int64
         groupBy:
@@ -7375,11 +7926,12 @@ components:
       type: object
       properties:
         chart:
+          minLength: 1
           type: string
         globalFilter:
           nullable: true
           allOf:
-          - $ref: "#/components/schemas/GlobalFilter"
+          - $ref: "#/components/schemas/ChartFiltersOverrides"
     DeletedInterface:
       type: object
       properties:
@@ -7403,6 +7955,19 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/PluginSchema"
+    Event_ExecutionStatusEvent_:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/ExecutionStatusEvent"
+        id:
+          type: string
+        name:
+          type: string
+        comment:
+          type: string
+        retry:
+          type: string
     Event_Execution_:
       type: object
       properties:
@@ -7433,7 +7998,6 @@ components:
       required:
       - flowId
       - namespace
-      - revision
       type: object
       properties:
         namespace:
@@ -7483,13 +8047,16 @@ components:
             $ref: "#/components/schemas/TaskRun"
         inputs:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         outputs:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         variables:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         state:
           $ref: "#/components/schemas/State"
         parentId:
@@ -7517,6 +8084,11 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
+        breakpoints:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/Breakpoint"
     ExecutionController.ApiValidateExecutionInputsResponse:
       required:
       - id
@@ -7542,7 +8114,8 @@ components:
       properties:
         input:
           $ref: "#/components/schemas/Input_Object_"
-        value: {}
+        value:
+          type: object
         enabled:
           type: boolean
         errors:
@@ -7572,12 +8145,33 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/Execution"
-      - properties:
+      - type: object
+        properties:
           deleted:
             type: boolean
           url:
             type: string
             format: uri
+    ExecutionController.LastExecutionResponse:
+      required:
+      - flowId
+      - id
+      - namespace
+      - startDate
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+        flowId:
+          type: string
+        namespace:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/State.Type"
     ExecutionController.SetLabelsByIdsRequest:
       required:
       - executionLabels
@@ -7602,11 +8196,52 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
+    ExecutionController.WebhookResponse:
+      required:
+      - flowId
+      - flowRevision
+      - id
+      - labels
+      - namespace
+      - outputs
+      - state
+      - tenantId
+      - trigger
+      - url
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     ExecutionKind:
       type: string
       enum:
       - NORMAL
       - TEST
+      - PLAYGROUND
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -7624,6 +8259,35 @@ components:
       enum:
       - CHILD
       - MAIN
+    ExecutionRepositoryInterface.FlowFilter:
+      required:
+      - id
+      - namespace
+      type: object
+      properties:
+        namespace:
+          type: string
+        id:
+          type: string
+    ExecutionStatusEvent:
+      required:
+      - executionId
+      - flowId
+      - namespace
+      - state
+      - tenantId
+      type: object
+      properties:
+        executionId:
+          type: string
+        tenantId:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        state:
+          $ref: "#/components/schemas/State"
     ExecutionTrigger:
       required:
       - id
@@ -7638,7 +8302,8 @@ components:
           type: string
         variables:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         logFile:
           type: string
           format: uri
@@ -7675,10 +8340,10 @@ components:
             type: string
     FileAttributes.FileType:
       type: string
-      x-enum-varnames:
+      enum:
       - File
       - Directory
-      enum:
+      x-enum-varnames:
       - File
       - Directory
     FileMetas:
@@ -7699,7 +8364,8 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - type: object
+        properties:
           id:
             maxLength: 100
             minLength: 1
@@ -7721,10 +8387,11 @@ components:
           disabled:
             type: boolean
           labels:
-            type: object
             oneOf:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
+          workerGroup:
+            $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           finally:
@@ -7740,10 +8407,12 @@ components:
             type: string
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties:
+              type: object
           tasks:
             minItems: 1
             type: array
+            additionalProperties: true
             items:
               $ref: "#/components/schemas/Task"
           errors:
@@ -7798,7 +8467,8 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - type: object
+        properties:
           id:
             maxLength: 100
             minLength: 1
@@ -7824,13 +8494,14 @@ components:
           disabled:
             type: boolean
           labels:
-            type: object
             oneOf:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
           variables:
             type: object
             additionalProperties: true
+          workerGroup:
+            $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           tasks:
@@ -7854,6 +8525,16 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/AbstractTriggerForExecution"
+    FlowGenerationPrompt:
+      required:
+      - flowYaml
+      - userPrompt
+      type: object
+      properties:
+        userPrompt:
+          type: string
+        flowYaml:
+          type: string
     FlowGraph:
       required:
       - clusters
@@ -7932,7 +8613,8 @@ components:
       - $ref: "#/components/schemas/FlowId"
       - $ref: "#/components/schemas/DeletedInterface"
       - $ref: "#/components/schemas/TenantInterface"
-      - properties:
+      - type: object
+        properties:
           disabled:
             type: boolean
           deleted:
@@ -7951,7 +8633,10 @@ components:
               $ref: "#/components/schemas/Output"
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties:
+              type: object
+          workerGroup:
+            $ref: "#/components/schemas/WorkerGroup"
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           sla:
@@ -8044,7 +8729,8 @@ components:
       allOf:
       - $ref: "#/components/schemas/Flow"
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - type: object
+        properties:
           id:
             maxLength: 100
             minLength: 1
@@ -8066,15 +8752,17 @@ components:
           disabled:
             type: boolean
           labels:
-            type: object
             oneOf:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
+          workerGroup:
+            $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties:
+              type: object
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           outputs:
@@ -8089,31 +8777,6 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
-    GlobalFilter:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
-        namespace:
-          type: string
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter"
     HostUsage:
       type: object
       properties:
@@ -8242,16 +8905,20 @@ components:
       properties:
         type:
           $ref: "#/components/schemas/KVType"
-        value: {}
+        value:
+          type: object
     KVEntry:
       required:
       - creationDate
+      - description
       - expirationDate
       - key
       - updateDate
       type: object
       properties:
         key:
+          type: string
+        description:
           type: string
         creationDate:
           type: string
@@ -8381,7 +9048,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Metric.Tag"
-        value: {}
+        value:
+          type: object
     Metric.Tag:
       required:
       - key
@@ -8503,8 +9171,6 @@ components:
           type: string
         preview:
           $ref: "#/components/schemas/MiscController.Preview"
-        isBasicAuthEnabled:
-          type: boolean
         systemNamespace:
           type: string
         hiddenLabelsPrefixes:
@@ -8515,6 +9181,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/QueryFilter.ResourceField"
+        isAiEnabled:
+          type: boolean
+        isBasicAuthInitialized:
+          type: boolean
     MiscController.Environment:
       required:
       - color
@@ -8556,7 +9226,8 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/NamespaceLight"
-      - properties:
+      - type: object
+        properties:
           id:
             pattern: "^[a-z0-9][a-z0-9._-]*"
             type: string
@@ -8577,7 +9248,8 @@ components:
           type: string
         description:
           type: string
-        value: {}
+        value:
+          type: object
         type:
           $ref: "#/components/schemas/Type"
         displayName:
@@ -8657,7 +9329,8 @@ components:
           type: array
           items:
             type: object
-            additionalProperties: true
+            additionalProperties:
+              type: object
         total:
           type: integer
           format: int64
@@ -8760,34 +9433,6 @@ components:
           type: object
           additionalProperties:
             type: string
-        tasks:
-          type: array
-          items:
-            type: string
-        triggers:
-          type: array
-          items:
-            type: string
-        conditions:
-          type: array
-          items:
-            type: string
-        controllers:
-          type: array
-          items:
-            type: string
-        storages:
-          type: array
-          items:
-            type: string
-        secrets:
-          type: array
-          items:
-            type: string
-        taskRunners:
-          type: array
-          items:
-            type: string
         guides:
           type: array
           items:
@@ -8796,36 +9441,74 @@ components:
           type: array
           items:
             type: string
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        triggers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        controllers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        storages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        secrets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        taskRunners:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         apps:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         appBlocks:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         charts:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         dataFilters:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         logExporters:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         additionalPlugins:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         categories:
           type: array
           items:
             $ref: "#/components/schemas/PluginSubGroup.PluginCategory"
         subGroup:
           type: string
+    Plugin.PluginElementMetadata:
+      required:
+      - cls
+      - deprecated
+      type: object
+      properties:
+        cls:
+          type: string
+        deprecated:
+          type: boolean
     PluginController.ApiPluginVersions:
       required:
       - type
@@ -8851,7 +9534,8 @@ components:
           type: boolean
         values:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
     PluginIcon:
       type: object
       properties:
@@ -8885,13 +9569,16 @@ components:
       properties:
         properties:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         outputs:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         definitions:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
     PluginSubGroup.PluginCategory:
       type: string
       enum:
@@ -8945,10 +9632,10 @@ components:
           $ref: "#/components/schemas/QueryFilter.Field"
         operation:
           $ref: "#/components/schemas/QueryFilter.Op"
-        value: {}
+        value:
+          type: object
     QueryFilter.Field:
       type: string
-      x-type: String
       enum:
       - QUERY
       - SCOPE
@@ -8965,6 +9652,7 @@ components:
       - WORKER_ID
       - EXISTING_ONLY
       - MIN_LEVEL
+      x-type: String
     QueryFilter.FieldOp:
       required:
       - name
@@ -9053,7 +9741,6 @@ components:
         behavior:
           $ref: "#/components/schemas/SLA.Behavior"
         labels:
-          type: object
           oneOf:
           - type: array
           - $ref: "#/components/schemas/Map_Object.Object_"
@@ -9150,7 +9837,8 @@ components:
           type: string
         props:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         metrics:
           type: array
           items:
@@ -9223,7 +9911,8 @@ components:
           $ref: "#/components/schemas/ServerConfig"
         props:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         seqId:
           type: integer
           format: int64
@@ -9344,6 +10033,7 @@ components:
       - RETRYING
       - RETRIED
       - SKIPPED
+      - BREAKPOINT
     Task:
       required:
       - id
@@ -9351,9 +10041,11 @@ components:
       type: object
       properties:
         id:
+          maxLength: 256
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
+          x-size-message: Task id must be at most 256 characters
         type:
           title: The class name of this task.
           minLength: 1
@@ -9384,13 +10076,11 @@ components:
           type: string
         allowWarning:
           type: boolean
+        taskCache:
+          $ref: "#/components/schemas/Cache"
     TaskFixture:
       required:
-      - description
       - id
-      - outputs
-      - state
-      - value
       type: object
       properties:
         id:
@@ -9401,7 +10091,8 @@ components:
           $ref: "#/components/schemas/State.Type"
         outputs:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         description:
           $ref: "#/components/schemas/Property_String_"
     TaskForExecution:
@@ -9473,7 +10164,8 @@ components:
             $ref: "#/components/schemas/TaskRunAttempt"
         outputs:
           type: object
-          additionalProperties: true
+          additionalProperties:
+            type: object
         state:
           $ref: "#/components/schemas/State"
         iteration:
@@ -9519,7 +10211,8 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/TriggerContext"
-      - properties:
+      - type: object
+        properties:
           executionId:
             type: string
             nullable: true
@@ -9576,6 +10269,7 @@ components:
       type: object
       properties:
         triggers:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/Trigger"
