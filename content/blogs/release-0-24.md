@@ -210,8 +210,7 @@ tenant = 'main'
 flow_id = 'sdk'
 namespace = 'demo'
 
-body = f"""
-id: {flow_id}
+body = f"""id: {flow_id}
 namespace: {namespace}
 
 tasks:
