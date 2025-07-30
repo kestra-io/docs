@@ -1385,7 +1385,7 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
     type: constant # type: string
     interval: PT5M # type: Duration
     maxDuration: PT1H # type: Duration
-    maxAttempt: 3 # type: int
+    maxAttempts: 3 # type: int
     warningOnRetry: true # type: boolean, default is false
 ```
 
