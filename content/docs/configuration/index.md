@@ -1553,9 +1553,9 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth/rbac.md#super-admin)
+The most powerful user in Kestra is the [Superadmin](../06.enterprise/03.auth/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
+You can create a `Superadmin` user from the `kestra.security.superAdmin` configuration.
 
 The super-admin requires three properties:
 * `kestra.security.superAdmin.username`: the username of the super-admin
