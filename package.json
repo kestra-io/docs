@@ -27,7 +27,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "dayjs": "^1.11.13",
-    "ipx": "^3.0.3",
+    "ipx": "^3.1.1",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.6.0",
     "nuxt-lazy-hydrate": "^1.0.0",
