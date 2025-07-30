@@ -173,7 +173,7 @@ We're excited to announce [the official Kestra SDKs](https://github.com/kestra-i
 To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in `.env` file, e.g.:
 
 ```
-KESTRA_HOST=http://localhost:48080
+KESTRA_HOST=http://localhost:8080
 KESTRA_USERNAME=admin@kestra.io
 KESTRA_PASSWORD=Admin1234
 ```
