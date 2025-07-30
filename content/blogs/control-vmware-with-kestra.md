@@ -10,12 +10,20 @@ author:
 image: /blogs/control-vmware-with-kestra.png
 ---
 
-
 If you’re virtualizing your infrastructure, chances are **VMware** plays a key role in your stack. For many enterprise-grade environments, VMware is the trusted foundation—powering development, test, production, and hybrid-cloud workloads with performance, scalability, and rock-solid reliability. It’s a go-to solution platform for IT teams managing complex, mission-critical operations.
 
 With the launch of the **new VMware plugin for Kestra Enterprise Edition (EE)**, teams can now **orchestrate the entire lifecycle of their virtual machines (VMs)** directly within Kestra. The plugin offers deep integration with **vSphere**, enabling operations both **via vCenter** and **directly on ESXi hosts**. For organizations running large-scale virtual environments, this unlocks powerful automation capabilities—reducing manual tasks, improving responsiveness, and bringing infrastructure orchestration into the broader data and workflow ecosystem.
 
 Let’s explore the key orchestration features this new plugin brings to your VMware-powered infrastructure.
+
+## Why This Plugin Matters
+
+Until now, VMware automation often required custom scripts, separate tools, or manual coordination between systems. With the Kestra EE VMware plugin, virtual machine orchestration becomes:
+
+- **Integrated**: Fully embedded into your Kestra workflows.
+- **Unified**: Supporting both vCenter and ESXi across environments.
+- **Event-Driven**: React to infrastructure changes as they happen.
+- **Scalable**: Tie VM operations into CI/CD, testing, and business process automation.
 
 ---
 
@@ -119,15 +127,6 @@ tasks:
 This turns your Kestra workflows into **responsive infrastructure agents**, not just scheduled jobs.
 
 ---
-
-## Why This Plugin Matters
-
-Until now, VMware automation often required custom scripts, separate tools, or manual coordination between systems. With the Kestra EE VMware plugin, virtual machine orchestration becomes:
-
-- **Integrated**: Fully embedded into your Kestra workflows.
-- **Unified**: Supporting both vCenter and ESXi across environments.
-- **Event-Driven**: React to infrastructure changes as they happen.
-- **Scalable**: Tie VM operations into CI/CD, testing, and business process automation.
 
 ## A Smarter Way to Orchestrate VMware
 
