@@ -565,6 +565,7 @@ The 0.24 release includes many plugin enhancements, incl. new plugins and improv
 - New [Mistral](https://github.com/kestra-io/plugin-mistral) plugin with the `ChatCompletion` task
 - New [Anthropic](https://github.com/kestra-io/plugin-anthropic) plugin with the `ChatCompletion` task
 - New [Perplexity](https://github.com/kestra-io/plugin-perplexity) plugin with the `ChatCompletion` task
+- New [Deepseek](https://github.com/kestra-io/plugin-deepseek) plugin with the `ChatCompletion` task
 - New [Scripts](https://github.com/kestra-io/plugin-scripts) tasks (incl. both `Commands` and `Script`) for PHP, Perl, Lua, Deno, Groovy, and Bun
 - New [Databricks](https://github.com/kestra-io/plugin-databricks/issues/116) task `DatabricksCLI` for running Databricks CLI commands
 
