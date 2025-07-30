@@ -120,7 +120,7 @@ tasks:
 
         def process_event(event):
             # TODO adjust the URL below to your Kestra Webhook URL
-            url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
+            url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, headers=headers, json=event)
             logger.info(f"Forwarding event response: {response.status_code} - {response.text}")
@@ -306,7 +306,7 @@ async def slack_events(request: Request):
     print(json_data)
 
     # URL of your Kestra flow webhook
-    url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
+    url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
     headers = {
         "Content-Type": "application/json",
     }
