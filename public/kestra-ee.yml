@@ -3178,7 +3178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_IAMBindingController.ApiBindingSummary_"
+                $ref: "#/components/schemas/PagedResults_IAMBindingController.ApiBindingDetail_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -16246,25 +16246,6 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
-    Group:
-      required:
-      - deleted
-      - description
-      - id
-      - name
-      - provider
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        deleted:
-          type: boolean
-        provider:
-          $ref: "#/components/schemas/IdentityProvider"
     GroupIdentifier:
       required:
       - groupId
@@ -16351,20 +16332,28 @@ components:
       - $ref: "#/components/schemas/ConversionServiceProvider"
     IAMBindingController.ApiBindingDetail:
       required:
-      - binding
-      - group
+      - id
       - role
-      - user
+      - type
       type: object
       properties:
-        binding:
-          $ref: "#/components/schemas/Binding"
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/Binding.Type"
+        namespace:
+          type: string
+          nullable: true
         role:
-          $ref: "#/components/schemas/Role"
-        user:
-          $ref: "#/components/schemas/ApiUser"
+          $ref: "#/components/schemas/IAMBindingController.ApiRole"
         group:
-          $ref: "#/components/schemas/Group"
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/IAMBindingController.ApiBindingGroup"
+        user:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/IAMBindingController.ApiBindingUser"
     IAMBindingController.ApiBindingGroup:
       required:
       - id
@@ -16375,28 +16364,6 @@ components:
           type: string
         name:
           type: string
-    IAMBindingController.ApiBindingSummary:
-      required:
-      - group
-      - id
-      - namespace
-      - role
-      - type
-      - user
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: "#/components/schemas/Binding.Type"
-        namespace:
-          type: string
-        role:
-          $ref: "#/components/schemas/IAMBindingController.ApiRole"
-        group:
-          $ref: "#/components/schemas/IAMBindingController.ApiBindingGroup"
-        user:
-          $ref: "#/components/schemas/IAMBindingController.ApiBindingUser"
     IAMBindingController.ApiBindingUser:
       required:
       - displayName
@@ -16416,7 +16383,6 @@ components:
     IAMBindingController.ApiCreateBindingRequest:
       required:
       - externalId
-      - namespaceId
       - roleId
       - type
       type: object
@@ -16429,6 +16395,7 @@ components:
           type: string
         namespaceId:
           type: string
+          nullable: true
     IAMBindingController.ApiRole:
       required:
       - id
@@ -16640,15 +16607,9 @@ components:
               type: array
             TEST:
               type: array
-            ME:
-              type: array
-            APITOKEN:
-              type: array
             DASHBOARD:
               type: array
             TENANT_ACCESS:
-              type: array
-            TENANT:
               type: array
             SERVICE_ACCOUNT:
               type: array
@@ -16719,15 +16680,9 @@ components:
               type: array
             TEST:
               type: array
-            ME:
-              type: array
-            APITOKEN:
-              type: array
             DASHBOARD:
               type: array
             TENANT_ACCESS:
-              type: array
-            TENANT:
               type: array
             SERVICE_ACCOUNT:
               type: array
@@ -18321,7 +18276,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_IAMBindingController.ApiBindingSummary_:
+    PagedResults_IAMBindingController.ApiBindingDetail_:
       required:
       - results
       - total
@@ -18330,7 +18285,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/IAMBindingController.ApiBindingSummary"
+            $ref: "#/components/schemas/IAMBindingController.ApiBindingDetail"
         total:
           type: integer
           format: int64
@@ -18597,20 +18552,14 @@ components:
       - APP
       - APPEXECUTION
       - TEST
-      - ME
-      - APITOKEN
       - DASHBOARD
       - TENANT_ACCESS
-      - TENANT
       - SERVICE_ACCOUNT
       - INVITATION
       - GROUP_MEMBERSHIP
       - UNKNOWN
       x-deprecated:
       - INFRASTRUCTURE
-      - ME
-      - APITOKEN
-      - TENANT
     Plugin:
       type: object
       properties:
@@ -19061,12 +19010,6 @@ components:
       properties:
         isManaged:
           type: boolean
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
         permissions:
           type: object
           properties:
@@ -19106,15 +19049,9 @@ components:
               type: array
             TEST:
               type: array
-            ME:
-              type: array
-            APITOKEN:
-              type: array
             DASHBOARD:
               type: array
             TENANT_ACCESS:
-              type: array
-            TENANT:
               type: array
             SERVICE_ACCOUNT:
               type: array
@@ -19124,6 +19061,12 @@ components:
               type: array
             UNKNOWN:
               type: array
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
         isDefault:
           type: boolean
         deleted:
