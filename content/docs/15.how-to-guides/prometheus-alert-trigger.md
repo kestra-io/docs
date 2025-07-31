@@ -189,7 +189,7 @@ Now create a Kestra flow that is triggered by a Prometheus alert via [webhook](.
 
 ```yaml
 id: prometheus-alert
-namespace: monitoring.alerts
+namespace: system
 
 triggers:
   - id: from-prometheus
