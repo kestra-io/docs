@@ -35,7 +35,7 @@ kestra:
 ```
 
 In this case, the following will occur:
-- The `enabled` flag will be ignored regardless of `true` or `false`, as authentication is required.
+- Now that authentication is required, it is always enabled. Therefore, the `enabled` flag is ignored regardless of `true` or `false`.
 - The user Setup page **will not** appear when starting Kestra because `username` and `password` are set. You will be prompted to log in with those credentials.
 - If `username` or `password` is missing, Kestra will start with the Setup page instead, and there will be a prompt to create a username and password. These credentials will be how you log in for future sessions.
 - If `username` or `password` is invalid, Kestra will show an error and prompt you to update the credentials to valid values.
@@ -50,7 +50,7 @@ kestra:
 ```
 
 In this case, the following will occur:
-- The `enabled` flag will be ignored, as basic authentication is now required.
+- Now that authentication is required, it is always enabled. Therefore, the `enabled` flag is ignored regardless of `true` or `false`.
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
 ### Scenario 3: No `basicAuth` configuration is added
