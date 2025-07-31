@@ -8,7 +8,7 @@ Install a selection of Kestra plugins in the open-source (OSS) version.
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
 - Install specific plugins when using the `-no-plugins` Docker image
-- Understand plugin versioning across OSS and [Enterprise](../06.enterprise/01.overview/01.enterprise-edition.md)
+- Understand plugin versioning across Open-source and [Enterprise](../06.enterprise/01.overview/01.enterprise-edition.md)
 - Automate plugin installation using Docker Compose
 - Link to plugin documentation and versioning support
 
