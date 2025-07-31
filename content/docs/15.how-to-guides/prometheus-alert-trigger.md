@@ -6,6 +6,8 @@ topics:
   - DevOps
 ---
 
+Connect Prometheus alerts to Kestra to trigger flows.
+
 # Monitoring with Prometheus and Triggering Flows in Kestra
 
 This guide explains how to connect Prometheus to Kestra and configure a workflow that is triggered by Prometheus alerts. This guide covers the basics and is intended as a starting off point for any production workflows. You will:
