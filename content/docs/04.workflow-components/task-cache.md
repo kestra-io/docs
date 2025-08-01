@@ -12,6 +12,10 @@ The `taskCache` core property caches the status and outputs of a task in your Ke
 
 Using task caching can significantly speed up workflows and reduce resource consumption.
 
+::alert{type="info"}
+Task caches are only usable for [Runnable Tasks](01.tasks/01.runnable-tasks.md).
+::
+
 ## `taskcache` syntax
 
 The syntax of the `taskCache` property is as follows:
