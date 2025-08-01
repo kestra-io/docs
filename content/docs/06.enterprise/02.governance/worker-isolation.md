@@ -10,7 +10,7 @@ When dealing with multiple teams, you can add extra security measures to your Ke
 
 ## Java security
 
-By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance across multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/io.kestra.plugin.scripts.jython.eval), and more. This is because the worker shares the same file system.
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](plugins/plugin-graalvm/python), and more. This is because the worker shares the same file system.
 
 You can use the following to opt-in to real isolation of file systems using advanced Kestra EE Java security:
 
@@ -51,7 +51,7 @@ kestra:
 ```
 
 ::alert{type="warning"}
-Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](/plugins/plugin-script-groovy) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
+Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](../../16.scripts/00.languages.md) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
 ::
 
 ## Scripting isolation

@@ -323,3 +323,39 @@ While the above example uses `isNotNull` and `contains` as assertion operators, 
 | lessThanOrEqualTo    | Asserts the value is less than or equal to the specified value, e.g. `lessThanOrEqualTo: 20`      |
 | in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
 | notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
+
+## Assert on Execution Outputs
+
+Rather than assert with an operator and a set value, you can use execution outputs in your tests. To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that the outputs of your tasks match the expected values.
+
+The below example assumes there is a flow that outputs a value:
+
+```yaml
+id: flow_outputs_demo
+namespace: demo
+tasks:
+  - id: mytask
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      myvalue: kestra
+outputs:
+  - id: myvalue
+    type: STRING
+    value: "{{ outputs.mytask.values.myvalue }}"
+```
+
+Then, create a unit test for this flow that asserts the output value as follows:
+
+```yaml
+id: test_flow_outputs_demo
+flowId: flow_outputs_demo
+namespace: demo
+testCases:
+  - id: flow_output
+    type: io.kestra.core.tests.flow.UnitTest
+    assertions:
+      - value: "{{ execution.outputs.myvalue }}"
+        equalTo: kestra
+```
+
+When you run this test, Kestra will execute the flow and verify that the output value matches the expected value. If the assertion fails, the test will be marked as failed, and you can inspect the execution logs to see what went wrong.

@@ -1810,6 +1810,17 @@ will produce the following return:
 [{"state":"FAILED","taskId":"fail"}]
 ```
 
+### http
+
+With the HTTP function, you can fetch from an external API directly
+
+```yaml
+inputs:
+  - id: category
+    type: SELECT
+    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
+```
+
 ---
 
 ### Example with Functions
