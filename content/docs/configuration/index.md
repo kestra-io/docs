@@ -1313,7 +1313,7 @@ kestra:
     configurations:
       - type: io.kestra.plugin.scripts.runner.docker.Docker
         values:
-          volumeEnabled: true
+          volume-enabled: true
 ```
 
 ### Allowed plugins
