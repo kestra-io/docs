@@ -32,7 +32,7 @@ outputs:
 You invoke this flow using the Executions API as follows:
 
 ```
-curl -X POST  http://localhost:8080/api/v1/executions/company.team/myflow
+curl -X POST  http://localhost:8080/api/v1/main/executions/company.team/myflow
 ```
 
 By default, the Executions API is asynchronous. It will invoke the execution of the flow, and return immediately with a response that includes the Execution ID and the time at which the execution was created:
@@ -68,7 +68,7 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
 In order to wait for an execution to finish and return the outputs from the flow in the response, you can call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
 
 ```
-curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=true'
+curl -X POST 'http://localhost:8080e/api/v1/main/xecutions/company.team/myflow?wait=true'
 ```
 
 Here is the output of this API invocation:
@@ -184,7 +184,7 @@ echo -n "username:password" | base64
 Then, you can use the encoded string in the `Authorization` header:
 
 ```bash
-curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=true' -H 'Authorization: Basic <encoded-string>'
+curl -X POST 'http://localhost:8080/api/v1/main/executions/company.team/myflow?wait=true' -H 'Authorization: Basic <encoded-string>'
 ```
 
 ### API Token
@@ -192,7 +192,7 @@ curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=t
 If you're on the Enterprise Edition, you can use the API token for authentication. You can use the API token in the `Authorization` header as follows:
 
 ```bash
-curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
+curl -X POST 'http://localhost:8080/api/v1/main/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
 ```
 
 Usually, you would need to include your tenant ID in the URL. Here is an example:
@@ -204,6 +204,6 @@ curl -X POST 'http://localhost:8080/api/v1/{tenant_id}/executions/company.team/m
 For Kestra Cloud, this would be:
 
 ```bash
-curl -X POST https://us.kestra.cloud/api/v1/YOUR_TENANT/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
+curl -X POST https://us.kestra.cloud/api/v1/{tenant_id}/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
 ```
 
