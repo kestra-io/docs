@@ -176,9 +176,13 @@ const features: Feature[] = [
         height: auto;
         display: flex;
         flex-direction: column;
-        align-items: end;
-        padding: 4rem 0 0 1rem;
-        top: 4rem;
+        align-items: center;
+        padding: 4rem 0 2rem 2rem;
+        
+        @include media-breakpoint-up(md) {
+            align-items: end;
+            padding: 5rem 0 0 2rem;
+        }
         
         @include media-breakpoint-up(xl) {
             position: absolute;
@@ -188,6 +192,7 @@ const features: Feature[] = [
             width: 800px;
             height: 100%;
             padding: 0;
+            align-items: end;
         }
 
         .fivetran-image,
