@@ -145,14 +145,22 @@ const values = [
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 29px;
+
+  @media (max-width: 450px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .value {
   &-header {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: .75rem;
     margin-bottom: .5rem;
+
+    :deep(svg) {
+      font-size: $font-size-lg;
+    }
 
     h3 {
       font-weight: 700;
