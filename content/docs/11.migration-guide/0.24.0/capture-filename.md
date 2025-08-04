@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 ## Breaking Change
 
-To upload a file for an input of type `FILE`, you should now use the part **name** for the input, and the part **filename** attribute for the name of the file.
+To upload a file for an input of type `FILE`, you should now use the part **name** for the input and the part **filename** attribute for the file name.
 
 For example, when using `cURL` to start an execution for the following flow:
 

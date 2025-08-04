@@ -8,7 +8,7 @@ Cache the status and outputs of computationally expensive operations.
 
 ## Overview
 
-The `taskCache` core property caches the status and outputs of a task in your Kestra instance's database. With the status and outputs cached, running the same execution again with the same inputs will skip the task and return the cached outputs instead. This can be added to any task, but it is particularly useful for computationally expensive operations such as large data extractions or long-running script tasks.
+The `taskCache` core property caches a task's status and outputs in your Kestra instance's database. With the status and outputs cached, rerunning the same execution with the same inputs will skip the task and return the cached outputs instead. This can be added to any task but is particularly useful for computationally expensive operations such as extensive data extractions or long-running script tasks.
 
 Using task caching can significantly speed up workflows and reduce resource consumption.
 
@@ -26,11 +26,11 @@ taskCache:
   ttl: PT1H # Duration in ISO 8601 format, e.g., PT1H for 1 hour
 ```
 
-Be sure to note how the `ttl` (time-to-live) property allows you to specify how long the cached outputs should be kept before they are purged. You can set it to any duration in ISO 8601 format, such as `PT1H` for 1 hour, `PT24H` for 24 hours, or `P7D` for 7 days.
+The `ttl` (time-to-live) property defines how long cached outputs are retained before being purged. Use any ISO 8601 duration, such as `PT1H` (1 hour), `PT24H` (24 hours), or `P7D`(7 days).
 
 ## `taskCache` example
 
-In the below example, the flow caches the outputs of a computationally expensive task extracting a large dataset from a production database. The flow downloads the infrequently-changing data only once per day, caches it for 24 hours, and then uses it in subsequent tasks to join with frequently changing transaction data.
+In the example below, the flow caches the outputs of a computationally expensive task, extracting a large dataset from a production database. The flow downloads the infrequently-changing data only once daily, caches it for 24 hours, and then uses it in subsequent tasks to join with frequently changing transaction data.
 
 ```yaml
 id: caching
@@ -42,7 +42,7 @@ tasks:
   - id: products
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/products.csv
-    description: This task pulls the full product catalog once per day. Because the catalog changes infrequently and contains over 200k rows, running it only once per day avoids unnecessary strain on a production DB, while ensuring downstream joins always use up-to-date reference data.
+    description: This task pulls the full product catalog once per day. Because the catalog changes infrequently and contains over 200k rows, running it only once daily avoids unnecessary strain on a production DB, while ensuring downstream joins always use up-to-date reference data.
     taskCache:
       enabled: true
       ttl: PT24H

@@ -260,7 +260,7 @@ triggers:
 ```
 
 ::alert{type="info"}
-Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property depending on the task's requirements.
+Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
 ::
 
 And here is the result:

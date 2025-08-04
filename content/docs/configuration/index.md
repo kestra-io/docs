@@ -1664,7 +1664,7 @@ kestra:
       password: kestra
 ```
 
-If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your OSS instance and not for multi-user management. For more details about scaling access, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your open-source instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
@@ -2328,7 +2328,7 @@ kestra:
 
 ## Allowed file paths
 
-To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme, must be bind-mount to the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
 
 ```yaml
   kestra:

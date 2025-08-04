@@ -74,7 +74,7 @@ Refer to the [Client SDK](https://github.com/kestra-io/client-sdk) repository on
 
 ## Kestra plugin
 
-The [dedicated Kestra plugin](https://github.com/kestra-io/kestra/issues/2867) is developed with the Java SDK. The plugin enables you to interact with flows and namespaces via tasks and provides tasks to interact with Kestra's own metadata, such as listing all flows in a namespace or exporting flow definitions. To see it in action, use the following example flow that lists all namespaces and their flows, and then logs the output.
+The [dedicated Kestra plugin](https://github.com/kestra-io/kestra/issues/2867) is developed with the Java SDK. The plugin enables you to interact with flows and namespaces via tasks and provides tasks to interact with Kestra's own metadata, such as listing all flows in a namespace or exporting flow definitions. To see it in action, use the following example flow that lists all namespaces and their flows, then logs the output.
 
 ```yaml
 id: kestra_plugin
