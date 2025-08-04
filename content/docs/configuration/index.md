@@ -687,9 +687,9 @@ Changing the timezone will mostly affect:
 
 ### Memory
 
-Configuring Java memory can be tricky, the JVM has overall good defaults except for the heap size (the heap is the memory area where objects created by Kestra are allocated).
+Configuring Java memory settings can be nuanced. While the JVM provides reasonable defaults, the heap size often requires manual adjustment. The heap is the memory area where objects created by Kestra are allocated.
 
-We configure the **heap size of the JVM to use up to 50% of the available memory**, for that, we use the `-XX:MaxRAMPercentage=50.0` JVM option which defines the size of the heap based on the available memory, here we define it to 50%. Alternatively, you can use the `-Xmx1g` option to set a specific memory target, here 1GB.
+By default, Kestra configures the JVM heap to use up to **50% of the available system memory**. This is done using the `-XX:MaxRAMPercentage=50.0` option, which dynamically allocates the heap size based on total memory. Alternatively, a fixed size can be set using the `-Xmx` option—for example, `-Xmx1g` to allocate 1 GB.
 
 ## Indexer
 
