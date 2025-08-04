@@ -49,30 +49,8 @@
         () => queryCollection(CollectionNames.docs)
             .where('path', 'LIKE', `${currentPageSlug}/%`)
             .where('path', 'NOT LIKE', `${currentPageSlug}/%/%`)
+            .order('release', 'DESC')
             .all()
-            .then(items => {
-                // Sort items by title in descending order for version numbers
-                return items.sort((a, b) => {
-                    // Extract version numbers from titles (e.g., "0.23.0" from "0.23.0")
-                    const versionA = a.title;
-                    const versionB = b.title;
-                    
-                    // Compare versions using semantic versioning
-                    const partsA = versionA.split('.').map(Number);
-                    const partsB = versionB.split('.').map(Number);
-                    
-                    for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
-                        const partA = partsA[i] || 0;
-                        const partB = partsB[i] || 0;
-                        
-                        if (partA !== partB) {
-                            return partB - partA; // Descending order (newest first)
-                        }
-                    }
-                    
-                    return 0;
-                });
-            })
     );
 
     const {data: currentPage} = await useAsyncData(
