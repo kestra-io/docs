@@ -2343,3 +2343,5 @@ To use the [universal file access protocol](../05.concepts/file-access.md), the 
             allowed-paths:
               - /scripts
 ```
+
+By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.local-files.enable-preview` set to `false`, as it is `true` by default.
