@@ -1234,39 +1234,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tenant"
-  /api/v1/tenants/namespaces/autocomplete:
-    post:
-      tags:
-      - Namespaces
-      summary: List namespaces for autocomplete
-      description: "Returns a list of namespaces for use in autocomplete fields, optionally\
-        \ allowing to filter by query and ids. Used especially for binding creation."
-      operationId: autocompleteNamespacesasSuperAdmin
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ApiIds"
-      responses:
-        "200":
-          description: autocompleteNamespacesasSuperAdmin 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/tenants/search:
     get:
       tags:
@@ -1416,44 +1383,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiTenant"
-  /api/v1/tenants/{resourceTenant}/namespaces/autocomplete:
-    post:
-      tags:
-      - Namespaces
-      summary: List namespaces for autocomplete
-      description: "Returns a list of namespaces for use in autocomplete fields, optionally\
-        \ allowing to filter by query and ids. Used especially for binding creation."
-      operationId: autocompleteNamespacesWithResourceTenantasSuperAdmin
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: resourceTenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ApiIds"
-      responses:
-        "200":
-          description: autocompleteNamespacesWithResourceTenantasSuperAdmin 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/users:
     get:
       tags:
@@ -6869,7 +6798,7 @@ paths:
           type: integer
           format: int32
           nullable: true
-      - name: breakpoint
+      - name: breakpoints
         in: query
         description: "Set a list of breakpoints at specific tasks 'id.value', separated\
           \ by a coma."
@@ -6983,7 +6912,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: breakpoint
+      - name: breakpoints
         in: query
         description: "\"Set a list of breakpoints at specific tasks 'id.value', separated\
           \ by a coma."
@@ -7172,7 +7101,7 @@ paths:
           type: string
           format: date-time
           nullable: true
-      - name: breakpoint
+      - name: breakpoints
         in: query
         description: "Set a list of breakpoints at specific tasks 'id.value', separated\
           \ by a coma."
@@ -9037,8 +8966,7 @@ paths:
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Groups:
     get:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Find by a combination of query parameters
       operationId: queryGroups
       parameters:
@@ -9114,8 +9042,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     post:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Create
       operationId: createSCIMResourceByIdGroups
       parameters:
@@ -9162,20 +9089,10 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: createSCIMResourceByIdGroups 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Groups/.search:
     post:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Search
       operationId: findGroups
       parameters:
@@ -9211,8 +9128,7 @@ paths:
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Groups/{id}:
     get:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Find by id
       operationId: getSCIMResourceByIdGroups
       parameters:
@@ -9260,8 +9176,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     put:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Update
       operationId: updateGroups
       parameters:
@@ -9313,8 +9228,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     delete:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Delete from the backing store
       operationId: deleteGroups
       parameters:
@@ -9344,19 +9258,9 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: deleteGroups 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
     patch:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Groups
       description: Patch a portion of the backing store
       operationId: patchGroups
       parameters:
@@ -9404,15 +9308,6 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: patchGroups 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/integrations/{integration}/scim/v2/ResourceTypes:
     get:
       tags:
@@ -9550,8 +9445,7 @@ paths:
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Users:
     get:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Find by a combination of query parameters
       operationId: queryUsers
       parameters:
@@ -9627,8 +9521,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     post:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Create
       operationId: createSCIMResourceByIdUsers
       parameters:
@@ -9675,20 +9568,10 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: createSCIMResourceByIdUsers 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Users/.search:
     post:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Search
       operationId: findUsers
       parameters:
@@ -9724,8 +9607,7 @@ paths:
   /api/v1/{tenant}/integrations/{integration}/scim/v2/Users/{id}:
     get:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Find by id
       operationId: getSCIMResourceByIdUsers
       parameters:
@@ -9773,8 +9655,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     put:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Update
       operationId: updateUsers
       parameters:
@@ -9826,8 +9707,7 @@ paths:
                 $ref: "#/components/schemas/ScimResource"
     delete:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Delete from the backing store
       operationId: deleteUsers
       parameters:
@@ -9857,19 +9737,9 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: deleteUsers 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
     patch:
       tags:
-      - SCIM
-      summary: "{@inheritDoc}"
+      - SCIM-Users
       description: Patch a portion of the backing store
       operationId: patchUsers
       parameters:
@@ -9917,15 +9787,6 @@ paths:
           description: Internal Server Error
         "501":
           description: Not Implemented
-        "200":
-          description: patchUsers 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/invitations:
     post:
       tags:
@@ -10831,13 +10692,6 @@ paths:
         \ allowing to filter by query and ids. Used especially for binding creation."
       operationId: autocompleteNamespaces
       parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
       - name: tenant
         in: path
         required: true
@@ -10847,7 +10701,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiIds"
+              $ref: "#/components/schemas/ApiAutocomplete"
+        required: true
       responses:
         "200":
           description: autocompleteNamespaces 200 response
