@@ -188,7 +188,6 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 ![invalid_trigger_configuration](/docs/workflow-components/triggers/invalid_trigger_configuration.png)
 
-
 ## The ``stopAfter`` property
 
 Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
@@ -287,3 +286,31 @@ triggers:
     inputs:
       user: John Smith
 ```
+
+## Trigger Errors
+
+By default, if a trigger fails, no execution is created (this is by design to avoid an excess of executions on the instance). To troubeshoot, you must [investigate the trigger logs](#troubleshooting-a-trigger-from-the-ui). To create an execution instead, set the `failOnTriggerError` property to `true` in the trigger configuration so that the flow fails and an execution is created with its own set of logs.
+
+For example, take the following flow with a misconfigured trigger:
+
+```yaml
+id: bad_trigger_example
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+
+triggers:
+  - id: sqs_trigger
+    type: io.kestra.plugin.aws.sqs.Trigger
+    accessKeyId: "nonExistingKey"
+    secretKeyId: "nonExistingSecret"
+    region: "us-east-1"
+    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+    maxRecords: 10
+    failOnTriggerError: true
+```
+
+With this configuration, the flow produces an execution with a log detailing the failed trigger. This execution context can be used for troubleshooting and notification in addition to the trigger logs.
