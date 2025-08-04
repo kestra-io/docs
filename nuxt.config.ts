@@ -341,7 +341,9 @@ export default defineNuxtConfig({
         '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
         '/docs/workflow-components/tasks/scripts': {redirect: '/docs/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
-        '/trust': {redirect: 'https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604'}
+        '/trust': {redirect: 'https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604'},
+        '/docs/ui/administration/stats': {redirect: '/docs/ui/administration/system-overview'}
+
     },
 
     build: {
