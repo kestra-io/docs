@@ -289,7 +289,7 @@ triggers:
 
 ## Trigger Errors
 
-By default, if a trigger fails, no execution is created (this is by design to avoid an excess of executions on the instance). To troubeshoot, you must [investigate the trigger logs](#troubleshooting-a-trigger-from-the-ui). To create an execution instead, set the `failOnTriggerError` property to `true` in the trigger configuration so that the flow fails and an execution is created with its own set of logs.
+By default, if a trigger fails, no execution is created; this is by design to avoid excessive executions on the instance. To troubleshoot, you must [investigate the trigger logs](#troubleshooting-a-trigger-from-the-ui). If you'd prefer an execution to be created on trigger failure, set the `failOnTriggerError` property to `true` in the trigger configuration. This will cause the flow to fail and produce an execution with its own logs.
 
 For example, take the following flow with a misconfigured trigger:
 
@@ -313,4 +313,4 @@ triggers:
     failOnTriggerError: true
 ```
 
-With this configuration, the flow produces an execution with a log detailing the failed trigger. This execution context can be used for troubleshooting and notification in addition to the trigger logs.
+With this configuration, the flow will produce an execution containing logs that describe the trigger failure. This execution can be used for both troubleshooting and notification, in addition to the trigger logs.
