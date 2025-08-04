@@ -671,10 +671,10 @@ Example:
 export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
-To configure a proxy each time your Kestra instance is up, set the `JAVA_FLAGS` at the JVM level in your configuration. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
+To configure a proxy each time your Kestra instance is up, use the `JAVA_OPTS` environment variable. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
 
 ```yaml
-JAVA_FLAGS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
+JAVA_OPTS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
 ```
 
 ### Timezone
@@ -684,6 +684,12 @@ By default, Kestra will handle all dates using your system's timezone. You can c
 Changing the timezone will mostly affect:
 * **scheduler**: by default, all schedule dates are UTC; changing the Java timezone will allow scheduling the flow in your timezone.
 * **logs display**: in your configured timezone.
+
+### Memory
+
+Configuring Java memory settings can be nuanced. While the JVM provides reasonable defaults, the heap size often requires manual adjustment. The heap is the memory area where objects created by Kestra are allocated.
+
+By default, Kestra configures the JVM heap to use up to **50% of the available system memory**. This is done using the `-XX:MaxRAMPercentage=50.0` option, which dynamically allocates the heap size based on total memory. Alternatively, a fixed size can be set using the `-Xmx` option—for example, `-Xmx1g` to allocate 1 GB.
 
 ## Indexer
 
