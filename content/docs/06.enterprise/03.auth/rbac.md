@@ -316,7 +316,7 @@ Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 
 ![Group Owner](/docs/enterprise/group-owner.png)
 
-Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
+Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group. Users with the `GROUP_MEMBERSHIP` permission can add members to groups and change their membership type.
 
 #### What happens if you delete a Group?
 
