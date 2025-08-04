@@ -65,9 +65,13 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `APPEXECUTION`
 - `ME`
 - `APITOKEN`
+- `SERVICE_ACCOUNT`
+- `INVITATION`
+- `TENANT_ACCESS`
+- `GROUP_MEMBERSHIP`
 
 ::alert{type="warning"}
-The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, make sure to update any custom roles with these permissions as needed by the users. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../11.migration-guide/0.24.0/endpoint-changes.md#rbac-updates)
 ::
 
 ### Actions
