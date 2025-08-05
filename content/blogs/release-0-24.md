@@ -73,7 +73,7 @@ The [new core task property](https://github.com/kestra-io/kestra/pull/10013) `ta
 - tasks performing complex computations
 - long-running scripts that don't need to be recomputed every time you run the flow.
 
-When you enable task caching, Kestra will store the task's status and outputs in the database. If you run the same task again with the same inputs, Kestra will skip the execution and return the cached outputs instead. This can significantly speed up your workflows and reduce resource consumption.
+When you enable task caching, Kestra will store the task's status and outputs in the database. If you run the same task again with the same inputs, Kestra will skip execution and return the cached outputs instead. This can significantly speed up your workflows and reduce resource consumption.
 
 The syntax of the `taskCache` property is as follows:
 
@@ -137,7 +137,7 @@ Kestra provides `SELECT` and `MULTISELECT` input types that turn into dropdown m
 
 With the new HTTP function, you can now make these dropdowns dynamic by fetching options from an external API directly. This proves valuable when your data used in dropdowns changes very frequently, or when you already have an API serving that data for existing applications.
 
-The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching your selected category.
+The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products that match your selected category.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/1WN2IkuzMdc3ex1YpBq0?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dynamic Inputs 2 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -175,7 +175,7 @@ Check out the video below to see how it works in action.
 
 We're excited to announce [the official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, Python, JavaScript, and Go. These SDKs provide a convenient way to interact with Kestra's API and build custom applications on top of it.
 
-To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in `.env` file, e.g.:
+To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in a `.env` file, e.g.:
 
 ```
 KESTRA_HOST=http://localhost:8080
@@ -189,7 +189,7 @@ First, create a virtual environment and install the Python SDK:
 uv venv
 source .venv/bin/activate
 uv pip install "git+https://github.com/kestra-io/client-sdk.git@master#egg=kestra_api_client&subdirectory=python-sdk"
-uv pip install python-dotenv # For loading auth environment variables from .env file
+uv pip install python-dotenv # For loading auth environment variables from the .env file
 ```
 
 Now, you can use the following Python script to create or update a flow that logs a message:
@@ -337,7 +337,7 @@ When running Kestra locally, you can access the documentation for this endpoint 
 
 ## CSV Export
 
-The new [CSV Export](https://github.com/kestra-io/kestra/issues/9368) is a handy feature that allows you to export tabular data from any dashboard into a CSV file for reporting and daily operations. You can use it to analyze data in a simple Excel or Google Sheet, or for sharing data with stakeholders who work with spreadsheets.
+The new [CSV Export](https://github.com/kestra-io/kestra/issues/9368) is a handy feature that allows you to export tabular data from any dashboard into a CSV file for reporting and daily operations. You can use it to analyze data in Excel or Google Sheets, or to share data with stakeholders who work with spreadsheets.
 
 ![csv_export](/blogs/release-0-24/csv_export.png)
 
@@ -386,7 +386,7 @@ pluginDefaults:
 
 ### Allowed paths
 
-Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, add the following to your `kestra.yml` configuration:
 
 ```yaml
   kestra:
@@ -446,7 +446,7 @@ tasks:
 
 ### Namespace Files as default FILE-type inputs
 
-One of the benefits of this protocol that you can now reference Namespace Files as default FILE-type inputs in your flows! See the example below that reads a local file `hello.txt` from the `demo` namespace and logs its content.
+One of the benefits of this protocol is that you can now reference Namespace Files as default FILE-type inputs in your flows. See the example below that reads a local file `hello.txt` from the `company.team` namespace and logs its content.
 
 ```yaml
 id: file_input
@@ -490,7 +490,7 @@ kestra:
         url: "https://kestra.io/support/"
 ```
 
-The `kestra.ee.custom-links` is an arbitrary map, so you can name the link properties as you like (as long as each of them includes the `title` and `url` properties):
+The `kestra.ee.custom-links` property is an arbitrary map, so you can name the link properties as you like (as long as each includes the `title` and `url` properties):
 
 ```yaml
 kestra:
@@ -515,7 +515,7 @@ The Unit Tests feature has been enhanced with several improvements, including th
 
 To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that the outputs of your tasks match the expected values.
 
-Assuming you have a flow that outputs a value:
+Assume you have a flow that outputs a value:
 ```yaml
 id: flow_outputs_demo
 namespace: company.team
@@ -555,7 +555,7 @@ When you run this test, Kestra will execute the flow and verify that the output 
 
 In this release, we introduced a [mandatory login screen](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting) for the open-source version of Kestra to improve security. This means that all users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment.
 
-This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows. The login screen is simple, requiring a username and password.
+This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows. The login screen requires a username and password.
 
 If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](https://kestra.io/docs/migration-guide/0.24.0).
 
@@ -581,18 +581,20 @@ The 0.24 release includes many plugin enhancements, incl. new plugins and improv
 - New [Scripts](https://github.com/kestra-io/plugin-scripts) tasks (incl. both `Commands` and `Script`) for PHP, Perl, Lua, Deno, Groovy, and Bun
 - New [Databricks](https://github.com/kestra-io/plugin-databricks/issues/116) task `DatabricksCLI` for running Databricks CLI commands
 
-Check the video below to see how the new language tasks work in action.
+Check the video below to see the new language tasks in action.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/F9jLQbS4GS0?si=bv6kLjhh_d6GF4fV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+Additionally, we have made numerous improvements to existing plugins, including better error handling, fixed bugs, and enhanced documentation. Expand the block below to see the full list of plugin improvements.
+
 ::collapse{title="🧩 Improved Plugins"}
 - (EE) [GCP](https://github.com/kestra-io/plugin-ee-gcp/): better output handling for the Google Batch task runner
 - (EE) [Azure](https://github.com/kestra-io/plugin-ee-azure/): improved Azure Batch logs
 - (EE) [Kubernetes](https://github.com/kestra-io/plugin-ee-kubernetes/): suppress noisy 400 errors on the Kubernetes task runner
-- [Storage S3](https://github.com/kestra-io/storage-s3): allow to list and move more than 1000 objects
-- [Storage GCS](https://github.com/kestra-io/storage-gcs/): allow to list and move more than 1000 objects
+- [Storage S3](https://github.com/kestra-io/storage-s3): allows listing and moving more than 1000 objects
+- [Storage GCS](https://github.com/kestra-io/storage-gcs/): allows listing and moving more than 1000 objects
 - [Scripts](https://github.com/kestra-io/plugin-scripts) with fixed documentation `python.Commands` (uv instead of Conda), and better support for Podman
 - [JDBC](https://github.com/kestra-io/plugin-jdbc) with fixed or improved tasks: DuckDB Query, Snowflake Query, Oracle Query, MariaDB Query, improved PostgreSQL tests with SSL
 - [Mongodb](https://github.com/kestra-io/plugin-mongodb) with fixed or improved tasks: `Find`
@@ -622,7 +624,8 @@ Check the video below to see how the new language tasks work in action.
 
 ## Next Steps
 
-This post covered new features and enhancements added in Kestra 0.24.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
+
+This post highlighted the new features and enhancements introduced in Kestra 0.24.0. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
