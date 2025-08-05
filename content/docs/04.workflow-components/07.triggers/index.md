@@ -188,7 +188,6 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 ![invalid_trigger_configuration](/docs/workflow-components/triggers/invalid_trigger_configuration.png)
 
-
 ## The ``stopAfter`` property
 
 Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
@@ -235,11 +234,7 @@ tasks:
   - id: slack
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
-    payload: |
-      {
-        "channel": "#price-alerts",
-        "text": "The price is now: {{ json(trigger.body).price }}"
-      }
+    messageText: "The price is now: {{ json(trigger.body).price }}"
 
 triggers:
   - id: http
@@ -254,7 +249,7 @@ triggers:
 Let's break down the above example:
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
 2. If the condition is met, the Execution will be created
-3. Within that execution, the `slack` task will send a Slack message to the `#price-alerts` channel to notify about the price change
+3. Within that execution, the `slack` task will send a Slack message to notify about the price change
 4. After that execution finishes successfully, the `stopAfter` property condition is met — it will disable the trigger ensuring that you don't get alerted every 30 seconds about the same condition.
 
 
@@ -291,3 +286,31 @@ triggers:
     inputs:
       user: John Smith
 ```
+
+## Trigger Errors
+
+By default, if a trigger fails, no execution is created; this is by design to avoid excessive executions on the instance. To troubleshoot, you must [investigate the trigger logs](#troubleshooting-a-trigger-from-the-ui). If you'd prefer an execution to be created on trigger failure, set the `failOnTriggerError` property to `true` in the trigger configuration. This will cause the flow to fail and produce an execution with its own logs.
+
+For example, take the following flow with a misconfigured trigger:
+
+```yaml
+id: bad_trigger_example
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+
+triggers:
+  - id: sqs_trigger
+    type: io.kestra.plugin.aws.sqs.Trigger
+    accessKeyId: "nonExistingKey"
+    secretKeyId: "nonExistingSecret"
+    region: "us-east-1"
+    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+    maxRecords: 10
+    failOnTriggerError: true
+```
+
+With this configuration, the flow will produce an execution containing logs that describe the trigger failure. This execution can be used for both troubleshooting and notification, in addition to the trigger logs.

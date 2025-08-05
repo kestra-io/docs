@@ -1391,7 +1391,7 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
     type: constant # type: string
     interval: PT5M # type: Duration
     maxDuration: PT1H # type: Duration
-    maxAttempt: 3 # type: int
+    maxAttempts: 3 # type: int
     warningOnRetry: true # type: boolean, default is false
 ```
 
@@ -1559,9 +1559,9 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth/rbac.md#super-admin)
+The most powerful user in Kestra is the [Superadmin](../06.enterprise/03.auth/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
+You can create a `Superadmin` user from the `kestra.security.superAdmin` configuration.
 
 The super-admin requires three properties:
 * `kestra.security.superAdmin.username`: the username of the super-admin
@@ -1670,7 +1670,7 @@ kestra:
       password: kestra
 ```
 
-HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your open-source instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
@@ -2315,3 +2315,39 @@ Currently, the UI is limited and outputs will not be directly visible if using i
 ::
 
 You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
+
+## Add Custom Links to Kestra UI (EE)
+
+In the Enterprise Edition, admins can add custom links as resources to Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. The configuration is managed in the YAML configuration file. See the example below:
+
+```yaml
+kestra:
+  ee:
+    custom-links:
+      link1:
+        title: "Internal Documentation"
+        url: "https://kestra.io/docs/"
+      link2:
+        title: "Internal Support Portal"
+        url: "https://kestra.io/support/"
+```
+
+## Allowed file paths
+
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    volumes:
+      - /Users/yourdir/scripts:/scripts # Bind-mount the host directory
+    ...
+    environment: # Allow access to the /scripts directory in Kestra container
+      KESTRA_CONFIGURATION: |
+        kestra:
+          local-files:
+            allowed-paths:
+              - /scripts
+```
+
+By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.local-files.enable-preview` set to `false`, as it is `true` by default.

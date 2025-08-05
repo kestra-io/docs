@@ -1810,6 +1810,45 @@ will produce the following return:
 [{"state":"FAILED","taskId":"fail"}]
 ```
 
+### http
+
+With the HTTP function, you can fetch from an external API directly
+
+```yaml
+inputs:
+  - id: category
+    type: SELECT
+    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
+```
+
+### isIn
+
+Returns true if the value on the left is present in the list on the right. Useful for conditions such as `runIf`.
+
+```yaml
+id: expression_example
+namespace: company.team
+
+sla:
+  - id: exceed_2_seconds
+    type: MAX_DURATION
+    duration: PT2S
+    behavior: CANCEL
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT1M
+
+afterExecution:
+  - id: alert
+    type: io.kestra.plugin.core.log.Log
+    message: "{{execution.state}}"
+    runIf: "{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}"
+```
+
+The value on the left (`execution.state`) is in the list on the right (`CANCELLED`).
+
 ---
 
 ### Example with Functions

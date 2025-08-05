@@ -195,7 +195,7 @@ Create a new users
 -p, --plugins=<pluginsPath>
                           Path to plugins directory
                             Default: /app/plugins
-    --superadmin          Create the superadmin role if not exists and add it
+    --superadmin          Create the Superadmin role if not exists and add it
                             to provided users, cannot be use at the same time
                             as --admin
     --tenant=<tenantId>   tenant identifier

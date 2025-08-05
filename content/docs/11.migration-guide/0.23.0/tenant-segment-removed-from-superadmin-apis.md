@@ -11,9 +11,9 @@ The `{tenant}` parameter has been removed from several API routes related to ten
 
 ## Reason for change
 
-These routes are relevant only to Superadmin users, who can see and manage all tenants:
+These routes are relevant only to `Superadmin` users, who can see and manage all tenants:
 * The `{tenant}` path parameter was unnecessary and led to confusion, as all access control is based on the authenticated user's privileges (i.e. their tenant access), not the path.
-* The endpoints now reflect the actual access model: actions depend on the Superadmin context, not on a specified `{tenant}` in the path.
+* The endpoints now reflect the actual access model: actions depend on the `Superadmin` context, not on a specified `{tenant}` in the path.
 
 ## Changed endpoints
 
@@ -31,4 +31,4 @@ The following API endpoints have been updated to remove the `{tenant}` path segm
 ## How to migrate
 
 * If you are using these endpoints programmatically, update your API clients to remove the `{tenant}` path segment.
-* Access remains limited to Superadmin users only.
+* Access remains limited to `Superadmin` users only.
