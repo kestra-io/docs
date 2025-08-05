@@ -61,10 +61,11 @@ To see Playground in action, check out the demo below.
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/LjdQeZY6l0gVWb8zJ3PY?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Playground Demo | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ::alert{type="warning"}
-Note that Playground mode is **currently in Beta**, so we welcome your feedback and suggestions for improvements. You can enable it directly from the Kestra UI from the **Settings** page simply by toggling on the `Playground` button:
-::
+Note that Playground mode is **currently in Beta**, and we welcome your feedback and suggestions for improvements. You can enable it directly from the Kestra UI from the **Settings** page simply by toggling on the `Playground` button:
 
 ![playground_toggle](/blogs/release-0-24/playground_toggle.png)
+::
+
 
 ## Task Caching
 
@@ -623,7 +624,6 @@ Additionally, we have made numerous improvements to existing plugins, including 
 
 
 ## Next Steps
-
 
 This post highlighted the new features and enhancements introduced in Kestra 0.24.0. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
