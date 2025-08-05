@@ -16,7 +16,7 @@ Using task caching can significantly speed up workflows and reduce resource cons
 Task caches are only usable for [Runnable Tasks](01.tasks/01.runnable-tasks.md).
 ::
 
-## `taskcache` syntax
+## `taskCache` syntax
 
 The syntax of the `taskCache` property is as follows:
 

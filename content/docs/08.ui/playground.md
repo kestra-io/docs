@@ -1,8 +1,8 @@
 ---
 title: Playground
 icon: /docs/icons/ui.svg
+editions: ["OSS, "EE", "BETA"]
 version: "0.24.0"
-editions: "BETA"
 ---
 
 ## Playground (Beta)
