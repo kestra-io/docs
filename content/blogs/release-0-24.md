@@ -189,7 +189,7 @@ First, create a virtual environment and install the Python SDK:
 ```bash
 uv venv
 source .venv/bin/activate
-uv pip install "git+https://github.com/kestra-io/client-sdk.git@master#egg=kestra_api_client&subdirectory=python-sdk"
+uv pip install kestrapy
 uv pip install python-dotenv # For loading auth environment variables from the .env file
 ```
 
