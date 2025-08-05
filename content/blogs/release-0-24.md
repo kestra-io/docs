@@ -239,6 +239,12 @@ except kestra_api_client.rest.ApiException as e:
         print(e)
 ```
 
+Check out the video below to see how it works in action.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/UJLGmolOagY?si=DFzlq7OO0FAINUmq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Kestra plugin
 
 Based on the newly introduced Java SDK, we created a [dedicated Kestra plugin](https://github.com/kestra-io/kestra/issues/2867) that allows you to interact with flows and namespaces via tasks. This plugin provides tasks to interact with Kestra's own metadata, such as listing all flows in a namespace or exporting flow definitions. To see it in action, you can use the following example flow that lists all namespaces and their flows, and then logs the output.
