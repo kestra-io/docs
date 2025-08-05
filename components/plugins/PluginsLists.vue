@@ -101,12 +101,16 @@ ${elements.map(({cls}) => `<li>
 </ul>`).join("");
     }
 
+    function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
+        return isEntryAPluginElementPredicate(...elementsArray);
+    }
+
     const filteredPluginsData = computed(() => {
         const filteredPlugins = props.plugins.flatMap(plugin => {
             const filteredPluginElementsEntries = Object.entries(plugin)
-                .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
-                .map(([elementType, elements]) => [elementType, (elements as PluginElement[]).filter(({deprecated}) => !deprecated)])
-                .filter(([, elements]) => elements.length > 0) as [string, PluginElement[]][];
+                .filter(isFullEntryAPluginElementPredicate)
+                .map(([elementType, elements]): [string, PluginElement[]] => [elementType, elements.filter(({deprecated}) => !deprecated)])
+                .filter(([, elements]) => elements.length > 0)
 
             if (filteredPluginElementsEntries.length === 0) {
                 return []
@@ -115,9 +119,8 @@ ${elements.map(({cls}) => `<li>
             return [{
                 ...plugin,
                 tooltipContent: tooltipContent(plugin, filteredPluginElementsEntries),
-                ...
-                    Object.fromEntries(filteredPluginElementsEntries)
-            }]
+                ...Object.fromEntries(filteredPluginElementsEntries)
+            } as Plugin]
         });
 
         let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
