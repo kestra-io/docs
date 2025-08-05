@@ -200,10 +200,3 @@ Usually, you would need to include your tenant ID in the URL. Here is an example
 ```bash
 curl -X POST 'http://localhost:8080/api/v1/{tenant_id}/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
 ```
-
-For Kestra Cloud, this would be:
-
-```bash
-curl -X POST https://us.kestra.cloud/api/v1/{tenant_id}/executions/company.team/myflow?wait=true' -H 'Authorization: Bearer YOUR_API_TOKEN'
-```
-
