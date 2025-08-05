@@ -34,9 +34,8 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-    <iframe src="XXXX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/0ziQFQYh1ow?si=__9sbqpB2gAuki0v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
 
 
 ## Playground (Beta)
@@ -166,6 +165,12 @@ tasks:
       And Product: {{ inputs.product }}
 ```
 
+Check out the video below to see how it works in action.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/4GbWKeYALQM?si=ECNteoA6M7d221sB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Java, Python, JavaScript, and Go SDKs
 
 We're excited to announce [the official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, Python, JavaScript, and Go. These SDKs provide a convenient way to interact with Kestra's API and build custom applications on top of it.
@@ -239,7 +244,7 @@ Based on the newly introduced Java SDK, we created a [dedicated Kestra plugin](h
 
 ```yaml
 id: kestra_plugin
-namespace: demo
+namespace: company.team
 
 tasks:
   - id: list_namespaces
@@ -266,6 +271,12 @@ pluginDefaults:
         password: Admin1234 # pass your Kestra password as secret or KV pair
 ```
 
+Check the video below to see how it works:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/RkVugo8wD80?si=6sPClrNQ1z3fehsd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Improved Slack integration
 
 The Slack plugin has been [enhanced](https://github.com/kestra-io/plugin-notifications/issues/227) to support sending well-formatted Slack updates with results from your tasks. The new `messageText` property in the `SlackIncomingWebhook` task accepts an arbitrary string, which can include markdown syntax with links, bold text or numbered lists — the plugin will render it without you having to worry about escaping special characters or manually constructing a JSON payload with Slack's blocks.
@@ -274,7 +285,7 @@ The example below demonstrates how to use the new `messageText` property to send
 
 ```yaml
 id: fetch_local_news
-namespace: demo
+namespace: company.team
 
 inputs:
   - id: prompt
@@ -413,7 +424,7 @@ Note that you can also use the `read()` function to read namespace files or loca
 
 ```yaml
 id: query
-namespace: demo
+namespace: company.team
 
 tasks:
   - id: duckdb
@@ -425,7 +436,7 @@ For local files on the host, you can use the `file:///` scheme:
 
 ```yaml
 id: query
-namespace: demo
+namespace: company.team
 
 tasks:
   - id: duckdb
@@ -439,7 +450,7 @@ One of the benefits of this protocol that you can now reference Namespace Files 
 
 ```yaml
 id: file_input
-namespace: demo
+namespace: company.team
 
 inputs:
   - id: myfile
@@ -507,7 +518,7 @@ To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}`
 Assuming you have a flow that outputs a value:
 ```yaml
 id: flow_outputs_demo
-namespace: demo
+namespace: company.team
 
 tasks:
   - id: mytask
@@ -526,7 +537,7 @@ You can then create a unit test for this flow that asserts the output value as f
 ```yaml
 id: test_flow_outputs_demo
 flowId: flow_outputs_demo
-namespace: demo
+namespace: company.team
 
 testCases:
   - id: flow_output
@@ -561,12 +572,20 @@ The 0.24 release includes many plugin enhancements, incl. new plugins and improv
 - (EE) [Cyberark](https://github.com/kestra-io/kestra-ee/issues/3231) Secret Manager plugin
 - (EE) [Salesforce](https://github.com/kestra-io/plugin-ee-salesforce/) plugin now has a new Trigger
 - New [Notion](https://github.com/kestra-io/plugin-notion/) plugin with the tasks to `Create`, `Read`, `Update`, and `Archive` pages
+- New [Sifflet](https://github.com/kestra-io/plugin-sifflet) plugin with a task to run specific Sifflet Rule
 - New [Mistral](https://github.com/kestra-io/plugin-mistral) plugin with the `ChatCompletion` task
 - New [Anthropic](https://github.com/kestra-io/plugin-anthropic) plugin with the `ChatCompletion` task
 - New [Perplexity](https://github.com/kestra-io/plugin-perplexity) plugin with the `ChatCompletion` task
 - New [Deepseek](https://github.com/kestra-io/plugin-deepseek) plugin with the `ChatCompletion` task
+- New [Gemini](https://github.com/kestra-io/plugin-gemini) plugin with the `ChatCompletion` task
 - New [Scripts](https://github.com/kestra-io/plugin-scripts) tasks (incl. both `Commands` and `Script`) for PHP, Perl, Lua, Deno, Groovy, and Bun
 - New [Databricks](https://github.com/kestra-io/plugin-databricks/issues/116) task `DatabricksCLI` for running Databricks CLI commands
+
+Check the video below to see how the new language tasks work in action.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/F9jLQbS4GS0?si=bv6kLjhh_d6GF4fV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ::collapse{title="🧩 Improved Plugins"}
 - (EE) [GCP](https://github.com/kestra-io/plugin-ee-gcp/): better output handling for the Google Batch task runner
