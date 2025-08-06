@@ -9,11 +9,19 @@
                             <span class="input-group-text"><Magnify v-if="!loading" /><MagnifyExpand  v-if="loading" /></span>
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
                             <div class="align-items-center d-flex input-group-append">
+                                <button 
+                                    class="ai-button me-2" 
+                                    @click="openDialog"
+                                    title="Ask Kestra AI"
+                                >
+                                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
+                                    Ask Kestra AI
+                                </button>
                                 <span class="esc">ESC</span>
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0">
+                    <div class="facets overflow-x-auto overflow-y-hidden p-0">
                         <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
                             <span>All</span>
                             <span>({{ allSum }})</span>
@@ -51,7 +59,7 @@
                                     </NuxtLink>
                                 </div>
                             </div>
-                            <div class="search-detail bg-dark-2 p-3 col-6 d-none d-md-flex">
+                            <div class="search-detail p-3 col-6 d-none d-md-flex">
                                 <div class="rounded-3 w-100" v-if="selectedItem">
                                     <div>
                                         <span class="type">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
@@ -80,11 +88,13 @@
             </div>
         </div>
     </div>
+    <AiChatDialog v-if="showAiDialog" @close="closeAiDialog" @backToSearch="backToSearch" />
 </template>
 
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand";
+    import AiChatDialog from "../ai/AiChatDialog.vue";
 </script>
 
 <script>
@@ -106,6 +116,7 @@
                 searchValue: undefined,
                 cancelToken: undefined,
                 loading: true,
+                showAiDialog: false,
             }
         },
         created() {
@@ -305,6 +316,21 @@
                         modal.hide();
                     }
                 }
+            },
+            openDialog() {
+                this.close();
+                this.showAiDialog = true;
+            },
+            closeAiDialog() {
+                this.showAiDialog = false;
+            },
+            backToSearch() {
+                this.showAiDialog = false;
+                
+                if (process.client && this.$refs.modal) {
+                    const searchModal = new this.$bootstrap.Modal(this.$refs.modal);
+                    searchModal.show();
+                }
             }
         }
     }
@@ -324,7 +350,7 @@
         .not-found-content {
             color: $white;
             padding: 3.125rem 0;
-            border-top: 1px solid #3D3D3F;
+            border-top: 1px solid $black-6;
             img {
                 width: 1.5rem;
             }
@@ -335,6 +361,13 @@
         }
 
         .search {
+            width: 100%;
+            border: 1px solid $black-6;
+            padding: 8px 16px;
+            gap: 8px;
+            background: $black-4;
+            opacity: 1;
+            
             .input-group-text {
                 background: transparent;
                 font-size: 1.25rem;
@@ -342,6 +375,33 @@
                 border-top-left-radius: $border-radius-lg;
                 border: none;
                 color: $white-3;
+                padding: 0;
+            }
+
+            .magnify-icon {
+                font-size: 20px;
+                color: var(--ks-content-secondary);
+                margin-top: -4px;
+            }
+
+            .ai-button {
+                height: 40px;
+                background: $black-3;
+                border: none;
+                color: $white;
+                border-radius: 8px;
+                padding: 8px 16px;
+                gap: 8px;
+                display: flex;
+                align-items: center;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    background: $black-5;
+                    color: $white;
+                }
             }
 
             .esc {
@@ -355,6 +415,7 @@
             background: transparent !important;
             border-bottom-right-radius: 0;
             border: none;
+            padding-left: 8px;
 
             &, &::placeholder {
                 color: $white-3;
@@ -393,7 +454,7 @@
 
             .search, .facets {
                 color: $white-3;
-
+                background: $black-4;
             }
 
             .facets {
@@ -435,6 +496,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             height: calc(100vh - 175px);
+            background: $black-4;
 
             &::-webkit-scrollbar {
                 width: 4px;
