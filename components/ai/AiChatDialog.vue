@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div v-if="messages.length > 0" class="messages" ref="messagesContainer">
+                <div v-if="messages.length > 0" class="messages scroller" ref="messagesContainer">
                     <template v-for="message in messages" :key="message.timestamp">
                         <div :class="`message message-${message.role}`">
                             <div class="avatar">
@@ -39,12 +39,18 @@
                                 </div>
                             </div>
                             <div class="bubble">
-                                <ContentRenderer
-                                    class="markdown"
-                                    v-if="message.role === 'assistant' && message.markdown"
-                                    :value="message.markdown"
-                                    :prose="false"
-                                />
+                                <template v-if="message.role === 'assistant'">
+                                    <div v-if="message.markdown && !isMessageStreaming(message)">
+                                        <ContentRenderer
+                                            class="markdown prose prose-sm"
+                                            :value="message.markdown"
+                                        />
+                                    </div>
+                                    <div v-else-if="isMessageStreaming(message)" class="loading">
+                                        <div class="dots"></div>
+                                    </div>
+                                    <p v-else>{{ message.content }}</p>
+                                </template>
                                 <p v-else>{{ message.content }}</p>
                                 
                                 <div v-if="message.role === 'assistant' && message.sources?.length" class="sources">
@@ -73,12 +79,6 @@
                             </div>
                         </div>
                     </template>
-
-                    <div v-if="isLoading" class="loading">
-                        <div class="dots">
-                            <div class="dot"></div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="input">
@@ -197,11 +197,9 @@ const extractSourcesFromMarkdown = (content: string): Source[] => {
         const isDocsUrl = url.includes('kestra.io/docs') || url.startsWith('/docs/')
         
         if (isDocsUrl) {
-            const isRelative = url.startsWith('/docs/')
-            const fullUrl = isRelative ? `https://kestra.io${url}` : url.trim()
-            const path = isRelative 
-                ? url.replace('/docs/', 'docs > ').replace(/\//g, ' > ')
-                : url.replace('https://kestra.io/', '').replace(/\//g, ' > ')
+            const fullUrl = url.startsWith('/docs/') ? `https://kestra.io${url}` : url
+            const pathPart = url.replace(/^(https:\/\/kestra\.io)?\/docs\//, '').replace(/\//g, ' > ')
+            const path = `docs > ${pathPart}`
             
             sources.push({ title: title.trim(), url: fullUrl, path })
         }
@@ -218,6 +216,13 @@ const scrollToBottom = (): void => {
             messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
         }
     })
+}
+
+const isMessageStreaming = (message: Message): boolean => {
+    return message.role === 'assistant' && 
+           message.content.length > 0 && 
+           !message.markdown && 
+           isLoading.value
 }
 
 const createUserMessage = (content: string): Message => ({
@@ -242,17 +247,16 @@ const processStreamData = async (indexToUpdate: number, value: StreamValue, data
     if (value.id === 'response' && data.response) {
         messages.value[indexToUpdate].content += data.response
         messages.value[indexToUpdate].timestamp = new Date().toISOString()
+        scrollToBottom()
+    }
 
+    if (value.id === 'completed') {
         try {
             messages.value[indexToUpdate].markdown = await parseMarkdown(messages.value[indexToUpdate].content)
         } catch (e) {
             // Silent fail for markdown parsing
         }
 
-        scrollToBottom()
-    }
-
-    if (value.id === 'completed') {
         const sources = extractSourcesFromMarkdown(messages.value[indexToUpdate].content)
         if (sources.length > 0) {
             messages.value[indexToUpdate].sources = sources
