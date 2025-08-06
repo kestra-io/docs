@@ -15,7 +15,8 @@
                                     title="Ask Kestra AI"
                                 >
                                     <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
-                                    Ask Kestra AI
+                                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                                    <span class="title d-md-none">Ask AI</span>
                                 </button>
                                 <span class="esc">ESC</span>
                             </div>
@@ -394,8 +395,6 @@
                 gap: 8px;
                 display: flex;
                 align-items: center;
-                font-size: 1rem;
-                font-weight: 500;
                 transition: all 0.2s ease;
                 
                 &:hover {

@@ -81,7 +81,7 @@
         .card {
             width: fit-content;
             background: $black-4;
-            border: 1px solid #252526;
+            border: 1px solid $black-3;
             border-radius: 0.5rem;
             padding: 1rem;
             cursor: pointer;
@@ -114,7 +114,7 @@
             
             .user {
                 font-size: 24px;
-                color: #736BCD;
+                color: $purple;
             }
             
             .ai {
@@ -153,7 +153,18 @@
                 border: 1px solid $black-5;
                 padding: 1rem;
                 border-radius: 0.5rem;
-                overflow-x: auto;
+            }
+
+            :deep(.language), :deep(.copy) {
+                position: absolute;
+                top: 1.75rem;
+                right: 1rem;
+            }
+
+            :deep(.code-block) {
+                background: transparent;
+                border: none;
+                padding: 1.25rem 0;
             }
 
             :deep(table) {
@@ -169,6 +180,10 @@
                     padding: 0.5rem;
                     border-bottom: 1px solid $black-6;
                 }
+            }
+
+            :deep(a), :deep(h1, h2, h3, h4, h5, h6) {
+                color: $purple;
             }
 
             .sources {
@@ -247,9 +262,9 @@
             width: 10px;
             height: 10px;
             border-radius: 5px;
-            background: #a78bfa;
+            background: $purple;
             animation: dotPulse 1.5s infinite ease-in-out;
-            margin-left: 3rem;
+            margin-left: 1rem;
             
             &::before, &::after {
                 content: '';
@@ -258,7 +273,7 @@
                 width: 10px;
                 height: 10px;
                 border-radius: 5px;
-                background: #a78bfa;
+                background: $purple;
             }
             
             &::before {
@@ -277,18 +292,18 @@
         margin-top: auto;
         
         .container {
-            background: #252526;
+            background: $black-3;
             border: 1px solid transparent;
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 0.5rem;
+            padding: 1rem;
             height: 56px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
             transition: border-color 0.2s ease-in-out;
             
             &:focus-within {
-                border-color: #736BCD;
+                border-color: $purple;
             }
 
             .send-icon {
@@ -306,7 +321,7 @@
                 background: transparent;
                 border: none;
                 color: $white;
-                font-size: 0.875rem;
+                font-size: 1rem;
                 resize: none;
                 outline: none;
                 height: 24px;
@@ -315,7 +330,7 @@
                 white-space: nowrap;
                 
                 &::placeholder {
-                    color: #E1E1E1;
+                    color: $white-1;
                 }
             }
         }
@@ -349,9 +364,9 @@
     .dialog {
         width: 100%;
         max-width: none;
-        max-height: 837px;
+        max-height: 600px;
         border-radius: 0.5rem;
-        margin: 0 0.5rem;
+        margin: 0 0.25rem;
     }
     
     .content {
@@ -421,10 +436,6 @@
                     height: 32px;
                 }
             }
-        }
-        
-        .loading .dots {
-            margin-left: 2rem;
         }
         
         .input .container {
