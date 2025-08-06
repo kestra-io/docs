@@ -1,5 +1,5 @@
 import url from "node:url";
-import type {JSONProperty, JSONSchema, Plugin} from "@kestra-io/ui-libs";
+import type {JSONProperty, JSONSchema, Plugin, PluginElement} from "@kestra-io/ui-libs";
 import {isEntryAPluginElementPredicate, slugify, subGroupName} from "@kestra-io/ui-libs";
 import type {RuntimeConfig} from "nuxt/schema";
 import type {NitroRuntimeConfig} from "nitropack/types";
@@ -32,7 +32,7 @@ const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<str
     const children = [];
 
     const sortedProperties = Object.entries(properties).sort(([_, valueA], [__, valueB]) => {
-        return Boolean(valueB.$required) === Boolean(valueA.$required) ? 0 :  Boolean(valueA.$required) ? 1 : -1;
+        return Boolean(valueB.$required) === Boolean(valueA.$required) ? 0 : Boolean(valueA.$required) ? 1 : -1;
     });
 
     for (const [key, property] of sortedProperties) {
@@ -104,10 +104,11 @@ function subGroupWrapperNav(subGroupWrapper: Plugin, parentUrl: string) {
                 title: toNavTitle(key),
                 isPage: false,
                 path: parentUrl + "#" + slugify(key),
-                children: value.map(item => ({
-                    title: item.substring(item.lastIndexOf('.') + 1),
-                    path: `${parentUrl}/${slugify(item)}`
-                }))
+                children: (value as PluginElement[]).filter(({deprecated}) => !deprecated)
+                    .map(item => ({
+                        title: item.cls.substring(item.cls.lastIndexOf('.') + 1),
+                        path: `${parentUrl}/${slugify(item.cls)}`
+                    }))
             });
         });
 }
@@ -116,14 +117,27 @@ async function generateNavigation(config: RuntimeConfig | NitroRuntimeConfig) {
     const pluginsSubGroups = await $fetch<Plugin[]>(`${config.public.apiUrl}/plugins/subgroups`);
     const subGroupsByGroup = pluginsSubGroups.reduce(
         (result, subGroupWrapper) => {
+            const filteredElementsByTypeEntries = Object.entries(subGroupWrapper).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                .map(([elementType, elements]) => [elementType, (elements as PluginElement[]).filter(({deprecated}) => !deprecated)])
+                .filter(([, elements]) => elements.length > 0)
+
+            if (filteredElementsByTypeEntries.length === 0) {
+                return result;
+            }
+
+            subGroupWrapper = Object.fromEntries([
+                ...Object.entries(subGroupWrapper).filter(([key, value]) => !isEntryAPluginElementPredicate(key, value)),
+                ...filteredElementsByTypeEntries
+            ])
+
             if (!result[subGroupWrapper.group]) {
                 result[subGroupWrapper.group] = [];
             }
             result[subGroupWrapper.group].push(subGroupWrapper);
             return result;
         }, {} as Record<string, Plugin[]>);
-    let sortedPluginsHierarchy = Object.entries(subGroupsByGroup).map(([group, subGroupsWrappers]) => {
-        let plugin = subGroupsWrappers.find(subGroupWrapper => subGroupWrapper.subGroup === undefined);
+    let sortedPluginsHierarchy = Object.entries(subGroupsByGroup).map(([_, subGroupsWrappers]) => {
+        let plugin = subGroupsWrappers.find(subGroupWrapper => subGroupWrapper.subGroup === undefined)!;
         let rootPluginUrl = "/plugins/" + slugify(plugin.name);
         let pluginChildren;
         if (subGroupsWrappers.length > 1) {

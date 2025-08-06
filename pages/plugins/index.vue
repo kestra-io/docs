@@ -20,7 +20,7 @@
 <script setup lang="ts">
     const config = useRuntimeConfig();
 
-    const {data: plugins, error, status} = await useFetch<{title:string}[]>(`${config.public.apiUrl}/plugins/subgroups?includeDeprecated=false`);
+    const {data: plugins, error, status} = await useFetch<{title:string}[]>(`${config.public.apiUrl}/plugins/subgroups`);
 
     if(status.value !== 'success'){
         console.error("Error in plugins page - blob", error)
