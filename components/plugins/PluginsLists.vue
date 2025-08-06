@@ -71,13 +71,21 @@
     const route = useRoute();
     const router = useRouter();
 
-    const totalPlugins = computed(() => props.plugins.reduce((acc, plugin) => {
-        Object.entries(plugin)
-            .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
-            .flatMap(([_, elements]) => elements as PluginElement[])
-            .forEach(e => acc.add(e));
-        return acc;
-    }, new Set<PluginElement>()).size);
+    function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
+        return isEntryAPluginElementPredicate(...elementsArray);
+    }
+
+    const totalPlugins = computed(() => {
+        let pluginElements = props.plugins.reduce((acc, plugin) => {
+            Object.entries(plugin)
+                .filter(isFullEntryAPluginElementPredicate)
+                .flatMap(([_, elements]) => elements)
+                .map(({cls}) => cls)
+                .forEach(e => acc.add(e));
+            return acc;
+        }, new Set<string>());
+        return pluginElements.size;
+    });
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
@@ -99,10 +107,6 @@ ${elements.map(({cls}) => `<li>
                 <a href="plugins/${plugin.title}/${cls}">${cls}</a>
               </li>`).join("")}
 </ul>`).join("");
-    }
-
-    function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
-        return isEntryAPluginElementPredicate(...elementsArray);
     }
 
     const filteredPluginsData = computed(() => {
@@ -153,8 +157,8 @@ ${elements.map(({cls}) => `<li>
         return allPlugins.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
                 Object.entries(item)
-                    .filter(([elementType, elements]) => isEntryAPluginElementPredicate(elementType, elements))
-                    .flatMap(([_, elements]) => elements as PluginElement[])
+                    .filter(isFullEntryAPluginElementPredicate)
+                    .flatMap(([_, elements]) => elements)
                     .some(({cls}) => cls.toLowerCase().includes(searchLowercase));
         });
     }
