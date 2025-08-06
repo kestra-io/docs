@@ -1,0 +1,440 @@
+@import "variable";
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.dialog {
+    background: $black-4;
+    border-radius: 8px;
+    width: 795px;
+    min-height: 532px;
+    max-height: 837px;
+    border: 1px solid var(--ks-border-secondary);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content {
+    padding: 16px 16px 32px;
+    color: $white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 763px;
+    margin: 0 auto;
+    
+    .welcome {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        margin-bottom: 2rem;
+        
+        .avatar {
+            width: 28px;
+            height: 44px;
+            flex-shrink: 0;
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+        
+        .text p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 22px;
+        }
+    }
+    
+    .examples {
+        margin-bottom: 2rem;
+        
+        h6 {
+            color: $white-5;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .card {
+            width: fit-content;
+            background: $black-4;
+            border: 1px solid #252526;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: $white-3;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            
+            &:hover {
+                border-color: var(--ks-border-secondary);
+                color: $white;
+            }
+        }
+    }
+
+    .messages {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+        padding-right: 0.5rem;
+    }
+
+    .message {
+        display: flex;
+        margin-bottom: 1rem;
+        gap: 0.75rem;
+
+        .avatar {
+            flex-shrink: 0;
+            
+            .user {
+                font-size: 24px;
+                color: #736BCD;
+            }
+            
+            .ai {
+                display: flex;
+                align-items: start;
+            }
+        }
+
+        .bubble {
+            padding: 1rem;
+            border-radius: 1rem;
+            background: $black-4;
+            border: 1px solid $black-5;
+            color: $white;
+            white-space: pre-line;
+            max-width: calc(100% - 48px);
+
+            p {
+                margin: 0 0 0.5rem;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            .timestamp {
+                font-size: 0.7rem;
+                color: $white-5;
+                display: block;
+                text-align: right;
+                margin-top: 0.5rem;
+            }
+
+            :deep(pre) {
+                background: $black-2;
+                border: 1px solid $black-5;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+            }
+
+            :deep(table) {
+                background: $black-2;
+                border: 1px solid $black-5;
+                border-radius: 0.5rem;
+                padding: 0.25rem;
+                font-size: 90%;
+                margin-bottom: 1rem;
+                width: 100%;
+                
+                th, td {
+                    padding: 0.5rem;
+                    border-bottom: 1px solid $black-6;
+                }
+            }
+
+            .sources {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid $black-6;
+
+                h6 {
+                    color: $white-5;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    margin: 0 0 0.75rem;
+                }
+
+                .items {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+
+                .item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 0.75rem;
+                    background: $black-4;
+                    border: 1px solid $black-5;
+                    border-radius: 0.5rem;
+                    text-decoration: none;
+                    color: $white-3;
+                    font-size: 0.875rem;
+                    transition: all 0.2s ease-in-out;
+
+                    &:hover {
+                        border-color: var(--ks-border-secondary);
+                        color: $white;
+                    }
+
+                    .icon {
+                        flex-shrink: 0;
+                        color: $white-5;
+                    }
+
+                    .info {
+                        flex: 1;
+                        min-width: 0;
+
+                        .title {
+                            font-weight: 500;
+                            line-height: 1.4;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .path {
+                            font-size: 0.75rem;
+                            color: $white-5;
+                            line-height: 1.2;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .loading {
+        display: flex;
+        margin-bottom: 1rem;
+        
+        .dots {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background: #a78bfa;
+            animation: dotPulse 1.5s infinite ease-in-out;
+            margin-left: 3rem;
+            
+            &::before, &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                width: 10px;
+                height: 10px;
+                border-radius: 5px;
+                background: #a78bfa;
+            }
+            
+            &::before {
+                left: -15px;
+                animation: dotPulseBefore 1.5s infinite ease-in-out;
+            }
+            
+            &::after {
+                left: 15px;
+                animation: dotPulseAfter 1.5s infinite ease-in-out;
+            }
+        }
+    }
+    
+    .input {
+        margin-top: auto;
+        
+        .container {
+            background: #252526;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 16px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.2s ease-in-out;
+            
+            &:focus-within {
+                border-color: #736BCD;
+            }
+
+            .send-icon {
+                font-size: 24px;
+                color: var(--ks-content-secondary);
+                cursor: pointer;
+                transition: color 0.2s ease-in-out;
+                &:hover {
+                    color: var(--ks-content-primary);
+                }
+            }
+            
+            textarea {
+                flex: 1;
+                background: transparent;
+                border: none;
+                color: $white;
+                font-size: 0.875rem;
+                resize: none;
+                outline: none;
+                height: 24px;
+                line-height: 24px;
+                overflow: hidden;
+                white-space: nowrap;
+                
+                &::placeholder {
+                    color: #E1E1E1;
+                }
+            }
+        }
+    }
+}
+
+@keyframes dotPulseBefore {
+    0% { transform: scale(1); }
+    25% { transform: scale(0.9); }
+    50%, 100% { transform: scale(0.75); }
+}
+
+@keyframes dotPulse {
+    0%, 100% { transform: scale(0.75); }
+    50% { transform: scale(1); }
+}
+
+@keyframes dotPulseAfter {
+    0% { transform: scale(0.75); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@include media-breakpoint-down(md) {
+    .overlay {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 4rem;
+    }
+    
+    .dialog {
+        width: 100%;
+        max-width: none;
+        max-height: 837px;
+        border-radius: 0.5rem;
+        margin: 0 0.5rem;
+    }
+    
+    .content {
+        padding: 1rem;
+        width: 100%;
+        
+        .welcome {
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            
+            .avatar {
+                width: 24px;
+                height: 38px;
+            }
+            
+            .text p {
+                font-size: 0.875rem;
+                line-height: 1.4;
+            }
+        }
+        
+        .examples {
+            margin-bottom: 1.5rem;
+            
+            .cards {
+                gap: 0.5rem;
+            }
+            
+            .card {
+                width: 100%;
+                padding: 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        .message {
+            gap: 0.5rem;
+            
+            .bubble {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+                max-width: calc(100% - 32px);
+                
+                .sources .item {
+                    padding: 0.5rem;
+                    font-size: 0.8rem;
+                    
+                    .info {
+                        .title {
+                            font-size: 0.8rem;
+                            line-height: 1.3;
+                        }
+                        
+                        .path {
+                            font-size: 0.7rem;
+                        }
+                    }
+                }
+            }
+            
+            .avatar .ai {
+                width: 32px;
+                height: 32px;
+                
+                img {
+                    width: 20px;
+                    height: 32px;
+                }
+            }
+        }
+        
+        .loading .dots {
+            margin-left: 2rem;
+        }
+        
+        .input .container {
+            padding: 12px;
+            height: 56px;
+            
+            textarea {
+                font-size: 0.875rem;
+                height: 24px;
+            }
+        }
+    }
+}
