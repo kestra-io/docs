@@ -49,19 +49,20 @@ To configure MITM proxy behavior in Kestra, you need to update the following sec
 ### 1. Configuration File
 ```yaml
 # values.yaml
-micronaut:
-  http:
-    client:
-      proxy-address: "PROXY_URI:PROXY_PORT"
-      proxy-type: HTTP
+configuration: 
+  micronaut:
+    http:
+      client:
+        proxy-address: "PROXY_URI:PROXY_PORT"
+        proxy-type: HTTP
 
-server:
-  ssl:
-    clientAuthentication: want
-    trustStore:
-      path: file:/app/ssl/truststore.jks
-      password: changeit
-      type: JKS
+    server:
+      ssl:
+        clientAuthentication: want
+        trustStore:
+          path: file:/app/ssl/truststore.jks
+          password: changeit
+          type: JKS
 ```
 This sets up:
 - The HTTP proxy endpoint.
@@ -71,7 +72,7 @@ This sets up:
 **For Kubernetes Deployments**: You must mount the Java TrustStore containing the MITM proxy’s certificate into the container.
 ```yaml
 # values.yaml
- extraVolumeMounts:
+extraVolumeMounts:
   - name: ssl-secret
     mountPath: "/app/ssl"
 
@@ -83,6 +84,7 @@ extraVolumes:
 **For Docker Compose Deployments**: You shall have the following properties
 ```yaml
 # docker-compose.yaml
+services:
   kestra:
     volumes:
       - kestra-data:/app/storage
