@@ -120,7 +120,7 @@
           email: form["email"].value,
           firstname: form["first-name"].value,
           lastname: form["last-name"].value,
-          kuid: localStorage.getItem("KUID"),
+          kuid: localStorage.getItem("KUID") || "",
         },
       ]);
 
@@ -145,11 +145,11 @@
           {
             objectTypeId: "0-1",
             name: "kuid",
-            value: localStorage.getItem("KUID"),
+            value: localStorage.getItem("KUID") || "",
           },
         ],
         context: {
-          hutk: getHubspotTracking(),
+          hutk: getHubspotTracking() || "",
           ipAddress: ip.data.ip,
           pageUri: route.path,
           pageName: document.title,
