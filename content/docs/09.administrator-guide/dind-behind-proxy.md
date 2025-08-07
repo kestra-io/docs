@@ -21,71 +21,80 @@ x509: certificate signed by unknown authority
 ## Prerequisites
 1. Create a ConfigMap for Docker daemon config
 This ConfigMap should include your `daemon.json` with proxy settings.
-    Create a file `daemon.json`
-    ```json
-    {
-        "proxies": {
-            "http-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
-            "https-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
-            "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,kestra-minio"
-        }
+
+Create a file `daemon.json`:
+
+```json
+{
+    "proxies": {
+        "http-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
+        "https-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
+        "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,kestra-minio"
     }
-    ```
-    Apply the configmap.
-    ```bash
-    kubectl create configmap dind-daemon-config \
-    --from-file=daemon.json=./daemon.json \
-    -n kestra
-    ```
+}
+```
+
+Apply the configmap:
+
+```bash
+kubectl create configmap dind-daemon-config \
+--from-file=daemon.json=./daemon.json \
+-n kestra
+```
+
 2. Create a ConfigMap for the MITM Proxy CA Certificate.
     
-    Assuming you have the CA file as `mitmproxy-ca.crt`
+Assuming you have the CA file as `mitmproxy-ca.crt`, run:
     
-    ```bash
-    kubectl create configmap dind-ca-certs \
-    --from-file=ca.crt=./mitmproxy-ca.crt \
-    -n kestra
-    ```
+```bash
+kubectl create configmap dind-ca-certs \
+--from-file=ca.crt=./mitmproxy-ca.crt \
+-n kestra
+```
+
 3. Kestra Configuration
-    Here is a configuration sample you can include in your Helm `values.yaml`.
-    ```yaml
-      configuration: 
-        kestra:
-          plugins:
-            configurations:
-              - type:  io.kestra.plugin.scripts.runner.docker.Docker
-                values:
-                  volume-enabled: true
-      dind:
-        enabled: true
-        image:
-          image: docker
-          tag: dind-rootless
-          pullPolicy: IfNotPresent
-        socketPath: /dind/
-        tmpPath: /tmp/
-        resources: {}
-        args:
-          - --log-level=fatal
-          - --group=1000
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-        extraVolumeMounts:
-          - name: docker-daemon-config
-            mountPath: /home/rootless/.config/docker
-            readOnly: true
-          - name: ca-cert-volume
-            mountPath: /home/rootless/.config/docker/certs.d/mitmproxy.default.svc.cluster.local:8000
-            readOnly: true
-          - name: ca-cert-volume
-            mountPath: /home/rootless/mitmproxy
-            readOnly: true
-        extraEnv:
-          - name: SSL_CERT_FILE 
-            value: /home/rootless/mitmproxy/ca.crt
-    ```
-    Notice that we used `volume-enabled: true` in the configuration to mount the CA cert from the DinD pod to the Container deployed later by a Task in Kestra.  
+
+Here is a configuration sample you can include in your Helm `values.yaml`:
+
+```yaml
+configuration: 
+  kestra:
+    plugins:
+      configurations:
+        - type:  io.kestra.plugin.scripts.runner.docker.Docker
+          values:
+            volume-enabled: true
+dind:
+  enabled: true
+  image:
+    image: docker
+    tag: dind-rootless
+    pullPolicy: IfNotPresent
+  socketPath: /dind/
+  tmpPath: /tmp/
+  resources: {}
+  args:
+    - --log-level=fatal
+    - --group=1000
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+  extraVolumeMounts:
+    - name: docker-daemon-config
+      mountPath: /home/rootless/.config/docker
+      readOnly: true
+    - name: ca-cert-volume
+      mountPath: /home/rootless/.config/docker/certs.d/mitmproxy.default.svc.cluster.local:8000
+      readOnly: true
+    - name: ca-cert-volume
+      mountPath: /home/rootless/mitmproxy
+      readOnly: true
+  extraEnv:
+    - name: SSL_CERT_FILE 
+      value: /home/rootless/mitmproxy/ca.crt
+```
+
+Notice that we used `volume-enabled: true` in the configuration to mount the CA cert from the DinD pod to the Container deployed later by a Task in Kestra.  
 
 ## DinD in Action
 
@@ -93,6 +102,7 @@ The configuration will help the DinD Pod pull the required Container Images succ
 
 Further, for Kestra tasks that need to run as a Docker Container, such as the `io.kestra.plugin.scripts.shell.Script`, you must provide the `HTTPS_PROXY` env variable and trust the certificate in the `beforeCommands` as shown below.
 To ensure consistency, configure the settings as plugin defaults.
+
 ```yaml
 tasks:
   - id: hello

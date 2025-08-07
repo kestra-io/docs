@@ -32,21 +32,27 @@ keytool -importcert \
   -file mitmproxy-ca.crt \
   -noprompt
 ```
+
 This step ensures that Kestra trusts the HTTPS traffic intercepted by the MITM proxy.
+
 ### 2. For Kubernetes Deployment, create a Secret with the Truststore
-Once you have the `truststore.jks` file, create a Kubernetes secret to mount it into the Kestra pod
+
+Once you have the `truststore.jks` file, create a Kubernetes secret to mount it into the Kestra pod:
+
 ```bash
 kubectl create secret generic kestra-ssl \
   --from-file=truststore.jks \
   -n kestra
 ```
+
 These resources will be used in your Kestra deployment configuration to enable proxying.
 
 ## Configuring MITM Proxy in Kestra
 
-To configure MITM proxy behavior in Kestra, you need to update the following sections in the configuration
+To configure MITM proxy behavior in Kestra, you need to update the following sections in the configuration.
 
 ### 1. Configuration File
+
 ```yaml
 # values.yaml
 configuration: 
@@ -64,12 +70,15 @@ configuration:
           password: changeit
           type: JKS
 ```
+
 This sets up:
 - The HTTP proxy endpoint.
 - Trust settings for the MITM certificate stored in a Java Keystore.
 
 ### 2. Mounting the TrustStore
+
 **For Kubernetes Deployments**: You must mount the Java TrustStore containing the MITM proxy’s certificate into the container.
+
 ```yaml
 # values.yaml
 extraVolumeMounts:
@@ -81,7 +90,9 @@ extraVolumes:
     secret:
       secretName: kestra-ssl   
 ```
+
 **For Docker Compose Deployments**: You need the following properties:
+
 ```yaml
 # docker-compose.yaml
 services:
@@ -92,10 +103,13 @@ services:
       - tmp-kestra:/tmp/kestra-wd
       - /app/ssl:/app/ssl # this is where the `truststore.jks` exists on your host machine
 ```
+
 ### 3. Environment Variables
+
 Set the following environment variables to ensure the JVM routes traffic via the proxy and uses the correct truststore. Ensure internal endpoints that shouldn't be routed through MITM proxy are added to the `-Dhttp.nonProxyHosts` flag.
 
-**For Kubernetes Deployments**: 
+**For Kubernetes Deployments**:
+
 ```yaml
 # values.yaml
 extraEnv:
@@ -103,15 +117,18 @@ extraEnv:
     value: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio"
 ```
 
-**For Docker Compose Deployments**: 
+**For Docker Compose Deployments**:
+
 ```yaml
 # docker-compose.yaml
     environment:
       JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com"
 ```
+
 These settings ensure HTTP and HTTPS traffic goes through the proxy while bypassing internal services.
 
 ## Troubleshooting
+
 1. If HTTPS calls fail, verify the truststore contains the correct CA.
 2. Check mitmproxy logs to confirm traffic is routed through it.
 3. Make sure your Kubernetes Secret is correctly mounted.
