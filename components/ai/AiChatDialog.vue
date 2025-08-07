@@ -65,7 +65,7 @@
                                             class="item"
                                         >
                                             <div class="icon">
-                                                <FileDocumentOutline :size="24" />
+                                                <FileDocumentOutline />
                                             </div>
                                             <div class="info">
                                                 <div class="title">{{ source.title }}</div>
@@ -106,6 +106,7 @@ import AiChatHeader from "./AiChatHeader.vue"
 import Send from "vue-material-design-icons/Send.vue"
 import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
+import { extractSourcesFromMarkdown, isInternalLink } from '../../utils/sources'
 
 interface Message {
     content: string
@@ -187,54 +188,6 @@ const formatTimestamp = (timestamp: string): string => {
     }
 }
 
-const extractSourcesFromMarkdown = (content: string): Source[] => {
-    const sources: Source[] = []
-    const linkRegex = /\[([^\]]+)\](?:\(([^\)]+)\)|<([^>]+)>)/g
-    let match: RegExpExecArray | null
-    
-    const getSimpleType = (item: string): string => item.split(".").pop() || ""
-    
-    while ((match = linkRegex.exec(content)) !== null) {
-        const [, title, parenUrl, angleUrl] = match
-        let url = parenUrl || angleUrl
-        const originalUrl = url
-        
-        if (url.includes('#/')) {
-            url = url.split('#')[1]
-        }
-        
-        const isDocsUrl = url.includes('kestra.io/docs') || url.startsWith('/docs/')
-        const isPluginUrl = url.includes('kestra.io/plugins') || url.startsWith('/plugins/')
-        
-        if (isDocsUrl) {
-            const fullUrl = url.startsWith('/docs/') ? `https://kestra.io${url}` : originalUrl
-            const pathPart = url.replace(/^(https:\/\/kestra\.io)?\/docs\//, '').replace(/\//g, ' > ')
-            const path = `docs > ${pathPart}`
-            
-            sources.push({ title: title.trim(), url: fullUrl, path })
-        } else if (isPluginUrl) {
-            const fullUrl = url.startsWith('/plugins/') ? `https://kestra.io${url}` : originalUrl
-            const pathPart = url.replace(/^(https:\/\/kestra\.io)?\/plugins\//, '')
-            
-            const urlParts = pathPart.split('/')
-            const [pluginName, type, className] = urlParts
-            
-            if (pluginName && type && className) {
-                const simpleClassName = getSimpleType(className)
-                const path = `plugins > ${pluginName} > ${type} > ${simpleClassName}`
-                sources.push({ title: title.trim(), url: fullUrl, path })
-            } else {
-                const path = `plugins > ${pathPart.replace(/\//g, ' > ')}`
-                sources.push({ title: title.trim(), url: fullUrl, path })
-            }
-        }
-    }
-    
-    return sources.filter((source, index, self) => 
-        index === self.findIndex(s => s.url === source.url)
-    )
-}
-
 const scrollToBottom = (): void => {
     nextTick(() => {
         if (messagesContainer.value) {
@@ -295,7 +248,7 @@ const handleContentClick = (event: Event): void => {
     const link = (event.target as HTMLElement).closest('a')
     const href = link?.getAttribute('href')
     
-    if (href?.startsWith('/') || href?.startsWith('#')) {
+    if (href && isInternalLink(href)) {
         emit('close')
     }
 }
