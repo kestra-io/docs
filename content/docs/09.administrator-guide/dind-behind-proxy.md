@@ -1,5 +1,5 @@
 ---
-title: Configure MITM Proxy for DinD
+title: MITM Proxy for DinD
 icon: /docs/icons/padlock.svg
 ---
 Run Docker-in-Docker (DinD) behind a Proxy in Kestra deployed on Kubernetes.
@@ -64,6 +64,13 @@ configuration:
         - type:  io.kestra.plugin.scripts.runner.docker.Docker
           values:
             volume-enabled: true
+extraVolumes: 
+  - name: docker-daemon-config
+    configMap:
+      name: dind-daemon-config
+  - name: ca-cert-volume
+    configMap:
+      name: dind-ca-certs
 dind:
   enabled: true
   image:
@@ -104,8 +111,10 @@ Further, for Kestra tasks that need to run as a Docker Container, such as the `i
 To ensure consistency, configure the settings as plugin defaults.
 
 ```yaml
+id: mitm_proxy
+namespace: company.team
 tasks:
-  - id: hello
+  - id: shell
     type: io.kestra.plugin.scripts.shell.Script
     containerImage: alpine/curl
     beforeCommands:

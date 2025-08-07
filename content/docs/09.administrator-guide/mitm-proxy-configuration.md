@@ -1,5 +1,5 @@
 ---
-title: Configure MITM Proxy for Kestra
+title: MITM Proxy for Kestra
 icon: /docs/icons/padlock.svg
 ---
 
@@ -121,6 +121,8 @@ extraEnv:
 
 ```yaml
 # docker-compose.yaml
+services:
+  kestra:
     environment:
       JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com"
 ```
