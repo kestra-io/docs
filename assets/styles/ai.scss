@@ -14,10 +14,10 @@
 .dialog {
     background: $black-4;
     border-radius: 8px;
-    width: 795px;
+    width: 895px;
     min-height: 532px;
-    max-height: 837px;
-    border: 1px solid var(--ks-border-secondary);
+    max-height: calc(100vh - 2rem);
+    border: 1px solid $black-6;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
@@ -25,44 +25,44 @@
 }
 
 .content {
-    padding: 16px 16px 32px;
+    padding: 32px;
     color: $white;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    width: 763px;
+    width: 100%;
     margin: 0 auto;
-    
+
     .welcome {
         display: flex;
         align-items: center;
         gap: 16px;
         padding: 16px 0;
         margin-bottom: 2rem;
-        
+
         .avatar {
             width: 28px;
             height: 44px;
             flex-shrink: 0;
-            
+
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
             }
         }
-        
+
         .text p {
             margin: 0;
             font-size: 1rem;
             line-height: 22px;
         }
     }
-    
+
     .examples {
         margin-bottom: 2rem;
-        
+
         h6 {
             color: $white-5;
             font-size: 0.75rem;
@@ -71,13 +71,13 @@
             text-transform: uppercase;
             margin-bottom: 1rem;
         }
-        
+
         .cards {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
-        
+
         .card {
             width: fit-content;
             background: $black-4;
@@ -89,9 +89,9 @@
             color: $white-3;
             font-size: 0.875rem;
             line-height: 1.4;
-            
+
             &:hover {
-                border-color: var(--ks-border-secondary);
+                border-color: $black-10;
                 color: $white;
             }
         }
@@ -111,12 +111,12 @@
 
         .avatar {
             flex-shrink: 0;
-            
+
             .user {
                 font-size: 24px;
                 color: $purple;
             }
-            
+
             .ai {
                 display: flex;
                 align-items: start;
@@ -134,7 +134,7 @@
 
             p {
                 margin: 0 0 0.5rem;
-                
+
                 &:last-child {
                     margin-bottom: 0;
                 }
@@ -155,7 +155,8 @@
                 border-radius: 0.5rem;
             }
 
-            :deep(.language), :deep(.copy) {
+            :deep(.language),
+            :deep(.copy) {
                 position: absolute;
                 top: 1.75rem;
                 right: 1rem;
@@ -173,16 +174,24 @@
                 border-radius: 0.5rem;
                 padding: 0.25rem;
                 font-size: 90%;
-                margin-bottom: 1rem;
                 width: 100%;
-                
-                th, td {
-                    padding: 0.5rem;
-                    border-bottom: 1px solid $black-6;
+
+                thead {
+
+                    th,
+                    td {
+                        padding: 0.5rem;
+                        border-bottom: 1px solid $black-6 !important;
+                    }
                 }
             }
 
-            :deep(a), :deep(h1, h2, h3, h4, h5, h6) {
+            :deep(.table-responsive) {
+                margin: 0.5rem 0 !important;
+            }
+
+            :deep(a),
+            :deep(h1, h2, h3, h4, h5, h6) {
                 color: $purple;
             }
 
@@ -256,7 +265,7 @@
     .loading {
         display: flex;
         margin-bottom: 1rem;
-        
+
         .dots {
             position: relative;
             width: 10px;
@@ -265,9 +274,10 @@
             background: $purple;
             animation: dotPulse 1.5s infinite ease-in-out;
             margin-left: 1rem;
-            
-            &::before, &::after {
-                content: '';
+
+            &::before,
+            &::after {
+                content: "";
                 position: absolute;
                 top: 0;
                 width: 10px;
@@ -275,22 +285,22 @@
                 border-radius: 5px;
                 background: $purple;
             }
-            
+
             &::before {
                 left: -15px;
                 animation: dotPulseBefore 1.5s infinite ease-in-out;
             }
-            
+
             &::after {
                 left: 15px;
                 animation: dotPulseAfter 1.5s infinite ease-in-out;
             }
         }
     }
-    
+
     .input {
         margin-top: auto;
-        
+
         .container {
             background: $black-3;
             border: 1px solid transparent;
@@ -301,21 +311,22 @@
             align-items: center;
             gap: 0.5rem;
             transition: border-color 0.2s ease-in-out;
-            
+
             &:focus-within {
                 border-color: $purple;
             }
 
             .send-icon {
                 font-size: 24px;
-                color: var(--ks-content-secondary);
+                color: #B9B9BA;
                 cursor: pointer;
                 transition: color 0.2s ease-in-out;
+
                 &:hover {
-                    color: var(--ks-content-primary);
+                    color: $purple;
                 }
             }
-            
+
             textarea {
                 flex: 1;
                 background: transparent;
@@ -324,11 +335,9 @@
                 font-size: 1rem;
                 resize: none;
                 outline: none;
-                height: 24px;
-                line-height: 24px;
                 overflow: hidden;
                 white-space: nowrap;
-                
+
                 &::placeholder {
                     color: $white-1;
                 }
@@ -338,110 +347,134 @@
 }
 
 @keyframes dotPulseBefore {
-    0% { transform: scale(1); }
-    25% { transform: scale(0.9); }
-    50%, 100% { transform: scale(0.75); }
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(0.9);
+    }
+
+    50%,
+    100% {
+        transform: scale(0.75);
+    }
 }
 
 @keyframes dotPulse {
-    0%, 100% { transform: scale(0.75); }
-    50% { transform: scale(1); }
+
+    0%,
+    100% {
+        transform: scale(0.75);
+    }
+
+    50% {
+        transform: scale(1);
+    }
 }
 
 @keyframes dotPulseAfter {
-    0% { transform: scale(0.75); }
-    50% { transform: scale(0.9); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(0.75);
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 @include media-breakpoint-down(md) {
     .overlay {
         padding: 0.5rem;
         align-items: flex-start;
-        padding-top: 4rem;
+        padding-top: 2rem;
     }
-    
+
     .dialog {
         width: 100%;
         max-width: none;
-        max-height: 600px;
+        max-height: calc(100vh - 4rem);
         border-radius: 0.5rem;
         margin: 0 0.25rem;
     }
-    
+
     .content {
         padding: 1rem;
         width: 100%;
-        
+
         .welcome {
             gap: 1rem;
             margin-bottom: 1.5rem;
-            
+
             .avatar {
                 width: 24px;
                 height: 38px;
             }
-            
+
             .text p {
                 font-size: 0.875rem;
                 line-height: 1.4;
             }
         }
-        
+
         .examples {
             margin-bottom: 1.5rem;
-            
+
             .cards {
                 gap: 0.5rem;
             }
-            
+
             .card {
                 width: 100%;
                 padding: 0.75rem;
                 font-size: 0.8rem;
             }
         }
-        
+
         .message {
             gap: 0.5rem;
-            
+
             .bubble {
                 padding: 0.75rem;
                 font-size: 0.875rem;
                 max-width: calc(100% - 32px);
-                
+
                 .sources .item {
                     padding: 0.5rem;
                     font-size: 0.8rem;
-                    
+
                     .info {
                         .title {
                             font-size: 0.8rem;
                             line-height: 1.3;
                         }
-                        
+
                         .path {
                             font-size: 0.7rem;
                         }
                     }
                 }
             }
-            
+
             .avatar .ai {
                 width: 32px;
                 height: 32px;
-                
+
                 img {
                     width: 20px;
                     height: 32px;
                 }
             }
         }
-        
+
         .input .container {
             padding: 12px;
             height: 56px;
-            
+
             textarea {
                 font-size: 0.875rem;
                 height: 24px;

@@ -56,7 +56,7 @@ function openSearch(): void {
         .search-btn {
             background: #252526;
             border: none;
-            color: var(--ks-content-primary);
+            color: $white-3;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             font-size: 0.875rem;
@@ -73,7 +73,7 @@ function openSearch(): void {
             }
             .magnify-icon {
                 font-size: 20px;
-                color: var(--ks-content-secondary);
+                color: $white-3;
                 margin-top: -4px;
             }
         }
