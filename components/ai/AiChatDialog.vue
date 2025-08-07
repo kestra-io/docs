@@ -40,13 +40,13 @@
                             </div>
                             <div class="bubble">
                                 <template v-if="message.role === 'assistant'">
-                                    <div v-if="message.markdown && !isLoading" @click="handleContentClick">
+                                    <div v-if="message.markdown" @click="handleContentClick">
                                         <ContentRenderer
                                             class="markdown prose prose-sm"
                                             :value="message.markdown"
                                         />
                                     </div>
-                                    <div v-else-if="isMessageStreaming(message) || (isLoading && message.content === '')" class="loading">
+                                    <div v-else-if="isMessageStreaming(message) || message.content === ''" class="loading">
                                         <div class="dots"></div>
                                     </div>
                                     <p v-else-if="message.content">{{ message.content }}</p>
