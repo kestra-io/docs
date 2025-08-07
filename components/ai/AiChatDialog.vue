@@ -40,16 +40,16 @@
                             </div>
                             <div class="bubble">
                                 <template v-if="message.role === 'assistant'">
-                                    <div v-if="message.markdown && !isMessageStreaming(message)">
+                                    <div v-if="message.markdown && !isLoading" @click="handleContentClick">
                                         <ContentRenderer
                                             class="markdown prose prose-sm"
                                             :value="message.markdown"
                                         />
                                     </div>
-                                    <div v-else-if="isMessageStreaming(message)" class="loading">
+                                    <div v-else-if="isMessageStreaming(message) || (isLoading && message.content === '')" class="loading">
                                         <div class="dots"></div>
                                     </div>
-                                    <p v-else>{{ message.content }}</p>
+                                    <p v-else-if="message.content">{{ message.content }}</p>
                                 </template>
                                 <p v-else>{{ message.content }}</p>
                                 
@@ -189,19 +189,44 @@ const formatTimestamp = (timestamp: string): string => {
 
 const extractSourcesFromMarkdown = (content: string): Source[] => {
     const sources: Source[] = []
-    const linkRegex = /\[([^\]]+)\]\(([^\)]+)\)/g
+    const linkRegex = /\[([^\]]+)\](?:\(([^\)]+)\)|<([^>]+)>)/g
     let match: RegExpExecArray | null
     
+    const getSimpleType = (item: string): string => item.split(".").pop() || ""
+    
     while ((match = linkRegex.exec(content)) !== null) {
-        const [, title, url] = match
+        const [, title, parenUrl, angleUrl] = match
+        let url = parenUrl || angleUrl
+        const originalUrl = url
+        
+        if (url.includes('#/')) {
+            url = url.split('#')[1]
+        }
+        
         const isDocsUrl = url.includes('kestra.io/docs') || url.startsWith('/docs/')
+        const isPluginUrl = url.includes('kestra.io/plugins') || url.startsWith('/plugins/')
         
         if (isDocsUrl) {
-            const fullUrl = url.startsWith('/docs/') ? `https://kestra.io${url}` : url
+            const fullUrl = url.startsWith('/docs/') ? `https://kestra.io${url}` : originalUrl
             const pathPart = url.replace(/^(https:\/\/kestra\.io)?\/docs\//, '').replace(/\//g, ' > ')
             const path = `docs > ${pathPart}`
             
             sources.push({ title: title.trim(), url: fullUrl, path })
+        } else if (isPluginUrl) {
+            const fullUrl = url.startsWith('/plugins/') ? `https://kestra.io${url}` : originalUrl
+            const pathPart = url.replace(/^(https:\/\/kestra\.io)?\/plugins\//, '')
+            
+            const urlParts = pathPart.split('/')
+            const [pluginName, type, className] = urlParts
+            
+            if (pluginName && type && className) {
+                const simpleClassName = getSimpleType(className)
+                const path = `plugins > ${pluginName} > ${type} > ${simpleClassName}`
+                sources.push({ title: title.trim(), url: fullUrl, path })
+            } else {
+                const path = `plugins > ${pathPart.replace(/\//g, ' > ')}`
+                sources.push({ title: title.trim(), url: fullUrl, path })
+            }
         }
     }
     
@@ -220,7 +245,6 @@ const scrollToBottom = (): void => {
 
 const isMessageStreaming = (message: Message): boolean => {
     return message.role === 'assistant' && 
-           message.content.length > 0 && 
            !message.markdown && 
            isLoading.value
 }
@@ -267,6 +291,15 @@ const processStreamData = async (indexToUpdate: number, value: StreamValue, data
     }
 }
 
+const handleContentClick = (event: Event): void => {
+    const link = (event.target as HTMLElement).closest('a')
+    const href = link?.getAttribute('href')
+    
+    if (href?.startsWith('/') || href?.startsWith('#')) {
+        emit('close')
+    }
+}
+
 const sendMessage = async (): Promise<void> => {
     const trimmedInput = userInput.value.trim()
     if (!trimmedInput || isLoading.value) return
@@ -277,8 +310,12 @@ const sendMessage = async (): Promise<void> => {
     isLoading.value = true
     scrollToBottom()
 
+    const loadingMessage = createAssistantMessage()
+    messages.value.push(loadingMessage)
+    scrollToBottom()
+
     try {
-        const chatHistory: ChatHistoryItem[] = messages.value.map(msg => ({
+        const chatHistory: ChatHistoryItem[] = messages.value.slice(0, -1).map(msg => ({
             role: msg.role,
             content: msg.content,
             timestamp: msg.timestamp
@@ -302,8 +339,7 @@ const sendMessage = async (): Promise<void> => {
 
         if (!reader) throw new Error('Failed to get stream reader')
 
-        const indexToUpdate = messages.value.length
-        messages.value.push(createAssistantMessage())
+        const indexToUpdate = messages.value.length - 1
 
         while (true) {
             const { value, done } = await reader.read()
@@ -315,6 +351,7 @@ const sendMessage = async (): Promise<void> => {
         }
     } catch (error) {
         console.error('Error sending message:', error)
+        messages.value.pop()
         messages.value.push(createSystemMessage("Oops! Something went wrong. Please try again later."))
     } finally {
         isLoading.value = false
