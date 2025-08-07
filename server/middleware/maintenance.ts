@@ -1,4 +1,6 @@
 export default defineEventHandler(async (event) => {
+    return
+
     // Skip middleware on server during build/generation
     if (process.prerender) {
         return
