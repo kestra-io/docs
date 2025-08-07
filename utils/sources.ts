@@ -37,5 +37,5 @@ export function extractSourcesFromMarkdown(content: string): Source[] {
 }
 
 export function isInternalLink(url: string): boolean {
-    return url.startsWith('/') || url.startsWith('#') || url.includes('kestra.io')
+    return url.startsWith('/') || url.startsWith('#')
 }
