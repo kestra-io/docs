@@ -9,7 +9,7 @@ This guide walks through the steps to route and inspect Kestra's HTTP/S traffic 
 
 ## Why use MITM proxy 
 
-When working in secured or restricted environments, it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy**. This allows to inspect, log, or modify traffic for auditing or security purposes. For this to work seamlessly, clients need to:
+When working in secured or restricted environments, it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy**. This allows inspecting, logging, or modifying traffic for auditing or security purposes. For this to work seamlessly, clients need to:
 
 - Trust the MITM proxy's certificate
 - Route traffic through the proxy
@@ -81,7 +81,7 @@ extraVolumes:
     secret:
       secretName: kestra-ssl   
 ```
-**For Docker Compose Deployments**: You shall have the following properties
+**For Docker Compose Deployments**: You need the following properties:
 ```yaml
 # docker-compose.yaml
 services:
@@ -93,7 +93,7 @@ services:
       - /app/ssl:/app/ssl # this is where the `truststore.jks` exists on your host machine
 ```
 ### 3. Environment Variables
-Set the following environment variables to ensure the JVM routes traffic via the proxy and uses the correct truststore. Ensure internal endpoints that shouldn't be routed through MITM proxy to be added in the `-Dhttp.nonProxyHosts` flag.
+Set the following environment variables to ensure the JVM routes traffic via the proxy and uses the correct truststore. Ensure internal endpoints that shouldn't be routed through MITM proxy are added to the `-Dhttp.nonProxyHosts` flag.
 
 **For Kubernetes Deployments**: 
 ```yaml
@@ -109,10 +109,10 @@ extraEnv:
     environment:
       JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com"
 ```
-These settings ensure both HTTP and HTTPS traffic go through the proxy while bypassing internal services.
+These settings ensure HTTP and HTTPS traffic goes through the proxy while bypassing internal services.
 
 ## Troubleshooting
 1. If HTTPS calls fail, verify the truststore contains the correct CA.
 2. Check mitmproxy logs to confirm traffic is routed through it.
 3. Make sure your Kubernetes Secret is correctly mounted.
-4. You can also enable additional logs by adding the following flag to `JAVA_OPTS` i.e: `-Djavax.net.debug=ssl,handshake`
+4. You can also enable additional logs by adding the following flag to `JAVA_OPTS`, i.e., `-Djavax.net.debug=ssl,handshake`

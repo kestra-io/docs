@@ -2,7 +2,7 @@
 title: Configure MITM Proxy for DinD
 icon: /docs/icons/padlock.svg
 ---
-Running Docker-in-Docker (DinD) Behind a Proxy in Kestra deployed on Kubernetes
+Run Docker-in-Docker (DinD) behind a Proxy in Kestra deployed on Kubernetes.
 
 This guide describes how to configure Docker-in-Docker (DinD) to work **behind a corporate or MITM (Man-in-the-Middle) proxy** in a **rootless** setup, within a Kestra deployment.
 
@@ -10,7 +10,7 @@ This guide describes how to configure Docker-in-Docker (DinD) to work **behind a
 
 Docker-in-Docker (DinD) allows containers to run their own Docker daemon, enabling them to build and run other containers. Kestra uses DinD in certain task types that need Docker runtime isolation.
 
-If your environment uses a proxy that intercepts HTTPS traffic (such as a MITM proxy), Docker must **trust the proxy’s CA certificate** when pulling images from remote registries (like Docker Hub or private registries).
+If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM proxy), Docker must **trust the proxy’s CA certificate** when pulling images from remote registries (like Docker Hub or private registries).
 
 Without this, you'll see errors like:
 
@@ -85,14 +85,14 @@ This ConfigMap should include your `daemon.json` with proxy settings.
           - name: SSL_CERT_FILE 
             value: /home/rootless/mitmproxy/ca.crt
     ```
-    Notice that we used `volume-enabled: true` in the configuration to mount the CA cert from DinD pod to the Container deployed later by a Task in Kestra.  
+    Notice that we used `volume-enabled: true` in the configuration to mount the CA cert from the DinD pod to the Container deployed later by a Task in Kestra.  
 
 ## DinD in Action
 
-The configuration will help the DinD Pod pull required Container Images successfully through the MITM Proxy.
+The configuration will help the DinD Pod pull the required Container Images successfully through the MITM Proxy.
 
-Further for Kestra tasks, that need to run as a Docker Container such as the `io.kestra.plugin.scripts.shell.Script`, you must provide the `HTTPS_PROXY` env variable and trust the certificate in the `beforeCommands` as shown below.
-It might also be a good idea to configure the settings as plugin defaults.
+Further, for Kestra tasks that need to run as a Docker Container, such as the `io.kestra.plugin.scripts.shell.Script`, you must provide the `HTTPS_PROXY` env variable and trust the certificate in the `beforeCommands` as shown below.
+To ensure consistency, configure the settings as plugin defaults.
 ```yaml
 tasks:
   - id: hello
