@@ -10,7 +10,7 @@ When dealing with multiple teams, you can add extra security measures to your Ke
 
 ## Java security
 
-By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](plugins/plugin-graalvm/python), and more. This is because the worker shares the same file system.
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python), and more. This is because the worker shares the same file system.
 
 You can use the following to opt-in to real isolation of file systems using advanced Kestra EE Java security:
 
@@ -82,8 +82,8 @@ kestra:
 ```
 
 Forced plugin defaults:
-- ensure a property is set globally for a task, and no task can override it
-- are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
+- Ensure a property is set globally for a task, and no task can override it.
+- Are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
 
 ::alert{type="warning"}
 You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.
