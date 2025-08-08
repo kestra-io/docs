@@ -347,7 +347,8 @@ export default defineNuxtConfig({
         '/docs/architecture/worker': {redirect: '/docs/architecture/server-components#worker'},
         '/docs/architecture/scheduler': {redirect: '/docs/architecture/server-components#scheduler'},
         '/docs/architecture/indexer': {redirect: '/docs/architecture/server-components#indexer'},
-        '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'}
+        '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'},
+        '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
 
     },
 
