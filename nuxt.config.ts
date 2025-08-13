@@ -192,7 +192,8 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Migration Guide"
+                        "Migration Guide",
+                        "Performance"
                     ],
                     "Reference Docs": [
                         "Configuration",
