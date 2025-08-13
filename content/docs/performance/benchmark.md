@@ -1,5 +1,5 @@
 ---
-title: Benchmark
+title: Benchmarks
 icon: /docs/icons/admin.svg
 ---
 
