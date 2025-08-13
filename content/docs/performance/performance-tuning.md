@@ -1,30 +1,33 @@
 ---
 title: Performance Tuning
-icon: TODO
+icon: /docs/icons/admin.svg
 ---
 
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.
 
-On this page, we will introduce some performance tuning that may be done to improve the performance of the Kestra orchestrator, all of which come with tradeoffs, so be sure to understand them before applying them.
+This page introduces performance tuning options for the Kestra orchestrator. Each comes with trade-offs, so ensure you understand them before applying.
 
-Before you read more, please be sure to understand the [Kestra architecture](../07.architecture).
+Before you read on, please familiarize yourself with the [Kestra architecture](../07.architecture).
 
-## The Worker
+## Worker
 
-The Worker is responsible for executing your tasks, so how to tune it depends on what you execute.
+The [Worker](../07.architecture/05.worker.md) executes your tasks, and tuning it depends on the type of workloads you run.
 
 The most useful configuration is the number of Worker threads, which is 4 times the number of available cores by default.
 
-You can increase it to increase parallelism task execution, depending on how you start Kestra, this would be:
+You can increase it to boost parallel task execution. Depending on how you start Kestra, use one of the following methods:
+
 - If using the standalone, set `--worker-thread` in the standalone command line.
 - If using separate component processes, set `--thread` in the Worker command line.
 - If using our Helm chart, set `deployments.worker.workerThreads` in the values.
 
-## The JDBC backend
+## JDBC backend
 
-### The JDBC queue
+The JDBC backend is composed of main components such as the JDBC queue and JDBC executor.
 
-The JDBC queue is the most performance-sensitive component of the JDBC backend.
+### JDBC queue
+
+The JDBC queue is the most performance-critical component of the JDBC backend.
 
 It may be configured using the following configuration options:
 
@@ -38,15 +41,15 @@ kestra:
       pollSize: 100
 ```
 
-How does it work? The JDBC queue polls a database table for new messages; this poll is made every 25ms by default and has a limit of 100 records.
-This default setup allows good latency (25ms) and batch for reasonable throughput.
-To avoid wasting resources when there are no messages, the queue will switch (progressively) to polling every 500ms if there is no message to process during 60 seconds.
+The JDBC queue polls a database table for new messages; this poll is made every 25 ms by default and has a limit of 100 records.
+This default setup provides low latency (25 ms) and batching for reasonable throughput.
+To avoid wasting resources when there are no messages, the queue will switch (progressively) to polling every 500 ms if no messages are processed for 60 seconds.
 
 You can configure:
-- `minPollInterval`: Reducing it will reduce latency, but increase the load on the database.
-- `maxPollInterval`: Reducing it will reduce latency when a workflow is executed on an idle instance, but it will increase the load on the database on an idle instance.
-- `pollSwitchInterval`: Increasing it may avoid the queue from going to the idle state too aggressively, so when a new execution is triggered, it is processed more eagerly.
-- `pollSize`: Reducing it may reduce latency, but also reduce throughput. Increasing it will do the opposite; it may increase latency, but it will also increase throughput.
+- `minPollInterval`: Lowering it reduces latency but increases database load.
+- `maxPollInterval`: Lowering it reduces latency when a workflow is executed on an idle instance, but it will increase the load on the database on an idle instance.
+- `pollSwitchInterval`: Increasing this value helps prevent the queue from entering an idle state too quickly, ensuring that new executions are picked up promptly when they arrive.
+- `pollSize`: Lowering it may reduce latency, but also reduces throughput. Increasing it will do the opposite; it may increase latency, but it will also increase throughput.
 
 ## The JDBC Executor
 
@@ -61,14 +64,15 @@ kestra:
       thread-count: 0
 ```
 
-By default, it's 0, which means half the number of available CPUs. You may ask why half, which seems counterproductive?
-It's because we start two thread pools, so overall we use all available CPUs by default.
+By default, it's 0, which means half the number of available CPUs. You might wonder why it’s set to half, which seems counterintuitive.
+This is because two thread pools are started, using all available CPUs by default.
 
 ## The Kafka backend
 
-First, we set the Kafka partition count to 16 with a replication factor of 1 by default. As Kafka is not the primary storage, it's not mandatory to increase the replication factor, as everything can be re-created from Elasticsearch if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, ...) would not provide any benefits. If you plan to do so, please increase the partition counts.
+First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from Elasticsearch if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
 
 This is the default topic configuration:
+
 ```yaml
 kestra:
   kafka:
@@ -81,9 +85,10 @@ kestra:
 You can configure any Kafka producer and consumer properties recommended in standard Kafka application tuning to improve performance.
 They are configurable via `kestra.kafka.defaults.consumer.properties` and `kestra.kafka.defaults.producer.properties` for the standard consumer and producer properties, and `kestra.kafka.defaults.stream.properties` for Kafka Streams.
 
-We see that the most impactful properties are `poll.ms` and `commit.interval.ms`; we reduce them by default from 100ms to 25ms. You can decrease them further at the cost of more resources used by the broker.
+The most impactful properties are `poll.ms` and `commit.interval.ms`, which are reduced by default from 100 ms to 25 ms. You can decrease them further at the cost of more resources used by the broker.
 
 This is the default properties configuration:
+
 ```yaml
 kestra:
   kafka:
@@ -95,4 +100,3 @@ kestra:
 ```
 
 You can also set those properties on a topic basis.
-
