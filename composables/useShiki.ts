@@ -6,7 +6,7 @@
  */
 import {ref} from "vue";
 import { createHighlighter, type HighlighterGeneric } from 'shiki'
-import { createWasmOnigEngine } from "shiki/engine/oniguruma";
+import { createOnigurumaEngine } from "shiki/engine/oniguruma";
 const langs = ['bash',
     'c',
     'cpp',
@@ -44,7 +44,7 @@ export function getShiki() {
         shiki = createHighlighter({
             themes: ['github-dark'],
             langs: [...langs],
-            engine: createWasmOnigEngine(import('shiki/wasm'))
+            engine: createOnigurumaEngine(import('shiki/wasm'))
         })
     }
     return shiki
