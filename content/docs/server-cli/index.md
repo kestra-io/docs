@@ -76,7 +76,7 @@ This server is a local development server. It will contain all server components
 
 Server components can run independently from each other. Each of them communicate through the database.
 
-Here is a example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
+Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
 
 ::collapse{title="Docker Compose Example"}
 ```yaml
