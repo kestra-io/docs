@@ -1414,6 +1414,10 @@ kestra:
         - EXECUTOR
 ```
 
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `secret`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Secrets UI Configuration](/docs/configuration/is-secrets-configuration.png)
+
 ### AWS Secret Manager
 
 In order to use [AWS Secret Manager](https://aws.amazon.com/secrets-manager/) as a secrets backend, make sure that your AWS IAM user or role have the required permissions including `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
@@ -1916,6 +1920,10 @@ kestra:
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
         - EXECUTOR
 ```
+
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `storage`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Internal Storage UI Configuration](/docs/configuration/is-secrets-configuration.png)
 
 ### S3
 
