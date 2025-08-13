@@ -6,7 +6,6 @@ editions: ["EE", "Cloud"]
 
 How to configure the secrets manager.
 
-
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 
 Kestra respects your privacy. Therefore, Secrets are persisted externally in a backend of your choice. They are accessed by workers at runtime and stored only in memory.
