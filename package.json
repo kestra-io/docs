@@ -32,7 +32,7 @@
     "mermaid": "^11.6.0",
     "nuxt-lazy-hydrate": "^1.0.0",
     "path-browserify": "^1.0.1",
-    "posthog-js": "^1.236.1",
+    "posthog-js": "^1.259.0",
     "rapidoc": "^9.3.8",
     "sharp": "^0.34.1",
     "shiki": "^3.9.2",
