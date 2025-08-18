@@ -283,7 +283,7 @@ You can change these parameters to reduce the polling latency, but be aware it w
 - `kestra.jdbc.queues.pollSize`: the maximum number of queues items fetched by each poll.
 - `kestra.jdbc.queues.minPollInterval`: the minimum duration between 2 polls.
 - `kestra.jdbc.queues.maxPollInterval`: the maximum duration between 2 polls.
-- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
+- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from `minPollInterval` to `maxPollInterval` when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
 
 
 Here is the default configuration:
@@ -1319,7 +1319,7 @@ kestra:
     configurations:
       - type: io.kestra.plugin.scripts.runner.docker.Docker
         values:
-          volume-enabled: true
+          volumeEnabled: true
 ```
 
 ### Allowed plugins
@@ -1651,11 +1651,11 @@ You can configure password validation rules for user passwords using a regular e
 ```yaml
 kestra:
   security:
-    basic-auth:
-      password-regexp: "<regexp-rule>"
+    basicAuth:
+      passwordRegexp: "<regexp-rule>"
 ```
 
-The `password-regexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
+The `passwordRegexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
 
 ## Server
 
@@ -2168,7 +2168,7 @@ These variables will be accessible in a flow with `{{ envs.your_env }}` in **low
       KESTRA_CONFIGURATION:
         kestra:
           variables:
-            env-vars-prefix: "ENV_" # this is the default as of version 0.23
+            envVarsPrefix: "ENV_" # this is the default as of version 0.23
 ```
 
 An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.my_variable }}`.
@@ -2271,12 +2271,12 @@ kestra:
 
 ### Configuring a mail server
 
-Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mail-service` configuration.
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mailService` configuration.
 
 ```yaml
 kestra:
   ee:
-    mail-service:
+    mailService:
       host: host.smtp.io
       port: 587
       username: user
@@ -2299,21 +2299,21 @@ To configure this option on an instance level, add the following to your Kestra 
 ```yaml
 kestra:
   ee:
-    execution-data:
-      internal-storage:
+    executionData:
+      internalStorage:
         enabled: true # the default is false
 ```
 
 Once you set the above configuration and your Tenant or Namespace has a "Dedicated internal storage" configured and the toggle "Execution data in internal storage" is enabled in the UI, all workflow outputs and inputs will be stored in the internal storage instead of the central database.
 
-To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `force-globally` property to `true`:
+To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `forceGlobally` property to `true`:
 
 ```yaml
 kestra:
   ee:
-    execution-data:
-      internal-storage:
-        force-globally: true # the default is false
+    executionData:
+      internalStorage:
+        forceGlobally: true # the default is false
 ```
 
 If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
@@ -2331,7 +2331,7 @@ In the Enterprise Edition, admins can add custom links as resources to Kestra's 
 ```yaml
 kestra:
   ee:
-    custom-links:
+    customLinks:
       link1:
         title: "Internal Documentation"
         url: "https://kestra.io/docs/"
@@ -2342,7 +2342,7 @@ kestra:
 
 ## Allowed file paths
 
-To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.localFiles.allowedPaths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
 
 ```yaml
   kestra:
@@ -2353,9 +2353,9 @@ To use the [universal file access protocol](../05.concepts/file-access.md), the 
     environment: # Allow access to the /scripts directory in Kestra container
       KESTRA_CONFIGURATION: |
         kestra:
-          local-files:
-            allowed-paths:
+          localFiles:
+            allowedPaths:
               - /scripts
 ```
 
-By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.local-files.enable-preview` set to `false`, as it is `true` by default.
+By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.localFiles.enablePreview` set to `false`, as it is `true` by default.
