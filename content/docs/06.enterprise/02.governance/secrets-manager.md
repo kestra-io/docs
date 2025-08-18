@@ -99,7 +99,6 @@ For Kestra instance deployed using the Kafka/Elastic backend, you can use the sa
 
 Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
 
-
 ## Google Secret Manager Configuration
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
@@ -211,11 +210,11 @@ kestra:
 
 ## Filter Secrets by Tags
 
-When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching tags. This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+When integrating an external secrets manager in [read-only mode](read-only-secrets.md), you can filter which secrets are visible in Kestra by matching tags. This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
 
 - Set `readOnly: true` and configure `filterOnTags.tags` as a map of key/value pairs to match.
 
-Examples:
+Below are example configurations for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager:
 
 ```yaml
 kestra:
