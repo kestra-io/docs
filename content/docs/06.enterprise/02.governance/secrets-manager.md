@@ -209,6 +209,62 @@ kestra:
         application: kestra-production
 ```
 
+## Filter Secrets by Tags
+
+When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching tags. This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+
+- Set `readOnly: true` and configure `filterOnTags.tags` as a map of key/value pairs to match.
+
+Examples:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    readOnly: true
+    azureKeyVault:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    readOnly: true
+    googleSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+## Filter Secrets by Prefix
+
+For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filterOnPrefix.prefix` to select secrets whose names start with the given prefix and `filterOnPrefix.keepPrefix` to control whether the prefix is kept in the Kestra secret key.
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnPrefix:
+        prefix: prod_
+        keepPrefix: true
+```
+
 ## Enable Caching
 
 If you use a secret manager provided by a cloud service provider, it may be worth enabling the secret cache to reduce
