@@ -54,6 +54,10 @@
                   <label for="demo-email">Company Email</label>
                   <input name="email" type="email" class="form-control" id="demo-email" placeholder="Company Email" required>
                 </div>
+                <div class="col-12 mt-3 d-flex align-items-start gap-2">
+                    <input name="agree" class="form-check-input" type="checkbox" id="demo-agree" required>
+                    <label for="demo-agree" class="form-check-label" style="color:var(--ks-content-inverse);font-size: medium;opacity: 0.7;">I agree to the processing of my personal data to schedule this meeting.</label>
+                </div>
                 <div class="col-12 mt-4 d-flex justify-content-center">
                   <button type="submit" class="btn btn-primary w-100">
                     Let's Talk
@@ -107,6 +111,12 @@
     script.addEventListener("load", async () => {
       const form = formRef.value;
       const hsq = (window._hsq = window._hsq || []);
+
+      if(!form["agree"].checked){
+        valid.value = false;
+        message.value = "Almost there! Please check the consent box so our team can contact you.";
+        return;
+      }
 
       if (!form.checkValidity()) {
         valid.value = false;
