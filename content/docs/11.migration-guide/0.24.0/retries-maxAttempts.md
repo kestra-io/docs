@@ -11,7 +11,7 @@ For [retries](../../04.workflow-components/12.retries.md), the `maxAttempt` prop
 
 ## Before
 
-The following example defines a retry for the `retry-sample` task with a maximum of 5 attempts every 15 minutes:
+The following example defines a retry for the `retry_sample` task with a maximum of 5 attempts every 15 minutes:
 
 ```yaml
 - id: retry_sample
@@ -27,7 +27,7 @@ The following example defines a retry for the `retry-sample` task with a maximum
 
 ## After
 
-The following example defines a retry for the `retry-sample` task with a maximum of 5 attempts every 15 minutes:
+The following example defines a retry for the `retry_sample` task with a maximum of 5 attempts every 15 minutes:
 
 ```yaml
 - id: retry_sample
