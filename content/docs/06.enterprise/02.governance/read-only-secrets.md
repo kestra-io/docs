@@ -1,5 +1,5 @@
 ---
-title: Read-only Secrets
+title: Read-only Secret Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
