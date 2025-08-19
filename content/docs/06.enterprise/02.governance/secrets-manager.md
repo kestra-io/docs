@@ -131,7 +131,6 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 
 To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
 
-
 1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
 
 ```yaml
@@ -178,7 +177,6 @@ Additionally, you can configure the following properties:
 - **Engine Version**: `kestra.secret.vault.engineVersion` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.rootEngine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
-
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
@@ -208,61 +206,7 @@ kestra:
         application: kestra-production
 ```
 
-## Filter Secrets by Tags
-
-When integrating an external secrets manager in [read-only mode](read-only-secrets.md), you can filter which secrets are visible in Kestra by matching tags. This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
-
-- Set `readOnly: true` and configure `filterOnTags.tags` as a map of key/value pairs to match.
-
-Below are example configurations for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager:
-
-```yaml
-kestra:
-  secret:
-    type: aws-secret-manager
-    readOnly: true
-    awsSecretManager:
-      filterOnTags:
-        tags:
-          application: kestra-production
-```
-
-```yaml
-kestra:
-  secret:
-    type: azure-key-vault
-    readOnly: true
-    azureKeyVault:
-      filterOnTags:
-        tags:
-          application: kestra-production
-```
-
-```yaml
-kestra:
-  secret:
-    type: google-secret-manager
-    readOnly: true
-    googleSecretManager:
-      filterOnTags:
-        tags:
-          application: kestra-production
-```
-
-## Filter Secrets by Prefix
-
-For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filterOnPrefix.prefix` to select secrets whose names start with the given prefix and `filterOnPrefix.keepPrefix` to control whether the prefix is kept in the Kestra secret key.
-
-```yaml
-kestra:
-  secret:
-    type: aws-secret-manager
-    readOnly: true
-    awsSecretManager:
-      filterOnPrefix:
-        prefix: prod_
-        keepPrefix: true
-```
+Tags can be used as filters on your secrets in read-only mode. Refer to the [Read-only Secret Manager documentation](read-only-secrets.md#filter-secrets-by-tags) for more details.
 
 ## Enable Caching
 
