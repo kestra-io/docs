@@ -1,7 +1,7 @@
 ---
 title: Versioned Plugins
 icon: /docs/icons/admin.svg
-editions: ["EE", "BETA"]
+editions: ["EE"]
 version: "0.22.0"
 ---
 
