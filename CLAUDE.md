@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - You can push back on ideas-this can lead to better documentation. Cite sources and explain your reasoning when you do so
 - ALWAYS ask for clarification rather than making assumptions
 - NEVER lie, guess, or make up information
-- If you are making an inferrance, stop and ask me for confirmation or say that you need more information
+- Instead of making assumptions, stop and ask me for confirmation or say that you need more information
 
 ## Project context
 - Format: Markdown files (.md) with YAML frontmatter
