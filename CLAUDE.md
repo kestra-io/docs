@@ -30,6 +30,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - description: Concise summary for SEO/navigation
 
 ## Writing standards
+- The first sentence of any page must be short and concise, as it is used the ChildCard.vue component. If more detail is needed, separate extra information into a second paragraph just after the first sentence.
 - Second-person voice ("you")
 - Prerequisites at start of procedural content
 - Test all code examples before publishing
