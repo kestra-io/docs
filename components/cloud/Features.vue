@@ -173,7 +173,6 @@
           </div>
         </div>
       </div>
-      <!-- /Right column -->
     </div>
   </div>
 </template>
@@ -287,7 +286,7 @@ const onSubmit = async (e: Event) => {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
-/* Right column structure with matched heights */
+
 .meeting-container {
   position: relative;
 
@@ -338,13 +337,11 @@ const onSubmit = async (e: Event) => {
       }
     }
   }
-
-  /* Agenda state mirrors the form height */
   .custom-meetings-iframe-container {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    min-height: 680px; /* same as .meeting-form */
+    min-height: 680px; 
 
     .iframe-wrapper {
       flex: 1 1 auto;
@@ -356,14 +353,13 @@ const onSubmit = async (e: Event) => {
     .embed-responsive-item {
       flex: 1 1 auto;
       width: 100%;
-      height: 100%;  /* fill the container, not viewport */
+      height: 100%; 
       border: none;
       display: block;
     }
   }
 }
 
-/* Left column testimonial border to match your style */
 .testimonial {
   border-left: 1px solid #414141;
 }
