@@ -4,7 +4,7 @@
         <div class="col-md-12 col-lg-7">
           <h2>
             Kestra Cloud
-            <span class="highlight">Request Access</span>
+            <span class="highlight">Book a call to get access</span>
           </h2>
           <h5 class="mt-3">
             Be among the first to experience Kestra Cloud with exclusive
@@ -257,15 +257,14 @@
             </div>
             <div class="col-12 mt-3">
                         <label for="use_case_context">
-                            <span class="text-danger">*</span>
-                            tell us more about your Orchestration Strategy and how we can help.
+                            <span class="text-danger"></span>
+                            Tell us more about your Orchestration strategy and how we can help.
                         </label>
 
                         <textarea
                             name="use_case_context"
                             class="form-control"
                             id="cloud-use_case_context"
-                            required
                         ></textarea>
                     </div>
             <div class="col-12 mt-4 pb-5 d-flex justify-content-center">
