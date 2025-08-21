@@ -29,7 +29,7 @@
     "dayjs": "^1.11.13",
     "ipx": "^3.0.3",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^11.6.0",
+    "mermaid": "^11.10.0",
     "nuxt-lazy-hydrate": "^1.0.0",
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.236.1",
