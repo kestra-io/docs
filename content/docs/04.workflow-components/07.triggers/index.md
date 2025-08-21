@@ -4,7 +4,7 @@ icon: /docs/icons/flow.svg
 docId: triggers
 ---
 
-Trigger is a mechanism that automates the execution of a flow.
+A trigger is a mechanism that automatically starts the execution of a flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -12,16 +12,16 @@ Trigger is a mechanism that automates the execution of a flow.
 
 ---
 
-Triggers can be scheduled or event-based providing lots of flexibility in how you can automate the execution of your workflows.
+Triggers can be either scheduled or event-based, giving you flexibility in how you automate workflow execution.
 
 ## Trigger types
 
 Kestra supports both **scheduled** and **external** events.
 
-Kestra provides five types of triggers:
+Kestra supports five core trigger types:
 
-- [Schedule trigger](./01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
-- [Flow trigger](./02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+- [Schedule trigger](./01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions.
+- [Flow trigger](./02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states).
 - [Webhook trigger](./03.webhook-trigger.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
 - [Polling trigger](./04.polling-trigger.md) allows you to execute your flow by polling external systems for the presence of data.
 - [Realtime trigger](./05.realtime-trigger.md) allows you to execute your flow when events happen with millisecond latency.
@@ -31,7 +31,7 @@ Many other triggers are available from the plugins, such as triggers based on fi
 
 ### Trigger Common Properties
 
-Following trigger properties can be set.
+The following properties are common to all triggers:
 
 | Field | Description                                                         |
 | ----- |---------------------------------------------------------------------|
@@ -45,9 +45,14 @@ Following trigger properties can be set.
 
 ## Trigger Variables
 
-Triggers allow you to access trigger metadata through expressions e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+Triggers expose metadata through expressions. For example:
+
+– `{{ trigger.date }}` returns the current date for the [Schedule trigger](01.schedule-trigger.md)
+– `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
+– `{{ trigger.rows }}` provides query results for triggers like [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
 
 This example will log the date when the trigger executes the flow:
+
 ```yaml
 id: variables
 namespace: company.team
@@ -65,12 +70,12 @@ triggers:
 ```
 
 ::alert{type="warning"}
-Note that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
+Keep in mind that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
 Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
 ::
 
-Triggers restrict parallel execution for a given trigger ID to one active run. For instance, if an Execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled Executions will not be affected.
+Each trigger ID is limited to a single active execution at a time. If a scheduled execution is still running, the next one will be queued instead of started immediately. For instance, if an execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled executions will not be affected.
 
 ```yaml
 id: hourlyFlow
@@ -87,7 +92,7 @@ triggers:
 
 ## Conditions
 
-Conditions are specific criteria or events that determine when a specific triggers should create a new execution. Usually, they limit the scope of a trigger to a specific set of cases.
+Conditions are criteria that determine when a trigger should create a new execution. Usually, they limit the scope of a trigger to a specific set of cases.
 
 For example, you can restrict a Flow trigger to a specific namespace prefix or execution status, and you can restrict a Schedule trigger to a specific time of the week or month.
 
@@ -108,9 +113,12 @@ Available conditions include:
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger.md#schedule-conditions).
 
-## Unlocking, enabling and disabling triggers
+## Unlocking, enabling, and disabling triggers
+
+Triggers do not always need to be enabled. Disable a trigger whenever you want to pause a flow during the development phase or other instances.
 
 ### Disabling a trigger in the source code
+
 If you want to temporarily disable a trigger, you could do so by setting the `disabled` property to `true`, as you can see in the example below:
 
 ```yaml
@@ -132,7 +140,7 @@ triggers:
     disabled: true
 ```
 
-However, this approach requires changing the source code. A better approach is to use the `Enabled` toggle from the UI.
+However, this approach requires changing the source code. A simpler approach is to use the `Enabled` toggle in the UI.
 
 ### Disabling a trigger from the UI
 
@@ -146,7 +154,7 @@ If your trigger is locked due to an execution in progress, you can unlock it by 
 
 ![trigger_unlock](/docs/workflow-components/triggers/trigger_unlock.png)
 
-The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
+The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Keep in mind that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
 ::alert{type="info"}
 Only scheduled-based triggers (triggers handled by the Scheduler) will be visible in the UI. Triggers handled by the Executor and Webserver will not be displayed. This also applies when fetching triggers from the API.
@@ -161,7 +169,7 @@ You can also disable, re-enable, or unlock triggers from the Administration page
 
 ## Troubleshooting a trigger from the UI
 
-Let's say you misconfigured a trigger, and as a result, no Executions are created.
+If you misconfigured a trigger, and as a result, no Executions are created, take the following actions to troubleshoot.
 
 The example flow below illustrates this scenario. Note how the `sqs_trigger` trigger is misconfigured with invalid AWS credentials:
 
@@ -192,7 +200,7 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
 
-This property is meant to be used primarily for a `Schedule` trigger and triggers that poll for conditions including the HTTP, JDBC, or File Detection triggers. However, you can use it with all triggers.
+This property is most useful with `Schedule` triggers and polling-based triggers such as HTTP, JDBC, or File Detection.
 
 ::alert{type="info"}
 Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
