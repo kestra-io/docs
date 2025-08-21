@@ -24,7 +24,7 @@
     "@vue-flow/controls": "^1.1.2",
     "@vue-flow/core": "^1.42.5",
     "@vueuse/core": "^13.1.0",
-    "axios": "^1.8.4",
+    "axios": "^1.11.0",
     "bootstrap": "^5.3.5",
     "dayjs": "^1.11.13",
     "ipx": "^3.0.3",
