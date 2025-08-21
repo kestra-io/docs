@@ -138,10 +138,8 @@ Virtual machines are still the foundation of enterprise infrastructure—but man
 
 Infrastructure automation is about: speed, resilience, traceability, and making your platform team more effective. This plugin helps you to get there.
 
-**Start using the VMware plugin in Kestra EE and bring your virtual environments into the modern orchestration era.**
+**Start using the [VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) in Kestra EE and bring your virtual environments into the modern orchestration era.**
 
-::alert{type="info"}
 Have questions or feedback? Join our [Slack community](https://kestra.io/slack) or open [an issue on GitHub](https://github.com/kestra-io/kestra).
 
 Like what we’re building? Support us with [a star on GitHub](https://github.com/kestra-io/kestra).
-::
