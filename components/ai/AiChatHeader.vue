@@ -4,9 +4,14 @@
             <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
             <span>Ask Kestra AI</span>
         </div>
-        
+
         <div class="actions">
-            <button class="search-btn" @click="openSearch" title="Search Documentation">
+            <button
+                class="search-btn"
+                title="Search Documentation"
+                data-bs-toggle="modal"
+                data-bs-target="#search-modal"
+            >
                 <Magnify />
                 <span>Search</span>
             </button>
@@ -31,28 +36,27 @@ function openSearch(): void {
 @import "../../assets/styles/variable";
 
 .header {
-    background: $black-4;
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     .brand {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        
+
         span {
             color: $white;
             font-weight: 700;
         }
     }
-    
+
     .actions {
         display: flex;
         align-items: center;
         gap: 1rem;
-        
+
         .search-btn {
             background: #252526;
             border: none;
@@ -65,7 +69,7 @@ function openSearch(): void {
             align-items: center;
             gap: 0.25rem;
             cursor: pointer;
-            
+
             &:focus {
                 outline: none;
                 box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
@@ -77,7 +81,7 @@ function openSearch(): void {
                 margin-top: -4px;
             }
         }
-        
+
         .esc {
             color: $black-10;
             font-size: 9px;
@@ -89,7 +93,7 @@ function openSearch(): void {
 @include media-breakpoint-down(md) {
     .header {
         padding: 0.875rem 1rem;
-        
+
         .brand {
             gap: 0.5rem;
         }
