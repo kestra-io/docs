@@ -16,7 +16,7 @@ This guide shows you how to create a workflow that responds to Notion database c
 Before you begin, you need:
 - A Notion workspace with a database
 - A [Notion integration](https://www.notion.so/my-integrations) with access to your database
-- A Slack workspace with webhook capabilities
+- A Slack workspace with webhook capabilities ([Slack Webhook Documentation](https://api.slack.com/messaging/webhooks))
 - Access to your Notion API token and Slack webhook URL
 
 ## Create a Notion integration
@@ -24,7 +24,7 @@ Before you begin, you need:
 1. Go to [Notion's My Integrations page](https://www.notion.so/my-integrations)
 2. Click **"New integration"**
 3. Give your integration a name and select your workspace
-4. Copy the **Internal Integration Token** - you'll need this for the `NOTION_API_KEY_2` secret
+4. Copy the **Internal Integration Token** - you'll need this for the `NOTION_API_KEY` secret
 
 ## Share your database with the integration
 
@@ -41,7 +41,7 @@ Store your sensitive credentials as [secrets](../05.concepts/04.secret.md):
 1. Navigate to your namespace in the Kestra UI
 2. Go to the **Secrets** tab
 3. Create these secrets:
-   - `NOTION_API_KEY_2`: Your Notion integration token
+   - `NOTION_API_KEY`: Your Notion integration token
    - `SLACK_WEBHOOK_URL`: Your Slack incoming webhook URL
 
 ## Create the webhook flow
@@ -50,12 +50,12 @@ Create a flow that listens for Notion webhook events and processes them:
 
 ```yaml
 id: notion-webhook
-namespace: aj-test
+namespace: company.team
 
 tasks:
   - id: get_notion_page_details
     type: io.kestra.plugin.notion.page.Read
-    apiToken: "{{ secret('NOTION_API_KEY_2') }}"
+    apiToken: "{{ secret('NOTION_API_KEY') }}"
     pageId: "{{ trigger.body.entity.id }}"
   
   - id: send_slack_alert
@@ -70,7 +70,7 @@ triggers:
 ```
 
 ::alert{type="warning"}
-Replace `my-notion-product-alert-key` with a secure, randomly generated key. Consider storing this as a [secret](../05.concepts/04.secret.md) for better security.
+Replace `my-notion-product-alert-key` with a secure, randomly generated key. Consider storing this as a [secret](../05.concepts/04.secret.md) or [key-value pair](../05.concepts/05.kv-store.md) for better security.
 ::
 
 ## Configure Notion webhooks
@@ -88,6 +88,8 @@ Set up webhooks directly in your Notion integration:
    - `database.created` - When new databases are created
 7. Click **"Create"** to save the webhook
 
+![Notion Integration UI](/docs/how-to-guides/notion/kestra-webhook-notion.png)
+
 For more details, see the [Notion Webhooks API documentation](https://developers.notion.com/reference/webhooks).
 
 ## Webhook URL format
@@ -99,14 +101,18 @@ http://your-kestra-host:8080/api/v1/main/executions/webhook/{namespace}/{flow_id
 ```
 
 For this example:
-- **Namespace**: `aj-test`
+- **Namespace**: `company.team`
 - **Flow ID**: `notion-webhook`
 - **Key**: `my-notion-product-alert-key`
 
 Complete URL:
 ```
-http://your-kestra-host:8080/api/v1/main/executions/webhook/aj-test/notion-webhook/my-notion-product-alert-key
+http://your-kestra-host:8080/api/v1/main/executions/webhook/company.team/notion-webhook/my-notion-product-alert-key
 ```
+
+You can copy your webhook URL directly from the Kestra UI from the **Triggers** tab and paste it in Notion:
+
+![Copy Webhook URL](/docs/how-to-guides/notion/copy-webhook-url.png)
 
 ## Testing the integration
 
@@ -114,7 +120,7 @@ Test your webhook flow manually:
 
 ```bash
 curl -X POST \
-  http://your-kestra-host:8080/api/v1/main/executions/webhook/aj-test/notion-webhook/my-notion-product-alert-key \
+  http://your-kestra-host:8080/api/v1/main/executions/webhook/company.team/notion-webhook/my-notion-product-alert-key \
   -H "Content-Type: application/json" \
   -d '{"entity": {"id": "your-notion-page-id"}}'
 ```
@@ -126,7 +132,7 @@ Replace `your-notion-page-id` with an actual page ID from your Notion database.
 The flow performs these steps:
 
 1. **Webhook trigger**: Listens for incoming webhook requests from Notion on the specified endpoint
-2. **Get page details**: Uses the [Notion plugin](https://kestra.io/plugins/plugin-notion) to fetch complete page information from Notion
+2. **Get page details**: Uses the [Notion plugin](/plugins/plugin-notion) to fetch complete page information from Notion
 3. **Send notification**: Extracts the task title and assignee information, then sends a formatted message to Slack
 
 ## Customizing the flow
@@ -189,7 +195,7 @@ tasks:
 ## Security considerations
 
 - Use strong, randomly generated webhook keys
-- Store all sensitive tokens as [secrets](../05.concepts/04.secret.md)
+- Store all sensitive tokens as [secrets](../05.concepts/04.secret.md) or [key-value pairs](../05.concepts/05.kv-store.md)
 - Consider implementing request validation in your webhook handler
 - Regularly rotate your API tokens and webhook URLs
 
