@@ -90,11 +90,6 @@ export default function useShiki() {
                 }
                 block.innerHTML = innerHTML.replace(/\n/g, '')
             }
-            // add mb-3 to the block-code element
-            let el: HTMLElement | null = block.parentElement
-            while(el && !el.classList.contains('code-block')) {
-                el = el.parentElement
-            }
         }
     }
 

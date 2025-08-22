@@ -34,7 +34,7 @@
                                 <AccountCircle />
                             </div>
                             <div v-else class="ai">
-                                <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px"/>
+                                <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px" />
                             </div>
                         </div>
                         <div class="bubble">
@@ -43,6 +43,7 @@
                                     <ContentRenderer
                                         class="markdown prose prose-sm"
                                         :value="message.markdown"
+                                        :components="proseComponents"
                                     />
                                 </div>
 
@@ -79,8 +80,8 @@
                         </div>
                     </div>
                 </template>
-                <div class="d-flex justify-content-end me-3 mb-1" v-if="!isLoading && messages.length > 0" >
-                    <button type="submit" class="btn btn-sm btn-dark" @click="clearMessage" >
+                <div class="d-flex justify-content-end me-3 mb-1" v-if="!isLoading && messages.length > 0">
+                    <button type="submit" class="btn btn-sm btn-dark" @click="clearMessage">
                         <TrashCan />
                         Start a new prompt
                     </button>
@@ -99,248 +100,262 @@
                     rows="1"
                     @keydown.enter="sendMessage"
                 ></textarea>
-                <Send @click="sendMessage" :disabled="isLoading || !userInput.trim()"/>
+                <Send @click="sendMessage" :disabled="isLoading || !userInput.trim()" />
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-// @ts-ignore - EventSourceParserStream might not have proper types
-import posthog from "posthog-js";
-import { EventSourceParserStream } from 'eventsource-parser/stream'
-import AiChatHeader from "./AiChatHeader.vue"
-import Send from "vue-material-design-icons/Send.vue"
-import TrashCan from "vue-material-design-icons/TrashCan.vue"
-import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
-import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
-import { extractSourcesFromMarkdown, isInternalLink } from '../../utils/sources'
+    // @ts-ignore - EventSourceParserStream might not have proper types
+    import posthog from "posthog-js";
+    import {EventSourceParserStream} from 'eventsource-parser/stream'
+    import AiChatHeader from "./AiChatHeader.vue"
+    import Send from "vue-material-design-icons/Send.vue"
+    import TrashCan from "vue-material-design-icons/TrashCan.vue"
+    import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
+    import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
+    import {extractSourcesFromMarkdown, isInternalLink} from '../../utils/sources'
 
-interface Message {
-    content: string
-    role: 'user' | 'assistant' | 'system'
-    timestamp: string
-    markdown?: any
-    sources?: Source[]
-}
+    interface Message {
+        content: string
+        role: 'user' | 'assistant' | 'system'
+        timestamp: string
+        markdown?: any
+        sources?: Source[]
+    }
 
-interface Source {
-    title: string
-    url: string
-    path: string
-}
+    interface Source {
+        title: string
+        url: string
+        path: string
+    }
 
-interface ChatHistoryItem {
-    role: string
-    content: string
-    timestamp: string
-}
+    interface ChatHistoryItem {
+        role: string
+        content: string
+        timestamp: string
+    }
 
-interface StreamValue {
-    id: string
-    data: string
-}
+    interface StreamValue {
+        id: string
+        data: string
+    }
 
-interface ResponseData {
-    response?: string
-    message?: string
-}
+    interface ResponseData {
+        response?: string
+        message?: string
+    }
 
-const { parseMarkdown } = await import("@nuxtjs/mdc/runtime")
-const { highlightCodeBlocks } = useShiki()
+    const {parseMarkdown} = await import("@nuxtjs/mdc/runtime")
 
-const emit = defineEmits<{
-    close: []
-    backToSearch: []
-}>()
+    // make MDCRenderer use the prose components of this content
+    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
+    const proseComponents: Record<string, Component> = {}
+    for (const path in proseComponentsImports) {
+        // extract the component name from the file path
+        // example: `file/path/ProsePre.vue` => `pre`
+        let compName = path.split("/").pop()!.slice(5, -4);
+        // components like ProseCodeInline should resolve to just "code" for Nuxt to take it
+        compName = compName.charAt(0).toLowerCase() + compName.slice(1).replace(/[A-Z].*/g, "");
+        if (compName) {
+            proseComponents[compName] = proseComponentsImports[path].default
+        }
+    }
 
-const createUUID = () => {
-    return  ((new Date).getTime().toString(16) + Math.floor(1E7*Math.random()).toString(16));
-}
+    const emit = defineEmits<{
+        close: []
+        backToSearch: []
+    }>()
 
-const userInput = ref<string>('')
-const messages = ref<Message[]>([])
-const isLoading = ref<boolean>(false)
-const contentContainer = ref<HTMLElement | null>(null)
-const conversationId = ref<string>(createUUID())
-const abortController = ref<AbortController>(new AbortController());
+    const createUUID = () => {
+        return ((new Date).getTime().toString(16) + Math.floor(1E7 * Math.random()).toString(16));
+    }
 
-const askQuestion = (question: string): void => {
-    userInput.value = question
-    sendMessage()
-}
+    const userInput = ref<string>('')
+    const messages = ref<Message[]>([])
+    const isLoading = ref<boolean>(false)
+    const contentContainer = ref<HTMLElement | null>(null)
+    const conversationId = ref<string>(createUUID())
+    const abortController = ref<AbortController>(new AbortController());
 
-const clearMessage = (): void => {
-    abortController.value.abort();
-    abortController.value = new AbortController();
-    userInput.value = '';
-    isLoading.value = false;
-    conversationId.value = createUUID();
-    messages.value = [];
-}
+    const askQuestion = (question: string): void => {
+        userInput.value = question
+        sendMessage()
+    }
 
-const formatTimestamp = (timestamp: string): string => {
-    const date = new Date(timestamp)
-    const today = new Date()
-    const isToday = date.toDateString() === today.toDateString()
+    const clearMessage = (): void => {
+        abortController.value.abort();
+        abortController.value = new AbortController();
+        userInput.value = '';
+        isLoading.value = false;
+        conversationId.value = createUUID();
+        messages.value = [];
+    }
 
-    const timeString = date.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
+    const formatTimestamp = (timestamp: string): string => {
+        const date = new Date(timestamp)
+        const today = new Date()
+        const isToday = date.toDateString() === today.toDateString()
+
+        const timeString = date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+
+        if (isToday) {
+            return `Today at ${timeString}`
+        } else {
+            const dateString = date.toLocaleDateString([], {
+                month: 'short',
+                day: 'numeric'
+            })
+            return `${dateString} at ${timeString}`
+        }
+    }
+
+    const scrollToBottom = async (): Promise<void> => {
+        return new Promise(resolve => {
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                if (contentContainer.value) {
+                    contentContainer.value.scroll({
+                        top: contentContainer.value.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                    resolve();
+                }
+            }));
+        })
+    }
+
+    const isMessageStreaming = (message: Message): boolean => {
+        return message.role === 'assistant' &&
+            !message.markdown &&
+            isLoading.value
+    }
+
+    const createUserMessage = (content: string): Message => ({
+        content,
+        role: 'user',
+        timestamp: new Date().toISOString()
     })
 
-    if (isToday) {
-        return `Today at ${timeString}`
-    } else {
-        const dateString = date.toLocaleDateString([], {
-            month: 'short',
-            day: 'numeric'
-        })
-        return `${dateString} at ${timeString}`
-    }
-}
+    const createSystemMessage = (content: string): Message => ({
+        content,
+        role: 'system',
+        timestamp: new Date().toISOString()
+    })
 
-const scrollToBottom = (): void => {
-    nextTick(() => {
-        if (contentContainer.value) {
-            contentContainer.value.scrollTo({
-                top: contentContainer.value.scrollHeight,
-                behavior: "smooth",
+    const createAssistantMessage = (): Message => ({
+        content: "",
+        role: 'assistant',
+        timestamp: new Date().toISOString()
+    })
+
+    const processStreamData = async (indexToUpdate: number, value: StreamValue, data: ResponseData): Promise<void> => {
+        if (value.id === 'response' && data.response) {
+            messages.value[indexToUpdate].content += data.response
+            messages.value[indexToUpdate].timestamp = new Date().toISOString()
+        }
+
+        try {
+            let markdown = await parseMarkdown(messages.value[indexToUpdate].content);
+            messages.value[indexToUpdate].markdown = markdown
+        } catch (e) {
+            // Silent fail for markdown parsing
+        }
+
+        if (value.id === 'completed') {
+            const sources = extractSourcesFromMarkdown(messages.value[indexToUpdate].content)
+            if (sources.length > 0) {
+                messages.value[indexToUpdate].sources = sources
+            }
+        }
+
+        return scrollToBottom()
+    }
+
+    const handleContentClick = (event: Event): void => {
+        const link = (event.target as HTMLElement).closest('a')
+        const href = link?.getAttribute('href')
+
+        if (href && isInternalLink(href)) {
+            emit('close')
+        }
+    }
+
+    const sendMessage = async (): Promise<void> => {
+        const trimmedInput = userInput.value.trim()
+        if (!trimmedInput || isLoading.value) return
+
+        const userMessage = createUserMessage(trimmedInput)
+        messages.value.push(userMessage)
+        userInput.value = ''
+        isLoading.value = true
+
+        const loadingMessage = createAssistantMessage()
+        messages.value.push(loadingMessage)
+
+        try {
+            const chatHistory: ChatHistoryItem[] = messages.value.slice(0, -1).map(msg => ({
+                role: msg.role,
+                content: msg.content,
+                timestamp: msg.timestamp
+            }))
+
+            const signal = abortController.value.signal;
+
+            const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    messages: chatHistory,
+                    distinctId: posthog.get_distinct_id()
+                }),
+                credentials: 'include',
+                signal: signal
+            })
+
+            posthog.capture("search_ai", {
+                text: trimmedInput,
+                chatHistoryLen: chatHistory.length,
             });
+
+            if (response.status !== 200) {
+                console.error('API request failed with status:', response.status)
+                return
+            }
+
+            const reader = response.body
+                ?.pipeThrough(new TextDecoderStream())
+                .pipeThrough(new EventSourceParserStream())
+                .getReader()
+
+            if (!reader) throw new Error('Failed to get stream reader')
+
+            const indexToUpdate = messages.value.length - 1
+
+            while (true) {
+                const {value, done} = await reader.read()
+                if (done) break
+
+                const streamValue = value as StreamValue
+                const data = JSON.parse(streamValue.data) as ResponseData
+                await processStreamData(indexToUpdate, streamValue, data)
+            }
+        } catch (error) {
+            if (error.name == 'AbortError') { // gère abort()
+                return;
+            }
+
+            console.error('Error sending message:', error)
+            messages.value.pop()
+            messages.value.push(createSystemMessage("Oops! Something went wrong. Please try again later."))
+        } finally {
+            isLoading.value = false
+            await scrollToBottom()
         }
-    })
-}
-
-const isMessageStreaming = (message: Message): boolean => {
-    return message.role === 'assistant' &&
-           !message.markdown &&
-           isLoading.value
-}
-
-const createUserMessage = (content: string): Message => ({
-    content,
-    role: 'user',
-    timestamp: new Date().toISOString()
-})
-
-const createSystemMessage = (content: string): Message => ({
-    content,
-    role: 'system',
-    timestamp: new Date().toISOString()
-})
-
-const createAssistantMessage = (): Message => ({
-    content: "",
-    role: 'assistant',
-    timestamp: new Date().toISOString()
-})
-
-const processStreamData = async (indexToUpdate: number, value: StreamValue, data: ResponseData): Promise<void> => {
-    if (value.id === 'response' && data.response) {
-        messages.value[indexToUpdate].content += data.response
-        messages.value[indexToUpdate].timestamp = new Date().toISOString()
     }
-
-    try {
-        messages.value[indexToUpdate].markdown = await parseMarkdown(messages.value[indexToUpdate].content)
-    } catch (e) {
-        // Silent fail for markdown parsing
-    }
-
-    if (value.id === 'completed') {
-        const sources = extractSourcesFromMarkdown(messages.value[indexToUpdate].content)
-        if (sources.length > 0) {
-            messages.value[indexToUpdate].sources = sources
-        }
-
-        await highlightCodeBlocks()
-        scrollToBottom()
-    }
-
-    scrollToBottom()
-}
-
-const handleContentClick = (event: Event): void => {
-    const link = (event.target as HTMLElement).closest('a')
-    const href = link?.getAttribute('href')
-
-    if (href && isInternalLink(href)) {
-        emit('close')
-    }
-}
-
-const sendMessage = async (): Promise<void> => {
-    const trimmedInput = userInput.value.trim()
-    if (!trimmedInput || isLoading.value) return
-
-    const userMessage = createUserMessage(trimmedInput)
-    messages.value.push(userMessage)
-    userInput.value = ''
-    isLoading.value = true
-
-    const loadingMessage = createAssistantMessage()
-    messages.value.push(loadingMessage)
-
-    try {
-        const chatHistory: ChatHistoryItem[] = messages.value.slice(0, -1).map(msg => ({
-            role: msg.role,
-            content: msg.content,
-            timestamp: msg.timestamp
-        }))
-
-        const signal = abortController.value.signal;
-
-        const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                messages: chatHistory,
-                distinctId: posthog.get_distinct_id()
-            }),
-            credentials: 'include',
-            signal: signal
-        })
-
-        posthog.capture("search_ai", {
-            text: trimmedInput,
-            chatHistoryLen: chatHistory.length,
-        });
-
-        if (response.status !== 200) {
-            console.error('API request failed with status:', response.status)
-            return
-        }
-
-        const reader = response.body
-            ?.pipeThrough(new TextDecoderStream())
-            .pipeThrough(new EventSourceParserStream())
-            .getReader()
-
-        if (!reader) throw new Error('Failed to get stream reader')
-
-        const indexToUpdate = messages.value.length - 1
-
-        while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-
-            const streamValue = value as StreamValue
-            const data = JSON.parse(streamValue.data) as ResponseData
-            await processStreamData(indexToUpdate, streamValue, data)
-        }
-    } catch (error) {
-        if (error.name == 'AbortError') { // gère abort()
-            return ;
-        }
-
-        console.error('Error sending message:', error)
-        messages.value.pop()
-        messages.value.push(createSystemMessage("Oops! Something went wrong. Please try again later."))
-    } finally {
-        isLoading.value = false
-        scrollToBottom()
-    }
-}
 </script>
 
 <style lang="scss" scoped src="../../assets/styles/ai.scss"></style>
