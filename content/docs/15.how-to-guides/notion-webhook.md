@@ -192,6 +192,10 @@ tasks:
         messageText: "New task assigned!"
 ```
 
+::alert{type="info"}
+Keep in mind that the above examples are additional tasks to add to the flow and not standalone flows. You need to add `id` and `namespace` properties to execute them standalone.
+::
+
 ## Security considerations
 
 - Use strong, randomly generated webhook keys
