@@ -1,5 +1,5 @@
 <template>
-    <div v-on="{ 'shown.bs.modal': focusSearch }" class="modal modal-xl fade" id="search-modal" tabindex="-1" ref="modal" aria-labelledby="search-modal" aria-hidden="true">
+    <div v-on="{ 'shown.bs.modal': focusSearch, 'hidden.bs.modal': onHiddenSearch }" class="modal modal-xl fade" id="search-modal" tabindex="-1" ref="modal" aria-labelledby="search-modal" aria-hidden="true">
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
                 <div class="modal-body row bg-dark-4">
@@ -9,10 +9,11 @@
                             <span class="input-group-text"><Magnify v-if="!loading" /><MagnifyExpand  v-if="loading" /></span>
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
                             <div class="align-items-center d-flex input-group-append">
-                                <button 
-                                    class="ai-button me-2" 
-                                    @click="openDialog"
+                                <button
+                                    class="ai-button me-2"
                                     title="Ask Kestra AI"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#search-ai-modal"
                                 >
                                     <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
                                     <span class="title d-none d-md-inline">Ask Kestra AI</span>
@@ -89,7 +90,17 @@
             </div>
         </div>
     </div>
-    <AiChatDialog v-if="showAiDialog" @close="closeAiDialog" @backToSearch="backToSearch" />
+
+    <div v-on="{ 'shown.bs.modal': focusSearchAi, 'hidden.bs.modal': onHiddenAi }" class="modal modal-xl fade" id="search-ai-modal" tabindex="-2" ref="modal" aria-labelledby="search-ai-modal" aria-hidden="true">
+        <div class="modal-dialog d-flex w-100 mx-auto">
+            <div class="modal-content">
+                <div class="modal-body row bg-dark-4">
+                    <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script setup>
@@ -105,6 +116,7 @@
     import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
     import PowerPlugOutline from "vue-material-design-icons/PowerPlugOutline.vue";
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
+    import posthog from "posthog-js";
 
     export default {
         data() {
@@ -144,6 +156,16 @@
                 document.querySelector('#search-input').focus();
                 this.search();
             },
+            onHiddenSearch() {
+                this.selectedIndex = null;
+                this.selectedItem = null;
+            },
+            focusSearchAi() {
+                document.querySelector('#ai-chat-input').value = '';
+                document.querySelector('#ai-chat-input').focus();
+            },
+            onHiddenAi() {
+            },
             search(value) {
                 if (this.cancelToken !== undefined) {
                     this.cancelToken.cancel('cancel all');
@@ -170,7 +192,7 @@
                             }
                             return result;
                         });
-                        
+
                         this.selectedIndex = 0;
                         this.selectedItem = this.searchResults[0];
                         this.loading = false;
@@ -181,6 +203,12 @@
                     if (response?.data.facets) {
                         this.searchFacets = this.sortFacet(response.data.facets);
                     }
+
+                    posthog.capture("search", {
+                        text: value,
+                        type: this.selectedFacet,
+                        resultsCount: response?.data?.results?.length || 0
+                    });
                 }).catch((e) => {
                     if (e.code !== "ERR_CANCELED") {
                         this.resetData();
@@ -327,7 +355,7 @@
             },
             backToSearch() {
                 this.showAiDialog = false;
-                
+
                 if (process.client && this.$refs.modal) {
                     const searchModal = new this.$bootstrap.Modal(this.$refs.modal);
                     searchModal.show();
@@ -342,12 +370,6 @@
     @import "../../assets/styles/variable";
 
     #search-modal {
-        .modal-dialog {
-            @include media-breakpoint-down(lg) {
-                max-width: 90%;
-            }
-        }
-
         .not-found-content {
             color: $white;
             padding: 3.125rem 0;
@@ -357,10 +379,6 @@
             }
         }
 
-        .modal-content {
-            max-height: 96vh;
-        }
-
         .search {
             width: 100%;
             border: 1px solid $black-6;
@@ -368,7 +386,7 @@
             gap: 8px;
             background: $black-4;
             opacity: 1;
-            
+
             .input-group-text {
                 background: transparent;
                 font-size: 1.25rem;
@@ -396,7 +414,7 @@
                 display: flex;
                 align-items: center;
                 transition: all 0.2s ease;
-                
+
                 &:hover {
                     background: $black-5;
                     color: $white;
@@ -427,10 +445,6 @@
             box-shadow: none;
         }
 
-        .modal-content {
-            background: none;
-            border: 0;
-        }
 
         .badge {
             font-weight: normal;
@@ -447,10 +461,6 @@
         }
 
         .modal-body {
-            border: 1px solid $black-6;
-            border-radius: $border-radius-lg;
-            padding: 0;
-
             .search, .facets {
                 color: $white-3;
                 background: $black-4;

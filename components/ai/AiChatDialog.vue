@@ -1,98 +1,105 @@
 <template>
-    <div class="overlay" @click="handleOverlayClick">
-        <div class="dialog" @click.stop>
-            <AiChatHeader @openSearch="$emit('backToSearch')" />
-            <div class="content">
-                <div v-if="messages.length === 0" class="welcome">
-                    <div class="avatar">
-                        <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" />
-                    </div>
-                    <div class="text">
-                        <p>Hi! I'm your Kestra AI assistant.<br>Ask me anything about workflows.</p>
-                    </div>
+    <div class="h-100 d-flex flex-column mh-100">
+        <AiChatHeader @openSearch="$emit('backToSearch')" />
+        <div class="content scroller" id="contentContainer" ref="contentContainer">
+            <div v-if="messages.length === 0" class="message welcome">
+                <div class="avatar">
+                    <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" />
                 </div>
-                
-                <div v-if="messages.length === 0" class="examples">
-                    <h6>EXAMPLE QUESTIONS</h6>
-                    <div class="cards">
-                        <div class="card" @click="askQuestion('How do I run an ETL pipeline with retries and dynamic scaling in Kestra?')">
-                            How do I run an ETL pipeline with retries and dynamic scaling in Kestra?
-                        </div>
-                        <div class="card" @click="askQuestion('How do I run Kestra with Docker?')">
-                            How do I run Kestra with Docker?
-                        </div>
-                        <div class="card" @click="askQuestion('Can I use multiple triggers for one flow?')">
-                            Can I use multiple triggers for one flow?
-                        </div>
-                    </div>
+                <div class="bubble">
+                    <p>Hi! I'm your Kestra AI assistant.<br>Ask me anything about workflows.</p>
                 </div>
+            </div>
 
-                <div v-if="messages.length > 0" class="messages scroller" ref="messagesContainer">
-                    <template v-for="message in messages" :key="message.timestamp">
-                        <div :class="`message message-${message.role}`">
-                            <div class="avatar">
-                                <div v-if="message.role === 'user'" class="user">
-                                    <AccountCircle />
-                                </div>
-                                <div v-else class="ai">
-                                    <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px"/>
-                                </div>
-                            </div>
-                            <div class="bubble">
-                                <template v-if="message.role === 'assistant'">
-                                    <div v-if="message.markdown" @click="handleContentClick">
-                                        <ContentRenderer
-                                            class="markdown prose prose-sm"
-                                            :value="message.markdown"
-                                        />
-                                    </div>
-                                    <div v-else-if="isMessageStreaming(message) || message.content === ''" class="loading">
-                                        <div class="dots"></div>
-                                    </div>
-                                    <p v-else-if="message.content">{{ message.content }}</p>
-                                </template>
-                                <p v-else>{{ message.content }}</p>
-                                
-                                <div v-if="message.role === 'assistant' && message.sources?.length" class="sources">
-                                    <h6>SOURCES</h6>
-                                    <div class="items">
-                                        <NuxtLink 
-                                            v-for="source in message.sources" 
-                                            :key="source.url"
-                                            :to="source.url"
-                                            external
-                                            target="_blank"
-                                            class="item"
-                                        >
-                                            <div class="icon">
-                                                <FileDocumentOutline />
-                                            </div>
-                                            <div class="info">
-                                                <div class="title">{{ source.title }}</div>
-                                                <div class="path">{{ source.path }}</div>
-                                            </div>
-                                        </NuxtLink>
-                                    </div>
-                                </div>
-                                
-                                <span class="timestamp">{{ formatTimestamp(message.timestamp) }}</span>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-                
-                <div class="input">
-                    <div class="container">
-                        <textarea 
-                            id="ai-chat-input"
-                            v-model="userInput"
-                            placeholder="Enter a prompt for Kestra"
-                            rows="1"
-                            @keydown.ctrl.enter="sendMessage"
-                        ></textarea>
-                        <Send @click="sendMessage" :disabled="isLoading || !userInput.trim()"/>
+            <div v-if="messages.length === 0" class="examples">
+                <h6>EXAMPLE QUESTIONS</h6>
+                <div class="cards">
+                    <div class="card" @click="askQuestion('How do I run an ETL pipeline with retries and dynamic scaling in Kestra?')">
+                        How do I run an ETL pipeline with retries and dynamic scaling in Kestra?
+                    </div>
+                    <div class="card" @click="askQuestion('How do I run Kestra with Docker?')">
+                        How do I run Kestra with Docker?
+                    </div>
+                    <div class="card" @click="askQuestion('Can I use multiple triggers for one flow?')">
+                        Can I use multiple triggers for one flow?
                     </div>
                 </div>
+            </div>
+
+            <div v-if="messages.length > 0" class="messages">
+                <template v-for="(message, messageIndex) of messages" :key="messageIndex">
+                    <div :class="`message message-${message.role}`">
+                        <div class="avatar">
+                            <div v-if="message.role === 'user'" class="user">
+                                <AccountCircle />
+                            </div>
+                            <div v-else class="ai">
+                                <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px"/>
+                            </div>
+                        </div>
+                        <div class="bubble">
+                            <template v-if="message.role === 'assistant'">
+                                <div v-if="message.markdown" @click="handleContentClick">
+                                    <ContentRenderer
+                                        class="markdown prose prose-sm"
+                                        :value="message.markdown"
+                                    />
+                                </div>
+
+                                <div v-if="isLoading" class="loading">
+                                    <div class="dots"></div>
+                                </div>
+
+                            </template>
+                            <p v-else>{{ message.content }}</p>
+
+                            <div v-if="message.role === 'assistant' && message.sources?.length" class="sources">
+                                <h6>SOURCES</h6>
+                                <div class="items">
+                                    <NuxtLink
+                                        v-for="source in message.sources"
+                                        :key="source.url"
+                                        :to="source.url"
+                                        external
+                                        target="_blank"
+                                        class="item"
+                                    >
+                                        <div class="icon">
+                                            <FileDocumentOutline />
+                                        </div>
+                                        <div class="info">
+                                            <div class="title">{{ source.title }}</div>
+                                            <div class="path">{{ source.path }}</div>
+                                        </div>
+                                    </NuxtLink>
+                                </div>
+                            </div>
+
+                            <span class="timestamp">{{ formatTimestamp(message.timestamp) }}</span>
+                        </div>
+                    </div>
+                </template>
+                <div class="d-flex justify-content-end me-3 mb-1" v-if="!isLoading && messages.length > 0" >
+                    <button type="submit" class="btn btn-sm btn-dark" @click="clearMessage" >
+                        <TrashCan />
+                        Start a new prompt
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="input" :class="{'disabled': isLoading}">
+            <div class="container">
+                <textarea
+                    id="ai-chat-input"
+                    v-model="userInput"
+                    :disabled="isLoading"
+                    placeholder="Enter a prompt for Kestra"
+                    rows="1"
+                    @keydown.enter="sendMessage"
+                ></textarea>
+                <Send @click="sendMessage" :disabled="isLoading || !userInput.trim()"/>
             </div>
         </div>
     </div>
@@ -100,10 +107,11 @@
 
 <script setup lang="ts">
 // @ts-ignore - EventSourceParserStream might not have proper types
+import posthog from "posthog-js";
 import { EventSourceParserStream } from 'eventsource-parser/stream'
-import { useMagicKeys } from '@vueuse/core'
 import AiChatHeader from "./AiChatHeader.vue"
 import Send from "vue-material-design-icons/Send.vue"
+import TrashCan from "vue-material-design-icons/TrashCan.vue"
 import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
 import { extractSourcesFromMarkdown, isInternalLink } from '../../utils/sources'
@@ -140,43 +148,47 @@ interface ResponseData {
 
 const { parseMarkdown } = await import("@nuxtjs/mdc/runtime")
 const { highlightCodeBlocks } = useShiki()
-const { escape } = useMagicKeys()
 
 const emit = defineEmits<{
     close: []
     backToSearch: []
 }>()
 
+const createUUID = () => {
+    return  ((new Date).getTime().toString(16) + Math.floor(1E7*Math.random()).toString(16));
+}
+
 const userInput = ref<string>('')
 const messages = ref<Message[]>([])
 const isLoading = ref<boolean>(false)
-const messagesContainer = ref<HTMLElement | null>(null)
-
-watch(escape, (v) => {
-    if (v) {
-        emit('close')
-    }
-})
-
-const handleOverlayClick = (): void => {
-    emit('close')
-}
+const contentContainer = ref<HTMLElement | null>(null)
+const conversationId = ref<string>(createUUID())
+const abortController = ref<AbortController>(new AbortController());
 
 const askQuestion = (question: string): void => {
     userInput.value = question
     sendMessage()
 }
 
+const clearMessage = (): void => {
+    abortController.value.abort();
+    abortController.value = new AbortController();
+    userInput.value = '';
+    isLoading.value = false;
+    conversationId.value = createUUID();
+    messages.value = [];
+}
+
 const formatTimestamp = (timestamp: string): string => {
     const date = new Date(timestamp)
     const today = new Date()
     const isToday = date.toDateString() === today.toDateString()
-    
-    const timeString = date.toLocaleTimeString([], { 
-        hour: '2-digit', 
-        minute: '2-digit' 
+
+    const timeString = date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
     })
-    
+
     if (isToday) {
         return `Today at ${timeString}`
     } else {
@@ -190,15 +202,18 @@ const formatTimestamp = (timestamp: string): string => {
 
 const scrollToBottom = (): void => {
     nextTick(() => {
-        if (messagesContainer.value) {
-            messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+        if (contentContainer.value) {
+            contentContainer.value.scrollTo({
+                top: contentContainer.value.scrollHeight,
+                behavior: "smooth",
+            });
         }
     })
 }
 
 const isMessageStreaming = (message: Message): boolean => {
-    return message.role === 'assistant' && 
-           !message.markdown && 
+    return message.role === 'assistant' &&
+           !message.markdown &&
            isLoading.value
 }
 
@@ -210,7 +225,7 @@ const createUserMessage = (content: string): Message => ({
 
 const createSystemMessage = (content: string): Message => ({
     content,
-    role: 'system', 
+    role: 'system',
     timestamp: new Date().toISOString()
 })
 
@@ -224,30 +239,31 @@ const processStreamData = async (indexToUpdate: number, value: StreamValue, data
     if (value.id === 'response' && data.response) {
         messages.value[indexToUpdate].content += data.response
         messages.value[indexToUpdate].timestamp = new Date().toISOString()
-        scrollToBottom()
+    }
+
+    try {
+        messages.value[indexToUpdate].markdown = await parseMarkdown(messages.value[indexToUpdate].content)
+    } catch (e) {
+        // Silent fail for markdown parsing
     }
 
     if (value.id === 'completed') {
-        try {
-            messages.value[indexToUpdate].markdown = await parseMarkdown(messages.value[indexToUpdate].content)
-        } catch (e) {
-            // Silent fail for markdown parsing
-        }
-
         const sources = extractSourcesFromMarkdown(messages.value[indexToUpdate].content)
         if (sources.length > 0) {
             messages.value[indexToUpdate].sources = sources
         }
-        
+
         await highlightCodeBlocks()
         scrollToBottom()
     }
+
+    scrollToBottom()
 }
 
 const handleContentClick = (event: Event): void => {
     const link = (event.target as HTMLElement).closest('a')
     const href = link?.getAttribute('href')
-    
+
     if (href && isInternalLink(href)) {
         emit('close')
     }
@@ -256,16 +272,14 @@ const handleContentClick = (event: Event): void => {
 const sendMessage = async (): Promise<void> => {
     const trimmedInput = userInput.value.trim()
     if (!trimmedInput || isLoading.value) return
-    
+
     const userMessage = createUserMessage(trimmedInput)
     messages.value.push(userMessage)
     userInput.value = ''
     isLoading.value = true
-    scrollToBottom()
 
     const loadingMessage = createAssistantMessage()
     messages.value.push(loadingMessage)
-    scrollToBottom()
 
     try {
         const chatHistory: ChatHistoryItem[] = messages.value.slice(0, -1).map(msg => ({
@@ -274,11 +288,23 @@ const sendMessage = async (): Promise<void> => {
             timestamp: msg.timestamp
         }))
 
-        const response = await fetch('https://api.kestra.io/v1/search-ai', {
+        const signal = abortController.value.signal;
+
+        const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(chatHistory),
+            body: JSON.stringify({
+                messages: chatHistory,
+                distinctId: posthog.get_distinct_id()
+            }),
+            credentials: 'include',
+            signal: signal
         })
+
+        posthog.capture("search_ai", {
+            text: trimmedInput,
+            chatHistoryLen: chatHistory.length,
+        });
 
         if (response.status !== 200) {
             console.error('API request failed with status:', response.status)
@@ -303,6 +329,10 @@ const sendMessage = async (): Promise<void> => {
             await processStreamData(indexToUpdate, streamValue, data)
         }
     } catch (error) {
+        if (error.name == 'AbortError') { // gère abort()
+            return ;
+        }
+
         console.error('Error sending message:', error)
         messages.value.pop()
         messages.value.push(createSystemMessage("Oops! Something went wrong. Please try again later."))

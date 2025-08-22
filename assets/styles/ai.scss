@@ -6,7 +6,6 @@
     background: rgba(0, 0, 0, 0.8);
     z-index: 1050;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 2rem;
 }
@@ -14,9 +13,6 @@
 .dialog {
     background: $black-4;
     border-radius: 8px;
-    width: 895px;
-    min-height: 532px;
-    max-height: calc(100vh - 2rem);
     border: 1px solid $black-6;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     display: flex;
@@ -24,15 +20,17 @@
     overflow: hidden;
 }
 
+.avatar {
+    width: 28px;
+    height: 44px;
+}
+
 .content {
-    padding: 32px;
-    color: $white;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    padding: 32px 32px 0;
+    max-height: 100%;
+    overflow-y: auto;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
 
     .welcome {
         display: flex;
@@ -42,8 +40,6 @@
         margin-bottom: 2rem;
 
         .avatar {
-            width: 28px;
-            height: 44px;
             flex-shrink: 0;
 
             img {
@@ -51,12 +47,6 @@
                 height: 100%;
                 object-fit: contain;
             }
-        }
-
-        .text p {
-            margin: 0;
-            font-size: 1rem;
-            line-height: 22px;
         }
     }
 
@@ -100,7 +90,6 @@
     .messages {
         flex: 1;
         overflow-y: auto;
-        margin-bottom: 1rem;
         padding-right: 0.5rem;
     }
 
@@ -298,50 +287,57 @@
             }
         }
     }
+}
 
-    .input {
-        margin-top: auto;
+.input {
+    margin-top: auto;
+    width: 100%;
+    margin-bottom: 0.75rem;
 
-        .container {
-            background: $black-3;
-            border: 1px solid transparent;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: border-color 0.2s ease-in-out;
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+    }
 
-            &:focus-within {
-                border-color: $purple;
+    .container {
+        background: $black-3;
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: border-color 0.2s ease-in-out;
+
+        &:focus-within {
+            border-color: $purple;
+        }
+
+        .send-icon {
+            font-size: 24px;
+            color: #B9B9BA;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+
+            &:hover {
+                color: $purple;
             }
+        }
 
-            .send-icon {
-                font-size: 24px;
-                color: #B9B9BA;
-                cursor: pointer;
-                transition: color 0.2s ease-in-out;
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: $white;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            overflow: hidden;
+            white-space: nowrap;
 
-                &:hover {
-                    color: $purple;
-                }
-            }
-
-            textarea {
-                flex: 1;
-                background: transparent;
-                border: none;
-                color: $white;
-                font-size: 1rem;
-                resize: none;
-                outline: none;
-                overflow: hidden;
-                white-space: nowrap;
-
-                &::placeholder {
-                    color: $white-1;
-                }
+            &::placeholder {
+                color: $white-1;
             }
         }
     }
@@ -411,11 +407,6 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
 
-            .avatar {
-                width: 24px;
-                height: 38px;
-            }
-
             .text p {
                 font-size: 0.875rem;
                 line-height: 1.4;
@@ -458,16 +449,6 @@
                             font-size: 0.7rem;
                         }
                     }
-                }
-            }
-
-            .avatar .ai {
-                width: 32px;
-                height: 32px;
-
-                img {
-                    width: 20px;
-                    height: 32px;
                 }
             }
         }
