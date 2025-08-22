@@ -36,10 +36,10 @@ Before you begin, you need:
 
 ## Set up secrets in Kestra
 
-Store your sensitive credentials as [secrets](../05.concepts/04.secret.md):
+Store your sensitive credentials as [secrets](../05.concepts/04.secret.md) or [key-value](../05.concepts/05.kv-store.md) pairs:
 
 1. Navigate to your namespace in the Kestra UI
-2. Go to the **Secrets** tab
+2. Go to the **Secrets** tab (Alternatively go to the **KV Store** tab and do the same)
 3. Create these secrets:
    - `NOTION_API_KEY`: Your Notion integration token
    - `SLACK_WEBHOOK_URL`: Your Slack incoming webhook URL
