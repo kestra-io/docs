@@ -112,6 +112,25 @@
             color: #646465;
             text-decoration: none;
             font-size: 14px;
+            position: relative;
+            transition: color 0.3s ease;
+            
+            .arrow-right-icon {
+                transition: transform 0.3s ease;
+                position: absolute;
+                bottom: 4px;
+                @include media-breakpoint-up(md) {
+                    bottom: 5px;
+                }
+                margin-left: 4px;
+            }
+            
+            &:hover {
+                color: #7C2EEA;
+                .arrow-right-icon {
+                    transform: translateX(4px);
+                }
+            }
         }
 
         > .learn-more{

@@ -42,7 +42,7 @@ triggers:
 
 The format of the Webhook URL follows:
 
-`https://{your_hostname}/api/v1/executions/webhook/{namespace}/{flow_id}/{key}`
+`https://{your_hostname}/api/v1/main/executions/webhook/{namespace}/{flow_id}/{key}`
 where:
 - `your_hostname` is the domain or IP of your server, e.g. example.com
 - `namespace` is `io.kestra.demo.flows`
@@ -52,7 +52,7 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
 
 You can also copy the formed Webhook URL from the **Triggers** tab.

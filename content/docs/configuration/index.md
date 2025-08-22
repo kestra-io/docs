@@ -283,7 +283,7 @@ You can change these parameters to reduce the polling latency, but be aware it w
 - `kestra.jdbc.queues.pollSize`: the maximum number of queues items fetched by each poll.
 - `kestra.jdbc.queues.minPollInterval`: the minimum duration between 2 polls.
 - `kestra.jdbc.queues.maxPollInterval`: the maximum duration between 2 polls.
-- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
+- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from `minPollInterval` to `maxPollInterval` when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
 
 
 Here is the default configuration:
@@ -671,10 +671,10 @@ Example:
 export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
-To configure a proxy each time your Kestra instance is up, set the `JAVA_FLAGS` at the JVM level in your configuration. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
+To configure a proxy each time your Kestra instance is up, use the `JAVA_OPTS` environment variable. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
 
 ```yaml
-JAVA_FLAGS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
+JAVA_OPTS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
 ```
 
 ### Timezone
@@ -684,6 +684,12 @@ By default, Kestra will handle all dates using your system's timezone. You can c
 Changing the timezone will mostly affect:
 * **scheduler**: by default, all schedule dates are UTC; changing the Java timezone will allow scheduling the flow in your timezone.
 * **logs display**: in your configured timezone.
+
+### Memory
+
+Configuring Java memory settings can be nuanced. While the JVM provides reasonable defaults, the heap size often requires manual adjustment. The heap is the memory area where objects created by Kestra are allocated.
+
+By default, Kestra configures the JVM heap to use up to **50% of the available system memory**. This is done using the `-XX:MaxRAMPercentage=50.0` option, which dynamically allocates the heap size based on total memory. Alternatively, a fixed size can be set using the `-Xmx` option—for example, `-Xmx1g` to allocate 1 GB.
 
 ## Indexer
 
@@ -1385,7 +1391,7 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
     type: constant # type: string
     interval: PT5M # type: Duration
     maxDuration: PT1H # type: Duration
-    maxAttempt: 3 # type: int
+    maxAttempts: 3 # type: int
     warningOnRetry: true # type: boolean, default is false
 ```
 
@@ -1407,6 +1413,10 @@ kestra:
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
         - EXECUTOR
 ```
+
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `secret`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Secrets UI Configuration](/docs/configuration/is-secrets-configuration.png)
 
 ### AWS Secret Manager
 
@@ -1553,9 +1563,9 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth/rbac.md#super-admin)
+The most powerful user in Kestra is the [Superadmin](../06.enterprise/03.auth/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
+You can create a `Superadmin` user from the `kestra.security.superAdmin` configuration.
 
 The super-admin requires three properties:
 * `kestra.security.superAdmin.username`: the username of the super-admin
@@ -1641,11 +1651,11 @@ You can configure password validation rules for user passwords using a regular e
 ```yaml
 kestra:
   security:
-    basic-auth:
-      password-regexp: "<regexp-rule>"
+    basicAuth:
+      passwordRegexp: "<regexp-rule>"
 ```
 
-The `password-regexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
+The `passwordRegexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
 
 ## Server
 
@@ -1664,7 +1674,7 @@ kestra:
       password: kestra
 ```
 
-HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your open-source instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
@@ -1911,6 +1921,10 @@ kestra:
         - EXECUTOR
 ```
 
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `storage`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Internal Storage UI Configuration](/docs/configuration/is-secrets-configuration.png)
+
 ### S3
 
 First, make sure that the S3 storage plugin is installed in your environment. You can install it with the following Kestra command:
@@ -2154,7 +2168,7 @@ These variables will be accessible in a flow with `{{ envs.your_env }}` in **low
       KESTRA_CONFIGURATION:
         kestra:
           variables:
-            env-vars-prefix: "ENV_" # this is the default as of version 0.23
+            envVarsPrefix: "ENV_" # this is the default as of version 0.23
 ```
 
 An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.my_variable }}`.
@@ -2257,12 +2271,12 @@ kestra:
 
 ### Configuring a mail server
 
-Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mail-service` configuration.
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mailService` configuration.
 
 ```yaml
 kestra:
   ee:
-    mail-service:
+    mailService:
       host: host.smtp.io
       port: 587
       username: user
@@ -2285,21 +2299,21 @@ To configure this option on an instance level, add the following to your Kestra 
 ```yaml
 kestra:
   ee:
-    execution-data:
-      internal-storage:
+    executionData:
+      internalStorage:
         enabled: true # the default is false
 ```
 
 Once you set the above configuration and your Tenant or Namespace has a "Dedicated internal storage" configured and the toggle "Execution data in internal storage" is enabled in the UI, all workflow outputs and inputs will be stored in the internal storage instead of the central database.
 
-To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `force-globally` property to `true`:
+To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `forceGlobally` property to `true`:
 
 ```yaml
 kestra:
   ee:
-    execution-data:
-      internal-storage:
-        force-globally: true # the default is false
+    executionData:
+      internalStorage:
+        forceGlobally: true # the default is false
 ```
 
 If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
@@ -2309,3 +2323,39 @@ Currently, the UI is limited and outputs will not be directly visible if using i
 ::
 
 You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
+
+## Add Custom Links to Kestra UI (EE)
+
+In the Enterprise Edition, admins can add custom links as resources to Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. The configuration is managed in the YAML configuration file. See the example below:
+
+```yaml
+kestra:
+  ee:
+    customLinks:
+      link1:
+        title: "Internal Documentation"
+        url: "https://kestra.io/docs/"
+      link2:
+        title: "Internal Support Portal"
+        url: "https://kestra.io/support/"
+```
+
+## Allowed file paths
+
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.localFiles.allowedPaths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    volumes:
+      - /Users/yourdir/scripts:/scripts # Bind-mount the host directory
+    ...
+    environment: # Allow access to the /scripts directory in Kestra container
+      KESTRA_CONFIGURATION: |
+        kestra:
+          localFiles:
+            allowedPaths:
+              - /scripts
+```
+
+By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.localFiles.enablePreview` set to `false`, as it is `true` by default.

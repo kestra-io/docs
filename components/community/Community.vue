@@ -3,15 +3,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <NuxtImg
-                        width="286px"
-                        height="81px"
-                        loading="lazy"
-                        format="webp"
-                        data-aos="fade-left"
-                        src="/landing/community/contributors.png"
-                        class="mb-4 img-fluid"
-                    />
+                    <NuxtImg width="286px" height="81px" loading="lazy" format="webp" data-aos="fade-left"
+                        src="/landing/community/contributors.png" class="mb-4 img-fluid" />
                     <h2 class="mb-4" data-aos="fade-left">Kestra is built in the open</h2>
                     <p data-aos="fade-right">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us improve
@@ -21,70 +14,70 @@
                 <div class="col-md-6">
                     <div class="row community">
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <Star title=""/>
+                            <Star title="" />
                             <p>
                                 Stars <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.stars : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
+                                </span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <DirectionsFork title=""/>
+                            <DirectionsFork title="" />
                             <p>
                                 Forks <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.forks : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
+                                </span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <BugOutline title=""/>
+                            <BugOutline title="" />
                             <p>
                                 Issues <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.issues : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
+                                </span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <BugOutline title=""/>
+                            <BugOutline title="" />
                             <p>
                                 Pull requests <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.pullRequests : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
+                                </span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <SourceCommitLocal title=""/>
+                            <SourceCommitLocal title="" />
                             <p>
                                 Commits <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.commits : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="metrics ? metrics.commits : 0" :duration="4000"></CountTo>
+                                </span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4" data-aos="fade-right">
-                            <AccountGroupOutline title=""/>
+                            <AccountGroupOutline title="" />
                             <p>
                                 Contributors <br>
-                                <span class="number"><CountTo :endVal="contributors ? contributors.length : 0"
-                                                              :duration="4000"></CountTo></span>
+                                <span class="number">
+                                    <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000">
+                                    </CountTo>
+                                </span>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <NuxtLink
-                    href="https://github.com/kestra-io/kestra"
-                    data-aos="zoom-in"
-                    class="btn btn-animated btn-dark-animated mt-2 mx-2"
-                >
+                <NuxtLink href="https://github.com/kestra-io/kestra" data-aos="zoom-in"
+                    class="btn btn-animated btn-dark-animated mt-2 mx-2">
                     Follow on GitHub
                 </NuxtLink>
-                <NuxtLink
-                    href="https://github.com/kestra-io/kestra/issues"
-                    data-aos="zoom-in"
-                    class="btn btn-animated btn-purple-animated
-                     mt-2"
-                >
+                <NuxtLink href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-animated btn-purple-animated
+                     mt-2">
                     Find Open Issues
                 </NuxtLink>
             </div>
@@ -92,61 +85,64 @@
     </div>
     <svg width="0" height="0">
         <defs>
-            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
-                <stop offset="0.015625" stop-color="#F2D5FF"/>
-                <stop offset="1" stop-color="#CB5AFF"/>
+            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161"
+                gradientUnits="userSpaceOnUse">
+                <stop offset="0.015625" stop-color="#F2D5FF" />
+                <stop offset="1" stop-color="#CB5AFF" />
             </linearGradient>
         </defs>
     </svg>
 </template>
 
-<script>
-    import Section from '../../components/layout/Section.vue';
-    import {CountTo} from 'vue3-count-to';
-    import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
-    import Star from "vue-material-design-icons/Star.vue";
-    import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue";
-    import SourcePull from "vue-material-design-icons/SourcePull.vue";
-    import BugOutline from "vue-material-design-icons/BugOutline.vue";
-    import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
-    import {useApi} from "~/composables/useApi.js";
+<script setup lang="ts">
+import { CountTo } from 'vue3-count-to'
+import SourceCommitLocal from 'vue-material-design-icons/SourceCommitLocal.vue'
+import Star from 'vue-material-design-icons/Star.vue'
+import DirectionsFork from 'vue-material-design-icons/DirectionsFork.vue'
+import BugOutline from 'vue-material-design-icons/BugOutline.vue'
+import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
+import { useApi } from '~/composables/useApi.js'
 
-    export default {
-        components: {
-            Section,
-            CountTo,
-            SourceCommitLocal,
-            Star,
-            DirectionsFork,
-            SourcePull,
-            BugOutline,
-            AccountGroupOutline,
-        },
-        setup() {
-            return {useApi}
-        },
-        data() {
-            return {
-                metrics: undefined,
-                contributors: undefined
-            };
-        },
-        async created() {
-            try {
-                const [metrics, contributors] = await Promise.all([
-                    this.useApi().get('/communities/github/metrics'),
-                    this.useApi().get('/communities/github/contributors')
-                ])
+interface GitHubMetrics {
+    stars: number
+    forks: number
+    issues: number
+    pullRequests: number
+    commits: number
+}
 
-                this.metrics = metrics.data
-                this.contributors = contributors.data
+interface GitHubResponse {
+    stargazers: number
+}
 
-            } catch (e) {
-                this.contributors = []
-                this.metrics = {}
-            }
+const api = useApi()
+const metrics = ref<GitHubMetrics | undefined>(undefined)
+const contributors = ref<any[] | undefined>(undefined)
+
+const fetchData = async (): Promise<void> => {
+    try {
+        const githubResponse = await $fetch<GitHubResponse>('/api/github')
+        
+        const [metricsResponse, contributorsResponse] = await Promise.all([
+            api.get('/communities/github/metrics'),
+            api.get('/communities/github/contributors')
+        ])
+
+        metrics.value = {
+            stars: githubResponse.stargazers,
+            forks: (metricsResponse as any).data?.forks,
+            issues: (metricsResponse as any).data?.issues,
+            pullRequests: (metricsResponse as any).data?.pullRequests,
+            commits: (metricsResponse as any).data?.commits
         }
+        
+        contributors.value = (contributorsResponse as any).data
+    } catch (error) {
+        contributors.value = []
     }
+}
+
+onMounted(fetchData)
 </script>
 
 

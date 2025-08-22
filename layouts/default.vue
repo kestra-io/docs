@@ -14,12 +14,13 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+    import {useNuxtApp} from "#app/nuxt.js";
     const config = useRuntimeConfig();
     const route = useRoute();
     const isScrolled = ref(false)
 
-    const {data: bannerMessages} = await useCachedAsyncData(
+    const {data: bannerMessages} = await useCachedAsyncData<{results: Record<string, any>}>(
         `header-annonces`,
         () => {
             return $fetch(`${config.public.apiUrl}/banner-messages`);
@@ -30,7 +31,7 @@
     );
 
     const content = computed(() => {
-        return bannerMessages.value?.results;
+        return bannerMessages.value?.results ?? {};
     })
 
     const handleScroll = () => {
@@ -50,27 +51,18 @@
         const path = route.path;
         return innerContent && innerContent.length > 0 && path === '/'
     })
+
+    const nuxtApp = useNuxtApp();
+
+    nuxtApp.hook("page:start", () => {
+        document.documentElement.classList.add("loading");
+        window.scrollTo(0, 0);
+    });
+
+    nuxtApp.hook("page:finish", () => {
+        document.documentElement.classList.remove("loading");
+    });
 </script>
-
-<script>
-    import {useNuxtApp} from "#app/nuxt.js";
-
-    export default defineComponent({
-        setup() {
-            const nuxtApp = useNuxtApp();
-
-            nuxtApp.hook("page:start", () => {
-                document.querySelector('body').classList.add("loading");
-                window.scrollTo(0, 0);
-            });
-
-            nuxtApp.hook("page:finish", () => {
-                document.querySelector('body').classList.remove("loading");
-            });
-        },
-    })
-</script>
-
 
 <style lang="scss">
     @import "../assets/styles/variable";

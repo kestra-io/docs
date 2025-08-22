@@ -10,7 +10,6 @@
 
         <CloudHeader />
         <CloudFeatures />
-        <CloudHowItWorks v-if="false" />
     </div>
 </template>
 

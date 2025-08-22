@@ -16,24 +16,16 @@
     </div>
 </template>
 
-<script>
-    import Twitter from "vue-material-design-icons/Twitter.vue";
-    import Youtube from "vue-material-design-icons/Youtube.vue";
+<script setup>
+
     import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
-    export default {
-        components: {Twitter, Youtube},
-        data() {
-            return {
-                valid: undefined,
-                message: undefined,
-            };
-        },
-        methods: {
-            checkForm: function (e) {
-                newsletterSubmit(this, e);
-            }
-        }
+    const valid = ref(false);
+    const message = ref(null);
+    const newsletter = ref(null);
+
+    function checkForm(e) {
+        newsletterSubmit({ newsletter, valid, message }, e);
     }
 </script>
 

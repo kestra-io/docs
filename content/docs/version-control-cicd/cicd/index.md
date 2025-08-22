@@ -140,7 +140,7 @@ Select "Add webhook":
 Paste Kestra's webhook URL into the *Payload URL* field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
 ```bash
-https://kestra_host_url/api/v1/executions/webhook/namespace/flow_id/webhook_key
+https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook_key
 ```
 
 ![github_webhook_2](/docs/developer-guide/ci-cd/github_webhook_2.png)

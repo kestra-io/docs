@@ -16,7 +16,7 @@ How to enable multi-tenancy in your Kestra instance.
 
 A tenant represents an **isolated environment within a single Kestra instance**.
 
-Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy and security along with separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
+Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy, security, and separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
 
 ::alert{type="info"}
 You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.overview/01.enterprise-edition.md).
@@ -26,11 +26,11 @@ All resources (such as [flows](../../04.workflow-components/01.flow.md), [trigge
 
 Data stored inside the internal storage is also separated by tenants.
 
-End-users can use the tenant selection dropdown menu from the [UI](../08.ui/index.md) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page also includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
+End-users can use the tenant selection dropdown menu from the [UI](../08.ui/index.md) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
 
 ![Tenants selection dropdown](/docs/enterprise/tenants.png)
 
-Most [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require a Superadmin access.
+Most [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
 
 For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../api-reference/enterprise.md) for more information.
 
@@ -56,7 +56,7 @@ Tenants can be created and managed directly through Kestra's user interface. Go 
 Fill in the form and click **Save**:
 ![create tenant from the UI](/docs/enterprise/tenant-create-2.png)
 
-The user who created the tenant will get an Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
+The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
 ### Creating a Tenant from the CLI
 
@@ -109,7 +109,13 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
 
 ### Creating a Tenant from Terraform
 
-Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../../13.terraform/resources/tenant.md). Here is an example of a Terraform configuration for creating a tenant:
+Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../../13.terraform/resources/tenant.md).
+
+::alert{type="info"}
+This example assumes you have already configured the [Kestra Terraform Provider](../../13.terraform/index.md)
+::
+
+Here is an example of a Terraform configuration for creating a tenant:
 
 ```hcl
 resource "kestra_tenant" "stage" {
@@ -120,7 +126,11 @@ resource "kestra_tenant" "stage" {
 
 ### Deleting a tenant
 
-Deleting a tenant will delete all its resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs remain stored in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
+Deleting a tenant removes all associated resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs are retained in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
+
+::alert{type="warning"}
+Deleting a tenant is irreversible. All resources under the tenant will be permanently removed, except for logs and execution history stored in the database.
+::
 
 Key-value pairs and namespace files will not be deleted as they are persisted in internal storage.
 
@@ -143,4 +153,24 @@ To configure a dedicated storage and secrets backend per tenant, navigate to the
 Note that this feature has been introduced in Kestra 0.20.0. If you are using an older version, you need to upgrade to set up dedicated storage and secrets backend per tenant.
 
 Also, make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
+::
+
+### Isolate Kestra Services
+
+When using [Dedicated Storage or Secret backends](./tenants.md#dedicated-storage-and-secrets-backend-per-tenant), you can isolate specific [Kestra services](../../07.architecture/02.server-components.md) to prevent them from accessing the storage or secret backend. For example, you may not want the [Webserver](../../07.architecture/08.webserver.md) to be able to access the dedicated internal storage. This isolation is intended for Kestra instances where multiple teams or organizations share access, but storage or secret data access must be limited to specific segments.
+
+The configuration utilizes the `deniedServices` property with a list of the services to isolate. Take the following as an example using `storage` (this can be replaced with `secret` for a dedicated secret backend), where the Executor and Webserver must be isolated:
+
+```yaml
+kestra:
+  storage:   # or secret
+    isolation:
+      enabled: true
+      deniedServices: [EXECUTOR, WEBSERVER]
+```
+
+For additional configuration details, refer to dedicated [Secrets backend](../../configuration/index.md#secret-managers) and [Internal Storage](../../configuration/index.md#internal-storage) in the configuration guide.
+
+::alert{type="info"}
+If this feature is enabled some UI or flow execution capabilities may not work as expected. If unsure, contact support.
 ::

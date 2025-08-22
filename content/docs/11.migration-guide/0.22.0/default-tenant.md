@@ -23,9 +23,10 @@ To continue using the default tenant, set the `defaultTenant` configuration flag
 
 ```yaml
 kestra:
-  tenants:
-    enabled: false
-    defaultTenant: true
+  ee:
+    tenants:
+      enabled: false
+      defaultTenant: true
 ```
 
 Note that in Kestra 0.22 and higher, `defaultTenant` is **no longer enabled by default**, so you must explicitly set that configuration option to `true` to keep using the default tenant.
@@ -37,9 +38,10 @@ Here is the default multi-tenancy configuration before 0.22.0:
 
 ```yaml
 kestra:
-  tenants:
-    enabled: false
-    defaultTenant: true
+  ee:
+    tenants:
+      enabled: false
+      defaultTenant: true
 ```
 
 ### After 0.22.0
@@ -48,7 +50,8 @@ Here is the default multi-tenancy configuration after 0.22.0:
 
 ```yaml
 kestra:
-  tenants:
-    enabled: true
-    defaultTenant: false
+  ee:
+    tenants:
+      enabled: true
+      defaultTenant: false
 ```

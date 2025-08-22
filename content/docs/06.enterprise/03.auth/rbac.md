@@ -24,7 +24,7 @@ Access page in the UI).
 ## Roles and Bindings
 
 A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups.\
-Theses permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
+These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
 e.g., `CREATE`).
 
 ::collapse{title="More information"}
@@ -65,9 +65,13 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `APPEXECUTION`
 - `ME`
 - `APITOKEN`
+- `SERVICE_ACCOUNT`
+- `INVITATION`
+- `TENANT_ACCESS`
+- `GROUP_MEMBERSHIP`
 
 ::alert{type="warning"}
-The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, make sure to update any custom roles with these permissions as needed by the users. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../11.migration-guide/0.24.0/endpoint-changes.md#rbac-updates)
 ::
 
 ### Actions
@@ -242,7 +246,7 @@ Note that these entities don’t belong to namespaces, but their permissions can
 ::collapse{title="How to bind a role to a User, a Service Accounts or a Group?"}
 Once you have created your first role. You can attach that role to an entity through the Access page. You can also limit that Role to one or more namespaces.
 
-The following example show the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
+The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
 ::alert{type="info"}
@@ -312,22 +316,22 @@ Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 
 ![Group Owner](/docs/enterprise/group-owner.png)
 
-Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
+Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group. Users with the `GROUP_MEMBERSHIP` permission can add members to groups and change their membership type.
 
 #### What happens if you delete a Group?
 
-All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However Users and Services Accounts will still exist.
+All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
 
 ## RBAC FAQ
 
 ::collapse{title="Why is Admin a Role rather than User type?"}
 
-Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
+The Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
 grant multiple users with admin permissions if needed, and you can revoke only specific admin permissions at any time
 without having to delete the user.
 
-Admin roles can be assumed by multiple users or groups, and some user may be later granted a lower or a higher
-permission boundary. In the same way, some user may initially be an Admin but then their permission may be revoked. The
+Admin roles can be assumed by multiple users or groups, and some user may later be granted a lower or a higher
+permission boundary. In the same way, some users may initially be Admins but then their permission may be revoked. The
 Admin role enables all these patterns in a flexible way.
 
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you

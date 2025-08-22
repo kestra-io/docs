@@ -245,7 +245,7 @@ tasks:
       - apt-get update
       - apt-get -y install curl
     commands:
-      - curl -X POST http://{{inputs.kestra_host}}/api/v1/flows/import -F fileUpload=@flow.yaml
+      - curl -X POST http://{{inputs.kestra_host}}/api/v1/main/flows/import -F fileUpload=@flow.yaml
       - echo "Executing the flow from http://{{inputs.kestra_host}}/ui/flows/edit/{{ inputs.flow_namespace }}/{{ inputs.flow_id }}"
   
   - id: subflow

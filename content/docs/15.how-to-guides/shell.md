@@ -22,13 +22,14 @@ description: This flow runs the shell script.
 tasks:
   - id: shell_script_task
     type: io.kestra.plugin.scripts.shell.Script
+    containerImage: badouralix/curl-jq
     script: |
       # invoke a GET call on an API and extract information from the JSON response
       downloads=$(curl https://hub.docker.com/v2/repositories/kestra/kestra/ | jq -r '.pull_count')
       echo "Downloads: ${downloads}"
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)
+You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script).
 
 ## Commands
 

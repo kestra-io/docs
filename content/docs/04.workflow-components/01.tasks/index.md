@@ -5,15 +5,15 @@ icon: /docs/icons/flow.svg
 
 Tasks are the steps within a flow.
 
-Tasks are discrete actions within a flow, capable of taking inputs and variables from the flow and producing outputs for downstream consumption by end users and other tasks.
+They represent discrete actions, capable of processing inputs and variables and producing outputs for downstream consumption by end users and other tasks.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/vRdlf1OwYWA?si=1qKj45mEsKtOF3bP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Flowable Tasks
+## Flowable tasks
 
-Kestra orchestrates your flows using [Flowable Tasks](./00.flowable-tasks.md). These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
+Kestra orchestrates flows using [Flowable tasks](./00.flowable-tasks.md). These tasks do not perform heavy computation. Instead, they control orchestration behavior, enabling advanced workflow patterns.
 
 Example Flowable tasks include:
 - `io.kestra.plugin.core.flow.Parallel`
@@ -22,11 +22,11 @@ Example Flowable tasks include:
 
 Read the full list on the [Flowable tasks page](./00.flowable-tasks.md).
 
-## Runnable Tasks
+## Runnable tasks
 
-In Kestra, most data processing workloads are executed using [Runnable Tasks](./01.runnable-tasks.md).
+Most data processing in Kestra is performed by [Runnable tasks](./01.runnable-tasks.md).
 
-In contrast to Flowable Tasks, Runnable Tasks are responsible for performing the actual work. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../../architecture/worker).
+Unlike Flowable tasks, Runnable tasks perform the actual work — such as file system operations, API calls, or database queries. These tasks can be compute-intensive and are executed by [workers](../../architecture/worker).
 
 Example runnable tasks include:
 - `io.kestra.plugin.scripts.python.Commands`
@@ -35,32 +35,34 @@ Example runnable tasks include:
 
 ## Core task properties
 
-The table below lists the core task properties available to all tasks.
+All tasks share the following core properties:
 
 | Field             | Description                                                                                                                                                                                                                                                                                                                                                          |
 |-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `id`              | The flow identifier, must be unique inside a flow.                                                                                                                                                                                                                                                                                                                   |
-| `type`            | The Java Fully Qualified Class Name of the task                                                                                                                                                                                                                                                                                                                     |
+| `id`              | A unique identifier within the flow                                                                                                                                                                                                                                                                                                                   |
+| `type`            | The Java Fully Qualified Class Name (FQCN) of the task                                                                                                                                                                                                                                                                                                                     |
 | `description`     | The [description](../../04.workflow-components/15.descriptions.md) of the task                                                                                                                                                                                                                                                                                       |
 | `retry`           | Task [retry](../../04.workflow-components/12.retries.md) behavior                                                                                                                                                                                                                                                                                                    |
 | `runIf`           | To skip the task execution if the provided condition evaluates to false                                                                                                                                                                                                                                                                                              |
-| `timeout`         | Task [timeout](../../04.workflow-components/13.timeout.md) expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations).                                                                                                                                                                                                                      |
-| `disabled`        | Set it to `true` to [disable](../../04.workflow-components/16.disabled.md) execution of the task.                                                                                                                                                                                                                                                                    |
+| `timeout`         | Task [timeout](../../04.workflow-components/13.timeout.md) expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)                                                                                                                                                                                                                      |
+| `disabled`        | Set it to `true` to [disable](../../04.workflow-components/16.disabled.md) execution of the task                                                                                                                                                                                                                                                                    |
 | `workerGroup.key` | To execute this task on a specific [Worker Group](../../06.enterprise/04.scalability/worker-group.md) (EE)                                                                                                                                                                                                                                                                         |
-| `allowFailure`    | Boolean flag allowing to [the execution to continue](../../04.workflow-components/11.errors.md) even if this task fails.                                                                                                                                                                                                                                                |
-| `allowWarning`    | Boolean flag allowing to the execution to [finish with a `SUCCESS` state](../../04.workflow-components/11.errors.md#allowfailure-and-allowwarning-property) even if this task produces a warning.                                                                                                                                                                    |
-| `logLevel`        | Property to define the log level granularity for which logs will be inserted into the backend database. By default, all logs are stored. However, if you restrict that to e.g., the `INFO` level, all lower log levels such as `DEBUG` and `TRACE` won't be persisted.                                                                                                          |
-| `logToFile`       | Boolean flag that lets you store logs as a file in internal storage. That file can be previewed and downloaded from the `Logs` and `Gantt` Execution tabs. When set to true, logs aren’t saved in the database, which is useful for tasks that produce a large amount of logs that would otherwise take up too much space. The same property can be set on triggers. |
+| `allowFailure`    | Boolean flag allowing to [the execution to continue](../../04.workflow-components/11.errors.md) even if this task fails                                                                                                                                                                                                                                                |
+| `allowWarning`    | Boolean flag allowing to the execution to [finish with a `SUCCESS` state](../../04.workflow-components/11.errors.md#allowfailure-and-allowwarning-property) even if this task produces a warning                                                                                                                                                                    |
+| `logLevel`        | Defines the log level persisted to the backend database. By default, all logs are stored. For example, restricting to `INFO` prevents `DEBUG` and `TRACE` logs from being saved.                                                                                                          |
+| `logToFile`       | Stores logs in internal storage as a file instead of the database. Files can be previewed and downloaded from the **Logs** and **Gantt** tabs. Useful for tasks that generate large volumes of logs. Also available for triggers. |
 
 ## Dynamic vs. static task properties
 
-Task properties can be **static** or **dynamic**. Dynamic task properties can be set using expressions. To find out whether a given task property is static or dynamic, check the task documentation available on the [plugin's homepage](/plugins) as well as in the UI when you hover over a task and click on the documentation tab on the right.
+Task properties can be static or dynamic. Dynamic properties can be set using expressions. To determine whether a property is static or dynamic, check the task’s documentation on the [plugin's homepage](/plugins) or in the UI by clicking on the documentation tab for the task.
 
 ![dynamic_properties](/docs/concepts/dynamic_properties.png)
 
-Often some task properties are marked as **not dynamic** because they are complex types (e.g., maps, list of strings, list of maps), meaning that they are **placeholders** for other dynamic properties. Let's take the [runTasks](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runtasks) property of Databrick's `SubmitRun` task as an example. This property is not dynamic because it's an array of [RunSubmitTaskSetting](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runsubmittasksetting).
+Some properties are marked as **not dynamic** because they are complex types (e.g., maps, lists of strings, lists of maps). These act as **placeholders** for other dynamic properties.
 
-On top of that, `RunSubmitTaskSetting` is a group of other properties which are also either dynamic or of complex type (placeholder for other properties). It's therefore useful to always drill down to the lowest level — most properties at the lowest level are dynamic and can be templated using expressions.
+For example, the [runTasks](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runtasks) property of Databricks' `SubmitRun` is not dynamic because it is an array of [RunSubmitTaskSetting](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runsubmittasksetting).
+
+Each `RunSubmitTaskSetting` contains its own properties, many of which are dynamic or placeholders for more complex types. Always drill down to the lowest level — most low-level properties are dynamic and can be templated using expressions.
 
 ::ChildCard
 ::

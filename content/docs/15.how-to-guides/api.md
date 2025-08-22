@@ -59,7 +59,7 @@ tasks:
 To make this request, we can use [cURL](https://en.wikipedia.org/wiki/CURL) in the command line:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/flows -H "Content-Type:application/x-yaml" -d "id: created_by_api
+curl -X POST http://localhost:8080/api/v1/main/flows -H "Content-Type:application/x-yaml" -d "id: created_by_api
 namespace: company.team
 
 tasks:
@@ -112,14 +112,14 @@ As our input has a default value, we can execute it by simply making a [POST req
 
 ```bash
 curl -X POST \
-http://localhost:8080/api/v1/executions/company.team/hello_world
+http://localhost:8080/api/v1/main/executions/company.team/hello_world
 ```
 
 If we want to add an input as part of our request, we can add it as part of our form data with `-F`:
 
 ```bash
 curl -X POST \
-http://localhost:8080/api/v1/executions/company.team/hello_world \
+http://localhost:8080/api/v1/main/executions/company.team/hello_world \
 -F greeting="hey there"
 ```
 
@@ -168,7 +168,7 @@ For more examples on executing with the API, check out the [Executions documenta
 When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution with the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/executions/-executionId-) `/api/v1/main/executions/{executionId}`:
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/executions/MYkTmLrI36s10iVXHwRbR
+curl -X GET http://localhost:8080/api/v1/main/executions/MYkTmLrI36s10iVXHwRbR
 ```
 
 The response received includes everything about the execution including the times the state changed, and any outputs generated:
@@ -395,7 +395,7 @@ Kestra has a [KV Store](../05.concepts/05.kv-store.md) which is useful for makin
 To start with, we can add a KV pair to the KV Store with the following [PUT request](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"Hello, World"'
+curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key -d '"Hello, World"'
 ```
 We can check in Kestra that it was added successfully:
 ![kv_api](/docs/how-to-guides/api/kv_api.png)
@@ -403,7 +403,7 @@ We can check in Kestra that it was added successfully:
 We can modify this by changing the body. For example, we will change the body to `"This is a modified value"`:
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"This is a modified value"'
+curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key -d '"This is a modified value"'
 ```
 
 We can see the key has been modified since it was created:
@@ -417,7 +417,7 @@ When we open the key, we will see the value has also been modified to reflect ou
 If we want to fetch the value from the KV Store, we will do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/namespaces/company.team/kv/my_key
+curl -X GET http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key
 ```
 
 It returns the response containing the pair:
@@ -442,7 +442,7 @@ Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/ap
 We will make this request for the `company.team` namespace with the following command:
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/namespaces/company.team/files/directory
+curl -X GET http://localhost:8080/api/v1/main/namespaces/company.team/files/directory
 ```
 
 Our response contains an array containing information about the files:
@@ -492,7 +492,7 @@ With this information, we can make a request to get the content of a specific fi
 We will make the following request to fetch the content of `example.txt`:
 
 ```bash
-curl -X GET 'http://localhost:8080/api/v1/namespaces/company.team/files?path=example.txt'
+curl -X GET 'http://localhost:8080/api/v1/main/namespaces/company.team/files?path=example.txt'
 ```
 
 which returns:
@@ -513,7 +513,7 @@ print({r.status_code})
 To do this, we will make the following request:
 
 ```bash
-curl -X POST 'http://localhost:8080/api/v1/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
+curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
 ```
 
 ::alert{type="info"}

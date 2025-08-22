@@ -7,7 +7,7 @@ version: ">= 0.23.0"
 
 Build Tests to ensure proper Flow behavior.
 
-Tests let you verify that your flow behaves as expected without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task rather than the executing the entire flow.
+Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than the executing the entire flow.
 
 <div class="video-container">
   <iframe src="https://youtube.com/embed/jMZ9Cs3xxpo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -127,11 +127,11 @@ The `id` is unique to the test suite, and the `namespace` and `flowId` must matc
 
 In the first test case, `extract_should_return_data`, the `fixtures` include tasks to replace the Slack alert and BigQuery data load so as to not clutter a Slack channel with test alert messages or a BigQuery table with test data but still test the overall design of the flow.
 
-The `assertions` property contains the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
+The `assertions` property defines the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
 
 ![Test case 1 results](/docs/enterprise/unit-tests/test-case-1.png)
 
-The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see the returned product names were also transformed successfully to uppercase in the assertion's actual result.
+The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see that the returned product names were also transformed successfully to uppercase in the assertion's actual result.
 
 Because we wrote the test suite with two test cases, both executed during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the previous test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this and solely test the transformation, we added the `extract` and `transform_to_products_name` fixtures in the second test case, `extract_should_transform_product_names_to_uppercase_mocked`. The `extract` fixture prevents the API call, and the `transform_to_products_name` fixture simulates the return of the flow task with a mock output, `my-product-1`, all in lowercase.
 
@@ -218,7 +218,7 @@ we can add a namespace file in the `company.team` namespace that mimics the form
 }
 ```
 
-This way, in our mock test, we can set the following configuration to test the transformation on sample data rather than making the API request:
+This way, in our mock test, we can use the following configuration to test the transformation on sample data, rather than making the API request:
 
 ```yaml
 id: etl_mockfile_from_ns
@@ -306,7 +306,7 @@ testCases:
 
 ## Available Assertions Operators
 
-While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The full list is as follows:
+While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:
 
 | **Operator**         | **Description of the assertion operator**                                                         |
 | -------------------- | ------------------------------------------------------------------------------------------------- |
@@ -323,3 +323,39 @@ While the above example uses `isNotNull` and `contains` as assertion operators, 
 | lessThanOrEqualTo    | Asserts the value is less than or equal to the specified value, e.g. `lessThanOrEqualTo: 20`      |
 | in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
 | notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
+
+## Assert on Execution Outputs
+
+Rather than assert with an operator and a set value, you can use execution outputs in your tests. To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that the outputs of your tasks match the expected values.
+
+The below example assumes there is a flow that outputs a value:
+
+```yaml
+id: flow_outputs_demo
+namespace: demo
+tasks:
+  - id: mytask
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      myvalue: kestra
+outputs:
+  - id: myvalue
+    type: STRING
+    value: "{{ outputs.mytask.values.myvalue }}"
+```
+
+Then, create a unit test for this flow that asserts the output value as follows:
+
+```yaml
+id: test_flow_outputs_demo
+flowId: flow_outputs_demo
+namespace: demo
+testCases:
+  - id: flow_output
+    type: io.kestra.core.tests.flow.UnitTest
+    assertions:
+      - value: "{{ execution.outputs.myvalue }}"
+        equalTo: kestra
+```
+
+When you run this test, Kestra will execute the flow and verify that the output value matches the expected value. If the assertion fails, the test will be marked as failed, and you can inspect the execution logs to see what went wrong.

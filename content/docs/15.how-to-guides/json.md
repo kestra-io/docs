@@ -54,13 +54,13 @@ My response: {"title":"Success","method":"GET","params":{},"code":200,"createdAt
 
 ## Accessing Part of the Body
 
-However, if the body is large, we may only want to access a certain part of it. To do this, `jq` is required as the expression returns a string. Using `jq`, the JSON can be parsed and accessed:
+However, if the body is large, we may only want to access a certain part of it. To do this, `jq` is required as the expression returns a string, not a JSON. Using `jq`, the JSON can be parsed and accessed:
 
 ```yaml
 {{ outputs.request.body | jq('.title') | first }}
 ```
 
-This will access the key `title` from the JSON and return that inside of an array. The additional function `first` is added to return it as a string, removing it from the array.
+This will access the key `title` from the JSON. `jq` will return the result inside of an array when used within an expression. In order to access the value, the function `first` is added to the end of the expression, removing it from the array.
 
 We can put that into the example:
 
@@ -125,6 +125,6 @@ The log message returns `My response: test`.
 
 ## Debugging Expressions
 
-You can use [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-outputs) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
+You can use [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
 
 ![debug_outputs](/docs/how-to-guides/json/json1.png)

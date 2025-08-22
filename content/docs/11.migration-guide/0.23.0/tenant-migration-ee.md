@@ -55,7 +55,7 @@ If you are using Helm for deployment, you can use an init container to run the m
 ```yaml
 initContainers:
   - name: kestra-migrate
-    image: kestra/kestra:v0.23.0
+    image: registry.kestra.io/docker/kestra-ee:v0.23.0
     command: ['sh', '-c', 'exec', '/app/kestra', 'migrate', 'default-tenant', '--tenant-id', 'migrated', '--tenant-name', 'migrated']
 ```
 

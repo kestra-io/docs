@@ -1,5 +1,5 @@
 ---
-title: Read-only Secrets
+title: Read-only Secret Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
@@ -20,15 +20,15 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level.
 
-To turn on for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
+To enable for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
 
 ![read-only-secrets-8](/docs/enterprise/read-only-secrets-8.png)
 
-To turn on for a specific Namespace, toggle the setting on in the **Dedicated secrets manager** configuration of the **Edit** tab.
+To enable for a specific Namespace, toggle the setting on in the **Dedicated secrets manager** configuration of the **Edit** tab.
 
 ![read-only-secrets-1](/docs/enterprise/read-only-secrets-1.png)
 
-Secrets will now have a lock icon to show that they cannot be edited from Kestra, and the **Create New Secret** button in the top right corner that would otherwise be present is unavailable.
+Secrets will display a lock icon to indicate read-only status, and the **Create New Secret** button will no longer be visible.
 
 ![read-only-secrets-4](/docs/enterprise/read-only-secrets-4.png)
 
@@ -77,12 +77,14 @@ kestra:
     googleSecretManager:
       project: gcp-project-id
       serviceAccount: |
-        Paste here the contents of the service account JSON key file
+        Paste the contents of the service account JSON key file here.
 ```
 
 ### Vault
 
-With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). The following demonstrates a visual representation of this structure:
+With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). 
+
+Here’s an example directory structure of a Vault secret engine used with Kestra:
 
 ```
 secret/
@@ -102,7 +104,7 @@ secret/
 - `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
 - `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
-With the above example structure, if we only need secrets for `app1`, our configuration in Kestra looks as follows with the added property `secretPathPrefix`:
+To configure access to secrets under `app1`, use the following Kestra configuration with the added property `secretPathPrefix`:
 
 ```yaml
 address: https://my-vault:8200/
@@ -139,7 +141,7 @@ Now to use in our flow, we need to use the `secret()` function with the name of 
 ::collapse{title="Expand for a Flow yaml"}
 ```yaml
 id: neon-db
-namespace: dv-aj
+namespace: company.team
 
 tasks:
 
@@ -181,3 +183,59 @@ pluginDefaults:
 After saving the flow and executing, we can see that Kestra successfully accessed the correct value from Vault and added 100 rows to our Neon database.
 
 ![read-only-secrets-7](/docs/enterprise/read-only-secrets-7.png)
+
+## Filter Secrets by Tags
+
+When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching [tags](./secrets-manager.md#default-tags). This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+
+- Set `readOnly: true` and configure `filterOnTags.tags` as a map of key/value pairs to match.
+
+Below are example configurations for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    readOnly: true
+    azureKeyVault:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    readOnly: true
+    googleSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+## Filter Secrets by Prefix
+
+For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filterOnPrefix.prefix` to select secrets whose names start with the given prefix and `filterOnPrefix.keepPrefix` to control whether the prefix is kept in the Kestra secret key.
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnPrefix:
+        prefix: prod_
+        keepPrefix: true
+```

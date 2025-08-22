@@ -59,8 +59,8 @@ import {computed} from "vue";
     const leadIndicators = computed(() => [
         { title: "Contributors", value: "750+" },
         ...(!error.value ? [{ title: "GitHub Stars", value: numberOfStargazersFormatted.value }] : []),
-        { title: "Kestra Deployments", value: "80k" },
-        { title: "Workflows Executed", value: "400m+" }
+        { title: "Kestra Deployments", value: "120k" },
+        { title: "Workflows Executed", value: "1b+" }
     ])
 </script>
 

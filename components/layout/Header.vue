@@ -395,8 +395,12 @@ if (process.client) {
 
 onMounted(() => {
     if (process.client) {
-        collapse = new nuxtApp.$bootstrap.Collapse('#main-header', {
-            toggle: false
+        // Wait for bootstrap to be available
+        nextTick(() => {
+            const bootstrap = nuxtApp.$bootstrap as any;
+            collapse = bootstrap?.Collapse 
+                ? new bootstrap.Collapse('#main-header', { toggle: false })
+                : undefined;
         });
 
         document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");

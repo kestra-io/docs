@@ -41,7 +41,7 @@ tasks:
     # Retry the task if it fails
     retry:
       behavior: RETRY_FAILED_TASK
-      maxAttempt: 2
+      maxAttempts: 2
       type: constant
       interval: PT5M
       warningOnRetry: true

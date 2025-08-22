@@ -44,7 +44,7 @@ In order to run the command at startup, you need to run each component independe
 
 To assign a worker group, add the `workerGroup.key` property to the task or the polling trigger. A default worker group can also be configured at the `namespace` or `tenant` level.
 
-The flow editor validates worker group keys when creating flows from the UI. If the provided key doesn’t exist, the syntax validation will prevent the flow from being saved.
+Worker groups can be defined at the flow level, and the flow editor validates worker group keys when creating flows from the UI. If the provided key doesn’t exist, the syntax validation will prevent the flow from being saved.
 
 Below is an example flow configuration with a worker group:
 
@@ -134,7 +134,6 @@ Here are common use cases in which Worker Groups can be beneficial:
 - Execute tasks and polling triggers on a worker with a specific Operating System (e.g., a Windows server).
 - Restrict backend access to a set of workers (firewall rules, private networks, etc.).
 - Execute tasks and polling triggers close to a remote backend (region selection).
-
 
 You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../16.scripts/index.md) are set to run on the `gpu` worker group:
 

@@ -120,7 +120,7 @@ tasks:
 
         def process_event(event):
             # TODO adjust the URL below to your Kestra Webhook URL
-            url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
+            url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, headers=headers, json=event)
             logger.info(f"Forwarding event response: {response.status_code} - {response.text}")
@@ -259,6 +259,10 @@ triggers:
     key: superStrongSecretKey42
 ```
 
+::alert{type="info"}
+Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
+::
+
 And here is the result:
 
 ![img_20.png](/docs/how-to-guides/slack-webhook/img_20.png)
@@ -306,7 +310,7 @@ async def slack_events(request: Request):
     print(json_data)
 
     # URL of your Kestra flow webhook
-    url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
+    url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
     headers = {
         "Content-Type": "application/json",
     }

@@ -76,7 +76,8 @@ You are not permitted to:
 - Use the Solution to provide third party training on the content and/or functionality of the Solution, except for training your licensed Users;
 - Cause or permit reverse engineering (unless required by law for interoperability), disassembly or decompilation of the Solution;
 - disclose results of any Solution benchmark tests without KESTRA’s prior written consent.
-1. **Purpose of the License**
+
+2. **Purpose of the License**
 
 The Solution will be used by You for the purpose of its use as mentioned in Appendix 1 and the applicable Order.
 
@@ -95,19 +96,19 @@ The right to use the Solution is granted to You only upon full payment of the pr
 
 You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](https://kestra.io/docs/).
 
-1. **Selection of Users**
+2. **Selection of Users**
 
 It is also Your responsibility to designate, among the Users, who will be in charge of the use and administration of the Solution.
 
 It is Your responsibility to use the Solution in strict compliance with the terms and conditions of this Agreement. In case of doubt of license usage, You shall contact KESTRA as soon as possible to commercially rectify its usage.
 
-1. **Access and confidentiality**
+3. **Access and confidentiality**
 
 Each User exclusively accesses the Solution through a secure authentication system determined and set by You.
 
 You are also responsible for implementing and enforcing strict policies and procedures to ensure the confidentiality and integrity of User credentials.
 
-1. **Contractual warranties**
+4. **Contractual warranties**
 
 KESTRA warrants that the Solution will, during the Initial Period , substantially operate as described in the applicable Solution technical and functional documentation set forth under Appendix 1.
 
@@ -129,15 +130,15 @@ KESTRA does not host the Solution or the data collected by it. You remain respon
 
 From the Effective date of the Agreement, You undertake to pay KESTRA the Subscription Fees set forth in the Order Form.
 
-1. **Invoicing and payment**
+2. **Invoicing and payment**
 
 Subscription Fees shall be calculated and invoiced as set out in the Order Form. The above prices will be the subject of invoices by KESTRA, communicated to You by any written means, and in particular by email, in accordance with the provisions set forth in the Order Form.
 
-1. **Late payments and payment incidents**
+3. **Late payments and payment incidents**
 
 In the absence of payment of an amount due on its due date within thirty (30) calendar days following receipt by You of a formal notice by registered letter with acknowledgement of receipt, which has remained without effect, KESTRA reserves the right to (i) suspend the Agreement, (ii) demand immediate payment of all amounts due by You, and/or (iii) terminate the Agreement, under the conditions set forth in "*Termination for breach*" section.
 
-1. **Taxes and other charges**
+4. **Taxes and other charges**
 
 Each Party shall be responsible for the due and proper payment of all taxes assessed on, levied, imposed by any government or any local state and/or national fiscal authority of any country or otherwise due in respect of its own profit, whether actual or assumed, and income and property arising in connection with this Agreement and/or its performance.
 
@@ -153,14 +154,15 @@ In particular, You shall be responsible for:
 - carrying out updates of the Solution in accordance with the terms of the Appendix 1;
 - ensuring at all times that Your infrastructures take into account the conditions of use of the Solution and, where applicable, take the necessary measures to ensure that Your computer infrastructure is compatible with the requirements mentioned in the terms of the installation of the Solution ;
 - having qualified and trained personnel available to use the Solution, in order to use it in accordance with the instructions provided by KESTRA.
-1. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
+
+2. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
 2. You are solely responsible for the use of the Solution by You and your Users.
 3. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
 4. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
 
 You warrant against any misuse, non-compliant or illicit use that Users may make of the Solution, in particular against infringement of the laws and regulations in force. You are thus exclusively responsible for putting in place all procedures intended to prevent or remedy the commission of such acts.
 
-1. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
+5. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
 
 You warrant to KESTRA that it has all necessary rights and permissions to distribute such Content. You undertake to ensure that such Content is lawful, does not infringe public order, public morality or third party rights, does not violate any legislative or regulatory provision and, more generally, is in no way likely to give rise to civil or criminal liability on the part of KESTRA.
 
@@ -186,7 +188,7 @@ Where applicable, the Parties shall only be granted a license to use the element
 
 Your content and Your data shall remain in Your exclusive property.
 
-1. **Intellectual Property Rights Infringement**
+2. **Intellectual Property Rights Infringement**
 
 Subject to this Agreement, KESTRA will (i) defend, or at its option settle, any claim, demand, action or legal proceeding (“Claim”) made or brought against You by a third party alleging that the use of the Solution as contemplated hereunder directly infringes the intellectual property rights of such third party, and (ii) pay (a) any final judgement or award directly resulting from such Claim to the extent such judgement or award is based upon such alleged infringement or (b) those damages agreed to by KESTRA in a monetary settlement of such Claim.
 
@@ -350,7 +352,7 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **User(s)**: means any natural person who is an employee, trainee or temporary worker of Your or a You’s partner who is authorized by You to use the Solution and who has an identifier for this purpose.
 
-1. **The Solution**
+2. **The Solution**
 
 **Scope**
 

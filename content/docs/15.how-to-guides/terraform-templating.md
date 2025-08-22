@@ -192,7 +192,7 @@ tasks:
     retry:
       type: constant
       interval: PT1M
-      maxAttempt: 5
+      maxAttempts: 5
     %{ if length(max-duration) > 0}
     maxDuration: "${max-duration}"
     %{ endif }

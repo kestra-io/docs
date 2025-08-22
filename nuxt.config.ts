@@ -164,6 +164,9 @@ export default defineNuxtConfig({
         public: {
             siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
             apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
+            currentSHA: (process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_COMMIT_SHA && process.env.CF_PAGES_BRANCH === 'main')
+                ? process.env.CF_PAGES_COMMIT_SHA
+                : 'dev',
             docs: {
                 sections: {
                     "Get Started with Kestra": [
@@ -190,7 +193,8 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Migration Guide"
+                        "Migration Guide",
+                        "Performance"
                     ],
                     "Reference Docs": [
                         "Configuration",
@@ -210,6 +214,18 @@ export default defineNuxtConfig({
     },
 
     nitro: {
+        storage: {
+            kv: {
+                driver: "cloudflare-kv-binding",
+                binding: "CLOUDFLARE_KVSTORAGE"
+            }
+        },
+        devStorage: {
+            kv: {
+                driver: "fs",
+                base: './.data/db'
+            }
+        },
         prerender: {
             routes: [
                 '/rss.xml',
@@ -327,7 +343,15 @@ export default defineNuxtConfig({
         '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
         '/docs/workflow-components/tasks/scripts': {redirect: '/docs/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
-        '/trust': {redirect: 'https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604'}
+        '/trust': {redirect: 'https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604'},
+        '/docs/ui/administration/stats': {redirect: '/docs/ui/administration/system-overview'},
+        '/docs/architecture/executor': {redirect: '/docs/architecture/server-components#executor'},
+        '/docs/architecture/worker': {redirect: '/docs/architecture/server-components#worker'},
+        '/docs/architecture/scheduler': {redirect: '/docs/architecture/server-components#scheduler'},
+        '/docs/architecture/indexer': {redirect: '/docs/architecture/server-components#indexer'},
+        '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'},
+        '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
+
     },
 
     build: {

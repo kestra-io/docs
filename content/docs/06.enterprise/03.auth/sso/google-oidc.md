@@ -35,15 +35,15 @@ Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity
 
 2. **Add a New Provider**:
    - Click on **Add a Provider**.
-   - From the list, choose **"OpenID Connect"**.
+   - From the list, choose **OpenID Connect**.
 
 ![add-provider](docs/how-to-guides/google-oidc/add-provider.png)
 
 3. **Configure the OIDC Provider**:
-   - **Grant type**: Select Code Flow grant type.
+   - **Grant type**: Select the Code Flow grant type.
    - **Provider Name**: Enter a display name for the OIDC provider.
-   - **Client ID**: Input the **Client ID** obtained from Google.
-   - **Client Secret**: Input the **Client Secret** associated with the Client ID.
+   - **Client ID**: Enter the **Client ID** obtained from Google.
+   - **Client Secret**: Enter the **Client Secret** associated with the Client ID.
    - **Issuer URL**: Provide the **Issuer URL** (e.g., `https://accounts.google.com`).
    - **Scopes**: Specify any additional scopes required by your application.
 
@@ -76,8 +76,8 @@ Now that Google is set up as an OIDC provider, we need to link it to Kestra.
           openid:
             issuer: 'https://accounts.google.com'
 ```
-- Replace `clientId` and `clientSecret` with the values from Google Identity Platform.
-- Update redirectUri with your Kestra instance URL.
+- Replace `clientId` and `clientSecret` with the values from the Google Identity Platform.
+- Update the `redirectUri` with your Kestra instance URL.
 - Restart Kestra to apply the changes.
 
 ## Additional Resources
@@ -85,4 +85,4 @@ Now that Google is set up as an OIDC provider, we need to link it to Kestra.
 - [Managing SAML and OIDC Providers Programmatically](https://cloud.google.com/identity-platform/docs/managing-providers-programmatically)
 - [Identity Platform Documentation](https://cloud.google.com/identity-platform/docs)
 
-By following these steps, you can successfully set up OIDC authentication using Google Identity Platform, allowing users to sign in with their existing credentials from your chosen OIDC provider.
+By following these steps, you can successfully set up OIDC authentication using Google Identity Platform, allowing users to sign in with their existing credentials via your chosen OIDC provider.

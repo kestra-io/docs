@@ -49,6 +49,7 @@
         () => queryCollection(CollectionNames.docs)
             .where('path', 'LIKE', `${currentPageSlug}/%`)
             .where('path', 'NOT LIKE', `${currentPageSlug}/%/%`)
+            .order('release', 'DESC')
             .all()
     );
 

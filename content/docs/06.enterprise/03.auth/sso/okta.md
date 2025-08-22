@@ -28,12 +28,12 @@ Next, select **Create App Integration**, select **OIDC - OpenID Connect** as the
 
 ## Step 2: Configure the Web App Integration
 
-In the General Settings, give your App integration a name and set your grant type. For this example, we are using Authorization Code. You can open **Advanced Settings** to configure more sensitive grants. Okta has several direct auth API grants such as OTP, OOB, MFA OTP, and MFA OOB that you can select only if necessary.
+In the General Settings, give your App integration a name and set your grant type. For this example, we are using Authorization Code. You can open **Advanced Settings** to configure more sensitive grants. Okta has several direct-auth API grants, such as OTP, OOB, MFA OTP, and MFA OOB that you can select only if necessary.
 
 ![okta-3](/docs/enterprise/sso/okta-3.png)
 
 Here, you also set the **Sign-in redirect URIs** and **Sign-out redirect URIs** for your App integration. For this example connecting to Kestra, we set a Sign-in redirect URI as `http://localhost:8080/oauth/callback/okta` and sign-out as `http://localhost:8080/logout`, but you can customize this to your environment.
-Further down the page, you can configure optional **Trusted Origins** and then choose the **Assignments** and the access settings for the App integration.
+Further down the page, you can configure optional **Trusted Origins**, and then choose the **Assignments** and the access settings for the App integration.
 
 We'll set the access to everyone in the organization, but you can set stricter access to only certain selected groups or skip for now. Lastly, we uncheck the setting to enable immediate access with Federation Broker Mode because we will give manual app access for this basic example. Finally, hit **Save**.
 
@@ -55,11 +55,11 @@ Select the Kestra application name you created and enter the added details for t
 
 ## Step 4: Connect to Kestra
 
-Now that Okta is set up as an OIDC provider, we need to link it to Kestra. After saving your settings in the previous step, Okta will automatically direct you to your integration. Here, you can collect your client credentials to connect to Kestra, **Client ID** and **Client Secret**.
+Now that Okta is set up as an OIDC provider, we need to link it to Kestra. After saving your settings in the previous step, Okta will automatically redirect you to your integration. Here, you can collect your client credentials to connect to Kestra, **Client ID** and **Client Secret**.
 
 ![okta-5](/docs/enterprise/sso/okta-5.png)
 
-After copying your Client Id and Client Secret, switch from the **General** tab to the **Sign On** tab. Here, you can configure your **OpenID Connect ID Token**, and for this example, we will edit the issuer from Dynamic to our Okta URL. Click **Save** and copy the URL to be used in our Kestra configuration along with the Client Id and Client Secret.
+After copying your **Client ID** and **Client Secret**, switch from the **General** tab to the **Sign On** tab. Here, you can configure your **OpenID Connect ID Token**. For this example, we will edit the issuer from Dynamic to our Okta URL. Click **Save** and copy the URL to be used in our Kestra configuration along with the Client Id and Client Secret.
 
 ![okta-6](/docs/enterprise/sso/okta-6.png)
 
@@ -81,7 +81,7 @@ After copying your Client Id and Client Secret, switch from the **General** tab 
           openid:
             issuer: 'https://<your-domain-id>.okta.com'
 ```
-- Replace `clientId` and `clientSecret` with the values from the Okta App integration copied previously.
+- Replace `clientId` and `clientSecret` with the values copied from the Okta App integration.
 - Replace `issuer` with your issuer URL from Application's sign on settings from before.
 - Restart Kestra to apply the changes and log in.
 
@@ -89,6 +89,6 @@ On restart, you will now see Okta as an available login method.
 
 ![okta-9](/docs/enterprise/sso/okta-9.png)
 
-After logging in with the created user, navigate to the **Administration > IAM** tab, and you can see un the **Users** tab that the user can sign in with basic authentication as well as Okta.
+After logging in with the created user, navigate to the **Administration > IAM** tab, and you can see in the **Users** tab that the user can sign in with basic authentication as well as Okta.
 
 ![okta-10](/docs/enterprise/sso/okta-10.png)

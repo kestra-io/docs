@@ -69,9 +69,9 @@ export const menuItems: MenuItems = {
             {
                 icon: CloudOutline,
                 title: "Cloud Edition",
-                description: "Register for the Cloud Edition",
+                description: "the Cloud edition managed by Kestra",
                 link: "/cloud",
-                tag: "Early Access"
+                tag: "Request Access"
             }
         ]
     },

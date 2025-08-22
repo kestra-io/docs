@@ -54,6 +54,10 @@
                   <label for="demo-email">Company Email</label>
                   <input name="email" type="email" class="form-control" id="demo-email" placeholder="Company Email" required>
                 </div>
+                <div class="col-12 mt-3 d-flex align-items-start gap-2">
+                    <input name="agree" class="form-check-input" type="checkbox" id="demo-agree" required>
+                    <label for="demo-agree" class="form-check-label" style="color:var(--ks-content-inverse);font-size: medium;opacity: 0.7;">I agree to the processing of my personal data to schedule this meeting.</label>
+                </div>
                 <div class="col-12 mt-4 d-flex justify-content-center">
                   <button type="submit" class="btn btn-primary w-100">
                     Let's Talk
@@ -108,6 +112,12 @@
       const form = formRef.value;
       const hsq = (window._hsq = window._hsq || []);
 
+      if(!form["agree"].checked){
+        valid.value = false;
+        message.value = "Almost there! Please check the consent box so our team can contact you.";
+        return;
+      }
+
       if (!form.checkValidity()) {
         valid.value = false;
         message.value = "Invalid form, please review the fields.";
@@ -120,7 +130,7 @@
           email: form["email"].value,
           firstname: form["first-name"].value,
           lastname: form["last-name"].value,
-          kuid: localStorage.getItem("KUID"),
+          kuid: localStorage.getItem("KUID") || "",
         },
       ]);
 
@@ -145,11 +155,11 @@
           {
             objectTypeId: "0-1",
             name: "kuid",
-            value: localStorage.getItem("KUID"),
+            value: localStorage.getItem("KUID") || "",
           },
         ],
         context: {
-          hutk: getHubspotTracking(),
+          hutk: getHubspotTracking() || "",
           ipAddress: ip.data.ip,
           pageUri: route.path,
           pageName: document.title,

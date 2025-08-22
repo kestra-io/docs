@@ -131,7 +131,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 For the Payload URL, your URL will follow the following format:
 
 ```
-https://{your_hostname}/api/v1/executions/webhook/system/sync_files_from_git/abcdefg
+https://{your_hostname}/api/v1/main/executions/webhook/system/sync_files_from_git/abcdefg
 ```
 
 This will require your host name to be publicly accessible. If you want to test this without having to deploy Kestra first, you can use a tool like [ngrok](https://ngrok.com/) to tunnel Kestra so GitHub can see it. As we're putting the secret in the URL, we can leave the Secret field blank.
