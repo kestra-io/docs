@@ -214,24 +214,46 @@
         }
     }
 
-    const scrollToBottom = async (): Promise<void> => {
-        return new Promise(resolve => {
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                if (contentContainer.value) {
-                    contentContainer.value.scroll({
-                        top: contentContainer.value.scrollHeight,
-                        behavior: 'smooth'
-                    });
-                    resolve();
-                }
-            }));
-        })
+    const scrollingInterval = ref();
+
+    let userScrolling = false;
+    const cancellableAutoScrollHandling = () => {
+        window.addEventListener("wheel", () => userScrolling = true);
+        window.addEventListener("touchmove", () => userScrolling = true);
+        window.addEventListener("mousedown", () => userScrolling = true);
+
+        contentContainer.value!.addEventListener("scroll", () => {
+            if (!userScrolling) return;
+            if (scrollingInterval.value !== undefined) {
+                clearInterval(scrollingInterval.value);
+                scrollingInterval.value = undefined;
+            }
+        });
     }
 
-    const isMessageStreaming = (message: Message): boolean => {
-        return message.role === 'assistant' &&
-            !message.markdown &&
-            isLoading.value
+    const startScrolling = async (): Promise<void> => {
+        userScrolling = false;
+        cancellableAutoScrollHandling();
+
+        if (scrollingInterval.value !== undefined) {
+            return;
+        }
+
+        scrollingInterval.value = setInterval(() => {
+            requestAnimationFrame(() => {
+                if (contentContainer.value) {
+                    let scrollTarget = contentContainer.value.scrollTop + 2;
+                    if (!isLoading.value && scrollTarget >= contentContainer.value.scrollHeight) {
+                        scrollTarget = contentContainer.value.scrollHeight;
+
+                        clearInterval(scrollingInterval.value);
+                        scrollingInterval.value = undefined;
+                    }
+
+                    contentContainer.value.scrollTop = scrollTarget;
+                }
+            })
+        }, 16);
     }
 
     const createUserMessage = (content: string): Message => ({
@@ -271,8 +293,6 @@
                 messages.value[indexToUpdate].sources = sources
             }
         }
-
-        return scrollToBottom()
     }
 
     const handleContentClick = (event: Event): void => {
@@ -335,6 +355,7 @@
 
             const indexToUpdate = messages.value.length - 1
 
+            startScrolling()
             while (true) {
                 const {value, done} = await reader.read()
                 if (done) break
@@ -353,7 +374,6 @@
             messages.value.push(createSystemMessage("Oops! Something went wrong. Please try again later."))
         } finally {
             isLoading.value = false
-            await scrollToBottom()
         }
     }
 </script>
