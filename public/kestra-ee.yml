@@ -35,6 +35,165 @@ tags:
 - name: Misc
   description: Misc api
 paths:
+  /api/v1/auditlogs/search:
+    get:
+      tags:
+      - Audit Logs
+      summary: "Search for audit logs across all tenants, required to be SuperAdmin"
+      operationId: searchAuditLogsForAllTenants
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: namespace
+        in: query
+        description: A namespace filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: executionId
+        in: query
+        description: An execution filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: userId
+        in: query
+        description: A user id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: id
+        in: query
+        description: A id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: permission
+        in: query
+        description: A permission filter
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Permission"
+      - name: startDate
+        in: query
+        description: The start datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        explode: false
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+      - name: type
+        in: query
+        description: The event that create the audit log
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/CrudEventType"
+      responses:
+        "200":
+          description: searchAuditLogsForAllTenants 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_AuditLogController.AuditLogWithUser_"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/auditlogs/{id}/diff:
+    get:
+      tags:
+      - Audit Logs
+      summary: Retrieve the diff between audit logs from global resource like users
+      description: Retrieves the diff between the current version and a selected previous
+        version of a given resource based on audit logs.
+      operationId: getGlobalResourceDiffFromAuditLog
+      parameters:
+      - name: id
+        in: path
+        description: The id of the audit log
+        required: true
+        schema:
+          type: string
+      - name: previousId
+        in: query
+        description: The id of a previous audit log to compare with
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: getGlobalResourceDiffFromAuditLog 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditLogController.AuditLogDiff"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/auths:
     get:
       tags:
@@ -210,6 +369,10 @@ paths:
       responses:
         "200":
           description: enterMaintenance 200 response
+          content:
+            application/json:
+              schema:
+                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -224,6 +387,10 @@ paths:
       responses:
         "200":
           description: exitMaintenance 200 response
+          content:
+            application/json:
+              schema:
+                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -394,6 +561,42 @@ paths:
       responses:
         "200":
           description: listAvailableVersionedPlugins 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/instance/versioned-plugins/available/secrets-managers:
+    get:
+      tags:
+      - Plugins
+      summary: List available plugin artifacts for Kestra Secret Manager
+      description: Superadmin-only. Lists all secret managers available for installation.
+        Requires INFRASTRUCTURE permission.
+      operationId: listAvailableVersionedPluginsForSecretManager
+      responses:
+        "200":
+          description: listAvailableVersionedPluginsForSecretManager 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/instance/versioned-plugins/available/storages:
+    get:
+      tags:
+      - Plugins
+      summary: List available plugin artifacts for Kestra Internal Storage
+      description: Superadmin-only. Lists all internal storages available for installation.
+        Requires INFRASTRUCTURE permission.
+      operationId: listAvailableVersionedPluginsForStorage
+      responses:
+        "200":
+          description: listAvailableVersionedPluginsForStorage 200 response
           content:
             application/json:
               schema:
@@ -10761,10 +10964,10 @@ paths:
       - name: existing
         in: query
         description: Return only existing namespace
+        required: true
         explode: false
         schema:
           type: boolean
-          nullable: true
           default: false
       - name: tenant
         in: path
@@ -10777,7 +10980,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_NamespaceWithDisabled_"
+                $ref: "#/components/schemas/PagedResults_Namespace_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -10785,7 +10988,7 @@ paths:
     get:
       tags:
       - Namespaces
-      summary: Retrieve namespace details
+      summary: Get a namespace
       operationId: getNamespace
       parameters:
       - name: id
@@ -11375,6 +11578,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{namespace}/kv/inheritance:
+    get:
+      tags:
+      - KV
+      summary: List all keys for a namespace and parent namespaces
+      operationId: listKeysWithInheritence
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listKeysWithInheritence 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KVEntry"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -13047,15 +13280,18 @@ paths:
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestSuiteController.RunRequest"
       responses:
         "200":
           description: runTestSuite 200 response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TestSuiteRunResult"
+                $ref: "#/components/schemas/TestSuiteRunResult"
   /api/v1/{tenant}/triggers:
     put:
       tags:
@@ -13853,7 +14089,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Usage"
+                $ref: "#/components/schemas/UsageEE"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -13934,6 +14170,8 @@ components:
           minimum: 1
           type: integer
           format: int32
+        description:
+          type: string
         inputs:
           type: array
           items:
@@ -14145,6 +14383,8 @@ components:
           nullable: true
           items:
             type: string
+        existingOnly:
+          type: boolean
     ApiGroupSummary:
       required:
       - id
@@ -14704,10 +14944,13 @@ components:
       - id
       - impersonatedBy
       - ipAddress
+      - tenantId
       - type
       - userId
       type: object
       properties:
+        tenantId:
+          type: string
         id:
           type: string
         type:
@@ -14980,19 +15223,6 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
-    ConfigurationUsage:
-      type: object
-      properties:
-        repositoryType:
-          type: string
-        queueType:
-          type: string
-        storageType:
-          type: string
-        secretType:
-          type: string
-        javaSecurityEnabled:
-          type: boolean
     ConversionService:
       type: object
     ConversionServiceProvider:
@@ -15406,6 +15636,7 @@ components:
       - enabled
       - errors
       - input
+      - isDefault
       - value
       type: object
       properties:
@@ -15414,6 +15645,8 @@ components:
         value:
           type: object
         enabled:
+          type: boolean
+        isDefault:
           type: boolean
         errors:
           type: array
@@ -15704,6 +15937,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -15727,8 +15962,6 @@ components:
             deprecated: true
             items:
               $ref: "#/components/schemas/PluginDefault"
-          description:
-            type: string
           variables:
             type: object
             additionalProperties:
@@ -15807,6 +16040,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -15939,6 +16174,8 @@ components:
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
+          description:
+            type: string
           disabled:
             type: boolean
           deleted:
@@ -16069,6 +16306,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -16129,56 +16368,6 @@ components:
         count:
           type: integer
           format: int64
-    HostUsage:
-      type: object
-      properties:
-        uuid:
-          type: string
-        hardware:
-          $ref: "#/components/schemas/HostUsage.Hardware"
-        os:
-          $ref: "#/components/schemas/HostUsage.Os"
-        jvm:
-          $ref: "#/components/schemas/HostUsage.Jvm"
-    HostUsage.Hardware:
-      type: object
-      properties:
-        logicalProcessorCount:
-          type: integer
-          format: int32
-        physicalProcessorCount:
-          type: integer
-          format: int64
-        maxFreq:
-          type: integer
-          format: int64
-        memory:
-          type: integer
-          format: int64
-        knownVmMacAddr:
-          type: boolean
-        knownDockerMacAddr:
-          type: boolean
-    HostUsage.Jvm:
-      type: object
-      properties:
-        name:
-          type: string
-        vendor:
-          type: string
-        version:
-          type: string
-    HostUsage.Os:
-      type: object
-      properties:
-        family:
-          type: string
-        version:
-          type: string
-        codeName:
-          type: string
-        buildNumber:
-          type: string
     HttpParameters:
       type: object
       allOf:
@@ -16962,7 +17151,8 @@ components:
           type: boolean
         defaults:
           title: The default value to use if no value is specified.
-          type: object
+          allOf:
+          - $ref: "#/components/schemas/Property_Object_"
         displayName:
           title: The display name of the input.
           type: string
@@ -17680,6 +17870,13 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
+    MiscController.ApiUsage:
+      type: object
+      properties:
+        flows:
+          $ref: "#/components/schemas/FlowUsage"
+        executions:
+          $ref: "#/components/schemas/ExecutionUsage"
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -17933,46 +18130,6 @@ components:
           type: string
         deleted:
           type: boolean
-    NamespaceUsage:
-      type: object
-      properties:
-        count:
-          type: integer
-          format: int64
-    NamespaceWithDisabled:
-      required:
-      - deleted
-      - disabled
-      - id
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/Namespace"
-      - $ref: "#/components/schemas/NamespaceLight"
-      - type: object
-        properties:
-          id:
-            pattern: "^[a-z0-9][a-z0-9._-]*"
-            type: string
-          deleted:
-            type: boolean
-          description:
-            type: string
-          variables:
-            type: object
-            additionalProperties:
-              type: object
-          pluginDefaults:
-            type: array
-            items:
-              $ref: "#/components/schemas/PluginDefault"
-          allowedNamespaces:
-            type: array
-            items:
-              $ref: "#/components/schemas/Namespace.AllowedNamespace"
-          workerGroup:
-            $ref: "#/components/schemas/WorkerGroup"
-          disabled:
-            type: boolean
     Output:
       required:
       - id
@@ -17992,6 +18149,8 @@ components:
           $ref: "#/components/schemas/Type"
         displayName:
           type: string
+        required:
+          type: boolean
     PageRequest:
       type: object
       properties:
@@ -18263,7 +18422,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_NamespaceWithDisabled_:
+    PagedResults_Namespace_:
       required:
       - results
       - total
@@ -18272,7 +18431,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/NamespaceWithDisabled"
+            $ref: "#/components/schemas/Namespace"
         total:
           type: integer
           format: int64
@@ -18594,25 +18753,6 @@ components:
           type: string
         flowable:
           type: boolean
-    PluginMetric:
-      required:
-      - count
-      - meanTime
-      - totalTime
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-        count:
-          type: number
-          format: double
-        totalTime:
-          type: number
-          format: double
-        meanTime:
-          type: number
-          format: double
     PluginSchema:
       type: object
       properties:
@@ -18645,13 +18785,6 @@ components:
       - CORE
       - INGESTION
       - BI
-    PluginUsage:
-      type: object
-      properties:
-        manifest:
-          type: object
-          additionalProperties:
-            type: string
     Property_Boolean_:
       required:
       - expression
@@ -18736,6 +18869,7 @@ components:
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
       - TRIGGER_ID
+      - EXECUTION_ID
       - CHILD_FILTER
       - WORKER_ID
       - EXISTING_ONLY
@@ -19250,15 +19384,6 @@ components:
       enum:
       - SERVER
       - STANDALONE
-    ServerType:
-      type: string
-      enum:
-      - EXECUTOR
-      - INDEXER
-      - SCHEDULER
-      - STANDALONE
-      - WEBSERVER
-      - WORKER
     Service.ServiceState:
       type: string
       enum:
@@ -19418,47 +19543,7 @@ components:
       - SCHEDULER
       - WEBSERVER
       - WORKER
-    ServiceUsage:
-      required:
-      - dailyStatistics
-      type: object
-      properties:
-        dailyStatistics:
-          type: array
-          items:
-            $ref: "#/components/schemas/ServiceUsage.DailyServiceStatistics"
-    ServiceUsage.DailyServiceStatistics:
-      required:
-      - type
-      - values
-      type: object
-      properties:
-        type:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: "#/components/schemas/ServiceUsage.DailyStatistics"
-    ServiceUsage.DailyStatistics:
-      required:
-      - avg
-      - date
-      - max
-      - min
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        min:
-          type: integer
-          format: int64
-        max:
-          type: integer
-          format: int64
-        avg:
-          type: integer
-          format: int64
+      - INVALID
     SetupConfiguration:
       required:
       - done
@@ -19816,6 +19901,15 @@ components:
           type: boolean
         disabled:
           type: boolean
+    TestSuiteController.RunRequest:
+      required:
+      - testCases
+      type: object
+      properties:
+        testCases:
+          type: array
+          items:
+            type: string
     TestSuiteController.SearchTestsLastResult:
       required:
       - testSuiteIds
@@ -20063,66 +20157,6 @@ components:
             $ref: "#/components/schemas/AssertionRunError"
         fixtures:
           $ref: "#/components/schemas/Fixtures"
-    Usage:
-      required:
-      - configurations
-      - executions
-      - flows
-      - host
-      - instanceUuid
-      - plugins
-      - serverType
-      - startTime
-      - startUuid
-      - uuid
-      - version
-      - zoneId
-      type: object
-      properties:
-        uuid:
-          type: string
-        startUuid:
-          type: string
-        instanceUuid:
-          type: string
-        serverType:
-          $ref: "#/components/schemas/ServerType"
-        version:
-          type: string
-        zoneId:
-          type: string
-        uri:
-          type: string
-          nullable: true
-        environments:
-          type: array
-          nullable: true
-          items:
-            type: string
-        startTime:
-          type: string
-          format: date-time
-        host:
-          $ref: "#/components/schemas/HostUsage"
-        configurations:
-          $ref: "#/components/schemas/ConfigurationUsage"
-        plugins:
-          type: array
-          items:
-            $ref: "#/components/schemas/PluginUsage"
-        flows:
-          $ref: "#/components/schemas/FlowUsage"
-        executions:
-          $ref: "#/components/schemas/ExecutionUsage"
-        services:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ServiceUsage"
-        pluginMetrics:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/PluginMetric"
     UsageEE:
       type: object
       properties:
@@ -20132,12 +20166,10 @@ components:
           $ref: "#/components/schemas/UserUsage"
         roles:
           $ref: "#/components/schemas/RoleUsage"
-        namespaces:
-          $ref: "#/components/schemas/NamespaceUsage"
         tenants:
           $ref: "#/components/schemas/TenantUsage"
       allOf:
-      - $ref: "#/components/schemas/Usage"
+      - $ref: "#/components/schemas/MiscController.ApiUsage"
     UserGroup:
       type: object
       properties:
