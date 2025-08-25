@@ -1,5 +1,4 @@
 <script setup>
-    import {onMounted} from "#imports";
     import {createPopper} from "@popperjs/core";
 
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
@@ -41,13 +40,12 @@
     const codeBlock = ref(null);
 
     watch(() => props.code, (newVal) => {
-        console.log("NEW CODE", newVal)
-        nextTick(() => {
-            if (codeBlock.value && newVal.length > 0) {
-                highlightCodeBlocks(codeBlock.value);
-            } else {
-                console.log("WEIRD")
-            }
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (codeBlock.value && newVal.length > 0) {
+                    highlightCodeBlocks(codeBlock.value);
+                }
+            })
         });
     }, {immediate: true});
 
