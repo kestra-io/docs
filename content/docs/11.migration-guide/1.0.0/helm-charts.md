@@ -55,7 +55,7 @@ common:
   # more...
 ```
 
-You can override all those configuration options in the deployments entry in the values.yaml.
+You can override all those configuration options in the `deployments` entry in the `values.yaml` file.
 
 ```yaml
 deployments:
@@ -71,7 +71,7 @@ deployments:
 
 ## Custom configuration files
 
-We changed the way to provide custom configuration files to Kestra. It's now all under configurations entry in the `values.yaml`.
+We changed the way to provide custom configuration files to Kestra. It's now all under configurations entry in the `values.yaml` file.
 
 ### Before
 
