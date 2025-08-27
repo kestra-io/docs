@@ -40,11 +40,14 @@
                         <div class="bubble">
                             <template v-if="message.role === 'assistant'">
                                 <div v-if="message.markdown" @click="handleContentClick">
-                                    <ContentRenderer
-                                        class="markdown prose prose-sm"
-                                        :value="message.markdown"
-                                        :components="proseComponents"
-                                    />
+                                    <ClientOnly>
+                                        <ContentRenderer
+                                            class="markdown prose prose-sm"
+                                            :value="message.markdown"
+                                            :components="proseComponents"
+                                            :key="messageIndex"
+                                        />
+                                    </ClientOnly>
                                 </div>
 
                                 <div v-if="isLoading" class="loading">
@@ -116,7 +119,6 @@
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import {extractSourcesFromMarkdown, isInternalLink} from '../../utils/sources'
-    import throttle from "lodash/throttle";
 
     interface Message {
         content: string
@@ -151,7 +153,7 @@
     const {parseMarkdown} = await import("@nuxtjs/mdc/runtime")
 
     // make MDCRenderer use the prose components of this content
-    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
+    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("../content/Prose*.vue", {eager: true})
     const proseComponents: Record<string, Component> = {}
     for (const path in proseComponentsImports) {
         // extract the component name from the file path
@@ -233,22 +235,26 @@
         timestamp: new Date().toISOString()
     })
 
-    const updateMarkdown = throttle(
-        async (index: number) => {
-            try {
-                messages.value[index].markdown = await parseMarkdown(messages.value[index].content);
-            } catch (e) {
-                // Silent fail for markdown parsing
+    const updateMarkdown = async (index: number) => {
+        try {
+            const rawMd = messages.value[index].content;
+            // Verify that markdown code blocks (```) and inline code (`) are all closed properly
+            const codeBlockCount = (rawMd.match(/```/g) || []).length;
+            const inlineCodeCount = (rawMd.match(/(?<!`)`(?!`)/g) || []).length;
+            if ((codeBlockCount % 2 !== 0) || (inlineCodeCount % 2 !== 0)) {
+                return;
             }
-        },
-        500
-    )
+            messages.value[index].markdown = await parseMarkdown(rawMd);
+        } catch (e) {
+            // Silent fail for markdown parsing
+        }
+    };
 
     const processStreamData = async (indexToUpdate: number, value: StreamValue, data: ResponseData): Promise<void> => {
         if (value.id === 'response' && data.response) {
             messages.value[indexToUpdate].content += data.response
             messages.value[indexToUpdate].timestamp = new Date().toISOString()
-            updateMarkdown(indexToUpdate);
+            await updateMarkdown(indexToUpdate);
         }
 
         if (value.id === 'completed') {
@@ -256,8 +262,6 @@
             if (sources.length > 0) {
                 messages.value[indexToUpdate].sources = sources
             }
-
-            await updateMarkdown.flush();
         }
     }
 

@@ -43,8 +43,7 @@
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel-nuxt": "^1.1.5",
     "vue3-count-to": "^1.1.2",
-    "vuex": "^4.1.0",
-    "lodash": "^4.17.21"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@nuxt/content": "^3.5.1",
