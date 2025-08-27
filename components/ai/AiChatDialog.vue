@@ -116,6 +116,7 @@
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import {extractSourcesFromMarkdown, isInternalLink} from '../../utils/sources'
+    import throttle from "lodash/throttle";
 
     interface Message {
         content: string
@@ -231,7 +232,7 @@
         });
     }
 
-    const startScrolling = async (): Promise<void> => {
+    const startScrolling = () => {
         userScrolling = false;
         cancellableAutoScrollHandling();
 
@@ -242,7 +243,7 @@
         scrollingInterval.value = setInterval(() => {
             requestAnimationFrame(() => {
                 if (contentContainer.value) {
-                    let scrollTarget = contentContainer.value.scrollTop + 2;
+                    let scrollTarget = contentContainer.value.scrollTop + 8;
                     if (!isLoading.value && scrollTarget >= contentContainer.value.scrollHeight) {
                         scrollTarget = contentContainer.value.scrollHeight;
 
@@ -253,7 +254,7 @@
                     contentContainer.value.scrollTop = scrollTarget;
                 }
             })
-        }, 16);
+        }, 64);
     }
 
     const createUserMessage = (content: string): Message => ({
@@ -274,17 +275,22 @@
         timestamp: new Date().toISOString()
     })
 
+    const updateMarkdown = throttle(
+        async (index: number) => {
+            try {
+                messages.value[index].markdown = await parseMarkdown(messages.value[index].content)
+            } catch (e) {
+                // Silent fail for markdown parsing
+            }
+        },
+        500
+    )
+
     const processStreamData = async (indexToUpdate: number, value: StreamValue, data: ResponseData): Promise<void> => {
         if (value.id === 'response' && data.response) {
             messages.value[indexToUpdate].content += data.response
             messages.value[indexToUpdate].timestamp = new Date().toISOString()
-        }
-
-        try {
-            let markdown = await parseMarkdown(messages.value[indexToUpdate].content);
-            messages.value[indexToUpdate].markdown = markdown
-        } catch (e) {
-            // Silent fail for markdown parsing
+            updateMarkdown(indexToUpdate);
         }
 
         if (value.id === 'completed') {
@@ -292,6 +298,8 @@
             if (sources.length > 0) {
                 messages.value[indexToUpdate].sources = sources
             }
+
+            await updateMarkdown.flush();
         }
     }
 
