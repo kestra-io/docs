@@ -1,5 +1,5 @@
 ---
-title: Read-only Secrets
+title: Read-only Secret Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
@@ -141,7 +141,7 @@ Now to use in our flow, we need to use the `secret()` function with the name of 
 ::collapse{title="Expand for a Flow yaml"}
 ```yaml
 id: neon-db
-namespace: dv-aj
+namespace: company.team
 
 tasks:
 
@@ -183,3 +183,59 @@ pluginDefaults:
 After saving the flow and executing, we can see that Kestra successfully accessed the correct value from Vault and added 100 rows to our Neon database.
 
 ![read-only-secrets-7](/docs/enterprise/read-only-secrets-7.png)
+
+## Filter Secrets by Tags
+
+When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching [tags](./secrets-manager.md#default-tags). This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+
+- Set `readOnly: true` and configure `filterOnTags.tags` as a map of key/value pairs to match.
+
+Below are example configurations for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    readOnly: true
+    azureKeyVault:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    readOnly: true
+    googleSecretManager:
+      filterOnTags:
+        tags:
+          application: kestra-production
+```
+
+## Filter Secrets by Prefix
+
+For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filterOnPrefix.prefix` to select secrets whose names start with the given prefix and `filterOnPrefix.keepPrefix` to control whether the prefix is kept in the Kestra secret key.
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    readOnly: true
+    awsSecretManager:
+      filterOnPrefix:
+        prefix: prod_
+        keepPrefix: true
+```

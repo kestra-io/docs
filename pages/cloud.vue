@@ -10,7 +10,6 @@
 
         <CloudHeader />
         <CloudFeatures />
-        <CloudHowItWorks />
     </div>
 </template>
 

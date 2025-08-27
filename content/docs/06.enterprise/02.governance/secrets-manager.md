@@ -6,7 +6,6 @@ editions: ["EE", "Cloud"]
 
 How to configure the secrets manager.
 
-
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 
 Kestra respects your privacy. Therefore, Secrets are persisted externally in a backend of your choice. They are accessed by workers at runtime and stored only in memory.
@@ -100,7 +99,6 @@ For Kestra instance deployed using the Kafka/Elastic backend, you can use the sa
 
 Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
 
-
 ## Google Secret Manager Configuration
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
@@ -132,7 +130,6 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 ### KV Secrets Engine - Version 2
 
 To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
-
 
 1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
 
@@ -180,7 +177,6 @@ Additionally, you can configure the following properties:
 - **Engine Version**: `kestra.secret.vault.engineVersion` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.rootEngine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
-
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
@@ -209,6 +205,8 @@ kestra:
       tags:
         application: kestra-production
 ```
+
+Tags can be used as filters on your secrets in read-only mode. Refer to the [Read-only Secret Manager documentation](read-only-secrets.md#filter-secrets-by-tags) for more details.
 
 ## Enable Caching
 
