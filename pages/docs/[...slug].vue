@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout type-docs">
-        <NavSideBar type="docs" :navigation="navigation"/>
+        <NavSideBar type="docs" :navigation="navigation" />
         <article v-if="page" class="bd-main order-1 docs"
                  :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
-                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title" />
                 <h1 v-if="page?.title" class="py-0 title">
                     <NuxtImg
                         v-if="page.icon"
@@ -19,17 +19,17 @@
                 </h1>
             </div>
 
-            <NavToc :page="page" class="right-menu"/>
+            <NavToc :page="page" class="right-menu" />
 
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
-                                        :page="page"/>
+                                        :page="page" />
 
-                <ContentRenderer class="bd-markdown" v-if="page" :value="page"/>
+                <ContentRenderer class="bd-markdown" v-if="page" :value="page" />
 
                 <template v-if="!page?.meta?.isHomepage">
-                    <HelpfulVote/>
-                    <PrevNext :navigation="navigation"/>
+                    <HelpfulVote />
+                    <PrevNext :navigation="navigation" />
                 </template>
             </div>
         </article>
@@ -45,7 +45,8 @@
     import HelpfulVote from "~/components/docs/HelpfulVote.vue";
     import {hash} from "ohash";
     import {generatePageNames, recursivePages} from "~/utils/navigation";
-    const {public:{CollectionNames}} = useRuntimeConfig()
+
+    const {public: {CollectionNames}} = useRuntimeConfig()
 
     const config = useRuntimeConfig();
 
@@ -58,10 +59,21 @@
             async () => {
                 const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus']);
 
-                if (data && !data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
-                    data[0].children.splice(data[0].children.length - 3, 0, {
-                        title: "Videos Tutorials",
-                        path: "/tutorial-videos",
+                if (data) {
+                    if (!data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
+                        data[0].children.splice(data[0].children.length - 3, 0, {
+                            title: "Videos Tutorials",
+                            path: "/tutorial-videos",
+                        });
+                    }
+
+                    let apiReferenceParentItem = data[0].children.find((item) => item?.title === "API Reference");
+                    apiReferenceParentItem.children.forEach(item => {
+                        if (item.title === "Cloud & Enterprise Edition API") {
+                            item.path = "/api-docs/ee";
+                        } else if (item.title === "Open Source API") {
+                            item.path = "/api-docs/oss";
+                        }
                     });
                 }
 
