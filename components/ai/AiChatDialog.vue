@@ -215,48 +215,6 @@
         }
     }
 
-    const scrollingInterval = ref();
-
-    let userScrolling = false;
-    const cancellableAutoScrollHandling = () => {
-        window.addEventListener("wheel", () => userScrolling = true);
-        window.addEventListener("touchmove", () => userScrolling = true);
-        window.addEventListener("mousedown", () => userScrolling = true);
-
-        contentContainer.value!.addEventListener("scroll", () => {
-            if (!userScrolling) return;
-            if (scrollingInterval.value !== undefined) {
-                clearInterval(scrollingInterval.value);
-                scrollingInterval.value = undefined;
-            }
-        });
-    }
-
-    const startScrolling = () => {
-        userScrolling = false;
-        cancellableAutoScrollHandling();
-
-        if (scrollingInterval.value !== undefined) {
-            return;
-        }
-
-        scrollingInterval.value = setInterval(() => {
-            requestAnimationFrame(() => {
-                if (contentContainer.value) {
-                    let scrollTarget = contentContainer.value.scrollTop + 8;
-                    if (!isLoading.value && scrollTarget >= contentContainer.value.scrollHeight) {
-                        scrollTarget = contentContainer.value.scrollHeight;
-
-                        clearInterval(scrollingInterval.value);
-                        scrollingInterval.value = undefined;
-                    }
-
-                    contentContainer.value.scrollTop = scrollTarget;
-                }
-            })
-        }, 64);
-    }
-
     const createUserMessage = (content: string): Message => ({
         content,
         role: 'user',
@@ -278,7 +236,7 @@
     const updateMarkdown = throttle(
         async (index: number) => {
             try {
-                messages.value[index].markdown = await parseMarkdown(messages.value[index].content)
+                messages.value[index].markdown = await parseMarkdown(messages.value[index].content);
             } catch (e) {
                 // Silent fail for markdown parsing
             }
@@ -363,7 +321,6 @@
 
             const indexToUpdate = messages.value.length - 1
 
-            startScrolling()
             while (true) {
                 const {value, done} = await reader.read()
                 if (done) break
