@@ -75,7 +75,7 @@
 
 <template>
     <template v-if="language === 'mermaid'">
-        <Mermaid :key="code">
+        <Mermaid :class="$attrs.class" :key="code">
             {{ code }}
         </Mermaid>
     </template>
@@ -93,7 +93,7 @@
                 <div id="arrow" data-popper-arrow />
             </div>
         </template>
-        <pre :class="$attrs.class" :key="code"><slot /></pre>
+        <pre :class="$attrs.class" :key="code"><slot :key="code" /></pre>
     </div>
 </template>
 
