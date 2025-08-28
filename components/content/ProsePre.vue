@@ -93,7 +93,7 @@
                 <div id="arrow" data-popper-arrow />
             </div>
         </template>
-        <pre :class="$attrs.class" :key="code"><slot :key="code" /></pre>
+        <pre :class="$attrs.class" :key="code"><slot /></pre>
     </div>
 </template>
 

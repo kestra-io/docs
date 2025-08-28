@@ -40,14 +40,11 @@
                         <div class="bubble">
                             <template v-if="message.role === 'assistant'">
                                 <div v-if="message.markdown" @click="handleContentClick">
-                                    <ClientOnly>
-                                        <ContentRenderer
-                                            class="markdown prose prose-sm"
-                                            :value="message.markdown"
-                                            :components="proseComponents"
-                                            :key="messageIndex"
-                                        />
-                                    </ClientOnly>
+                                    <ContentRenderer
+                                        class="markdown prose prose-sm"
+                                        :value="message.markdown"
+                                        :components="proseComponents"
+                                    />
                                 </div>
 
                                 <div v-if="isLoading" class="loading">
@@ -153,7 +150,7 @@
     const {parseMarkdown} = await import("@nuxtjs/mdc/runtime")
 
     // make MDCRenderer use the prose components of this content
-    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("../content/Prose*.vue", {eager: true})
+    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
     const proseComponents: Record<string, Component> = {}
     for (const path in proseComponentsImports) {
         // extract the component name from the file path
