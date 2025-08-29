@@ -19,6 +19,10 @@ To start using this feature, you can add an [**AI Agent**](/plugins/plugin-ai/a
 
 ## AI Agent flow example
 
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/pYfoz6Q1x969y5JoZ0kv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+---
+
 To demonstrate, below is a flow that summarizes arbitrary text with controllable length and language. Each component of the flow is broken down.
 
 ```yaml
