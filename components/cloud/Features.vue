@@ -98,9 +98,8 @@
 
             <h4 class="mb-4">Request Access to Kestra Cloud</h4>
 
-            <div class="col-6">
-              <label for="firstname">
-                <span class="text-danger">*</span>
+            <div class="col-md-6 col-12">
+              <label for="firstname" class="form-label">
                 First Name
               </label>
               <input
@@ -108,13 +107,13 @@
                 type="text"
                 class="form-control"
                 id="firstname"
+                placeholder="First Name"
                 required
               />
             </div>
 
-            <div class="col-6">
-              <label for="lastname">
-                <span class="text-danger">*</span>
+            <div class="col-md-6 col-12">
+              <label for="lastname" class="form-label">
                 Last Name
               </label>
               <input
@@ -122,36 +121,44 @@
                 type="text"
                 class="form-control"
                 id="lastname"
+                placeholder="Last Name"
                 required
               />
             </div>
 
-            <div class="col-12 mt-3">
-              <label for="email">
-                <span class="text-danger">*</span>
-                Company Email
+              <div class="col-12">
+              <label for="email" class="form-label">
+                  Company Email
               </label>
               <input
                 name="email"
                 type="email"
                 class="form-control"
                 id="email"
+                placeholder="Company Email"
                 required
               />
             </div>
 
-            <div class="col-12 mt-3">
-              <label for="use_case_context">
+            <div class="col-12">
+              <label for="use_case_context" class="form-label">
                 Tell us more about your Orchestration strategy and how we can help.
               </label>
               <textarea
                 name="use_case_context"
                 class="form-control"
                 id="cloud-use_case_context"
+                  rows="3"
+                placeholder="Tell us more about your Orchestration strategy and how we can help."
               ></textarea>
             </div>
+            <div class="col-12 mb-4">
+               <small class="agree">
+                  By submitting this form, you agree to our <NuxtLink href="/privacy-policy">Privacy Policy.</NuxtLink>
+               </small>
+            </div>
 
-            <div class="col-12 mt-4 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center">
               <button type="submit" class="btn btn-primary w-100">
                 Book a Call
               </button>
@@ -189,8 +196,7 @@ const valid = ref(false);
 const message = ref("");
 const meetingUrl = ref<string>("");
 
-const hubSpotUrl =
-  "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
+const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
 
 function ensureMeetingsScriptLoaded(): Promise<void> {
   return new Promise((resolve) => {
@@ -276,7 +282,7 @@ const onSubmit = async (e: Event) => {
     if (error?.response?.data?.errors?.filter((e: any) => e.errorType === "BLOCKED_EMAIL").length > 0) {
       message.value = "Please use a professional email address";
     } else {
-      message.value = error?.response?.data?.message || "Form submission error";
+      message.value = error?.response?.data?.message || "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again.";
     }
   }
 };
@@ -298,6 +304,12 @@ const onSubmit = async (e: Event) => {
     align-items: center;
     justify-content: center;
     min-height: 680px; /* base height for the form */
+
+    h4 {
+      color: $primary;
+      margin-top: 1rem;
+      text-align: center;
+    }
 
     img.background {
       width: 644px;
@@ -321,18 +333,15 @@ const onSubmit = async (e: Event) => {
       color: #212529;
 
       label {
-        color: #212529;
-        font-weight: 400;
+          display: none;
       }
 
-      input,
-      textarea {
-        color: #212529;
-        background-color: #fff;
+      input, textarea {
+          margin-bottom: 1.25rem;
       }
 
       @include media-breakpoint-up(lg) {
-        width: 75%;
+        width: 85%;
       }
     }
   }
@@ -340,7 +349,7 @@ const onSubmit = async (e: Event) => {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    min-height: 680px; 
+    min-height: 680px;
 
     .iframe-wrapper {
       flex: 1 1 auto;
@@ -352,7 +361,7 @@ const onSubmit = async (e: Event) => {
     .embed-responsive-item {
       flex: 1 1 auto;
       width: 100%;
-      height: 100%; 
+      height: 100%;
       border: none;
       display: block;
     }

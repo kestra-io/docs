@@ -467,6 +467,15 @@ blockquote.blockquote {
     max-width: $baseline-max-width;
 }
 
+small.agree {
+    font-size: 75%;
+    opacity: 0.6;
+    color: var(--bs-body-color);
+    a {
+        color: var(--bs-body-color);
+    }
+}
+
 @keyframes slide-in {
     0% {
         transform: translateY(1rem);
