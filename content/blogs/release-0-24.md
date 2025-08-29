@@ -488,27 +488,29 @@ In the Enterprise Edition, admins can add custom links that will be displayed in
 ```yaml
 kestra:
   ee:
-    custom-links:
-      link1:
-        title: "Internal Documentation"
-        url: "https://kestra.io/docs/"
-      link2:
-        title: "Internal Support Portal"
-        url: "https://kestra.io/support/"
+    right-sidebar:
+      custom-links:
+        internal-docs:
+          title: "Internal Docs"
+          url: "https://kestra.io/docs/"
+        support-portal:
+          title: "Support portal"
+          url: "https://kestra.io/support/"
 ```
 
-The `kestra.ee.custom-links` property is an arbitrary map, so you can name the link properties as you like (as long as each includes the `title` and `url` properties):
+The `kestra.ee.right-sidebar.custom-links` property is an arbitrary map, so you can name the link properties as you like (as long as each includes the `title` and `url` properties):
 
 ```yaml
 kestra:
   ee:
-    custom-links:
-      internal-docs:
-        title: "Internal Docs"
-        url: "https://kestra.io/docs/"
-      support-portal:
-        title: "Support Portal"
-        url: "https://kestra.io/support/"
+    right-sidebar:
+      custom-links:
+        internal-docs:
+          title: "Internal Docs"
+          url: "https://kestra.io/docs/"
+        support-portal:
+          title: "Support Portal"
+          url: "https://kestra.io/support/"
 ```
 
 The links will show up in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
