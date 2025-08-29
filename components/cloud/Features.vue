@@ -174,6 +174,7 @@
               :src="meetingUrl"
               class="embed-responsive-item"
               allowtransparency="true"
+              style="min-height: 750px; min-width: 350px;"
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
             ></iframe>
           </div>
@@ -332,7 +333,6 @@ const onSubmit = async (e: Event) => {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    min-height: 680px;
 
     .iframe-wrapper {
       flex: 1 1 auto;

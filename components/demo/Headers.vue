@@ -73,7 +73,7 @@
                   v-if="meetingUrl"
                   :src="meetingUrl"
                   class="embed-responsive-item"
-                  style="min-height: 700px; border: none; width: 100%;"
+                  style="min-height: 750px; min-width: 350px; border: none; width: 100%;"
                   allowtransparency="true"
                   sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                 ></iframe>
