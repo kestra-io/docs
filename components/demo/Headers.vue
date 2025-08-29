@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-12 mt-2">
                     <small class="agree">
-                        By submitting this form, you agree to our <NuxtLink href="/privacy-policy">Privacy Policy.</NuxtLink>
+                        By submitting this form, you agree to our <NuxtLink target="_blank" href="/privacy-policy">Privacy Policy.</NuxtLink>
                     </small>
                 </div>
                 <div class="col-12 mt-4 d-flex justify-content-center">
