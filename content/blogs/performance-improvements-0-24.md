@@ -1,13 +1,13 @@
 ---
 title: "Performance Upgrades of 0.24"
 description: "Kestra 0.24 boosts performance with faster scheduling, improved JDBC queues, and nearly 2x execution throughput."
-date: 2025-08-12T13:00:00
+date: 2025-08-29T17:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/TODO.jpg
+image: /blogs/0-24-performance-upgrades.png
 ---
 
 In 0.23, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.23](https://kestra.io/blogs/performance-improvements-0.23.md).
