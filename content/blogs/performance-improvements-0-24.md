@@ -1,6 +1,6 @@
 ---
 title: "Performance Upgrades of 0.24"
-description: "TODO"
+description: "Kestra 0.24 boosts performance with faster scheduling, improved JDBC queues, and nearly 2x execution throughput."
 date: 2025-08-12T13:00:00
 category: Solutions
 author:
