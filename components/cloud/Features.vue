@@ -247,7 +247,7 @@ const onSubmit = async (e: Event) => {
       { objectTypeId: "0-1", name: "kuid", value: localStorage.getItem("KUID") || "" },
     ],
     context: {
-      hutk: getHubspotTracking() || "",
+      hutk: getHubspotTracking() || undefined,
       ipAddress: ip.data.ip,
       pageUri: route.path,
       pageName: document.title,

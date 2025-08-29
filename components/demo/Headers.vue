@@ -154,7 +154,7 @@
           },
         ],
         context: {
-          hutk: getHubspotTracking() || "",
+          hutk: getHubspotTracking() || undefined,
           ipAddress: ip.data.ip,
           pageUri: route.path,
           pageName: document.title,
