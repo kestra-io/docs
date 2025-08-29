@@ -187,6 +187,7 @@
 import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import posthog from "posthog-js";
+import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting.js";
 
 const route = useRoute();
 const gtm = useGtm();
@@ -198,19 +199,10 @@ const meetingUrl = ref<string>("");
 
 const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
 
-function ensureMeetingsScriptLoaded(): Promise<void> {
-  return new Promise((resolve) => {
-    if (document.querySelector('script[src*="MeetingsEmbedCode.js"]')) {
-      resolve();
-      return;
-    }
-    const script = document.createElement("script");
-    script.src =
-      "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-    script.defer = true;
-    script.addEventListener("load", () => resolve());
-    document.body.appendChild(script);
-  });
+// the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
+if (process.client && getHubspotTracking() === null) {
+    meetingUrl.value = getMeetingUrl();
+    valid.value = true;
 }
 
 const onSubmit = async (e: Event) => {
@@ -267,16 +259,7 @@ const onSubmit = async (e: Event) => {
     hsq.push(["refreshPageHandlers"]);
     hsq.push(["trackPageView"]);
 
-
-
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timezone.startsWith("America")) {
-      meetingUrl.value =
-        "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-    } else {
-      meetingUrl.value =
-        "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true";
-    }
+    meetingUrl.value = getMeetingUrl()
   } catch (error: any) {
     valid.value = false;
     if (error?.response?.data?.errors?.filter((e: any) => e.errorType === "BLOCKED_EMAIL").length > 0) {

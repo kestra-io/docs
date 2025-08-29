@@ -89,6 +89,7 @@
   import posthog from "posthog-js";
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
+  import { getMeetingUrl } from "~/composables/useMeeting.js";
 
   const route = useRoute();
   const gtm = useGtm();
@@ -96,7 +97,13 @@
 
   const valid = ref(false);
   const message = ref("");
-  const meetingUrl = ref("https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true");
+  const meetingUrl = ref(undefined);
+
+  // the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
+  if (process.client && getHubspotTracking() === null) {
+      meetingUrl.value = getMeetingUrl();
+      valid.value = true;
+  }
 
   const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
 
@@ -173,14 +180,7 @@
           hsq.push(["refreshPageHandlers"]);
           hsq.push(["trackPageView"]);
 
-          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          if (timezone.startsWith("America")) {
-            // North or South America
-            meetingUrl.value = "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-          } else {
-            // Everyone else
-            meetingUrl.value = "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true";
-          }
+          meetingUrl.value = getMeetingUrl();
         })
         .catch((error) => {
           valid.value = false;
