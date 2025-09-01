@@ -1,0 +1,126 @@
+---
+title: Standalone Server Installation Guide (Enterprise Edition)
+icon: /docs/icons/installation.svg
+editions: ["EE"]
+---
+
+Install Kestra on a standalone server with a simple executable file.
+
+# Standalone Server Installation Guide (Enterprise Edition)
+
+To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+. 
+
+## Instructions
+
+The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
+
+---
+
+### Standalone JAR
+
+Download the latest version of the Kestra EE JAR from:
+
+[http://registry.kestra.io/exe/latest](http://registry.kestra.io/exe/latest)
+
+**Credentials:**
+
+- **Username**: `license-id`  
+- **Password**: `fingerprint`
+
+This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
+
+---
+
+### Plugins
+
+In standalone JAR deployments, all plugins must be downloaded separately.  
+
+Kestra EE provides a command to install all available plugins:
+
+```shell
+# Install all available plugins
+kestra plugins install --all 
+```
+
+This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
+
+Additional Enterprise Edition plugins may also be required.
+
+---
+
+### Secret Plugins
+
+Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
+
+| Secret Service | Download Link |
+| :------------- | :------------- |
+| Vault | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-vault/0.22.0/secret-vault-0.22.0.jar |
+| AWS | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-aws/0.22.0/secret-aws-0.22.0.jar |
+| GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.22.0/secret-gcp-0.22.0.jar |
+| Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.22.0/secret-azure-0.22.0.jar |
+
+---
+
+### MinIO Internal Storage
+
+To enable MinIO storage, install the storage plugin:
+
+```shell
+# Install MinIO internal storage plugin
+kestra plugins install io.kestra.storage:storage-minio:LATEST
+```
+
+---
+
+### Enterprise Deployment Configuration
+
+For the full list of configuration options, refer to the [Configuration Reference](https://kestra.io/docs/configuration).  
+
+To enable Kestra Enterprise features, configure the following parameters:
+
+| Configuration Parameter | Required | Documentation Link | Description |
+| :---------------------- | :------- | :----------------- | :---------- |
+| Enterprise License | Yes | [EE License](../../configuration/index.md#ee-license) | License information for the Kestra instance |
+| Multi-tenancy | Yes | [Multi-tenancy](../../configuration#multi-tenancy) | Enables/disables multi-tenancy (required for SCIM) |
+| Secret Manager | Yes | [Secret Managers](/../../configuration#secret-managers) | Configure a secret manager in RW or RO mode |
+| Encryption Key | Yes | [Encryption](/../../configuration#encryption) | Key to encrypt inputs/outputs in flows |
+| Security | No | [Security](/../../configuration#security) | Configure Super Admin (also settable in UI on startup) |
+| User Invitations | No | [Kestra URL](/../../configuration#kestra-url), [Mail Server](/../../configuration#configuring-a-mail-server) | Required for email invitations (not needed with LDAP/SCIM) |
+| SSO | No | [SSO](../03.auth/sso/index.md) | Configure OIDC provider |
+| LDAP | No | [LDAP](../03.auth/sso/ldap.md) | Connect to an existing LDAP provider |
+| SCIM | No | [SCIM](../03.auth/scim/index.md) | Sync user/group membership with SCIM 2.0 |
+
+---
+
+## Starting Kestra
+
+Kestra can be started in **standalone mode** or in a **distributed setup** for production.
+
+Refer to the sample `application.yml` file provided with this guide for configuration details.
+
+---
+
+### Standalone Server
+
+```shell
+kestra server standalone -c ./application.yml -p ./plugins --port=8080
+```
+
+This starts Kestra as a standalone service on port `8080`.
+
+---
+
+### Distributed Mode
+
+For production usage, Kestra should run in distributed mode for scalability and high availability.  
+
+Each component can run independently across servers, with shared access to the same database (no TCP communication is required between components).
+
+Example with all components on one server:
+
+```shell
+kestra server webserver -c ./application.yml -p ./plugins --port=8080
+kestra server scheduler -c ./application.yml -p ./plugins --port=8081
+kestra server worker -c ./application.yml -p ./plugins --port=8082
+kestra server executor -c ./application.yml -p ./plugins --port=8083
+```
