@@ -309,7 +309,7 @@
 
             const signal = abortController.value.signal;
 
-            const response = await fetch(`http://api.kestra.ee:8181/v1/search-ai/${conversationId.value}/test`, {
+            const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
