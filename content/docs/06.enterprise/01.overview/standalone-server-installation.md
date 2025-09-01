@@ -10,13 +10,13 @@ Install Kestra on a standalone server with a simple executable file.
 
 To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+. 
 
-## Instructions
+# Instructions
 
 The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
 
 ---
 
-### Standalone JAR
+## Standalone JAR
 
 Download the latest version of the Kestra EE JAR from:
 
@@ -29,9 +29,34 @@ Download the latest version of the Kestra EE JAR from:
 
 This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
 
+To make the file executable, Linux or MacOS users use the following with filename:
+
+```bash
+chmod +x kestra.jar
+```
+
+Or with a file path:
+
+```bash
+mv kestra.jar /usr/local/bin/kestra # Replace with your execution environment file path
+chmod +x /usr/local/bin/kestra
+```
+
+For Windows users:
+
+```powershell
+java -jar kestra.jar
+```
+
+Or with a file path assuming execution from the current directory:
+
+```powershell
+java -jar kestra.jar server standalone -c ./application.yml -p ./plugins --port=8080
+```
+
 ---
 
-### Plugins
+## Plugins
 
 In standalone JAR deployments, all plugins must be downloaded separately.  
 
@@ -44,24 +69,24 @@ kestra plugins install --all
 
 This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
 
-Additional Enterprise Edition plugins may also be required.
+Additional Enterprise Edition plugins that are not task related may also be required -- such as secrets or storage plugins.
 
 ---
 
-### Secret Plugins
+## Secret Plugins
 
 Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
 
 | Secret Service | Download Link |
 | :------------- | :------------- |
-| Vault | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-vault/0.22.0/secret-vault-0.22.0.jar |
-| AWS | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-aws/0.22.0/secret-aws-0.22.0.jar |
-| GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.22.0/secret-gcp-0.22.0.jar |
-| Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.22.0/secret-azure-0.22.0.jar |
+| Vault | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-vault/0.24.0/secret-vault-0.24.0.jar |
+| AWS | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-aws/0.24.0/secret-aws-0.24.0.jar |
+| GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.24.0/secret-gcp-0.24.0.jar |
+| Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.24.0/secret-azure-0.24.0.jar |
 
 ---
 
-### MinIO Internal Storage
+## MinIO Internal Storage
 
 To enable MinIO storage, install the storage plugin:
 
@@ -72,7 +97,7 @@ kestra plugins install io.kestra.storage:storage-minio:LATEST
 
 ---
 
-### Enterprise Deployment Configuration
+## Enterprise Deployment Configuration
 
 For the full list of configuration options, refer to the [Configuration Reference](https://kestra.io/docs/configuration).  
 
@@ -92,7 +117,7 @@ To enable Kestra Enterprise features, configure the following parameters:
 
 ---
 
-## Starting Kestra
+# Starting Kestra
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 
@@ -100,7 +125,7 @@ Refer to the sample `application.yml` file provided with this guide for configur
 
 ---
 
-### Standalone Server
+## Standalone Server
 
 ```shell
 kestra server standalone -c ./application.yml -p ./plugins --port=8080
@@ -110,7 +135,7 @@ This starts Kestra as a standalone service on port `8080`.
 
 ---
 
-### Distributed Mode
+## Distributed Mode
 
 For production usage, Kestra should run in distributed mode for scalability and high availability.  
 
