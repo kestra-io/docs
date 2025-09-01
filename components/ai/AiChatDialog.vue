@@ -14,15 +14,13 @@
             <div v-if="messages.length === 0" class="examples">
                 <h6>EXAMPLE QUESTIONS</h6>
                 <div class="cards">
-                    <div class="card" @click="askQuestion('How do I run an ETL pipeline with retries and dynamic scaling in Kestra?')">
-                        How do I run an ETL pipeline with retries and dynamic scaling in Kestra?
-                    </div>
-                    <div class="card" @click="askQuestion('How do I run Kestra with Docker?')">
-                        How do I run Kestra with Docker?
-                    </div>
-                    <div class="card" @click="askQuestion('Can I use multiple triggers for one flow?')">
-                        Can I use multiple triggers for one flow?
-                    </div>
+                    <ClientOnly>
+                        <template v-for="(question, index) in randomQuestion.sort(() => .5 - Math.random()).slice(0, 3)" :key="index">
+                            <div class="card" @click="askQuestion(question)">
+                                {{ question }}
+                            </div>
+                        </template>
+                    </ClientOnly>
                 </div>
             </div>
 
@@ -148,6 +146,25 @@
     }
 
     const {parseMarkdown} = await import("@nuxtjs/mdc/runtime")
+
+    const randomQuestion = [
+        "How to add secrets?",
+        "How to configure my internal storage?",
+        "What are main differences between Open Source and Enterprise?",
+        "How to sync my flows with Git?",
+        "How to set up CI/CD for kestra flows?",
+        "What is a task runner?",
+        "How to handle errors & retry on flow?",
+        "How to run Python script?",
+        "How to schedule flow?",
+        "How to write expression for previous tasks outputs?",
+        "How to deploy Kestra inside Kubernetes?",
+        "How to prevent concurrent execution of the same flow?",
+        "How to trigger a flow after another one?",
+        "How to run a Ansible playbook?",
+        "How to run dbt?",
+        "How to receive an alert on flow failure?",
+    ]
 
     // make MDCRenderer use the prose components of this content
     const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
@@ -292,7 +309,7 @@
 
             const signal = abortController.value.signal;
 
-            const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
+            const response = await fetch(`http://api.kestra.ee:8181/v1/search-ai/${conversationId.value}/test`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
