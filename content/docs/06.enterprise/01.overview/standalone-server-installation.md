@@ -32,26 +32,34 @@ This provides a single JAR file that can be used to start Kestra. Store the file
 To make the file executable, Linux or MacOS users use the following with filename:
 
 ```bash
-chmod +x kestra.jar
+chmod +x kestra-ee-VERSION # Replace VERSION with your version
 ```
 
 Or with a file path:
 
 ```bash
-mv kestra.jar /usr/local/bin/kestra # Replace with your execution environment file path
+mv kestra-ee-VERSION /usr/local/bin/kestra # Replace with your version and execution environment file path
 chmod +x /usr/local/bin/kestra
 ```
+
+The file is then executable with:
+
+```bash
+./kestra-ee-VERSION server local # Replace VERSION with your version
+```
+
+---
 
 For Windows users:
 
 ```powershell
-java -jar kestra.jar
+java -jar kestra-ee-VERSION # Replace VERSION with your version
 ```
 
 Or with a file path assuming execution from the current directory:
 
 ```powershell
-java -jar kestra.jar server standalone -c ./application.yml -p ./plugins --port=8080
+java -jar kestra-ee-VERSION server standalone -c ./application.yml -p ./plugins --port=8080 # Replace VERSION with your version
 ```
 
 ---
