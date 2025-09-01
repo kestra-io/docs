@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div v-on="{ 'shown.bs.modal': focusSearchAi, 'hidden.bs.modal': onHiddenAi }" class="modal modal-xl fade" id="search-ai-modal" tabindex="-2" ref="modal" aria-labelledby="search-ai-modal" aria-hidden="true">
+    <div v-on="{ 'shown.bs.modal': focusSearchAi, 'hidden.bs.modal': onHiddenAi }" class="modal modal-xl fade" id="search-ai-modal" tabindex="-2" ref="ai-modal" aria-labelledby="search-ai-modal" aria-hidden="true">
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
                 <div class="modal-body row bg-dark-4">
