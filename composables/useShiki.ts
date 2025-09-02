@@ -55,7 +55,7 @@ export default function useShiki() {
     const shiki = ref<ReturnType<typeof getShiki>>()
 
     async function highlightCodeBlocks(root: HTMLElement = document.body) {
-        return new Promise<void>(resolve => nextTick(() => requestAnimationFrame(async () => {
+        return new Promise<void>(resolve => nextTick(async () => {
             const blocks = root.querySelectorAll('pre > code')
             for(const block of blocks) {
                 const preClassList = block.parentElement?.classList;
@@ -93,7 +93,7 @@ export default function useShiki() {
                 }
             }
             resolve();
-        })));
+        }));
     }
 
     onMounted(async () => {

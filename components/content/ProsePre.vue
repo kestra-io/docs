@@ -40,13 +40,9 @@
     const codeBlock = ref(null);
 
     watch(() => props.code, (newVal) => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                if (codeBlock.value && newVal.length > 0) {
-                    highlightCodeBlocks(codeBlock.value);
-                }
-            })
-        });
+        if (codeBlock.value && newVal.length > 0) {
+            highlightCodeBlocks(codeBlock.value);
+        }
     }, {immediate: true});
 
     function hoverCode() {
