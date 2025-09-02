@@ -12,6 +12,7 @@
             titleHtml="Kestra for<br><span>Software Engineers</span>"
             description="Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
             imageSrc="/landing/usecases/software-engineers/header-hero.svg"
+            imageAlt="Kestra Microservice"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
@@ -21,7 +22,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints tag="Software Engineering"/>
+            <UseCasesEngineersExploreBlueprints />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration

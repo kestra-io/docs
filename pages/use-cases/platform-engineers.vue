@@ -12,6 +12,7 @@
             titleHtml="Kestra for<br><span>Platform Engineers</span>"
             description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
             imageSrc="/landing/usecases/platform-engineers/header-hero.svg"
+            imageAlt="Kestra Infrastructure Workflows"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
@@ -21,7 +22,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints tag="DevOps" />
+            <UseCasesEngineersExploreBlueprints />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration
