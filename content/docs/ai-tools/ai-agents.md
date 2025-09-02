@@ -19,7 +19,7 @@ To start using this feature, you can add an [**AI Agent**](/plugins/plugin-ai/a
 
 ## AI Agent flow example
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/pYfoz6Q1x969y5JoZ0kv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/KL8TVCdgVc4nS5OTS6VS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent 3 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ---
 
@@ -85,6 +85,11 @@ pluginDefaults:
           type: io.kestra.plugin.ai.provider.GoogleGemini
           modelName: gemini-2.5-flash
           apiKey: "{{ kv('GEMINI_API_KEY') }}"
+          configuration:
+            logRequests: true
+            logResponses: true
+            responseFormat: 
+              type: TEXT
 ```
 
 ### Inputs
@@ -95,21 +100,21 @@ All inputs have a default value, and more or less can be used and referenced in 
 
 ![AI Agent Flow Inputs](/docs/ai-tools/ai-agent-inputs.png)
 
-Continuing below for reference, we select `short` for the summary length.
+Continuing below for reference, we select `short` for the summary length and German (`de`) for the summary language.
 
 ### Tasks
 
 In the flow, there are two tasks using the [AI Agent plugin](/plugins/plugin-ai/agent): `multilingual_agent` and `english_brevity`. The first task, `multilingual_agent`, includes the `systemMessage` property which dictates the system message to the LLM provider. The system message references the input selections for the desired summary length and in what language to generate the summary in. It also defines what should be outputted when the input is short, medium, or long.
 
-Now that the AI Agent is familiar with its role, the `prompt` property tells it what to do, which is to summarize the inputted text. Taking a look at the output for a short summary, the `multilingual_agent` task does provide a 1–2 sentence summary of Kestra.
+Now that the AI Agent is familiar with its role, the `prompt` property tells it what to do, which is to summarize the inputted text. Taking a look at the output for a short summary, the `multilingual_agent` task does provide a 1–2 sentence summary of Kestra in German.
 
 ![AI Agent Initial Summary](/docs/ai-tools/ai-agent-summary.png)
 
-Following `multilingual_agent` is the `english_brevity` task which only needs a `prompt` because the `systemMessage` moves downstream in the flow. Whether a shorter English translation is needed, or the original outputted summary is in a different language, the `english_brevity` task provides a different output to match the need. In the execution context, the output is abbreviated and limited to exactly one sentence per the prompt.
+Following `multilingual_agent` is the `english_brevity` task, which only needs a `prompt` because the `systemMessage` moves downstream in the flow. Whether a shorter English translation is needed, or the original outputted summary is in a different language, the `english_brevity` task provides a different output to match the need. In the execution context, the output is abbreviated and limited to exactly one sentence per the prompt.
 
 ![AI Agent Abbreviated Summary](/docs/ai-tools/ai-agent-brevity.png)
 
-These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
+These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
 
 ### Plugin Defaults
 
