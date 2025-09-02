@@ -1,6 +1,5 @@
 <script setup>
-    import {onMounted} from "#imports";
-    import { createPopper } from "@popperjs/core";
+    import {createPopper} from "@popperjs/core";
 
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
@@ -10,71 +9,70 @@
     const {highlightCodeBlocks} = useShiki();
 
     const props = defineProps({
-            code: {
-                type: String,
-                default: ""
-            },
-            language: {
-                type: String,
-                default: null
-            },
-            filename: {
-                type: String,
-                default: null
-            },
-            highlights: {
-                type: Array,
-                default: () => []
-            },
-            meta: {
-                type: String,
-                default: null
-            }
-        })
+        code: {
+            type: String,
+            default: ""
+        },
+        language: {
+            type: String,
+            default: null
+        },
+        filename: {
+            type: String,
+            default: null
+        },
+        highlights: {
+            type: Array,
+            default: () => []
+        },
+        meta: {
+            type: String,
+            default: null
+        }
+    })
 
-        const copied = ref(false);
-        const isHoveringCode = ref(false);
-        const copyIconResetTimer = ref(undefined);
-        const copyButton = ref(null);
-        const copyTooltip = ref(null);
+    const copied = ref(false);
+    const isHoveringCode = ref(false);
+    const copyIconResetTimer = ref(undefined);
+    const copyButton = ref(null);
+    const copyTooltip = ref(null);
 
-        const codeBlock = ref(null);
+    const codeBlock = ref(null);
 
-        onMounted(() => {
-            if(codeBlock.value){
-                highlightCodeBlocks(codeBlock.value);
-            }
-        })
+    watch([() => props.code, codeBlock], ([newVal, block]) => {
+        if (block && newVal.length > 0) {
+            highlightCodeBlocks(block);
+        }
+    }, {immediate: true});
 
-
-        function hoverCode(){
-            isHoveringCode.value = true;
-            if(copyIconResetTimer.value) {
-                nextTick(() => {
-                    createPopper(copyButton.value, copyTooltip.value, {
-                        placement: 'left',
-                    });
+    function hoverCode() {
+        isHoveringCode.value = true;
+        if (copyIconResetTimer.value) {
+            nextTick(() => {
+                createPopper(copyButton.value, copyTooltip.value, {
+                    placement: 'left',
                 });
-            }
+            });
         }
+    }
 
-        function copyToClipboard() {
-            clearTimeout(copyIconResetTimer.value);
-            copied.value = true;
+    function copyToClipboard() {
+        clearTimeout(copyIconResetTimer.value);
+        copied.value = true;
 
-            navigator.clipboard.writeText(props.code.trimEnd())
+        navigator.clipboard.writeText(props.code.trimEnd())
 
-            copyIconResetTimer.value = setTimeout(() => {
-                copied.value = false;
-                copyIconResetTimer.value = undefined;
-            }, 2000)
-        }
+        copyIconResetTimer.value = setTimeout(() => {
+            copied.value = false;
+            copyIconResetTimer.value = undefined;
+        }, 2000)
+    }
 </script>
 
 <template>
     <template v-if="language === 'mermaid'">
-        <Mermaid>
-            {{code}}
+        <Mermaid :class="$attrs.class" :key="code">
+            {{ code }}
         </Mermaid>
     </template>
     <div v-else class="code-block" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" ref="codeBlock">
@@ -91,7 +89,7 @@
                 <div id="arrow" data-popper-arrow />
             </div>
         </template>
-        <pre v-bind="$attrs"><slot /></pre>
+        <pre :class="$attrs.class" :key="code"><slot /></pre>
     </div>
 </template>
 
@@ -127,7 +125,7 @@
             border: none;
             background: none;
 
-            & .material-design-icon{
+            & .material-design-icon {
                 &, & * {
                     height: 1.125rem !important;
                     width: 1.125rem !important;
@@ -173,7 +171,7 @@
         opacity: 0;
     }
 
-    pre.shiki :deep(code){
+    pre.shiki :deep(code) {
         opacity: 1;
     }
 </style>

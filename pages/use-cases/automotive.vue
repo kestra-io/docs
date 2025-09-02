@@ -9,6 +9,7 @@
             titleHtml="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
             imageSrc="/landing/usecases/automotive/header-hero.svg"
+            imageAlt="Kestra Automotive"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesDeploymentChallenges
@@ -47,7 +48,7 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <div class="enterprise-edition">
-                <FeaturesEnterpriseEdition
+                <FeaturesFeatureEnterprise
                     logoPath="/landing/usecases/automotive/enterprise-edition.svg"
                 />
             </div>
