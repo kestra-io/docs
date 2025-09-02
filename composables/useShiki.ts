@@ -38,11 +38,11 @@ const langs = ['bash',
     'powershell',
     'xml',
     'yaml'] as const
-let shiki: Promise<HighlighterGeneric<(typeof langs)[number], 'github-dark'>> | null = null
+let shiki: HighlighterGeneric<(typeof langs)[number], 'github-dark'> | null = null
 
-export function getShiki() {
+export async function getShiki() {
     if(!shiki){
-        shiki = createHighlighter({
+        shiki = await createHighlighter({
             themes: ['github-dark'],
             langs: [...langs],
             engine: createOnigurumaEngine(import('shiki/wasm'))
@@ -52,6 +52,8 @@ export function getShiki() {
 }
 
 export default function useShiki() {
+    const shikiRef = ref<ReturnType<typeof getShiki>>()
+
     async function highlightCodeBlocks(root: HTMLElement = document.body) {
         return new Promise<void>(resolve => nextTick(async () => {
             const blocks = root.querySelectorAll('pre > code')
@@ -63,7 +65,7 @@ export default function useShiki() {
                 const languageClass = Array.from(preClassList).find((c) => c.startsWith('language-'))
                 if(languageClass) {
                     const originalCode = block.innerHTML.replace(/\n$/, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-                    const shikiValue = await shiki
+                    const shikiValue = await shikiRef.value
                     const html = shikiValue?.codeToHtml(originalCode, {
                         lang: languageClass.replace('language-', ''),
                         theme: 'github-dark'
@@ -94,8 +96,8 @@ export default function useShiki() {
         }));
     }
 
-    onMounted(async () => {
-        shiki = getShiki()
+    onMounted(() => {
+        shikiRef.value = getShiki()
     })
 
     return { highlightCodeBlocks }
