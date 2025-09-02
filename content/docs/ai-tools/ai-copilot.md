@@ -20,10 +20,10 @@ To add Copilot to your flow editor, add the following to your Kestra configurati
 ```yaml
 kestra:
   ai:
-    type: gemini
+    type: openai
     gemini:
-      model-name: "gemini-2.5-flash"
-      api-key: yourkey
+      model-name: "gpt-5"
+      api-key: YOUR_OPENAI_API_KEY
 ```
 
 Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor.
@@ -31,7 +31,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
 ::alert{type="info"}
-For now, only Gemini models are supported, but we will release support for other models -- including open source -- in the future.
+The open-source version supports only OpenAI models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
 ::
 
 ## Build flows with Copilot
@@ -58,7 +58,7 @@ The Copilot again makes a suggestion to add to the flow, but only in the targete
 
 ![Copilot Trigger Iteration](/docs/ai-tools/copilot-trigger.png)
 
-You can continuously collaborate with Copilot until the flow is exactly the way you originally imagined. Suggestions are always declaratively written and manageable in version controlled revisions if accepted.
+You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
 
 ## Starter prompts
 
@@ -80,8 +80,8 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 - Run a flow every 10 minutes
 - Run a flow every day at 9 AM
 - Run a command echo 'Hello Docker' in a Docker container
-- Run a command python [main.py](http://main.py/) in a Docker container
-- Run a script [main.py](http://main.py/) stored as namespace file
+- Run a command python main.py in a Docker container
+- Run a script main.py stored as namespace file
 - Build a Docker image from an inline Dockerfile and push it to a GitHub Container Registry
 - Build a Docker image from an inline Dockerfile and push it to a DockerHub Container Registry
 - Create a flow that adds a string KV pair called MYKEY with value myvalue to namespace company
