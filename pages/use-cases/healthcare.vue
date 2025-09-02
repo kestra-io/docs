@@ -36,7 +36,7 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <div class="enterprise-edition">
-                <FeaturesEnterpriseEdition
+                <FeaturesFeatureEnterprise
                     logoPath="/landing/usecases/healthcare/enterprise-edition.svg"
                 />
             </div>

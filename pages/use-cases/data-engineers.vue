@@ -27,7 +27,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <FeaturesEnterpriseEdition/>
+            <FeaturesFeatureEnterprise />
         </NuxtLazyHydrate>
     </div>
 </template>
