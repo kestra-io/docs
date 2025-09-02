@@ -27,6 +27,10 @@ Download the latest version of the Kestra EE JAR from:
 - **Username**: `license-id`  
 - **Password**: `fingerprint`
 
+::alert{type="info"}
+Make sure to store your credentials in an `application.yaml` file.
+::
+
 This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
 
 To make the file executable, Linux or MacOS users use the following with filename:
@@ -45,8 +49,12 @@ chmod +x /usr/local/bin/kestra
 The file is then executable with:
 
 ```bash
-./kestra-ee-VERSION server local # Replace VERSION with your version
+./kestra-ee-VERSION server standalone # Replace VERSION with your version
 ```
+
+::alert{type="info"}
+You need to provide a configuration with a connection to a database.
+::
 
 ---
 
@@ -59,7 +67,7 @@ java -jar kestra-ee-VERSION # Replace VERSION with your version
 Or with a file path assuming execution from the current directory:
 
 ```powershell
-java -jar kestra-ee-VERSION server standalone -c ./application.yml -p ./plugins --port=8080 # Replace VERSION with your version
+java -jar kestra-ee-VERSION server standalone -c ./application.yaml -p ./plugins --port=8080 # Replace VERSION with your version
 ```
 
 ---
@@ -129,14 +137,14 @@ To enable Kestra Enterprise features, configure the following parameters:
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 
-Refer to the sample `application.yml` file provided with this guide for configuration details.
+Make sure to have a database configured and your Enterprise credentials stored in the `application.yaml` file.
 
 ---
 
 ## Standalone Server
 
 ```shell
-kestra server standalone -c ./application.yml -p ./plugins --port=8080
+kestra server standalone -c ./application.yaml -p ./plugins --port=8080
 ```
 
 This starts Kestra as a standalone service on port `8080`.
@@ -152,8 +160,8 @@ Each component can run independently across servers, with shared access to the s
 Example with all components on one server:
 
 ```shell
-kestra server webserver -c ./application.yml -p ./plugins --port=8080
-kestra server scheduler -c ./application.yml -p ./plugins --port=8081
-kestra server worker -c ./application.yml -p ./plugins --port=8082
-kestra server executor -c ./application.yml -p ./plugins --port=8083
+kestra server webserver -c ./application.yaml -p ./plugins --port=8080
+kestra server scheduler -c ./application.yaml -p ./plugins --port=8081
+kestra server worker -c ./application.yaml -p ./plugins --port=8082
+kestra server executor -c ./application.yaml -p ./plugins --port=8083
 ```
