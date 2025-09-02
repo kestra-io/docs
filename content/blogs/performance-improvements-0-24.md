@@ -1,6 +1,6 @@
 ---
-title: "Performance Upgrades of 0.24"
-description: "Kestra 0.24 boosts performance with faster scheduling, improved JDBC queues, and nearly 2x execution throughput."
+title: "How We Keep Upgrading Kestra Before 1.0"
+description: "Once again, we boosted performances with faster scheduling, improved JDBC queues, and nearly 2x execution throughput."
 date: 2025-08-29T17:00:00
 category: Solutions
 author:
@@ -12,7 +12,7 @@ image: /blogs/0-24-performance-upgrades.png
 
 In 0.23, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.23](https://kestra.io/blogs/performance-improvements-0.23.md).
 
-This latest version delivers even more substantial speed, efficiency, and system responsiveness enhancements.
+Today, we delivers even more substantial speed, efficiency, and system responsiveness enhancements.
 
 ## Scheduler improvements with the help of Xiaomi
 
@@ -55,7 +55,7 @@ In a controlled benchmark, performance improved as follows:
 
 ## Conclusion
 
-Version 0.24 delivers major performance and scalability improvements, largely thanks to the Xiaomi Engineering team. Their production-scale usage, in-depth diagnostics, and targeted contributions—such as the scheduler enhancements—continue to shape the evolution of Kestra.
+We delivers major performance and scalability improvements, largely thanks to the Xiaomi Engineering team. Their production-scale usage, in-depth diagnostics, and targeted contributions—such as the scheduler enhancements—continue to shape the evolution of Kestra.
 
 Stay tuned—there’s more to come as the focus on performance, resiliency, and scalability continues.
 
