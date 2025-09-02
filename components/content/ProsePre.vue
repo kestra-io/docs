@@ -40,9 +40,11 @@
     const codeBlock = ref(null);
 
     watch(() => props.code, (newVal) => {
-        if (codeBlock.value && newVal.length > 0) {
-            highlightCodeBlocks(codeBlock.value);
-        }
+        nextTick(() => {
+            if (codeBlock.value && newVal.length > 0) {
+                highlightCodeBlocks(codeBlock.value);
+            }
+        });
     }, {immediate: true});
 
     function hoverCode() {

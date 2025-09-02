@@ -52,8 +52,6 @@ export function getShiki() {
 }
 
 export default function useShiki() {
-    const shiki = ref<ReturnType<typeof getShiki>>()
-
     async function highlightCodeBlocks(root: HTMLElement = document.body) {
         return new Promise<void>(resolve => nextTick(async () => {
             const blocks = root.querySelectorAll('pre > code')
@@ -65,7 +63,7 @@ export default function useShiki() {
                 const languageClass = Array.from(preClassList).find((c) => c.startsWith('language-'))
                 if(languageClass) {
                     const originalCode = block.innerHTML.replace(/\n$/, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
-                    const shikiValue = await shiki.value
+                    const shikiValue = await shiki
                     const html = shikiValue?.codeToHtml(originalCode, {
                         lang: languageClass.replace('language-', ''),
                         theme: 'github-dark'
@@ -97,7 +95,7 @@ export default function useShiki() {
     }
 
     onMounted(async () => {
-        shiki.value = getShiki()
+        shiki = getShiki()
     })
 
     return { highlightCodeBlocks }
