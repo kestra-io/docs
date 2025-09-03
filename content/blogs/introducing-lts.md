@@ -1,6 +1,6 @@
 ---
 title: "Introducing Long-Term Support (LTS) for Kestra"
-description: "Kestra 1.0 marks the first LTS release, with weekly backport releases and one year of guaranteed maintenance for each LTS version."
+description: "Kestra 1.0 marks the first LTS release, with weekly backports and one year of guaranteed maintenance for each LTS version."
 date: 2025-09-11T15:00:00
 category: News & Product Updates
 authors:
@@ -22,14 +22,14 @@ From 1.0 onward, backports are applied to the **latest**, the **latest LTS**, an
 
 ## Tracking the latest LTS
 
-Each LTS release is clearly labeled in **GitHub release notes**. We also provide a `latest-lts` Docker tag:
+Each LTS release is clearly labeled in **GitHub release notes**. For simplicity, we also provide a `latest-lts` Docker image tag:
 
 ```bash
 kestra/kestra:latest-lts # Open Source
 registry.kestra.io/docker/kestra-ee:latest-lts # Enterprise Edition
 ```
 
-Pinning to this tag keeps you on the most recent **stable production release** without having to track exact version numbers.
+Pinning your image to this tag keeps your environment on the most recent **stable production release** without having to track exact version numbers.
 
 ## Versioning at a glance
 
