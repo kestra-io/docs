@@ -1,7 +1,7 @@
 ---
 title: "How We Keep Upgrading Kestra Before 1.0"
 description: "Once again, we boosted performances with faster scheduling, improved JDBC queues, and nearly 2x execution throughput."
-date: 2025-08-29T17:00:00
+date: 2025-09-03T17:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
