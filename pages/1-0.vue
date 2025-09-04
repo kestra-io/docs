@@ -2,14 +2,14 @@
     <div class="features-1-0">
         <Head>
             <Title>Introducing Kestra 1.0: The Declarative Agentic Orchestration Platform."</Title>
-            <Meta 
+            <Meta
                 name="description"
-                content="Build workflows faster with AI-assisted code, autonomous agents, and production-ready features. Scale AI Agents in days instead of weeks with full governance and no vendor lock-in." 
+                content="Build workflows faster with AI-assisted code, autonomous agents, and production-ready features. Scale AI Agents in days instead of weeks with full governance and no vendor lock-in."
             />
         </Head>
         <OnezeroHeader />
         <OnezeroInfo />
-        <!-- <OnezeroAiCopilot /> -->
+        <OnezeroAiCopilot />
         <OnezeroOrchestration />
         <OnezeroUnified />
         <!-- <OnezeroFaq /> -->
