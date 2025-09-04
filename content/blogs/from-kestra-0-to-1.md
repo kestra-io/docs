@@ -4,9 +4,9 @@ description: We are getting closer to the 1.0 release, this is our journey
 date: 2025-09-04T13:00:00
 category: News & Product Updates
 author: 
- name: Emmanuel Darras
- image: edarras
- role: CEO & Co-Founder
+ name: Ludovic Dehon
+ image: ldehon
+ role: CTO & Co-Founder
 image: /blogs/from-0-to-1.jpg
 ---
 
@@ -19,7 +19,7 @@ That’s not a phrase we use lightly. 1.0 is a **true revolution**: stable, ente
 First, let’s be clear: our philosophy has always been the same.
 
 - **Open Source**: Kestra will always provide a strong open-source environment, free and accessible to anyone who wants to orchestrate their data, AI, infrastructure, or business processes.
-- **Enterprise Grade When You Need It**: For the world’s largest companies, Kestra Enterprise delivers advanced features for security, governance, and scale, with the same open DNA.
+- **Enterprise Grade When You Need It**: Kestra Enterprise delivers advanced features for security, governance, and scale, with the same open DNA.
 - **No Lock-In**: Openness isn’t just a licensing choice; it’s a design principle. Kestra is built to run anywhere, on-premises, in any cloud, or in an air-gapped environment.
 
 This balance between **community accessibility** and **enterprise reliability** is the foundation of everything we do, and it will continue to guide us well beyond 1.0.
@@ -56,7 +56,7 @@ And this is just a glimpse of what the team has delivered during those past year
 
 Alongside these features, the **community became a force multiplier.** Kestra trended on GitHub multiple times, surged past **20,000 stars**. Every contribution, bug report, and edge-case fix helped turn Kestra into the orchestrator that could run anywhere, for anyone.
 
-And trust followed. Today, **Apple, Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, and many others** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
+And trust followed. Today, **Apple, Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, BHP, and many others** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
 
 ## “Nine hundred plugins? That seems like a lot.”
 
@@ -64,7 +64,7 @@ It is a lot. And yes, they **work**.
 
 Every time we mention that Kestra now spans **900+ plugins**, we get two reactions. The first is excitement because it means you can connect to practically anything: data stores, compute backends, messaging systems, observability stacks, back‑office apps, and the long tail of tools that enterprises rely on. The second is skepticism: can that many integrations really be trustworthy?
 
-They can, and they are, because we treat the plugin ecosystem with the same discipline we apply to the core. Plugins are part of the product. We test them. We keep them up to date. We make upgrades safe. In Enterprise, **plugin versioning** lets you pin exactly what your workflows depend on, run multiple versions in parallel, and adopt changes at your own pace. The size of the ecosystem is the result of years of work, so that integration breadth doesn’t come at the cost of quality. This is the level we are reaching, and it’s the same bar for everyone.
+They can, and they are, because we treat the plugin ecosystem with the same discipline we apply to the core. Plugins are part of the product. We test them. We keep them up to date. We make upgrades safe. In Enterprise Edition, **plugin versioning** lets you pin exactly what your workflows depend on, run multiple versions in parallel, and adopt changes at your own pace. The size of the ecosystem is the result of years of work, so that integration breadth doesn’t come at the cost of quality. This is the level we are reaching, and it’s the same bar for everyone.
 
 ## One control plane, everywhere you run
 
@@ -74,7 +74,7 @@ From the beginning, we refused to tie orchestration to a deployment model. Some 
 
 So what does **Kestra 1.0** actually **mean**?
 
-It means the ideas we started with: **declarative orchestration**, **open source**, **governance by design,** have matured into a platform worthy of long‑term commitments. It means we’ve earned the right to call this next release **LTS**, with all the discipline that entails. It means when we say **Fortune 500** teams trust Kestra, we can point to real systems moving large workloads. It means when we say **900+ plugins**, we stand behind them, as a maintained, tested, and continually updated ecosystem that extends what you can orchestrate without compromise.
+It means the ideas we started with: **declarative orchestration**, **open source**, **governance by design,** have matured into a platform worthy of long‑term commitments. It means we’ve earned the right to call this next release **LTS** (Long Term Support), with all the discipline that entails. It means when we say **Fortune 500** teams trust Kestra, we can point to real systems moving large workloads. It means when we say **900+ plugins**, we stand behind them, as a maintained, tested, and continually updated ecosystem that extends what you can orchestrate without compromise.
 
 Most of all, it means you can trust Kestra. You can make it the single orchestration layer across data, infrastructure, and business operations. You can consolidate the glue that used to live in cron jobs and shell scripts. You can stop explaining to auditors why the most critical paths in your company depend on duct tape.
 
