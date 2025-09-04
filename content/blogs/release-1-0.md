@@ -1,6 +1,6 @@
 ---
-title: Kestra 1.0 - the Declarative Agentic Orchestration Platform is Here! 🚀
-description: Kestra 1.0 is an LTS release that introduces an AI Copilot and custom AI Agents, enabling Declarative Agentic Orchestration as Code and from the UI.
+title: Kestra 1.0 — Declarative Orchestration with AI Agents and Copilot
+description: Kestra 1.0 delivers Declarative Orchestration as Code and from the UI. With AI Copilot and custom AI Agents, this LTS release sets the foundation for agentic automation.
 date: 2025-09-09T15:00:00
 category: News & Product Updates
 authors:
