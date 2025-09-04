@@ -26,7 +26,14 @@ kestra:
       api-key: YOUR_GEMINI_API_KEY
 ```
 
-Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor.
+Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration:
+
+- `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
+- `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
+- `topK`: Typically ranges from 1–200+ depending on the API; lower values restrict choices to a few predictable tokens, while higher values allow more options and greater variety in responses.
+- `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
+- `logRequests`: Creates logs in Kestra for LLM requests.
+- `logResponses`: Creates logs in Kestra for LLM responses.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
