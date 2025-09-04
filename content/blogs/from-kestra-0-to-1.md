@@ -78,7 +78,7 @@ It means the ideas we started with: **declarative orchestration**, **open source
 
 Most of all, it means you can trust Kestra. You can make it the single orchestration layer across data, infrastructure, and business operations. You can consolidate the glue that used to live in cron jobs and shell scripts. You can stop explaining to auditors why the most critical paths in your company depend on duct tape.
 
-We are proud of where we landed. **Kestra 1.0** is ready. The release you’ll see on Tuesday is a culmination of that philosophy: a platform that is stable, understandable, and ready to carry serious workloads with integrity.
+We are proud of where we landed. **Kestra 1.0** is ready. The release you’ll see on Tuesday is a culmination of that philosophy: a platform that is stable, understandable, and ready to carry critical workflows with integrity.
 
 If you’ve been with us since the early days, thank you for the issues you opened, the pull requests you sent, and the ideas you pushed us to test. If you’re just discovering Kestra now, welcome. You’ll find a platform that values clarity, reliability, and openness over lock‑in.
 
