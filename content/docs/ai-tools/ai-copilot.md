@@ -20,10 +20,10 @@ To add Copilot to your flow editor, add the following to your Kestra configurati
 ```yaml
 kestra:
   ai:
-    type: openai
+    type: gemini
     gemini:
-      model-name: "gpt-5"
-      api-key: YOUR_OPENAI_API_KEY
+      model-name: gemini-2.5-flash
+      api-key: YOUR_GEMINI_API_KEY
 ```
 
 Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor.
@@ -31,7 +31,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
 ::alert{type="info"}
-The open-source version supports only OpenAI models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
+The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
 ::
 
 ## Build flows with Copilot
