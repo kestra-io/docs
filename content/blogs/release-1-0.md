@@ -23,10 +23,11 @@ The table below highlights the key features of this release.
 | Playground (GA)                     | Iteratively build workflows by running tasks one at a time without re-executing the entire flow.                         | All Editions       |
 | Flow-level SLA (GA)                 | Define SLA rules per workflow to enforce max duration or execution assertions, with automatic actions on breaches.       | All Editions       |
 | New Helm Charts                     | Deploy Kestra with a production-ready Helm Chart with improved values, and cleaned-up dependencies.                      | All Editions       |
-| New Git Sync integration            | Sync all Flows, Apps, Unit Tests and Custom Dashboards with your Git repository using a single task.                     | All Editions       |
+| New Git Sync integration            | Sync all Flows, Namespace Files, Apps, Unit Tests and Custom Dashboards with your Git repository using a single task.    | All Editions       |
 | Plugin Versioning (GA)              | Run multiple versions of the same plugin in parallel, pin versions per workflow, and upgrade safely.                     | Enterprise Edition |
 | Unit Tests (GA)                     | Add tests for your flows with improved UI, built-in documentation and dedicated tasks to run Unit Tests from your flows. | Enterprise Edition |
-| No-Code Multi-Panel Editor for Apps | Build Apps from a No-Code interface with multi-panel UI.                                                                 | Enterprise Edition |
+| Multi-Panel Editor for Apps & Tests | Multi-Panel editor for Unit Tests and Apps (now available also in the No-Code mode!).                                    | Enterprise Edition |
+| Multiple SemVer tags                | Use v0.24 or v1.0 to always pull the latest patch (e.g., 0.24.4 or 1.0.0) without pinning the exact patch version.       | Enterprise Edition |
 
 ---
 
