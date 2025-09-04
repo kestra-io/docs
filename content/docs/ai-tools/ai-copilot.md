@@ -86,7 +86,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 - Create a flow that outputs Hello as value
 - Run a flow every 10 minutes
 - Run a flow every day at 9 AM
-- Run a command echo 'Hello Docker' in a Docker container
+- Run a shell command echo 'Hello Docker' in a Docker container
 - Run a command python main.py in a Docker container
 - Run a script main.py stored as namespace file
 - Build a Docker image from an inline Dockerfile and push it to a GitHub Container Registry
