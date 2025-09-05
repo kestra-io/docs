@@ -106,7 +106,7 @@ const faqItems = [
     position: relative;
     color: white;
     z-index: 0;
-    padding: 70px 1.25rem 160px;
+    padding: 70px 1.25rem;
     overflow: hidden;
 
     .background-ring {
@@ -117,7 +117,6 @@ const faqItems = [
         width: 100%;
         height: 100%;
         object-fit: contain;
-        opacity: 1;
         mix-blend-mode: color-dodge;
         z-index: -1;
 
@@ -132,14 +131,6 @@ const faqItems = [
         }
     }
 
-    @include media-breakpoint-down(lg) {
-        padding: 50px 1.25rem 100px;
-    }
-
-    @include media-breakpoint-down(md) {
-        padding: 64px 1.25rem 80px;
-    }
-
     .container {
         position: relative;
         max-width: 980px;
@@ -148,9 +139,8 @@ const faqItems = [
         align-items: center;
         gap: 160px;
         padding: 0;
-        overflow: hidden;
 
-        @include media-breakpoint-down(md) {
+        @media screen and (max-width: 1024px) {
             gap: 5rem;
         }
 
