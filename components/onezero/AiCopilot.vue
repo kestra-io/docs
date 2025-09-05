@@ -102,8 +102,8 @@
 
 .ai-copilot{
     margin-bottom: 80px;
+    display: grid;
     @include media-breakpoint-up(lg) {
-        display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
             "first-line first-line"
@@ -213,16 +213,17 @@
 }
 
 .second-line {
+    overflow: hidden;
     @include media-breakpoint-up(lg) {
         grid-area: second-line;
-    }
-    background-image:
-            radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
-    background-repeat: no-repeat;
-    background-position: 0% 150%;
-    background-size: 97% 80%;
-    .ai-copilot & {
-        padding-top: 120px;
+        background-image:
+                radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
+        background-repeat: no-repeat;
+        background-position: 0% 150%;
+        background-size: 97% 80%;
+        .ai-copilot & {
+            padding-top: 120px;
+        }
     }
     h3 {
         font-size: 24px;
@@ -231,12 +232,20 @@
     }
     h3, p{
         width: 820px;
-        margin: 0 auto 40px;
+        @include media-breakpoint-up(lg) {
+            margin: 0 auto 40px;
+        }
     }
     .illu{
         margin-top: 10px;
         margin-bottom: -30px;
-        width: 100%;
+        width: 137%;
+        position: relative;
+        left: -16%;
+        @include media-breakpoint-up(lg) {
+            position: static;
+            width: 100%;
+        }
         height: auto;
     }
 }
