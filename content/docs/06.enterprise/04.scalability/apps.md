@@ -103,6 +103,14 @@ Then, add your app configuration to create a form that requests compute resource
 
 ---
 
+## Creating Apps No Code
+
+Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
+
+![Apps No Code](/docs/enterprise/apps/apps-no-code.png)
+
+---
+
 ## App Catalog
 
 The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.

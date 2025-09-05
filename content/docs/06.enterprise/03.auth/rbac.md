@@ -58,7 +58,6 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `AUDITLOG`
 - `SECRET`
 - `BLUEPRINT`
-- `INFRASTRUCTURE`
 - `IMPERSONATE`
 - `SETTING`
 - `APP`
