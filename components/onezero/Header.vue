@@ -78,7 +78,7 @@ const companyLogos = [
 .main {
     position: relative;
     width: 100%;
-    background: #07070a url("/landing/onezero/hero_gradient.png") center top 40rem / cover no-repeat;
+    background: #07070a url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
     @include media-breakpoint-up(lg) {
         background-position: center top 30rem;
     }

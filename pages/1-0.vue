@@ -12,7 +12,7 @@
         <OnezeroAiCopilot />
         <OnezeroOrchestration />
         <OnezeroUnified />
-        <!-- <OnezeroFaq /> -->
+        <OnezeroFaq />
     </div>
 </template>
 
