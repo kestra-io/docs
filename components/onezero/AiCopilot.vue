@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="ai-copilot container">
             <div class="first-line">
-                <div>
+                <div data-aos="fade-right">
                     <div class="what-is-new">What is new in <strong>1.0</strong></div>
                     <h2>AI Copilot</h2>
                     <p>
@@ -11,7 +11,7 @@
                         version, and deploy.
                     </p>
                 </div>
-                <div class="copilot-overview-illustration">
+                <div class="copilot-overview-illustration" data-aos="fade-left">
                     <NuxtImg class="illu-code" src="/landing/onezero/Copilot.png" alt="AI Copilot Overview code" width="1042" height="695" />
                     <NuxtImg class="illu-prompt" src="/landing/onezero/prompt.png" alt="AI Copilot Overview prompt" width="1126" height="296" />
                 </div>
@@ -25,7 +25,7 @@
                     loop until goals are met, and coordinate multi-step
                     objectives—fully observable and governed.
                 </p>
-                <NuxtImg class="illu" src="/landing/onezero/AIAgent.png" alt="AI Agent Overview" width="1012" height="590" />
+                <NuxtImg class="illu" src="/landing/onezero/AIAgent.png" alt="AI Agent Overview" width="1012" height="590" data-aos="zoom-in"/>
             </div>
             <div class="ai-block">
                 <h3>Official MCP Server</h3>
@@ -33,14 +33,14 @@
                     Connect Kestra to AI IDEs & agent frameworks via the Model Context Protocol;
                     manage flows and executions from your AI workspace.
                 </p>
-                <NuxtImg class="illu"src="/landing/onezero/MCPServer.png" alt="MCP Server Illustration" width="1012" height="590" />
+                <NuxtImg class="illu" src="/landing/onezero/MCPServer.png" alt="MCP Server Illustration" width="1012" height="590" data-aos="zoom-in" />
             </div>
             <div class="second-line">
                 <h3>AI-Powered Docs Search</h3>
                 <p>
                     Get answers to your questions instantly.
                 </p>
-                <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI" width="2280" height="722" />
+                <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI" width="2280" height="722" data-aos="fade-up"/>
             </div>
             <div class="ai-block">
                 <h3>Enterprise-grade LTS</h3>
@@ -48,7 +48,7 @@
                     Predictable upgrades, backward compatibility, RBAC,
                     encrypted secrets, tenant isolation proven at scale.
                 </p>
-                <NuxtImg class="illu" src="/landing/onezero/EnterpriseLTS.png" alt="Enterprise LTS Illustration" width="1076" height="656" />
+                <NuxtImg class="illu" src="/landing/onezero/EnterpriseLTS.png" alt="Enterprise LTS Illustration" width="1076" height="656" data-aos="zoom-in"/>
             </div>
             <div class="ai-block">
                 <h3>900+ Plugins & Safe Upgrades</h3>
@@ -57,26 +57,26 @@
                     Plugin Versioning allows you to pin and run multiple versions
                     simultaneously for safer, more controlled rollouts.
                 </p>
-                <NuxtImg class="illu" src="/landing/onezero/PluginsUpgrade.png" alt="Plugins Upgrade Illustration" width="1012" height="656" />
+                <NuxtImg class="illu" src="/landing/onezero/PluginsUpgrade.png" alt="Plugins Upgrade Illustration" width="1012" height="656" data-aos="zoom-in"/>
             </div>
         </div>
         <div class="velocity container">
             <h2><span>Velocity</span> Features</h2>
             <div class="feature-list">
                 <div class="feature-item">
-                    <h3>Playground (GA)</h3>
+                    <h3><OnezeroIconsPlayground/> Playground (GA)</h3>
                     <p>
                         Reduce friction in complex builds by testing steps independently while keeping production runs clean and consistent.
                     </p>
                 </div>
                 <div class="feature-item">
-                    <h3>Flow-level SLAs</h3>
+                    <h3><OnezeroIconsFlowLevel/> Flow-level SLAs</h3>
                     <p>
                         Enforce reliability standards with built-in SLAs that automatically handle long-running or failed executions to keep workflows compliant and predictable.
                     </p>
                 </div>
                 <div class="feature-item">
-                    <h3>New Dependency View</h3>
+                    <h3><OnezeroIconsSpiderWeb/> New Dependency View</h3>
                     <p>
                         Full visibility into complex workflows with a scalable, intuitive dependency view that makes it easy to trace, explore, and navigate data flows at any scale.
                     </p>
@@ -101,7 +101,7 @@
 
 .ai-copilot{
     display: grid;
-    margin-bottom: 200px;
+    margin-bottom: 80px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 1fr auto 1fr;
     grid-template-areas:
@@ -110,13 +110,13 @@
         "second-line second-line"
         ". .";
     > div{
-        border: 1px solid #333;
+        border: 1px solid #2F3242;
         border-right: 0;
         border-left: 0;
         padding: 2rem 0;
         padding-top: 64px;
         &:nth-child(3n){
-            border-left: 1px solid #333;
+            border-left: 1px solid #2F3242;
             padding-left: 2rem;
         }
     }
@@ -240,6 +240,44 @@
     .illu{
         width: 100%;
         height: auto;
+    }
+}
+
+.velocity{
+    text-align: center;
+    padding-bottom: 52px;
+    position: relative;
+    z-index: 1;
+    h2{
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 600;
+        margin-bottom: 40px;
+        > span{
+            background: linear-gradient(90deg, #8C4BFF 0%, #658AF9 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+    .feature-list{
+        text-align: left;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+        h3{
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        p{
+            font-size: 14px;
+            line-height: 20px;
+        }
     }
 }
 </style>
