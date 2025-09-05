@@ -92,7 +92,10 @@
 .wrapper {
     background-color: #1A1C25;
     color: white;
-    padding: 102px 2rem 50px;
+    padding: 0 2rem;
+    @include media-breakpoint-up(lg) {
+        padding: 102px 2rem 50px;
+    }
     p{
         color: #D5D3DE;
         font-size: 18px;
