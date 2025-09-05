@@ -24,14 +24,12 @@
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="50">
-                    <div class="video-container">
-                        <div class="video-wrapper">
+                    <div class="video-responsive">
                             <iframe 
                                 src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T"
                                 referrerpolicy="strict-origin-when-cross-origin" 
-                                allowfullscreen 
+                                allowfullscreen
                             />
-                        </div>
                     </div>
                 </div>
             </div>
@@ -87,32 +85,15 @@
         }
     }
 
-    .video-container {
-        .video-wrapper {
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
 
-            @media screen and (min-width: 992px) {
-                aspect-ratio: 1.575;
-            }
 
-            @media screen and (max-width: 991px) {
-                aspect-ratio: 16 / 9;
-            }
-
-            iframe {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                border: none;
-                object-fit: cover;
-            }
-        }
+    .video-responsive {
+    padding-bottom: 56.5%;
+    @include media-breakpoint-down(sm) {
+        padding-bottom: 61%;
     }
+    border-radius: 15px;
+}
 
     @media (max-width: 768px) {
         [data-aos] {
