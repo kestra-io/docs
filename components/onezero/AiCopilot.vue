@@ -311,4 +311,12 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    [data-aos] {
+        transform: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+    }
+}
 </style>
