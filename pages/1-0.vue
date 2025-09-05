@@ -17,7 +17,7 @@
 </template>
 
 <style lang="scss" scoped>
-:deep(.btn-primary) {
+:deep(.btn-lg) {
     font-size: 1rem !important;
     border-radius: 0.5rem !important;
 }

@@ -82,7 +82,7 @@
                     </p>
                 </div>
             </div>
-            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-md btn-primary">Explore the 1.0 Highlights</NuxtLink>
+            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-lg btn-primary">Explore the 1.0 Highlights</NuxtLink>
         </div>
     </div>
 </template>
@@ -137,7 +137,10 @@
     position: relative;
     .ai-copilot & {
         border: none;
-        padding-bottom: 200px;
+        padding-bottom: 100px;
+        @include media-breakpoint-up(lg) {
+            padding-bottom: 200px;
+        }
     }
     .what-is-new{
         font-weight: 600;

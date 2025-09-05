@@ -18,7 +18,7 @@
             <div class="session-card" data-aos="zoom-in">
                 <h1>Book a Strategy Session</h1>
                 <p>What could Declarative Agentic Orchestration can do for you?</p>
-                <NuxtLink href="/demo" class="btn btn-md btn-primary">
+                <NuxtLink href="/demo" class="btn btn-lg btn-primary">
                     Book Your Strategy Session
                 </NuxtLink>
             </div>
@@ -145,6 +145,9 @@ const faqItems = [
         }
 
         .row {
+            @include media-breakpoint-down(sm) {
+                padding: 0 2rem;
+            }
             .feature-item {
                 display: flex;
                 flex-direction: column;
@@ -216,6 +219,10 @@ const faqItems = [
                 font-weight: 400;
                 margin: 20px 0;
                 color: $white;
+            }
+
+            .btn-primary::before{
+                display: none;
             }
         }
     }
