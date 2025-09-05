@@ -9,6 +9,8 @@
                     loading="lazy"
                     class="img-fluid"
                     data-aos="zoom-in"
+                    width="619px"
+                    height="326px"
                 />
                 <div class="text-block" data-aos="fade-up" data-aos-delay="200">
                     <h1>Introducing Kestra 1.0</h1>
