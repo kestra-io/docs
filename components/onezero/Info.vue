@@ -92,6 +92,7 @@
             width: 100%;
             position: relative;
             overflow: hidden;
+            border-radius: 15px;
 
             @media screen and (min-width: 992px) {
                 aspect-ratio: 1.575;
