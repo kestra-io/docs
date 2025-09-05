@@ -181,7 +181,7 @@ tasks:
       modelName: gemini-2.5-flash
       apiKey: "{{ kv('GEMINI_API_KEY') }}"
     tools:
-      - type: io.kestra.plugin.ai.tool.KestraFlowCalling
+      - type: io.kestra.plugin.ai.tool.KestraFlow
 ```
 
 
