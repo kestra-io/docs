@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div >
+            <div class="ai-block">
                 <h3>AI Agent</h3>
                 <p>
                     Autonomous, memory-aware tasks that can reason,
@@ -25,39 +25,39 @@
                     loop until goals are met, and coordinate multi-step
                     objectives—fully observable and governed.
                 </p>
-                <NuxtImg src="ai-agent-overview.png" alt="AI Agent Overview" />
+                <NuxtImg class="illu" src="/landing/onezero/AIAgent.png" alt="AI Agent Overview" width="1012" height="590" />
             </div>
-            <div >
+            <div class="ai-block">
                 <h3>Official MCP Server</h3>
                 <p>
                     Connect Kestra to AI IDEs & agent frameworks via the Model Context Protocol;
                     manage flows and executions from your AI workspace.
                 </p>
-                <NuxtImg src="mcp-overview.png" alt="MCP Overview" />
+                <NuxtImg class="illu"src="/landing/onezero/MCPServer.png" alt="MCP Server Illustration" width="1012" height="590" />
             </div>
             <div class="second-line">
                 <h3>AI-Powered Docs Search</h3>
                 <p>
                     Get answers to your questions instantly.
                 </p>
-                <NuxtImg src="ask-kestra-ai.png" alt="AI Prompt reading Ask Kestra AI" />
+                <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI" width="2280" height="722" />
             </div>
-            <div >
+            <div class="ai-block">
                 <h3>Enterprise-grade LTS</h3>
                 <p>
                     Predictable upgrades, backward compatibility, RBAC,
                     encrypted secrets, tenant isolation proven at scale.
                 </p>
-                <NuxtImg src="enterprise-lts.png" alt="Network of features" />
+                <NuxtImg class="illu" src="/landing/onezero/EnterpriseLTS.png" alt="Enterprise LTS Illustration" width="1076" height="656" />
             </div>
-            <div >
+            <div class="ai-block">
                 <h3>900+ Plugins & Safe Upgrades</h3>
                 <p>
                     Our extensive ecosystem spans data, AI, and infrastructure.
                     Plugin Versioning allows you to pin and run multiple versions
                     simultaneously for safer, more controlled rollouts.
                 </p>
-                <NuxtImg src="plugins-logos.png" alt="Community Plugins Logos" />
+                <NuxtImg class="illu" src="/landing/onezero/PluginsUpgrade.png" alt="Plugins Upgrade Illustration" width="1012" height="656" />
             </div>
         </div>
         <div class="velocity container">
@@ -92,13 +92,18 @@
     background-color: #1A1C25;
     color: white;
     padding: 102px 2rem 50px;
+    p{
+        color: #D5D3DE;
+        font-size: 18px;
+        line-height: 24px;
+    }
 }
 
 .ai-copilot{
     display: grid;
     margin-bottom: 200px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr auto 1fr;
     grid-template-areas:
         "first-line first-line"
         ". ."
@@ -109,6 +114,7 @@
         border-right: 0;
         border-left: 0;
         padding: 2rem 0;
+        padding-top: 64px;
         &:nth-child(3n){
             border-left: 1px solid #333;
             padding-left: 2rem;
@@ -124,6 +130,23 @@
         border: none;
         padding-bottom: 200px;
     }
+    .what-is-new{
+        font-weight: 600;
+        font-size: 18.4px;
+        strong{
+            color: #8C4BFF;
+            font-weight: 600;
+        }
+    }
+    h2 {
+        font-size: 48px;
+        font-weight: 600;
+        line-height: 56px;
+        margin: 28px 0;
+    }
+    p{
+        width: 410px;
+    }
     &:before{
         display: block;
         content: "";
@@ -132,7 +155,9 @@
         left: 0;
         right: -200px;
         bottom: 150px;
-        background-image: radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%), radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%);
+        background-image:
+            radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%),
+            radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%);
         background-size: 1000px 400px, 1000px 400px;
         background-repeat: no-repeat, no-repeat;
         background-position: 100% 50%, 110% 240%;
@@ -141,10 +166,33 @@
 
 .second-line {
     grid-area: second-line;
+    background-image:
+            radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
+    background-repeat: no-repeat;
+    background-position: 0% 150%;
+    background-size: 97% 80%;
+    .ai-copilot & {
+        padding-top: 120px;
+    }
+    h3 {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 36px;
+    }
+    h3, p{
+        width: 820px;
+        margin: 0 auto 40px;
+    }
+    .illu{
+        margin-top: 10px;
+        margin-bottom: -30px;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .copilot-overview-illustration {
-    margin-left: 2rem;
+    margin-left: 150px;
     position: relative;
     max-width: 90%;
     width: 100%;
@@ -175,6 +223,23 @@
         left: -10%;
         bottom: -20%;
 
+    }
+}
+
+.ai-block{
+    p{
+        height: 96px;
+        width: 430px;
+        margin: 20px 0;
+    }
+    h3{
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+    }
+    .illu{
+        width: 100%;
+        height: auto;
     }
 }
 </style>
