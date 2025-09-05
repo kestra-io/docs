@@ -1909,7 +1909,7 @@ Example:
 
 ### contains
 
-The `contains` operator checks if an item exists within a collection, map, or array.
+The `contains` operator checks if an item exists within a collection, string, map, or array.
 
 Examples:
 
@@ -1933,6 +1933,10 @@ To check multiple items:
 {% if ["apple", "pear", "banana", "peach"] contains ["apple", "peach"] %}
 	...
 {% endif %}
+```
+
+```yaml
+message: "substring is present in the main string: {{ inputs.mainString contains inputs.subString }}"
 ```
 
 ---
