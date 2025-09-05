@@ -153,10 +153,10 @@
         line-height: 56px;
         margin: 28px 0;
     }
-    p{
-        width: 410px;
-    }
     @include media-breakpoint-up(lg) {
+        p{
+            width: 410px;
+        }
         &:before{
             display: block;
             content: "";
