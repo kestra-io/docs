@@ -13,7 +13,7 @@
                 </div>
                 <div class="copilot-overview-illustration" data-aos="fade-left">
                     <NuxtImg class="illu-code" src="/landing/onezero/Copilot.png" alt="AI Copilot Overview code" width="1042" height="695" />
-                    <NuxtImg class="illu-prompt" src="/landing/onezero/prompt.png" alt="AI Copilot Overview prompt" width="1126" height="296" />
+                    <NuxtImg class="illu-prompt" src="/landing/onezero/Prompt.png" alt="AI Copilot Overview prompt" width="1126" height="296" />
                 </div>
             </div>
 
