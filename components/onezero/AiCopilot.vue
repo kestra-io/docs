@@ -82,12 +82,13 @@
                     </p>
                 </div>
             </div>
-            <NuxtLink href="1.0" target="_blank" class="btn btn-md btn-primary">Explore the 1.0 Highlights</NuxtLink>
+            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-md btn-primary">Explore the 1.0 Highlights</NuxtLink>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+@import "../../assets/styles/variable";
 .wrapper {
     background-color: #1A1C25;
     color: white;
@@ -100,31 +101,36 @@
 }
 
 .ai-copilot{
-    display: grid;
     margin-bottom: 80px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr 1fr auto 1fr;
-    grid-template-areas:
-        "first-line first-line"
-        ". ."
-        "second-line second-line"
-        ". .";
+    @include media-breakpoint-up(lg) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+            "first-line first-line"
+            ". ."
+            "second-line second-line"
+            ". .";
+    }
     > div{
         border: 1px solid #2F3242;
         border-right: 0;
         border-left: 0;
         padding: 2rem 0;
         padding-top: 64px;
-        &:nth-child(3n){
-            border-left: 1px solid #2F3242;
-            padding-left: 2rem;
+        @include media-breakpoint-up(lg) {
+            &:nth-child(3n){
+                border-left: 1px solid #2F3242;
+                padding-left: 2rem;
+            }
         }
     }
 }
 
 .first-line {
-    grid-area: first-line;
-    display: flex;
+    @include media-breakpoint-up(lg) {
+        grid-area: first-line;
+        display: flex;
+    }
     position: relative;
     .ai-copilot & {
         border: none;
@@ -147,52 +153,29 @@
     p{
         width: 410px;
     }
-    &:before{
-        display: block;
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: -200px;
-        bottom: 150px;
-        background-image:
-            radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%),
-            radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%);
-        background-size: 1000px 400px, 1000px 400px;
-        background-repeat: no-repeat, no-repeat;
-        background-position: 100% 50%, 110% 240%;
-    }
-}
-
-.second-line {
-    grid-area: second-line;
-    background-image:
-            radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
-    background-repeat: no-repeat;
-    background-position: 0% 150%;
-    background-size: 97% 80%;
-    .ai-copilot & {
-        padding-top: 120px;
-    }
-    h3 {
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 36px;
-    }
-    h3, p{
-        width: 820px;
-        margin: 0 auto 40px;
-    }
-    .illu{
-        margin-top: 10px;
-        margin-bottom: -30px;
-        width: 100%;
-        height: auto;
+    @include media-breakpoint-up(lg) {
+        &:before{
+            display: block;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: -200px;
+            bottom: 150px;
+            background-image:
+                radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%),
+                radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%);
+            background-size: 1000px 400px, 1000px 400px;
+            background-repeat: no-repeat, no-repeat;
+            background-position: 100% 50%, 110% 240%;
+        }
     }
 }
 
 .copilot-overview-illustration {
-    margin-left: 150px;
+    @include media-breakpoint-up(lg) {
+        margin-left: 150px;
+    }
     position: relative;
     max-width: 90%;
     width: 100%;
@@ -220,17 +203,51 @@
         width: 109%;
         height: auto;
         position: absolute;
-        left: -10%;
         bottom: -20%;
+        left: -4%;
+        @include media-breakpoint-up(lg) {
+            left: -10%;
+        }
 
+    }
+}
+
+.second-line {
+    @include media-breakpoint-up(lg) {
+        grid-area: second-line;
+    }
+    background-image:
+            radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
+    background-repeat: no-repeat;
+    background-position: 0% 150%;
+    background-size: 97% 80%;
+    .ai-copilot & {
+        padding-top: 120px;
+    }
+    h3 {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 36px;
+    }
+    h3, p{
+        width: 820px;
+        margin: 0 auto 40px;
+    }
+    .illu{
+        margin-top: 10px;
+        margin-bottom: -30px;
+        width: 100%;
+        height: auto;
     }
 }
 
 .ai-block{
     p{
         height: 96px;
-        width: 430px;
         margin: 20px 0;
+        @include media-breakpoint-up(lg) {
+            width: 430px;
+        }
     }
     h3{
         font-size: 24px;
@@ -263,7 +280,9 @@
     .feature-list{
         text-align: left;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
         gap: 24px;
         margin-bottom: 40px;
         h3{
