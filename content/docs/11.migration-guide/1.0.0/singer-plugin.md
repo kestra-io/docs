@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugin/plugin-airbyte), [dlt](/plugin/plugin-dlt), and [CloudQuery](/plugin/plugin-cloudquery).
+Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugin/plugin-airbyte), [dlt](https://kestra.io/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugin/plugin-cloudquery).
 
 ## Why is Singer support being removed?
 
@@ -17,9 +17,7 @@ Singer was once a promising open-source technology for building and sharing data
 - After Meltano shut down, there is no longer a company backing the ecosystem.
 - As a result, compatibility, security, and reliability cannot be guaranteed going forward.
 
-To ensure Kestra users have reliable, well-maintained data ingestion options, we recommend migrating to open-source alternatives such as **Airbyte**, **dlt**, and **CloudQuery**.
-
-Kestra has first-class plugins for several data ingestion frameworks:
+To ensure Kestra users have reliable, well-maintained data ingestion options, we recommend migrating to other open-source alternatives. For example, Kestra provides plugins for:
 - Airbyte: Large connector ecosystem for databases, SaaS apps, and warehouses. Runs in both **Cloud** and **OSS** modes.
 - dlt: Flexible **Python-based** ingestion framework, great for custom pipelines and lightweight ingestion.
 - CloudQuery: Purpose-built for cloud asset discovery and syncing metadata to databases or warehouses.
@@ -33,9 +31,9 @@ Kestra has first-class plugins for several data ingestion frameworks:
 3. Configure connections:
     - For Airbyte, set up connections in the Airbyte UI and reference `connectionId` in Kestra.
 
-    - For dlt, define a Python pipeline and run it as a task in Kestra.
+    - For dlt, define your pipeline script and run it as a Python task in Kestra.
 
-    - For CloudQuery, configure via YAML and execute with the Kestra task.
+    - For CloudQuery, configure your ingestion spec in YAML and execute it with the Sync or CLI tasks.
 
 4. Update secrets in Kestra (API tokens, database credentials).
 

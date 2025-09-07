@@ -7,11 +7,11 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with dependencies installed such as PostgreSQL and MinIO, which was helpful to get started but typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator specifically for reading Resource Definitions to conduct different actions in Kestra. 
+We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with preinstalled dependencies, such as PostgreSQL and MinIO, which were helpful to get started, but which were typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator, specifically for reading Resource Definitions to conduct various actions in Kestra. 
 
 We also restructured configurations and values to be more comprehensive and production grade.
 
-There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator). **ADD LINKS TO CHARTS SOURCE CODE**
+There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator). 
 
 ::alert{type="info"}
 Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading.
@@ -19,7 +19,7 @@ Breaking changes have been made to the Helm chart in order to support the new fe
 
 ## `kestra`
 
-This chart is considered production ready. To install, the release name is now `my-kestra`:
+This chart is intended for production deployments. Here is how you can install it under the release name `my-kestra`:
 
 ```bash
 $ helm repo add kestra https://helm.kestra.io/
@@ -30,7 +30,7 @@ We removed PostgreSQL, MinIO, Kafka and Elasticsearch from the chart dependencie
 
 ## Deployment configuration
 
-Most of the deployment configuration options have been restructured. There is now a common entry in the `values.yaml`:
+Most of the deployment configuration options have been restructured. There is now a common entry in the `values.yaml` — compare the `Before` and `After` sections below.
 
 ### Before
 
@@ -154,6 +154,5 @@ There is no more need to take care of `configurationPath:`; it's automatically m
 
 We upgraded the way that `dind` is managed. It's now under the `dind` entry in the `values.yaml`. We added `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode.
 
-For a full list of values, refer to the [Values](https://github.com/kestra-io/helm-charts/blob/refacto()/chart_kestra/charts/kestra/README.md#values) in the source code for the chart.
+For a full list of values, refer to the [Values](https://github.com/kestra-io/helm-charts/tree/master/charts/kestra/README.md#values) in the chart's source code.
 
-**CHANGE VALUES LINK**

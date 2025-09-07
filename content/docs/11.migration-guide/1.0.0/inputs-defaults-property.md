@@ -1,5 +1,5 @@
 ---
-title: `defaults property` of all Inputs is now Dynamic
+title: Input defaults are now dynamic
 icon: /docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-The `defaults property` of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../expressions/index.md) as a default value. Consider this use case:
+The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../expressions/index.md) as a default value. Consider this use case:
 
 ```yaml
 id: session
