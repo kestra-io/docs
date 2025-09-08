@@ -6,11 +6,7 @@
                 <thead class="t-head">
                     <tr>
                         <th
-                            class="t-head-title"
-                            :class="{
-                                        'w-50 ps-5': title === 'Features',
-                                        'text-center': title !== 'Features',
-                                     }"
+                            class="t-head-title text-center"
                             v-for="(head, index) in  tableHead "
                             :key="head"
                         >

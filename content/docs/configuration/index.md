@@ -528,6 +528,55 @@ kestra:
 
 When you launch Kestra Enterprise Edition, it will check the license and display the validation step in the log.
 
+## EE Sidebar Configuration
+
+Kestra Enterprise Edition (EE) allows administrators to customize both the left and right sidebars in the UI for improved user experience and compliance with internal requirements.
+
+### Right Sidebar: Custom Links
+
+Admins can add custom links to the right sidebar, providing quick access to internal documentation, support portals, or other resources. Each link must include a `title` and a `url` property, and you can name the link properties as you like.
+
+Example configuration:
+
+```yaml
+kestra:
+  ee:
+    right-sidebar:
+      custom-links:
+        internal-docs:
+          title: "Internal Docs"
+          url: "https://kestra.io/docs/"
+        support-portal:
+          title: "Support portal"
+          url: "https://kestra.io/support/"
+```
+
+These links will appear in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
+
+::alert{type="info"}
+**Note:** The configuration syntax for right sidebar customization was updated since the initial launch in 0.24.0 to make it more explicit. If you previously used this feature, please update your configuration accordingly.
+::
+
+
+### Left Sidebar: Disable Menus
+
+You can disable specific menus in the left sidebar, which is useful for airgapped environments or to restrict access to certain features. For example, you may want to hide public blueprints or other menus that are not relevant for your deployment.
+
+Add the following to your configuration file:
+
+```yaml
+kestra:
+  ee:
+    left-sidebar:
+      disabled-menus:
+        - "Blueprints/Flow Blueprints"
+        - "Blueprints/Dashboard Blueprints"
+        - "Blueprints/App Blueprints"
+```
+
+Replace the menu names with those you want to disable. This feature is especially helpful for customers who want to limit access to certain features or customize specific environments.
+
+
 ## Multi-tenancy
 
 ::alert{type="warning"}
@@ -926,12 +975,14 @@ You can change the log behavior in Kestra by adjusting the `logger` configuratio
 ```yaml
 logger:
   levels:
-    io.kestra.core.runners: TRACE
-    org.elasticsearch.client: TRACE
-    org.elasticsearch.client.sniffer: TRACE
-    org.apache.kafka: DEBUG
-    io.netty.handler.logging: TRACE
+    io.kestra.core.runners: TRACE # Internal task execution-related details
+    org.opensearch.client.RestClient: DEBUG # OpenSearch API activity
+    org.apache.http: DEBUG # OpenSearch API client activity details
+    org.apache.http.wire: DEBUG # OpenSearch API client's raw HTTP bodies
+    org.apache.kafka: DEBUG # Kafka client activity
+    io.netty.handler.logging: TRACE # Netty's debugging messages
 ```
+
 By default, server logs also contain flow execution logs. To disable them, you can configure the following:
 
 ```yaml
@@ -951,12 +1002,14 @@ logger:
 ```
 
 Inside the server logs, there are 3 specific loggers that log execution related information:
+
 - The `execution` logger logs the start and end of each execution.
 - The `task` logger logs the start and end of each task run.
 - The `trigger` logger logs the start and end of each trigger evaluation.
 
 See them in action in the following log snippet:
-```text
+
+```log
 10:20:47.355 INFO  jdbc-execution-executor_0 execution.hello-world [tenant: main] [namespace: company.team] [flow: hello-world] [execution: 4cQNlX5ZBpOAHJeexSHojx] Flow started
 10:20:48.035 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log started
 10:20:48.371 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log with state SUCCESS completed in 00:00:00.514
@@ -964,6 +1017,7 @@ See them in action in the following log snippet:
 ```
 
 You can disable them via the following configuration:
+
 ```yaml
 logger:
   levels:
@@ -973,6 +1027,7 @@ logger:
 ```
 
 You can also disable them only for specific flows, for example for the `hello-world` flow:
+
 ```yaml
 logger:
   levels:

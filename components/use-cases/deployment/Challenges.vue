@@ -7,8 +7,8 @@
                     <span>{{title}}</span>
                 </p>
                 <p class="title" v-else v-html="titleHtml" />
-                <p class="description">
-                    {{description}}
+                <p class="description" v-if="description">
+                    {{ description }}
                 </p>
             </div>
             <div class="row d-flex justify-content-center mt-5 cards-container">
@@ -41,7 +41,8 @@
       },
       description: {
         type: String,
-        required: true,
+        required: false,
+        default: undefined
       },
       titleHtml: {
         type: String,

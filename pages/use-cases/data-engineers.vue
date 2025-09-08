@@ -9,6 +9,7 @@
             titleHtml="Kestra for<br><span>Data Engineers</span>"
             description="Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
             imageSrc="/landing/usecases/data-engineers/header-hero.svg"
+            imageAlt="Kestra for Data Engineers"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
@@ -18,7 +19,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints tag="Data" />
+            <UseCasesEngineersExploreBlueprints />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration
@@ -27,7 +28,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <FeaturesEnterpriseEdition/>
+            <FeaturesFeatureEnterprise />
         </NuxtLazyHydrate>
     </div>
 </template>

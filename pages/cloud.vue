@@ -103,10 +103,6 @@
         color: $white-1
     }
 
-    & :deep(div) {
-        color: $white;
-    }
-
     & :deep(.form) {
         & h4,
         & p,

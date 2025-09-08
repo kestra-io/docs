@@ -98,9 +98,8 @@
 
             <h4 class="mb-4">Request Access to Kestra Cloud</h4>
 
-            <div class="col-6">
-              <label for="firstname">
-                <span class="text-danger">*</span>
+            <div class="col-md-6 col-12">
+              <label for="firstname" class="form-label">
                 First Name
               </label>
               <input
@@ -108,13 +107,13 @@
                 type="text"
                 class="form-control"
                 id="firstname"
+                placeholder="First Name"
                 required
               />
             </div>
 
-            <div class="col-6">
-              <label for="lastname">
-                <span class="text-danger">*</span>
+            <div class="col-md-6 col-12">
+              <label for="lastname" class="form-label">
                 Last Name
               </label>
               <input
@@ -122,36 +121,44 @@
                 type="text"
                 class="form-control"
                 id="lastname"
+                placeholder="Last Name"
                 required
               />
             </div>
 
-            <div class="col-12 mt-3">
-              <label for="email">
-                <span class="text-danger">*</span>
-                Company Email
+              <div class="col-12">
+              <label for="email" class="form-label">
+                  Company Email
               </label>
               <input
                 name="email"
                 type="email"
                 class="form-control"
                 id="email"
+                placeholder="Company Email"
                 required
               />
             </div>
 
-            <div class="col-12 mt-3">
-              <label for="use_case_context">
+            <div class="col-12">
+              <label for="use_case_context" class="form-label">
                 Tell us more about your Orchestration strategy and how we can help.
               </label>
               <textarea
                 name="use_case_context"
                 class="form-control"
                 id="cloud-use_case_context"
+                  rows="3"
+                placeholder="Tell us more about your Orchestration strategy and how we can help."
               ></textarea>
             </div>
+            <div class="col-12 mb-4">
+               <small class="agree">
+                  By submitting this form, you agree to our <NuxtLink target="_blank" href="/privacy-policy">Privacy Policy.</NuxtLink>
+               </small>
+            </div>
 
-            <div class="col-12 mt-4 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center">
               <button type="submit" class="btn btn-primary w-100">
                 Book a Call
               </button>
@@ -167,6 +174,7 @@
               :src="meetingUrl"
               class="embed-responsive-item"
               allowtransparency="true"
+              style="min-height: 750px; min-width: 350px;"
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
             ></iframe>
           </div>
@@ -180,6 +188,7 @@
 import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import posthog from "posthog-js";
+import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting.js";
 
 const route = useRoute();
 const gtm = useGtm();
@@ -189,22 +198,12 @@ const valid = ref(false);
 const message = ref("");
 const meetingUrl = ref<string>("");
 
-const hubSpotUrl =
-  "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
+const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
 
-function ensureMeetingsScriptLoaded(): Promise<void> {
-  return new Promise((resolve) => {
-    if (document.querySelector('script[src*="MeetingsEmbedCode.js"]')) {
-      resolve();
-      return;
-    }
-    const script = document.createElement("script");
-    script.src =
-      "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-    script.defer = true;
-    script.addEventListener("load", () => resolve());
-    document.body.appendChild(script);
-  });
+// the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
+if (process.client && getHubspotTracking() === null) {
+    meetingUrl.value = getMeetingUrl();
+    valid.value = true;
 }
 
 const onSubmit = async (e: Event) => {
@@ -241,7 +240,7 @@ const onSubmit = async (e: Event) => {
       { objectTypeId: "0-1", name: "kuid", value: localStorage.getItem("KUID") || "" },
     ],
     context: {
-      hutk: getHubspotTracking() || "",
+      hutk: getHubspotTracking() || undefined,
       ipAddress: ip.data.ip,
       pageUri: route.path,
       pageName: document.title,
@@ -261,22 +260,13 @@ const onSubmit = async (e: Event) => {
     hsq.push(["refreshPageHandlers"]);
     hsq.push(["trackPageView"]);
 
-
-
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timezone.startsWith("America")) {
-      meetingUrl.value =
-        "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-    } else {
-      meetingUrl.value =
-        "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true";
-    }
+    meetingUrl.value = getMeetingUrl()
   } catch (error: any) {
     valid.value = false;
     if (error?.response?.data?.errors?.filter((e: any) => e.errorType === "BLOCKED_EMAIL").length > 0) {
       message.value = "Please use a professional email address";
     } else {
-      message.value = error?.response?.data?.message || "Form submission error";
+      message.value = error?.response?.data?.message || "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again.";
     }
   }
 };
@@ -298,6 +288,12 @@ const onSubmit = async (e: Event) => {
     align-items: center;
     justify-content: center;
     min-height: 680px; /* base height for the form */
+
+    h4 {
+      color: $primary;
+      margin-top: 1rem;
+      text-align: center;
+    }
 
     img.background {
       width: 644px;
@@ -321,18 +317,15 @@ const onSubmit = async (e: Event) => {
       color: #212529;
 
       label {
-        color: #212529;
-        font-weight: 400;
+          display: none;
       }
 
-      input,
-      textarea {
-        color: #212529;
-        background-color: #fff;
+      input, textarea {
+          margin-bottom: 1.25rem;
       }
 
       @include media-breakpoint-up(lg) {
-        width: 75%;
+        width: 85%;
       }
     }
   }
@@ -340,7 +333,6 @@ const onSubmit = async (e: Event) => {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    min-height: 680px; 
 
     .iframe-wrapper {
       flex: 1 1 auto;
@@ -352,7 +344,7 @@ const onSubmit = async (e: Event) => {
     .embed-responsive-item {
       flex: 1 1 auto;
       width: 100%;
-      height: 100%; 
+      height: 100%;
       border: none;
       display: block;
     }

@@ -54,9 +54,10 @@
                   <label for="demo-email">Company Email</label>
                   <input name="email" type="email" class="form-control" id="demo-email" placeholder="Company Email" required>
                 </div>
-                <div class="col-12 mt-3 d-flex align-items-start gap-2">
-                    <input name="agree" class="form-check-input" type="checkbox" id="demo-agree" required>
-                    <label for="demo-agree" class="form-check-label" style="color:var(--ks-content-inverse);font-size: medium;opacity: 0.7;">I agree to the processing of my personal data to schedule this meeting.</label>
+                <div class="col-12 mt-2">
+                    <small class="agree">
+                        By submitting this form, you agree to our <NuxtLink target="_blank" href="/privacy-policy">Privacy Policy.</NuxtLink>
+                    </small>
                 </div>
                 <div class="col-12 mt-4 d-flex justify-content-center">
                   <button type="submit" class="btn btn-primary w-100">
@@ -72,7 +73,7 @@
                   v-if="meetingUrl"
                   :src="meetingUrl"
                   class="embed-responsive-item"
-                  style="min-height: 700px; border: none; width: 100%;"
+                  style="min-height: 750px; min-width: 350px; border: none; width: 100%;"
                   allowtransparency="true"
                   sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                 ></iframe>
@@ -88,6 +89,7 @@
   import posthog from "posthog-js";
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
+  import { getMeetingUrl } from "~/composables/useMeeting.js";
 
   const route = useRoute();
   const gtm = useGtm();
@@ -95,7 +97,13 @@
 
   const valid = ref(false);
   const message = ref("");
-  const meetingUrl = ref("https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true");
+  const meetingUrl = ref(undefined);
+
+  // the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
+  if (process.client && getHubspotTracking() === null) {
+      meetingUrl.value = getMeetingUrl();
+      valid.value = true;
+  }
 
   const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
 
@@ -111,12 +119,6 @@
     script.addEventListener("load", async () => {
       const form = formRef.value;
       const hsq = (window._hsq = window._hsq || []);
-
-      if(!form["agree"].checked){
-        valid.value = false;
-        message.value = "Almost there! Please check the consent box so our team can contact you.";
-        return;
-      }
 
       if (!form.checkValidity()) {
         valid.value = false;
@@ -159,7 +161,7 @@
           },
         ],
         context: {
-          hutk: getHubspotTracking() || "",
+          hutk: getHubspotTracking() || undefined,
           ipAddress: ip.data.ip,
           pageUri: route.path,
           pageName: document.title,
@@ -178,14 +180,7 @@
           hsq.push(["refreshPageHandlers"]);
           hsq.push(["trackPageView"]);
 
-          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-if (timezone.startsWith("America")) {
-  // North or South America
-  meetingUrl.value = "https://meetings-eu1.hubspot.com/luke-lipan?uuid=c75c198e-f6c2-43cb-8e05-d622bd9fa06c&embed=true";
-} else {
-  // Everyone else
-  meetingUrl.value = "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true";
-}
+          meetingUrl.value = getMeetingUrl();
         })
         .catch((error) => {
           valid.value = false;
@@ -194,7 +189,7 @@ if (timezone.startsWith("America")) {
           ) {
             message.value = "Please use a professional email address";
           } else {
-            message.value = error.response.data.message;
+            message.value = error?.response?.data?.message || "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again.";
           }
         });
     });
@@ -209,7 +204,6 @@ if (timezone.startsWith("America")) {
     overflow: hidden;
     background: url('/landing/features/declarative/header-bg.svg') no-repeat;
     background-size: cover;
-    color: var(--bs-white);
     margin-top: -80px;
     padding-top: 80px;
 

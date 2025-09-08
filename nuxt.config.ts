@@ -11,10 +11,11 @@ export default defineNuxtConfig({
         'vue3-carousel-nuxt',
         'nuxt-lazy-hydrate',
         'nuxt-aos',
-        '@zadigetvoltaire/nuxt-gtm',
+        '@saslavik/nuxt-gtm',
         '@nuxtjs/sitemap',
         '@nuxtjs/robots',
         '@nuxt/content',
+        "nitro-cloudflare-dev",
     ],
     image: {
         dir: 'public',
@@ -378,8 +379,9 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
+        disableCacheOverviewLogMessage: true,
         data: {
-            enabled: process.env.NUXT_CACHE_ENABLED !== 'false',
+            enabled: true,
         },
     },
 

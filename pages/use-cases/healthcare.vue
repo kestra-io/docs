@@ -9,6 +9,7 @@
             titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
             description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
             imageSrc="/landing/usecases/healthcare/header-hero.svg"
+            imageAlt="Healthcare Workflows"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesDeploymentChallenges
@@ -36,7 +37,7 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <div class="enterprise-edition">
-                <FeaturesEnterpriseEdition
+                <FeaturesFeatureEnterprise
                     logoPath="/landing/usecases/healthcare/enterprise-edition.svg"
                 />
             </div>
@@ -57,35 +58,35 @@
               challengesTitle: `Use Cases in  <span>Healthcare</span>`,
               cardsData: [
                 {
-                  icon: RefreshAuto ,
+                  icon: shallowRef(RefreshAuto),
                   cardInfo: {
                     title: 'Healthcare  Data Management',
                     description: 'Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate.'
                   },
                 },
                 {
-                  icon: CommentQuoteOutline,
+                  icon: shallowRef(CommentQuoteOutline),
                   cardInfo: {
                     title: 'Genomic Data Processing',
                     description: 'Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors,'
                   },
                 },
                 {
-                  icon: ChartBellCurve,
+                  icon: shallowRef(ChartBellCurve) ,
                   cardInfo: {
                     title: 'Regulatory Compliance',
                     description: 'Automate the generation of compliance reports, access logs, and data usage reports. Ensure  compliance with regulatory standards reducing the risk of breaches and improving data governance.'
                   },
                 },
                 {
-                  icon: FileChartOutline,
+                  icon: shallowRef(FileChartOutline),
                   cardInfo: {
                     title: 'Predictive Analytics',
                     description: ' Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics.'
                   },
                 },
                 {
-                  icon: ImageFilterCenterFocus,
+                  icon: shallowRef(ImageFilterCenterFocus),
                   cardInfo: {
                     title: 'Streamlined Data Management',
                     description: 'Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.'

@@ -9,7 +9,7 @@
             titleHtml="Infrastructure <br> Monitoring"
             description="Automate infrastructure monitoring, implement  alerting, and ensure optimal performance and reliability."
             imageSrc="/landing/usecases/monitoring/header-hero.svg"
-            imageAlt="Monitoring"
+            imageAlt="Infrastructure Monitoring"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
