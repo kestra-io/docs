@@ -188,10 +188,10 @@ To set an existing User with a Super Admin privilege from the [CLI](../../ee-ser
 
 ```bash
 # Set a user as Super Admin
-kestra auths users set-type admin@kestra.io SUPER_ADMIN
+kestra auths users set-superadmin admin@kestra.io true
 
 # Revoke Super Admin privilege
-kestra auths users set-type admin@kestra.io STANDARD
+kestra auths users set-superadmin admin@kestra.io false
 ```
 
 ::
