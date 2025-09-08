@@ -9,16 +9,18 @@
                             <span class="input-group-text"><Magnify v-if="!loading" /><MagnifyExpand  v-if="loading" /></span>
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
                             <div class="align-items-center d-flex input-group-append">
-                                <button
-                                    class="ai-button me-2"
-                                    title="Ask Kestra AI"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#search-ai-modal"
-                                >
-                                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
-                                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
-                                    <span class="title d-md-none">Ask AI</span>
-                                </button>
+                                <div class="ai-button-wrapper me-2">
+                                    <button
+                                        class="ai-button "
+                                        title="Ask Kestra AI"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#search-ai-modal"
+                                    >
+                                        <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
+                                        <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                                        <span class="title d-md-none">Ask AI</span>
+                                    </button>
+                                </div>
                                 <span class="esc">ESC</span>
                             </div>
                         </div>
@@ -404,21 +406,7 @@
             }
 
             .ai-button {
-                height: 40px;
-                background: $black-3;
-                border: none;
-                color: $white;
-                border-radius: 8px;
-                padding: 8px 16px;
-                gap: 8px;
-                display: flex;
-                align-items: center;
-                transition: all 0.2s ease;
-
-                &:hover {
-                    background: $black-5;
-                    color: $white;
-                }
+                padding: 4px 12px;
             }
 
             .esc {
