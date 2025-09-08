@@ -26,7 +26,7 @@
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="50">
                     <div class="video-responsive">
                             <iframe 
-                                src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T"
+                                src="https://youtu.be/b5TkMRlrUxw"
                                 referrerpolicy="strict-origin-when-cross-origin" 
                                 allowfullscreen
                             />
