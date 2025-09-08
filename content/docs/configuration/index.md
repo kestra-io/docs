@@ -1038,11 +1038,11 @@ logger:
 
 ### Access Log configuration
 
-You can configure the access log from the webserver using the `micronaut.server.netty.accessLogger` configuration:
-- `micronaut.server.netty.accessLogger.enabled`: enable access log from webserver (default `true`).
-- `micronaut.server.netty.accessLogger.name`: logger name (default `io.kestra.webserver.access`).
-- `micronaut.server.netty.accessLogger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
-- `micronaut.server.netty.accessLogger.exclusions`: list of regexp to define which log to exclude.
+You can configure the access log from the webserver using the `micronaut.server.netty.access-logger` configuration:
+- `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
+- `micronaut.server.netty.access-logger.logger-name`: logger name (default `io.kestra.webserver.access`).
+- `micronaut.server.netty.access-logger.log-format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
+- `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
 
 Here are the default values:
 
@@ -1050,10 +1050,10 @@ Here are the default values:
 micronaut:
   server:
     netty:
-      accessLogger:
+      access-logger:
         enabled: true
-        name: io.kestra.webserver.access
-        format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
+        logger-name: io.kestra.webserver.access
+        log-format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
         exclusions:
           - /ui/.+
           - /health
