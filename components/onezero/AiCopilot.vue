@@ -1,8 +1,8 @@
 <template>
-    <div class="wrapper">
+    <section class="wrapper">
         <div class="ai-copilot container">
             <div class="first-line">
-                <div data-aos="fade-right">
+                <div data-aos="fade-right" class="content">
                     <div class="what-is-new">What is new in <strong>1.0</strong></div>
                     <h2>AI Copilot</h2>
                     <p>
@@ -12,100 +12,146 @@
                     </p>
                 </div>
                 <div class="copilot-overview-illustration" data-aos="fade-left">
-                    <NuxtImg class="illu-code" src="/landing/onezero/Copilot.png" alt="AI Copilot Overview code" width="1042" height="695" />
-                    <NuxtImg class="illu-prompt" src="/landing/onezero/Prompt.png" alt="AI Copilot Overview prompt" width="1126" height="296" />
+                    <img class="illu-code" src="/landing/onezero/copilot.svg" alt="AI Copilot" width="900" height="auto" />
+                    <div class="d-none d-xl-block illu-code-background"></div>
                 </div>
             </div>
 
-            <div class="ai-block">
-                <h3>AI Agent</h3>
-                <p>
-                    Autonomous, memory-aware tasks that can reason,
-                    choose tools (web search, task/flow calling),
-                    loop until goals are met, and coordinate multi-step
-                    objectives—fully observable and governed.
-                </p>
-                <NuxtImg class="illu" src="/landing/onezero/AIAgent.png" alt="AI Agent Overview" width="1012" height="590" data-aos="zoom-in"/>
+            <div v-for="block in aiBlocksone" :key="block.title" class="ai-block">
+                <h3>{{ block.title }}</h3>
+                <p>{{ block.description }}</p>
+                <NuxtImg class="illu" :src="block.imgSrc" :alt="block.alt" :width="block.width" :height="block.height"
+                    data-aos="zoom-in" format="webp" loading="lazy" />
             </div>
-            <div class="ai-block">
-                <h3>Official MCP Server</h3>
-                <p>
-                    Connect Kestra to AI IDEs & agent frameworks via the Model Context Protocol;
-                    manage flows and executions from your AI workspace.
-                </p>
-                <NuxtImg class="illu" src="/landing/onezero/MCPServer.png" alt="MCP Server Illustration" width="1012" height="590" data-aos="zoom-in" />
-            </div>
+
             <div class="second-line">
                 <h3>AI-Powered Docs Search</h3>
-                <p>
-                    Get answers to your questions instantly.
-                </p>
-                <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI" width="2280" height="722" data-aos="fade-up"/>
+                <p>Get answers to your questions instantly.</p>
+                <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI"
+                    width="2280" height="722" data-aos="fade-up" format="webp" loading="lazy" />
             </div>
-            <div class="ai-block">
-                <h3>Enterprise-grade LTS</h3>
-                <p>
-                    Predictable upgrades, backward compatibility, RBAC,
-                    encrypted secrets, tenant isolation proven at scale.
-                </p>
-                <NuxtImg class="illu" src="/landing/onezero/EnterpriseLTS.png" alt="Enterprise LTS Illustration" width="1076" height="656" data-aos="zoom-in"/>
-            </div>
-            <div class="ai-block">
-                <h3>900+ Plugins & Safe Upgrades</h3>
-                <p>
-                    Our extensive ecosystem spans data, AI, and infrastructure.
-                    Plugin Versioning allows you to pin and run multiple versions
-                    simultaneously for safer, more controlled rollouts.
-                </p>
-                <NuxtImg class="illu" src="/landing/onezero/PluginsUpgrade.png" alt="Plugins Upgrade Illustration" width="1012" height="656" data-aos="zoom-in"/>
+
+            <div v-for="block in aiBlockstwo" :key="block.title" class="ai-block">
+                <h3>{{ block.title }}</h3>
+                <p>{{ block.description }}</p>
+                <NuxtImg class="illu" :src="block.imgSrc" :alt="block.alt" :width="block.width" :height="block.height"
+                    data-aos="zoom-in" format="webp" loading="lazy" />
             </div>
         </div>
+
         <div class="velocity container">
             <h2><span>Velocity</span> Features</h2>
             <div class="feature-list">
-                <div class="feature-item">
-                    <h3><OnezeroIconsPlayground/> Playground (GA)</h3>
-                    <p>
-                        Reduce friction in complex builds by testing steps independently while keeping production runs clean and consistent.
-                    </p>
-                </div>
-                <div class="feature-item">
-                    <h3><OnezeroIconsFlowLevel/> Flow-level SLAs</h3>
-                    <p>
-                        Enforce reliability standards with built-in SLAs that automatically handle long-running or failed executions to keep workflows compliant and predictable.
-                    </p>
-                </div>
-                <div class="feature-item">
-                    <h3><OnezeroIconsSpiderWeb/> New Dependency View</h3>
-                    <p>
-                        Full visibility into complex workflows with a scalable, intuitive dependency view that makes it easy to trace, explore, and navigate data flows at any scale.
-                    </p>
+                <div v-for="feature in velocityFeatures" :key="feature.title" class="feature-item">
+                    <div class="feature-icon">
+                        <component :is="feature.icon" />
+                        <h3>{{ feature.title }}</h3>
+                    </div>
+                    <p>{{ feature.description }}</p>
                 </div>
             </div>
-            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-lg btn-primary">Explore the 1.0 Highlights</NuxtLink>
+            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-lg btn-primary">
+                Explore the 1.0 Highlights
+            </NuxtLink>
         </div>
-    </div>
+        <svg width="0" height="0">
+            <defs>
+                <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0.22%" stop-color="#9F79F3" />
+                    <stop offset="99.78%" stop-color="#658AF9" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </section>
 </template>
+
+<script setup lang="ts">
+import GamepadSquare from "vue-material-design-icons/GamepadSquare.vue";
+import TimerCheck from "vue-material-design-icons/TimerCheck.vue";
+import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue";
+
+const aiBlocksone = [
+    {
+        title: "AI Agent",
+        description: "Autonomous, memory-aware tasks that can reason, choose tools (web search, task/flow calling), loop until goals are met, and coordinate multi-step objectives—fully observable and governed.",
+        imgSrc: "/landing/onezero/AIAgent.png",
+        alt: "AI Agent Overview",
+        width: 1012,
+        height: 590
+    },
+    {
+        title: "Official MCP Server",
+        description: "Connect Kestra to AI IDEs & agent frameworks via the Model Context Protocol; manage flows and executions from your AI workspace.",
+        imgSrc: "/landing/onezero/MCPServer.png",
+        alt: "MCP Server Illustration",
+        width: 1012,
+        height: 590
+    }
+];
+const aiBlockstwo = [
+    {
+        title: "Enterprise-grade LTS",
+        description: "Predictable upgrades, backward compatibility, RBAC, encrypted secrets, tenant isolation proven at scale.",
+        imgSrc: "/landing/onezero/EnterpriseLTS.png",
+        alt: "Enterprise LTS Illustration",
+        width: 1076,
+        height: 656
+    },
+    {
+        title: "900+ Plugins & Safe Upgrades",
+        description: "Our extensive ecosystem spans data, AI, and infrastructure. Plugin Versioning allows you to pin and run multiple versions simultaneously for safer, more controlled rollouts.",
+        imgSrc: "/landing/onezero/PluginsUpgrade.png",
+        alt: "Plugins Upgrade Illustration",
+        width: 1012,
+        height: 656
+    }
+]
+
+const velocityFeatures = [
+    {
+        title: "Playground (GA)",
+        icon: GamepadSquare,
+        description: "Reduce friction in complex builds by testing steps independently while keeping production runs clean and consistent."
+    },
+    {
+        title: "Flow-level SLAs",
+        icon: TimerCheck,
+        description: "Enforce reliability standards with built-in SLAs that automatically handle long-running or failed executions to keep workflows compliant and predictable."
+    },
+    {
+        title: "New Dependency View",
+        icon: SpiderWeb,
+        description: "Full visibility into complex workflows with a scalable, intuitive dependency view that makes it easy to trace, explore, and navigate data flows at any scale."
+    }
+]
+</script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
+
 .wrapper {
     background-color: #1A1C25;
     color: white;
-    padding: 0 2rem;
-    @include media-breakpoint-up(lg) {
+    padding: 4rem 2rem;
+
+    @include media-breakpoint-up(md) {
         padding: 102px 2rem 50px;
     }
-    p{
-        color: #D5D3DE;
-        font-size: 18px;
+
+    p {
+        color: #d5d3de;
         line-height: 24px;
+
+        @include media-breakpoint-up(md) {
+            font-size: 18px;
+        }
     }
 }
 
-.ai-copilot{
+.ai-copilot {
     margin-bottom: 80px;
     display: grid;
+
     @include media-breakpoint-up(lg) {
         grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
@@ -114,15 +160,18 @@
             "second-line second-line"
             ". .";
     }
-    > div{
-        border: 1px solid #2F3242;
+
+    >div {
+        border: 1px solid #2f3242;
         border-right: 0;
         border-left: 0;
-        padding: 2rem 0;
-        padding-top: 64px;
+        padding-top: 2rem;
+
         @include media-breakpoint-up(lg) {
-            &:nth-child(3n){
-                border-left: 1px solid #2F3242;
+            padding-top: 4rem;
+
+            &:nth-child(3n) {
+                border-left: 1px solid #2f3242;
                 padding-left: 2rem;
             }
         }
@@ -130,187 +179,255 @@
 }
 
 .first-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border: none !important;
+
     @include media-breakpoint-up(lg) {
         grid-area: first-line;
-        display: flex;
+        flex-direction: row;
+        text-align: left;
     }
-    position: relative;
-    .ai-copilot & {
-        border: none;
-        padding-bottom: 100px;
+
+    .content {
         @include media-breakpoint-up(lg) {
-            padding-bottom: 200px;
+            margin-top: -9rem;
         }
     }
-    .what-is-new{
+
+    &.ai-copilot {
+        border: none;
+    }
+
+    .what-is-new {
         font-weight: 600;
         font-size: 18.4px;
-        strong{
+        margin-top: -0.875rem;
+
+        strong {
             color: #8C4BFF;
             font-weight: 600;
         }
     }
+
     h2 {
         font-size: 48px;
         font-weight: 600;
         line-height: 56px;
-        margin: 28px 0;
-    }
-    @include media-breakpoint-up(lg) {
-        p{
-            width: 410px;
-        }
-        &:before{
-            display: block;
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: -200px;
-            bottom: 150px;
-            background-image:
-                radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%),
-                radial-gradient(ellipse closest-side,#8205ffb6 0,#ddc4ff00 70%);
-            background-size: 1000px 400px, 1000px 400px;
-            background-repeat: no-repeat, no-repeat;
-            background-position: 100% 50%, 110% 240%;
-        }
-    }
-}
 
-.copilot-overview-illustration {
-    @include media-breakpoint-up(lg) {
-        margin-left: 150px;
+        @include media-breakpoint-up(lg) {
+            margin: 20px 0;
+        }
     }
-    position: relative;
-    max-width: 90%;
-    width: 100%;
-    z-index: 1;
-    &::before{
-        display: block;
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #1A1C25;
-        z-index: -1;
+
+    p {
+        @include media-breakpoint-up(lg) {
+            width: 410px;
+            margin-bottom: 0;
+        }
     }
-    .illu-code {
+
+    .copilot-overview-illustration {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
         width: 100%;
-        height: auto;
-        /* make the gradient opacity from top to bottom */
-        mask-image: linear-gradient(black, transparent);
         position: relative;
 
-    }
-    .illu-prompt {
-        width: 109%;
-        height: auto;
-        position: absolute;
-        bottom: -20%;
-        left: -4%;
-        @include media-breakpoint-up(lg) {
-            left: -10%;
+        @include media-breakpoint-up(xl) {
+            margin-top: -6rem;
         }
 
+        .illu-code-background {
+            --border-angle: 0turn;
+            --gradient-border: conic-gradient(from calc(var(--border-angle) + 50.37deg) at 50% 50%, #3991FF 0deg, #8C4BFF 124.62deg,
+                    #A396FF 205.96deg, #3991FF 299.42deg,
+                    #E0E0FF 342.69deg, #3991FF 360deg);
+            position: absolute;
+            bottom: calc(35% + 1px);
+            left: 14%;
+            border: 1px solid transparent;
+            border-radius: 1rem;
+            background: var(--gradient-border) border-box;
+            -webkit-mask: linear-gradient($white 0 0) padding-box, linear-gradient($white 0 0);
+            mask: linear-gradient($white 0 0) padding-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 2;
+            width: 350px;
+            height: 32px;
+            animation: bg-spin 3s linear infinite;
+        }
+
+        .illu-code {
+            width: 150%;
+            height: auto;
+
+            @include media-breakpoint-up(xl) {
+                margin-left: 3rem;
+            }
+
+            @media screen and (max-width: 991px) {
+                margin-top: -2rem;
+            }
+
+            @media screen and (min-width: 992px) and (max-width: 1199px) {
+                margin-top: -7rem;
+            }
+        }
     }
 }
 
 .second-line {
     overflow: hidden;
-    @include media-breakpoint-up(lg) {
-        grid-area: second-line;
-        background-image:
-                radial-gradient(ellipse closest-side,#437cfffb 0%,#437cfffb 30%,#437cff00 90%);
-        background-repeat: no-repeat;
-        background-position: 0% 150%;
-        background-size: 97% 80%;
-        .ai-copilot & {
-            padding-top: 120px;
+    background: url("/landing/onezero/ellipse.svg") no-repeat center bottom / 100% auto;
+
+    @include media-breakpoint-down(lg) {
+        background-size: 100% 100%;
+
+        @include media-breakpoint-down(md) {
+            background-size: 100% 90%;
+
+            @include media-breakpoint-down(sm) {
+                background-size: 100% 75%;
+            }
         }
     }
+
+    @include media-breakpoint-up(lg) {
+        grid-area: second-line;
+        background-position: 0% 160%;
+        background-size: 100%;
+
+        &.ai-copilot {
+            padding-top: 90px;
+        }
+    }
+
+    h3,
+    p {
+        width: 820px;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0 auto 20px;
+        }
+    }
+
     h3 {
         font-size: 24px;
         font-weight: 600;
         line-height: 36px;
     }
-    h3, p{
-        width: 820px;
-        @include media-breakpoint-up(lg) {
-            margin: 0 auto 40px;
-        }
+
+    p {
+        margin-bottom: 40px;
     }
-    .illu{
-        margin-top: 10px;
-        margin-bottom: -30px;
+
+    .illu {
         width: 137%;
         position: relative;
         left: -16%;
+        height: auto;
+
         @include media-breakpoint-up(lg) {
             position: static;
             width: 100%;
         }
-        height: auto;
     }
 }
 
-.ai-block{
-    p{
-        height: 96px;
+.ai-block {
+    h3 {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+    }
+
+    p {
         margin: 20px 0;
+
         @include media-breakpoint-up(lg) {
             width: 430px;
         }
     }
-    h3{
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 32px;
-    }
-    .illu{
+
+    .illu {
         width: 100%;
         height: auto;
+
+        @include media-breakpoint-down(md) {
+            padding: 1.75rem 0;
+        }
     }
 }
 
-.velocity{
+.velocity {
     text-align: center;
-    padding-bottom: 52px;
     position: relative;
     z-index: 1;
-    h2{
+
+    @include media-breakpoint-up(lg) {
+        padding-bottom: 50px;
+    }
+
+    h2 {
         font-size: 24px;
         line-height: 32px;
         font-weight: 600;
         margin-bottom: 40px;
-        > span{
-            background: linear-gradient(90deg, #8C4BFF 0%, #658AF9 100%);
+
+        span {
+            background: linear-gradient(90deg, #8c4bff 0%, #658af9 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     }
-    .feature-list{
+
+    .feature-list {
         text-align: left;
         display: grid;
+        gap: 24px;
+        margin-bottom: 40px;
+
         @include media-breakpoint-up(lg) {
             grid-template-columns: repeat(3, 1fr);
         }
-        gap: 24px;
-        margin-bottom: 40px;
-        h3{
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 24px;
+
+        .feature-item {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 8px;
-        }
-        p{
-            font-size: 14px;
-            line-height: 20px;
+
+            .feature-icon {
+                display: inline-flex;
+                gap: 16px;
+
+                :deep(svg) {
+                    width: 24px;
+                    height: 24px;
+                    position: absolute;
+                    bottom: -0.25rem;
+                }
+
+                :deep(path) {
+                    fill: url(#icon-gradient);
+                }
+
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 700;
+                    line-height: 24px;
+                    margin: 0;
+                }
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 22px;
+            }
         }
     }
 }
@@ -320,6 +437,18 @@
         transform: none !important;
         transition: none !important;
         opacity: 1 !important;
+    }
+}
+
+@property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+}
+
+@keyframes bg-spin {
+    to {
+        --border-angle: 1turn;
     }
 }
 </style>
