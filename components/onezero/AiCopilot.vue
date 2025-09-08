@@ -50,7 +50,7 @@
                     <p>{{ feature.description }}</p>
                 </div>
             </div>
-            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-lg btn-primary">
+            <NuxtLink href="/blogs/release-1-0" target="_blank" class="btn btn-lg btn-primary">
                 Explore the 1.0 Highlights
             </NuxtLink>
         </div>
@@ -73,7 +73,7 @@ import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue";
 const aiBlocksone = [
     {
         title: "AI Agent",
-        description: "Autonomous, memory-aware tasks that can reason, choose tools (web search, task/flow calling), loop until goals are met, and coordinate multi-step objectives—fully observable and governed.",
+        description: "AI-native agents powered by OpenAI GPT, Google Gemini, Anthropic Claude, Mistral, Bedrock, Vertex AI, DeepSeek, and Ollama, combining memory with tools like Web Search, Code Execution, MCP clients, and File System ops to adapt, loop, and orchestrate until goals are met, all fully observable and governed.",
         imgSrc: "/landing/onezero/AIAgent.png",
         alt: "AI Agent Overview",
         width: 1012,
