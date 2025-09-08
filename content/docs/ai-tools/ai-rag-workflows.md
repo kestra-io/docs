@@ -64,11 +64,13 @@ pluginDefaults:
 
 ### How it works
 
-This flow first ingests external documents into the Kestra KV Store by generating embeddings with a chosen LLM provider. Those embeddings act as a searchable index. When you ask a question, Kestra can either pass the raw prompt directly to the LLM (without RAG) or augment the prompt with the most relevant information retrieved from the embeddings (with RAG). By grounding the model’s response in actual data, Kestra reduces the likelihood of hallucinations and ensures answers remain accurate and contextual to your source material.
+This flow first ingests external documents into the Kestra KV Store by generating embeddings with a chosen LLM provider. Those embeddings act as a searchable index. When you ask a question, Kestra can either pass the raw prompt directly to the LLM (without RAG) or augment the prompt with the most relevant information retrieved from the embeddings (with RAG). By supporting the model’s response in actual data, Kestra reduces the likelihood of hallucinations and ensures answers remain accurate and contextual to your source material.
 
 ### Without RAG vs. With RAG
 
-Without RAG, the model answers based only on its pretraining and may produce plausible but inaccurate results if the requested details are not part of its training knowledge. With RAG, the model supplements its reasoning by retrieving embeddings stored in the KV Store and using them as context, producing responses directly tied to the ingested documents. This contrast makes clear how RAG helps transform generic answers into precise, data-grounded insights.
+Without RAG, the model answers based only on its pretraining and may produce plausible but inaccurate results if the requested details are not part of its training knowledge. With RAG, the model supplements its reasoning by retrieving embeddings stored in the KV Store and using them as context, producing responses directly tied to the ingested documents.
+
+Use RAG when you need AI responses anchored in current, domain-specific, or external data sources.
 
 ## RAG with web search example
 
