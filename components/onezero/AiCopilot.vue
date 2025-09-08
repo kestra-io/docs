@@ -72,16 +72,16 @@ import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue";
 
 const aiBlocksone = [
     {
-        title: "AI Agent",
+        title: "AI Agents",
         description: "AI-native agents powered by OpenAI GPT, Google Gemini, Anthropic Claude, Mistral, Bedrock, Vertex AI, DeepSeek, and Ollama, combining memory with tools like Web Search, Code Execution, MCP clients, and File System ops to adapt, loop, and orchestrate until goals are met, all fully observable and governed.",
         imgSrc: "/landing/onezero/AIAgent.png",
-        alt: "AI Agent Overview",
+        alt: "AI Agents Overview",
         width: 1012,
         height: 590
     },
     {
         title: "Official MCP Server",
-        description: "Connect Kestra to AI IDEs & agent frameworks via the Model Context Protocol; manage flows and executions from your AI workspace.",
+        description: "Connect Kestra to AI IDEs & agents frameworks via the Model Context Protocol; manage flows and executions from your AI workspace.",
         imgSrc: "/landing/onezero/MCPServer.png",
         alt: "MCP Server Illustration",
         width: 1012,
