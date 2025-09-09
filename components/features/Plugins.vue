@@ -2,7 +2,7 @@
     <section class="features-plugins">
         <HomeCard class="container card-block">
             <div class="plugin-text">
-                <h2 class="text-white"><span>600+</span> Plugins<br />That Integrate With<br />Your <span>Stack</span>
+                <h2 class="text-white"><span>900+</span> Plugins<br />That Integrate With<br />Your <span>Stack</span>
                 </h2>
                 <h2 class="text-white mobile">Integrate With<br />Your <span>Stack</span></h2>
                 <p>Connect with third-party systems, data sources, and applications. And if you require a custom
@@ -169,4 +169,4 @@ const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys
     }
 }
 </style>
-    
+
