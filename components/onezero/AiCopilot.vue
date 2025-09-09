@@ -50,7 +50,7 @@
                     <p>{{ feature.description }}</p>
                 </div>
             </div>
-            <NuxtLink href="/blogs/kestra-1-in-7-days" target="_blank" class="btn btn-lg btn-primary">
+            <NuxtLink href="/blogs/release-1-0" target="_blank" class="btn btn-lg btn-primary">
                 Explore the 1.0 Highlights
             </NuxtLink>
         </div>
