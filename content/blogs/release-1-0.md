@@ -29,6 +29,13 @@ The table below highlights the key features of this release.
 | Multi-Panel Editor for Apps & Tests | Multi-Panel editor for Unit Tests and Apps (now available also in the No-Code mode!).                                    | Enterprise Edition |
 | Multiple SemVer tags                | Use v0.24 or v1.0 to always pull the latest patch (e.g., 0.24.4 or 1.0.0) without pinning the exact patch version.       | Enterprise Edition |
 
+Check the video below for a quick overview of all enhancements.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/FpKuP3Y8uuM?si=T2RUT5fsfdYZ1wQD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+
 ---
 
 ## AI Copilot
@@ -38,6 +45,7 @@ We're excited to announce the **AI Copilot** in Kestra 1.0, designed to help you
 How to get started? Click on the **AI Copilot** button in the top right corner of the Flow Editor, and you can start typing your prompt, e.g. `"Make a REST API call to https://kestra.io/api/mock and allow failure"`. The AI Copilot will generate the YAML code for you, which you can then accept, reject, or modify as needed.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 
 ---
 
@@ -74,6 +82,18 @@ flowchart LR
   style COP fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px,color:#000
   style AT fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px,color:#000
 ```
+
+Check the video below for a demo of how to use AI Copilot:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=XUmI_BG4MulVamd2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+And here's a demo of AI Agents:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=POI9pQyGefA0RhjQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ---
 
@@ -182,6 +202,12 @@ With Playground, you can execute individual tasks in sequence, reusing outputs f
 In summary, Playground gives you a safe, iterative space to prototype new workflows before running them in production.
 
 ![playground](/blogs/release-1-0/playground.png)
+
+The video below shows how to use Playground to build a flow step by step:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/p7UXd66GI1M?si=uoOlWJXedBnsrj1N" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ---
 
