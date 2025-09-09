@@ -40,7 +40,7 @@
             </div>
             <div class="plugins bg-image">
                 <div class="header">
-                    <p>Integrate With 600+ Plugins</p>
+                    <p>Integrate With 900+ Plugins</p>
                     <span>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes plugin development simple, keeping your workflows flexible, scalable, and fully aligned with your enterprise goals.</span>
                 </div>
 
