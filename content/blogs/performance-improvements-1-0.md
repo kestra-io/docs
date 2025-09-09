@@ -19,18 +19,18 @@ TODO
 [??? I asked for his name](https://github.com/thyw1) from Xiaomi contributed significant improvements to our MySQL list queries
 
 For all MySQL queries that list table records, we used the `SQL_CALC_FOUND_ROWS` hint to return the number of queried rows using the `FOUND_ROWS()` function and avoid a separate `select count(*)` query.
-MySQL deprecated this hint and the function and advise to use a separate `select count(*)` query.
+MySQL deprecated this hint and the function and advises to use a separate `select count(*)` query.
 
-At Xiaomi's scale (>100k records in tables) this shows a drastic reduction in query execution time from 30s to a few hundreds of milliseconds!
+At Xiaomi's scale (>100k records in tables), this shows a drastic reduction in query execution time from 30s to a few hundred milliseconds!
 
 Check out the [PR #10765](https://github.com/kestra-io/kestra/pull/10765) for more details.
 
 
 ## Increase the number of threads used by the Kestra worker.
 
-In version 0.22, 0.23 and 0.24 we improve a lot of the JDBC executor by parallelizing queue processing and tuning the number of threads used.
+In versions 0.22, 0.23, and 0.24, we significantly improved the JDBC executor by parallelizing queue processing and tuning the number of threads used.
 
-And now with a much more powerful executor, we discover that the default number of threads used by the worker, 4x the number of available cores, was not ideal so we increase it to 8x the number of available cores.
+Now, with a much more powerful executor, we discovered that the default number of threads used by the worker, 4x the number of available cores, was not ideal, so we increased it to 8x the number of available cores.
 
 In a controlled benchmark, performance improved as follows:
 
@@ -44,7 +44,7 @@ In a controlled benchmark, performance improved as follows:
 
 \* This is more probably a benchmark artifact, but I didn't rerun it
 
-This improvement sees a clear tail latency reduction, however what is more interesting is to use a `io.kestra.plugin.core.flow.Sleep` task to emulate a long-running task.
+This improvement clearly reduces tail latency; however, what is more interesting is using a `io.kestra.plugin.core.flow.Sleep` task to emulate a long-running task.
 
 In a benchmark with a single `Sleep` task of 5s, performance improved as follows:
 
