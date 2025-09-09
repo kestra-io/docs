@@ -12,7 +12,7 @@
                             href="/1-0"
                             class="btn btn-lg btn-primary me-md-3 mb-3 d-block d-md-inline"
                         >
-                            Discover kestra 1.0
+                            Explore Kestra 1.0
                         </NuxtLink>
                     </div>
 
