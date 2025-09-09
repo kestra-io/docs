@@ -26,9 +26,11 @@
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="50">
                     <div class="video-responsive">
                             <iframe 
-                                src="https://youtu.be/b5TkMRlrUxw"
-                                referrerpolicy="strict-origin-when-cross-origin" 
-                                allowfullscreen
+                            src="https://www.youtube.com/embed/b5TkMRlrUxw" 
+                            title="Kestra 1.0: Introducing Declarative Agentic Orchestration" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
                             />
                     </div>
                 </div>
