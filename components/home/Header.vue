@@ -6,21 +6,25 @@
                     Declarative. Agentic. AI-Native.
                 </h1>
                 <p>A new era for orchestration.</p>
-                <div class="buttons">
-                    <NuxtLink
-                        href="/1-0"
-                        class="btn btn-lg btn-primary me-3 mb-2"
-                    >
-                        Discover kestra 1.0
-                    </NuxtLink>
+                <div class="row buttons px-3 px-md-0">
+                    <div class="col-12 col-md-6">
+                        <NuxtLink
+                            href="/1-0"
+                            class="btn btn-lg btn-primary me-md-3 mb-3 d-block d-md-inline"
+                        >
+                            Discover kestra 1.0
+                        </NuxtLink>
+                    </div>
 
-                    <NuxtLink
-                        href="/demo"
-                        class="btn btn-lg btn-secondary mb-2"
-                        target="_blank"
-                    >
-                        Book a Strategy Call
-                    </NuxtLink>
+                    <div class="col-12 col-md-6">
+                        <NuxtLink
+                            href="/demo"
+                            class="btn btn-lg btn-secondary mb-3 d-block d-md-inline"
+                            target="_blank"
+                        >
+                            Book a Strategy Call
+                        </NuxtLink>
+                    </div>
 
                 </div>
             </div>
@@ -58,11 +62,12 @@
             background: #08090d url("/landing/home/bg-1.0.jpg") no-repeat center top;
             height: 887px;
             padding-bottom: 2rem;
+
             padding-top: 5rem;
             position: relative;
             @include media-breakpoint-down(sm) {
                 margin-top: 48px;
-                background: #08090d url("/landing/home/bg-1.0-mobile.jpg") no-repeat center top;
+                background: #08090d url("/landing/home/bg-1.0-mobile.png") no-repeat center 70px;
                 background-size: contain;
                 height: 687px;
             }
@@ -80,6 +85,7 @@
             text-transform: uppercase;
             @include media-breakpoint-down(sm) {
                 margin-top: 55%;
+                font-size: 1.5rem;
             }
         }
 
@@ -92,6 +98,10 @@
             color: white;
             text-wrap: balance;
             font-size: 1.5rem;
+
+            @include media-breakpoint-down(sm) {
+                font-size: 0.85rem;
+            }
         }
 
         .buttons {
