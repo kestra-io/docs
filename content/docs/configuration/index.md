@@ -363,6 +363,13 @@ kestra:
     fixedDelay: 1h
 ```
 
+UI data is controlled by the following and disabled by default:
+```yaml
+kestra: 
+  ui-anonymous-usage-report:
+    enabled: false
+```
+
 ## Elasticsearch
 
 **Elasticsearch is an [Enterprise Edition](/enterprise) functionality.**
@@ -1031,11 +1038,11 @@ logger:
 
 ### Access Log configuration
 
-You can configure the access log from the webserver using the `micronaut.server.netty.accessLogger` configuration:
-- `micronaut.server.netty.accessLogger.enabled`: enable access log from webserver (default `true`).
-- `micronaut.server.netty.accessLogger.name`: logger name (default `io.kestra.webserver.access`).
-- `micronaut.server.netty.accessLogger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
-- `micronaut.server.netty.accessLogger.exclusions`: list of regexp to define which log to exclude.
+You can configure the access log from the webserver using the `micronaut.server.netty.access-logger` configuration:
+- `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
+- `micronaut.server.netty.access-logger.logger-name`: logger name (default `io.kestra.webserver.access`).
+- `micronaut.server.netty.access-logger.log-format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
+- `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
 
 Here are the default values:
 
@@ -1043,10 +1050,10 @@ Here are the default values:
 micronaut:
   server:
     netty:
-      accessLogger:
+      access-logger:
         enabled: true
-        name: io.kestra.webserver.access
-        format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
+        logger-name: io.kestra.webserver.access
+        log-format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
         exclusions:
           - /ui/.+
           - /health
@@ -2414,3 +2421,25 @@ To use the [universal file access protocol](../05.concepts/file-access.md), the 
 ```
 
 By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.localFiles.enablePreview` set to `false`, as it is `true` by default.
+
+## AI Copilot
+
+To add Copilot to your flow editor, add the following to your Kestra configuration:
+
+```yaml
+kestra:
+  ai:
+    type: gemini
+    gemini:
+      model-name: gemini-2.5-flash
+      api-key: YOUR_GEMINI_API_KEY
+```
+
+Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration:
+
+- `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
+- `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
+- `topK`: Typically ranges from 1–200+ depending on the API; lower values restrict choices to a few predictable tokens, while higher values allow more options and greater variety in responses.
+- `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
+- `logRequests`: Creates logs in Kestra for LLM requests.
+- `logResponses`: Creates logs in Kestra for LLM responses.
