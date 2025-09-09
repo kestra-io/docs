@@ -120,7 +120,7 @@ The MCP Server can be run locally or in Docker, and works with both OSS and Ente
 
 ::collapse{title="Expand to see an example of how to use our MCP server as a tool in Kestra's AI Agents."}
 ```yaml
-id: kestra_mcp_stdio
+id: kestra_mcp_server
 namespace: company.ai
 
 inputs:
@@ -138,14 +138,8 @@ tasks:
       modelName: gpt-5-mini
       apiKey: "{{ kv('OPENAI_API_KEY') }}"
     tools:
-      - type: io.kestra.plugin.ai.tool.StdioMcpClient
-        command: ["/usr/local/bin/docker", "run", "-i", "--rm", "--pull", "always",
-          "-e", "KESTRA_MCP_DISABLED_TOOLS",
-          "-e", "KESTRA_BASE_URL",
-          "-e", "KESTRA_TENANT_ID",
-          "-e", "KESTRA_USERNAME",
-          "-e", "KESTRA_PASSWORD",
-          "ghcr.io/kestra-io/mcp-server-python:latest"]
+      - type: io.kestra.plugin.ai.tool.DockerMcpClient
+        image: ghcr.io/kestra-io/mcp-server-python:latest
         env:
           KESTRA_BASE_URL: http://host.docker.internal:8080/api/v1
           KESTRA_TENANT_ID: main
@@ -373,6 +367,7 @@ tasks:
     flowId: child
     namespace: demo
     wait: false
+
   - id: kill
     type: io.kestra.plugin.kestra.executions.Kill
     runIf: "{{ inputs.shouldKill == true }}"
