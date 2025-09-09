@@ -9,7 +9,7 @@
             <div class="content-section">
                 <h2>Overview of Rundeck and Kestra</h2>
 <p><strong>Rundeck</strong>: is an open-source automation tool (now part of PagerDuty) use (mostly) for runbook and infrastructure automation. Rundeck provides self-service access to operations tasks with fine-grained ACLs and a GUI to execute jobs on remote nodes via SSH​. It’s commonly used to run Ansible playbooks, deploy scripts, and handle routine server tasks. Rundeck’s flexibility is a strength, but it also has limitations – it offers around 120+ plugins and its API is not fully RESTful, lacking features like versioned job definitions​. For example, Rundeck cannot natively preserve historical versions of a job; any API call will run the latest job configuration​.</p>
-      <p><strong>Kestra</strong>: is also an open-source, but it's an orchestration platform designed to bring Infrastructure-as-Code practices to automation and any workflow. Kestra takes an API-first approach and lets you define workflows as YAML pipelines, treating automation configuration as code​. It features an event-driven architecture and a highly extensible plugin ecosystem. Kestra was built with scalability in mind – under the hood it uses Apache Kafka and Elasticsearch to handle massive workloads with an “infinitely scalable” design​. With a user-friendly UI (including a code editor and live workflow topology view) and 600+ plugins for integrations​, Kestra is aimed at modern cloud and data-centric automation needs.</p>          
+      <p><strong>Kestra</strong>: is also an open-source, but it's an orchestration platform designed to bring Infrastructure-as-Code practices to automation and any workflow. Kestra takes an API-first approach and lets you define workflows as YAML pipelines, treating automation configuration as code​. It features an event-driven architecture and a highly extensible plugin ecosystem. Kestra was built with scalability in mind – under the hood it uses Apache Kafka and Elasticsearch to handle massive workloads with an “infinitely scalable” design​. With a user-friendly UI (including a code editor and live workflow topology view) and 900+ plugins for integrations​, Kestra is aimed at modern cloud and data-centric automation needs.</p>          
 
 </div>
 
@@ -65,7 +65,7 @@
                 </tr>
                 <tr>
                     <td>Plugin Ecosystem</td>
-                    <td>600+ plugins (cloud services, data, DevOps tools, etc.)</td>
+                    <td>900+ plugins (cloud services, data, DevOps tools, etc.)</td>
                     <td>~120 plugins (scripts, nodes, not as many cloud-native plugins)</td>
                 </tr>
                 <tr>

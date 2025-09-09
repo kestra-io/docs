@@ -277,7 +277,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
             img.background {
                 width: 644px;
                 max-width: 100%;
@@ -297,13 +296,21 @@
                     width: 75%;
                 }
 
+                @include media-breakpoint-down(md) {
+                    top: 0;
+                }
+
                 background: white;
             }
+
+            @include media-breakpoint-down(md) {
+                min-height: 400px;
+            }
+
         }
 
         .meeting-container {
             position: relative;
-
             @include media-breakpoint-up(lg) {
                 padding: calc($spacer * 1.25) calc($spacer * 0.5);
             }

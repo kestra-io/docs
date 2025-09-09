@@ -80,7 +80,7 @@ const benefits = [
   {
     id: "consistent-governance",
     title: "Consistent governance",
-    description: "Enforce versioning, auditing, and compliance by default",
+    description: "Enforce versioning, auditing, and compliance by default.",
     icon: LaptopAccount,
   },
 ]
