@@ -543,7 +543,13 @@ tasks:
 
 ## Next Steps
 
-This post highlighted the new features and enhancements introduced in Kestra 1.0. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
+This post highlighted the new features and enhancements introduced in Kestra 1.0. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback. You can also learn more about this release in our latest podcast episode:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/KXmvXAmNx5c?si=u-Jxo70O9lT-4Rte" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
