@@ -8,7 +8,7 @@
             <ArrowLeft />
             <div class="wrapper">
                 <span v-if="directory(prev.path)" class="directory">
-                  {{ directory(prev.path) }}
+                    {{ directory(prev.path) }}
                 </span>
                 <span class="title">{{ prev.title }}</span>
             </div>
@@ -23,7 +23,7 @@
         >
             <div class="wrapper">
                 <span v-if="directory(next.path)" class="directory">
-                  {{ directory(next.path) }}
+                    {{ directory(next.path) }}
                 </span>
                 <span class="title">{{ next.title }}</span>
             </div>
@@ -55,19 +55,14 @@ const navDirFromPath = () => []
         },
         methods: {
             directory(link) {
-                const nav = navDirFromPath(link.path, this.navigation || [])
+                const [nav] = navDirFromPath(link.path, this.navigation || [])
+                if (nav) return nav.path
 
-                if (nav && nav[0]) {
-                    return nav[0].path
-                } else {
-                    const dirs = link.split('/')
-                    const directory = dirs[Math.max(1, dirs.length - 2)]
-                    if (directory === "ui") {
-                        return "UI";
-                    } else {
-                        return directory.split('-').map(upperFirst).join(' ');
-                    }
-                }
+                const dirs = link.split('/')
+                const directory = dirs[Math.max(1, dirs.length - 2)]
+
+                const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
+                return specialCases[directory] || directory.split('-').map(upperFirst).join(' ')
             },
         }
     });
