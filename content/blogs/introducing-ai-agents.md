@@ -1,7 +1,7 @@
 ---
 title: "Introducing AI Agents: Autonomous Orchestration with Declarative Workflows"
 description: "AI Agents in Kestra 1.0 turn workflows from static lists of tasks to dynamic decision engines. By combining LLMs, memory, and tools, they enable agentic orchestration that can reason and adapt autonomously."
-date: 2025-09-10T15:00:00
+date: 2025-09-10T13:00:00
 category: News & Product Updates
 authors:
   - name: Anna Geller
