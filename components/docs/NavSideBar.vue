@@ -141,11 +141,15 @@
 
         .search, .ai-button-wrapper {
             width: 209px;
+            height: 32px;
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                margin-top: $spacer;
+            }
         }
 
         .search {
-            width: 209px;
-            height: 32px;
             padding: calc($spacer * 0.3) calc($spacer * 0.8);
             gap: 8px;
             border-radius: calc($spacer * 0.25);
@@ -157,11 +161,6 @@
             &:hover {
                 background-color: $black-4;
                 border: 1px solid $black-6;
-            }
-
-            @include media-breakpoint-down(lg) {
-                width: 100%;
-                margin-top: $spacer;
             }
 
             :deep(.material-design-icon__svg) {
