@@ -83,6 +83,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "* 8 * * *"
 ```
+::
 
 ::collapse{title="This flow turns natural language prompts into structured Todoist tasks using an AI model. Each item is parsed into a title, description, and due date, then automatically created in your Todoist workspace via the REST API."}
 
@@ -147,6 +148,7 @@ tasks:
             "due_datetime": "{{ taskrun.value | jq('.due_date') | first }}"
           }
 ```
+::
 
 ::collapse{title="This flow generates an image from a user prompt, sends it to a Discord channel for review, and waits for approval. If approved, the image is finalized and logged; if rejected, the user can provide feedback to regenerate a new image, which is then shared again on Discord."}
 
@@ -280,3 +282,4 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 15 * * 5"  # Every Friday at 15:00 (3:00 PM) UTC
 ```
+::
