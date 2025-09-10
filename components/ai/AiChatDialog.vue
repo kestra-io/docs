@@ -45,7 +45,7 @@
                                     />
                                 </div>
 
-                                <div v-if="isLoading" class="loading">
+                                <div v-if="isLoading && messageIndex === messages.length - 1 && !message.content" class="loading">
                                     <div class="dots"></div>
                                 </div>
 
