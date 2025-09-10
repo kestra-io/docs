@@ -62,7 +62,7 @@ And trust followed. Today, **Apple, Toyota, Bloomberg, JPMorgan Chase, SoftBank,
 
 It is a lot. And yes, they **work**.
 
-Every time we mention that Kestra now spans **900+ plugins**, we get two reactions. The first is excitement because it means you can connect to practically anything: data stores, file stores, messaging systems, observability stacks, back‑office apps, and the long tail of tools that enterprises rely on. The second is skepticism: can that many integrations really be trustworthy?
+Every time we mention that Kestra now spans **:PluginCount plugins**, we get two reactions. The first is excitement because it means you can connect to practically anything: data stores, file stores, messaging systems, observability stacks, back‑office apps, and the long tail of tools that enterprises rely on. The second is skepticism: can that many integrations really be trustworthy?
 
 They can, and they are, because we treat the plugin ecosystem with the same discipline we apply to the core. Plugins are part of the product. We test them daily. We keep them up to date. We make upgrades safe. In Enterprise Edition, **plugin versioning** lets you pin exactly what your workflows depend on, run multiple versions in parallel, and adopt changes at your own pace. The size of the ecosystem is the result of years of work, so that integration breadth doesn’t come at the cost of quality. This is the level we are reaching, and it’s the same bar for everyone.
 

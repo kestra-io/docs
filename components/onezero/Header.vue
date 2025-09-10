@@ -50,12 +50,14 @@
 </template>
 
 <script setup lang="ts">
-const releaseHighlights = [
+const { totalPlugins } = usePluginsCount();
+
+const releaseHighlights = computed(() => [
     { title: "LTS Release" },
     { title: "Apache 2.0 License" },
-    { title: "900+ Plugins" },
+    { title: `${totalPlugins.value} Plugins` },
     { title: "Deploy anywhere" }
-]
+]);
 
 const companyLogos = [
     { name: "Apple", src: "/landing/onezero/apple.svg", width: 33, height: 39 },
