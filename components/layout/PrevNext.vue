@@ -62,11 +62,7 @@ const navDirFromPath = () => []
                 } else {
                     const dirs = link.split('/')
                     const directory = dirs[Math.max(1, dirs.length - 2)]
-                    if (directory === "ui") {
-                        return "UI";
-                    } else {
-                        return directory.split('-').map(upperFirst).join(' ');
-                    }
+                    return directory.split('-').map(upperFirst).join(' ')
                 }
             },
         }
