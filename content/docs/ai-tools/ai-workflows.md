@@ -276,3 +276,9 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 15 * * 5"  # Every Friday at 15:00 (3:00 PM) UTC
 ```
+
+Check out this full playlist of AI workflow demo videos:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/videoseries?si=uFFbyDPJ8-zGDVOI&amp;list=PLEK3H8YwZn1qe8T2PSE8qfYJF4IEhtUEH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
