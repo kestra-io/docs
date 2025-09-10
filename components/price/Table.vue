@@ -135,7 +135,9 @@
   import Plus from 'vue-material-design-icons/Plus.vue'
   import CheckBold from 'vue-material-design-icons/CheckBold.vue'
   import Information from 'vue-material-design-icons/Information.vue'
-  import {ref} from "vue"
+  import {ref, computed} from "vue"
+
+  const { totalPlugins } = usePluginsCount();
 
   const selectedType = ref('enterprise');
   const tableHead = ref([
@@ -161,7 +163,7 @@
     },
   ]);
 
-  const tableData = ref([
+  const tableData = computed(() => [
     {
       title: "Core Features",
       isFullLine: true,
@@ -199,7 +201,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Connect Kestra to 700+ plugins",
+        text: `Connect Kestra to ${totalPlugins.value} plugins`,
         link: "/plugins"
       }
     },
@@ -528,7 +530,7 @@
     }
   ]);
 
-  const tableSortedData = ref([
+  const tableSortedData = computed(() => [
     {
       title: "Core Features",
       isFullLine: true,
@@ -566,7 +568,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Connect Kestra to 700+ plugins",
+            text: `Connect Kestra to ${totalPlugins.value} plugins`,
             link: "/plugins"
           }
         },

@@ -22,7 +22,7 @@
                                 <li data-aos="fade-right" data-aos-delay="250">Embedded code editor</li>
                                 <li data-aos="fade-right" data-aos-delay="300">Embedded documentation</li>
                                 <li data-aos="fade-right" data-aos-delay="350">Live-updating topology view</li>
-                                <li data-aos="fade-right" data-aos-delay="400">Access to 400+ plugins</li>
+                                <li data-aos="fade-right" data-aos-delay="400">Access to {{ totalPlugins }} plugins</li>
                                 <li data-aos="fade-right" data-aos-delay="450">Git & CI/CD integrations</li>
                                 <li data-aos="fade-right" data-aos-delay="500">Basic authentication</li>
                                 <li data-aos="fade-right" data-aos-delay="550">Community support</li>
@@ -554,23 +554,13 @@
     </div>
 </template>
 
-<script setup>
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import Check from "vue-material-design-icons/Check.vue"
-</script>
+<script setup lang="ts">
+import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
+import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+import Section from '../layout/Section.vue';
 
-<script>
-    import Section from '../layout/Section.vue';
-
-    export default {
-        components: {Section},
-        data() {
-            return {
-                isOpen: false
-            }
-        }
-    }
+const { totalPlugins } = usePluginsCount();
+const isOpen = ref(false);
 </script>
 
 <style lang="scss" scoped>

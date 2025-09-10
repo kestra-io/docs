@@ -3,10 +3,10 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }}+ plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }} plugins</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg"
-                           :placeholder="`Search across ${totalPlugins}+ plugins`" v-model="searchQuery">
+                           :placeholder="`Search across ${totalPlugins} plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -74,18 +74,7 @@
     function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
         return isEntryAPluginElementPredicate(...elementsArray);
     }
-
-    const totalPlugins = computed(() => {
-        let pluginElements = props.plugins.reduce((acc, plugin) => {
-            Object.entries(plugin)
-                .filter(isFullEntryAPluginElementPredicate)
-                .flatMap(([_, elements]) => elements)
-                .map(({cls}) => cls)
-                .forEach(e => acc.add(e));
-            return acc;
-        }, new Set<string>());
-        return pluginElements.size;
-    });
+    const { totalPlugins } = usePluginsCount();
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
@@ -94,7 +83,7 @@
     };
 
     const capitalize = (name: string) => {
-        return name[0].toUpperCase() + name.slice(1);
+        return name[0]?.toUpperCase() + name.slice(1);
     };
 
     const totalGroups = computed(() => filteredPluginsData.value.length);

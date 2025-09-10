@@ -10,14 +10,14 @@
                 :class="{ 'section-active': isInWorkflowSection }">
                 <div class="workflow-track">
                     <div v-if="!isMobile" class="workflow-step">
-                        <div class="gradient-border" :class="`${workflowSteps[currentStep].id}-border`"></div>
+                        <div class="gradient-border" :class="`${workflowSteps[currentStep]?.id}-border`"></div>
                         <div class="step-content" :key="`content-${currentStep}`" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
-                            <span class="step-label" :class="`${workflowSteps[currentStep].id}-label`">{{ workflowSteps[currentStep].label }}</span>
-                            <h4>{{ workflowSteps[currentStep].title }}</h4>
-                            <p>{{ workflowSteps[currentStep].description }}</p>
+                            <span class="step-label" :class="`${workflowSteps[currentStep]?.id}-label`">{{ workflowSteps[currentStep]?.label }}</span>
+                            <h4>{{ workflowSteps[currentStep]?.title }}</h4>
+                            <p>{{ workflowSteps[currentStep]?.description }}</p>
                         </div>
                         <div class="step-image">
-                            <NuxtImg :src="workflowSteps[currentStep].image" :alt="workflowSteps[currentStep].alt" width="600" height="371" />
+                            <NuxtImg :src="workflowSteps[currentStep]?.image" :alt="workflowSteps[currentStep]?.alt" width="600" height="371" />
                         </div>
                     </div>
                     
@@ -56,6 +56,8 @@
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { useWindowScroll, useEventListener, useElementBounding, useWindowSize } from '@vueuse/core'
 
+const { totalPlugins } = usePluginsCount();
+
 const workflowContainer = ref<HTMLElement>()
 const currentStep = ref(0)
 const isScrolling = ref(false)
@@ -73,7 +75,7 @@ const { width: windowWidth } = useWindowSize()
 
 const { top, bottom, height } = useElementBounding(workflowContainer)
 
-const workflowSteps = [
+const workflowSteps = computed(() => [
     {
         id: 'design',
         label: 'Design',
@@ -86,7 +88,7 @@ const workflowSteps = [
         id: 'connect',
         label: 'Connect',
         title: 'Plug to Any Tool',
-        description: 'Integrate with 700+ plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.',
+        description: `Integrate with ${totalPlugins.value} plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.`,
         image: '/landing/overview/connect.png',
         alt: 'Connect to tools'
     },
@@ -114,20 +116,7 @@ const workflowSteps = [
         image: '/landing/overview/observe.png',
         alt: 'Stay in control'
     }
-]
-
-const stepColors = {
-    design: '#7751F4',
-    connect: '#FF694B',
-    trigger: '#51F485',
-    run: '#F4C951',
-    observe: '#C051F4'
-}
-
-const currentStepColor = computed(() => {
-    const currentStepId = workflowSteps[currentStep.value]?.id
-    return stepColors[currentStepId as keyof typeof stepColors] || '#F4C951'
-})
+])
 
 const isMobile = computed(() => {
     return windowWidth.value <= 992
@@ -167,12 +156,12 @@ const resetScrollState = () => {
 }
 
 const setInitialStep = (deltaY: number) => {
-    currentStep.value = deltaY > 0 ? 0 : workflowSteps.length - 1
+    currentStep.value = deltaY > 0 ? 0 : workflowSteps.value.length - 1
 }
 
 const handleStepNavigation = (deltaY: number) => {
     if (deltaY > 0) {
-        if (currentStep.value < workflowSteps.length - 1) {
+        if (currentStep.value < workflowSteps.value.length - 1) {
             currentStep.value++
         } else {
             hasCompletedSteps.value = true
@@ -359,7 +348,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "../../assets/styles/_variable";
 
 $step-colors: (
     design: #7751F4,

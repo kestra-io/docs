@@ -2,7 +2,7 @@
     <div class="slug">
         <span :class="{ first: index === 0 }" v-for="(item, index) in breadcrumb" :key="item">
             <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
-                {{ item !== "docs" && pageNames[item] ? pageNames[item] : item }}
+                {{ item !== "docs" && pageNames[item] ? pageNames[item] : formatDirectoryName(item) }}
             </NuxtLink>
         </span>
     </div>
@@ -32,6 +32,10 @@ export default {
         },
         breadcrumbLinkExist(item, index) {
             return this.pageList?.includes(this.breadcrumbLink(item, index))
+        },
+        formatDirectoryName(item) {
+            const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
+            return specialCases[item] || item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
         }
     },
     computed: {
