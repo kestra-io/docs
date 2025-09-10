@@ -70,6 +70,8 @@ import GamepadSquare from "vue-material-design-icons/GamepadSquare.vue";
 import TimerCheck from "vue-material-design-icons/TimerCheck.vue";
 import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue";
 
+const { totalPlugins } = usePluginsCount();
+
 const aiBlocksone = [
     {
         title: "AI Agents",
@@ -88,7 +90,7 @@ const aiBlocksone = [
         height: 590
     }
 ];
-const aiBlockstwo = [
+const aiBlockstwo = computed(() => [
     {
         title: "Enterprise-grade LTS",
         description: "Predictable upgrades, backward compatibility, RBAC, encrypted secrets, tenant isolation proven at scale.",
@@ -98,14 +100,14 @@ const aiBlockstwo = [
         height: 656
     },
     {
-        title: "900+ Plugins & Safe Upgrades",
+        title: `${totalPlugins.value} Plugins & Safe Upgrades`,
         description: "Our extensive ecosystem spans data, AI, and infrastructure. Plugin Versioning allows you to pin and run multiple versions simultaneously for safer, more controlled rollouts.",
         imgSrc: "/landing/onezero/PluginsUpgrade.png",
         alt: "Plugins Upgrade Illustration",
         width: 1012,
         height: 656
     }
-]
+])
 
 const velocityFeatures = [
     {
