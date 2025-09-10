@@ -23,7 +23,9 @@ The following examples demonstrate Kestra AI plugins for a variety of workflows.
 
 Different provider plugins may include additional properties beyond those shown in the examples. Refer to each plugin’s documentation for a complete list. Common properties to be aware of include `prompt`, `messages`, `jsonResponseSchema`, to name a few.
 
-::collapse{title="This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at 8:00 AM on a schedule."}
+::collapse{title="Check the weather for sports daily using Gemini"}
+
+This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at 8:00 AM on a schedule.
 
 ```yaml
 id: check_weather
@@ -85,7 +87,9 @@ triggers:
 ```
 ::
 
-::collapse{title="This flow turns natural language prompts into structured Todoist tasks using an AI model. Each item is parsed into a title, description, and due date, then automatically created in your Todoist workspace via the REST API."}
+::collapse{title="Create tasks with natural language prompts using DeepSeek and Todoist"}
+
+This flow turns natural language prompts into structured Todoist tasks using an AI model. Each item is parsed into a title, description, and due date, then automatically created in your Todoist workspace via the REST API.
 
 ```yaml
 id: add_tasks_to_todoist
@@ -150,7 +154,9 @@ tasks:
 ```
 ::
 
-::collapse{title="This flow generates an image from a user prompt, sends it to a Discord channel for review, and waits for approval. If approved, the image is finalized and logged; if rejected, the user can provide feedback to regenerate a new image, which is then shared again on Discord."}
+::collapse{title="Generate an image with OpenAI with human approval"}
+
+This flow generates an image from a user prompt, sends it to a Discord channel for review, and waits for approval. If approved, the image is finalized and logged; if rejected, the user can provide feedback to regenerate a new image, which is then shared again on Discord.
 
 ```yaml
 id: gen_img_approval
@@ -209,7 +215,9 @@ tasks:
         url: "{{ vars.discord_webhook }}"
 ```
 
-::collapse{title="This flow automatically summarizes Git commits from the past week in a specified repository and branch. Each Friday at 15:00 UTC, it generates a plain-text summary using Ollama and posts it to Slack, keeping teams updated on project progress."}
+::collapse{title="Summarize Git commits from the past week using Ollama"}
+
+This flow automatically summarizes Git commits from the past week in a specified repository and branch. Each Friday at 15:00 UTC, it generates a plain-text summary using Ollama and posts it to Slack, keeping teams updated on project progress.
 
 ```yaml
 id: ai-summarize-weekly-git-commits
