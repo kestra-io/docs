@@ -22,7 +22,7 @@
                             class="btn btn-lg btn-secondary mb-3 d-block d-md-inline"
                             target="_blank"
                         >
-                            Book a Strategy Call
+                            Book a Demo
                         </NuxtLink>
                     </div>
 
