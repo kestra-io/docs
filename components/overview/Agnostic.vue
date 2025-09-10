@@ -86,7 +86,7 @@ const workflowSteps = [
         id: 'connect',
         label: 'Connect',
         title: 'Plug to Any Tool',
-        description: 'Integrate with 700+ plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.',
+        description: 'Integrate with 900+ plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.',
         image: '/landing/overview/connect.png',
         alt: 'Connect to tools'
     },

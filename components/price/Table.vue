@@ -199,7 +199,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Connect Kestra to 700+ plugins",
+        text: "Connect Kestra to 900+ plugins",
         link: "/plugins"
       }
     },
@@ -566,7 +566,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Connect Kestra to 700+ plugins",
+            text: "Connect Kestra to 900+ plugins",
             link: "/plugins"
           }
         },

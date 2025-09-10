@@ -22,7 +22,7 @@
                                 <li data-aos="fade-right" data-aos-delay="250">Embedded code editor</li>
                                 <li data-aos="fade-right" data-aos-delay="300">Embedded documentation</li>
                                 <li data-aos="fade-right" data-aos-delay="350">Live-updating topology view</li>
-                                <li data-aos="fade-right" data-aos-delay="400">Access to 400+ plugins</li>
+                                <li data-aos="fade-right" data-aos-delay="400">Access to 900+ plugins</li>
                                 <li data-aos="fade-right" data-aos-delay="450">Git & CI/CD integrations</li>
                                 <li data-aos="fade-right" data-aos-delay="500">Basic authentication</li>
                                 <li data-aos="fade-right" data-aos-delay="550">Community support</li>
