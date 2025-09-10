@@ -214,6 +214,7 @@ tasks:
         content: "Here's the new image with your feedback: {{ outputs.retry.outputs.image }}"
         url: "{{ vars.discord_webhook }}"
 ```
+::
 
 ::collapse{title="Summarize Git commits from the past week using Ollama"}
 
