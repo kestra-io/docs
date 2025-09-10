@@ -23,7 +23,7 @@ The following examples demonstrate Kestra AI plugins for a variety of workflows.
 
 Different provider plugins may include additional properties beyond those shown in the examples. Refer to each plugin’s documentation for a complete list. Common properties to be aware of include `prompt`, `messages`, `jsonResponseSchema`, to name a few.
 
-::collapse{title="This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an "Out of office – gone sailing" event. It runs every morning at 8:00 AM on a schedule."}
+::collapse{title="This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at 8:00 AM on a schedule."}
 
 ```yaml
 id: check_weather
