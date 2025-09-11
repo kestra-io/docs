@@ -26,7 +26,7 @@
                     ML/AI Orchestration
                 </div>
                 <div class="spider-box" style="top: 69%; left: 55%;">
-                    Event-Driven Automation
+                    Infrastructure Orchestration
                 </div>
                 <div class="spider-box" style="top: 69%; left: 22%;">
                     Data & API Orchestration

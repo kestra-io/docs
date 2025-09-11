@@ -4,7 +4,7 @@
       <div class="col-md-12 col-lg-7">
         <h2>
           Kestra Cloud
-          <span class="highlight">Book a call to get access</span>
+          <span class="highlight">Let's talk to get access</span>
         </h2>
         <h5 class="mt-3">
           Be among the first to experience Kestra Cloud with exclusive
@@ -160,7 +160,7 @@
 
             <div class="col-12 d-flex justify-content-center">
               <button type="submit" class="btn btn-primary w-100">
-                Book a Call
+                Talk to us
               </button>
             </div>
           </form>
