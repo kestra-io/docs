@@ -337,6 +337,7 @@ export default defineNuxtConfig({
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/docs/scripts/runners': {redirect: '/docs/scripts/task-runners'},
         '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
