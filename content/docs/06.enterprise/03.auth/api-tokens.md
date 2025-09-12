@@ -45,7 +45,7 @@ Fill in the form with the required information, including the `Name`, `Descripti
 
 Once you confirm the API token creation, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location, as it will not be displayed again.
 
-![copy-and-save](docs/enterprise/copy-and-save.png)
+![copy-and-save](/public/docs/enterprise/copy-and-save.png)
 
 ## How to create a Service Account API token
 

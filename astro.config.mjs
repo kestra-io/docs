@@ -8,23 +8,58 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   integrations: [
       starlight({
-          title: 'My Docs',
-          social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-          sidebar: [
-              {
-                  label: 'Guides',
-                  items: [
-                      // Each item here is one entry in the navigation menu.
-                      { label: 'Example Guide', slug: 'guides/example' },
-                  ],
-              },
-              {
-                  label: 'Reference',
-                  autogenerate: { directory: 'reference' },
-              },
-          ],
+        title: 'Kestra Docs',
+        sidebar:  [{
+                    label: "Get Started with Kestra",
+                    items: [
+                        {slug: "Getting Started"},
+                        {slug: "Tutorial"},
+                        {slug: "Architecture"},
+                        {slug: "Installation Guide"},
+                        {slug: "User Interface"}
+                        // {slug: "Video Tutorials"}
+                    ],
+                // }, {
+                //     label: "Build with Kestra",
+                //     items: [
+                //         "Concepts",
+                //         "Workflow Components",
+                //         "Multi-Language Script Tasks",
+                //         "AI Tools",
+                //         "Version Control & CI/CD",
+                //         "Plugin Developer Guide",
+                //         "How-to Guides"
+                //     ],
+                // }, {
+                //     label: "Scale with Kestra",
+                //     items: [
+                //         "Cloud & Enterprise Edition",
+                //         "Task Runners",
+                //         // "Worker Groups",
+                //         "Best Practices"
+                //     ],
+                // }, {
+                //     label: "Manage Kestra",
+                //     items: [
+                //         "Administrator Guide",
+                //         "Migration Guide",
+                //         "Performance"
+                //     ],
+                // }, {
+                //     label: "Reference Docs",
+                //     items: [
+                //         "Configuration",
+                //         "Expressions",
+                //         "API Reference",
+                //         "Terraform Provider",
+                //         "Server CLI",
+                //         "Kestra EE CLI"
+                //     ]
+                },
+            ]
       }),
-	],
-
-  adapter: cloudflare(),
+],
+  adapter: cloudflare({
+    imageService: 'cloudflare'
+  }),
 });

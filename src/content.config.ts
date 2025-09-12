@@ -1,10 +1,25 @@
-import { defineCollection } from 'astro:content';
-import { docsLoader,  } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 export const collections = {
   docs: defineCollection({
-    loader: docsLoader(),
-    schema: docsSchema()
-}),
+    loader: glob({
+        pattern: "./**/*.md",
+        base: "./content/docs"
+    }),
+    schema: z.object({
+        title: z.string(),
+        icon: z.string().optional(),
+        release: z.string().optional(),
+        version: z.string().optional(),
+        editions: z.array(z.enum(["OSS", "EE", "Cloud"])).optional(),
+        topics: z.array(z.string()).optional(),
+        stage: z.string().optional(),
+        hideSubMenus: z.boolean().optional(),
+        deprecated: z.object({
+            since: z.string(),
+            migrationGuide: z.string(),
+        }).optional(),
+      })
+  }),
 };
