@@ -31,7 +31,7 @@
     "ipx": "^3.1.1",
     "lodash": "^4.17.21",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^11.10.1",
+    "mermaid": "^11.11.0",
     "nuxt-lazy-hydrate": "^1.0.0",
     "path-browserify": "^1.0.1",
     "posthog-js": "^1.261.0",
