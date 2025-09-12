@@ -46,7 +46,7 @@ For workloads exceeding 1,000 task runs per minute, increase Executor and Worker
 
 ::alert{type="info"}
 **Extra Tips**:
-1. Always provision at least one extra node per component for maintenance and one extra node for high availability.
+1. It is best practice to provision at least one extra node per component for maintenance and one extra node for high availability.
 2. These guidelines are starting points. Monitor your actual usage and adjust based on performance metrics.
 3. Use the above guidelines in conjunction with the [Worker Calculator](https://v0-worker-calculator.vercel.app/) to determine the right number of Workers for your workload.
 ::
@@ -68,7 +68,7 @@ Workers scale with workload type and concurrency:
 
 ### Executors
 
-Executors scale with orchestration load:
+Executors scale with [orchestration load](https://kestra.io/docs/performance/benchmark):
 
 - **Simple flows (few tasks)**: ~1500 executions/min with JDBC backend, ~2000 with Kafka backend before latency rises.
 - **Complex flows (many tasks per execution)**: throughput is lower (300–400 exec/min), as each execution spawns many task runs.
