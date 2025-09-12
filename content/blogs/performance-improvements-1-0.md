@@ -16,7 +16,7 @@ TODO
 
 ## MySQL query improvements with the help of Xiaomi
 
-[??? I asked for his name](https://github.com/thyw1) from Xiaomi contributed significant improvements to our MySQL list queries
+[Li Zi](https://github.com/thyw1) from Xiaomi contributed significant improvements to our MySQL list queries
 
 For all MySQL queries that list table records, we used the `SQL_CALC_FOUND_ROWS` hint to return the number of queried rows using the `FOUND_ROWS()` function and avoid a separate `select count(*)` query.
 MySQL deprecated this hint and the function and advises to use a separate `select count(*)` query.
