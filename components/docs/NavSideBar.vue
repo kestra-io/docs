@@ -18,7 +18,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
+                    <img src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
                     Ask Kestra AI
                 </button>
             </div>

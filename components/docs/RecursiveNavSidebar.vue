@@ -11,15 +11,15 @@
                     {{ item.title }}
                 </li>
                 <li v-else :class="{['depth-' + depthLevel]: true}" >
-                    <NuxtLink
+                    <a
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
                         :href="item.path"
                         @click="handleNavClick($event, item.path)">
                             {{ item.emoji }}
                             {{ item.title }}
-                    </NuxtLink>
-                    <NuxtLink
+                </a>
+                    <a
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
                         data-bs-toggle="collapse"
@@ -28,7 +28,7 @@
                     >
                             {{ item.emoji }}
                             {{ item.title }}
-                    </NuxtLink>
+            </a>
                     <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
                         <chevron-down
                             v-if="isActiveOrExpanded(item)"
