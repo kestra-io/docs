@@ -54,6 +54,7 @@
 </template>
 
 <script setup>
+  import {computed} from "vue";
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
@@ -66,6 +67,9 @@
         navigation: {
             type: Object,
         },
+        slug: {
+            type: String,
+        }
     })
 
     const disabledPages = [
@@ -74,9 +78,7 @@
         '/docs/terraform/resources'
     ]
 
-    const route = useRoute()
-
-    const activeSlug = computed(() => route.path)
+    const activeSlug = computed(() => props.slug)
     const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
 

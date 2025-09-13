@@ -64,8 +64,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, nextTick, onMounted } from "vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import { useSidebarScroll } from "../../composables/useSidebarScroll"
 
 interface Props {
     items: Array<any>
@@ -82,10 +84,10 @@ const toggled = ref<string[]>([])
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
-    
+
     nextTick(() => {
         const wasRestored = restoreScrollPosition()
-        
+
         if (!wasRestored) {
             scrollToActiveIfNeeded()
         }
