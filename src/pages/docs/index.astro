@@ -1,0 +1,24 @@
+---
+import Layout from "../../components/layout.astro";
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('docs')
+---
+
+<Layout>
+    <h1>Documentation</h1>
+    <p>Welcome to the documentation page. Here you'll find all the information you need to get started.</p>
+    <main>
+			<section>
+				<ul>
+					{
+						posts.map((docPage) => (
+							<li>
+								<a href={'/docs/' + docPage.id}>{docPage.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</main>
+	</Layout>
