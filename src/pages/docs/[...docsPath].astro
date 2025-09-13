@@ -1,0 +1,22 @@
+---
+// use astro content collection to fetch markdown files from /content/docs
+import { getEntry, getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../components/layout.astro";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+	const docsPages = await getCollection('docs');
+	return docsPages.map((doc) => ({
+		params: { docsPath: doc.id },
+		props: doc,
+	}));
+}
+type Props = CollectionEntry<'docs'>;
+
+const doc = Astro.props;
+const { Content } = await render(doc);
+---
+<Layout>
+  <h1>{doc.data.title}</h1>
+  <Content />
+</Layout>

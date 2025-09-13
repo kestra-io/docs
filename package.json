@@ -53,7 +53,6 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@astrojs/starlight": "^0.35.2",
     "@nuxt/content": "^3.6.3",
     "@nuxt/devtools": "^2.6.3",
     "@nuxt/image": "^1.11.0",

@@ -5,7 +5,8 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md",
-        base: "./content/docs"
+        base: "./content/docs",
+        generateId: ({ entry }) => entry.replace(/\.md$/, '').replace(/^\d+\./, '').replace(/\/\d+\./g, '/')
     }),
     schema: z.object({
         title: z.string(),
