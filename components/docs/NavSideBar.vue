@@ -53,19 +53,20 @@
 
 </template>
 
-<script setup>
-  import {computed} from "vue";
+<script lang="ts" setup>
+  import {computed, type PropType} from "vue";
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
-  import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+  import RecursiveNavSidebar, { type NavigationItem } from "./RecursiveNavSidebar.vue";
+
   const props = defineProps({
         type: {
             type: String,
             required: true
         },
         navigation: {
-            type: Object,
+            type: Object as PropType<{children: NavigationItem[]}[]>,
         },
         slug: {
             type: String,

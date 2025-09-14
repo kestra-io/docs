@@ -69,16 +69,25 @@ import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 import { useSidebarScroll } from "../../composables/useSidebarScroll"
 
-interface Props {
-    items: Array<any>
+export interface NavigationItem {
+    isSection?: boolean;
+    path: string;
+    title: string;
+    stem: string;
+    hideSubMenus?: boolean;
+    hideSidebar?: boolean;
+    emoji?: string;
+    children?: NavigationItem[];
+}
+
+const props = defineProps<{
+    items: Array<NavigationItem>
     depthLevel: number
-    activeSlug: string
+    activeSlug?: string
     parentSlug: string
     disabledPages?: Array<string>
     type?: string
-}
-
-const props = defineProps<Props>()
+}>()
 
 const toggled = ref<string[]>([])
 
@@ -134,6 +143,10 @@ const filterChildren = (item: any) => {
 }
 
 const isActive = (item: any) => {
+    if(!props.activeSlug) {
+        return false
+    }
+
     if (item.path.includes("#") && item.children?.some((c: any) => isActive(c))) {
         return true
     }
