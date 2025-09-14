@@ -6,7 +6,7 @@ export const collections = {
     loader: glob({
         pattern: "./**/*.md",
         base: "./content/docs",
-        generateId: ({ entry }) => entry.replace(/\.md$/, '').replace(/^\d+\./, '').replace(/\/\d+\./g, '/')
+        generateId: ({ entry }) => entry.replace(/\.md$/, '').replace(/^\d+\./, '').replace(/\/\d+\./g, '/').replace(/index$/, ''),
     }),
     schema: z.object({
         title: z.string(),

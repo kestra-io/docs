@@ -1,4 +1,5 @@
 ---
+import "../../assets/styles/docs.scss";
 import { getCollection } from "astro:content";
 import NavSideBar from "../../components/docs/NavSideBar.vue";
 import Layout from "./layout.astro";
@@ -19,10 +20,6 @@ docsPages.sort((a, b) => {
 const navigation = [{
     title: 'Documentation',
     children: docsPages.reduce((acc, docPage) => {
-        if(docPage.id.endsWith('/index')) {
-            // skip index pages, they will be represented by their parent
-            return acc;
-        }
         const parts = docPage.id.split('/');
         let currentLevel: NavigationItem[] | undefined = acc;
 
@@ -31,7 +28,7 @@ const navigation = [{
             const docsPath = `/docs/${path}`;
             let existingPart = currentLevel?.find(item => item.path === docsPath);
             if (!existingPart) {
-                const page = docsPages.find(doc => (doc.id === path) || (doc.id === `${path}/index`));
+                const page = docsPages.find(doc => (doc.id === path));
                 existingPart = {
                     title: page?.data.title ?? part,
                     path: docsPath,
@@ -56,7 +53,7 @@ const props = Astro.props;
 <Layout>
     <div class="layout-docs-wrapper">
         <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle/>
-        <main>
+        <main class="bd-content">
             <slot/>
         </main>
     </div>
