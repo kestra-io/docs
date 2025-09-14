@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import NavSideBar from "../../components/docs/NavSideBar.vue";
+import Layout from "./layout.astro";
+import type { NavigationItem } from "../../components/docs/RecursiveNavSidebar.vue";
+
+const docsPages = await getCollection('docs')
+
+// transform the flat list of docsPages into a nested structure based on the '/' in the id
+
+// first sort the docsPages by depth (number of '/' in the id)
+docsPages.sort((a, b) => {
+    const aDepth = a.id.split('/').length;
+    const bDepth = b.id.split('/').length;
+    return aDepth - bDepth;
+});
+
+// then create a nested structure
+const navigation = [{
+    title: 'Documentation',
+    children: docsPages.reduce((acc, docPage) => {
+        if(docPage.id.endsWith('/index')) {
+            // skip index pages, they will be represented by their parent
+            return acc;
+        }
+        const parts = docPage.id.split('/');
+        let currentLevel: NavigationItem[] | undefined = acc;
+
+        parts.forEach((part, index) => {
+            const path = parts.slice(0, index + 1).join('/');
+            const docsPath = `/docs/${path}`;
+            let existingPart = currentLevel?.find(item => item.path === docsPath);
+            if (!existingPart) {
+                const page = docsPages.find(doc => (doc.id === path) || (doc.id === `${path}/index`));
+                existingPart = {
+                    title: page?.data.title ?? part,
+                    path: docsPath,
+                    children: []
+                };
+                currentLevel?.push(existingPart);
+            }
+            currentLevel = existingPart.children;
+        });
+
+        return acc;
+    }, [] as NavigationItem[]),
+}]
+
+interface Props {
+    activeStem: string
+}
+
+const props = Astro.props;
+---
+
+<Layout>
+    <div class="layout-docs-wrapper">
+        <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle/>
+        <main>
+            <slot/>
+        </main>
+    </div>
+</Layout>
+
+<style>
+    .layout-docs-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 100%;
+    }
+

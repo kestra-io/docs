@@ -1,32 +1,10 @@
 ---
-import Layout from "../../components/layout.astro";
-import { getCollection } from 'astro:content';
-import NavSideBar from "../../../components/docs/NavSideBar.vue";
-
-const docsPages = await getCollection('docs')
-
-const navigation = docsPages.map((doc) => ({
-    title: doc.data.title,
-    url: '/docs/' + doc.id
-}));
+import LayoutDocs from "../../components/layout-docs.astro";
 ---
 
-<Layout>
-    <NavSideBar type="docs" navigation={navigation} slug="" client:idle/>
+<LayoutDocs>
     <main>
-    <h1>Documentation</h1>
-    <p>Welcome to the documentation page. Here you'll find all the information you need to get started.</p>
-    <main>
-			<section>
-				<ul>
-					{
-						docsPages.map((docPage) => (
-							<li>
-								<a href={'/docs/' + docPage.id}>{docPage.data.title}</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-	</Layout>
+        <h1>Documentation</h1>
+        <p>Welcome to the documentation page. Here you'll find all the information you need to get started.</p>
+    </main>
+</LayoutDocs>

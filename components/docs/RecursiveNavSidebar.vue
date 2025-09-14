@@ -73,7 +73,6 @@ export interface NavigationItem {
     isSection?: boolean;
     path: string;
     title: string;
-    stem: string;
     hideSubMenus?: boolean;
     hideSidebar?: boolean;
     emoji?: string;
