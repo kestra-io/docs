@@ -107,7 +107,7 @@ Then, add your app configuration to create a form that requests compute resource
 
 Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
 
-![Apps No Code](/docs/enterprise/apps/apps-no-code.png)
+![Apps No Code](/docs/enterprise/apps/app-no-code.png)
 
 ---
 
