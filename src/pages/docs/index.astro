@@ -1,10 +1,17 @@
 ---
 import LayoutDocs from "../../components/layout-docs.astro";
+import { getEntry, render } from "astro:content";
+const doc = await getEntry('docs', '<index>');
+if (!doc) {
+    throw new Error('Index document not found');
+}
+
+const { Content } = await render(doc);
 ---
 
-<LayoutDocs>
+<LayoutDocs activeStem="/docs">
     <main>
-        <h1>Documentation</h1>
-        <p>Welcome to the documentation page. Here you'll find all the information you need to get started.</p>
+        <h1>{doc.data.title}</h1>
+        <Content />
     </main>
 </LayoutDocs>
