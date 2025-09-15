@@ -192,7 +192,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Built-in code editor to write and test your workflows",
+        text: "Built-in code editor to write and run your workflows",
         link: "/docs/concepts/editor"
       }
     },
@@ -278,9 +278,153 @@
       }
     },
     {
+      title: "KV Store",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Key-value store to persist configuration and custom workflow execution data",
+        link: "/docs/concepts/kv-store"
+      }
+    },    
+    {
+      title: "Playground Mode",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Build workflows iteratively, one task at a time",
+        link: "/docs/ui/playground"
+      }
+    },
+    {
+      title: "Multi-Panel Editor",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Split-screen Flow Editor that lets you open, reorder, and close multiple panels, including Code, No-Code, Files, Docs, and more side by side",
+        link: "/docs/ui/flows#edit"
+      }
+    },
+    {
+      title: "No-Code Workflow Builder",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Create Kestra flows from the form-based UI tabs without writing code",
+        link: "/docs/ui/flows#no-code-view"
+      }
+    },    
+    {
+      title: "Conditional Inputs",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Show/hide inputs based on other input values or custom conditions",
+        link: "/docs/workflow-components/inputs#dynamic-inputs"
+      }
+    },    
+    {
+      title: "Dynamic Dropdowns",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Dropdown options dynamically fetched from external HTTP endpoints",
+        link: "/blogs/release-0-24#dynamic-dropdowns-powered-by-http-function"
+      }
+    },    
+    {
+      title: "Namespace Files",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Store and manage custom code separately for each namespace",
+        link: "/docs/concepts/namespace-files"
+      }
+    },    
+    {
+      title: "Flow-level SLA",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Define service level agreements for workflow execution",
+        link: "/docs/workflow-components/sla"
+      }
+    },
+    {
+      title: "Task Caching",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Intelligent caching of task outputs to avoid redundant execution",
+        link: "/docs/workflow-components/task-cache"
+      }
+    },    
+    {
+      title: "Realtime Event Triggers",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Millisecond-latency event processing for business-critical workflows",
+        link: "/docs/workflow-components/triggers/realtime-trigger"
+      }
+    },    
+    {
+      title: "LoopUntil Orchestration Pattern",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Wait for specific conditions to be met before proceeding",
+        link: "/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil"
+      }
+    },
+    {
+      title: "Human-in-the-loop Manual Approval",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Pause and resume workflow executions with custom inputs",
+        link: "/docs/how-to-guides/pause-resume"
+      }
+    },    
+    {
+      title: "AI Agents",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Launch autonomous processes with an LLM, memory, and tools",
+        link: "/docs/ai-tools/ai-agents"
+      }
+    },    
+    {
+      title: "AI Copilot (Gemini models only)",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "AI-Copilot generating workflow code based on a natural language prompt using Gemini models",
+        link: "/docs/ai-tools/ai-copilot"
+      }
+    },
+    {
+      title: "AI Copilot (Any LLM provider)",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "AI-Copilot with support for any LLM provider",
+        link: "/docs/ai-tools/ai-copilot"
+      }
+    },
+    {
       title: "Security & Governance",
       isFullLine: true,
       textBold: true,
+    },
+    {
+      title: "LTS Releases (Long-Term Support)",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Long-term support releases with guaranteed 1-year maintenance",
+        link: "/blogs/introducing-lts"
+      }
     },
     {
       title: "Users Management",
@@ -375,7 +519,7 @@
       }
     },
     {
-      title: "Log Shipper",
+      title: "Log Shippers",
       isOpenSource: false,
       isEnterprise: true,
       description: {
@@ -393,10 +537,82 @@
       }
     },
     {
+      title: "User Invitations",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Streamlined user onboarding with invitations",
+        link: "/docs/enterprise/auth/invitations"
+      }
+    },
+    {
+      title: "Announcements",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Communicate planned maintenance or incidents with in-app banners",
+        link: "/docs/enterprise/instance/announcements"
+      }
+    },
+    {
       title: "Productivity",
       isFullLine: true,
       textBold: true,
     },
+    {
+      title: "Custom Dashboards",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Build custom dashboards for monitoring and analytics",
+        link: "/docs/ui/dashboard"
+      }
+    },    
+    {
+      title: "Bookmarks",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Save and organize frequently accessed workflows and resources",
+        link: "/docs/ui/bookmarks"
+      }
+    },    
+    {
+      title: "UI Localization",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Access the UI in one of 12 supported languages",
+        link: "/blogs/release-0-19#localization-ui"
+      }
+    },
+    {
+      title: "In-app Versioned Docs",
+      isOpenSource: true,
+      isEnterprise: true,
+      description: {
+        text: "Contextual documentation integrated into the UI",
+        link: "/blogs/release-0-19#in-app-versioning-for-docs-and-blueprints"
+      }
+    },    
+    {
+      title: "Plugin Versioning",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Use multiple versions of a plugin depending on your instance requirements and upgrade path",
+        link: "/docs/enterprise/instance/versioned-plugins"
+      }
+    },    
+    {
+      title: "Customizable UI Links",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Customize navigation and external links in the UI",
+        link: "/docs/configuration#ee-sidebar-configuration"
+      }
+    },    
     {
       title: "Custom Blueprints & Templates",
       isOpenSource: false,
@@ -443,6 +659,15 @@
       }
     },
     {
+      title: "Namespace-Level Secrets Management",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
+        link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
+      }
+    },
+    {
       title: "Apps",
       isOpenSource: false,
       isEnterprise: true,
@@ -452,12 +677,21 @@
       }
     },
     {
-      title: "Namespace-Level Secrets Management",
+      title: "Apps Catalog",
       isOpenSource: false,
       isEnterprise: true,
       description: {
-        text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
-        link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
+        text: "Browse and manage custom applications built with Kestra",
+        link: "/docs/enterprise/scalability/apps#app-catalog"
+      }
+    },
+    {
+      title: "Unit Tests",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Automated, isolated tests for your Kestra flows with fixtures and assertions to avoid regressions in production",
+        link: "/blogs/introducing-unit-tests"
       }
     },
     {
@@ -527,6 +761,24 @@
         text: "Handle large volumes of events per second with built-in parallelism, scaling, and queue management",
         link: "/docs"
       }
+    },
+    {
+      title: "Backup & Restore",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Automated backup and restore for disaster recovery",
+        link: "/docs/administrator-guide/backup-and-restore"
+      }
+    },
+    {
+      title: "Maintenance Mode",
+      isOpenSource: false,
+      isEnterprise: true,
+      description: {
+        text: "Graceful maintenance mode for system updates and maintenance",
+        link: "/docs/enterprise/maintenance-mode"
+      }
     }
   ]);
 
@@ -559,7 +811,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Built-in code editor to write and test your workflows",
+            text: "Built-in code editor to write and run your workflows",
             link: "/docs/concepts/editor"
           }
         },
@@ -586,7 +838,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Setup Version Control with Git to store your flows and namespace files",
+            text: "Advanced Git integration to sync all your Kestra objects incl. flows, apps, unit tests, dashboards and namespace files",
             link: "/docs/version-control-cicd/git"
           }
         },
@@ -644,6 +896,141 @@
             link: "/docs/ui/flows#documentation-view"
           }
         },
+        {
+          title: "KV Store",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Key-value store to persist configuration and custom workflow execution data",
+            link: "/docs/concepts/kv-store"
+          }
+        },
+        {
+          title: "Playground Mode",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Build workflows iteratively, one task at a time",
+            link: "/docs/ui/playground"
+          }
+        },
+        {
+          title: "Multi-Panel Editor",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Split-screen Flow Editor that lets you open, reorder, and close multiple panels, including Code, No-Code, Files, Docs, and more side by side",
+            link: "/docs/ui/flows#edit"
+          }
+        },
+        {
+          title: "No-Code Workflow Builder",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Create Kestra flows from the form-based UI tabs without writing code",
+            link: "/docs/ui/flows#no-code-view"
+          }
+        },
+        {
+          title: "Conditional Inputs",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Show/hide inputs based on other input values or custom conditions",
+            link: "/docs/workflow-components/inputs#dynamic-inputs"
+          }
+        },
+        {
+          title: "Dynamic Dropdowns",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Dropdown options dynamically fetched from external HTTP endpoints",
+            link: "/blogs/release-0-24#dynamic-dropdowns-powered-by-http-function"
+          }
+        },
+        {
+          title: "Namespace Files",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Store and manage custom code separately for each namespace",
+            link: "/docs/concepts/namespace-files"
+          }
+        },
+        {
+          title: "Flow-level SLA",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Define service level agreements for workflow execution",
+            link: "/docs/workflow-components/sla"
+          }
+        },
+        {
+          title: "Task Caching",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Intelligent caching of task outputs to avoid redundant execution",
+            link: "/docs/workflow-components/task-cache"
+          }
+        },
+        {
+          title: "Realtime Event Triggers",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Millisecond-latency event processing for business-critical workflows",
+            link: "/docs/workflow-components/triggers/realtime-trigger"
+          }
+        },
+        {
+          title: "LoopUntil Orchestration Pattern",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Wait for specific conditions to be met before proceeding",
+            link: "/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil"
+          }
+        },
+        {
+          title: "Human-in-the-loop Manual Approval",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Pause and resume workflow executions with custom inputs",
+            link: "/docs/how-to-guides/pause-resume"
+          }
+        },
+        {
+          title: "AI Agents",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Launch autonomous processes with an LLM, memory, and tools",
+            link: "/docs/ai-tools/ai-agents"
+          }
+        },
+        {
+          title: "AI Copilot (Gemini models only)",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "AI-Copilot generating workflow code based on a natural language prompt using Gemini models",
+            link: "/docs/ai-tools/ai-copilot"
+          }
+        },
+        {
+          title: "AI Copilot (Any LLM provider)",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "AI-Copilot with support for any LLM provider",
+            link: "/docs/ai-tools/ai-copilot"
+          }
+        },
       ]
     },
     {
@@ -651,6 +1038,15 @@
       isFullLine: true,
       textBold: true,
       children: [
+        {
+          title: "LTS Releases (Long-Term Support)",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Long-term support releases with guaranteed 1-year maintenance",
+            link: "/blogs/introducing-lts"
+          }
+        },        
         {
           title: "Users Management",
           isOpenSource: false,
@@ -744,7 +1140,25 @@
           }
         },
         {
-          title: "Log Shipper",
+          title: "User Invitations",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Streamlined user onboarding with invitations",
+            link: "/docs/enterprise/auth/invitations"
+          }
+        },
+        {
+          title: "Announcements",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Communicate planned maintenance or incidents with in-app banners",
+            link: "/docs/enterprise/instance/announcements"
+          }
+        },
+        {
+          title: "Log Shippers",
           isOpenSource: false,
           isEnterprise: true,
           description: {
@@ -752,6 +1166,15 @@
             link: "/docs/enterprise/governance/logshipper"
           }
         },
+        {
+          title: "SOC 2",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "SOC 2 compliance",
+            link: "/trust"
+          }
+        },        
       ]
     },
     {
@@ -805,6 +1228,15 @@
           }
         },
         {
+          title: "Namespace-Level Secrets Management",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
+            link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
+          }
+        },        
+        {
           title: "Apps",
           isOpenSource: false,
           isEnterprise: true,
@@ -814,12 +1246,75 @@
           }
         },
         {
-          title: "Namespace-Level Secrets Management",
+          title: "Apps Catalog",
           isOpenSource: false,
           isEnterprise: true,
           description: {
-            text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
-            link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
+            text: "Browse and manage custom applications built with Kestra",
+            link: "/docs/enterprise/scalability/apps#app-catalog"
+          }
+        },           
+        {
+            title: "Unit Tests",
+            isOpenSource: false,
+            isEnterprise: true,
+            description: {
+              text: "Automated, isolated tests for your Kestra flows with fixtures and assertions to avoid regressions in production",
+              link: "/blogs/introducing-unit-tests"
+            }
+          },        
+        {
+          title: "Custom Dashboards",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Build custom dashboards for monitoring and analytics",
+            link: "/docs/ui/dashboard"
+          }
+        },
+        {
+          title: "Bookmarks",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Save and organize frequently accessed workflows and resources",
+            link: "/docs/ui/bookmarks"
+          }
+        },
+        {
+          title: "UI Localization",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Access the UI in one of 12 supported languages",
+            link: "/blogs/release-0-19#localization-ui"
+          }
+        },
+        {
+          title: "In-app Versioned Docs",
+          isOpenSource: true,
+          isEnterprise: true,
+          description: {
+            text: "Contextual documentation integrated into the UI",
+            link: "/blogs/release-0-19#in-app-versioning-for-docs-and-blueprints"
+          }
+        },
+        {
+          title: "Plugin Versioning",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Use multiple versions of a plugin depending on your instance requirements and upgrade path",
+            link: "/docs/enterprise/instance/versioned-plugins"
+          }
+        },
+        {
+          title: "Customizable UI Links",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Customize navigation and external links in the UI",
+            link: "/docs/configuration#ee-sidebar-configuration"
           }
         }
       ]
@@ -874,6 +1369,24 @@
             link: "/docs/enterprise/governance/worker-isolation"
           }
         },
+        {
+          title: "Backup & Restore",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Automated backup and restore for disaster recovery",
+            link: "/docs/administrator-guide/backup-and-restore"
+          }
+        },
+        {
+          title: "Maintenance Mode",
+          isOpenSource: false,
+          isEnterprise: true,
+          description: {
+            text: "Graceful maintenance mode for system updates and maintenance",
+            link: "/docs/enterprise/maintenance-mode"
+          }
+        },        
         {
           title: "Cluster Monitoring & Custom Storage",
           isOpenSource: false,
