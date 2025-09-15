@@ -282,7 +282,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Key-value store for application state and configuration",
+        text: "Key-value store to persist configuration and custom workflow execution data",
         link: "/docs/concepts/kv-store"
       }
     },    
@@ -319,7 +319,7 @@
       isEnterprise: true,
       description: {
         text: "Show/hide inputs based on other input values or custom conditions",
-        link: "/docs/workflow-components/inputs"
+        link: "/docs/workflow-components/inputs#dynamic-inputs"
       }
     },    
     {
@@ -327,8 +327,8 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Dynamic dropdown options based on external data sources",
-        link: "/docs/workflow-components/inputs#dynamic-inputs"
+        text: "Dropdown options dynamically fetched from external HTTP endpoints",
+        link: "/blogs/release-0-24#dynamic-dropdowns-powered-by-http-function"
       }
     },    
     {
@@ -336,7 +336,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Store and manage custom code within namespaces",
+        text: "Store and manage custom code separately for each namespace",
         link: "/docs/concepts/namespace-files"
       }
     },    
@@ -582,7 +582,7 @@
       isOpenSource: true,
       isEnterprise: true,
       description: {
-        text: "Multi-language support for the user interface",
+        text: "Access the UI in one of 12 supported languages",
         link: "/blogs/release-0-19#localization-ui"
       }
     },
@@ -901,7 +901,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Key-value store for application state and configuration",
+            text: "Key-value store to persist configuration and custom workflow execution data",
             link: "/docs/concepts/kv-store"
           }
         },
@@ -938,7 +938,7 @@
           isEnterprise: true,
           description: {
             text: "Show/hide inputs based on other input values or custom conditions",
-            link: "/docs/workflow-components/inputs"
+            link: "/docs/workflow-components/inputs#dynamic-inputs"
           }
         },
         {
@@ -946,8 +946,8 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Dynamic dropdown options based on external data sources",
-            link: "/docs/workflow-components/inputs#dynamic-inputs"
+            text: "Dropdown options dynamically fetched from external HTTP endpoints",
+            link: "/blogs/release-0-24#dynamic-dropdowns-powered-by-http-function"
           }
         },
         {
@@ -955,7 +955,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Store and manage custom code within namespaces",
+            text: "Store and manage custom code separately for each namespace",
             link: "/docs/concepts/namespace-files"
           }
         },
@@ -1286,7 +1286,7 @@
           isOpenSource: true,
           isEnterprise: true,
           description: {
-            text: "Multi-language support for the user interface",
+            text: "Access the UI in one of 12 supported languages",
             link: "/blogs/release-0-19#localization-ui"
           }
         },
