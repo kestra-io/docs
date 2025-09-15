@@ -74,6 +74,7 @@ import { useSidebarScroll } from "../../composables/useSidebarScroll"
 
 export interface NavigationItem {
     isSection?: boolean;
+    isPage?: boolean;
     path: string;
     title: string;
     hideSubMenus?: boolean;
@@ -104,7 +105,7 @@ onMounted(() => {
     })
 })
 
-const handleNavClick = (event: Event, path: string) => {
+const handleNavClick = (_event: Event, path: string) => {
     activeSlug.value = path
     const { preserveScrollPosition } = useSidebarScroll()
     preserveScrollPosition()
@@ -140,11 +141,11 @@ const pathToId = (path: string) => {
     return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__")
 }
 
-const filterChildren = (item: any) => {
+const filterChildren = (item: NavigationItem) => {
     return (item.children || []).filter((r: any) => item.path !== r.path)
 }
 
-const isActive = (item: any) => {
+const isActive = (item: NavigationItem) => {
     if(!activeSlug.value) {
         return false
     }
@@ -161,7 +162,10 @@ const isActive = (item: any) => {
     return normalizePath(activeSlug.value).startsWith(normalizePath(item.path))
 }
 
-const isActiveOrExpanded = (item: any) => {
+const isActiveOrExpanded = (item: NavigationItem) => {
+    if(item.isSection) {
+        return true
+    }
     if (isActive(item)) {
         return !toggled.value.includes(item.path)
     }
@@ -169,7 +173,7 @@ const isActiveOrExpanded = (item: any) => {
     return toggled.value.includes(item.path)
 }
 
-const isPage = (item: any) => {
+const isPage = (item: NavigationItem) => {
     if (item.isPage === false) {
         return false
     }
