@@ -26,6 +26,7 @@ import VideoCheckOutline from "vue-material-design-icons/VideoCheckOutline.vue"
 import LightbulbOn40 from "vue-material-design-icons/LightbulbOn40.vue"
 import HeadQuestion from "vue-material-design-icons/HeadQuestion.vue"
 import Flare from "vue-material-design-icons/Flare.vue"
+import ListBox from "vue-material-design-icons/ListBox.vue";
 
 interface MenuItem {
     icon: Component;
@@ -183,6 +184,11 @@ export const menuItems: MenuItems = {
                 icon: BookOpenPageVariant,
                 title: "Customer Stories",
                 link: "/use-cases/stories"
+            },
+            {
+                icon: ListBox,
+                title: "Release Notes",
+                link: "/docs/release-notes"
             }
         ]
     },
