@@ -11,10 +11,11 @@ export default defineNuxtConfig({
         'vue3-carousel-nuxt',
         'nuxt-lazy-hydrate',
         'nuxt-aos',
-        '@zadigetvoltaire/nuxt-gtm',
+        '@saslavik/nuxt-gtm',
         '@nuxtjs/sitemap',
         '@nuxtjs/robots',
         '@nuxt/content',
+        "nitro-cloudflare-dev",
     ],
     image: {
         dir: 'public',
@@ -180,6 +181,7 @@ export default defineNuxtConfig({
                         "Concepts",
                         "Workflow Components",
                         "Multi-Language Script Tasks",
+                        "AI Tools",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -335,6 +337,7 @@ export default defineNuxtConfig({
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/docs/scripts/runners': {redirect: '/docs/scripts/task-runners'},
         '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
@@ -377,8 +380,9 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
+        disableCacheOverviewLogMessage: true,
         data: {
-            enabled: process.env.NUXT_CACHE_ENABLED !== 'false',
+            enabled: true,
         },
     },
 

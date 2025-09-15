@@ -10,7 +10,6 @@
 
         <CloudHeader />
         <CloudFeatures />
-        <CloudHowItWorks />
     </div>
 </template>
 
@@ -102,10 +101,6 @@
     & :deep(p) {
         font-size: 14px;
         color: $white-1
-    }
-
-    & :deep(div) {
-        color: $white;
     }
 
     & :deep(.form) {

@@ -25,7 +25,7 @@ While Kestra Cloud provides a fully managed, hassle-free experience, it differs 
 | **Identity Providers (IdP)**        | Built-in Google, Microsoft, or Basic Authentication                | Custom SSO/SCIM supported                 |
 | **Log Retention**                  | Automatic retention protocol managed by Kestra      | Unlimited (based on customer setup)      |
 | **Deployment Regions**             | US & EU (Belgium) on GCP                          | Any cloud, any region                    |
-| **Task Runners**             | Compatible with most, [Process Task Runner](../task-runners/04.types/01.process-task-runner.md) excluded                          | Compatible with all, however [Kubernetes Task Runner](../task-runners/04.types/03.kubernetes-task-runner.md) better suited for Cloud                    |
+| **Task Runners**             | Compatible with most, [Process Task Runner](../task-runners/04.types/01.process-task-runner.md) excluded                          | Compatible with all task runners                    |
 
 This section describes those features in detail and explains how to configure them.
 

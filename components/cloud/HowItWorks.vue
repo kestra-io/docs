@@ -22,12 +22,12 @@ const columns = [
     {
         title: "Request Access",
         description:
-            "Fill out a short form to request your 30-day access.",
+            "Fill out a short form to request your 30-day access and pick a meeting slot with our solution team.",
     },
     {
         title: "Region & Setup",
         description:
-            "We’ll contact you to confirm your region and set up your Kestra Cloud instance.",
+            "We’ll speak about your requirements and set up your Kestra Cloud instance.",
     },
     {
         title: "Get Started",

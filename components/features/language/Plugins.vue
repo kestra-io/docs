@@ -3,7 +3,7 @@
         <div class="container">
             <div class="mb-5">
                 <h2 class="title">Platform <span>Independent</span></h2>
-                <p class="desc">Select from 400+ integrations and swap tools when needed</p>
+                <p class="desc">Select from 900+ integrations and swap tools when needed</p>
                 <LayoutPlugins />
             </div>
         </div>
@@ -25,7 +25,6 @@
     @import "../../../assets/styles/variable";
 
     .container-fluid {
-        background: url("/landing/home/plugins/background.svg") no-repeat center;
         color: var(--bs-white);
         padding: 0;
 

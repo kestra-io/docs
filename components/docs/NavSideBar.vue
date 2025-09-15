@@ -11,6 +11,17 @@
             >
                 <Menu /> Documentation Menu
             </button>
+            <div class="ai-button-wrapper mb-2">
+                <button
+                    class="ai-button "
+                    title="Ask Kestra AI"
+                    data-bs-toggle="modal"
+                    data-bs-target="#search-ai-modal"
+                >
+                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
+                    Ask Kestra AI
+                </button>
+            </div>
             <div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                 <div class="input-group">
                     <div class="input-icon">
@@ -128,9 +139,17 @@
             }
         }
 
-        .search {
+        .search, .ai-button-wrapper {
             width: 209px;
             height: 32px;
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                margin-top: $spacer;
+            }
+        }
+
+        .search {
             padding: calc($spacer * 0.3) calc($spacer * 0.8);
             gap: 8px;
             border-radius: calc($spacer * 0.25);
@@ -142,11 +161,6 @@
             &:hover {
                 background-color: $black-4;
                 border: 1px solid $black-6;
-            }
-
-            @include media-breakpoint-down(lg) {
-                width: 100%;
-                margin-top: $spacer;
             }
 
             :deep(.material-design-icon__svg) {

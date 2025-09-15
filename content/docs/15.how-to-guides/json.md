@@ -54,13 +54,13 @@ My response: {"title":"Success","method":"GET","params":{},"code":200,"createdAt
 
 ## Accessing Part of the Body
 
-However, if the body is large, we may only want to access a certain part of it. To do this, `jq` is required as the expression returns a string. Using `jq`, the JSON can be parsed and accessed:
+However, if the body is large, we may only want to access a certain part of it. To do this, `jq` is required as the expression returns a string, not a JSON. Using `jq`, the JSON can be parsed and accessed:
 
 ```yaml
 {{ outputs.request.body | jq('.title') | first }}
 ```
 
-This will access the key `title` from the JSON and return that inside of an array. The additional function `first` is added to return it as a string, removing it from the array.
+This will access the key `title` from the JSON. `jq` will return the result inside of an array when used within an expression. In order to access the value, the function `first` is added to the end of the expression, removing it from the array.
 
 We can put that into the example:
 

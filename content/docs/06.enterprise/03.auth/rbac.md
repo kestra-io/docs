@@ -58,7 +58,6 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `AUDITLOG`
 - `SECRET`
 - `BLUEPRINT`
-- `INFRASTRUCTURE`
 - `IMPERSONATE`
 - `SETTING`
 - `APP`
@@ -188,10 +187,10 @@ To set an existing User with a Super Admin privilege from the [CLI](../../ee-ser
 
 ```bash
 # Set a user as Super Admin
-kestra auths users set-type admin@kestra.io SUPER_ADMIN
+kestra auths users set-superadmin admin@kestra.io true
 
 # Revoke Super Admin privilege
-kestra auths users set-type admin@kestra.io STANDARD
+kestra auths users set-superadmin admin@kestra.io false
 ```
 
 ::
@@ -304,7 +303,11 @@ If a user wants to change their password, they can do it on their profile. This 
 
 #### Reset password (by a Super Admin)
 
-Kestra provides a "forgot password" functionality that your users could leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page.
+Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **Users**.
+
+![Reset Password](/docs/enterprise/forgot-password.png)
+
+![Superadmin Change Password](/docs/enterprise/create-user-password.png)
 
 ### Groups
 

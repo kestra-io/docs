@@ -36,16 +36,17 @@ const teamMembers = [
   { name: "Anna Geller", title: "Product Lead", image: "/landing/company/teams/ageller-round.png" },
   { name: "David Khan", title: "Sales Leader", image: "/landing/company/teams/dkhan-round.png" },
   { name: "Luke Lipan", title: "Sales Leader", image: "/landing/company/teams/llipan-round.png" },
-  { name: "Jesse Martin", title: "Cloud Go To Market Lead", image: "/landing/company/teams/jmartin-round.png" },
   { name: "Paul Grainger", title: "Lead Field Engineer", image: "/landing/company/teams/pgrainger-round.png" },
   { name: "Florian Hussonnois", title: "Lead Software Engineer", image: "/landing/company/teams/fhussonois-round.png" },
   { name: "Loïc Mathieu", title: "Lead Software Engineer", image: "/landing/company/teams/lmathieu-round.png" },
   { name: "François Delbrayelle", title: "Lead Software Engineer", image: "/landing/company/teams/fdelbrayelle-round.png" },
+  { name: "Ermek Djumataev", title: "Marketing Lead", image: "/landing/company/teams/edjumataev-round.png" },
   { name: "Martin-Pierre Roset", title: "Lead Growth & Marketing", image: "/landing/company/teams/mproset-round.png" },
   { name: "Nicolas Callens", title: "Lead Product Designer", image: "/landing/company/teams/ncallens-round.png" },
   { name: "Faizan Qazi", title: "Solution Engineer", image: "/landing/company/teams/fqazi-round.png" },
   { name: "Antoine Lin", title: "Lead Finance & Admin", image: "/landing/company/teams/alin-round.png" },
   { name: "Benoît Pimpaud", title: "Product Owner", image: "/landing/company/teams/bpimpaud-round.png" },
+  { name: "Eddie Jaoude", title: "Lead Education Engineer", image: "/landing/company/teams/ejaoude-round.png" },
   { name: "Will Russell", title: "Developer Advocate", image: "/landing/company/teams/wrussel-round.png" },
   { name: "Yann Coornaert", title: "Software Engineer", image: "/landing/company/teams/ycoornaert-round.png" },
   { name: "Brian Mulier", title: "Software Engineer", image: "/landing/company/teams/bmulier-round.png" },
@@ -59,6 +60,7 @@ const teamMembers = [
   { name: "Gilles Perreymond", title: "Platform Engineer", image: "/landing/company/teams/gperreymond-round.png" },
   { name: "Alex Emerich", title: "Technical Writer", image: "/landing/company/teams/aemerich-round.png" },
   { name: "Rok Grabnar", title: "Data Analyst", image: "/landing/company/teams/rgrabnar-round.png" },
+  { name: "Pradumna Saraf", title: "QA Engineer", image: "/landing/company/teams/psaraf-round.png" },
   { name: "Wish to see <br />your photo here?", title: null, image: "/landing/company/teams/portrait-round.png", isOpenPosition: true }
 ]
 </script>

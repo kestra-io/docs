@@ -13,9 +13,8 @@
 
 <script lang="ts" setup>
   const config = useRuntimeConfig();
-  const props = defineProps<{tag:string}>()
   const {data: blueprintsData} = await useAsyncData<{results:any[]}>('blueprints', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${props.tag}`)
+    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest`)
   });
 </script>
 

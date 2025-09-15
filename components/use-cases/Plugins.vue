@@ -57,7 +57,6 @@ export default {
 }
 
 .container-fluid {
-    background: url("/landing/home/plugins/background.svg") no-repeat center;
     color: var(--bs-white);
     padding: 0;
 

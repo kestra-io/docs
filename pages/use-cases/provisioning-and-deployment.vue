@@ -9,7 +9,7 @@
             titleHtml="Provisioning <br> and Deployment"
             description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
             imageSrc="/landing/usecases/provisioning-and-deployment/header-hero.svg"
-            imageAlt="Provisioning and Deployment"
+            imageAlt="Infrastructure Provisioning and Deployment"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain

@@ -1,4 +1,4 @@
-import {useDataCache} from '#nuxt-multi-cache/composables'
+import {useDataCache} from '#imports'
 
 export default defineEventHandler(async (event) => {
     const {value, addToCache} = await useDataCache('api-github-metrics-with-contributors', event);

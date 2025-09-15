@@ -40,7 +40,7 @@
             </div>
             <div class="plugins bg-image">
                 <div class="header">
-                    <p>Integrate With 600+ Plugins</p>
+                    <p>Integrate With {{ totalPlugins }} Plugins</p>
                     <span>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes plugin development simple, keeping your workflows flexible, scalable, and fully aligned with your enterprise goals.</span>
                 </div>
 
@@ -58,38 +58,33 @@
     </div>
 </template>
 
-<script>
-  export default {
-    name: "ProjectDetails",
-    data() {
-      return {
-        plugins: [
-          {path: '/landing/enterprise/plugin.svg'},
-          {path: '/landing/enterprise/plugin-1.svg'},
-          {path: '/landing/enterprise/plugin-2.svg'},
-          {path: '/landing/enterprise/plugin-3.svg'},
-          {path: '/landing/enterprise/plugin-4.svg'},
-          {path: '/landing/enterprise/plugin-5.svg'},
-          {path: '/landing/enterprise/plugin-6.svg'},
-          {path: '/landing/enterprise/plugin-7.svg'},
-          {path: '/landing/enterprise/plugin-8.svg'},
-          {path: '/landing/enterprise/plugin-9.svg'},
-          {path: '/landing/enterprise/plugin-10.svg'},
-          {path: '/landing/enterprise/plugin-11.svg'},
-          {path: '/landing/enterprise/plugin-12.svg'},
-          {path: '/landing/enterprise/plugin-13.svg'},
-          {path: '/landing/enterprise/plugin-14.svg'},
-          {path: '/landing/enterprise/plugin-15.svg'},
-          {path: '/landing/enterprise/plugin-16.svg'},
-          {path: '/landing/enterprise/plugin-17.svg'},
-          {path: '/landing/enterprise/plugin-18.svg'},
-          {path: '/landing/enterprise/plugin-19.svg'},
-          {path: '/landing/enterprise/plugin-20.svg'},
-          {path: '/landing/enterprise/plugin-21.svg'},
-        ],
-      };
-    },
-  };
+<script setup lang="ts">
+const { totalPlugins } = usePluginsCount();
+
+const plugins = [
+    { path: '/landing/enterprise/plugin.svg' },
+    { path: '/landing/enterprise/plugin-1.svg' },
+    { path: '/landing/enterprise/plugin-2.svg' },
+    { path: '/landing/enterprise/plugin-3.svg' },
+    { path: '/landing/enterprise/plugin-4.svg' },
+    { path: '/landing/enterprise/plugin-5.svg' },
+    { path: '/landing/enterprise/plugin-6.svg' },
+    { path: '/landing/enterprise/plugin-7.svg' },
+    { path: '/landing/enterprise/plugin-8.svg' },
+    { path: '/landing/enterprise/plugin-9.svg' },
+    { path: '/landing/enterprise/plugin-10.svg' },
+    { path: '/landing/enterprise/plugin-11.svg' },
+    { path: '/landing/enterprise/plugin-12.svg' },
+    { path: '/landing/enterprise/plugin-13.svg' },
+    { path: '/landing/enterprise/plugin-14.svg' },
+    { path: '/landing/enterprise/plugin-15.svg' },
+    { path: '/landing/enterprise/plugin-16.svg' },
+    { path: '/landing/enterprise/plugin-17.svg' },
+    { path: '/landing/enterprise/plugin-18.svg' },
+    { path: '/landing/enterprise/plugin-19.svg' },
+    { path: '/landing/enterprise/plugin-20.svg' },
+    { path: '/landing/enterprise/plugin-21.svg' },
+];
 </script>
 
 <style lang="scss" scoped>

@@ -3,8 +3,9 @@
         <Section
             subtitle="Our contributors"
         >
+            <div ref="topOfSection" />
             <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
-                <template v-for="(contributor, index) in contributorsRand">
+                <template v-for="(contributor, index) in displayedContributors" :key="contributor.name">
                     <ClientOnly>
                         <template #fallback>
                             <a :href="'https://github.com/' + contributors[index].name" />
@@ -23,6 +24,26 @@
                     </ClientOnly>
                 </template>
             </div>
+            <div v-if="contributors && moreCount > 0" class="text-center mt-4">
+                <button
+                    v-if="!isExpanded"
+                    type="button"
+                    class="btn btn-animated btn-dark-animated"
+                    @click="isExpanded = true"
+                    data-aos="zoom-in"
+                >
+                    {{ moreCount }} more contributors
+                </button>
+                <button
+                    v-else
+                    type="button"
+                    class="btn btn-animated btn-purple-animated"
+                    @click="collapse"
+                    data-aos="zoom-in"
+                >
+                    Show less
+                </button>
+            </div>
         </Section>
     </div>
 </template>
@@ -39,8 +60,38 @@
         data() {
             return {
                 contributors: undefined,
-                contributorsRand: undefined
+                contributorsRand: undefined,
+                isExpanded: false,
+                regularCount: 24,
             };
+        },
+        computed: {
+            sortedByContributions() {
+                if (!this.contributors || this.contributors.length === 0) {
+                    return []
+                }
+                const sample = this.contributors[0] || {}
+                const hasContribField = Object.prototype.hasOwnProperty.call(sample, 'contributions')
+                if (hasContribField) {
+                    return [...this.contributors].sort((a, b) => (b.contributions || 0) - (a.contributions || 0))
+                }
+                return this.contributorsRand || []
+            },
+            regularContributors() {
+                return (this.sortedByContributions || []).slice(0, this.regularCount)
+            },
+            displayedContributors() {
+                if (this.isExpanded) {
+                    return this.contributorsRand || []
+                }
+                return this.regularContributors || []
+            },
+            moreCount() {
+                const total = this.contributors ? this.contributors.length : 0
+                const shown = this.regularContributors ? this.regularContributors.length : 0
+                const remaining = total - shown
+                return remaining > 0 ? remaining : 0
+            }
         },
         async created() {
             try {
@@ -49,6 +100,17 @@
                 this.contributorsRand = this.contributors.toSorted(() => 0.5 - Math.random())
             } catch (e) {
                 this.contributors = []
+            }
+        },
+        methods: {
+            collapse() {
+                this.isExpanded = false
+                // Smoothly scroll back to the top of the contributors section
+                try {
+                    this.$refs.topOfSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                } catch (e) {
+                    // no-op
+                }
             }
         }
     }
