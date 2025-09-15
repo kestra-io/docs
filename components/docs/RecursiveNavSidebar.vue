@@ -4,8 +4,8 @@
     </li>
     <li v-else :class="{['depth-' + depthLevel]: true}" >
         <a
-            v-if="isPage(item) && !item.hideSidebar"
-            :class="getClass(item, depthLevel, false)"
+            v-if="isPage && !item.hideSidebar"
+            :class="classes"
             :href="item.path"
             @click="handleNavClick($event, item.path)"
         >
@@ -14,15 +14,16 @@
         </a>
         <a
             v-else-if="!item.hideSidebar"
-            :class="getClass(item, depthLevel, true)"
+            class="disabled"
+            :class="classes"
             @click="toggleWithChildrenHandling(item.path)"
         >
             {{ item.emoji }}
             {{ item.title }}
         </a>
-        <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
+        <template v-if="filteredChildren.length > 0 && !item.hideSubMenus">
             <ChevronDown
-                v-if="isActiveOrExpanded(item)"
+                v-if="toggled"
                 class="accordion-button"
                 @click="toggleWithChildrenHandling(item.path)"
                 role="button"
@@ -36,12 +37,12 @@
         </template>
     </li>
     <ul
-        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+        v-if="!item.hideSubMenus && filteredChildren.length > 0"
         class="list-unstyled mb-0 accordion-collapse"
-        :class="['ks-collapse', {'ks-open': isActiveOrExpanded(item)}]"
+        :class="['ks-collapse', {'ks-open': toggled}]"
     >
         <RecursiveNavSidebar
-            v-for="item in filterChildren(item)"
+            v-for="item in filteredChildren"
             :ref="`childSideBar-${pathToId(item.path)}`"
             :item="item"
             :depth-level="depthLevel+1"
@@ -53,6 +54,7 @@
 </template>
 <script lang="ts">
 export const activeSlugInjectionKey = Symbol('activeSlug') as InjectionKey<Ref<string>>
+const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
 </script>
 
 <script setup lang="ts">
@@ -80,7 +82,9 @@ const props = defineProps<{
     type?: string
 }>()
 
-const toggled = ref<boolean>(false)
+const activeSlug = inject(activeSlugInjectionKey, ref(''))
+const isActive = computed(() => normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)))
+const toggled = ref<boolean>(isActive.value)
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
@@ -125,35 +129,20 @@ const filterChildren = (item: NavigationItem) => {
     return (item.children || []).filter((r: any) => item.path !== r.path)
 }
 
-const isActive = (item: NavigationItem) => {
-    if(!activeSlug.value) {
-        return false
-    }
-
-    if (item.path.includes("#") && item.children?.some((c: any) => isActive(c))) {
-        return true
-    }
-
-    if (item.path.match(/[^/]*\.[^/]*$/)) {
-        return activeSlug.value === item.path
-    }
-
-    const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
-    return normalizePath(activeSlug.value).startsWith(normalizePath(item.path))
-}
+const filteredChildren = computed(() => {
+    return filterChildren(props.item)
+})
 
 const isActiveOrExpanded = (item: NavigationItem) => {
     if(item.isSection) {
         return true
     }
-    if (isActive(item)) {
-        return !toggled.value
-    }
 
     return toggled.value
 }
 
-const isPage = (item: NavigationItem) => {
+const isPage = computed(() => {
+    const item = props.item
     if (item.isPage === false) {
         return false
     }
@@ -163,18 +152,20 @@ const isPage = (item: NavigationItem) => {
     }
 
     return item.isPage ?? true
-}
+})
 
-const getClass = (item: any, depthLevel: number, disabled: boolean) => {
+const getClass = (item: any, depthLevel: number) => {
     return {
         bold: depthLevel === 1,
         section: item.isSection,
-        active: isActive(item),
-        disabled: disabled
+        active: isActive.value,
     }
 }
 
-const activeSlug = inject(activeSlugInjectionKey, ref(''))
+const classes = computed(() => {
+    return getClass(props.item, props.depthLevel)
+})
+
 </script>
 
 <style lang="scss" scoped>
