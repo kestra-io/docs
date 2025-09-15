@@ -198,7 +198,7 @@ const activeSlug = inject(activeSlugInjectionKey, ref(''))
 
     .accordion-collapse {
         &.ks-collapse {
-            transition: height 0.5s ease-in-out;
+            transition: height 0.2s ease-in-out;
             transition-behavior: allow-discrete;
             overflow: hidden;
             height: 0;

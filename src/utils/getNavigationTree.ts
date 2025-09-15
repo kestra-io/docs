@@ -45,10 +45,11 @@ export function getNavigationTree(docsPages: { id: string, data: { title: string
     // then build the navigation tree
     const navigationTreeResult: NavigationItem[] = [];
     for (const [section, titles] of Object.entries(navigationTree)) {
-        const sectionPages = docsPages.find(page => section === page.data.title);
+        const sectionPage = docsPages.find(page => section === page.data.title);
         const sectionNode: NavigationItem = {
             title: section,
-            path: sectionPages ? sectionPages.id : '',
+            isSection: true,
+            path: sectionPage ? `/docs/${sectionPage.id}` : '#',
             children: titles.map(title => {
                 const page = docsPages.find(page => title === page.data.title);
                 return page ? {
