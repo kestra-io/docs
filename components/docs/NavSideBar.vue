@@ -18,7 +18,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
+                    <img src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
                     Ask Kestra AI
                 </button>
             </div>
@@ -53,19 +53,24 @@
 
 </template>
 
-<script setup>
+<script lang="ts" setup>
+  import {computed, provide, ref, type PropType} from "vue";
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
-  import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+  import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "./RecursiveNavSidebar.vue";
+
   const props = defineProps({
         type: {
             type: String,
             required: true
         },
         navigation: {
-            type: Object,
+            type: Object as PropType<{children: NavigationItem[]}[]>,
         },
+        slug: {
+            type: String,
+        }
     })
 
     const disabledPages = [
@@ -74,9 +79,10 @@
         '/docs/terraform/resources'
     ]
 
-    const route = useRoute()
+    // provide activeSlug to all children
+    const activeSlug = ref<string>(props.slug ?? '')
+    provide(activeSlugInjectionKey, activeSlug)
 
-    const activeSlug = computed(() => route.path)
     const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
 

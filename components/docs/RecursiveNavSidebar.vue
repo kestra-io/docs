@@ -2,8 +2,7 @@
     <div
         :id="pathToId(parentSlug)"
         :data-bs-parent="'#'+pathToId(parentSlug)"
-        class="accordion-collapse collapse"
-        :class="{show: isActiveOrExpanded({path: parentSlug, children: items})}"
+        class="accordion-collapse"
     >
         <template v-for="item in items">
             <ul class="list-unstyled mb-0">
@@ -11,15 +10,15 @@
                     {{ item.title }}
                 </li>
                 <li v-else :class="{['depth-' + depthLevel]: true}" >
-                    <NuxtLink
+                    <a
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
                         :href="item.path"
                         @click="handleNavClick($event, item.path)">
                             {{ item.emoji }}
                             {{ item.title }}
-                    </NuxtLink>
-                    <NuxtLink
+                </a>
+                <a
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
                         data-bs-toggle="collapse"
@@ -28,71 +27,86 @@
                     >
                             {{ item.emoji }}
                             {{ item.title }}
-                    </NuxtLink>
-                    <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
-                        <chevron-down
-                            v-if="isActiveOrExpanded(item)"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                        <chevron-right
-                            v-else
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                    </template>
-                </li>
-                    <RecursiveNavSidebar
-                        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
-                        :ref="`childSideBar-${pathToId(item.path)}`"
-                        :items="filterChildren(item)"
-                        :depth-level="depthLevel+1"
-                        :active-slug="activeSlug"
-                        :parent-slug="item.path"
-                        :disabled-pages="disabledPages"
-                        :type="type"
+                </a>
+                <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
+                    <chevron-down
+                        v-if="isActiveOrExpanded(item)"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="'#'+pathToId(item.path)"
+                        @click="toggleWithChildrenHandling(item.path)"
+                        role="button"
                     />
+                    <chevron-right
+                        v-else
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="'#'+pathToId(item.path)"
+                        @click="toggleWithChildrenHandling(item.path)"
+                        role="button"
+                    />
+                </template>
+                </li>
+                <RecursiveNavSidebar
+                    v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+                    :class="['ks-collapse', {'ks-open': isActiveOrExpanded(item)}]"
+                    :ref="`childSideBar-${pathToId(item.path)}`"
+                    :items="filterChildren(item)"
+                    :depth-level="depthLevel+1"
+                    :active-slug="activeSlug"
+                    :parent-slug="item.path"
+                    :disabled-pages="disabledPages"
+                    :type="type"
+                />
             </ul>
         </template>
     </div>
 </template>
+<script lang="ts">
+export const activeSlugInjectionKey = Symbol('activeSlug') as InjectionKey<Ref<string>>
+</script>
 
 <script setup lang="ts">
+import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref } from "vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import { useSidebarScroll } from "../../composables/useSidebarScroll"
 
-interface Props {
-    items: Array<any>
+export interface NavigationItem {
+    isSection?: boolean;
+    isPage?: boolean;
+    path: string;
+    title: string;
+    hideSubMenus?: boolean;
+    hideSidebar?: boolean;
+    emoji?: string;
+    children?: NavigationItem[];
+}
+
+const props = defineProps<{
+    items: Array<NavigationItem>
     depthLevel: number
-    activeSlug: string
     parentSlug: string
     disabledPages?: Array<string>
     type?: string
-}
-
-const props = defineProps<Props>()
+}>()
 
 const toggled = ref<string[]>([])
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
-    
+
     nextTick(() => {
         const wasRestored = restoreScrollPosition()
-        
+
         if (!wasRestored) {
             scrollToActiveIfNeeded()
         }
     })
 })
 
-const handleNavClick = (event: Event, path: string) => {
+const handleNavClick = (_event: Event, path: string) => {
+    activeSlug.value = path
     const { preserveScrollPosition } = useSidebarScroll()
     preserveScrollPosition()
 }
@@ -127,24 +141,31 @@ const pathToId = (path: string) => {
     return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__")
 }
 
-const filterChildren = (item: any) => {
+const filterChildren = (item: NavigationItem) => {
     return (item.children || []).filter((r: any) => item.path !== r.path)
 }
 
-const isActive = (item: any) => {
+const isActive = (item: NavigationItem) => {
+    if(!activeSlug.value) {
+        return false
+    }
+
     if (item.path.includes("#") && item.children?.some((c: any) => isActive(c))) {
         return true
     }
 
     if (item.path.match(/[^/]*\.[^/]*$/)) {
-        return props.activeSlug === item.path
+        return activeSlug.value === item.path
     }
 
     const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
-    return normalizePath(props.activeSlug).startsWith(normalizePath(item.path))
+    return normalizePath(activeSlug.value).startsWith(normalizePath(item.path))
 }
 
-const isActiveOrExpanded = (item: any) => {
+const isActiveOrExpanded = (item: NavigationItem) => {
+    if(item.isSection) {
+        return true
+    }
     if (isActive(item)) {
         return !toggled.value.includes(item.path)
     }
@@ -152,7 +173,7 @@ const isActiveOrExpanded = (item: any) => {
     return toggled.value.includes(item.path)
 }
 
-const isPage = (item: any) => {
+const isPage = (item: NavigationItem) => {
     if (item.isPage === false) {
         return false
     }
@@ -172,12 +193,26 @@ const getClass = (item: any, depthLevel: number, disabled: boolean) => {
         disabled: disabled
     }
 }
+
+const activeSlug = inject(activeSlugInjectionKey, ref(''))
 </script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/_variable.scss";
 
     .accordion-collapse {
+        &.ks-collapse {
+            transition: height 0.2s ease-in-out;
+            transition-behavior: allow-discrete;
+            overflow: hidden;
+            height: 0;
+            @starting-style {
+                height: 0;
+            }
+            &.ks-open{
+                height: calc-size(auto, size);
+            }
+        }
         li {
             display: flex;
             align-items: center;
