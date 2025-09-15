@@ -1,13 +1,25 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
+
+const title = "Kestra Docs";
+const description = "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
 ---
 
 
 <html lang="en">
   <head>
-    <title>Kestra Docs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <ClientRouter />
   </head>
   <body>
     <slot />
