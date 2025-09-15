@@ -13,12 +13,12 @@
             </button>
             <div class="ai-button-wrapper mb-2">
                 <button
-                    class="ai-button "
+                    class="ai-button"
                     title="Ask Kestra AI"
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <img src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
+                    <img src="/docs/icons/ks-ai.webp" alt="Kestra AI"  height="100%" />
                     Ask Kestra AI
                 </button>
             </div>
@@ -225,5 +225,9 @@
 
 
         }
+    }
+
+    .ai-button img {
+        height: 28px;
     }
 </style>

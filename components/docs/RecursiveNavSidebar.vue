@@ -1,6 +1,5 @@
 <template>
     <div
-        :id="pathToId(parentSlug)"
         :data-bs-parent="'#'+pathToId(parentSlug)"
         class="accordion-collapse"
     >
@@ -21,8 +20,6 @@
                 <a
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#'+pathToId(item.path)"
                         @click="toggleWithChildrenHandling(item.path)"
                     >
                             {{ item.emoji }}
@@ -32,16 +29,12 @@
                     <chevron-down
                         v-if="isActiveOrExpanded(item)"
                         class="accordion-button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#'+pathToId(item.path)"
                         @click="toggleWithChildrenHandling(item.path)"
                         role="button"
                     />
                     <chevron-right
                         v-else
                         class="accordion-button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#'+pathToId(item.path)"
                         @click="toggleWithChildrenHandling(item.path)"
                         role="button"
                     />
