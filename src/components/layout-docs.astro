@@ -3,7 +3,7 @@ import "../../assets/styles/docs.scss";
 import { getCollection } from "astro:content";
 import NavSideBar from "../../components/docs/NavSideBar.vue";
 import Layout from "./layout.astro";
-import type { NavigationItem } from "../../components/docs/RecursiveNavSidebar.vue";
+import { getNavigationTree } from "../utils/getNavigationTree";
 
 const docsPages = await getCollection('docs')
 
@@ -19,28 +19,7 @@ docsPages.sort((a, b) => {
 // then create a nested structure
 const navigation = [{
     title: 'Documentation',
-    children: docsPages.reduce((acc, docPage) => {
-        const parts = docPage.id.split('/');
-        let currentLevel: NavigationItem[] | undefined = acc;
-
-        parts.forEach((part, index) => {
-            const path = parts.slice(0, index + 1).join('/');
-            const docsPath = `/docs/${path}`;
-            let existingPart = currentLevel?.find(item => item.path === docsPath);
-            if (!existingPart) {
-                const page = docsPages.find(doc => (doc.id === path));
-                existingPart = {
-                    title: page?.data.title ?? part,
-                    path: docsPath,
-                    children: []
-                };
-                currentLevel?.push(existingPart);
-            }
-            currentLevel = existingPart.children;
-        });
-
-        return acc;
-    }, [] as NavigationItem[]),
+    children: getNavigationTree(docsPages)
 }]
 
 interface Props {
@@ -59,7 +38,7 @@ const props = Astro.props;
     </div>
 </Layout>
 
-<style>
+<style lang="scss">
     .layout-docs-wrapper {
         display: flex;
         flex-direction: row;
@@ -74,6 +53,10 @@ const props = Astro.props;
     .bd-sidebar{
         width: 250px;
         white-space: normal;
+        .ai-button-wrapper, .search {
+            height: 32px;
+            width: 209px;
+        }
     }
 </style>
 
