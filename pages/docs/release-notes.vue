@@ -9,14 +9,17 @@
             <article class="bd-main order-1 docs full">
                 <div>
                     <h1>Release Notes</h1>
-                    <select v-model="selectedId" class="form-select bg-dark-2">
-                        <option v-for="release in releases" :key="release.id" :value="release.id">
-                            {{ release.name || release.tag_name }}
+                    <select v-model="selectedGroupKey" class="form-select bg-dark-2">
+                        <option v-for="group in releaseGroups" :key="group.version" :value="group.version">
+                            {{ group.version }}
                         </option>
                     </select>
-                </div>
-                <div class="bd-content" v-if="selectedRelease">
-                    <ContentRenderer class="bd-markdown" :value="releasePage"/>
+                    <div class="bd-content" v-if="selectedGroup">
+                        <div v-for="release in selectedGroup.releases" :key="release.id">
+                            <h2 :id="release.tag_name">{{ release.name || release.tag_name }}</h2>
+                            <ContentRenderer class="bd-markdown" :value="release.parsedBody"/>
+                        </div>
+                    </div>
                 </div>
             </article>
         </template>
@@ -24,32 +27,26 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import NavSideBar from "~/components/docs/NavSideBar.vue";
 
-const releases = ref([])
-const selectedId = ref(null)
-const releasePage = ref({})
 const navMenu = ref([])
 const loading = ref(true)
+const releaseGroups = ref([])
+const selectedGroupKey = ref(null)
 
 onMounted(async () => {
     loading.value = true
-    const res = await fetch('https://api.github.com/repos/kestra-io/kestra/releases')
-    if (res.ok) {
-        let data = await res.json()
-        data = data.sort((a, b) => b.tag_name.localeCompare(a.tag_name)).filter(r => !r.draft && !r.prerelease)
-        releases.value = data
-        if (releases.value.length) {
-            selectedId.value = releases.value[0].id
-        }
+    releaseGroups.value = await fetchLast3ReleaseGroups()
+    if (releaseGroups.value.length) {
+        selectedGroupKey.value = releaseGroups.value[0].version
     }
     loading.value = false
 })
 
-const selectedRelease = computed(() =>
-    releases.value.find(r => r.id === selectedId.value)
+const selectedGroup = computed(() =>
+    releaseGroups.value.find(g => g.version === selectedGroupKey.value)
 )
 
 function modifyCommitLink(body, repo = 'kestra-io/kestra') {
@@ -74,22 +71,43 @@ function modifyCommitLink(body, repo = 'kestra-io/kestra') {
     return transformedBefore + transformedAfter;
 }
 
-watch(selectedRelease, async (release) => {
-    if (release) {
-        const parsed = await parseMarkdown(modifyCommitLink(release.body), {});
-        releasePage.value = parsed;
-        navMenu.value = [{
-            children: (parsed.toc?.links || []).map(h => ({
-                title: h.text,
-                path: `#${h.id}`,
-                children: h.children?.map(child => ({
-                    title: child.text,
-                    path: `#${child.id}`
-                })) || []
-            }))
-        }];
+async function fetchLast3ReleaseGroups() {
+    const res = await fetch('https://api.github.com/repos/kestra-io/kestra/releases?per_page=150');
+    if (!res.ok) return [];
+
+    let data = await res.json();
+    data = data.filter(r => !r.draft && !r.prerelease);
+
+    const groups = {};
+    for (const release of data) {
+        const match = release.tag_name.match(/(\d+\.\d+)/);
+        if (match) {
+            const key = match[1];
+            if (!groups[key]) groups[key] = [];
+            release.parsedBody = await parseMarkdown(modifyCommitLink(release.body));
+            groups[key].push(release);
+        }
     }
-}, { immediate: true });
+
+    const sortedKeys = Object.keys(groups)
+        .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+
+    return sortedKeys.slice(0, 4).map(key => ({
+        version: key,
+        releases: groups[key]
+    }));
+}
+
+watch(selectedGroup, (group) => {
+    if (group) {
+        navMenu.value = [{
+            children: group.releases.map(r => ({
+                title: r.tag_name,
+                path: `#${r.tag_name}`
+            }))
+        }]
+    }
+}, { immediate: true })
 </script>
 
 <style scoped lang="scss">
