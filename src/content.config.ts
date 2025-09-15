@@ -10,7 +10,7 @@ export const collections = {
             .replace(/\.md$/, '')
             .replace(/^\d+\./, '')
             .replace(/\/\d+\./g, '/')
-            .replace(/index$/, ''),
+            .replace(/\/index$/, ''),
     }),
     schema: z.object({
         title: z.string(),

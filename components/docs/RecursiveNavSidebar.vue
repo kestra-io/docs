@@ -2,8 +2,7 @@
     <div
         :id="pathToId(parentSlug)"
         :data-bs-parent="'#'+pathToId(parentSlug)"
-        class="accordion-collapse collapse"
-        :class="{show: isActiveOrExpanded({path: parentSlug, children: items})}"
+        class="accordion-collapse"
     >
         <template v-for="item in items">
             <ul class="list-unstyled mb-0">
@@ -19,7 +18,7 @@
                             {{ item.emoji }}
                             {{ item.title }}
                 </a>
-                    <a
+                <a
                         v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
                         data-bs-toggle="collapse"
@@ -28,36 +27,37 @@
                     >
                             {{ item.emoji }}
                             {{ item.title }}
-            </a>
-                    <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
-                        <chevron-down
-                            v-if="isActiveOrExpanded(item)"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                        <chevron-right
-                            v-else
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                    </template>
-                </li>
-                    <RecursiveNavSidebar
-                        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
-                        :ref="`childSideBar-${pathToId(item.path)}`"
-                        :items="filterChildren(item)"
-                        :depth-level="depthLevel+1"
-                        :active-slug="activeSlug"
-                        :parent-slug="item.path"
-                        :disabled-pages="disabledPages"
-                        :type="type"
+                </a>
+                <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
+                    <chevron-down
+                        v-if="isActiveOrExpanded(item)"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="'#'+pathToId(item.path)"
+                        @click="toggleWithChildrenHandling(item.path)"
+                        role="button"
                     />
+                    <chevron-right
+                        v-else
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="'#'+pathToId(item.path)"
+                        @click="toggleWithChildrenHandling(item.path)"
+                        role="button"
+                    />
+                </template>
+                </li>
+                <RecursiveNavSidebar
+                    v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+                    :class="['ks-collapse', {'ks-open': isActiveOrExpanded(item)}]"
+                    :ref="`childSideBar-${pathToId(item.path)}`"
+                    :items="filterChildren(item)"
+                    :depth-level="depthLevel+1"
+                    :active-slug="activeSlug"
+                    :parent-slug="item.path"
+                    :disabled-pages="disabledPages"
+                    :type="type"
+                />
             </ul>
         </template>
     </div>
@@ -192,6 +192,18 @@ const getClass = (item: any, depthLevel: number, disabled: boolean) => {
     @import "../../assets/styles/_variable.scss";
 
     .accordion-collapse {
+        &.ks-collapse {
+            transition: height 0.5s ease-in-out;
+            transition-behavior: allow-discrete;
+            overflow: hidden;
+            height: 0;
+            @starting-style {
+                height: 0;
+            }
+            &.ks-open{
+                height: calc-size(auto, size);
+            }
+        }
         li {
             display: flex;
             align-items: center;
