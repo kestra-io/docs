@@ -3,8 +3,8 @@
         :data-bs-parent="'#'+pathToId(parentSlug)"
         class="accordion-collapse"
     >
-        <template v-for="item in items">
-            <ul class="list-unstyled mb-0">
+        <ul class="list-unstyled mb-0">
+            <template v-for="item in items">
                 <li v-if="item.isSection" class="section">
                     {{ item.title }}
                 </li>
@@ -51,8 +51,8 @@
                     :disabled-pages="disabledPages"
                     :type="type"
                 />
-            </ul>
-        </template>
+            </template>
+        </ul>
     </div>
 </template>
 <script lang="ts">
