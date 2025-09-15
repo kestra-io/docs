@@ -1,59 +1,55 @@
 <template>
-    <div
-        :data-bs-parent="'#'+pathToId(parentSlug)"
-        class="accordion-collapse"
+    <li v-if="item.isSection" class="section">
+        {{ item.title }}
+    </li>
+    <li v-else :class="{['depth-' + depthLevel]: true}" >
+        <a
+            v-if="isPage(item) && !item.hideSidebar"
+            :class="getClass(item, depthLevel, false)"
+            :href="item.path"
+            @click="handleNavClick($event, item.path)"
+        >
+            {{ item.emoji }}
+            {{ item.title }}
+        </a>
+        <a
+            v-else-if="!item.hideSidebar"
+            :class="getClass(item, depthLevel, true)"
+            @click="toggleWithChildrenHandling(item.path)"
+        >
+            {{ item.emoji }}
+            {{ item.title }}
+        </a>
+        <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
+            <ChevronDown
+                v-if="isActiveOrExpanded(item)"
+                class="accordion-button"
+                @click="toggleWithChildrenHandling(item.path)"
+                role="button"
+            />
+            <ChevronRight
+                v-else
+                class="accordion-button"
+                @click="toggleWithChildrenHandling(item.path)"
+                role="button"
+            />
+        </template>
+    </li>
+    <ul
+        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+        class="list-unstyled mb-0 accordion-collapse"
+        :class="['ks-collapse', {'ks-open': isActiveOrExpanded(item)}]"
     >
-        <ul class="list-unstyled mb-0">
-            <template v-for="item in items">
-                <li v-if="item.isSection" class="section">
-                    {{ item.title }}
-                </li>
-                <li v-else :class="{['depth-' + depthLevel]: true}" >
-                    <a
-                        v-if="isPage(item) && !item.hideSidebar"
-                        :class="getClass(item, depthLevel, false)"
-                        :href="item.path"
-                        @click="handleNavClick($event, item.path)">
-                            {{ item.emoji }}
-                            {{ item.title }}
-                </a>
-                <a
-                        v-else-if="!item.hideSidebar"
-                        :class="getClass(item, depthLevel, true)"
-                        @click="toggleWithChildrenHandling(item.path)"
-                    >
-                            {{ item.emoji }}
-                            {{ item.title }}
-                </a>
-                <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
-                    <chevron-down
-                        v-if="isActiveOrExpanded(item)"
-                        class="accordion-button"
-                        @click="toggleWithChildrenHandling(item.path)"
-                        role="button"
-                    />
-                    <chevron-right
-                        v-else
-                        class="accordion-button"
-                        @click="toggleWithChildrenHandling(item.path)"
-                        role="button"
-                    />
-                </template>
-                </li>
-                <RecursiveNavSidebar
-                    v-if="!item.hideSubMenus && filterChildren(item).length > 0"
-                    :class="['ks-collapse', {'ks-open': isActiveOrExpanded(item)}]"
-                    :ref="`childSideBar-${pathToId(item.path)}`"
-                    :items="filterChildren(item)"
-                    :depth-level="depthLevel+1"
-                    :active-slug="activeSlug"
-                    :parent-slug="item.path"
-                    :disabled-pages="disabledPages"
-                    :type="type"
-                />
-            </template>
-        </ul>
-    </div>
+        <RecursiveNavSidebar
+            v-for="item in filterChildren(item)"
+            :ref="`childSideBar-${pathToId(item.path)}`"
+            :item="item"
+            :depth-level="depthLevel+1"
+            :parent-slug="item.path"
+            :disabled-pages="disabledPages"
+            :type="type"
+        />
+    </ul>
 </template>
 <script lang="ts">
 export const activeSlugInjectionKey = Symbol('activeSlug') as InjectionKey<Ref<string>>
@@ -77,7 +73,7 @@ export interface NavigationItem {
 }
 
 const props = defineProps<{
-    items: Array<NavigationItem>
+    item: NavigationItem
     depthLevel: number
     parentSlug: string
     disabledPages?: Array<string>
@@ -105,7 +101,7 @@ const handleNavClick = (_event: Event, path: string) => {
 }
 
 const toggleWithChildrenHandling = (path: string) => {
-    props.items.filter(i => i.path.startsWith(path))
+    props.item.children?.filter(i => i.path.startsWith(path))
         .forEach(i => {
             if (isActiveOrExpanded(i) || i.path === path) {
                 const childRef = document.querySelector(`#childSideBar-${pathToId(i.path)}`)
@@ -193,70 +189,68 @@ const activeSlug = inject(activeSlugInjectionKey, ref(''))
 <style lang="scss" scoped>
     @import "../../assets/styles/_variable.scss";
 
-    .accordion-collapse {
-        &.ks-collapse {
-            transition: height 0.2s ease-in-out;
-            transition-behavior: allow-discrete;
-            overflow: hidden;
+    .ks-collapse {
+        transition: height 0.2s ease-in-out;
+        transition-behavior: allow-discrete;
+        overflow: hidden;
+        height: 0;
+        @starting-style {
             height: 0;
-            @starting-style {
-                height: 0;
-            }
-            &.ks-open{
-                height: calc-size(auto, size);
+        }
+        &.ks-open{
+            height: calc-size(auto, size);
+        }
+    }
+    li {
+        display: flex;
+        align-items: center;
+
+        .accordion-button {
+            width: 16px;
+
+            :deep(.material-design-icon__svg) {
+                bottom: 0;
+                color: $black-10;
             }
         }
-        li {
-            display: flex;
-            align-items: center;
 
-            .accordion-button {
-                width: 16px;
-
-                :deep(.material-design-icon__svg) {
-                    bottom: 0;
-                    color: $black-10;
-                }
-            }
-
-            @for $i from 0 through 6 {
-                &.depth-#{$i} {
-                    a {
-                        padding-left: calc(.5rem * ($i));
-                    }
-                }
-            }
-
-            a {
-                color: $white-1;
-                font-size: $font-size-sm;
-                padding: calc($spacer / 2);
-                display: flex;
-
-                &.active {
-                    font-weight: 500;
-                }
-
-                &:hover, &.active {
-                    color: $purple !important;
-                }
-
-                &.disabled {
-                    cursor: pointer;
-                }
-            }
-
-            &.depth-1 {
+        @for $i from 0 through 6 {
+            &.depth-#{$i} {
                 a {
-                    padding-left: 0.25rem;
-                    border-left: 0;
-                    color: $white-1;
+                    padding-left: calc(.5rem * ($i));
                 }
             }
+        }
 
-            &:not(.depth-1) a {
-                font-size: $font-size-sm;
+        a {
+            color: $white-1;
+            font-size: $font-size-sm;
+            padding: calc($spacer / 2);
+            display: flex;
+
+            &.active {
+                font-weight: 500;
             }
+
+            &:hover, &.active {
+                color: $purple !important;
+            }
+
+            &.disabled {
+                cursor: pointer;
+            }
+        }
+
+        &.depth-1 {
+            a {
+                padding-left: 0.25rem;
+                border-left: 0;
+                color: $white-1;
+            }
+        }
+
+        &:not(.depth-1) a {
+            font-size: $font-size-sm;
         }
     }
 

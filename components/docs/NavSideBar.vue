@@ -36,15 +36,17 @@
             </div>
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
-                    <RecursiveNavSidebar
-                        :parent-slug="'/' + type"
-                        :type="type"
-                        :items="items"
-                        :depth-level="1"
-                        :active-slug="activeSlug"
-                        :disabled-pages="disabledPages"
-                        :open="true"
-                    />
+                    <ul class="list-unstyled mb-0">
+                        <RecursiveNavSidebar
+                            v-for="item in items"
+                            :key="item.path"
+                            :parent-slug="'/' + type"
+                            :type="type"
+                            :item="item"
+                            :depth-level="1"
+                            :disabled-pages="disabledPages"
+                        />
+                    </ul>
                 </nav>
             </div>
         </div>
