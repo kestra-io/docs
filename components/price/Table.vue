@@ -211,7 +211,7 @@
       enterpriseText: 'On Request',
       description: {
         text: "Support for developing custom plugins",
-        link: "/docs"
+        link: "/docs/plugin-developer-guide"
       }
     },
     {
@@ -830,7 +830,7 @@
           enterpriseText: 'On-Demand',
           description: {
             text: "Support for developing custom plugins",
-            link: "/docs"
+            link: "/docs/plugin-developer-guide"
           }
         },
         {
