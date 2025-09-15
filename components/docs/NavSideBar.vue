@@ -162,7 +162,8 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                padding: 6px 12px;
+                padding-right: 12px;
+                padding-left: 0;
                 min-width: 0;
             }
         }
@@ -237,9 +238,5 @@
 
 
         }
-    }
-
-    .ai-button img {
-        height: 28px;
     }
 </style>
