@@ -18,7 +18,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI"  height="100%" />
+                    <img src="/docs/icons/ks-ai.svg" alt="Kestra AI" width="30px" height="30px" />
                     Ask Kestra AI
                 </button>
             </div>
@@ -146,6 +146,16 @@
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
+            }
+        }
+
+        .ai-button-wrapper {
+            .ai-button {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 6px 12px;
+                min-width: 0;
             }
         }
 
