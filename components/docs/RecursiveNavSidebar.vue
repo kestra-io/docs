@@ -80,7 +80,7 @@ const props = defineProps<{
     type?: string
 }>()
 
-const toggled = ref<string[]>([])
+const toggled = ref<boolean>(false)
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
@@ -111,19 +111,10 @@ const toggleWithChildrenHandling = (path: string) => {
             }
 
             if (isActiveOrExpanded(i) && i.path !== path) {
-                rawToggle(i.path)
+                toggled.value = true
             }
         })
-
-    rawToggle(path)
-}
-
-const rawToggle = (path: string) => {
-    if (toggled.value.includes(path)) {
-        toggled.value = toggled.value.filter(p => p !== path)
-    } else {
-        toggled.value.push(path)
-    }
+    toggled.value = !toggled.value
 }
 
 const pathToId = (path: string) => {
@@ -156,10 +147,10 @@ const isActiveOrExpanded = (item: NavigationItem) => {
         return true
     }
     if (isActive(item)) {
-        return !toggled.value.includes(item.path)
+        return !toggled.value
     }
 
-    return toggled.value.includes(item.path)
+    return toggled.value
 }
 
 const isPage = (item: NavigationItem) => {
