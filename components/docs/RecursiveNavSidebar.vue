@@ -62,9 +62,12 @@
         </template>
     </div>
 </template>
+<script lang="ts">
+export const activeSlugInjectionKey = Symbol('activeSlug') as InjectionKey<Ref<string>>
+</script>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from "vue"
+import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref } from "vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 import { useSidebarScroll } from "../../composables/useSidebarScroll"
@@ -82,7 +85,6 @@ export interface NavigationItem {
 const props = defineProps<{
     items: Array<NavigationItem>
     depthLevel: number
-    activeSlug?: string
     parentSlug: string
     disabledPages?: Array<string>
     type?: string
@@ -103,6 +105,7 @@ onMounted(() => {
 })
 
 const handleNavClick = (event: Event, path: string) => {
+    activeSlug.value = path
     const { preserveScrollPosition } = useSidebarScroll()
     preserveScrollPosition()
 }
@@ -142,7 +145,7 @@ const filterChildren = (item: any) => {
 }
 
 const isActive = (item: any) => {
-    if(!props.activeSlug) {
+    if(!activeSlug.value) {
         return false
     }
 
@@ -151,11 +154,11 @@ const isActive = (item: any) => {
     }
 
     if (item.path.match(/[^/]*\.[^/]*$/)) {
-        return props.activeSlug === item.path
+        return activeSlug.value === item.path
     }
 
     const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
-    return normalizePath(props.activeSlug).startsWith(normalizePath(item.path))
+    return normalizePath(activeSlug.value).startsWith(normalizePath(item.path))
 }
 
 const isActiveOrExpanded = (item: any) => {
@@ -186,6 +189,8 @@ const getClass = (item: any, depthLevel: number, disabled: boolean) => {
         disabled: disabled
     }
 }
+
+const activeSlug = inject(activeSlugInjectionKey, ref(''))
 </script>
 
 <style lang="scss" scoped>
