@@ -44,12 +44,12 @@ tasks:
 
 By using a [Process Task Runner](../task-runners/04.types/01.process-task-runner.md), we can speed up the execution time so that our task isn't pulling a container image to run the task inside of a container.
 
-## Cache dependencies (Beta)
+## Cache dependencies
 
 ::badge{version=">=0.23" editions="OSS,EE"}
 ::
 
-Since Kestra 0.23, you can also use the Beta `dependencies` property allowing you to cache Python dependencies across multiple executions.
+Since Kestra 0.23, you can also use the `dependencies` property allowing you to cache Python dependencies across multiple executions.
 
 <div class="video-container">
   <iframe src="https://youtube.com/embed/g9Jt5zt9wI4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
