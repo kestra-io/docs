@@ -157,7 +157,7 @@ Once you added the `kestra.queue.type` and `kestra.repository.type`, you need to
 Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your `datasources` configuration.
 
 
-::collapse{title="PostgreSQL"}
+:::collapse{title="PostgreSQL"}
 
 Here is a minimal configuration for PostgreSQL:
 ```yaml
@@ -174,9 +174,10 @@ datasources:
     username: kestra
     password: k3str4
 ```
-::
 
-::collapse{title="MySQL"}
+:::
+
+:::collapse{title="MySQL"}
 
 Here is a minimal configuration for MySQL:
 ```yaml
@@ -195,13 +196,13 @@ datasources:
     dialect: MYSQL
 ```
 
-:::alert{type="warning"}
+::::alert{type="warning"}
 Note that we currently don't support the `8.0.31` version of MySQL. If possible, try another version or reach out via [Slack](/slack) to help you troubleshoot.
 :::
 ::
 
 
-::collapse{title="H2"}
+:::collapse{title="H2"}
 
 Here is a minimal configuration for H2:
 
@@ -219,7 +220,8 @@ datasources:
     password: ""
     driverClassName: org.h2.Driver
 ```
-::
+
+:::
 
 ### Connection pool size
 
@@ -1860,7 +1862,7 @@ Note that Worker liveness is directly managed by the Apache Kafka protocol which
 durability and reliability of task executions.
 :::
 
-::collapse{title="For Kestra versions prior to 0.16.0"}
+:::collapse{title="For Kestra versions prior to 0.16.0"}
 
 
 Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](../07.architecture/index.md#architecture-with-jdbc-backend)).
@@ -1870,7 +1872,8 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
   marked as unhealthy.
 * If the last received Heartbeat for a `Worker` is older than `heartbeat-missed * frequency * 2`, then the `Worker` is
   deleted from the server metadata.
-::
+
+:::
 
 ### Heartbeat Frequency
 
@@ -2021,7 +2024,7 @@ kestra:
 Additional configurations can be found [here](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
 
 
-::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
+:::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
 
 You can configure Amazon S3 storage to utilize **AWS AssumeRole** to temporarily assume the permissions of a specific **IAM** role.
 When using AssumeRole with S3, you can omit specifying the `AccessKeyId` and `SecretAccessKey` in your configurations.
@@ -2044,7 +2047,8 @@ kestra:
       # (Optional)
       stsEndpointOverride: "<AWS Endpoint to communicate with>"
 ```
-::
+
+:::
 
 ### MinIO
 

@@ -78,7 +78,7 @@ Server components can run independently from each other. Each of them communicat
 
 Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
 
-::collapse{title="Docker Compose Example"}
+:::collapse{title="Docker Compose Example"}
 ```yaml
 volumes:
   postgres-data:
@@ -200,7 +200,8 @@ services:
       postgres:
         condition: service_started
 ```
-::
+
+:::
 
 In production you might run a similar pattern either by:
 

@@ -2371,7 +2371,7 @@ Checks if an integer is odd.
 ## Expressions FAQ
 
 
-::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
+:::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
 In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters.
 
 Here is a working example showing the recommended pattern:
@@ -2444,5 +2444,5 @@ tasks:
       } | toJson }}
 ```
 
-::
+:::
 

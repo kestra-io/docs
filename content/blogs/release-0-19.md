@@ -159,7 +159,7 @@ tasks:
       ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
 ```
 
-::collapse{title="Expand for a full workflow setting up all key-value pairs"}
+:::collapse{title="Expand for a full workflow setting up all key-value pairs"}
 ```yaml
 id: add_kv_pairs
 namespace: company.team
@@ -208,7 +208,8 @@ tasks:
         "Azure": ["eastus", "westus", "centralus", "northcentralus"]
       }
 ```
-::
+
+:::
 
 :::alert{type="info"}
 Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays allows you to dynamically retrieve those as `SELECT` or `MULTISELECT` values in your conditional inputs.
@@ -246,7 +247,7 @@ inputs:
 ```
 
 
-::collapse{title="Full workflow example using the new Conditional Inputs feature"}
+:::collapse{title="Full workflow example using the new Conditional Inputs feature"}
 
 ```yaml
 id: request_resources
@@ -369,7 +370,8 @@ tasks:
       Status of the request {{ outputs.wait_for_approval.onResume.comment }}.
       Process finished with {{ outputs.approve.body }}.
 ```
-::
+
+:::
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
 
@@ -661,7 +663,7 @@ tasks:
 
 Assuming this child flow `myflow` is a long-running flow, the parent flow will not wait for it to finish (due to `wait: false`) and will continue executing other tasks. This is particularly useful when you want to schedule the subflow to run in the background when the right time comes and continue with other tasks in the parent flow.
 
-::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
+:::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
 ```yaml
 id: myflow
 namespace: company.team
@@ -673,13 +675,14 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```
-::
+
+:::
 
 The scheduled execution will be `CREATED`, and will transition into the `RUNNING` state at the `scheduleDate` — you can inspect all details including that scheduled date from the Overview page of that Execution.
 
 If you have multiple dates to schedule, you can combine the `Subflow` task with the `ForEach` task to create multiple scheduled executions in the future — useful especially if the dates are retrieved from an external source or calculated based on some internal business logic — see the example below.
 
-::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
+:::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
 ```yaml
 id: schedule_subflows
 namespace: company.team
@@ -719,7 +722,8 @@ tasks:
         scheduleDate: "{{ taskrun.value }}"
         wait: false
 ```
-::
+
+:::
 
 Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow:
 

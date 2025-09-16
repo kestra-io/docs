@@ -8,7 +8,7 @@ export default function() {
                 node.type == 'leafDirective' ||
                 node.type === 'textDirective'
             ) {
-                if (node.name !== 'alert') return
+                if (!['alert', 'collapse'].includes(node.name)) return
                 const data = node.data || (node.data = {})
                 const attributes = node.attributes || {}
 
@@ -20,6 +20,22 @@ export default function() {
                             class: `doc-alert alert alert-${type}`,
                             role: "alert",
                         }
+                        break
+                    case 'collapse':
+                        data.hName = 'details'
+                        const summaryText = attributes.title ?? "Details"
+                        data.hProperties = {class: 'doc-collapse'}
+                        node.children = [
+                            {
+                                type: 'summary',
+                                data:{
+                                    hName: 'summary',
+                                    hProperties: {}
+                                },
+                                children: [{type: 'text', value: summaryText}]
+                            },
+                            ...(node.children ?? [])
+                        ]
                         break
                 }
             }

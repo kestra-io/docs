@@ -104,7 +104,7 @@ outputs:
 
 Save that flow. Then, go to the `Apps` page and click on `+ Create`. Then, paste the app configuration shown below.
 
-::collapse{title="Expand for the App code"}
+:::collapse{title="Expand for the App code"}
 ```yaml
 id: request_data_form
 type: io.kestra.plugin.ee.apps.Execution
@@ -173,7 +173,8 @@ layout:
         delay: PT60S
         url: https://kestra.io/docs/
 ```
-::
+
+:::
 
 Click on `View App` to see it in action:
 
