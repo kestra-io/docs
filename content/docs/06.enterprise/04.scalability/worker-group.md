@@ -20,7 +20,6 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 ## Creating Worker Groups from the UI
 
 ::badge{version=">=0.19" editions="EE"}
-::
 
 To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
 
@@ -86,7 +85,6 @@ tasks:
 ## Worker Group Fallback Behavior
 
 ::badge{version=">=0.20" editions="EE"}
-::
 
 By default, a task configured to run on a given worker will wait for the worker to be available (i.e., `workerGroup.fallback: WAIT`). If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
 

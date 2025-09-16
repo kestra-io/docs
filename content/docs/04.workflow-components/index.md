@@ -9,4 +9,3 @@ Get to know the main orchestration components of a Kestra workflow.
 </div>
 
 ::ChildCard
-::

@@ -13,7 +13,6 @@ Thanks to :PluginCount plugins and embedded Code editor with Git and Terraform i
 
 
 ::BigChildCards{directory="/docs/use-cases" title="What’s possible with Kestra"}
-::
 
 <div style="height: 50px;"></div>
 <div class="video-container">
@@ -21,7 +20,5 @@ Thanks to :PluginCount plugins and embedded Code editor with Git and Terraform i
 </div>
 
 ::WhatsNew{title="What's New in Kestra"}
-::
 
 ::SupportLinks{title="Support"}
-::

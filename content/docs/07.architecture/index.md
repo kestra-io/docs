@@ -103,4 +103,3 @@ The Indexer, available only in the [Enterprise Edition](../06.enterprise/01.over
 The following sections provide more details about the components of the architecture.
 
 ::ChildCard
-::

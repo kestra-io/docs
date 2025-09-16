@@ -2356,7 +2356,6 @@ kestra:
 ## Store Execution Data in Internal Storage
 
 ::badge{version=">=0.23" editions="EE,Cloud"}
-::
 
 If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
 
