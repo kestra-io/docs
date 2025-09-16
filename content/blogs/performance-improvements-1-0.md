@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/images/kestra-performance-1-0.png
+image: /blogs/kestra-performance-1-0.jpg
 ---
 
 In 0.24, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.24](https://kestra.io/blogs/performance-improvements-0.24.md).
