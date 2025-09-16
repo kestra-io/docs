@@ -3,7 +3,7 @@ title: "Kestra Open Source has Just Reached 20,000 Stars"
 description: Orchestration should be simple, powerful, accessible to everyone, and open-source.
 date: 2025-07-24T13:00:00
 category: News & Product Updates
-author: 
+author:
  name: Emmanuel Darras
  image: edarras
  role: CEO & Co-Founder

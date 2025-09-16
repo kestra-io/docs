@@ -7,11 +7,11 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with preinstalled dependencies, such as PostgreSQL and MinIO, which were helpful to get started, but which were typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator, specifically for reading Resource Definitions to conduct various actions in Kestra. 
+We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with preinstalled dependencies, such as PostgreSQL and MinIO, which were helpful to get started, but which were typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator, specifically for reading Resource Definitions to conduct various actions in Kestra.
 
 We also restructured configurations and values to be more comprehensive and production grade.
 
-There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator). 
+There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator).
 
 ::alert{type="info"}
 Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading.

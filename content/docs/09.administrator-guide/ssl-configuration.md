@@ -188,7 +188,7 @@ Below is an example configuration file with the newly added environment variable
               trustStore:
                 path: file:/app/ssl/truststore.jks
                 password: changeit
-                type: JKS      
+                type: JKS
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra

@@ -3,10 +3,10 @@ title: Benchmarks
 icon: /docs/icons/admin.svg
 ---
 
-Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.  
+Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.
 Flows can range from lightweight tasks running in milliseconds to complex scripts in containers that run for tens of minutes.
 
-This benchmark focuses on **orchestration performance**, including dispatching to the Kestra Worker, rather than workload execution, which varies by use case.  
+This benchmark focuses on **orchestration performance**, including dispatching to the Kestra Worker, rather than workload execution, which varies by use case.
 To isolate orchestration performance, we use workflows with fast tasks, such as:
 
 - `io.kestra.plugin.core.log.Log` — logs a single message.
@@ -27,9 +27,9 @@ Benchmark results are for Kestra 0.23.4.
 
 ## Benchmark 1 -- Simple flow
 
-**Description**  
+**Description**
 Triggered by a Webhook. Contains two tasks:
-1. Outputs a variable.  
+1. Outputs a variable.
 2. Logs that variable.
 
 ```yaml

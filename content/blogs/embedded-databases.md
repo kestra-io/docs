@@ -89,7 +89,7 @@ Below is an example of how to use chDB to query a Parquet file:
 import chdb
 
 data = chdb.query("""
-SELECT * 
+SELECT *
 FROM url('https://huggingface.co/datasets/kestra/datasets/resolve/main/json/products.json');
 """, 'PrettyCompact')
 print(data)
@@ -216,7 +216,7 @@ tasks:
       SELECT sum(total) as total, avg(quantity) as avg_quantity
       FROM url('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv');
       """, 'PrettyCompact')
-      print(data)    
+      print(data)
 
   - id: duckDB
     type: io.kestra.plugin.jdbc.duckdb.Query

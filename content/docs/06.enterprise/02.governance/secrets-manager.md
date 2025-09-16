@@ -52,15 +52,15 @@ The secret name in AWS will not display inside of Kestra. Instead set this to so
 
 ## Azure Key Vault Configuration
 
-To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including: 
-- `"Get"` 
-- `"List"` 
+To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including:
+- `"Get"`
+- `"List"`
 - `"Set"`
-- `"Delete"` 
-- `"Recover"` 
-- `"Backup"` 
-- `"Restore"` 
-- `"Purge"` 
+- `"Delete"`
+- `"Recover"`
+- `"Backup"`
+- `"Restore"`
+- `"Purge"`
 
 Then, paste the `clientSecret` from the Azure portal to the `clientSecret` property in the configuration below.
 
