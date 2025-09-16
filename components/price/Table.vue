@@ -1,906 +1,145 @@
 <template>
-    <div class="table-content" ref="tableContentRef">
-        <div class="container table-responsive">
-            <h3>Compare All Features</h3>
-            <table class="table table-dark">
-                <thead class="t-head">
-                    <tr>
-                        <th
-                            class="t-head-title text-center"
-                            v-for="(head, index) in  tableHead "
-                            :key="head"
-                        >
-                            <div class="border-radius" :class="{
-                                        'bg-gray': index !== 0,
-                                   }">
-                                <p class="fw-bold">{{ head.name }}</p>
-                                <span>{{ head.period }}</span>
-                                <NuxtLink
-                                    v-if="head?.button"
-                                    :href="head?.button?.href"
-                                    :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                                >
-                                    {{head.button?.text}}
-                                </NuxtLink>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="t-head-body">
-                    <tr v-for="(item, index)  in tableData"
-                        :key="index"
-                        :class="!item.textBold ? '' : 'sticky-tr'"
-                    >
-                        <td class="ps-5 t-border-data-first-block"
-                            :class="!item.textBold ? '' : 't-r-heading-text'">
-                                    <span>
-                                        {{item.title }}
-                                        <div v-if="!item.textBold && item.description" class="tooltip-container">
-                                            <Information class="info" />
-                                            <div class="tooltip-content">
-                                                {{ item.description.text }}
-                                                <NuxtLink v-if="item.description.link" :to="item.description.link">Learn more</NuxtLink>
-                                            </div>
-                                        </div>
-                                    </span>
-                        </td>
-                        <td class="tick t-border-data">
-                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
-                                <CheckBold v-if="!item.isFullLine && item.isOpenSource" class="check-svg-purple"/>
-                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.openSourceText"/>
-                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.openSourceText}}</span>
-                            </div>
-                        </td>
-                        <td class="tick t-border-data">
-                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
-                                <CheckBold v-if="!item.isFullLine && item.isEnterprise" class="check-svg-purple"/>
-                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.enterpriseText"/>
-                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.enterpriseText}}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="collapsed-table">
-        <div class="container">
-            <div class="buttons">
-                <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
-                     @click="changeSelectedType('enterprise')">
-                    <p>Enterprise</p>
-                    <span>Per Instance</span>
-                </div>
-                <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
-                     @click="changeSelectedType('opensource')">
-                    <p>Open-Source</p>
-                    <span>Free</span>
-                </div>
-            </div>
-            <div class="features">
-                <CollapsedFeatures
-                    v-for="(item, index) in tableSortedData"
-                    :key="index"
-                    class="que text-white"
-                    :title="item.title"
-                >
-                    <div v-for="(child, childIndex) in item.children" :key="childIndex" class="feature-row">
-                        <div
-                            class="feature-row-title"
-                            :class="{'border-bottom-none': childIndex === item.children.length - 1}"
-                        >
-                            <span>
-                                {{child.title}}
-                                <div v-if="child.description" class="tooltip-container ms-auto">
-                                    <Information class="info ps-4" />
-                                    <div class="tooltip-content">
-                                        {{ child.description.text }}
-                                        <NuxtLink v-if="child.description.link" :to="child.description.link">Learn more</NuxtLink>
-                                    </div>
-                                </div>
-                            </span>
-                        </div>
-                        <div
-                            class="feature-row-access"
-                            :class="{'border-bottom-none': childIndex === item.children.length - 1}"
-                        >
-                            <span
-                                v-if="selectedType === 'enterprise' && child.enterpriseText">{{child.enterpriseText}}</span>
-                            <span v-else-if="selectedType !== 'enterprise' && child.openSourceText">{{child.openSourceText}}</span>
-                            <div v-if="selectedType === 'enterprise' && !child.enterpriseText">
-                                <Close class="close-svg-red" v-if="!child.isEnterprise"/>
-                                <CheckBold v-else-if="child.isEnterprise" class="check-svg-purple"/>
-                            </div>
-                            <div v-else-if="selectedType === 'opensource' && !child.openSourceText">
-                                <Close class="close-svg-red" v-if="!child.isOpenSource"/>
-                                <CheckBold v-else-if="child.isOpenSource" class="check-svg-purple"/>
-                            </div>
-                        </div>
-                    </div>
-                </CollapsedFeatures>
-                <NuxtLink
-                    :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
-                    :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                >
-                    {{selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started'}}
+  <div class="table-content" ref="tableContentRef">
+    <div class="container table-responsive">
+      <h3>Compare All Features</h3>
+      <table class="table table-dark">
+        <thead class="t-head">
+          <tr>
+            <th class="t-head-title text-center" v-for="(head, index) in tableHead" :key="index">
+              <div class="border-radius" :class="{
+                'bg-gray': index !== 0,
+              }">
+                <p class="fw-bold">{{ head.name }}</p>
+                <span>{{ head.period }}</span>
+                <NuxtLink v-if="head?.button" :href="head?.button?.href"
+                  :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'">
+                  {{ head.button?.text }}
                 </NuxtLink>
-            </div>
-        </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="t-head-body">
+          <tr v-for="(item, index) in tableData" :key="index" :class="!item.textBold ? '' : 'sticky-tr'">
+            <td class="ps-5 t-border-data-first-block" :class="!item.textBold ? '' : 't-r-heading-text'">
+              <span>
+                {{ item.title }}
+                <div v-if="!item.textBold && item.description" class="tooltip-container">
+                  <Information class="info" />
+                  <div class="tooltip-content">
+                    {{ item.description.text }}
+                    <NuxtLink v-if="item.description.link" :to="item.description.link">Learn more</NuxtLink>
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td class="tick t-border-data">
+              <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
+                <CheckBold v-if="!item.isFullLine && item.isOpenSource" class="check-svg-purple" />
+                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.openSourceText" />
+                <span class="enterprise-text" v-else-if="!item.isFullLine">{{ item.openSourceText }}</span>
+              </div>
+            </td>
+            <td class="tick t-border-data">
+              <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
+                <CheckBold v-if="!item.isFullLine && item.isEnterprise" class="check-svg-purple" />
+                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.enterpriseText" />
+                <span class="enterprise-text" v-else-if="!item.isFullLine">{{ item.enterpriseText }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <div class="collapsed-table">
+    <div class="container">
+      <div class="buttons">
+        <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
+          @click="changeSelectedType('enterprise')">
+          <p>Enterprise</p>
+          <span>Per Instance</span>
+        </div>
+        <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
+          @click="changeSelectedType('opensource')">
+          <p>Open-Source</p>
+          <span>Free</span>
+        </div>
+      </div>
+      <div class="features">
+        <CollapsedFeatures v-for="(item, index) in tableSortedData" :key="index" class="que text-white"
+          :title="item.title">
+          <div v-for="(child, childIndex) in item.children" :key="childIndex" class="feature-row">
+            <div class="feature-row-title" :class="{ 'border-bottom-none': childIndex === item.children.length - 1 }">
+              <span>
+                {{ child.title }}
+                <div v-if="child.description" class="tooltip-container ms-auto">
+                  <Information class="info ps-4" />
+                  <div class="tooltip-content">
+                    {{ child.description.text }}
+                    <NuxtLink v-if="child.description.link" :to="child.description.link">Learn more</NuxtLink>
+                  </div>
+                </div>
+              </span>
+            </div>
+            <div class="feature-row-access" :class="{ 'border-bottom-none': childIndex === item.children.length - 1 }">
+              <span v-if="selectedType === 'enterprise' && child.enterpriseText">{{ child.enterpriseText }}</span>
+              <span v-else-if="selectedType !== 'enterprise' && child.openSourceText">{{ child.openSourceText }}</span>
+              <div v-if="selectedType === 'enterprise' && !child.enterpriseText">
+                <Close class="close-svg-red" v-if="!child.isEnterprise" />
+                <CheckBold v-else-if="child.isEnterprise" class="check-svg-purple" />
+              </div>
+              <div v-else-if="selectedType === 'opensource' && !child.openSourceText">
+                <Close class="close-svg-red" v-if="!child.isOpenSource" />
+                <CheckBold v-else-if="child.isOpenSource" class="check-svg-purple" />
+              </div>
+            </div>
+          </div>
+        </CollapsedFeatures>
+        <NuxtLink :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
+          :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'">
+          {{ selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started' }}
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script setup>
-  import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
+<script setup lang="ts">
+  import { ref, computed, onMounted, onUnmounted } from "vue"
   import Close from 'vue-material-design-icons/Close.vue'
-  import Plus from 'vue-material-design-icons/Plus.vue'
   import CheckBold from 'vue-material-design-icons/CheckBold.vue'
   import Information from 'vue-material-design-icons/Information.vue'
-  import {ref, computed} from "vue"
+  import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
+  import { tableHeadData, getTableSortedData } from "../../data/compare-features"
 
   const { totalPlugins } = usePluginsCount();
 
-  const selectedType = ref('enterprise');
-  const tableHead = ref([
-    {
-      name: "",
-      period: "",
-    },
-    {
-      name: 'The Open-Source Edition',
-      period: "Free",
-      button: {
-        text: "Get Started",
-        href: "/docs/getting-started/quickstart#start-kestra",
-      },
-    },
-    {
-      name: 'Enterprise',
-      period: "Per Instance",
-      button: {
-        text: "Talk to us",
-        href: "/demo",
-      },
-    },
-  ]);
+  const selectedType = ref<string>('enterprise');
+  const tableHead = computed(() => tableHeadData);
+  const tableSortedData = computed(() => getTableSortedData(totalPlugins.value));
 
-  const tableData = computed(() => [
-    {
-      title: "Core Features",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      title: "Workflow Creation and Execution",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Execute all your workflows as code or from the UI",
-        link: "/docs/workflow-components"
-      }
-    },
-    {
-      title: "Multi-Cloud or On-Prem Deployment Options",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Install Kestra on any cloud or on-prem",
-        link: "/docs/installation"
-      }
-    },
-    {
-      title: "Embedded Code Editor",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Built-in code editor to write and test your workflows",
-        link: "/docs/concepts/editor"
-      }
-    },
-    {
-      title: "Plugins",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: `Connect Kestra to ${totalPlugins.value} plugins`,
-        link: "/plugins"
-      }
-    },
-    {
-      title: "Plugin Development Support",
-      isOpenSource: false,
-      enterpriseText: 'On Request',
-      description: {
-        text: "Support for developing custom plugins",
-        link: "/docs"
-      }
-    },
-    {
-      title: "Code Versioning & Git Integration",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Setup Version Control with Git to store your flows and namespace files",
-        link: "/docs/version-control-cicd/git"
-      }
-    },
-    {
-      title: "Autocompletion & Syntax Validation",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Trigger autocompletion to list available tasks or properties of a given task",
-        link: "/docs/tutorial/fundamentals#autocompletion"
-      }
-    },
-    {
-      title: "Live-Updated Topology View",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Visualize the structure of your flow",
-        link: "/docs/ui/flows#topology-view"
-      }
-    },
-    {
-      title: "Task & Subflow Dependency Management",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Visualize the relationship dependencies between your flows",
-        link: "/docs/ui/flows#dependencies"
-      }
-    },
-    {
-      title: "Flexible Scheduling System",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "The Scheduler is a server component responsible for processing all triggers",
-        link: "/docs/architecture/scheduler"
-      }
-    },
-    {
-      title: "Event-Driven Data Processing",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "Execute your workflow based on events",
-        link: "/docs/workflow-components/triggers"
-      }
-    },
-    {
-      title: "Embedded Task & Trigger Documentation",
-      isOpenSource: true,
-      isEnterprise: true,
-      description: {
-        text: "The documentation view displays Kestra's documentation right inside of the editor",
-        link: "/docs/ui/flows#documentation-view"
-      }
-    },
-    {
-      title: "Security & Governance",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      title: "Users Management",
-      isOpenSource: false,
-      isEnterprise: false,
-      openSourceText: '',
-      enterpriseText: 'Unlimited',
-      description: {
-        text: "Manage users inside Kestra UI",
-        link: "/docs/ui/administration/users"
-      }
-    },
-    {
-      title: "SSO & OIDC Authentication",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Access multiple applications with one set of login credentials",
-        link: "/docs/enterprise/auth/sso"
-      }
-    },
-    {
-      title: "Role-Based Access Control (RBAC)",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Manage access to workflows and resources by assigning Roles to Users, Groups, and Service Accounts",
-        link: "/docs/enterprise/auth/rbac"
-      }
-    },
-    {
-      title: "Multi-Tenancy Support",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Isolate multiple environments within a single Kestra instance",
-        link: "/docs/enterprise/governance/tenants"
-      }
-    },
-    {
-      title: "Audit Logs & Revision History",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Record all activities made by all users on the resources created inside Kestra",
-        link: "/docs/ui/administration/audit-logs"
-      }
-    },
-    {
-      title: "Secret Manager Integrations",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Store sensitive information securely.",
-        link: "/docs/enterprise/governance/secrets-manager"
-      }
-    },
-    {
-      title: "Namespace-Level Permissions",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Govern secrets, variables, and plugin defaults on a namespace level.",
-        link: "/docs/enterprise/governance/namespace-management"
-      }
-    },
-    {
-      title: "Worker Security Isolation",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Isolate your executions on dedicated tenants",
-        link: "/docs/enterprise/scalability/worker-group"
-      }
-    },
-    {
-      title: "Encryption & Fault Tolerance",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Built-in encryption and workflow reliability with automatic retries and state persistence",
-        link: "/docs"
-      }
-    },
-    {
-      title: "SCIM Directory Sync",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Sync users and groups from your Identity Provider to Kestra",
-        link: "/docs/enterprise/auth/scim"
-      }
-    },
-    {
-      title: "Log Shipper",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Manage and distribute logs across your entire infrastructure",
-        link: "/docs/enterprise/governance/logshipper"
-      }
-    },
-    {
-      title: "SOC 2",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "SOC 2 compliance",
-        link: "/trust"
-      }
-    },
-    {
-      title: "Productivity",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      title: "Custom Blueprints & Templates",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Your private internal App store of ready to use Kestra workflows",
-        link: "/docs/enterprise/governance/custom-blueprints"
-      }
-    },
-    {
-      title: "Full-Text Search on Task Runs",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Manage Task Runs in one place",
-        link: "/docs/ui/task-runs"
-      }
-    },
-    {
-      title: "Centralized User & Permission Management",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Give users restricted access or full control over your Kestra instance",
-        link: "/docs/enterprise/auth/rbac#permissions"
-      }
-    },
-    {
-      title: "Onboarding & Training Support",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Get your team using Kestra as it full potential with the help of our experts",
-        link: "/docs"
-      }
-    },
-    {
-      title: "Customer Success Program with SLAs",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Get dedicated support with a guaranteed Service Level Agreement",
-        link: "/docs"
-      }
-    },
-    {
-      title: "Apps",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Build custom UIs to interact with Kestra from the outside world",
-        link: "/docs/enterprise/scalability/apps"
-      }
-    },
-    {
-      title: "Namespace-Level Secrets Management",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
-        link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
-      }
-    },
-    {
-      title: "Scalability & Infrastructure",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      title: "High Availability (No Single Point of Failure)",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Kestra is designed to be highly available and fault-tolerant",
-        link: "/docs/administrator-guide/high-availability"
-      }
-    },
-    {
-      title: "Worker Groups for Distributed Tasks",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "A set of workers that can be explicitly targeted for task execution or polling trigger evaluation",
-        link: "/docs/enterprise/scalability/worker-group"
-      }
-    },
-    {
-      title: "Task Runners",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Offload compute-intensive tasks to remote environments",
-        link: "/docs/enterprise/scalability/task-runners"
-      }
-    },
-    {
-      title: "Service Accounts & API Tokens",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Create applications with programmatic API access or create token for real users",
-        link: "/docs/enterprise/auth/service-accounts"
-      }
-    },
-    {
-      title: "Dedicated Storage & Tenant Isolation",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Add extra security measures to your Kestra instance to isolate access",
-        link: "/docs/enterprise/governance/worker-isolation"
-      }
-    },
-    {
-      title: "Cluster Monitoring & Custom Storage",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Monitor cluster health and performance. Support for plugging in your own storage backend",
-        link: "/docs"
-      }
-    },
-    {
-      title: "High-Throughput Event Handling",
-      isOpenSource: false,
-      isEnterprise: true,
-      description: {
-        text: "Handle large volumes of events per second with built-in parallelism, scaling, and queue management",
-        link: "/docs"
-      }
-    }
-  ]);
+  const tableData = computed(() => {
+    const flattened: any[] = [];
+    tableSortedData.value.forEach(group => {
+      flattened.push({
+        title: group.title,
+        isFullLine: true,
+        textBold: true,
+      });
+      group.children.forEach(child => {
+        flattened.push(child);
+      });
+    });
+    return flattened;
+  });
 
-  const tableSortedData = computed(() => [
-    {
-      title: "Core Features",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          title: "Workflow Creation and Execution",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Execute all your workflows as code or from the UI",
-            link: "/docs/workflow-components"
-          }
-        },
-        {
-          title: "Multi-Cloud or On-Prem Deployment Options",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Install Kestra on any cloud or on-prem",
-            link: "/docs/installation"
-          }
-        },
-        {
-          title: "Embedded Code Editor",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Built-in code editor to write and test your workflows",
-            link: "/docs/concepts/editor"
-          }
-        },
-        {
-          title: "Plugins",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: `Connect Kestra to ${totalPlugins.value} plugins`,
-            link: "/plugins"
-          }
-        },
-        {
-          title: "Plugin Development Support",
-          openSourceText: false,
-          enterpriseText: 'On-Demand',
-          description: {
-            text: "Support for developing custom plugins",
-            link: "/docs"
-          }
-        },
-        {
-          title: "Code Versioning & Git Integration",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Setup Version Control with Git to store your flows and namespace files",
-            link: "/docs/version-control-cicd/git"
-          }
-        },
-        {
-          title: "Autocompletion & Syntax Validation",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Trigger autocompletion to list available tasks or properties of a given task",
-            link: "/docs/tutorial/fundamentals#autocompletion"
-          }
-        },
-        {
-          title: "Live-Updated Topology View",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Visualize the structure of your flow",
-            link: "/docs/ui/flows#topology-view"
-          }
-        },
-        {
-          title: "Task & Subflow Dependency Management",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Visualize the relationship dependencies between your flows",
-            link: "/docs/ui/flows#dependencies"
-          }
-        },
-        {
-          title: "Flexible Scheduling System",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "The Scheduler is a server component responsible for processing all triggers",
-            link: "/docs/architecture/scheduler"
-          }
-        },
-        {
-          title: "Event-Driven Data Processing",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "Execute your workflow based on events",
-            link: "/docs/workflow-components/triggers"
-          }
-        },
-        {
-          title: "Embedded Task & Trigger Documentation",
-          isOpenSource: true,
-          isEnterprise: true,
-          description: {
-            text: "The documentation view displays Kestra's documentation right inside of the editor",
-            link: "/docs/ui/flows#documentation-view"
-          }
-        },
-      ]
-    },
-    {
-      title: "Security & Governance",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          title: "Users Management",
-          isOpenSource: false,
-          isEnterprise: false,
-          openSourceText: '',
-          enterpriseText: 'Unlimited',
-          description: {
-            text: "Manage users inside Kestra UI",
-            link: "/docs/ui/administration/users"
-          }
-        },
-        {
-          title: "SSO & OIDC Authentication",
-          isEnterprise: true,
-          isOpenSource: false,
-          description: {
-            text: "Access multiple applications with one set of login credentials",
-            link: "/docs/enterprise/auth/sso"
-          }
-        },
-        {
-          title: "Role-Based Access Control (RBAC)",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Manage access to workflows and resources by assigning Roles to Users, Groups, and Service Accounts",
-            link: "/docs/enterprise/auth/rbac"
-          }
-        },
-        {
-          title: "Multi-Tenancy Support",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Isolate multiple environments within a single Kestra instance",
-            link: "/docs/enterprise/governance/tenants"
-          }
-        },
-        {
-          title: "Audit Logs & Revision History",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Record all activities made by all users on the resources created inside Kestra",
-            link: "/docs/ui/administration/audit-logs"
-          }
-        },
-        {
-          title: "Secret Manager Integrations",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Store sensitive information securely.",
-            link: "/docs/enterprise/governance/secrets-manager"
-          }
-        },
-        {
-          title: "Namespace-Level Permissions",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Govern secrets, variables, and plugin defaults on a namespace level.",
-            link: "/docs/enterprise/governance/namespace-management"
-          }
-        },
-        {
-          title: "Worker Security Isolation",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Isolate your executions on dedicated tenants",
-            link: "/docs/enterprise/scalability/worker-group"
-          }
-        },
-        {
-          title: "Encryption & Fault Tolerance",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Built-in encryption and workflow reliability with automatic retries and state persistence",
-            link: "/docs"
-          }
-        },
-        {
-          title: "SCIM Directory Sync",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Sync users and groups from your Identity Provider to Kestra",
-            link: "/docs/enterprise/auth/scim"
-          }
-        },
-        {
-          title: "Log Shipper",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Manage and distribute logs across your entire infrastructure",
-            link: "/docs/enterprise/governance/logshipper"
-          }
-        },
-      ]
-    },
-    {
-      title: "Productivity",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          title: "Custom Blueprints & Templates",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Your private internal App store of ready to use Kestra workflows",
-            link: "/docs/enterprise/governance/custom-blueprints"
-          }
-        },
-        {
-          title: "Full-Text Search on Task Runs",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Manage Task Runs in one place",
-            link: "/docs/ui/task-runs"
-          }
-        },
-        {
-          title: "Centralized User & Permission Management",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Give users restricted access or full control over your Kestra instance",
-            link: "/docs/enterprise/auth/rbac#permissions"
-          }
-        },
-        {
-          title: "Onboarding & Training Support",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Get your team using Kestra as it full potential with the help of our experts",
-            link: "/docs"
-          }
-        },
-        {
-          title: "Customer Success Program with SLAs",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Get dedicated support with a guaranteed Service Level Agreement",
-            link: "/docs"
-          }
-        },
-        {
-          title: "Apps",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Build custom UIs to interact with Kestra from the outside world",
-            link: "/docs/enterprise/scalability/apps"
-          }
-        },
-        {
-          title: "Namespace-Level Secrets Management",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
-            link: "/docs/enterprise/governance/namespace-management#namespace-level-features"
-          }
-        }
-      ]
-    },
-    {
-      title: "Scalability & Infrastructure",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          title: "High Availability (No Single Point of Failure)",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Kestra is designed to be highly available and fault-tolerant",
-            link: "/docs/administrator-guide/high-availability"
-          }
-        },
-        {
-          title: "Worker Groups for Distributed Tasks",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "A set of workers that can be explicitly targeted for task execution or polling trigger evaluation",
-            link: "/docs/enterprise/scalability/worker-group"
-          }
-        },
-        {
-          title: "Task Runners",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Offload compute-intensive tasks to remote environments",
-            link: "/docs/enterprise/scalability/task-runners"
-          }
-        },
-        {
-          title: "Service Accounts & API Tokens",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Create applications with programmatic API access or create token for real users",
-            link: "/docs/enterprise/auth/service-accounts"
-          }
-        },
-        {
-          title: "Dedicated Storage & Tenant Isolation",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Add extra security measures to your Kestra instance to isolate access",
-            link: "/docs/enterprise/governance/worker-isolation"
-          }
-        },
-        {
-          title: "Cluster Monitoring & Custom Storage",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Monitor cluster health and performance. Support for plugging in your own storage backend",
-            link: "/docs"
-          }
-        },
-        {
-          title: "High-Throughput Event Handling",
-          isOpenSource: false,
-          isEnterprise: true,
-          description: {
-            text: "Handle large volumes of events per second with built-in parallelism, scaling, and queue management",
-            link: "/docs"
-          }
-        }
-      ]
-    },
-  ]);
 
-  const changeSelectedType = (type) => {
+  const changeSelectedType = (type: string): void => {
     selectedType.value = type
   }
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
       const stickyElements = document.querySelectorAll('.sticky-tr');
       if(stickyElements) {
         stickyElements?.forEach((item) => {
@@ -912,16 +151,18 @@
         });
       }
   };
+
   onMounted(() => {
     window.addEventListener('scroll', handleScroll);
   });
+
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "../../assets/styles/_variable";
     .shadow {
         box-shadow: 0px 2px 0px 0px #EFEFEF !important;
         td {
@@ -968,7 +209,7 @@
         justify-content: center;
         color: $white !important;
         padding: 9px 0;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 16px;
         font-weight: 700;
         background-color: #7117FF;
@@ -984,7 +225,7 @@
         justify-content: center;
         color: $black-2 !important;
         padding: 9px 0;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 16px;
         font-weight: 700;
         background-color: transparent;
