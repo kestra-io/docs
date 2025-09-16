@@ -89,7 +89,7 @@ Below is an example of how to use chDB to query a Parquet file:
 import chdb
 
 data = chdb.query("""
-SELECT * 
+SELECT *
 FROM url('https://huggingface.co/datasets/kestra/datasets/resolve/main/json/products.json');
 """, 'PrettyCompact')
 print(data)
@@ -216,7 +216,7 @@ tasks:
       SELECT sum(total) as total, avg(quantity) as avg_quantity
       FROM url('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv');
       """, 'PrettyCompact')
-      print(data)    
+      print(data)
 
   - id: duckDB
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -255,8 +255,8 @@ Kestra’s ability to mix batch and event-driven tasks in one pipeline means dev
 
 **Future Trends:** Expect continued convergence of OLAP and OLTP, improved support for multi-cloud, advancements in distributed computing, and open-source OLAP engines gaining even more traction. The rise of data mesh architectures may also influence how developers design workflows, emphasizing decentralized data ownership and interoperability.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

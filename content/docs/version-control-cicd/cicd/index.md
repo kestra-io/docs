@@ -33,12 +33,12 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --api-token <your-api-token>
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the `--api-token` option is available only in the [Enterprise Edition](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md). In the open-source version, you can leverage the basic authentication using the `--user` flag:
 ```bash
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
 ```
-::
+:::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
 
@@ -81,9 +81,9 @@ For all available CLI options on both `flow validate` and `flow namespace update
 ./kestra template namespace update template-namespace-to-update path-to-template-directory
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that templates are deprecated and will be removed in a future release. Use subflows instead.
-::
+:::
 
 ### Deploy flows... from a flow!
 
@@ -199,7 +199,7 @@ jobs:
 
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
-::alert{type="info"}
+:::alert{type="info"}
 Here is a modified version of the same workflow but this time using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of a `user` name and `password`:
 
 ```yaml
@@ -239,6 +239,7 @@ jobs:
           apiToken: ${{secrets.KESTRA_API_TOKEN}}
           delete: false
 ```
+:::
 
 
 ### Deploy flows from a GitLab CI/CD

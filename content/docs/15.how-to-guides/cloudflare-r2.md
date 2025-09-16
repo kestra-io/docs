@@ -7,14 +7,14 @@ topics:
 - Object Storage
 ---
 
-This guide demonstrates how to use **Cloudflare R2** as an object storage backend through an S3-compatible interface, exposed to **Kestra** via a **MinIO Gateway**.  
+This guide demonstrates how to use **Cloudflare R2** as an object storage backend through an S3-compatible interface, exposed to **Kestra** via a **MinIO Gateway**.
 This setup enables Kestra to continue using S3 storage without requiring configuration changes.
 
 ---
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This guide assumes that **MinIO runs locally in gateway mode** to access Cloudflare R2. It is intended for **local development and QA environments**, and is **not optimized for production deployments**.
-::
+:::
 
 ## Create an R2 Bucket
 

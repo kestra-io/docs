@@ -46,21 +46,21 @@ When adding a secret in AWS, you will need to specify the following tags:
 - `key`: the key which you will use to access the secret inside of your workflow.
 - `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
-::
+:::
 
 ## Azure Key Vault Configuration
 
-To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including: 
-- `"Get"` 
-- `"List"` 
+To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including:
+- `"Get"`
+- `"List"`
 - `"Set"`
-- `"Delete"` 
-- `"Recover"` 
-- `"Backup"` 
-- `"Restore"` 
-- `"Purge"` 
+- `"Delete"`
+- `"Recover"`
+- `"Backup"`
+- `"Restore"`
+- `"Purge"`
 
 Then, paste the `clientSecret` from the Azure portal to the `clientSecret` property in the configuration below.
 

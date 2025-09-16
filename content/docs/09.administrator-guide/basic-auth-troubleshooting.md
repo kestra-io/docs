@@ -17,7 +17,7 @@ kestra:
       password: Admin1234
 ```
 
-Now that basic authentication is required, the `enabled` flag is ignored (ideally don't use it anymore), and credentials must be set in order to interact with Kestra UI or API. For new users, simply follow the Setup Page that will show up when you start Kestra UI. 
+Now that basic authentication is required, the `enabled` flag is ignored (ideally don't use it anymore), and credentials must be set in order to interact with Kestra UI or API. For new users, simply follow the Setup Page that will show up when you start Kestra UI.
 
 For production deployments, we recommend setting a valid email address and a strong password in the configuration file.
 
@@ -58,6 +58,6 @@ In this case, the following will occur:
 If there is no `basicAuth` set in the configuration file then:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
-::alert{type="info"}
+:::alert{type="info"}
 For all users, if you forget your credentials, you can always update `username` and `password` in the configuration file, as the configuration file will always take precedence over the values configured from the Setup page.
-::
+:::

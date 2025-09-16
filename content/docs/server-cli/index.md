@@ -17,9 +17,9 @@ Kestra leverages five different server components. The `kestra server` command a
 
 * `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 For more information on troubleshooting CLI options, see the dedicated [Troubleshooting](../09.administrator-guide/16.troubleshooting.md#unprocessable-execution) page.
-::
+:::
 
 ### Indexer
 
@@ -223,9 +223,9 @@ These options affect global log levels for all flows only.
 
 `--internal-log`: Kestra hides internal logs by default. Use this option to enable these logs.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This option enables logs of very high verbosity.
-::
+:::
 
 ### Configuration Files
 

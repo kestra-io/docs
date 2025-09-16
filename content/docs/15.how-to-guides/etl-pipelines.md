@@ -10,9 +10,9 @@ Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
 
 This tutorial demonstrates building different ETL pipelines in Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 We have used AWS access key and secret key in the example workflows below. To know more about these keys and how to get one, you can refer [this](https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/) page. Once we have these, we can store them in the [KV Store](../05.concepts/05.kv-store.md) or as [Secrets](../05.concepts/04.secret.md).
-::
+:::
 
 ## Using DuckDB
 
@@ -42,7 +42,7 @@ tasks:
       orders.csv: "{{ outputs.download_orders_csv.uri }}"
       products.csv: "{{ outputs.download_products_csv.uri }}"
     sql: |
-      SELECT 
+      SELECT
         o.order_id,
         o.customer_name,
         o.customer_email,
@@ -52,8 +52,8 @@ tasks:
         o.total,
         p.product_name,
         p.product_category,
-        p.brand 
-      FROM read_csv_auto('{{ workingDir }}/orders.csv', header=True) o 
+        p.brand
+      FROM read_csv_auto('{{ workingDir }}/orders.csv', header=True) o
       JOIN read_csv_auto('{{ workingDir }}/products.csv', header=True) p
       ON o.product_id = p.product_id
       ORDER BY order_id ASC;
@@ -72,7 +72,7 @@ tasks:
     region: "eu-central-1"
     from: "{{ outputs.get_orders_per_product_csv.uri }}"
     bucket: "my_bucket"
-    key: "orders/detailed_orders" 
+    key: "orders/detailed_orders"
 
   - id: get_orders_per_product
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -88,7 +88,7 @@ tasks:
       GROUP BY product_id
       ORDER BY product_id ASC
     store: true
-  
+
   - id: get_orders_per_product_csv
     type: io.kestra.plugin.serdes.csv.IonToCsv
     description: Convert the result into CSV
@@ -102,7 +102,7 @@ tasks:
     region: "eu-central-1"
     from: "{{ outputs.get_orders_per_product_csv.uri }}"
     bucket: "my_bucket"
-    key: "orders/orders_per_product" 
+    key: "orders/orders_per_product"
 ```
 
 Similar Query tasks can be performed on different databases like Snowflake, Postgres, etc.
@@ -131,7 +131,7 @@ tasks:
       def _extract(url):
         csv_data = requests.get(url).content
         return pd.read_csv(io.StringIO(csv_data.decode('utf-8')), header=0)
-      
+
       def run_etl():
         orders_data = _extract("https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv")
         products_data = _extract("https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv")
@@ -142,7 +142,7 @@ tasks:
         orders_per_product = detailed_orders.groupby('product_id').agg(order_count= ('product_id', 'count'), product_count=('quantity', 'sum'), order_total=('total', 'sum')).sort_values('product_id')
         orders_per_product['order_total'] = orders_per_product['order_total'].apply(lambda x: float("{:.2f}".format(x)))
         orders_per_product.to_csv("orders_per_product.csv")
-      
+
       if __name__ == "__main__":
           run_etl()
     outputFiles:
@@ -205,7 +205,7 @@ tasks:
       def _extract(url):
         csv_data = requests.get(url).content
         return pd.read_csv(io.StringIO(csv_data.decode('utf-8')), header=0)
-      
+
       def run_etl():
         orders_data = _extract("https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv")
         products_data = _extract("https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv")
@@ -216,13 +216,13 @@ tasks:
         orders_per_product = detailed_orders.groupby('product_id').agg(order_count= ('product_id', 'count'), product_count=('quantity', 'sum'), order_total=('total', 'sum')).sort_values('product_id')
         orders_per_product['order_total'] = orders_per_product['order_total'].apply(lambda x: float("{:.2f}".format(x)))
         orders_per_product.to_csv("orders_per_product.csv")
-      
+
       if __name__ == "__main__":
           run_etl()
     outputFiles:
       - detailed_orders.csv
       - orders_per_product.csv
-  
+
   - id: upload_detailed_orders_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
@@ -290,7 +290,7 @@ tasks:
           type: INT64
         - name: total
           type: FLOAT64
-  
+
   - id: create_products_table
     type: io.kestra.plugin.gcp.bigquery.CreateTable
     description: Create products table in BigQuery.
@@ -322,7 +322,7 @@ tasks:
     csvOptions:
       fieldDelimiter: ","
       skipLeadingRows: 1
-  
+
   - id: load_products_table
     type: io.kestra.plugin.gcp.bigquery.Load
     description: Load products table with data from products.csv
@@ -334,7 +334,7 @@ tasks:
     csvOptions:
       fieldDelimiter: ","
       skipLeadingRows: 1
-  
+
   - id: dbt
     type: io.kestra.plugin.dbt.cli.DbtCLI
     description: Use dbt build to perform the dbt transformations
@@ -365,7 +365,7 @@ tasks:
       - dbt build
 
   - id: query_detailed_orders
-    type: io.kestra.plugin.gcp.bigquery.Query 
+    type: io.kestra.plugin.gcp.bigquery.Query
     description: Query the newly generated detailed_orders BigQuery table
     serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT_JSON') }}"
     projectId: <gcp_project_id>
@@ -374,7 +374,7 @@ tasks:
     store: true
 
   - id: query_orders_per_product
-    type: io.kestra.plugin.gcp.bigquery.Query 
+    type: io.kestra.plugin.gcp.bigquery.Query
     description: Query the newly generated orders_per_product BigQuery table
     serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT_JSON') }}"
     projectId: <gcp_project_id>
@@ -422,7 +422,7 @@ sources:
   - name: ecommerce
     database: <gcp_project_id>
     schema: ecommerce
-    tables: 
+    tables:
       - name: orders
       - name: products
 ```
@@ -449,7 +449,7 @@ from {{ source('ecommerce', 'orders') }}
 ```
 {{ config(materialized="view") }}
 
-select 
+select
 product_id,
 product_name,
 product_category,
@@ -462,7 +462,7 @@ Next, we will create `detailed_orders.sql` which will create the `detailed_order
 ```
 {{ config(materialized="table") }}
 
-select 
+select
 o.order_id,
 o.customer_name,
 o.customer_email,
@@ -482,7 +482,7 @@ Next, we will create `order_per_product.sql` which will create the `order_per_pr
 ```
 {{ config(materialized="table") }}
 
-select 
+select
 product_id,
 COUNT(product_id) as order_count,
 SUM(quantity) as product_count,
@@ -528,13 +528,13 @@ tasks:
 
           #Create orders dataframe based on orders.csv
           orders_df = spark.read.csv("file://" + SparkFiles.get("orders.csv"), inferSchema=True, header=True)
-          
+
           #Create products dataframe based on orders.csv
           products_df = spark.read.csv("file://" + SparkFiles.get("products.csv"), inferSchema=True, header=True)
-          
+
           #Create detailed_orders by joining orders_df and products_df
-          detailed_orders_df = orders_df.join(products_df, orders_df.product_id ==  products_df.product_id, "left") 
-          
+          detailed_orders_df = orders_df.join(products_df, orders_df.product_id ==  products_df.product_id, "left")
+
           # Print the contents of detailed_orders_df
           detailed_orders_df.show(10)
 

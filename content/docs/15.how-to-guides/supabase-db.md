@@ -12,9 +12,9 @@ Connect your Supabase Database to your workflows using the PostgreSQL plugin.
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-::alert{type="info"}
+:::alert{type="info"}
 As of Kestra 1.0, there is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
-::
+:::
 
 ## Overview
 
@@ -24,7 +24,7 @@ To get started, make sure you have a [Supabase account](https://supabase.com/) s
 
 ## Setting up a Database in Supabase
 
-Once you've logged into Supabase, you'll need to set up an organization where you will create projects to access resources such as a database. 
+Once you've logged into Supabase, you'll need to set up an organization where you will create projects to access resources such as a database.
 
 ![supabase-1](/docs/how-to-guides/supabase-db/supabase-1.png)
 
@@ -40,7 +40,7 @@ Once your project is created, you will now be able to access resources inside of
 
 Now that we have a database set up in Supabase, we can move into Kestra to set up our connection. While there's no official Supabase plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres), which supports a number of tasks such as `Query`, `CopyIn`, and `CopyOut`.
 
-Inside of Supabase, select the **Connect** button at the top to get information about our databases connection. Select **Type** and change this JDBC. This will give us 3 ways of connecting with a Connection String. As we're only connecting to the database when our workflow runs, the Transaction pooler is a good option to use. 
+Inside of Supabase, select the **Connect** button at the top to get information about our databases connection. Select **Type** and change this JDBC. This will give us 3 ways of connecting with a Connection String. As we're only connecting to the database when our workflow runs, the Transaction pooler is a good option to use.
 
 ![supabase-4](/docs/how-to-guides/supabase-db/supabase-4.png)
 
@@ -59,7 +59,7 @@ pluginDefaults:
 
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
@@ -72,7 +72,7 @@ pluginDefaults:
       password: "{{ kv('SUPABASE_PASSWORD') }}
 ```
 
-::
+:::
 
 ## Copying a CSV file into Supabase DB inside of a Flow
 

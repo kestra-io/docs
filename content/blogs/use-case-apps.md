@@ -68,7 +68,7 @@ tasks:
           password: "{{ secret('FTP_COMPANY_PASSWORD') }}"
           from: "{{ inputs.file }}"
           to: "{{inputs.folder}}/{{inputs.file_name}}"
-          
+
       "FTP Shiny Rocks":
         - id: ftp_shiny
           type: io.kestra.plugin.fs.ftp.Upload
@@ -109,7 +109,7 @@ Kestra already made easy connection with any system. It now provides the key to 
 
 Sometimes you build dashboards. Tons of dashboards. But data consumers often crave something more flexible—a dynamic interface where they can craft their own analysis by tweaking dimensions, measures, and parameters on the fly.
 
-We can build an app that will bound such request while allowing users to play with parameters. 
+We can build an app that will bound such request while allowing users to play with parameters.
 
 For example, let's take a parametized query allowing us to aggregate some data over time. The end user might want to download trends for different dimension and measures alongside a specific time frame.
 
@@ -167,7 +167,7 @@ tasks:
       data = pd.read_csv("data.csv")
       print(data.head())
       plot = (
-          ggplot(data) + 
+          ggplot(data) +
           geom_col(aes(x="date_time", fill="city", y="avg_temperature"), position="dodge")
       )
       ggsave(plot, "plot.png")
@@ -217,7 +217,7 @@ layout:
         content: |
           ## Running analysis
           Don't close this window. The results will be displayed as soon as the processing is complete.
-      
+
       - type: io.kestra.plugin.ee.apps.core.blocks.Loading
       - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
         text: Cancel request
@@ -230,7 +230,7 @@ layout:
           Here is your data
 
       - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
-        
+
       - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: Find more App examples in the linked repository
 
@@ -322,7 +322,7 @@ tasks:
         - id: log_response
           type: io.kestra.plugin.core.log.Log
           message: "{{ json(outputs.new_discussion_prompt.body) }}"
-            
+
       "follow up":
         - id: follow_up_prompt
           type: io.kestra.plugin.core.http.Request
@@ -337,7 +337,7 @@ tasks:
               {"role": "system", "content": "{{ vars.pre_prompt }}. {{vars.follow_up_prompt }}"},
               {"role": "user", "content": "{{ inputs.user_context }}"}
             ]
-            
+
         - id: log_response2
           type: io.kestra.plugin.core.log.Log
           message: "{{ json(outputs.follow_up_prompt.body) }}"
@@ -379,7 +379,7 @@ layout:
         content: |
           ## User Context
           This AI powered application helps you to answer user questions. It's a great help for your user research work!
-          
+
           Please fill the user context below.
       - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
       - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
@@ -391,7 +391,7 @@ layout:
         content: |
           ## Doing science 🧙
           Don't close this window. The results will be displayed as soon as the LLM is doing its magic!
-      
+
       - type: io.kestra.plugin.ee.apps.core.blocks.Loading
       - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
         text: Cancel request
@@ -401,12 +401,12 @@ layout:
       - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
         content: |
           Here are a potential answer:
-      
+
       - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
         filter:
           logLevel: INFO
           taskIds: ['log_response', 'log_response2', 'log_response3']
-     
+
 
       - type: io.kestra.plugin.ee.apps.core.blocks.Button
         text: App examples
@@ -444,8 +444,8 @@ Apps open up a wide range of possibilities for automating user-facing processes.
 
 With Apps, you can make Kestra workflows accessible to everyone, regardless of their technical expertise. Try out Apps in the latest version of Kestra Enterprise Edition, and let us know what you think!
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

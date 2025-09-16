@@ -41,7 +41,7 @@ tasks:
     namespace: company.team
     inputs:
       debug: "{{ vars.debug }}"
-  
+
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.subflow.outputs.subflow_output }}"
@@ -72,7 +72,7 @@ outputs:
 
 Using the [KV Store](../05.concepts/05.kv-store.md), you can set and get values across different flows. This is good if you want to be able to store values without flows directly interacting with one another, like they do with Subflows. Flows can use the Get and Set tasks to make themselves stateful, allowing one flow to store the state, and another to access it when it wants. However, this approach isn't ideal if you don't want these values to be modified by the flows directly.
 
-For example, you can use `io.kestra.plugin.core.kv.Set` task as well as use the UI interface to manage the values in the KV Store. To access them, you can use the  `io.kestra.plugin.core.kv.Get` task which will return them as an output. 
+For example, you can use `io.kestra.plugin.core.kv.Set` task as well as use the UI interface to manage the values in the KV Store. To access them, you can use the  `io.kestra.plugin.core.kv.Get` task which will return them as an output.
 
 ```yaml
 id: kv_store
@@ -91,7 +91,7 @@ tasks:
   - id: get
     type: io.kestra.plugin.core.kv.Get
     key: debug
-  
+
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.get.value }}"
@@ -99,9 +99,9 @@ tasks:
 
 ## Namespace Variables
 
-::alert{type="info"}
+:::alert{type="info"}
 This is an [Enterprise Edition](../06.enterprise/index.md) feature.
-::
+:::
 
 Using [Namespace Variables](../06.enterprise/02.governance/07.namespace-management.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../08.ui/04.namespaces/ee.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
 
@@ -126,7 +126,7 @@ tasks:
   - id: debug_1
     type: io.kestra.plugin.core.log.Log
     message: "Namespace: {{ namespace.state }}"
-  
+
   - id: debug_2
     type: io.kestra.plugin.core.log.Log
     message: "Local: {{ vars.debug }}"

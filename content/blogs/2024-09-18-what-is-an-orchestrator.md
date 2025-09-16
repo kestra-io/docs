@@ -224,7 +224,7 @@ errors:
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Note**: The YAML defines the following:
 
 - The `tutorial` namespace which is the subfolder where the Python file is stored.
@@ -233,7 +233,7 @@ errors:
 - The `triggers` section adds the trigger.
 - The `errors` section manages eventual errors and sends a Slack message (you have to set up a dedicated Slack channel to make it work).
 
-::
+:::
 
 When you've done, click on **Execute**: you'll be asked to load the CSV file containing the data. When the job is done, in the logs section you'll see the results:
 

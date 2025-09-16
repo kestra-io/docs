@@ -101,7 +101,7 @@ tasks:
 It's important that we have the following properties configured:
 - `namespaceFiles` property has `enabled` set to `true` to ensure that the task has access to your namespace files.
 - Provide the GCP service account JSON file so that the task is able to connect to your GCP account in order to access BigQuery. Check out the [dedicated guide](./google-credentials.md) on how to add it. This file is referenced in the dbt project file.
-- Install the `sqlmesh[bigquery]` and `dbt-bigquery` depenedencies with `beforeCommands`. These allow SQLMesh and dbt to perform operations on BigQuery. 
+- Install the `sqlmesh[bigquery]` and `dbt-bigquery` depenedencies with `beforeCommands`. These allow SQLMesh and dbt to perform operations on BigQuery.
 
 Once the task is created and configured correctly, save the flow.
 
@@ -153,9 +153,9 @@ models:
   +start: Nov 10 2024
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that `models` require a start date for backfilling data through use of the `start` configuration parameter.
-::
+:::
 
 Now create a folder called `models` in the namespace. In the `models` folder, we will create `sources.yml` which will define the source models, with the following content:
 
@@ -166,7 +166,7 @@ sources:
   - name: ecommerce
     database: <gcp-project-id>
     schema: ecommerce
-    tables: 
+    tables:
       - name: orders
 ```
 

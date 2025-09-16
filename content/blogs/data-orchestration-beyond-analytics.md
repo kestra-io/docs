@@ -69,7 +69,7 @@ When your orchestration requirements move past analytics and into real-time busi
 
 **TL;DR**: If you’re looking for more than a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

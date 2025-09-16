@@ -66,9 +66,9 @@ kestra:
           - DELETE
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note: depending on the Keycloak configuration, you might want to tune the issuer URL.
-::
+:::
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).
 
@@ -111,7 +111,7 @@ With this configured, you then need to update the `kestra` property in your conf
 
 ```yaml
 kestra:
-  security:    
+  security:
     oidc:
       groups-claim-path: "resource_access.kestra.roles"
 ```

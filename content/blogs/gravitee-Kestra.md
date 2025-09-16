@@ -4,7 +4,7 @@ description: Discover how Gravitee automates API documentation using Kestra's or
 date: 2025-07-01T13:00:00
 category: Solutions
 author:
-  name: Martin-Pierre Roset 
+  name: Martin-Pierre Roset
   image: mproset
   role: Kestra Team
 image: /blogs/kestra-gravitee.png
@@ -28,7 +28,7 @@ API documentation is a must-have. Without clear and accurate documentation, APIs
 
 Gravitee.io chose **Kestra** to power their documentation workflows. Kestra’s API-first architecture and extensive plugin ecosystem enabled integration with their existing stack, including **SQL databases, Docker containers, and Python scripts**. Generative AI capabilities added the final touch, allowing them to create developer-friendly documentation on demand.
 
-> *“Kestra offered a modern stack and an amazing developer experience. It felt built for 
+> *“Kestra offered a modern stack and an amazing developer experience. It felt built for
 > teams like ours.”* — Gravitee.io Engineering Team
 
 ## **How It Works: Automating API Documentation with Kestra**
@@ -36,11 +36,11 @@ Gravitee.io chose **Kestra** to power their documentation workflows. Kestra’s 
 Gravitee.io's workflow showcases the power of combining orchestration with generative AI. Here's how they use Kestra:
 
 1. **Documentation at the Press of a Button**
-    
+
     With Kestra handling the backend orchestration, customers only need to trigger a workflow with a single click. This initiates the generation of developer-friendly, up-to-date documentation for any newly created API.
 
 ![generate-doc](/blogs/kestra-gravitee/api-doc.jpg)
-    
+
 2. **Triggering Workflows with SQL Polling**
 
 Kestra begins by polling their SQL database to identify API updates or new specifications. This ensures that documentation stays in sync with the latest changes.
@@ -80,7 +80,7 @@ By blending orchestration with generative AI, Gravitee resolved a key developer 
 But it doesn’t stop there. Gravitee's experience with Kestra goes well beyond documentation. They’ve adopted Kestra to orchestrate the full lifecycle of their **SpecGen system**, which uses machine learning and generative AI to generate OpenAPI specs and augment them with clear, human-readable summaries. This includes champion/challenger model comparisons, real-world usage validation, and resilient automation strategies.
 
 > "Kestra addressed all of these pain points effectively. It’s great to go with solutions that open-source their code—it builds confidence. Kestra is super easy to use, works with any code, and comes with tons of ready-made connectors.”
-> 
+>
 
 By choosing Kestra, Gravitee gained:
 
@@ -97,9 +97,9 @@ If you're exploring orchestration solutions for AI, data workflows, or API tooli
 
 Gravitee's integration of Kestra is live, real-world, and developer-friendly. Check out [Gravitee.io](https://www.gravitee.io/) to see how they're rethinking API management with automation and AI at the core.
 
-::alert{type="info"}
+:::alert{type="info"}
 Have a similar challenge? Reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::
 

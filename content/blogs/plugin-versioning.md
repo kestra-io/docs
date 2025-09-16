@@ -6,13 +6,13 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-  role: 
+  role:
 image: /blogs/plugin-versioning.png
 ---
 
-Kestra relies on plugins to integrate with various systems and services. As workflows evolve, keeping these plugins up-to-date without breaking existing flows can become a challenge. 
+Kestra relies on plugins to integrate with various systems and services. As workflows evolve, keeping these plugins up-to-date without breaking existing flows can become a challenge.
 
-**Plugin Versioning** is a feature in Kestra (available in v0.22+ for Enterprise Edition) that tackles this. It allows you to run multiple versions of the same plugin simultaneously, giving teams the flexibility to upgrade at their own pace. 
+**Plugin Versioning** is a feature in Kestra (available in v0.22+ for Enterprise Edition) that tackles this. It allows you to run multiple versions of the same plugin simultaneously, giving teams the flexibility to upgrade at their own pace.
 
 In this post, we’ll explore why plugin versioning matters, how Kestra’s implementation works, and what benefits it brings everyone, from new users to enterprise teams.
 
@@ -26,7 +26,7 @@ It is important to be able to upgrade the orchestration platform while keeping e
 
 Kestra’s **Plugin Versioning** feature provides a safe, flexible way to manage plugin upgrades. In a nutshell, it lets you **install multiple versions** of any Kestra plugin on the same instance and control which workflow uses which version. This approach enables granular version management across your Kestra environment.
 
-**How does it work?** Instead of replacing an old plugin when a new version arrives, Kestra can keep the old one and add the new one in tandem. You can **pin specific plugin versions** for certain flows (e.g., keep using v1.0.0 in an older workflow) while directing other flows to use the latest release. 
+**How does it work?** Instead of replacing an old plugin when a new version arrives, Kestra can keep the old one and add the new one in tandem. You can **pin specific plugin versions** for certain flows (e.g., keep using v1.0.0 in an older workflow) while directing other flows to use the latest release.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -75,9 +75,9 @@ Once you confirm, Kestra will download and install that plugin version into its 
 
 ![versioned plugin](/blogs/plugin-versioning/versioned-plugin.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 After installing multiple versions, the **Versioned Plugins** page lists each plugin and the versions installed. In this example, Ansible plugin v0.21.2 is installed, and the PostgreSQL plugin v0.19.0 is installed with a newer version available (hence the Upgrade prompt). Kestra preserves the old version when upgrading, adding the new version as a separate entry.
-::
+:::
 
 When you upgrade a plugin via the UI, Kestra doesn’t simply overwrite the old JAR. It keeps the existing version in place and adds the new version as a separate installation. This means any flows currently using the older version will continue to run unaffected. You could upgrade, for instance, the **PostgreSQL** plugin from 0.19.0 to 0.20.0 – and you’d see both versions listed. Then, you might update only certain flows to use 0.20.0 while others remain on 0.19.0 (until you decide to switch them). This side-by-side installation approach is key to safe transitions.
 
@@ -127,14 +127,14 @@ These use cases all boil down to a single theme: **flexibility with stability**.
 
 ## Conclusion
 
-By giving developers control over plugin versions at the workflow level, Kestra empowers you to use new tools and new integrations without fear. At the same time, providing safety nets like side-by-side versions and explicit version pinning ensures that production workflows remain stable and predictable. 
+By giving developers control over plugin versions at the workflow level, Kestra empowers you to use new tools and new integrations without fear. At the same time, providing safety nets like side-by-side versions and explicit version pinning ensures that production workflows remain stable and predictable.
 
 For new users discovering Kestra, plugin versioning means you can confidently adopt Kestra’s plugin ecosystem. For seasoned users running thousands of production workflows, it means easier maintenance and upgrade paths – you can keep your system up-to-date with far less risk. For enterprise teams managing multiple environments and strict uptime requirements, it provides a governance tool to roll out changes in a controlled, reversible manner.
 
 In summary, **Kestra’s Plugin Versioning** feature makes plugin management a first-class citizen of the orchestration process. It acknowledges that change is constant – new plugin versions will come – but with the proper tooling, change doesn’t have to be scary.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

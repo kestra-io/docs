@@ -13,9 +13,9 @@ Default tenant is deprecated and multi-tenancy is enabled by default.
 
 One and a half years later in Kestra 0.22, we are deprecating the default tenant functionality and plan to remove it in the future. We will provide enough time for the migration before removing the functionality and we'll publish a detailed migration guide for all customers who still use the default tenant so that they can migrate to the multi-tenancy feature.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Prior to Kestra 0.22, `tenants.enabled` was by default set to `false` and `defaultTenant` was set to `true`. Starting from Kestra 0.22, `tenants.enabled` is set to `true` and `defaultTenant` is set to `false` by default.
-::
+:::
 
 ## How to keep the default tenant for now
 

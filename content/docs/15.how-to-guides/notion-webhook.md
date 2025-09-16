@@ -57,7 +57,7 @@ tasks:
     type: io.kestra.plugin.notion.page.Read
     apiToken: "{{ secret('NOTION_API_KEY') }}"
     pageId: "{{ trigger.body.entity.id }}"
-  
+
   - id: send_slack_alert
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
@@ -69,9 +69,9 @@ triggers:
     key: my-notion-product-alert-key # Replace with a secure key
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Replace `my-notion-product-alert-key` with a secure, randomly generated key. Consider storing this as a [secret](../05.concepts/04.secret.md) or [key-value pair](../05.concepts/05.kv-store.md) for better security.
-::
+:::
 
 ## Configure Notion webhooks
 
@@ -192,9 +192,9 @@ tasks:
         messageText: "New task assigned!"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Keep in mind that the above examples are additional tasks to add to the flow and not standalone flows. You need to add `id` and `namespace` properties to execute them standalone.
-::
+:::
 
 ## Security considerations
 

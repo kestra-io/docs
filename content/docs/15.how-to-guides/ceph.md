@@ -1,5 +1,5 @@
 ---
-title: Configure Local Ceph Storage for Kestra via MinIO Gateway  
+title: Configure Local Ceph Storage for Kestra via MinIO Gateway
 icon: /docs/icons/ceph.svg
 stage: Intermediate
 topics:
@@ -7,14 +7,14 @@ topics:
 - Object Storage
 ---
 
-This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).  
+This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).
 MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as its object storage.
 
 ---
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This guide is intended for **local testing only**. It sets up a single-node Ceph cluster using `cephadm` and exposes it via MinIO in gateway mode. This configuration is **not suitable for production** use.
-::
+:::
 
 ## Install `cephadm`
 
@@ -97,9 +97,9 @@ Then deploy RGW on that hostname (e.g., `kestra`):
 sudo cephadm shell -- ceph orch apply rgw default kestra
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The second argument **must match your system's hostname**. Using `default` or a wrong name will result in an `Unknown hosts` error.
-::
+:::
 
 Verify RGW is running:
 

@@ -60,7 +60,7 @@ In short, **Kestra’s declarative-first mentality drove us to create an orchest
 
 ## Conclusion
 
-By sticking to a declarative-first philosophy from day one, we ensured that Kestra could fulfill that vision without being held back by legacy constraints. 
+By sticking to a declarative-first philosophy from day one, we ensured that Kestra could fulfill that vision without being held back by legacy constraints.
 
 Being declarative-first turned out to be a *future-proof* decision. The tech stack is constantly evolving, but because Kestra is agnostic to languages and environments, it evolves right along with it. New cloud service? There’s likely a plugin for that (or you can create one). More stakeholders needing insight into pipelines? They can jump into the UI and collaborate safely. Larger workloads or real-time events? Kestra’s event-driven, scalable architecture is ready to handle it – no retrofitting needed. Other platforms are now racing to add “declarative” capabilities because the industry recognizes the need for them. Kestra doesn’t have to race; we’ve been running this track from the start.
 
@@ -68,8 +68,8 @@ In practical terms, this means data engineers and platform engineers can rely on
 
 **Kestra is orchestration done right, from the start.** If you’re ready to embrace a declarative, flexible, and universal approach to orchestrating your data and processes, Kestra is here – with a purple welcome screen inviting you to create your first flow. Dive into our documentation and see for yourself why a declarative-first orchestrator makes all the difference.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

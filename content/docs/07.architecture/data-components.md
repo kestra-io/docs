@@ -7,13 +7,13 @@ Understand where different data components ([inputs](../04.workflow-components/0
 
 ## Overview
 
-Kestra processes and stores various data components, including [flow definitions](../04.workflow-components/01.flow.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding where these components are stored is beneficial for optimizing performance, configuring persistence, and integrating with external storage solutions. 
+Kestra processes and stores various data components, including [flow definitions](../04.workflow-components/01.flow.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding where these components are stored is beneficial for optimizing performance, configuring persistence, and integrating with external storage solutions.
 
 Kestra data is stored in either a [Repository](./01.main-components.md#repository), such as PostgreSQL, or [Internal Storage](./09.internal-storage.md), which by default is your local storage but can be configured to an [AWS S3](https://aws.amazon.com/s3/) bucket or [MinIO](https://min.io/).
 
-::alert{type="info"}
+:::alert{type="info"}
 You can read more about [Kestra's architecture](../07.architecture/03.deployment-architecture.md) and [Internal Storage](./09.internal-storage.md) in their dedicated documentation.
-::
+:::
 
 ## Data Storage Components
 
