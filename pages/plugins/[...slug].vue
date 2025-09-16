@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout">
-        <NavSideBar type="plugins" :navigation="navigation"/>
+        <NavSideBar type="plugins" :navigation="navigation" :slug="route.path"/>
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false }">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>

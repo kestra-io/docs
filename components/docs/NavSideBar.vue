@@ -13,7 +13,7 @@
             </button>
             <div class="ai-button-wrapper mb-2">
                 <button
-                    class="ai-button "
+                    class="ai-button"
                     title="Ask Kestra AI"
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
@@ -36,15 +36,17 @@
             </div>
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
-                    <RecursiveNavSidebar
-                        :parent-slug="'/' + type"
-                        :type="type"
-                        :items="items"
-                        :depth-level="1"
-                        :active-slug="activeSlug"
-                        :disabled-pages="disabledPages"
-                        :open="true"
-                    />
+                    <ul class="list-unstyled mb-0">
+                        <RecursiveNavSidebar
+                            v-for="item in items"
+                            :key="item.path"
+                            :parent-slug="'/' + type"
+                            :type="type"
+                            :item="item"
+                            :depth-level="1"
+                            :disabled-pages="disabledPages"
+                        />
+                    </ul>
                 </nav>
             </div>
         </div>
@@ -53,19 +55,24 @@
 
 </template>
 
-<script setup>
+<script lang="ts" setup>
+  import {computed, provide, ref, type PropType} from "vue";
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
-  import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+  import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "./RecursiveNavSidebar.vue";
+
   const props = defineProps({
         type: {
             type: String,
             required: true
         },
         navigation: {
-            type: Object,
+            type: Object as PropType<{children: NavigationItem[]}[]>,
         },
+        slug: {
+            type: String,
+        }
     })
 
     const disabledPages = [
@@ -74,9 +81,10 @@
         '/docs/terraform/resources'
     ]
 
-    const route = useRoute()
+    // provide activeSlug to all children
+    const activeSlug = ref<string>(props.slug ?? '')
+    provide(activeSlugInjectionKey, activeSlug)
 
-    const activeSlug = computed(() => route.path)
     const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
 
@@ -154,7 +162,8 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                padding: 6px 12px;
+                padding-right: 12px;
+                padding-left: 0;
                 min-width: 0;
             }
         }
