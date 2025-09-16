@@ -7,13 +7,15 @@ import vue from '@astrojs/vue';
 import remarkDirective from 'remark-directive';
 import remarkCustomElements from './utils/remark-custom-elements.mjs';
 
+import expressiveCode from 'astro-expressive-code';
+
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare({
     imageService: 'cloudflare'
   }),
 
-  integrations: [vue()],
+  integrations: [vue(), expressiveCode()],
   markdown: {
     remarkPlugins: [
       remarkDirective,
