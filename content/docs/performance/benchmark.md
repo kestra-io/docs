@@ -89,7 +89,7 @@ tasks:
 - At 250 executions/min (500 tasks/min), execution latency is approximately 200ms — similar to single execution time.
 - Kestra OSS (JDBC backend) sustains up to 1500 executions/min (3000 tasks/min) with an execution duration of less than 1s, which is what we could realistically target for such a workflow.
 - Kestra EE (Kafka backend) sustains up to 4000 executions/min (8000 tasks/min).
-- Kestra EE has a slightly higher latency as low throughput, but supports way higher throughput than Kestra OSS.
+- Kestra EE has a slightly higher latency due to low throughput, but supports way higher throughput than Kestra OSS.
 
 ## Benchmark 2 -- Complex flow
 
