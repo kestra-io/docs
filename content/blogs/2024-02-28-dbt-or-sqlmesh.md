@@ -82,9 +82,9 @@ SQLMesh introduces key improvements for managing SQL queries:
 
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
 
-::div
+<div>
 <iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-::
+</div>
 
 Here is a general feature comparison between dbt and SQLMesh:
 
