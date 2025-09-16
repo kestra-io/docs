@@ -1,16 +1,13 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import generateId from '../utils/generateId';
 
 export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md",
         base: "./content/docs",
-        generateId: ({ entry }) => entry === "index.md" ? "<index>" : entry
-            .replace(/\.md$/, '')
-            .replace(/^\d+\./, '')
-            .replace(/\/\d+\./g, '/')
-            .replace(/\/index$/, ''),
+        generateId,
     }),
     schema: z.object({
         title: z.string(),
