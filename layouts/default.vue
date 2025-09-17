@@ -29,7 +29,7 @@
             return $fetch(`${config.public.apiUrl}/banner-messages`);
         },
         {
-            clientMaxAge: 60 * 10,
+            clientMaxAge: 30, // cache on client for 30 seconds
             serverMaxAge: 60 * 10,
         }
     );
