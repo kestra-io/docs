@@ -180,7 +180,10 @@ const classes = computed(() => {
             height: 0;
         }
         &.ks-open{
-            height: calc-size(auto, size);
+            height: auto;
+            @supports (height: calc-size(auto, size)){
+                height: calc-size(auto, size);
+            }
         }
     }
     li {
