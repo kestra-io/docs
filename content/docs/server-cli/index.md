@@ -42,6 +42,11 @@ For more information on troubleshooting CLI options, see the dedicated [Troubles
 
 `./kestra server webserver`
 
+Or
+
+`./kestra server webserver --no-indexer` to start independently from the Indexer.
+
+
 ## Kestra standalone, all server components in one process
 
 `./kestra server standalone`
@@ -71,7 +76,7 @@ This server is a local development server. It will contain all server components
 
 Server components can run independently from each other. Each of them communicate through the database.
 
-Here is a example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
+Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
 
 ::collapse{title="Docker Compose Example"}
 ```yaml

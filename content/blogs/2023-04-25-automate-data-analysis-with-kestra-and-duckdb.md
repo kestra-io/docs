@@ -81,10 +81,10 @@ The final task, export_result, uses Kestra's CsvWriter plugin to convert the res
 
 ## Exploring Further with Kestra and DuckDB
 
-For those who are interested in exploring more about the capabilities and use cases of Kestra and DuckDB, the [Blueprints](https://demo.kestra.io/ui/blueprints/community?q=duck&page=1&selectedTag=35) provides valuable resources and pre-built workflows that you can use as a starting point for your own tasks.
+For those who are interested in exploring more about the capabilities and use cases of Kestra and DuckDB, the [Blueprints](/blueprints?q=duck) provides valuable resources and pre-built workflows that you can use as a starting point for your own tasks.
 
 ![duckdb blueprints](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/blueprints-DuckDB.png)
 
 If you are particularly interested in learning more about DuckDB and its various applications, you can check out this blog post: [DuckDB vs MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck). It provides a comprehensive comparison between DuckDB and its in-memory, shareable version, MotherDuck, and will give you further insights into how to use these tools effectively in your own data workflows.
 
-If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra). 
+If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).

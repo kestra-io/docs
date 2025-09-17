@@ -2,7 +2,7 @@
 title: Kestra 0.19.0 is here with a new Dashboard, Conditional Inputs, Backup & Restore, and In-App Docs
 description: This release makes your workflows more dynamic with Conditional Inputs, simplifies administrative tasks via Backup & Restore and System Flows, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra UI now supports 12 languages!
 date: 2024-10-01T17:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller
@@ -89,11 +89,11 @@ In the future, we plan to add more customization options allowing you to set cus
 ## System Flows
 
 System Flows are designed to handle periodically executed background operations that keep your platform running but are generally kept out of sight. These flows automate maintenance workflows, such as:
-1. Sending [alert notifications](https://kestra.io/blueprints/failure-alert-slack)
+1. Sending [alert notifications](/blueprints/failure-alert-slack)
 2. Creating automated support tickets when critical workflows fail
-3. [Purging logs](https://kestra.io/blueprints/purge) and removing old executions or internal storage files to save space
+3. [Purging logs](/blueprints/purge) and removing old executions or internal storage files to save space
 4. Syncing code from Git or pushing code to Git
-5. Automatically [releasing flows](https://kestra.io/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments.
+5. Automatically [releasing flows](/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments.
 
 We refer to these as **System Flows** because, by default, they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
@@ -336,7 +336,7 @@ variables:
 tasks:
   - id: send_approval_request
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: https://reqres.in/api/slack
+    url: https://kestra.io/api/mock
     payload: |
       {
         "channel": "#devops",
@@ -358,7 +358,7 @@ tasks:
 
   - id: approve
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/resources
+    uri: https://kestra.io/api/mock
     method: POST
     contentType: application/json
     body: "{{ inputs }}"
@@ -435,10 +435,12 @@ This configuration step is critical to ensure that Kestra EE operates correctly 
 ```yaml
 kestra:
   encryption:
-    secretKey: pleaseChangeThisSecret # ✅ mandatory!
+    secretKey: BASE64_ENCODED_STRING_OF_32_CHARCTERS # ✅ mandatory!
 ```
 
-The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `pleaseChangeThisSecret` with a secure, custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
+The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `BASE64_ENCODED_STRING_OF_32_CHARCTERS` with a secure, base64-encoded custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
+
+For more details, see the [Configuration article](../docs/configuration/index.md#encryption).
 
 If you want to use a separate secret for your JWT refresh token signature, you can **optionally** customize that as follows:
 
@@ -456,7 +458,6 @@ micronaut:
 In case you ever need to revoke a refresh token, it's easy to do with a simple `DELETE` request to `/users/{id}/refresh-token` — this can be useful in emergency situations, e.g., when you suspect your computer has been compromised.
 
 As always, if you have any questions or run into issues during the upgrade, our support team is here to help — just reach out via the Customer Portal or through your dedicated Slack channel.
-
 
 ### Keeping You Logged In
 

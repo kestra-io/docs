@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## How to upgrade Kestra
 
 To upgrade Kestra, follow these steps:
@@ -16,7 +20,8 @@ To upgrade Kestra, follow these steps:
 
 ## How to rollback Kestra to a previous version
 
-Soemtimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+Sometimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+
 1. Perform a database backup (optional but recommended)
 2. Stop all Kestra components
 3. Restore from a backup
@@ -24,9 +29,13 @@ Soemtimes you might need to downgrade Kestra to a previous version. Here are som
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
+::alert{type="warning"}
+We strongly recommend to avoid downgrading to a previous version if possible. To avoid any surprises, before upgrading, test out the newer version on a non-production environment to ensure expected functionality with your existing instance. If you must rollback, closely follow the recommended actions above.
+::
+
 ## Where you can find the release changelog
 
-You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](/blogs).
+You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level explanation of the changes, you can also check release [blog posts](/blogs).
 
 ## How to identify breaking changes in a release
 
@@ -36,9 +45,10 @@ Next to all bug fixes and enhancements, you can find a dedicated section called 
 ⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
 ::
 
-## How to minimise downtime when updating Kestra
+## How to minimize downtime when updating Kestra
 
 If running Kestra in separate components you should:
+
 - Stop the executors and the scheduler
 - Stop the workers - there is a graceful shutdown period to finish active jobs before closing the worker. This is set by default to be: `kestra.server.terminateGracePeriod = '5m'` but is adjustable in your [Kestra Configuration](../configuration/index.md).
   - If the job in progress is shorter than five minutes, then the worker will shutdown immediately when completed. If not, the task will be killed and restart when the worker is restarted.

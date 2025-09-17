@@ -1,234 +1,241 @@
 <template>
-    <div
-        :id="pathToId(parentSlug)"
-        :data-bs-parent="'#'+pathToId(parentSlug)"
-        class="accordion-collapse collapse"
-        :class="{show: isActiveOrExpanded({path: parentSlug, children: items})}"
-    >
-        <template v-for="item in items">
-            <ul class="list-unstyled mb-0">
-                <li v-if="item.isSection" class="section">
-                    {{ item.title }}
-                </li>
-                <li v-else :class="{['depth-' + depthLevel]: true}" >
-                    <NuxtLink
-                        v-if="isPage(item) && !item.hideSidebar"
-                        :class="getClass(item, depthLevel, false)"
-                        :href="item.path">
-                           {{ item.emoji }}
-                            {{ item.title }}
-                    </NuxtLink>
-                    <NuxtLink
-                        v-else-if="!item.hideSidebar"
-                        :class="getClass(item, depthLevel, true)"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#'+pathToId(item.path)"
-                        @click="toggleWithChildrenHandling(item.path)"
-                    >
-                            {{ item.emoji }}
-                            {{ item.title }}
-                    </NuxtLink>
-                    <template v-if="filterChildren(item).length > 0 && !item.hideSubMenus">
-                        <chevron-down
-                            v-if="isActiveOrExpanded(item)"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                        <chevron-right
-                            v-else
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            :data-bs-target="'#'+pathToId(item.path)"
-                            @click="toggleWithChildrenHandling(item.path)"
-                            role="button"
-                        />
-                    </template>
-                </li>
-                    <RecursiveNavSidebar
-                        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
-                        :ref="`childSideBar-${pathToId(item.path)}`"
-                        :items="filterChildren(item)"
-                        :depth-level="depthLevel+1"
-                        :active-slug="activeSlug"
-                        :parent-slug="item.path"
-                        :disabled-pages="disabledPages"
-                        :type="type"
-                    />
-            </ul>
+    <li v-if="item.isSection" class="section">
+        {{ item.title }}
+    </li>
+    <li v-else :class="{['depth-' + depthLevel]: true}" >
+        <a
+            v-if="isPage && !item.hideSidebar"
+            :class="classes"
+            :href="item.path"
+            @click="handleNavClick($event, item.path)"
+        >
+            {{ item.emoji }}
+            {{ item.title }}
+        </a>
+        <a
+            v-else-if="!item.hideSidebar"
+            class="disabled"
+            :class="classes"
+            @click="toggleWithChildrenHandling(item.path)"
+        >
+            {{ item.emoji }}
+            {{ item.title }}
+        </a>
+        <template v-if="filteredChildren.length > 0 && !item.hideSubMenus">
+            <ChevronDown
+                v-if="toggled"
+                class="accordion-button"
+                @click="toggleWithChildrenHandling(item.path)"
+                role="button"
+            />
+            <ChevronRight
+                v-else
+                class="accordion-button"
+                @click="toggleWithChildrenHandling(item.path)"
+                role="button"
+            />
         </template>
-    </div>
+    </li>
+    <ul
+        v-if="!item.hideSubMenus && filteredChildren.length > 0"
+        class="list-unstyled mb-0 accordion-collapse"
+        :class="['ks-collapse', {'ks-open': toggled}]"
+    >
+        <RecursiveNavSidebar
+            v-for="item in filteredChildren"
+            :ref="`childSideBar-${pathToId(item.path)}`"
+            :item="item"
+            :depth-level="depthLevel+1"
+            :parent-slug="item.path"
+            :disabled-pages="disabledPages"
+            :type="type"
+        />
+    </ul>
 </template>
+<script lang="ts">
+export const activeSlugInjectionKey = Symbol('activeSlug') as InjectionKey<Ref<string>>
+const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}`
+</script>
 
-<script>
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+<script setup lang="ts">
+import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref } from "vue"
+import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import { useSidebarScroll } from "../../composables/useSidebarScroll"
 
-    export default {
-        name: "RecursiveNavSidebar",
-        components: {
-            ChevronDown,
-            ChevronRight
-        },
-        props: {
-            items: {
-                type: Array,
-                required: true
-            },
-            depthLevel: {
-                type: Number,
-                required: true
-            },
-            activeSlug: {
-                type: String,
-                required: true
-            },
-            parentSlug: {
-                type: String,
-                required: true
-            },
-            disabledPages: {
-                type: Array,
-                required: false
-            },
-            type: {
-                type: String,
-                required: false
-            }
-        },
-        data: () => ({
-            toggled: [],
-        }),
-        mounted() {
-            this.$nextTick(() => {
-                const activeItem = document.querySelector('.bd-sidebar a.active');
-                if (activeItem) {
-                    activeItem.scrollIntoView({ behavior: 'instant', block: 'center' });
-                }
-            });
-        },
-        methods: {
-            toggleWithChildrenHandling(path) {
-                this.items.filter(i => i.path.startsWith(path))
-                    .forEach(i => {
-                        if (this.isActiveOrExpanded(i) || i.path === path) {
-                            this.$refs["childSideBar-" + this.pathToId(i.path)]?.[0]?.toggleWithChildrenHandling(i.path);
-                        }
+export interface NavigationItem {
+    isSection?: boolean;
+    isPage?: boolean;
+    path: string;
+    title: string;
+    hideSubMenus?: boolean;
+    hideSidebar?: boolean;
+    emoji?: string;
+    children?: NavigationItem[];
+}
 
-                        if (this.isActiveOrExpanded(i) && i.path !== path) {
-                            this.rawToggle(i.path);
-                        }
-                    });
+const props = defineProps<{
+    item: NavigationItem
+    depthLevel: number
+    parentSlug: string
+    disabledPages?: Array<string>
+    type?: string
+}>()
 
-                this.rawToggle(path);
-            },
-            rawToggle(path) {
-                if (this.toggled.includes(path)) {
-                    this.toggled = this.toggled.filter(p => p !== path);
-                } else {
-                    this.toggled.push(path);
-                }
-            },
-            pathToId(path) {
-                return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__");
-            },
-            filterChildren(item) {
-                return (item.children || []).filter(r => item.path !== r.path);
-            },
-            isActive(item) {
-                if (item.path.includes("#") && item.children?.some(c => this.isActive(c))) {
-                    return true;
-                }
+const activeSlug = inject(activeSlugInjectionKey, ref(''))
+const isActive = computed(() => normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)))
+const toggled = ref<boolean>(isActive.value)
 
-                return item.path.match(/[^/]*\.[^/]*$/) ? this.activeSlug === item.path : this.activeSlug.startsWith(item.path);
-            },
-            isActiveOrExpanded(item) {
-                if (this.isActive(item)) {
-                    return !this.toggled.includes(item.path);
-                }
+onMounted(() => {
+    const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
 
-                return this.toggled.includes(item.path);
-            },
-            isPage(item) {
-                if (item.isPage === false) {
-                    return false;
-                }
+    nextTick(() => {
+        const wasRestored = restoreScrollPosition()
 
-                if (this.disabledPages) {
-                    return !this.disabledPages.includes(item.path)
-                }
-
-                return item.isPage ?? true;
-            },
-            getClass(item, depthLevel, disabled) {
-                return {
-                    bold: depthLevel === 1,
-                    section: item.isSection,
-                    active: this.isActive(item),
-                    disabled: disabled
-                }
-            }
+        if (!wasRestored) {
+            scrollToActiveIfNeeded()
         }
+    })
+})
+
+const handleNavClick = (_event: Event, path: string) => {
+    activeSlug.value = path
+    const { preserveScrollPosition } = useSidebarScroll()
+    preserveScrollPosition()
+}
+
+const toggleWithChildrenHandling = (path: string) => {
+    props.item.children?.filter(i => i.path.startsWith(path))
+        .forEach(i => {
+            if (isActiveOrExpanded(i) || i.path === path) {
+                const childRef = document.querySelector(`#childSideBar-${pathToId(i.path)}`)
+                if (childRef && 'toggleWithChildrenHandling' in childRef) {
+                    (childRef as any).toggleWithChildrenHandling(i.path)
+                }
+            }
+
+            if (isActiveOrExpanded(i) && i.path !== path) {
+                toggled.value = true
+            }
+        })
+    toggled.value = !toggled.value
+}
+
+const pathToId = (path: string) => {
+    return path.replaceAll("/", '_').replaceAll(".", "-").replaceAll("#", "__")
+}
+
+const filterChildren = (item: NavigationItem) => {
+    return (item.children || []).filter((r: any) => item.path !== r.path)
+}
+
+const filteredChildren = computed(() => {
+    return filterChildren(props.item)
+})
+
+const isActiveOrExpanded = (item: NavigationItem) => {
+    if(item.isSection) {
+        return true
     }
+
+    return toggled.value
+}
+
+const isPage = computed(() => {
+    const item = props.item
+    if (item.isPage === false) {
+        return false
+    }
+
+    if (props.disabledPages) {
+        return !props.disabledPages.includes(item.path)
+    }
+
+    return item.isPage ?? true
+})
+
+const getClass = (item: any, depthLevel: number) => {
+    return {
+        bold: depthLevel === 1,
+        section: item.isSection,
+        active: isActive.value,
+    }
+}
+
+const classes = computed(() => {
+    return getClass(props.item, props.depthLevel)
+})
+
 </script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/_variable.scss";
 
-    .accordion-collapse {
-        li {
-            display: flex;
-            align-items: center;
-
-            .accordion-button {
-                width: 16px;
-
-                :deep(.material-design-icon__svg) {
-                    bottom: 0;
-                    color: $black-10;
-                }
+    .ks-collapse {
+        transition: height 0.2s ease-in-out;
+        transition-behavior: allow-discrete;
+        overflow: hidden;
+        height: 0;
+        @starting-style {
+            height: 0;
+        }
+        &.ks-open{
+            height: auto;
+            @supports (height: calc-size(auto, size)){
+                height: calc-size(auto, size);
             }
+        }
+    }
+    li {
+        display: flex;
+        align-items: center;
 
-            @for $i from 0 through 6 {
-                &.depth-#{$i} {
-                    a {
-                        padding-left: calc(.5rem * ($i));
-                    }
-                }
+        .accordion-button {
+            width: 16px;
+
+            :deep(.material-design-icon__svg) {
+                bottom: 0;
+                color: $black-10;
             }
+        }
 
-            a {
-                color: $white-1;
-                font-size: $font-size-sm;
-                padding: calc($spacer / 2);
-                display: flex;
-
-                &.active {
-                    font-weight: 500;
-                }
-
-                &:hover, &.active {
-                    color: $purple !important;
-                }
-
-                &.disabled {
-                    cursor: pointer;
-                }
-            }
-
-            &.depth-1 {
+        @for $i from 0 through 6 {
+            &.depth-#{$i} {
                 a {
-                    padding-left: 0.25rem;
-                    border-left: 0;
-                    color: $white-1;
+                    padding-left: calc(.5rem * ($i));
                 }
             }
+        }
 
-            &:not(.depth-1) a {
-                font-size: $font-size-sm;
+        a {
+            color: $white-1;
+            font-size: $font-size-sm;
+            padding: calc($spacer / 2);
+            display: flex;
+
+            &.active {
+                font-weight: 500;
             }
+
+            &:hover, &.active {
+                color: $purple !important;
+            }
+
+            &.disabled {
+                cursor: pointer;
+            }
+        }
+
+        &.depth-1 {
+            a {
+                padding-left: 0.25rem;
+                border-left: 0;
+                color: $white-1;
+            }
+        }
+
+        &:not(.depth-1) a {
+            font-size: $font-size-sm;
         }
     }
 

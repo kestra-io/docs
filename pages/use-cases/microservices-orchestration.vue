@@ -6,10 +6,10 @@
         </Head>
 
         <UseCasesEngineersHeader
-            titleHtml="Microservices  <br> Orchestration"
+            titleHtml="Microservices <br> Orchestration"
             description="Automate, orchestrate, and Optimize Your Microservices."
             imageSrc="/landing/usecases/microservices-orchestration/header-hero.svg"
-            imageAlt="Microservices"
+            imageAlt="Kestra HTTP"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
@@ -39,7 +39,7 @@
                 title="Ready to take your Infrastructure to the next level ?"
                 purpleButtonText="Get Started"
                 purpleButtonHref="/docs/getting-started/quickstart"
-                darkButtonText="Get a demo"
+                darkButtonText="Talk to us"
                 darkButtonHref="/demo"
             />
         </NuxtLazyHydrate>

@@ -11,7 +11,7 @@
                                 Get Started
                             </NuxtLink>
                             <a href="/demo"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                                Get a demo
+                                Talk to us
                             </a>
                         </div>
                     </div>

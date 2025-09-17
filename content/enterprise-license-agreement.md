@@ -10,7 +10,8 @@ description: Review our Enterprise agreement
 
 # **SOFTWARE LICENSE AGREEMENT**
 
-## **TERMS & CONDITIONS**
+
+**TERMS & CONDITIONS**
 
 This software license agreement (the “Agreement”) is between Kestra Technologies, a French simplified joint stock company (“Kestra,” “we,” “us,” or “our”) and the legal entity identified in the Order (“You”). This Agreement sets forth the terms and conditions that govern order(s) placed by You under the Agreement.
 
@@ -75,6 +76,7 @@ You are not permitted to:
 - Use the Solution to provide third party training on the content and/or functionality of the Solution, except for training your licensed Users;
 - Cause or permit reverse engineering (unless required by law for interoperability), disassembly or decompilation of the Solution;
 - disclose results of any Solution benchmark tests without KESTRA’s prior written consent.
+
 2. **Purpose of the License**
 
 The Solution will be used by You for the purpose of its use as mentioned in Appendix 1 and the applicable Order.
@@ -152,14 +154,15 @@ In particular, You shall be responsible for:
 - carrying out updates of the Solution in accordance with the terms of the Appendix 1;
 - ensuring at all times that Your infrastructures take into account the conditions of use of the Solution and, where applicable, take the necessary measures to ensure that Your computer infrastructure is compatible with the requirements mentioned in the terms of the installation of the Solution ;
 - having qualified and trained personnel available to use the Solution, in order to use it in accordance with the instructions provided by KESTRA.
-1. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
+
+2. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
 2. You are solely responsible for the use of the Solution by You and your Users.
 3. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
 4. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
 
 You warrant against any misuse, non-compliant or illicit use that Users may make of the Solution, in particular against infringement of the laws and regulations in force. You are thus exclusively responsible for putting in place all procedures intended to prevent or remedy the commission of such acts.
 
-2. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
+5. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
 
 You warrant to KESTRA that it has all necessary rights and permissions to distribute such Content. You undertake to ensure that such Content is lawful, does not infringe public order, public morality or third party rights, does not violate any legislative or regulatory provision and, more generally, is in no way likely to give rise to civil or criminal liability on the part of KESTRA.
 
@@ -339,7 +342,7 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **Official KESTRA Plugins:** Open-source software under the Apache license, whose sources are available at the following address: [https://github.com/KESTRA-io](https://github.com/kestra-io), which adds connectivity features to the Community Edition or Enterprise Edition (hereinafter referred to as "**Official Plugins**").
 
-**Statistics Report:** KESTRA, using the license key, automatically generates precise statistics reports, including open source usage trackers plus enterprise usages tracker (numbers of groups, numbers of Tenants, number of namespaces, number of roles, each user with hashed username and number of authorisation). KESTRA warrants that these statistics reports are completely anonymized and will not contain any of your personal data (email of users). All personal data will be hashed (irreversible encryption based on MD5) and securely transmitted from instance to KESTRA servers by HTTPS protocol on server https://api.KESTRA.io .
+**Statistics Report: KESTRA, using the license key, automatically generates precise statistics reports, including open source usage trackers plus enterprise usages tracker (numbers of groups, numbers of Tenants, number of namespaces, number of roles, numbers of user, ...). KESTRA warrants that these statistics reports are completely anonymized and will not contain any of your personal data. All data will be securely transmitted from instance to KESTRA servers by HTTPS protocol on server https://api.KESTRA.io .
 
 **“Tenant”** allows a single instance of Kestra to support and serve multiple independent groups of users, known as tenants. Each tenant has its own isolated data, configurations, and user access rights, but they all share the same underlying infrastructure and codebase.
 

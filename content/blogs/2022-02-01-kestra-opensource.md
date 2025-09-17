@@ -1,8 +1,8 @@
 ---
-title: "Introducing Kestra first public release :tada:"
+title: "Introducing Kestra first public release 🎉"
 description: Today, our team is proud to announce a first public release of Kestra — an open-source platform to orchestrate and schedule any kind of workflow at scale.
 date: 2022-02-01T10:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Ludovic Dehon
   image: "ldehon"

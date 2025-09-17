@@ -6,7 +6,7 @@
         </Head>
 
         <UseCasesEngineersHeader
-            titleHtml="Databases  <br> Management"
+            titleHtml="Databases <br> Management"
             description="Automate  your database management tasks within the development pipeline using Kestra."
             imageSrc="/landing/usecases/databases/header-hero.svg"
             imageAlt="Databases"
@@ -39,7 +39,7 @@
                 title="Ready to take your Infrastructure to the next level?"
                 purpleButtonText="Get Started"
                 purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
-                darkButtonText="Get a demo"
+                darkButtonText="Talk to us"
                 darkButtonHref="/demo"
             />
         </NuxtLazyHydrate>

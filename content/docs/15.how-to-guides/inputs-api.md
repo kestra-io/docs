@@ -41,7 +41,7 @@ namespace: company.team
 tasks:
   - id: basic_auth_api
     type: io.kestra.plugin.core.http.Request
-    uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
+    uri: http://host.docker.internal:8080/api/v1/main/executions/dev/inputs_demo
     method: POST
     contentType: multipart/form-data
     formData:
@@ -58,7 +58,7 @@ namespace: company.team
 tasks:
   - id: basic_auth_api
     type: io.kestra.plugin.core.http.Request
-    uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
+    uri: http://host.docker.internal:8080/api/v1/main/executions/dev/inputs_demo
     options:
       basicAuthUser: admin
       basicAuthPassword: admin

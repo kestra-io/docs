@@ -29,7 +29,7 @@ Requests can send or request data, with common methods known as GET, POST, PUT a
 | PUT | Used to replace data on a server |
 | DELETE | Used to delete data on a server |
 
-There are many other request methods too, which you can read more about on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+There are many other request methods too, which you can read more about on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods).
 
 When you make a request, you will receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_responses) from the server with the answer. We can use this answer with Kestra to create powerful automations. However first, let's understand a bit more about what makes up a request!
 
@@ -50,11 +50,11 @@ A few common ones you might have seen include:
 - 404: Not Found - Request reached the server but the resource wasn't found. A common one you see when you go to a page on a website that doesn't exist.
 - 500: Internal Server Error - Request reached the server but the server was unable to process it. Usually means the server has thrown an error.
 
-You can read the full list of status codes on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+You can read the full list of status codes on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 
 ### Headers
 
-Each request also has a set of Request Headers which can provide additional information for the request, such as what client the user is using, as well as the type of content that sent with our request. You can read more about HTTP Headers on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/) The response will also have headers following the same structure.
+Each request also has a set of Request Headers which can provide additional information for the request, such as what client the user is using, as well as the type of content that sent with our request. You can read more about HTTP Headers on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/). The response will also have headers following the same structure.
 
 ### Body
 
@@ -105,7 +105,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request)
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request).
 
 ### GET Request
 
@@ -139,7 +139,7 @@ However if we want to view the outputs from tasks without needing to use Log tas
 
 ![http_get_outputs](/docs/how-to-guides/http/http_get_outputs.png)
 
-Here, we are using the [Debug Outputs](../04.workflow-components/06.outputs.md#using-render-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
+Here, we are using the [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
 
 ### POST Request
 
@@ -177,10 +177,10 @@ tasks:
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
 ::alert{type="info"}
-If your body message input is multiple lines, the best practice is to use a pebble expression to converst to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../expressions/index.md#expressions-faq).
+If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../expressions/index.md#expressions-faq).
 ::
 
-When we execute this as a `POST` request, this is the response we receive using the same Debug Outputs option in the Outputs page:
+When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:
 
 ![http_post_outputs](/docs/how-to-guides/http/http_post_outputs.png)
 

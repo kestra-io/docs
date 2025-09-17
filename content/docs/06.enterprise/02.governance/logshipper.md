@@ -13,7 +13,7 @@ Manage and distribute logs across your entire infrastructure.
 
 ## Log Shipper functionality
 
-Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization queries logs and automatically batches them into optimal chunks. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers reliable, consistent log batches to your monitoring platform.
+Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
 Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
 
@@ -21,7 +21,7 @@ Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can inte
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
-- `logExporters` - This property is required, and it specifies the plaform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
+- `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. With `INFO`, all log levels `INFO` and above (`WARNING` and `ERROR`) are batched. If you only want logs that are warnings or errors, then you can set this property to `WARNING` and so on.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
 - `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
@@ -44,7 +44,7 @@ tasks:
     offsetKey: logShipperOffset
     logExporters:
       - id: awsCloudWatch
-        type: io.kestra.plugin.ee.aws.LogExporter
+        type: io.kestra.plugin.ee.aws.cloudwatch.LogExporter
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
         region: us-east-1
@@ -53,12 +53,12 @@ tasks:
         chunk: 5000
 
       - id: googleOperationalSuite
-        type: io.kestra.plugin.ee.gcp.LogExporter
+        type: io.kestra.plugin.ee.gcp.gcs.LogExporter
         projectId: my-gcp-project
         chunk: 2000
 
       - id: azureMonitor
-        type: io.kestra.plugin.ee.azure.LogExporter
+        type: io.kestra.plugin.ee.azure.monitor.LogExporter
         endpoint: https://endpoint-host.ingest.monitor.azure.com
         tenantId: "{{ secret('AZURE_TENANT_ID') }}"
         clientId: "{{ secret('AZURE_CLIENT_ID') }}"
@@ -89,11 +89,11 @@ flowchart TD
 
 ## Log Shipper examples
 
-The Log Shipper integrates with many popular observability platforms. Below are a coupe of example flows using a Kestra core plugin as well as external platform plugins.
+The Log Shipper integrates with many popular observability platforms. Below are a couple of example flows using a Kestra core plugin as well as external platform plugins.
 
 ### Kestra `FileLogExporter`
 
-The following example uses Kestra's core `FileLogExporter` plugin to sychronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file `uri` is passed as an expression in the `upload` task to then upload the logs to an S3 bucket.
+The following example uses Kestra's core `FileLogExporter` plugin to synchronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file `uri` is passed as an expression in the `upload` task to then upload the logs to an S3 bucket.
 
 ```yaml
 id: log_shipper_file
@@ -110,6 +110,8 @@ tasks:
     logExporters:
       - id: file
         type: io.kestra.plugin.ee.core.log.FileLogExporter
+        format: JSON # default ION
+        maxLinesPerFile: 100
 
   - id: upload
     type: io.kestra.plugin.aws.s3.Upload
@@ -288,7 +290,7 @@ tasks:
     delete: false
     logExporters:
       - id: azureMonitor
-        type: io.kestra.plugin.ee.azure.LogExporter
+        type: io.kestra.plugin.ee.azure.monitor.LogExporter
         endpoint: https://endpoint-host.ingest.monitor.azure.com
         tenantId: "{{ secret('AZURE_TENANT_ID') }}"
         clientId: "{{ secret('AZURE_CLIENT_ID') }}"
@@ -299,7 +301,7 @@ tasks:
 
 ### Azure Blob Storage
 
-This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/). The following example flow triggers a daily batch and export to Azure Blog Storage:
+This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/). The following example flow triggers a daily batch and export to Azure Blob Storage:
 
 ```yaml
 id: log_shipper
@@ -480,7 +482,7 @@ The Audit Log Shipper uses the following properties similar to the execution Log
 - `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
 - `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
 - `offsetKey` - Specifies the [key](../../05.concepts/05.kv-store.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
-- `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra's database right after they are successfully exported, helping optimize storage space for logs that have already been exported and thus no longer need to occupy space in Kestra's metadata database. By default, this property is set to `false`.
+- `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra’s database immediately after successful export, helping optimize storage by removing logs that no longer need to reside in Kestra’s metadata store. By default, this property is set to `false`.
 
 The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
 

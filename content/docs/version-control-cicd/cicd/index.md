@@ -107,7 +107,6 @@ tasks:
         description: "Validate flows from Git before deploying them."
         taskRunner:
           type: io.kestra.plugin.core.runner.Process
-        warningOnStdErr: false
         commands:
           - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
 
@@ -116,7 +115,6 @@ tasks:
         description: "Deply flows to a Kestra namespace."
         taskRunner:
           type: io.kestra.plugin.core.runner.Process
-        warningOnStdErr: false
         commands:
           - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
           - /app/kestra flow namespace update prod.marketing flows/prod.marketing/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
@@ -142,7 +140,7 @@ Select "Add webhook":
 Paste Kestra's webhook URL into the *Payload URL* field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
 ```bash
-https://kestra_host_url/api/v1/executions/webhook/namespace/flow_id/webhook_key
+https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook_key
 ```
 
 ![github_webhook_2](/docs/developer-guide/ci-cd/github_webhook_2.png)
@@ -241,6 +239,8 @@ jobs:
           apiToken: ${{secrets.KESTRA_API_TOKEN}}
           delete: false
 ```
+
+::
 
 
 ### Deploy flows from a GitLab CI/CD

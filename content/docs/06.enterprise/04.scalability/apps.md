@@ -103,11 +103,33 @@ Then, add your app configuration to create a form that requests compute resource
 
 ---
 
+## Creating Apps No Code
+
+Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
+
+![Apps No Code](/docs/enterprise/apps/app-no-code.png)
+
+---
+
 ## App Catalog
 
 The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.
 
 ![apps_catalog](/docs/enterprise/apps/apps_catalog.png)
+
+Kestra provides a direct access URL to the Apps Catalog via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`. This URL can be accessed by any Kestra user who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
+
+The catalog page requires authentication, so the Apps Catalog is never publicly accessible. It displays all Apps by default—if you want to exclude some from being shown in the catalog, add `access.catalog: true` to your App configuration. The users only see the Apps they are allowed to see based on their RBAC permissions—for example, you can limit some apps only to specific groups of users by defining the `group` property in your App as follows:
+
+
+```yaml
+access: 
+  catalog: true
+  type: PRIVATE
+  groups:
+    - Admins
+```
+
 
 ---
 

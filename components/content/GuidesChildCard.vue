@@ -23,7 +23,7 @@
             />
         </div>
         <div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
-            <Magnify />
+            <Magnify class="magnify-icon" />
             <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
         </div>
         <div class="col-xl-auto col-md-6 pb-3 pb-xl-0">
@@ -248,19 +248,21 @@
             position: relative;
             .magnify-icon {
                 position: absolute;
-                top: calc(2rem / 2 - 8px);
-                left: 30px;
-                color: $white;
-                width: 16px;
-                height: 16px;
+                top: 50%;
+                left: 18px;
+                transform: translateY(-55%);
+                color: $white-3;
+                font-size: 1.25rem;
+                z-index: 1;
+                pointer-events: none;
             }
             .form-control {
                 border-color: $black-3;
-                height:  2rem;
+                height: 2rem;
                 padding-left: 2rem;
                 color: $white;
                 &::placeholder {
-                    color: $white;
+                    color: $white-3;
                     font-size: $font-size-sm !important;
                 }
             }

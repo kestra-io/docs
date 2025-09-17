@@ -10,10 +10,6 @@ The following diagram shows the main components of Kestra using the JDBC backend
 
 ![Kestra JDBC Architecture](/docs/architecture/jdbc.png "Kestra Architecture")
 
-::alert{type="info"}
-While it's not captured in the diagram above, the JDBC backend in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) also supports Microsoft SQL Server starting from Kestra 0.18.0.
-::
-
 Here are the components and their interactions:
 
 1. **JDBC Backend**: the data storage layer used for orchestration metadata
@@ -31,8 +27,9 @@ Here are the components and their interactions:
    - **External Services**: third-party APIs or services outside of Kestra which Workers might interact with to process data within a given task
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
-(../api-reference/index.md)
-For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) and [Microsoft SQL Server JDBC Driver](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver16) can provide an encrypted connection with some configuration.
+
+For either database backend, the respective [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/documentation/ssl/#configuring-the-client) can provide an encrypted connection with some configuration.
+
 
 ### Scalability with JDBC
 
@@ -74,7 +71,7 @@ This architecture is designed to provide the enhanced scalability, high availabi
 
 ### Scalability with Kafka and Elasticsearch
 
-Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to ensure fault tolerance, distribute the load and maintain system performance as demand increases. 
+Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to ensure fault tolerance, distribute the load and maintain system performance as demand increases.
 
 Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
 

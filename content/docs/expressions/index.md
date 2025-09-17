@@ -23,7 +23,7 @@ Flows, tasks, executions, triggers, and schedules come with built-in expressions
 - `{{ inputs.myinput }}` retrieves an input value passed to the execution
 - `{{ outputs.mytask.myoutput }}` fetches a task's output.
 
-To debug expressions, use the **Debug Outputs** console as demonstrated in the video below:
+To debug expressions, use the **Debug Expression** console as demonstrated in the video below:
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/SPGmXSJN3VE?si=rCoWNDEq14LYvPdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -49,7 +49,7 @@ The execution context includes these variables:
 - `globals` — global variables.
 
 ::alert{type="info"}
-To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Outputs console.
+To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Expression console.
 ![printContext](/docs/expressions/printContext.png)
 ::
 
@@ -124,9 +124,9 @@ Use the `date` filter to format the `execution.startDate` variable as `yyyy-MM-d
 
 ### Environment Variables
 
-Kestra provides access to environment variables prefixed with `KESTRA_` by default, unless configured otherwise in the `variables` [configuration](../configuration/index.md).
+Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the `variables` [configuration](../configuration/index.md).
 
-To use an environment variable, such as `KESTRA_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `KESTRA_` prefix and converting the remainder to **lowercase**.
+To use an environment variable, such as `ENV_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `ENV_` prefix and converting the remainder to **lowercase**.
 
 To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
 
@@ -910,10 +910,11 @@ The `split` filter divides a string into a list based on a delimiter.
 ```
 
 **Arguments**:
-- `delimiter`: the string to split on.
+- `delimiter`: the regex to split on. Escape special characters (e.g. `split('\\.')`)
 - `limit`: limits the number of splits:
   - **Positive**: limits the array size, with the last entry containing the remaining content.
-  - **Zero or negative**: no limit on splits.
+  - **Zero**: no limit on splits, trailing empty strings will be discarded.
+  - **Negative**: no limit on splits, trailing empty strings will be included.
 
 ```twig
 {{ 'apple,banana,cherry,grape' | split(',', 2) }}
@@ -1258,6 +1259,20 @@ The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ---
 
+### timestampMilli
+
+The `timestampMilli` filter converts a date to a Unix timestamp in milliseconds.
+
+```twig
+{{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
+# output: 1720505821135
+```
+
+**Arguments**:
+- Same as `timestamp`.
+
+---
+
 ### timestampNano
 
 The `timestampNano` filter converts a date to a Unix timestamp in nanoseconds.
@@ -1290,6 +1305,7 @@ tasks:
       - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
       - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
       - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"
       - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
 ```
 
@@ -1302,6 +1318,7 @@ Previous day: 2024-07-08T06:17:01.174686Z
 Next day: 2024-07-10T06:17:01.176138Z
 Timezone (seconds): 1720505821
 Timezone (microseconds): 1720505821000180275
+Timezone (milliseconds): 1720505821135
 Timezone (nanoseconds): 1720505821182413000
 ```
 
@@ -1434,7 +1451,7 @@ tasks:
 errors:
   - id: alert
     type: io.kestra.plugin.core.log.Log
-    message: list of error logs — {{ errorLogs() }}>
+    message: list of error logs — {{ errorLogs() }}
 ```
 
 ---
@@ -1730,7 +1747,7 @@ tasks:
   - id: download
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
-  
+
   - id: fileSize
     type: io.kestra.plugin.core.log.Log
     message: "The file size is {{ fileSize(output.download.uri) }}"
@@ -1765,6 +1782,72 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "Is the file empty? {{ fileEmpty(output.download.uri) }}"
 ```
+
+### tasksWithState
+
+The `tasksWithState` function returns a map of tasks and their states.
+
+Used in the following flow:
+
+```yaml
+id: error_logs_demo
+namespace: company.team
+
+tasks:
+  - id: fail
+    type: io.kestra.plugin.core.execution.Fail
+    errorMessage: Something went wrong, make sure to fix it asap ⚠️
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.core.log.Log
+    message: List of tasks that failed - {{ tasksWithState('failed') }}
+```
+
+will produce the following return:
+
+```json
+[{"state":"FAILED","taskId":"fail"}]
+```
+
+### http
+
+With the HTTP function, you can fetch from an external API directly
+
+```yaml
+inputs:
+  - id: category
+    type: SELECT
+    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
+```
+
+### isIn
+
+Returns true if the value on the left is present in the list on the right. Useful for conditions such as `runIf`.
+
+```yaml
+id: expression_example
+namespace: company.team
+
+sla:
+  - id: exceed_2_seconds
+    type: MAX_DURATION
+    duration: PT2S
+    behavior: CANCEL
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT1M
+
+afterExecution:
+  - id: alert
+    type: io.kestra.plugin.core.log.Log
+    message: "{{execution.state}}"
+    runIf: "{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}"
+```
+
+The value on the left (`execution.state`) is in the list on the right (`CANCELLED`).
 
 ---
 
@@ -1826,7 +1909,7 @@ Example:
 
 ### contains
 
-The `contains` operator checks if an item exists within a collection, map, or array.
+The `contains` operator checks if an item exists within a collection, string, map, or array.
 
 Examples:
 
@@ -1850,6 +1933,10 @@ To check multiple items:
 {% if ["apple", "pear", "banana", "peach"] contains ["apple", "peach"] %}
 	...
 {% endif %}
+```
+
+```yaml
+message: "substring is present in the main string: {{ inputs.mainString contains inputs.subString }}"
 ```
 
 ---
@@ -2285,7 +2372,7 @@ Checks if an integer is odd.
 
 
 ::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
-In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters. 
+In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters.
 
 Here is a working example showing the recommended pattern:
 
@@ -2311,17 +2398,17 @@ inputs:
 tasks:
   - id: hello
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/test-request
+    uri: https://kestra.io/api/mock
     method: POST
     body: |
       {{ {
         "title": inputs.title,
         "message": inputs.message,
         "priority": inputs.priority
-      } }}    
+      } }}
 ```
 
-You can also explicitly leverage the `toJson` filter at the end of the expression e.g. `{{ {'message':  inputs.message} | toJson }}`. 
+You can also explicitly leverage the `toJson` filter at the end of the expression e.g. `{{ {'message':  inputs.message} | toJson }}`.
 
 Here is an example usage in a flow:
 
@@ -2347,14 +2434,14 @@ inputs:
 tasks:
   - id: hello
     type: io.kestra.plugin.core.http.Request
-    uri: https://reqres.in/api/test-request
+    uri: https://kestra.io/api/mock
     method: POST
     body: |
       {{ {
         "title": inputs.title,
         "message": inputs.message,
         "priority": inputs.priority
-      } | toJson }}  
+      } | toJson }}
 ```
 
 ::

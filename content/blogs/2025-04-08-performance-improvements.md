@@ -69,11 +69,11 @@ For more details, you can have a look at this pull request: [PR #6777](https://g
 
 ### Improvements to Flowable Task Executions
 
-When the Kestra Executor executes an execution, it can handle two types of tasks: 
-- **runnable tasks** that are sent to the Worker for processing. 
+When the Kestra Executor executes an execution, it can handle two types of tasks:
+- **runnable tasks** that are sent to the Worker for processing.
 - **flowable tasks** that are executed directly inside the Executor (e.g., loops, conditionals).
 
-Previously, flowable task processing created a Worker Task Result (to mimic a task execution from the Worker) and sent it to the Worker Task Result queue so it would go inside the queue and be re-processed later by the Executor. 
+Previously, flowable task processing created a Worker Task Result (to mimic a task execution from the Worker) and sent it to the Worker Task Result queue so it would go inside the queue and be re-processed later by the Executor.
 
 With Kestra 0.22, flowable tasks are no longer queued for later processing but handled immediately, eliminating unnecessary queue operations and reducing execution latency.
 

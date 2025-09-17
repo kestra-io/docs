@@ -96,7 +96,7 @@
                                     href="/demo"
                                     class="btn text-white btn-animated btn-purple-animated mt-2"
                                 >
-                                    Get a demo
+                                    Talk to us
                                 </NuxtLink>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
       }
     });
 
-    const {data} = await useAsyncData('stories', () => {
+    const {data} = await useAsyncData(`useCases/stories/${route.params.id}`, () => {
         return $fetch(`${config.public.apiUrl}/customer-stories-v2/${route.params.id}`)
     })
 

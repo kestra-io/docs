@@ -1,153 +1,38 @@
 <template>
     <section class="main-header">
-        <div class="hero container">
+        <div class="hero">
             <div class="text-block">
                 <h1>
-                    Powerful orchestration.
-                    Simplified workflows.
+                    Declarative. Agentic. AI-Native.
                 </h1>
-                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, and from the UI.</p>
-                <div class="buttons">
-                    <NuxtLink
-                        href="/docs/getting-started/quickstart#start-kestra"
-                        class="btn btn-lg btn-primary me-3 mb-2"
-                    >
-                        Get Started!
-                    </NuxtLink>
+                <p>A new era for orchestration.</p>
+                <div class="row buttons px-3 px-md-0">
+                    <div class="col-12 col-md-6">
+                        <NuxtLink
+                            href="/1-0"
+                            class="btn btn-lg btn-primary me-md-3 mb-3 d-block d-md-inline"
+                        >
+                            Explore Kestra 1.0
+                        </NuxtLink>
+                    </div>
 
-                    <NuxtLink
-                        href="/demo"
-                        class="btn btn-lg btn-secondary mb-2"
-                        target="_blank"
-                    >
-                        Talk to us
-                    </NuxtLink>
+                    <div class="col-12 col-md-6">
+                        <NuxtLink
+                            href="/demo"
+                            class="btn btn-lg btn-secondary mb-3 d-block d-md-inline"
+                            target="_blank"
+                        >
+                            Book a Demo
+                        </NuxtLink>
+                    </div>
 
                 </div>
             </div>
-            <div class="img-block">
-                <a
-                    href="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
-                    class="homepage-video"
-                    data-bs-toggle="modal"
-                    data-bs-target="#home-intro"
-                >
-                    <div>
-                        <PlayCircleOutlineIcon class="play-icon"/>
-                        Kestra in 60 seconds
-                    </div>
-                    <NuxtImg
-                        src="/landing/home/video60sec.gif"
-                        alt="video"
-                        height="90"
-                        width="162"
-                    />
-                </a>
-                <NuxtImg
-                    v-if="isMobile"
-                    height="720"
-                    loading="lazy"
-                    src="/landing/home/homepage.png"
-                    alt="homepage"
-                    class="homepage-image"
-                />
-                <canvas v-else ref="canvas" height="1520" width="2000" :class="{
-                    loading: !riveLoaded,
-                }"/>
-            </div>
+
         </div>
     </section>
-    <div
-        v-on="{
-            'show.bs.modal': () => (videoVisible = true),
-            'hidden.bs.modal': () => (videoVisible = false),
-        }"
-        class="modal modal-full fade"
-        id="home-intro"
-        tabindex="-1"
-        aria-labelledby="home-intro"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="video-responsive">
-                        <iframe
-                            v-if="videoVisible"
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </template>
-
-<script setup lang="ts">
-    import { ref, onMounted } from "vue";
-    import { useMediaQuery } from "@vueuse/core";
-    import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
-
-    const isMobile = useMediaQuery('(max-width: 768px)')
-
-    import { Rive } from "@rive-app/canvas";
-
-    const videoVisible = ref(false)
-    const canvas = ref<HTMLCanvasElement>()
-
-    const riveAnimation = ref()
-    const riveLoaded = ref(false)
-
-    function setupRiveAnimation(){
-        if(!canvas.value) return
-        const anim = new Rive({
-            src: "/landing/home/homepage.riv",
-            canvas: canvas.value,
-            autoplay: true,
-            stateMachines: "kestra",
-            isTouchScrollEnabled: true,
-            onLoad: () => {
-                riveLoaded.value = true
-                anim.resizeDrawingSurfaceToCanvas();
-            },
-        });
-        riveAnimation.value = anim
-    }
-
-    onMounted(() => {
-        if(!isMobile.value){
-            setupRiveAnimation()
-        }
-    })
-    function cleanupRiveAnimation(){
-        try{
-            riveAnimation.value?.cleanup();
-        }catch(e){
-            // eat the error
-        }
-        riveAnimation.value = undefined
-    }
-
-    watch(isMobile, (newVal) => {
-        if(newVal){
-            cleanupRiveAnimation()
-        }else{
-            nextTick(() => {
-                setupRiveAnimation();
-            })
-        }
-    })
-
-    onUnmounted(() => {
-        cleanupRiveAnimation();
-    })
-</script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
@@ -171,13 +56,21 @@
             flex-direction: column;
             width: 100%;
             align-items: center;
-            gap: $spacer;
         }
 
         .hero {
+            background: #08090d url("/landing/home/bg-1.0.jpg") no-repeat center top;
+            height: 887px;
             padding-bottom: 2rem;
+
             padding-top: 5rem;
             position: relative;
+            @include media-breakpoint-down(sm) {
+                margin-top: 48px;
+                background: #08090d url("/landing/home/bg-1.0-mobile.png") no-repeat center 70px;
+                background-size: contain;
+                height: 687px;
+            }
         }
 
         h1 {
@@ -185,32 +78,29 @@
             text-align: center;
             max-width: 100%;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 2.25rem;
             padding: 0;
-            margin-top: 2rem;
+            margin-top: 28rem;
             margin-bottom: 0;
-            @include media-breakpoint-up(lg) {
-                font-size: 3rem;
-                margin: 0;
-                max-width: 800px;
-                font-size: 3.875rem;
-                line-height: 1.2em;
+            text-transform: uppercase;
+            @include media-breakpoint-down(sm) {
+                margin-top: 55%;
+                font-size: 1.5rem;
             }
         }
 
         p {
             max-width: fit-content;
             text-align: center;
-            font-weight: 400;
-            color: #B9B9BA;
+            font-weight: 300;
+            font-style: italic;
+            text-transform: uppercase;
+            color: white;
             text-wrap: balance;
-            margin: 0;
-            margin-top: .5rem;
-            font-size: .9rem;
-            @include media-breakpoint-up(lg) {
-                text-wrap: wrap;
-                width: 600px;
-                font-size: 1.2rem;
+            font-size: 1.5rem;
+
+            @include media-breakpoint-down(sm) {
+                font-size: 0.85rem;
             }
         }
 
@@ -220,121 +110,12 @@
             white-space: nowrap;
         }
 
-        .companies {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 4rem !important;
-        }
-
-        .companies-title {
-            position: relative;
-
-            &:after {
-                content: "";
-                position: absolute;
-                left: 50%;
-                bottom: -1rem;
-                transform: translateX(-50%);
-                display: inline-block;
-                height: 2px;
-                width: 51px;
-                background: var(--bs-pink);
-            }
-        }
-
         @include media-breakpoint-down(lg) {
             .hero {
                 padding-top: 6rem;
                 padding-bottom: 0;
                 .text-block {
                     margin-bottom: 0;
-                }
-            }
-        }
-
-        .img-block
-        {
-            .homepage-video {
-                position: absolute;
-                top: 30px;
-                left: 50%;
-                transform: translateX(-50%);
-                @include media-breakpoint-up(lg) {
-                    top: -70px;
-                    transform: none;
-                    right: 0;
-                    left: auto;
-                }
-                z-index: 10;
-                padding: 0;
-                overflow: hidden;
-                border: 1px solid #5818D8;
-                border-radius: 1rem;
-                color: white;
-                height: 90px;
-                background-color: #5818D8;
-                > div {
-                    position: absolute;
-                    text-align: center;
-                    display: flex;
-                    width: 100%;
-                    height: 100%;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: column;
-                    font-size: 13px;;
-                    .play-icon{
-                        margin: .5rem;
-                        font-size: 32px;
-                    }
-                }
-            }
-            position: relative;
-            display: flex;
-            justify-content: center;
-            .homepage-image{
-                display: none;
-            }
-            @include media-breakpoint-down(md) {
-                position: relative;
-                justify-content: flex-start;
-                height: 360px;
-                overflow: hidden;
-                width: 100vw;
-                canvas {
-                    display: none;
-                }
-                .homepage-image{
-                    display: block;
-                    height: 400px;
-                    margin-top: 75px;
-                    position: relative;
-                    width: 900px;
-                    left: -50px;
-                    margin-bottom: 100px;
-                }
-            }
-
-            canvas {
-                width: 2000px;
-                margin-top: -700px;
-                margin-bottom: -200px;
-                background-image: url("/landing/home/homepage.png");
-                background-position: 237px 596px;
-                background-size: 1600px;
-                background-repeat: no-repeat;
-            }
-
-            canvas.loading{
-                opacity: .5;
-            }
-        }
-
-        :deep(.companies-container) {
-            max-width: unset;
-            .companies-list-container {
-                &:before,
-                &:after {
-                    content: none;
                 }
             }
         }

@@ -6,13 +6,13 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-  role: 
+  role:
 image: /blogs/kestra-over-databricks-workflows.jpg
 ---
 
 Databricks offers a robust platform for big data processing and machine learning. Yet we’ve all encountered the challenges that come with managing its workflows and clusters. These challenges aren’t about what Databricks can do, but more about the increasingly complex data ecosystems driving up costs or adding operational overhead.
 
-Many Kestra users  are using our orchestration capabilities for Databricks. Let’s see how Kestra can overtake the misses from Databricks workflows. 
+Many Kestra users  are using our orchestration capabilities for Databricks. Let’s see how Kestra can overtake the misses from Databricks workflows.
 
 ---
 

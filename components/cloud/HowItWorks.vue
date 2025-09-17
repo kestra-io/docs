@@ -22,22 +22,22 @@ const columns = [
     {
         title: "Request Access",
         description:
-            "Complete our short form to request your spot in the program.",
+            "Fill out a short form to request your 30-day access and pick a meeting slot with our solution team.",
     },
     {
-        title: "Selection & Scheduling",
+        title: "Region & Setup",
         description:
-            "Our team selects qualified participants and schedules a brief call with you.",
+            "We’ll speak about your requirements and set up your Kestra Cloud instance.",
     },
     {
-        title: "Validation Call",
+        title: "Get Started",
         description:
-            "We'll confirm your participation and outline the details and conditions of your exclusive access.",
+            "Your instance is ready, start building and running workflows.",
     },
     {
-        title: "Setup & Launch",
+        title: "30 Days Free",
         description:
-            "We provision your Kestra Cloud instance so you can start orchestrating workflows immediately.",
+            "Explore Kestra Cloud with full access for 30 days.",
     },
     {
         title: "Feedback & Next Steps",

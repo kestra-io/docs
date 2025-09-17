@@ -231,7 +231,7 @@ services:
             local:
               basePath: "/app/storage"
           tutorial-flows:
-            enabled: false 
+            enabled: false
           plugins:
             defaults:
               - type: io.kestra.plugin.jdbc.postgresql
@@ -259,6 +259,6 @@ services:
 
 For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
 
-::alert{type=info}
+::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
 ::

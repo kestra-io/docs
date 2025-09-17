@@ -24,7 +24,7 @@ Access page in the UI).
 ## Roles and Bindings
 
 A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups.\
-Theses permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
+These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
 e.g., `CREATE`).
 
 ::collapse{title="More information"}
@@ -37,7 +37,7 @@ This Binding grants the permissions defined by that Role to the User, Service Ac
 
 A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a Role attached to the `prod` namespace automatically grants access to the `prod.engineering` namespace as well.
 
-Note that you can [configure a default role](../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
+Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
 ::
@@ -58,16 +58,19 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `AUDITLOG`
 - `SECRET`
 - `BLUEPRINT`
-- `INFRASTRUCTURE`
 - `IMPERSONATE`
 - `SETTING`
 - `APP`
 - `APPEXECUTION`
 - `ME`
 - `APITOKEN`
+- `SERVICE_ACCOUNT`
+- `INVITATION`
+- `TENANT_ACCESS`
+- `GROUP_MEMBERSHIP`
 
 ::alert{type="warning"}
-The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, make sure to update any custom roles with these permissions as needed by the users. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../11.migration-guide/0.24.0/endpoint-changes.md#rbac-updates)
 ::
 
 ### Actions
@@ -142,6 +145,12 @@ kestra auths users create <username> <password> \
 --tenant=<tenant-id> --superadmin
 ```
 
+To set or revoke Super Admin privileges, use the following in the CLI:
+
+```bash
+kestra auths users set-superadmin user@email.com true # (use false to revoke)
+```
+
 #### Through the Configuration
 
 A Super Admin can also be created from the configuration file using the configuration below:
@@ -178,10 +187,10 @@ To set an existing User with a Super Admin privilege from the [CLI](../../ee-ser
 
 ```bash
 # Set a user as Super Admin
-kestra auths users set-type admin@kestra.io SUPER_ADMIN
+kestra auths users set-superadmin admin@kestra.io true
 
 # Revoke Super Admin privilege
-kestra auths users set-type admin@kestra.io STANDARD
+kestra auths users set-superadmin admin@kestra.io false
 ```
 
 ::
@@ -236,7 +245,7 @@ Note that these entities don’t belong to namespaces, but their permissions can
 ::collapse{title="How to bind a role to a User, a Service Accounts or a Group?"}
 Once you have created your first role. You can attach that role to an entity through the Access page. You can also limit that Role to one or more namespaces.
 
-The following example show the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
+The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
 ::alert{type="info"}
@@ -253,16 +262,19 @@ There is no limit to the number of Roles that can be bound to an entity. They ca
 By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
-security:
-  login:
-    failed-attempts:
-      threshold: 10
-      monitoring-window: PT5M
-      lock-duration: PT30M
+kestra:
+  security:
+    login:
+      failed-attempts:
+        threshold: 10
+        monitoring-window: PT5M
+        lock-duration: PT30M
 ```
+
 The key attributes are:
+
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
-- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Superadmin can unlock the user manually by resetting their password from the user's detail page.
+- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Super Admin can unlock the user manually by resetting their password from the user's detail page.
 - `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
@@ -283,38 +295,46 @@ To add users to your Kestra instance, you can do one of the following:
 
 #### Change password
 
-If a user wants to change their password, they can do it on their profile. This page can be accessed through the person icon in top right corner of the UI.
+If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
+
 ::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
 ::
 
 #### Reset password (by a Super Admin)
 
-Kestra does not provide any "forgot password" feature yet. Currently only a super admin can update a user password through its User Edit page.
+Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **Users**.
+
+![Reset Password](/docs/enterprise/forgot-password.png)
+
+![Superadmin Change Password](/docs/enterprise/create-user-password.png)
 
 ### Groups
 
-Each `Group` is a collection of `Users` or `Service Accounts`.
+Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 
+- Each `Owner` can add users to a group without being a Kestra Admin.
 - Each `User` can be assigned to zero, one, or more `Groups`.
 - Each `Service Account` can also be assigned to zero, one, or more `Groups`.
 
-Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
+![Group Owner](/docs/enterprise/group-owner.png)
+
+Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group. Users with the `GROUP_MEMBERSHIP` permission can add members to groups and change their membership type.
 
 #### What happens if you delete a Group?
 
-All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However Users and Services Accounts will still exist.
+All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
 
 ## RBAC FAQ
 
 ::collapse{title="Why is Admin a Role rather than User type?"}
 
-Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
+The Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
 grant multiple users with admin permissions if needed, and you can revoke only specific admin permissions at any time
 without having to delete the user.
 
-Admin roles can be assumed by multiple users or groups, and some user may be later granted a lower or a higher
-permission boundary. In the same way, some user may initially be an Admin but then their permission may be revoked. The
+Admin roles can be assumed by multiple users or groups, and some user may later be granted a lower or a higher
+permission boundary. In the same way, some users may initially be Admins but then their permission may be revoked. The
 Admin role enables all these patterns in a flexible way.
 
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you

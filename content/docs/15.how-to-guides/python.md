@@ -27,7 +27,7 @@ Managing Python Dependencies can be frustrating. There's 3 ways you can manage y
 
 For more information, check out the [dedicated guide here](./python-dependencies.md).
 
-## Script
+## Script Task
 
 If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
 
@@ -45,7 +45,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     script: |
       import requests
 
@@ -61,7 +60,43 @@ tasks:
       downloads = get_docker_image_downloads()
 ```
 
-## Commands
+You can also include expressions directly inside of your Python code too. In this example, an input is used inside of the Python method:
+
+```yaml
+id: python_scripts_expression_input
+namespace: company.team
+
+description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
+
+inputs:
+  - id: image_name
+    type: STRING
+    defaults: kestra/kestra
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    script: |
+      import requests
+
+      def get_docker_image_downloads():
+          """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+          url = f"https://hub.docker.com/v2/repositories/{{ inputs.image_name }}/"
+          response = requests.get(url)
+          data = response.json()
+
+          downloads = data.get('pull_count', 'Not available')
+          return downloads
+
+      downloads = get_docker_image_downloads()
+```
+
+## Commands Task
 
 If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
 
@@ -79,7 +114,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     beforeCommands:
       - pip install requests
     commands:
@@ -150,7 +184,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     beforeCommands:
       - pip install requests kestra
     commands:
@@ -181,7 +214,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    warningOnStdErr: false
     outputFiles:
       - downloads.txt
     script: |
@@ -231,7 +263,6 @@ tasks:
   - id: python_logger
     type: io.kestra.plugin.scripts.python.Script
     allowFailure: true
-    warningOnStdErr: false
     script: |
       import time
       from kestra import Kestra
@@ -406,4 +437,30 @@ triggers:
     maxKeys: 1
 ```
 
+
+## Execute GraalVM Task
+
+Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
+- [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
+
+In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
+
+```yaml
+id: parse_json_data
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: http://xkcd.com/info.0.json
+
+  - id: graal
+    type: io.kestra.plugin.graalvm.python.Eval
+    outputs:
+      - data
+    script: |
+      data = {{ read(outputs.download.uri) }}
+      data["next_month"] = int(data["month"]) + 1
+```
 

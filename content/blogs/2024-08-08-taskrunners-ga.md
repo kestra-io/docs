@@ -2,7 +2,7 @@
 title: Task Runners are now Generally Available and Ready to Handle Your Most Demanding Workflows
 description: Run your code anywhere with dynamically-provisioned resources.
 date: 2024-08-08T13:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller
@@ -41,7 +41,7 @@ Task Runners empower you with **fine-grained resource allocation**, ensuring tha
 
 Thanks to the built-in documentation and autocompletion, building workflows with Task Runners is easy and fast. When you add a specific `taskRunner` to your workflow in the Code Editor, its documentation appears on the right side of the screen, providing immediate access to all available properties and usage examples. Additionally, the syntax validation helps you gain confidence that your task runner configuration is correct before you run it.
 
-To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws-batch-terraform-git) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
+To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](/blueprints/aws-batch-terraform-git) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
 
 ![task_runner_blueprints](/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
 
@@ -65,7 +65,7 @@ Check the video below summarizing the key benefits of Task Runners.
 
 Embrace the scalability of dynamically-provisioned resources with Task Runners, now fully equipped to handle your most demanding data processing workflows.
 
-To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](https://kestra.io/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
+To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/N-Bq-TWqxiw?si=2u4_xmm2vLivKLPO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

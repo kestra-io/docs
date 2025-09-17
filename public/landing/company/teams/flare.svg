@@ -1,0 +1,11 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g style="mix-blend-mode:color-dodge">
+<g clip-path="url(#paint0_diamond_16676_25243_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0 -0.0244874 0.0244874 0 24.9706 25.4735)"><rect x="0" y="0" width="1058.71" height="1058.71" fill="url(#paint0_diamond_16676_25243)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="1058.71" height="1058.71" transform="scale(1 -1)" fill="url(#paint0_diamond_16676_25243)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="1058.71" height="1058.71" transform="scale(-1 1)" fill="url(#paint0_diamond_16676_25243)" opacity="1" shape-rendering="crispEdges"/><rect x="0" y="0" width="1058.71" height="1058.71" transform="scale(-1)" fill="url(#paint0_diamond_16676_25243)" opacity="1" shape-rendering="crispEdges"/></g></g><path d="M0.483185 25.4735C0.483185 11.9495 11.4466 0.986115 24.9706 0.986115C38.4946 0.986115 49.458 11.9495 49.458 25.4735C49.458 38.9976 38.4946 49.9609 24.9706 49.9609C11.4466 49.9609 0.483185 38.9976 0.483185 25.4735Z" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_DIAMOND&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:1.0},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.0,&#34;g&#34;:0.0,&#34;b&#34;:0.0,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[],&#34;transform&#34;:{&#34;m00&#34;:-2.8019434319632509e-16,&#34;m01&#34;:48.974822998046875,&#34;m02&#34;:0.4831848144531250,&#34;m10&#34;:-48.974822998046875,&#34;m11&#34;:-2.8019434319632509e-16,&#34;m12&#34;:49.96093750},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+</g>
+<defs>
+<clipPath id="paint0_diamond_16676_25243_clip_path"><path d="M0.483185 25.4735C0.483185 11.9495 11.4466 0.986115 24.9706 0.986115C38.4946 0.986115 49.458 11.9495 49.458 25.4735C49.458 38.9976 38.4946 49.9609 24.9706 49.9609C11.4466 49.9609 0.483185 38.9976 0.483185 25.4735Z"/></clipPath><linearGradient id="paint0_diamond_16676_25243" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1"/>
+</linearGradient>
+</defs>
+</svg>

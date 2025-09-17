@@ -2,7 +2,7 @@
 title: "Kestra 0.12 simplifies building modular, event-driven and containerized workflows"
 description: "Kestra 0.12.0 is now available, featuring an enhanced subflow UX, allowing you to zoom in and out across modular workflows and their logs. With the new Docker and AWS EventBridge integration, you can automate any process across platforms and programming languages."
 date: 2023-09-28T14:00:00
-category: News & Products Updates
+category: News & Product Updates
 author:
   name: Anna Geller
   image: "ageller"
@@ -87,7 +87,7 @@ This integration allows you to:
 
 With this integration, you can seamlessly incorporate serverless functions as part of an end-to-end workflow and orchestrate microservices running on AWS along with on-prem and cloud-native applications and data pipelines.
 
-The following example from [a Blueprint library](https://demo.kestra.io/ui/blueprints/community/126) shows how you can trigger multiple AWS Lambda functions in parallel:
+The following example from [a Blueprint library](/blueprints/aws-lambda) shows how you can trigger multiple AWS Lambda functions in parallel:
 
 ```yaml
 id: aws_lambda
@@ -145,7 +145,7 @@ tasks:
           message: this could be any event
 ```
 
-The [following Blueprint](https://demo.kestra.io/ui/blueprints/community/135) demonstrates additional ways of sending custom events to the AWS event bus using the `PutEvents` task.
+The [following Blueprint](/blueprints/aws-event-bridge) demonstrates additional ways of sending custom events to the AWS event bus using the `PutEvents` task.
 
 ---
 
@@ -156,7 +156,7 @@ Amazon Kinesis Data Streams is a massively scalable and durable real-time data s
 The new `PutRecords` task lets you send data to Amazon Kinesis Data Streams. This way, you can build end-to-end workflows that extract data from various sources, transform it, and load it to Kinesis for (near) real-time analytics use cases such as anomaly detection, dynamic pricing, and many more.
 
 
-The [following Blueprint example](https://demo.kestra.io/ui/blueprints/community/137) shows how you can orchestrate near-real-time applications using the `PutRecords` task. Here is a simple example:
+The [following Blueprint example](/blueprints/aws-kinesis-json) shows how you can orchestrate near-real-time applications using the `PutRecords` task. Here is a simple example:
 
 ```yaml
 id: aws_kinesis

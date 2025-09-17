@@ -11,20 +11,29 @@ export default defineNuxtConfig({
         'vue3-carousel-nuxt',
         'nuxt-lazy-hydrate',
         'nuxt-aos',
-        '@zadigetvoltaire/nuxt-gtm',
+        '@saslavik/nuxt-gtm',
         '@nuxtjs/sitemap',
         '@nuxtjs/robots',
         '@nuxt/content',
+        "nitro-cloudflare-dev",
     ],
-    target: 'static',
     image: {
-        formats: {
-            webp: {
-                quality: 80
-            }
+        dir: 'public',
+        provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
+        format: ['webp', 'avif', 'png'],
+        cloudflare: {
+            modifiers: {
+                format: 'webp'
+            },
         },
+        ipx: {
+            modifiers: {
+                format: 'webp'
+            },
+        },
+        quality: 80,
         densities: [1, 2],
-        domains: ['kestra.io']
+        domains: ['kestra.io', '*.kestra-io.pages.dev'],
     },
     sitemap: {
         sitemaps: {
@@ -105,6 +114,13 @@ export default defineNuxtConfig({
         }
     },
     vite: {
+        server: {
+            fs: {
+                allow: [
+                    "../ui-libs"
+                ]
+            }
+        },
         build: {
             rollupOptions: {
                 external: [
@@ -148,6 +164,9 @@ export default defineNuxtConfig({
         public: {
             siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
             apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
+            currentSHA: (process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_COMMIT_SHA && process.env.CF_PAGES_BRANCH === 'main')
+                ? process.env.CF_PAGES_COMMIT_SHA
+                : 'dev',
             docs: {
                 sections: {
                     "Get Started with Kestra": [
@@ -162,6 +181,7 @@ export default defineNuxtConfig({
                         "Concepts",
                         "Workflow Components",
                         "Multi-Language Script Tasks",
+                        "AI Tools",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -174,7 +194,8 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Migration Guide"
+                        "Migration Guide",
+                        "Performance"
                     ],
                     "Reference Docs": [
                         "Configuration",
@@ -194,6 +215,18 @@ export default defineNuxtConfig({
     },
 
     nitro: {
+        storage: {
+            kv: {
+                driver: "cloudflare-kv-binding",
+                binding: "CLOUDFLARE_KVSTORAGE"
+            }
+        },
+        devStorage: {
+            kv: {
+                driver: "fs",
+                base: './.data/db'
+            }
+        },
         prerender: {
             routes: [
                 '/rss.xml',
@@ -304,6 +337,7 @@ export default defineNuxtConfig({
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/docs/enterprise/kestra-identity': {redirect: '/docs/brand-assets'},
+        '/docs/scripts/runners': {redirect: '/docs/scripts/task-runners'},
         '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
@@ -311,6 +345,15 @@ export default defineNuxtConfig({
         '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
         '/docs/workflow-components/tasks/scripts': {redirect: '/docs/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
+        '/trust': {redirect: 'https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604'},
+        '/docs/ui/administration/stats': {redirect: '/docs/ui/administration/system-overview'},
+        '/docs/architecture/executor': {redirect: '/docs/architecture/server-components#executor'},
+        '/docs/architecture/worker': {redirect: '/docs/architecture/server-components#worker'},
+        '/docs/architecture/scheduler': {redirect: '/docs/architecture/server-components#scheduler'},
+        '/docs/architecture/indexer': {redirect: '/docs/architecture/server-components#indexer'},
+        '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'},
+        '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
+
     },
 
     build: {
@@ -337,8 +380,9 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
+        disableCacheOverviewLogMessage: true,
         data: {
-            enabled: process.env.NUXT_CACHE_ENABLED !== 'false',
+            enabled: true,
         },
     },
 
@@ -352,6 +396,8 @@ export default defineNuxtConfig({
             enabled: true
         }
     },
+
+
 
     compatibilityDate: '2024-07-16'
 })

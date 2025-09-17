@@ -38,11 +38,11 @@ and, with the default configuration, an email alert is sent to the account used 
 
 ### Sentry Registration
 
-Registration is quick and easy - you don’t have to choose a plan at this time, Sentry automatically gives everyone a 14-day trial of the Business Plan. During registration, you will be asked to **create an initial project** and an SDK for your preferred tech. A particular SDK is not needed to use Kestra, but you do need one to move forward with Sentry. 
+Registration is quick and easy - you don’t have to choose a plan at this time, Sentry automatically gives everyone a 14-day trial of the Business Plan. During registration, you will be asked to **create an initial project** and an SDK for your preferred tech. A particular SDK is not needed to use Kestra, but you do need one to move forward with Sentry.
 
 ![sentry registration](/blogs/2024-01-08-sentry-plugin/sentry_00_choose_sdk_dotnet.png)
 
-Choose one of the middleware technologies as these make it easy to find your **Sentry Client Keys**, aka Data Source Name or **DSN**. Your Kestra flows will need the DSN in order to POST issues to Sentry, 
+Choose one of the middleware technologies as these make it easy to find your **Sentry Client Keys**, aka Data Source Name or **DSN**. Your Kestra flows will need the DSN in order to POST issues to Sentry,
 
 Each project has its own DSN, which can be found by clicking on **Settings**, then **Project Settings**, then the **Client Keys** (DSN) link toward the bottom of the menu:
 
@@ -129,7 +129,7 @@ tasks:
           "Flow ID": "{{ flow.id }}",
           "Execution ID": "{{ execution.id }}",
           "Link": "http://localhost:8080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-        }      
+        }
       }
 ```
 
@@ -172,7 +172,7 @@ Sentry provides the **extra** property where you can add values as needed. That 
   "Flow ID": "{{ flow.id }}",
   "Execution ID": "{{ execution.id }}",
   "Link": "http://localhost:8080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-}     
+}
 ```
 
 The **Link** key-value pair of the extras property in the example above is particularly useful. It will appear on the issue detail page and is conveniently clickable:
@@ -197,12 +197,12 @@ Finally, after you executed the flow, navigate to the logs from the Logs or Gant
 
 ### SentryAlert Example
 
-This flow, [Purge execution data including logs, metrics and outputs on a schedule](https://demo.kestra.io/ui/blueprints/community/202). This flow will purge all execution data older than 1 month, including logs, metrics, and outputs. On success or failure, an issue will be sent to Sentry. It demonstrates the minimal use of the payload property:
+This flow, [Purge execution data including logs, metrics and outputs on a schedule](/blueprints/purge). This flow will purge all execution data older than 1 month, including logs, metrics, and outputs. On success or failure, an issue will be sent to Sentry. It demonstrates the minimal use of the payload property:
 
 ```yaml
 id: purge_storage
 namespace: company.team
-description: Based on https://demo.kestra.io/ui/blueprints/community/202
+description: Based on /blueprints/purge
 
 tasks:
   - id: clean_up_storage
@@ -265,7 +265,7 @@ namespace: company.payroll
 
 Now we create a fourth flow using the SentryExecution task that will be triggered when any flow with the **company.payroll** namespace fails. This flow has two parts, the task and the trigger.
 
-The task is straightforward. All you need to provide is the **DSN** and the **Level**: 
+The task is straightforward. All you need to provide is the **DSN** and the **Level**:
 
 ```yaml
 tasks:
@@ -277,7 +277,7 @@ tasks:
   level: ERROR
 ```
 
-The trigger is only slightly more involved: it needs two pieces of information: the condition that will trigger this flow, and the namespace that Kestra will use to link all four flows together. 
+The trigger is only slightly more involved: it needs two pieces of information: the condition that will trigger this flow, and the namespace that Kestra will use to link all four flows together.
 
 ```yaml
 triggers:
@@ -293,7 +293,7 @@ triggers:
         prefix: false
 ```
 
-In the YAML above, the `ExecutionStatus` says that any time the execution status is either `FAILED` or `WARNING`, and the `ExecutionNamespace` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.  
+In the YAML above, the `ExecutionStatus` says that any time the execution status is either `FAILED` or `WARNING`, and the `ExecutionNamespace` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.
 
 In pseudo-code, the entire flow might read like this:
 
@@ -320,7 +320,7 @@ Here’s a full set:
 id: task_to_trigger_another_trigger
 namespace: company.team
 description: |
-  This flow will always fail. When it does, the sentry_execution_example flow 
+  This flow will always fail. When it does, the sentry_execution_example flow
 will be triggered.
 tasks:
   - id: say_hello
@@ -334,7 +334,7 @@ tasks:
 ```yaml
 id: sentry_execution_example
 namespace: company.team
-description: Waits for another flow with the namespace specified below to fail or 
+description: Waits for another flow with the namespace specified below to fail or
 warn, and then sends a Sentry issue.
 tasks:
 - id: send_alert
@@ -353,7 +353,7 @@ triggers:
           - WARNING
       - type: io.kestra.plugin.core.condition.ExecutionNamespace
         namespace: company.payroll
-        prefix: false        
+        prefix: false
  # namespace must match exactly
 ```
 
@@ -376,7 +376,7 @@ triggers:
     "Flow ID": "task_to_trigger_another_trigger",
     "Execution ID": "7SHVIjFA6jTEJdRrs9xPWJ",
     "Execution Status": "FAILED",
-    "Link": 
+    "Link":
 "http://localhost:8090/ui/executions/trig/task_to_trigger_another_trigger/
 7SHVIjFA6jTEJdRrs9xPWJ"
   },
@@ -421,7 +421,7 @@ namespace: company.team
 description: Generate an error so we can send a SentryAlert
 errors:
   - id: log_msg_on_err
-    type: io.kestra.plugin.core.log.Log    
+    type: io.kestra.plugin.core.log.Log
     message: "Something bad happened while running {{execution.id}} {{task.id}}"
   - id: send_sentry_alert_on_failure
     type: io.kestra.plugin.notifications.sentry.SentryAlert
@@ -441,7 +441,7 @@ errors:
           "Flow ID": "{{ flow.id }}",
           "Execution ID": "{{ execution.id }}",
           "Link": "http://localhost:8080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-        }      
+        }
       }
 
 tasks:
@@ -470,7 +470,7 @@ pluginDefaults:
       username: "{{ secret('PG_USERNAM') }}"
       password: "{{ secret('PG_PWD') }}"
       url: jdbc:postgresql://{{vars.db_host}}:5432/{{ vars.db_name}}
-     
+
 ```
 
 ### `SentryExecution` Production Example
@@ -541,9 +541,9 @@ triggers:
 
 ## Summing up Kestra and Sentry Integration
 
-After you’ve tried the examples above in your own environment, you’ll see how easy it is for business or technical users to add Sentry.io monitoring and alerting. From dev to production, whatever the size of your shop, Kestra and Sentry help create issues from workflows, successes or failures, but tracking them throughout any of your issues’ lifecycle stages. Together, Kestra and Sentry are fully capable of delivering enterprise-grade workflow automation and end-to-end observability. 
+After you’ve tried the examples above in your own environment, you’ll see how easy it is for business or technical users to add Sentry.io monitoring and alerting. From dev to production, whatever the size of your shop, Kestra and Sentry help create issues from workflows, successes or failures, but tracking them throughout any of your issues’ lifecycle stages. Together, Kestra and Sentry are fully capable of delivering enterprise-grade workflow automation and end-to-end observability.
 
-Kestra provides dashboards and metrics directly in the UI, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](https://kestra.io/docs/administrator-guide/monitoring) or in our [Notification Blueprints](https://kestra.io/blueprints?page=1&size=24&tags=17).
+Kestra provides dashboards and metrics directly in the UI, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](https://kestra.io/docs/administrator-guide/monitoring) or in our [Notification Blueprints](/blueprints?page=1&size=24&tags=17).
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 

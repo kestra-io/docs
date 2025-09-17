@@ -140,7 +140,7 @@
             <CustomDetails title="How can I get access to the Kestra Enterprise Edition?">
                 <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank"
                                                                                                     href="/slack">Slack
-                    channel</a> or <a target="_blank" href="/demo">book a demo</a>. We will provide you with the
+                    channel</a> or <a target="_blank" href="/demo">Talk to us</a>. We will provide you with the
                     necessary information and guide you through the process of setting up the Enterprise Edition.</p>
             </CustomDetails>
             <CustomDetails title="Are there additional costs associated with the Enterprise Edition?">
@@ -204,75 +204,85 @@
 
 
 <style scoped lang="scss">
-    @import "../assets/styles/variable";
+@import "../assets/styles/variable";
 
-    .header-container {
-        padding-top: 6rem;
-        background: url("/landing/careers/bg.svg") no-repeat bottom;
-        margin-bottom: 3.125rem;
-        .header {
-            padding-bottom: calc($spacer * 4.125);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+.header-container {
+    padding-top: 6rem;
+    background: url("/landing/careers/bg.svg") no-repeat bottom;
+    margin-bottom: 3.125rem;
+    .header {
+        padding-bottom: calc($spacer * 4.125);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 
-            h1 {
-                color: $white;
-                text-align: center;
-                font-weight: 300;
-                margin-bottom: 0;
-                font-size: $font-size-4xl;
-
-                @include media-breakpoint-down(sm) {
-                    font-size: 1.875rem !important;
-                }
-
-                span {
-                    background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-            }
-        }
-
-    }
-
-    h2 {
-        margin: 2.5rem 0;
-        color: $white;
-        font-size: $h2-font-size;
-        font-weight: 300;
-    }
-
-    :deep(details) {
-        box-shadow: none!important;
-        border: $block-border!important;
-        background-color: $black-2!important;
-        @include media-breakpoint-down(sm) {
-            padding-left: calc($spacer * 0.2);
-            padding-right: calc($spacer * 0.2);
-        }
-
-        summary h3 {
+        h1 {
             color: $white;
-            font-size: $h6-font-size;
-            font-weight: 700;
+            text-align: center;
+            font-weight: 300;
+            margin-bottom: 0;
+            font-size: $font-size-4xl;
+
             @include media-breakpoint-down(sm) {
-                font-size: $font-size-md!important;
+                font-size: 1.875rem !important;
             }
-        }
 
-        span {
-            color: $white;
-        }
-
-        div {
-            border-left-color: $purple-35;
-
-           ul > li,
-           ol > li,
-           p {
-                color: $white;
+            span {
+                background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
         }
     }
+}
+
+h2 {
+    margin: 2.5rem 0;
+    color: $white;
+    font-size: $h2-font-size;
+    font-weight: 300;
+}
+
+/* ✅ Force all text in the page to be white */
+.container {
+    color: $white;
+
+    p, ul > li, ol > li, span, a {
+        color: $white;
+    }
+}
+
+:deep(details) {
+    box-shadow: none!important;
+    border: $block-border!important;
+    background-color: $black-2!important;
+
+    @include media-breakpoint-down(sm) {
+        padding-left: calc($spacer * 0.2);
+        padding-right: calc($spacer * 0.2);
+    }
+
+    summary h3 {
+        color: $white;
+        font-size: $h6-font-size;
+        font-weight: 700;
+        @include media-breakpoint-down(sm) {
+            font-size: $font-size-md!important;
+        }
+    }
+
+    span {
+        color: $white;
+    }
+
+    div {
+        border-left-color: $purple-35;
+
+        ul > li,
+        ol > li,
+        p {
+            color: $white;
+        }
+    }
+}
 </style>
+

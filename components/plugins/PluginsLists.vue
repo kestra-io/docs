@@ -3,10 +3,10 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our +{{ totalPlugins }} plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }} plugins</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg"
-                           :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
+                           :placeholder="`Search across ${totalPlugins} plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -14,17 +14,17 @@
         <div class="container bd-gutter">
             <div class="mt-5" data-aos="fade-left">
                 <button
-                    v-for="category in categories"
+                    v-for="category in augmentedCategories"
                     :key="category"
                     :class="{ 'active': category === activeCategory }"
                     @click="setActiveCategory(category)"
                     class="m-1 rounded-button"
                 >
-                    {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category) }}
+                    {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category.toLowerCase()) }}
                 </button>
             </div>
             <div class="row my-4" data-aos="fade-right">
-                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.name + '-' + plugin.title">
+                <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in pluginsSlice" :key="plugin.name + '-' + plugin.title">
                     <PluginsPluginCard :plugin="plugin" />
                 </div>
                 <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">
@@ -57,179 +57,134 @@
 
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import {isEntryAPluginElementPredicate, slugify} from "@kestra-io/ui-libs";
+    import {isEntryAPluginElementPredicate, type Plugin, type PluginElement} from "@kestra-io/ui-libs";
 
-    const DONT_CAPITALIZE_CATEGORIES = ["AI"];
+    const DONT_CAPITALIZE_CATEGORIES = ["AI", "BI"];
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
-    const plugins = ref([]);
     const activeCategory = ref('All Categories');
-    const categories = ref([]);
-    const props = defineProps(["plugins", "categories"]);
-    const totalPages = ref(0);
-    const totalGroups = ref(0);
-    const totalPlugins = ref(0);
+    const props = defineProps<{
+        plugins: Plugin[],
+        categories: string[],
+    }>();
     const searchQuery = ref('');
     const route = useRoute();
     const router = useRouter();
 
-    if (props.plugins) {
-        const pluginElements = new Set();
-
-        // avoid duplicate across groups and subgroups
-        props.plugins.forEach(plugin => {
-            plugin.tooltipContent = "";
-
-            // We only need this mapping for root plugin cards
-            const subGroupsToSlugs = plugin.subGroup === undefined
-                ? Object.fromEntries(props.plugins.filter(p => p.name === plugin.name).map(p => [p.subGroup, p.title]))
-                : undefined;
-
-            Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                .forEach(([category, elements]) => {
-                    creatingTooltipContainer(plugin, category.replaceAll(/[A-Z]/g, match => ` ${match}`), elements, subGroupsToSlugs);
-                    elements.forEach(element => pluginElements.add(element));
-                })
-        });
-
-        totalPlugins.value = pluginElements.size;
+    function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
+        return isEntryAPluginElementPredicate(...elementsArray);
     }
+    const { totalPlugins } = usePluginsCount();
 
-    if (props.categories) {
-        categories.value = ['All Categories', ...props.categories];
-    }
+    const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
-    function generateCategoryLink(pluginQualifier, item) {
-        return `plugins/${pluginQualifier}/${item}`
-    }
-
-    function generateCategoryList(plugin, categoryItems, subGroupsToSlugs) {
-        return categoryItems.map(item => {
-            let subGroupQualifier = "";
-            if (plugin.subGroup === undefined) {
-                const matchingSubGroupSlug = Object.entries(subGroupsToSlugs).filter(([subGroup]) => item.startsWith(subGroup)).sort(([subGroupA], [subGroupB]) => subGroupB.length - subGroupA.length)?.[0]?.[1];
-                if (matchingSubGroupSlug !== undefined) {
-                    subGroupQualifier = `/${slugify(matchingSubGroupSlug)}`;
-                }
-            } else {
-                subGroupQualifier = `/${slugify(plugin.title)}`
-            }
-
-            return `
-                      <li>
-                        <a href="${generateCategoryLink(slugify(plugin.name) + subGroupQualifier, item)}">${item}</a>
-                      </li>
-                    `
-        }).join("");
-    }
-
-    function creatingTooltipContainer(plugin, categoryName, categoryItems, subGroupsToSlugs) {
-        if (categoryItems && categoryItems.length > 0) {
-            plugin.tooltipContent += `
-            <p class="text-capitalize ks-plugin-card-${slugify(categoryName)}">${categoryName}</p>
-            <ul>
-              ${generateCategoryList(plugin, categoryItems, subGroupsToSlugs)}
-            </ul>
-        `
-        }
-    }
-
-    const setActiveCategory = (category) => {
+    const setActiveCategory = (category: string) => {
         activeCategory.value = category
     };
 
-    const capitalize = (name) => {
-        return name[0].toUpperCase() + name.slice(1).toLowerCase();
+    const capitalize = (name: string) => {
+        return name[0]?.toUpperCase() + name.slice(1);
     };
 
-    const setPlugins = (allPlugins, total) => {
-        plugins.value = allPlugins
-        totalGroups.value = total;
-        totalPages.value = Math.ceil(total / itemsPerPage.value)
-    };
+    const totalGroups = computed(() => filteredPluginsData.value.length);
 
-    const setSearchPlugins = (search, allPlugins) => {
-        let searchPluginsList = [...allPlugins];
-        const searchLowercase = search ? search.trim().toLowerCase() : null;
-        return searchPluginsList.filter((item) => {
-            return item?.title.toLowerCase().includes(searchLowercase) ||
-                (item.tasks ?? []).some(task => task.toLowerCase().includes(searchLowercase)) ||
-                (item.triggers ?? []).some(trigger => trigger.toLowerCase().includes(searchLowercase)) ||
-                (item.conditions ?? []).some(condition => condition.toLowerCase().includes(searchLowercase)) ||
-                (item.taskRunners ?? []).some(taskRunner => taskRunner.toLowerCase().includes(searchLowercase))
-        });
-    };
-
-    if (props.plugins) {
-        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
-        const endIndex = startIndex + itemsPerPage.value;
-
-        const pluginsData = props.plugins.slice(startIndex, endIndex);
-
-        setPlugins(pluginsData, props.plugins.length);
+    function tooltipContent(plugin: Plugin, filteredPluginElementsEntries: [string, PluginElement[]][]) {
+        return filteredPluginElementsEntries.map(([elementType, elements]) =>
+            `<p>${capitalize(elementType).replaceAll(/[A-Z]/g, match => ` ${match}`)}</p>
+<ul>
+${elements.map(({cls}) => `<li>
+                <a href="plugins/${plugin.title}/${cls}">${cls}</a>
+              </li>`).join("")}
+</ul>`).join("");
     }
 
-    const changePage = (pageNo) => {
-        currentPage.value = pageNo;
-        window.scrollTo(0, 0)
-    };
+    const filteredPluginsData = computed(() => {
+        const filteredPlugins = props.plugins.flatMap(plugin => {
+            const filteredPluginElementsEntries = Object.entries(plugin)
+                .filter(isFullEntryAPluginElementPredicate)
+                .map(([elementType, elements]): [string, PluginElement[]] => [elementType, elements.filter(({deprecated}) => !deprecated)])
+                .filter(([, elements]) => elements.length > 0)
 
-    const breadcrumb = (slug) => {
-        return [...new Set(slug.split(".")
-            .filter(r => r !== ""))
-        ]
-    };
+            if (filteredPluginElementsEntries.length === 0) {
+                return []
+            }
 
-    const filterPlugins = (pageVal, itemVal, categoryVal, searchVal) => {
-        let pluginsList = [...props.plugins];
-        let searchResults = [];
-        if (searchVal) {
-            searchResults = setSearchPlugins(searchVal, pluginsList);
-        } else {
-            searchResults = pluginsList;
-        }
-        let page = pageVal;
-        if (categoryVal !== 'All Categories') {
-            page = 1;
-            currentPage.value = page;
+            return [{
+                ...plugin,
+                tooltipContent: tooltipContent(plugin, filteredPluginElementsEntries),
+                ...Object.fromEntries(filteredPluginElementsEntries)
+            } as Plugin]
+        });
+
+        let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
+        if (activeCategory.value !== 'All Categories') {
+            currentPage.value = 1;
             searchResults = searchResults.filter((item) => {
-                if (item.categories?.includes(categoryVal)) {
+                if (item.categories?.includes(activeCategory.value)) {
                     return item;
                 }
             })
         }
-        const startIndex = (page - 1) * itemVal;
-        const endIndex = startIndex + itemVal;
-        const pluginsData = searchResults.slice(startIndex, endIndex);
-        setPlugins(pluginsData, searchResults.length);
+        return searchResults;
+    });
 
+    const pluginsSlice = computed(() => {
+        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
+        const endIndex = startIndex + itemsPerPage.value;
+        return filteredPluginsData.value.slice(startIndex, endIndex);
+    });
+
+    const totalPages = computed(() => {
+        return Math.ceil(totalGroups.value / itemsPerPage.value);
+    });
+
+    function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
+        if (!search) {
+            return allPlugins;
+        }
+        const searchLowercase = search?.trim().toLowerCase();
+        return allPlugins.filter((item) => {
+            return item?.title.toLowerCase().includes(searchLowercase) ||
+                Object.entries(item)
+                    .filter(isFullEntryAPluginElementPredicate)
+                    .flatMap(([_, elements]) => elements)
+                    .some(({cls}) => cls.toLowerCase().includes(searchLowercase));
+        });
+    }
+
+    const changePage = (pageNo: number) => {
+        currentPage.value = pageNo;
+        window.scrollTo(0, 0)
+    };
+
+    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string) {
         return {
-            page,
+            page: pageVal,
             size: itemVal,
             category: categoryVal,
             q: searchVal,
         }
     };
 
-    if (route.query.page) currentPage.value = parseInt(route.query.page);
-    if (route.query.size) itemsPerPage.value = parseInt(route.query.size);
-    if (route.query.category) {
-        activeCategory.value = categories.value.find(c => c === route.query.category);
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
-    if (route.query.q) {
-        searchQuery.value = route.query.q.trim();
-        filterPlugins(currentPage.value, itemsPerPage.value, activeCategory.value, searchQuery.value)
-    }
+    onMounted(() => {
+        if (route.query.page) currentPage.value = parseInt(route.query.page as string);
+        if (route.query.size) itemsPerPage.value = parseInt(route.query.size as string);
+        if (route.query.category) {
+            activeCategory.value = augmentedCategories.value.find(c => c === route.query.category) ?? "";
+        }
+        if (typeof route.query.q === 'string') {
+            searchQuery.value = route.query.q.trim();
+        }
+    })
 
-    let timer;
+    const timer = ref<NodeJS.Timeout>();
     watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
         if (timer) {
-            clearTimeout(timer)
+            clearTimeout(timer.value);
         }
-        timer = setTimeout(async () => {
+        timer.value = setTimeout(async () => {
             router.push({
-                query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
+                query: getFilterPluginsQuery(pageVal, itemVal, categoryVal, searchVal)
             })
 
         }, 500);

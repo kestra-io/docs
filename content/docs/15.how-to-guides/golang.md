@@ -8,15 +8,17 @@ topics:
 
 Run Go code directly inside of your Flows and generate outputs.
 
+<div class="video-container">
+    <iframe src="https://youtube.com/embed/flGQZeP1MmA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 Go is a powerful programming language often used for cloud-native development, CLI utilities and more. As Go is complied, it's often much more performant than Python making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows.
 
 This guide is going to walk you through how to get Go running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-## Executing Go inside Kestra
+## Commands Task
 
-There isn't an official Go plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
-
-In this example, we're using the Docker Task Runner with the `golang:latest` image so that Go can be executed.
+There is an official Go plugin with a `Commands` task and an inline `Script` task. This example executes a Namespace file using `Commands`:
 
 ```yaml
 id: golang_commands
@@ -24,10 +26,7 @@ namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
+    type: io.kestra.plugin.scripts.go.Commands
     namespaceFiles:
       enabled: true
     commands:
@@ -46,30 +45,58 @@ func main() {
 
 You'll need to add your Golang code using the built-in Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
-You can also add your Golang code inline using the `inputFiles` property.
+You can read more about the Go Commands type in the [Plugin documentation](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.commands).
+
+## Script
+
+You can also add your Golang code inline using the `Script` task.
 
 ```yaml
-id: golang_commands
+id: golang_script
 namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
-    inputFiles:
-      main.go: |
-        package main
-        import "fmt"
-        func main() {
-            fmt.Println("hello world")
-        }
-    commands:
-      - go run main.go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("hello world")
+      }
 ```
 
-You can read more about the Shell Commands type in the [Plugin documentation](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands).
+You can also use expressions directly inside of your Go code. In this example, inputs are embedded directly into the code:
+
+```yaml
+id: golang_script_expression
+namespace: company.team
+
+inputs:
+  - id: message
+    type: STRING
+    defaults: "Hello, World!"
+
+  - id: number
+    type: INT
+    defaults: 4
+
+tasks:
+  - id: go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("Message: {{ inputs.message }}")
+          fmt.Println("Number: {{ inputs.number }}")
+      }
+```
+
+You can read more about the Go Script type in the [Plugin documentation](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.script).
+
 
 ## Handling Outputs
 
@@ -85,19 +112,14 @@ namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
-    inputFiles:
-      main.go: |
-        package main
-        import "fmt"
-        func main() {
-            fmt.Println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
-        }
-    commands:
-      - go run main.go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
+      }
 ```
 
 All the output variables can be viewed in the Outputs tab of the execution.
@@ -112,19 +134,14 @@ namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
-    inputFiles:
-      main.go: |
-        package main
-        import "fmt"
-        func main() {
-            fmt.Println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
-        }
-    commands:
-      - go run main.go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
+      }
 
   - id: return
     type: io.kestra.plugin.core.debug.Return
@@ -143,33 +160,27 @@ namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
-    inputFiles:
-      main.go: |
-        package main
-
-        import (
-            "os"
-        )
-
-        func check(e error) {
-            if e != nil {
-                panic(e)
-            }
-        }
-
-        func main() {
-            d1 := []byte("hello go")
-            err := os.WriteFile("output.txt", d1, 0644)
-            check(err)
-        }
+    type: io.kestra.plugin.scripts.go.Script
     outputFiles:
       - output.txt
-    commands:
-      - go run main.go
+    script: |
+      package main
+
+      import (
+          "os"
+      )
+
+      func check(e error) {
+          if e != nil {
+              panic(e)
+          }
+      }
+
+      func main() {
+          d1 := []byte("hello go")
+          err := os.WriteFile("output.txt", d1, 0644)
+          check(err)
+      }
 
   - id: log
     type: io.kestra.plugin.core.log.Log
@@ -186,22 +197,17 @@ namespace: company.team
 
 tasks:
   - id: go
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: golang:latest
-    inputFiles:
-      main.go: |
-        package main
-        import "fmt"
-        func main() {
-            fmt.Println("There are 20 products in the cart")
-            fmt.Println("::{\"outputs\":{\"productCount\":20}}::")
-            fmt.Println("::{\"metrics\":[{\"name\":\"productCount\",\"type\":\"counter\",\"value\":20}]}::")
-            fmt.Println("::{\"metrics\":[{\"name\":\"purchaseTime\",\"type\":\"timer\",\"value\":32.44}]}::")
-        }
-    commands:
-      - go run main.go
+    type: io.kestra.plugin.scripts.go.Script
+    script: |
+      package main
+      import "fmt"
+
+      func main() {
+          fmt.Println("There are 20 products in the cart")
+          fmt.Println("::{\"outputs\":{\"productCount\":20}}::")
+          fmt.Println("::{\"metrics\":[{\"name\":\"productCount\",\"type\":\"counter\",\"value\":20}]}::")
+          fmt.Println("::{\"metrics\":[{\"name\":\"purchaseTime\",\"type\":\"timer\",\"value\":32.44}]}::")
+      }
 ```
 
 Once this has executed, both the metrics can be viewed under **Metrics**.

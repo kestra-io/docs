@@ -42,10 +42,10 @@ export function prevNext(navigation, path) {
 
 export const recursivePages = (item) => {
     const paths = [];
-    if (item.isPage ?? true) {
+    if (item?.isPage ?? item) {
         paths.push(item.path);
     }
-    if (item.children) {
+    if (item?.children) {
         paths.push(...(item.children.flatMap(child => {
             return recursivePages(child);
         })));
@@ -57,10 +57,10 @@ export const recursivePages = (item) => {
 export const generatePageNames = (item) => {
     const result = {};
     function traverse(item) {
-        if (item.path && item.title) {
+        if (item?.path && item?.title) {
             result[item.path] = item.title;
         }
-        if (item.children) {
+        if (item?.children) {
             item.children.forEach(child => traverse(child));
         }
     }

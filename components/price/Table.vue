@@ -1,659 +1,145 @@
 <template>
-    <div class="table-content" ref="tableContentRef">
-        <div class="container table-responsive">
-            <h3>Compare All Features</h3>
-            <table class="table table-dark">
-                <thead class="t-head">
-                    <tr>
-                        <th
-                            class="t-head-title"
-                            :class="{
-                                        'w-50 ps-5': title === 'Features',
-                                        'text-center': title !== 'Features',
-                                     }"
-                            v-for="(head, index) in  tableHead "
-                            :key="head"
-                        >
-                            <div class="border-radius" :class="{
-                                        'bg-gray': index !== 0,
-                                   }">
-                                <p>{{ head.name }}</p>
-                                <span>{{ head.period }}</span>
-                                <NuxtLink
-                                    v-if="head?.button"
-                                    :href="head?.button?.href"
-                                    :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                                >
-                                    {{head.button?.text}}
-                                </NuxtLink>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="t-head-body">
-                    <tr v-for="item in tableData"
-                        :key="item.id"
-                        :class="!item.textBold ? '' : 'sticky-tr'"
-                    >
-                        <td class="ps-5 t-border-data-first-block"
-                            :class="!item.textBold ? '' : 't-r-heading-text'">
-                                    <span>
-                                        {{item.title }}
-                                    </span>
-                        </td>
-                        <td class="tick t-border-data">
-                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
-                                <CheckBold v-if="!item.isFullLine && item.isOpenSource"/>
-                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.openSourceText"/>
-                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.openSourceText}}</span>
-                            </div>
-                        </td>
-                        <td class="tick t-border-data">
-                            <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
-                                <CheckBold v-if="!item.isFullLine && item.isEnterprise"/>
-                                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.enterpriseText"/>
-                                <span class="enterprise-text" v-else-if="!item.isFullLine">{{item.enterpriseText}}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="collapsed-table">
-        <div class="container">
-            <div class="buttons">
-                <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
-                     @click="changeSelectedType('enterprise')">
-                    <p>Enterprise</p>
-                    <span>Per Instance</span>
-                </div>
-                <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
-                     @click="changeSelectedType('opensource')">
-                    <p>Open-Source</p>
-                    <span>Free</span>
-                </div>
-            </div>
-            <div class="features">
-                <CollapsedFeatures
-                    v-for="(item, index) in tableSortedData"
-                    :key="index"
-                    class="que text-white"
-                    :title="item.title"
-                >
-                    <div v-for="(child, childIndex) in item.children" :key="childIndex" class="feature-row">
-                        <div
-                            class="feature-row-title"
-                            :class="{'border-bottom-none': childIndex === item.children.length - 1}"
-                        >
-                            <span>{{child.title}}</span>
-                        </div>
-                        <div
-                            class="feature-row-access"
-                            :class="{'border-bottom-none': childIndex === item.children.length - 1}"
-                        >
-                            <span
-                                v-if="selectedType === 'enterprise' && child.enterpriseText">{{child.enterpriseText}}</span>
-                            <span v-else-if="selectedType !== 'enterprise' && child.openSourceText">{{child.openSourceText}}</span>
-                            <div v-if="selectedType === 'enterprise' && !child.enterpriseText">
-                                <Close class="close-svg-red" v-if="!child.isEnterprise"/>
-                                <CheckBold v-else-if="child.isEnterprise"/>
-                            </div>
-                            <div v-else-if="selectedType === 'opensource' && !child.openSourceText">
-                                <Close class="close-svg-red" v-if="!child.isOpenSource"/>
-                                <CheckBold v-else-if="child.isOpenSource"/>
-                            </div>
-                        </div>
-                    </div>
-                </CollapsedFeatures>
-                <NuxtLink
-                    :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
-                    :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'"
-                >
-                    {{selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started'}}
+  <div class="table-content" ref="tableContentRef">
+    <div class="container table-responsive">
+      <h3>Compare All Features</h3>
+      <table class="table table-dark">
+        <thead class="t-head">
+          <tr>
+            <th class="t-head-title text-center" v-for="(head, index) in tableHead" :key="index">
+              <div class="border-radius" :class="{
+                'bg-gray': index !== 0,
+              }">
+                <p class="fw-bold">{{ head.name }}</p>
+                <span>{{ head.period }}</span>
+                <NuxtLink v-if="head?.button" :href="head?.button?.href"
+                  :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'">
+                  {{ head.button?.text }}
                 </NuxtLink>
-            </div>
-        </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="t-head-body">
+          <tr v-for="(item, index) in tableData" :key="index" :class="!item.textBold ? '' : 'sticky-tr'">
+            <td class="ps-5 t-border-data-first-block" :class="!item.textBold ? '' : 't-r-heading-text'">
+              <span>
+                {{ item.title }}
+                <div v-if="!item.textBold && item.description" class="tooltip-container">
+                  <Information class="info" />
+                  <div class="tooltip-content">
+                    {{ item.description.text }}
+                    <NuxtLink v-if="item.description.link" :to="item.description.link">Learn more</NuxtLink>
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td class="tick t-border-data">
+              <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
+                <CheckBold v-if="!item.isFullLine && item.isOpenSource" class="check-svg-purple" />
+                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.openSourceText" />
+                <span class="enterprise-text" v-else-if="!item.isFullLine">{{ item.openSourceText }}</span>
+              </div>
+            </td>
+            <td class="tick t-border-data">
+              <div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
+                <CheckBold v-if="!item.isFullLine && item.isEnterprise" class="check-svg-purple" />
+                <Close class="close-svg-red" v-else-if="!item.isFullLine && !item.enterpriseText" />
+                <span class="enterprise-text" v-else-if="!item.isFullLine">{{ item.enterpriseText }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <div class="collapsed-table">
+    <div class="container">
+      <div class="buttons">
+        <div :class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
+          @click="changeSelectedType('enterprise')">
+          <p>Enterprise</p>
+          <span>Per Instance</span>
+        </div>
+        <div :class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
+          @click="changeSelectedType('opensource')">
+          <p>Open-Source</p>
+          <span>Free</span>
+        </div>
+      </div>
+      <div class="features">
+        <CollapsedFeatures v-for="(item, index) in tableSortedData" :key="index" class="que text-white"
+          :title="item.title">
+          <div v-for="(child, childIndex) in item.children" :key="childIndex" class="feature-row">
+            <div class="feature-row-title" :class="{ 'border-bottom-none': childIndex === item.children.length - 1 }">
+              <span>
+                {{ child.title }}
+                <div v-if="child.description" class="tooltip-container ms-auto">
+                  <Information class="info ps-4" />
+                  <div class="tooltip-content">
+                    {{ child.description.text }}
+                    <NuxtLink v-if="child.description.link" :to="child.description.link">Learn more</NuxtLink>
+                  </div>
+                </div>
+              </span>
+            </div>
+            <div class="feature-row-access" :class="{ 'border-bottom-none': childIndex === item.children.length - 1 }">
+              <span v-if="selectedType === 'enterprise' && child.enterpriseText">{{ child.enterpriseText }}</span>
+              <span v-else-if="selectedType !== 'enterprise' && child.openSourceText">{{ child.openSourceText }}</span>
+              <div v-if="selectedType === 'enterprise' && !child.enterpriseText">
+                <Close class="close-svg-red" v-if="!child.isEnterprise" />
+                <CheckBold v-else-if="child.isEnterprise" class="check-svg-purple" />
+              </div>
+              <div v-else-if="selectedType === 'opensource' && !child.openSourceText">
+                <Close class="close-svg-red" v-if="!child.isOpenSource" />
+                <CheckBold v-else-if="child.isOpenSource" class="check-svg-purple" />
+              </div>
+            </div>
+          </div>
+        </CollapsedFeatures>
+        <NuxtLink :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
+          :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'">
+          {{ selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started' }}
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script setup>
-  import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
+<script setup lang="ts">
+  import { ref, computed, onMounted, onUnmounted } from "vue"
   import Close from 'vue-material-design-icons/Close.vue'
-  import Plus from 'vue-material-design-icons/Plus.vue'
   import CheckBold from 'vue-material-design-icons/CheckBold.vue'
-  import {ref} from "vue"
+  import Information from 'vue-material-design-icons/Information.vue'
+  import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
+  import { tableHeadData, getTableSortedData } from "../../data/compare-features"
 
-  const selectedType = ref('enterprise');
-  const tableHead = ref([
-    {
-      name: "",
-      period: "",
-    },
-    {
-      name: 'Open-Source Edition',
-      period: "Free",
-      button: {
-        text: "Get Started",
-        href: "/docs/getting-started/quickstart#start-kestra",
-      },
-    },
-    {
-      name: 'Enterprise Edition',
-      period: "Per Instance",
-      button: {
-        text: "Talk to us",
-        href: "/demo",
-      },
-    },
-  ]);
-  const tableData = ref([
-    {
-      id: 1,
-      title: "Core Features",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      id: 2,
-      title: "Users Management",
-      isOpenSource: false,
-      isEnterprise: false,
-      openSourceText: '',
-      enterpriseText: 'Unlimited',
-    },
-    {
-      id: 3,
-      title: "Workflow Creation and Execution",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 4,
-      title: "Multi-Cloud or On-Prem Deployment Options",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 5,
-      title: "Embedded Code Editor",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 6,
-      title: "Plugins",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 7,
-      title: "Custom Plugins",
-      isOpenSource: false,
-      enterpriseText: 'On Request',
-    },
-    {
-      id: 8,
-      title: "Code Versioning & Git Integration",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 9,
-      title: "Autocompletion & Syntax Validation",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 10,
-      title: "Live-Updated Topology View",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 11,
-      title: "Task & Subflow Dependency Management",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 12,
-      title: "Flexible Scheduling System",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 13,
-      title: "Event-Driven Data Processing",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 14,
-      title: "Embedded Task & Trigger Documentation",
-      isOpenSource: true,
-      isEnterprise: true,
-    },
-    {
-      id: 15,
-      title: "Security & Governance",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      id: 16,
-      title: "SSO & OIDC Authentication",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 17,
-      title: "Role-Based Access Control (RBAC)",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 18,
-      title: "Multi-Tenancy Support",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 19,
-      title: "Audit Logs & Revision History",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 20,
-      title: "Secret Manager Integrations",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 21,
-      title: "Namespace-Level Permissions",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 22,
-      title: "Worker Security Isolation",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 23,
-      title: "Encryption & Fault Tolerance",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 24,
-      title: "SCIM Directory Sync",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 25,
-      title: "Productivity",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      id: 24,
-      title: "Custom Blueprints & Templates",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 25,
-      title: "Full-Text Search on Task Runs",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 25,
-      title: "Centralized User & Permission Management",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 26,
-      title: "Onboarding & Training Support",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 27,
-      title: "Customer Success Program with SLAs",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 28,
-      title: "Custom Apps & Dashboard Views",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 29,
-      title: "Namespace-Level Secrets Management",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 30,
-      title: "Scalability & Infrastructure",
-      isFullLine: true,
-      textBold: true,
-    },
-    {
-      id: 31,
-      title: "High Availability (No Single Point of Failure)",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 32,
-      title: "Worker Groups for Distributed Tasks",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 33,
-      title: "Task Runners",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 34,
-      title: "Service Accounts & API Tokens",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 35,
-      title: "Dedicated Storage & Tenant Isolation",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 36,
-      title: "Cluster Monitoring & Custom Storage",
-      isOpenSource: false,
-      isEnterprise: true,
-    },
-    {
-      id: 37,
-      title: "High-Throughput Event Handling",
-      isOpenSource: false,
-      isEnterprise: true,
-    }
-  ]);
-  const tableSortedData = ref([
-    {
-      id: 1,
-      title: "Core Features",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          id: 2,
-          title: "Users Management",
-          isOpenSource: false,
-          isEnterprise: false,
-          openSourceText: '',
-          enterpriseText: 'Unlimited',
-        },
-        {
-          id: 3,
-          title: "Workflow Creation and Execution",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 4,
-          title: "Multi-Cloud or On-Prem Deployment Options",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 5,
-          title: "Embedded Code Editor",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 6,
-          title: "Plugins",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 7,
-          title: "Custom Plugins",
-          openSourceText: 'Priority in plugin roadmap',
-          enterpriseText: 'On-Demand',
-        },
-        {
-          id: 8,
-          title: "Code Versioning & Git Integration",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 9,
-          title: "Autocompletion & Syntax Validation",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 10,
-          title: "Live-Updated Topology View",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 11,
-          title: "Task & Subflow Dependency Management",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 12,
-          title: "Flexible Scheduling System",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 13,
-          title: "Event-Driven Data Processing",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-        {
-          id: 14,
-          title: "Embedded Task & Trigger Documentation",
-          isOpenSource: true,
-          isEnterprise: true,
-        },
-      ]
-    },
-    {
-      id: 2,
-      title: "Security & Governance",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          id: 16,
-          title: "SSO & OIDC Authentication",
-          isEnterprise: true,
-          isOpenSource: false,
-        },
-        {
-          id: 17,
-          title: "Role-Based Access Control (RBAC)",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 18,
-          title: "Multi-Tenancy Support",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 19,
-          title: "Audit Logs & Revision History",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 20,
-          title: "Secret Manager Integrations",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 21,
-          title: "Namespace-Level Permissions",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 22,
-          title: "Worker Security Isolation",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 23,
-          title: "Encryption & Fault Tolerance",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 24,
-          title: "SCIM Directory Sync",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-      ]
-    },
-    {
-      id: 3,
-      title: "Productivity",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          id: 24,
-          title: "Custom Blueprints & Templates",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 25,
-          title: "Full-Text Search on Task Runs",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 25,
-          title: "Centralized User & Permission Management",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 26,
-          title: "Onboarding & Training Support",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 27,
-          title: "Customer Success Program with SLAs",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 28,
-          title: "Apps",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 29,
-          title: "Namespace-Level Secrets Management",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 30,
-          title: "Apps",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-      ]
-    },
-    {
-      id: 4,
-      title: "Scalability & Infrastructure",
-      isFullLine: true,
-      textBold: true,
-      children: [
-        {
-          id: 31,
-          title: "High Availability (No Single Point of Failure)",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 32,
-          title: "Worker Groups for Distributed Tasks",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 33,
-          title: "Task Runners",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 34,
-          title: "Service Accounts & API Tokens",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 35,
-          title: "Dedicated Storage & Tenant Isolation",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 36,
-          title: "Cluster Monitoring & Custom Storage",
-          isOpenSource: false,
-          isEnterprise: true,
-        },
-        {
-          id: 37,
-          title: "High-Throughput Event Handling",
-          isOpenSource: false,
-          isEnterprise: true,
-        }
-      ]
-    },
-  ]);
-  const changeSelectedType = (type) => {
+  const { totalPlugins } = usePluginsCount();
+
+  const selectedType = ref<string>('enterprise');
+  const tableHead = computed(() => tableHeadData);
+  const tableSortedData = computed(() => getTableSortedData(totalPlugins.value));
+
+  const tableData = computed(() => {
+    const flattened: any[] = [];
+    tableSortedData.value.forEach(group => {
+      flattened.push({
+        title: group.title,
+        isFullLine: true,
+        textBold: true,
+      });
+      group.children.forEach(child => {
+        flattened.push(child);
+      });
+    });
+    return flattened;
+  });
+
+
+  const changeSelectedType = (type: string): void => {
     selectedType.value = type
   }
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
       const stickyElements = document.querySelectorAll('.sticky-tr');
       if(stickyElements) {
         stickyElements?.forEach((item) => {
@@ -665,16 +151,18 @@
         });
       }
   };
+
   onMounted(() => {
     window.addEventListener('scroll', handleScroll);
   });
+
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
   });
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "../../assets/styles/_variable";
     .shadow {
         box-shadow: 0px 2px 0px 0px #EFEFEF !important;
         td {
@@ -683,13 +171,32 @@
             }
         }
     }
-    .close-svg-red {
+    .close-svg-red, .check-svg-purple {
         width: 24px;
         height: auto;
     }
     :deep(.close-svg-red > svg ) {
-        color: #E3262F !important;
+        color: #FD7278 !important;
         font-size: 24px !important;
+    }
+    :deep(.check-svg-purple > svg ) {
+        color: #8405FF !important;
+        font-size: 24px !important;
+    }
+    .info {
+        width: 14px;
+        height: auto;
+    }
+
+    :deep(.info > svg ) {
+        position: absolute;
+        bottom: -0.23em;
+        color: #B9B9BA !important;
+
+        &:hover {
+            color: #646465 !important;
+            transition: color 200ms ease-in-out;
+        }
     }
 
     .enterprise-btn {
@@ -702,7 +209,7 @@
         justify-content: center;
         color: $white !important;
         padding: 9px 0;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 16px;
         font-weight: 700;
         background-color: #7117FF;
@@ -718,10 +225,10 @@
         justify-content: center;
         color: $black-2 !important;
         padding: 9px 0;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 16px;
         font-weight: 700;
-        background-color: #F8F8F8;
+        background-color: transparent;
         border: 1px solid #B0B0B0;
     }
 
@@ -794,12 +301,19 @@
                     top: 64px;
                 }
 
+                tr th:last-child {
+                    .border-radius {
+                        border-left: 1px solid #7117FF;
+                        border-right: 1px solid #7117FF;
+                        border-top: 1px solid #7117FF;
+                    }
+                }
+
                 .border-bottom-elem {
                     position: absolute;
                     width: 100%;
                     z-index: 99999999!important;
                     padding: 0 16px 0 44px;
-                    bottom: -47px;
 
                     @include media-breakpoint-down(xl) {
                         padding: 0 16px;
@@ -820,6 +334,25 @@
                 min-height: 45px;
                 padding: 10px $rem-2;
                 background-color: #F8F8F8;
+            }
+
+            .t-head-body {
+                tr:last-child td .bg-gray {
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                }
+                tr td:last-child .bg-gray {
+                    border-left: 1px solid $purple-15;
+                    border-right: 1px solid $purple-15;
+                }
+
+                tr:first-child td:last-child .bg-gray {
+                    border-top: none;
+                }
+
+                tr:last-child td:last-child .bg-gray {
+                    border-bottom: 1px solid $purple-15;
+                }
             }
 
             .t-head-title {
@@ -1013,9 +546,45 @@
                     color: $black-1;
 
                     span {
+                        display: flex;
+                        align-items: center;
+                        justify-content: end;
+                        width: 100%;
                         font-size: 14px;
                         font-weight: 400;
                         color: #000000;
+                    }
+
+                    .tooltip-container {
+                        position: relative;
+
+                        .tooltip-content {
+                            top: calc(100% + 15px);
+                            right: -20px;
+                            left: auto;
+                            transform: none;
+
+                            &::before,
+                            &::after {
+                                right: 20px;
+                                left: auto;
+                                transform: none;
+                            }
+
+                            &::before {
+                                top: -8px;
+                                border-left: 8px solid transparent;
+                                border-right: 8px solid transparent;
+                                border-bottom: 8px solid #E5E5E5;
+                            }
+
+                            &::after {
+                                top: -7px;
+                                border-left: 7px solid transparent;
+                                border-right: 7px solid transparent;
+                                border-bottom: 7px solid #FFFFFF;
+                            }
+                        }
                     }
                 }
 
@@ -1036,6 +605,75 @@
                     }
                 }
             }
+        }
+    }
+
+    .tooltip-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 4px;
+
+        .tooltip-content {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            top: calc(100% + 10px);
+            left: 30%;
+            transform: translateX(-30%);
+            background-color: $white;
+            border: 1px solid #9797A6;
+            border-radius: 4px;
+            padding: 8px 16px;
+            width: max-content;
+            max-width: 250px;
+            z-index: 1000;
+            font-size: $font-size-xs;
+            line-height: 20px;
+            white-space: normal;
+            transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                left: 30%;
+                transform: translateX(-30%);
+            }
+
+            &::before {
+                top: -8px;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-bottom: 8px solid #9797A6;
+            }
+
+            &::after {
+                top: -7px;
+                border-left: 7px solid transparent;
+                border-right: 7px solid transparent;
+                border-bottom: 7px solid #FFFFFF;
+            }
+
+            a {
+                display: inline-block;
+                color: #8405FF;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .tooltip-content:hover {
+            opacity: 1;
+            visibility: visible;
         }
     }
 </style>

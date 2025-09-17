@@ -9,7 +9,7 @@
             titleHtml="Disaster Recovery"
             description="Automate disaster recovery processes, secure your data, and ensure business continuity."
             imageSrc="/landing/usecases/disaster-recovery/header-hero.svg"
-            imageAlt="Monitoring"
+            imageAlt="Devops Monitoring"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
@@ -39,7 +39,7 @@
                 title="Ready to take your Infrastructure to the next level ?"
                 purpleButtonText="Get Started"
                 purpleButtonHref="/docs/getting-started/quickstart"
-                darkButtonText="Get a demo"
+                darkButtonText="Talk to us"
                 darkButtonHref="/demo"
             />
         </NuxtLazyHydrate>

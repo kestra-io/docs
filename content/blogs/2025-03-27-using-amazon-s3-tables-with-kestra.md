@@ -127,7 +127,7 @@ We will now create the Spark job that will create Iceberg namespace and Iceberg 
 
 #### Spark Configuration
 
-In order to leverage S3 tables for loading the data into Iceberge table, we need to use the following Spark configuration:
+In order to leverage S3 tables for loading the data into Iceberg table, we need to use the following Spark configuration:
 
 ```
 spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog
@@ -301,7 +301,7 @@ Thus, we have successfully leverage S3 table bucket to create an Iceberg table.
 
 ## Conclusion
 
-Kestra workflows can be used to work with the S3 table buckets and create Iceberge tables. This enables us to introduce orchestration related to S3 tables with Kestra, bringing in all the good features that S3 tables have to offer.
+Kestra workflows can be used to work with the S3 table buckets and create Iceberg tables. This enables us to introduce orchestration related to S3 tables with Kestra, bringing in all the good features that S3 tables have to offer.
 
 If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
 

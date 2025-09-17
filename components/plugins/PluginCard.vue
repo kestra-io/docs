@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :href="href">
-        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip"
+        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toggle="tooltip"
              data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
             <div class="icon-content">
                 <img :src="`/icons/${plugin.subGroup || plugin.group}.svg`" :alt="plugin.title">

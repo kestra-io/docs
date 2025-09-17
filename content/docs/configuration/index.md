@@ -139,9 +139,9 @@ kestra:
     type: postgres
 ```
 
-Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a preview in the Enterprise Edition since Kestra 0.18.0).
+Currently, Kestra supports Postgres, H2, and MySQL.
 - H2 can be convenient for local **development**.
-- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL and SQL Server can be used as well.
+- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL can be used as well.
 
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
@@ -200,33 +200,6 @@ Note that we currently don't support the `8.0.31` version of MySQL. If possible,
 ::
 ::
 
-::collapse{title="SQL Server"}
-
-Here is a minimal configuration for a SQL Server database, currently available in preview in the Enterprise Edition since Kestra 0.18.0:
-
-```yaml
-kestra:
-  repository:
-    type: sqlserver
-  queue:
-    type: sqlserver
-
-datasources:
-  sqlserver:
-    url: jdbc:sqlserver://localhost:1433
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: kestra
-    password: k3str4
-    dialect: SQL_SERVER
-# Uncomment only if your database is not encrypted
-#    dataSourceProperties:
-#      encrypt: false
-```
-
-::alert{type="warning"}
-Note that this feature is currently in preview and only available in the Enterprise Edition. If you want to try it, please [reach out](/demo) to get access.
-::
-::
 
 ::collapse{title="H2"}
 
@@ -310,7 +283,7 @@ You can change these parameters to reduce the polling latency, but be aware it w
 - `kestra.jdbc.queues.pollSize`: the maximum number of queues items fetched by each poll.
 - `kestra.jdbc.queues.minPollInterval`: the minimum duration between 2 polls.
 - `kestra.jdbc.queues.maxPollInterval`: the maximum duration between 2 polls.
-- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
+- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from `minPollInterval` to `maxPollInterval` when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
 
 
 Here is the default configuration:
@@ -388,6 +361,13 @@ You can change the fixed delay (default 1h):
 kestra:
   anonymousUsageReport:
     fixedDelay: 1h
+```
+
+UI data is controlled by the following and disabled by default:
+```yaml
+kestra:
+  ui-anonymous-usage-report:
+    enabled: false
 ```
 
 ## Elasticsearch
@@ -528,17 +508,80 @@ kestra:
 
 ## EE License
 
-To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kstra.io).
+To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
 
-The license is set up using three configuration properties: `id`, `fingerprint` and `key`.
+The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
-- `kestra.ee.license.fingerprint`: license authentication.
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md).
 - `kestra.ee.license.key`: license key.
+
+```yaml
+kestra:
+  ee:
+    license:
+      id: <LICENSE ID>
+      fingerprint: <LICENSE FINGERPRINT>
+      key: |
+        <LICENSE KEY>
+```
 
 When you launch Kestra Enterprise Edition, it will check the license and display the validation step in the log.
 
+## EE Sidebar Configuration
+
+Kestra Enterprise Edition (EE) allows administrators to customize both the left and right sidebars in the UI for improved user experience and compliance with internal requirements.
+
+### Right Sidebar: Custom Links
+
+Admins can add custom links to the right sidebar, providing quick access to internal documentation, support portals, or other resources. Each link must include a `title` and a `url` property, and you can name the link properties as you like.
+
+Example configuration:
+
+```yaml
+kestra:
+  ee:
+    right-sidebar:
+      custom-links:
+        internal-docs:
+          title: "Internal Docs"
+          url: "https://kestra.io/docs/"
+        support-portal:
+          title: "Support portal"
+          url: "https://kestra.io/support/"
+```
+
+These links will appear in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
+
+::alert{type="info"}
+**Note:** The configuration syntax for right sidebar customization was updated since the initial launch in 0.24.0 to make it more explicit. If you previously used this feature, please update your configuration accordingly.
+::
+
+
+### Left Sidebar: Disable Menus
+
+You can disable specific menus in the left sidebar, which is useful for airgapped environments or to restrict access to certain features. For example, you may want to hide public blueprints or other menus that are not relevant for your deployment.
+
+Add the following to your configuration file:
+
+```yaml
+kestra:
+  ee:
+    left-sidebar:
+      disabled-menus:
+        - "Blueprints/Flow Blueprints"
+        - "Blueprints/Dashboard Blueprints"
+        - "Blueprints/App Blueprints"
+```
+
+Replace the menu names with those you want to disable. This feature is especially helpful for customers who want to limit access to certain features or customize specific environments.
+
+
 ## Multi-tenancy
+
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
 
 By default, multi-tenancy is disabled. To enable it, add the `kestra.ee.tenants` configuration:
 
@@ -551,6 +594,10 @@ kestra:
 
 ## Default Tenant
 
+::alert{type="warning"}
+These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
+::
+
 By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.defaultTenant` configuration:
 
 ```yaml
@@ -562,7 +609,6 @@ kestra:
 ```
 
 This will enable multi-tenancy and disable the default tenant (best practice). It is **recommended** to disable it so that your Kestra instance includes only the tenants you explicitly create.
-
 
 ## Encryption
 
@@ -681,6 +727,12 @@ Example:
 export JAVA_OPTS="-user.timezone=Europe/Paris"
 ```
 
+To configure a proxy each time your Kestra instance is up, use the `JAVA_OPTS` environment variable. For example, see the following code snippet and the [Java Documentation](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html):
+
+```yaml
+JAVA_OPTS=-Dhttp.proxyHost=10.0.0.100 -Dhttp.proxyPort=8800
+```
+
 ### Timezone
 
 By default, Kestra will handle all dates using your system's timezone. You can change the timezone using the `user.timezone` JVM option.
@@ -688,6 +740,12 @@ By default, Kestra will handle all dates using your system's timezone. You can c
 Changing the timezone will mostly affect:
 * **scheduler**: by default, all schedule dates are UTC; changing the Java timezone will allow scheduling the flow in your timezone.
 * **logs display**: in your configured timezone.
+
+### Memory
+
+Configuring Java memory settings can be nuanced. While the JVM provides reasonable defaults, the heap size often requires manual adjustment. The heap is the memory area where objects created by Kestra are allocated.
+
+By default, Kestra configures the JVM heap to use up to **50% of the available system memory**. This is done using the `-XX:MaxRAMPercentage=50.0` option, which dynamically allocates the heap size based on total memory. Alternatively, a fixed size can be set using the `-Xmx` option—for example, `-Xmx1g` to allocate 1 GB.
 
 ## Indexer
 
@@ -910,18 +968,22 @@ kestra:
 
 ## Logger
 
+### Server log
+
 You can change the log behavior in Kestra by adjusting the `logger` configuration parameters:
 
 ```yaml
 logger:
   levels:
-    io.kestra.core.runners: TRACE
-    org.elasticsearch.client: TRACE
-    org.elasticsearch.client.sniffer: TRACE
-    org.apache.kafka: DEBUG
-    io.netty.handler.logging: TRACE
+    io.kestra.core.runners: TRACE # Internal task execution-related details
+    org.opensearch.client.RestClient: DEBUG # OpenSearch API activity
+    org.apache.http: DEBUG # OpenSearch API client activity details
+    org.apache.http.wire: DEBUG # OpenSearch API client's raw HTTP bodies
+    org.apache.kafka: DEBUG # Kafka client activity
+    io.netty.handler.logging: TRACE # Netty's debugging messages
 ```
-To disable logging to the server logs, you can configure the following:
+
+By default, server logs also contain flow execution logs. To disable them, you can configure the following:
 
 ```yaml
 logger:
@@ -929,7 +991,7 @@ logger:
     flow: 'OFF'
 ```
 
-This disables the storage of all flow execution logs, so they will only appear in the server logs. 
+This disables the inclusion of all flow execution logs into the server log, so they will only be stored inside the Kestra database.
 
 Similarly, the following configuration disables the execution logs for the `hello-world` flow:
 
@@ -939,13 +1001,48 @@ logger:
     flow.hello-world: 'OFF'
 ```
 
+Inside the server logs, there are 3 specific loggers that log execution related information:
+
+- The `execution` logger logs the start and end of each execution.
+- The `task` logger logs the start and end of each task run.
+- The `trigger` logger logs the start and end of each trigger evaluation.
+
+See them in action in the following log snippet:
+
+```log
+10:20:47.355 INFO  jdbc-execution-executor_0 execution.hello-world [tenant: main] [namespace: company.team] [flow: hello-world] [execution: 4cQNlX5ZBpOAHJeexSHojx] Flow started
+10:20:48.035 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log started
+10:20:48.371 INFO  worker_0     task.hello-world.hello [tenant: main] [namespace: company.team] [flow: hello-world] [task: hello] [execution: 4cQNlX5ZBpOAHJeexSHojx] [taskrun: 40agqhADXZfzFSzzbs1kMP] Type Log with state SUCCESS completed in 00:00:00.514
+10:20:48.677 INFO  jdbc-execution-executor_2 execution.hello-world [tenant: main] [namespace: company.team] [flow: hello-world] [execution: 4cQNlX5ZBpOAHJeexSHojx] Flow completed with state SUCCESS in 00:00:01.543
+```
+
+You can disable them via the following configuration:
+
+```yaml
+logger:
+  levels:
+    execution: 'OFF'
+    task: 'OFF'
+    trigger: 'OFF'
+```
+
+You can also disable them only for specific flows, for example for the `hello-world` flow:
+
+```yaml
+logger:
+  levels:
+    execution.hello-world: 'OFF'
+    task.hello-world: 'OFF'
+    trigger.hello-world: 'OFF'
+```
+
 ### Access Log configuration
 
-You can configure the access log from the webserver using the `micronaut.server.netty.accessLogger` configuration:
-- `micronaut.server.netty.accessLogger.enabled`: enable access log from webserver (default `true`).
-- `micronaut.server.netty.accessLogger.name`: logger name (default `io.kestra.webserver.access`).
-- `micronaut.server.netty.accessLogger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
-- `micronaut.server.netty.accessLogger.exclusions`: list of regexp to define which log to exclude.
+You can configure the access log from the webserver using the `micronaut.server.netty.access-logger` configuration:
+- `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
+- `micronaut.server.netty.access-logger.logger-name`: logger name (default `io.kestra.webserver.access`).
+- `micronaut.server.netty.access-logger.log-format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
+- `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
 
 Here are the default values:
 
@@ -953,10 +1050,10 @@ Here are the default values:
 micronaut:
   server:
     netty:
-      accessLogger:
+      access-logger:
         enabled: true
-        name: io.kestra.webserver.access
-        format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
+        logger-name: io.kestra.webserver.access
+        log-format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
         exclusions:
           - /ui/.+
           - /health
@@ -976,13 +1073,13 @@ We provide some predefined configuration, and some example of the `logback.xml` 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-    <include resource="logback/base.xml" />
-    <include resource="logback/gcp.xml" />
+  <include resource="logback/base.xml" />
+  <include resource="logback/gcp.xml" />
 
-    <root level="WARN">
-        <appender-ref ref="CONSOLE_JSON_OUT" />
-        <appender-ref ref="CONSOLE_JSON_ERR" />
-    </root>
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_JSON_OUT" />
+    <appender-ref ref="CONSOLE_JSON_ERR" />
+  </root>
 </configuration>
 ```
 
@@ -1105,7 +1202,7 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
-### Configure Local Flow Syncronization
+### Configure Local Flow Synchronization
 
 Below is the minimal configuration to enable local flow synchronization:
 
@@ -1177,7 +1274,7 @@ kestra:
 
 ### Plugin Defaults
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined as a default value for these tasks.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. These provide default values for plugin properties and will be applied to each task on your cluster **unless that flow explicitly defines that property**. Plugin defaults ensure a property is defined as a default value for these tasks.
 
 ```yaml
 kestra:
@@ -1187,6 +1284,12 @@ kestra:
       values:
         level: ERROR
 ```
+
+::alert{type="warning"}
+**⚠️ Important:** The `kestra.plugins.defaults` block is evaluated once **by the Executor** and the resulting values are propagated unchanged to every Kestra component (Executor, Webserver, Scheduler, Worker). Workers do not perform any template rendering or logic of their own; they simply receive the fully rendered task properties from the Executor, execute the task or trigger as instructed, and report back the status and outputs.
+
+Because of this design, all servers in your Kestra deployment must share the same `kestra.plugins.defaults` configuration. Any attempt to define different defaults for individual Workers (for example, by using separate template files in each Worker’s `application.yaml`) will have no effect at runtime. To ensure consistent behavior and avoid confusion, we recommend maintaining a single, unified `kestra.plugins.defaults` block in your Executor-side configuration.
+::
 
 For greater granularity, you can use the flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level) property, which overrides global defaults for the given flow.
 
@@ -1238,7 +1341,7 @@ By default, the `outputs` property of a parent flow's `Subflow` task is deprecat
 
 You can also set default values for a plugin. Unlike the [`defaults` section](./#plugin-defaults), the `configuration` section defines features that are not accessible through the standard plugin properties used in flows.
 
-For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
+For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE`, avoiding recovering unnecessary missed scheduled executions after a server restart (e.g., missed runs during a planned [maintenance window](../06.enterprise/05.instance/maintenance-mode.md)):
 
 ```yaml
 kestra:
@@ -1250,13 +1353,11 @@ kestra:
           recoverMissedSchedules: NONE
 ```
 
-Before 0.15, Kestra was always recovering missed schedules. This means that if your server was down for a few hours, Kestra would recover all missed schedules when it was back up. This behavior was not always desirable, as often the recovery of missed schedules is not necessary e.g. during a planned maintenance window. This is why, starting from Kestra 0.15 release, you can customize the `recoverMissedSchedules` property and choose whether you want to recover missed schedules or not.
-
-The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
+The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE`, or `LAST`:
 
 - `ALL`: Kestra will recover all missed schedules. This is the default value.
 - `NONE`: Kestra will not recover any missed schedules.
-- `LAST`: Kestra will recover only the last missed schedule for each flow.
+- `LAST`: Kestra will recover only the **last** missed schedule for each flow.
 
 Note that this is a global configuration that will apply to all flows, unless explicitly overwritten within the flow definition:
 
@@ -1265,10 +1366,10 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
-    recoverMissedSchedules: NONE
+    recoverMissedSchedules: LAST
 ```
 
-In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
+In this example, the `recoverMissedSchedules` is set to `LAST`, which means that Kestra will recover only the **last** missed schedules for this specific flow regardless of the global configuration being set to `NONE`.
 
 ### Volume Enabled for Docker Task Runner
 
@@ -1309,7 +1410,7 @@ kestra:
 As of Kestra 0.22.0, you can configure plugin management properties for remote storage and custom and versioned plugins. An example configuration for managing plugins looks as follows:
 
 ```yaml
-kestra: 
+kestra:
   plugins:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
@@ -1318,7 +1419,7 @@ kestra:
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s
-        defaultVersion: LATEST 
+        defaultVersion: LATEST
 ```
 
 The following list of properties correspond to Versioned and remotely stored plugins:
@@ -1352,7 +1453,7 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
     type: constant # type: string
     interval: PT5M # type: Duration
     maxDuration: PT1H # type: Duration
-    maxAttempt: 3 # type: int
+    maxAttempts: 3 # type: int
     warningOnRetry: true # type: boolean, default is false
 ```
 
@@ -1372,8 +1473,12 @@ kestra:
     isolation: # available in Kestra >=0.22
       enabled: true # default: false
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
-        - EXECUTOR        
+        - EXECUTOR
 ```
+
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `secret`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Secrets UI Configuration](/docs/configuration/is-secrets-configuration.png)
 
 ### AWS Secret Manager
 
@@ -1520,9 +1625,9 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-Admin
 
-The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/03.auth/rbac.md#super-admin)
+The most powerful user in Kestra is the [Superadmin](../06.enterprise/03.auth/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
+You can create a `Superadmin` user from the `kestra.security.superAdmin` configuration.
 
 The super-admin requires three properties:
 * `kestra.security.superAdmin.username`: the username of the super-admin
@@ -1549,7 +1654,7 @@ kestra:
 
 ### Default Role
 
-The default role is the role that will be assigned to a new user when it is created.
+The default role is the role that will be assigned to a new user when it is created. This is particularly helpful when syncing users via [SCIM](../06.enterprise/03.auth/scim/index.md). Note that this doesn't apply to Service Accounts, which don't have any roles assigned by default.
 
 You can define the default role using the `kestra.security.defaultRole` configuration.
 Whenever you start Kestra, the default role will be checked and created if it doesn't exist.
@@ -1601,6 +1706,19 @@ kestra:
       expireAfter: P30D
 ```
 
+### Basic Authentication Password Rules
+
+You can configure password validation rules for user passwords using a regular expression pattern. This allows you to enforce password complexity requirements when users set or change their passwords.
+
+```yaml
+kestra:
+  security:
+    basicAuth:
+      passwordRegexp: "<regexp-rule>"
+```
+
+The `passwordRegexp` property defines a regular expression that user passwords must match. You can customize this pattern to enforce specific password requirements such as minimum length, character types, or complexity rules. The pattern `".*"` allows any password.
+
 ## Server
 
 Using the `kestra.server` configuration, you can set up multiple server-specific functionalities.
@@ -1618,7 +1736,7 @@ kestra:
       password: kestra
 ```
 
-HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
+If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. Basic authentication is solely to protect your open-source instance and not for multi-user management. For more details about scaling access, see
 the [Authentication page](../06.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
@@ -1850,7 +1968,7 @@ kestra:
 Other internal storage types include:
 - [Storage S3](#s3) for [AWS S3](https://aws.amazon.com/s3/)
 - [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
-- [Storage Minio](#minio) compatible with  others *S3 like* storage services
+- [Storage MinIO](#minio) compatible with  others *S3 like* storage services
 - [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 To isolate your dedicated internal storage from specific [Kestra services](../07.architecture/02.server-components.md), you can specify the following in your configuration using `kestra.storage.isolation`:
@@ -1864,6 +1982,10 @@ kestra:
       deniedServices: # optional (default: EXECUTOR, SCHEDULER, WEBSERVER)
         - EXECUTOR
 ```
+
+If configuring in the UI, certain higher level properties are assumed (`kestra` and `storage`) or defined with dropdowns and toggles (e.g., `type` and `isolation`), so there is no need to include them in the `yaml`. Refer to the following screenshot as an example:
+
+![Internal Storage UI Configuration](/docs/configuration/is-secrets-configuration.png)
 
 ### S3
 
@@ -1924,9 +2046,9 @@ kestra:
 ```
 ::
 
-### Minio
+### MinIO
 
-If you use Minio or similar S3-compatible storage options, you can follow the same process as shown above to install the Minio storage plugin. Then, make sure to include the Minio's `endpoint` and `port` in the storage configuration:
+If you use MinIO or similar S3-compatible storage options, you can follow the same process as shown above to install the MinIO storage plugin. Then, make sure to include the MinIO's `endpoint` and `port` in the storage configuration:
 
 ```yaml
 kestra:
@@ -1943,9 +2065,19 @@ kestra:
       partSize: your_part_size_for_multipart_uploads # syntax: <number><unit> without space e.g. 100KB, 5MB, 1GB — defaults to 5MB
 ```
 
-Optionally and if the Minio configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on Minio server), you can also use the `kestra.storage.minio.vhost: true` property to make Minio client to use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
+Optionally and if the MinIO configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on MinIO server), you can also use the `kestra.storage.minio.vhost: true` property to make the MinIO client use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
 
 Please note that the endpoint should always be your base domain (even if you use the virtual host syntax). In the above example, `endpoint: my.domain.com`, `bucket: my-bucket`. Setting `endpoint: my-bucket.my.domain.com` will lead to failure.
+
+To add a proxy in your MinIO configuration, take the following example:
+
+```yaml
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    ports:
+      - "8888:8080"  # MITM proxy listens on 8080 inside container by default
+    command: mitmdump --mode regular --listen-port 8080
+```
 
 ### Azure
 
@@ -2066,7 +2198,7 @@ kestra:
 
 ## Kestra URL
 
-Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use a full URI here with a trailing `/` (without `ui` or `api`).
+Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use the full URI, but omit `/ui` and `/api` segments:
 
 ```yaml
 kestra:
@@ -2079,17 +2211,29 @@ Using the `kestra.variables` configuration, you can determine how variables are 
 
 ### Environment Variables Prefix
 
-Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
+Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `ENV_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
 
 ```yaml
 kestra:
   variables:
-    envVarsPrefix: KESTRA_
+    envVarsPrefix: ENV_
 ```
 
-These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**.
+These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**. Your Docker Compose might look something like this:
 
-For example, an environment variable with the name `KESTRA_MY_ENV` can be accessed using `{{ envs.my_env }}`.
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    environment:
+      ENV_MY_VARIABLE: extra variable value
+      ENV_NEW_VARIABLE: new variable value
+      KESTRA_CONFIGURATION:
+        kestra:
+          variables:
+            envVarsPrefix: "ENV_" # this is the default as of version 0.23
+```
+
+An environment variable with the name `ENV_MY_VARIABLE` can be accessed using `{{ envs.my_variable }}`.
 
 ### Global Variables
 
@@ -2189,16 +2333,113 @@ kestra:
 
 ### Configuring a mail server
 
-Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the `kestra.mail-service` configuration.
+Kestra can send emails for invitations and forgotten passwords. You can configure the mail server using the EE `mailService` configuration.
 
 ```yaml
-    host: host.smtp.io
-    port: 587
-    username: user
-    password: password
-    from: configurable@mail.com
-    fromName: Kestra
-    auth: true #default
-    starttlsEnable: true #default
-
+kestra:
+  ee:
+    mailService:
+      host: host.smtp.io
+      port: 587
+      username: user
+      password: password
+      from: configurable@mail.com
+      fromName: Kestra
+      auth: true # default
+      starttlsEnable: true # default
 ```
+
+## Store Execution Data in Internal Storage
+
+::badge{version=">=0.23" editions="EE,Cloud"}
+::
+
+If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
+
+To configure this option on an instance level, add the following to your Kestra configuration file:
+
+```yaml
+kestra:
+  ee:
+    executionData:
+      internalStorage:
+        enabled: true # the default is false
+```
+
+Once you set the above configuration and your Tenant or Namespace has a "Dedicated internal storage" configured and the toggle "Execution data in internal storage" is enabled in the UI, all workflow outputs and inputs will be stored in the internal storage instead of the central database.
+
+To enforce this behavior globally, rather than just enabling this feature to be configured per Namespace or Tenant, you can set the `forceGlobally` property to `true`:
+
+```yaml
+kestra:
+  ee:
+    executionData:
+      internalStorage:
+        forceGlobally: true # the default is false
+```
+
+If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
+
+::alert{type="info"}
+Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
+::
+
+You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
+
+## Add Custom Links to Kestra UI (EE)
+
+In the Enterprise Edition, admins can add custom links as resources to Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. The configuration is managed in the YAML configuration file. See the example below:
+
+```yaml
+kestra:
+  ee:
+    customLinks:
+      link1:
+        title: "Internal Documentation"
+        url: "https://kestra.io/docs/"
+      link2:
+        title: "Internal Support Portal"
+        url: "https://kestra.io/support/"
+```
+
+## Allowed file paths
+
+To use the [universal file access protocol](../05.concepts/file-access.md), the `file:///` scheme must be bind-mounted to the host directory containing the files in the Docker container running Kestra, as well as set the `kestra.localFiles.allowedPaths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+
+```yaml
+  kestra:
+    image: kestra/kestra:latest
+    volumes:
+      - /Users/yourdir/scripts:/scripts # Bind-mount the host directory
+    ...
+    environment: # Allow access to the /scripts directory in Kestra container
+      KESTRA_CONFIGURATION: |
+        kestra:
+          localFiles:
+            allowedPaths:
+              - /scripts
+```
+
+By default, local files are previewable in the **Execution Overview** UI page; to disable, update your Kestra configuration file to have the property `kestra.localFiles.enablePreview` set to `false`, as it is `true` by default.
+
+## AI Copilot
+
+To add Copilot to your flow editor, add the following to your Kestra configuration:
+
+```yaml
+kestra:
+  ai:
+    type: gemini
+    gemini:
+      model-name: gemini-2.5-flash
+      api-key: YOUR_GEMINI_API_KEY
+```
+
+Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration:
+
+- `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
+- `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
+- `topK`: Typically ranges from 1–200+ depending on the API; lower values restrict choices to a few predictable tokens, while higher values allow more options and greater variety in responses.
+- `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
+- `logRequests`: Creates logs in Kestra for LLM requests.
+- `logResponses`: Creates logs in Kestra for LLM responses.

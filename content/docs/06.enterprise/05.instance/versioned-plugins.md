@@ -1,7 +1,7 @@
 ---
 title: Versioned Plugins
 icon: /docs/icons/admin.svg
-editions: ["EE", "BETA"]
+editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
 
@@ -28,7 +28,7 @@ Versioned plugins support several properties that can be modified in your Kestra
 An example configuration looks as follows:
 
 ```yaml
-kestra: 
+kestra:
   plugins:
       management:
         enabled: true # setting to false will make Versioned plugin tab disappear + API will return an error
@@ -37,7 +37,7 @@ kestra:
         localRepositoryPath: /tmp/kestra/plugins-repository
         autoReloadEnabled: true
         autoReloadInterval: 60s
-        defaultVersion: LATEST 
+        defaultVersion: LATEST
 ```
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
@@ -61,13 +61,21 @@ For locally stored plugins configured by the `localRepositoryPath` attribute, th
 └── plugins.meta
 ```
 
+## Configuration for EE-specific plugins
+
+Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your Kestra configuration has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
+
 ## Install versioned plugins
 
 Versioned plugins can be installed from the Kestra UI as well as programmatically.
 
 ### From the UI
 
-Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
+Below is an video demonstration walking through each step from installation to application in a flow.
+
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+Here are the steps again, listed one by one. Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
 
 ![versioned-plugins-1](/docs/enterprise/versioned-plugins/versioned-plugins-1.png)
 
@@ -147,7 +155,7 @@ To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md)
 ./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2
 ```
 
-The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled. 
+The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled.
 
 - `--locally=true` installs the plugin locally.
 - `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../configuration/index.md#internal-storage) directly.
@@ -157,12 +165,23 @@ The `--locally` flag specifies whether the plugin should be installed locally or
 In Flow tasks or triggers, you can specify the version of the plugin to use with the `version` property. For example, if the instance has both 0.22.0 and 0.21.0 versions installed of the Shell script plugin, the version to use can be specified in the flow as follows:
 
 ```yaml
-id: legacy_shell_script
+id: shell_script_example
 namespace: company.team
+
 tasks:
-  -id: script
-   type: io.kestra.plugin.scripts.shell.Script
-   version: 0.21.0
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: shell_script_task
+    type: io.kestra.plugin.scripts.shell.Script
+    version: "0.21.0"
+    outputFiles:
+      - first.txt
+    script: |
+      echo "The current execution is : {{ execution.id }}"
+      echo "1" >> first.txt
+      cat {{ outputs.http_download.uri }}
 ```
 
 The `version` property also accepts specific, non-case-sensitive values like in the configuration file:
