@@ -3,7 +3,6 @@ import { ClientRouter } from "astro:transitions";
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
-import LayoutHeader from "../../components/layout/Header.vue"
 
 
 
@@ -34,7 +33,6 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <ClientRouter />
   </head>
   <body>
-    <LayoutHeader scrolled={true} client:load/>
     <slot />
   </body>
 </html>
