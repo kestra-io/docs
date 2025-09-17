@@ -60,6 +60,28 @@ export function ChildCard(data, _attributes, node, file) {
             {
                 type: 'element',
                 data: {
+                    hName: 'div',
+                    hProperties: {
+                        class: 'card-icon',
+                    },
+                },
+                children: [{
+                    type: 'element',
+                    data: {
+                        hName: 'img',
+                        hProperties: {
+                            class: 'card-icon-img',
+                            src: richFile.data.icon ?? '/default-icon.svg',
+                            alt: richFile.data.title ?? richFile.entry.replace(/\.mdx?$/, ''),
+                            height: '50px',
+                            width: '50px',
+                        }
+                    }
+                }]
+            },
+            {
+                type: 'element',
+                data: {
                     hName: 'h4',
                     hProperties: {
                         class: 'card-title',

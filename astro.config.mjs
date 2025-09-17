@@ -15,7 +15,16 @@ export default defineConfig({
     imageService: 'cloudflare'
   }),
 
-  integrations: [vue(), expressiveCode()],
+  integrations: [vue(), expressiveCode({
+    defaultProps: {
+        wrap: true,
+        overridesByLang: {
+            'bash,sh,zsh,shell': {
+                frame: 'none',
+            }
+        }
+    }
+  })],
   markdown: {
     remarkPlugins: [
       remarkDirective,

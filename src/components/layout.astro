@@ -3,14 +3,26 @@ import { ClientRouter } from "astro:transitions";
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
+import LayoutHeader from "../../components/layout/Header.vue"
 
-const title = "Kestra Docs";
-const description = "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
+
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const props = Astro.props;
+
+const title = props.title ?? "Kestra";
+const description = props.description ?? "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
 ---
 
 
 <html lang="en" class="dark">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
@@ -22,6 +34,7 @@ const description = "Documentation for Kestra, the open-source data orchestratio
     <ClientRouter />
   </head>
   <body>
+    <LayoutHeader scrolled={true} client:load/>
     <slot />
   </body>
 </html>

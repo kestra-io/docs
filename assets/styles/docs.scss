@@ -196,6 +196,7 @@ $bd-gutter-x: 3rem;
 }
 
 .bd-content {
+    #{--bs-heading-color}: white;
     grid-area: content;
     min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
 
@@ -379,8 +380,6 @@ $bd-gutter-x: 3rem;
     }
 
     .doc-alert {
-        display: flex;
-        align-items: start;
         border: 1px solid;
         border-left-width: 5px !important;
         padding: 1rem;
