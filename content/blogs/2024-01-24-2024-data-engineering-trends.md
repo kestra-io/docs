@@ -27,9 +27,9 @@ As organizations seek to do more with less, there’s a growing demand for gener
 
 On the other hand, software engineers working on AI-driven features or data products start taking over many data engineering tasks, such as data cleaning, validation, and governance, because the quality of AI-based products depends on the quality of the underlying data. Tuning an LLM on bad data won’t lead to good outcomes for the business, regardless of how many GPUs we throw at it. You may notice that the boundaries between what software and data teams do are getting blurry in 2024.
 
-::alert{type="info"}
+:::alert{type="info"}
 It’s worth noting that even though there is a growing trend towards smaller data teams and more versatile skill sets, larger organizations will continue to look for specialists in data modeling, engineering, analytics, ML, and AI. Both generalists and specialists have their place, even in the AI era.
-::
+:::
 
 ## Data Teams as Profit Centers
 

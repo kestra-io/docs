@@ -1,0 +1,17 @@
+---
+import LayoutDocs from "../../components/layout-docs.astro";
+import { getEntry, render } from "astro:content";
+const doc = await getEntry('docs', '<index>');
+if (!doc) {
+    throw new Error('Index document not found');
+}
+
+const { Content } = await render(doc);
+---
+
+<LayoutDocs activeStem="/docs">
+    <main>
+        <h1>{doc.data.title}</h1>
+        <Content />
+    </main>
+</LayoutDocs>

@@ -34,7 +34,6 @@ You can use the following command line parameters:
 - `--no-encryption`: use it to bypass backup encryption. Metadata backup may contain sensitive information so make sure you are aware of the risk when bypassing the encryption.
 
 ::badge{version=">=0.22" editions="OSS,EE"}
-::
 
 - `--include-data`: includes execution data in the backup (executions, logs, metrics, auditlogs). By default execution data is not included due to the potential size of the file.
 - `--internal-log`: change the log level for internal logs to be backed up.

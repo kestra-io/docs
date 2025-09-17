@@ -11,9 +11,9 @@ description: |-
 
 Use this data source to access information about an existing Kestra Namespace.
 
-::alert{type="info"}
+:::alert{type="info"}
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-::
+:::
 
 ## Example Usage
 

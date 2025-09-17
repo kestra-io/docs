@@ -54,7 +54,7 @@ Kestra’s approach is adaptable and vendor-neutral, allowing organizations to s
 
 A **unified platform** is the future of Ops — scalable, transparent, and open to collaboration. Consider [**Kestra**](https://kestra.io/) as a step toward flexible orchestration for diverse workflows, designed to ensure teams can work together effectively while building on best practices across domains.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

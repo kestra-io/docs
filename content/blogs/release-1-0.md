@@ -118,7 +118,7 @@ As part of the same release, we're excited to introduce the [Kestra MCP Server](
 The MCP Server can be run locally or in Docker, and works with both OSS and Enterprise editions. This integration opens the door for tighter collaboration between AI assistants and Kestra, enabling natural language control of your workflows and orchestration platform.
 
 
-::collapse{title="Expand to see an example of how to use our MCP server as a tool in Kestra's AI Agents."}
+:::collapse{title="Expand to see an example of how to use our MCP server as a tool in Kestra's AI Agents."}
 ```yaml
 id: kestra_mcp_server
 namespace: company.ai
@@ -147,7 +147,8 @@ tasks:
           KESTRA_USERNAME: admin@kestra.io
           KESTRA_PASSWORD: "{{ kv('KESTRA_PASSWORD') }}"
 ```
-::
+
+:::
 
 ---
 

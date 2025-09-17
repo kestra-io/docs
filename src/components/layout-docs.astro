@@ -1,0 +1,62 @@
+---
+import "../../assets/styles/docs.scss";
+import { getCollection } from "astro:content";
+import NavSideBar from "../../components/docs/NavSideBar.vue";
+import Layout from "./layout.astro";
+import { getNavigationTree } from "../utils/getNavigationTree";
+
+const docsPages = await getCollection('docs')
+
+// transform the flat list of docsPages into a nested structure based on the '/' in the id
+
+// first sort the docsPages by depth (number of '/' in the id)
+docsPages.sort((a, b) => {
+    const aDepth = a.id.split('/').length;
+    const bDepth = b.id.split('/').length;
+    return aDepth - bDepth;
+});
+
+// then create a nested structure
+const navigation = [{
+    title: 'Documentation',
+    children: getNavigationTree(docsPages)
+}]
+
+interface Props {
+    activeStem: string
+}
+
+const props = Astro.props;
+---
+
+<Layout>
+    <div class="layout-docs-wrapper">
+        <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
+        <main class="bd-content">
+            <slot/>
+        </main>
+    </div>
+</Layout>
+
+<style lang="scss">
+    .layout-docs-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 100%;
+    }
+    .bd-sidebar{
+        min-width: 250px;
+        white-space: normal;
+        .ai-button-wrapper, .search {
+            height: 32px;
+            width: 209px;
+        }
+    }
+</style>
+

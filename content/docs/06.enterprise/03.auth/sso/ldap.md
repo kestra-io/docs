@@ -63,6 +63,6 @@ If they are a part of any groups specified in the directory, those groups will b
 
 Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If a user is deleted from the LDAP server, they will lose access to Kestra at the next synchronization or login attempt.
-::
+:::

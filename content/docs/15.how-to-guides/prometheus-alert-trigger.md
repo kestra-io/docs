@@ -44,9 +44,9 @@ scrape_configs:
 
 Be sure to put the appropriate <kestra-host-ip-address> in the last line, e.g., `localhost:8081` or `host.docker.internal:8081`. Restart Prometheus for the changes to take effect.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you're running everything with Docker on the same machine, you will need to change your host address to `host.docker.internal` rather than localhost, or the name of the container.
-::
+:::
 
 ---
 
@@ -152,9 +152,9 @@ rule_files:
     - "/alertmanager/alert.rules"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Make sure that your `groups.name` and `rule_files` have the same name so that Alertmanager correctly connects the alerts.
-::
+:::
 
 To check that your rules are picked up by Prometheus, go to `http://localhost:9090/rules`.
 

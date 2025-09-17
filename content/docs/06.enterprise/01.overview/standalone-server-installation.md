@@ -27,9 +27,9 @@ Download the latest version of the Kestra EE JAR from:
 - **Username**: `license-id`
 - **Password**: `fingerprint`
 
-::alert{type="info"}
+:::alert{type="info"}
 Make sure to store your credentials in an `application.yaml` file.
-::
+:::
 
 This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
 
@@ -52,9 +52,9 @@ The file is then executable with:
 ./kestra-ee-VERSION server standalone # Replace VERSION with your version
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 You need to provide a configuration with a connection to a database.
-::
+:::
 
 ---
 

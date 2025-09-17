@@ -9,9 +9,9 @@ Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now
 ## Why the Change?
 Multiple plugin types have been moved to a new package structure under `io.kestra.plugin.core` to make the plugin system more consistent and intuitive.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 We've also renamed `taskDefaults` to `pluginDefaults` to highlight that you can set default values for all plugins (_including triggers, task runners and more_), not just tasks.
-::
+:::
 
 All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 

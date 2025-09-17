@@ -228,9 +228,9 @@ tasks:
 
 All tasks from the template will be *copied* at runtime.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 From the template, you can access all execution context variables. However, this is discouraged. The best is to use the `args` property to rename variables from the global context to the template's local one.
-::
+:::
 
 ### Templates UI
 

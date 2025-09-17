@@ -42,9 +42,9 @@ The role of this processor is to automatically manage the `META-INF/services` fi
 
 Kestra allows you to develop a custom constraint validator using the standard Java API for bean validation (i.e., JSR-380), which is used to validate the properties of custom tasks.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The custom validator must now implement the standard `jakarta.validation.ConstraintValidator` instead of the interface provided by Micronaut: `io.micronaut.validation.validator.constraints.ConstraintValidator`.
-::
+:::
 
 In addition, custom validation annotation should now strictly adhere to the Java bean specification — see the example below.
 

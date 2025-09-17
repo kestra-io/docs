@@ -58,7 +58,7 @@ const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}
 </script>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref } from "vue"
+import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref, computed } from "vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 import { useSidebarScroll } from "../../composables/useSidebarScroll"
@@ -84,7 +84,7 @@ const props = defineProps<{
 
 const activeSlug = inject(activeSlugInjectionKey, ref(''))
 const isActive = computed(() => normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)))
-const toggled = ref<boolean>(isActive.value)
+const toggled = ref<boolean>(isActive.value || props.item.isSection === true)
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()

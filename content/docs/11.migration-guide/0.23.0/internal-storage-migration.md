@@ -16,9 +16,9 @@ Below is an example of how the storage path looks like before and after the chan
 
 Make sure to run the following script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Before taking any action to fix the double slash issue, Open-source users **MUST** follow the steps in the [OSS Tenant Migration Guide](tenant-migration-oss.md) and Enterprise users **MUST** follow the steps in the [EE Tenant Migration Guide](tenant-migration-ee.md).
-::
+:::
 
 ### GCS storage root slash migration script
 

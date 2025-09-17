@@ -9,4 +9,3 @@ The Administrator Guide covers everything you need to know about managing your K
 - Check the **[Configuration Reference](../configuration/index.md)** for details on how to **configure Kestra** based your specific needs.
 
 ::ChildCard{pageUrl="/docs/administrator-guide/"}
-::

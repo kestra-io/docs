@@ -16,9 +16,9 @@ There is 2 ways (for flow) to handle yaml:
 
 **Those properties have to be set at the provider level.**
 
-::alert{type="danger"}
+:::alert{type="danger"}
 Take care with `keep_original_source = false` that this terraform provider is not aware of task & plugins. It can't know default values of properties, and most of conversion logic done by Kestra Server. If you see diff that **is always present** (even just after apply), your flow on terraform must have a minor difference return from the server. In this case, **copy the source from Kestra UI** in your terraform files to avoid these difference.
-::
+:::
 
 There is in terraform a lot of function that allow to work properly with this yaml content :
 
@@ -75,9 +75,9 @@ resource "kestra_flow" "example" {
 
 Even better will be to use a [templatefile function](https://www.terraform.io/docs/language/functions/templatefile.html) that will allow more complex flows to be more readable. You can include some external external and this one can also include other file.
 
-::alert{type="danger"}
+:::alert{type="danger"}
 Take care about the indent functon that need to fit your actual flow ident. Terraform don't know anything about your yaml (it's a simple string), so you need to handle properly the indent count by yourself using the [indent function](https://www.terraform.io/docs/language/functions/indent.html)
-::
+:::
 
 ### Dealing with included yaml string
 

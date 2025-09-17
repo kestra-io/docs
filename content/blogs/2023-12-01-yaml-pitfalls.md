@@ -23,9 +23,9 @@ Despite all its benefits, some consider YAML to be error-prone or difficult to u
 
 However, it's worth looking at those issues **in the context** of a specific tool. At Kestra, we've solved **all of the common YAML challenges** through our API, and we're confident that YAML is the right choice for a declarative definition of orchestration logic as long as it's built on top of robust schemas with proper validation mechanisms built into the framework. This blog post explains how we addressed the most common YAML pitfalls in our platform.
 
-::alert{type="info"}
+:::alert{type="info"}
 **YAML Syntax 101:** YAML syntax is based on **key-value pairs** that can accept **lists**, **scalar** values and **other key-value pairs** organized into hierarchies based on indentation. It natively supports various data structures and types, including strings, integers, floats, timestamps, nulls, booleans, arrays, and maps. If you are new to YAML, read our [YAML Crash Course](https://kestra.io/blogs/2023-11-27-yaml-crashcourse), and for a detailed introspection, check the official [language specification](https://yaml.org/spec/1.2/spec.html).
-::
+:::
 
 ---
 
@@ -40,9 +40,9 @@ These complaints often result from YAML being applied in the context of Kubernet
 
 Let's discuss each of these critical remarks in detail and explain why they don't apply to Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 Many of the YAML _pitfalls_ can be overcome by installing one of the many YAML extensions available for popular IDEs including VS Code, IntelliJ, PyCharm, Sublime Text, Eclipse, vim, TextMate, Notepad++, and more. If you use VS Code, we recommend installing [RedHat's YAML VS Code extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml), which provides a rich set of features for writing YAML files, including real-time syntax validation against a schema you select (such as a schema for your Kestra server), error detection, a formatter with auto-indentation, document outlining, auto-completion, invalid key node and invalid type validation, documentation when hovering over any key property, as well as syntax checking for Kubernetes YAML files. It's a verified and officially supported extension with over 14 million downloads at the time of writing.
-::
+:::
 
 ---
 
@@ -64,9 +64,9 @@ However, in another example shown below, you can see that the indentation is inc
 
 Thanks to the built-in syntax validation, **Kestra's API doesn't allow you to save an invalid flow**. There are no surprises at runtime because the flow is validated during its creation, i.e. at build time. This constrained (yet robust) approach offers an advantage over more flexible (yet more fragile) Python scripts, where indentation errors can lead to unexpected behavior at runtime.
 
-::alert{type="info"}
+:::alert{type="info"}
 **TL;DR:** The claim of YAML being error-prone due to indentation is an old misconception established when tools such as [RedHat's YAML VS Code extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) didn't exist yet, and you had to rely on manual YAML parsing to detect errors. Kestra's API continuously validates the syntax before saving any flow, ensuring that your code is valid before you deploy or run it.
-::
+:::
 
 ---
 
@@ -90,9 +90,9 @@ Kestra encourages small, modular and reusable components, and it provides multip
 
  In short, Kestra encourages modular, decoupled components built on top of a simple orchestration syntax defined in YAML.
 
-::alert{type="info"}
+:::alert{type="info"}
 **TL;DR:** If you follow engineering best practices and modularize your logic into smaller, reusable components, Kestra flows built with YAML scale well to support large and complex workloads. Kestra provides multiple ways to split any workflow into smaller building blocks that can be referenced in the same way as functions in a programming language.
-::
+:::
 
 ---
 
@@ -108,9 +108,9 @@ Additionally, Kestra makes it **transparent which inputs and outputs are expecte
 
 Kestra also provides `DEBUG` and `TRACE` log levels, which can be used for debugging purposes. You don't need to do anything special to enable these log levels — just select the desired log level in the UI's logs page.
 
-::alert{type="info"}
+:::alert{type="info"}
 **TL;DR:** The claim of YAML being difficult to debug is a misconception born out of systems such as GitHub Actions, where the validation happens after you deploy your code, which is simply too late. Syntax errors should be caught as early as possible, ideally when you're writing the code. Kestra's API validates the syntax before saving the flow and provides additional debugging capabilities such as log levels, inputs and outputs for each task, and the ability to disable any task, trigger or flow for iterative debugging.
-::
+:::
 
 ---
 

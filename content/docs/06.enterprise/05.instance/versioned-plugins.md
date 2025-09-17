@@ -198,7 +198,7 @@ When there are multiple versions of a plugin available, Kestra resolves the vers
 
 **Note**: By default, Kestra defaults to `LATEST` for core plugins if no version can be resolved. For other plugins, if no version can be resolved, the Flow will be considered invalid.
 
-::alert{type="info"}
+:::alert{type="info"}
 The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.
-::
+:::
 

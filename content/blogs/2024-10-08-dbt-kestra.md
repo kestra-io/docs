@@ -137,7 +137,7 @@ With Kestra, you get a complete platform for orchestrating and scaling dbt workf
 
 Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our [dbt plugin documentation](/plugins/plugin-dbt) for more details.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

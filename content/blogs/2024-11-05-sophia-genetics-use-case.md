@@ -32,7 +32,7 @@ Azure Batch is a cloud-based job scheduling service that simplifies running larg
 The combination of the Kestra orchestration engine, declarative Flow based definition and Azure Batch plugin integration offers a powerful solution for SOPHiA GENETICS to manage, store, and process large-scale data workloads, while ensuring the highest stnadards of information security. Thanks to Kestra, they further streamlined their genomic sequence analysis, which involves many tools and processes. This led to improved time management, simplified data practitioner oversight, and ultimately, enhanced overall productivity. We're very proud to have SOPHiA GENETICS as one of our power users and can't wait to continue working with them to enhance further their genomic analysis capabilities, push the boundaries of medical research, and ultimately contribute to advancements in precision healthcare.
 
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

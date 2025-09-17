@@ -49,9 +49,9 @@ scrape_configs:
 
 Be sure to put the appropriate `<kestra-host-ip-address>` in the last line, e.g. `localhost:8081` or `host.docker.internal:8081`.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you're running everything in Docker on the same machine, you will need to change your host address to `host.docker.internal` rather than localhost.
-::
+:::
 
 We can start the Prometheus server using the following docker command in the same directory as `prometheus.yml`:
 

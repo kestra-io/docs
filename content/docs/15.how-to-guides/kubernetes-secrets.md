@@ -10,9 +10,9 @@ editions: ["OSS"]
 
 How to add Kestra Secrets to your Helm Chart deployment.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../06.enterprise/02.governance/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../06.enterprise/02.governance/secrets-manager.md) of your choice.
-::
+:::
 
 ## Pass environment variables directly
 
@@ -42,9 +42,9 @@ extraEnv:
     value: "cGFzc3dvcmQ="
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note how each environment variable's key starts with `SECRET_`. This is important for Kestra to recognize them as secrets.
-::
+:::
 
 Now, all that's left is to install or upgrade your Helm Chart:
 
@@ -79,14 +79,14 @@ Execute the flow and check the output values in the Outputs tab in the UI. You s
 
 If you want to define your secrets in a Kubernetes Secret, you can use the `extraSecretEnvFrom` property in your Helm Chart. This property allows you to reference an existing Kubernetes Secret and pass its values as environment variables to Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 Since Kubernetes Secrets values need to be base64 encoded, you need to double encode them. Taking the same example as above, you would need to encode the values `admin` and `password` twice.
 
 ```shell
 echo -n "admin" | base64 | base64 # it should give you WVdSdGFXNEsK
 echo -n "password" | base64 | base64 # it should give you YzBGemMzZHZjbVFLCg==
 ```
-::
+:::
 
 Here is an example of a Kubernetes Secret definition:
 

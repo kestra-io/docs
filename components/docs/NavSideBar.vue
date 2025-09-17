@@ -235,8 +235,6 @@
                     font-size: calc($font-size-base * 0.62);
                 }
             }
-
-
         }
     }
 </style>

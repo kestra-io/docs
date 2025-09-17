@@ -123,11 +123,11 @@ tasks:
 
 In the example above, the `subflow` task produces an output attribute `final`. This output attribute is then used in the `log_subflow_output` task.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note how the `outputs` are set twice within the `"{{outputs.subflow.outputs.final}}"`:
 1. once to access outputs of the `subflow` task
 2. once to access the outputs of the subflow itself — specifically, the `final` output.
-::
+:::
 
 Here is what you will see in the Outputs tab of the **Executions** page in the parent flow:
 

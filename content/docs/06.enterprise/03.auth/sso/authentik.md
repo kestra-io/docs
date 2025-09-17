@@ -87,6 +87,6 @@ kestra:
       defaultTenant: false
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 ⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `defaultRole` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
-::
+:::

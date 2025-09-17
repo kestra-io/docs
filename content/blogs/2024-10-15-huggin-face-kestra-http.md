@@ -116,7 +116,7 @@ For developers, Kestra’s “everything-as-code” approach means that building
 
 The extensive plugin library and adaptable structure mean Kestra isn’t limited to data orchestration. You can bring in observability tools, set up notification triggers, or even configure machine learning models to monitor key performance metrics. It's built for more than just task automation, you can **simplify and improve how you leverage AI and data throughout your entire tech stack.**
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

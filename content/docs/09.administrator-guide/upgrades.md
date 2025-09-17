@@ -29,9 +29,9 @@ Sometimes you might need to downgrade Kestra to a previous version. Here are som
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 We strongly recommend to avoid downgrading to a previous version if possible. To avoid any surprises, before upgrading, test out the newer version on a non-production environment to ensure expected functionality with your existing instance. If you must rollback, closely follow the recommended actions above.
-::
+:::
 
 ## Where you can find the release changelog
 
@@ -41,9 +41,9 @@ You can find the release changelog on the main repository's [Releases](https://g
 
 Next to all bug fixes and enhancements, you can find a dedicated section called `Breaking Changes` in the release notes. This section lists changes that may require some adjustments in your code or Kestra configuration, along with links to the documentation showing how to migrate.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 ⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
-::
+:::
 
 ## How to minimize downtime when updating Kestra
 
@@ -57,9 +57,9 @@ If running Kestra in separate components you should:
 
 Normally, there is a graceful shutdown on all components so you will not lose anything. Once this is done, you can update and restart everything in the opposite order (or any order as all components are independent).
 
-::alert{type="info"}
+:::alert{type="info"}
 The webserver host the API so it's the one that must be stopped then started immediately to avoid potential downtime. Once this has been done, you can restart the other components so flow executions can start again.
-::
+:::
 
 ## How to stick to a specific Kestra version
 

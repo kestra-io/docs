@@ -44,7 +44,6 @@ Each service displays:
 ## Announcements
 
 ::badge{version=">=0.20" editions="EE"}
-::
 
 Notify users about planned maintenance or updates:
 1. **Create Announcements**: Specify a title, message, and date range.
@@ -55,7 +54,6 @@ Notify users about planned maintenance or updates:
 ## Maintenance Mode
 
 ::badge{version=">=0.21" editions="EE"}
-::
 
 Temporarily pause all workflows and services for upgrades:
 1. Enable **Maintenance Mode** from the Instance page.
@@ -65,7 +63,6 @@ Temporarily pause all workflows and services for upgrades:
 ## Worker Groups
 
 ::badge{version=">=0.10" editions="EE"}
-::
 
 Create [worker groups](../04.scalability/worker-group.md) to isolate workloads or delegate tasks to given workers:
 - **Add Worker Groups**: Define groups with specific resource limits or labels.

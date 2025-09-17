@@ -32,5 +32,4 @@ Kestra explicitly relies on the SCIM 2.0 protocol for directory synchronization.
 For a detailed guide on how to set up SCIM provisioning with a specific IdP, refer to the documentation for the respective provider.
 
 ::ChildCard
-::
 

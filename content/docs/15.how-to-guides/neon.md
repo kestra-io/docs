@@ -56,7 +56,7 @@ pluginDefaults:
 
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
@@ -69,7 +69,7 @@ pluginDefaults:
       password: "{{kv('NEON_PASSWORD')}}"
 ```
 
-::
+:::
 
 ## Copying a CSV file into Neon inside of a Flow
 

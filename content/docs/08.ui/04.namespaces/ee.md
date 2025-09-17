@@ -6,9 +6,9 @@ editions: ["EE", "Cloud"]
 
 Manage specific enterprise features within a namespace.
 
-::alert{type="info"}
+:::alert{type="info"}
 This feature requires a [commercial license](/pricing).
-::
+:::
 
 There's a number of extra namespace pages available in the enterprise edition:
 - Edit

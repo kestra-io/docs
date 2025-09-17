@@ -22,4 +22,3 @@ If you use a [commercial version of Kestra](../06.enterprise/index.md), you can 
 The following pages dive into details of each task runner, supported programming languages, and how to manage dependencies.
 
 ::ChildCard
-::

@@ -18,9 +18,9 @@ Starting with 0.21, Kestra supports all three kinds of telemetry data thanks to 
 
 ## Traces
 
-::alert{type="info"}
+:::alert{type="info"}
 Exporting trace data in Kestra is currently a Beta feature.
-::
+:::
 
 The first step is to enable distributed traces inside the Kestra configuration file:
 

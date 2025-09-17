@@ -17,11 +17,9 @@ Kestra strives to be a simple yet powerful orchestration platform, enabling our 
 
 
 ::CardLogos
-::
 
 
 Click on the link below to download the logo pack in PNG and SVG:
 
 
 ::DownloadLogoPack
-::

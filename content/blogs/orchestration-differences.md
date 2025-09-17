@@ -60,8 +60,8 @@ Kestra’s event-driven approach integrates real-time data flows seamlessly with
 
 Orchestration should not operate in silos. Effective orchestration integrates data workflows, software deployments, and infrastructure tasks into a single, cohesive automated process. Kestra provides a unified, scalable orchestration platform, blending simplicity with powerful automation capabilities. By adopting Kestra, organizations can reduce operational complexity, enhance agility, ensure visibility, and improve cost efficiency.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

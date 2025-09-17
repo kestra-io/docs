@@ -19,9 +19,9 @@ kestra:
       enabled: true
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/0.23.0/tenant-migration-ee.md) to assist with upgrading.
-::
+:::
 
 ## Kestra SCIM Setup: Create a New Provisioning Integration
 
@@ -53,9 +53,9 @@ Note that you can disable or completely remove the SCIM Integration at any time.
 ![scim3](/docs/enterprise/scim3.png)
 
 
-::alert{type="info"}
+:::alert{type="info"}
 At first, you can disable the integration to configure your Keycloak SCIM integration, and then enable it once the configuration is complete.
-::
+:::
 
 ### IAM Role and Service Account
 
@@ -70,9 +70,9 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user using our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
-::
+:::
 
 ---
 

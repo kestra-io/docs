@@ -55,9 +55,9 @@ All of these tools work in a similar way:
 2. Then, you create **connections** to sync data between them.
 3. Finally, you can directly add a schedule or trigger from the same UI so that the process runs on a regular basis.
 
-::alert{type="info"}
+:::alert{type="info"}
 To see how you can orchestrate Fivetran connectors with [kestra](https://github.com/kestra-io/kestra), check our [Fivetran blueprints](/blueprints?q=fivetran) and the [plugin documentation](/plugins/plugin-fivetran).
-::
+:::
 
 ### Why no-code is often not enough
 
@@ -77,9 +77,9 @@ When commercial no-code tools don't cut it, you'll likely "just" write a script.
 
 [Stitch](https://www.stitchdata.com/) tried to solve that problem by building a universal data ingestion **standard** called [Singer spec](https://hub.meltano.com/singer/spec/). That spec aimed to improve standardization and community collaboration to avoid reinventing the wheel across companies.
 
-::alert{type="info"}
+:::alert{type="info"}
 To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](/blueprints/postgres-to-bigquery) and the [Singer plugin documentation](/plugins/plugin-singer).
-::
+:::
 
 A typical [Singer](https://www.singer.io/) project consists of **taps**, **targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.
 
@@ -118,9 +118,9 @@ Airbyte's monorepo allows it to centrally govern the connectors and ensure that 
 
 **How does Airbyte monetize?** [Airbyte Cloud](https://airbyte.com/solutions/airbyte-cloud) is a managed ELT platform in the Cloud. Apart from that, Airbyte offers a self-managed Enterprise plan as well as [Powered by Airbyte](https://airbyte.com/solutions/powered-by-airbyte) solution.
 
-::alert{type="info"}
+:::alert{type="info"}
 To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](/blueprints?q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
-::
+:::
 
 <video autoplay muted loop>
   <source src="/blogs/2023-10-11-why-ingestion-will-never-be-solved/airbyte_kestra.mp4" type="video/mp4">
@@ -148,9 +148,9 @@ One of the main selling points of dlt is that it's a lightweight Python-based fr
 
 **How does dltHub monetize?** dlt plans to offer an [integration hub](https://dlthub.com/) that might resemble a connector marketplace and a managed service for data integration. The monetization model looks similar to the one of CloudQuery, but it's too early to tell how the two products will compare commercially.
 
-::alert{type="info"}
+:::alert{type="info"}
 To see end-to-end examples of orchestrating dlt data ingestion with Kestra, check our [dltHub blueprints](/blueprints?q=dlt).
-::
+:::
 
 ---
 

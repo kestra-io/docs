@@ -153,9 +153,9 @@ models:
   +start: Nov 10 2024
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that `models` require a start date for backfilling data through use of the `start` configuration parameter.
-::
+:::
 
 Now create a folder called `models` in the namespace. In the `models` folder, we will create `sources.yml` which will define the source models, with the following content:
 

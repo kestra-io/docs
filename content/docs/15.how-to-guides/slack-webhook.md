@@ -59,9 +59,9 @@ triggers:
     key: superStrongSecretKey42
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store it securely.
-::
+:::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
 
@@ -148,7 +148,7 @@ tasks:
             return web_app
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
 ```yaml
 id: slack_app
@@ -166,7 +166,7 @@ tasks:
       MODAL_TOKEN_SECRET: "{{ secret('MODAL_TOKEN_SECRET') }}"
 ```
 ![img_8.png](/docs/how-to-guides/slack-webhook/img_8.png)
-::
+:::
 
 Once you execute that flow, you will see the endpoint to your app in the logs:
 
@@ -259,9 +259,9 @@ triggers:
     key: superStrongSecretKey42
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
-::
+:::
 
 And here is the result:
 

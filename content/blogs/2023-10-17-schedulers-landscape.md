@@ -146,9 +146,9 @@ triggers:
 
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 The examples above show how Kestra allows you to keep the entire scheduling logic in code. For more examples of how Kestra brings Infrastructure as Code best practices to all workflows, check the [CI/CD guide](https://kestra.io/docs/developer-guide/cicd). See it in action by following the [getting started guide](https://kestra.io/docs/getting-started).
-::
+:::
 
 ---
 

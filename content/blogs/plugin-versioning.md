@@ -75,9 +75,9 @@ Once you confirm, Kestra will download and install that plugin version into its 
 
 ![versioned plugin](/blogs/plugin-versioning/versioned-plugin.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 After installing multiple versions, the **Versioned Plugins** page lists each plugin and the versions installed. In this example, Ansible plugin v0.21.2 is installed, and the PostgreSQL plugin v0.19.0 is installed with a newer version available (hence the Upgrade prompt). Kestra preserves the old version when upgrading, adding the new version as a separate entry.
-::
+:::
 
 When you upgrade a plugin via the UI, Kestra doesn’t simply overwrite the old JAR. It keeps the existing version in place and adds the new version as a separate installation. This means any flows currently using the older version will continue to run unaffected. You could upgrade, for instance, the **PostgreSQL** plugin from 0.19.0 to 0.20.0 – and you’d see both versions listed. Then, you might update only certain flows to use 0.20.0 while others remain on 0.19.0 (until you decide to switch them). This side-by-side installation approach is key to safe transitions.
 
@@ -133,8 +133,8 @@ For new users discovering Kestra, plugin versioning means you can confidently ad
 
 In summary, **Kestra’s Plugin Versioning** feature makes plugin management a first-class citizen of the orchestration process. It acknowledges that change is constant – new plugin versions will come – but with the proper tooling, change doesn’t have to be scary.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

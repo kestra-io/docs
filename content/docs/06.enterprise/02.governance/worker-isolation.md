@@ -50,9 +50,9 @@ kestra:
         - io.kestra.plugin.scripts
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](../../16.scripts/00.languages.md) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
-::
+:::
 
 ## Scripting isolation
 
@@ -85,6 +85,6 @@ Forced plugin defaults:
 - Ensure a property is set globally for a task, and no task can override it.
 - Are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.
-::
+:::
