@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 import vue from '@astrojs/vue';
 import remarkDirective from 'remark-directive';
-import remarkCustomElements from './utils/remark-custom-elements.mjs';
+import remarkCustomElements from './utils/remark-custom-elements/index.mjs';
 
 import expressiveCode from 'astro-expressive-code';
 
