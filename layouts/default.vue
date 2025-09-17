@@ -2,9 +2,9 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="isScrolled" />
+        <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="scrolled" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
-            <LayoutHeader :scrolled="isScrolled" />
+            <LayoutHeader :scrolled :transparentHeader :nuxtApp />
             <main>
                 <slot />
             </main>
@@ -15,10 +15,13 @@
 </template>
 
 <script lang="ts" setup>
-    import {useNuxtApp} from "#app/nuxt.js";
+    import {useNuxtApp, NuxtLink} from "#app";
     const config = useRuntimeConfig();
     const route = useRoute();
-    const isScrolled = ref(false)
+    const scrolled = ref(false)
+    provide(linkSymbolInjectionKey, NuxtLink)
+
+    const transparentHeader = computed(() => route.meta.transparentHeader === true)
 
     const {data: bannerMessages} = await useCachedAsyncData<{results: Record<string, any>}>(
         `header-annonces`,
@@ -35,7 +38,7 @@
     })
 
     const handleScroll = () => {
-      isScrolled.value = window.scrollY > 20
+      scrolled.value = window.scrollY > 20
     }
 
     onMounted(() => {
