@@ -5,7 +5,7 @@ date: 2024-10-03T13:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
-  role: 
+  role:
   image: mproset
 image: /blogs/2024-10-03-conditional-inputs.jpg
 ---
@@ -34,10 +34,10 @@ inputs:
     type: SELECT
     expression: "{{ kv('SERVICE')[inputs.cloud] }}"
     dependsOn:
-      inputs: 
+      inputs:
         - cloud
 	    condition: "{{ inputs.cloud|length > 0 }}"
-    
+
 
 ```
 

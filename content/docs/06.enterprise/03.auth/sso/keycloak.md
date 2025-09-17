@@ -111,7 +111,7 @@ With this configured, you then need to update the `kestra` property in your conf
 
 ```yaml
 kestra:
-  security:    
+  security:
     oidc:
       groups-claim-path: "resource_access.kestra.roles"
 ```

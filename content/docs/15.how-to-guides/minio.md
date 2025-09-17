@@ -12,8 +12,8 @@ Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra us
 ---
 
 ::alert{type="warning"}
-This guide is intended for **local development and testing only**.  
-MinIO is configured in gateway mode and exposed on `localhost`, without TLS or public access.  
+This guide is intended for **local development and testing only**.
+MinIO is configured in gateway mode and exposed on `localhost`, without TLS or public access.
 **Do not use this setup in production** without additional security measures (e.g., HTTPS, access controls, and network isolation).
 ::
 

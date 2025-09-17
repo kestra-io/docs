@@ -365,7 +365,7 @@ kestra:
 
 UI data is controlled by the following and disabled by default:
 ```yaml
-kestra: 
+kestra:
   ui-anonymous-usage-report:
     enabled: false
 ```

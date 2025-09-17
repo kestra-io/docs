@@ -17,7 +17,7 @@ Set up Prometheus and Grafana for monitoring Kestra.
 
 Kestra exposes [Prometheus](https://prometheus.io/) metrics at port 8081 on the endpoint `/prometheus`. This endpoint can be used by any compatible monitoring system.
 
-Use the [docker-compose.yml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) file and start Kestra using the command: 
+Use the [docker-compose.yml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) file and start Kestra using the command:
 
 ```sh
 docker compose up
@@ -85,7 +85,7 @@ Click on **Add new Data Source** button present on the top right, and select **P
 
 We are now all set to create the Grafana dashboard. For this, click on the **+** button on the top of the page to add a **New Dashboard** to Grafana. Save the dashboard with an appropriate name. Then, click on **Add visualization**, and select **prometheus** as the data source.
 
-We will create a Gauge that shows the number of tasks that are presently running. For this, select **Gauge** as the Visualization in the top right corner. In the PromQL metrics explorer text box, you can write `sum(kestra_worker_running_count)`. Click on **Run queries** button to ensure the Gauge shows up the number. 
+We will create a Gauge that shows the number of tasks that are presently running. For this, select **Gauge** as the Visualization in the top right corner. In the PromQL metrics explorer text box, you can write `sum(kestra_worker_running_count)`. Click on **Run queries** button to ensure the Gauge shows up the number.
 
 Head back to Kestra and create a number of tasks that will execute for a long time. The example below will sleep for 60 seconds:
 
@@ -100,7 +100,7 @@ tasks:
       - sleep 60
 ```
 
-Now we have some long-running tasks in progress, we can check that the Gauge correctly reflects the count. You can now put an appropriate title in the Panel options that says **Tasks running**. 
+Now we have some long-running tasks in progress, we can check that the Gauge correctly reflects the count. You can now put an appropriate title in the Panel options that says **Tasks running**.
 
 This is how your Grafana should look like:
 
