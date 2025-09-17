@@ -4,7 +4,7 @@
         <LayoutSearch />
         <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="scrolled" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
-            <LayoutHeader :scrolled :transparentHeader :nuxtApp />
+            <LayoutHeader :scrolled :nuxtApp />
             <main>
                 <slot />
             </main>
@@ -22,8 +22,6 @@
     const route = useRoute();
     const scrolled = ref(false)
     provide(linkSymbolInjectionKey, NuxtLink)
-
-    const transparentHeader = computed(() => route.meta.transparentHeader === true)
 
     const {data: bannerMessages} = await useCachedAsyncData<{results: Record<string, any>}>(
         `header-annonces`,

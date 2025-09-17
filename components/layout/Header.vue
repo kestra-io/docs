@@ -365,11 +365,9 @@ import { menuItems } from '../../utils/menu-items';
 
 const props = defineProps<{
     scrolled?: boolean;
-    transparentHeader?: boolean;
     nuxtApp?: any;
 }>();
 
-const transparentHeader = ref(false);
 const isOpen = ref(false);
 const showDownloadLogos = ref(false);
 const showMenu = ref(false);
@@ -405,11 +403,6 @@ onMounted(() => {
 
     document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");
 });
-
-watch(() => props.transparentHeader, (to) => {
-    transparentHeader.value = props.transparentHeader;
-    globalClick(true);
-}, { deep: true });
 
 function mouseOverMenu() {
     mouseoverMenu.value = true;
