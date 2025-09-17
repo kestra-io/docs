@@ -10,8 +10,8 @@ const { Content } = await render(doc);
 ---
 
 <LayoutDocs activeStem="/docs">
-    <main>
-        <h1>{doc.data.title}</h1>
+    <h1>{doc.data.title}</h1>
+    <div class="bd-markdown">
         <Content />
-    </main>
+    </div>
 </LayoutDocs>

@@ -3,7 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
-
+import Header from "../../components/layout/Header.vue";
 
 
 interface Props {
@@ -33,6 +33,7 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <ClientRouter />
   </head>
   <body>
+    <Header client:load />
     <slot />
   </body>
 </html>
