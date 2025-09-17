@@ -15,7 +15,9 @@
 </template>
 
 <script lang="ts" setup>
-    import {useNuxtApp, NuxtLink} from "#app";
+    import {useNuxtApp} from "#app";
+    import { NuxtLink } from "#components";
+    import { linkSymbolInjectionKey } from "~/components/layout/Header.vue";
     const config = useRuntimeConfig();
     const route = useRoute();
     const scrolled = ref(false)
@@ -29,6 +31,7 @@
             return $fetch(`${config.public.apiUrl}/banner-messages`);
         },
         {
+            clientMaxAge: 60 * 10,
             serverMaxAge: 60 * 10,
         }
     );
