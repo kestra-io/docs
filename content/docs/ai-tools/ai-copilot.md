@@ -160,7 +160,7 @@ kestra:
       tenant-id: AZURE_TENANT_ID
       client-id: AZURE_CLIENT_ID
       client-secret: AZURE_CLIENT_SECRET
-      endpoint: ENDPOINT_ID
+      endpoint: "https://your-resource.openai.azure.com/"
 ```
 
 ### Deepseek
@@ -174,6 +174,7 @@ kestra:
       api-key: DEEPSEEK_API_KEY
       base-url: "https://api.deepseek.com/v1"
 ```
+
 ### Google Gemini
 
 ```yaml
@@ -193,8 +194,9 @@ kestra:
     type: googlevertexai
     googlevertexai:
       model-name: gemini-2.5-flash
-      project: PROJECT_ID
-      location: LOCATION_ID
+      project: GOOGLE_PROJECT_ID
+      location: GOOGLE_CLOUD_REGION
+      endpoint: VERTEX-AI-ENDPOINT
 ```
 
 ### Mistral
@@ -204,7 +206,7 @@ kestra:
   ai:
     type: mistralai
     mistralai:
-      model-name: mistral-small-latest
+      model-name: mistral:7b
       api-key: MISTRALAI_API_KEY
       base-url: "https://api.mistral.ai/v1"
 ```
@@ -216,8 +218,8 @@ kestra:
   ai:
     type: ollama
     ollama:
-      model-name:
-      base-url:
+      model-name: llama3
+      base-url: http://localhost:11434
 ```
 
 ### OpenAI
@@ -230,4 +232,16 @@ kestra:
       model-name: gpt-5-nano
       api-key: OPENAI_API_KEY
       base-url: https://api.openai.com/v1
+```
+
+### OpenRouter
+
+```yaml
+kestra:
+  ai:
+    type: openrouter
+    openrouter:
+      api-key: OPENROUTER_API_KEY
+      base-url: "https://openrouter.ai/api/v1"
+      model-name: x-ai/grok-beta
 ```
