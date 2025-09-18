@@ -1,4 +1,4 @@
-import {editionLabelAndColorByPrefix} from '../../badgeMaps.mjs'
+import {editionLabelAndColorByPrefix} from '../badgeMaps.mjs'
 
 export function badge(data, attributes, node) {
     const {version, editions} = attributes

@@ -4,6 +4,13 @@ import { collapse } from './collapse.mjs';
 import { ChildCard } from './ChildCard.mjs';
 import {badge} from './badge.mjs'
 
+const componentMap = {
+    alert,
+    collapse,
+    ChildCard,
+    badge,
+}
+
 
 export default function() {
     return function(tree, file) {
@@ -13,24 +20,11 @@ export default function() {
                 node.type == 'leafDirective' ||
                 node.type === 'textDirective'
             ) {
-                if (!['alert', 'collapse', 'ChildCard'].includes(node.name)) return
+                if (!(node.name in componentMap)) return
                 const data = node.data || (node.data = {})
                 const attributes = node.attributes || {}
 
-                switch (node.name) {
-                    case 'alert':
-                        alert(data, attributes)
-                        break
-                    case 'collapse':
-                        collapse(data, attributes, node)
-                        break
-                    case 'ChildCard':
-                        ChildCard(data, attributes, node, file)
-                        break
-                    case 'badge':
-                        badge(data, attributes, node)
-                        break
-                }
+                componentMap[node.name](data, attributes, node, file)
             }
         })
     }
