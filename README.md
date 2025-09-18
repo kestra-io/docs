@@ -27,10 +27,10 @@
 
 <p align="center">
     <a href="https://go.kestra.io/video/product-overview" target="_blank">
-        <img src="https://kestra.io/startvideo.png" alt="Get started in 4 minutes with Kestra" width="640px" />
+        <img src="https://kestra.io/startvideo.png" alt="Get started in 3 minutes with Kestra" width="640px" />
     </a>
 </p>
-<p align="center" style="color:#CF9FFF;"><strong>Get started with Kestra in 4 minutes.</strong></p>
+<p align="center" style="color:#CF9FFF;"><strong>Get started with Kestra in 3 minutes.</strong></p>
 
 # Kestra Documentation
 
