@@ -10,7 +10,7 @@ author:
 image: /blogs/kestra-performance-1-0.jpg
 ---
 
-In 0.24, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.24](https://kestra.io/blogs/performance-improvements-0.24.md).
+In 0.24, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.24](https://kestra.io/blogs/performance-improvements-0.24)
 
 With 1.0, we’ve continued that momentum by optimizing MySQL queries, scaling worker threads, and improving Kafka Streams. These changes bring faster execution times, reduced latency, and higher throughput across both open-source and Enterprise deployments.
 
