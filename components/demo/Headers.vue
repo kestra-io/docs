@@ -52,7 +52,7 @@
               </div>
 
               <div class="col-12">
-                <label for="demo-email">
+                <label for="demo-email" class="form-label mb-0">
                   Company Email
                 </label>
                 <input id="demo-email" name="email" type="email" class="form-control" placeholder="Company Email"
@@ -327,6 +327,7 @@
           display: flex;
           flex-direction: column;
           gap: calc($spacer / 2);
+          margin-bottom: 2rem;
 
           .title-block {
             display: flex;
@@ -424,6 +425,10 @@
           width: 100%;
           border-radius: 0.5rem;
         }
+
+        .form-label {
+          opacity: 0;
+        }
       }
 
       @include media-breakpoint-down(md) {
@@ -501,6 +506,11 @@
       .custom-meetings-iframe-container {
         width: 100%;
         position: relative;
+        @include media-breakpoint-down(md) {
+                  display: flex;
+        justify-content: center;
+        align-items: center;
+        }
 
         // Decorative background elements for iframe container
         &::after,
@@ -546,6 +556,9 @@
         }
 
         @include media-breakpoint-down(md) {
+          .iframe-wrapper {
+            margin-bottom: -3.5rem;
+          }
           &::after {
             left: 6rem;
           }
