@@ -376,8 +376,12 @@
 
         .title-block {
           display: inline-flex;
-          align-items: center;
+          align-items: start;
           gap: 8px;
+
+          img {
+            margin-top: 3px;
+          }
 
           p.title {
             margin: 0;
