@@ -8,12 +8,12 @@ Cache the status and outputs of computationally expensive operations.
 
 ## Overview
 
-The `taskCache` core property caches a task's status and outputs in your Kestra instance's database. With the status and outputs cached, rerunning the same execution with the same inputs will skip the task and return the cached outputs instead. This can be added to any task but is particularly useful for computationally expensive operations such as extensive data extractions or long-running script tasks.
+The `taskCache` property stores a task’s status and outputs in Kestra’s database. When the same execution runs again with identical inputs, Kestra skips the task and reuses the cached outputs. You can enable caching on any task, but it is most effective for heavy operations such as large data extractions or long-running scripts.
 
 Using task caching can significantly speed up workflows and reduce resource consumption.
 
 ::alert{type="info"}
-Task caches are only usable for [Runnable Tasks](01.tasks/01.runnable-tasks.md).
+Task caching is only supported for [Runnable Tasks](./01.tasks/01.runnable-tasks.md).
 ::
 
 ## `taskCache` syntax
@@ -26,11 +26,11 @@ taskCache:
   ttl: PT1H # Duration in ISO 8601 format, e.g., PT1H for 1 hour
 ```
 
-The `ttl` (time-to-live) property defines how long cached outputs are retained before being purged. Use any ISO 8601 duration, such as `PT1H` (1 hour), `PT24H` (24 hours), or `P7D`(7 days).
+The `ttl` (time-to-live) property defines how long cached outputs are kept before expiring. Use any ISO 8601 duration (e.g., `PT1H` for 1 hour, `PT24H` for 1 day, or `P7D` for 7 days).
 
 ## `taskCache` example
 
-In the example below, the flow caches the outputs of a computationally expensive task, extracting a large dataset from a production database. The flow downloads the infrequently-changing data only once daily, caches it for 24 hours, and then uses it in subsequent tasks to join with frequently changing transaction data.
+In the example below, the flow caches the outputs of a computationally expensive task, extracting a large dataset from a production database. This flow downloads product data once per day, caches it for 24 hours, and reuses it in joins with frequently updated transaction data.
 
 ```yaml
 id: caching
@@ -69,3 +69,5 @@ tasks:
         read_csv_auto('products.csv') AS p
       USING (product_id);
 ```
+
+This approach minimizes load on the production database while ensuring transactions are always processed against up-to-date product data.
