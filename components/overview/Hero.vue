@@ -6,7 +6,7 @@
                 <h1>Overview</h1>
 
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/xnGYiWFM2uk?si=Me1gxTBmI-YouP3H"
+                    <iframe src="https://www.youtube.com/embed/3gS3-mu9GvU"
                         title="Getting Started with Kestra in 5 minutes" frameborder="0" allowfullscreen />
                 </div>
 
