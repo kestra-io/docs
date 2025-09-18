@@ -9,10 +9,10 @@
 
             <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
                 <div class="download-logos" @click.stop>
-                    <NuxtImg width="24px" height="24px" loading="lazy" format="webp" class="close-icon"
+                    <img width="24px" height="24px" loading="lazy" format="webp" class="close-icon"
                         src="/landing/header-menu/window-close.svg" alt="close" @click="closeDownloadLogosModal" />
                     <p class="title">Looking for our logo?</p>
-                    <NuxtImg width="236px" height="123px" loading="lazy" format="webp" class="img-fluid"
+                    <img width="236px" height="123px" loading="lazy" format="webp" class="img-fluid"
                         src="/landing/header-menu/download-logo.svg" alt="Looking for our logo" />
                     <a download class="btn btn-animated btn-purple-animated mt-2" href="/kestra-logo-kit.zip">
                         Download Logo Pack
