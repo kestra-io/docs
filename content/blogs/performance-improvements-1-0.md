@@ -1,7 +1,7 @@
 ---
-title: "How We Keep Upgrading Kestra on 1.0"
+title: "Kestra 1.0: Achieving 99% Faster Queries and Massive Scale With Xiaomi"
 description: "How we continue to improve Kestra’s performance and scalability in the 1.0 release series." 
-date: 2025-09-15T17:00:00
+date: 2025-09-18T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
