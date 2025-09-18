@@ -38,6 +38,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
+- `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
@@ -228,5 +229,5 @@ kestra:
     openai:
       model-name: gpt-5-nano
       api-key: OPENAI_API_KEY
-      baseUrl: https://api.openai.com/v1
+      base-url: https://api.openai.com/v1
 ```
