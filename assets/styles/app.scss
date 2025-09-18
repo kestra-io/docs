@@ -11,6 +11,11 @@ body {
     position: relative;
     background-color: #0A0B0D;
 }
+
+.headers-body-bg {
+    background: #111113 !important;
+}
+
 .nuxt-loading-indicator {
     background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
 }
