@@ -522,6 +522,11 @@ small.agree {
 
 :root{
     --spacer: #{$spacer};
+    // avoids issues when pagination css file is loaded too late or not at all
+    .pagination{
+        --bs-pagination-disabled-bg: $black-2;
+        --bs-pagination-bg: $black-2;
+    }
 }
 
 #cc-main {
