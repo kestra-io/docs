@@ -2443,3 +2443,6 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
+- `baseURL`: Specifies the endpoint address where the LLM API is hosted.
+
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, and all open-source models supported by Ollama. Refer to the [AI Copilot documentation](../ai-tools/ai-copilot.md#enterprise-edition-copilot-configurations) for each provider configuration.
