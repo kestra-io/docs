@@ -94,8 +94,19 @@ kestra:
     defaults:
       stream:
         properties:
-          poll.ms: 25 # default 100
-          commit.interval.ms: 25 # default 100
+          poll.ms: 25 # Kafka default 100
+          commit.interval.ms: 25 # Kafka default 100
 ```
 
 You can also set those properties on a topic basis.
+
+We also configure the number of threads used by Kafka Stream (`num.stream.threads`). In Kafka Stream default, it uses only one processing thread, we configure it by default to the number of available CPU cores for better resource utilization.
+However, if you process a lot of big executions, this can incur an increase in memory usage, in this case you can lower it.
+On the opposite, you can increase it for better resource utilization if you process a high number of small executions.
+
+```yaml
+kestra:
+  kafka:
+  executor:
+    stream-threads: 2 # Default 0 which means the number of available CPU cores
+```
