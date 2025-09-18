@@ -13,7 +13,7 @@ interface Props {
 
 const props = Astro.props;
 
-const title = props.title ?? "Kestra";
+const title = props.title ?? "Kestra, Open Source Declarative Data Orchestration";
 const description = props.description ?? "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
 ---
 
@@ -34,6 +34,11 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
   </head>
   <body>
     <Header client:load />
+    <div style="height:70px;"></div>
     <slot />
+    <script>
+      import AOS from "aos";
+      AOS.init();
+    </script>
   </body>
 </html>
