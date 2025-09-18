@@ -2,7 +2,7 @@ import {visit} from 'unist-util-visit'
 import { alert } from './alert.mjs';
 import { collapse } from './collapse.mjs';
 import { ChildCard } from './ChildCard.mjs';
-
+import {badge} from './badge.mjs'
 
 
 export default function() {
@@ -26,6 +26,9 @@ export default function() {
                         break
                     case 'ChildCard':
                         ChildCard(data, attributes, node, file)
+                        break
+                    case 'badge':
+                        badge(data, attributes, node)
                         break
                 }
             }
