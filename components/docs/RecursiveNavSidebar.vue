@@ -100,6 +100,7 @@ onMounted(() => {
 
 const handleNavClick = (_event: Event, path: string) => {
     activeSlug.value = path
+    toggled.value = true
     const { preserveScrollPosition } = useSidebarScroll()
     preserveScrollPosition()
 }
