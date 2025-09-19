@@ -2,7 +2,7 @@ export function NextLink(data, attributes, node, file) {
     const children = node.children || [];
     data.hName = 'div';
     data.hProperties = {
-        class: ['text-end mt-3 mb-3']
+        class: ['text-end mt-3 mb-3 ks-doc-next-link']
     };
     node.children = [
         {

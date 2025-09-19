@@ -413,4 +413,17 @@ $bd-gutter-x: 3rem;
             background-color: var(--ks-background-success);
         }
     }
+
+    .ks-doc-next-link{
+        &:hover {
+            a, a:hover {
+                color: var(--bs-white) !important;
+            }
+        }
+
+        p {
+            display: inline;
+            margin-bottom: 0 !important;
+        }
+    }
 }
