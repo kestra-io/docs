@@ -1,30 +1,22 @@
 
 <template>
-    <BigChildCardsRender :title="props.title" :navigation="protectedNavigation" :LinkComponent="NuxtLink"/>
+    <h2 class="big-title">{{title}}</h2>
+    <div class="big-card-grid">
+        <component :is="LinkComponent" :href="item.path" class="big-card" v-for="item in navigation" :key="item.path">
+            <h4 class="card-title">{{ item.title }}</h4>
+            <p class="card-text">{{ item.description }}</p>
+        </component>
+    </div>
 </template>
 
 <script setup lang="ts">
-    import {computed} from "vue";
-    import {hash} from "ohash";
-    import {useAsyncData} from "#imports";
-    import {NuxtLink} from '#components'
-    import BigChildCardsRender from "./BigChildCardsRender.vue";
-    const {public:{CollectionNames}} = useRuntimeConfig()
-
     const props = defineProps<{
-        directory: string
         title: string
+        navigation: Array<{path: string, title: string, description: string}>
+        LinkComponent?: any
     }>()
 
-    const {data: navigation} = await useAsyncData(
-        `BigChildCard-${hash(props.directory)}`,
-        () => queryCollection(CollectionNames.docs).where("path", "LIKE", `${props.directory}/%`).all()
-    );
-
-    // avoid null values in navigation
-    const protectedNavigation = computed(() => {
-        return navigation.value?.filter(Boolean)
-    })
+    const LinkComponent = props.LinkComponent ?? 'a';
 </script>
 
 <style lang="scss" scoped>
