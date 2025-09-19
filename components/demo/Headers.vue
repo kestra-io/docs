@@ -103,158 +103,174 @@
   </div>
 </template>
 
-  <script setup>
-  import posthog from "posthog-js";
-  import axios from "axios";
-  import { getHubspotTracking } from "~/utils/hubspot.js";
-  import { getMeetingUrl } from "~/composables/useMeeting.js";
-  import { useMediaQuery } from "@vueuse/core";
+<script setup>
+import posthog from "posthog-js";
+import axios from "axios";
+import { getHubspotTracking } from "~/utils/hubspot.js";
+import { getMeetingUrl } from "~/composables/useMeeting.js";
+import { useMediaQuery } from "@vueuse/core";
 
-  const route = useRoute();
-  const gtm = useGtm();
-  const formRef = useTemplateRef("demo-form");
+const route = useRoute();
+const gtm = useGtm();
+const formRef = useTemplateRef("demo-form");
 
-  const valid = ref(false);
-  const message = ref("");
-  const meetingUrl = ref(undefined);
-  const isMobile = useMediaQuery("(max-width: 767px)");
+const valid = ref(false);
+const message = ref("");
+const meetingUrl = ref(undefined);
+const isMobile = useMediaQuery("(max-width: 767px)");
 
-  const cards = ref([
-    {
-      img: "/demo/chart-areaspline.svg",
-      alt: "Work",
-      title: "Scale Your Work",
-      description: "Accelerate workflow creation and deployment with Kestra Enterprise's automation and seamless integration."
-    },
-    {
-      img: "/demo/security.svg",
-      alt: "Work",
-      title: "Ensure Security and Compliance",
-      description: "Guarantee the safety and integrity of your data with high-security standards, precise access control, and centralized secret management."
-    },
-    {
-      img: "/demo/handshake.svg",
-      alt: "Work",
-      title: "Empower Your Team",
-      description: "Enable better collaboration and efficient workflow management, ensuring your team can operate smoothly and effectively across all business critical projects."
-    }
-  ]);
-
-  // the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
-  if (process.client && getHubspotTracking() === null) {
-      meetingUrl.value = getMeetingUrl();
-      valid.value = true;
+const cards = ref([
+  {
+    img: "/demo/chart-areaspline.svg",
+    alt: "Work",
+    title: "Scale Your Work",
+    description: "Accelerate workflow creation and deployment with Kestra Enterprise's automation and seamless integration."
+  },
+  {
+    img: "/demo/security.svg",
+    alt: "Work",
+    title: "Ensure Security and Compliance",
+    description: "Guarantee the safety and integrity of your data with high-security standards, precise access control, and centralized secret management."
+  },
+  {
+    img: "/demo/handshake.svg",
+    alt: "Work",
+    title: "Empower Your Team",
+    description: "Enable better collaboration and efficient workflow management, ensuring your team can operate smoothly and effectively across all business critical projects."
   }
+]);
 
-  watch(isMobile, (newValue) => {
-    if (newValue) {
-      document.body.classList.add('headers-body-bg');
-    } else {
-      document.body.classList.remove('headers-body-bg');
-    }
+function withContactParams(base, { firstname, lastname, email }) {
+  try {
+    const url = new URL(base, window.location.origin);
+    if (firstname) url.searchParams.set("firstname", String(firstname).trim());
+    if (lastname)  url.searchParams.set("lastname", String(lastname).trim());
+    if (email)     url.searchParams.set("email", String(email).trim());
+    return url.toString();
+  } catch {
+
+    const sep = base.includes("?") ? "&" : "?";
+    const qp = new URLSearchParams();
+    if (firstname) qp.set("firstname", String(firstname).trim());
+    if (lastname)  qp.set("lastname", String(lastname).trim());
+    if (email)     qp.set("email", String(email).trim());
+    return `${base}${sep}${qp.toString()}`;
+  }
+}
+
+if (process.client && getHubspotTracking() === null) {
+  const base = getMeetingUrl();
+  const current = new URLSearchParams(window.location.search);
+  meetingUrl.value = withContactParams(base, {
+    firstname: current.get("firstname"),
+    lastname:  current.get("lastname"),
+    email:     current.get("email")
   });
+  valid.value = true;
+}
 
-  onMounted(() => {
-    if (isMobile.value) {
-      document.body.classList.add('headers-body-bg');
-    }
-  });
-
-  onUnmounted(() => {
+watch(isMobile, (newValue) => {
+  if (newValue) {
+    document.body.classList.add('headers-body-bg');
+  } else {
     document.body.classList.remove('headers-body-bg');
-  });
+  }
+});
 
-  const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
+onMounted(() => {
+  if (isMobile.value) {
+    document.body.classList.add('headers-body-bg');
+  }
+});
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+onUnmounted(() => {
+  document.body.classList.remove('headers-body-bg');
+});
 
-    const script = document.createElement("script");
-    script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-    script.defer = true;
-    document.body.appendChild(script);
+const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
 
-    script.addEventListener("load", async () => {
-      const form = formRef.value;
-      const hsq = (window._hsq = window._hsq || []);
+const onSubmit = async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-      if (!form.checkValidity()) {
-        valid.value = false;
-        message.value = "Invalid form, please review the fields.";
-        return;
-      }
+  const script = document.createElement("script");
+  script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+  script.defer = true;
+  document.body.appendChild(script);
 
-      hsq.push([
-        "identify",
-        {
-          email: form["email"].value,
-          firstname: form["first-name"].value,
-          lastname: form["last-name"].value,
-          kuid: localStorage.getItem("KUID") || "",
-        },
-      ]);
+  script.addEventListener("load", async () => {
+    const form = formRef.value;
+    const hsq = (window._hsq = window._hsq || []);
 
-      const ip = await axios.get("https://api.ipify.org?format=json");
-      const formData = {
-        fields: [
-          {
-            objectTypeId: "0-1",
-            name: "email",
-            value: form["email"].value,
-          },
-          {
-            objectTypeId: "0-1",
-            name: "firstname",
-            value: form["first-name"].value,
-          },
-          {
-            objectTypeId: "0-1",
-            name: "lastname",
-            value: form["last-name"].value,
-          },
-          {
-            objectTypeId: "0-1",
-            name: "kuid",
-            value: localStorage.getItem("KUID") || "",
-          },
-        ],
-        context: {
-          hutk: getHubspotTracking() || undefined,
-          ipAddress: ip.data.ip,
-          pageUri: route.path,
-          pageName: document.title,
-        },
-      };
+    if (!form.checkValidity()) {
+      valid.value = false;
+      message.value = "Invalid form, please review the fields.";
+      return;
+    }
 
-      posthog.capture("bookdemo_form");
-      hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }]);
-      gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
-      identify(form["email"].value);
+    const fn = form["first-name"].value;
+    const ln = form["last-name"].value;
+    const em = form["email"].value;
 
-      axios
-        .post(hubSpotUrl, formData, {})
-        .then(async () => {
-          valid.value = true;
-          hsq.push(["refreshPageHandlers"]);
-          hsq.push(["trackPageView"]);
+    hsq.push([
+      "identify",
+      {
+        email: em,
+        firstname: fn,
+        lastname: ln,
+        kuid: localStorage.getItem("KUID") || "",
+      },
+    ]);
 
-          meetingUrl.value = getMeetingUrl();
-        })
-        .catch((error) => {
-          valid.value = false;
-          if (
-            error.response.data.errors.filter((e) => e.errorType === "BLOCKED_EMAIL").length > 0
-          ) {
-            message.value = "Please use a professional email address";
-          } else {
-            message.value = error?.response?.data?.message || "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again.";
-          }
+    const ip = await axios.get("https://api.ipify.org?format=json");
+    const formData = {
+      fields: [
+        { objectTypeId: "0-1", name: "email", value: em },
+        { objectTypeId: "0-1", name: "firstname", value: fn },
+        { objectTypeId: "0-1", name: "lastname", value: ln },
+        { objectTypeId: "0-1", name: "kuid", value: localStorage.getItem("KUID") || "" },
+      ],
+      context: {
+        hutk: getHubspotTracking() || undefined,
+        ipAddress: ip.data.ip,
+        pageUri: route.path,
+        pageName: document.title,
+      },
+    };
+
+    posthog.capture("bookdemo_form");
+    hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }]);
+    gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
+    // Guarded in case identify() isn't globally defined
+    // eslint-disable-next-line no-undef
+    if (typeof identify === "function") identify(em);
+
+    axios
+      .post(hubSpotUrl, formData, {})
+      .then(async () => {
+        valid.value = true;
+        hsq.push(["refreshPageHandlers"]);
+        hsq.push(["trackPageView"]);
+
+        meetingUrl.value = withContactParams(getMeetingUrl(), {
+          firstname: fn,
+          lastname:  ln,
+          email:     em
         });
-    });
-  };
-  </script>
-
+      })
+      .catch((error) => {
+        valid.value = false;
+        if (error?.response?.data?.errors?.some?.(e => e.errorType === "BLOCKED_EMAIL")) {
+          message.value = "Please use a professional email address";
+        } else {
+          message.value =
+            error?.response?.data?.message ||
+            "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again.";
+        }
+      });
+  }, { once: true });
+};
+</script>
 
 <style scoped lang="scss">
 @import "../../assets/styles/_variable";
@@ -447,7 +463,6 @@
       @include media-breakpoint-up(md) {
         padding: calc($spacer * 1.25) calc($spacer * 0.5);
 
-        // Decorative background elements
         &::after,
         &::before {
           position: absolute;
@@ -512,7 +527,6 @@
         align-items: center;
         }
 
-        // Decorative background elements for iframe container
         &::after,
         &::before {
           position: absolute;
