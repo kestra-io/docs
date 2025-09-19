@@ -5,12 +5,13 @@ import generateId from '../utils/generateId';
 export const collections = {
   docs: defineCollection({
     loader: glob({
-        pattern: "./**/*.md",
+        pattern: "./**/*.md{,x}",
         base: "./content/docs",
         generateId,
     }),
     schema: z.object({
         title: z.string(),
+        description: z.string().optional(),
         icon: z.string().optional(),
         release: z.string().optional(),
         version: z.string().optional(),

@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/mdx": "^4.3.5",
     "@astrojs/vue": "^5.1.1",
     "@kestra-io/ui-libs": "^0.0.249",
     "@popperjs/core": "^2.11.8",

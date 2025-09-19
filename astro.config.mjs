@@ -2,12 +2,13 @@
 import { defineConfig } from 'astro/config';
 
 import cloudflare from '@astrojs/cloudflare';
-
 import vue from '@astrojs/vue';
+import mdx from '@astrojs/mdx';
+import expressiveCode from 'astro-expressive-code';
+
 import remarkDirective from 'remark-directive';
 import remarkCustomElements from './utils/remark-custom-elements/index.mjs';
 
-import expressiveCode from 'astro-expressive-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +25,7 @@ export default defineConfig({
             }
         }
     }
-  })],
+  }), mdx()],
   markdown: {
     remarkPlugins: [
       remarkDirective,
