@@ -16,16 +16,20 @@ export default defineConfig({
     imageService: 'cloudflare'
   }),
 
-  integrations: [vue(), expressiveCode({
-    defaultProps: {
-        wrap: true,
-        overridesByLang: {
-            'bash,sh,zsh,shell': {
-                frame: 'none',
+  integrations: [
+    vue(),
+    expressiveCode({
+        defaultProps: {
+            wrap: true,
+            overridesByLang: {
+                'bash,sh,zsh,shell': {
+                    frame: 'none',
+                }
             }
         }
-    }
-  }), mdx()],
+    }),
+    mdx()
+  ],
   markdown: {
     remarkPlugins: [
       remarkDirective,

@@ -1,0 +1,24 @@
+---
+// use astro content collection to fetch markdown files from /content/docs
+import { render, getCollection, type CollectionEntry } from "astro:content";
+import LayoutDocs from "../../components/layout-docs.astro";
+import type { Plugin } from "@kestra-io/ui-libs";
+import Layout from "../../components/layout.astro";
+
+export async function getStaticPaths() {
+	const pluginsRes = await fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+    const pluginsData = await pluginsRes.json();
+	return pluginsData.map((plugin: any) => ({
+		params: { slug: plugin.name },
+		props: plugin,
+	}));
+}
+type Props = Plugin
+const props = Astro.props as Props;
+
+
+---
+
+<Layout>
+    {JSON.stringify(props, null, 2)}
+</Layout>

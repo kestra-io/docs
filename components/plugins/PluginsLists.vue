@@ -23,6 +23,7 @@
                     {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category.toLowerCase()) }}
                 </button>
             </div>
+            <pre><code>{{ JSON.stringify(pluginsSlice.length, null, 2) }}</code></pre>
             <div class="row my-4" data-aos="fade-right">
                 <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in pluginsSlice" :key="plugin.name + '-' + plugin.title">
                     <PluginsPluginCard :plugin="plugin" />
@@ -58,23 +59,30 @@
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import {isEntryAPluginElementPredicate, type Plugin, type PluginElement} from "@kestra-io/ui-libs";
+    import { computed, ref } from "vue";
+    import { usePluginsCount } from "../../composables/usePluginsCount";
+    import PluginsPluginCard from "./PluginCard.vue";
+    import CommonPagination from "../common/Pagination.vue";
 
     const DONT_CAPITALIZE_CATEGORIES = ["AI", "BI"];
-    const currentPage = ref(1);
-    const itemsPerPage = ref(40);
-    const activeCategory = ref('All Categories');
-    const props = defineProps<{
+
+    const currentPage = defineModel<number>('currentPage', {required: false, default: 1});
+    const itemsPerPage = defineModel<number>('itemsPerPage', {required: false, default: 20});
+    const activeCategory = defineModel<string>('activeCategory', {required: false, default: 'All Categories'});
+
+    const props = withDefaults(defineProps<{
         plugins: Plugin[],
         categories: string[],
-    }>();
+        searchQuery?: string
+    }>(), {
+        searchQuery: ''
+    });
     const searchQuery = ref('');
-    const route = useRoute();
-    const router = useRouter();
 
     function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
         return isEntryAPluginElementPredicate(...elementsArray);
     }
-    const { totalPlugins } = usePluginsCount();
+    const { totalPlugins } = usePluginsCount(computed(() => props.plugins));
 
     const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
@@ -157,38 +165,6 @@ ${elements.map(({cls}) => `<li>
         window.scrollTo(0, 0)
     };
 
-    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string) {
-        return {
-            page: pageVal,
-            size: itemVal,
-            category: categoryVal,
-            q: searchVal,
-        }
-    };
-
-    onMounted(() => {
-        if (route.query.page) currentPage.value = parseInt(route.query.page as string);
-        if (route.query.size) itemsPerPage.value = parseInt(route.query.size as string);
-        if (route.query.category) {
-            activeCategory.value = augmentedCategories.value.find(c => c === route.query.category) ?? "";
-        }
-        if (typeof route.query.q === 'string') {
-            searchQuery.value = route.query.q.trim();
-        }
-    })
-
-    const timer = ref<NodeJS.Timeout>();
-    watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
-        if (timer) {
-            clearTimeout(timer.value);
-        }
-        timer.value = setTimeout(async () => {
-            router.push({
-                query: getFilterPluginsQuery(pageVal, itemVal, categoryVal, searchVal)
-            })
-
-        }, 500);
-    });
 </script>
 
 <style lang="scss" scoped>

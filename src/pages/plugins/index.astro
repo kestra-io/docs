@@ -1,0 +1,22 @@
+---
+
+const pluginsRes = await fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+const pluginsData = await pluginsRes.json();
+
+const categoriesRes = await fetch(`https://api.kestra.io/v1/plugins/categories`);
+const categoriesData = await categoriesRes.json();
+
+import Layout from "../../components/layout.astro";
+import PluginsLists from "../../../components/plugins/PluginsLists.vue";
+import LayoutFooterContact from "../../../components/layout/FooterContact.vue";
+---
+<Layout>
+    <PluginsLists plugins={pluginsData} categories={categoriesData ?? []} client:idle />
+    <LayoutFooterContact
+        title="Didn’t find the plugin you were looking for?"
+        darkButtonText="Ask on slack"
+        darkButtonHref="https://kestra.io/slack"
+        purpleButtonText="Create one"
+        purpleButtonHref="/docs/plugin-developer-guide"
+    />
+</Layout>
