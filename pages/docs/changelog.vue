@@ -2,7 +2,7 @@
     <div class="container-fluid bd-gutter bd-layout type-docs">
         <div v-if="loading" class="loading-wrapper">
             <div class="spinner"></div>
-            <span class=" bg-dark-2">Loading changelogs...</span>
+            <span class=" bg-dark-2">Loading the changelog...</span>
         </div>
         <template v-else>
             <NavSideBar type="docs" :navigation="navMenu"/>

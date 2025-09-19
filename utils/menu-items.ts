@@ -187,8 +187,8 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: ListBox,
-                title: "Changelogs",
-                link: "/docs/changelogs"
+                title: "Changelog",
+                link: "/docs/changelog"
             }
         ]
     },
