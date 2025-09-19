@@ -18,8 +18,8 @@ This tutorial guides you through **key concepts** in Kestra. We start with the s
 We then dive into `parallel` task execution, error handling, as well as custom scripts and microservices running in isolated containers. Let's get started!
 
 
-::next-link
+:::next-link
 [Fundamentals: build a "Hello World" flow](./01.fundamentals.md)
-::
+:::
 
 ::ChildCard
