@@ -57,7 +57,7 @@ tasks:
     type: io.kestra.plugin.notion.page.Read
     apiToken: "{{ secret('NOTION_API_KEY') }}"
     pageId: "{{ trigger.body.entity.id }}"
-  
+
   - id: send_slack_alert
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"

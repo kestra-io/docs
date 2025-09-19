@@ -4,7 +4,19 @@
             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
                 <span class="page-link fw-bold arrow-button bg-dark-2" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in pages" :key="n" :role="n === morePagesPlaceholder ? '' : 'button'" class="page-item" :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }" @click="changePage({ pageNo: n })"><span class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span></li>
+            <li
+                v-for="n in pages"
+                :key="n"
+                :role="n === morePagesPlaceholder ? '' : 'button'"
+                class="page-item"
+                :class="{
+                    'active': currentPage === n,
+                    'disabled': n === morePagesPlaceholder
+                }"
+                @click="changePage({ pageNo: n })"
+            >
+                <span class="page-list-item page-link fw-bold">{{ n }}</span>
+            </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <span class="page-link fw-bold arrow-button bg-dark-2"><ChevronRight /></span>
             </li>

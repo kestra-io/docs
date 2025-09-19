@@ -1305,7 +1305,7 @@ tasks:
       - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
       - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
       - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
-      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"      
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"
       - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
 ```
 
@@ -1747,7 +1747,7 @@ tasks:
   - id: download
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
-  
+
   - id: fileSize
     type: io.kestra.plugin.core.log.Log
     message: "The file size is {{ fileSize(output.download.uri) }}"
@@ -2372,7 +2372,7 @@ Checks if an integer is odd.
 
 
 ::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
-In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters. 
+In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters.
 
 Here is a working example showing the recommended pattern:
 
@@ -2405,10 +2405,10 @@ tasks:
         "title": inputs.title,
         "message": inputs.message,
         "priority": inputs.priority
-      } }}    
+      } }}
 ```
 
-You can also explicitly leverage the `toJson` filter at the end of the expression e.g. `{{ {'message':  inputs.message} | toJson }}`. 
+You can also explicitly leverage the `toJson` filter at the end of the expression e.g. `{{ {'message':  inputs.message} | toJson }}`.
 
 Here is an example usage in a flow:
 
@@ -2441,7 +2441,7 @@ tasks:
         "title": inputs.title,
         "message": inputs.message,
         "priority": inputs.priority
-      } | toJson }}  
+      } | toJson }}
 ```
 
 ::

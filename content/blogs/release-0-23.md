@@ -54,13 +54,13 @@ You can customize your experience by opening only the panels you need, creating 
 
 ## No-Code Forms
 
-The new Multi-Panel editor ships with a significant update to the No-Code Forms. When you open the No-Code view, you can add new tasks, triggers, or flow properties from form-based tabs without writing any YAML code. 
+The new Multi-Panel editor ships with a significant update to the No-Code Forms. When you open the No-Code view, you can add new tasks, triggers, or flow properties from form-based tabs without writing any YAML code.
 
 Adding any new task or trigger opens a new No-Code tab, allowing you to edit multiple workflow components at the same time.
 
 Key improvements include:
 - **New design**: the new layout simplifies navigation and editing, e.g. adding a task runner configuration to your script task will open a new No-Code tab allowing you to edit the main script and its runtime configuration side-by-side.
-- **Improved editing of complex objects**: we've taken great care to ensure that complex objects, such as nested properties and arrays are easy to edit from No-Code forms. 
+- **Improved editing of complex objects**: we've taken great care to ensure that complex objects, such as nested properties and arrays are easy to edit from No-Code forms.
 - **Sensible defaults**: the new No-Code forms make it easy to edit properties that have default values. If you want to revert to a default behavior, the "Clear selection" feature will help you remove your custom overrides.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/99kb4bVvCDnir4V4SxjT?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="no_code | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
@@ -155,13 +155,13 @@ testCases:
 
 UI filters now have faster autocompletion and are editable as plain text!
 
-We've heard your feedback that the prior filtering experience has sometimes been a bit slow and tedious to configure. The new filters have been rebuilt from the ground up and are now built on top of our workflow editor. You can now configure even complex filters as simple text with super-fast autocompletion and immediate feedback on syntax errors. 
+We've heard your feedback that the prior filtering experience has sometimes been a bit slow and tedious to configure. The new filters have been rebuilt from the ground up and are now built on top of our workflow editor. You can now configure even complex filters as simple text with super-fast autocompletion and immediate feedback on syntax errors.
 
-Since the filter configuration is just text, you can easily copy-paste a filter configuration from one flow or namespace to another, and it will just work! 
+Since the filter configuration is just text, you can easily copy-paste a filter configuration from one flow or namespace to another, and it will just work!
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OFBpLz9IX1O2UtxuXeKi?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-## Internal Storage Persistence for Inputs and Outputs 
+## Internal Storage Persistence for Inputs and Outputs
 
 Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage instead of the default database. This feature is especially valuable for organizations with multiple teams or business units, as it ensures that outputs are only accessible to the relevant segment, providing stronger data separation and privacy.
 
@@ -189,7 +189,7 @@ kestra:
 
 With these configuration options, you can control where flow outputs and inputs are stored, improving data governance and compliance for organizations with strict separation requirements.
 
-Note that this comes with some tradeoffs — storing that data in the internal storage backend such as S3 rather than in the backend database (like Postgres or Elasticsearch) introduces some additional latency,  especially visible with inputs stored and fetched from internal storage. 
+Note that this comes with some tradeoffs — storing that data in the internal storage backend such as S3 rather than in the backend database (like Postgres or Elasticsearch) introduces some additional latency,  especially visible with inputs stored and fetched from internal storage.
 
 ::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
@@ -198,7 +198,7 @@ Currently, the UI is limited and outputs will not be directly visible if using i
 
 ## Customizable Dashboards
 
-This release allows you to personalize your default dashboard with new customizable KPI charts and adjustable chart widths. You can now control what charts and metrics you see when you first log in. 
+This release allows you to personalize your default dashboard with new customizable KPI charts and adjustable chart widths. You can now control what charts and metrics you see when you first log in.
 
 With improved custom dashboards, you can:
 - Set any custom-built dashboard as your default view
@@ -267,7 +267,7 @@ tasks:
       Kestra.outputs({"average_age": df['Age'].mean()})
 ```
 
-A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs. 
+A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable caching in the worker directory, so dependencies can be quickly retrieved the next time the task runs.
 
 Again, the `beforeCommands` property is still supported for advanced use cases or custom installation steps.
 
@@ -312,13 +312,13 @@ triggers:
 
 **Ion data format support** with new `IonToParquet` and `IonToAvro` tasks for data conversion, plus `InferAvroSchemaFromIon` for schema generation.
 
-**Pause Task**: The Pause task now uses a `pauseDuration` property, replacing `delay` and removing `timeout` because `timeout` is a core property available to all tasks incl. `Pause`. When the `pauseDuration` ends, the task proceeds based on the `behavior` property: `RESUME` (default), `WARN`, `FAIL`, or `CANCEL`. Manually resumed tasks always succeed. Finally, the new `onPause` property allows you to easily define a task that should run whenever the task enters a `PAUSED` state, which is especially useful for sending alerts on paused workflows waiting for approval (i.e. waiting to be manually resumed). 
+**Pause Task**: The Pause task now uses a `pauseDuration` property, replacing `delay` and removing `timeout` because `timeout` is a core property available to all tasks incl. `Pause`. When the `pauseDuration` ends, the task proceeds based on the `behavior` property: `RESUME` (default), `WARN`, `FAIL`, or `CANCEL`. Manually resumed tasks always succeed. Finally, the new `onPause` property allows you to easily define a task that should run whenever the task enters a `PAUSED` state, which is especially useful for sending alerts on paused workflows waiting for approval (i.e. waiting to be manually resumed).
 
 **Plugin Usage Metrics**: Kestra now provides plugin usage metrics based on an execution count. These metrics are compatible with [internal metrics](..docs/09.administrator-guide/03.monitoring) and Prometheus, helping you track how plugins are used in your organization.
 
 **Data Backup**: We now support full Backup & Restore, including backup of executions and logs data, ensuring you can recover all execution-related information for disaster recovery.
 
-**Account Navigation**: Settings and User Profile are now located under the Account settings in the bottom left corner, just below the Tenant switcher. 
+**Account Navigation**: Settings and User Profile are now located under the Account settings in the bottom left corner, just below the Tenant switcher.
 
 **Pebble Function Autocompletion**: When editing Pebble expressions (`{{ ... }}`), function names autocomplete as you type.
 
@@ -350,7 +350,7 @@ tasks:
           password: "{{ secret('SALESFORCE_PASSWORD') }}"
           authEndpoint: "{{ secret('SALESFORCE_AUTH_ENDPOINT') }}"
         objectName: "Contact"
-        records: 
+        records:
           - FirstName: "{{ json(taskrun.value).FirstName }}"
             LastName: "{{ json(taskrun.value).LastName }}"
             Email: "{{ json(taskrun.value).Email }}"
@@ -362,9 +362,9 @@ triggers:
     username: "{{ secret('POSTGRES_USERNAME') }}"
     password: "{{ secret('POSTGRES_PASSWORD') }}"
     sql: |
-      SELECT 
-        first_name as "FirstName", 
-        last_name as "LastName", 
+      SELECT
+        first_name as "FirstName",
+        last_name as "LastName",
         email as "Email"
       FROM customers
       WHERE updated_at > CURRENT_DATE - INTERVAL '1 day'
@@ -719,4 +719,4 @@ This post covered new features and enhancements added in Kestra 0.23.0. Which of
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack). 
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).

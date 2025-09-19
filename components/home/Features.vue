@@ -8,7 +8,7 @@
         <div class="cta-buttons">
             <NuxtLink class="btn btn-primary btn-lg" href="/features">See All Features</NuxtLink>
             <a
-                href="https://www.youtube.com/embed/feC6-KQLYyA?autoplay=1"
+                href="https://www.youtube.com/embed/xnGYiWFM2uk?autoplay=1"
                 class="btn btn-secondary btn-lg"
                 data-bs-toggle="modal"
                 data-bs-target="#full-video"
@@ -42,7 +42,7 @@
                             v-if="videoVisible"
                             width="560"
                             height="315"
-                            src="https://www.youtube.com/embed/feC6-KQLYyA?autoplay=1"
+                            src="https://www.youtube.com/embed/xnGYiWFM2uk?autoplay=1"
                             title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

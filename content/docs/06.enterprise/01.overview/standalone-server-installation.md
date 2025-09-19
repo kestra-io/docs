@@ -8,7 +8,7 @@ Install Kestra on a standalone server with a simple executable file.
 
 # Standalone Server Installation Guide (Enterprise Edition)
 
-To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+. 
+To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.
 
 # Instructions
 
@@ -24,7 +24,7 @@ Download the latest version of the Kestra EE JAR from:
 
 **Credentials:**
 
-- **Username**: `license-id`  
+- **Username**: `license-id`
 - **Password**: `fingerprint`
 
 ::alert{type="info"}
@@ -74,13 +74,13 @@ java -jar kestra-ee-VERSION server standalone -c ./application.yaml -p ./plugins
 
 ## Plugins
 
-In standalone JAR deployments, all plugins must be downloaded separately.  
+In standalone JAR deployments, all plugins must be downloaded separately.
 
 Kestra EE provides a command to install all available plugins:
 
 ```shell
 # Install all available plugins
-kestra plugins install --all 
+kestra plugins install --all
 ```
 
 This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
@@ -115,7 +115,7 @@ kestra plugins install io.kestra.storage:storage-minio:LATEST
 
 ## Enterprise Deployment Configuration
 
-For the full list of configuration options, refer to the [Configuration Reference](https://kestra.io/docs/configuration).  
+For the full list of configuration options, refer to the [Configuration Reference](https://kestra.io/docs/configuration).
 
 To enable Kestra Enterprise features, configure the following parameters:
 
@@ -153,7 +153,7 @@ This starts Kestra as a standalone service on port `8080`.
 
 ## Distributed Mode
 
-For production usage, Kestra should run in distributed mode for scalability and high availability.  
+For production usage, Kestra should run in distributed mode for scalability and high availability.
 
 Each component can run independently across servers, with shared access to the same database (no TCP communication is required between components).
 

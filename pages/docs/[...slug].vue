@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout type-docs">
-        <NavSideBar type="docs" :navigation="navigation"/>
+        <NavSideBar type="docs" :navigation="navigation" :slug="route.path"/>
         <article v-if="page" class="bd-main order-1 docs"
                  :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">

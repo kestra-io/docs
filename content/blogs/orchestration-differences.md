@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-  role: 
+  role:
 image: /blogs/orchestrations-differences.jpg
 ---
 

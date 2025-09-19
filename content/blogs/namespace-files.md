@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-  role: 
+  role:
 image: /blogs/namespace.png
 ---
 Engineering teams all face a familiar dilemma: strike the right balance between central governance and team autonomy or risk chaos. Centralization slows everyone down. Decentralization breeds inconsistency and risk. Most orchestration platforms force you to pick a side. **Kestra doesn’t.** Inspired by infrastructure best practices like Kubernetes, Kestra brings logical isolation, inheritance, and secure reusability to orchestration through a powerful feature called **Namespace Files**.
@@ -30,21 +30,21 @@ Kestra brings this proven best practice into data and workflow orchestration. By
 Here’s how it works:
 
 - **Hierarchical Organization:**
-    
+
     Workflows and resources are structured within namespaces, which can be infinitely nested using dot-separated naming (e.g., `company.team.project`).
-    
+
 - **Shared Resources:**
-    
+
     Store shared workflows, secrets, scripts, and configurations at higher-level namespaces (e.g., `company`), automatically available to child namespaces (`company.team`, `company.team.projectA`).
-    
+
 - **Inheritance and Overrides:**
-    
+
     Child namespaces inherit configurations (e.g., credentials, variables, plugins) from their parents. Teams can override non-mandatory settings, balancing central control with local flexibility.
-    
+
 - **Secure Isolation:**
-    
+
     Dedicated secrets, variables, and even storage buckets can be managed at each namespace level. Worker groups can also be assigned for physical isolation if needed.
-    
+
 
 ## Namespace Files in Kestra
 

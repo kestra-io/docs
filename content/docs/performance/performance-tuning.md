@@ -13,7 +13,7 @@ Before you read on, please familiarize yourself with the [Kestra architecture](.
 
 The [Worker](../07.architecture/05.worker.md) executes your tasks, and tuning it depends on the type of workloads you run.
 
-The most useful configuration is the number of Worker threads, which is 4 times the number of available cores by default.
+The most useful configuration is the number of Worker threads, which is 8 times the number of available cores by default.
 
 You can increase it to boost parallel task execution. Depending on how you start Kestra, use one of the following methods:
 
@@ -64,8 +64,7 @@ kestra:
       thread-count: 0
 ```
 
-By default, it's 0, which means half the number of available CPUs. You might wonder why it’s set to half, which seems counterintuitive.
-This is because two thread pools are started, using all available CPUs by default.
+By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
 
 ## The Kafka backend
 
@@ -95,8 +94,19 @@ kestra:
     defaults:
       stream:
         properties:
-          poll.ms: 25 # default 100
-          commit.interval.ms: 25 # default 100
+          poll.ms: 25 # Kafka default 100
+          commit.interval.ms: 25 # Kafka default 100
 ```
 
 You can also set those properties on a topic basis.
+
+We also configure the number of threads used by Kafka Stream (`num.stream.threads`). In Kafka Stream default, it uses only one processing thread, we configure it by default to the number of available CPU cores for better resource utilization.
+However, if you process a lot of big executions, this can incur an increase in memory usage, in this case you can lower it.
+On the opposite, you can increase it for better resource utilization if you process a high number of small executions.
+
+```yaml
+kestra:
+  kafka:
+  executor:
+    stream-threads: 2 # Default 0 which means the number of available CPU cores
+```

@@ -4,21 +4,21 @@
             <Github /> <span class="d-none d-xl-inline-block"> Star</span>
         </a>
         <a class="btn btn-outline-dark " :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
-            <ClientOnly>
-                <template #fallback>
-                    <span class="placeholder" style="width: 39px"></span>
-                </template>
-                <LayoutGithubStargazer @api-error="!hasError" />
-            </ClientOnly>
+            <LayoutGithubStargazer v-if="onClient" @api-error="!hasError" />
+            <span v-else class="placeholder" style="width: 39px"></span>
         </a>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Github from "vue-material-design-icons/Github.vue"
 
 const hasError = ref(false)
+const onClient = ref(false)
+onMounted(() => {
+    onClient.value = true
+})
 
 withDefaults(defineProps<{ small?: boolean }>(), { small: false })
 </script>

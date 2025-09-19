@@ -1,5 +1,5 @@
 ---
-title: Configure Local Ceph Storage for Kestra via MinIO Gateway  
+title: Configure Local Ceph Storage for Kestra via MinIO Gateway
 icon: /docs/icons/ceph.svg
 stage: Intermediate
 topics:
@@ -7,7 +7,7 @@ topics:
 - Object Storage
 ---
 
-This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).  
+This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).
 MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as its object storage.
 
 ---
