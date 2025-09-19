@@ -2,13 +2,13 @@
 title: MITM Proxy for DinD
 icon: /docs/icons/padlock.svg
 ---
-Run Docker-in-Docker (DinD) behind a Proxy in Kestra deployed on Kubernetes.
+Configure Docker-in-Docker (DinD) to run behind a Proxy in a Kubernetes-based Kestra deployment.
 
 This guide describes how to configure Docker-in-Docker (DinD) to work **behind a corporate or MITM (Man-in-the-Middle) proxy** in a **rootless** setup, within a Kestra deployment.
 
-## Why Configure CA Certs and Proxies for DinD?
+## Why configure CA certs and proxies for DinD?
 
-Docker-in-Docker (DinD) allows containers to run their own Docker daemon, enabling them to build and run other containers. Kestra uses DinD in certain task types that need Docker runtime isolation.
+Docker-in-Docker (DinD) runs a Docker daemon inside a container, allowing it to build and run other containers. Kestra relies on DinD for certain task types that require Docker runtime isolation.
 
 If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM proxy), Docker must **trust the proxy’s CA certificate** when pulling images from remote registries (like Docker Hub or private registries).
 
@@ -19,8 +19,9 @@ x509: certificate signed by unknown authority
 ```
 
 ## Prerequisites
-1. Create a ConfigMap for Docker daemon config
-This ConfigMap should include your `daemon.json` with proxy settings.
+1. Create a ConfigMap for the Docker daemon configuration.
+
+This should include your `daemon.json` with proxy settings.
 
 Create a file `daemon.json`:
 
@@ -42,9 +43,9 @@ kubectl create configmap dind-daemon-config \
 -n kestra
 ```
 
-2. Create a ConfigMap for the MITM Proxy CA Certificate.
-    
-Assuming you have the CA file as `mitmproxy-ca.crt`, run:
+2. Create a ConfigMap for the MITM Proxy CA certificate.  
+
+Assuming you have the CA file saved as `mitmproxy-ca.crt`, run:
     
 ```bash
 kubectl create configmap dind-ca-certs \
@@ -101,14 +102,14 @@ dind:
       value: /home/rootless/mitmproxy/ca.crt
 ```
 
-Notice that we used `volume-enabled: true` in the configuration to mount the CA cert from the DinD pod to the Container deployed later by a Task in Kestra.  
+Here, `volume-enabled: true` ensures that the CA certificate is mounted from the DinD pod into any container deployed by a Kestra task.
 
-## DinD in Action
+## DinD in action
 
 The configuration will help the DinD Pod pull the required Container Images successfully through the MITM Proxy.
 
-Further, for Kestra tasks that need to run as a Docker Container, such as the `io.kestra.plugin.scripts.shell.Script`, you must provide the `HTTPS_PROXY` env variable and trust the certificate in the `beforeCommands` as shown below.
-To ensure consistency, configure the settings as plugin defaults.
+For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.  
+For consistency across tasks, consider configuring these settings as plugin defaults.
 
 ```yaml
 id: mitm_proxy
@@ -132,6 +133,6 @@ tasks:
 
 ##  How it Works
 - `daemon.json`: tells Docker which proxy settings to use.
-- `certs.d`: where Docker looks for custom CA certs to trust registries.
+- `certs.d`: directory where Docker looks for custom CA certificates to trust registries.
 - `SSL_CERT_FILE`: overrides the TLS stack used by the Docker daemon to trust the MITM CA.
 - `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`: standard proxy env vars for networking.
