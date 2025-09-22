@@ -107,22 +107,22 @@ ${elements.map(({cls}) => `<li>
     }
 
     const filteredPluginsData = computed(() => {
-        const filteredPlugins = props.plugins.flatMap(plugin => {
+        const filteredPlugins = props.plugins.map(plugin => {
             const filteredPluginElementsEntries = Object.entries(plugin)
                 .filter(isFullEntryAPluginElementPredicate)
                 .map(([elementType, elements]): [string, PluginElement[]] => [elementType, elements.filter(({deprecated}) => !deprecated)])
                 .filter(([, elements]) => elements.length > 0)
 
             if (filteredPluginElementsEntries.length === 0) {
-                return []
+                return undefined
             }
 
-            return [{
+            return {
                 ...plugin,
                 tooltipContent: tooltipContent(plugin, filteredPluginElementsEntries),
                 ...Object.fromEntries(filteredPluginElementsEntries)
-            } as Plugin]
-        });
+            } as Plugin
+        }).filter((plugin): plugin is Plugin => plugin !== undefined);
 
         let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
         if (activeCategory.value !== 'All Categories') {

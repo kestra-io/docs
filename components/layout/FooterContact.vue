@@ -8,17 +8,17 @@
                 <p class="subtitle" v-if="subtitle" :data-aos="animationType('fade-left')">
                     {{subtitle}}
                 </p>
-                <NuxtLink
+                <a
                     v-if="darkButtonText"
                     :href="darkButtonHref"
                     class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
                     :data-aos="animationType('zoom-in')"
                 >
                     {{darkButtonText}}
-                </NuxtLink>
-                <NuxtLink v-if="purpleButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
+                </a>
+                <a v-if="purpleButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
                     {{purpleButtonText}}
-                </NuxtLink>
+                </a>
             </div>
         </Section>
     </div>
