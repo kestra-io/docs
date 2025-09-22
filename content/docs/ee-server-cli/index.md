@@ -8,13 +8,51 @@ How to interact with Kestra Enterprise Edition using the CLI.
 
 ## Authentication
 
-The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/enterprise.md). You can use the `--api-token` option to authenticate with the API.
+The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/enterprise.md). You can pass credentials via global/API options (see below) such as `--api-token`, `--user`, or `--server`.
 
 ```shell
 kestra --api-token <your-api-token> --help
 ```
 
-## kestra
+---
+
+## Global Options
+
+These options can be used with **any** Kestra CLI command.
+
+- `-v, --verbose` — Increase log verbosity (use `-vv` for more).
+- `-l, --log-level` — Set a specific level: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
+- `--internal-log` — Also change the level for internal logs.
+- `-c, --config` — Path to a configuration file (default: `~/.kestra/config.yml`).
+- `-p, --plugins` — Path to the plugins directory.
+
+**Examples**
+
+```bash
+kestra plugins list -vv
+kestra plugins install --log-level DEBUG
+```
+
+## API Options
+
+Available for commands that talk to the server API.
+
+- `--server` — Kestra server URL (default: `http://localhost:8080`).
+- `--headers` — Add custom headers (`<name=value>`).
+- `--user` — Basic auth (`user:password`).
+- `--tenant` — Tenant identifier (**EE only**).
+- `--api-token` — API token (**EE only**).
+
+**Examples**
+
+```bash
+kestra flow list --server http://my-kestra:8080
+kestra flow list --user admin:secret
+```
+
+---
+
+## `kestra` (top-level)
 
 ```bash
 Usage: kestra [-hV] [COMMAND]
@@ -34,1079 +72,400 @@ Commands:
   auths      handle auths
   sys-ee     handle kestra ee systems maintenance
   tenants    handle tenants
-```
-
-## kestra auths
-
-```bash
-Usage: kestra auths [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                       [-p=<pluginsPath>] [COMMAND]
-handle auths
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  users  handle users
-```
-
-Here is the list of available commands withing `kestra auths`:
-
-- `kestra auths users`
-
-```bash
-Usage: kestra auths users [-hVv] [--internal-log] [-c=<config>]
-                             [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
-handle users
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  create       Create a new users
-  sync-access  Sync users access with the default Tenant.
-               This command is designed to be used when enabling multi-tenancy
-                 on an existing Kestra instance, in this case the existing user
-                 will need to have their access synchronized if they need
-                 access to the default tenants (groups and roles will be
-                 synchronized)
-  refresh      Refresh users to update their properties
-  set-type     Set type of a user between STANDARD and SUPER_ADMIN.
-```
-
-- `kestra auths users sync-access`
-
-```bash
-Usage: kestra auths users sync-access [-hVv] [--internal-log] [-c=<config>]
-       [-l=<logLevel>] [-p=<pluginsPath>]
-Sync users access with the default Tenant.
-This command is designed to be used when enabling multi-tenancy on an existing
-Kestra instance, in this case the existing user will need to have their access
-synchronized if they need access to the default tenants (groups and roles will
-be synchronized)
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-- `kestra auths users refresh`
-
-```bash
-Usage: kestra auths users refresh [-hVv] [--internal-log] [-c=<config>]
-                                     [-l=<logLevel>] [-p=<pluginsPath>]
-Refresh users to update their properties
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-- `kestra auths users set-type`
-
-```bash
-Usage: kestra auths users set-type [-hVv] [--internal-log] [-c=<config>]
-                                      [-l=<logLevel>] [-p=<pluginsPath>] <user>
-                                      <type>
-Set type of a user between STANDARD and SUPER_ADMIN.
-      <user>              User username
-      <type>              User type between STANDARD and SUPER_ADMIN
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-
-- `kestra auths users create`
-
-```bash
-Usage: kestra auths users create [-hVv] [--admin] [--internal-log]
-                          [--superadmin] [-c=<config>]
-                          [-l=<logLevel>] [-p=<pluginsPath>]
-                          [--tenant=<tenantId>] [--groups=<group>]...
-                          <user> [<password>]
-Create a new users
-      <user>             User username
-      [<password>]       User password
-      --admin            Create the admin role if not exists and add it to
-                         provided users; cannot be use at the same time as
-                            --superadmin
-
--c, --config=<config>     Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-    --groups=<group>      User groups
--h, --help                Show this help message and exit.
-    --internal-log        Change also log level for internal log
--l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
--p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-    --superadmin          Create the Superadmin role if not exists and add it
-                            to provided users, cannot be use at the same time
-                            as --admin
-    --tenant=<tenantId>   tenant identifier
--v, --verbose             Change log level. Multiple -v options increase the
-                            verbosity.
--V, --version             Print version information and exit.
-```
-
-Example command to create a Super Admin user:
-
-```shell
-kestra auths users create --superadmin \
-  --tenant=default admin admin_password123
-```
-
-Example command to create an Admin user:
-
-```shell
-kestra auths users create --admin \
-  --tenant=default admin admin_password123
-```
-
-Example command to create a regular user:
-
-```shell
-kestra auths users create --tenant=default user user_password123
-```
-
-
----
-
-## kestra flow
-
-```bash
-Usage: kestra flow [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                      [-p=<pluginsPath>] [COMMAND]
-handle flows
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  validate   validate a flow
-  test       test a flow
-  namespace  handle namespace flows
-  dot        generate a dot graph from a file
-  export     export flows to a zip file
-```
-
-- `kestra flow namespace`
-
-```bash
-Usage: kestra flow namespace [-hVv] [--internal-log] [-c=<config>]
-                                [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
-handle namespace flows
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  update  handle namespace flows
-```
-
-- `kestra flow namespace update`
-
-```bash
-Usage: kestra flow namespace update [-hVv] [--[no-]delete] [--internal-log]
-                                       [-c=<config>] [-l=<logLevel>]
-                                       [-p=<pluginsPath>] [--server=<server>]
-                                       [--tenant=<tenantId>] [--user=<user:
-                                       password>] [--headers=<name=value>]...
-                                       <namespace> <directory>
-handle namespace flows
-      <namespace>           the namespace to update
-      <directory>           the directory containing files for current namespace
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-      --[no-]delete         if missing should be deleted
-  -h, --help                Show this help message and exit.
-      --headers=<name=value>
-                            Headers to add to the request
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --server=<server>     Kestra server url
-                              Default: http://localhost:8080
-      --tenant=<tenantId>   Tenant identifier (EE only, when multi-tenancy is
-                              enabled)
-      --user=<user:password>
-                            Server user and password
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-
-- `kestra flow test`
-
-```bash
-Usage: kestra flow test [-hVv] [--internal-log] [-c=<config>]
-                           [-l=<logLevel>] [-p=<pluginsPath>] <file>
-                           [<inputs>...]
-test a flow
-      <file>              the flow file to test
-      [<inputs>...]       the inputs to pass as key pair value separated by
-                            space, for input type file, you need to pass an
-                            absolute path.
-                            Default: []
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-- `kestra flow dot`
-
-```bash
-Usage: kestra flow dot [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                          [-p=<pluginsPath>] <file>
-generate a dot graph from a file
-      <file>              the flow file to display
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-- `kestra flow export`
-
-```bash
-Usage: kestra flow export [-hVv] [--internal-log] [-c=<config>]
-                             [-l=<logLevel>] [--namespace=<namespace>]
-                             [-p=<pluginsPath>] [--server=<server>]
-                             [--tenant=<tenantId>] [--user=<user:password>]
-                             [--headers=<name=value>]... <directory>
-export flows to a zip file
-      <directory>           the directory to export the file to
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --headers=<name=value>
-                            Headers to add to the request
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-      --namespace=<namespace>
-                            the namespace of flows to export
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --server=<server>     Kestra server url
-                              Default: http://localhost:8080
-      --tenant=<tenantId>   Tenant identifier (EE only, when multi-tenancy is
-                              enabled)
-      --user=<user:password>
-                            Server user and password
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-
-- `kestra flow validate`
-
-```bash
-Usage: kestra flow validate [-hVv] [--internal-log] [--local] [-c=<config>]
-                               [-l=<logLevel>] [-p=<pluginsPath>]
-                               [--server=<server>] [--tenant=<tenantId>]
-                               [--user=<user:password>]
-                               [--headers=<name=value>]... <directory>
-validate a flow
-      <directory>           the directory containing files to check
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --headers=<name=value>
-                            Headers to add to the request
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-      --local               If validation should be done locally or using a
-                              remote server
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --server=<server>     Kestra server url
-                              Default: http://localhost:8080
-      --tenant=<tenantId>   Tenant identifier (EE only, when multi-tenancy is
-                              enabled)
-      --user=<user:password>
-                            Server user and password
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
+  migrate    handle migrations
+  backups    (EE) handle metadata backups and restore
 ```
 
 ---
 
-## kestra tenants
+## Configuration Commands
+
+### `kestra configs properties`
+
+Display the effective configuration properties.
 
 ```bash
-Usage: kestra tenants [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                         [-p=<pluginsPath>] [COMMAND]
-handle tenants
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  create  create a tenant and assign admin roles to an existing admin user
-```
-
-
-- `kestra tenants create`
-
-```bash
-Usage: kestra tenants create [-hVv] [--internal-log]
-                                [--admin-username=<adminUser>] [-c=<config>]
-                                [-l=<logLevel>] [-p=<pluginsPath>] <tenantId>
-                                <tenantName>
-create a tenant and assign admin roles to an existing admin user
-      <tenantId>          tenant identifier
-      <tenantName>        tenant description
-      --admin-username=<adminUser>
-                          Username of an existing admin user that will be admin
-                            of this tenant
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra configs properties
 ```
 
 ---
 
-## kestra plugins
+## Flow Commands
+
+### `kestra flow validate`
+
+Validate a flow file.
+
+**Input**: `file` (path)
 
 ```bash
-Usage: kestra plugins [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                         [-p=<pluginsPath>] [COMMAND]
-handle plugins
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  install  install a plugin
-  list     list all plugins already installed
-  doc      write documentation for all plugins currently installed
+kestra flow validate /path/to/my-flow.yml
 ```
 
-- `kestra plugins install`
+### `kestra flow test`
+
+Run a flow locally with inputs.
+
+**Inputs**: `file` (path), `inputs` (key value pairs; absolute path for file inputs)
 
 ```bash
-Usage: kestra plugins install [-hVv] [--internal-log] [-c=<config>]
-                                 [-l=<logLevel>] [-p=<pluginsPath>]
-                                 [--repositories=<repositories>]...
-                                 [<dependencies>...]
-install a plugin
-      [<dependencies>...]   the plugins to install
-                              Default: []
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --repositories=<repositories>
-                            url to additional maven repositories
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
+kestra flow test /path/to/my-flow.yml myInput1 value1
 ```
 
-- `kestra plugins list`
+### `kestra flow dot`
+
+Generate a DOT graph from a flow file.
 
 ```bash
-Usage: kestra plugins list [-hVv] [--core] [--internal-log] [-c=<config>]
-                              [-l=<logLevel>] [-p=<pluginsPath>]
-list all plugins already installed
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-      --core              Also write core tasks plugins
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra flow dot /path/to/my-flow.yml
 ```
 
-- `kestra plugins doc`
+### `kestra flow export`
+
+Export flows to a ZIP file.
+
+**Inputs**: `--namespace` (optional), `directory` (path to export into)
 
 ```bash
-Usage: kestra plugins doc [-hVv] [--core] [--icons] [--internal-log]
-                             [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
-                             <output>
-write documentation for all plugins currently installed
-      <output>            Path to write documentations files
-                            Default: /tmp/6VA8fpHM6Jipu7caPPRpAY/docs
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-      --core              Also write core tasks docs files
-  -h, --help              Show this help message and exit.
-      --icons             Also write icon for each task
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra flow export --namespace my-namespace /path/to/export-directory
+```
+
+### `kestra flow update`
+
+Update a single flow on the server from a local file.
+
+**Inputs**: `flowFile` (path), `namespace` (string), `id` (string)
+
+```bash
+kestra flow update /path/to/my-updated-flow.yml my-namespace my-flow-id
+```
+
+### `kestra flow updates`
+
+Bulk update flows from a directory.
+
+**Inputs**: `directory` (path), `--delete` (optional), `--namespace` (optional)
+
+```bash
+kestra flow updates /path/to/my-flows --delete --namespace my-namespace
+```
+
+### `kestra flow namespace update`
+
+Update **all** flows within a namespace from a directory.
+
+**Option**: `--override-namespaces` (optional)
+
+```bash
+kestra flow namespace update --override-namespaces /path/to/flows
+```
+
+### `kestra flow create`
+
+Create a new flow from a YAML file.
+
+```bash
+kestra flow create /path/to/new-flow.yml
+```
+
+### `kestra flow delete`
+
+Delete a flow.
+
+**Inputs**: `namespace`, `id`
+
+```bash
+kestra flow delete my-namespace my-flow-id
 ```
 
 ---
 
-## kestra server
+## Migration Commands
+
+### `kestra migrate default-tenant`
+
+Migrate all resources without tenant to a new tenant (multi-tenant setups).
+
+**Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
 
 ```bash
-Usage: kestra server [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                        [-p=<pluginsPath>] [COMMAND]
-handle servers
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  executor    start an executor
-  indexer     start an indexer
-  scheduler   start an scheduler
-  standalone  start a standalone server
-  webserver   start the webserver
-  worker      start a worker
-  local       start a local server
-```
-
-### kestra server executor
-
-```bash
-Usage: kestra server executor [-hVv] [--internal-log] [-c=<config>]
-                                 [-l=<logLevel>] [-p=<pluginsPath>]
-                                 [--port=<serverPort>]
-                                 [--skip-executions=<skipExecutions>[,
-                                 <skipExecutions>...]]...
-start an executor
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-      --skip-executions=<skipExecutions>[,<skipExecutions>...]
-                            a list of execution identifiers to skip, separated
-                              by a coma; for troubleshooting purpose only
-                              Default: []
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-### kestra server indexer
-
-```bash
-Usage: kestra server indexer [-hVv] [--internal-log] [-c=<config>]
-                                [-l=<logLevel>] [-p=<pluginsPath>]
-                                [--port=<serverPort>]
-start an indexer
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-### kestra server scheduler
-
-```bash
-Usage: kestra server scheduler [-hVv] [--internal-log] [-c=<config>]
-                                  [-l=<logLevel>] [-p=<pluginsPath>]
-                                  [--port=<serverPort>]
-start an scheduler
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-### kestra server standalone
-
-```bash
-Usage: kestra server standalone [-hVv] [--internal-log] [-c=<config>]
-                                   [-f=<flowPath>] [-l=<logLevel>]
-                                   [-p=<pluginsPath>] [--port=<serverPort>]
-                                   [--worker-thread=<workerThread>]
-                                   [--skip-executions=<skipExecutions>[,
-                                   <skipExecutions>...]]...
-start a standalone server
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -f, --flow-path=<flowPath>
-                            the flow path containing flow to inject at startup
-                              (when running with a memory flow repository)
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-      --skip-executions=<skipExecutions>[,<skipExecutions>...]
-                            a list of execution identifiers to skip, separated
-                              by a coma; for troubleshooting purpose only
-                              Default: []
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-      --worker-thread=<workerThread>
-                            the number of worker thread
-```
-
-### kestra server webserver
-
-```bash
-Usage: kestra server webserver [-hVv] [--internal-log] [-c=<config>]
-                                  [-l=<logLevel>] [-p=<pluginsPath>]
-                                  [--port=<serverPort>]
-start the webserver
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-### kestra server worker
-
-```bash
-Usage: kestra server worker [-hVv] [--internal-log] [-c=<config>]
-                               [-g=<workerGroupKey>] [-l=<logLevel>]
-                               [-p=<pluginsPath>] [--port=<serverPort>]
-                               [-t=<thread>]
-start a worker
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -g, --worker-group=<workerGroupKey>
-                            the worker group key, must match the regex
-                              [a-zA-Z0-9_-]+ (EE only)
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-  -t, --thread=<thread>     the max number of concurrent threads to launch
-                              Default: 4
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
-
-### kestra server local
-
-```bash
-Usage: kestra server local [-hVv] [--internal-log] [-c=<config>]
-                              [-f=<flowPath>] [-l=<logLevel>]
-                              [-p=<pluginsPath>] [--port=<serverPort>]
-                              [--worker-thread=<workerThread>]
-                              [--skip-executions=<skipExecutions>[,
-                              <skipExecutions>...]]...
-start a local server
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -f, --flow-path=<flowPath>
-                            the flow path containing flow to inject at startup
-                              (when running with a memory flow repository)
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --port=<serverPort>   the port to bind
-      --skip-executions=<skipExecutions>[,<skipExecutions>...]
-                            a list of execution identifiers to skip, separated
-                              by a coma; for troubleshooting purpose only
-                              Default: []
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-      --worker-thread=<workerThread>
-                            the number of worker thread
-```
-
-
----
-
-## kestra sys
-
-```bash
-Usage: kestra sys [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                     [-p=<pluginsPath>] [COMMAND]
-handle systems maintenance
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  reindex                  reindex all records of a type: read them from the
-                             database then update them
-  database                 manage Kestra database
-  submit-queued-execution  Submit all queued execution to the executor
-```
-
-### kestra sys reindex
-
-```bash
-Usage: kestra sys reindex [-hVv] [--internal-log] [-c=<config>]
-                             [-l=<logLevel>] [-p=<pluginsPath>] [-t=<type>]
-reindex all records of a type: read them from the database then update them
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -t, --type=<type>       The type of the records to reindex, only 'flow' is
-                            supported for now.
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-```
-
-### kestra sys database
-
-```bash
-Usage: kestra sys database [-hVv] [--internal-log] [-c=<config>]
-                              [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
-manage Kestra database
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  migrate  Force database schema migration.
-           Kestra uses Flyway to manage database schema evolution, this command
-             will run Flyway then exit.
-```
-
-### kestra sys submit-queued-execution
-
-```bash
-Usage: kestra sys submit-queued-execution [-hVv] [--internal-log]
-       [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
-Submit all queued execution to the executor
-All queued execution will be submitted to the executor. Warning, if there is
-still running executions and concurrency limit configured, the executions may
-be queued again.
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra migrate default-tenant --tenant-id my-tenant --tenant-name "My Tenant" --dry-run
 ```
 
 ---
 
-## kestra configs
+## Namespace Commands
+
+### `kestra namespace files update`
+
+Sync namespace files from a local directory.
+
+**Inputs**: `namespace`, `from` (local path), `to` (remote path, default `/`), `--delete` (optional)
 
 ```bash
-Usage: kestra configs [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                         [-p=<pluginsPath>] [COMMAND]
-handle configs
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  properties  Display actual configurations properties.
+kestra namespace files update my-namespace /path/to/local/files / --delete
 ```
 
-- `kestra configs properties`:
+### `kestra namespace kv update`
+
+Set/update a key in the namespace KV store.
+
+**Inputs**: `namespace`, `key`, `value`  
+**Options**: `-e, --expiration`, `-t, --type`, `-f, --file-value`
 
 ```bash
-Usage: kestra configs properties [-hVv] [--internal-log] [-c=<config>]
-                                    [-l=<logLevel>] [-p=<pluginsPath>]
-Display actual configurations properties.
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra namespace kv update my-ns my-key "my-value" -e 1d
 ```
-
 
 ---
 
-## kestra sys-ee
+## Plugin Commands
+
+### `kestra plugins install`
+
+Install one or more plugins by Maven coordinates.
+
+**Options**: `--locally` (default true), `--all`, `--repositories`
 
 ```bash
-Usage: kestra sys-ee [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
-                        [-p=<pluginsPath>] [COMMAND]
-handle kestra ee systems maintenance
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
-Commands:
-  restore-flow-listeners   restore state-store for FlowListeners
-  restore-queue            send all data from a repository to kafka.
-  reset-concurrency-limit  Reset the concurrency limit stored on the Kafka
-                             runner.
+kestra plugins install io.kestra.plugin.jdbc:mysql:1.2.3
 ```
 
-### kestra sys-ee restore-flow-listeners (relevant only for older versions of kestra before 0.12)
+### `kestra plugins uninstall`
 
-Legacy command for [Listeners](../11.migration-guide/0.12.0/listeners.md).
+Uninstall one or more plugins.
 
 ```bash
-Usage: kestra sys-ee restore-flow-listeners [-hVv] [--internal-log]
-       [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>] [--timeout=<timeout>]
-restore state-store for FlowListeners
-Mostly usefull in case of restore of flow queue, the state store need to be
-init to avoid sending old revisions.
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --timeout=<timeout>   Timeout before quit, considering we complete the
-                              restore
-                              Default: PT1M
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
+kestra plugins uninstall io.kestra.plugin.jdbc:mysql:1.2.3
 ```
 
-### kestra sys-ee restore-queue
+### `kestra plugins list`
+
+List installed plugins.
+
+**Option**: `--core` to include core task plugins
 
 ```bash
-Usage: kestra sys-ee restore-queue [-hVv] [--internal-log] [--no-flows]
-                                      [--no-namespaces] [--no-recreate]
-                                      [--no-templates] [--no-triggers]
-                                      [--no-triggers-execution-id]
-                                      [-c=<config>] [-l=<logLevel>]
-                                      [-p=<pluginsPath>]
-send all data from a repository to kafka.
-Mostly useful to send all flows, templates, triggers & namespaces from
-repository to kafka in case of restore.
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-      --no-flows          Don't send flows
-      --no-namespaces     Don't send namespaces
-      --no-recreate       Don't drop the topic and recreate it
-      --no-templates      Don't send templates
-      --no-triggers       Don't send triggers
-      --no-triggers-execution-id
-                          Remove executionId from trigger
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra plugins list --core
 ```
 
-### kestra sys-ee reset-concurrency-limit
+### `kestra plugins doc`
+
+Generate documentation for installed plugins.
+
+**Inputs**: `output` (default: `./docs`)  
+**Options**: `--core`, `--icons`, `--schema`
 
 ```bash
-Usage: kestra sys-ee reset-concurrency-limit [-hVv] [--internal-log]
-       [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
-Reset the concurrency limit stored on the Kafka runner.
-Use it only if some flow that has a concurrency limit hasn't started due to
-concurrency limit, even though there is no execution running.
-  -c, --config=<config>   Path to a configuration file
-                            Default: /home/kestra/.kestra/config.yml
-  -h, --help              Show this help message and exit.
-      --internal-log      Change also log level for internal log
-  -l, --log-level=<logLevel>
-                          Change log level (values: TRACE, DEBUG, INFO, WARN,
-                            ERROR)
-                            Default: INFO
-  -p, --plugins=<pluginsPath>
-                          Path to plugins directory
-                            Default: /app/plugins
-  -v, --verbose           Change log level. Multiple -v options increase the
-                            verbosity.
-  -V, --version           Print version information and exit.
+kestra plugins doc ./docs --core
 ```
 
+### `kestra plugins search`
+
+Search for available plugins.
+
+```bash
+kestra plugins search jdbc
+```
+
+---
+
+## Server Commands
+
+### `kestra server executor`
+
+Start the executor.
+
+**Options**: `--skip-executions` (list)
+
+```bash
+kestra server executor
+```
+
+### `kestra server indexer`
+
+Start the indexer.
+
+```bash
+kestra server indexer
+```
+
+### `kestra server scheduler`
+
+Start the scheduler.
+
+```bash
+kestra server scheduler
+```
+
+### `kestra server standalone`
+
+Start a standalone server (all core services).
+
+```bash
+kestra server standalone
+```
+
+### `kestra server webserver`
+
+Start the webserver.
+
+**Option**: `--no-tutorials` to disable auto-loading tutorials
+
+```bash
+kestra server webserver --no-tutorials
+```
+
+### `kestra server worker`
+
+Start a worker.
+
+**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
+
+```bash
+kestra server worker --thread 16
+```
+
+### `kestra server local`
+
+Start a local dev server.
+
+```bash
+kestra server local
+```
+
+---
+
+## System Commands
+
+### `kestra sys reindex`
+
+Reindex records (currently only `flow`).
+
+**Option**: `--type`
+
+```bash
+kestra sys reindex --type flow
+```
+
+### `kestra sys submit-queued-execution`
+
+Submit all queued executions to the executor.
+
+```bash
+kestra sys submit-queued-execution
+```
+
+### `kestra sys database migrate`
+
+Force database schema migration (Flyway).
+
+```bash
+kestra sys database migrate
+```
+
+### `kestra sys state-store migrate`
+
+Migrate old state store files to the Key-Value (KV) Store.
+
+```bash
+kestra sys state-store migrate
+```
+
+---
+
+## Auths (EE)
+
+### `kestra auths users create`
+
+Create a user.
+
+**Inputs**: `username` (required), `password` (optional)  
+**Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
+
+```bash
+kestra auths users create --superadmin --tenant=default admin admin_password123
+```
+
+### `kestra auths users create-basic-auth`
+
+Create or replace a basic auth password for a user.
+
+```bash
+kestra auths users create-basic-auth alice
+```
+
+### `kestra auths users refresh`
+
+Refresh users to update their properties.
+
+```bash
+kestra auths users refresh
+```
+
+### `kestra auths users set-superadmin`
+
+Set or remove Superadmin status.
+
+**Inputs**: `user`, `isSuperAdmin` (true|false)
+
+```bash
+kestra auths users set-superadmin alice true
+```
+
+### `kestra auths users email-replace-username`
+
+Set the username as the email for every user.
+
+```bash
+kestra auths users email-replace-username
+```
+
+### `kestra auths users sync-access`
+
+Sync users' access with the fallback tenant (for enabling multi-tenancy).
+
+```bash
+kestra auths users sync-access
+```
+
+---
+
+## Backups (EE)
+
+### `kestra backups create`
+
+Create a metadata backup.
+
+**Inputs**: `type` (`FULL` | `TENANT`)  
+**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
+
+```bash
+kestra backups create FULL --no-encryption
+```
+
+### `kestra backups restore`
+
+Restore a metadata backup.
+
+**Input**: `uri` (Kestra internal storage URI)  
+**Options**: `--encryption-key`, `--to-tenant`
+
+```bash
+kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
+```
+
+---
+
+## Tenants (EE)
+
+### `kestra tenants create`
+
+Create a tenant and assign admin roles to an existing admin user.
+
+**Inputs**: `tenantId`, `tenantName`  
+**Option**: `--admin-username`
+
+```bash
+kestra tenants create tenantA "Tenant A" --admin-username alice
+```
