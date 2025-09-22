@@ -106,7 +106,7 @@ kestra flow validate /path/to/my-flow.yml
 
 ### `kestra flow test`
 
-Run a flow locally with inputs.
+Run a flow locally with specific inputs, helping you test its logic without deploying it to the server.
 
 **Inputs**: `file` (path), `inputs` (key value pairs; absolute path for file inputs)
 
@@ -116,7 +116,7 @@ kestra flow test /path/to/my-flow.yml myInput1 value1
 
 ### `kestra flow dot`
 
-Generate a DOT graph from a flow file.
+Generate a DOT graph from a flow file, which you can use with a visualization tool to create a visual diagram of your flow's structure.
 
 ```bash
 kestra flow dot /path/to/my-flow.yml
@@ -134,7 +134,7 @@ kestra flow export --namespace my-namespace /path/to/export-directory
 
 ### `kestra flow update`
 
-Update a single flow on the server from a local file.
+Update a single flow on the server from a local file. You must specify the flow's namespace and its unique ID.
 
 **Inputs**: `flowFile` (path), `namespace` (string), `id` (string)
 
@@ -144,7 +144,7 @@ kestra flow update /path/to/my-updated-flow.yml my-namespace my-flow-id
 
 ### `kestra flow updates`
 
-Bulk update flows from a directory.
+Bulk update flows from a directory. Point the command to a directory, and Kestra will create or update all the flows it finds. The `--delete` flag removes any flows on the server that are no longer in the specified directory.
 
 **Inputs**: `directory` (path), `--delete` (optional), `--namespace` (optional)
 
@@ -210,7 +210,7 @@ kestra namespace files update my-namespace /path/to/local/files / --delete
 
 ### `kestra namespace kv update`
 
-Set/update a key in the namespace KV store.
+Set/update a key in the namespace KV store. Set an expiration time, specify the data type, and even read the value from a file.
 
 **Inputs**: `namespace`, `key`, `value`  
 **Options**: `-e, --expiration`, `-t, --type`, `-f, --file-value`
@@ -335,6 +335,141 @@ Start a local dev server.
 ```bash
 kestra server local
 ```
+
+## Kestra with server components in different services
+
+Server components can run independently from each other. Each of them communicate through the database.
+
+Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
+
+::collapse{title="Docker Compose Example"}
+```yaml
+volumes:
+  postgres-data:
+    driver: local
+  kestra-data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: kestra
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: k3str4
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  kestra-scheduler:
+    image: kestra/kestra:latest
+    deploy:
+      replicas: 2
+    pull_policy: if_not_present
+    user: "root"
+    command: server scheduler
+    volumes:
+      - kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+    environment:
+      KESTRA_CONFIGURATION: &common_configuration |
+        datasources:
+          postgres:
+            url: jdbc:postgresql://postgres:5432/kestra
+            driverClassName: org.postgresql.Driver
+            username: kestra
+            password: k3str4
+        kestra:
+          server:
+            basicAuth:
+              enabled: false
+              username: "admin@kestra.io"
+              password: kestra
+          repository:
+            type: postgres
+          storage:
+            type: local
+            local:
+              basePath: "/app/storage"
+          queue:
+            type: postgres
+          tasks:
+            tmpDir:
+              path: /tmp/kestra-wd/tmp
+    ports:
+      - "8082-8083:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+
+  kestra-worker:
+    image: kestra/kestra:latest
+    deploy:
+      replicas: 2
+    pull_policy: if_not_present
+    user: "root"
+    command: server worker
+    volumes:
+      - kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+    environment:
+      KESTRA_CONFIGURATION: *common_configuration
+    ports:
+      - "8084-8085:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+  kestra-executor:
+    image: kestra/kestra:latest
+    deploy:
+      replicas: 2
+    pull_policy: if_not_present
+    user: "root"
+    command: server executor
+    volumes:
+      - kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+    environment:
+      KESTRA_CONFIGURATION: *common_configuration
+    ports:
+      - "8086-8087:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+  kestra-webserver:
+    image: kestra/kestra:latest
+    deploy:
+      replicas: 1
+    pull_policy: if_not_present
+    user: "root"
+    command: server webserver
+    volumes:
+      - kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+    environment:
+      KESTRA_CONFIGURATION: *common_configuration
+      KESTRA_URL: http://localhost:8080/
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+```
+::
+
+In production you might run a similar pattern either by:
+
+1. Running Kestra services on dedicated machines. For examples, running the webserver, the scheduler, and the executor on one VM and running one or more workers on other instances.
+2. Using Kubernetes and Helm charts. Read more about how to set these up [in the Kubernetes installation documentation](../02.installation/03.kubernetes.md).
 
 ---
 
