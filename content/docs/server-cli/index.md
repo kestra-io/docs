@@ -1,82 +1,346 @@
 ---
-title: Server CLI
+title: Kestra CLI
 icon: /docs/icons/admin.svg
+editions: ["OSS","EE"]
 ---
 
-Reference for server commands available in Kestra.
+How to interact with Kestra using the CLI.
 
-Kestra leverages five different server components. The `kestra server` command allows to start them individually, or run an all-inclusive standalone server.
+This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 
-## Separate server components
+## Authentication
 
-### Executor
+The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/enterprise.md). You can pass credentials via global/API options (see below) such as `--api-token`, `--user`, or `--server`.
 
-`./kestra server executor`
+```bash
+kestra --api-token <your-api-token> --help
+```
 
-**Options:**
+---
 
-* `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
+## Global Options
 
-::alert{type="info"}
-For more information on troubleshooting CLI options, see the dedicated [Troubleshooting](../09.administrator-guide/16.troubleshooting.md#unprocessable-execution) page.
-::
+These options can be used with **any** Kestra CLI command.
 
-### Indexer
+- `-v, --verbose` — Increase log verbosity (use `-vv` for more).
+- `-l, --log-level` — Set a specific level: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
+- `--internal-log` — Also change the level for internal logs.
+- `-c, --config` — Path to a configuration file (default: `~/.kestra/config.yml`).
+- `-p, --plugins` — Path to the plugins directory.
 
-`./kestra server indexer`
+**Examples**
 
-### Scheduler
+```bash
+kestra plugins list -vv
+kestra plugins install --log-level DEBUG
+```
 
-`./kestra server scheduler`
+## API Options
 
-### Worker
+Available for commands that talk to the server API.
 
-`./kestra server worker`
+- `--server` — Kestra server URL (default: `http://localhost:8080`).
+- `--headers` — Add custom headers (`<name=value>`).
+- `--user` — Basic auth (`user:password`).
+- `--tenant` — Tenant identifier (**EE only**).
+- `--api-token` — API token (**EE only**).
 
-**Options:**
+**Examples**
 
-* `-t` or `--thread`: the number of threads that can handle tasks at the same time. By default, the worker will start 2 threads per CPU core available.
-* `-g` or `--worker-group`: the key of the worker group if using [Worker Group (EE)](../06.enterprise/04.scalability/worker-group.md).
+```bash
+kestra flow list --server http://my-kestra:8080
+kestra flow list --user admin:secret
+```
 
-### Webserver
+---
 
-`./kestra server webserver`
+## `kestra` (top-level)
 
-Or
+```bash
+Usage: kestra [-hV] [COMMAND]
 
-`./kestra server webserver --no-indexer` to start independently from the Indexer.
+Options:
+  -h, --help      Show this help message and exit.
+  -V, --version   Print version information and exit.
 
+Commands:
+  plugins    handle plugins
+  server     handle servers
+  flow       handle flows
+  template   handle templates
+  sys        handle systems maintenance
+  configs    handle configs
+  namespace  handle namespaces
+  auths      handle auths
+  sys-ee     handle kestra ee systems maintenance
+  tenants    handle tenants
+  migrate    handle migrations
+  backups    (EE) handle metadata backups and restore
+```
 
-## Kestra standalone, all server components in one process
+---
 
-`./kestra server standalone`
+## Configuration Commands
 
-This server is a special server, since it will contain all the server components in one JVM. This works well for development or small-sized environments.
+### `kestra configs properties`
 
-**Options:**
+Display the effective configuration properties.
 
-* `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
-* `--skip-executions`: the list of execution identifiers to skip. Use it only for troubleshooting e.g. when an execution cannot be processed by Kestra.
+```bash
+kestra configs properties
+```
 
-## Kestra local, development server with no dependencies
+---
 
-`./kestra server local`
+## Flow Commands
 
-This server is a local development server. It will contain all server components in one JVM, and use a local database (H2), and a local storage - perfect to start a development server. Data will be saved in the `data` directory within the current working directory.
+### `kestra flow validate`
 
+Validate a flow file.
 
-**Options:**
+**Input**: `file` (path)
 
-* `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
-* `--worker-thread`: the number of worker threads. By default, it's CPU cores X 4.
+```bash
+kestra flow validate /path/to/my-flow.yml
+```
 
+### `kestra flow test`
+
+Run a flow locally with specific inputs, helping you test its logic without deploying it to the server.
+
+**Inputs**: `file` (path), `inputs` (key value pairs; absolute path for file inputs)
+
+```bash
+kestra flow test /path/to/my-flow.yml myInput1 value1
+```
+
+### `kestra flow dot`
+
+Generate a DOT graph from a flow file, which you can use with a visualization tool to create a visual diagram of your flow's structure.
+
+```bash
+kestra flow dot /path/to/my-flow.yml
+```
+
+### `kestra flow export`
+
+Export flows to a ZIP file.
+
+**Inputs**: `--namespace` (optional), `directory` (path to export into)
+
+```bash
+kestra flow export --namespace my-namespace /path/to/export-directory
+```
+
+### `kestra flow update`
+
+Update a single flow on the server from a local file. You must specify the flow's namespace and its unique ID.
+
+**Inputs**: `flowFile` (path), `namespace` (string), `id` (string)
+
+```bash
+kestra flow update /path/to/my-updated-flow.yml my-namespace my-flow-id
+```
+
+### `kestra flow updates`
+
+Bulk update flows from a directory. Point the command to a directory, and Kestra will create or update all the flows it finds. The `--delete` flag removes any flows on the server that are no longer in the specified directory.
+
+**Inputs**: `directory` (path), `--delete` (optional), `--namespace` (optional)
+
+```bash
+kestra flow updates /path/to/my-flows --delete --namespace my-namespace
+```
+
+### `kestra flow namespace update`
+
+Update **all** flows within a namespace from a directory.
+
+**Option**: `--override-namespaces` (optional)
+
+```bash
+kestra flow namespace update --override-namespaces /path/to/flows
+```
+
+### `kestra flow create`
+
+Create a new flow from a YAML file.
+
+```bash
+kestra flow create /path/to/new-flow.yml
+```
+
+### `kestra flow delete`
+
+Delete a flow.
+
+**Inputs**: `namespace`, `id`
+
+```bash
+kestra flow delete my-namespace my-flow-id
+```
+
+---
+
+## Migration Commands
+
+### `kestra migrate default-tenant`
+
+Migrate all resources without tenant to a new tenant (multi-tenant setups).
+
+**Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
+
+```bash
+kestra migrate default-tenant --tenant-id my-tenant --tenant-name "My Tenant" --dry-run
+```
+
+---
+
+## Namespace Commands
+
+### `kestra namespace files update`
+
+Sync namespace files from a local directory.
+
+**Inputs**: `namespace`, `from` (local path), `to` (remote path, default `/`), `--delete` (optional)
+
+```bash
+kestra namespace files update my-namespace /path/to/local/files / --delete
+```
+
+### `kestra namespace kv update`
+
+Set/update a key in the namespace KV store. Set an expiration time, specify the data type, and even read the value from a file.
+
+**Inputs**: `namespace`, `key`, `value`  
+**Options**: `-e, --expiration`, `-t, --type`, `-f, --file-value`
+
+```bash
+kestra namespace kv update my-ns my-key "my-value" -e 1d
+```
+
+---
+
+## Plugin Commands
+
+### `kestra plugins install`
+
+Install one or more plugins by Maven coordinates.
+
+**Options**: `--locally` (default true), `--all`, `--repositories`
+
+```bash
+kestra plugins install io.kestra.plugin.jdbc:mysql:1.2.3
+```
+
+### `kestra plugins uninstall`
+
+Uninstall one or more plugins.
+
+```bash
+kestra plugins uninstall io.kestra.plugin.jdbc:mysql:1.2.3
+```
+
+### `kestra plugins list`
+
+List installed plugins.
+
+**Option**: `--core` to include core task plugins
+
+```bash
+kestra plugins list --core
+```
+
+### `kestra plugins doc`
+
+Generate documentation for installed plugins.
+
+**Inputs**: `output` (default: `./docs`)  
+**Options**: `--core`, `--icons`, `--schema`
+
+```bash
+kestra plugins doc ./docs --core
+```
+
+### `kestra plugins search`
+
+Search for available plugins.
+
+```bash
+kestra plugins search jdbc
+```
+
+---
+
+## Server Commands
+
+### `kestra server executor`
+
+Start the executor.
+
+**Options**: `--skip-executions` (list)
+
+```bash
+kestra server executor
+```
+
+### `kestra server indexer`
+
+Start the indexer.
+
+```bash
+kestra server indexer
+```
+
+### `kestra server scheduler`
+
+Start the scheduler.
+
+```bash
+kestra server scheduler
+```
+
+### `kestra server standalone`
+
+Start a standalone server (all core services).
+
+```bash
+kestra server standalone
+```
+
+### `kestra server webserver`
+
+Start the webserver.
+
+**Option**: `--no-tutorials` to disable auto-loading tutorials
+
+```bash
+kestra server webserver --no-tutorials
+```
+
+### `kestra server worker`
+
+Start a worker.
+
+**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
+
+```bash
+kestra server worker --thread 16
+```
+
+### `kestra server local`
+
+Start a local dev server.
+
+```bash
+kestra server local
+```
 
 ## Kestra with server components in different services
 
 Server components can run independently from each other. Each of them communicate through the database.
 
-Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgre database backend.
+Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
 ::collapse{title="Docker Compose Example"}
 ```yaml
@@ -204,37 +468,185 @@ services:
 
 In production you might run a similar pattern either by:
 
-1. Runing Kestra services on dedicated machines. For examples, running the webserver, the scheduler and the executor on one VM and running one or more workers on other instances.
-2. Using Kubernetes and Helm charts. Read more about how to set these up [in the documentation](../02.installation/03.kubernetes.md).
+1. Running Kestra services on dedicated machines. For examples, running the webserver, the scheduler, and the executor on one VM and running one or more workers on other instances.
+2. Using Kubernetes and Helm charts. Read more about how to set these up [in the Kubernetes installation documentation](../02.installation/03.kubernetes.md).
 
+---
 
-## Options for all server commands
+## System Commands
 
-### Log Level
+### `kestra sys reindex`
 
-Log level can be changed with two options:
+Reindex records (currently only `flow`).
 
-* `-l` or `--log-level`: possible values: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
-* `-v` or `--verbose`: for `DEBUG`, `-vv` for `TRACE`
+**Option**: `--type`
 
-These options affect global log levels for all flows only.
+```bash
+kestra sys reindex --type flow
+```
 
-### Internal Log
+### `kestra sys submit-queued-execution`
 
-`--internal-log`: Kestra hides internal logs by default. Use this option to enable these logs.
+Submit all queued executions to the executor.
 
-::alert{type="warning"}
-This option enables logs of very high verbosity.
-::
+```bash
+kestra sys submit-queued-execution
+```
 
-### Configuration Files
+### `kestra sys database migrate`
 
-`-c` or `--config`: You can change the location of Kestra [configuration](../configuration/index.md) files, the default is `~/.kestra/config.yml`.
+Force database schema migration (Flyway).
 
-### Plugins directory
+```bash
+kestra sys database migrate
+```
 
-`-p` or `--plugins`: Path to the plugins directory. The default is the `plugins` directory located in the same directory as the Kestra executable.
+### `kestra sys state-store migrate`
 
-### Server port
+Migrate old state store files to the Key-Value (KV) Store.
 
-`--port`: The server port. The default is `8080`.
+```bash
+kestra sys state-store migrate
+```
+
+---
+
+## Auths (EE)
+
+### `kestra auths users create`
+
+Create a user.
+
+**Inputs**: `username` (required), `password` (optional)  
+**Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
+
+```bash
+kestra auths users create --superadmin --tenant=default admin admin_password123
+```
+
+### `kestra auths users create-basic-auth`
+
+Create or replace a basic auth password for a user.
+
+```bash
+kestra auths users create-basic-auth alice
+```
+
+### `kestra auths users refresh`
+
+Refresh users to update their properties.
+
+```bash
+kestra auths users refresh
+```
+
+### `kestra auths users set-superadmin`
+
+Set or remove Superadmin status.
+
+**Inputs**: `user`, `isSuperAdmin` (true|false)
+
+```bash
+kestra auths users set-superadmin alice true
+```
+
+### `kestra auths users email-replace-username`
+
+Set the username as the email for every user.
+
+```bash
+kestra auths users email-replace-username
+```
+
+### `kestra auths users sync-access`
+
+Sync users' access with the fallback tenant (for enabling multi-tenancy).
+
+```bash
+kestra auths users sync-access
+```
+
+---
+
+## Backups (EE)
+
+### `kestra backups create`
+
+Create a metadata backup.
+
+**Inputs**: `type` (`FULL` | `TENANT`)  
+**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
+
+```bash
+kestra backups create FULL --no-encryption
+```
+
+### `kestra backups restore`
+
+Restore a metadata backup.
+
+**Input**: `uri` (Kestra internal storage URI)  
+**Options**: `--encryption-key`, `--to-tenant`
+
+```bash
+kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
+```
+
+---
+
+## Systems (EE)
+
+### kestra sys-ee restore-flow-listeners
+
+Restores the state-store for FlowListeners. Useful after restoring a flow queue.
+
+**Inputs**  
+- `--timeout` (option): Timeout in seconds before quitting (default: 60).
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee restore-flow-listeners --timeout 120
+```
+
+---
+
+### kestra sys-ee restore-queue
+
+Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
+
+**Inputs**  
+- `--no-recreate` (option): Don't drop and recreate the Kafka topic.  
+- `--no-flows` (option): Don't send flows.  
+- `--no-templates` (option): Don't send templates.  
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee restore-queue --no-flows
+```
+
+---
+
+### kestra sys-ee reset-concurrency-limit
+
+Resets the concurrency limit stored on the Kafka runner.
+
+**Inputs**  
+None
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee reset-concurrency-limit
+```
+
+## Tenants (EE)
+
+### `kestra tenants create`
+
+Create a tenant and assign admin roles to an existing admin user.
+
+**Inputs**: `tenantId`, `tenantName`  
+**Option**: `--admin-username`
+
+```bash
+kestra tenants create tenantA "Tenant A" --admin-username alice
+```
