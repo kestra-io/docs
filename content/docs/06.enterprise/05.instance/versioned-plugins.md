@@ -149,7 +149,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 
 ### From the CLI
 
-To install versioned plugins from the [Kestra CLI](../../ee-server-cli/index.md), you can use the following command:
+To install versioned plugins from the [Kestra CLI](../../server-cli/index.md), you can use the following command:
 
 ```bash
 ./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2

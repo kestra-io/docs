@@ -135,7 +135,7 @@ This interface invites you to create your first User which will be automatically
 
 #### Through the CLI
 
-To create a User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the `--superadmin` option:
+To create a User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -183,7 +183,7 @@ You can grant or revoke the Super Admin privilege using the switch in the User E
 
 #### Through the CLI
 
-To set an existing User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the dedicated command:
+To set an existing User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
 
 ```bash
 # Set a user as Super Admin
