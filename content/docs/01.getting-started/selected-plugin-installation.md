@@ -58,7 +58,7 @@ You can copy only the JARs you need from a full Kestra image:
 
 ```bash
 docker run --rm -d --name kestra-temp kestra/kestra:latest
-docker cp kestra-temp:/app/plugins ./local-plugins
+docker cp kestra-temp:/app/plugins/. ./local-plugins
 docker rm -f kestra-temp
 ```
 
