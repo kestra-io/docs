@@ -10,7 +10,7 @@ Support dynamic dropdown for inputs based on data from external source.
 
 ## Use-case
 
-In this guide, we show how you can create a dynamic dropdown list for inputs. The dropdown retrieves the values from an external source. While it is not possible to directly integrate the external source for powering the dynamic dropdown, it is possible to do so using the [KV store](../05.concepts/05.kv-store.md).
+In this guide, we show how you can create a dynamic dropdown list for inputs. The dropdown retrieves the values from an external source. It is possible to do so by storing the values in the [KV store](../05.concepts/05.kv-store.md), and also to directly integrate the external source with the HTTP Pebble function, `http()`.
 
 ## Update KV store on schedule
 
@@ -70,3 +70,30 @@ tasks:
 When you execute this flow, the `department` input will have a dropdown that contains the values fetched from the `department_key` key in the KV store.
 
 ![dynamic_dropdown](/docs/how-to-guides/dynamic-inputs/dynamic_dropdown.png)
+
+## Dynamic Inputs with HTTP function
+
+With the `http()` function, you can make `SELECT` and `MULTISELECT` inputs dynamic by fetching options from an external API. This proves valuable when your data used in dropdowns changes frequently or when you already have an API serving that data for existing applications.
+
+The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching the selected category.
+
+```yaml
+id: dynamic_dropdowns
+namespace: company.team
+inputs:
+  - id: category
+    type: SELECT
+    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
+  - id: product
+    type: SELECT
+    dependsOn:
+      inputs:
+        - category
+    expression: "{{ http(uri = 'https://dummyjson.com/products/category/' + inputs.category) | jq('.products[].title') }}"
+tasks:
+  - id: display_selection
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      You selected Category: {{ inputs.category }}
+      And Product: {{ inputs.product }}
+```
