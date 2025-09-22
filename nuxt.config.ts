@@ -202,8 +202,7 @@ export default defineNuxtConfig({
                         "Expressions",
                         "API Reference",
                         "Terraform Provider",
-                        "Kestra CLI",
-                        "Kestra EE CLI"
+                        "Kestra CLI"
                     ]
                 }
             },
