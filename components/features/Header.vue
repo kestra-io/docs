@@ -37,7 +37,7 @@ const isScrolled = computed(() => y.value > 50)
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "../../assets/styles/_variable";
 
 .main-header {
   position: relative;
@@ -127,10 +127,10 @@ const isScrolled = computed(() => y.value > 50)
   .img-block {
     position: relative;
     display: flex;
-    @include media-breakpoint-up(sm) {
-      justify-content: center;
+    justify-content: center;
+    @include media-breakpoint-down(sm) {
+        justify-content: end;
     }
-    justify-content: end;
     border: 1px solid;
     border-image-source: radial-gradient(
       46.16% 31.1% at 73.05% 39.82%, 
@@ -147,13 +147,13 @@ const isScrolled = computed(() => y.value > 50)
         #6B66D5 44.15%, 
         #2D344E 100%
       );
-      padding-left: 16px;
+      padding-left: 24px;
       @media screen and (min-width: 301px) {
         padding-left: 24px;
         
       }
       @media screen and (max-width: 576px) {
-        margin-top: 1rem;
+        margin-top: 1.25rem;
       }
     }
 
