@@ -457,6 +457,50 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 
 ---
 
+## Systems (EE)
+
+### kestra sys-ee restore-flow-listeners
+
+Restores the state-store for FlowListeners. Useful after restoring a flow queue.
+
+**Inputs**  
+- `--timeout` (option): Timeout in seconds before quitting (default: 60).
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee restore-flow-listeners --timeout 120
+```
+
+---
+
+### kestra sys-ee restore-queue
+
+Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
+
+**Inputs**  
+- `--no-recreate` (option): Don't drop and recreate the Kafka topic.  
+- `--no-flows` (option): Don't send flows.  
+- `--no-templates` (option): Don't send templates.  
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee restore-queue --no-flows
+```
+
+---
+
+### kestra sys-ee reset-concurrency-limit
+
+Resets the concurrency limit stored on the Kafka runner.
+
+**Inputs**  
+None
+
+**Example Usage**  
+```bash
+kestra-ee sys-ee reset-concurrency-limit
+```
+
 ## Tenants (EE)
 
 ### `kestra tenants create`
