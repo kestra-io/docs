@@ -25,28 +25,11 @@ tags:
 - name: Metrics
   description: Metrics API
 paths:
-  /api/v1/basicAuthValidationErrors:
-    get:
-      tags:
-      - Misc
-      summary: Retrieve the instance configuration.
-      description: Global endpoint available to all users.
-      operationId: getBasicAuthConfigErrors
-      responses:
-        "200":
-          description: getBasicAuthConfigErrors 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
   /api/v1/configs:
     get:
       tags:
       - Misc
-      summary: Retrieve the instance configuration.
-      description: Global endpoint available to all users.
+      summary: Get current configurations
       operationId: getConfiguration
       responses:
         "200":
@@ -55,271 +38,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.Configuration"
-  /api/v1/main/ai/generate/flow:
-    post:
-      tags:
-      - AI
-      summary: Generate or regenerate a flow based on a prompt
-      operationId: generateFlow
-      requestBody:
-        description: Prompt and context required for flow generation
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FlowGenerationPrompt"
-        required: true
-      responses:
-        "200":
-          description: generateFlow 200 response
-          content:
-            application/yaml:
-              schema:
-                type: string
-  /api/v1/plugins:
-    get:
-      tags:
-      - Plugins
-      summary: Get list of plugins
-      operationId: listPlugins
-      responses:
-        "200":
-          description: listPlugins 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Plugin"
-  /api/v1/plugins/groups/subgroups:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins group by subgroups
-      operationId: getPluginBySubgroups
-      responses:
-        "200":
-          description: getPluginBySubgroups 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Plugin"
-  /api/v1/plugins/icons:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins icons
-      operationId: getPluginIcons
-      responses:
-        "200":
-          description: getPluginIcons 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/PluginIcon"
-  /api/v1/plugins/icons/groups:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugins icons
-      operationId: getPluginGroupIcons
-      responses:
-        "200":
-          description: getPluginGroupIcons 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/PluginIcon"
-  /api/v1/plugins/inputs:
-    get:
-      tags:
-      - Plugins
-      summary: Get all types for an inputs
-      operationId: getAllInputTypes
-      responses:
-        "200":
-          description: getAllInputTypes 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/InputType"
-  /api/v1/plugins/inputs/{type}:
-    get:
-      tags:
-      - Plugins
-      summary: Get the JSON schema for an input type
-      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
-      operationId: getSchemaFromInputType
-      parameters:
-      - name: type
-        in: path
-        description: The schema needed
-        required: true
-        schema:
-          $ref: "#/components/schemas/Type"
-      responses:
-        "200":
-          description: getSchemaFromInputType 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/plugins/properties/{type}:
-    get:
-      tags:
-      - Plugins
-      summary: Get the properties part of the JSON schema for a type
-      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
-      operationId: getPropertiesFromType
-      parameters:
-      - name: type
-        in: path
-        description: The schema needed
-        required: true
-        schema:
-          $ref: "#/components/schemas/SchemaType"
-      responses:
-        "200":
-          description: getPropertiesFromType 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: object
-  /api/v1/plugins/schemas/{type}:
-    get:
-      tags:
-      - Plugins
-      summary: Get the JSON schema for a type
-      description: "The schema will be a [JSON Schema Draft 7](http://json-schema.org/draft-07/schema)"
-      operationId: getSchemasFromType
-      parameters:
-      - name: type
-        in: path
-        description: The schema needed
-        required: true
-        schema:
-          $ref: "#/components/schemas/SchemaType"
-      - name: arrayOf
-        in: query
-        description: If schema should be an array of requested type
-        explode: false
-        schema:
-          type: boolean
-          nullable: true
-          default: false
-      responses:
-        "200":
-          description: getSchemasFromType 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: object
-  /api/v1/plugins/{cls}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: getPluginDocumentation
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin full class name
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
-      responses:
-        "200":
-          description: getPluginDocumentation 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/plugins/{cls}/versions:
-    get:
-      tags:
-      - Plugins
-      summary: Get all versions for a plugin
-      operationId: getPluginVersions
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getPluginVersions 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
-  /api/v1/plugins/{cls}/versions/{version}:
-    get:
-      tags:
-      - Plugins
-      summary: Get plugin documentation
-      operationId: getPluginDocumentationFromVersion
-      parameters:
-      - name: cls
-        in: path
-        description: The plugin type
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: The plugin version
-        required: true
-        schema:
-          type: string
-      - name: all
-        in: query
-        description: Include all the properties
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
-      responses:
-        "200":
-          description: getPluginDocumentationFromVersion 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocumentationWithSchema"
-  /api/v1/{tenant}/basicAuth:
+  /api/v1/main/basicAuth:
     post:
       tags:
       - Misc
-      summary: Configure basic authentication for the instance.
-      description: Sets up basic authentication credentials.
+      summary: Create basic auth for the current instance
       operationId: createBasicAuth
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -329,6 +53,19 @@ paths:
       responses:
         "200":
           description: createBasicAuth 200 response
+  /api/v1/main/usages/all:
+    get:
+      tags:
+      - Misc
+      summary: Get instance usage information
+      operationId: getUsages
+      responses:
+        "200":
+          description: getUsages 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usage"
   /api/v1/{tenant}/blueprints/community/{kind}:
     get:
       tags:
@@ -630,32 +367,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dashboard"
-  /api/v1/{tenant}/dashboards/charts/export/to-csv:
-    post:
-      tags:
-      - Dashboards
-      summary: Export a table chart data to CSV
-      operationId: exportChartToCsv
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DashboardController.PreviewRequest"
-        required: true
-      responses:
-        "200":
-          description: exportChartToCsv 200 response
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: byte
   /api/v1/{tenant}/dashboards/charts/preview:
     post:
       tags:
@@ -839,7 +550,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChartFiltersOverrides"
+              $ref: "#/components/schemas/GlobalFilter"
         required: true
       responses:
         "200":
@@ -848,46 +559,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Map_String.Object__"
-  /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export/to-csv:
-    post:
-      tags:
-      - Dashboards
-      summary: Export a dashboard chart data to CSV
-      operationId: exportDashboardChartDataToCSV
-      parameters:
-      - name: id
-        in: path
-        description: The dashboard id
-        required: true
-        schema:
-          type: string
-      - name: chartId
-        in: path
-        description: The chart id
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: "The filters to apply, some can override chart definition like\
-          \ labels & namespace"
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChartFiltersOverrides"
-        required: true
-      responses:
-        "200":
-          description: exportDashboardChartDataToCSV 200 response
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: byte
   /api/v1/{tenant}/executions:
     get:
       tags:
@@ -1885,35 +1556,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/{tenant}/executions/latest:
-    post:
-      tags:
-      - Executions
-      summary: Get the latest execution for given flows
-      operationId: getLatestExecutions
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/ExecutionRepositoryInterface.FlowFilter"
-        required: true
-      responses:
-        "200":
-          description: getLatestExecutions 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExecutionController.LastExecutionResponse"
   /api/v1/{tenant}/executions/namespaces:
     get:
       tags:
@@ -2870,14 +2512,6 @@ paths:
       summary: Unqueue a list of executions
       operationId: unqueueExecutionsByIds
       parameters:
-      - name: state
-        in: query
-        description: The new state of the unqueued executions
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -3011,14 +2645,6 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      - name: newState
-        in: query
-        description: The new state of the unqueued executions
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -3079,7 +2705,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/Execution"
     put:
       tags:
       - Executions
@@ -3115,7 +2741,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/Execution"
     post:
       tags:
       - Executions
@@ -3151,7 +2777,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/Execution"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -3458,48 +3084,6 @@ paths:
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/Event_Execution_"
-  /api/v1/{tenant}/executions/{executionId}/follow-dependencies:
-    get:
-      tags:
-      - Executions
-      summary: Follow all execution dependencies executions
-      operationId: followDependenciesExecutions
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution id
-        required: true
-        schema:
-          type: string
-      - name: destinationOnly
-        in: query
-        description: "If true, list only destination dependencies, otherwise list\
-          \ also source dependencies"
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
-      - name: expandAll
-        in: query
-        description: "If true, expand all dependencies recursively"
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: followDependenciesExecutions 200 response
-          content:
-            text/event-stream:
-              schema:
-                $ref: "#/components/schemas/Event_ExecutionStatusEvent_"
   /api/v1/{tenant}/executions/{executionId}/force-run:
     post:
       tags:
@@ -3683,14 +3267,6 @@ paths:
           type: integer
           format: int32
           nullable: true
-      - name: breakpoints
-        in: query
-        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
-          \ by a coma."
-        explode: false
-        schema:
-          type: string
-          nullable: true
       - name: tenant
         in: path
         required: true
@@ -3768,38 +3344,6 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
-  /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint:
-    post:
-      tags:
-      - Executions
-      summary: Resume an execution from a breakpoint (in the 'BREAKPOINT' state).
-      operationId: resumeExecutionFromBreakpoint
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution id
-        required: true
-        schema:
-          type: string
-      - name: breakpoints
-        in: query
-        description: "\"Set a list of breakpoints at specific tasks 'id.value', separated\
-          \ by a coma."
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: On success
-        "409":
-          description: If the executions is not in the 'BREAKPOINT' state or has no
-            breakpoint
   /api/v1/{tenant}/executions/{executionId}/resume/validate:
     post:
       tags:
@@ -3877,14 +3421,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: state
-        in: query
-        description: The new state of the execution
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/State.Type"
       - name: tenant
         in: path
         required: true
@@ -3948,22 +3484,6 @@ paths:
           type: string
           format: date-time
           nullable: true
-      - name: breakpoints
-        in: query
-        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
-          \ by a coma."
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: kind
-        in: query
-        description: Specific execution kind
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionKind"
       - name: tenant
         in: path
         required: true
@@ -5064,14 +4584,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
-      - name: expandAll
-        in: query
-        description: "If true, expand all dependencies recursively"
         required: true
         explode: false
         schema:
@@ -6562,6 +6074,280 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiSecretListResponse"
+  /api/v1/{tenant}/plugins:
+    get:
+      tags:
+      - Plugins
+      summary: Get list of plugins
+      operationId: listPlugins
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listPlugins 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
+  /api/v1/{tenant}/plugins/groups/subgroups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins group by subgroups
+      operationId: getPluginBySubgroups
+      parameters:
+      - name: includeDeprecated
+        in: query
+        description: Whether to include deprecated plugins
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginBySubgroups 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
+  /api/v1/{tenant}/plugins/icons:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: getPluginIcons
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/PluginIcon"
+  /api/v1/{tenant}/plugins/icons/groups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: getPluginGroupIcons
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginGroupIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: "#/components/schemas/PluginIcon"
+  /api/v1/{tenant}/plugins/inputs:
+    get:
+      tags:
+      - Plugins
+      summary: Get all types for an inputs
+      operationId: getAllInputTypes
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getAllInputTypes 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InputType"
+  /api/v1/{tenant}/plugins/inputs/{type}:
+    get:
+      tags:
+      - Plugins
+      summary: Get json schemas for an input type
+      description: "The schema will be output as [http://json-schema.org/draft-07/schema](Json\
+        \ Schema Draft 7)"
+      operationId: getSchemaFromInputType
+      parameters:
+      - name: type
+        in: path
+        description: The schema needed
+        required: true
+        schema:
+          $ref: "#/components/schemas/Type"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getSchemaFromInputType 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
+  /api/v1/{tenant}/plugins/schemas/{type}:
+    get:
+      tags:
+      - Plugins
+      summary: Get all json schemas for a type
+      description: "The schema will be output as [http://json-schema.org/draft-07/schema](Json\
+        \ Schema Draft 7)"
+      operationId: getSchemasFromType
+      parameters:
+      - name: type
+        in: path
+        description: The schema needed
+        required: true
+        schema:
+          $ref: "#/components/schemas/SchemaType"
+      - name: arrayOf
+        in: query
+        description: If schema should be an array of requested type
+        explode: false
+        schema:
+          type: boolean
+          nullable: true
+          default: false
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getSchemasFromType 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/v1/{tenant}/plugins/{cls}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugin documentation
+      operationId: getPluginDocumentation
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin full class name
+        required: true
+        schema:
+          type: string
+      - name: all
+        in: query
+        description: Include all the properties
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginDocumentation 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
+  /api/v1/{tenant}/plugins/{cls}/versions:
+    get:
+      tags:
+      - Plugins
+      summary: Get all versions for a plugin
+      operationId: getPluginVersions
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin type
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginVersions 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PluginController.ApiPluginVersions"
+  /api/v1/{tenant}/plugins/{cls}/versions/{version}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugin documentation
+      operationId: getPluginDocumentationFromVersion
+      parameters:
+      - name: cls
+        in: path
+        description: The plugin type
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: The plugin version
+        required: true
+        schema:
+          type: string
+      - name: all
+        in: query
+        description: Include all the properties
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginDocumentationFromVersion 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentationWithSchema"
   /api/v1/{tenant}/taskruns/search:
     get:
       tags:
@@ -7414,25 +7200,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Trigger"
-  /api/v1/{tenant}/usages/all:
-    get:
-      tags:
-      - Misc
-      summary: Retrieve instance usage information
-      operationId: getUsages
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getUsages 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Usage"
 components:
   schemas:
     AbstractFlow:
@@ -7473,9 +7240,8 @@ components:
           - $ref: "#/components/schemas/Map_Object.Object_"
         variables:
           type: object
-          additionalProperties: true
-        workerGroup:
-          $ref: "#/components/schemas/WorkerGroup"
+          additionalProperties:
+            type: object
         deleted:
           type: boolean
     AbstractGraph:
@@ -7566,8 +7332,6 @@ components:
           items:
             $ref: "#/components/schemas/State.Type"
         logToFile:
-          type: boolean
-        failOnTriggerError:
           type: boolean
     AbstractTriggerForExecution:
       required:
@@ -7705,16 +7469,6 @@ components:
       - APP
       - DASHBOARD
       - FLOW
-    Breakpoint:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-        value:
-          type: string
-          nullable: true
     BulkErrorResponse:
       type: object
       properties:
@@ -7728,40 +7482,6 @@ components:
         count:
           type: integer
           format: int32
-    Cache:
-      required:
-      - enabled
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        ttl:
-          type: string
-    ChartFiltersOverrides:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
-        namespace:
-          type: string
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter"
     Chart_ChartOption_:
       required:
       - id
@@ -7877,9 +7597,6 @@ components:
             SKIPPED:
               type: integer
               format: int64
-            BREAKPOINT:
-              type: integer
-              format: int64
         groupBy:
           type: string
     DailyExecutionStatistics.Duration:
@@ -7926,12 +7643,11 @@ components:
       type: object
       properties:
         chart:
-          minLength: 1
           type: string
         globalFilter:
           nullable: true
           allOf:
-          - $ref: "#/components/schemas/ChartFiltersOverrides"
+          - $ref: "#/components/schemas/GlobalFilter"
     DeletedInterface:
       type: object
       properties:
@@ -7955,19 +7671,6 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/PluginSchema"
-    Event_ExecutionStatusEvent_:
-      type: object
-      properties:
-        data:
-          $ref: "#/components/schemas/ExecutionStatusEvent"
-        id:
-          type: string
-        name:
-          type: string
-        comment:
-          type: string
-        retry:
-          type: string
     Event_Execution_:
       type: object
       properties:
@@ -8084,11 +7787,6 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
-        breakpoints:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/Breakpoint"
     ExecutionController.ApiValidateExecutionInputsResponse:
       required:
       - id
@@ -8152,26 +7850,6 @@ components:
           url:
             type: string
             format: uri
-    ExecutionController.LastExecutionResponse:
-      required:
-      - flowId
-      - id
-      - namespace
-      - startDate
-      - status
-      type: object
-      properties:
-        id:
-          type: string
-        flowId:
-          type: string
-        namespace:
-          type: string
-        startDate:
-          type: string
-          format: date-time
-        status:
-          $ref: "#/components/schemas/State.Type"
     ExecutionController.SetLabelsByIdsRequest:
       required:
       - executionLabels
@@ -8196,52 +7874,11 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      required:
-      - flowId
-      - flowRevision
-      - id
-      - labels
-      - namespace
-      - outputs
-      - state
-      - tenantId
-      - trigger
-      - url
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
       - NORMAL
       - TEST
-      - PLAYGROUND
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -8259,35 +7896,6 @@ components:
       enum:
       - CHILD
       - MAIN
-    ExecutionRepositoryInterface.FlowFilter:
-      required:
-      - id
-      - namespace
-      type: object
-      properties:
-        namespace:
-          type: string
-        id:
-          type: string
-    ExecutionStatusEvent:
-      required:
-      - executionId
-      - flowId
-      - namespace
-      - state
-      - tenantId
-      type: object
-      properties:
-        executionId:
-          type: string
-        tenantId:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        state:
-          $ref: "#/components/schemas/State"
     ExecutionTrigger:
       required:
       - id
@@ -8340,10 +7948,10 @@ components:
             type: string
     FileAttributes.FileType:
       type: string
-      enum:
+      x-enum-varnames:
       - File
       - Directory
-      x-enum-varnames:
+      enum:
       - File
       - Directory
     FileMetas:
@@ -8390,8 +7998,6 @@ components:
             oneOf:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
-          workerGroup:
-            $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           finally:
@@ -8412,7 +8018,6 @@ components:
           tasks:
             minItems: 1
             type: array
-            additionalProperties: true
             items:
               $ref: "#/components/schemas/Task"
           errors:
@@ -8499,9 +8104,8 @@ components:
             - $ref: "#/components/schemas/Map_Object.Object_"
           variables:
             type: object
-            additionalProperties: true
-          workerGroup:
-            $ref: "#/components/schemas/WorkerGroup"
+            additionalProperties:
+              type: object
           deleted:
             type: boolean
           tasks:
@@ -8525,16 +8129,6 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/AbstractTriggerForExecution"
-    FlowGenerationPrompt:
-      required:
-      - flowYaml
-      - userPrompt
-      type: object
-      properties:
-        userPrompt:
-          type: string
-        flowYaml:
-          type: string
     FlowGraph:
       required:
       - clusters
@@ -8635,8 +8229,6 @@ components:
             type: object
             additionalProperties:
               type: object
-          workerGroup:
-            $ref: "#/components/schemas/WorkerGroup"
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           sla:
@@ -8755,8 +8347,6 @@ components:
             oneOf:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
-          workerGroup:
-            $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           variables:
@@ -8777,6 +8367,31 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+    GlobalFilter:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        namespace:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
     HostUsage:
       type: object
       properties:
@@ -8910,15 +8525,12 @@ components:
     KVEntry:
       required:
       - creationDate
-      - description
       - expirationDate
       - key
       - updateDate
       type: object
       properties:
         key:
-          type: string
-        description:
           type: string
         creationDate:
           type: string
@@ -9152,8 +8764,6 @@ components:
           type: string
         version:
           type: string
-        edition:
-          $ref: "#/components/schemas/MiscController.Edition"
         commitId:
           type: string
         commitDate:
@@ -9165,8 +8775,6 @@ components:
           type: boolean
         isAnonymousUsageEnabled:
           type: boolean
-        isUiAnonymousUsageEnabled:
-          type: boolean
         isTemplateEnabled:
           type: boolean
         environment:
@@ -9175,6 +8783,8 @@ components:
           type: string
         preview:
           $ref: "#/components/schemas/MiscController.Preview"
+        isBasicAuthEnabled:
+          type: boolean
         systemNamespace:
           type: string
         hiddenLabelsPrefixes:
@@ -9185,15 +8795,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/QueryFilter.ResourceField"
-        isAiEnabled:
-          type: boolean
-        isBasicAuthInitialized:
-          type: boolean
-    MiscController.Edition:
-      type: string
-      enum:
-      - OSS
-      - EE
     MiscController.Environment:
       required:
       - color
@@ -9442,6 +9043,34 @@ components:
           type: object
           additionalProperties:
             type: string
+        tasks:
+          type: array
+          items:
+            type: string
+        triggers:
+          type: array
+          items:
+            type: string
+        conditions:
+          type: array
+          items:
+            type: string
+        controllers:
+          type: array
+          items:
+            type: string
+        storages:
+          type: array
+          items:
+            type: string
+        secrets:
+          type: array
+          items:
+            type: string
+        taskRunners:
+          type: array
+          items:
+            type: string
         guides:
           type: array
           items:
@@ -9450,74 +9079,36 @@ components:
           type: array
           items:
             type: string
-        tasks:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        triggers:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        conditions:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        controllers:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        storages:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        secrets:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        taskRunners:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         apps:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         appBlocks:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         charts:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         dataFilters:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         logExporters:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         additionalPlugins:
           type: array
           items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+            type: string
         categories:
           type: array
           items:
             $ref: "#/components/schemas/PluginSubGroup.PluginCategory"
         subGroup:
           type: string
-    Plugin.PluginElementMetadata:
-      required:
-      - cls
-      - deprecated
-      type: object
-      properties:
-        cls:
-          type: string
-        deprecated:
-          type: boolean
     PluginController.ApiPluginVersions:
       required:
       - type
@@ -9645,6 +9236,7 @@ components:
           type: object
     QueryFilter.Field:
       type: string
+      x-type: String
       enum:
       - QUERY
       - SCOPE
@@ -9661,7 +9253,6 @@ components:
       - WORKER_ID
       - EXISTING_ONLY
       - MIN_LEVEL
-      x-type: String
     QueryFilter.FieldOp:
       required:
       - name
@@ -10042,7 +9633,6 @@ components:
       - RETRYING
       - RETRIED
       - SKIPPED
-      - BREAKPOINT
     Task:
       required:
       - id
@@ -10050,11 +9640,9 @@ components:
       type: object
       properties:
         id:
-          maxLength: 256
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-          x-size-message: Task id must be at most 256 characters
         type:
           title: The class name of this task.
           minLength: 1
@@ -10085,11 +9673,13 @@ components:
           type: string
         allowWarning:
           type: boolean
-        taskCache:
-          $ref: "#/components/schemas/Cache"
     TaskFixture:
       required:
+      - description
       - id
+      - outputs
+      - state
+      - value
       type: object
       properties:
         id:
@@ -10278,7 +9868,6 @@ components:
       type: object
       properties:
         triggers:
-          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/Trigger"
