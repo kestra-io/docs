@@ -48,7 +48,7 @@ if (lowerCasePluginType !== undefined) {
 
 const page = pluginType === undefined
     ? nuxtBlocksFromSubGroupsWrappers(await $fetch(`https://api.kestra.io/v1/plugins/${splitRouteSlug[0]}/subgroups`))
-    : nuxtBlocksFromJsonSchema((await $fetch(`https://api.kestra.io/v1/plugins/definitions/${pluginType}`).schema));
+    : nuxtBlocksFromJsonSchema((await $fetch(`https://api.kestra.io/v1/plugins/definitions/${pluginType}`)).schema);
 
 function getSubGroup(){
     const maybeSubGroup = splitRouteSlug?.[1];
