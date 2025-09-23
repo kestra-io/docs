@@ -19631,9 +19631,11 @@ components:
       - DASHBOARD
       - EXECUTION
       - FLOW
+      - KV_STORE
       - GROUP
       - INVITATION
       - NAMESPACE
+      - NAMESPACE_FILE
       - ROLE
       - SECURITY_INTEGRATION
       - SECRET
