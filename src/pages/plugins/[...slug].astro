@@ -92,9 +92,6 @@ const {pageIcon, icons} = await getIcon(pluginType ?? splitRouteSlug[0], "group"
                 icons={icons}
                 client:idle
             />}
-            <pre style="color: white">{JSON.stringify({
-                pluginsWithoutDeprecated: pluginsWithoutDeprecated.map(p => p.name),
-            }, null, 2)}</pre>
         </article>
     </div>
 </Layout>
