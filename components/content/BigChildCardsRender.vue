@@ -2,10 +2,10 @@
 <template>
     <h2 class="big-title">{{title}}</h2>
     <div class="big-card-grid">
-        <component :is="LinkComponent" :href="item.path" class="big-card" v-for="item in navigation" :key="item.path">
+        <NuxtLink :href="item.path" class="big-card" v-for="item in navigation" :key="item.path">
             <h4 class="card-title">{{ item.title }}</h4>
             <p class="card-text">{{ item.description }}</p>
-        </component>
+        </NuxtLink>
     </div>
 </template>
 

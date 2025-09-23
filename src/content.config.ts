@@ -32,6 +32,8 @@ export const collections = {
         generateId,
     }),
     schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
         date: z.date(),
         category: z.string(),
         author: z.object({
