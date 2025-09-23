@@ -22,7 +22,7 @@
                     <option :value="50">50</option>
                 </select>
             </div>
-            <CommonPagination :totalPages="totalPages"  @on-page-change="changePage" v-if="totalPages > 1" />
+            <CommonPagination :totalPages="totalPages" :currentPage="currentPage" @on-page-change="changePage" v-if="totalPages > 1" />
         </div>
     </div>
 </template>

@@ -100,6 +100,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <CommonPagination
                             :totalPages="totalPages"
+                            :currentPage="page"
                             @on-page-change="changePage"
                             v-if="totalPages > 1"
                         />
@@ -201,7 +202,7 @@ const tags = new Map([
   ['feature-highlight', 'Feature Highlight']
 ])
 
-const page = computed(() => 
+const page = computed(() =>
   route.query.page ? parseInt(route.query.page as string) : 1
 )
 

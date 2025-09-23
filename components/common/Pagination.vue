@@ -20,7 +20,6 @@ export default {
     components: { ChevronLeft, ChevronRight },
     data() {
         return {
-            currentPage: 1,
             morePagesPlaceholder: "..."
         }
     },
@@ -29,10 +28,9 @@ export default {
             type: Number,
             required: true
         },
-    },
-    mounted() {
-        if(this.$route.query.page) {
-            this.currentPage = parseInt(this.$route.query.page)
+        currentPage:{
+            type: Number,
+            default: 1
         }
     },
     methods: {

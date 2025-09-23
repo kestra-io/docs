@@ -36,6 +36,7 @@
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <CommonPagination
                     :totalPages="totalPages"
+                    :currentPage="currentPage"
                     @on-page-change="changePage"
                     v-if="totalPages > 1"
                 />

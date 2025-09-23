@@ -42,6 +42,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <CommonPagination
                             :totalPages="totalPages"
+                            :currentPage="currentPage"
                             @on-page-change="changePage"
                             v-if="totalPages > 1"
                         />
