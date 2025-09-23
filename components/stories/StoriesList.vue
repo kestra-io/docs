@@ -22,7 +22,12 @@
                     <option :value="50">50</option>
                 </select>
             </div>
-            <CommonPagination :totalPages="totalPages" :currentPage="currentPage" @on-page-change="changePage" v-if="totalPages > 1" />
+            <CommonPagination
+                v-if="totalPages > 1"
+                :totalPages="totalPages"
+                v-model:currentPage="currentPage"
+                @update:currentPage="changePage"
+            />
         </div>
     </div>
 </template>
@@ -44,11 +49,12 @@ const currentPage = ref(1);
 const totalPages = computed(()=>{
     return Math.ceil(props.totalStories / itemsPerPage.value)
 })
-const changePage = (pageNo) => {
-    currentPage.value = pageNo
+
+const changePage = () => {
     window.scrollTo(0, 0)
     fetchPageData()
 }
+
 const fetchPageData = () => {
     emits('fetchPageData', { currentPage: currentPage.value, itemsPerPage: itemsPerPage.value })
 }

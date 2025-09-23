@@ -101,7 +101,7 @@
                         <CommonPagination
                             :totalPages="totalPages"
                             :currentPage="page"
-                            @on-page-change="changePage"
+                            @update:currentPage="changePage"
                             v-if="totalPages > 1"
                         />
                         <div class="d-flex align-items-baseline">

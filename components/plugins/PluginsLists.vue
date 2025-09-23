@@ -42,8 +42,8 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <CommonPagination
                             :totalPages="totalPages"
-                            :currentPage="currentPage"
-                            @on-page-change="changePage"
+                            v-model:currentPage="currentPage"
+                            @update:currentPage="changePage"
                             v-if="totalPages > 1"
                         />
                         <div class="d-flex align-items-baseline">
@@ -160,8 +160,7 @@ ${elements.map(({cls}) => `<li>
         });
     }
 
-    const changePage = (pageNo: number) => {
-        currentPage.value = pageNo;
+    const changePage = () => {
         window.scrollTo(0, 0)
     };
 

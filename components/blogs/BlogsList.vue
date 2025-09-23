@@ -96,8 +96,7 @@
                 </div>
                 <CommonPagination
                     :totalPages="totalPages"
-                    :currentPage="pageNo"
-                    @on-page-change="changePage"
+                    v-model:currentPage="pageNo"
                     v-if="totalPages > 1"
                 />
             </div>
@@ -201,10 +200,6 @@ export default {
                 (e) => e.category === filter || filter === "All news",
             );
             return blogs[blogs.length - 1];
-        },
-
-        changePage(value) {
-            this.pageNo = value;
         },
 
         scrollToView({ el, ref }) {
