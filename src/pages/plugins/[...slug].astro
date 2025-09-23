@@ -1,24 +1,100 @@
 ---
-// use astro content collection to fetch markdown files from /content/docs
-import { render, getCollection, type CollectionEntry } from "astro:content";
-import LayoutDocs from "../../components/layout-docs.astro";
-import type { Plugin } from "@kestra-io/ui-libs";
+import { slugify, subGroupName, type Plugin } from "@kestra-io/ui-libs";
 import Layout from "../../components/layout.astro";
+import NavSideBar from "../../../components/docs/NavSideBar.vue";
+import Breadcrumb from "../../../components/layout/Breadcrumb.vue";
+import NavToc from "../../../components/docs/NavToc.vue";
+import { generateNavigationFromSubgroups } from "../../utils/plugins/generateNavigation";
+import PluginsMDCRender from "../../../components/plugins/PluginsMDCRender.vue";
+import { generatePageNames, recursivePages } from "../../../utils/navigation";
+import { nuxtBlocksFromJsonSchema, nuxtBlocksFromSubGroupsWrappers } from "../../utils/plugins/nuxtBlocks";
+import { getIcon } from "../../utils/plugins/getPluginIcon";
+import { $fetch } from "../../utils/fetch";
+import { getPluginsWithoutDeprecated } from "../../utils/plugins/getListOfPlugins";
 
 export async function getStaticPaths() {
 	const pluginsRes = await fetch(`https://api.kestra.io/v1/plugins/subgroups`);
     const pluginsData = await pluginsRes.json();
+    // FIXME: return all non top level slugs
+    // example: `/plugins/plugin-airflow/io.kestra.plugin.airflow.dags.triggerdagrun`
 	return pluginsData.map((plugin: any) => ({
 		params: { slug: plugin.name },
 		props: plugin,
 	}));
 }
+
 type Props = Plugin
 const props = Astro.props as Props;
+const params = Astro.params as { slug: string };
 
+const navigationData = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+const navigation = generateNavigationFromSubgroups(navigationData);
 
+const splitRouteSlug = params.slug.split("/");
+
+const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
+let pluginType: string | undefined = undefined;
+
+const pageNames = generatePageNames(navigation[0])
+const pageList = recursivePages(navigation[0])
+
+const pageName = pageNames[`/plugins/${params.slug}`] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
+
+if (lowerCasePluginType !== undefined) {
+    let splitPluginType = lowerCasePluginType.split(".");
+    const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
+    pluginType = `${packageName}.${pageNames[params.slug] ?? splitPluginType[splitPluginType.length - 1]}`;
+}
+
+const page = pluginType === undefined
+    ? nuxtBlocksFromSubGroupsWrappers(await $fetch(`https://api.kestra.io/v1/plugins/${splitRouteSlug[0]}/subgroups`))
+    : nuxtBlocksFromJsonSchema((await $fetch(`https://api.kestra.io/v1/plugins/definitions/${pluginType}`).schema));
+
+function getSubGroup(){
+    const maybeSubGroup = splitRouteSlug?.[1];
+    return maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
+}
+
+const subGroup = getSubGroup();
+
+const pluginsWithoutDeprecated = getPluginsWithoutDeprecated("plugins" in page.body ? page.body.plugins : []);
+
+const subGroupWrapper = subGroup === undefined || pluginType !== undefined ? undefined : pluginsWithoutDeprecated.find(p => slugify(subGroupName(p)) === subGroup);
+
+const {pageIcon, icons} = await getIcon(pluginType ?? splitRouteSlug[0], "group" in page.body ? page.body.group : undefined, subGroupWrapper?.subGroup);
 ---
 
 <Layout>
-    {JSON.stringify(props, null, 2)}
+     <div class="container-fluid bd-gutter bd-layout">
+        <NavSideBar type="plugins" navigation={navigation} slug={`/plugins/${props.slug}`} client:load/>
+        <article class="bd-main order-1">
+            <div class="bd-title">
+                <Breadcrumb slug={props.slug} pageList={pageList} pageNames={pageNames} />
+                <h1 v-if="page && pageName" class="py-0 title">
+                    {pageIcon && <img
+                        src={pageIcon}
+                        alt={pageName}
+                        width="40"
+                        height="40"
+                        loading="lazy"
+                        class="me-3 page-icon"
+                    />}
+                    <span class="text-capitalize" v-html="transformTitle(pageName)" />
+                </h1>
+            </div>
+            <NavToc rate-helpful page={page} capitalize class="my-md-0 my-4 right-menu"/>
+
+            {page && <PluginsMDCRender
+                page={page}
+                pluginName={pageName ?? ""}
+                pluginType={pluginType}
+                plugins={pluginsWithoutDeprecated}
+                icons={icons}
+                client:idle
+            />}
+            <pre style="color: white">{JSON.stringify({
+                pluginsWithoutDeprecated: pluginsWithoutDeprecated.map(p => p.name),
+            }, null, 2)}</pre>
+        </article>
+    </div>
 </Layout>

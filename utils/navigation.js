@@ -53,7 +53,11 @@ export const recursivePages = (item) => {
 
     return paths;
 }
-
+ /**
+  *
+  * @param {*} item
+  * @returns {Record<string, any>}
+  */
 export const generatePageNames = (item) => {
     const result = {};
     function traverse(item) {

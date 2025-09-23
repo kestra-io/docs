@@ -21,3 +21,23 @@ export function getListOfPlugins(inputPlugins: Plugin[]): Plugin[] {
             } as Plugin
         }).filter((plugin): plugin is Plugin => plugin !== undefined);
 }
+
+export function getPluginsWithoutDeprecated(plugins: Plugin[]): PluginElement[] {
+    return plugins
+        .flatMap(p => {
+            let filteredElementsEntries = Object.entries(p).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                .map(([elementType, elements]) => [elementType, (elements as PluginElement[]).filter(({deprecated}) => !deprecated)])
+                .filter(([, elements]) => elements.length > 0);
+
+            if (filteredElementsEntries.length === 0) {
+                return [];
+            }
+
+            return [{
+                ...p,
+                ...Object.fromEntries(
+                    filteredElementsEntries
+                )
+            }];
+        })
+}

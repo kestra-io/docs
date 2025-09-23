@@ -1,5 +1,4 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
-import { getListOfPlugins } from "../../utils/getListOfPlugins";
+import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
 export async function GET({ params }: { params: { cls: string } }) {
   const cls = params.cls;

@@ -1,9 +1,9 @@
 <template>
     <div class="slug">
         <span :class="{ first: index === 0 }" v-for="(item, index) in breadcrumb" :key="item">
-            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
+            <a :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
                 {{ item !== "docs" && pageNames[item] ? pageNames[item] : formatDirectoryName(item) }}
-            </NuxtLink>
+            </a>
         </span>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default {
     },
     computed: {
         breadcrumb() {
-            let breadcrumbs = [...new Set(this.slug.split("/")
+            let breadcrumbs = [...new Set(this.slug?.split("/")
                 .filter(r => r !== ""))].slice(0, -1);
             return (breadcrumbs && breadcrumbs.length > 0) ? breadcrumbs : ['docs']
         },

@@ -23,7 +23,6 @@
                     {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category.toLowerCase()) }}
                 </button>
             </div>
-            <pre><code>{{ JSON.stringify(pluginsSlice.length, null, 2) }}</code></pre>
             <div class="row my-4" data-aos="fade-right">
                 <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in pluginsSlice" :key="plugin.name + '-' + plugin.title">
                     <PluginsPluginCard :plugin="plugin" />
