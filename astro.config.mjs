@@ -17,7 +17,9 @@ export default defineConfig({
   }),
 
   integrations: [
-    vue(),
+    vue({
+        appEntrypoint: './src/_main.ts'
+    }),
     expressiveCode({
         defaultProps: {
             wrap: true,
