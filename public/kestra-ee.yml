@@ -35,166 +35,6 @@ tags:
 - name: Misc
   description: Misc api
 paths:
-  /api/v1/auditlogs/search:
-    get:
-      tags:
-      - Audit Logs
-      summary: "Search for audit logs across all tenants, required to be SuperAdmin"
-      operationId: searchAuditLogsForAllTenants
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        explode: false
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        explode: false
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: namespace
-        in: query
-        description: A namespace filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: executionId
-        in: query
-        description: An execution filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: userId
-        in: query
-        description: A user id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: id
-        in: query
-        description: A id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: resources
-        in: query
-        description: A resource filter
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/ResourceType_1"
-      - name: startDate
-        in: query
-        description: The start datetime
-        explode: false
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        explode: false
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: details
-        in: query
-        description: A list of auditLog details
-        explode: false
-        schema:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-      - name: type
-        in: query
-        description: The event that create the audit log
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/CrudEventType"
-      responses:
-        "200":
-          description: searchAuditLogsForAllTenants 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_AuditLogController.ApiAuditLogItem_"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/auditlogs/{id}/diff:
-    get:
-      tags:
-      - Audit Logs
-      summary: Retrieve the diff between audit logs from global resource like users
-      description: Retrieves the diff between the current version and a selected previous
-        version of a given resource based on audit logs.
-      operationId: getGlobalResourceDiffFromAuditLog
-      parameters:
-      - name: id
-        in: path
-        description: The id of the audit log
-        required: true
-        schema:
-          type: string
-      - name: previousId
-        in: query
-        description: The id of a previous audit log to compare with
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: getGlobalResourceDiffFromAuditLog 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuditLogController.AuditLogDiff"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/auths:
     get:
       tags:
@@ -370,10 +210,6 @@ paths:
       responses:
         "200":
           description: enterMaintenance 200 response
-          content:
-            application/json:
-              schema:
-                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -388,10 +224,6 @@ paths:
       responses:
         "200":
           description: exitMaintenance 200 response
-          content:
-            application/json:
-              schema:
-                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -562,42 +394,6 @@ paths:
       responses:
         "200":
           description: listAvailableVersionedPlugins 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/instance/versioned-plugins/available/secrets-managers:
-    get:
-      tags:
-      - Plugins
-      summary: List available plugin artifacts for Kestra Secret Manager
-      description: Superadmin-only. Lists all secret managers available for installation.
-        Requires INFRASTRUCTURE permission.
-      operationId: listAvailableVersionedPluginsForSecretManager
-      responses:
-        "200":
-          description: listAvailableVersionedPluginsForSecretManager 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/instance/versioned-plugins/available/storages:
-    get:
-      tags:
-      - Plugins
-      summary: List available plugin artifacts for Kestra Internal Storage
-      description: Superadmin-only. Lists all internal storages available for installation.
-        Requires INFRASTRUCTURE permission.
-      operationId: listAvailableVersionedPluginsForStorage
-      responses:
-        "200":
-          description: listAvailableVersionedPluginsForStorage 200 response
           content:
             application/json:
               schema:
@@ -1380,269 +1176,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/service-accounts:
-    get:
-      tags:
-      - ServiceAccount
-      summary: 'List service accounts. Superadmin-only. '
-      operationId: listServiceAccounts
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        explode: false
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        explode: false
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: Service account successfully created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_IAMServiceAccountController.ApiServiceAccountDetail_"
-        "404":
-          description: Group not found
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-    post:
-      tags:
-      - ServiceAccount
-      summary: Create a service account
-      description: Superadmin-only. CReate service account with access to multiple
-        tenants.
-      operationId: createServiceAccount
-      requestBody:
-        description: The service account
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/IAMServiceAccountController.ApiCreateServiceAccountRequest"
-        required: true
-      responses:
-        "200":
-          description: Service account successfully created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IAMServiceAccountController.ApiServiceAccountDetail"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/service-accounts/{id}:
-    get:
-      tags:
-      - ServiceAccount
-      summary: Get a service account
-      description: Superadmin-only. Get user account details.
-      operationId: getServiceAccount
-      parameters:
-      - name: id
-        in: path
-        description: The service account id
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: User not found
-        "200":
-          description: getServiceAccount 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IAMServiceAccountController.ApiServiceAccountDetail"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-    delete:
-      tags:
-      - ServiceAccount
-      summary: Delete a service account
-      description: Superadmin-only. Delete a service account including all its access.
-      operationId: deleteServiceAccount
-      parameters:
-      - name: id
-        in: path
-        description: The service account id
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: Service account successfully deleted
-        "404":
-          description: Service account not found
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-    patch:
-      tags:
-      - ServiceAccount
-      summary: Update service account details
-      description: Superadmin-only. Updates the details of a service account.
-      operationId: patchServiceAccountDetails
-      parameters:
-      - name: id
-        in: path
-        description: The service account id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: The service account details
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/IAMServiceAccountController.ApiPatchServiceAccountRequest"
-        required: true
-      responses:
-        "200":
-          description: patchServiceAccountDetails 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IAMServiceAccountController.ApiServiceAccountDetail"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/service-accounts/{id}/api-tokens:
-    get:
-      tags:
-      - Users
-      summary: List API tokens for a specific user
-      operationId: listApiTokens
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listApiTokens 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-    post:
-      tags:
-      - Users
-      summary: Create new API Token for a specific user
-      operationId: createApiTokensForUser
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: The create api-token request
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateApiTokenRequest"
-        required: true
-      responses:
-        "200":
-          description: createApiTokensForUser 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/service-accounts/{id}/api-tokens/{tokenId}:
-    delete:
-      tags:
-      - Users
-      summary: Delete an API Token for specific user and token id
-      operationId: deleteApiToken
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      - name: tokenId
-        in: path
-        description: The token id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteApiToken 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/service-accounts/{id}/superadmin:
-    patch:
-      tags:
-      - ServiceAccount
-      summary: Update service account superadmin privileges
-      description: Superadmin-only. Updates whether a service account is a superadmin.
-      operationId: patchServiceAccountSuperAdmin
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ApiPatchSuperAdminRequest"
-        required: true
-      responses:
-        "200":
-          description: Service account successfully updated
-        "404":
-          description: Service account not found
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/setup:
     get:
       tags:
@@ -2037,7 +1570,7 @@ paths:
       - Users
       summary: List API tokens for a specific user
       description: Superadmin-only. Get all API token existing for a user.
-      operationId: listApiTokens_1
+      operationId: listApiTokens
       parameters:
       - name: id
         in: path
@@ -2049,7 +1582,7 @@ paths:
         "404":
           description: User not found
         "200":
-          description: listApiTokens_1 200 response
+          description: listApiTokens 200 response
           content:
             application/json:
               schema:
@@ -2062,7 +1595,7 @@ paths:
       - Users
       summary: Create new API Token for a specific user
       description: Superadmin-only. Create a new API token for a user.
-      operationId: createApiTokensForUser_1
+      operationId: createApiTokensForUser
       parameters:
       - name: id
         in: path
@@ -2095,7 +1628,7 @@ paths:
       - Users
       summary: Delete an API Token for specific user and token id
       description: Superadmin-only. Delete an API token for a user.
-      operationId: deleteApiToken_1
+      operationId: deleteApiToken
       parameters:
       - name: id
         in: path
@@ -2274,7 +1807,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiPatchSuperAdminRequest"
+              $ref: "#/components/schemas/IAMUserController.ApiPatchSuperAdminRequest"
         required: true
       responses:
         "200":
@@ -3185,114 +2718,6 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
-  /api/v1/{tenant}/auditlogs/export:
-    get:
-      tags:
-      - Audit Logs
-      summary: Export all audit logs as a streamed CSV file
-      operationId: exportAuditLogs
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: executionId
-        in: query
-        description: An execution filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: userId
-        in: query
-        description: A user id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: id
-        in: query
-        description: A id filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: resources
-        in: query
-        description: A resource filter
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/ResourceType_1"
-      - name: startDate
-        in: query
-        description: The start datetime
-        explode: false
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        explode: false
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: details
-        in: query
-        description: A list of auditLog details
-        explode: false
-        schema:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-      - name: type
-        in: query
-        description: The event that create the audit log
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/CrudEventType"
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: exportAuditLogs 200 response
-          content:
-            text/csv:
-              schema:
-                type: array
-                items:
-                  type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/{tenant}/auditlogs/find:
     post:
       tags:
@@ -3318,7 +2743,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuditLogController.ApiAuditLogItem"
+                $ref: "#/components/schemas/AuditLogController.AuditLogWithUser"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -3428,15 +2853,14 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: resources
+      - name: permission
         in: query
-        description: A resource filter
+        description: A permission filter
         explode: false
         schema:
-          type: array
           nullable: true
-          items:
-            $ref: "#/components/schemas/ResourceType_1"
+          allOf:
+          - $ref: "#/components/schemas/Permission"
       - name: startDate
         in: query
         description: The start datetime
@@ -3481,7 +2905,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_AuditLogController.ApiAuditLogItem_"
+                $ref: "#/components/schemas/PagedResults_AuditLogController.AuditLogWithUser_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -7390,68 +6814,6 @@ paths:
       responses:
         "200":
           description: replayExecution 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Execution"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/{tenant}/executions/{executionId}/replay-with-inputs:
-    post:
-      tags:
-      - Executions
-      summary: Create a new execution from an old one and start it from a specified
-        task run id
-      operationId: replayExecutionWithinputs
-      parameters:
-      - name: executionId
-        in: path
-        description: the original execution id to clone
-        required: true
-        schema:
-          type: string
-      - name: taskRunId
-        in: query
-        description: The taskrun id
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: revision
-        in: query
-        description: The flow revision to use for new execution
-        explode: false
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: breakpoints
-        in: query
-        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
-          \ by a coma."
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: The inputs
-        content:
-          multipart/form-data:
-            schema:
-              type: array
-              items:
-                type: string
-                format: binary
-        required: true
-      responses:
-        "200":
-          description: replayExecutionWithinputs 200 response
           content:
             application/json:
               schema:
@@ -11399,10 +10761,10 @@ paths:
       - name: existing
         in: query
         description: Return only existing namespace
-        required: true
         explode: false
         schema:
           type: boolean
+          nullable: true
           default: false
       - name: tenant
         in: path
@@ -11415,7 +10777,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_Namespace_"
+                $ref: "#/components/schemas/PagedResults_NamespaceWithDisabled_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -11423,7 +10785,7 @@ paths:
     get:
       tags:
       - Namespaces
-      summary: Get a namespace
+      summary: Retrieve namespace details
       operationId: getNamespace
       parameters:
       - name: id
@@ -12013,36 +11375,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/{tenant}/namespaces/{namespace}/kv/inheritance:
-    get:
-      tags:
-      - KV
-      summary: List all keys for a namespace and parent namespaces
-      operationId: listKeysWithInheritence
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listKeysWithInheritence 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/KVEntry"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12736,8 +12068,8 @@ paths:
     post:
       tags:
       - ServiceAccount
-      summary: Create a service account for the given tenant
-      operationId: createServiceAccountForTenant
+      summary: Create a user service account
+      operationId: createServiceAccount
       parameters:
       - name: tenant
         in: path
@@ -12768,7 +12100,7 @@ paths:
       tags:
       - ServiceAccount
       summary: Retrieve a service account
-      operationId: getServiceAccountForTenant
+      operationId: getServiceAccount
       parameters:
       - name: id
         in: path
@@ -12785,7 +12117,7 @@ paths:
         "404":
           description: Service account not found
         "200":
-          description: getServiceAccountForTenant 200 response
+          description: getServiceAccount 200 response
           content:
             application/json:
               schema:
@@ -12833,11 +12165,11 @@ paths:
       tags:
       - ServiceAccount
       summary: Delete a service account
-      operationId: deleteServiceAccountForTenant
+      operationId: deleteServiceAccount
       parameters:
       - name: id
         in: path
-        description: The service account id
+        description: The user id
         required: true
         schema:
           type: string
@@ -12850,7 +12182,7 @@ paths:
         "404":
           description: Service account
         "200":
-          description: deleteServiceAccountForTenant 200 response
+          description: deleteServiceAccount 200 response
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12859,7 +12191,7 @@ paths:
       tags:
       - Users
       summary: List API tokens for a specific user
-      operationId: listApiTokensWithTenant
+      operationId: listApiTokens_1
       parameters:
       - name: id
         in: path
@@ -12874,7 +12206,7 @@ paths:
           type: string
       responses:
         "200":
-          description: listApiTokensWithTenant 200 response
+          description: listApiTokens_1 200 response
           content:
             application/json:
               schema:
@@ -12886,7 +12218,7 @@ paths:
       tags:
       - Users
       summary: Create new API Token for a specific user
-      operationId: createApiTokensForUserWithTenant
+      operationId: createApiTokensForUser_1
       parameters:
       - name: id
         in: path
@@ -12908,7 +12240,7 @@ paths:
         required: true
       responses:
         "200":
-          description: createApiTokensForUserWithTenant 200 response
+          description: createApiTokensForUser_1 200 response
           content:
             application/json:
               schema:
@@ -12921,7 +12253,7 @@ paths:
       tags:
       - Users
       summary: Delete an API Token for specific user and token id
-      operationId: deleteApiTokenWithTenant
+      operationId: deleteApiToken_1
       parameters:
       - name: id
         in: path
@@ -12942,7 +12274,7 @@ paths:
           type: string
       responses:
         "200":
-          description: deleteApiTokenWithTenant 200 response
+          description: deleteApiToken_1 200 response
           content:
             application/json:
               schema:
@@ -13441,77 +12773,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
-  /api/v1/{tenant}/tests/results/search:
-    get:
-      tags:
-      - TestSuites
-      summary: Search for tests results
-      description: "with optional filtering by namespace, test suite ID and flow ID.\
-        \ Requires TEST permission with the READ action."
-      operationId: searchTestSuitesResults
-      parameters:
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        explode: false
-        schema:
-          minimum: 1
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        explode: false
-        schema:
-          minimum: 1
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: testSuiteId
-        in: query
-        description: The test suite id to filter on
-        required: true
-        explode: false
-        schema:
-          type: string
-      - name: namespace
-        in: query
-        description: The namespace to filter on
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: The flow id to filter on
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: searchTestSuitesResults 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_TestSuiteRunResult_"
   /api/v1/{tenant}/tests/results/search/last:
     post:
       tags:
@@ -13564,33 +12825,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TestSuiteRunResult"
-  /api/v1/{tenant}/tests/run:
-    post:
-      tags:
-      - TestSuites
-      summary: Run multiple TestSuites by query
-      description: Executes all TestSuites impacted by the specified filter. Requires
-        TEST permission with the CREATE action.
-      operationId: runTestSuitesByQuery
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TestSuiteService.RunByQueryRequest"
-        required: true
-      responses:
-        "200":
-          description: runTestSuitesByQuery 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TestSuiteService.TestRunByQueryResult"
   /api/v1/{tenant}/tests/search:
     get:
       tags:
@@ -13643,14 +12877,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: includeChildNamespaces
-        in: query
-        description: Include child namespaces in filter or not
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: true
       - name: tenant
         in: path
         required: true
@@ -13821,18 +13047,15 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TestSuiteController.RunRequest"
       responses:
         "200":
           description: runTestSuite 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TestSuiteRunResult"
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestSuiteRunResult"
   /api/v1/{tenant}/triggers:
     put:
       tags:
@@ -14630,7 +13853,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsageEE"
+                $ref: "#/components/schemas/Usage"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -14711,8 +13934,6 @@ components:
           minimum: 1
           type: integer
           format: int32
-        description:
-          type: string
         inputs:
           type: array
           items:
@@ -14924,8 +14145,6 @@ components:
           nullable: true
           items:
             type: string
-        existingOnly:
-          type: boolean
     ApiGroupSummary:
       required:
       - id
@@ -14945,13 +14164,6 @@ components:
           type: array
           items:
             type: string
-    ApiPatchSuperAdminRequest:
-      required:
-      - superAdmin
-      type: object
-      properties:
-        superAdmin:
-          type: boolean
     ApiRoleSummary:
       required:
       - id
@@ -15048,16 +14260,6 @@ components:
             type: boolean
           logo:
             type: string
-    ApiTenantSummary:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
     ApiUser:
       type: object
       allOf:
@@ -15330,16 +14532,6 @@ components:
             type: array
             items:
               type: object
-    AuditLogController.ApiAuditLogItem:
-      required:
-      - auditLog
-      - user
-      type: object
-      properties:
-        auditLog:
-          $ref: "#/components/schemas/AuditLog"
-        user:
-          $ref: "#/components/schemas/ApiUser"
     AuditLogController.AuditLogDiff:
       required:
       - after
@@ -15364,14 +14556,24 @@ components:
           format: date-time
         username:
           type: string
+    AuditLogController.AuditLogWithUser:
+      required:
+      - auditLog
+      - user
+      type: object
+      properties:
+        auditLog:
+          $ref: "#/components/schemas/AuditLog"
+        user:
+          $ref: "#/components/schemas/ApiUser"
     AuditLogController.FindRequest:
       required:
       - detail
-      - resource
+      - permission
       type: object
       properties:
-        resource:
-          $ref: "#/components/schemas/ResourceType_1"
+        permission:
+          $ref: "#/components/schemas/Permission"
         type:
           nullable: true
           allOf:
@@ -15382,15 +14584,17 @@ components:
             type: object
     AuditLogDetail:
       required:
+      - cls
+      - permission
       - type
       type: object
       properties:
-        permission:
-          $ref: "#/components/schemas/Permission"
-        resourceType:
-          $ref: "#/components/schemas/ResourceType_1"
         type:
           type: string
+        cls:
+          type: string
+        permission:
+          $ref: "#/components/schemas/Permission"
         id:
           type: string
     AuthController.Auth:
@@ -15500,13 +14704,10 @@ components:
       - id
       - impersonatedBy
       - ipAddress
-      - tenantId
       - type
       - userId
       type: object
       properties:
-        tenantId:
-          type: string
         id:
           type: string
         type:
@@ -15779,6 +14980,19 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
+    ConfigurationUsage:
+      type: object
+      properties:
+        repositoryType:
+          type: string
+        queueType:
+          type: string
+        storageType:
+          type: string
+        secretType:
+          type: string
+        javaSecurityEnabled:
+          type: boolean
     ConversionService:
       type: object
     ConversionServiceProvider:
@@ -16002,11 +15216,6 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/PluginSchema"
-    EditionProvider.Edition:
-      type: string
-      enum:
-      - OSS
-      - EE
     Email:
       type: object
       properties:
@@ -16184,7 +15393,6 @@ components:
       - enabled
       - errors
       - input
-      - isDefault
       - value
       type: object
       properties:
@@ -16193,8 +15401,6 @@ components:
         value:
           type: object
         enabled:
-          type: boolean
-        isDefault:
           type: boolean
         errors:
           type: array
@@ -16485,8 +15691,6 @@ components:
             minimum: 1
             type: integer
             format: int32
-          description:
-            type: string
           inputs:
             type: array
             items:
@@ -16510,6 +15714,8 @@ components:
             deprecated: true
             items:
               $ref: "#/components/schemas/PluginDefault"
+          description:
+            type: string
           variables:
             type: object
             additionalProperties:
@@ -16588,8 +15794,6 @@ components:
             minimum: 1
             type: integer
             format: int32
-          description:
-            type: string
           inputs:
             type: array
             items:
@@ -16634,13 +15838,10 @@ components:
               $ref: "#/components/schemas/AbstractTriggerForExecution"
     FlowGenerationPrompt:
       required:
-      - conversationId
       - flowYaml
       - userPrompt
       type: object
       properties:
-        conversationId:
-          type: string
         userPrompt:
           type: string
         flowYaml:
@@ -16725,8 +15926,6 @@ components:
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
-          description:
-            type: string
           disabled:
             type: boolean
           deleted:
@@ -16857,8 +16056,6 @@ components:
             minimum: 1
             type: integer
             format: int32
-          description:
-            type: string
           inputs:
             type: array
             items:
@@ -16919,6 +16116,56 @@ components:
         count:
           type: integer
           format: int64
+    HostUsage:
+      type: object
+      properties:
+        uuid:
+          type: string
+        hardware:
+          $ref: "#/components/schemas/HostUsage.Hardware"
+        os:
+          $ref: "#/components/schemas/HostUsage.Os"
+        jvm:
+          $ref: "#/components/schemas/HostUsage.Jvm"
+    HostUsage.Hardware:
+      type: object
+      properties:
+        logicalProcessorCount:
+          type: integer
+          format: int32
+        physicalProcessorCount:
+          type: integer
+          format: int64
+        maxFreq:
+          type: integer
+          format: int64
+        memory:
+          type: integer
+          format: int64
+        knownVmMacAddr:
+          type: boolean
+        knownDockerMacAddr:
+          type: boolean
+    HostUsage.Jvm:
+      type: object
+      properties:
+        name:
+          type: string
+        vendor:
+          type: string
+        version:
+          type: string
+    HostUsage.Os:
+      type: object
+      properties:
+        family:
+          type: string
+        version:
+          type: string
+        codeName:
+          type: string
+        buildNumber:
+          type: string
     HttpParameters:
       type: object
       allOf:
@@ -17291,26 +16538,6 @@ components:
           type: boolean
         isManaged:
           type: boolean
-    IAMServiceAccountController.ApiCreateServiceAccountRequest:
-      required:
-      - description
-      - name
-      - superAdmin
-      - tenants
-      type: object
-      properties:
-        name:
-          pattern: "^(?=.{1,63}$)[a-z0-9]+(?:-[a-z0-9]+)*$"
-          type: string
-        description:
-          type: string
-        superAdmin:
-          type: boolean
-        tenants:
-          type: array
-          items:
-            type: string
-      description: Request payload for updating service account details
     IAMServiceAccountController.ApiGroup:
       required:
       - id
@@ -17318,44 +16545,6 @@ components:
       properties:
         id:
           type: string
-    IAMServiceAccountController.ApiPatchServiceAccountRequest:
-      required:
-      - description
-      - name
-      type: object
-      properties:
-        name:
-          pattern: "^(?=.{1,63}$)[a-z0-9]+(?:-[a-z0-9]+)*$"
-          type: string
-        description:
-          type: string
-      description: Request payload for updating service account details
-    IAMServiceAccountController.ApiServiceAccountDetail:
-      required:
-      - description
-      - id
-      - name
-      - superAdmin
-      - tenants
-      type: object
-      properties:
-        id:
-          type: string
-          description: the identifier of this service account.
-        name:
-          pattern: "^(?=.{1,63}$)[a-z0-9]+(?:-[a-z0-9]+)*$"
-          type: string
-          description: the name of this service account.
-        description:
-          type: string
-          description: the description of this service account.
-        tenants:
-          type: array
-          items:
-            $ref: "#/components/schemas/ApiTenantSummary"
-        superAdmin:
-          type: boolean
-      description: A User Service Account.
     IAMServiceAccountController.ApiServiceAccountRequest:
       required:
       - description
@@ -17581,12 +16770,29 @@ components:
       properties:
         restricted:
           type: boolean
+    IAMUserController.ApiPatchSuperAdminRequest:
+      required:
+      - superAdmin
+      type: object
+      properties:
+        superAdmin:
+          type: boolean
     IAMUserController.ApiPatchUserPasswordRequest:
       required:
       - password
       type: object
       properties:
         password:
+          type: string
+    IAMUserController.ApiTenant:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
           type: string
     IAMUserController.ApiUser:
       required:
@@ -17618,7 +16824,7 @@ components:
         tenants:
           type: array
           items:
-            $ref: "#/components/schemas/ApiTenantSummary"
+            $ref: "#/components/schemas/IAMUserController.ApiTenant"
         auths:
           type: array
           items:
@@ -17663,7 +16869,7 @@ components:
         tenants:
           type: array
           items:
-            $ref: "#/components/schemas/ApiTenantSummary"
+            $ref: "#/components/schemas/IAMUserController.ApiTenant"
         auths:
           type: array
           items:
@@ -17743,8 +16949,7 @@ components:
           type: boolean
         defaults:
           title: The default value to use if no value is specified.
-          allOf:
-          - $ref: "#/components/schemas/Property_Object_"
+          type: object
         displayName:
           title: The display name of the input.
           type: string
@@ -18146,6 +17351,8 @@ components:
     KVEntry:
       required:
       - creationDate
+      - description
+      - expirationDate
       - key
       - updateDate
       type: object
@@ -18154,7 +17361,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         creationDate:
           type: string
           format: date-time
@@ -18164,7 +17370,6 @@ components:
         expirationDate:
           type: string
           format: date-time
-          nullable: true
     KVType:
       type: string
       enum:
@@ -18469,13 +17674,6 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
-    MiscController.ApiUsage:
-      type: object
-      properties:
-        flows:
-          $ref: "#/components/schemas/FlowUsage"
-        executions:
-          $ref: "#/components/schemas/ExecutionUsage"
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -18497,7 +17695,7 @@ components:
         version:
           type: string
         edition:
-          $ref: "#/components/schemas/EditionProvider.Edition"
+          $ref: "#/components/schemas/MiscController.Edition"
         commitId:
           type: string
         commitDate:
@@ -18533,9 +17731,6 @@ components:
           type: boolean
         isBasicAuthInitialized:
           type: boolean
-        pluginsHash:
-          type: integer
-          format: int64
     MiscController.EEConfiguration:
       type: object
       allOf:
@@ -18572,6 +17767,11 @@ components:
             type: boolean
           passwordRegexp:
             type: string
+    MiscController.Edition:
+      type: string
+      enum:
+      - OSS
+      - EE
     MiscController.Environment:
       required:
       - color
@@ -18736,6 +17936,46 @@ components:
           type: string
         deleted:
           type: boolean
+    NamespaceUsage:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+    NamespaceWithDisabled:
+      required:
+      - deleted
+      - disabled
+      - id
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/Namespace"
+      - $ref: "#/components/schemas/NamespaceLight"
+      - type: object
+        properties:
+          id:
+            pattern: "^[a-z0-9][a-z0-9._-]*"
+            type: string
+          deleted:
+            type: boolean
+          description:
+            type: string
+          variables:
+            type: object
+            additionalProperties:
+              type: object
+          pluginDefaults:
+            type: array
+            items:
+              $ref: "#/components/schemas/PluginDefault"
+          allowedNamespaces:
+            type: array
+            items:
+              $ref: "#/components/schemas/Namespace.AllowedNamespace"
+          workerGroup:
+            $ref: "#/components/schemas/WorkerGroup"
+          disabled:
+            type: boolean
     Output:
       required:
       - id
@@ -18755,8 +17995,6 @@ components:
           $ref: "#/components/schemas/Type"
         displayName:
           type: string
-        required:
-          type: boolean
     PageRequest:
       type: object
       properties:
@@ -18818,7 +18056,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_AuditLogController.ApiAuditLogItem_:
+    PagedResults_AuditLogController.AuditLogWithUser_:
       required:
       - results
       - total
@@ -18827,7 +18065,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/AuditLogController.ApiAuditLogItem"
+            $ref: "#/components/schemas/AuditLogController.AuditLogWithUser"
         total:
           type: integer
           format: int64
@@ -18935,19 +18173,6 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_IAMServiceAccountController.ApiServiceAccountDetail_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/IAMServiceAccountController.ApiServiceAccountDetail"
-        total:
-          type: integer
-          format: int64
     PagedResults_IAMTenantAccessController.ApiUserTenantAccess_:
       required:
       - results
@@ -19041,7 +18266,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_Namespace_:
+    PagedResults_NamespaceWithDisabled_:
       required:
       - results
       - total
@@ -19050,7 +18275,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Namespace"
+            $ref: "#/components/schemas/NamespaceWithDisabled"
         total:
           type: integer
           format: int64
@@ -19090,19 +18315,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Tenant"
-        total:
-          type: integer
-          format: int64
-    PagedResults_TestSuiteRunResult_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/TestSuiteRunResult"
         total:
           type: integer
           format: int64
@@ -19204,6 +18416,8 @@ components:
       - INVITATION
       - GROUP_MEMBERSHIP
       - UNKNOWN
+      x-deprecated:
+      - INFRASTRUCTURE
     Plugin:
       type: object
       properties:
@@ -19274,10 +18488,6 @@ components:
           items:
             $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         dataFilters:
-          type: array
-          items:
-            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
-        dataFiltersKPI:
           type: array
           items:
             $ref: "#/components/schemas/Plugin.PluginElementMetadata"
@@ -19387,6 +18597,25 @@ components:
           type: string
         flowable:
           type: boolean
+    PluginMetric:
+      required:
+      - count
+      - meanTime
+      - totalTime
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+        count:
+          type: number
+          format: double
+        totalTime:
+          type: number
+          format: double
+        meanTime:
+          type: number
+          format: double
     PluginSchema:
       type: object
       properties:
@@ -19419,6 +18648,13 @@ components:
       - CORE
       - INGESTION
       - BI
+    PluginUsage:
+      type: object
+      properties:
+        manifest:
+          type: object
+          additionalProperties:
+            type: string
     Property_Boolean_:
       required:
       - expression
@@ -19503,7 +18739,6 @@ components:
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
       - TRIGGER_ID
-      - EXECUTION_ID
       - CHILD_FILTER
       - WORKER_ID
       - EXISTING_ONLY
@@ -19620,36 +18855,6 @@ components:
           type: string
         required:
           type: boolean
-    ResourceType_1:
-      type: string
-      enum:
-      - AUDITLOG
-      - APP
-      - APP_EXECUTION
-      - BLUEPRINT
-      - BINDING
-      - DASHBOARD
-      - EXECUTION
-      - FLOW
-      - KV_STORE
-      - GROUP
-      - INVITATION
-      - NAMESPACE
-      - NAMESPACE_FILE
-      - ROLE
-      - SECURITY_INTEGRATION
-      - SECRET
-      - SETTING
-      - TEMPLATE
-      - TENANT
-      - TENANT_ACCESS
-      - TESTSUITE
-      - TESTSUITE_RUN
-      - VERSIONED_PLUGIN
-      - USER
-      - WORKER_GROUP
-      - INSTANCE
-      - UNKNOWN
     RightSidebarConfiguration:
       type: object
       properties:
@@ -20065,6 +19270,15 @@ components:
       enum:
       - SERVER
       - STANDALONE
+    ServerType:
+      type: string
+      enum:
+      - EXECUTOR
+      - INDEXER
+      - SCHEDULER
+      - STANDALONE
+      - WEBSERVER
+      - WORKER
     Service.ServiceState:
       type: string
       enum:
@@ -20076,7 +19290,7 @@ components:
       - TERMINATED_GRACEFULLY
       - TERMINATED_FORCED
       - NOT_RUNNING
-      - INACTIVE
+      - EMPTY
       - MAINTENANCE
     ServiceInstance:
       required:
@@ -20224,7 +19438,47 @@ components:
       - SCHEDULER
       - WEBSERVER
       - WORKER
-      - INVALID
+    ServiceUsage:
+      required:
+      - dailyStatistics
+      type: object
+      properties:
+        dailyStatistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceUsage.DailyServiceStatistics"
+    ServiceUsage.DailyServiceStatistics:
+      required:
+      - type
+      - values
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceUsage.DailyStatistics"
+    ServiceUsage.DailyStatistics:
+      required:
+      - avg
+      - date
+      - max
+      - min
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        min:
+          type: integer
+          format: int64
+        max:
+          type: integer
+          format: int64
+        avg:
+          type: integer
+          format: int64
     SetupConfiguration:
       required:
       - done
@@ -20582,15 +19836,6 @@ components:
           type: boolean
         disabled:
           type: boolean
-    TestSuiteController.RunRequest:
-      required:
-      - testCases
-      type: object
-      properties:
-        testCases:
-          type: array
-          items:
-            type: string
     TestSuiteController.SearchTestsLastResult:
       required:
       - testSuiteIds
@@ -20663,46 +19908,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UnitTestResult"
-    TestSuiteService.RunByQueryRequest:
-      required:
-      - flowId
-      - includeChildNamespaces
-      - namespace
-      type: object
-      properties:
-        namespace:
-          type: string
-          nullable: true
-        flowId:
-          type: string
-          nullable: true
-        includeChildNamespaces:
-          type: boolean
-          description: Should child namespaces be included or not
-          default: true
-    TestSuiteService.TestRunByQueryResult:
-      required:
-      - numberOfTestCasesToBeRun
-      - numberOfTestSuitesToBeRun
-      - requestMade
-      - results
-      - tenantId
-      type: object
-      properties:
-        requestMade:
-          $ref: "#/components/schemas/TestSuiteService.RunByQueryRequest"
-        tenantId:
-          type: string
-        numberOfTestSuitesToBeRun:
-          type: integer
-          format: int32
-        numberOfTestCasesToBeRun:
-          type: integer
-          format: int32
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/TestSuiteRunResult"
     TimeWindow:
       type: object
       properties:
@@ -20878,6 +20083,66 @@ components:
             $ref: "#/components/schemas/AssertionRunError"
         fixtures:
           $ref: "#/components/schemas/Fixtures"
+    Usage:
+      required:
+      - configurations
+      - executions
+      - flows
+      - host
+      - instanceUuid
+      - plugins
+      - serverType
+      - startTime
+      - startUuid
+      - uuid
+      - version
+      - zoneId
+      type: object
+      properties:
+        uuid:
+          type: string
+        startUuid:
+          type: string
+        instanceUuid:
+          type: string
+        serverType:
+          $ref: "#/components/schemas/ServerType"
+        version:
+          type: string
+        zoneId:
+          type: string
+        uri:
+          type: string
+          nullable: true
+        environments:
+          type: array
+          nullable: true
+          items:
+            type: string
+        startTime:
+          type: string
+          format: date-time
+        host:
+          $ref: "#/components/schemas/HostUsage"
+        configurations:
+          $ref: "#/components/schemas/ConfigurationUsage"
+        plugins:
+          type: array
+          items:
+            $ref: "#/components/schemas/PluginUsage"
+        flows:
+          $ref: "#/components/schemas/FlowUsage"
+        executions:
+          $ref: "#/components/schemas/ExecutionUsage"
+        services:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ServiceUsage"
+        pluginMetrics:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/PluginMetric"
     UsageEE:
       type: object
       properties:
@@ -20887,10 +20152,12 @@ components:
           $ref: "#/components/schemas/UserUsage"
         roles:
           $ref: "#/components/schemas/RoleUsage"
+        namespaces:
+          $ref: "#/components/schemas/NamespaceUsage"
         tenants:
           $ref: "#/components/schemas/TenantUsage"
       allOf:
-      - $ref: "#/components/schemas/MiscController.ApiUsage"
+      - $ref: "#/components/schemas/Usage"
     UserGroup:
       type: object
       properties:
