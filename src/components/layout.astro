@@ -38,7 +38,9 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <slot />
     <script>
       import AOS from "aos";
-      AOS.init();
+      setTimeout(() => {
+        AOS.init();
+      }, 300);
     </script>
   </body>
 </html>
