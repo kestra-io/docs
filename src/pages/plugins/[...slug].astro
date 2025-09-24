@@ -46,8 +46,6 @@ const splitRouteSlug = params.slug.split("/");
 const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
 let pluginType: string | undefined = undefined;
 
-
-
 const pageName = props.pageNames[props.slug] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
 
 if (lowerCasePluginType !== undefined) {
@@ -71,7 +69,7 @@ const pluginsWithoutDeprecated = getPluginsWithoutDeprecated("plugins" in page.b
 
 const subGroupWrapper = subGroup === undefined || pluginType !== undefined ? undefined : pluginsWithoutDeprecated.find(p => slugify(subGroupName(p)) === subGroup);
 
-const {pageIcon, icons} = await getIcon(pluginType, "group" in page.body ? page.body.group : undefined, subGroupWrapper?.subGroup);
+const {pageIcon, icons} = await getIcon(splitRouteSlug?.[0], pluginType, "group" in page.body ? page.body.group : undefined, subGroupWrapper?.subGroup);
 
 const transformTitle = (text: string) => {
     return text
@@ -87,7 +85,6 @@ const transformTitle = (text: string) => {
             <div class="bd-title">
                 <Breadcrumb slug={params.slug} pageList={props.pageList} pageNames={props.pageNames} />
                 <h1 v-if="page && pageName" class="py-0 title">
-                    {pageIcon}
                     {pageIcon && <img
                         src={pageIcon}
                         alt={pageName}
