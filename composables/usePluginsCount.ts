@@ -28,7 +28,9 @@ export const usePluginsCount = (pluginsRef?: Ref<Plugin[]>) => {
                 return r.json()
             })
             .then(data => {
-                plugins.value = data as unknown as Plugin[];
+                if (plugins) {
+                    plugins.value = data as unknown as Plugin[];
+                }
             });
     }
 
