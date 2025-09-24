@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, defineProps, defineEmits } from 'vue'
+import { computed, watch } from 'vue'
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
