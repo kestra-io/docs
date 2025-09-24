@@ -54,6 +54,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/bootstrap": "^5.2.10",
     "@types/node": "^24.3.0",
     "astro": "^5.6.1",
     "nitro-cloudflare-dev": "^0.2.2",

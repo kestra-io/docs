@@ -11,9 +11,10 @@
         </div>
     </a>
 </template>
+
 <script setup lang="ts">
     import {slugify} from "@kestra-io/ui-libs"
-    import {ref} from "vue";
+    import {onMounted, useTemplateRef} from "vue";
 
     const props = defineProps({
         plugin: {
@@ -26,9 +27,39 @@
         },
     });
 
-    const root = ref(null);
+    const root = useTemplateRef("root");
 
     const href = `/plugins/${props.plugin.name}${props.plugin.subGroup === undefined ? '' : ('/' + slugify(props.plugin.title))}`
+
+    onMounted(async () => {
+        if (root.value && typeof document !== 'undefined') {
+            const { default: Tooltip } = await import('bootstrap/js/dist/tooltip');
+            new Tooltip(root.value, {
+                trigger: 'manual',
+                boundary: document.documentElement
+            });
+
+            root.value.addEventListener('mouseenter', () => {
+                if(root.value){
+                    const tooltip = Tooltip.getInstance(root.value);
+                    if (tooltip) {
+                        removeAllTooltips();
+                        tooltip.show();
+                        tooltip.tip.addEventListener('mouseleave', () => {
+                            tooltip?.hide();
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    function removeAllTooltips(){
+        const tooltips = document.querySelectorAll('.tooltip');
+        tooltips.forEach(tooltip => {
+            tooltip.parentNode?.removeChild(tooltip);
+        });
+    }
 </script>
 
 
