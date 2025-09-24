@@ -8,7 +8,7 @@
                     :plugins="pluginsWithoutDeprecated"
                     :plugin-name="pluginName"
                     :sub-group="subGroup"
-                    :routePath="`/plugins/${pluginType ?? ''}`"
+                    :routePath="`/plugins/${pluginName?.toLowerCase()}`"
         >
             <template v-slot:markdown="{ content }">
                 <h1 class="mb-4">INDEX</h1>
