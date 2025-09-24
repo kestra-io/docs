@@ -9,7 +9,7 @@ export default {
         const plugins = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
         store.clear()
         for(const plugin of plugins) {
-            const id = plugin.name
+            const id = plugin.subGroup ?? plugin.group
             store.set({
                 id,
                 data: plugin,
