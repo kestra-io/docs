@@ -67,7 +67,7 @@
     const DONT_CAPITALIZE_CATEGORIES = ["AI", "BI"];
 
     const currentPage = defineModel<number>('currentPage', {required: false, default: 1});
-    const itemsPerPage = defineModel<number>('itemsPerPage', {required: false, default: 20});
+    const itemsPerPage = defineModel<number>('itemsPerPage', {required: false, default: 40});
     const activeCategory = defineModel<string>('activeCategory', {required: false, default: 'All Categories'});
 
     const props = withDefaults(defineProps<{
@@ -98,7 +98,7 @@
 
     function tooltipContent(plugin: Plugin, filteredPluginElementsEntries: [string, PluginElement[]][]) {
         return filteredPluginElementsEntries.map(([elementType, elements]) =>
-            `<p>${capitalize(elementType).replaceAll(/[A-Z]/g, match => ` ${match}`)}</p>
+            `<p>${capitalize(elementType).replace(/[A-Z]/g, match => ` ${match}`)}</p>
 <ul>
 ${elements.map(({cls}) => `<li>
                 <a href="plugins/${plugin.title}/${cls}">${cls}</a>
