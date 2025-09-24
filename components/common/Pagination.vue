@@ -4,7 +4,16 @@
              <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
                 <span class="page-link fw-bold arrow-button bg-dark-2" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in pages" :key="n" :role="n === morePagesPlaceholder ? '' : 'button'" class="page-item" :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }" @click="changePage({ pageNo: n })"><span class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span></li>
+            <li
+                v-for="n in pages"
+                :key="n"
+                :role="n === morePagesPlaceholder ? '' : 'button'"
+                class="page-item"
+                :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }"
+                @click="changePage({ pageNo: n })"
+            >
+                <span class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span>
+            </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <span class="page-link fw-bold arrow-button bg-dark-2"><ChevronRight /></span>
             </li>
@@ -17,7 +26,7 @@ import { computed, watch } from 'vue'
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
-const morePagesPlaceholder = '...'
+const morePagesPlaceholder = '...' as const
 
 const props = defineProps<{
     totalPages: number
@@ -39,8 +48,8 @@ function changePage(event: { direction?: 'previous' | 'next', pageNo?: number | 
     }
 }
 
-function paginate(current_page: number, last_page: number): (number | string)[] {
-    const pages: (number | string)[] = []
+function paginate(current_page: number, last_page: number): (number | "...")[] {
+    const pages: (number | "...")[] = []
     for (let i = 1; i <= last_page; i++) {
         const offset = 1
         if (
@@ -60,7 +69,7 @@ function paginate(current_page: number, last_page: number): (number | string)[] 
     return pages
 }
 
-const pages = computed(() => paginate(currentPage.value, props.totalPages))
+const pages = computed<(number | "...")[]>(() => paginate(currentPage.value, props.totalPages))
 </script>
 
 <style scoped lang="scss">
