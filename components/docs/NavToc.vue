@@ -42,7 +42,7 @@
             </template>
 
             <div class="d-none d-lg-block pt-4 bd-social-list">
-                <CommonSocialsList :page="page" />
+                <SocialsList :page="page" />
             </div>
         </div>
     </div>
@@ -51,6 +51,7 @@
 <script setup>
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+    import SocialsList from "../common/SocialsList.vue";
 </script>
 
 <script>
