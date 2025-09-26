@@ -1247,7 +1247,7 @@ The `timestamp` filter converts a date to a Unix timestamp in seconds.
 
 ### timestampMicro
 
-::alert{type="warn"}
+::alert{type="warning"}
 Previously, this expression has wrongly returned a nano-precision timestamp.
 ::
 
