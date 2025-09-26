@@ -1247,11 +1247,15 @@ The `timestamp` filter converts a date to a Unix timestamp in seconds.
 
 ### timestampMicro
 
+::alert{type="warn"}
+Previously, this expression has wrongly returned a nano-precision timestamp.
+::
+
 The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ```twig
 {{ now() | timestampMicro(timeZone="Asia/Kolkata") }}
-# output: 1720505821000180275
+# output: 1720505821182413
 ```
 
 **Arguments**:
