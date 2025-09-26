@@ -143,7 +143,7 @@ Since Kestra is open-source and self-hosted, you retain full control over your e
 - **Data Pipelines and ETL/ELT**: Orchestrate batch and real-time data processing jobs, load data from multiple sources, run dbt transformations, and scale computation for custom scripts with task runners.
 - **Process Automation**: Empower non-engineers to automate routine tasks and complex business-critical processes with human-in-the-loop manual approval, intuitive UI forms and user-facing Apps.
 - **Microservice Coordination**: Trigger workflows based on events, integrate with message brokers or REST APIs, monitor long-running processes and call containerized jobs in any language.
-- **Generative AI Workflows**: Orchestrate LLM-powered tasks and integrate with OpenAI, LangChain, or Google Gemini plugins. Trigger AI steps in response to any business event and use Kestra’s Pause & Resume functionality to let humans validate AI-generated outputs.
+- **Generative AI Workflows**: Orchestrate LLM-powered tasks and build custom AI agents. Trigger AI steps in response to any business event and use Kestra’s Pause & Resume functionality to let humans validate AI-generated outputs.
 - **IT Automation**: Automate resource requests for infrastructure provisioning across AWS, GCP, or on-prem. Orchestrate build processes with plugins for Terraform, Ansible, or Docker and simplify DevOps processes from a single orchestrator.
 - **Cross-Team Collaboration**: Let analytics, finance, marketing, and engineering automate work in the same platform, each at their own comfort level.
 - **Custom Applications**: Use Kestra as a backend workflow engine for your internal tools, SaaS products, or customer-facing applications.
