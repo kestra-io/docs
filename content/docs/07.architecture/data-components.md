@@ -104,9 +104,9 @@ You can manage secrets in your Kestra instance with the secret manager of your c
 kestra:
   secret:
     type: aws-secret-manager
-    awsSecretManager:
-      accessKeyId: mysuperaccesskey
-      secretKeyId: mysupersecretkey
+    aws-secret-manager:
+      access-key-id: mysuperaccesskey
+      secret-key-id: mysupersecretkey
       sessionToken: mysupersessiontoken
       region: us-east-1
 ```

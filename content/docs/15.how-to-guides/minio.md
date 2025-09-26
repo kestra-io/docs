@@ -68,8 +68,8 @@ storage:
     endpoint: localhost
     port: 9000
     bucket: your_bucket
-    accessKey: YOUR_ACCESS_KEY
-    secretKey: YOUR_SECRET_KEY
+    access-key: YOUR_ACCESS_KEY
+    secret-key: YOUR_SECRET_KEY
 ```
 
 ## Launch Kestra

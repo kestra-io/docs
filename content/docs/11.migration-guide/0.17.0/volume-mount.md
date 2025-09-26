@@ -33,12 +33,12 @@ It is recommended to make the following change in the [Docker Compose file](http
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -47,11 +47,11 @@ It is recommended to make the following change in the [Docker Compose file](http
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           plugins:
             configurations:

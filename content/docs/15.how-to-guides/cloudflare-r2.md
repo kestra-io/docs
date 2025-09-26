@@ -97,8 +97,8 @@ storage:
     endpoint: localhost
     port: 9000
     bucket: kestra-bucket
-    accessKey: <R2_ACCESS_KEY>
-    secretKey: <R2_SECRET_KEY>
+    access-key: <R2_ACCESS_KEY>
+    secret-key: <R2_SECRET_KEY>
 ```
 
 Kestra will interact with MinIO, which in turn proxies to R2.

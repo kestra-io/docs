@@ -121,12 +121,12 @@ Ensure that you expose the secure port of the connection if different from the d
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -135,11 +135,11 @@ Ensure that you expose the secure port of the connection if different from the d
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           ports:
             - "8443:8443"
@@ -192,12 +192,12 @@ Below is an example configuration file with the newly added environment variable
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -206,11 +206,11 @@ Below is an example configuration file with the newly added environment variable
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           ports:
             - "8443:8443"

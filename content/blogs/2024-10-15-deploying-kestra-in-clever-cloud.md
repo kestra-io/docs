@@ -72,7 +72,7 @@ datasources:
 kestra:
   server:
     # Configure basic auth as Kestra will be publicly available <2>
-    basicAuth:
+    basic-auth:
       enabled: true
       username: user@domain.com
       password: supersecretpassword

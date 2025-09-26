@@ -180,8 +180,8 @@ storage:
     endpoint: localhost
     port: 9000
     bucket: kestra-bucket
-    accessKey: ABCDEF1234567890
-    secretKey: abc/xyz890foobar==
+    access-key: ABCDEF1234567890
+    secret-key: abc/xyz890foobar==
 ```
 
 Kestra will talk to MinIO as usual, and MinIO will write to Ceph transparently.

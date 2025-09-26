@@ -326,7 +326,7 @@ triggers:
 
 **Worker Information in Task Execution**: Task execution details now show the worker ID, hostname, version, and state. Example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
-**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filterOnTags` property lets you filter secrets by tags and sync only those that match.
+**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filter-on-tags` property lets you filter secrets by tags and sync only those that match.
 
 ## Plugin Enhancements
 

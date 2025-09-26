@@ -7,12 +7,12 @@ Troubleshoot issues with Basic Authentication.
 
 ## Troubleshooting Scenarios
 
-Starting with version 0.24, every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup Page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basicAuth` (recommended for production):
+Starting with version 0.24, every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup Page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:
   server:
-    basicAuth:
+    basic-auth:
       username: admin@kestra.io
       password: Admin1234
 ```
@@ -28,7 +28,7 @@ If you're upgrading to version 0.24, there are three possible scenarios for exis
 ```yaml
 kestra:
   server:
-    basicAuth:
+    basic-auth:
       enabled: true
       username: admin@kestra.io
       password: Admin1234
@@ -45,7 +45,7 @@ In this case, the following occurs:
 ```yaml
 kestra:
   server:
-    basicAuth:
+    basic-auth:
       enabled: false
 ```
 
@@ -54,9 +54,9 @@ In this case, the following occurs:
 - On first startup, the Setup page appears and prompts you to create credentials. These are stored in the Kestra database in the **Settings** table under the key `kestra.server.basic-auth` and are used for all subsequent logins.
 
 
-### Scenario 3: No `basicAuth` configuration is added
+### Scenario 3: No `basic-auth` configuration is added
 
-If no `basicAuth` configuration is defined:
+If no `basic-auth` configuration is defined:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
 ::alert{type="info"}

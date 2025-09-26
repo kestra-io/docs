@@ -46,8 +46,8 @@ provider "kestra" {
 - `extra_headers` (Map of String) Extra headers to add to every request
 - `jwt` (String, Sensitive) The JWT token (EE)
 - `keep_original_source` (Boolean) Keep original source code, keeping comment and indentation. Setting to false is now deprecated and will be removed in the future.
-- `password` (String, Sensitive) The BasicAuth password
+- `password` (String, Sensitive) The basic-auth password
 - `tenant_id` (String) The tenant id (EE)
 - `timeout` (Number) The timeout (in seconds) for http requests
 - `url` (String) The endpoint url
-- `username` (String) The BasicAuth username
+- `username` (String) The basic-auth username
