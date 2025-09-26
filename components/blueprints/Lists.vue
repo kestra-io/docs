@@ -36,7 +36,8 @@
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <CommonPagination
                     :totalPages="totalPages"
-                    @on-page-change="changePage"
+                    v-model:current-page="currentPage"
+                    @update:current-page="changePage"
                     v-if="totalPages > 1"
                 />
                 <span class="total-pages">Total {{ totalBlueprints }}</span>
@@ -120,8 +121,7 @@ if(blueprintsData.value) {
     setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
 }
 
-const changePage = (pageNo) => {
-    currentPage.value = pageNo
+const changePage = () => {
     window.scrollTo(0, 0)
 };
 
