@@ -6,9 +6,9 @@
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
         <HomeHeader/>
-        <HomeLogosTable/>
-        <HomeOpenSource/>
-        <HomeOpenSourceQuotes/>
+        <HomeLogosTable :logos="logos" />
+        <HomeOpenSource v-bind="githubData" :error="githubError" />
+        <HomeOpenSourceQuotes :quotes="randomizedQuotes" />
         <NuxtLazyHydrate when-visible>
             <HomeFeatures/>
         </NuxtLazyHydrate>
@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+
     definePageMeta({
         transparentHeader: true,
     })
@@ -51,6 +52,32 @@
             { property: 'og:image:alt', content: "Kestra, Open Source Declarative Data Orchestration" },
             { property: 'og:url', content: `${origin}` },
         ]
+    })
+
+    const companies = import.meta.glob('~/public/landing/home/trusted-companies/*.svg', {
+        import: "default",
+        query: 'url',
+    })
+
+    const {data: logos} = await useAsyncData(() => {
+        // get all svg/png files in the /public/landing/companies folder
+        return Promise.all(Object.entries(companies).map(([filePath, mod]) => {
+            return mod().then((img) => {
+                return {
+                    name: filePath.split('/').pop()?.split('.').shift(),
+                    url: img,
+                }
+            })
+        })).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
+    })
+
+    // fetch the number of contributors from the GitHub API
+    const {data:githubData, error: githubError} = await useFetch<{contributors: number, stargazers: number}>("/api/github", {
+        pick:["stargazers", "contributors"],
+    })
+
+    const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes-oss', () => {
+        return import('@/data/oss-quotes.json').then((quotes) => quotes.default.sort(() => Math.random() - 0.5))
     })
 
 </script>

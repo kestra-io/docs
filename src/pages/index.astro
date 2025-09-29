@@ -1,8 +1,32 @@
 ---
 import Layout from "../components/layout.astro";
+import Header from "../../components/home/Header.vue";
+import LogosTable from "../../components/home/LogosTable.vue";
+import OpenSource from "../../components/home/OpenSource.vue";
+import OpenSourceQuotes from "../../components/home/OpenSourceQuotes.vue";
+import { $fetch } from "../utils/fetch";
+
+const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
+const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
+    return mod().then((img: any) => {
+                return {
+                    name: filePath.split('/').pop()?.split('.').shift(),
+                    url: img.default.src,
+                }
+            })
+})).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()));
+
+const githubData = await $fetch('https://api.github.com/repos/flowiseai/Flowise', {
+    headers: {
+        'Accept': 'application/vnd.github.v3+json'
+    }
+});
+const quotes = await import('../../data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 ---
 
 <Layout>
-  <h1>Welcome to Kestra Docs</h1>
-  <a href="/docs">click here</a>
+    <Header client:load/>
+    <LogosTable logos={logos} />
+    <OpenSource {...githubData} />
+    <OpenSourceQuotes quotes={quotes} client:idle/>
 </Layout>

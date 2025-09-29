@@ -101,13 +101,14 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue";
+    import { nextTick, onUnmounted, ref, useTemplateRef, watch } from "vue";
     import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
-    import { Rive } from "@rive-app/canvas";
+    import * as riveCanvasImport from "@rive-app/canvas";
+    const Rive = riveCanvasImport.Rive;
 
     const videoVisible = ref(false)
     const riveCanvas = useTemplateRef<HTMLCanvasElement>('riveCanvas')

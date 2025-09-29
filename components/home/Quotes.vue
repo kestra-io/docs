@@ -12,12 +12,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
 
 const wrapper = ref<HTMLElement | null>(null)
 
-defineProps<{quotes: any[]}>()
+defineProps<{quotes: {
+    text: string,
+    author: {
+        name: string,
+        title: string
+    }
+}[]}>()
 
 const scrollLeft = () => {
     if(wrapper.value){
