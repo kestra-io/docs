@@ -106,6 +106,194 @@ const transformTitle = (text: string) => {
                 icons={icons}
                 client:idle
             />}
+            <pre>{JSON.stringify(page, null, 2)}</pre>
         </article>
     </div>
 </Layout>
+
+<style lang="scss">
+    @import "../../../assets/styles/variable";
+
+    :global(.plugin-title) {
+        font-size: 1.5em;
+    }
+
+    .container-fluid {
+        gap: calc($spacer * 4);
+        overflow-x: unset;
+
+        .bd-title {
+            margin-top: calc($spacer * 4);
+            @include media-breakpoint-down(lg) {
+                margin-top: calc($spacer * 1);
+            }
+
+            h1 {
+                @media only screen and (min-width: 1920px) {
+                    max-width: 71.25rem;
+                }
+            }
+        }
+
+        .bd-main {
+            gap: calc($spacer * 2) calc($spacer * 4);
+            @include media-breakpoint-down(sm) {
+                gap: calc($spacer * 2) calc($spacer * 7);
+            }
+        }
+
+        .bd-content {
+            margin: 0 auto 2em auto;
+            @media only screen and (min-width: 1920px) {
+                max-width: 71.25rem
+            }
+        }
+
+        .title {
+            font-size: $h2-font-size;
+            font-weight: 400;
+            line-height: 3.25rem;
+            margin: 0 auto;
+        }
+    }
+
+    :global(p) {
+        line-height: 1.75rem;
+        font-size: $h6-font-size !important;
+    }
+
+    :global(.bd-markdown > h2) {
+        margin-top: calc($spacer * 4.12);
+        border-top: 1px solid $black-6;
+        padding-top: calc($spacer * 3.125);
+        margin-bottom: 2rem;
+
+        a {
+            border-left: 5px solid $purple-36;
+            padding-left: calc($spacer * 0.6);
+            font-size: calc($font-size-base * 1.87);
+        }
+    }
+
+
+    :global(p > a) {
+        text-decoration: underline;
+    }
+
+    :global(h2 > a) {
+        font-weight: 600;
+        line-height: 2.375rem;
+        margin: 0;
+    }
+
+    :global(h3 > a ) {
+        color: $white !important;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 2.375rem;
+    }
+
+    :global(h4 > a ) {
+        color: $white !important;
+        font-weight: 600;
+    }
+
+    :global(h5) {
+        color: $white !important;
+        font-weight: 600;
+    }
+
+    .bd-main :global(p > a), .bd-main :global(ul a) {
+        color: $purple-36;
+    }
+
+    .container, :global(h2 > a) {
+        color: $white !important;
+    }
+
+    :global(p > code), :global(li > code), :global(a > code), :global(table code) {
+        color: $white-3;
+        text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
+    }
+
+    :global(.code-block), :global(p > code), :global(li > code), :global(a > code), :global(table code) {
+        border: $block-border;
+        background-color: $black-2 !important;
+    }
+
+    :global(p > strong > code) {
+        color: $white-3;
+        text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
+    }
+
+    :global(li > mark) {
+        background-color: $link-color;
+    }
+
+    :global(.docs-prev-next a) {
+        span {
+            color: $link-color;
+        }
+
+        .directory {
+            color: $white;
+        }
+    }
+
+    :global(.btn) {
+        span {
+            color: $link-color;
+        }
+
+        &:hover {
+
+            span {
+                color: $white;
+            }
+        }
+    }
+
+    :global(table) {
+        td, th {
+            background-color: $black-2;
+            border: $block-border;
+            color: $white;
+
+            a {
+                color: $link-color;
+            }
+        }
+    }
+
+    :global(.bd-markdown > h2 > a > span ) {
+        display: inline !important;
+    }
+
+    :global(.alert-info) {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        background-color: var(--ks-background-info);
+        border: 1px solid var(--ks-border-info);
+        border-left-width: 5px;
+        border-radius: 8px;
+
+        &::before {
+            content: '!';
+            min-width: 20px;
+            height: 20px;
+            margin-top: 4px;
+            border-radius: 50%;
+            background: var(--ks-content-info);
+            color: $black;
+            font: 600 13px/20px sans-serif;
+            text-align: center;
+        }
+
+        p { color: var(--ks-content-info); }
+    }
+</style>

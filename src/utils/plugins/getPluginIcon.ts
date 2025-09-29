@@ -1,13 +1,22 @@
 import { $fetch } from "../fetch";
 
 function colorFixedB64Icon(b64Icon: string) {
-    return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replaceAll("currentColor", "#CAC5DA")).toString('base64');
+    return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replace(/currentColor/g, "#CAC5DA")).toString('base64');
 }
 
 export async function getIcon(pluginName: string, pluginType?: string, group?:string, subGroup?: string) {
     const originalIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons/subgroups`);
     const elementIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons`);
-    const icons = {...originalIcons, ...elementIcons}
+
+    const originalIconsAsString = Object.fromEntries(Object.entries(originalIcons)
+        .map(([key, value]: [string, {icon: string}]) => [key, colorFixedB64Icon(value.icon)]));
+    const elementIconsAsString = Object.fromEntries(Object.entries(elementIcons)
+        .map(([key, value]: [string, {icon: string}]) => [key, colorFixedB64Icon(value.icon)]));
+
+    const icons = {
+        ...originalIconsAsString,
+        ...elementIconsAsString
+    }
     let icon;
     if (pluginType !== undefined) {
         icon = icons[pluginType];
@@ -22,7 +31,7 @@ export async function getIcon(pluginName: string, pluginType?: string, group?:st
     }
 
     return {
-        pageIcon: icon ? `data:image/svg+xml;base64,${colorFixedB64Icon(icon.icon)}` : undefined,
+        pageIcon: icon ? `data:image/svg+xml;base64,${colorFixedB64Icon(icon)}` : undefined,
         icons
     };
 }
