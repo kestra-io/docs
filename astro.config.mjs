@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
+import * as path from 'path';
 import cloudflare from '@astrojs/cloudflare';
 import vue from '@astrojs/vue';
 import mdx from '@astrojs/mdx';
@@ -9,6 +10,7 @@ import expressiveCode from 'astro-expressive-code';
 import remarkDirective from 'remark-directive';
 import remarkCustomElements from './utils/remark-custom-elements/index.mjs';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 
 // https://astro.build/config
 export default defineConfig({
@@ -39,6 +41,12 @@ export default defineConfig({
     ]
   },
   vite: {
+    resolve:{
+        alias: {
+            "#mdc-imports": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
+            "#mdc-configs": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
+        },
+    },
     css: {
         preprocessorOptions: {
             scss: {
