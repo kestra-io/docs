@@ -28,7 +28,7 @@
                 <p>Kestra is a declarative orchestrator designed for managing all kinds of workflows. It uses YAML (Yet
                     Another Markup Language) to define workflows in a human-readable and structured format. Kestra
                     workflows consist of tasks and triggers that represent various data processing operations, connected
-                    by data dependencies and flow control structures.</p>
+                    by data dependencies and control flow structures.</p>
             </CustomDetails>
             <CustomDetails title="What are the advantages of a declarative orchestrator?">
                 <p>By using a declarative approach, Kestra simplifies the development, maintenance, and scalability of
