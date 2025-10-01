@@ -41,6 +41,8 @@ export default defineConfig({
     remarkPlugins: [
       remarkDirective,
       remarkCustomElements,
+      // when internal docs links we point to real files
+      // while in the docs generated we want to point to urls with generated ids
       [remarkLinkRewrite, {
         /** @param {string} url */
         replacer(url) {
