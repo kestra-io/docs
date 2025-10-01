@@ -17,7 +17,7 @@ While Kestra Cloud provides a fully managed, hassle-free experience, it differs 
 | :--------------------------------- | :------------------------------------------------ | :--------------------------------------- |
 | **Infrastructure Control**         | Fully managed by Kestra for simplicity and reliability               | Full control and customization          |
 | **Backend Technology**             | Postgres JDBC only                                | Customizable Kafka, Postgres, MySQL, SQL Server, H2 (testing)   |
-| **Workers**                        | Managed worker pools sized for stability                  | Remote [Worker Groups](04.scalability/worker-group.md), autoscaling        |
+| **Workers**                        | Managed worker pools sized for stability                  | Remote [Worker Groups](./04.scalability/worker-group.md), autoscaling        |
 | **Custom Internal Storage & Secrets**              | No instance-level control, **tenant/namespace-level only** backends            | Fully customizable backends              |
 | **Network Configuration**          | Secure access over public Internet                             | Private networking (self-hosted, VPC peering, etc.)   |
 | **Backup Access**                  | Automatic backups handled by Kestra                 | Customer-controlled backups              |
