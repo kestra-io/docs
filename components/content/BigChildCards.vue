@@ -6,8 +6,6 @@
 <script setup lang="ts">
     import {computed} from "vue";
     import {hash} from "ohash";
-    import {useAsyncData} from "#imports";
-    import {NuxtLink} from '#components'
     import BigChildCardsRender from "./BigChildCardsRender.vue";
     const {public:{CollectionNames}} = useRuntimeConfig()
 
