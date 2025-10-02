@@ -41,7 +41,7 @@ You can find the changelog on the main repository’s [Releases](https://github.
 In addition to bug fixes and enhancements, the release notes include a `Breaking Changes` section. It lists changes that may require adjustments to your code or Kestra configuration, with links to [migration docs](../11.migration-guide/index.md).
 
 ::alert{type="warning"}
-⚠️ The `Breaking Changes` section appears at the end of the [release notes](https://github.com/kestra-io/kestra/releases). Review it before upgrading.
+The `Breaking Changes` section appears at the end of the [release notes](https://github.com/kestra-io/kestra/releases). Review it before upgrading.
 ::
 
 ## How to minimize downtime when updating Kestra
