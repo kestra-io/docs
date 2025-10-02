@@ -128,7 +128,7 @@ First, create an Elasticsearch snapshot named `kestra`:
 PUT _snapshot/my_snapshot_repository/kestra?wait_for_completion=true
 ```
 
-Next, delete all Kestra indices and recreate them using the snapshot:
+Next, delete all Kestra indices (prefixed with `kestra_` by default) and recreate them using the snapshot:
 
 ```bash
 POST _snapshot/my_snapshot_repository/kestra/_restore
@@ -139,7 +139,7 @@ POST _snapshot/my_snapshot_repository/kestra/_restore
 
 If you need to start from a fresh Kafka cluster, reindex Kafka from Elasticsearch with:
 
-```shell
+```bash
 kestra sys-ee restore-queue
 ```
 
