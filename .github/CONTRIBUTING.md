@@ -39,8 +39,8 @@ To start contributing:
 - Clone the fork on your workstation:
 
 ```bash
-$ git clone git@github.com:{YOUR_USERNAME}/docs.git
-$ cd docs
+git clone git@github.com:{YOUR_USERNAME}/docs.git
+cd docs
 ```
 
 
@@ -50,15 +50,15 @@ The frontend is made with [Nuxt JS](https://nuxt.com/).
 
 ```bash
 # install dependencies
-$ npm install
+npm install
 
 # serve with hot reload at localhost:3001
 # NOTE: the application start process presents itself with just the Nuxt logo
-$ npm run dev
+npm run dev
 
 # to generate static pages
-$ npm run generate
+npm run generate
 
 # making a production build
-$ npm run build
+npm run build
 ```
