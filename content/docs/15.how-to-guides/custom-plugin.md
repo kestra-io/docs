@@ -86,7 +86,7 @@ jar {
 
 In `src/main/java/io/kestra/plugin/pokemon`, we will create a new class `Pokemon.java`. This will be used to map the JSON output of the pokemon API to the Java class. We only need to add the fields that we are interested in, and ignore the rest.
 
-::collapse{title="Here is how the Pokemon.java file should look"}
+:::collapse{title="Here is how the Pokemon.java file should look"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -121,7 +121,7 @@ class Move {
   String name;
 }
 ```
-::
+:::
 
 ### Runnable Task
 
@@ -263,7 +263,7 @@ Let us refactor the file names from `ExampleRunnerTest.java` and `ExampleTest.ja
 
 Let us use a relevant flow in `pokemonFetch.yaml`.
 
-::collapse{title="Contents of pokemonFetch.yaml"}
+:::collapse{title="Contents of pokemonFetch.yaml"}
 ```yaml
 id: pokemonFetch
 namespace: company.team
@@ -276,11 +276,11 @@ tasks:
   type: io.kestra.plugin.pokemon.Fetch
   pokemon: "gengar"
 ```
-::
+:::
 
 Let us now amend the `FetchRunnerTest.java`. In this test, we try to load the flow file `pokemonFetch.yaml`, and run this flow. We then test if all the tasks in this flow were executed.
 
-::collapse{title="Contents of FetchRunnerTest.java"}
+:::collapse{title="Contents of FetchRunnerTest.java"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -335,11 +335,11 @@ class FetchRunnerTest {
     }
 }
 ```
-::
+:::
 
 Let’s test the actual logic of the plugin in `FetchTest.java`. Here, we are creating the input and invoking the logic present in the task, and then verifying the output returned by the task.
 
-::collapse{title="Contents of FetchTest.java"}
+:::collapse{title="Contents of FetchTest.java"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -380,7 +380,7 @@ class FetchTest {
     }
 }
 ```
-::
+:::
 
 ### Running the tests
 

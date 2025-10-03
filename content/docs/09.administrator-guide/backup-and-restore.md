@@ -31,8 +31,8 @@ By default, backups are encrypted with the embedded Kestra encryption key. You c
 - `--encryption-key`: a custom encryption key to use instead of the embedded key.
 - `--no-encryption`: disable encryption (not recommended; metadata may contain sensitive information).
 
-::badge{version=">=0.22" editions="EE"}
-::
+:::badge{version=">=0.22" editions="EE"}
+:::
 
 - `--include-data`: include execution data (executions, logs, metrics, audit logs). By default, execution data is excluded due to potential size.
 - `--internal-log`: set the level for internal logs to include in the backup.

@@ -164,7 +164,7 @@ In the example below, the first task will be able to retrieve the key-value pair
 
 For more details on how to use and configure the KV pairs, check our [KV Store documentation](https://kestra.io/docs/concepts/kv-store).
 
-::collapse{title="Example of key-value inheritance"}
+:::collapse{title="Example of key-value inheritance"}
 ```yaml
 id: key_value_inheritance
 namespace: company.team
@@ -178,7 +178,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ kv('test_value', namespace='test') }}"
 ```
-::
+:::
 
 ### LDAP Integration
 

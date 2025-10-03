@@ -1862,7 +1862,7 @@ Note that Worker liveness is directly managed by the Apache Kafka protocol which
 durability and reliability of task executions.
 :::
 
-::collapse{title="For Kestra versions prior to 0.16.0"}
+:::collapse{title="For Kestra versions prior to 0.16.0"}
 
 
 Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](../07.architecture/index.md#architecture-with-jdbc-backend)).
@@ -1872,7 +1872,7 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
   marked as unhealthy.
 * If the last received Heartbeat for a `Worker` is older than `heartbeat-missed * frequency * 2`, then the `Worker` is
   deleted from the server metadata.
-::
+:::
 
 ### Heartbeat Frequency
 
@@ -2023,7 +2023,7 @@ kestra:
 Additional configurations can be found [here](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
 
 
-::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
+:::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
 
 You can configure Amazon S3 storage to utilize **AWS AssumeRole** to temporarily assume the permissions of a specific **IAM** role.
 When using AssumeRole with S3, you can omit specifying the `access-key-id` and `secret-access-key` in your configurations.
@@ -2046,7 +2046,7 @@ kestra:
       # (Optional)
       sts-endpoint-override: "<AWS Endpoint to communicate with>"
 ```
-::
+:::
 
 ### MinIO
 
@@ -2353,8 +2353,8 @@ kestra:
 
 ## Store Execution Data in Internal Storage
 
-::badge{version=">=0.23" editions="EE,Cloud"}
-::
+:::badge{version=">=0.23" editions="EE,Cloud"}
+:::
 
 If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
 
