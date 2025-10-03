@@ -88,7 +88,7 @@ Note how the `ttl` (time-to-live) property allows you to specify how long the ca
 
 Expand the block below for an example flow that caches the outputs of a computationally expensive task extracting a large dataset from a production database. The flow downloads the infrequently-changing data only once per day, caches it for 24 hours, and then uses it in subsequent tasks to join with frequently changing transaction data.
 
-::collapse{title="Example: Caching infrequently changing master data"}
+:::collapse{title="Example: Caching infrequently changing master data"}
 ```yaml
 id: caching
 namespace: company.team
@@ -129,7 +129,7 @@ tasks:
         read_csv_auto('products.csv') AS p
       USING (product_id);
 ```
-::
+:::
 
 
 ## Dynamic dropdowns powered by HTTP function
@@ -598,7 +598,7 @@ Check the video below to see the new language tasks in action.
 
 Additionally, we have made numerous improvements to existing plugins, including better error handling, fixed bugs, and enhanced documentation. Expand the block below to see the full list of plugin improvements.
 
-::collapse{title="🧩 Improved Plugins"}
+:::collapse{title="🧩 Improved Plugins"}
 - (EE) [GCP](https://github.com/kestra-io/plugin-ee-gcp/): better output handling for the Google Batch task runner
 - (EE) [Azure](https://github.com/kestra-io/plugin-ee-azure/): improved Azure Batch logs
 - (EE) [Kubernetes](https://github.com/kestra-io/plugin-ee-kubernetes/): suppress noisy 400 errors on the Kubernetes task runner
@@ -627,7 +627,7 @@ Additionally, we have made numerous improvements to existing plugins, including 
 - [Nats](https://github.com/kestra-io/plugin-nats/) with secure TLS support
 - [Git](http://github.com/kestra-io/plugin-git/) with following fixed or improved tasks: `PushNamespaceFiles`, `AbstractSyncTask` + allow self hosted repo for most tasks
 - [Template](https://github.com/kestra-io/plugin-template) with a bug fixed on doc/guides generation
-::
+:::
 
 
 ## Next Steps

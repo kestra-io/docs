@@ -159,7 +159,7 @@ Once you added the `kestra.queue.type` and `kestra.repository.type`, you need to
 Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your `datasources` configuration.
 
 
-::collapse{title="PostgreSQL"}
+:::collapse{title="PostgreSQL"}
 
 Here is a minimal configuration for PostgreSQL:
 ```yaml
@@ -176,9 +176,9 @@ datasources:
     username: kestra
     password: k3str4
 ```
-::
+:::
 
-::collapse{title="MySQL"}
+:::collapse{title="MySQL"}
 
 Here is a minimal configuration for MySQL:
 ```yaml
@@ -199,11 +199,11 @@ datasources:
 
 :::alert{type="warning"}
 Note that we currently don't support the `8.0.31` version of MySQL. If possible, try another version or reach out via [Slack](/slack) to help you troubleshoot.
-:::
+::::
 ::
 
 
-::collapse{title="H2"}
+:::collapse{title="H2"}
 
 Here is a minimal configuration for H2:
 
@@ -221,7 +221,7 @@ datasources:
     password: ""
     driver-class-name: org.h2.Driver
 ```
-::
+:::
 
 ### Connection pool size
 
@@ -1749,12 +1749,12 @@ This setting allows to delete all configuration files after the server startup. 
 configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in
 memory, and they won't be accessible from tasks.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: false
 ---
-::
+:::
 
 ### Server Liveness & Heartbeats
 
@@ -1772,34 +1772,34 @@ it's perfectly safe to set different values for those parameters depending on th
 Enable the liveness probe for the server. This property controls whether a server can be detected as `DISCONNECTED` or
 not. Must always be `true` for production environment.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: true
 ---
-::
+:::
 
 #### `kestra.server.liveness.interval`
 
 Frequency at which an `Executor` will check the liveness of connected servers.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5s
 ---
-::
+:::
 
 #### `kestra.server.liveness.timeout`
 
 The time an `Executor` will wait for a state update from a server before considering it as `DISCONNECTED`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
 :::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
@@ -1809,12 +1809,12 @@ Note that this parameter MUST be configured with the same value for all `Executo
 
 The initial delay after which an `Executor` will start monitoring the liveliness of a server joining the cluster.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
 :::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
@@ -1825,12 +1825,12 @@ Note that this parameter MUST be configured with the same value for all `Executo
 The interval at which a server will send a heartbeat indicating its current state.
 Must be strictly inferior to `kestra.server.liveness.timeout`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 3s
 ---
-::
+:::
 
 #### Recommended configuration for production
 
@@ -1862,7 +1862,7 @@ Note that Worker liveness is directly managed by the Apache Kafka protocol which
 durability and reliability of task executions.
 :::
 
-::collapse{title="For Kestra versions prior to 0.16.0"}
+:::collapse{title="For Kestra versions prior to 0.16.0"}
 
 
 Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](../07.architecture/index.md#architecture-with-jdbc-backend)).
@@ -1872,29 +1872,29 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
   marked as unhealthy.
 * If the last received Heartbeat for a `Worker` is older than `heartbeat-missed * frequency * 2`, then the `Worker` is
   deleted from the server metadata.
-::
+:::
 
 ### Heartbeat Frequency
 
 The interval at which a Worker will send a heartbeat indicating its current state can be configured using the `kestra.heartbeat.frequency` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 10s
 ---
-::
+:::
 
 ### Heartbeat Missed
 
 The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeat-missed` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Integer
 defaultValue: 3
 ---
-::
+:::
 
 ### Worker Task Restart Strategy
 
@@ -1925,13 +1925,13 @@ This strategy should prefer to reduce the risk of task duplication  (i.e., tasks
 effort).
 
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: String
 defaultValue: AFTER_TERMINATION_GRACE_PERIOD
 validValues: NEVER, IMMEDIATELY, AFTER_TERMINATION_GRACE_PERIOD
 ---
-::
+:::
 
 ### Termination Grace Period
 
@@ -1944,12 +1944,12 @@ The termination grace period defines the allowed period for a server to stop gra
 
 The expected time for the server to complete all its tasks before shutting down.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5m
 ---
-::
+:::
 
 ## Internal Storage
 
@@ -2023,7 +2023,7 @@ kestra:
 Additional configurations can be found [here](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
 
 
-::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
+:::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
 
 You can configure Amazon S3 storage to utilize **AWS AssumeRole** to temporarily assume the permissions of a specific **IAM** role.
 When using AssumeRole with S3, you can omit specifying the `access-key-id` and `secret-access-key` in your configurations.
@@ -2046,7 +2046,7 @@ kestra:
       # (Optional)
       sts-endpoint-override: "<AWS Endpoint to communicate with>"
 ```
-::
+:::
 
 ### MinIO
 
@@ -2353,8 +2353,8 @@ kestra:
 
 ## Store Execution Data in Internal Storage
 
-::badge{version=">=0.23" editions="EE,Cloud"}
-::
+:::badge{version=">=0.23" editions="EE,Cloud"}
+:::
 
 If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
 

@@ -171,6 +171,6 @@ kestra:
 
 For additional configuration details, refer to dedicated [Secrets backend](../../configuration/index.md#secret-managers) and [Internal Storage](../../configuration/index.md#internal-storage) in the configuration guide.
 
-::alert{type="info"}
+:::alert{type="info"}
 If this feature is enabled some UI or flow execution capabilities may not work as expected. If unsure, contact support.
-::
+:::

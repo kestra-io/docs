@@ -64,5 +64,5 @@ For example, the [runTasks](/plugins/tasks/job/io.kestra.plugin.databricks.job.S
 
 Each `RunSubmitTaskSetting` contains its own properties, many of which are dynamic or placeholders for more complex types. Always drill down to the lowest level — most low-level properties are dynamic and can be templated using expressions.
 
-::ChildCard
-::
+:::ChildCard
+:::

@@ -82,7 +82,7 @@ kestra:
 
 ### Vault
 
-With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`). 
+With [Vault](./secrets-manager.md#vault-configuration), secrets are stored in a unique structure that can vary depending on the organization and version of Vault. Typically, there is a Secret Engine that hosts different Secrets with specific paths. Those Secrets are the paths to subkeys that are the actual key value pairs such as Username or Password to a service (e.g., `MY_SECRET = MY_SECRET_PASSWORD`).
 
 Here’s an example directory structure of a Vault secret engine used with Kestra:
 
@@ -138,7 +138,7 @@ In Vault, we know `my-app` is the secret that hosts the subkey we are looking fo
 
 Now to use in our flow, we need to use the `secret()` function with the name of our secret `my-app` and the `subkey` parameter set to the key of the secret value we want to use, which in this case is `NEON_PASSWORD`.
 
-::collapse{title="Expand for a Flow yaml"}
+:::collapse{title="Expand for a Flow yaml"}
 ```yaml
 id: neon-db
 namespace: company.team
@@ -176,7 +176,7 @@ pluginDefaults:
     values:
       url: jdbc:postgresql://ep-ancient-flower-a2e73um1-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password={{secret('my-app', subkey='NEON_PASSWORD')}}
 ```
-::
+:::
 
 ![read-only-secrets-6](/docs/enterprise/read-only-secrets-6.png)
 

@@ -27,7 +27,7 @@ A Role is a collection of permissions that can be assigned to Users, Service Acc
 These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
 e.g., `CREATE`).
 
-::collapse{title="More information"}
+:::collapse{title="More information"}
 
 The **Role** itself does not grant any permissions to anyone.
 
@@ -40,7 +40,7 @@ A Binding can be optionally limited to specific namespaces. When a Binding is ti
 Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
-::
+:::
 
 ### Permissions
 
@@ -97,7 +97,7 @@ Kestra provides two roles for managing your instance: super admin and admin.
 - Super Admin is a user type with elevated privileges for global control
 - Admin is a customizable role that grants full access to all resources (scoped to a tenant if multi-tenancy is enabled).
 
-::collapse{title="Summary"}
+:::collapse{title="Summary"}
 Here's a table summarizing the key differences between an Admin and a Super Admin:
 
 | Feature                             | Admin (scoped to a tenant if enabled)              | Super Admin                                          |
@@ -115,7 +115,7 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance.
 
 
-::collapse{title="More information"}
+:::collapse{title="More information"}
 
 #### Use Cases
 
@@ -125,7 +125,7 @@ a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 However, you should use Kestra through the role system.
 ::
 
-::collapse{title="Creating a Super Admin"}
+:::collapse{title="Creating a Super Admin"}
 
 #### Through the UI
 
@@ -169,11 +169,11 @@ For more details, check the [Enterprise Edition Configuration](../../configurati
 
 ::
 
-::collapse{title="Grant/Revoke Super Admin permissions"}
+:::collapse{title="Grant/Revoke Super Admin permissions"}
 
 :::alert{type="info"}
 Note that you need to be a super admin yourself.
-:::
+:::::
 
 #### Through the UI
 
@@ -207,7 +207,7 @@ When using multi-tenancy, Kestra assigns the Admin Role to the user who created 
 If you see an error when creating a new User or Service Account, it might be caused by a limit on your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
 :::
 
-::collapse{title="Creating a User with an Admin Role"}
+:::collapse{title="Creating a User with an Admin Role"}
 
 ####  Through the UI
 
@@ -242,23 +242,23 @@ All theses entities can be assigned to a Role, which define what resources the U
 
 Note that these entities don’t belong to namespaces, but their permissions can be limited to specific namespaces via Bindings (Access page).
 
-::collapse{title="How to bind a role to a User, a Service Accounts or a Group?"}
+:::collapse{title="How to bind a role to a User, a Service Accounts or a Group?"}
 Once you have created your first role. You can attach that role to an entity through the Access page. You can also limit that Role to one or more namespaces.
 
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
-:::alert{type="info"}
+:::::alert{type="info"}
 **Note:** Service Accounts are considered as Users when binding.
 :::
 
 ::
 
-::collapse{title="How many Roles can a User, a Service Account or Group have?"}
+:::collapse{title="How many Roles can a User, a Service Account or Group have?"}
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
-::
+:::
 
-::collapse{title="How to change the lockout behavior after too many failed login attempts."}
+:::collapse{title="How to change the lockout behavior after too many failed login attempts."}
 By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
@@ -278,7 +278,7 @@ The key attributes are:
 - `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
-::
+:::
 
 ### Users
 
@@ -297,9 +297,9 @@ To add users to your Kestra instance, you can do one of the following:
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
 
-::collapse{title="Change password in the UI"}
+:::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
-::
+:::
 
 #### Reset password (by a Super Admin)
 
@@ -327,7 +327,7 @@ All Users and Service Accounts assigned to that Group will lose permissions that
 
 ## RBAC FAQ
 
-::collapse{title="Why is Admin a Role rather than User type?"}
+:::collapse{title="Why is Admin a Role rather than User type?"}
 
 The Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
 grant multiple users with admin permissions if needed, and you can revoke only specific admin permissions at any time
@@ -340,11 +340,11 @@ Admin role enables all these patterns in a flexible way.
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you
 are allowed to do). Decoupling authentication from authorization allows you to grant permissions to multiple users or
 groups at once by attaching a single Role to a Group.
-::
+:::
 
-::collapse{title="Why can't I edit an existing Binding?"}
+:::collapse{title="Why can't I edit an existing Binding?"}
 
 A Binding is an immutable object. If a Binding no longer reflects the desired permissions, you can delete the existing
 Binding and create a new one for the same User, Service Account, or Group but with different Roles and/or namespaces.
 This is a safety feature to prevent accidental changes to existing permissions.
-::
+:::

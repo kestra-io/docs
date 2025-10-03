@@ -38,7 +38,7 @@ kestra migrate default-tenant \
     [--dry-run]
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The migration command is also required for customers that have the following configuration:
 
 ```yaml
@@ -47,9 +47,9 @@ kestra:
       defaultTenant: true
       enabled: false
 ```
-::
+:::
 
-::alert{type="info"}
+:::alert{type="info"}
 If you are using Helm for deployment, you can use an init container to run the migration:
 
 ```yaml
@@ -60,7 +60,7 @@ initContainers:
 ```
 
 You can remove it after successful run (it has to be only executed once).
-::
+:::
 
 ### Kafka Queue Handling
 

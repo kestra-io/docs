@@ -43,7 +43,7 @@ Before running the migrate script, we recommend to do a complete database dump t
 - Re-run without the flag to execute the migration.
 :::
 
-::alert{type="info"}
+:::alert{type="info"}
 If you are using Helm for deployment, you can use an init container to run the migration:
 
 ```yaml
@@ -54,7 +54,7 @@ initContainers:
 ```
 
 You can remove it after successful run (it has to be only executed once).
-::
+:::
 
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
 
