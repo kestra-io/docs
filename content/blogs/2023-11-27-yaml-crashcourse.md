@@ -246,7 +246,7 @@ Kestra doesn't use spaces or special characters in keys. Instead, we follow the 
 
 String values can contain spaces, but special characters, incl. `:`, `?`, `[`, `]`, `{`, `}`, `,`, `&`, `*`, `#`, `!`, `|`, `>`, `'`, `"`, `%`, `@`, `` ` `` are reserved and must be quoted.
 
-::alert{type="info"}
+:::alert{type="info"}
 Usually, scalar values are parsed by YAML into the matching `int`, `float`, `string`, `timestamp`, `null`, or `boolean` data types. If you put those in **quotes**, they will be parsed as `strings` instead:
 
 ```yaml
@@ -259,7 +259,7 @@ float_value: 42.2
 string_value_with_boolean: "true"
 boolean_value: true
 ```
-::
+:::
 
 ---
 

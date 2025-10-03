@@ -174,7 +174,7 @@ environment:
   ...
 ```
 
-::collapse{title="Full Docker Compose with GOOGLE_APPLICATION_CREDENTIALS"}
+:::collapse{title="Full Docker Compose with GOOGLE_APPLICATION_CREDENTIALS"}
 Here is a full Docker Compose that you can use to add a service account using the environment variable `GOOGLE_APPLICATION_CREDENTIALS`:
 
 ```yaml
@@ -261,4 +261,4 @@ For some Google applications, like Gmail, you won't use a service account for au
 
 :::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-:::
+::::

@@ -148,7 +148,7 @@ tasks:
             return web_app
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
 ```yaml
 id: slack_app
@@ -166,7 +166,7 @@ tasks:
       MODAL_TOKEN_SECRET: "{{ secret('MODAL_TOKEN_SECRET') }}"
 ```
 ![img_8.png](/docs/how-to-guides/slack-webhook/img_8.png)
-::
+:::
 
 Once you execute that flow, you will see the endpoint to your app in the logs:
 

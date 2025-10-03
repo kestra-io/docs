@@ -212,7 +212,7 @@ kestra namespace files update my-namespace /path/to/local/files / --delete
 
 Set/update a key in the namespace KV store. Set an expiration time, specify the data type, and even read the value from a file.
 
-**Inputs**: `namespace`, `key`, `value`  
+**Inputs**: `namespace`, `key`, `value`
 **Options**: `-e, --expiration`, `-t, --type`, `-f, --file-value`
 
 ```bash
@@ -255,7 +255,7 @@ kestra plugins list --core
 
 Generate documentation for installed plugins.
 
-**Inputs**: `output` (default: `./docs`)  
+**Inputs**: `output` (default: `./docs`)
 **Options**: `--core`, `--icons`, `--schema`
 
 ```bash
@@ -342,7 +342,7 @@ Server components can run independently from each other. Each of them communicat
 
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
-::collapse{title="Docker Compose Example"}
+:::collapse{title="Docker Compose Example"}
 ```yaml
 volumes:
   postgres-data:
@@ -464,7 +464,7 @@ services:
       postgres:
         condition: service_started
 ```
-::
+:::
 
 In production you might run a similar pattern either by:
 
@@ -517,7 +517,7 @@ kestra sys state-store migrate
 
 Create a user.
 
-**Inputs**: `username` (required), `password` (optional)  
+**Inputs**: `username` (required), `password` (optional)
 **Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
 
 ```bash
@@ -574,7 +574,7 @@ kestra auths users sync-access
 
 Create a metadata backup.
 
-**Inputs**: `type` (`FULL` | `TENANT`)  
+**Inputs**: `type` (`FULL` | `TENANT`)
 **Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
 
 ```bash
@@ -585,7 +585,7 @@ kestra backups create FULL --no-encryption
 
 Restore a metadata backup.
 
-**Input**: `uri` (Kestra internal storage URI)  
+**Input**: `uri` (Kestra internal storage URI)
 **Options**: `--encryption-key`, `--to-tenant`
 
 ```bash
@@ -600,10 +600,10 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 
 Restores the state-store for FlowListeners. Useful after restoring a flow queue.
 
-**Inputs**  
+**Inputs**
 - `--timeout` (option): Timeout in seconds before quitting (default: 60).
 
-**Example Usage**  
+**Example Usage**
 ```bash
 kestra-ee sys-ee restore-flow-listeners --timeout 120
 ```
@@ -614,12 +614,12 @@ kestra-ee sys-ee restore-flow-listeners --timeout 120
 
 Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
 
-**Inputs**  
-- `--no-recreate` (option): Don't drop and recreate the Kafka topic.  
-- `--no-flows` (option): Don't send flows.  
-- `--no-templates` (option): Don't send templates.  
+**Inputs**
+- `--no-recreate` (option): Don't drop and recreate the Kafka topic.
+- `--no-flows` (option): Don't send flows.
+- `--no-templates` (option): Don't send templates.
 
-**Example Usage**  
+**Example Usage**
 ```bash
 kestra-ee sys-ee restore-queue --no-flows
 ```
@@ -630,10 +630,10 @@ kestra-ee sys-ee restore-queue --no-flows
 
 Resets the concurrency limit stored on the Kafka runner.
 
-**Inputs**  
+**Inputs**
 None
 
-**Example Usage**  
+**Example Usage**
 ```bash
 kestra-ee sys-ee reset-concurrency-limit
 ```
@@ -644,7 +644,7 @@ kestra-ee sys-ee reset-concurrency-limit
 
 Create a tenant and assign admin roles to an existing admin user.
 
-**Inputs**: `tenantId`, `tenantName`  
+**Inputs**: `tenantId`, `tenantName`
 **Option**: `--admin-username`
 
 ```bash

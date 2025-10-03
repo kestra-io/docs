@@ -159,7 +159,7 @@ Once you added the `kestra.queue.type` and `kestra.repository.type`, you need to
 Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your `datasources` configuration.
 
 
-::collapse{title="PostgreSQL"}
+:::collapse{title="PostgreSQL"}
 
 Here is a minimal configuration for PostgreSQL:
 ```yaml
@@ -176,9 +176,9 @@ datasources:
     username: kestra
     password: k3str4
 ```
-::
+:::
 
-::collapse{title="MySQL"}
+:::collapse{title="MySQL"}
 
 Here is a minimal configuration for MySQL:
 ```yaml
@@ -199,11 +199,11 @@ datasources:
 
 :::alert{type="warning"}
 Note that we currently don't support the `8.0.31` version of MySQL. If possible, try another version or reach out via [Slack](/slack) to help you troubleshoot.
-:::
+::::
 ::
 
 
-::collapse{title="H2"}
+:::collapse{title="H2"}
 
 Here is a minimal configuration for H2:
 
@@ -221,7 +221,7 @@ datasources:
     password: ""
     driver-class-name: org.h2.Driver
 ```
-::
+:::
 
 ### Connection pool size
 

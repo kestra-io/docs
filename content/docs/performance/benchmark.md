@@ -366,7 +366,7 @@ Kestra is designed for high performance in workflow orchestration and task dispa
 
 To further note, Kestra is built to scale horizontally. When a use case demands it, seamlessly add Executor/Worker nodes to further increase throughput.
 
-::alert{type="info"}
+:::alert{type="info"}
 We will try our best to keep this page up to date with each new Kestra release.
 For more details on how to run this benchmark yourself, refer to our [Benchmarks](https://github.com/kestra-io/benchmarks) repository on GitHub.
-::
+:::

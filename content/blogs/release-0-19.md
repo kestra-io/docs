@@ -246,7 +246,7 @@ inputs:
 ```
 
 
-::collapse{title="Full workflow example using the new Conditional Inputs feature"}
+:::collapse{title="Full workflow example using the new Conditional Inputs feature"}
 
 ```yaml
 id: request_resources
@@ -369,7 +369,7 @@ tasks:
       Status of the request {{ outputs.wait_for_approval.onResume.comment }}.
       Process finished with {{ outputs.approve.body }}.
 ```
-::
+:::
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
 

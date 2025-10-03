@@ -79,7 +79,7 @@ For detailed instructions on how to configure and use this feature, visit the [R
 
 This release introduces a new flow property called `afterExecution`, allowing you to run tasks **after** the execution of the flow e.g. to send different alerts depending on some condition. For instance, you can leverage this new property in combination with the `runIf` task property to send a different Slack message for successful and failed Executions — expand the example below to see it in action.
 
-::collapse{title="Example Flow using the new property"}
+:::collapse{title="Example Flow using the new property"}
 ```yaml
 id: alerts_demo
 namespace: company.team
@@ -111,7 +111,7 @@ afterExecution:
         "text": "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
       }
 ```
-::
+:::
 
 The `afterExecution` differs from the `finally` property because:
 1. `finally` runs tasks at the end of the flow while the execution is still in a `RUNNING` state
@@ -133,7 +133,7 @@ For detailed instructions on how to configure and use this feature, check out ou
 Namespace files can now be shared and reused simply by referencing a given `namespace` directly in your script task. If you define multiple namespaces, Kestra will fetch the corresponding namespace files in the same order the namespaces are listed. If you have the same file(s) defined in multiple namespaces, the later namespaces will override files from earlier ones.
 
 
-::collapse{title="Example of Namespace Files inheritance"}
+:::collapse{title="Example of Namespace Files inheritance"}
 ```yaml
 id: namespace_files_inheritance
 namespace: company
@@ -150,7 +150,7 @@ tasks:
     commands:
       - python main.py
 ```
-::
+:::
 
 For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files).
 
@@ -253,7 +253,7 @@ We're pleased to introduce GraalVM integration to Kestra. GraalVM is a high-perf
 
 This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations or Docker images. The GraalVM plugin is currently in Beta, and we welcome your feedback on this exciting new feature.
 
-::collapse{title="Example parsing JSON data using Python in GraalVM"}
+:::collapse{title="Example parsing JSON data using Python in GraalVM"}
 ```yaml
 id: parse_json_data
 namespace: company.team
@@ -271,7 +271,7 @@ tasks:
       data = {{ read(outputs.download.uri )}}
       data["next_month"] = int(data["month"]) + 1
 ```
-::
+:::
 
 ### DuckDB & SQLite Improvements
 
@@ -279,7 +279,7 @@ This release resolves several issues and enhances persistence capabilities for o
 
 The new `outputDbFile` boolean property enables both plugin tasks to fully support data persistence across your workflow tasks.
 
-::collapse{title="Example with DuckDB"}
+:::collapse{title="Example with DuckDB"}
 ```yaml
 id: duckdb_demo
 namespace: company.team
@@ -306,11 +306,11 @@ tasks:
     sql: SELECT field2, SUM(field1) FROM my_data GROUP BY field2;
     fetchType: STORE
 ```
-::
+:::
 
 Also, it's now possible to avoid using `workingDir()` Pebble method in DuckDB to read local files.
 
-::collapse{title="Reading file without using workingDir in DuckDB"}
+:::collapse{title="Reading file without using workingDir in DuckDB"}
 ```yaml
 id: duckdb_no_working_dir
 namespace: company.team
@@ -329,14 +329,14 @@ tasks:
       data.csv: "{{ outputs.download.uri }}"
     sql: SELECT * FROM read_csv_auto('data.csv');
 ```
-::
+:::
 
 
 ### New Snowflake CLI plugin
 
 Developers can now streamline their Snowflake workflows using the new Snowflake CLI, enabling quick creation, management, and deployment of applications across Snowpark, Streamlit, native app frameworks and all the other possibilities offered by Snowflake. All of this with the automation power of Kestra!
 
-::collapse{title="Snowflake CLI task example"}
+:::collapse{title="Snowflake CLI task example"}
 ```yaml
 id: run_snowpark_function
 namespace: company.team
@@ -355,7 +355,7 @@ pluginDefaults:
       username: "{{secret('SNOWFLAKE_USERNAME')}}"
       password: "{{secret('SNOWFLAKE_PASSWORD')}}"
 ```
-::
+:::
 
 ### New MariaDB tasks
 

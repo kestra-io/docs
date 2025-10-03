@@ -135,7 +135,7 @@ The actual crux of the task logic resides in the `run` method. This is an overri
 
 In the `run` method, we use the name of the pokemon, and make a call to the pokemon API. The fetched response is then mapped to the Pokemon class using the `ObjectMapper`. The resulting `Pokemon` object is then transformed into the `Fetch.Output` class, and returned.
 
-::collapse{title="Here is a pokemon Fetch task that will fetch the details of a given pokemon"}
+:::collapse{title="Here is a pokemon Fetch task that will fetch the details of a given pokemon"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -245,7 +245,7 @@ public class Fetch extends Task implements RunnableTask<Fetch.Output> {
     }
 }
 ```
-::
+:::
 
 ### Compile the plugin
 

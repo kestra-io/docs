@@ -27,7 +27,7 @@ A Role is a collection of permissions that can be assigned to Users, Service Acc
 These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
 e.g., `CREATE`).
 
-::collapse{title="More information"}
+:::collapse{title="More information"}
 
 The **Role** itself does not grant any permissions to anyone.
 
@@ -40,7 +40,7 @@ A Binding can be optionally limited to specific namespaces. When a Binding is ti
 Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
-::
+:::
 
 ### Permissions
 
@@ -97,7 +97,7 @@ Kestra provides two roles for managing your instance: super admin and admin.
 - Super Admin is a user type with elevated privileges for global control
 - Admin is a customizable role that grants full access to all resources (scoped to a tenant if multi-tenancy is enabled).
 
-::collapse{title="Summary"}
+:::collapse{title="Summary"}
 Here's a table summarizing the key differences between an Admin and a Super Admin:
 
 | Feature                             | Admin (scoped to a tenant if enabled)              | Super Admin                                          |
@@ -115,7 +115,7 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance.
 
 
-::collapse{title="More information"}
+:::collapse{title="More information"}
 
 #### Use Cases
 
@@ -125,7 +125,7 @@ a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 However, you should use Kestra through the role system.
 ::
 
-::collapse{title="Creating a Super Admin"}
+:::collapse{title="Creating a Super Admin"}
 
 #### Through the UI
 
@@ -173,7 +173,7 @@ For more details, check the [Enterprise Edition Configuration](../../configurati
 
 :::alert{type="info"}
 Note that you need to be a super admin yourself.
-:::
+::::
 
 #### Through the UI
 
@@ -207,7 +207,7 @@ When using multi-tenancy, Kestra assigns the Admin Role to the user who created 
 If you see an error when creating a new User or Service Account, it might be caused by a limit on your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
 :::
 
-::collapse{title="Creating a User with an Admin Role"}
+:::collapse{title="Creating a User with an Admin Role"}
 
 ####  Through the UI
 
@@ -248,7 +248,7 @@ Once you have created your first role. You can attach that role to an entity thr
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
-:::alert{type="info"}
+::::alert{type="info"}
 **Note:** Service Accounts are considered as Users when binding.
 :::
 
@@ -297,9 +297,9 @@ To add users to your Kestra instance, you can do one of the following:
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
 
-::collapse{title="Change password in the UI"}
+:::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
-::
+:::
 
 #### Reset password (by a Super Admin)
 
