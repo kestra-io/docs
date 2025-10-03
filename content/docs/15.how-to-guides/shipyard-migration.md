@@ -38,13 +38,13 @@ For every vessel in the fleet, try to find a matching [Kestra Plugin](/plugins).
 
 In the same fashion as you would configure a vessel, you can configure a task in Kestra. Use the built-it task documentation in the Kestra UI to help you configure all task properties (the **Source and documentation** view). You can easily find plugins directly within the built-in UI editor by using the auto-complete feature. Each task documentation comes with an example and a detailed description of each task property.
 
-![documentation_view](/public/docs/how-to-guides/shipyard-migration/documentation_view.png)
+![documentation_view](docs/how-to-guides/shipyard-migration/documentation_view.png)
 
 There is no concept of **connections** in Kestra. By default, all tasks are executed sequentially. To adjust the execution logic e.g. to run some tasks in parallel, wrap your tasks in [flowable tasks](../04.workflow-components/01.tasks/00.flowable-tasks.md). As always, the combination of our [core documentation](../index.md), [Plugin documentation](/plugins) and [Blueprints](/blueprints) will help you figure out how to do that.
 
 Once you have the fleet equivalent (i.e. a flow) ready in Kestra, you can use the **Source and topology view** to validate whether your Kestra flow matches the connections in your Shipyard fleet.
 
-![topology_view](/public/docs/how-to-guides/shipyard-migration/topology_view.png)
+![topology_view](docs/how-to-guides/shipyard-migration/topology_view.png)
 
 You can now Save and Execute your flow. Then, check the Logs, Gantt and Outputs tab of your Execution to validate that your workflow behaves as expected.
 

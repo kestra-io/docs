@@ -46,7 +46,8 @@ By using a [Process Task Runner](../task-runners/04.types/01.process-task-runner
 
 ## Cache dependencies
 
-::badge{version=">=0.23" editions="OSS,EE"}
+:::badge{version=">=0.23" editions="OSS,EE"}
+:::
 
 Since Kestra 0.23, you can also use the `dependencies` property allowing you to cache Python dependencies across multiple executions.
 

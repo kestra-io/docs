@@ -25,4 +25,5 @@ Together, AI Copilot and AI Agents introduce two complementary approaches:
 
 Both features maintain Kestra’s principle of declarative, code-based orchestration while extending flexibility for different use cases.
 
-::ChildCard
+:::ChildCard
+:::

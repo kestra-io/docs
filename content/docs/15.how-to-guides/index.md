@@ -8,4 +8,5 @@ Learn Kestra with our hands-on guides.
 
 Adjust the filters based on your needs or search directly.
 
-::GuidesChildCard
+:::GuidesChildCard
+:::

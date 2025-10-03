@@ -238,7 +238,6 @@ tasks:
     filesMap:
       orders.csv: "{{ outputs.extract.uri }}"
 ```
-
 :::
 
 The test for this flow can use a fixture referencing that namespace file by its URI `{{fileURI('orders.csv')}}`:

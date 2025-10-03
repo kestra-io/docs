@@ -143,7 +143,6 @@ testCases:
       - value: "{{outputs.http_request.code}}"
         notEqualTo: 200
 ```
-
 :::
 
 
@@ -306,7 +305,6 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 * * * *"
 ```
-
 :::
 
 
@@ -328,7 +326,7 @@ triggers:
 
 **Worker Information in Task Execution**: Task execution details now show the worker ID, hostname, version, and state. Example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
-**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filterOnTags` property lets you filter secrets by tags and sync only those that match.
+**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filter-on-tags` property lets you filter secrets by tags and sync only those that match.
 
 ## Plugin Enhancements
 
@@ -374,7 +372,6 @@ triggers:
     interval: PT5M
     fetchType: FETCH
 ```
-
 :::
 
 ### HubSpot
@@ -398,7 +395,6 @@ tasks:
       - propertyName: "createdate"
         direction: "DESCENDING"
 ```
-
 :::
 
 ### Ollama
@@ -424,7 +420,6 @@ tasks:
     outputFiles:
       - completion.txt
 ```
-
 :::
 
 ### OpenAI Response
@@ -463,7 +458,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.trends.outputText }}"
 ```
-
 :::
 
 ### LangChain4j (Beta)
@@ -521,7 +515,6 @@ tasks:
       type: io.kestra.plugin.langchain4j.embeddings.KestraKVStore
     prompt: Which features were released in Kestra 0.22?
 ```
-
 :::
 
 ### GitHub Actions Workflow
@@ -547,7 +540,6 @@ tasks:
     inputs:
       foo:bar
 ```
-
 :::
 
 ### Jenkins
@@ -574,7 +566,6 @@ tasks:
       environment:
         - staging
 ```
-
 :::
 
 ### Go Scripts
@@ -614,7 +605,6 @@ tasks:
       - go get github.com/go-gota/gota/dataframe
       - go mod tidy
 ```
-
 :::
 
 <div class="video-container">
@@ -673,7 +663,6 @@ tasks:
         }
       }
 ```
-
 :::
 
 ### Databricks CLI
@@ -722,7 +711,7 @@ For a complete list of changes and migration instructions, check the [migration 
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](/public/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
 

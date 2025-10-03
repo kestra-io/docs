@@ -129,7 +129,6 @@ tasks:
         read_csv_auto('products.csv') AS p
       USING (product_id);
 ```
-
 :::
 
 
@@ -628,7 +627,6 @@ Additionally, we have made numerous improvements to existing plugins, including 
 - [Nats](https://github.com/kestra-io/plugin-nats/) with secure TLS support
 - [Git](http://github.com/kestra-io/plugin-git/) with following fixed or improved tasks: `PushNamespaceFiles`, `AbstractSyncTask` + allow self hosted repo for most tasks
 - [Template](https://github.com/kestra-io/plugin-template) with a bug fixed on doc/guides generation
-
 :::
 
 

@@ -271,7 +271,6 @@ The response received includes everything about the execution including the time
     }
 }
 ```
-
 :::
 
 We can modify our flow to generate an output like so:
@@ -387,7 +386,6 @@ When we fetch the data from an Execution of this flow with Execution ID `59uQXHb
     "scheduleDate": "2024-11-21T17:09:40.181Z"
 }
 ```
-
 :::
 
 ## Accessing the KV Store

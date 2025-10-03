@@ -10,4 +10,5 @@ Kestra Enterprise Edition builds on the open-source version by offering more gra
 
 To learn more, explore the sections below or follow the setup guide to get started.
 
-::ChildCard
+:::ChildCard
+:::

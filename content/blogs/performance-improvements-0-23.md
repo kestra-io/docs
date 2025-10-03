@@ -42,7 +42,6 @@ tasks:
         type: io.kestra.plugin.core.log.Log
         message: Some log
 ```
-
 :::
 
 This was the happy case, when there are no outputs, using the same flow with the `OutputValues` task instead of the `Log` task will still bring an enhancement from 44s to 24s.
@@ -131,7 +130,6 @@ tasks:
       type: io.kestra.plugin.core.log.Log
       message: Hello False 5
 ```
-
 :::
 
 In high-load scenarios (e.g., 10 executions per second), performance improved dramatically, reducing execution times from 12 seconds per task in 0.22 to just 4 seconds in 0.23.

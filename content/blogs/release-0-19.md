@@ -208,7 +208,6 @@ tasks:
         "Azure": ["eastus", "westus", "centralus", "northcentralus"]
       }
 ```
-
 :::
 
 :::alert{type="info"}
@@ -370,7 +369,6 @@ tasks:
       Status of the request {{ outputs.wait_for_approval.onResume.comment }}.
       Process finished with {{ outputs.approve.body }}.
 ```
-
 :::
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
@@ -389,7 +387,7 @@ For each Kestra execution, you can filter logs by specific levels, such as WARN 
 
 Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN`, or `ERROR` logs.
 
-![loglevel_display](/blogs/release-0-19/loglevel_display.png)
+![loglevel_display](blogs/release-0-19/loglevel_display.png)
 
 Using the new log-level navigation, you can quickly jump to the next log of a specific level while having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
 
@@ -675,7 +673,6 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```
-
 :::
 
 The scheduled execution will be `CREATED`, and will transition into the `RUNNING` state at the `scheduleDate` — you can inspect all details including that scheduled date from the Overview page of that Execution.
@@ -722,7 +719,6 @@ tasks:
         scheduleDate: "{{ taskrun.value }}"
         wait: false
 ```
-
 :::
 
 Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow:

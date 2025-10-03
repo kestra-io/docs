@@ -6,4 +6,5 @@ release: 0.17.0
 
 Deprecated features and migration guides for 0.17.0 and onwards.
 
-::ChildCard
+:::ChildCard
+:::

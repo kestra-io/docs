@@ -173,7 +173,6 @@ layout:
         delay: PT60S
         url: https://kestra.io/docs/
 ```
-
 :::
 
 Click on `View App` to see it in action:

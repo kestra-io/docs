@@ -38,11 +38,12 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
+- `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
 :::alert{type="info"}
-The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
+The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
 :::
 
 ## Build flows with Copilot
@@ -118,5 +119,129 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 - Run a flow whenever 5 records are available in Kafka topic mytopic
 - Submit a run for a Databricks job
 ```
-
 :::
+
+## Enterprise Edition Copilot configurations
+
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+
+### Amazon Bedrock
+
+```yaml
+kestra:
+  ai:
+    type: bedrock
+    bedrock:
+      model-name: amazon.nova-lite-v1:0
+      access-key-id: BEDROCK_ACCESS_KEY_ID
+      secret-access-key: BEDROCK_SECRET_ACCESS_KEY
+```
+
+### Anthropic
+
+```yaml
+kestra:
+  ai:
+    type: anthropic
+    anthropic:
+      model-name: claude-opus-4-1-20250805
+      api-key: CLAUDE_API_KEY
+```
+
+### Azure OpenAI
+
+```yaml
+kestra:
+  ai:
+    type: azure-openai
+    azure-openai:
+      model-name: gpt-4o-2024-11-20
+      api-key: AZURE_OPENAI_API_KEY
+      tenant-id: AZURE_TENANT_ID
+      client-id: AZURE_CLIENT_ID
+      client-secret: AZURE_CLIENT_SECRET
+      endpoint: "https://your-resource.openai.azure.com/"
+```
+
+### Deepseek
+
+```yaml
+kestra:
+  ai:
+    type: deepseek
+    deepseek:
+      model-name: deepseek-chat
+      api-key: DEEPSEEK_API_KEY
+      base-url: "https://api.deepseek.com/v1"
+```
+
+### Google Gemini
+
+```yaml
+kestra:
+  ai:
+    type: gemini
+    gemini:
+      model-name: gemini-2.5-flash
+      api-key: YOUR_GEMINI_API_KEY
+```
+
+### Google Vertex AI
+
+```yaml
+kestra:
+  ai:
+    type: googlevertexai
+    googlevertexai:
+      model-name: gemini-2.5-flash
+      project: GOOGLE_PROJECT_ID
+      location: GOOGLE_CLOUD_REGION
+      endpoint: VERTEX-AI-ENDPOINT
+```
+
+### Mistral
+
+```yaml
+kestra:
+  ai:
+    type: mistralai
+    mistralai:
+      model-name: mistral:7b
+      api-key: MISTRALAI_API_KEY
+      base-url: "https://api.mistral.ai/v1"
+```
+
+### Ollama
+
+```yaml
+kestra:
+  ai:
+    type: ollama
+    ollama:
+      model-name: llama3
+      base-url: http://localhost:11434
+```
+
+### OpenAI
+
+```yaml
+kestra:
+  ai:
+    type: openai
+    openai:
+      model-name: gpt-5-nano
+      api-key: OPENAI_API_KEY
+      base-url: https://api.openai.com/v1
+```
+
+### OpenRouter
+
+```yaml
+kestra:
+  ai:
+    type: openrouter
+    openrouter:
+      api-key: OPENROUTER_API_KEY
+      base-url: "https://openrouter.ai/api/v1"
+      model-name: x-ai/grok-beta
+```

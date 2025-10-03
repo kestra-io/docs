@@ -239,9 +239,8 @@ jobs:
           apiToken: ${{secrets.KESTRA_API_TOKEN}}
           delete: false
 ```
-:::
 
-::
+:::
 
 
 ### Deploy flows from a GitLab CI/CD

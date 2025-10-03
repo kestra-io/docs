@@ -146,7 +146,6 @@ tasks:
     values:
       log: "{{outputs.transform.value}}"
 ```
-
 :::
 
 ### JDBC backend

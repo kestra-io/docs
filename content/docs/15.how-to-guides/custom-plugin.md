@@ -121,7 +121,6 @@ class Move {
   String name;
 }
 ```
-
 :::
 
 ### Runnable Task
@@ -246,7 +245,6 @@ public class Fetch extends Task implements RunnableTask<Fetch.Output> {
     }
 }
 ```
-
 :::
 
 ### Compile the plugin
@@ -257,7 +255,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../server-cli/index.md#plugins-directory).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../server-cli/index.md#plugin-commands).
 
 ## Writing unit tests
 
@@ -278,7 +276,6 @@ tasks:
   type: io.kestra.plugin.pokemon.Fetch
   pokemon: "gengar"
 ```
-
 :::
 
 Let us now amend the `FetchRunnerTest.java`. In this test, we try to load the flow file `pokemonFetch.yaml`, and run this flow. We then test if all the tasks in this flow were executed.
@@ -338,7 +335,6 @@ class FetchRunnerTest {
     }
 }
 ```
-
 :::
 
 Let’s test the actual logic of the plugin in `FetchTest.java`. Here, we are creating the input and invoking the logic present in the task, and then verifying the output returned by the task.
@@ -384,7 +380,6 @@ class FetchTest {
     }
 }
 ```
-
 :::
 
 ### Running the tests

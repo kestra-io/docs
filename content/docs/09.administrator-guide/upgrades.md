@@ -3,7 +3,7 @@ title: Managing Upgrades
 icon: /docs/icons/admin.svg
 ---
 
-Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
+Kestra evolves quickly. This page explains how to upgrade your installation.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -12,53 +12,51 @@ Kestra is a fast-evolving project. This section will guide you through the proce
 ## How to upgrade Kestra
 
 To upgrade Kestra, follow these steps:
-1. Perform a database backup (optional but recommended)
-2. Read the [release notes](https://github.com/kestra-io/kestra/releases) on GitHub to understand the changes in the new version
-3. Perform a rolling upgrade of Kestra components e.g. for a Kubernetes deployment, upgrade the Kestra Helm chart as described below in the section "Rolling upgrades in Kubernetes"
-4. Perform any actions needed following the release notes (e.g. update configuration files, adjust deprecated features, etc.)
-
+1. Perform a database backup (optional but recommended).
+2. Read the [release notes](https://github.com/kestra-io/kestra/releases) to understand the changes in the new version.
+3. Perform a rolling upgrade of Kestra components. For Kubernetes, upgrade the Kestra Helm chart as described in “Rolling upgrades in Kubernetes,” below.
+4. Apply any actions noted in the release notes (for example, update configuration files or adjust deprecated features).
 
 ## How to rollback Kestra to a previous version
 
-Sometimes you might need to downgrade Kestra to a previous version. Here are some steps to follow:
+Sometimes you might need to roll back Kestra to a previous version. Follow these steps:
 
-1. Perform a database backup (optional but recommended)
-2. Stop all Kestra components
-3. Restore from a backup
-4. Restart from an older version
+1. Perform a database backup (optional but recommended).
+2. Stop all Kestra components.
+3. Restore from a backup.
+4. Restart with the older version.
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
 :::alert{type="warning"}
-We strongly recommend to avoid downgrading to a previous version if possible. To avoid any surprises, before upgrading, test out the newer version on a non-production environment to ensure expected functionality with your existing instance. If you must rollback, closely follow the recommended actions above.
+We strongly recommend avoiding downgrades. To prevent surprises, test the new version in a non-production environment before upgrading. If you must roll back, closely follow the steps above.
 :::
 
 ## Where you can find the release changelog
 
-You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level explanation of the changes, you can also check release [blog posts](/blogs).
+You can find the changelog on the main repository’s [Releases](https://github.com/kestra-io/kestra/releases) page. It lists changes, new features, and bug fixes for each release, as well as any breaking changes. For a high-level overview, see the release [blog posts](/blogs).
 
 ## How to identify breaking changes in a release
 
-Next to all bug fixes and enhancements, you can find a dedicated section called `Breaking Changes` in the release notes. This section lists changes that may require some adjustments in your code or Kestra configuration, along with links to the documentation showing how to migrate.
+In addition to bug fixes and enhancements, the release notes include a `Breaking Changes` section. It lists changes that may require adjustments to your code or Kestra configuration, with links to [migration docs](../11.migration-guide/index.md).
 
 :::alert{type="warning"}
-⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
+The `Breaking Changes` section appears at the end of the [release notes](https://github.com/kestra-io/kestra/releases). Review it before upgrading.
 :::
 
 ## How to minimize downtime when updating Kestra
 
-If running Kestra in separate components you should:
+If you run Kestra as separate components, you should:
 
 - Stop the executors and the scheduler
-- Stop the workers - there is a graceful shutdown period to finish active jobs before closing the worker. This is set by default to be: `kestra.server.terminateGracePeriod = '5m'` but is adjustable in your [Kestra Configuration](../configuration/index.md).
-  - If the job in progress is shorter than five minutes, then the worker will shutdown immediately when completed. If not, the task will be killed and restart when the worker is restarted.
+- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminateGracePeriod = '5m'`, configurable in your [Kestra configuration](../configuration/index.md).
+- If the job finishes within five minutes, the worker shuts down immediately. Otherwise, the task is killed and restarts when the worker restarts.
+- Stop the webserver (and the indexer if using EE with Kafka).
 
-- Stop the webserver (and the indexer using EE and Kafka)
-
-Normally, there is a graceful shutdown on all components so you will not lose anything. Once this is done, you can update and restart everything in the opposite order (or any order as all components are independent).
+All components support graceful shutdown, so no data is lost. Afterward, update and restart everything in the opposite order (or in any order, as components are independent).
 
 :::alert{type="info"}
-The webserver host the API so it's the one that must be stopped then started immediately to avoid potential downtime. Once this has been done, you can restart the other components so flow executions can start again.
+The webserver hosts the API, so stop and then start it immediately to avoid downtime. After that, restart the other components so flow executions can resume.
 :::
 
 ## How to stick to a specific Kestra version
@@ -70,14 +68,15 @@ If you want to stick to a specific Kestra version, you can pin the [Docker image
 - `kestra/kestra:v0.19.0-no-plugins` includes the 0.19 release without any plugins
 - `kestra/kestra:v0.19.0` includes the 0.19 release with all plugins.
 
-Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
+You can also create a custom image with your own plugins and dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
 
-## Migrating a Standalone Installation
+## Migrating a standalone installation
+
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
 
 ![download_kestra_binary](/docs/administrator-guide/download_kestra_binary.png)
 
-Once you downloaded the binary, you can start kestra from that binary using the following command:
+Once you’ve downloaded the binary, start Kestra with the following command:
 
 ```bash
 ./kestra-VERSION server standalone
@@ -85,19 +84,18 @@ Once you downloaded the binary, you can start kestra from that binary using the 
 
 ## Migrating an installation with Docker
 
-If you use Docker, you can change the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to the desired version and restart the container(s) or Kubernetes pod(s).
-
+If you use Docker, change the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to the desired version and restart the container(s) or Kubernetes pod(s).
 
 ### Docker Compose
 
-If you use Docker compose, adjust your Docker Compose file to use the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker-compose up -d` to restart the container(s).
+If you use Docker Compose, update your compose file to the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker-compose up -d` to restart the container(s).
 
 ## Migration in Kubernetes using Helm
 
-If you use Helm, adjust the [Helm chart `tag` value](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L4) to point the installation to the desired version. For example, you can run the following command to upgrade the installation to the desired version:
+If you use Helm, set the [Helm chart `image.tag` value](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L18) to the desired version. For example:
 
 ```bash
-helm upgrade kestra kestra/kestra --set image.tag=v0.20.0
+helm upgrade kestra kestra/kestra --set image.tag=v1.0.0
 ```
 
 For more complex configurations that include multiple changes, consider using a custom values file:
@@ -110,24 +108,21 @@ helm upgrade kestra kestra/kestra -f values.yaml
 
 ## Rolling upgrades in Kubernetes
 
-Upgrading Kestra on a Kubernetes cluster depends on a deployment rollout strategy.
+Upgrading Kestra on Kubernetes depends on your deployment rollout strategy. Every service can be rolled out without downtime, except workers, which need special attention.
 
-Every service can be rolled out without any downtime except for a worker that needs a special attention.
+During rollout, each component creates a new pod (the old one keeps running). After the new pod passes health checks, Kubernetes shuts down the previous pod, resulting in zero downtime.
 
-Each standard component during the rollout will create a pod with a new version (_keeping the old one running_). When the new pod is up and running (passing all health checks), Kubernetes will shutdown the previous one leading to a zero-downtime migration.
+Upgrading workers is more involved because they handle data-processing tasks that can run from seconds to hours. Define the desired behavior for in-flight tasks.
 
-Upgrading workers is more involved since workers handle data processing tasks which can range from a few seconds to many hours. You need to define the behavior for these tasks.
+By default, Kestra workers wait for all task runs to complete before shutting down during a migration. You can override this behavior if needed. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L98) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
 
-By default, Kestra worker process will wait until the completion of all task runs before shutting down during a migration. However, you can overwrite that default behavior if you wish. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/1f9a97331ff0c160a32ceba3f255a58e01f5ff95/charts/kestra/values.yaml#L80) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
+If the worker has no running tasks, or finishes them before the grace period, it shuts down immediately. If the pod cannot finish tasks before `terminationGracePeriodSeconds`, Kubernetes kills the pod, and those tasks are resubmitted to another worker.
 
-If the worker has no workers or is able to terminate all tasks before the grace period, it will be shutdown directly. If the pod is not able to finish the tasks affected before `terminationGracePeriodSeconds`, Kubernetes will kill the pod, leading to some tasks being resubmitted and handled by another worker.
-
-In Kestra, every worker that died unexpectedly will be detected by the executor, and all unfinished task runs will be resubmitted and will be picked up by a new worker. In case of rollout with `terminationGracePeriodSeconds`, we are in the case of unexpected failure and the task will also be resubmitted.
-
+If a worker exits unexpectedly, the executor detects it and resubmits unfinished task runs to a new worker. The same behavior applies when a pod is terminated at `terminationGracePeriodSeconds`.
 
 ## Where can I find migration guides
 
-The [Migrations section](../11.migration-guide/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](../11.migration-guide/index.md) details deprecated features and explains how to migrate to the new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
@@ -135,7 +130,7 @@ For all breaking changes, the migration guides are linked in the [release notes]
 
 You can get notified about new releases in the following ways:
 1. Subscribe to notifications in the `#announcements` channel in the [Slack](/slack) community.
-2. Follow us on [Twitter](https://twitter.com/kestra_io)
+2. Follow us on [X (Twitter)](https://twitter.com/kestra_io)
 3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
 4. Subscribe to the [Kestra newsletter](/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
@@ -149,22 +144,21 @@ There are two types of database migrations: automatic and manual.
 
 ### Automatic database migration
 
-Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when Kestra server is started. Flyway is a tool that allows version controlling changes to a database (such as Kestra's database) so that you can migrate it to a new version easily. Kestra stores the current version of the database in a table called `flyway_schema_history`. When Flyway runs, it compares the current version of the database with the version that it should be at. If the versions do not match, Flyway will run the necessary migrations to bring the database up to date. This process is automatic when Kestra server starts, therefore no manual intervention is required.
+Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations—no manual intervention needed.
 
 ### Manual database migration
 
 Sometimes a manual database migration is useful, especially when you have a large database and you want to perform the migration before upgrading Kestra to avoid a long downtime.
 
-For example, when migrating from Kestra v0.12.0 to v0.13.0, all indexes will be rebuilt due to addition of the multi-tenancy feature (the `tenant_id` column is added on almost every table). When using the JDBC runner with a large database, database migration can take multiple hours. In such use cases, we recommend performing the migration manually before starting Kestra by using the `kestra sys database migrate` command.
+For example, when migrating from v0.12.0 to v0.13.0, all indexes are rebuilt due to multi-tenancy (`tenant_id` is added to most tables). With a large JDBC-backed database, this can take hours. In such cases, run `kestra sys database migrate` manually before starting Kestra.
 
 This command should use the same configuration as configured on your Kestra instance. Depending on whether you deploy Kestra using Docker or Kubernetes, this command can be launched via a `docker exec` or a `kubectl exec` command.
 
 There are two ways to initiate the manual database migration:
 1. Keep Kestra running in an old version. Then, stop Kestra and launch the command on the new version.
-2. Start Kestra on the new version with automatic schema migration disabled via `flyway.datasources.postgres.enabled=false` (in case you're database is not postgres replace postgres with the type of your database) and launch the command: `kestra sys database migrate`.
+2. Start Kestra on the new version with automatic schema migration disabled: `flyway.datasources.postgres.enabled=false` (if your database is not Postgres, replace `postgres` with your DB type). Then run: `kestra sys database migrate`.
 
-
-Here is an example of how to launch the command via a `docker exec` command:
+Example: run the command via `docker exec`:
 
 ```bash
 docker exec your_container_id bash ./kestra sys database migrate --help
@@ -196,8 +190,8 @@ Flyway then exit.
 
 ## Getting help
 
-If you have any questions about the upgrade process:
-- if you are a [Kestra Enterprise](/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
-- reach out to us [via Slack](/slack).
+If you have questions about the upgrade process:
+- If you are a [Kestra Enterprise](/enterprise) customer, submit a [support ticket](https://support.kestra.io/).
+- Or reach out [via Slack](/slack).
 
-We understand that upgrades can be difficult. If you need more help, [reach out to us](/contact-us) and we'll help you with the migration based on your specific environment and use case.
+We understand upgrades can be challenging. If you need more help, [contact us](/contact-us) and we’ll assist with migration based on your environment and use case.

@@ -147,7 +147,6 @@ tasks:
           KESTRA_USERNAME: admin@kestra.io
           KESTRA_PASSWORD: "{{ kv('KESTRA_PASSWORD') }}"
 ```
-
 :::
 
 ---

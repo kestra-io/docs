@@ -40,7 +40,6 @@ A Binding can be optionally limited to specific namespaces. When a Binding is ti
 Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
-
 :::
 
 ### Permissions
@@ -109,7 +108,7 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 | Flow/Execution Management           | Has the permission by default                      | No                                                   |
 | Set Super Admin privilege           | No                                                 | Yes                                                  |
 
-:::
+::
 
 ### Super Admin
 
@@ -124,8 +123,7 @@ Super Admin is a powerful type of user. Use the role sparingly and only for use 
 a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
 However, you should use Kestra through the role system.
-
-:::
+::
 
 :::collapse{title="Creating a Super Admin"}
 
@@ -137,7 +135,7 @@ This interface invites you to create your first User which will be automatically
 
 #### Through the CLI
 
-To create a User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the `--superadmin` option:
+To create a User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -169,13 +167,13 @@ kestra:
 
 For more details, check the [Enterprise Edition Configuration](../../configuration/index.md#super-admin) page.
 
-:::
+::
 
 :::collapse{title="Grant/Revoke Super Admin permissions"}
 
-::::alert{type="info"}
+:::alert{type="info"}
 Note that you need to be a super admin yourself.
-:::
+:::::
 
 #### Through the UI
 
@@ -185,7 +183,7 @@ You can grant or revoke the Super Admin privilege using the switch in the User E
 
 #### Through the CLI
 
-To set an existing User with a Super Admin privilege from the [CLI](../../ee-server-cli/index.md), use the dedicated command:
+To set an existing User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
 
 ```bash
 # Set a user as Super Admin
@@ -230,7 +228,7 @@ kestra auths users create prod.admin@kestra.io TopSecret42 --admin
 kestra auths users create <username> <password> --admin
 ```
 
-:::
+::
 
 ## Users, Groups and Service Accounts
 
@@ -250,8 +248,7 @@ Once you have created your first role. You can attach that role to an entity thr
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
-
-::::alert{type="info"}
+:::::alert{type="info"}
 **Note:** Service Accounts are considered as Users when binding.
 :::
 
@@ -259,7 +256,6 @@ The following example shows the creation of a Binding for a User. We are definin
 
 :::collapse{title="How many Roles can a User, a Service Account or Group have?"}
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
-
 :::
 
 :::collapse{title="How to change the lockout behavior after too many failed login attempts."}
@@ -282,7 +278,6 @@ The key attributes are:
 - `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
-
 :::
 
 ### Users
@@ -304,7 +299,6 @@ If a user wants to change their password, they can do it on their profile. This 
 
 :::collapse{title="Change password in the UI"}
 ![change_password](/docs/enterprise/change_password.png)
-
 :::
 
 #### Reset password (by a Super Admin)
@@ -346,7 +340,6 @@ Admin role enables all these patterns in a flexible way.
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you
 are allowed to do). Decoupling authentication from authorization allows you to grant permissions to multiple users or
 groups at once by attaching a single Role to a Group.
-
 :::
 
 :::collapse{title="Why can't I edit an existing Binding?"}
@@ -354,5 +347,4 @@ groups at once by attaching a single Role to a Group.
 A Binding is an immutable object. If a Binding no longer reflects the desired permissions, you can delete the existing
 Binding and create a new one for the same User, Service Account, or Group but with different Roles and/or namespaces.
 This is a safety feature to prevent accidental changes to existing permissions.
-
 :::

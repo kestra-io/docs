@@ -128,7 +128,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "This task won't execute because the SLA was breached."
 ```
-
 :::
 
 :::alert{type="info"}
@@ -165,7 +164,6 @@ triggers:
           flowId: bronze_layer
           states: [SUCCESS]
 ```
-
 :::
 
 :::collapse{title="Send a Slack alert on failure from a company namespace"}
@@ -196,7 +194,6 @@ triggers:
               type: STARTS_WITH
               value: company
 ```
-
 :::
 
 
@@ -222,7 +219,6 @@ tasks:
     message: Hello World!
     runIf: "{{ inputs.run_task }}"
 ```
-
 :::
 
 This new property is useful in microservice orchestration scenarios where you need to conditionally execute tasks based on the status code of prior API calls.
@@ -252,7 +248,6 @@ Including `allowFailure: true` alone would cause the failure in the task run to 
 Here is a mini-schema to visualize the state transitions:
 
 `FAILED` state → `allowFailure` → `WARNING` state → `allowWarning` → `SUCCESS` state
-
 :::
 
 ## New `errorLogs()` Function
@@ -274,7 +269,6 @@ errors:
     type: io.kestra.plugin.core.log.Log
     message: "Failure alert: {{ errorLogs() }}"
 ```
-
 :::
 
 ## New Sidebar

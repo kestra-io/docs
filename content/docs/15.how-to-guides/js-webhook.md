@@ -281,5 +281,4 @@ These are the CSS styles used in the example:
 }
 
 ```
-
 :::

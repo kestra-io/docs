@@ -57,4 +57,5 @@ From the KV Store tab, manage the key-values pairs associated with a namespace. 
 
 In the Enterprise Edition, there's a number of additional pages that give you richer insight and control over your namespaces. To read more about them, check out the page below:
 
-::ChildCard
+:::ChildCard
+:::

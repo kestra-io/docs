@@ -13,4 +13,5 @@ Kestra comes prepackaged with hundreds of [plugins](/plugins), and you can also 
 
 To integrate with your internal systems and processes, you can build custom plugins. If you think it could be useful to others, consider contributing your plugin to our open-source community.
 
-::ChildCard
+:::ChildCard
+:::

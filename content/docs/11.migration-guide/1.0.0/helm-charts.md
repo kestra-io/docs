@@ -133,13 +133,13 @@ configurations:
       storage:
         type: local
         local:
-          basePath: "/app/storage"
+          base-path: "/app/storage"
     datasources:
       h2:
         url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
         username: kestra
         password: ""
-        driverClassName: org.h2.Driver
+        driver-class-name: org.h2.Driver
   configmaps:
     - name: kestra-others
       key: others.yml

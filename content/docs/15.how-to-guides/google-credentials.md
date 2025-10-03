@@ -215,12 +215,12 @@ services:
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -229,7 +229,7 @@ services:
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           tutorial-flows:
             enabled: false
           plugins:
@@ -242,7 +242,7 @@ services:
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           url: http://localhost:8080/
     ports:
@@ -253,7 +253,7 @@ services:
         condition: service_started
 ```
 
-:::
+::
 
 ## Google App Passwords
 
@@ -261,4 +261,4 @@ For some Google applications, like Gmail, you won't use a service account for au
 
 :::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-:::
+::::

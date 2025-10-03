@@ -323,4 +323,5 @@ triggers:
 
 With this configuration, the flow will produce an execution containing logs that describe the trigger failure. This execution can be used for both troubleshooting and notification, in addition to the trigger logs.
 
-::ChildCard
+:::ChildCard
+:::

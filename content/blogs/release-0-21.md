@@ -67,7 +67,6 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 ```
-
 :::
 
 ![datadog logshipper](/blogs/release-0-21/logshipper_datadog.png)
@@ -96,7 +95,6 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *" # everyday at 9am
 ```
-
 :::
 
 ![logshipper aws cloudwatch](/blogs/release-0-21/logshipper_aws_cloudwatch.png)
@@ -178,7 +176,6 @@ charts:
           type: STARTS_WITH
           value: data
 ```
-
 :::
 
 ![alt text](/blogs/release-0-21/custom_dashboard1.png)
@@ -266,7 +263,6 @@ finally:
     type: io.kestra.plugin.docker.Stop
     containerId: "{{outputs.start.taskRunner.containerId}}"
 ```
-
 :::
 
 ## User Interface & Experience Improvements
@@ -328,7 +324,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: This is the end
 ```
-
 :::
 
 ### New `Write` task
@@ -382,7 +377,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "The input is categorized as a {{ json(outputs.classification.output).labels[0] }} message."
 ```
-
 :::
 
 ### New AWS EMR plugin
@@ -417,7 +411,6 @@ tasks:
           - spark-submit s3://kestra-test/health_violations.py --data_source s3://kestra-test/food_establishment_data.csv --output_uri s3://kestra-test/test-emr-output
     wait: false
 ```
-
 :::
 
 ### New Pebble functions

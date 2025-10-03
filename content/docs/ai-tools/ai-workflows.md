@@ -85,7 +85,6 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "* 8 * * *"
 ```
-
 :::
 
 :::collapse{title="Create tasks with natural language prompts using DeepSeek and Todoist"}
@@ -153,7 +152,6 @@ tasks:
             "due_datetime": "{{ taskrun.value | jq('.due_date') | first }}"
           }
 ```
-
 :::
 
 :::collapse{title="Generate an image with OpenAI with human approval"}
@@ -216,7 +214,6 @@ tasks:
         content: "Here's the new image with your feedback: {{ outputs.retry.outputs.image }}"
         url: "{{ vars.discord_webhook }}"
 ```
-
 :::
 
 :::collapse{title="Summarize Git commits from the past week using Ollama"}
@@ -294,5 +291,4 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 15 * * 5"  # Every Friday at 15:00 (3:00 PM) UTC
 ```
-
 :::

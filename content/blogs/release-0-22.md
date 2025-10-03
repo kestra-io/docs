@@ -111,7 +111,6 @@ afterExecution:
         "text": "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
       }
 ```
-
 :::
 
 The `afterExecution` differs from the `finally` property because:
@@ -151,7 +150,6 @@ tasks:
     commands:
       - python main.py
 ```
-
 :::
 
 For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files).
@@ -180,7 +178,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ kv('test_value', namespace='test') }}"
 ```
-
 :::
 
 ### LDAP Integration
@@ -231,7 +228,7 @@ This release introduces new global views for managing secrets and key-value pair
 ## Notable Backend Enhancements
 
 - We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up to 90% less database space due to aggresive cleaning and perform better. Queues can now sustain a much higher Executions throughput with lower database load. We also haven't forgotten about the Kafka runner, which also benefits from latency improvements due to configuration finetuning.
-- [DevContainer support](/public/docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
+- [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
 - [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
 - Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
@@ -274,7 +271,6 @@ tasks:
       data = {{ read(outputs.download.uri )}}
       data["next_month"] = int(data["month"]) + 1
 ```
-
 :::
 
 ### DuckDB & SQLite Improvements
@@ -310,7 +306,6 @@ tasks:
     sql: SELECT field2, SUM(field1) FROM my_data GROUP BY field2;
     fetchType: STORE
 ```
-
 :::
 
 Also, it's now possible to avoid using `workingDir()` Pebble method in DuckDB to read local files.
@@ -334,7 +329,6 @@ tasks:
       data.csv: "{{ outputs.download.uri }}"
     sql: SELECT * FROM read_csv_auto('data.csv');
 ```
-
 :::
 
 
@@ -361,7 +355,6 @@ pluginDefaults:
       username: "{{secret('SNOWFLAKE_USERNAME')}}"
       password: "{{secret('SNOWFLAKE_PASSWORD')}}"
 ```
-
 :::
 
 ### New MariaDB tasks
@@ -385,7 +378,7 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](/public/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 Special thanks to [V-Rico](https://github.com/V-Rico) for their [pull request](https://github.com/kestra-io/kestra/pull/7662) resolving an XSS vulnerability in Kestra.
 

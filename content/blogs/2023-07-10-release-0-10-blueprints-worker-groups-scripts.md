@@ -212,7 +212,7 @@ Here is how to set a basic authentication user in your Kestra configuration:
 ```yaml
 kestra:
   server:
-    basicAuth:
+    basic-auth:
       enabled: false
       username: admin
       password: *******

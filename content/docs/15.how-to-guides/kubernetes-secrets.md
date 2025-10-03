@@ -16,37 +16,31 @@ Note that this page is only relevant for the Open-Source edition of Kestra. For 
 
 ## Pass environment variables directly
 
-The simplest way to pass secrets to Kestra is to use environment variables referenced using the `extraEnv` property. Make sure that each environment variable's key starts with `SECRET_` and that the value of the secret is base64 encoded.
+The simplest way to pass secrets to Kestra is to use environment variables referenced using the `common.extraEnv` property. Make sure that each environment variable's key starts with `SECRET_`.
 
 Let's assume you want to add two secrets to your Helm Chart:
 1. `DB_USERNAME` with the value `admin`
 2. `DB_PASSWORD` with the value `password`
 
-First, let's encode the values:
-
-```shell
-echo -n "admin" | base64 # it should give you YWRtaW4=
-echo -n "password" | base64 # it should give you cGFzc3dvcmQ=
-```
-
 You can set them directly in your Helm Chart `values.yaml` as follows:
 
 ```yaml
-deployment:
+deployments:
   standalone:
     enabled: true
-extraEnv:
-  - name: SECRET_DB_USERNAME
-    value: "YWRtaW4="
-  - name: SECRET_DB_PASSWORD
-    value: "cGFzc3dvcmQ="
+common:
+  extraEnv:
+    - name: SECRET_DB_USERNAME
+      value: "admin"
+    - name: SECRET_DB_PASSWORD
+      value: "password"
 ```
 
 :::alert{type="info"}
 Note how each environment variable's key starts with `SECRET_`. This is important for Kestra to recognize them as secrets.
 :::
 
-Now, all that's left is to install or upgrade your Helm Chart:
+Now, install or upgrade your Helm Chart:
 
 ```shell
 helm repo add kestra https://helm.kestra.io/
@@ -77,16 +71,7 @@ Execute the flow and check the output values in the Outputs tab in the UI. You s
 
 ## Pass environment variables from a Kubernetes Secret
 
-If you want to define your secrets in a Kubernetes Secret, you can use the `extraSecretEnvFrom` property in your Helm Chart. This property allows you to reference an existing Kubernetes Secret and pass its values as environment variables to Kestra.
-
-:::alert{type="info"}
-Since Kubernetes Secrets values need to be base64 encoded, you need to double encode them. Taking the same example as above, you would need to encode the values `admin` and `password` twice.
-
-```shell
-echo -n "admin" | base64 | base64 # it should give you WVdSdGFXNEsK
-echo -n "password" | base64 | base64 # it should give you YzBGemMzZHZjbVFLCg==
-```
-:::
+If you want to define your secrets in a Kubernetes Secret, you can use the `common.extraEnvFrom` property in your Helm Chart. This property allows you to reference an existing Kubernetes Secret and pass its values as environment variables to Kestra.
 
 Here is an example of a Kubernetes Secret definition:
 
@@ -96,25 +81,27 @@ kind: Secret
 metadata:
   name: db-creds
 type: Opaque
-data: # base64 encoded twice
-  SECRET_DB_USERNAME: WVdSdGFXNEsK
-  SECRET_DB_PASSWORD: Y0dGemMzZHZjbVFLCg==
+stringData:
+  SECRET_DB_USERNAME: admin
+  SECRET_DB_PASSWORD: password
 ```
 
-First, make sure to create the Secret in your Kubernetes cluster:
+First, create the Secret in your Kubernetes cluster:
 
 ```shell
 kubectl apply -f secret.yaml
 ```
 
-Then, you can reference this secret in your Helm Chart `values.yaml` as follows:
+Then, reference this secret in your Helm Chart `values.yaml`:
 
 ```yaml
-deployment:
+deployments:
   standalone:
     enabled: true
-extraSecretEnvFrom:
-  - name: db-creds
+common:
+  extraEnvFrom:
+    - secretRef:
+        name: db-creds
 ```
 
 Redeploy your Helm Chart:
@@ -125,42 +112,49 @@ helm upgrade kestra kestra/kestra -f values.yaml
 
 And test the secrets in a flow as described in the previous section.
 
-Note that in this method, the Kubernetes Secret's keys must start with `SECRET_` to be recognized as Kestra Secrets and they need to be base64 encoded twice due to the additional encoding used by Kubernetes Secrets.
+Note that in this method, the Kubernetes Secret's keys must start with `SECRET_` to be recognized as Kestra Secrets.
 
-## Use Kubernetes Secrets as Kestra Secrets
+---
 
-An alternative to the `extraSecretEnvFrom` property is to create an environment variables referencing the Kubernetes Secret values. The benefit of this method is that you can use arbitrary keys in your Kubernetes Secret without the need to prefix them with `SECRET_`.
+## Use Kubernetes Secrets as Kestra Secrets with `configurations.secrets`
 
-Kubernetes Secret definition (again, keep in mind that the Secret values still need to be base64 encoded twice to account for the additional encoding used by Kubernetes Secrets on top of the base64 encoding required by Kestra):
+An alternative is to mount an entire Kubernetes Secret as a Kestra configuration file using the `configurations.secrets` property.
 
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: db-creds
-type: Opaque
-data: # base64 encoded twice
-  username: WVdSdGFXNEsK
-  password: Y0dGemMzZHZjbVFLCg==
-```
-
-Then, you can reference this secret in your Helm Chart `values.yaml` as follows:
+For example, in `values.yaml`:
 
 ```yaml
-deployment:
-  standalone:
-    enabled: true
-extraEnv:
-  - name: SECRET_DB_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: db-creds
-        key: username
-  - name: SECRET_DB_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: db-creds
-        key: password
+configurations:
+  secrets:
+    - name: db-creds
+      key: db.yml
 ```
 
-The benefit of this approach is that you can define the Kestra-specific secret names in your Kestra's Helm Chart deployment rather than in the Kubernetes Secret itself.
+And in your Helm chart, define the secret in `extraManifests`:
+
+```yaml
+extraManifests:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: db-creds
+    stringData:
+      db.yml: |
+        kestra:
+          datasources:
+            postgres:
+              url: jdbc:postgresql://postgres:5432/kestra
+              username: admin
+              password: password
+```
+
+This method avoids the need for encoding and allows you to configure secrets in YAML format directly.
+
+---
+
+## Summary
+
+- Use `common.extraEnv` for simple inline secrets.
+- Use `common.extraEnvFrom` to load secrets from existing Kubernetes Secret objects.
+- Use `configurations.secrets` when you want to mount YAML-based secrets as part of Kestra's configuration.
+
+Choose the method that best fits your security and deployment requirements.
