@@ -57,7 +57,7 @@
     "@saslavik/nuxt-gtm": "^0.1.2",
     "@types/node": "^24.3.0",
     "nitro-cloudflare-dev": "^0.2.2",
-    "nuxt": "^4.0.3",
+    "nuxt": "^4.1.2",
     "nuxt-aos": "^1.2.5",
     "nuxt-multi-cache": "^4.0.1",
     "remark-code-import": "file:./utils/remark-code-import",
