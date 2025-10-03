@@ -45,9 +45,9 @@ The following diagram shows the main components of Kestra using the [Kafka](http
 
 ![Kestra OSS Architecture](/docs/architecture/kafka.png "Kestra Architecture")
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
-::
+:::
 
 This architecture is designed to provide the enhanced scalability, high availability, and fault tolerance required to meet the needs of large-scale enterprise deployments.
 
@@ -81,9 +81,9 @@ Elasticsearch contributes to scalability by providing a robust, horizontally sca
 
 When comparing both diagrams, the main difference between the **JDBC** and an **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that it's possible to use the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.
-::
+:::
 
 The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with [**Internal Storage**](./09.internal-storage.md) to persist intermediary results and store the final task run outputs.
 

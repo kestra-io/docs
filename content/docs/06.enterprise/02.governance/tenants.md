@@ -18,9 +18,9 @@ A tenant represents an **isolated environment within a single Kestra instance**.
 
 Each tenant functions as a separate entity with its own resources, such as flows, triggers, or executions. Multi-tenancy enables different teams, projects, or customers to operate independently within the same Kestra instance, ensuring data privacy, security, and separation of resources between business units, teams, or customers. For example, you can have a `dev` tenant for development, a `staging` tenant for testing, and a `prod` tenant for production.
 
-::alert{type="info"}
+:::alert{type="info"}
 You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.overview/01.enterprise-edition.md).
-::
+:::
 
 All resources (such as [flows](../../04.workflow-components/01.flow.md), [triggers](../../04.workflow-components/07.triggers/index.md), [executions](../../04.workflow-components/03.execution.md), [RBAC](../03.auth/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
@@ -111,9 +111,9 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
 
 Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../../13.terraform/resources/tenant.md).
 
-::alert{type="info"}
+:::alert{type="info"}
 This example assumes you have already configured the [Kestra Terraform Provider](../../13.terraform/index.md)
-::
+:::
 
 Here is an example of a Terraform configuration for creating a tenant:
 
@@ -128,9 +128,9 @@ resource "kestra_tenant" "stage" {
 
 Deleting a tenant removes all associated resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs are retained in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Deleting a tenant is irreversible. All resources under the tenant will be permanently removed, except for logs and execution history stored in the database.
-::
+:::
 
 Key-value pairs and namespace files will not be deleted as they are persisted in internal storage.
 
@@ -149,11 +149,11 @@ To configure a dedicated storage and secrets backend per tenant, navigate to the
 ![tenants-dedicated-internal-storage](/docs/enterprise/tenants-dedicated-internal-storage.png)
 
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that this feature has been introduced in Kestra 0.20.0. If you are using an older version, you need to upgrade to set up dedicated storage and secrets backend per tenant.
 
 Also, make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
-::
+:::
 
 ### Isolate Kestra Services
 

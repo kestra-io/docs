@@ -191,9 +191,9 @@ With these configuration options, you can control where flow outputs and inputs 
 
 Note that this comes with some tradeoffs — storing that data in the internal storage backend such as S3 rather than in the backend database (like Postgres or Elasticsearch) introduces some additional latency,  especially visible with inputs stored and fetched from internal storage.
 
-::alert{type="info"}
+:::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
-::
+:::
 
 
 ## Customizable Dashboards
@@ -683,11 +683,11 @@ We've expanded the ServiceNow plugin with two new tasks:
 
 With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our [dedicated migration guide](https://kestra.io/docs/migration-guide/0.23.0).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
 - [Open Source](../docs/11.migration-guide/0.23.0/tenant-migration-oss.md)
 - [Enteprise](../docs/11.migration-guide/0.23.0/tenant-migration-ee.md)
-::
+:::
 
 **Key changes include:**
 

@@ -130,9 +130,9 @@ tasks:
 ```
 ::
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases.
-::
+:::
 
 
 ## Flow Trigger Enhancements

@@ -28,9 +28,9 @@ By default, if the [email server is configured in Kestra EE](../../configuration
 
 ![Add User Interface](/docs/enterprise/invitations/invite1.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 You can check the box to **Create user directly (skip invitation)** if one is not required. This action is recommended only with third-party authentication such as SSO or LDAP.
-::
+:::
 
 ![invite2](/docs/enterprise/invitations/invite2.png)
 

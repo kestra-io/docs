@@ -61,7 +61,7 @@ You can add an arbitrary number of cases to the `Switch` task, and each case can
 
 By using the `defaults` attribute, you can specify a default input value that will be prefilled in the dropdown menu in the UI when executing the flow.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that it's not possible to launch a workflow execution without selecting a value from the dropdown menu. The requirement for selecting a value guarantees that the flow is only executed with valid input `values` defined by the `ENUM` type.
-::
+:::
 

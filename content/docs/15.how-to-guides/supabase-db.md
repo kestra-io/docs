@@ -12,9 +12,9 @@ Connect your Supabase Database to your workflows using the PostgreSQL plugin.
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-::alert{type="info"}
+:::alert{type="info"}
 As of Kestra 1.0, there is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
-::
+:::
 
 ## Overview
 

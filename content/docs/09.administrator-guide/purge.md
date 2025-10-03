@@ -6,15 +6,15 @@ version: ">= 0.18.0"
 
 Use purge tasks to remove old executions and logs, helping reduce storage usage.
 
-The recommended approach is to combine [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) with [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs).  
-- `PurgeExecutions`: deletes execution records  
-- `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk  
+The recommended approach is to combine [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) with [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs).
+- `PurgeExecutions`: deletes execution records
+- `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
 
 Together, these replace the legacy `io.kestra.plugin.core.storage.Purge` task with a **faster and more reliable process (~10x faster)**.
 
-::alert{type="info"}
+:::alert{type="info"}
 The [Enterprise Edition](../06.enterprise/index.md) also includes [`PurgeAuditLogs`](../06.enterprise/02.governance/06.audit-logs.md#how-to-purge-audit-logs).
-::
+:::
 
 ```yaml
 id: purge
@@ -39,9 +39,9 @@ triggers:
     cron: "@daily"
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Purge tasks permanently delete data. Always test in non-production environments first.
-::
+:::
 
 ## Purge tasks vs. UI deletion
 
@@ -49,9 +49,9 @@ Purge tasks perform **hard deletion**, permanently removing records and reclaimi
 
 This distinction matters for compliance and troubleshooting: purge flows are best for cleaning up space, while UI deletions preserve history for auditability.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Purge tasks do not affect Kestra’s [internal queues](../07.architecture/01.main-components.md#queue). Queue retention is managed separately via [JDBC Cleaner](../configuration/index.md#jdbc-cleaner) (for database) or [topic retention](../configuration/index.md#topic-retention) (for Kafka).
-::
+:::
 
 ::collapse{title="Renamed Purge Tasks in 0.18.0"}
 We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of the **Purge tasks** to make them more performant and reliable — some tasks have been renamed to reflect their enhanced functionality.

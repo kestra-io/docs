@@ -51,9 +51,9 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
 
 For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Plugin versioning is currently in Beta and may change in upcoming releases.
-::
+:::
 
 ### Read-Only Secrets Backends
 

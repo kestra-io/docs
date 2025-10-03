@@ -42,9 +42,9 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
-::
+:::
 
 ## Build flows with Copilot
 

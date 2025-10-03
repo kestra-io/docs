@@ -10,9 +10,9 @@ editions: ["OSS"]
 
 How to add Kestra Secrets to your Helm Chart deployment.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../06.enterprise/02.governance/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../06.enterprise/02.governance/secrets-manager.md) of your choice.
-::
+:::
 
 ## Pass environment variables directly
 
@@ -36,9 +36,9 @@ common:
       value: "password"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note how each environment variable's key starts with `SECRET_`. This is important for Kestra to recognize them as secrets.
-::
+:::
 
 Now, install or upgrade your Helm Chart:
 
@@ -153,8 +153,8 @@ This method avoids the need for encoding and allows you to configure secrets in 
 
 ## Summary
 
-- Use `common.extraEnv` for simple inline secrets.  
-- Use `common.extraEnvFrom` to load secrets from existing Kubernetes Secret objects.  
-- Use `configurations.secrets` when you want to mount YAML-based secrets as part of Kestra's configuration.  
+- Use `common.extraEnv` for simple inline secrets.
+- Use `common.extraEnvFrom` to load secrets from existing Kubernetes Secret objects.
+- Use `configurations.secrets` when you want to mount YAML-based secrets as part of Kestra's configuration.
 
 Choose the method that best fits your security and deployment requirements.

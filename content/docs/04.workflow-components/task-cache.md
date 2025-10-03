@@ -12,9 +12,9 @@ The `taskCache` property stores a task’s status and outputs in Kestra’s data
 
 Using task caching can significantly speed up workflows and reduce resource consumption.
 
-::alert{type="info"}
+:::alert{type="info"}
 Task caching is only supported for [Runnable Tasks](./01.tasks/01.runnable-tasks.md).
-::
+:::
 
 ## `taskCache` syntax
 

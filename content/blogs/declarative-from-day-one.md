@@ -68,8 +68,8 @@ In practical terms, this means data engineers and platform engineers can rely on
 
 **Kestra is orchestration done right, from the start.** If you’re ready to embrace a declarative, flexible, and universal approach to orchestrating your data and processes, Kestra is here – with a purple welcome screen inviting you to create your first flow. Dive into our documentation and see for yourself why a declarative-first orchestrator makes all the difference.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::
