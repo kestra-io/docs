@@ -49,9 +49,18 @@ Summary list of improvements across plugins and components:
 ## Plugins
 
 Summary list of improvements across plugins and components:
-- Improvement 1
-- Improvement 2
-- Improvement 3
+- New [Liquibase plugin](https://github.com/kestra-io/kestra/issues/9799) with CLI tasks to compare databases and generate diffs or change logs for version control. Use tasks like `Diff` to compare two database schemas and output the differences, ideal for tracking database changes in Git.
+- Dedicated [dlt plugin](https://github.com/kestra-io/kestra/issues/11114) with a `CLI` task to run dlt pipelines directly from Kestra. Configure sources, destinations, and incremental loading strategies to streamline your data ingestion workflows.
+- [Airtable plugin](https://github.com/kestra-io/kestra/issues/11212) with five new tasks: `List` to retrieve records with filters and pagination, `Get` to fetch a single record by ID, `Create` to add new records, `Update` to modify existing records, and `Delete` to remove records from your Airtable bases.
+- [Dataform plugin](https://github.com/kestra-io/plugin-gcp/pull/532/files) (GCP) with `InvokeWorkflow` task to trigger Dataform workflows on BigQuery.
+- dbt plugin now supports the [dbt‑fusion engine](https://github.com/kestra-io/plugin-dbt/issues/205) through updated CLI tasks, allowing you to execute dbt projects using the dbt‑fusion runtime for improved performance.
+- [Resend plugin](https://github.com/kestra-io/plugin-resend/pull/4/files) with a `Send` task to send transactional emails using Resend's API. Support for templates, dynamic variables, attachments, and multiple recipients makes email automation seamless.
+- [Odoo plugin](https://github.com/kestra-io/kestra/issues/11300) with a `Query` task that supports all major Odoo operations including search_read, create, write, unlink, search, and search_count
+- [YouTube plugin](https://github.com/kestra-io/plugin-youtube/pull/4/files) with tasks like `VideoStats` to retrieve a video stastistic, and `VideoTrigger` or `CommentTrigger` allowing to trigger a flow whenever a new video or a new comment events arrives.
+- [Apify plugin](https://github.com/kestra-io/plugin-apify/pull/4) with `RunActor` to execute an Apify Actor, `GetDataset` to fetch the dataset associated with a specific Apify Actor run.
+- [Algolia plugin](https://github.com/kestra-io/plugin-algolia/pull/3) with tasks to manage records, and manage indices programmatically.
+- [Prometheus plugin](https://github.com/kestra-io/plugin-prometheus/pull/3) with a `Query` task to run PromQL queries and retrieve time-series metrics, a `Push` task to send custom metrics to Prometheus via the Pushgateway and a `QueryTrigger` to wait for a Prometheus PromQL query to return results.
+- [Prefect Cloud plugin](https://github.com/kestra-io/plugin-prefect/pull/3) with a `CreateFlowRun` task to trigger Prefect flow runs from deployments.
 
 ::::collapse{title="Full list of improvements"}
 - Detailed item A
