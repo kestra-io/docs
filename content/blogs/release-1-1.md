@@ -40,15 +40,14 @@ One or two paragraphs describing this feature.
 
 ## Improvements
 
-Summary list of improvements across plugins and components:
-- Improvement 1
-- Improvement 2
-- Improvement 3
+- Added flows as a data source for custom dashboards, enabling you to display and monitor flow metrics, status, and execution details directly within your [custom dashboard views](https://github.com/kestra-io/kestra-ee/issues/2609)
+- Introduced "Fix with AI" feature that provides AI-powered suggestions and fixes when task runs fail, helping you quickly [diagnose and resolve workflow issues](https://github.com/kestra-io/kestra/issues/11162)
 
 
 ## Plugins
 
-Summary list of improvements across plugins and components:
+This release comes with a wealth of new plugins, thanks largely to the incredible contributions from our growing community. Here's what's new:
+
 - New [Liquibase plugin](https://github.com/kestra-io/kestra/issues/9799) with CLI tasks to compare databases and generate diffs or change logs for version control. Use tasks like `Diff` to compare two database schemas and output the differences, ideal for tracking database changes in Git.
 - Dedicated [dlt plugin](https://github.com/kestra-io/kestra/issues/11114) with a `CLI` task to run dlt pipelines directly from Kestra. Configure sources, destinations, and incremental loading strategies to streamline your data ingestion workflows.
 - [Airtable plugin](https://github.com/kestra-io/kestra/issues/11212) with five new tasks: `List` to retrieve records with filters and pagination, `Get` to fetch a single record by ID, `Create` to add new records, `Update` to modify existing records, and `Delete` to remove records from your Airtable bases.
