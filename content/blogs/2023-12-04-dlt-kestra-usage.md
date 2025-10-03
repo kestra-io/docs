@@ -122,9 +122,9 @@ In my [subflow](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/subflow.yml
   messages: [{"role": "system", "content": "You are a tool that summarizes emails."}]
 ```
 
-::info
+:::alert{type="info"}
 **`Kestra`** also includes Slack, as well as BigQuery plugins, which I used in my flows. Additionally, there is a wide variety of [other plugins](https://kestra.io/plugins) available.
-::
+:::
 
 ### The automation part
 
