@@ -31,5 +31,5 @@ This section describes those features in detail and explains how to configure th
 
 If you're interested to learn more, check our [Open-Source and Paid Editions comparison](../oss-vs-paid.md), explore our [Pricing](/pricing), and [get in touch](/demo) to discuss your requirements.
 
-::ChildCard
-::
+:::ChildCard
+:::

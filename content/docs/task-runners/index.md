@@ -21,5 +21,5 @@ Note that some task runner plugins are available only in the [Enterprise Edition
 
 ---
 
-::ChildCard
-::
+:::ChildCard
+:::
