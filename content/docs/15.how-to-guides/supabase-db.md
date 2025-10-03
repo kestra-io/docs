@@ -59,7 +59,7 @@ pluginDefaults:
 
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
@@ -72,7 +72,7 @@ pluginDefaults:
       password: "{{ kv('SUPABASE_PASSWORD') }}
 ```
 
-::
+:::
 
 ## Copying a CSV file into Supabase DB inside of a Flow
 

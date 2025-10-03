@@ -199,7 +199,7 @@ jobs:
 
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
-::alert{type="info"}
+:::alert{type="info"}
 Here is a modified version of the same workflow but this time using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of a `user` name and `password`:
 
 ```yaml
@@ -240,7 +240,7 @@ jobs:
           delete: false
 ```
 
-::
+:::
 
 
 ### Deploy flows from a GitLab CI/CD
