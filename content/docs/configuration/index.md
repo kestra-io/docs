@@ -1749,12 +1749,12 @@ This setting allows to delete all configuration files after the server startup. 
 configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in
 memory, and they won't be accessible from tasks.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: false
 ---
-::
+:::
 
 ### Server Liveness & Heartbeats
 
@@ -1772,34 +1772,34 @@ it's perfectly safe to set different values for those parameters depending on th
 Enable the liveness probe for the server. This property controls whether a server can be detected as `DISCONNECTED` or
 not. Must always be `true` for production environment.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: true
 ---
-::
+:::
 
 #### `kestra.server.liveness.interval`
 
 Frequency at which an `Executor` will check the liveness of connected servers.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5s
 ---
-::
+:::
 
 #### `kestra.server.liveness.timeout`
 
 The time an `Executor` will wait for a state update from a server before considering it as `DISCONNECTED`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
 :::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
@@ -1809,12 +1809,12 @@ Note that this parameter MUST be configured with the same value for all `Executo
 
 The initial delay after which an `Executor` will start monitoring the liveliness of a server joining the cluster.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
 :::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
@@ -1825,12 +1825,12 @@ Note that this parameter MUST be configured with the same value for all `Executo
 The interval at which a server will send a heartbeat indicating its current state.
 Must be strictly inferior to `kestra.server.liveness.timeout`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 3s
 ---
-::
+:::
 
 #### Recommended configuration for production
 
@@ -1878,23 +1878,23 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
 
 The interval at which a Worker will send a heartbeat indicating its current state can be configured using the `kestra.heartbeat.frequency` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 10s
 ---
-::
+:::
 
 ### Heartbeat Missed
 
 The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeat-missed` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Integer
 defaultValue: 3
 ---
-::
+:::
 
 ### Worker Task Restart Strategy
 
@@ -1925,13 +1925,13 @@ This strategy should prefer to reduce the risk of task duplication  (i.e., tasks
 effort).
 
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: String
 defaultValue: AFTER_TERMINATION_GRACE_PERIOD
 validValues: NEVER, IMMEDIATELY, AFTER_TERMINATION_GRACE_PERIOD
 ---
-::
+:::
 
 ### Termination Grace Period
 
@@ -1944,12 +1944,12 @@ The termination grace period defines the allowed period for a server to stop gra
 
 The expected time for the server to complete all its tasks before shutting down.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5m
 ---
-::
+:::
 
 ## Internal Storage
 
