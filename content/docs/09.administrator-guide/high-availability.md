@@ -14,9 +14,9 @@ Highly available systems are built to keep running even in the event of componen
 
 In Kestra, high availability is achieved by running multiple instances of each core component — including the `webserver` (API), `scheduler`, `executor`, `indexer`, and `workers`. This ensures that if one instance fails, the system can continue to operate without interruption.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that you need to deploy Kestra using the [Kafka and Elasticsearch architecture](../07.architecture/index.md#architecture-with-kafka-and-elasticsearch-backend). This architecture is designed to be highly available and fault-tolerant.
-::
+:::
 
 ## Scaling the components
 
@@ -32,9 +32,9 @@ Additionally, the Elasticsearch and Kafka clusters can be scaled out as needed t
 
 Finally, the internal storage (such as e.g. S3) is highly available and fault-tolerant by design.
 
-::alert{type="info"}
+:::alert{type="info"}
 Ensure that the underlying host system is also tuned for high availability and fault tolerance. For example, adjusting the Linux kernel parameter `net.ipv4.tcp_retries2` can reduce [TCP retransmission times](https://access.redhat.com/solutions/726753).
-::
+:::
 
 ## Load balancing
 

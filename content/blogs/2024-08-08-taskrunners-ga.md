@@ -53,13 +53,13 @@ One of the key benefits of Task Runners is their ability to run the same busines
 
 Whether you are developing locally in Docker or running production workloads in Kubernetes, Task Runners offer a **consistent API**, requiring **no changes to your business logic code**. Thanks to `pluginDefaults`, you can manage your task runner configuration and credentials in a single place for each environment without code duplication.
 
-::alert{type="info"}
+:::alert{type="info"}
 Check the video below summarizing the key benefits of Task Runners.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-::
+:::
 
 ## Next steps
 

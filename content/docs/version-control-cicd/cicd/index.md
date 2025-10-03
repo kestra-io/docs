@@ -33,12 +33,12 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --api-token <your-api-token>
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the `--api-token` option is available only in the [Enterprise Edition](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md). In the open-source version, you can leverage the basic authentication using the `--user` flag:
 ```bash
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
 ```
-::
+:::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
 
@@ -81,9 +81,9 @@ For all available CLI options on both `flow validate` and `flow namespace update
 ./kestra template namespace update template-namespace-to-update path-to-template-directory
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that templates are deprecated and will be removed in a future release. Use subflows instead.
-::
+:::
 
 ### Deploy flows... from a flow!
 

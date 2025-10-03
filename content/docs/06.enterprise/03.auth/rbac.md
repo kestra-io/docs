@@ -69,9 +69,9 @@ A Permission is a resource that can be accessed by a User or Group. Supported Pe
 - `TENANT_ACCESS`
 - `GROUP_MEMBERSHIP`
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../11.migration-guide/0.24.0/endpoint-changes.md#rbac-updates)
-::
+:::
 
 ### Actions
 
@@ -171,9 +171,9 @@ For more details, check the [Enterprise Edition Configuration](../../configurati
 
 ::collapse{title="Grant/Revoke Super Admin permissions"}
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that you need to be a super admin yourself.
-::
+:::
 
 #### Through the UI
 
@@ -203,9 +203,9 @@ This role can be assigned to any User, Service Account, or Group. This allows yo
 
 When using multi-tenancy, Kestra assigns the Admin Role to the user who created the tenant by default.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you see an error when creating a new User or Service Account, it might be caused by a limit on your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
-::
+:::
 
 ::collapse{title="Creating a User with an Admin Role"}
 
@@ -248,9 +248,9 @@ Once you have created your first role. You can attach that role to an entity thr
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
-::alert{type="info"}
+:::alert{type="info"}
 **Note:** Service Accounts are considered as Users when binding.
-::
+:::
 
 ::
 

@@ -18,12 +18,12 @@ Kestra supports OpenTelemetry out of the box. You can export traces for every ex
 
 In this post, we’ll focus on tracing — how to enable it, how it works in Kestra, and how to use tools like Jaeger to analyze flow executions. If you're looking for metrics or logs, check out [OpenTelemetry](/docs/09.administrator-guide/open-telemetry) guide.
 
-::alert{type="info"}
+:::alert{type="info"}
  you’ll need:
 - A running Kestra instance
 - Docker (for Jaeger)
 - Basic understanding of YAML configs
-::
+:::
 
 ## OpenTelemetry traces
 
@@ -72,12 +72,12 @@ services:
       - COLLECTOR_OTLP_ENABLED=true
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If you don’t see any traces in the Jaeger UI, make sure:
 - OpenTelemetry is enabled in both Micronaut and Kestra configs
 - The OTLP exporter points to the correct Jaeger gRPC port (`4317` by default)
 - You're selecting the correct service name ("Kestra") in the Jaeger UI
-::
+:::
 
 Let's first test with an __Hello World__ flow:
 

@@ -46,9 +46,9 @@ When adding a secret in AWS, you will need to specify the following tags:
 - `key`: the key which you will use to access the secret inside of your workflow.
 - `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
-::
+:::
 
 ## Azure Key Vault Configuration
 

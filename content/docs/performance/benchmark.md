@@ -19,9 +19,9 @@ Benchmarks were run on a Google Cloud **e2-standard-4** VM (4 vCPUs, 16 GB RAM) 
 1. **Kestra Open Source (OSS)** — Postgres 16 backend (4 vCPUs, 16 GB RAM). Database runs remotely to simulate production.
 2. **Kestra Enterprise Edition (EE)** — Kafka backend (4 vCPUs, 16 GB RAM). Kafka and Elasticsearch run on separate VMs.
 
-::alert{type="info"}
+:::alert{type="info"}
 Benchmark results are for Kestra 1.0.1.
-::
+:::
 
 ---
 

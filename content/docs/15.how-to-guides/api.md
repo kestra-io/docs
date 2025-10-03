@@ -516,9 +516,9 @@ To do this, we will make the following request:
 curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Note:** Make sure `fileContent` has the correct path to your file.
-::
+:::
 
 When we make this request, we can see it appear in the Namespace Editor:
 

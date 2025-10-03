@@ -40,9 +40,9 @@ Just so you're aware:
 - **[`Kestra`](https://github.com/kestra-io/kestra)** is an open-source automation tool that makes both scheduled and event-driven workflows easy.
 - **[`dlt`](https://github.com/dlt-hub/dlt)** is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
 
-::alert{type="info"}
+:::alert{type="info"}
 Wanna jump to the [GitHub repo](https://github.com/dlt-hub/dlt-kestra-demo)?
-::
+:::
 
 ---
 
@@ -66,9 +66,9 @@ Now, all you need to do is [create your flows](https://github.com/dlt-hub/dlt-ke
 The great thing about **`Kestra`** is its ease of use - it's UI-based, declarative, and language-agnostic. Unless you're using a task like a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script), you don't even need to know how to code.
 
 
-::alert{type="info"}
+:::alert{type="info"}
 If you're already considering ways to use **`Kestra`** for your projects, consult their [documentation](https://kestra.io/docs) and the [plugin](https://kestra.io/plugins) pages for further insights.
-::
+:::
 
 ### The data loading part
 
@@ -102,9 +102,9 @@ In this setup ☝️, **`dlt`** loads all email data into the table “my_inbox�
 
 ![bigquery_my_inbox](https://storage.googleapis.com/dlt-blog-images/dlt_kestra_bigquery_my_inbox.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](/blogs/2023-12-04-dlt-kestra-usage/2.png).
-::
+:::
 
 ### The AI part
 
@@ -122,9 +122,9 @@ In my [subflow](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/subflow.yml
   messages: [{"role": "system", "content": "You are a tool that summarizes emails."}]
 ```
 
-::info
+:::alert{type="info"}
 **`Kestra`** also includes Slack, as well as BigQuery plugins, which I used in my flows. Additionally, there is a wide variety of [other plugins](https://kestra.io/plugins) available.
-::
+:::
 
 ### The automation part
 

@@ -22,5 +22,5 @@ We then dive into `parallel` task execution, error handling, as well as custom s
 [Fundamentals: build a "Hello World" flow](./01.fundamentals.md)
 ::
 
-::ChildCard
-::
+:::ChildCard
+:::

@@ -59,18 +59,18 @@ In this case, the following occurs:
 If no `basic-auth` configuration is defined:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you forget your credentials, update the `username` and `password` in the configuration file. The configuration file always takes precedence over values set from the Setup page.
-::
+:::
 
 ### Scenario 4: Using Authorization headers instead of cookies
 
-Kestra’s API accepts both `Authorization: Basic ...` headers and cookies for authentication.  
+Kestra’s API accepts both `Authorization: Basic ...` headers and cookies for authentication.
 However, the **UI only works with cookie-based authentication** and will ignore the `Authorization` header.
 
 If you are running in an environment where headers are injected automatically (e.g. via proxy or authentication middleware), you have two options:
 
-- Use a proxy or middleware to translate the `Authorization` header into a `BASIC_AUTH` cookie before forwarding to the Kestra UI.  
+- Use a proxy or middleware to translate the `Authorization` header into a `BASIC_AUTH` cookie before forwarding to the Kestra UI.
 - Use a browser extension (e.g. [ModHeader](https://modheader.com/)) to inject the `BASIC_AUTH` cookie directly.
 
 This limitation does not affect API usage, which continues to accept both headers and cookies.

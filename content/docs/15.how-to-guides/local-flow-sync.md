@@ -17,9 +17,9 @@ How to synchronize flows from a local directory on a local development instance.
 
 ## Configure your instance
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This feature is only for local development, that is why you can not connect to a distant Kestra instance.
-::
+:::
 
 When developing on a local Kestra instance, it can be more convenient to have your flows in a local directory, maybe synchronize with a GitHub repository on your local machine, and have Kestra automatically load them.
 

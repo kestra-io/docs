@@ -59,8 +59,8 @@ We delivers major performance and scalability improvements, largely thanks to th
 
 Stay tuned—there’s more to come as the focus on performance, resiliency, and scalability continues.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

@@ -28,9 +28,9 @@ Sometimes you might need to roll back Kestra to a previous version. Follow these
 
 Check the [Backup and Restore](./backup-and-restore.md) section for more information on how to backup and restore Kestra, and [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) to pause your Kestra instance for maintenance, upgrade, and backup tasks.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 We strongly recommend avoiding downgrades. To prevent surprises, test the new version in a non-production environment before upgrading. If you must roll back, closely follow the steps above.
-::
+:::
 
 ## Where you can find the release changelog
 
@@ -40,9 +40,9 @@ You can find the changelog on the main repository’s [Releases](https://github.
 
 In addition to bug fixes and enhancements, the release notes include a `Breaking Changes` section. It lists changes that may require adjustments to your code or Kestra configuration, with links to [migration docs](../11.migration-guide/index.md).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The `Breaking Changes` section appears at the end of the [release notes](https://github.com/kestra-io/kestra/releases). Review it before upgrading.
-::
+:::
 
 ## How to minimize downtime when updating Kestra
 
@@ -55,9 +55,9 @@ If you run Kestra as separate components, you should:
 
 All components support graceful shutdown, so no data is lost. Afterward, update and restart everything in the opposite order (or in any order, as components are independent).
 
-::alert{type="info"}
+:::alert{type="info"}
 The webserver hosts the API, so stop and then start it immediately to avoid downtime. After that, restart the other components so flow executions can resume.
-::
+:::
 
 ## How to stick to a specific Kestra version
 

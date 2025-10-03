@@ -59,9 +59,9 @@ triggers:
     key: superStrongSecretKey42
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store it securely.
-::
+:::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
 
@@ -259,9 +259,9 @@ triggers:
     key: superStrongSecretKey42
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
-::
+:::
 
 And here is the result:
 
