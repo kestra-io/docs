@@ -143,7 +143,7 @@
       const stickyElements = document.querySelectorAll('.sticky-tr');
       if(stickyElements) {
         stickyElements?.forEach((item) => {
-          if (item.getBoundingClientRect()?.top <= 210) {
+          if (item.getBoundingClientRect()?.top <= 240) {
             item?.classList.add('shadow')
           } else {
             item?.classList.remove('shadow')
@@ -301,6 +301,10 @@
                     top: 64px;
                 }
 
+                tr th div{
+                  padding-top: 62px;
+                }
+
                 tr th:last-child {
                     .border-radius {
                         border-left: 1px solid #7117FF;
@@ -312,7 +316,7 @@
                 .border-bottom-elem {
                     position: absolute;
                     width: 100%;
-                    z-index: 99999999!important;
+                    z-index: 100;
                     padding: 0 16px 0 44px;
 
                     @include media-breakpoint-down(xl) {
@@ -384,7 +388,7 @@
                 }
                 .sticky-tr {
                     position: sticky;
-                    top: 185px;
+                    top: 240px;
                     background: #FFFFFF;
                     z-index: 100;
                 }
