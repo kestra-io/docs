@@ -68,6 +68,7 @@
     .cont {
         overflow: clip;
         background: #121217;
+        margin-top: 62px;
 
         @include media-breakpoint-down(md) {
             background-image: url(/public/landing/pricing/visual-bg.png);
