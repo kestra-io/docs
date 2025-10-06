@@ -465,6 +465,12 @@ kestra:
         <LICENSE KEY>
 ```
 
+The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
+
+- `kestra.ee.license.id`: license identifier.
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md).
+- `kestra.ee.license.key`: license key.
+
 Kestra validates the license on startup.
 
 ## EE sidebar configuration
@@ -594,7 +600,7 @@ Without `kestra.encryption.secret-key`, `SECRET` types throw:
 
 ## Endpoints
 
-Secure Micronaut endpoints with basic auth:
+Secure [Micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration) with basic auth:
 
 ```yaml
 endpoints:
@@ -662,7 +668,7 @@ Larger values reduce load but delay UI updates.
 
 ## Kafka
 
-**Enterprise Edition.**
+You can set up your Kafka connection using the `kestra.kafka` configuration. **Enterprise Edition only.**
 
 ### Client properties
 
@@ -698,7 +704,7 @@ kestra:
     type: kafka
 ```
 
-`kestra.kafka.client.properties` accepts any Kafka property (see Kafka docs).
+`kestra.kafka.client.properties` accepts any Kafka property (see [Kafka docs](https://kafka.apache.org/documentation/)).
 
 ### Topics
 
@@ -707,11 +713,15 @@ Defaults can be tuned:
 - `kestra.kafka.defaults.topic.partitions` (default 16)
 - `kestra.kafka.defaults.topic.replication-factor` (default 1)
 
+The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
+
 :::alert{type="warning"}
 Set replication factor per your cluster. For 3 brokers, use 3 for HA.
 :::
 
 ### Consumer, producer, and stream defaults
+
+You can change the default properties of the Kafka client used by Kestra using the `kestra.kafka.defaults.[consumer|producer|stream].properties` configuration. These allow you to change any available properties.
 
 ```yaml
 kestra:
@@ -739,7 +749,10 @@ kestra:
 
 ### Topic names and properties
 
-Rename topics or set per-topic properties via `kestra.kafka.defaults.topics`. See defaults in the project’s `application.yml`.
+Rename topics or set per-topic properties via `kestra.kafka.defaults.topics`. See defaults in the [project’s `application.yml`](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yml).
+
+- `kestra.kafka.defaults.topics.{{topic}}.name`: Change the name of the topic.
+- `kestra.kafka.defaults.topics.{{topic}}.properties`: Change the default properties used during topic automatic creation.
 
 ### Consumer prefix
 
@@ -803,7 +816,7 @@ kestra:
 ### Protecting against large messages
 
 :::alert{type="info"}
-Experimental.
+This is an **Experimental** feature.
 :::
 
 Store oversize messages in internal storage to avoid failures:
@@ -960,6 +973,8 @@ micronaut:
 
 ### Configure SSL
 
+[This guide](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html) will help you configure SSL with Micronaut.
+
 Example (passwords via env vars):
 
 ```yaml
@@ -1000,6 +1015,8 @@ micronaut:
 
 ### Changing base path
 
+If behind a reverse proxy, you can change the base path of the application with the following configuration:
+
 ```yaml
 micronaut:
   server:
@@ -1007,6 +1024,8 @@ micronaut:
 ```
 
 ### Changing host resolution
+
+If behind a reverse proxy, you can change host resolution (http/https/domain name) providing the header sent by your reverse proxy:
 
 ```yaml
 micronaut:
@@ -1239,7 +1258,7 @@ To set task-level retries globally, use plugin defaults:
 
 ## Secret managers
 
-Configure a secrets backend via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
+Configure a [secrets backend](../06.enterprise/02.governance/secrets-manager.md) via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
 
 ```yaml
 kestra:
@@ -1320,7 +1339,7 @@ kestra:
 
 Supported auth methods: Userpass, Token, AppRole.
 
-Userpass:
+[Userpass](https://www.vaultproject.io/docs/auth/userpass):
 
 ```yaml
 kestra:
@@ -1337,7 +1356,7 @@ kestra:
       expire-after-write: 60s
 ```
 
-Token:
+[Token](https://www.vaultproject.io/docs/auth/token):
 
 ```yaml
 kestra:
@@ -1349,7 +1368,7 @@ kestra:
         token: your-secret-token
 ```
 
-AppRole:
+[AppRole](https://www.vaultproject.io/docs/auth/approle):
 
 ```yaml
 kestra:
@@ -1396,6 +1415,8 @@ kestra:
 
 ## Security
 
+Using the `kestra.security` configuration, you can set up multiple security features of Kestra.
+
 ### Super-admin
 
 The [Super-admin](../06.enterprise/03.auth/rbac.md#super-admin) has the highest privileges.
@@ -1428,7 +1449,7 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
 ```
 
-With multi-tenancy, restrict to one tenant:
+With [multi-tenancy]((../06.enterprise/02.governance/tenants.md)), restrict to one tenant:
 
 ```yaml
 kestra:
@@ -1632,7 +1653,7 @@ kestra:
       bucket: "<your-s3-bucket-name>"
 ```
 
-More options in the S3 plugin source.
+More options in the [S3 plugin source](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
 
 #### Assume role (STS)
 
@@ -1669,7 +1690,7 @@ kestra:
       part-size: 5MB
 ```
 
-If MinIO is configured with `MINIO_DOMAIN`, use virtual host syntax via `kestra.storage.minio.vhost: true`. Keep `endpoint` as base domain (`my.domain.com`), not `bucket.domain`.
+If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1) via `kestra.storage.minio.vhost: true`. Keep `endpoint` as base domain (`my.domain.com`), not `bucket.domain`.
 
 ### Azure
 
@@ -1718,7 +1739,7 @@ kestra:
       service-account: "<JSON or use default credentials>"
 ```
 
-If not set, default credentials are used (GKE/GCE). Alternatively, set `GOOGLE_APPLICATION_CREDENTIALS`.
+If not set, default credentials are used (GKE/GCE). Alternatively, set `GOOGLE_APPLICATION_CREDENTIALS`. You can find more details in the [GCP documentation](https://cloud.google.com/docs/authentication/production).
 
 ## System flows
 
@@ -1764,7 +1785,7 @@ kestra:
 
 ## Enabling templates
 
-Templates are deprecated and disabled by default since 0.11.0. Re-enable:
+Templates are [deprecated]((../11.migration-guide/0.11.0/templates.md)) and disabled by default since 0.11.0. Re-enable:
 
 ```yaml
 kestra:
@@ -1824,7 +1845,7 @@ Camel case becomes hyphenated.
 
 ### Recursive rendering
 
-Restore pre-0.14.0 behavior (defaults to `false`):
+Restore [pre-0.14.0 behavior](../11.migration-guide/0.14.0/recursive-rendering.md) (defaults to `false`):
 
 ```yaml
 kestra:
