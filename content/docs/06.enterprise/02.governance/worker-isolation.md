@@ -29,7 +29,7 @@ To only limit access to certain plugins on a Worker without requiring file path 
 
 ### `kestra.ee.java-security.forbidden-paths`
 
-This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect Kestra configuration files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
+This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect [Kestra configuration](../../configuration/index.md) files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
 
 ### `kestra.ee.java-security.authorized-class-prefix`
 

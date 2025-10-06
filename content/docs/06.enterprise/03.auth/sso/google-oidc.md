@@ -59,7 +59,7 @@ Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity
 Now that Google is set up as an OIDC provider, we need to link it to Kestra.
 
 1. **Navigate to the Kestra Configuration File**:
-   - Locate Kestra’s `yaml` configuration file.
+   - Locate Kestra’s `yaml` [configuration](../../../configuration/index.md) file.
 
 2. **Add the OIDC Settings**:
    - Add the following configuration to enable Google as an OIDC provider for Kestra:
