@@ -3,10 +3,10 @@
         <div class="hero container">
             <div class="text-block">
                 <h1>
-                    Powerful orchestration.
+                    Powerful orchestration.<br />
                     Simplified workflows.
                 </h1>
-                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, and from the UI.</p>
+                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, from the UI and with AI.</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"
@@ -234,7 +234,7 @@
             font-size: .9rem;
             @include media-breakpoint-up(lg) {
                 text-wrap: wrap;
-                width: 600px;
+                width: 630px;
                 font-size: 1.2rem;
             }
         }

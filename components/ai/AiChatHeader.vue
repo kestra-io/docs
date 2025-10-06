@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="brand">
-            <NuxtImg src="/docs/icons/ks-ai.png" alt="Kestra AI" width="30px" height="30px" />
+            <img src="/docs/icons/ks-ai.svg" alt="Kestra AI" width="30px" height="30px" />
             <span>Ask Kestra AI</span>
         </div>
 

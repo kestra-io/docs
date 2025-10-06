@@ -40,9 +40,7 @@ watch([absX, absY], ([xv, yv]) => {
 
 .home-card {
     background-image:
-        radial-gradient(500px at var(--x) var(--y),rgba(153,153,153,0.08),transparent 100%),
-        linear-gradient(180deg,#21242e99 0,#1a1c2499),
-        linear-gradient(90deg,#1A1C24 0,#373A44,#1A1C24);
+        radial-gradient(500px at var(--x) var(--y), oklch(0.3 0.0193 271.93) 0, oklch(0.26 0.0193 271.93) 100%);
     border-radius: 1rem;
     box-shadow: 0px 12px 24px 8px #00000017;
     border: 1px solid #2C2E4B;

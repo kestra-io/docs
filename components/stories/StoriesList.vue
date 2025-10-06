@@ -25,8 +25,8 @@
             <CommonPagination
                 v-if="totalPages > 1"
                 :totalPages="totalPages"
-                v-model:currentPage="currentPage"
-                @update:currentPage="changePage"
+                v-model:current-page="currentPage"
+                @update:current-page="changePage"
             />
         </div>
     </div>
@@ -49,7 +49,6 @@ const currentPage = ref(1);
 const totalPages = computed(()=>{
     return Math.ceil(props.totalStories / itemsPerPage.value)
 })
-
 const changePage = () => {
     window.scrollTo(0, 0)
     fetchPageData()

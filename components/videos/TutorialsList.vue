@@ -100,8 +100,8 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <CommonPagination
                             :totalPages="totalPages"
-                            :currentPage="page"
-                            @update:currentPage="changePage"
+                            v-model:current-page="page"
+                            @update:current-page="changePage"
                             v-if="totalPages > 1"
                         />
                         <div class="d-flex align-items-baseline">

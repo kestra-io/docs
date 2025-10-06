@@ -9152,6 +9152,8 @@ components:
           type: string
         version:
           type: string
+        edition:
+          $ref: "#/components/schemas/MiscController.Edition"
         commitId:
           type: string
         commitDate:
@@ -9162,6 +9164,8 @@ components:
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
+          type: boolean
+        isUiAnonymousUsageEnabled:
           type: boolean
         isTemplateEnabled:
           type: boolean
@@ -9185,6 +9189,11 @@ components:
           type: boolean
         isBasicAuthInitialized:
           type: boolean
+    MiscController.Edition:
+      type: string
+      enum:
+      - OSS
+      - EE
     MiscController.Environment:
       required:
       - color

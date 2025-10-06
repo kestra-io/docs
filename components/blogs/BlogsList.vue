@@ -96,7 +96,7 @@
                 </div>
                 <CommonPagination
                     :totalPages="totalPages"
-                    v-model:currentPage="pageNo"
+                    v-model:current-page="pageNo"
                     v-if="totalPages > 1"
                 />
             </div>

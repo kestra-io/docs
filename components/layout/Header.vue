@@ -369,7 +369,6 @@ const props = defineProps<{
     nuxtApp?: any;
 }>();
 
-const transparentHeader = ref(false);
 const isOpen = ref(false);
 const showDownloadLogos = ref(false);
 const showMenu = ref(false);
@@ -407,7 +406,6 @@ onMounted(() => {
 });
 
 watch(() => props.transparentHeader, (to) => {
-    transparentHeader.value = props.transparentHeader;
     globalClick(true);
 }, { deep: true });
 
