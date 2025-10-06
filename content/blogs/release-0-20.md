@@ -102,7 +102,7 @@ Starting from Kestra 0.20, you can set custom [Service Level Agreements (SLAs) p
 
 For instance, if a workflow takes longer than expected (`MAX_DURATION`) or doesn't return the expected results (`EXECUTION_ASSERTION`), you can set an SLA `behavior` to cancel or fail the execution. Alternatively, an SLA behavior can be set to `NONE` to simply log a message and add specific labels indicating the SLA breach.
 
-::collapse{title="Expand for an SLA example"}
+:::collapse{title="Expand for an SLA example"}
 ```yaml
 id: sla_example
 namespace: company.team
@@ -128,11 +128,11 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "This task won't execute because the SLA was breached."
 ```
-::
+:::
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that SLA is in Beta so some properties might change in the next release or two. Please be aware that its API could change in ways that are not compatible with earlier versions in future releases.
-::
+:::
 
 
 ## Flow Trigger Enhancements
@@ -141,7 +141,7 @@ Flow Triggers have been enhanced to allow easier configuration of complex depend
 
 Expand the examples below to see what’s possible with the improved Flow trigger conditions.
 
-::collapse{title="Run a silver layer flow once the bronze layer finishes successfully by 9 AM"}
+:::collapse{title="Run a silver layer flow once the bronze layer finishes successfully by 9 AM"}
 ```yaml
 id: silver_layer
 namespace: company.team
@@ -164,9 +164,9 @@ triggers:
           flowId: bronze_layer
           states: [SUCCESS]
 ```
-::
+:::
 
-::collapse{title="Send a Slack alert on failure from a company namespace"}
+:::collapse{title="Send a Slack alert on failure from a company namespace"}
 ```yaml
 id: alert_on_failure
 namespace: system
@@ -194,7 +194,7 @@ triggers:
               type: STARTS_WITH
               value: company
 ```
-::
+:::
 
 
 Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [plugin examples](/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
@@ -203,7 +203,7 @@ Check the [Flow trigger docs](https://kestra.io/docs/workflow-components/trigger
 
 The new `runIf` task property allows performing a check before executing a task. This feature is particularly useful when you need to conditionally execute tasks based on the output of a previous task or a user input. If the provided condition evaluates to false, the task will be skipped.
 
-::collapse{title="Example with a task that runs only if the boolean input is true"}
+:::collapse{title="Example with a task that runs only if the boolean input is true"}
 ```yaml
 id: conditional_branching
 namespace: company.team
@@ -219,7 +219,7 @@ tasks:
     message: Hello World!
     runIf: "{{ inputs.run_task }}"
 ```
-::
+:::
 
 This new property is useful in microservice orchestration scenarios where you need to conditionally execute tasks based on the status code of prior API calls.
 
@@ -229,7 +229,7 @@ Often some tasks emit warnings that are not important enough to block downstream
 
 The new core task property `allowWarning` allow a task run with warnings to be marked as `Success` by simply setting `allowWarning: true`.
 
-::collapse{title="Expand to learn more"}
+:::collapse{title="Expand to learn more"}
 
 Let’s take the following flow example:
 
@@ -248,13 +248,13 @@ Including `allowFailure: true` alone would cause the failure in the task run to 
 Here is a mini-schema to visualize the state transitions:
 
 `FAILED` state → `allowFailure` → `WARNING` state → `allowWarning` → `SUCCESS` state
-::
+:::
 
 ## New `errorLogs()` Function
 
 Speaking of failures and warnings: we have introduced a new `errorLogs()` Pebble function, allowing you to add specific error details to alert notifications. This makes it easier to understand what went wrong without diving into individual execution logs.
 
-::collapse{title="Expand to see how to use it"}
+:::collapse{title="Expand to see how to use it"}
 ```yaml
 id: error_logs_demo
 namespace: company.team
@@ -269,7 +269,7 @@ errors:
     type: io.kestra.plugin.core.log.Log
     message: "Failure alert: {{ errorLogs() }}"
 ```
-::
+:::
 
 ## New Sidebar
 

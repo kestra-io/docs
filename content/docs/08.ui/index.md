@@ -40,5 +40,5 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
 
 ---
 
-::ChildCard
-::
+:::ChildCard
+:::

@@ -27,9 +27,9 @@ Temporarily, there is a compatibility layer implemented to map `/api/v1/...` to 
 
 ### Migration Script
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Before running the following migration scripts, you must completely shut down the main Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
-::
+:::
 
 To add the tenantId field across your existing database (flows, executions, logs, etc.), use (with migrated being customizable):
 
@@ -37,13 +37,13 @@ To add the tenantId field across your existing database (flows, executions, logs
 kestra migrate default-tenant --dry-run
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
 - Use `--dry-run` to preview changes without modifying data.
 - Re-run without the flag to execute the migration.
-::
+:::
 
-::alert{type="info"}
+:::alert{type="info"}
 If you are using Helm for deployment, you can use an init container to run the migration:
 
 ```yaml
@@ -54,7 +54,7 @@ initContainers:
 ```
 
 You can remove it after successful run (it has to be only executed once).
-::
+:::
 
 ## Internal Storage Migration Guide from `defaultTenant` to a tenant
 

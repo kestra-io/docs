@@ -1,6 +1,6 @@
 ---
 title: "Kestra 1.0: Achieving 99% Faster Queries and Massive Scale With Xiaomi"
-description: "How we continue to improve Kestra’s performance and scalability in the 1.0 release series." 
+description: "How we continue to improve Kestra’s performance and scalability in the 1.0 release series."
 date: 2025-09-18T13:00:00
 category: Solutions
 author:
@@ -18,7 +18,7 @@ With 1.0, we’ve continued that momentum by optimizing MySQL queries, scaling w
 
 [Li Zi](https://github.com/thyw1) from Xiaomi contributed significant improvements to our MySQL list queries.
 
-For all MySQL queries that list table records, we used the `SQL_CALC_FOUND_ROWS` hint to return the number of queried rows using the `FOUND_ROWS()` function and avoid a separate `select count(*)` query.  
+For all MySQL queries that list table records, we used the `SQL_CALC_FOUND_ROWS` hint to return the number of queried rows using the `FOUND_ROWS()` function and avoid a separate `select count(*)` query.
 MySQL deprecated this hint and the function and advises to use a separate `select count(*)` query.
 
 At Xiaomi's scale (>100k records in tables), this shows a drastic reduction in query execution time from 30s to a few hundred milliseconds!
@@ -79,18 +79,18 @@ On our regular benchmark (a simple flow with two tasks), performance improved as
 
 This improvement significantly reduces latency, especially at high throughput. The maximum supported throughput doubled from 2000 executions per minute in 0.24 to up to 4000 in 1.0!
 
-::alert{type="info"}
+:::alert{type="info"}
 This improvement is only available starting with 1.0.1, as more testing was required before release.
-::
+:::
 
 ## Conclusion
 
-With Kestra 1.0, we continue to raise the bar on performance and scalability. Contributions from the community and our internal tuning have led to major gains across MySQL, worker threads, and Kafka Streams. These improvements reduce latency, increase throughput, and help Kestra scale smoothly as workloads grow.  
+With Kestra 1.0, we continue to raise the bar on performance and scalability. Contributions from the community and our internal tuning have led to major gains across MySQL, worker threads, and Kafka Streams. These improvements reduce latency, increase throughput, and help Kestra scale smoothly as workloads grow.
 
 Stay tuned—there’s more to come as we keep pushing performance, resiliency, and scalability forward.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

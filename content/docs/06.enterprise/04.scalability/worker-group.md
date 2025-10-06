@@ -9,9 +9,9 @@ How to configure Worker Groups in Kestra Enterprise Edition.
 
 A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
 
-::alert{type="info"}
+:::alert{type="info"}
 Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
-::
+:::
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/C-539c3UVJM?si=3USIb1F7OiW9AQVp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -19,8 +19,8 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 
 ## Creating Worker Groups from the UI
 
-::badge{version=">=0.19" editions="EE"}
-::
+:::badge{version=">=0.19" editions="EE"}
+:::
 
 To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
 
@@ -36,9 +36,9 @@ The Worker Groups UI tracks the health of worker groups, showing how many worker
 
 ![Worker Group UI Details](/docs/enterprise/worker-group-details.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../server-cli/index.md#kestra-with-server-components-in-different-services).
-::
+:::
 
 ## Using Worker Groups
 
@@ -85,8 +85,8 @@ tasks:
 
 ## Worker Group Fallback Behavior
 
-::badge{version=">=0.20" editions="EE"}
-::
+:::badge{version=">=0.20" editions="EE"}
+:::
 
 By default, a task configured to run on a given worker will wait for the worker to be available (i.e., `workerGroup.fallback: WAIT`). If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
 
@@ -188,9 +188,9 @@ In the below architecture, it is not possible to execute tasks on worker 1 from 
 
 ![Data Isolation Architecture](/docs/enterprise/data-isolation.png)
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
-::
+:::
 
 ## Load Balancing
 

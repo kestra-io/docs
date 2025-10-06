@@ -19,9 +19,9 @@ Starting with version 0.21, Kestra supports all three kinds of telemetry data th
 
 ## Traces
 
-::alert{type="info"}
+:::alert{type="info"}
 Exporting trace data in Kestra is currently a Beta feature.
-::
+:::
 
 The first step is to enable distributed traces inside the Kestra configuration file:
 
@@ -144,10 +144,10 @@ exporters:
 
 ## Logs
 
-To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../06.enterprise/02.governance/logshipper.md) with the built-in OpenTelemetry log exporter.  
-::alert{type="warning"}
+To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../06.enterprise/02.governance/logshipper.md) with the built-in OpenTelemetry log exporter.
+:::alert{type="warning"}
 LogShipper is only available in the Kestra **Enterprise Edition**.
-::
+:::
 
 The following flow sends logs from all flows to a collector daily:
 

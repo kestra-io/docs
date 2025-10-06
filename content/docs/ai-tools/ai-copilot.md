@@ -42,9 +42,9 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
-::
+:::
 
 ## Build flows with Copilot
 
@@ -76,7 +76,7 @@ You can continuously collaborate with Copilot until the flow is exactly as you i
 
 To get started with Copilot, here are some example prompts to test, iterate on, and use as a starting point for collaboratively building flows with AI in Kestra:
 
-::collapse{title="Example prompts to get started"}
+:::collapse{title="Example prompts to get started"}
 ```markdown
 - Create a flow that runs a dbt build command on DuckDB
 - Create a flow cloning https://github.com/kestra-io/dbt-example Git repository from a main branch, then add a dbt CLI task using DuckDB backend that will run dbt build command for that cloned repository using my_dbt_project profile and dev target. The dbt project is located in the root directory so no dbt project needs to be configured.
@@ -119,7 +119,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 - Run a flow whenever 5 records are available in Kafka topic mytopic
 - Submit a run for a Databricks job
 ```
-::
+:::
 
 ## Enterprise Edition Copilot configurations
 

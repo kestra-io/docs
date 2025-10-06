@@ -207,7 +207,7 @@ testCases:
 
 You can also use namespace files to mock file-based data in tests. For example, download the `orders.csv` file and upload it to `company.team` namespace from the built-in editor in the UI or using the `UploadFiles` task.
 
-::collapse{title="Example Flow Using Namespace Files"}
+:::collapse{title="Example Flow Using Namespace Files"}
 ```yaml
 id: ns_files_demo
 namespace: company.team
@@ -238,7 +238,7 @@ tasks:
     filesMap:
       orders.csv: "{{ outputs.extract.uri }}"
 ```
-::
+:::
 
 The test for this flow can use a fixture referencing that namespace file by its URI `{{fileURI('orders.csv')}}`:
 

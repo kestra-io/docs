@@ -21,9 +21,9 @@ For further details, Cloudflare has a good write-up on [why you should use https
 
 To get started in lower environments, you can create self-signed certificates using the OpenSSL library. Full details on the steps and how to examine the certificates and keys in more detail can be found in this [Micronaut article](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html).
 
-::alert{type="info"}
+:::alert{type="info"}
 While self-signed certificates encrypt traffic, they are considered unsuitable for production usage. They are deemed untrustworthy, as they do not come from a trusted Certificate Authority (CA) such as [Let's Encrypt](https://letsencrypt.org/). Follow your organization's best practices when choosing a CA provider.
-::
+:::
 
 ```bash
 # Create a folder which will be later mounted to the kestra container
@@ -80,9 +80,9 @@ keytool -import -trustcacerts -noprompt -alias ca \
 
 Enable HTTPS through the `micronaut` configuration settings. These are set at the root level within the Kestra configuration.
 
-::alert{type="info"}
+:::alert{type="info"}
 Ensure that you expose the secure port of the connection if different from the default port.
-::
+:::
 
 ```yaml
   kestra:
@@ -352,9 +352,9 @@ For environments where ingress TLS termination isn't available:
        targetPort: 8443
    ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Production deployments on cloud platforms such as Azure AKS typically require valid certificates from trusted CAs for SSO integration. Self-signed certificates may work for testing but aren't suitable for production use.
-::
+:::
 
 ### Verifying the Configuration
 

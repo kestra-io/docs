@@ -117,9 +117,9 @@ Video version:
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8OhRFGCV3A?si=jw-VsFDdVutDObhL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-::alert{type="info"}
+:::alert{type="info"}
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
-::
+:::
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages now offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
@@ -159,7 +159,7 @@ tasks:
       ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
 ```
 
-::collapse{title="Expand for a full workflow setting up all key-value pairs"}
+:::collapse{title="Expand for a full workflow setting up all key-value pairs"}
 ```yaml
 id: add_kv_pairs
 namespace: company.team
@@ -208,11 +208,11 @@ tasks:
         "Azure": ["eastus", "westus", "centralus", "northcentralus"]
       }
 ```
-::
+:::
 
-::alert{type="info"}
+:::alert{type="info"}
 Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays allows you to dynamically retrieve those as `SELECT` or `MULTISELECT` values in your conditional inputs.
-::
+:::
 
 
 We can now create a flow with conditional inputs that will reference the key-value pairs we've just configured:
@@ -246,7 +246,7 @@ inputs:
 ```
 
 
-::collapse{title="Full workflow example using the new Conditional Inputs feature"}
+:::collapse{title="Full workflow example using the new Conditional Inputs feature"}
 
 ```yaml
 id: request_resources
@@ -369,7 +369,7 @@ tasks:
       Status of the request {{ outputs.wait_for_approval.onResume.comment }}.
       Process finished with {{ outputs.approve.body }}.
 ```
-::
+:::
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
 
@@ -413,9 +413,9 @@ Until now, the documentation and blueprints were served on the website for the l
 
 From v0.19.0 on, Kestra dynamically fetches the correct documentation and blueprints based on the Kestra version you’re using. This is handled through new API endpoints pulling the relevant content when needed.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the documentation you see on the website always reflects the `latest` stable release. However, when you’re working in the app, you’ll see documentation and blueprint examples for your Kestra version. We deliberately decided not to introduce versioning on the website for now to avoid confusion when you accidentally stumble upon docs for an older version, which often results in broken links and annoying banners constantly reminding you to switch to the _latest_ version when browsing the documentation for an _older_ version.
-::
+:::
 
 Overall, we believe that **the best documentation is the one you don't have to read**. The second best is one that is always up-to-date and relevant to your current environment, and resurfaced when you need it. With this new feature, we aim to serve you the right documentation at the right time, making it easier to understand and use Kestra.
 
@@ -509,9 +509,9 @@ One of the key advantages of Managed Roles is that they stay up to date automati
 
 If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, Managed Roles provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
-::
+:::
 
 ---
 
@@ -636,9 +636,9 @@ curl -v -X POST -H 'Content-Type: multipart/form-data' \
     'http://localhost:28080/api/v1/executions/tutorial/hello_world?scheduleDate=2024-10-04T14:00:00.000000%2B02:00'
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL-encoded. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` when passing the date and time in a URL.
-::
+:::
 
 Here is how the `Subflow` task would look:
 
@@ -661,7 +661,7 @@ tasks:
 
 Assuming this child flow `myflow` is a long-running flow, the parent flow will not wait for it to finish (due to `wait: false`) and will continue executing other tasks. This is particularly useful when you want to schedule the subflow to run in the background when the right time comes and continue with other tasks in the parent flow.
 
-::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
+:::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
 ```yaml
 id: myflow
 namespace: company.team
@@ -673,13 +673,13 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```
-::
+:::
 
 The scheduled execution will be `CREATED`, and will transition into the `RUNNING` state at the `scheduleDate` — you can inspect all details including that scheduled date from the Overview page of that Execution.
 
 If you have multiple dates to schedule, you can combine the `Subflow` task with the `ForEach` task to create multiple scheduled executions in the future — useful especially if the dates are retrieved from an external source or calculated based on some internal business logic — see the example below.
 
-::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
+:::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
 ```yaml
 id: schedule_subflows
 namespace: company.team
@@ -719,7 +719,7 @@ tasks:
         scheduleDate: "{{ taskrun.value }}"
         wait: false
 ```
-::
+:::
 
 Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow:
 
@@ -811,9 +811,9 @@ We'd like to thank all existing and new contributors who helped make this releas
 
 In this release, we welcome a record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with the [good first issue](https://go.kestra.io/contribute) label. Join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
-::
+:::
 
 ---
 

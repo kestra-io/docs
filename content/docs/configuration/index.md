@@ -147,9 +147,9 @@ Currently, Kestra supports Postgres, H2, and MySQL.
 
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you experience performance issues when using PostgreSQL, you can tune the cost optimizer parameter `random_page_cost=1.1`, which should make PostgreSQL use the right index for the queues table. You can also configure `kestra.queue.postgres.disable-seq-scan=true` so that Kestra turns off sequential scans on the queue polling query forcing PostgreSQL to use the index.
-::
+:::
 
 
 ### Datasources
@@ -159,7 +159,7 @@ Once you added the `kestra.queue.type` and `kestra.repository.type`, you need to
 Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your `datasources` configuration.
 
 
-::collapse{title="PostgreSQL"}
+:::collapse{title="PostgreSQL"}
 
 Here is a minimal configuration for PostgreSQL:
 ```yaml
@@ -176,9 +176,9 @@ datasources:
     username: kestra
     password: k3str4
 ```
-::
+:::
 
-::collapse{title="MySQL"}
+:::collapse{title="MySQL"}
 
 Here is a minimal configuration for MySQL:
 ```yaml
@@ -197,13 +197,13 @@ datasources:
     dialect: MYSQL
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that we currently don't support the `8.0.31` version of MySQL. If possible, try another version or reach out via [Slack](/slack) to help you troubleshoot.
-::
+::::
 ::
 
 
-::collapse{title="H2"}
+:::collapse{title="H2"}
 
 Here is a minimal configuration for H2:
 
@@ -221,7 +221,7 @@ datasources:
     password: ""
     driver-class-name: org.h2.Driver
 ```
-::
+:::
 
 ### Connection pool size
 
@@ -322,9 +322,9 @@ The properties are the following:
 
 ### Protecting against too big messages
 
-::alert{type="info"}
+:::alert{type="info"}
 Note: this is an experimental feature available starting with Kestra 0.19.
-::
+:::
 
 The database backend has no limit on the size of messages it can handle. However, as messages are loaded into memory, this can endanger Kestra itself and push pressure on memory usage.
 
@@ -555,9 +555,9 @@ kestra:
 
 These links will appear in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
 
-::alert{type="info"}
+:::alert{type="info"}
 **Note:** The configuration syntax for right sidebar customization was updated since the initial launch in 0.24.0 to make it more explicit. If you previously used this feature, please update your configuration accordingly.
-::
+:::
 
 
 ### Left Sidebar: Disable Menus
@@ -581,9 +581,9 @@ Replace the menu names with those you want to disable. This feature is especiall
 
 ## Multi-tenancy
 
-::alert{type="warning"}
+:::alert{type="warning"}
 These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
-::
+:::
 
 By default, multi-tenancy is disabled. To enable it, add the `kestra.ee.tenants` configuration:
 
@@ -596,9 +596,9 @@ kestra:
 
 ## Default Tenant
 
-::alert{type="warning"}
+:::alert{type="warning"}
 These properties are removed in Kestra version 0.23. Refer to the [0.23 Migration Guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md) for compatibility.
-::
+:::
 
 By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.default-tenant` configuration:
 
@@ -678,9 +678,9 @@ When executing this flow, you will see a masked field:
 
 In the Execution Overview tab, you will see a masked value of the secret.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If the `secret-key` is not set in the `kestra.encryption` configuration, you will get an error: `Illegal argument: Unable to use a SECRET input as encryption is not configured` when trying to use a `SECRET` input or output type.
-::
+:::
 
 ## Endpoints
 
@@ -813,9 +813,9 @@ By default, Kestra automatically creates all the needed topics. You can change t
 
 The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 For the optimal value of the replication factor, validate the actual configuration of the target Kafka cluster. Generally, for high availability, the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use the replication factor of 3.
-::
+:::
 
 ### Consumer, Producer and Stream properties
 
@@ -888,9 +888,9 @@ kestra:
 
 The `kestra.kafka.client.loggers` configuration allows enabling logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This configuration has a huge performance impact, using regexp and serialization for most of the messages.
-::
+:::
 
 ```yaml
 kestra:
@@ -940,9 +940,9 @@ For example, for the topic storing executions, you can configure the retention v
 
 ### Protecting against too big messages
 
-::alert{type="info"}
+:::alert{type="info"}
 Note: this is an experimental feature.
-::
+:::
 
 Kafka topic has a limit of the size of messages it can handle. By default, we set this limit to 10MiB.
 If a message exceeds this limit, it may crash the executor and Kestra will stop.
@@ -1287,17 +1287,17 @@ kestra:
         level: ERROR
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 **⚠️ Important:** The `kestra.plugins.defaults` block is evaluated once **by the Executor** and the resulting values are propagated unchanged to every Kestra component (Executor, Webserver, Scheduler, Worker). Workers do not perform any template rendering or logic of their own; they simply receive the fully rendered task properties from the Executor, execute the task or trigger as instructed, and report back the status and outputs.
 
 Because of this design, all servers in your Kestra deployment must share the same `kestra.plugins.defaults` configuration. Any attempt to define different defaults for individual Workers (for example, by using separate template files in each Worker’s `application.yaml`) will have no effect at runtime. To ensure consistent behavior and avoid confusion, we recommend maintaining a single, unified `kestra.plugins.defaults` block in your Executor-side configuration.
-::
+:::
 
 For greater granularity, you can use the flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level) property, which overrides global defaults for the given flow.
 
-::alert{type="info"}
+:::alert{type="info"}
 For more information, you can see the dedicated [Plugin ​Defaults](../04.workflow-components/09.plugin-defaults.md) section.
-::
+:::
 
 #### Forced Plugin Defaults
 
@@ -1388,9 +1388,9 @@ kestra:
 
 ### Allowed plugins
 
-::alert{type="info"}
+:::alert{type="info"}
 This is an [Enterprise Edition](../06.enterprise/index.md) feature available starting with Kestra 0.19.
-::
+:::
 
 You can restrict which plugins can be used in a Kestra instance by configuring an include / exclude list using regexes.
 
@@ -1443,9 +1443,9 @@ Here are the available retry configuration options:
 - `kestra.retries.max-delay`: the max amount of time to retry (default `undefined`)
 - `kestra.retries.multiplier`: the multiplier of `delay` between each attempt (default `2.0`)
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that those retries are only applied to API calls made to internal storage (like S3 or GCS) and to secrets managers (like Vault or AWS Secrets Manager). They are not applied to tasks.
-::
+:::
 
 In order to globally configure retries for tasks, you can use the [plugin defaults](../04.workflow-components/09.plugin-defaults.md) with a global scope tied to the main `io.kestra` plugin path as follows:
 
@@ -1640,9 +1640,9 @@ The super-admin requires three properties:
   * At each startup, this user is checked and if the list of access permissions has been modified, new access permissions can be created, but none will be removed
 
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The password should never be stored in clear text in the configuration file. Make sure to use an environment variable in the format `${KESTRA_SUPERADMIN_PASSWORD}`.
-::
+:::
 
 ```yaml
 kestra:
@@ -1691,9 +1691,9 @@ kestra:
 ```
 
 
-::alert{type="info"}
+:::alert{type="info"}
 Make sure that you attach the `default-role` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
-::
+:::
 
 ### Invitation Expiration
 
@@ -1749,12 +1749,12 @@ This setting allows to delete all configuration files after the server startup. 
 configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in
 memory, and they won't be accessible from tasks.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: false
 ---
-::
+:::
 
 ### Server Liveness & Heartbeats
 
@@ -1772,65 +1772,65 @@ it's perfectly safe to set different values for those parameters depending on th
 Enable the liveness probe for the server. This property controls whether a server can be detected as `DISCONNECTED` or
 not. Must always be `true` for production environment.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Boolean
 defaultValue: true
 ---
-::
+:::
 
 #### `kestra.server.liveness.interval`
 
 Frequency at which an `Executor` will check the liveness of connected servers.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5s
 ---
-::
+:::
 
 #### `kestra.server.liveness.timeout`
 
 The time an `Executor` will wait for a state update from a server before considering it as `DISCONNECTED`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
-::
+:::
 
 #### `kestra.server.liveness.initial-delay`
 
 The initial delay after which an `Executor` will start monitoring the liveliness of a server joining the cluster.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 45s
 ---
-::
+:::
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that this parameter MUST be configured with the same value for all `Executor` server.
-::
+:::
 
 #### `kestra.server.liveness.heartbeat-interval`
 
 The interval at which a server will send a heartbeat indicating its current state.
 Must be strictly inferior to `kestra.server.liveness.timeout`.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 3s
 ---
-::
+:::
 
 #### Recommended configuration for production
 
@@ -1857,12 +1857,12 @@ kestra:
       initial-delay: 1m
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Note that Worker liveness is directly managed by the Apache Kafka protocol which natively provides
 durability and reliability of task executions.
-::
+:::
 
-::collapse{title="For Kestra versions prior to 0.16.0"}
+:::collapse{title="For Kestra versions prior to 0.16.0"}
 
 
 Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](../07.architecture/index.md#architecture-with-jdbc-backend)).
@@ -1872,29 +1872,29 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
   marked as unhealthy.
 * If the last received Heartbeat for a `Worker` is older than `heartbeat-missed * frequency * 2`, then the `Worker` is
   deleted from the server metadata.
-::
+:::
 
 ### Heartbeat Frequency
 
 The interval at which a Worker will send a heartbeat indicating its current state can be configured using the `kestra.heartbeat.frequency` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 10s
 ---
-::
+:::
 
 ### Heartbeat Missed
 
 The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeat-missed` configuration.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Integer
 defaultValue: 3
 ---
-::
+:::
 
 ### Worker Task Restart Strategy
 
@@ -1925,13 +1925,13 @@ This strategy should prefer to reduce the risk of task duplication  (i.e., tasks
 effort).
 
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: String
 defaultValue: AFTER_TERMINATION_GRACE_PERIOD
 validValues: NEVER, IMMEDIATELY, AFTER_TERMINATION_GRACE_PERIOD
 ---
-::
+:::
 
 ### Termination Grace Period
 
@@ -1944,12 +1944,12 @@ The termination grace period defines the allowed period for a server to stop gra
 
 The expected time for the server to complete all its tasks before shutting down.
 
-::ConfigPropertyCard
+:::ConfigPropertyCard
 ---
 type: Duration
 defaultValue: 5m
 ---
-::
+:::
 
 ## Internal Storage
 
@@ -2023,7 +2023,7 @@ kestra:
 Additional configurations can be found [here](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
 
 
-::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
+:::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
 
 You can configure Amazon S3 storage to utilize **AWS AssumeRole** to temporarily assume the permissions of a specific **IAM** role.
 When using AssumeRole with S3, you can omit specifying the `access-key-id` and `secret-access-key` in your configurations.
@@ -2046,7 +2046,7 @@ kestra:
       # (Optional)
       sts-endpoint-override: "<AWS Endpoint to communicate with>"
 ```
-::
+:::
 
 ### MinIO
 
@@ -2101,9 +2101,9 @@ kestra:
       sas-token: "<sas-token>"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that your Azure Blob Storage should disable `Hierarchical namespace` as this feature is [not supported](https://github.com/kestra-io/plugin-azure/issues/22) in Kestra.
-::
+:::
 
 ### GCS
 
@@ -2353,8 +2353,8 @@ kestra:
 
 ## Store Execution Data in Internal Storage
 
-::badge{version=">=0.23" editions="EE,Cloud"}
-::
+:::badge{version=">=0.23" editions="EE,Cloud"}
+:::
 
 If you are using the Kestra Enterprise Edition or Kestra Cloud, you can choose to store workflow outputs and inputs in the internal storage rather than in the central database. When enabled per Tenant or Namespace, this feature ensures that workflow outputs and inputs are stored in a dedicated internal storage (e.g., a dedicated S3 bucket), providing complete data separation across business units or teams. This is particularly useful for organizations that require strict data isolation.
 
@@ -2382,9 +2382,9 @@ kestra:
 
 If the above configuration is set to `true`, all workflow outputs and inputs will be stored in the internal storage, regardless of whether the Tenant or Namespace has a dedicated internal storage configured. If no dedicated internal storage is configured for a Tenant or Namespace, the workflow outputs and inputs will be stored in the default internal storage configured for the Kestra instance.
 
-::alert{type="info"}
+:::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
-::
+:::
 
 You can also configure this to a specific namespace or tenant via the Kestra UI on the [Edit Namespace page](../08.ui/04.namespaces/ee.md) or [Tenant page](../06.enterprise/02.governance/tenants.md).
 

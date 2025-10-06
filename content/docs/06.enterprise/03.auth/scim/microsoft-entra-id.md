@@ -49,9 +49,9 @@ Note that you can disable or completely remove the SCIM Integration at any time.
 ![scim3](/docs/enterprise/scim3.png)
 
 
-::alert{type="info"}
+:::alert{type="info"}
 At first, you can disable the integration to configure your Microsoft Entra ID integration in the Azure portal, and then enable it once the configuration is complete.
-::
+:::
 
 ### IAM Role and Service Account
 
@@ -66,9 +66,9 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
-::
+:::
 
 ---
 
@@ -108,9 +108,9 @@ Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the
 GET /api/v1/<tenant>/integrations/<integration_id>/scim/v2/Schemas
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Replace `<tenant>` with your actual tenant, and `<integration_id>` with your actual Kestra SCIM integration ID.
-::
+:::
 
 This endpoint returns a list of supported schemas and their attributes. Use it as a reference when configuring attribute mappings in Entra ID.
 
@@ -130,9 +130,9 @@ To configure mappings:
 3. Refer to the `/Schemas` endpoint response from Kestra to guide accurate mapping.
 4. Use attribute expressions or transformations in Entra ID if needed (e.g., to format names or emails).
 
-::alert{type="info"}
+:::alert{type="info"}
 By default, Azure will pre-populate the mapping with many Microsoft Entra ID attributes. You may need to **remove or simplify** some of these mappings if synchronization issues occur with users or groups in Kestra.
-::
+:::
 
 #### Test the Configuration
 After mappings are configured:

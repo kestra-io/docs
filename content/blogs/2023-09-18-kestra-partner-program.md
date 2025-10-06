@@ -32,11 +32,11 @@ Our commitment is to develop a significant network of Partners, each bringing a 
 If you are looking to leverage the simplest and most versatile open-source workflow orchestration solution, fill out the form below to become a partner.
 
 
-::HubspotForm
+:::HubspotForm
 {
   "region": "eu1",
   "portalId": "27220195",
   "formId": "e044de55-bda2-4bb8-9e50-ed8c78b94922",
   "event": "partner_form"
 }
-::
+:::

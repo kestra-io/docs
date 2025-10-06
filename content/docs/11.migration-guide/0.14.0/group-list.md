@@ -23,9 +23,9 @@ groupList:
     membership: MEMBER
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that if you use Kestra UI or manage users and groups via Terraform, you won't be affected by this change at all. This change only affects customers who manage groups programmatically via the API directly.
-::
+:::
 
 ## Summary
 

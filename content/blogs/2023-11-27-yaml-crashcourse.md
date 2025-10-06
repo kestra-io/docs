@@ -92,9 +92,9 @@ Scalars are single unquoted values which can represent various data types, inclu
 
 Note how the example below deliberately uses both `camelCase` and `snake_case` formats to demonstrate that YAML supports both.
 
-::alert{type="info"}
+:::alert{type="info"}
 At Kestra, we follow the `camelCase` convention for all YAML properties. However, since YAML is case-sensitive, you can use both `camelCase` and `snake_case` formats in your configuration files.
-::
+:::
 
 ```yaml
 unquotedString: Rick Astley # simple scalar value
@@ -240,13 +240,13 @@ quoted_value: "namespace: company.team" # string with a colon has to be quoted
 
 In practice, you'll rarely see quoted keys — most applications standardize on either the `camelCase` or `snake_case` convention without allowing special characters in keys. However, **if your key requires a space** or a special character, you need to **quote it**.
 
-::alert{type="info"}
+:::alert{type="info"}
 Kestra doesn't use spaces or special characters in keys. Instead, we follow the `camelCase` convention without spaces or special characters in keys.
-::
+:::
 
 String values can contain spaces, but special characters, incl. `:`, `?`, `[`, `]`, `{`, `}`, `,`, `&`, `*`, `#`, `!`, `|`, `>`, `'`, `"`, `%`, `@`, `` ` `` are reserved and must be quoted.
 
-::alert{type="info"}
+:::alert{type="info"}
 Usually, scalar values are parsed by YAML into the matching `int`, `float`, `string`, `timestamp`, `null`, or `boolean` data types. If you put those in **quotes**, they will be parsed as `strings` instead:
 
 ```yaml
@@ -259,7 +259,7 @@ float_value: 42.2
 string_value_with_boolean: "true"
 boolean_value: true
 ```
-::
+:::
 
 ---
 
@@ -327,9 +327,9 @@ Here are the differences:
 
 
 
-::alert{type="info"}
+:::alert{type="info"}
 To sum up multi-line strings, the `|` character preserves newlines as they are, and `>` is for folded blocks converting newlines to spaces. The `+` keeps the trailing newline, while `-` removes it.
-::
+:::
 
 ---
 
