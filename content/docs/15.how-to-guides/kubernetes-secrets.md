@@ -118,7 +118,7 @@ Note that in this method, the Kubernetes Secret's keys must start with `SECRET_`
 
 ## Use Kubernetes Secrets as Kestra Secrets with `configurations.secrets`
 
-An alternative is to mount an entire Kubernetes Secret as a Kestra configuration file using the `configurations.secrets` property.
+An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../configuration/index.md) file using the `configurations.secrets` property.
 
 For example, in `values.yaml`:
 
