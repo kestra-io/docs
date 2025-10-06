@@ -78,7 +78,7 @@ keytool -import -trustcacerts -noprompt -alias ca \
 
 ## Sample Kestra configuration with SSL enabled
 
-Enable HTTPS through the `micronaut` configuration settings. These are set at the root level within the Kestra configuration.
+Enable HTTPS through the `micronaut` configuration settings. These are set at the root level within the [Kestra configuration](../configuration/index.md).
 
 :::alert{type="info"}
 Ensure that you expose the secure port of the connection if different from the default port.
@@ -146,7 +146,7 @@ Ensure that you expose the secure port of the connection if different from the d
 ```
 
 ## Outbound SSL configuration
-If Kestra tasks make outbound calls to other services, secure the process by configuring SSL for outbound traffic. You can accomplish this in your Kestra configuration file by passing the following JVM options in the `JAVA_OPTS` environment variable:
+If Kestra tasks make outbound calls to other services, secure the process by configuring SSL for outbound traffic. You can accomplish this in your [Kestra configuration](../configuration/index.md) file by passing the following JVM options in the `JAVA_OPTS` environment variable:
 
 ```yaml
 JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
