@@ -92,6 +92,28 @@ export default defineNuxtConfig({
                     'remark-code-import': {
                         rootDir: process.cwd()
                     },
+                },
+                highlight: {
+                    langs: ['java',
+                        'yaml',
+                        'json',
+                        'bash',
+                        'groovy',
+                        'markdown',
+                        'python',
+                        'dockerfile',
+                        'powershell',
+                        'systemd',
+                        'hcl',
+                        'sql', 'xml',
+                        'properties',
+                        'ini', 'diff',
+                        'js', 'typescript',
+                        'tsx', 'css', 'scss',
+                        'php', 'python',
+                        'ruby', 'go', 'twig',
+                        'bash', 'shell', 'sh',
+                    ],
                 }
             },
         }
