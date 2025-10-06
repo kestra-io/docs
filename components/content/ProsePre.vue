@@ -4,9 +4,6 @@
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
     import Mermaid from "~/components/content/Mermaid.vue";
-    import useShiki from "~/composables/useShiki";
-
-    const {highlightCodeBlocks} = useShiki();
 
     const props = defineProps({
         code: {
@@ -38,12 +35,6 @@
     const copyTooltip = ref(null);
 
     const codeBlock = ref(null);
-
-    watch([() => props.code, codeBlock], ([newVal, block]) => {
-        if (block && newVal.length > 0) {
-            highlightCodeBlocks(block);
-        }
-    }, {immediate: true});
 
     function hoverCode() {
         isHoveringCode.value = true;

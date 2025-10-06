@@ -92,8 +92,7 @@ export default defineNuxtConfig({
                     'remark-code-import': {
                         rootDir: process.cwd()
                     },
-                },
-                highlight: false,
+                }
             },
         }
     },
