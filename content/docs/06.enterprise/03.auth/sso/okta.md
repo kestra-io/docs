@@ -59,7 +59,7 @@ Now that Okta is set up as an OIDC provider, we need to link it to Kestra. After
 
 ![okta-5](/docs/enterprise/sso/okta-5.png)
 
-After copying your **Client ID** and **Client Secret**, switch from the **General** tab to the **Sign On** tab. Here, you can configure your **OpenID Connect ID Token**. For this example, we will edit the issuer from Dynamic to our Okta URL. Click **Save** and copy the URL to be used in our [Kestra configuration](../../../configuration/index.md) along with the Client Id and Client Secret.
+After copying your **Client ID** and **Client Secret**, switch from the **General** tab to the **Sign On** tab. Here, you can configure your **OpenID Connect ID Token**. For this example, we will edit the issuer from Dynamic to our Okta URL. Click **Save** and copy the URL to be used in our [Kestra configuration](../../../configuration/index.md) along with the Client ID and Client Secret.
 
 ![okta-6](/docs/enterprise/sso/okta-6.png)
 
