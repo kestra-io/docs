@@ -64,7 +64,7 @@ After copying your **Client ID** and **Client Secret**, switch from the **Genera
 ![okta-6](/docs/enterprise/sso/okta-6.png)
 
 1. **Navigate to the Kestra Configuration File**:
-   - Locate Kestra’s `yaml` configuration file.
+   - Locate the [Kestra configuration](../../../configuration/index.md) file.
 
 2. **Add the OIDC Settings**:
    - Add the following configuration to enable Okta as an OIDC provider for Kestra:

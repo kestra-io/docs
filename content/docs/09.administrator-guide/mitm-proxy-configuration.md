@@ -49,11 +49,11 @@ This secret will be mounted into Kestra pods.
 
 ## Configuring Kestra to use the MITM proxy
 
-You must update the Kestra configuration and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
+You must update the [Kestra configuration](../configuration/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
 
 ### 1. Micronaut / Kestra configuration
 
-Add proxy settings and truststore configuration to your Kestra configuration (merged via Helm `configurations.application` or a config file):
+Add proxy settings and truststore configuration to your [Kestra configuration](../configuration/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
 # values.yaml (or application.yml configuration)

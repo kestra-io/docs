@@ -117,7 +117,7 @@ kestra:
 
 ## Metrics
 
-To send metrics to an OpenTelemetry-compatible collector, add the following parameters to your Kestra configuration file:
+To send metrics to an OpenTelemetry-compatible collector, add the following parameters to your [Kestra configuration](../configuration/index.md) file:
 
 ```yaml
 micronaut:
