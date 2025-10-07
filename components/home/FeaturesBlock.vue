@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import HomeCard from './Card.vue';
 const features = [
     {
         name: "Deploy Anywhere",

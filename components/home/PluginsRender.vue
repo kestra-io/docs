@@ -1,18 +1,25 @@
 <template>
-    <PluginsRender :totalPlugins :pluginLogos/>
+    <HomeCard class="container card-block">
+        <div class="plugin-text">
+            <h2 class="text-white"><span>{{ totalPlugins }}</span> Plugins<br/>That Integrate With<br/>Your <span>Stack</span></h2>
+            <h2 class="text-white mobile">Integrate With<br/>Your <span>Stack</span></h2>
+            <p>Connect  with third-party systems, data sources, and applications. And if you require a custom integration, our platform makes it easy to build custom plugins.</p>
+            <NuxtLink href="/plugins" class="btn btn-md btn-primary">See All Plugins</NuxtLink>
+        </div>
+        <div class="plugin-logos-grid">
+            <div v-for="plugin in pluginLogos" :key="plugin.name">
+                <img :src="plugin.logo" :alt="plugin.name" />
+            </div>
+        </div>
+    </HomeCard>
 </template>
 
 <script setup lang="ts">
-const { totalPlugins } = usePluginsCount();
-
-const plugins = import.meta.glob('@/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
-
-const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys(plugins).map((key) => {
-    return {
-        name: key?.split('/').pop()?.split('.').shift(),
-        logo: plugins[key]?.default
-    }
-}).sort(() => 0.5 - Math.random()).slice(0, 20) as {name: string, logo: string}[]))
+import HomeCard from "./Card.vue"
+defineProps<{
+    totalPlugins: number
+    pluginLogos: { name: string, logo: string }[]
+}>()
 </script>
 
 <style lang="scss" scoped>

@@ -21,6 +21,8 @@
 </template>
 
 <script lang="ts" setup>
+import { nextTick, ref } from 'vue';
+
 
 const tabs = [
     {
