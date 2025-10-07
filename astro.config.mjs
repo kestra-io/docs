@@ -17,6 +17,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   adapter: cloudflare({
     imageService: 'cloudflare'
   }),
