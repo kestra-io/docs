@@ -11,9 +11,9 @@ Kestra processes and stores various data components, including [flow definitions
 
 Kestra data is stored in either a [Repository](./01.main-components.md#repository), such as PostgreSQL, or [Internal Storage](./09.internal-storage.md), which by default is your local storage but can be configured to an [AWS S3](https://aws.amazon.com/s3/) bucket or [MinIO](https://min.io/).
 
-::alert{type="info"}
+:::alert{type="info"}
 You can read more about [Kestra's architecture](../07.architecture/03.deployment-architecture.md) and [Internal Storage](./09.internal-storage.md) in their dedicated documentation.
-::
+:::
 
 ## Data Storage Components
 
@@ -104,9 +104,9 @@ You can manage secrets in your Kestra instance with the secret manager of your c
 kestra:
   secret:
     type: aws-secret-manager
-    awsSecretManager:
-      accessKeyId: mysuperaccesskey
-      secretKeyId: mysupersecretkey
+    aws-secret-manager:
+      access-key-id: mysuperaccesskey
+      secret-key-id: mysupersecretkey
       sessionToken: mysupersessiontoken
       region: us-east-1
 ```

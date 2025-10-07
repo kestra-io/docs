@@ -104,7 +104,7 @@ outputs:
 
 Save that flow. Then, go to the `Apps` page and click on `+ Create`. Then, paste the app configuration shown below.
 
-::collapse{title="Expand for the App code"}
+:::collapse{title="Expand for the App code"}
 ```yaml
 id: request_data_form
 type: io.kestra.plugin.ee.apps.Execution
@@ -173,7 +173,7 @@ layout:
         delay: PT60S
         url: https://kestra.io/docs/
 ```
-::
+:::
 
 Click on `View App` to see it in action:
 
@@ -201,8 +201,8 @@ Apps open up a wide range of possibilities for automating user-facing processes.
 
 With Apps, you can make Kestra workflows accessible to everyone, regardless of their technical expertise. Try out Apps in the latest version of Kestra Enterprise Edition, and let us know what you think!
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

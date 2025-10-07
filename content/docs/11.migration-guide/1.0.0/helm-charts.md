@@ -13,9 +13,9 @@ We also restructured configurations and values to be more comprehensive and prod
 
 There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator).
 
-::alert{type="info"}
+:::alert{type="info"}
 Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading.
-::
+:::
 
 ## `kestra`
 
@@ -133,13 +133,13 @@ configurations:
       storage:
         type: local
         local:
-          basePath: "/app/storage"
+          base-path: "/app/storage"
     datasources:
       h2:
         url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
         username: kestra
         password: ""
-        driverClassName: org.h2.Driver
+        driver-class-name: org.h2.Driver
   configmaps:
     - name: kestra-others
       key: others.yml

@@ -5,7 +5,7 @@
             <h1 data-aos="fade-left">Blueprints</h1>
             <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
             <div class="col-12 search-input position-relative">
-                <input type="text" class="form-control form-control-lg" placeholder="Search across 180+ of blueprints" v-model="searchQuery">
+                <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ of blueprints" v-model="searchQuery">
                 <Magnify class="search-icon" />
             </div>
         </div>
@@ -36,7 +36,8 @@
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <CommonPagination
                     :totalPages="totalPages"
-                    @on-page-change="changePage"
+                    v-model:current-page="currentPage"
+                    @update:current-page="changePage"
                     v-if="totalPages > 1"
                 />
                 <span class="total-pages">Total {{ totalBlueprints }}</span>
@@ -120,8 +121,7 @@ if(blueprintsData.value) {
     setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
 }
 
-const changePage = (pageNo) => {
-    currentPage.value = pageNo
+const changePage = () => {
     window.scrollTo(0, 0)
 };
 

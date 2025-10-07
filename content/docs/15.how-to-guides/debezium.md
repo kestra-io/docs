@@ -37,9 +37,9 @@ mysql> GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIE
 
 For a description of the required permissions, see [Descriptions of user permissions](https://debezium.io/documentation/reference/3.0/connectors/mysql.html#permissions-explained-mysql-connector).
 
-::alert{type="info"}
+:::alert{type="info"}
 If using a hosted option such as Amazon RDS or Amazon Aurora that does not allow a global read lock, table-level locks are used to create the consistent snapshot. In this case, you need to also grant `LOCK TABLES` permissions to the user that you created. See [snapshots](https://debezium.io/documentation/reference/3.0/connectors/mysql.html#mysql-snapshots) for more details.
-::
+:::
 
 3. Finalize the user’s permissions:
 
@@ -280,15 +280,15 @@ az postgres server restart --resource-group mygroup --name myserver
 
 It is possible to use Debezium with [CrunchyBridge](https://crunchybridge.com/); logical replication is already turned on. The `pgoutput` plugin is available. You will have to create a replication user and provide correct privileges.
 
-::alert{type="info"}
+:::alert{type="info"}
 While using the `pgoutput` plug-in, it is recommended that you configure `filtered` as the `publication.autocreate.mode`. If you use `all_tables`, which is the default value for `publication.autocreate.mode`, and the publication is not found, the connector tries to create one by using `CREATE PUBLICATION <publication_name> FOR ALL TABLES;`, but this fails due to lack of permissions.
-::
+:::
 
 ### Installing the logical decoding output plug-in
 
-::alert{type="info"}
+:::alert{type="info"}
 For more detailed instructions about setting up and testing logical decoding plug-ins, see [Logical Decoding Output Plug-in Installation for PostgreSQL](https://debezium.io/documentation/reference/3.0/postgres-plugins.html).
-::
+:::
 
 As of PostgreSQL 9.4, the only way to read changes to the write-ahead-log is to install a logical decoding output plug-in. Plug-ins are written in C, compiled, and installed on the machine that runs the PostgreSQL server. Plug-ins use a number of PostgreSQL specific APIs, as described by the [PostgreSQL documentation](https://www.postgresql.org/docs/current/static/logicaldecoding-output-plugin.html).
 
@@ -296,9 +296,9 @@ The PostgreSQL connector works with one of Debezium’s supported logical decodi
 
 For simplicity, Debezium also provides a container image based on the upstream PostgreSQL server image, on top of which it compiles and installs the plug-ins. You can [use this image](https://github.com/debezium/container-images/tree/main/postgres/13) as an example of the detailed steps required for the installation.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The Debezium logical decoding plug-ins have been installed and tested on only Linux machines. For Windows and other operating systems, different installation steps might be required.
-::
+:::
 
 ### Running Debezium tasks on PostgreSQL
 
@@ -329,9 +329,9 @@ Debezium PostgreSQL Realtime Trigger will collect the records from the change da
 
 For Debezium to capture change events from SQL Server tables, a SQL Server administrator with the necessary privileges must first run a query to enable CDC on the database. The administrator must then enable CDC for each table that you want Debezium to capture.
 
-::alert{type="info"}
+:::alert{type="info"}
 By default, JDBC connections to Microsoft SQL Server are protected by SSL encryption. If SSL is not enabled for a SQL Server database, or if you want to connect to the database without using SSL, you can disable SSL by setting the value of the `database.encrypt` property in connector configuration to `false`.
-::
+:::
 
 After CDC is applied, it captures all of the `INSERT`, `UPDATE`, and `DELETE` operations that are committed to the tables for which CDC is enabled. The Debezium connector can then capture these events and emit them to Kafka topics.
 
@@ -345,9 +345,9 @@ Before you can enable CDC for a table, you must enable it for the SQL Server dat
 - You are a db_owner of the database.
 - The SQL Server Agent is running.
 
-::alert{type="info"}
+:::alert{type="info"}
 The SQL Server CDC feature processes changes that occur in user-created tables only. You cannot enable CDC on the SQL Server master database.
-::
+:::
 
 **Procedure**
 

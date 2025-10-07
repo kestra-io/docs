@@ -15080,19 +15080,6 @@ components:
       - IMPERSONATE
       - LOGIN_FAILURE
       - ACCOUNT_LOCKED
-    CustomLink:
-      required:
-      - name
-      - title
-      - url
-      type: object
-      properties:
-        name:
-          type: string
-        title:
-          type: string
-        url:
-          type: string
     DailyExecutionStatistics:
       required:
       - duration
@@ -17403,6 +17390,13 @@ components:
           type: string
         value:
           type: string
+    LeftSidebarConfiguration:
+      type: object
+      properties:
+        disabledMenus:
+          type: array
+          items:
+            type: string
     Level:
       type: string
       enum:
@@ -17700,6 +17694,8 @@ components:
           type: string
         version:
           type: string
+        edition:
+          $ref: "#/components/schemas/MiscController.Edition"
         commitId:
           type: string
         commitDate:
@@ -17710,6 +17706,8 @@ components:
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
+          type: boolean
+        isUiAnonymousUsageEnabled:
           type: boolean
         isTemplateEnabled:
           type: boolean
@@ -17761,14 +17759,19 @@ components:
             type: boolean
           outputsInInternalStorageEnabled:
             type: boolean
-          contextCustomLinks:
-            type: object
-            additionalProperties:
-              $ref: "#/components/schemas/CustomLink"
+          leftSidebar:
+            $ref: "#/components/schemas/LeftSidebarConfiguration"
+          rightSidebar:
+            $ref: "#/components/schemas/RightSidebarConfiguration"
           inMaintenance:
             type: boolean
           passwordRegexp:
             type: string
+    MiscController.Edition:
+      type: string
+      enum:
+      - OSS
+      - EE
     MiscController.Environment:
       required:
       - color
@@ -18852,6 +18855,23 @@ components:
           type: string
         required:
           type: boolean
+    RightSidebarConfiguration:
+      type: object
+      properties:
+        customLinks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/RightSidebarConfiguration.CustomLink"
+    RightSidebarConfiguration.CustomLink:
+      required:
+      - title
+      - url
+      type: object
+      properties:
+        title:
+          type: string
+        url:
+          type: string
     Role:
       required:
       - deleted

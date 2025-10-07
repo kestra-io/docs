@@ -46,9 +46,9 @@ You can bulk-resume paused workflows from the `Executions` page by selecting the
 
 This feature is useful when you have multiple paused workflows and want to resume them all at once.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Make sure to select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
-::
+:::
 
 
 ### Manual Approval Process

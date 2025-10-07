@@ -9,5 +9,5 @@ You can deploy Kestra (almost) anywhere, from your laptop or an on-prem server t
 
 The easiest way to install Kestra locally is to use [Docker](./02.docker.md).
 
-::ChildCard
-::
+:::ChildCard
+:::

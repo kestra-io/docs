@@ -19,9 +19,9 @@ Benchmarks were run on a Google Cloud **e2-standard-4** VM (4 vCPUs, 16 GB RAM) 
 1. **Kestra Open Source (OSS)** — Postgres 16 backend (4 vCPUs, 16 GB RAM). Database runs remotely to simulate production.
 2. **Kestra Enterprise Edition (EE)** — Kafka backend (4 vCPUs, 16 GB RAM). Kafka and Elasticsearch run on separate VMs.
 
-::alert{type="info"}
+:::alert{type="info"}
 Benchmark results are for Kestra 1.0.1.
-::
+:::
 
 ---
 
@@ -366,7 +366,7 @@ Kestra is designed for high performance in workflow orchestration and task dispa
 
 To further note, Kestra is built to scale horizontally. When a use case demands it, seamlessly add Executor/Worker nodes to further increase throughput.
 
-::alert{type="info"}
+:::alert{type="info"}
 We will try our best to keep this page up to date with each new Kestra release.
 For more details on how to run this benchmark yourself, refer to our [Benchmarks](https://github.com/kestra-io/benchmarks) repository on GitHub.
-::
+:::

@@ -10,9 +10,9 @@ The docker volume mount, by setting the property `kestra.tasks.scripts.docker.vo
 
 This change is implemented in a non-breaking way, so you don't need to immediately change the way you use the docker volume mount. In case you use this older method for mounting the volume, you will receive the following deprecation warning:
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The `kestra.tasks.scripts.docker.volume-enabled` is deprecated, please use the plugin configuration `volume-enabled` instead.
-::
+:::
 
 It is recommended to make the following change in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) for mounting the volume:
 
@@ -33,12 +33,12 @@ It is recommended to make the following change in the [Docker Compose file](http
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -47,11 +47,11 @@ It is recommended to make the following change in the [Docker Compose file](http
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           plugins:
             configurations:

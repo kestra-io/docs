@@ -49,7 +49,7 @@ You can retrieve the `clientId` and `clientSecret` via Keycloak user interface
 ![alt text](/docs/how-to-guides/keycloak/clientSecret.png)
 
 
-Don't forget to set a default role in your Kestra configuration to streamline the process of onboarding new users.
+Don't forget to set a default role in your [Kestra configuration](../../../configuration/index.md) to streamline the process of onboarding new users.
 
 ```yaml
 kestra:
@@ -66,9 +66,9 @@ kestra:
           - DELETE
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note: depending on the Keycloak configuration, you might want to tune the issuer URL.
-::
+:::
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).
 
