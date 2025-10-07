@@ -21,7 +21,7 @@
             <HomeBlueprints/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <HomeEnterprise/>
+            <HomeEnterprise :stories/>
             <HomeEnterpriseQuotes />
             <HomeCTA/>
         </NuxtLazyHydrate>
@@ -72,13 +72,17 @@
     })
 
     // fetch the number of contributors from the GitHub API
-    const {data:githubData, error: githubError} = await useFetch<{contributors: number, stargazers: number}>("/api/github", {
+    const {data:githubData, error: githubError} = await useFetch("/api/github", {
         pick:["stargazers", "contributors"],
     })
 
     const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes-oss', () => {
         return import('@/data/oss-quotes.json').then((quotes) => quotes.default.sort(() => Math.random() - 0.5))
     })
+
+    const config = useRuntimeConfig();
+    const {data: storiesData} = await useFetch(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
+    const stories = computed(() => storiesData.value?.results);
 
 </script>
 

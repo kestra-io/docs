@@ -19,6 +19,9 @@
         </div>
     </section>
 </template>
+<script setup lang="ts">
+import HomeCard from "./Card.vue";
+</script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";

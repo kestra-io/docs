@@ -11,6 +11,9 @@ import Experience from "../../components/home/Experience.vue";
 import PluginsRender from "../../components/home/PluginsRender.vue";
 import BlueprintsRender from "../../components/home/BlueprintsRender.vue";
 import { calculateTotalPlugins } from "../../composables/usePluginsCount";
+import Enterprise from "../../components/home/Enterprise.vue";
+import EnterpriseQuotesRender from "../../components/home/EnterpriseQuotesRender.vue";
+import CTA from "../../components/home/CTA.vue";
 
 const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
@@ -39,6 +42,8 @@ const plugins = await fetch("https://api.kestra.io/v1/plugins/subgroups")
 const totalPlugins = calculateTotalPlugins(plugins);
 
 const blueprints  = await $fetch<{results: any[]}>("https://api.kestra.io/v1/blueprints/versions/latest?page=1&size=20")
+const stories = await $fetch<{results: any[]}>("https://api.kestra.io/v1/customer-stories-v2?featured=true")
+const enterpriseQuotes = await import('../../data/enterprise-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 ---
 
 <Layout>
@@ -51,4 +56,7 @@ const blueprints  = await $fetch<{results: any[]}>("https://api.kestra.io/v1/blu
     <Experience client:visible />
     <PluginsRender totalPlugins={totalPlugins} pluginLogos={pluginsSorted}/>
     <BlueprintsRender blueprints={blueprints.results} client:visible />
+    <Enterprise stories={stories.results} client:visible />
+    <EnterpriseQuotesRender quotes={enterpriseQuotes} client:visible />
+    <CTA client:visible />
 </Layout>

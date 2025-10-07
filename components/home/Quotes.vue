@@ -24,6 +24,7 @@ defineProps<{quotes: {
         name: string,
         title: string
     }
+    logo?: string
 }[]}>()
 
 const scrollLeft = () => {

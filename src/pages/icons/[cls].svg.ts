@@ -26,7 +26,7 @@ function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
         const entries = Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value)) as [string, any][];
         for (const [key, sectionEntries] of entries) {
             if (sectionEntries) {
-                for (const {cls} of sectionEntries.filter(({deprecated}) => !deprecated)) {
+                for (const {cls} of sectionEntries.filter(({deprecated}: {deprecated: boolean}) => !deprecated)) {
                     if(cls){
                         allPluginsCls.add(cls);
                     }

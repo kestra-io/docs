@@ -18,9 +18,9 @@
 
     <div class="dots">
         <ClientOnly>
-           <button 
+           <button
   v-for="(story, index) in stories"
-  :key="story.id" 
+  :key="story.id"
   :class="{ active: index === activeStory }"
   @click="manualScrollTo(index)"
 />
@@ -31,12 +31,17 @@
 
 <script lang="ts" setup>
     import {slugify} from "@kestra-io/ui-libs";
-    const config = useRuntimeConfig();
+    import { onMounted, onUnmounted, ref, watch } from "vue";
+
+    const props = defineProps<{
+        stories: Story[],
+        error?: string
+    }>();
 
     const AUTO_SCROLL = 2000;
     const SCROLL_TRANSITION = 1000;
 
-    interface Story {
+    export interface Story {
         id: string;
         title: string;
         description: string;
@@ -56,9 +61,6 @@
     const isHovering = ref(false);
     const isManualChange = ref(false);
 
-    const {data, error} = await useFetch<{results: Story[]}>(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
-    const stories = computed(() => data.value?.results);
-
     const clearTimers = () => {
         if (timers.value.auto) clearInterval(timers.value.auto);
         if (timers.value.user) clearTimeout(timers.value.user as NodeJS.Timeout);
@@ -66,15 +68,15 @@
     };
 
     const startAutoScroll = (delay: number = AUTO_SCROLL) => {
-        if (isScrolling.value || !stories.value?.length || isHovering.value || isManualChange.value) return;
+        if (isScrolling.value || !props.stories?.length || isHovering.value || isManualChange.value) return;
         clearTimers();
 
         timers.value.auto = setInterval(() => {
-            if (!stories.value?.length || isHovering.value) {
+            if (!props.stories?.length || isHovering.value) {
                 clearTimers();
                 return;
             }
-            scrollTo((activeStory.value + 1) % stories.value.length);
+            scrollTo((activeStory.value + 1) % props.stories.length);
         }, delay);
     };
 
@@ -87,16 +89,16 @@
     };
 
     const scrollHandler = (e: Event) => {
-        if (isScrolling.value || !stories.value?.length || isManualChange.value) return;
+        if (isScrolling.value || !props.stories?.length || isManualChange.value) return;
         clearTimers();
 
         const target = e.target as HTMLElement;
         if (target.scrollWidth === 0) return;
 
-        const storyWidth = target.scrollWidth / stories.value.length;
+        const storyWidth = target.scrollWidth / props.stories.length;
         const newActiveStory = Math.max(0, Math.min(
             Math.round(target.scrollLeft / storyWidth),
-            stories.value.length - 1
+            props.stories.length - 1
         ));
 
         if (newActiveStory !== activeStory.value) {
@@ -107,8 +109,8 @@
     };
 
     const scrollTo = (index: number) => {
-        if (!scroller.value || !stories.value?.length ||
-            index < 0 || index >= stories.value.length ||
+        if (!scroller.value || !props.stories?.length ||
+            index < 0 || index >= props.stories.length ||
             isScrolling.value) return;
 
         clearTimers();
@@ -116,7 +118,7 @@
         activeStory.value = index;
 
         scroller.value.scrollTo({
-            left: (scroller.value.scrollWidth / stories.value.length) * index,
+            left: (scroller.value.scrollWidth / props.stories.length) * index,
             behavior: 'smooth'
         });
 
