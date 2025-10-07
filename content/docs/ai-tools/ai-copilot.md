@@ -125,7 +125,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
 
 ### Amazon Bedrock
 
@@ -245,5 +245,5 @@ kestra:
     openrouter:
       api-key: OPENROUTER_API_KEY
       base-url: "https://openrouter.ai/api/v1"
-      model-name: x-ai/grok-beta
+      model-name: "anthropic/claude-sonnet-4"
 ```
