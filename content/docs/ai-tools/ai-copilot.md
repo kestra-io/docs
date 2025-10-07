@@ -30,7 +30,7 @@ kestra:
       api-key: YOUR_GEMINI_API_KEY
 ```
 
-Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration:
+Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration (not all properties may be included with every provider):
 
 - `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
 - `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
@@ -39,6 +39,8 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
+- `clientPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
+- `caPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
