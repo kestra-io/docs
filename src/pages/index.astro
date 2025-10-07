@@ -51,7 +51,7 @@ const enterpriseQuotes = await import('../../data/enterprise-quotes.json').then(
     <LogosTable logos={logos} />
     <OpenSource {...githubData} />
     <OpenSourceQuotes quotes={quotes} client:idle/>
-    <Features/>
+    <Features client:visible/>
     <EveryDev/>
     <Experience client:visible />
     <PluginsRender totalPlugins={totalPlugins} pluginLogos={pluginsSorted}/>
