@@ -13,7 +13,7 @@ Listeners are deprecated and disabled by default starting from the 0.12.0 releas
 3. It's a hard-to-grasp concept — listeners can launch tasks *outside* of the flow, i.e., tasks that will not be considered part of the flow but are defined *within* it. Additionally, the results of listeners will not change the execution status of the flow, so having them defined within the flow has caused some confusion in the past.
 4. Currently, listeners are mainly used to send failure (or success) notifications, and Kestra already has two concepts allowing you to do that: `triggers` and `errors`. Having **three** choices for such a standard use case has led to confusion about when to use which of them.
 
-If you are using listeners and you are not ready to migrate to Flow triggers yet, add the following Kestra configuration option to still be able to use listeners:
+If you are using listeners and you are not ready to migrate to Flow triggers yet, add the following [Kestra configuration](../../configuration/index.md) option to still be able to use listeners:
 
 ```yaml
 kestra:

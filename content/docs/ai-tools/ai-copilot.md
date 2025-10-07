@@ -19,7 +19,7 @@ The AI Copilot is designed to help build and modify flows directly from natural 
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your Kestra configuration:
+To add Copilot to your flow editor, add the following to your [Kestra configuration](../configuration/index.md):
 
 ```yaml
 kestra:

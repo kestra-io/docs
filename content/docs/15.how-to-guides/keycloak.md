@@ -50,7 +50,7 @@ You can retrieve `clientId` and `clientSecret` via KeyCloak user interface
 ![alt text](/docs/how-to-guides/keycloak/clientSecret.png)
 
 
-Don't forget to set a default role in your Kestra configuration to streamline the process of adding new users.
+Don't forget to set a default role in your [Kestra configuration](../configuration/index.md) to streamline the process of adding new users.
 
 ```
 kestra:
