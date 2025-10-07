@@ -39,7 +39,7 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 
 1. Go to **Certificates & secrets**.
 2. Under **Client secrets**, click on **New client secret**.
-3. Copy the generated secret and use it in the `{{ clientSecret }}` field in your configuration.
+3. Copy the generated secret and use it in the `{{ clientSecret }}` field in your [configuration](../../../configuration/index.md).
 
 ### Kestra Configuration
 

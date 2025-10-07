@@ -9,7 +9,7 @@ editions: ["OSS"]
 
 Basic authentication (`username` and `password`) is now required to enhance security on open-source instances. All users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment. This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows.
 
-The credentials can be configured from the Setup Page in the UI (http://localhost:8080/ui/main/setup) or you can set them manually in the Kestra configuration file under `basic-auth` (recommended for production):
+The credentials can be configured from the Setup Page in the UI (http://localhost:8080/ui/main/setup) or you can set them manually in the [Kestra configuration](../../configuration/index.md) file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:

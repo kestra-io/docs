@@ -93,7 +93,7 @@ Announcements appear as banners of the chosen type (`Info`, `Warning`, `Error`) 
 
 [System Labels](https://kestra.io/docs/concepts/system-labels) provide a powerful way to add extra metadata to manage executions. For example, they allow you to disable edits from the UI by making workflows read-only or track cross-execution dependencies using correlation IDs.
 
-Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your Kestra configuration.
+Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your [Kestra configuration](../docs/configuration/index.md).
 
 
 ## Flow-Level SLA (Beta)

@@ -483,7 +483,7 @@ The Apps catalog is offered as a dedicated page without showing any typical Kest
 
 ## Custom UI Links (EE only)
 
-In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your Kestra configuration file as follows:
+In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your [Kestra configuration](../docs/configuration/index.md) file as follows:
 
 ```yaml
 kestra:
