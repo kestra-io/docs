@@ -1,3 +1,4 @@
+import { $fetch } from "../../utils/fetch";
 import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
 export async function GET({ params }: { params: { cls: string } }) {
@@ -19,11 +20,29 @@ export async function GET({ params }: { params: { cls: string } }) {
   });
 }
 
+function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
+    const pluginKeySection = ["tasks", "conditions", "triggers", "taskRunners", "exporter"] as const;
+
+    for (const plugin of plugins || []) {
+        for (const curSection of pluginKeySection) {
+            const entries = plugin[curSection];
+            if (entries) {
+                for (const {cls} of entries.filter(({deprecated}) => !deprecated)) {
+                    if(cls){
+                        allPluginsCls.add(cls);
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 
 export async function getStaticPaths() {
-  const pluginsRes = await fetch(`https://api.kestra.io/v1/plugins/subgroups`);
-  const pluginsData = await pluginsRes.json();
-  const allPluginsCls = new Set(getListOfPlugins(pluginsData).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
+  const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+
+  const allPluginsCls = new Set(getListOfPlugins(plugins).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
+  resolveSubPlugins(plugins, allPluginsCls);
   return Array.from(allPluginsCls).map(cls => ({ params: { cls } }));
 }
