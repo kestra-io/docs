@@ -1,3 +1,4 @@
+import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
 import { $fetch } from "../../utils/fetch";
 import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
@@ -21,13 +22,11 @@ export async function GET({ params }: { params: { cls: string } }) {
 }
 
 function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
-    const pluginKeySection = ["tasks", "conditions", "triggers", "taskRunners", "exporter"] as const;
-
     for (const plugin of plugins || []) {
-        for (const curSection of pluginKeySection) {
-            const entries = plugin[curSection];
-            if (entries) {
-                for (const {cls} of entries.filter(({deprecated}) => !deprecated)) {
+        const entries = Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value)) as [string, any][];
+        for (const [key, sectionEntries] of entries) {
+            if (sectionEntries) {
+                for (const {cls} of sectionEntries.filter(({deprecated}) => !deprecated)) {
                     if(cls){
                         allPluginsCls.add(cls);
                     }
@@ -36,8 +35,6 @@ function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
         }
     }
 }
-
-
 
 export async function getStaticPaths() {
   const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
