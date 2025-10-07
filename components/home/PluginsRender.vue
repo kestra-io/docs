@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import HomeCard from "./Card.vue"
 defineProps<{
-    totalPlugins: number
+    totalPlugins: string | number
     pluginLogos: { name: string, logo: string }[]
 }>()
 </script>

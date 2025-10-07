@@ -9,7 +9,7 @@ export async function GET({ params }: { params: { cls: string } }) {
   }
 
   const svg = await response.text();
-  const modifiedSvg = svg.replaceAll("currentColor", "#CAC5DA");
+  const modifiedSvg = svg.replace(/currentColor/g, "#CAC5DA");
 
   return new Response(modifiedSvg, {
     headers: {

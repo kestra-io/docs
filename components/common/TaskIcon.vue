@@ -4,8 +4,9 @@
     </div>
 </template>
 
-<script setup>
-    const {$bootstrap} = useNuxtApp()
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+    // const {$bootstrap} = useNuxtApp()
 
     const props = defineProps({
         cls: {
@@ -23,20 +24,20 @@
 
     const root = ref(null)
 
-    onMounted(() => {
-        if (process.client) {
-            new $bootstrap.Tooltip(root.value);
-        }
-    });
+    // onMounted(() => {
+    //     if (process.client) {
+    //         new $bootstrap.Tooltip(root.value);
+    //     }
+    // });
 
-    onBeforeUnmount(() => {
-        if (process.client) {
-            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-            if (tooltip) {
-                tooltip.dispose();
-            }
-        }
-    });
+    // onBeforeUnmount(() => {
+    //     if (process.client) {
+    //         const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+    //         if (tooltip) {
+    //             tooltip.dispose();
+    //         }
+    //     }
+    // });
 
     const generateTagName = () => {
       const splittedName = props.cls.split(".");

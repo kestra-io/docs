@@ -9,6 +9,8 @@ import Features from "../../components/home/Features.vue";
 import EveryDev from "../../components/home/EveryDev.vue";
 import Experience from "../../components/home/Experience.vue";
 import PluginsRender from "../../components/home/PluginsRender.vue";
+import BlueprintsRender from "../../components/home/BlueprintsRender.vue";
+import { calculateTotalPlugins } from "../../composables/usePluginsCount";
 
 const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
@@ -29,6 +31,14 @@ const quotes = await import('../../data/oss-quotes.json').then((qs) => qs.defaul
 
 const pluginLogos = await import.meta.glob('/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
 const pluginsSorted = Object.entries(pluginLogos).map(([name, logo]) => ({ name: name.split('/').pop()?.split('.').shift() ?? "", logo: logo.default.src as string })).sort(() => 0.5 - Math.random()).slice(0, 20);
+
+const plugins = await fetch("https://api.kestra.io/v1/plugins/subgroups")
+            .then(r => {
+                return r.json()
+            })
+const totalPlugins = calculateTotalPlugins(plugins);
+
+const blueprints  = await $fetch<{results: any[]}>("https://api.kestra.io/v1/blueprints/versions/latest?page=1&size=20")
 ---
 
 <Layout>
@@ -38,6 +48,7 @@ const pluginsSorted = Object.entries(pluginLogos).map(([name, logo]) => ({ name:
     <OpenSourceQuotes quotes={quotes} client:idle/>
     <Features/>
     <EveryDev/>
-    <Experience client:visible/>
-    <PluginsRender totalPlugins={100} pluginLogos={pluginsSorted}/>
+    <Experience client:visible />
+    <PluginsRender totalPlugins={totalPlugins} pluginLogos={pluginsSorted}/>
+    <BlueprintsRender blueprints={blueprints.results} client:visible />
 </Layout>

@@ -2,7 +2,7 @@ import type { Plugin, PluginElement } from "@kestra-io/ui-libs";
 import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
 import { computed, ref, type Ref } from "vue";
 
-function calculateTotalPlugins(plugins: Plugin[]): number {
+export function calculateTotalPlugins(plugins: Plugin[]): number {
     const classes = new Set<string>();
 
     plugins.forEach(plugin => {
