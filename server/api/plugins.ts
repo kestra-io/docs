@@ -205,8 +205,25 @@ export default defineEventHandler(async (event) => {
             }
             case "definitions": {
                 let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
+                let schema = pageData.schema;
 
-                return nuxtBlocksFromJsonSchema(pageData.schema);
+                console.log(schema)
+                
+                if(typeof schema["definitions"] != "undefined") {
+                    for(const [definName, hashMap] of Object.entries(schema["definitions"]))
+                    {
+                        if(typeof hashMap["properties"] == "undefined")
+                            continue;
+
+                        let properties = hashMap["properties"];
+                        for(const [key, value] of Object.entries(properties)) {
+                            if('type' in value && typeof value["type"] == "object") {
+                                value["type"] = value["type"].filter(element => !element.startsWith('null'));
+                            }
+                        }
+                    }
+                }
+                return nuxtBlocksFromJsonSchema(schema);
             }
             case "plugin": {
                 let subgroups = await $fetch(`${config.public.apiUrl}/plugins/${page}/subgroups`);
