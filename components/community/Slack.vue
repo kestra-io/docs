@@ -55,7 +55,7 @@
 import Section from '../../components/layout/Section.vue';
 import Card from '../card/Card.vue';
 import Slack from "vue-material-design-icons/Slack.vue";
-import {useApi} from "~/composables/useApi.js";
+import {useApi} from "../../composables/useApi";
 
 export default {
     components: {Slack, Section, Card},

@@ -101,7 +101,7 @@ import Star from 'vue-material-design-icons/Star.vue'
 import DirectionsFork from 'vue-material-design-icons/DirectionsFork.vue'
 import BugOutline from 'vue-material-design-icons/BugOutline.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
-import { useApi } from '~/composables/useApi.js'
+import { useApi } from '../../composables/useApi'
 
 interface GitHubMetrics {
     stars: number
@@ -122,7 +122,7 @@ const contributors = ref<any[] | undefined>(undefined)
 const fetchData = async (): Promise<void> => {
     try {
         const githubResponse = await $fetch<GitHubResponse>('/api/github')
-        
+
         const [metricsResponse, contributorsResponse] = await Promise.all([
             api.get('/communities/github/metrics'),
             api.get('/communities/github/contributors')
@@ -135,7 +135,7 @@ const fetchData = async (): Promise<void> => {
             pullRequests: (metricsResponse as any).data?.pullRequests,
             commits: (metricsResponse as any).data?.commits
         }
-        
+
         contributors.value = (contributorsResponse as any).data
     } catch (error) {
         contributors.value = []

@@ -17,7 +17,7 @@ const { Content } = await render(doc);
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`}>
-  <h1>{doc.data.title}</h1>
+  <h1>{doc.data?.title}</h1>
   <div class="bd-markdown">
     <Content />
   </div>

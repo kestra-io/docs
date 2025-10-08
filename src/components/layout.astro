@@ -4,6 +4,8 @@ import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
 import Header from "../../components/layout/Header.vue";
+import LayoutFooter from "../../components/layout/Footer.vue";
+import LayoutFixed from "../../components/layout/Fixed.vue";
 
 
 interface Props {
@@ -36,6 +38,8 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <Header client:load />
     <div style="height:70px;"></div>
     <slot />
+    <LayoutFooter />
+    <LayoutFixed />
     <script>
       import AOS from "aos";
       setTimeout(() => {

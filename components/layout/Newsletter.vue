@@ -13,15 +13,17 @@
     </form>
 </template>
 
-<script setup>
-    import newsletterSubmit from "../../utils/newsletterSubmit.js";
+<script setup lang="ts">
+    import { ref } from 'vue';
+
+    // import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
     const valid = ref(false);
     const message = ref(null);
     const newsletter = ref(null);
 
-    function checkForm(e) {
-        newsletterSubmit({ newsletter, valid, message }, e);
+    function checkForm(_e: any) {
+        // newsletterSubmit({ newsletter, valid, message }, e);
     }
 </script>
 
