@@ -91,6 +91,8 @@ kestra:
     type: gcs
 ```
 
+See [Internal storage](#internal-storage) for details.
+
 ### Queue configuration
 
 Queues must be compatible with the repository type. Defaults depend on your architecture and [installation](../02.installation/index.md).
