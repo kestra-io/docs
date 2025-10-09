@@ -8,6 +8,9 @@
     "dist"
   ],
   "compilerOptions": {
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@assets/*": ["./src/assets/*"]
+    }
   }
 }

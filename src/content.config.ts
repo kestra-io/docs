@@ -10,7 +10,7 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./content/docs",
+        base: "./src/content/docs",
         generateId,
     }),
     schema: z.object({
@@ -32,10 +32,11 @@ export const collections = {
   blogs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./content/blogs",
+        base: "./src/content/blogs",
         generateId,
     }),
-    schema: z.object({
+    schema: ({ image }) =>
+      z.object({
         title: z.string(),
         description: z.string().optional(),
         date: z.date(),
@@ -52,13 +53,13 @@ export const collections = {
             twitter: z.string().optional(),
             role: z.string(),
         })).optional(),
-        image: z.string(),
-    })
+        image: image(),
+      })
   }),
   misc: defineCollection({
     loader: glob({
         pattern: "./*.md{,x}",
-        base: "./content",
+        base: "./src/content",
         generateId,
     }),
     schema: z.object({

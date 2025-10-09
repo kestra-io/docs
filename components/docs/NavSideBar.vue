@@ -18,7 +18,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <img src="/docs/icons/ks-ai.svg" alt="Kestra AI" width="30px" height="30px" />
+                    <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
                 </button>
             </div>
@@ -61,6 +61,7 @@
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
   import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "./RecursiveNavSidebar.vue";
+  import KSAIImg from "@assets/docs/icons/ks-ai.svg"
 
   const props = defineProps({
         type: {

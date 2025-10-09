@@ -5,7 +5,7 @@
             <template v-for="(post, index) of posts" :key="post.path" >
                 <hr v-if="index > 0" />
                 <NuxtLink :to="post.path" class="post-card">
-                    <img :src="post.image" class="card-img-left" alt="blog.title" />
+                    <img :src="post.image" class="card-img-left" :alt="post.title" />
                     <div class="card-body">
                         <div class="card-details">
                             <span class="card-category">{{ post.category }}</span>

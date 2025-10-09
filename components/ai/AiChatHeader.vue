@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="brand">
-            <img src="/docs/icons/ks-ai.svg" alt="Kestra AI" width="30px" height="30px" />
+
             <span>Ask Kestra AI</span>
         </div>
 
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import KSAIImg from "@assets/docs/icons/ks-ai.svg"
 import Magnify from "vue-material-design-icons/Magnify.vue";
 
 const emit = defineEmits<{

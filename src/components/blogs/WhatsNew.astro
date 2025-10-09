@@ -4,13 +4,14 @@ import WhatsNewRender from "../../../components/content/WhatsNewRender.vue";
 
 const blogs = await getCollection('blogs')
 
-const recentBlogs = blogs
+const recentBlogs = await Promise.all(blogs
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3)
-  .map(blog => ({
+  .map(async blog => ({
     path: `/blogs/${blog.id}`,
     ...blog.data,
-  }))
+    image: blog.data.image.src,
+  })))
 ---
 
 <WhatsNewRender title="What's New" posts={recentBlogs} />
