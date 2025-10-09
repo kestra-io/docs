@@ -1,18 +1,26 @@
 <template>
-    <HomeQuotes :quotes="randomizedQuotes">
+    <Quotes :quotes>
         <template v-slot:default="{quote}">
-            <div class="quote" >
+            <div class="quote" v-if="quote">
                 <q class="quote-text" :title="quote.text">{{ quote.text }}</q>
                 <div class="quote-author"><b>{{ quote.author.name }}</b><span>{{ quote.author.title }}</span></div>
             </div>
         </template>
-    </HomeQuotes>
+    </Quotes>
 </template>
 
 <script setup lang="ts">
-const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes-oss', () => {
-    return import('@/data/oss-quotes.json').then((quotes: any) => quotes.default.sort(() => Math.random() - 0.5))
-})
+import Quotes from "./Quotes.vue";
+
+    defineProps<{
+        quotes: Array<{
+            text: string,
+            author: {
+                name: string,
+                title: string
+            }
+        }>
+    }>()
 </script>
 
 <style lang="scss" scoped>

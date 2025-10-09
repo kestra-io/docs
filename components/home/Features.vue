@@ -55,7 +55,10 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue'
+import HomeFeaturesBlock from "./FeaturesBlock.vue"
+import HomeFeaturesValue from "./FeaturesValue.vue"
 const videoVisible = ref(false)
 </script>
 

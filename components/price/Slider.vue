@@ -115,7 +115,7 @@
             message: "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
             name: "John Kim",
             designation: "Manager Corporate Strategy",
-            alt: " Manager Corporate Strategy",
+            alt: "Manager Corporate Strategy",
           },
         ],
       };

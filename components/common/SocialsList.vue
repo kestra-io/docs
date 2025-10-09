@@ -49,13 +49,14 @@
         </nav>
     </div>
 </template>
-<script setup>
+<script lang="ts" setup>
+    import { computed } from "vue";
     import Slack from "vue-material-design-icons/Slack.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "../components/icons/TwitterXIcon.vue";
-    import BlueSky from "../components/icons/BlueSkyIcon.vue";
+    import Twitter from "../icons/TwitterXIcon.vue";
+    import BlueSky from "../icons/BlueSkyIcon.vue";
 
     const props = defineProps({
         page: {

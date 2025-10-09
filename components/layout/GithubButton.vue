@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Github from "vue-material-design-icons/Github.vue"
+import LayoutGithubStargazer from "./GithubStargazer.client.vue"
 
 const hasError = ref(false)
 const onClient = ref(false)
