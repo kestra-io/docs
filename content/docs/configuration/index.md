@@ -55,7 +55,7 @@ datasources:
 
 with an environment variable:
 
-```
+```bash
 DATASOURCES_POSTGRES_USERNAME=kestra
 ```
 
@@ -70,13 +70,14 @@ kestra:
 
 becomes:
 
-```
+```bash
 KESTRA_STORAGE_S3_ACCESS-KEY=myKey
 ```
 
 ## Setup
 
 Configure three core components during initial setup:
+
 1. Internal storage
 2. Queue
 3. Repository
@@ -98,6 +99,7 @@ See [Internal storage](#internal-storage) for details.
 Queues must be compatible with the repository type. Defaults depend on your architecture and [installation](../02.installation/index.md).
 
 Available types:
+
 - **In-memory** (with in-memory repository) — for local testing
 - **Database** (JDBC) — H2, MySQL, PostgreSQL
 - **Kafka** (with Elasticsearch repository; **Enterprise Edition**)
@@ -159,6 +161,7 @@ After setting repository/queue types, configure `datasources`. Kestra uses [Hika
 
 :::collapse{title="PostgreSQL"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -173,10 +176,12 @@ datasources:
     username: kestra
     password: k3str4
 ```
+
 :::
 
 :::collapse{title="MySQL"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -200,6 +205,7 @@ MySQL `8.0.31` is not supported. Choose another version or ask for help on [Slac
 
 :::collapse{title="H2"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -214,6 +220,7 @@ datasources:
     password: ""
     driver-class-name: org.h2.Driver
 ```
+
 :::
 
 ### Connection pool size
@@ -230,41 +237,37 @@ Defaults generally suffice.
 
 HikariCP properties:
 
-| Property | Type | Description |
-|---|---|---|
-| `url` | String | JDBC connection string |
-| `catalog` | String | Default catalog |
-| `schema` | String | Default schema |
-| `username` | String | Default username |
-| `password` | String | Default password |
-| `transaction-isolation` | String | Default isolation level |
-| `pool-name` | String | Pool name |
-| `connection-init-sql` | String | SQL run on new connections |
-| `connection-test-query` | String | Validation query |
-| `connection-timeout` | Long | Max wait for a connection (ms) |
-| `idle-timeout` | Long | Max idle time (ms) |
-| `minimum-idle` | Long | Minimum idle connections (defaults to `maximum-pool-size`) |
-| `initialization-fail-timeout` | Long | Initialization failure timeout |
-| `leak-detection-threshold` | Long | Leak detection threshold (ms) |
-| `maximum-pool-size` | Int | Pool size (default 10) |
-| `max-lifetime` | Long | Max connection lifetime (ms) |
-| `validation-timeout` | Long | Max validation time (ms) |
+| Property | Type | Description | Default value |
+|---|---|---|---|
+| `url` | String | JDBC connection string | |
+| `catalog` | String | Default catalog | driver default |
+| `schema` | String | Default schema | driver default |
+| `username` | String | Default username | |
+| `password` | String | Default password | |
+| `transaction-isolation` | String | Default isolation level | driver default |
+| `pool-name` | String | Pool name | `HikariPool-<Generated>` |
+| `connection-init-sql` | String | SQL run on new connections | `null` |
+| `connection-test-query` | String | Validation query | `null` |
+| `connection-timeout` | Long | Max wait for a connection (ms) | `30000` |
+| `idle-timeout` | Long | Max idle time (ms) | `600000` |
+| `minimum-idle` | Long | Minimum idle connections (defaults to `maximum-pool-size`) | `10` |
+| `initialization-fail-timeout` | Long | Initialization failure timeout (ms) | `1` |
+| `leak-detection-threshold` | Long | Leak detection threshold (ms) | `0` |
+| `maximum-pool-size` | Int | Pool size | `10` |
+| `max-lifetime` | Long | Max connection lifetime (ms) | `1800000` |
+| `validation-timeout` | Long | Max validation time (ms) | `5000` |
 
-Defaults:
+Example:
 
 ```yaml
-transaction-isolation: default
-pool-name: HikariPool-<Generated>
-connection-init-sql: null
-connection-test-query: null
-connection-timeout: 30000
-idle-timeout: 600000
-minimum-idle: 10
-initialization-fail-timeout: 1
-leak-detection-threshold: 0
-maximum-pool-size: 10
-max-lifetime: 1800000
-validation-timeout: 5000
+datasources:
+  postgres:
+    url: jdbc:postgresql://localhost:5432/kestra
+    driver-class-name: org.postgresql.Driver
+    username: kestra
+    password: k3str4
+    maximum-pool-size: 20
+    minimum-idle: 10
 ```
 
 ### JDBC queues
