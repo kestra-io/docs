@@ -7594,7 +7594,7 @@ components:
             $ref: "#/components/schemas/Label"
         variables:
           type: object
-          additionalProperties: true
+          additionalProperties: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         deleted:
@@ -7655,8 +7655,7 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -7671,6 +7670,7 @@ components:
             $ref: "#/components/schemas/Condition"
         disabled:
           type: boolean
+          default: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         logLevel:
@@ -7704,8 +7704,7 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -7908,8 +7907,7 @@ components:
           type: string
         type:
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         chartOptions:
           type: object
@@ -7937,8 +7935,7 @@ components:
       type: object
       properties:
         type:
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
     DailyExecutionStatistics:
       required:
@@ -8540,8 +8537,7 @@ components:
               $ref: "#/components/schemas/PluginDefault"
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           tasks:
             minItems: 1
             type: array
@@ -8638,7 +8634,7 @@ components:
               $ref: "#/components/schemas/Label"
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties: false
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -8911,8 +8907,7 @@ components:
             type: boolean
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           outputs:
@@ -9351,7 +9346,9 @@ components:
         description:
           type: string
         value:
-          type: object
+          oneOf:
+          - type: object
+          - type: string
         type:
           $ref: "#/components/schemas/Type"
         displayName:
@@ -9633,7 +9630,6 @@ components:
       required:
       - forced
       - type
-      - values
       type: object
       properties:
         type:
@@ -9642,8 +9638,10 @@ components:
           type: boolean
         values:
           type: object
-          additionalProperties:
-            type: object
+          additionalProperties: false
+          oneOf:
+          - $ref: "#/components/schemas/Map_Object.Object_"
+          - type: string
     PluginIcon:
       type: object
       properties:
@@ -9694,6 +9692,9 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
     Property_Object_:
       required:
       - expression
@@ -9703,6 +9704,9 @@ components:
           type: string
         value:
           type: object
+      oneOf:
+      - type: object
+      - type: string
     Property_String_:
       required:
       - expression
@@ -9712,6 +9716,9 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
     QueryFilter:
       required:
       - field
@@ -10092,8 +10099,7 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -10151,8 +10157,7 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -10280,6 +10285,7 @@ components:
       properties:
         disabled:
           type: boolean
+          default: false
         tenantId:
           pattern: "^[a-z0-9][a-z0-9_-]"
           type: string
