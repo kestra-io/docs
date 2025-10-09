@@ -110,6 +110,8 @@ kestra:
     type: postgres
 ```
 
+See [database](#database) for details.
+
 ### Repository configuration
 
 Repositories must match the queue type:
