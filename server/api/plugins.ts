@@ -179,24 +179,36 @@ async function generateNavigation(config: RuntimeConfig | NitroRuntimeConfig) {
     }];
 }
 
+function filterRequiredMapsNullTypes(properties: JSONSchema, schema: JSONSchema) {
+    for (const [definName, hashMap] of Object.entries(properties)) {
+        if (typeof hashMap.type != "object")
+            continue;
+        hashMap.type = hashMap.type.filter(element => {
+            if (!element.startsWith("null")) {
+                hashMap["$required"] = false;
+                schema.properties.required = schema.properties.required.filter(e => e != definName);
+                return true;
+            }
+            return false;
+        });
+    }
+}
+
 function filterSchemaNullTypes(schema: JSONSchema) {
                 let schemaProperties = schema.properties?.properties;
+                let outputsProperties = schema.outputs?.properties;
 
+                // Main Properties Filter
                 if (typeof schemaProperties != "undefined") {
-                    for (const [definName, hashMap] of Object.entries(schemaProperties)) {
-                        if (typeof hashMap.type != "object")
-                            continue;
-                        hashMap.type = hashMap.type.filter(element => {
-                            if (!element.startsWith("null")) {
-                                hashMap["$required"] = false;
-                                schema.properties.required = schema.properties.required.filter(e => e != definName);
-                                return false;
-                            }
-                            return true;
-                        });
-                    }
+                    filterRequiredMapsNullTypes(schemaProperties, schema);
                 }
                 
+                // Outputs Filter
+                if(typeof outputsProperties != "undefined") {
+                    filterRequiredMapsNullTypes(outputsProperties, schema);
+                }
+                
+                // Definitions Filter
                 if(typeof schema["definitions"] != "undefined") {
                     for(const [definName, hashMap] of Object.entries(schema["definitions"]))
                     {
