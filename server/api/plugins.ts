@@ -181,8 +181,11 @@ async function generateNavigation(config: RuntimeConfig | NitroRuntimeConfig) {
 
 function filterRequiredMapsNullTypes(properties: JSONSchema, schema: JSONSchema) {
     for (const [definName, hashMap] of Object.entries(properties)) {
+        // Checks if the data type of an attribute is an array or not
         if (typeof hashMap.type != "object")
             continue;
+
+        // Filters null out of the array and removes the attribute's required property
         hashMap.type = hashMap.type.filter(element => {
             if (!element.startsWith("null")) {
                 hashMap["$required"] = false;
@@ -212,11 +215,15 @@ function filterSchemaNullTypes(schema: JSONSchema) {
                 if(typeof schema["definitions"] != "undefined") {
                     for(const [definName, hashMap] of Object.entries(schema["definitions"]))
                     {
+                        // Checks if the properties map exists in the definitions schema
                         if(typeof hashMap["properties"] == "undefined")
                             continue;
-
+                        
                         let properties = hashMap["properties"];
+
+                        // Filters out null from each array in the definitions schema
                         for(const [key, value] of Object.entries(properties)) {
+                            // Checks if the definition has a type attribute that is an array
                             if('type' in value && typeof value["type"] == "object") {
                                 value["type"] = value["type"].filter(element => !element.startsWith('null'));
                             }
