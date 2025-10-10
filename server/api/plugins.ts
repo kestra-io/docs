@@ -179,6 +179,40 @@ async function generateNavigation(config: RuntimeConfig | NitroRuntimeConfig) {
     }];
 }
 
+function filterSchemaNullTypes(schema: JSONSchema) {
+                let schemaProperties = schema.properties?.properties;
+
+                if (typeof schemaProperties != "undefined") {
+                    for (const [definName, hashMap] of Object.entries(schemaProperties)) {
+                        if (typeof hashMap.type != "object")
+                            continue;
+                        hashMap.type = hashMap.type.filter(element => {
+                            if (!element.startsWith("null")) {
+                                hashMap["$required"] = false;
+                                schema.properties.required = schema.properties.required.filter(e => e != definName);
+                                return false;
+                            }
+                            return true;
+                        });
+                    }
+                }
+                
+                if(typeof schema["definitions"] != "undefined") {
+                    for(const [definName, hashMap] of Object.entries(schema["definitions"]))
+                    {
+                        if(typeof hashMap["properties"] == "undefined")
+                            continue;
+
+                        let properties = hashMap["properties"];
+                        for(const [key, value] of Object.entries(properties)) {
+                            if('type' in value && typeof value["type"] == "object") {
+                                value["type"] = value["type"].filter(element => !element.startsWith('null'));
+                            }
+                        }
+                    }
+                }
+}
+
 export default defineEventHandler(async (event) => {
     try {
         const requestUrl = new url.URL("http://localhost" + event.node.req.url);
@@ -205,25 +239,10 @@ export default defineEventHandler(async (event) => {
             }
             case "definitions": {
                 let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
-                let schema = pageData.schema;
 
-                console.log(schema)
-                
-                if(typeof schema["definitions"] != "undefined") {
-                    for(const [definName, hashMap] of Object.entries(schema["definitions"]))
-                    {
-                        if(typeof hashMap["properties"] == "undefined")
-                            continue;
+                filterSchemaNullTypes(pageData.schema);
 
-                        let properties = hashMap["properties"];
-                        for(const [key, value] of Object.entries(properties)) {
-                            if('type' in value && typeof value["type"] == "object") {
-                                value["type"] = value["type"].filter(element => !element.startsWith('null'));
-                            }
-                        }
-                    }
-                }
-                return nuxtBlocksFromJsonSchema(schema);
+                return nuxtBlocksFromJsonSchema(pageData.schema);
             }
             case "plugin": {
                 let subgroups = await $fetch(`${config.public.apiUrl}/plugins/${page}/subgroups`);
