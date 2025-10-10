@@ -870,7 +870,7 @@ logger:
     flow: 'OFF'
 ```
 
-Disable logs for a specific flow:
+Disable logs for a specific flow (`hello-world`):
 
 ```yaml
 logger:
@@ -878,7 +878,7 @@ logger:
     flow.hello-world: 'OFF'
 ```
 
-Disable logs for a specific task:
+Disable logs for a specific task (taskId = `log`, flowId = `hello-world`):
 
 ```yaml
 logger:
@@ -886,7 +886,7 @@ logger:
     flow.hello-world.log: 'OFF'
 ```
 
-You can also disable specific trigger logs by its id.
+You can also disable specific trigger's logs by its ID.
 
 Execution-related loggers:
 
