@@ -31,8 +31,8 @@ By default, backups are encrypted with the embedded Kestra encryption key. You c
 - `--encryption-key`: a custom encryption key to use instead of the embedded key.
 - `--no-encryption`: disable encryption (not recommended; metadata may contain sensitive information).
 
-::badge{version=">=0.22" editions="EE"}
-::
+:::badge{version=">=0.22" editions="EE"}
+:::
 
 - `--include-data`: include execution data (executions, logs, metrics, audit logs). By default, execution data is excluded due to potential size.
 - `--internal-log`: set the level for internal logs to include in the backup.
@@ -128,7 +128,7 @@ First, create an Elasticsearch snapshot named `kestra`:
 PUT _snapshot/my_snapshot_repository/kestra?wait_for_completion=true
 ```
 
-Next, delete all Kestra indices and recreate them using the snapshot:
+Next, delete all Kestra indices (prefixed with `kestra_` by default) and recreate them using the snapshot:
 
 ```bash
 POST _snapshot/my_snapshot_repository/kestra/_restore
@@ -139,7 +139,7 @@ POST _snapshot/my_snapshot_repository/kestra/_restore
 
 If you need to start from a fresh Kafka cluster, reindex Kafka from Elasticsearch with:
 
-```shell
+```bash
 kestra sys-ee restore-queue
 ```
 

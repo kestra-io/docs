@@ -44,12 +44,12 @@ For workloads exceeding 1,000 task runs per minute, increase Executor and Worker
 | Scheduler  | 1   | 2 GB | Scale with triggers. |
 | Worker     | 4   | 8 GB | Scale based on [Worker Calculator](#worker-sizing-methodology). |
 
-::alert{type="info"}
+:::alert{type="info"}
 **Extra Tips**:
 1. It is best practice to provision at least one extra node per component for maintenance and one extra node for high availability.
 2. These guidelines are starting points. Monitor your actual usage and adjust based on performance metrics.
 3. Use the above guidelines in conjunction with the [Worker Calculator](https://v0-worker-calculator.vercel.app/) to determine the right number of Workers for your workload.
-::
+:::
 
 **Why we don’t provide exact information about VM instance type?** Compute nodes vary across cloud providers, on-prem and internal requirements of any company. Thus, we focus on simple CPU/memory recommendations you can use regardless of where you deploy Kestra.
 
@@ -138,9 +138,9 @@ Where:
 - **Polling triggers**: depends on duration × frequency.
 - **Task execution**: depends on the number of task runs per day, average duration, and active hours.
 
-::alert{type="info"}
+:::alert{type="info"}
 **Rule of thumb**: Start with calculated number of Workers, then add a **20–30% buffer** for production workloads.
-::
+:::
 
 ---
 
@@ -157,9 +157,9 @@ Where:
 - **Tune cautiously**: Each tuning option has trade-offs; always validate in staging before applying to production.
 - **Maintain High Availability (HA)**: Run at least two nodes per component (webserver, executor, worker, scheduler).
 
-::alert{type="info"}
+:::alert{type="info"}
 🔧 **Why no separate Indexer service is needed**: each Webserver replica has an Indexer component running as a background process. Adding a second Webserver (for HA) also **doubles indexing throughput** without introducing a new component to deploy and manage. This reduces complexity while still providing high availability and adequate indexing throughput for most workloads.
-::
+:::
 
 ---
 

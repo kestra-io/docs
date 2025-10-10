@@ -76,8 +76,8 @@ By following this pattern, teams avoid the chaos that often comes with scaling, 
 - 👉 Explore the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files)
 - 📺 Watch our [walkthrough on YouTube](https://youtu.be/BeQNI2XRddA)
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

@@ -69,11 +69,11 @@ triggers:
 
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Keep in mind that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
 Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
-::
+:::
 
 Each trigger ID is limited to a single active execution at a time. If a scheduled execution is still running, the next one will be queued instead of started immediately. For instance, if an execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled executions will not be affected.
 
@@ -156,9 +156,9 @@ If your trigger is locked due to an execution in progress, you can unlock it by 
 
 The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Keep in mind that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
-::alert{type="info"}
+:::alert{type="info"}
 Only scheduled-based triggers (triggers handled by the Scheduler) will be visible in the UI. Triggers handled by the Executor and Webserver will not be displayed. This also applies when fetching triggers from the API.
-::
+:::
 
 ### Toggle or unlock triggers from the Administation page
 
@@ -202,9 +202,9 @@ Kestra 0.15 introduced a generic `stopAfter` property which is a list of states 
 
 This property is most useful with `Schedule` triggers and polling-based triggers such as HTTP, JDBC, or File Detection.
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
-::
+:::
 
 
 ### Pause the schedule trigger after a failed execution
@@ -323,5 +323,5 @@ triggers:
 
 With this configuration, the flow will produce an execution containing logs that describe the trigger failure. This execution can be used for both troubleshooting and notification, in addition to the trigger logs.
 
-::ChildCard
-::
+:::ChildCard
+:::

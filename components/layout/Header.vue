@@ -36,12 +36,13 @@
             <div class="collapse navbar-collapse" id="main-header">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
                     <li class="nav-item dropdown" @mouseover="mouseOver('product')" @mouseleave="mouseOut('product')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
                             aria-expanded="false">
                             Product
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'product'"
+                            <ChevronDown v-if="showMenuId !== 'product' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'product' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
@@ -59,12 +60,13 @@
                     </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver('solutions')"
                         @mouseleave="mouseOut('solutions')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
                             aria-expanded="false">
                             Solutions
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'solutions'"
+                            <ChevronDown v-if="showMenuId !== 'solutions' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'solutions' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
@@ -115,12 +117,13 @@
                     </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver('resources')"
                         @mouseleave="mouseOut('resources')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
                             aria-expanded="false">
                             Learn
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'resources'"
+                            <ChevronDown v-if="showMenuId !== 'resources' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'resources' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">

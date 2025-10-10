@@ -13,9 +13,9 @@ We also restructured configurations and values to be more comprehensive and prod
 
 There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator).
 
-::alert{type="info"}
+:::alert{type="info"}
 Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading.
-::
+:::
 
 ## `kestra`
 

@@ -6,5 +6,5 @@ release: 0.18.0
 
 Deprecated features and migration guides for 0.18.0 and onwards.
 
-::ChildCard
-::
+:::ChildCard
+:::

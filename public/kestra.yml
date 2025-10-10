@@ -3417,7 +3417,7 @@ paths:
       parameters:
       - name: executionId
         in: path
-        description: The execution that you want flow information's
+        description: The execution that you want flow informations
         required: true
         schema:
           type: string
@@ -3699,6 +3699,65 @@ paths:
       responses:
         "200":
           description: replayExecution 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Execution"
+  /api/v1/{tenant}/executions/{executionId}/replay-with-inputs:
+    post:
+      tags:
+      - Executions
+      summary: Create a new execution from an old one and start it from a specified
+        task run id
+      operationId: replayExecutionWithinputs
+      parameters:
+      - name: executionId
+        in: path
+        description: the original execution id to clone
+        required: true
+        schema:
+          type: string
+      - name: taskRunId
+        in: query
+        description: The taskrun id
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: revision
+        in: query
+        description: The flow revision to use for new execution
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      - name: breakpoints
+        in: query
+        description: "Set a list of breakpoints at specific tasks 'id.value', separated\
+          \ by a coma."
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The inputs
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                type: string
+                format: binary
+        required: true
+      responses:
+        "200":
+          description: replayExecutionWithinputs 200 response
           content:
             application/json:
               schema:
@@ -5903,6 +5962,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_MetricEntry_"
+  /api/v1/{tenant}/namespaces/autocomplete:
+    post:
+      tags:
+      - Namespaces
+      summary: List namespaces for autocomplete
+      description: "Returns a list of namespaces for use in autocomplete fields, optionally\
+        \ allowing to filter by query and ids. Used especially for binding creation."
+      operationId: autocompleteNamespaces
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiAutocomplete"
+        required: true
+      responses:
+        "200":
+          description: autocompleteNamespaces 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /api/v1/{tenant}/namespaces/search:
     get:
       tags:
@@ -5965,7 +6053,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_NamespaceWithDisabled_"
+                $ref: "#/components/schemas/PagedResults_Namespace_"
   /api/v1/{tenant}/namespaces/{id}:
     get:
       tags:
@@ -6404,6 +6492,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
+  /api/v1/{tenant}/namespaces/{namespace}/kv/inheritance:
+    get:
+      tags:
+      - KV
+      summary: List all keys for inherited namespaces
+      operationId: listKeysWithInheritence
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listKeysWithInheritence 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KVEntry"
   /api/v1/{tenant}/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -7432,7 +7547,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Usage"
+                $ref: "#/components/schemas/MiscController.ApiUsage"
 components:
   schemas:
     AbstractFlow:
@@ -7457,6 +7572,8 @@ components:
           minimum: 1
           type: integer
           format: int32
+        description:
+          type: string
         inputs:
           type: array
           items:
@@ -7468,12 +7585,16 @@ components:
         disabled:
           type: boolean
         labels:
+          type: array
+          description: Labels as a list of Label (key/value pairs) or as a map of
+            string to string.
           oneOf:
-          - type: array
           - $ref: "#/components/schemas/Map_Object.Object_"
+          items:
+            $ref: "#/components/schemas/Label"
         variables:
           type: object
-          additionalProperties: true
+          additionalProperties: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         deleted:
@@ -7534,8 +7655,7 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -7550,6 +7670,7 @@ components:
             $ref: "#/components/schemas/Condition"
         disabled:
           type: boolean
+          default: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         logLevel:
@@ -7583,13 +7704,25 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
           pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
           type: string
+    ApiAutocomplete:
+      type: object
+      properties:
+        q:
+          type: string
+          nullable: true
+        ids:
+          type: array
+          nullable: true
+          items:
+            type: string
+        existingOnly:
+          type: boolean
     ApiSecretListResponse:
       required:
       - readOnly
@@ -7774,8 +7907,7 @@ components:
           type: string
         type:
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         chartOptions:
           type: object
@@ -7803,22 +7935,8 @@ components:
       type: object
       properties:
         type:
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
-    ConfigurationUsage:
-      type: object
-      properties:
-        repositoryType:
-          type: string
-        queueType:
-          type: string
-        storageType:
-          type: string
-        secretType:
-          type: string
-        javaSecurityEnabled:
-          type: boolean
     DailyExecutionStatistics:
       required:
       - duration
@@ -7955,6 +8073,11 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/PluginSchema"
+    EditionProvider.Edition:
+      type: string
+      enum:
+      - OSS
+      - EE
     Event_ExecutionStatusEvent_:
       type: object
       properties:
@@ -8109,6 +8232,7 @@ components:
       - enabled
       - errors
       - input
+      - isDefault
       - value
       type: object
       properties:
@@ -8117,6 +8241,8 @@ components:
         value:
           type: object
         enabled:
+          type: boolean
+        isDefault:
           type: boolean
         errors:
           type: array
@@ -8380,6 +8506,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -8387,9 +8515,13 @@ components:
           disabled:
             type: boolean
           labels:
+            type: array
+            description: Labels as a list of Label (key/value pairs) or as a map of
+              string to string.
             oneOf:
-            - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
+            items:
+              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -8403,12 +8535,9 @@ components:
             deprecated: true
             items:
               $ref: "#/components/schemas/PluginDefault"
-          description:
-            type: string
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           tasks:
             minItems: 1
             type: array
@@ -8483,6 +8612,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -8494,12 +8625,16 @@ components:
           disabled:
             type: boolean
           labels:
+            type: array
+            description: Labels as a list of Label (key/value pairs) or as a map of
+              string to string.
             oneOf:
-            - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
+            items:
+              $ref: "#/components/schemas/Label"
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties: false
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -8527,10 +8662,13 @@ components:
               $ref: "#/components/schemas/AbstractTriggerForExecution"
     FlowGenerationPrompt:
       required:
+      - conversationId
       - flowYaml
       - userPrompt
       type: object
       properties:
+        conversationId:
+          type: string
         userPrompt:
           type: string
         flowYaml:
@@ -8615,6 +8753,8 @@ components:
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
+          description:
+            type: string
           disabled:
             type: boolean
           deleted:
@@ -8745,6 +8885,8 @@ components:
             minimum: 1
             type: integer
             format: int32
+          description:
+            type: string
           inputs:
             type: array
             items:
@@ -8752,17 +8894,20 @@ components:
           disabled:
             type: boolean
           labels:
+            type: array
+            description: Labels as a list of Label (key/value pairs) or as a map of
+              string to string.
             oneOf:
-            - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
+            items:
+              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
             type: boolean
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           outputs:
@@ -8777,56 +8922,6 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
-    HostUsage:
-      type: object
-      properties:
-        uuid:
-          type: string
-        hardware:
-          $ref: "#/components/schemas/HostUsage.Hardware"
-        os:
-          $ref: "#/components/schemas/HostUsage.Os"
-        jvm:
-          $ref: "#/components/schemas/HostUsage.Jvm"
-    HostUsage.Hardware:
-      type: object
-      properties:
-        logicalProcessorCount:
-          type: integer
-          format: int32
-        physicalProcessorCount:
-          type: integer
-          format: int64
-        maxFreq:
-          type: integer
-          format: int64
-        memory:
-          type: integer
-          format: int64
-        knownVmMacAddr:
-          type: boolean
-        knownDockerMacAddr:
-          type: boolean
-    HostUsage.Jvm:
-      type: object
-      properties:
-        name:
-          type: string
-        vendor:
-          type: string
-        version:
-          type: string
-    HostUsage.Os:
-      type: object
-      properties:
-        family:
-          type: string
-        version:
-          type: string
-        codeName:
-          type: string
-        buildNumber:
-          type: string
     IdWithNamespace:
       type: object
       properties:
@@ -8873,7 +8968,8 @@ components:
           type: boolean
         defaults:
           title: The default value to use if no value is specified.
-          type: object
+          allOf:
+          - $ref: "#/components/schemas/Property_Object_"
         displayName:
           title: The display name of the input.
           type: string
@@ -8910,8 +9006,6 @@ components:
     KVEntry:
       required:
       - creationDate
-      - description
-      - expirationDate
       - key
       - updateDate
       type: object
@@ -8920,6 +9014,7 @@ components:
           type: string
         description:
           type: string
+          nullable: true
         creationDate:
           type: string
           format: date-time
@@ -8929,6 +9024,7 @@ components:
         expirationDate:
           type: string
           format: date-time
+          nullable: true
     KVType:
       type: string
       enum:
@@ -8946,9 +9042,13 @@ components:
       type: object
       properties:
         key:
+          minLength: 1
           type: string
         value:
+          minLength: 1
           type: string
+      description: A key/value pair that can be attached to a Flow or Execution. Labels
+        are often used to organize and categorize objects.
     Level:
       type: string
       enum:
@@ -9132,6 +9232,13 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
+    MiscController.ApiUsage:
+      type: object
+      properties:
+        flows:
+          $ref: "#/components/schemas/FlowUsage"
+        executions:
+          $ref: "#/components/schemas/ExecutionUsage"
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -9153,7 +9260,7 @@ components:
         version:
           type: string
         edition:
-          $ref: "#/components/schemas/MiscController.Edition"
+          $ref: "#/components/schemas/EditionProvider.Edition"
         commitId:
           type: string
         commitDate:
@@ -9189,11 +9296,9 @@ components:
           type: boolean
         isBasicAuthInitialized:
           type: boolean
-    MiscController.Edition:
-      type: string
-      enum:
-      - OSS
-      - EE
+        pluginsHash:
+          type: integer
+          format: int64
     MiscController.Environment:
       required:
       - color
@@ -9227,23 +9332,6 @@ components:
           type: string
         deleted:
           type: boolean
-    NamespaceWithDisabled:
-      required:
-      - deleted
-      - disabled
-      - id
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/NamespaceLight"
-      - type: object
-        properties:
-          id:
-            pattern: "^[a-z0-9][a-z0-9._-]*"
-            type: string
-          deleted:
-            type: boolean
-          disabled:
-            type: boolean
     Output:
       required:
       - id
@@ -9258,11 +9346,15 @@ components:
         description:
           type: string
         value:
-          type: object
+          oneOf:
+          - type: object
+          - type: string
         type:
           $ref: "#/components/schemas/Type"
         displayName:
           type: string
+        required:
+          type: boolean
     PagedResults_BlueprintController.ApiBlueprintItem_:
       required:
       - results
@@ -9356,7 +9448,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_NamespaceWithDisabled_:
+    PagedResults_Namespace_:
       required:
       - results
       - total
@@ -9365,7 +9457,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/NamespaceWithDisabled"
+            $ref: "#/components/schemas/NamespaceLight"
         total:
           type: integer
           format: int64
@@ -9494,6 +9586,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Plugin.PluginElementMetadata"
+        dataFiltersKPI:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plugin.PluginElementMetadata"
         logExporters:
           type: array
           items:
@@ -9534,7 +9630,6 @@ components:
       required:
       - forced
       - type
-      - values
       type: object
       properties:
         type:
@@ -9543,8 +9638,10 @@ components:
           type: boolean
         values:
           type: object
-          additionalProperties:
-            type: object
+          additionalProperties: false
+          oneOf:
+          - $ref: "#/components/schemas/Map_Object.Object_"
+          - type: string
     PluginIcon:
       type: object
       properties:
@@ -9554,25 +9651,6 @@ components:
           type: string
         flowable:
           type: boolean
-    PluginMetric:
-      required:
-      - count
-      - meanTime
-      - totalTime
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-        count:
-          type: number
-          format: double
-        totalTime:
-          type: number
-          format: double
-        meanTime:
-          type: number
-          format: double
     PluginSchema:
       type: object
       properties:
@@ -9605,13 +9683,6 @@ components:
       - CORE
       - INGESTION
       - BI
-    PluginUsage:
-      type: object
-      properties:
-        manifest:
-          type: object
-          additionalProperties:
-            type: string
     Property_Duration_:
       required:
       - expression
@@ -9621,6 +9692,21 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
+    Property_Object_:
+      required:
+      - expression
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: object
+      oneOf:
+      - type: object
+      - type: string
     Property_String_:
       required:
       - expression
@@ -9630,6 +9716,9 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
     QueryFilter:
       required:
       - field
@@ -9657,6 +9746,7 @@ components:
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
       - TRIGGER_ID
+      - EXECUTION_ID
       - CHILD_FILTER
       - WORKER_ID
       - EXISTING_ONLY
@@ -9857,15 +9947,6 @@ components:
       enum:
       - SERVER
       - STANDALONE
-    ServerType:
-      type: string
-      enum:
-      - EXECUTOR
-      - INDEXER
-      - SCHEDULER
-      - STANDALONE
-      - WEBSERVER
-      - WORKER
     Service.ServiceState:
       type: string
       enum:
@@ -9877,7 +9958,7 @@ components:
       - TERMINATED_GRACEFULLY
       - TERMINATED_FORCED
       - NOT_RUNNING
-      - EMPTY
+      - INACTIVE
       - MAINTENANCE
     ServiceInstance:
       required:
@@ -9950,47 +10031,7 @@ components:
       - SCHEDULER
       - WEBSERVER
       - WORKER
-    ServiceUsage:
-      required:
-      - dailyStatistics
-      type: object
-      properties:
-        dailyStatistics:
-          type: array
-          items:
-            $ref: "#/components/schemas/ServiceUsage.DailyServiceStatistics"
-    ServiceUsage.DailyServiceStatistics:
-      required:
-      - type
-      - values
-      type: object
-      properties:
-        type:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: "#/components/schemas/ServiceUsage.DailyStatistics"
-    ServiceUsage.DailyStatistics:
-      required:
-      - avg
-      - date
-      - max
-      - min
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        min:
-          type: integer
-          format: int64
-        max:
-          type: integer
-          format: int64
-        avg:
-          type: integer
-          format: int64
+      - INVALID
     State:
       required:
       - current
@@ -10058,8 +10099,7 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -10117,8 +10157,7 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
           title: The version of the plugin to use.
@@ -10246,6 +10285,7 @@ components:
       properties:
         disabled:
           type: boolean
+          default: false
         tenantId:
           pattern: "^[a-z0-9][a-z0-9_-]"
           type: string
@@ -10316,66 +10356,6 @@ components:
       - MULTISELECT
       - YAML
       - EMAIL
-    Usage:
-      required:
-      - configurations
-      - executions
-      - flows
-      - host
-      - instanceUuid
-      - plugins
-      - serverType
-      - startTime
-      - startUuid
-      - uuid
-      - version
-      - zoneId
-      type: object
-      properties:
-        uuid:
-          type: string
-        startUuid:
-          type: string
-        instanceUuid:
-          type: string
-        serverType:
-          $ref: "#/components/schemas/ServerType"
-        version:
-          type: string
-        zoneId:
-          type: string
-        uri:
-          type: string
-          nullable: true
-        environments:
-          type: array
-          nullable: true
-          items:
-            type: string
-        startTime:
-          type: string
-          format: date-time
-        host:
-          $ref: "#/components/schemas/HostUsage"
-        configurations:
-          $ref: "#/components/schemas/ConfigurationUsage"
-        plugins:
-          type: array
-          items:
-            $ref: "#/components/schemas/PluginUsage"
-        flows:
-          $ref: "#/components/schemas/FlowUsage"
-        executions:
-          $ref: "#/components/schemas/ExecutionUsage"
-        services:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ServiceUsage"
-        pluginMetrics:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/PluginMetric"
     ValidateConstraintViolation:
       required:
       - constraints

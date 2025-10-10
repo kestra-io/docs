@@ -15,9 +15,9 @@ In secured or restricted environments it’s common to route outbound HTTP/S tra
 - Route outbound traffic through the proxy.
 - Configure the JVM and any auxiliary daemons (e.g., Docker daemon) to use the proxy and truststore.
 
-::alert{type="info"}
+:::alert{type="info"}
 **Security note:** An MITM proxy intercepts TLS traffic. Only enable this in controlled environments and with appropriate approvals.
-::
+:::
 
 ---
 
@@ -31,9 +31,9 @@ Import the MITM CA certificate into a Java keystore so the JVM trusts intercepte
 keytool -importcert   -alias mitmproxy-ca   -storepass changeit   -keystore truststore.jks   -trustcacerts   -file mitmproxy-ca.crt   -noprompt
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Tip: prefer a strong password instead of `changeit` in production. You can also use PKCS12 by setting `-deststoretype PKCS12`.
-::
+:::
 
 ### 2. (Kubernetes) Create a Secret containing the truststore
 
@@ -49,11 +49,11 @@ This secret will be mounted into Kestra pods.
 
 ## Configuring Kestra to use the MITM proxy
 
-You must update the Kestra configuration and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
+You must update the [Kestra configuration](../configuration/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
 
 ### 1. Micronaut / Kestra configuration
 
-Add proxy settings and truststore configuration to your Kestra configuration (merged via Helm `configurations.application` or a config file):
+Add proxy settings and truststore configuration to your [Kestra configuration](../configuration/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
 # values.yaml (or application.yml configuration)
@@ -132,14 +132,14 @@ services:
 
 ## Troubleshooting
 
-1. **TLS handshake errors**  
+1. **TLS handshake errors**
    Verify `truststore.jks` contains the correct CA (`keytool -list -keystore truststore.jks`).
 
-2. **Requests not reaching the proxy**  
+2. **Requests not reaching the proxy**
    Confirm `http.proxyHost` / `https.proxyHost` and `http.nonProxyHosts` are correct.
 
-3. **Docker image pull failures**  
+3. **Docker image pull failures**
    Add the MITM CA to Docker daemon certs (`/etc/docker/certs.d/.../ca.crt`).
 
-4. **Debugging TLS**  
+4. **Debugging TLS**
    Temporarily enable: `-Djavax.net.debug=ssl,handshake`.

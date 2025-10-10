@@ -22,17 +22,19 @@ In contrast to regular users, Service Accounts don't have a password and they do
 
 ## Creating a Service Account
 
-To create a new service account, go to the Service Accounts page under the Administration section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
+To create a new service account, go to **Service Accounts** tab on the **IAM** page under the **Administration** section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
-Once you have created a service account, you can add a Role that will grant it permissions to specific resources. To do this, click the **Add** button and select the role you want to assign to the service account.
+Once you have created a service account, you can add a Role that will grant it permissions to specific resources. To do this, switch to the **Access** tab and click the **Add** button and select the role you want to assign to the service account.
+
+![Assign Service Account Role](/docs/user-interface-guide/service_account_role.png)
 
 Finally, you can generate an API token for the service account by clicking the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
 
-::alert{type="info"}
+:::alert{type="info"}
 **Note:** You can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
-::
+:::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
 

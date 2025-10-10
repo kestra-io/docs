@@ -37,9 +37,9 @@ From this section, you’ll find the _System Blueprints_ tab, which provides ful
 
 ![system_blueprints](/docs/concepts/system-flows/system_blueprints.png)
 
-::alert{type="info"}
+:::alert{type="info"}
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
-::
+:::
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions or view both simultaneously.
 
