@@ -146,7 +146,7 @@ kestra:
     type: postgres
 ```
 
-Supported: PostgreSQL, H2, MySQL.  
+Supported: PostgreSQL, H2, MySQL.
 Use H2 for local **development**. For **production**, use PostgreSQL (or MySQL if PostgreSQL isn’t an option).
 
 See [software requirements](../09.administrator-guide/00.requirements.md) for minimum versions.
@@ -601,7 +601,7 @@ outputs:
 ```
 
 :::alert{type="warning"}
-Without `kestra.encryption.secret-key`, `SECRET` types throw:  
+Without `kestra.encryption.secret-key`, `SECRET` types throw:
 `Illegal argument: Unable to use a SECRET input as encryption is not configured`.
 :::
 
@@ -878,6 +878,16 @@ logger:
     flow.hello-world: 'OFF'
 ```
 
+Disable logs for a specific task:
+
+```yaml
+logger:
+  levels:
+    flow.hello-world.log: 'OFF'
+```
+
+You can also disable specific trigger logs by its id.
+
 Execution-related loggers:
 
 - `execution`: flow start/end
@@ -902,6 +912,15 @@ logger:
     execution.hello-world: 'OFF'
     task.hello-world: 'OFF'
     trigger.hello-world: 'OFF'
+```
+
+Or per task/trigger:
+
+```yaml
+logger:
+  levels:
+    task.hello-world.log: 'OFF'
+    trigger.hello-world.schedule: 'OFF'
 ```
 
 ### Access log configuration
@@ -1530,13 +1549,13 @@ Kestra servers send heartbeats for liveness.
 
 #### `kestra.server.liveness.interval` (Duration, default `5s`)
 
-#### `kestra.server.liveness.timeout` (Duration, default `45s`)  
+#### `kestra.server.liveness.timeout` (Duration, default `45s`)
 Must match across **all Executors**.
 
-#### `kestra.server.liveness.initial-delay` (Duration, default `45s`)  
+#### `kestra.server.liveness.initial-delay` (Duration, default `45s`)
 Must match across **all Executors**.
 
-#### `kestra.server.liveness.heartbeat-interval` (Duration, default `3s`)  
+#### `kestra.server.liveness.heartbeat-interval` (Duration, default `3s`)
 Must be strictly less than `timeout`.
 
 **Recommended (JDBC / OSS):**
