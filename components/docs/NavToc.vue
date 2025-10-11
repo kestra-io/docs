@@ -1,10 +1,10 @@
 <template>
     <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
         <div>
-            <template v-if="generated.length > 0" class="bd-contents-list">
+            <template v-if="links.length > 0" class="bd-contents-list">
                 <button
                     class="btn d-lg-none"
-                    :class="tableOfContentsExpanded = !tableOfContentsExpanded ? '' : 'collapsed'"
+                    :class="!tableOfContentsExpanded ? '' : 'collapsed'"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#tocContents"
@@ -21,7 +21,7 @@
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
+                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in links">
                             <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text"
                                 @click="closeToc" class="table-content">
                                 <a @click="menuNavigate" :href="`#${tableOfContent.id}`" :class="`depth-${tableOfContent.depth}`">{{ tableOfContent.text }}</a>
@@ -42,135 +42,150 @@
             </template>
 
             <div class="d-none d-lg-block pt-4 bd-social-list">
-                <SocialsList :page="page" />
+                <SocialsList :editLink :stem :extension/>
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import SocialsList from "../common/SocialsList.vue";
-</script>
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { useRoute } from 'vue-router';
+import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+import SocialsList from "../common/SocialsList.vue";
 
-<script>
-    export default {
-        props: {
-            page: {
-                type: Object,
-                required: true
-            },
-            capitalize: {
-                type: Boolean,
-                default: false
-            }
-        },
-        data() {
-            return {
-                tableOfContentsExpanded: false,
-                showThankYou: false
-            }
-        },
-        computed: {
-            generated() {
-                return this.page.body?.toc?.links ?? [];
-            }
-        },
-        mounted() {
-            this.scrollToHash();
-            window.addEventListener('scroll', this.handleScroll);
-        },
-        beforeDestroy() {
-            window.removeEventListener('scroll', this.handleScroll);
-        },
-        methods: {
-            closeToc() {
-                this.tableOfContentsExpanded = false;
-                document.getElementById('tocContents').classList.remove("show");
-            },
-            handleScroll() {
-              if (window.scrollY === 0) {
-                this.removeActiveTab();
-              } else {
-                this.generated.forEach((link, i) => {
-                  this.activateMenuItem(link, i, this.generated, this.removeActiveTab);
-                  if (link.children) {
-                    link.children.forEach((childrenLink, index) => {
-                      this.activateMenuItem(childrenLink, index, link.children, this.removeActiveTab);
-                    })
-                  }
-                });
-              }
-            },
-            removeActiveTab() {
-              document.querySelectorAll('.depth-2').forEach((item) => {
-                item.classList.remove('active');
-              })
-              document.querySelectorAll('.depth-3').forEach((item) => {
-                item.classList.remove('active');
-              })
-            },
-            menuNavigate(e) {
-              this.scrollIntoView(e.target.name);
-              window.location.hash = e.target.name;
-              setTimeout(() => {
-                this.removeActiveTab();
-                e.target.classList.add('active');
-              }, 1000);
-            },
-            activateMenuItem(item, index, linkArray, removeActiveTab) {
-              if (item?.id) {
-                const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
-                const prevChildrenLinkPosition = index > 0 ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect()?.top : undefined;
-                if (childrenLinkPosition?.top <= 160) {
-                  let activeTapItem = document.querySelector(`.right-menu a[href='#${item.id}']`);
-                  if (!activeTapItem.classList.contains('active')) {
-                    if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
-                      removeActiveTab();
-                      activeTapItem.classList.add('active');
-                    }
-                  }
-                }
-              }
-            },
-            scrollToHash() {
-              const hash = this.$route.hash;
-              if (hash) {
-                const targetId = hash.substring(1);
-                this.scrollIntoView(targetId);
-              }
-            },
-            scrollIntoView(id) {
-              const element = document.getElementById(id);
-              this.$nextTick(() => {
-                if (element) {
-                  setTimeout(() => {
-                    element.scrollIntoView({block: "nearest", inline: "nearest"});
-                  }, 100);
-                } else {
-                  setTimeout(() => {
-                    this.$nextTick(() => {
-                      const updatedElement = document.getElementById(id);
-                      if (updatedElement) {
-                        updatedElement.scrollIntoView({block: "nearest", inline: "nearest"});
-                      }
-                    });
-                  }, 1000);
-                }
-              });
-            }
-        },
-        watch: {
-            '$route.params': {
-                handler(newParams, oldParams) {
-                    this.showThankYou = false;
-                },
-                deep: true,
-                immediate: true
-            }
+interface TocLink {
+  id: string;
+  text: string;
+  depth: number;
+  children?: TocLink[];
+}
+
+const props = withDefaults(defineProps<{
+  links?: TocLink[];
+  editLink?: boolean;
+  extension?: string;
+  stem?: string;
+  capitalize?: boolean;
+}>(), {
+  links: () => [],
+  capitalize: false
+});
+
+const tableOfContentsExpanded = ref(false);
+const showThankYou = ref(false);
+
+const route = useRoute();
+
+function closeToc() {
+  tableOfContentsExpanded.value = false;
+  const toc = document.getElementById('tocContents');
+  if (toc) toc.classList.remove("show");
+}
+
+function removeActiveTab() {
+  document.querySelectorAll('.depth-2').forEach((item) => {
+    item.classList.remove('active');
+  });
+  document.querySelectorAll('.depth-3').forEach((item) => {
+    item.classList.remove('active');
+  });
+}
+
+function activateMenuItem(
+  item: TocLink,
+  index: number,
+  linkArray: TocLink[],
+  removeActiveTab: () => void
+) {
+  if (item?.id) {
+    const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
+    const prevChildrenLinkPosition = index > 0 ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect()?.top : undefined;
+    if (childrenLinkPosition?.top !== undefined && childrenLinkPosition.top <= 160) {
+      const activeTapItem = document.querySelector(`.right-menu a[href='#${item.id}']`);
+      if (activeTapItem && !activeTapItem.classList.contains('active')) {
+        if ((prevChildrenLinkPosition === undefined || prevChildrenLinkPosition <= 0)) {
+          removeActiveTab();
+          activeTapItem.classList.add('active');
         }
+      }
     }
+  }
+}
+
+function handleScroll() {
+  if (window.scrollY === 0) {
+    removeActiveTab();
+  } else {
+    props.links.forEach((link, i) => {
+      activateMenuItem(link, i, props.links, removeActiveTab);
+      if (link.children) {
+        link.children.forEach((childrenLink, index) => {
+          activateMenuItem(childrenLink, index, link.children!, removeActiveTab);
+        });
+      }
+    });
+  }
+}
+
+function scrollIntoView(id: string) {
+  const element = document.getElementById(id);
+  nextTick(() => {
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }, 100);
+    } else {
+      setTimeout(() => {
+        nextTick(() => {
+          const updatedElement = document.getElementById(id);
+          if (updatedElement) {
+            updatedElement.scrollIntoView({ block: "nearest", inline: "nearest" });
+          }
+        });
+      }, 1000);
+    }
+  });
+}
+
+function menuNavigate(e: Event) {
+  const target = e.target as HTMLElement;
+  const id = target.getAttribute('name') || target.getAttribute('href')?.replace(/^#/, '');
+  if (id) {
+    scrollIntoView(id);
+    window.location.hash = id;
+    setTimeout(() => {
+      removeActiveTab();
+      target.classList.add('active');
+    }, 1000);
+  }
+}
+
+function scrollToHash() {
+  const hash = route.hash;
+  if (hash) {
+    const targetId = hash.substring(1);
+    scrollIntoView(targetId);
+  }
+}
+
+onMounted(() => {
+  scrollToHash();
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+watch(
+  () => route.params,
+  () => {
+    showThankYou.value = false;
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>

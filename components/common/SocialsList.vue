@@ -3,8 +3,8 @@
         <strong class="h6 my-2 title text-white">Contribute</strong>
         <nav class="social mt-1">
             <ul>
-                <li v-if="page.editLink !== false && editLink">
-                    <a class="text-white" :href="editLink" target="_blank">
+                <li v-if="editLink !== false && computedEditLink">
+                    <a class="text-white" :href="computedEditLink" target="_blank">
                         <Github />
                         Edit this page
                     </a>
@@ -59,19 +59,28 @@
     import BlueSky from "../icons/BlueSkyIcon.vue";
 
     const props = defineProps({
-        page: {
-            type: Object,
-            default: {},
+        editLink: {
+            type: Boolean,
+            default: "",
         },
+        stem: {
+            type: String,
+            default: undefined
+        },
+        extension:{
+            type:String,
+            default: undefined
+        }
     });
 
-    const editLink = computed(() => {
-        if (!props.page.stem || !props.page.extension) {
+    const computedEditLink = computed(() => {
+        if (!props.stem || !props.extension) {
             return false;
         }
-        return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.page.stem}.${props.page.extension}`;
+        return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.stem}.${props.extension}`;
     });
 </script>
+
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     strong {
