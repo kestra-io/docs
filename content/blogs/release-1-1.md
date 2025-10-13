@@ -30,9 +30,10 @@ Check the video below for a quick overview of all enhancements.
 </div>
 
 
-## Feature 1
+## New Filters
 
-One or two paragraphs describing this feature.
+https://github.com/kestra-io/kestra/issues/10349
+
 
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
