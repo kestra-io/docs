@@ -40,6 +40,10 @@ https://github.com/kestra-io/kestra/issues/10349
 https://github.com/kestra-io/kestra-ee/issues/3752
 
 
+## AI helpers for failure
+
+Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/11162
+
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
 
 
@@ -49,6 +53,7 @@ https://github.com/kestra-io/kestra-ee/issues/3752
 - Introduced "Fix with AI" feature that provides AI-powered suggestions and fixes when task runs fail, helping you quickly [diagnose and resolve workflow issues](https://github.com/kestra-io/kestra/issues/11162).
 - Added a new `syncWorkingDirectory` [property for remote task runners to control whether the working directory is synchronized between remote and local environments](https://github.com/kestra-io/kestra-ee/issues/4761). This ensures consistent behavior across different runner types when working with files and directories in your tasks. Previously, working directories were only synced when output files or directories were specified.
 - [Added flows as a data source for dashboards](https://github.com/kestra-io/kestra-ee/issues/3752), allowing you to display and monitor flow information in table format directly within your dashboard views.
+- [AI Agent can now call remote agent via A2A framework](https://github.com/kestra-io/kestra-ee/issues/5256)
 
 
 ## Plugins
@@ -67,6 +72,9 @@ This release comes with a wealth of new plugins, thanks largely to the incredibl
 - [Algolia plugin](https://github.com/kestra-io/plugin-algolia/pull/3) with tasks to manage records, and manage indices programmatically.
 - [Prometheus plugin](https://github.com/kestra-io/plugin-prometheus/pull/3) with a `Query` task to run PromQL queries and retrieve time-series metrics, a `Push` task to send custom metrics to Prometheus via the Pushgateway and a `QueryTrigger` to wait for a Prometheus PromQL query to return results.
 - [Prefect Cloud plugin](https://github.com/kestra-io/plugin-prefect/pull/3) with a `CreateFlowRun` task to trigger Prefect flow runs from deployments.
+
+New triggers:
+- Allow file detection triggers to react to both new and updated files - https://github.com/kestra-io/kestra/issues/11761
 
 ::::collapse{title="Full list of improvements"}
 - Detailed item A
