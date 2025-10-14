@@ -352,7 +352,8 @@ export default defineNuxtConfig({
         '/docs/architecture/indexer': {redirect: '/docs/architecture/server-components#indexer'},
         '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'},
         '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
-        '/docs/ee-server-cli': {redirect: '/docs/server-cli'}
+        '/docs/ee-server-cli': {redirect: '/docs/server-cli'},
+        '/docs/ui/administration/workers': {redirect: '/docs/architecture/server-components#worker'}
 
     },
 
