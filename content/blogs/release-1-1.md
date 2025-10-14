@@ -72,6 +72,12 @@ This release comes with a wealth of new plugins, thanks largely to the incredibl
 - [Algolia plugin](https://github.com/kestra-io/plugin-algolia/pull/3) with tasks to manage records, and manage indices programmatically.
 - [Prometheus plugin](https://github.com/kestra-io/plugin-prometheus/pull/3) with a `Query` task to run PromQL queries and retrieve time-series metrics, a `Push` task to send custom metrics to Prometheus via the Pushgateway and a `QueryTrigger` to wait for a Prometheus PromQL query to return results.
 - [Prefect Cloud plugin](https://github.com/kestra-io/plugin-prefect/pull/3) with a `CreateFlowRun` task to trigger Prefect flow runs from deployments.
+- New [AWS CloudWatch plugin](https://github.com/kestra-io/kestra-ee/issues/5290) allowing to push or query metrics from AWS CloudWatch as well as trigger a new flow when CloudWatch metrics match a query condition.
+- New [DocumentDB plugin](https://github.com/kestra-io/plugin-documentdb/pull/1) allowing to Create, Read, Update or Delete records from DocumentDB
+- New [SNMP plugin](https://github.com/kestra-io/kestra-ee/issues/5288) TODO details
+- New [Stripe plugin](https://github.com/kestra-io/kestra/issues/11301)
+- New [Apache Flink plugin](https://github.com/kestra-io/kestra/issues/11298)
+- AI Agent: we added support for [Oracle Cloud Infrastructure GenAI language model](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI model provider](https://github.com/kestra-io/plugin-ai/issues/175), [support for LocalAI language model](https://github.com/kestra-io/plugin-ai/issues/173)
 
 New triggers:
 - Allow file detection triggers to react to both new and updated files - https://github.com/kestra-io/kestra/issues/11761
