@@ -33,6 +33,7 @@ tasks:
 
       - id: upload
         type: io.kestra.plugin.core.namespace.UploadFiles
+        namespace: "{{ flow.namespace }}"
         files:
           - "glob:**/dbt/**"
 ```
@@ -111,12 +112,13 @@ Here’s how you can set up namespace file management:
 tasks:
   - id: download
     type: io.kestra.plugin.core.namespace.DownloadFiles
-    sourceNamespace: "company.team.other"
+    namespace: "company.team.other"
     files:
       - "glob:**/dbt/**"
 
   - id: delete
     type: io.kestra.plugin.core.namespace.DeleteFiles
+    namespace: "company.team.other"
     files:
       - "glob:**/dbt/temp/**"
 ```
