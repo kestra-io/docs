@@ -33,6 +33,7 @@ tasks:
 
       - id: upload
         type: io.kestra.plugin.core.namespace.UploadFiles
+        namespace: "{{ flow.namespace }}"
         files:
           - "glob:**/dbt/**"
 ```
