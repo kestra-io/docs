@@ -1,6 +1,5 @@
 import * as sass from "sass";
 import { CollectionNames } from "./content.config.names";
-import redirect from "./server/middleware/redirect";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
