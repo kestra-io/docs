@@ -13,10 +13,10 @@ export const collections = {
         base: "./src/content/docs",
         generateId,
     }),
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string().optional(),
-        icon: z.string().optional(),
+        icon: image().optional(),
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE", "Cloud"])).optional(),
