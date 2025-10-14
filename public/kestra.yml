@@ -4041,13 +4041,11 @@ paths:
         "409":
           description: if the flow is disabled
         "200":
-          description: createExecution 200 response
+          description: On execution created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
   /api/v1/{tenant}/executions/{namespace}/{id}/validate:
     post:
       tags:
@@ -5069,7 +5067,7 @@ paths:
         required: true
       responses:
         "200":
-          description: updateFlow 200 response
+          description: On success
           content:
             application/json:
               schema:
@@ -7727,7 +7725,6 @@ components:
       required:
       - readOnly
       - results
-      - total
       type: object
       properties:
         readOnly:
@@ -7782,13 +7779,6 @@ components:
           type: string
           format: date-time
     BlueprintController.ApiBlueprintItem:
-      required:
-      - description
-      - id
-      - includedTasks
-      - publishedAt
-      - tags
-      - title
       type: object
       properties:
         id:
@@ -7819,10 +7809,6 @@ components:
           kind:
             $ref: "#/components/schemas/BlueprintController.Kind"
     BlueprintController.ApiBlueprintTagItem:
-      required:
-      - id
-      - name
-      - publishedAt
       type: object
       properties:
         id:
@@ -7940,8 +7926,6 @@ components:
     DailyExecutionStatistics:
       required:
       - duration
-      - executionCounts
-      - groupBy
       - startDate
       type: object
       properties:
@@ -8118,9 +8102,6 @@ components:
         retry:
           type: string
     ExecutableTask.SubflowId:
-      required:
-      - flowId
-      - namespace
       type: object
       properties:
         namespace:
@@ -8137,18 +8118,8 @@ components:
       - flowId
       - flowRevision
       - id
-      - inputs
-      - labels
-      - metadata
       - namespace
-      - originalId
-      - outputs
-      - parentId
       - state
-      - taskRunList
-      - traceParent
-      - trigger
-      - variables
       type: object
       properties:
         labels:
@@ -8213,10 +8184,6 @@ components:
           items:
             $ref: "#/components/schemas/Breakpoint"
     ExecutionController.ApiValidateExecutionInputsResponse:
-      required:
-      - id
-      - inputs
-      - namespace
       type: object
       properties:
         id:
@@ -8228,12 +8195,6 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue:
-      required:
-      - enabled
-      - errors
-      - input
-      - isDefault
-      - value
       type: object
       properties:
         input:
@@ -8249,8 +8210,6 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
-      required:
-      - message
       type: object
       properties:
         message:
@@ -8267,7 +8226,6 @@ components:
     ExecutionController.ExecutionResponse:
       required:
       - deleted
-      - url
       type: object
       allOf:
       - $ref: "#/components/schemas/Execution"
@@ -8279,12 +8237,6 @@ components:
             type: string
             format: uri
     ExecutionController.LastExecutionResponse:
-      required:
-      - flowId
-      - id
-      - namespace
-      - startDate
-      - status
       type: object
       properties:
         id:
@@ -8299,9 +8251,6 @@ components:
         status:
           $ref: "#/components/schemas/State.Type"
     ExecutionController.SetLabelsByIdsRequest:
-      required:
-      - executionLabels
-      - executionsId
       type: object
       properties:
         executionsId:
@@ -8313,9 +8262,6 @@ components:
           items:
             $ref: "#/components/schemas/Label"
     ExecutionController.StateRequest:
-      required:
-      - state
-      - taskRunId
       type: object
       properties:
         taskRunId:
@@ -8323,17 +8269,6 @@ components:
         state:
           $ref: "#/components/schemas/State.Type"
     ExecutionController.WebhookResponse:
-      required:
-      - flowId
-      - flowRevision
-      - id
-      - labels
-      - namespace
-      - outputs
-      - state
-      - tenantId
-      - trigger
-      - url
       type: object
       properties:
         tenantId:
@@ -8369,9 +8304,6 @@ components:
       - TEST
       - PLAYGROUND
     ExecutionMetadata:
-      required:
-      - attemptNumber
-      - originalCreatedDate
       type: object
       properties:
         attemptNumber:
@@ -8396,12 +8328,6 @@ components:
         id:
           type: string
     ExecutionStatusEvent:
-      required:
-      - executionId
-      - flowId
-      - namespace
-      - state
-      - tenantId
       type: object
       properties:
         executionId:
@@ -8417,9 +8343,7 @@ components:
     ExecutionTrigger:
       required:
       - id
-      - logFile
       - type
-      - variables
       type: object
       properties:
         id:
@@ -8663,7 +8587,6 @@ components:
     FlowGenerationPrompt:
       required:
       - conversationId
-      - flowYaml
       - userPrompt
       type: object
       properties:
@@ -8674,11 +8597,6 @@ components:
         flowYaml:
           type: string
     FlowGraph:
-      required:
-      - clusters
-      - edges
-      - flowables
-      - nodes
       type: object
       properties:
         nodes:
@@ -8698,12 +8616,6 @@ components:
           items:
             type: string
     FlowGraph.Cluster:
-      required:
-      - cluster
-      - end
-      - nodes
-      - parents
-      - start
       type: object
       properties:
         cluster:
@@ -8721,10 +8633,6 @@ components:
         end:
           type: string
     FlowGraph.Edge:
-      required:
-      - relation
-      - source
-      - target
       type: object
       properties:
         source:
@@ -8787,8 +8695,6 @@ components:
             type: string
     FlowNode:
       required:
-      - id
-      - namespace
       - uid
       type: object
       properties:
@@ -8809,9 +8715,6 @@ components:
       - USER
       - SYSTEM
     FlowTopologyGraph:
-      required:
-      - edges
-      - nodes
       type: object
       properties:
         nodes:
@@ -8823,10 +8726,6 @@ components:
           items:
             $ref: "#/components/schemas/FlowTopologyGraph.Edge"
     FlowTopologyGraph.Edge:
-      required:
-      - relation
-      - source
-      - target
       type: object
       properties:
         source:
@@ -8930,9 +8829,6 @@ components:
         id:
           type: string
     InputType:
-      required:
-      - cls
-      - type
       type: object
       properties:
         type:
@@ -8974,8 +8870,6 @@ components:
           title: The display name of the input.
           type: string
     KVController.ApiDeleteBulkRequest:
-      required:
-      - keys
       type: object
       properties:
         keys:
@@ -8984,8 +8878,6 @@ components:
             type: string
       description: API Request for the bulk-delete operation.
     KVController.ApiDeleteBulkResponse:
-      required:
-      - keys
       type: object
       properties:
         keys:
@@ -8994,9 +8886,6 @@ components:
             type: string
       description: API Response for the bulk-delete operation.
     KVController.TypedValue:
-      required:
-      - type
-      - value
       type: object
       properties:
         type:
@@ -9004,10 +8893,6 @@ components:
         value:
           type: object
     KVEntry:
-      required:
-      - creationDate
-      - key
-      - updateDate
       type: object
       properties:
         key:
@@ -9059,8 +8944,6 @@ components:
       - TRACE
     Listener:
       required:
-      - conditions
-      - description
       - tasks
       type: object
       properties:
@@ -9079,11 +8962,7 @@ components:
       required:
       - deleted
       - flowId
-      - level
-      - message
       - namespace
-      - thread
-      - timestamp
       type: object
       properties:
         namespace:
@@ -9127,13 +9006,6 @@ components:
         empty:
           type: boolean
     Metric:
-      required:
-      - baseUnit
-      - description
-      - name
-      - tags
-      - type
-      - value
       type: object
       properties:
         name:
@@ -9151,9 +9023,6 @@ components:
         value:
           type: object
     Metric.Tag:
-      required:
-      - key
-      - value
       type: object
       properties:
         key:
@@ -9164,7 +9033,6 @@ components:
       required:
       - date
       - name
-      - value
       type: object
       properties:
         name:
@@ -9240,10 +9108,6 @@ components:
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
     MiscController.BasicAuthCredentials:
-      required:
-      - password
-      - uid
-      - username
       type: object
       properties:
         uid:
@@ -9300,9 +9164,6 @@ components:
           type: integer
           format: int64
     MiscController.Environment:
-      required:
-      - color
-      - name
       type: object
       properties:
         name:
@@ -9310,9 +9171,6 @@ components:
         color:
           type: string
     MiscController.Preview:
-      required:
-      - initial
-      - max
       type: object
       properties:
         initial:
@@ -9605,9 +9463,6 @@ components:
         subGroup:
           type: string
     Plugin.PluginElementMetadata:
-      required:
-      - cls
-      - deprecated
       type: object
       properties:
         cls:
@@ -9615,9 +9470,6 @@ components:
         deprecated:
           type: boolean
     PluginController.ApiPluginVersions:
-      required:
-      - type
-      - versions
       type: object
       properties:
         type:
@@ -9628,7 +9480,6 @@ components:
             type: string
     PluginDefault:
       required:
-      - forced
       - type
       type: object
       properties:
@@ -9639,9 +9490,6 @@ components:
         values:
           type: object
           additionalProperties: false
-          oneOf:
-          - $ref: "#/components/schemas/Map_Object.Object_"
-          - type: string
     PluginIcon:
       type: object
       properties:
@@ -9684,8 +9532,6 @@ components:
       - INGESTION
       - BI
     Property_Duration_:
-      required:
-      - expression
       type: object
       properties:
         expression:
@@ -9696,8 +9542,6 @@ components:
       - type: object
       - type: string
     Property_Object_:
-      required:
-      - expression
       type: object
       properties:
         expression:
@@ -9708,8 +9552,6 @@ components:
       - type: object
       - type: string
     Property_String_:
-      required:
-      - expression
       type: object
       properties:
         expression:
@@ -9720,10 +9562,6 @@ components:
       - type: object
       - type: string
     QueryFilter:
-      required:
-      - field
-      - operation
-      - value
       type: object
       properties:
         field:
@@ -9753,10 +9591,6 @@ components:
       - MIN_LEVEL
       x-type: String
     QueryFilter.FieldOp:
-      required:
-      - name
-      - operations
-      - value
       type: object
       properties:
         name:
@@ -9784,9 +9618,6 @@ components:
       - REGEX
       - PREFIX
     QueryFilter.Operation:
-      required:
-      - name
-      - value
       type: object
       properties:
         name:
@@ -9794,9 +9625,6 @@ components:
         value:
           type: string
     QueryFilter.ResourceField:
-      required:
-      - fields
-      - name
       type: object
       properties:
         name:
@@ -9806,9 +9634,6 @@ components:
           items:
             $ref: "#/components/schemas/QueryFilter.FieldOp"
     Relation:
-      required:
-      - relationType
-      - value
       type: object
       properties:
         relationType:
@@ -9866,9 +9691,6 @@ components:
       - TESTSUITES
       - DASHBOARD
     SearchResult_Flow_:
-      required:
-      - fragments
-      - model
       type: object
       properties:
         model:
@@ -9879,7 +9701,6 @@ components:
             type: string
     ServerConfig:
       required:
-      - liveness
       - terminationGracePeriod
       type: object
       properties:
@@ -9917,13 +9738,6 @@ components:
           type: string
           default: 3s
     ServerInstance:
-      required:
-      - hostname
-      - id
-      - metrics
-      - props
-      - type
-      - version
       type: object
       properties:
         id:
@@ -9961,18 +9775,6 @@ components:
       - INACTIVE
       - MAINTENANCE
     ServiceInstance:
-      required:
-      - config
-      - createdAt
-      - events
-      - id
-      - metrics
-      - props
-      - seqId
-      - server
-      - state
-      - type
-      - updatedAt
       type: object
       properties:
         server:
@@ -10007,11 +9809,6 @@ components:
           type: integer
           format: int64
     ServiceInstance.TimestampedEvent:
-      required:
-      - state
-      - ts
-      - type
-      - value
       type: object
       properties:
         ts:
@@ -10175,18 +9972,12 @@ components:
           $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
-      - attempts
-      - dynamic
       - executionId
       - flowId
       - id
-      - iteration
       - namespace
-      - outputs
-      - parentTaskRunId
       - state
       - taskId
-      - value
       type: object
       properties:
         items:
@@ -10214,6 +10005,7 @@ components:
           type: object
           additionalProperties:
             type: object
+          nullable: true
         state:
           $ref: "#/components/schemas/State"
         iteration:
@@ -10223,7 +10015,6 @@ components:
           type: boolean
         forceExecution:
           type: boolean
-          nullable: true
     TaskRunAttempt:
       required:
       - state
@@ -10325,9 +10116,6 @@ components:
         disabled:
           type: boolean
     TriggerController.Triggers:
-      required:
-      - abstractTrigger
-      - triggerContext
       type: object
       properties:
         abstractTrigger:
@@ -10358,14 +10146,7 @@ components:
       - EMAIL
     ValidateConstraintViolation:
       required:
-      - constraints
-      - deprecationPaths
-      - flow
       - index
-      - infos
-      - namespace
-      - outdated
-      - warnings
       type: object
       properties:
         flow:
