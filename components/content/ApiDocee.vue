@@ -11,6 +11,11 @@
             allow-try="false"
             regular-font="Public Sans"
             mono-font="Source Code Pro"
+            style="
+                --textarea-height: auto;
+                --textarea-min-height: 100px;
+                --code-block-max-height: 600px;
+            "
         />
     </ClientOnly>
 </template>
@@ -29,24 +34,5 @@
         &::part(section-endpoint) {
             white-space: nowrap;
         }
-
-        &::part(section-request-body) {
-            min-height: auto;
-        }
-
-        &::part(textarea-request) {
-            min-height: 100px;
-            height: auto;
-        }
-    }
-
-    :deep(textarea) {
-        min-height: 100px !important;
-        height: auto !important;
-    }
-
-    :deep(.textarea) {
-        min-height: 100px !important;
-        height: auto !important;
     }
 </style>
