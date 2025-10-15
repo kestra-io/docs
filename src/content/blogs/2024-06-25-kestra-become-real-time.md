@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: "edarras"
-image: "@assets/blogs/2024-06-25-kestra-become-real-time.jpg"
+image: "assets/blogs/2024-06-25-kestra-become-real-time.jpg"
 ---
 
 Today, we are thrilled to announce Kestra's Realtime Triggers, an innovative feature that sets a new standard for orchestration. This powerful feature provides everything to build and operationalize business-critical workflows in real-time, including powerful, millisecond-latency integrations with messaging systems (Kafka, Pulsar, AMQP, MQTT, AWS SQS, Google Pub/Sub, Azure Event Hubs, NATS, Redis) and SQL databases.
@@ -57,7 +57,7 @@ Whether you’re processing data in **batch or real-time**, Kestra provides fine
 
 With Kestra, you can **lower latency** for reporting and analytics, transitioning seamlessly from batch to real-time as your needs evolve. Unlike complex orchestration systems that require extensive sensor setup and complex deployment processes, Kestra’s **intuitive design** and **simple configuration** mean you can get started in minutes.
 
-![code](@assets/blogs/2024-06-25-kestra-become-real-time/yamlloop.gif)
+![code](assets/blogs/2024-06-25-kestra-become-real-time/yamlloop.gif)
 
 ## Simplified Real-Time Automation for All Engineers
 

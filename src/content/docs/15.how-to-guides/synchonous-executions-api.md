@@ -1,6 +1,6 @@
 ---
 title: Synchronous Executions API
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Integrations

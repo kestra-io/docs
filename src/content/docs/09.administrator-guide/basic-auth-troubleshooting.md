@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting Basic Authentication
-icon: /docs/icons/faq.svg
+icon: assets/docs/icons/faq.svg
 ---
 
 Troubleshoot issues with Basic Authentication.

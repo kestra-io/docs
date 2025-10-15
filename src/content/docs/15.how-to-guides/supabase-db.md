@@ -1,6 +1,6 @@
 ---
 title: Connect Supabase Database to Kestra
-icon: /docs/icons/supabase.svg
+icon: assets/docs/icons/supabase.svg
 stage: Intermediate
 topics:
   - Integrations
@@ -26,15 +26,15 @@ To get started, make sure you have a [Supabase account](https://supabase.com/) s
 
 Once you've logged into Supabase, you'll need to set up an organization where you will create projects to access resources such as a database.
 
-![supabase-1](@assets/docs/how-to-guides/supabase-db/supabase-1.png)
+![supabase-1](assets/docs/how-to-guides/supabase-db/supabase-1.png)
 
 Once your organization is created, you'll be prompted to create a new project. You will need to set a password for this project which we will use later to authenticate with the database inside of Kestra.
 
-![supabase-2](@assets/docs/how-to-guides/supabase-db/supabase-2.png)
+![supabase-2](assets/docs/how-to-guides/supabase-db/supabase-2.png)
 
 Once your project is created, you will now be able to access resources inside of Supabase. Head to the menu on the left side and select **Database**. You will be prompted to create a new table inside of your database, as well as configure any columns you want to use. We can leave the columns blank for now and modify these later once we know what data we want to copy into our database.
 
-![supabase-3](@assets/docs/how-to-guides/supabase-db/supabase-3.png)
+![supabase-3](assets/docs/how-to-guides/supabase-db/supabase-3.png)
 
 ## Connecting Supabase to Kestra
 
@@ -42,7 +42,7 @@ Now that we have a database set up in Supabase, we can move into Kestra to set u
 
 Inside of Supabase, select the **Connect** button at the top to get information about our databases connection. Select **Type** and change this JDBC. This will give us 3 ways of connecting with a Connection String. As we're only connecting to the database when our workflow runs, the Transaction pooler is a good option to use.
 
-![supabase-4](@assets/docs/how-to-guides/supabase-db/supabase-4.png)
+![supabase-4](assets/docs/how-to-guides/supabase-db/supabase-4.png)
 
 To connect, we can copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. To prevent exposing the password in our flow, we can store it as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md).
 
@@ -130,4 +130,4 @@ pluginDefaults:
 
 Once this flow completes, we can view the contents of our database in Supabase:
 
-![supabase-5](@assets/docs/how-to-guides/supabase-db/supabase-5.png)
+![supabase-5](assets/docs/how-to-guides/supabase-db/supabase-5.png)

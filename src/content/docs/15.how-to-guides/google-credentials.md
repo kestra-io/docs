@@ -1,6 +1,6 @@
 ---
 title: Configure Google Service Account
-icon: /docs/icons/gcp-compute.svg
+icon: assets/docs/icons/gcp-compute.svg
 stage: Getting Started
 topics:
   - Integrations

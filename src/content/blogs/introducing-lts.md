@@ -7,7 +7,7 @@ authors:
   - name: Anna Geller
     image: ageller
     role: Product Lead
-image: "@assets/blogs/introducing-lts.jpg"
+image: "assets/blogs/introducing-lts.jpg"
 ---
 
 With the release of **Kestra 1.0**, we are introducing a **Long-Term Support (LTS)** release model. This change ensures predictable upgrade paths and long-term stability for production environments.

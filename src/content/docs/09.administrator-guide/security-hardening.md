@@ -1,6 +1,6 @@
 ---
 title: Security Hardening
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 Security hardening options for Kestra.

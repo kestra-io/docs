@@ -1,6 +1,6 @@
 ---
 title: Benchmarks
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.
@@ -58,7 +58,7 @@ tasks:
 
 **Results for Kestra OSS**
 
-![Kestra OSS - Benchmark01](@assets/docs/performance/bench01-OSS.png "Kestra OSS Benchmark01 results")
+![Kestra OSS - Benchmark01](assets/docs/performance/bench01-OSS.png "Kestra OSS Benchmark01 results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -70,7 +70,7 @@ tasks:
 
 **Results for Kestra EE**
 
-![Kestra EE - Benchmark01](@assets/docs/performance/bench01-EE.png "Kestra EE Benchmark01 results")
+![Kestra EE - Benchmark01](assets/docs/performance/bench01-EE.png "Kestra EE Benchmark01 results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -171,7 +171,7 @@ tasks:
 
 **Results for Kestra OSS**
 
-![Kestra OSS - Benchmark02](@assets/docs/performance/bench02-OSS.png "Kestra OSS Benchmark02 results")
+![Kestra OSS - Benchmark02](assets/docs/performance/bench02-OSS.png "Kestra OSS Benchmark02 results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -183,7 +183,7 @@ tasks:
 
 **Results for Kestra EE**
 
-![Kestra EE - Benchmark02](@assets/docs/performance/bench02-OSS.png "Kestra OSS Benchmark02 results")
+![Kestra EE - Benchmark02](assets/docs/performance/bench02-OSS.png "Kestra OSS Benchmark02 results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -273,7 +273,7 @@ Benchmarked with:
 
 With 1.6 KB small-sized messages:
 
-![Kestra OSS - Benchmark04 - Small messages](@assets/docs/performance/bench04-OSS-small.png "Kestra OSS Benchmark04 with small messages results")
+![Kestra OSS - Benchmark04 - Small messages](assets/docs/performance/bench04-OSS-small.png "Kestra OSS Benchmark04 with small messages results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -285,7 +285,7 @@ With 1.6 KB small-sized messages:
 
 With 16 KB medium-sized messages:
 
-![Kestra OSS - Benchmark04 - Medium messages](@assets/docs/performance/bench04-OSS-medium.png "Kestra OSS Benchmark04 with medium messages results")
+![Kestra OSS - Benchmark04 - Medium messages](assets/docs/performance/bench04-OSS-medium.png "Kestra OSS Benchmark04 with medium messages results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -297,7 +297,7 @@ With 16 KB medium-sized messages:
 
 With 160 KB large-sized messages:
 
-![Kestra OSS - Benchmark04 - Big messages](@assets/docs/performance/bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
+![Kestra OSS - Benchmark04 - Big messages](assets/docs/performance/bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -310,7 +310,7 @@ With 160 KB large-sized messages:
 
 With 1.6 KB small-sized messages:
 
-![Kestra EE - Benchmark04 - Small messages](@assets/docs/performance/bench04-EE-small.png "Kestra EE Benchmark04 with small messages results")
+![Kestra EE - Benchmark04 - Small messages](assets/docs/performance/bench04-EE-small.png "Kestra EE Benchmark04 with small messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -325,7 +325,7 @@ With 1.6 KB small-sized messages:
 
 With 16 KB medium-sized messages:
 
-![Kestra EE - Benchmark04 - Meidum messages](@assets/docs/performance/bench04-EE-medium.png "Kestra OSS Benchmark04 with medium messages results")
+![Kestra EE - Benchmark04 - Meidum messages](assets/docs/performance/bench04-EE-medium.png "Kestra OSS Benchmark04 with medium messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -341,7 +341,7 @@ With 16 KB medium-sized messages:
 
 With 160 KB large-sized messages:
 
-![Kestra EE - Benchmark04 - Big messages](@assets/docs/performance/bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
+![Kestra EE - Benchmark04 - Big messages](assets/docs/performance/bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|

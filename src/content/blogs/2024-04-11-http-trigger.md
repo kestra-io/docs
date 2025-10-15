@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2024-04-11-http-trigger.jpg"
+image: "assets/blogs/2024-04-11-http-trigger.jpg"
 ---
 
 If you’re into automation you know cron schedule and file system event listening are the basics. We need to run jobs on a daily schedule and listen to new files arriving on the FTP or S3 buckets.
@@ -54,7 +54,7 @@ triggers:
     interval: PT2M
 ```
 
-![supply topology](@assets/blogs/2024-04-11-http-trigger/supply-topology.png)
+![supply topology](assets/blogs/2024-04-11-http-trigger/supply-topology.png)
 
 In the above example, we have an API endpoint exposed by the service managing our warehouse facility. This endpoint allows gathering information such as stock information for certain products.
 
@@ -124,7 +124,7 @@ triggers:
 
 ```
 
-![tableau topology](@assets/blogs/2024-04-11-http-trigger/tableau-topology.png)
+![tableau topology](assets/blogs/2024-04-11-http-trigger/tableau-topology.png)
 
 ## Setup the War Room in case of Infrastructure Urgency
 
@@ -192,7 +192,7 @@ triggers:
     responseCondition: "{{ json(response.body).result.metric.value >= 0.8 }}"
     interval: PT5M
 ```
-![war room topology](@assets/blogs/2024-04-11-http-trigger/war-room-topology.png)
+![war room topology](assets/blogs/2024-04-11-http-trigger/war-room-topology.png)
 
 ## Conclusion
 

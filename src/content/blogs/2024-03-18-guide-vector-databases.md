@@ -6,7 +6,7 @@ category: Solution
 author:
   name: Kevin Fleming
   image: "kfleming"
-image: "@assets/blogs/2024-03-18-guide-vector-databases.jpg"
+image: "assets/blogs/2024-03-18-guide-vector-databases.jpg"
 ---
 In what way are vector data type searches NOT LIKE SQL data type searches? Some answers:
 

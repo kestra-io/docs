@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   image: mproset
   role:
-image: "@assets/blogs/kestra-over-databricks-workflows.jpg"
+image: "assets/blogs/kestra-over-databricks-workflows.jpg"
 ---
 
 Databricks offers a robust platform for big data processing and machine learning. Yet we’ve all encountered the challenges that come with managing its workflows and clusters. These challenges aren’t about what Databricks can do, but more about the increasingly complex data ecosystems driving up costs or adding operational overhead.

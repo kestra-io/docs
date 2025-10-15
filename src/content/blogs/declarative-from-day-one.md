@@ -7,7 +7,7 @@ author:
   name: Emmanuel Darras
   image: edarras
   role: CEO & Co-Founder
-image: "@assets/blogs/declarative-orchestration.jpg"
+image: "assets/blogs/declarative-orchestration.jpg"
 ---
 
 [Kestra](https://github.com/kestra-io/kestra) committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.

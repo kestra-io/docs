@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: "@assets/blogs/2024-11-25-kestra-vs-jenkins.jpg"
+image: "assets/blogs/2024-11-25-kestra-vs-jenkins.jpg"
 ---
 
 Jenkins is a well known open source automation server, commonly used for CI/CD.

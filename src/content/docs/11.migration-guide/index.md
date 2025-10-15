@@ -1,6 +1,6 @@
 ---
 title: Migration Guide
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 ---
 
 Migrate Kestra smoothly with in-depth guides.

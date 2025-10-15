@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "@assets/blogs/2024-01-24-2024-data-engineering-trends.png"
+image: "assets/blogs/2024-01-24-2024-data-engineering-trends.png"
 ---
 
 This blog post highlights the key trends we see in data engineering in 2024 and how those trends affect data teams.

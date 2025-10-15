@@ -6,14 +6,14 @@ category: Company News
 author:
   name: Quentin Sinig
   image: "qsinig"
-image: "@assets/blogs/2023-09-18-kestra-partner-program.jpg"
+image: "assets/blogs/2023-09-18-kestra-partner-program.jpg"
 ---
 
 We are thrilled to announce the launch of our partner program, a significant milestone for [Kestra](https://github.com/kestra-io/kestra) as we continue to expand our presence in orchestrating applications and mission-critical operations. This program aims to build strong partnerships with organizations that share our vision and expertise, empowering us to offer extensive support to businesses navigating the complexities of workflow automation.
 
 As the demand for Kestra continues to grow, we recognize the need for hands-on assistance in various aspects of orchestration. Whether it's a from-scratch implementation, a re-platforming initiative, a migration project, or an extension through custom development, organizations often require expert guidance and support to ensure successful outcomes. This is where our **Consulting Partners** step in and we couldn't be more excited to welcome [Converteo](https://converteo.com/en/) and [NTICO](https://www.ntico.com/) as our inaugural partners.
 
-![Converteo & Ntico & Kestra Partnership](@assets/blogs/2023-09-18-kestra-partner-program/partners.png)
+![Converteo & Ntico & Kestra Partnership](assets/blogs/2023-09-18-kestra-partner-program/partners.png)
 
 > “Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management, and maintenance of large-scale data flow. What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte. We are genuinely thrilled to engage with Kestra.”
 

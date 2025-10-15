@@ -1,6 +1,6 @@
 ---
 title: Unit Tests
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
 ---
@@ -27,13 +27,13 @@ Once tests are created, they can all be viewed from the **Tests** tab with their
 
 ---
 
-![Tests Interface](@assets/docs/enterprise/unit-tests/unit-test-interface.png)
+![Tests Interface](assets/docs/enterprise/unit-tests/unit-test-interface.png)
 
 ---
 
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
-![Tests Tree Diagram](@assets/docs/enterprise/unit-tests/unittest.png)
+![Tests Tree Diagram](assets/docs/enterprise/unit-tests/unittest.png)
 
 ## Configuration
 
@@ -129,7 +129,7 @@ In the first test case, `extract_should_return_data`, the `fixtures` include tas
 
 The `assertions` property defines the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
 
-![Test case 1 results](@assets/docs/enterprise/unit-tests/test-case-1.png)
+![Test case 1 results](assets/docs/enterprise/unit-tests/test-case-1.png)
 
 The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see that the returned product names were also transformed successfully to uppercase in the assertion's actual result.
 
@@ -137,11 +137,11 @@ Because we wrote the test suite with two test cases, both executed during the ru
 
 After running, we can see that the assertion was successful and the actual result `MY-PRODUCT-1` was successfully transformed and matches the expected result defined in the `assertions` property of the test.
 
-![Test case 2 results](@assets/docs/enterprise/unit-tests/test-case-2.png)
+![Test case 2 results](assets/docs/enterprise/unit-tests/test-case-2.png)
 
 Execution details are not stored in the Executions page like normally run flows to protect cluttering that space with unneccesary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
 
-![Test Execution Details](@assets/docs/enterprise/unit-tests/test-execution.png)
+![Test Execution Details](assets/docs/enterprise/unit-tests/test-execution.png)
 
 ## Unit Test with Namespace File
 

@@ -1,6 +1,6 @@
 ---
 title: Configure Keycloak SSO
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 
@@ -18,12 +18,12 @@ You can follow the steps described in the [Keycloak tutorial documentation](http
 
 Once in Keycloak, create a new client:
 
-![alt text](@assets/docs/how-to-guides/keycloak/client1.png)
-![alt text](@assets/docs/how-to-guides/keycloak/client2.png)
+![alt text](assets/docs/how-to-guides/keycloak/client1.png)
+![alt text](assets/docs/how-to-guides/keycloak/client2.png)
 
 Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/logout` as the valid post-logout redirect URI.
 
-![alt text](@assets/docs/how-to-guides/keycloak/redirect-uri.png)
+![alt text](assets/docs/how-to-guides/keycloak/redirect-uri.png)
 
 ## Kestra Configuration
 
@@ -45,8 +45,8 @@ micronaut:
 
 You can retrieve the `clientId` and `clientSecret` via Keycloak user interface
 
-![alt text](@assets/docs/how-to-guides/keycloak/clientId.png)
-![alt text](@assets/docs/how-to-guides/keycloak/clientSecret.png)
+![alt text](assets/docs/how-to-guides/keycloak/clientId.png)
+![alt text](assets/docs/how-to-guides/keycloak/clientSecret.png)
 
 
 Don't forget to set a default role in your [Kestra configuration](../../../configuration/index.md) to streamline the process of onboarding new users.

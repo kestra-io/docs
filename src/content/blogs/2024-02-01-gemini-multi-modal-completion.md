@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Loïc Mathieu
   image: "lmathieu"
-image: "@assets/blogs/2024-02-01-gemini-multi-modal-completion.jpg"
+image: "assets/blogs/2024-02-01-gemini-multi-modal-completion.jpg"
 ---
 
 A few weeks ago, [Google introduce Gemini](https://blog.google/technology/ai/google-gemini-ai), a new addition to Generative AI. What sets Gemini apart is its ability to handle multi-modal completions combining text, images, and other content types into a single response. This capability moves us closer to human-like analysis of diverse information sources simultaneously.
@@ -32,7 +32,7 @@ tasks:
 
 This task will output Gemini's response in the form of a prediction.
 
-![Gemini task outputs for a multimodal completion with a text](@assets/blogs/2024-02-01-gemini-multi-modal-completion/text-completion-outputs.png)
+![Gemini task outputs for a multimodal completion with a text](assets/blogs/2024-02-01-gemini-multi-modal-completion/text-completion-outputs.png)
 
 The task interacts with Gemini to generate responses across various modalities, outputting predictions that include both the generated content and safety ratings. While initially similar to what we've seen with previous AI models like Bard, Gemini take a step further with its multimodal completion capability. This function allows it to process and generate content that spans text, audio, and video within a single query.
 
@@ -70,7 +70,7 @@ tasks:
 
 This is the generated text for the description of the image.
 
-![Gemini task outputs for a multimodal completion with an image](@assets/blogs/2024-02-01-gemini-multi-modal-completion/image-completion-output.png)
+![Gemini task outputs for a multimodal completion with an image](assets/blogs/2024-02-01-gemini-multi-modal-completion/image-completion-output.png)
 
 The image was indeed a schema of the Java classloader system, the answer is pretty good, but we can see that it is truncated.
 
@@ -96,7 +96,7 @@ With this configuration, the description of the image is no more truncated.
 
 This is the generated text for the description of the video, the video was a screencast of Kestra, the description is not very accurate except for the black color as I used Kestra's dark theme.
 
-![Gemini task outputs for a multimodal completion with a video](@assets/blogs/2024-02-01-gemini-multi-modal-completion/video-completion-output.png)
+![Gemini task outputs for a multimodal completion with a video](assets/blogs/2024-02-01-gemini-multi-modal-completion/video-completion-output.png)
 
 ## Security Safety with Gemini Model
 
@@ -104,7 +104,7 @@ Gemini has security safety included, and it works for all type of content.
 
 For example, if you ask Gemini to describe a photo of an identity card, the answer will be blocked for a safety reason and the task ends in WARNING.
 
-![Gemini task outputs for a blocked answer due to safety reason](@assets/blogs/2024-02-01-gemini-multi-modal-completion/safety-blocked-output.png)
+![Gemini task outputs for a blocked answer due to safety reason](assets/blogs/2024-02-01-gemini-multi-modal-completion/safety-blocked-output.png)
 
 You can see in the outputs that the safety category `HARM_CATEGORY_DANGEROUS_CONTENT` was evaluated as `MEDIUM` and blocked the answer.
 

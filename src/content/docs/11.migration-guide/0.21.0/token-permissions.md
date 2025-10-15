@@ -1,6 +1,6 @@
 ---
 title: ME and APITOKEN user permissions
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["EE"]
 ---

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anuun Chinbat
   image: "achinbat"
-image: "@assets/blogs/2023-12-04-dlt-kestra-usage.jpg"
+image: "assets/blogs/2023-12-04-dlt-kestra-usage.jpg"
 ---
 <head>
 
@@ -50,7 +50,7 @@ Wanna jump to the [GitHub repo](https://github.com/dlt-hub/dlt-kestra-demo)?
 
 To lay it all out clearly: Everything's automated in **`Kestra`**, with hassle-free data loading thanks to **`dlt`**, and the analytical thinking handled by OpenAI. Here's a diagram to help you understand the general outline of the entire process.
 
-![overview](@assets/blogs/2023-12-04-dlt-kestra-usage.jpg)
+![overview](assets/blogs/2023-12-04-dlt-kestra-usage.jpg)
 
 Now, let's delve into specific parts of the implementation.
 
@@ -59,7 +59,7 @@ Now, let's delve into specific parts of the implementation.
 >💡 The two flows in Kestra are set up in a very straightforward and intuitive manner. Simply follow the Prerequisites and Setup guidelines in the [repo](https://github.com/dlt-hub/dlt-kestra-demo). It should take no more than 15 minutes.
 Once you’ve opened http://localhost:8080/ in your browser, this is what you’ll see on your screen:
 
-![Kestra](@assets/blogs/2023-12-04-dlt-kestra-usage/1.png)
+![Kestra](assets/blogs/2023-12-04-dlt-kestra-usage/1.png)
 
 Now, all you need to do is [create your flows](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/README.md) and execute them.
 
@@ -146,11 +146,11 @@ This configuration ensures that your flows are executed hourly on workdays from 
 
 A Slack assistant that delivers crisp inbox insights right at your fingertips:
 
-![slack.png](@assets/blogs/2023-12-04-dlt-kestra-usage/3.png)
+![slack.png](assets/blogs/2023-12-04-dlt-kestra-usage/3.png)
 
 And a well-organized table in BigQuery, ready for you to dive into a more complex analysis:
 
-![bigquery_test.png](@assets/blogs/2023-12-04-dlt-kestra-usage/4.png)
+![bigquery_test.png](assets/blogs/2023-12-04-dlt-kestra-usage/4.png)
 
 In essence, using **`Kestra`** and **`dlt`** offers a trio of advantages for refining email analysis and data workflows:
 

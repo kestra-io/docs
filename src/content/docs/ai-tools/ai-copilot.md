@@ -1,6 +1,6 @@
 ---
 title: AI Copilot
-icon: /docs/icons/ai.svg
+icon: assets/docs/icons/ai.svg
 editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---
@@ -40,7 +40,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `logResponses`: Creates logs in Kestra for LLM responses.
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 
-![AI Copilot](@assets/docs/ai-tools/ai-copilot.png)
+![AI Copilot](assets/docs/ai-tools/ai-copilot.png)
 
 :::alert{type="info"}
 The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
@@ -58,7 +58,7 @@ Create a flow with a Python script that fetches weather data for New York City
 
 Once prompted, the Copilot generates YAML directly in the flow editor that can be accepted or refused in the bottom right corner.
 
-![Copilot Suggestion](@assets/docs/ai-tools/copilot-suggestion.png)
+![Copilot Suggestion](assets/docs/ai-tools/copilot-suggestion.png)
 
 If accepted, the flow is created and can be saved for execution, iterated on manually, or continually iterated upon by the Copilot. For example, you want a trigger added to the flow to run it on a schedule. Reopen the Copilot and prompt it with the desired trigger setup such as:
 
@@ -68,7 +68,7 @@ Add a trigger to run the flow every day at 9 AM
 
 The Copilot again makes a suggestion to add to the flow, but only in the targeted section, in this case a `triggers` block. This is also the case if you want the Copilot only to consider a specific task, input, plugin default, and so on.
 
-![Copilot Trigger Iteration](@assets/docs/ai-tools/copilot-trigger.png)
+![Copilot Trigger Iteration](assets/docs/ai-tools/copilot-trigger.png)
 
 You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
 

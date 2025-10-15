@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "@assets/blogs/release-0-19.png"
+image: "assets/blogs/release-0-19.png"
 ---
 
 Kestra 0.19.0 has arrived, bringing a host of powerful new updates for your orchestration platform.
@@ -68,7 +68,7 @@ At Kestra, we know how critical it is to have a clear view of your orchestration
 
 The previous dashboard aimed to display as much information as possible, but over time, it became cluttered and sometimes slow to load (see the image below).
 
-![old_vs_new_dashboard](@assets/blogs/release-0-19/old_vs_new_dashboard.png)
+![old_vs_new_dashboard](assets/blogs/release-0-19/old_vs_new_dashboard.png)
 
 Here’s what we’ve changed:
 
@@ -80,7 +80,7 @@ Here’s what we’ve changed:
 
 This new layout brings clarity and faster load times, and is visually appealing! See the screenshot below.
 
-![new_dashboard_purple](@assets/blogs/release-0-19/new_dashboard_purple.png)
+![new_dashboard_purple](assets/blogs/release-0-19/new_dashboard_purple.png)
 
 In the future, we plan to add more customization options allowing you to set custom color palettes and create additional visuals.
 
@@ -105,11 +105,11 @@ kestra:
 
 To access System Flows, navigate to the `Namespaces` section in the UI. The `system` namespace is pinned at the top for quick access.
 
-![system_namespace](@assets/blogs/release-0-19/system_namespace.png)
+![system_namespace](assets/blogs/release-0-19/system_namespace.png)
 
 Here, you’ll find the _System Blueprints_ tab, which provides fully customizable templates tagged for system use. You can modify these templates to suit your organization’s needs.
 
-![system_blueprints](@assets/blogs/release-0-19/system_blueprints.png)
+![system_blueprints](assets/blogs/release-0-19/system_blueprints.png)
 
 Video version:
 
@@ -123,7 +123,7 @@ Keep in mind that System Flows are not restricted to System Blueprints — any v
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages now offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
-![system_filter](@assets/blogs/release-0-19/system_filter.png)
+![system_filter](assets/blogs/release-0-19/system_filter.png)
 
 In terms of permissions, the `system` namespace is open by default. With the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
 
@@ -387,7 +387,7 @@ For each Kestra execution, you can filter logs by specific levels, such as WARN 
 
 Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN`, or `ERROR` logs.
 
-![loglevel_display](@assets/blogs/release-0-19/loglevel_display.png)
+![loglevel_display](assets/blogs/release-0-19/loglevel_display.png)
 
 Using the new log-level navigation, you can quickly jump to the next log of a specific level while having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
 
@@ -525,7 +525,7 @@ Kestra 0.19 introduces a more convenient **view for permissions management** to 
 
 In short, the new permissions view eliminates tedious clicks needed to configure roles.
 
-![permissions_tree_view](@assets/blogs/release-0-19/permissions_tree_view.png)
+![permissions_tree_view](assets/blogs/release-0-19/permissions_tree_view.png)
 
 ---
 
@@ -552,7 +552,7 @@ kestra:
 
 On the User detail page, users with basic authentication and an email set have the option to reset their password.
 
-![reset_password](@assets/blogs/release-0-19/reset_password.png)
+![reset_password](assets/blogs/release-0-19/reset_password.png)
 
 ---
 
@@ -617,11 +617,11 @@ Starting from Kestra 0.19.0, [you can schedule any flow](https://github.com/kest
 
 You can type the desired date directly, or use the date picker and click on the `Execute` button.
 
-![execute_later](@assets/blogs/release-0-19/execute_later.png)
+![execute_later](assets/blogs/release-0-19/execute_later.png)
 
 That execution will be shown in the `CREATED` state and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
 
-![execute_later2](@assets/blogs/release-0-19/execute_later2.png)
+![execute_later2](assets/blogs/release-0-19/execute_later2.png)
 
 If you prefer a programmatic approach, you can also schedule execution for later using one of the following methods:
 1. An API call
@@ -760,7 +760,7 @@ Let us know how you plan to use these scheduling enhancements to make your flows
 
 The new `Concurrency` tab in the `Flow` UI page allows you to track and troubleshoot concurrency issues. [This new tab](https://github.com/kestra-io/kestra/issues/4721#event-14422957135) shows a progress bar with the number of active slots compared to the total number of slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
 
-![concurrency_page_1](@assets/blogs/release-0-19/concurrency_page_1.png)
+![concurrency_page_1](assets/blogs/release-0-19/concurrency_page_1.png)
 
 To see the concurrency behavior in action, you can configure a flow with a concurrency limit as follows:
 
@@ -783,7 +783,7 @@ tasks:
 
 Then trigger multiple Executions of that flow and watch the `Concurrency` tab showing the active slots and queued Executions.
 
-![concurrency_page_2](@assets/blogs/release-0-19/concurrency_page_2.png)
+![concurrency_page_2](assets/blogs/release-0-19/concurrency_page_2.png)
 
 
 ---

@@ -1,6 +1,6 @@
 ---
 title: Usernames replaced by email addresses
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.20.0
 editions: ["EE"]
 ---

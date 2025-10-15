@@ -1,6 +1,6 @@
 ---
 title: Log Shipper
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.21.0"
 ---
@@ -151,7 +151,7 @@ tasks:
 
 The batched logs directly populate your Datadog instance like in the following screenshot:
 
-![Datadog Logs](@assets/docs/enterprise/logshipper_datadog.png)
+![Datadog Logs](assets/docs/enterprise/logshipper_datadog.png)
 
 ### AWS Cloudwatch
 
@@ -185,7 +185,7 @@ tasks:
 
 The logs are viewable in the interface of the specified Log Group and can be examined like in the following screenshot:
 
-![AWS Cloud Watch Logs](@assets/docs/enterprise/logshipper_aws_cloudwatch.png)
+![AWS Cloud Watch Logs](assets/docs/enterprise/logshipper_aws_cloudwatch.png)
 
 ### AWS S3
 

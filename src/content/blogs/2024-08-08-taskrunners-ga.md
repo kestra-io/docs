@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller
-image: "@assets/blogs/2024-08-08-taskrunners-ga.png"
+image: "assets/blogs/2024-08-08-taskrunners-ga.png"
 ---
 
 We are thrilled to announce the general availability of Task Runners, a major addition to Kestra's orchestration capabilities, allowing you to offload resource-intensive tasks to on-demand compute services. Task runners guarantee that your workflows have enough resources while reducing compute costs.
@@ -21,7 +21,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered in Kestra Enterprise or Kestra Cloud, such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
 
-![task_runner_plugins](@assets/blogs/2024-08-08-taskrunners-ga/task_runner_plugins.png)
+![task_runner_plugins](assets/blogs/2024-08-08-taskrunners-ga/task_runner_plugins.png)
 
 ## From Beta to General Availability
 
@@ -43,7 +43,7 @@ Thanks to the built-in documentation and autocompletion, building workflows with
 
 To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](/blueprints/aws-batch-terraform-git) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
 
-![task_runner_blueprints](@assets/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
+![task_runner_blueprints](assets/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
 
 ### From development to production
 

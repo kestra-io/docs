@@ -1,6 +1,6 @@
 ---
 title: Editor
-icon: /docs/icons/concepts.svg
+icon: assets/docs/icons/concepts.svg
 docId: flowEditor
 ---
 

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
-image: "@assets/blogs/2024-06-27-realtime-triggers.jpg"
+image: "assets/blogs/2024-06-27-realtime-triggers.jpg"
 ---
 
 Kestra 0.17.0 introduced the concept of **Realtime Triggers**, which allows you to react to events instantly without polling. With this feature, Kestra triggers the execution of a flow immediately for every incoming event. This post demonstrates how you can leverage real-time triggers in a real-world scenario.
@@ -83,7 +83,7 @@ In the flow, we want to enrich the order event by putting the product informatio
 
 We will insert this detailed order record in a collection in MongoDB. This is how the architecture will look like:
 
-![detailed_orders_architecture](@assets/blogs/2024-06-27-realtime-triggers/detailed_orders_architecture.png)
+![detailed_orders_architecture](assets/blogs/2024-06-27-realtime-triggers/detailed_orders_architecture.png)
 
 ### Generating order events
 
@@ -135,7 +135,7 @@ COPY kestra.products FROM 'products.csv' WITH DELIMITER=',' AND HEADER=TRUE;
 
 Our final collection `detailed_orders` will reside in MongoDB, whose each document consists of the complete details about the order and the product corresponding to that order. For that, we will require a MongoDB, and have a database named `kestra`, under which we will create a collection named `detailed_orders`. Below is the screenshot for creating the appropriate database and collection using MongoDB Compass:
 
-![mongodb_compass](@assets/blogs/2024-06-27-realtime-triggers/mongodb_compass.png)
+![mongodb_compass](assets/blogs/2024-06-27-realtime-triggers/mongodb_compass.png)
 
 With this, all the pre-requisites are in place, and we can move on to create the Kestra flow.
 

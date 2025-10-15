@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "@assets/blogs/2023-10-11-why-ingestion-will-never-be-solved.png"
+image: "assets/blogs/2023-10-11-why-ingestion-will-never-be-solved.png"
 ---
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the most mundane and time-consuming tasks of any platform team.

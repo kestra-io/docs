@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "@assets/blogs/release-0-20.png"
+image: "assets/blogs/release-0-20.png"
 ---
 
 
@@ -65,7 +65,7 @@ However, teams often need *physical* data isolation per organizational unit. Sta
 
 To configure dedicated storage and secrets backends per tenant, navigate to the respective tenant in the UI, click on `Edit`, and select the storage and secrets backend you want to use. You can configure the same on a namespace level if you want multiple teams to work in their isolated workspaces but still be able to have shared workflow dependencies (using subflows or flow triggers).
 
-![storageSecretsPerTenant.png](@assets/blogs/release-0-20/storageSecretsPerTenant.png)
+![storageSecretsPerTenant.png](assets/blogs/release-0-20/storageSecretsPerTenant.png)
 
 This feature enables decentralized workspaces for individual business units with centralized governance for operational teams.
 
@@ -77,17 +77,17 @@ Previously, administrators needed to create users manually and then assign roles
 
 By default, if the email server is configured in Kestra EE, we send an email with an invitation link. If the email server isn’t configured, you can manually share the link with invited users.
 
-![image.png](@assets/blogs/release-0-20/image.png)
+![image.png](assets/blogs/release-0-20/image.png)
 
 ## Announcements
 
 You can now add [custom announcements](https://kestra.io/docs/enterprise/announcements) from the Kestra UI to inform users about planned maintenance, outages, or incidents. This feature helps communicate important events directly from the UI.
 
-![image 1.png](@assets/blogs/release-0-20/image_1.png)
+![image 1.png](assets/blogs/release-0-20/image_1.png)
 
 Announcements appear as banners of the chosen type (`Info`, `Warning`, `Error`) for the specified time period.
 
-![image 2.png](@assets/blogs/release-0-20/image_2.png)
+![image 2.png](assets/blogs/release-0-20/image_2.png)
 
 ## System Labels
 
@@ -275,13 +275,13 @@ errors:
 
 The new sidebar on the right side of the Kestra UI provides quick access to the latest product news, documentation, and other resources. You can now stay up-to-date and browse the docs (soon contextual!) without leaving the UI.
 
-![sidebar](@assets/blogs/release-0-20/sidebar.png)
+![sidebar](assets/blogs/release-0-20/sidebar.png)
 
 ## Bookmarks
 
 You can now [bookmark any Kestra UI page](https://kestra.io/docs/ui/bookmarks) with your selected filters which is particularly handy when you need quick access to specific filtered views, such as _"Failed Executions within the last 2 days"_. This new feature makes frequently-used pages available at a fingertip.
 
-![bookmarks](@assets/blogs/release-0-20/bookmarks.png)
+![bookmarks](assets/blogs/release-0-20/bookmarks.png)
 
 ## Transactional Queries
 
@@ -293,7 +293,7 @@ In short, you can use this feature to safely execute sequences of SQL operations
 
 The filter and search bars have been improved to better handle more complex filtering criteria. You can now adjust filters on any UI page simply by typing your filter criteria. The improved filtering system applies across different parts of the Kestra UI, including the main Dashboard, Executions, Logs, Flows, Apps, and more.
 
-![filters](@assets/blogs/release-0-20/filters.png)
+![filters](assets/blogs/release-0-20/filters.png)
 
 ## Enhancements to dbt
 

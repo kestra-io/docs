@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: "@assets/blogs/2022-06-21-kestra-light.jpg"
+image: "assets/blogs/2022-06-21-kestra-light.jpg"
 ---
 
 When we have launch [Kestra](https://github.com/kestra-io/kestra) [officially](../blogs/2022-02-01-kestra-opensource.md) few month ago, we wanted to have the most **complete, reliable, scalable** product to show you. We are really proud to have the **first cloud native orchestration & scheduling platform** running only with technologies like Kafka and ElasticSearch. Theses bring an architecture with no single point of failure and high throughput in order to scale to millions of executions without the pain.
@@ -20,7 +20,7 @@ We have interview many people on our slack community, twitter, ... also that **c
 
 For now, we continue to think a high-availability solution is a **must-have**, a solution that can ensure you that if your needs increase, you will have a solution to scale without having to do without the features. So we decide to create a new version of Kestra (in Beta for now) that will work for a Medium-sized environment.
 
-![Kestra Architecture](@assets/docs/architecture/architecture-sql.svg)
+![Kestra Architecture](assets/docs/architecture/architecture-sql.svg)
 
 
 The solution is to **remove the dependencies of Kafka & ElasticSearch** and to allow to replace them with a **simple MySQL of Postgres** database for the both of them.
@@ -31,7 +31,7 @@ The new version is possible since Kestra thought since its inception as **plugga
 
 ## Tradeoff using a Database
 
-![Tradeoff using a Database](@assets/blogs/2022-06-21-light-architecture/warning.jpg)
+![Tradeoff using a Database](assets/blogs/2022-06-21-light-architecture/warning.jpg)
 
 We have worked harder to be able to have the **more fluent change** using a database, but we have made some tradeoffs for now (maybe you can go deeper depending on your feedback for a certain point).
 

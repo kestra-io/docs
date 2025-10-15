@@ -1,6 +1,6 @@
 ---
 title: Dynamic Flows
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts

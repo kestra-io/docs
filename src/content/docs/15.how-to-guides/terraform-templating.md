@@ -1,6 +1,6 @@
 ---
 title: Leverage Terraform for flow modularity
-icon: /docs/icons/terraform.svg
+icon: assets/docs/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps
@@ -288,7 +288,7 @@ You can either execute this sublow as is, or use it in another flow to avoid rep
 
 Executing the subflow will prompt you to enter the SQL query you want to execute :
 
-![Subflow execution](@assets/docs/terraform-templating-guide/01-execute_sublow_query_my_postgres.png)
+![Subflow execution](assets/docs/terraform-templating-guide/01-execute_sublow_query_my_postgres.png)
 
 ## Using the subflow in a flow
 
@@ -315,7 +315,7 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
 > Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
 
 Parent flow logs will display tasks from subflow directly:
-![Subflow execution from parent flow](@assets/docs/terraform-templating-guide/02-execute_sublow_from_parent_flow.png)
+![Subflow execution from parent flow](assets/docs/terraform-templating-guide/02-execute_sublow_from_parent_flow.png)
 
 ## Subflows vs Terraform templating
 

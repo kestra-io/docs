@@ -1,6 +1,6 @@
 ---
 title: SCIM Directory Sync
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
@@ -19,7 +19,7 @@ It simplifies user provisioning, de-provisioning, and group synchronization betw
 
 Kestra explicitly relies on the SCIM 2.0 protocol for directory synchronization.
 
-![scim.jpeg](@assets/docs/enterprise/scim.png)
+![scim.jpeg](assets/docs/enterprise/scim.png)
 
 ## Benefits of a Directory Sync with SCIM
 

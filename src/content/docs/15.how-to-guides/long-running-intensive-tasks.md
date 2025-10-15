@@ -1,6 +1,6 @@
 ---
 title: Long running and intensive processes on Kubernetes
-icon: /docs/icons/kubernetes.svg
+icon: assets/docs/icons/kubernetes.svg
 stage: Advanced
 topics:
   - DevOps
@@ -92,11 +92,11 @@ This flow will:
 - clone the dbt example repository inside the pod
 - run the dbt seed and build commands
 
-![dbt-pod-create](@assets/docs/how-to-guides/kubernetes/pod_create_dbt.png)
+![dbt-pod-create](assets/docs/how-to-guides/kubernetes/pod_create_dbt.png)
 
 At the end of the execution, the pod is deleted, and the logs remain available in the Kestra UI.
 
-![dbt-pod-deleted-after-success](@assets/docs/how-to-guides/kubernetes/pod_create_delete.png)
+![dbt-pod-deleted-after-success](assets/docs/how-to-guides/kubernetes/pod_create_delete.png)
 
 ## Embrace Kestra versality with Kubernetes Task Runners
 
@@ -130,7 +130,7 @@ tasks:
       - dbt build
 ```
 
-![dbt-task-runner](@assets/docs/how-to-guides/kubernetes/task_runner_dbt.png)
+![dbt-task-runner](assets/docs/how-to-guides/kubernetes/task_runner_dbt.png)
 
 
 In case we want to easily test this flow on a local Kestra instance, we would just have to change the `taskRunner` type to `io.kestra.plugin.scripts.runner.docker.Docker`:

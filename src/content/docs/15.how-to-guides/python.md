@@ -1,6 +1,6 @@
 ---
 title: Run Python inside of your Flows
-icon: /docs/icons/python.svg
+icon: assets/docs/icons/python.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -286,7 +286,7 @@ tasks:
 
 When we execute the above example, we can see Kestra correctly captures the log levels in the Logs view:
 
-![logs](@assets/docs/how-to-guides/python/logs.png)
+![logs](assets/docs/how-to-guides/python/logs.png)
 
 You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script)
 
@@ -321,7 +321,7 @@ Kestra.timer('duration', end - start)
 ```
 
 Once this has executed, `duration` will be viewable under **Metrics**.
-![metrics](@assets/docs/how-to-guides/python/metrics.png)
+![metrics](assets/docs/how-to-guides/python/metrics.png)
 
 ## Execute Flows in Python
 

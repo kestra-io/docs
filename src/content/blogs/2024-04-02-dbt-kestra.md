@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "@assets/blogs/2024-04-02-dbt-kestra.jpg"
+image: "assets/blogs/2024-04-02-dbt-kestra.jpg"
 ---
 
 

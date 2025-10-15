@@ -1,6 +1,6 @@
 ---
 title: Capture filename on input type FILE
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]
 ---

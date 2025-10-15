@@ -1,6 +1,6 @@
 ---
 title: Working Directory
-icon: /docs/icons/dev.svg
+icon: assets/docs/icons/dev.svg
 ---
 
 Run multiple tasks in the same working directory sequentially.

@@ -7,7 +7,7 @@ author:
   name: Shruti Mantri
   image: smantri
   role:
-image: "@assets/blogs/s3-table.jpg"
+image: "assets/blogs/s3-table.jpg"
 ---
 
 Amazon recently introduced S3 Tables, purpose-built for storing and querying tabular data directly on S3. Backed by built-in Apache Iceberg support, S3 Tables make data instantly accessible to popular AWS and third-party analytics engines like EMR and Athena.
@@ -47,7 +47,7 @@ In order to get the end-to-end Kestra workflow that interacts with S3 table, we 
 
 Firstly, we will need a general purpose S3 bucket where we will store the data. For this, navigate to the [S3 service](https://console.aws.amazon.com/s3/home) on the AWS console. From the left navigation menu, select `General purpose buckets`. On the `General purpose buckets` page, select the `Create bucket` button. On the `Create bucket` page, provide a globally unique bucket name in the `Bucket name` text box. For the purpose of this blog, for example we name the bucket as `s3-general-purpose-ecommerce`. Rest of the configurations can be left as default, and select the **Create bucket** button at the bottom of the page. This will create the new bucket.
 
-![Create S3 General Purpose Bucket](@assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_s3_general_purpose_bucket.png)
+![Create S3 General Purpose Bucket](assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_s3_general_purpose_bucket.png)
 
 From the `General purpose buckets` page, search for the newly created bucket, and select the bucket name. On the corresponding bucket's home page, select the `Create folder` button. Provide the folder name, for example `data`, and select the `Create folder` button at the bottom of the page. We will be storing our data in this folder.
 
@@ -103,11 +103,11 @@ On the [S3 service](https://console.aws.amazon.com/s3/home) page on the AWS cons
 
 In case, you are opening the table buckets page for the first time, you will see a box at the top of the page about `Integration with AWS analytics services - New` with the `Enable integration` button. Select the button and enable the integration of S3 table buckets with AWS analytics services like Amazon EMR, Amazon Redshift and Amazon Athena.
 
-![Enable Integration](@assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/enable_integration.png)
+![Enable Integration](assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/enable_integration.png)
 
 Next, we will create a table bucket. Select the `Create table bucket` button at the top of the page. On the `Create table bucket` page, provide an appropriate name for the table bucket, say `ecommerce-lakehouse`. Select the `Create table bucket` button at the bottom of the page. This will create the new table bucket.
 
-![Create Table Bucket](@assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_table_bucket.png)
+![Create Table Bucket](assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_table_bucket.png)
 
 ### Providing IAM Access
 
@@ -119,7 +119,7 @@ On the `Roles` page with IAM, search for `EMR_EC2_DefaultRole`, and select the s
 
 Navigate to [EC2 service](https://console.aws.amazon.com/ec2/home) on the AWS console. From the left navigation menu, navigate to `Key pairs`. On the `Key pairs` page, select the `Create key pair` button at the top of the page. On the `Create key pair` page, provide an appropriate name for the key pair, say `emr-ec2-key-pair`, and select the `Create key pair` button at the bottom of the page. This will download the pem file associated with the key pair to your machine, and the new key pair will be created.
 
-![Create EC2 Key Pair](@assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_ec2_key_pair.png)
+![Create EC2 Key Pair](assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/create_ec2_key_pair.png)
 
 ### Create PySpark Job
 
@@ -295,7 +295,7 @@ SELECT * FROM "data"."products";
 
 You should be able to see all the 20 rows from the table getting displayed in the `Query results` section.
 
-![Query S3 Table using Amazon Athena](@assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/query_s3_table_using_amazon_athena.png)
+![Query S3 Table using Amazon Athena](assets/blogs/2025-03-27-using-amazon-s3-tables-with-kestra/query_s3_table_using_amazon_athena.png)
 
 Thus, we have successfully leverage S3 table bucket to create an Iceberg table.
 

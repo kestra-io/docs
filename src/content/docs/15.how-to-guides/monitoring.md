@@ -1,6 +1,6 @@
 ---
 title: Configure Monitoring with Grafana & Prometheus
-icon: /docs/icons/grafana.svg
+icon: assets/docs/icons/grafana.svg
 stage: Intermediate
 topics:
   - DevOps
@@ -25,7 +25,7 @@ docker compose up
 
 Once Kestra is up and running, you can check out the available metrics by going to `http://localhost:8081/prometheus` on your browser. The metrics should appear as below:
 
-![prometheus_metrics](@assets/docs/how-to-guides/setup-monitoring/prometheus_metrics.png)
+![prometheus_metrics](assets/docs/how-to-guides/setup-monitoring/prometheus_metrics.png)
 
 Create a few flows and execute them to generate some metrics for visualization. You can also add triggers to the flows to check the metrics corresponding to executions happening on a regular basis.
 
@@ -63,7 +63,7 @@ Note, in this last command you may have to add `--add-host=host.docker.internal:
 
 You can now go to `http://localhost:9090/graph` and try out visualizing some metrics using the PromQL. Here is one of the graphs for `kestra_executor_execution_started_count_total` metric:
 
-![promql_graph](@assets/docs/how-to-guides/setup-monitoring/promql_graph.png)
+![promql_graph](assets/docs/how-to-guides/setup-monitoring/promql_graph.png)
 
 ## Setting up Grafana
 
@@ -75,7 +75,7 @@ docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise
 
 You can open the Grafana server at `http://localhost:3000`. The default credentials are `admin` as both username and password. Once logged into Grafana, click on the hamburger menu on the top left and go to **Connections -> Data Sources**.
 
-![grafana_data_sources](@assets/docs/how-to-guides/setup-monitoring/grafana_data_sources.png)
+![grafana_data_sources](assets/docs/how-to-guides/setup-monitoring/grafana_data_sources.png)
 
 ### Add Data Source
 
@@ -104,10 +104,10 @@ Now we have some long-running tasks in progress, we can check that the Gauge cor
 
 This is how your Grafana should look like:
 
-![grafana_tasks_running_gauge](@assets/docs/how-to-guides/setup-monitoring/grafana_tasks_running_gauge.png)
+![grafana_tasks_running_gauge](assets/docs/how-to-guides/setup-monitoring/grafana_tasks_running_gauge.png)
 
 Click on **Save** and **Apply** to add this gauge to the dashboard.
 
 Similarly, you can now keep on adding more graphs to your dashboard. Here is one of the example dashboards for Kestra metrics.
 
-![kestra_metrics_dashboard](@assets/docs/how-to-guides/setup-monitoring/kestra_metrics_dashboard.png)
+![kestra_metrics_dashboard](assets/docs/how-to-guides/setup-monitoring/kestra_metrics_dashboard.png)

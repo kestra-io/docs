@@ -1,6 +1,6 @@
 ---
 title: Plugin Developer Guide
-icon: /docs/icons/dev.svg
+icon: assets/docs/icons/dev.svg
 ---
 
 Browse [Kestra's integrations](/plugins) and learn how to create your own plugins.

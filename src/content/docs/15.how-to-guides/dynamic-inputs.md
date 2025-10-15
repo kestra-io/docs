@@ -1,6 +1,6 @@
 ---
 title: Dynamic Dropdown for Inputs
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts
@@ -45,7 +45,7 @@ triggers:
 
 This is how the KV store will look post execution of the above flow.
 
-![kv_store_content](@assets/docs/how-to-guides/dynamic-inputs/kv_store_content.png)
+![kv_store_content](assets/docs/how-to-guides/dynamic-inputs/kv_store_content.png)
 
 ## Flow supporting Dynamic Inputs
 
@@ -69,7 +69,7 @@ tasks:
 
 When you execute this flow, the `department` input will have a dropdown that contains the values fetched from the `department_key` key in the KV store.
 
-![dynamic_dropdown](@assets/docs/how-to-guides/dynamic-inputs/dynamic_dropdown.png)
+![dynamic_dropdown](assets/docs/how-to-guides/dynamic-inputs/dynamic_dropdown.png)
 
 ## Dynamic Inputs with HTTP function
 

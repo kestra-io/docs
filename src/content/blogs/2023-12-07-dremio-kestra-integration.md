@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "@assets/blogs/2023-12-07-dremio-kestra-integration.png"
+image: "assets/blogs/2023-12-07-dremio-kestra-integration.png"
 ---
 
 
@@ -82,7 +82,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
 
 
 
-![dremio architecture](@assets/blogs/2023-12-07-dremio-kestra-integration/dremio-architecture.png)
+![dremio architecture](assets/blogs/2023-12-07-dremio-kestra-integration/dremio-architecture.png)
 
 ---
 
@@ -157,7 +157,7 @@ This flow clones a Git repository with [dbt code](https://github.com/dbt-labs/ja
 
 
 
-![dremio_topology](@assets/blogs/2023-12-07-dremio-kestra-integration/dremio_topology.png)
+![dremio_topology](assets/blogs/2023-12-07-dremio-kestra-integration/dremio_topology.png)
 
 
 ---

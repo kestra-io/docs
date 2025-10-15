@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role:
   image: mproset
-image: "@assets/blogs/2024-10-15-huggin-face-kestra-http.jpg"
+image: "assets/blogs/2024-10-15-huggin-face-kestra-http.jpg"
 ---
 
 AI integration doesn’t have to be complicated. Kestra lets you connect to Hugging Face models quickly with just a few HTTP requests. Need to analyze the sentiment of customer reviews? Or perhaps classify large datasets? With Hugging Face’s extensive API library, you have access to hundreds of models capable of handling these tasks.

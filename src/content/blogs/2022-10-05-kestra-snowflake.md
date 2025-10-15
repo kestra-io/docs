@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: "@assets/blogs/2022-10-05-kestra-snowflake.jpg"
+image: "assets/blogs/2022-10-05-kestra-snowflake.jpg"
 ---
 
 Snowflake is one of the most popular cloud data warehouse technologies. This post demonstrates [Kestra](https://github.com/kestra-io/kestra) plugins for Snowflake data management, including event-driven triggers based on changes in your Snowflake data, file management, and queries.
@@ -22,7 +22,7 @@ The platform enables organizations to avoid large-scale licensing costs commonly
 
 ## Enhancing Snowflake with Kestra ##
 
-![Kestra x Snowflake](@assets/blogs/2022-10-05-kestra-snowflake/snowflake.png)
+![Kestra x Snowflake](assets/blogs/2022-10-05-kestra-snowflake/snowflake.png)
 
 Data warehouse workloads are typically part of a larger technological stack. To streamline operations, orchestration, and scheduling of data pipelines are crucial. This is where Kestra comes into play.
 

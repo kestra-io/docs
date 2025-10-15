@@ -1,6 +1,6 @@
 ---
 title: Input defaults are now dynamic
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
 ---

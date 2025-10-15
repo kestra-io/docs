@@ -1,6 +1,6 @@
 ---
 title: RAG Workflows
-icon: /docs/icons/ai.svg
+icon: assets/docs/icons/ai.svg
 editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---

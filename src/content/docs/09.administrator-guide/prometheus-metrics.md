@@ -1,6 +1,6 @@
 ---
 title: Prometheus Metrics
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 This page provides an overview of all available Prometheus metrics in Kestra.

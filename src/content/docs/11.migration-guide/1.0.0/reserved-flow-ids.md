@@ -1,6 +1,6 @@
 ---
 title: Reserved keywords cannot be used as Flow IDs
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
 ---

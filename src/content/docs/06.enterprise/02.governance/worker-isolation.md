@@ -1,6 +1,6 @@
 ---
 title: Worker Isolation
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE"]
 ---
 

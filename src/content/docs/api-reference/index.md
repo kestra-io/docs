@@ -1,6 +1,6 @@
 ---
 title: API Reference
-icon: /docs/icons/api.svg
+icon: assets/docs/icons/api.svg
 ---
 
 <ChildTableOfContents :max="1" />

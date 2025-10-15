@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: "lmathieu"
   twitter: "@loicmathieu"
-image: "@assets/blogs/2023-04-13-welcome-kestra-0-8-0.png"
+image: "assets/blogs/2023-04-13-welcome-kestra-0-8-0.png"
 ---
 
 [Kestra](https://github.com/kestra-io/kestra) is back with version 0.8.0, and this time, we're putting the spotlight on enhancing the flow creation experience. We've introduced powerful new features and developer tools that make Kestra the go-to data orchestration platform for data engineers like you.
@@ -18,7 +18,7 @@ image: "@assets/blogs/2023-04-13-welcome-kestra-0-8-0.png"
 
 This new release feature the first iteration of our low-code editor. The previous **Source** tab of the **Flow** page has been replaced with a new **Editor** page that allows editing the flow YAML, modifying the flow structure using drag-and-drop, and editing a task easily thanks to a form. This should greatly facilitate flow creation and modification. We’ll appreciate any feedback on it as we plan to improve it in the next release.
 
-![Task metrics](@assets/blogs/2023-04-13-welcome-kestra-0-8-0/lowcode-releasepost.gif)
+![Task metrics](assets/blogs/2023-04-13-welcome-kestra-0-8-0/lowcode-releasepost.gif)
 
 ### Task documentation in the editor
 
@@ -26,7 +26,7 @@ Each task has exhaustive documentation in the [plugin documentation](/plugins/) 
 
 To limit context switching, we added a contextual panel in the flow editor displaying the current task documentation. So now you can keep your flow at hand while developing and still be close to the documentation.
 
-![Task metrics](@assets/blogs/2023-04-13-welcome-kestra-0-8-0/doc-in-editor.png)
+![Task metrics](assets/blogs/2023-04-13-welcome-kestra-0-8-0/doc-in-editor.png)
 
 ### Improved EachSequential and EachParallel value definition
 
@@ -38,7 +38,7 @@ Tasks can emit metrics, those metrics are accessible as Micrometer metrics along
 
 We now moved the storage of task metrics in a dedicated place out of the task attempt and added a new **Metrics** tab on the **Execution** page to access all the metrics of a flow execution.
 
-![Task metrics](@assets/blogs/2023-04-13-welcome-kestra-0-8-0/flow-metrics.png)
+![Task metrics](assets/blogs/2023-04-13-welcome-kestra-0-8-0/flow-metrics.png)
 
 ## New core tasks
 

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2023-09-15-football-malloy-kestra.jpg"
+image: "assets/blogs/2023-09-15-football-malloy-kestra.jpg"
 ---
 
 Accessing football data has never been more convenient than it is today. With [public websites](https://fbref.com/) featuring user-friendly bot policies and [private companies opening up their datasets](https://github.com/statsbomb/open-data), getting started with football analytics is [a far smoother journey than it was just a few years ago](https://medium.pimpaudben.fr/part-2-a-career-in-football-analytics-the-how-ae8b5eca38ce).
@@ -30,7 +30,7 @@ You could find a [specific scraper project in this repository](https://github.co
 
 It’s quite straightforward, as we only need to retrieve table tags and write them as proper CSV files. Here is an example of how we parse the table for the competition fixtures pages:
 
-![parsing](@assets/blogs/2023-09-15-football-malloy-kestra/parsing.png)
+![parsing](assets/blogs/2023-09-15-football-malloy-kestra/parsing.png)
 
 If you’re willing to explore the whole parsing strategies and dedicated CLI, [check out the project on GitHub](https://github.com/Ben8t/fbref_scraper).
 
@@ -49,7 +49,7 @@ Malloy provides a smart semantic to deal with hyper-dimensional data, nested que
 Let’s start with a simple example on our freshly scraped data:
 
 
-![model malloy 1](@assets/blogs/2023-09-15-football-malloy-kestra/model1_malloy.png)
+![model malloy 1](assets/blogs/2023-09-15-football-malloy-kestra/model1_malloy.png)
 
 This query allows us to compute the average attendance of Arsenal team depending on the game venue (home or away).
 
@@ -63,28 +63,28 @@ They are many interesting things to notice in this simple example:
 Malloy can be run directly in your VS Code editor, from Python, Node or with a dedicated CLI. It also comes with a notebook-like component, which is great to create complex reports.
 
 
-![result malloy 1](@assets/blogs/2023-09-15-football-malloy-kestra/vscode_1.png)
+![result malloy 1](assets/blogs/2023-09-15-football-malloy-kestra/vscode_1.png)
 
 This first example is very straightforward and doesn’t bring new things compared to SQL. Things get very interesting when we look at complex queries:
 
-![model malloy 2](@assets/blogs/2023-09-15-football-malloy-kestra/model2_malloy.png)
+![model malloy 2](assets/blogs/2023-09-15-football-malloy-kestra/model2_malloy.png)
 
-![result malloy 2](@assets/blogs/2023-09-15-football-malloy-kestra/result2_malloy.png)
+![result malloy 2](assets/blogs/2023-09-15-football-malloy-kestra/result2_malloy.png)
 
 See how we neatly [nest](https://malloydata.github.io/documentation/language/nesting) results here? Doing this in SQL would be much trickier. Looking at Malloy’s compiled SQL gives us a hint about the complexity in regular SQL.
 
-![sql example](@assets/blogs/2023-09-15-football-malloy-kestra/sql_example.png)
+![sql example](assets/blogs/2023-09-15-football-malloy-kestra/sql_example.png)
 
 
 Furthermore Malloy supports some plotting features with simple tags such as below example. Just add # bar_chart will draw a bar chart for each nested result.
 
-![bar chart malloy](@assets/blogs/2023-09-15-football-malloy-kestra/result3_malloy.png)
+![bar chart malloy](assets/blogs/2023-09-15-football-malloy-kestra/result3_malloy.png)
 
 Same, with # dashboard tag a query is rendered as a dashboard, dimensions aligned at the top, and aggregates and nested queries float within the dashboard.
 
 You can check [all rendering tags in the documentation](https://malloydata.github.io/documentation/visualizations/overview).
 
-![dashboard malloy](@assets/blogs/2023-09-15-football-malloy-kestra/result4_malloy.png)
+![dashboard malloy](assets/blogs/2023-09-15-football-malloy-kestra/result4_malloy.png)
 
 I encourage you to look at the whole documentation, especially [the common pattern section](https://malloydata.github.io/documentation/patterns/yoy) showcasing the power of Malloy.
 
@@ -97,9 +97,9 @@ That’s where Kestra makes the glue !
 
 Let’s create a first flow to scrape matches results every day.
 
-![parse fbref flow](@assets/blogs/2023-09-15-football-malloy-kestra/parse_fbref_kestra.png)
+![parse fbref flow](assets/blogs/2023-09-15-football-malloy-kestra/parse_fbref_kestra.png)
 
-![parse fbref topo](@assets/blogs/2023-09-15-football-malloy-kestra/parse_fbref_topo.png)
+![parse fbref topo](assets/blogs/2023-09-15-football-malloy-kestra/parse_fbref_topo.png)
 
 This Kestra Flow does several things:
 
@@ -112,9 +112,9 @@ Now that we have a process to get data everyday, we can move on to analysis auto
 
 In a separate flow we use the Malloy CLI Kestra plugin to run Malloy commands on our data:
 
-![malloy cli](@assets/blogs/2023-09-15-football-malloy-kestra/malloy_cli.png)
+![malloy cli](assets/blogs/2023-09-15-football-malloy-kestra/malloy_cli.png)
 
-![malloy cli topo](@assets/blogs/2023-09-15-football-malloy-kestra/malloy_cli_topo.png)
+![malloy cli topo](assets/blogs/2023-09-15-football-malloy-kestra/malloy_cli_topo.png)
 
 
 In this flow we have the following tasks:
@@ -125,7 +125,7 @@ In this flow we have the following tasks:
 
 Here we export Malloy results to a JSON file, but we could have saved those to BigQuery tables for example, enabling us to connect dashboard tools such as [Looker](https://cloud.google.com/looker-studio), [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
 
-![xg analysis output](@assets/blogs/2023-09-15-football-malloy-kestra/xg_analysis_output.png)
+![xg analysis output](assets/blogs/2023-09-15-football-malloy-kestra/xg_analysis_output.png)
 
 
 If you want to know more about Kestra and its wide range of possibilities, I encourage you to look at the documentation and join the community on Slack.

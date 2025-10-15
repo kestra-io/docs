@@ -1,6 +1,6 @@
 ---
 title: Administration
-icon: /docs/icons/ui.svg
+icon: assets/docs/icons/ui.svg
 ---
 
 Manage your Kestra Instance.

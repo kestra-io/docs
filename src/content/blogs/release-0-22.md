@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: "@assets/blogs/release-0-22.jpg"
+image: "assets/blogs/release-0-22.jpg"
 ---
 
 
@@ -71,9 +71,9 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 
 For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../docs/enterprise/governance/read-only-secrets).
 
-![read only secret manager](@assets/blogs/release-0-22/read-only-secret-manager.png)
+![read only secret manager](assets/blogs/release-0-22/read-only-secret-manager.png)
 
-![read only secret manager 2](@assets/blogs/release-0-22/read-only-secret-manager-2.png)
+![read only secret manager 2](assets/blogs/release-0-22/read-only-secret-manager-2.png)
 
 ### New flow-level property called `afterExecution`
 
@@ -200,7 +200,7 @@ Once LDAP integration is set up, users logging into Kestra for the first time wi
 
 For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](/docs/enterprise/auth/sso/ldap).
 
-![ldap](@assets/blogs/release-0-22/ldap.png)
+![ldap](assets/blogs/release-0-22/ldap.png)
 
 ### New Log Shipper plugins
 

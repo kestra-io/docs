@@ -1,6 +1,6 @@
 ---
 title: Cloud & Enterprise Edition FAQ
-icon: /docs/icons/faq.svg
+icon: assets/docs/icons/faq.svg
 editions: ["EE", "Cloud"]
 ---
 

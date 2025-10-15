@@ -1,6 +1,6 @@
 ---
 title: Run Perl inside of your Flows
-icon: /docs/icons/perl.svg
+icon: assets/docs/icons/perl.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -91,7 +91,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![perl_outputs](@assets/docs/how-to-guides/perl/outputs.png)
+![perl_outputs](assets/docs/how-to-guides/perl/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -191,4 +191,4 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](@assets/docs/how-to-guides/perl/metrics.png)
+![metrics](assets/docs/how-to-guides/perl/metrics.png)

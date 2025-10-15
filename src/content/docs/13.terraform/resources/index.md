@@ -1,6 +1,6 @@
 ---
 title: Resources
-icon: /docs/icons/terraform.svg
+icon: assets/docs/icons/terraform.svg
 ---
 
 :::ChildCard

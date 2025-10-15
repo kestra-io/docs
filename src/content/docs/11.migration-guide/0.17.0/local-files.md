@@ -1,6 +1,6 @@
 ---
 title: Deprecation of LocalFiles and outputDir
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 

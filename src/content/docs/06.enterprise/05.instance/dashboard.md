@@ -1,6 +1,6 @@
 ---
 title: Instance Dashboard
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.16.0"
 docId: instance
@@ -26,7 +26,7 @@ The **Overview** tab gives a high-level snapshot of your instance’s operationa
 - Check real-time metrics like uptime and service liveness.
 - Access detailed configurations for each service (e.g., version, hostname, heartbeat intervals).
 
-![Instance Overview Table](@assets/docs/enterprise/instance-table.png)
+![Instance Overview Table](assets/docs/enterprise/instance-table.png)
 
 ## Monitoring Services
 

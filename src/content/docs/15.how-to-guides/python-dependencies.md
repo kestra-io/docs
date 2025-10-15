@@ -1,6 +1,6 @@
 ---
 title: Manage Python Dependencies
-icon: /docs/icons/python.svg
+icon: assets/docs/icons/python.svg
 stage: Getting Started
 topics:
   - Scripting

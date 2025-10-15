@@ -1,6 +1,6 @@
 ---
 title: Configuration
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 Configuration reference for Kestra.
@@ -1277,7 +1277,7 @@ kestra:
 
 If configured in the UI, top-level keys are implied. Example UI screenshot:
 
-![Secrets UI Configuration](@assets/docs/configuration/is-secrets-configuration.png)
+![Secrets UI Configuration](assets/docs/configuration/is-secrets-configuration.png)
 
 ### AWS Secrets Manager
 
@@ -1617,7 +1617,7 @@ kestra:
 
 Screenshot example:
 
-![Internal Storage UI Configuration](@assets/docs/configuration/is-secrets-configuration.png)
+![Internal Storage UI Configuration](assets/docs/configuration/is-secrets-configuration.png)
 
 ### S3
 

@@ -1,6 +1,6 @@
 ---
 title: Standalone Server Installation Guide (Enterprise Edition)
-icon: /docs/icons/installation.svg
+icon: assets/docs/icons/installation.svg
 editions: ["EE"]
 ---
 

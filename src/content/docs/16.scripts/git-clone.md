@@ -1,6 +1,6 @@
 ---
 title: Git Clone task
-icon: /docs/icons/dev.svg
+icon: assets/docs/icons/dev.svg
 ---
 
 Clone a Git repository and use the files in your tasks.

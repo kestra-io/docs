@@ -1,6 +1,6 @@
 ---
 title: The BOOLEAN-type input is deprecated in favor of BOOL
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

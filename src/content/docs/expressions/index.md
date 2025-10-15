@@ -1,6 +1,6 @@
 ---
 title: Expressions
-icon: /docs/icons/expression.svg
+icon: assets/docs/icons/expression.svg
 ---
 
 Expressions & Context Variables
@@ -50,7 +50,7 @@ The execution context includes these variables:
 
 :::alert{type="info"}
 To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Expression console.
-![printContext](@assets/docs/expressions/printContext.png)
+![printContext](assets/docs/expressions/printContext.png)
 :::
 
 ---

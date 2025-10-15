@@ -1,6 +1,6 @@
 ---
 title: Best Practices
-icon: /docs/icons/best-practices.svg
+icon: assets/docs/icons/best-practices.svg
 ---
 
 Best practices for building reliable workflows in Kestra.

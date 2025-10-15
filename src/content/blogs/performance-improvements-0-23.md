@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: "@assets/blogs/performances-0-23.jpg"
+image: "assets/blogs/performances-0-23.jpg"
 ---
 
 In 0.22, the engineering team focused on performance in multiple areas, you can find the details in this blog post [Optimizing Performance in Kestra in Version 0.22](https://kestra.io/blogs/2025-04-08-performance-improvements).

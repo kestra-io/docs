@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin Pierre Roset
   image: "mproset"
-image: "@assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg"
+image: "assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg"
 ---
 
 The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. This article outlines how [Kestra](https://github.com/kestra-io/kestra) addresses the requirements of organizations in search of a proficient data orchestrator.
@@ -28,12 +28,12 @@ Managing dependencies can be a challenge as workflows grow in complexity. Kestra
 Kestra's intuitive and user-friendly interface makes the tool accessible to both data engineers and business stakeholders. Despite dealing with complex workflows, Kestra ensures the user interface remains simple and understandable. With an embedded code editor, auto-completion, and clear visualization of workflow dependencies, Kestra simplifies data orchestration management.
 
 ### 5-Integration & Extension capabilities ###
-![plugins](@assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/plugins.png)
+![plugins](assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/plugins.png)
 
 Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins/), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
 ### 6-Monitoring ###
-![monitoring](@assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/Monitoring.png)
+![monitoring](assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/Monitoring.png)
 
 Troubleshooting any issue occurring on your workflow is a very important step of your orchestration.  Kestra offers real-time visibility into your workflows, enabling you to identify and address issues quickly. You can track task execution, dependencies, failures, and more, which provides you with the granular detail necessary to effectively manage your data orchestration.
 
@@ -41,7 +41,7 @@ Troubleshooting any issue occurring on your workflow is a very important step of
 Ensuring workflows are tested before they are pushed into production can save a lot of trouble down the line. With Kestra, workflows can be thoroughly tested before they go live, providing an essential safety net for your data project.
 
 ### 8-Documentation ###
-![documentation](@assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/doc-in-editor.png)
+![documentation](assets/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/doc-in-editor.png)
 
 Good documentation supports a smoother learning process and encourages team collaboration. We have a strong focus on our integrated documentation, reducing the learning curve and making it easier for teams to work together effectively.
 

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "@assets/blogs/2023-07-28-duckdb-vs-motherduck.png"
+image: "assets/blogs/2023-07-28-duckdb-vs-motherduck.png"
 ---
 
 
@@ -203,7 +203,7 @@ D show databases; -- verify that orders database got ingested
 
 The local `orders` database is now in the cloud, and you can run queries from a friendly, lightweight notebook interface.
 
-![blueprintKestra2](@assets/blogs/2023-07-28-duckdb-vs-motherduck/md.png)
+![blueprintKestra2](assets/blogs/2023-07-28-duckdb-vs-motherduck/md.png)
 
 
 Our local orders database is now in the cloud — image by the author
@@ -238,11 +238,11 @@ So far, we’ve executed standalone queries. Let’s now cover some end-to-end u
 
 To get started with Kestra, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml), run `docker compose up -d` and launch the UI from http://localhost:8080. From here, you can find several built-in DuckDB examples available in the UI as [Blueprints](https://kestra.io/docs/user-interface-guide/blueprints).
 
-![blueprintKestra](@assets/blogs/2023-07-28-duckdb-vs-motherduck/md2.png)
+![blueprintKestra](assets/blogs/2023-07-28-duckdb-vs-motherduck/md2.png)
 
 I found the blueprint “[Extract data, mask sensitive columns using DuckDB and load it to BigQuery](/blueprints/sensitive-data)” particularly useful. Source systems often contain sensitive data that requires pseudonymization before you are allowed to load that data to a data warehouse and use it for analytics. DuckDB provides utility functions such as `hash()` and `md5()` that can mask sensitive columns between the extract and load steps in a data pipeline. The example shown in the image below illustrates  how DuckDB helps solve fairly complex problems in a simple SQL query.
 
-![blueprintKestra2](@assets/blogs/2023-07-28-duckdb-vs-motherduck/md3.png)
+![blueprintKestra2](assets/blogs/2023-07-28-duckdb-vs-motherduck/md3.png)
 
 Here is a brief summary of other data pipeline blueprints using DuckDB:
 

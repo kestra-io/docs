@@ -1,6 +1,6 @@
 ---
 title: The default pullPolicy for Docker-based tasks changed
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---
@@ -29,4 +29,4 @@ tasks:
 
 Now, the plugin defaults to `IF_NOT_PRESENT`. This also applies to all other Docker-based tasks from the `plugin-docker` group, such as `io.kestra.plugin.docker.Run`.
 
-![Default Docker Runner Pull Policy](@assets/docs/migration-guide/0-23/pullPolicy-default.png)
+![Default Docker Runner Pull Policy](assets/docs/migration-guide/0-23/pullPolicy-default.png)

@@ -1,6 +1,6 @@
 ---
 title: File Access in Kestra
-icon: /docs/icons/concepts.svg
+icon: assets/docs/icons/concepts.svg
 version: ">= 0.24.0"
 ---
 

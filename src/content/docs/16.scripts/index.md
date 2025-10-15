@@ -1,6 +1,6 @@
 ---
 title: Multi-Language Script Tasks
-icon: /docs/icons/dev.svg
+icon: assets/docs/icons/dev.svg
 ---
 
 Kestra is language agnostic. Write your business logic in any language.

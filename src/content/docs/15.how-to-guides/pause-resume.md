@@ -1,6 +1,6 @@
 ---
 title: Pause and Resume Flows in Kestra
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
@@ -36,13 +36,13 @@ The `Pause` task will pause the execution and the `Log` task will run only once 
 
 You can either use the Pause task or manually Pause from the Execution overview page. Once the execution is paused, you can inspect the current logs and outputs. Then, you can resume it from the UI by clicking on the `Resume` button in the `Overview` tab:
 
-![pause_resume](@assets/docs/how-to-guides/pause-resume/pause_resume.png)
+![pause_resume](assets/docs/how-to-guides/pause-resume/pause_resume.png)
 
 ## Bulk-resuming paused workflows
 
 You can bulk-resume paused workflows from the `Executions` page by selecting the workflows you want to resume and clicking on the `Resume` button:
 
-![pause_resume2](@assets/docs/how-to-guides/pause-resume/pause_resume2.png)
+![pause_resume2](assets/docs/how-to-guides/pause-resume/pause_resume2.png)
 
 This feature is useful when you have multiple paused workflows and want to resume them all at once.
 
@@ -112,8 +112,8 @@ tasks:
 
 When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
 
-![pause_resume_1](@assets/docs/how-to-guides/pause-resume/pause_resume_1.png)
+![pause_resume_1](assets/docs/how-to-guides/pause-resume/pause_resume_1.png)
 
 After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
 
-![pause_resume_2](@assets/docs/how-to-guides/pause-resume/pause_resume_2.png)
+![pause_resume_2](assets/docs/how-to-guides/pause-resume/pause_resume_2.png)

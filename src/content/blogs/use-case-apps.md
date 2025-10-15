@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: "@assets/blogs/use-case-apps.jpg"
+image: "assets/blogs/use-case-apps.jpg"
 ---
 
 Automation focuses on the execution of tasks—triggering scripts, transferring data, or running jobs. Orchestration, however, operates at a higher level: coordinating these tasks, defining dependencies, and ensuring everything flows across systems and teams.
@@ -96,9 +96,9 @@ tasks:
 ```
 
 
-![fist_app_inputs](@assets/blogs/use-case-apps/first_app_inputs.png)
+![fist_app_inputs](assets/blogs/use-case-apps/first_app_inputs.png)
 
-![fist_app_loading](@assets/blogs/use-case-apps/first_app_loading.png)
+![fist_app_loading](assets/blogs/use-case-apps/first_app_loading.png)
 
 This example is one of the many one can imagine! Providing a simple interface for any users to request infrastructure deployment, file access, days off for holiday, etc. There are tons of cases where these need custom specifications and underlying automation.
 
@@ -246,8 +246,8 @@ layout:
 ```
 
 
-![second_app_inputs](@assets/blogs/use-case-apps/second_app_inputs.png)
-![second_app_outputs](@assets/blogs/use-case-apps/second_app_outputs.png)
+![second_app_inputs](assets/blogs/use-case-apps/second_app_inputs.png)
+![second_app_outputs](assets/blogs/use-case-apps/second_app_outputs.png)
 
 ## Simple Interfaces for Everyday Automation
 
@@ -424,15 +424,15 @@ layout:
 With Kestra Apps, this workflow is paired with a simple UI that allows users to provide input and see results.
 
 Here is our main user interface. Here the user is asked the general user context
-![alt text](@assets/blogs/use-case-apps/custom_1.png)
+![alt text](assets/blogs/use-case-apps/custom_1.png)
 
 
 LLMs are doing the work under the hood
-![alt text](@assets/blogs/use-case-apps/custom_2.png)
+![alt text](assets/blogs/use-case-apps/custom_2.png)
 
 
 And then we get a potential answer for our user
-![alt text](@assets/blogs/use-case-apps/custom_3.png)
+![alt text](assets/blogs/use-case-apps/custom_3.png)
 
 This example is just one of many. Whether automating lead qualification, simplifying infrastructure requests, or responding to customer inquiries, Kestra Apps make automation accessible to all teams.
 

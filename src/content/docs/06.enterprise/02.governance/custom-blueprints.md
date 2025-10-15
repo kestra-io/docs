@@ -1,6 +1,6 @@
 ---
 title: Custom Blueprints
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: custom
 ---
@@ -23,7 +23,7 @@ From the left navigation menu, go to **Blueprints**. Then, select the **Custom B
 
 Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the **Create** button.
 
-![New Custom Blueprint](@assets/docs/user-interface-guide/blueprint-org-2.png)
+![New Custom Blueprint](assets/docs/user-interface-guide/blueprint-org-2.png)
 
 You can edit Blueprints at any time, for example, to add new tasks or expand the documentation.
 

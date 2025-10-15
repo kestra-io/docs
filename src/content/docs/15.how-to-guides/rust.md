@@ -1,6 +1,6 @@
 ---
 title: Run Rust inside of your Flows
-icon: /docs/icons/rust.svg
+icon: assets/docs/icons/rust.svg
 stage: Getting Started
 topics:
   - Scripting

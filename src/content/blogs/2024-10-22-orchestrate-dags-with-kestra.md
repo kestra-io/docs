@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role:
   image: mproset
-image: "@assets/blogs/2024-10-22-orchestrate-dags-with-kestra.jpg"
+image: "assets/blogs/2024-10-22-orchestrate-dags-with-kestra.jpg"
 ---
 
 Migrating from one orchestration tool to another can seem like an intimidating task—especially if you have critical workflows running in production. When you rely on Airflow for essential data processing, the idea of moving everything to a new platform at once might feel risky. That’s why with **Kestra**, you don't have to jump into a big-bang migration. Instead, you can transition **one workflow at a time** and gradually adopt Kestra’s advanced orchestration capabilities while keeping what works in Airflow.
@@ -58,10 +58,10 @@ In this setup:
 - **Monitor and poll the status** of your Airflow tasks directly within Kestra, allowing for real-time visibility.
 - **Pass execution metadata** (like task and flow IDs) to maintain context and track workflow performance across both platforms.
 
-![kestra outputs](@assets/blogs/2024-10-22-orchestrate-dags-with-kestra/kestra.png)
+![kestra outputs](assets/blogs/2024-10-22-orchestrate-dags-with-kestra/kestra.png)
 As we can see, Kestra catch all the dag run information.
 
-![airflow ui](@assets/blogs/2024-10-22-orchestrate-dags-with-kestra/airflow.png)
+![airflow ui](assets/blogs/2024-10-22-orchestrate-dags-with-kestra/airflow.png)
 On the other side, the Airflow DAG is triggered successfully.
 
 ## Kestra: A Central tool for All Your Workflows

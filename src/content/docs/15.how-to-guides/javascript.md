@@ -1,6 +1,6 @@
 ---
 title: Run JavaScript inside of your Flows
-icon: /docs/icons/nodejs.svg
+icon: assets/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -203,7 +203,7 @@ tasks:
 
 We can also preview our file directly in the Outputs tab as well.
 
-![outputs](@assets/docs/how-to-guides/nodejs/outputs.png)
+![outputs](assets/docs/how-to-guides/nodejs/outputs.png)
 
 _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
 
@@ -238,7 +238,7 @@ Kestra.timer('duration', end - start);
 ```
 
 Once this has executed, `duration` will be viewable under **Metrics**.
-![metrics](@assets/docs/how-to-guides/nodejs/metrics.png)
+![metrics](assets/docs/how-to-guides/nodejs/metrics.png)
 
 ## Execute GraalVM Task
 

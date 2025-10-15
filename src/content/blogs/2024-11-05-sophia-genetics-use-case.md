@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2024-11-05-sophia-genetics-use-case.jpg"
+image: "assets/blogs/2024-11-05-sophia-genetics-use-case.jpg"
 ---
 
 Genomic sequence analysis is a key process for leading companies in the health technology industry. Yet, bioinformaticians have long grappled with existing tools that either lack user-friendly interfaces or fail to integrate smoothly with external systems. Enter Kestra, a software orchestrator that represents a game-changing solution designed to fill this gap. While many tools in the field either focus on narrow scientific applications, neglect modern integration capabilities, or rely on the limitations of interpreted languages like Python, Kestra offers a balanced approach. It combines scientific rigor with the flexibility to integrate with contemporary tooling, making it easier to scale, update architecture, and onboard new talent into this specialized field. In essence, Kestra addresses the bioinformatics community's pressing need for a tool that harmonizes scientific depth with modern technological agility.

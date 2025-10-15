@@ -7,7 +7,7 @@ author:
  name: Ludovic Dehon
  image: ldehon
  role: CTO & Co-Founder
-image: "@assets/blogs/from-0-to-1.jpg"
+image: "assets/blogs/from-0-to-1.jpg"
 ---
 
 On Tuesday, September 9th, we will officially launch **Kestra 1.0,** a release that will **change the face of orchestration forever**.

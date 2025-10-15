@@ -7,7 +7,7 @@ author:
  name: Emmanuel Darras
  image: edarras
  role: CEO & Co-Founder
-image: "@assets/blogs/1.0-7-days.jpg"
+image: "assets/blogs/1.0-7-days.jpg"
 ---
 
 For too long, orchestration has meant **complexity and patchwork**: fragile schedulers, vendor lock-in, homegrown scripts, endless configs, stacked monitoring layers. Some even ended up coding their workflows directly in Python as if orchestration itself needed to be coded. The result: **slow to build, painful to maintain, impossible to scale.**

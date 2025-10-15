@@ -1,6 +1,6 @@
 ---
 title: Managing Upgrades
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
@@ -74,7 +74,7 @@ You can also create a custom image with your own plugins and dependencies, as ex
 
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
 
-![download_kestra_binary](@assets/docs/administrator-guide/download_kestra_binary.png)
+![download_kestra_binary](assets/docs/administrator-guide/download_kestra_binary.png)
 
 Once you’ve downloaded the binary, start Kestra with the following command:
 
@@ -135,7 +135,7 @@ You can get notified about new releases in the following ways:
 4. Subscribe to the [Kestra newsletter](/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
-![release_notification_github](@assets/docs/administrator-guide/release_notifications_github.png)
+![release_notification_github](assets/docs/administrator-guide/release_notifications_github.png)
 
 
 ## Database Migrations

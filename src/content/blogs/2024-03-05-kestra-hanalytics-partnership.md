@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Quentin Sinig
   image: "qsinig"
-image: "@assets/blogs/2024-03-05-kestra-hanalytics-partnership.jpg"
+image: "assets/blogs/2024-03-05-kestra-hanalytics-partnership.jpg"
 ---
 
 We're thrilled to announce our partnership with [Hanalytics](https://www.data-hanalytics.io/), a leader in consulting service dedicated to empowering data-rich organizations to enhance their analytics capabilities.
@@ -37,7 +37,7 @@ Their Kestra-certified team has already successfully implemented Kestra in multi
 
 - **Reduced complexities, improved performances:** Hanalytics' expertise helped Copines de Voyage transition from a legacy system to a modern data stack. This modernized infrastructure allows for better data organization, access, and utilization for valuable insights.
 
-![kestraxHanalytics](@assets/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg)
+![kestraxHanalytics](assets/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg)
 
 ## Get Involved
 

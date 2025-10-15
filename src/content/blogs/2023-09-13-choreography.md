@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2023-09-13-choreography.jpg"
+image: "assets/blogs/2023-09-13-choreography.jpg"
 ---
 
 Most of the best practices we apply in the data ecosystem are coming from software culture. CI/CD, tests, versioning, atomic code or package management all have been introduced because of their success in transforming software development practices.

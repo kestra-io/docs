@@ -1,6 +1,6 @@
 ---
 title: Azure DevOps
-icon: /docs/icons/dev.svg
+icon: assets/docs/icons/dev.svg
 ---
 
 How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
@@ -9,7 +9,7 @@ How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
 1. To create an Azure Devops Pipeline, first connect to your code repository. You can choose from several providers such as GitHub, Azure Repos Git or Bitbucket.
 
-![az-devops-image-repo](@assets/docs/developer-guide/ci-cd/az-devops-image-repo.png)
+![az-devops-image-repo](assets/docs/developer-guide/ci-cd/az-devops-image-repo.png)
 
 
 2. Then, choose the repository where your Kestra flows are located.
@@ -17,7 +17,7 @@ How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
 3. Start with a minimal pipeline template or use an existing one.
 
-![az-devops-image-config](@assets/docs/developer-guide/ci-cd/az-devops-image-config.png)
+![az-devops-image-config](assets/docs/developer-guide/ci-cd/az-devops-image-config.png)
 
 
 4. Consider the following pipeline:
@@ -67,7 +67,7 @@ stages:
 
 - Use the Terraform extension to install, validate, and apply Terraform resources. You can install the Terraform extension task by navigating to the Organization Settings > Extensions and then browse the marketplace to install the Terraform extension.
 
-![image-terraform](@assets/docs/developer-guide/ci-cd/az-devops-image-terraform.png)
+![image-terraform](assets/docs/developer-guide/ci-cd/az-devops-image-terraform.png)
 
 The first task is to use the `TerraformInstaller@1` to install Terraform when the pipeline runs. Then, we use the `TerraformTaskV4@4`` three times:
 
@@ -78,6 +78,6 @@ The first task is to use the `TerraformInstaller@1` to install Terraform when th
 3. run the `apply`` command to execute the actions proposed in the Terraform plan
 
 
-![image-green-pipeline](@assets/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
+![image-green-pipeline](assets/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
 
 You can find the specification of the [Kestra Terraform provider in the corresponding documentation](../../13.terraform/index.md)

@@ -1,6 +1,6 @@
 ---
 title: Access Files on your Local Machine in Kestra
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Scripting

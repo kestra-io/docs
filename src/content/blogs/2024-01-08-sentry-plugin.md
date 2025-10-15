@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Kevin Fleming
   image: "kfleming"
-image: "@assets/blogs/2024-01-08-sentry-plugin.jpg"
+image: "assets/blogs/2024-01-08-sentry-plugin.jpg"
 ---
 
 The goal of observability is to provide answers to one question: is everything working as expected, and if not, why not? Everything from data quality to workflow bottlenecks to user experience to CICD pipelines can and should be observable by logs, metrics, and traces (the three pillars). And, as they say, absence of evidence is not evidence of absence, so success must be just as observable as failure.
@@ -26,27 +26,27 @@ Each one of these tasks is described in detail below, and at the end of the arti
 
 Sentry has a [zero-dollar plan for devs](https://sentry.io/pricing/) (no credit card required) and that’s the plan I’ll be using in this article.
 
-![sentry plan](@assets/blogs/2024-01-08-sentry-plugin/sentry_dev_plan.png)
+![sentry plan](assets/blogs/2024-01-08-sentry-plugin/sentry_dev_plan.png)
 
 When Sentry receives an issue, it appears in the Issues dashboard:
 
-![sentry dashboard](@assets/blogs/2024-01-08-sentry-plugin/sentry_dashboard_issues_good_inset.png)
+![sentry dashboard](assets/blogs/2024-01-08-sentry-plugin/sentry_dashboard_issues_good_inset.png)
 
 and, with the default configuration, an email alert is sent to the account used during registration:
 
-![sentry gmail](@assets/blogs/2024-01-08-sentry-plugin/sentry_gmail_issues_good.png)
+![sentry gmail](assets/blogs/2024-01-08-sentry-plugin/sentry_gmail_issues_good.png)
 
 ### Sentry Registration
 
 Registration is quick and easy - you don’t have to choose a plan at this time, Sentry automatically gives everyone a 14-day trial of the Business Plan. During registration, you will be asked to **create an initial project** and an SDK for your preferred tech. A particular SDK is not needed to use Kestra, but you do need one to move forward with Sentry.
 
-![sentry registration](@assets/blogs/2024-01-08-sentry-plugin/sentry_00_choose_sdk_dotnet.png)
+![sentry registration](assets/blogs/2024-01-08-sentry-plugin/sentry_00_choose_sdk_dotnet.png)
 
 Choose one of the middleware technologies as these make it easy to find your **Sentry Client Keys**, aka Data Source Name or **DSN**. Your Kestra flows will need the DSN in order to POST issues to Sentry,
 
 Each project has its own DSN, which can be found by clicking on **Settings**, then **Project Settings**, then the **Client Keys** (DSN) link toward the bottom of the menu:
 
-![sentry menu](@assets/blogs/2024-01-08-sentry-plugin/sentry_project_menu_client_keys.png)
+![sentry menu](assets/blogs/2024-01-08-sentry-plugin/sentry_project_menu_client_keys.png)
 
 That will take you to this screen, where you can copy the DSN.
 
@@ -54,7 +54,7 @@ That will take you to this screen, where you can copy the DSN.
 
 **For more on working with secrets in Kestra, see our [Managing Secrets](https://kestra.io/docs/developer-guide/secrets) guide.**
 
-![sentry client](@assets/blogs/2024-01-08-sentry-plugin/sentry_dsn_client_keys.png)
+![sentry client](assets/blogs/2024-01-08-sentry-plugin/sentry_dsn_client_keys.png)
 
 That’s it. You're all set with Sentry.
 
@@ -141,7 +141,7 @@ The **message** JSON property will become the label or title of the issue.
 
 Sentry uses this value to group similar issues:
 
-![sentry issues](@assets/blogs/2024-01-08-sentry-plugin/sentry_alert_task.png)
+![sentry issues](assets/blogs/2024-01-08-sentry-plugin/sentry_alert_task.png)
 
 The `culprit` JSON property is used to define the module or code section related to this issue:
 
@@ -177,11 +177,11 @@ Sentry provides the **extra** property where you can add values as needed. That 
 
 The **Link** key-value pair of the extras property in the example above is particularly useful. It will appear on the issue detail page and is conveniently clickable:
 
-![sentry arrows](@assets/blogs/2024-01-08-sentry-plugin/sentry_payload_extras_arrow.png)
+![sentry arrows](assets/blogs/2024-01-08-sentry-plugin/sentry_payload_extras_arrow.png)
 
 In this example, the link URL has been composed so that it will take you right to the Kestra page for this execution, where you can view any of the relevant information:
 
-![sentry kestra](@assets/blogs/2024-01-08-sentry-plugin/sentry_link_to_kestra.png)
+![sentry kestra](assets/blogs/2024-01-08-sentry-plugin/sentry_link_to_kestra.png)
 
 If your use case for Sentry is to actually capture failures, then this link can be composed like this, so that clicking it will take you straight to the logs tab of the executions details:
 
@@ -193,7 +193,7 @@ http://localhost:8090/ui/executions/sentry_article/sentry_info_task/1TFBhMb71oc3
 
 Finally, after you executed the flow, navigate to the logs from the Logs or Gantt tabs, and Kestra will show you the JSON that was sent to Sentry:**
 
-![sentry produce](@assets/blogs/2024-01-08-sentry-plugin/kestra_just_send_log_link_json.png)
+![sentry produce](assets/blogs/2024-01-08-sentry-plugin/kestra_just_send_log_link_json.png)
 
 ### SentryAlert Example
 

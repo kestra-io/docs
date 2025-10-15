@@ -1,6 +1,6 @@
 ---
 title: Manage dbt projects with Kestra's Code Editor
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -47,7 +47,7 @@ You can use this flow as an initial setup:
 3. Execute that flow
 4. Click on the `Files` sidebar in the code editor to view the uploaded dbt files.
 
-![dbt-code-editor](@assets/docs/how-to-guides/dbt/dbt-code-editor.png)
+![dbt-code-editor](assets/docs/how-to-guides/dbt/dbt-code-editor.png)
 
 ---
 
@@ -101,7 +101,7 @@ from {{ ref('my_first_dbt_model') }}
 where id = 2
 ```
 
-![dbt-code-editor](@assets/docs/how-to-guides/dbt/dbt-code-editor-2.png)
+![dbt-code-editor](assets/docs/how-to-guides/dbt/dbt-code-editor-2.png)
 
 When you now run the flow using the second dropdown value for the `dbt_command` input, only the new model will be built. This allows you to test the changes quickly and iterate faster.
 

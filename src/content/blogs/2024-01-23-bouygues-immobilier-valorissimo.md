@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "@assets/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg"
+image: "assets/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg"
 ---
 
 Bouygues Immobilier platform, Valorissimo, with over two decades of experience in the real estate sector, stands out as a historic company in the industry. They have developed a unique methodology over the years to assist real estate professionals in selling their programs. This expertise encompasses a broad understanding of the market, which has been instrumental in their success.

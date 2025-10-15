@@ -1,6 +1,6 @@
 ---
 title: Google as an OIDC SSO Provider
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 
@@ -37,7 +37,7 @@ Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity
    - Click on **Add a Provider**.
    - From the list, choose **OpenID Connect**.
 
-![add-provider](@assets/docs/how-to-guides/google-oidc/add-provider.png)
+![add-provider](assets/docs/how-to-guides/google-oidc/add-provider.png)
 
 3. **Configure the OIDC Provider**:
    - **Grant type**: Select the Code Flow grant type.
@@ -47,7 +47,7 @@ Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity
    - **Issuer URL**: Provide the **Issuer URL** (e.g., `https://accounts.google.com`).
    - **Scopes**: Specify any additional scopes required by your application.
 
-![oidc-details](@assets/docs/how-to-guides/google-oidc/oidc-provider.png)
+![oidc-details](assets/docs/how-to-guides/google-oidc/oidc-provider.png)
 
 4. **Save the Configuration**:
    - Click **"Save"** to add the OIDC provider to your Identity Platform configuration.

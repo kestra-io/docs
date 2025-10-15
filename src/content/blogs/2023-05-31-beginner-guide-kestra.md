@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Quentin Sinig
   image: "qsinig"
-image: "@assets/blogs/2023-05-31-beginner-guide-kestra.jpg"
+image: "assets/blogs/2023-05-31-beginner-guide-kestra.jpg"
 ---
 
 This guide was written by a non-technical user **for** non-technical users. Being familiar with a terminal is a plus and not mandatory.
@@ -36,14 +36,14 @@ As a person without an engineering background, manipulating the Command Line Int
 ### 1-Download Docker Extension for VSC ###
 After installing Visual Studio Code, download [Docker Extension for VSC](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and directly click right on `the docker-compose.yaml` file to access the `Compose Up` command. If any dependency is missing on your local machine, leveraging this plugin will overcome the issue.
 
-![docker compose](@assets/blogs/2023-05-31-beginner-guide-kestra/docker.png)
+![docker compose](assets/blogs/2023-05-31-beginner-guide-kestra/docker.png)
 
 ### 2-Use and re-use the Docker Desktop UI ###
 Thanks to the UI, you can directly search the `Kestra installer` (a.k.a the Docker image) via the Search Bar. You can also decide which version you want to pick up. Once it’s done, you can keep using it to stop/start your server and directly open Kestra in Visual Studio Code.
 
-![docker step 1](@assets/blogs/2023-05-31-beginner-guide-kestra/docker-step-1.png)
+![docker step 1](assets/blogs/2023-05-31-beginner-guide-kestra/docker-step-1.png)
 
-![docker step 2](@assets/blogs/2023-05-31-beginner-guide-kestra/docker-step-2.png)
+![docker step 2](assets/blogs/2023-05-31-beginner-guide-kestra/docker-step-2.png)
 
 You can also download [Docker Extension for VSC](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and directly click right on the docker-compose.yaml file to access the `Compose Up` command.
 
@@ -51,7 +51,7 @@ You can also download [Docker Extension for VSC](https://marketplace.visualstudi
 
 Once you're in, the easiest thing to do is the follow the [Guided Tour](https://kestra.io/docs/flow-examples/example-guided-tour.html) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
 
-![Guided tour](@assets/blogs/2023-05-31-beginner-guide-kestra/guided-tour.png)
+![Guided tour](assets/blogs/2023-05-31-beginner-guide-kestra/guided-tour.png)
 
 Personally, I like to pause between each step. Indeed, **to understand**, I need to:
 
@@ -141,7 +141,7 @@ tasks:
     from: "{{ outputs.downloadCsv.uri }}"
 ```
 
-![Topology](@assets/blogs/2023-05-31-beginner-guide-kestra/topo.png)
+![Topology](assets/blogs/2023-05-31-beginner-guide-kestra/topo.png)
 
 Yaiiii! Congrats! You just wrote your first flow to download a CSV and transform it into a JSON file!
 

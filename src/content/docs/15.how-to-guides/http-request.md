@@ -1,6 +1,6 @@
 ---
 title: Make HTTP Requests inside of your flows
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -76,7 +76,7 @@ In the example below, we can use Postman to make a POST Request to [dummyjson.co
 
 In Postman, we'll need to add our URL: `https://dummyjson.com/products/add`. On top of that, we will need to set our request type to `POST` and add the body above as a `raw` option and then change the type to JSON. Once we've done this, we can press send:
 
-![postman](@assets/docs/how-to-guides/http/postman.png)
+![postman](assets/docs/how-to-guides/http/postman.png)
 
 We can also do the same with cURL by using the command below:
 
@@ -133,11 +133,11 @@ tasks:
 
 We can see the response from the Logs task in the Logs page:
 
-![http_get_logs](@assets/docs/how-to-guides/http/http_get_logs.png)
+![http_get_logs](assets/docs/how-to-guides/http/http_get_logs.png)
 
 However if we want to view the outputs from tasks without needing to use Log tasks, we can easily view our output using the Outputs page inside the UI:
 
-![http_get_outputs](@assets/docs/how-to-guides/http/http_get_outputs.png)
+![http_get_outputs](assets/docs/how-to-guides/http/http_get_outputs.png)
 
 Here, we are using the [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
 
@@ -182,7 +182,7 @@ If your body message input is multiple lines, the best practice is to use a pebb
 
 When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:
 
-![http_post_outputs](@assets/docs/how-to-guides/http/http_post_outputs.png)
+![http_post_outputs](assets/docs/how-to-guides/http/http_post_outputs.png)
 
 As we can see, this generates the same output from our earlier example but with the added benefit that we can pass this data to later tasks to perform computation if we wanted to!
 
@@ -216,7 +216,7 @@ tasks:
 
 As we can see, the response body is showing our updated title field.
 
-![http_put_outputs](@assets/docs/how-to-guides/http/http_put_outputs.png)
+![http_put_outputs](assets/docs/how-to-guides/http/http_put_outputs.png)
 
 ### DELETE Request
 
@@ -246,8 +246,8 @@ tasks:
 
 By adding an input, we can change which product we will remove by asking for the `id` at execution.
 
-![http_delete_outputs](@assets/docs/how-to-guides/http/http_delete_input.png)
+![http_delete_outputs](assets/docs/how-to-guides/http/http_delete_input.png)
 
 As expected, we get the desired output:
 
-![http_delete_outputs](@assets/docs/how-to-guides/http/http_delete_outputs.png)
+![http_delete_outputs](assets/docs/how-to-guides/http/http_delete_outputs.png)

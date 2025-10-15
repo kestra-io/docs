@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2023-10-13-kestra-mls.jpg"
+image: "assets/blogs/2023-10-13-kestra-mls.jpg"
 ---
 
 In this blog post we will show how [Kestra](https://github.com/kestra-io/kestra) is used by professional football club to find the best talents and optimize game strategy.
@@ -52,7 +52,7 @@ Thanks to Kestra, they can orchestrate several critical pipelines such as:
 
 For deployment, they choose a straightforward AWS EC2 instance with PostgreSQL server, Shiny proxy to serve apps and private R or Python packages for everyday tasks.
 
-![infra schema](@assets/blogs/2023-10-13-kestra-mls/mls-schema.png)
+![infra schema](assets/blogs/2023-10-13-kestra-mls/mls-schema.png)
 
 
 ## Next Steps

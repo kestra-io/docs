@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import KSAIImg from "@assets/docs/icons/ks-ai.svg"
+import KSAIImg from "assets/docs/icons/ks-ai.svg"
 import Magnify from "vue-material-design-icons/Magnify.vue";
 
 const emit = defineEmits<{

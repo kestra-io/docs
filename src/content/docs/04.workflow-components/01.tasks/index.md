@@ -1,6 +1,6 @@
 ---
 title: Tasks
-icon: /docs/icons/flow.svg
+icon: assets/docs/icons/flow.svg
 ---
 
 Tasks are the steps within a flow.
@@ -56,7 +56,7 @@ All tasks share the following core properties:
 
 Task properties can be static or dynamic. Dynamic properties can be set using expressions. To determine whether a property is static or dynamic, check the task’s documentation on the [plugin's homepage](/plugins) or in the UI by clicking on the documentation tab for the task.
 
-![dynamic_properties](@assets/docs/concepts/dynamic_properties.png)
+![dynamic_properties](assets/docs/concepts/dynamic_properties.png)
 
 Some properties are marked as **not dynamic** because they are complex types (e.g., maps, lists of strings, lists of maps). These act as **placeholders** for other dynamic properties.
 

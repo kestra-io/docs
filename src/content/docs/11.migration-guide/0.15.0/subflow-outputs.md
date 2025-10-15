@@ -1,6 +1,6 @@
 ---
 title: Subflow outputs behavior
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.15.0
 ---
 
@@ -101,7 +101,7 @@ You can see that outputs are defined as a list of key-value pairs. The `id` is t
 
 You will see the output of the flow on the **Executions** page in the **Overview** tab.
 
-![subflow_output](@assets/docs/workflow-components/subflow_output.png)
+![subflow_output](assets/docs/workflow-components/subflow_output.png)
 
 Here is how you can access the flow output in the parent flow:
 
@@ -131,5 +131,5 @@ Note how the `outputs` are set twice within the `"{{outputs.subflow.outputs.fina
 
 Here is what you will see in the Outputs tab of the **Executions** page in the parent flow:
 
-![subflow_output_parent](@assets/docs/workflow-components/subflow_output_parent.png)
+![subflow_output_parent](assets/docs/workflow-components/subflow_output_parent.png)
 

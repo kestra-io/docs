@@ -10,7 +10,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "paths": {
-      "@assets/*": ["./src/assets/*"]
+      "assets/*": ["./src/assets/*"]
     }
   }
 }

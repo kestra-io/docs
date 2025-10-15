@@ -8,7 +8,7 @@ Kestra's architecture is designed to be scalable, flexible, and fault-tolerant. 
 
 The following diagram shows the main components of Kestra using the JDBC backend.
 
-![Kestra JDBC Architecture](@assets/docs/architecture/jdbc.png "Kestra Architecture")
+![Kestra JDBC Architecture](assets/docs/architecture/jdbc.png "Kestra Architecture")
 
 Here are the components and their interactions:
 
@@ -43,7 +43,7 @@ The JDBC Backend can be scaled too, either through clustering or sharding, to ha
 
 The following diagram shows the main components of Kestra using the [Kafka](https://kafka.apache.org/) and [Elasticsearch](https://www.elastic.co/elasticsearch) backend.
 
-![Kestra OSS Architecture](@assets/docs/architecture/kafka.png "Kestra Architecture")
+![Kestra OSS Architecture](assets/docs/architecture/kafka.png "Kestra Architecture")
 
 :::alert{type="info"}
 Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.

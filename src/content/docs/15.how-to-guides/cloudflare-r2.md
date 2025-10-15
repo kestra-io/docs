@@ -1,6 +1,6 @@
 ---
 title: Use Cloudflare R2 with MinIO Gateway for Kestra
-icon: /docs/icons/cloudflare.svg
+icon: assets/docs/icons/cloudflare.svg
 stage: Intermediate
 topics:
 - DevOps

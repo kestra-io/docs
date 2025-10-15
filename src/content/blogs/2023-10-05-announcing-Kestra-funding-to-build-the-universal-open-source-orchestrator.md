@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Emmanuel Darras
   image: "edarras"
-image: "@assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator.jpg"
+image: "assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator.jpg"
 ---
 
 We are thrilled to announce that Kestra has raised **$3 million of funding** to make orchestration more accessible, collaborative, and scalable.
@@ -27,7 +27,7 @@ To address this, Kestra offers a versatile and language-agnostic developer platf
 
 ## The Orchestration Platform for Business-Critical Operations
 
-![Kestra Baseline](@assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/baseline.png)
+![Kestra Baseline](assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/baseline.png)
 
 Our initial mission was to build the most efficient open-source workflow platform targeting the data engineering space. Since then, we’ve experienced tremendous growth well beyond that domain. Our users leverage Kestra not only to orchestrate data pipelines but also to power their **business-critical applications**. They use our platform to orchestrate microservices and applications feeding data to their end products, and then they use Kestra for analytical workflows to understand how their products are performing. This way, Kestra serves as a **universal orchestration** solution for their business.
 
@@ -39,7 +39,7 @@ Software engineers appreciate the **API-first** design and **robust**, **scalabl
 
 ## Run Anywhere, Code in Any Language
 
-![languages and installation](@assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/code-install.png)
+![languages and installation](assets/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/code-install.png)
 
 In terms of language compatibility, Kestra supports tasks written in a wide array of programming languages, including **Python**, **R**, **Node.js**, **Julia**, **Rust**, **Bash**, **PowerShell**, and anything that can run as a containerized process. Kestra's flows can run anywhere — from your laptop or on-prem VM to a Kubernetes cluster in a public cloud. Thanks to the extensible integrations ecosystem, including features such as custom plugins, triggers, tasks, blueprints, and fully customizable scripts and microservices, the product keeps evolving along with the business requirements of our users.
 

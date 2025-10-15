@@ -1,6 +1,6 @@
 ---
 title: ETL Pipelines in Kestra
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Integrations

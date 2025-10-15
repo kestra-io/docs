@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "@assets/blogs/2024-06-05-gitops-superpowers.jpg"
+image: "assets/blogs/2024-06-05-gitops-superpowers.jpg"
 ---
 
 We are excited to introduce a fully redesigned version control integration that takes your GitOps capabilities to new heights. This blog post explores how these new features can enhance productivity and collaboration.
@@ -19,7 +19,7 @@ For example, when you’ve developed a new data pipeline flow, with PushFlows, y
 
 But we didn't stop there. The **SyncFlows** task automatically checks for changes in your Git branch and deploys them to your Kestra namespaces. This continuous synchronization means you no longer need to manually update your production environment. Whether you schedule it to run hourly or trigger it whenever changes are merged into a specific Git branch, SyncFlows ensures that your environments are always up-to-date and consistent.
 
-![dev to prod](@assets/blogs/2024-06-05-gitops-superpowers/as-code.png)
+![dev to prod](assets/blogs/2024-06-05-gitops-superpowers/as-code.png)
 
 ### Continuous Integration with SyncFlows
 
@@ -39,7 +39,7 @@ Here is how that works:
 1. You push your flows from a development environment to a Git repository
 2. You then sync them to your Kestra production environment after they have been reviewed and merged into the production branch.
 
-![dev to prod](@assets/blogs/2024-06-05-gitops-superpowers/devtoprod.png)
+![dev to prod](assets/blogs/2024-06-05-gitops-superpowers/devtoprod.png)
 
 ## Validate Before You Commit with Dry-Run Mode
 

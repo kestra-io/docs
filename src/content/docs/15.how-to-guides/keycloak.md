@@ -1,6 +1,6 @@
 ---
 title: Configure KeyCloak SSO in Kestra
-icon: /docs/icons/tutorial.svg
+icon: assets/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
@@ -19,12 +19,12 @@ You can follow the steps described [here](https://documentation.cloud-iam.com/ge
 
 Once in KeyCloak, you would need to create a client:
 
-![alt text](@assets/docs/how-to-guides/keycloak/client1.png)
-![alt text](@assets/docs/how-to-guides/keycloak/client2.png)
+![alt text](assets/docs/how-to-guides/keycloak/client1.png)
+![alt text](assets/docs/how-to-guides/keycloak/client2.png)
 
 Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as Valid redirect URIs and `https://{{ yourKestraInstanceURL }}/logout` as Valid post logout redirect URIs.
 
-![alt text](@assets/docs/how-to-guides/keycloak/redirect-uri.png)
+![alt text](assets/docs/how-to-guides/keycloak/redirect-uri.png)
 
 ## Kestra Configuration
 
@@ -46,8 +46,8 @@ micronaut:
 
 You can retrieve `clientId` and `clientSecret` via KeyCloak user interface
 
-![alt text](@assets/docs/how-to-guides/keycloak/clientId.png)
-![alt text](@assets/docs/how-to-guides/keycloak/clientSecret.png)
+![alt text](assets/docs/how-to-guides/keycloak/clientId.png)
+![alt text](assets/docs/how-to-guides/keycloak/clientSecret.png)
 
 
 Don't forget to set a default role in your [Kestra configuration](../configuration/index.md) to streamline the process of adding new users.

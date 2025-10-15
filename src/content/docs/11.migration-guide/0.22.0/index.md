@@ -1,6 +1,6 @@
 ---
 title: 0.22.0
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.22.0
 ---
 

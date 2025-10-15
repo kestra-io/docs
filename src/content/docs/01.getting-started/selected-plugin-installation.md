@@ -1,6 +1,6 @@
 ---
 title: Install Only Selected Plugins in Kestra OSS
-icon: /docs/icons/plugins.svg
+icon: assets/docs/icons/plugins.svg
 ---
 
 Install a selection of Kestra plugins in the open-source (OSS) version. 

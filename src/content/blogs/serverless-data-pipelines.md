@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "@assets/blogs/serverless-data-pipelines.jpg"
+image: "assets/blogs/serverless-data-pipelines.jpg"
 ---
 
 Building data pipelines often comes down to getting the right compute power when you need it. With serverless options like Modal and BigQuery, you can focus on your workflows without having to think about infrastructure. In this post, we'll walk through a real-world example of a serverless data pipeline where we use **Kestra** for orchestration, **Modal** for on-demand compute, **dbt** for data transformations, and **BigQuery** for data storage and querying. Based on this example, we'll explore why [Kestra](https://github.com/kestra-io/kestra) is a great choice for orchestrating serverless data pipelines and how it can help you build interactive workflows that dynamically adapt compute to your needs.
@@ -18,7 +18,7 @@ You can find the entire code for this project in the [kestra-io/serverless](http
 
 Here is a conceptual overview of the project:
 
-![serverless_flow](@assets/blogs/serverless-data-pipelines/serverless_flow.jpg)
+![serverless_flow](assets/blogs/serverless-data-pipelines/serverless_flow.jpg)
 
 
 ## Serverless Workflow in Action

@@ -1,6 +1,6 @@
 ---
 title: LoopUntil task changed default values for checkFrequency
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

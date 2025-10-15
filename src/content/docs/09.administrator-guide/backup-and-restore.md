@@ -1,6 +1,6 @@
 ---
 title: Backup & Restore
-icon: /docs/icons/admin.svg
+icon: assets/docs/icons/admin.svg
 ---
 
 Back up and restore your Kestra instance.

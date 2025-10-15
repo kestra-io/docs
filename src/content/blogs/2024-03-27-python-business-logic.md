@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "@assets/blogs/2024-03-27-python-business-logic.png"
+image: "assets/blogs/2024-03-27-python-business-logic.png"
 ---
 
 ## What’s business logic anyway?
@@ -75,7 +75,7 @@ That's why Python is so popular - it's easy to learn and understand, almost like
 
 In computer science, there's a trade-off between programmer friendliness and performance. Languages closer to the machine code - the ones and zeros - run faster, but they're also much harder for humans to understand and write. This is because high-level languages, which are closer to natural language, offer features and abstractions that make them easier to use, but these features can sometimes come at the cost of some speed.
 
-![programming language scale](@assets/blogs/2024-03-27-python-business-logic/programming-language.png)
+![programming language scale](assets/blogs/2024-03-27-python-business-logic/programming-language.png)
 
 
 The tension in this duality is often a matter of context. Building robust software that will handle high levels of concurrency and need high availability will often be written in lower-level languages such as C++ or Java.
@@ -106,17 +106,17 @@ With Kestra, we’ve built several features to allow developers to handle their 
 
 For example, Kestra allows to pull of Git repositories containing a whole Python project. Then it’s easy to run Python main commands and describe the orchestration of scripts easily.
 
-![git repo](@assets/blogs/2024-03-27-python-business-logic/git-repo.png)
+![git repo](assets/blogs/2024-03-27-python-business-logic/git-repo.png)
 
 
-![Kestra Flow Git clone with Python](@assets/blogs/2024-03-27-python-business-logic/git-clone-flow.png)
+![Kestra Flow Git clone with Python](assets/blogs/2024-03-27-python-business-logic/git-clone-flow.png)
 
 We even went further by allowing to write Python scripts directly in an embedded Code editor, while connecting these scripts easily in the orchestration logic.
 
-![VS Code in Kestra](@assets/blogs/2024-03-27-python-business-logic/vs-code-python.png)
+![VS Code in Kestra](assets/blogs/2024-03-27-python-business-logic/vs-code-python.png)
 
 
-![read method](@assets/blogs/2024-03-27-python-business-logic/read-method.png)
+![read method](assets/blogs/2024-03-27-python-business-logic/read-method.png)
 
 ## Conclusion
 

@@ -6,7 +6,7 @@ category: Engineering
 author:
   name: Loïc Mathieu
   image: "lmathieu"
-image: "@assets/blogs/2024-03-08-building-multi-tenant-saas.jpg"
+image: "assets/blogs/2024-03-08-building-multi-tenant-saas.jpg"
 ---
 
 One of the recent Kestra evolutions I was responsible for was multitenancy support, a critical feature for providing scalable and secure data management solutions to a wide range of clients. This blog post delves into how we're implementing multi-tenancy at Kestra, guided by insights from a recent talk I gave on designing multi-tenant SaaS systems.
@@ -39,7 +39,7 @@ The most flexible yet complex model involves embedding a **`tenantId`** identifi
 
 Kestra’s architecture is built on a distributed system, where various components interact asynchronously, primarily through messaging queues. Below is an overview of the key components that make up Kestra’s architecture:
 
-![architecture](@assets/blogs/2024-03-08-building-multi-tenant-saas/architecture.png)
+![architecture](assets/blogs/2024-03-08-building-multi-tenant-saas/architecture.png)
 
 ### Core Components of Kestra:
 

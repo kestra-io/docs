@@ -7,7 +7,7 @@ authors:
   - name: Anna Geller
     image: ageller
     role: Product Lead
-image: "@assets/blogs/release-1-0.jpg"
+image: "assets/blogs/release-1-0.jpg"
 ---
 
 The table below highlights the key features of this release.
@@ -107,7 +107,7 @@ flowchart LR
 
 With Kestra 1.0, we've also added AI-powered search on the Kestra website, bringing more relevant and contextual answers right where you need them. Built on top of the same AI plugin used by AI Agents, this feature leverages Retrieval-Augmented Generation (RAG) to ground responses in the official Kestra documentation. You can ask questions in natural language, such as "How do I configure a flow schedule?", and the search will return a summary based on the most relevant docs so you don't have to manually scan through multiple pages.
 
-![AI search](@assets/blogs/release-1-0/ai-search.png)
+![AI search](assets/blogs/release-1-0/ai-search.png)
 
 ---
 
@@ -201,7 +201,7 @@ With Playground, you can execute individual tasks in sequence, reusing outputs f
 
 In summary, Playground gives you a safe, iterative space to prototype new workflows before running them in production.
 
-![playground](@assets/blogs/release-1-0/playground.png)
+![playground](assets/blogs/release-1-0/playground.png)
 
 The video below shows how to use Playground to build a flow step by step:
 
@@ -219,7 +219,7 @@ Since its Beta release, we've extended Plugin Versioning to work with **plugin d
 
 Any new or updated plugin version is instantly synchronized across your environment without downtime, ensuring you can upgrade safely and keep full control over your plugin ecosystem.
 
-![playground](@assets/blogs/release-1-0/plugin_versioning.png)
+![playground](assets/blogs/release-1-0/plugin_versioning.png)
 
 
 ---
@@ -230,7 +230,7 @@ To further improve the reliability of your flows, Kestra 1.0 brings Unit Tests o
 
 Since the initial release, we've redesigned the Unit Tests UI to show the test definition, flow code, and documentation side by side, making it easier to write and maintain tests. New UI tabs allow you to track all Test Runs and related Audit Logs.
 
-![playground](@assets/blogs/release-1-0/unit_tests.png)
+![playground](assets/blogs/release-1-0/unit_tests.png)
 
 You can now also run tests programmatically from a flow using the new `RunTest` and `RunTests` tasks. This allows you to trigger tests on demand for:
 - all tests in a given **tenant**,
@@ -300,7 +300,7 @@ Traditionally, Apps in Kestra are defined as code, specifying layout blocks and 
 
 Just like with the multi-panel Flow Editor, you can open, reorder, and close any combination of panels (incl. No-Code, App Code, Documentation, Preview and Blueprints) to build a personalized workspace. The No-Code form editor simplifies the creation of complex App layouts, making it easier to design interactive Apps for internal tools, dashboards, or data request forms without needing to start from raw YAML.
 
-![playground](@assets/blogs/release-1-0/apps_no_code.png)
+![playground](assets/blogs/release-1-0/apps_no_code.png)
 
 ---
 

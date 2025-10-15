@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: "@assets/blogs/2022-02-22-leroy-merlin-usage-kestra.jpg"
+image: "assets/blogs/2022-02-22-leroy-merlin-usage-kestra.jpg"
 ---
 
 [Adeo](https://www.adeo.com) is the leading French company in the international DIY and home improvement market; it is also one of the world’s top three companies in the industry, and is moving from strength to strength.
@@ -75,7 +75,7 @@ By this time, Terraform and BigQuery had demonstrated their strengths and, Airfl
 :::
 
 ## Kestra to the Rescue
-![Kestra user interface](@assets/blogs/2022-02-22-leroy-merlin-usage-kestra/ui.png)
+![Kestra user interface](assets/blogs/2022-02-22-leroy-merlin-usage-kestra/ui.png)
 <div class="clearfix" />
 
 In the meantime, the Kestra team had started working on the Kestra platform and presented the first version to Leroy Merlin. The LM team leaders were very interested and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute to the open-source project and some new plugins.
@@ -147,7 +147,7 @@ Thanks to Kestra, they moved **to full autonomy** and **reduced the time to mark
 :::
 
 ### Go Production
-![Kestra user interface](@assets/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg)
+![Kestra user interface](assets/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg)
 
 After a few months, **Kestra was confirmed** and was deployed to a production environment in May of 2020. They also decided to move to the Enterprise Edition of Kestra in August 2020 as they needed to have fine-grained security, role-based access control and single sign-on.
 
@@ -161,9 +161,9 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **3,000,000+ tasks** every month
 - **Equivalent of 2,300 days of task processing time** every month (yep, that’s the equivalent of seventy-five days of task processing every single day)
 
-![Kestra user interface](@assets/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg)
-![Kestra user interface](@assets/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg)
-![Kestra user interface](@assets/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg)
+![Kestra user interface](assets/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg)
+![Kestra user interface](assets/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg)
+![Kestra user interface](assets/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg)
 
 ### Some Testimonials
 Leroy Merlin has strongly supported the development of Kestra. As with any software, its young age could be a source of frustration for users. They needed to handle  missing features, report some bugs, suffer some time loss from instability. But what was astounding was the realization that the **pain was far less than the gain**, and we obtained many good reports on software internal notation tools. It proved to be a solution that users really love and uphold.

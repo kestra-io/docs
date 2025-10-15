@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   image: mproset
   role: Kestra Team
-image: "@assets/blogs/kestra-gravitee.png"
+image: "assets/blogs/kestra-gravitee.png"
 ---
 [Gravitee.io] (https://www.gravitee.io/) started in 2015 with a simple idea: making APIs less complex. What began as a team of four developers has grown into a platform that powers API and event stream ecosystems for some of the world’s biggest companies. Recognized as a 2024 **Gartner Magic Quadrant™ Leader for API Management**, Gravitee helps enterprises like **Michelin, Roche,** and **Blue Yonder** take control of their APIs and event streams.
 
@@ -39,7 +39,7 @@ Gravitee.io's workflow showcases the power of combining orchestration with gener
 
     With Kestra handling the backend orchestration, customers only need to trigger a workflow with a single click. This initiates the generation of developer-friendly, up-to-date documentation for any newly created API.
 
-![generate-doc](@assets/blogs/kestra-gravitee/api-doc.jpg)
+![generate-doc](assets/blogs/kestra-gravitee/api-doc.jpg)
 
 2. **Triggering Workflows with SQL Polling**
 
@@ -57,13 +57,13 @@ Using Kestra’s **http.Request** tasks, the API specifications are fed into a l
 
 To maintain reliability, Kestra monitors the entire workflow. Any errors are immediately flagged, and Slack alerts are sent to the team.
 
-![error alerting](@assets/blogs/kestra-gravitee/error-flow.png)
+![error alerting](assets/blogs/kestra-gravitee/error-flow.png)
 
 ## Fast and Reliable Documentation
 
 With generative AI accelerating the process, documentation is produced faster than ever, reducing manual effort and saving developers time. Kestra’s modular design ensured the system could grow alongside their expanding API ecosystem, adding new workflows with ease. By automating repetitive tasks, developers are free to focus on building better APIs rather than managing documentation.
 
-![training](@assets/blogs/kestra-gravitee/training.png)
+![training](assets/blogs/kestra-gravitee/training.png)
 
 ## Why It Matters for API Management
 

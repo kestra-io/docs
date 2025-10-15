@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image: "@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023.png"
+image: "assets/blogs/2023-10-30-top-data-orchestration-platforms-2023.png"
 ---
 
 Handling data in 2023 is... tough, to say at least. It's become normal for companies to collect huge volumes of data from dozens of sources, which means orchestrating these workflows was never more important (and complex) than today. After all, it's what will allow you to make smart, data-driven decisions.
@@ -51,7 +51,7 @@ This section walks you through the 5 most popular orchestration tools and discus
 ### 1. Apache Airflow
 [Airflow](https://airflow.apache.org/) is a Python-based open-source orchestration tool adopted by many in the industry. It allows you to create DAGs (Directed Acyclic Graphs) that are responsible for implementing data pipelines. Airflow is primarily intended for scheduling batch ETL pipelines for data lake and data warehousing use cases.
 
-![Image 1 - Apache Airflow](@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/1.png)
+![Image 1 - Apache Airflow](assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/1.png)
 
 Airflow belongs to the FOSS category (free and open-source software). Of course, you'll need to manage the expense of running Airflow with its compute environment, and you'll need someone to set it up and manage it for you. The other option is to use a pay-as-you-go cloud-managed Airflow instance. You can find it on all major cloud providers (AWS, Azure, GCP), but the price will depend on so many factors, as it typically does with cloud environments.
 
@@ -75,7 +75,7 @@ That being said, Airflow isn't without its flaws. Here are some you might find a
 ### 2. Kestra
 [Kestra](https://github.com/kestra-io/kestra) is an open-source universal orchestration platform with a declarative interface for workflow definition. It's primarily built for software engineers but it's simple enough to be used by anyone in your organization. For more information about Kestra, check our [Documentation](../docs/index.md).
 
-![Image 2 - Kestra](@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/2.png)
+![Image 2 - Kestra](assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/2.png)
 
 The open-source version of Kestra is **completely free** and recommended for a single-player experience. If you want to adopt Kestra in your team, we recommend the [Enterprise edition](https://kestra.io/enterprise), which offers Enterprise-grade features such as SSO, RBAC, namespace level secrets and variable management, plugin defaults, worker groups, custom blueprints, high availability with no single point of failure architecture, and so much more.
 
@@ -92,7 +92,7 @@ This is the list of areas in which Kestra easily beats the competition:
 ### 3. Azure Data Factory
 [Azure Data Factory](https://azure.microsoft.com/en-us/products/data-factory) is a cloud-based ETL tool owned by Microsoft Azure. Unlike the two orchestration tools listed earlier, this one works only in the cloud and is a good option to consider if your organization already uses a lot of Azure services. ADF offers around 90 connectors for building data pipelines which sounds like a lot, but is on the low side when compared with other tools on this list.
 
-![Image 3 - Azure Data Factory](@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/4.png)
+![Image 3 - Azure Data Factory](assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/4.png)
 
 It's often difficult to figure out how much a cloud tool will cost you on a monthly basis, and Azure Data Factory is no exception. ADF pricing depends on the integration server at runtime and specific operations performed. You're charged separately for organization, data movement, pipeline activities, and multiple other actions. **Price can vary so much between users, so we won't even try to estimate it**. You can take a look at their [pricing options](https://azure.microsoft.com/en-us/pricing/details/data-factory/data-pipeline/) and potentially come up with an estimated monthly figure.
 
@@ -111,7 +111,7 @@ However, there are more than a few cons you need to be aware of:
 ### 4. Prefect
 [Prefect](https://www.prefect.io/) is another Python-centric open-source orchestration tool. It's known for its flexibility and adaptability. Sure, it's not widely recognized or used as Airflow, but it has gained traction in the last couple of years. In addition to what's already obvious, Prefect makes it easy to add logging, retries, dynamic mapping, caching, and failure notifications to Python-based workflows.
 
-![Image 4 - Prefect](@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/3.png)
+![Image 4 - Prefect](assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/3.png)
 
 **Prefect is open-source**, but offers two [pricing tiers](https://www.prefect.io/pricing). You can use the free forever version that has limited features, or step up to the paid Prefect Cloud version that will set you back almost $500 per month.
 
@@ -131,7 +131,7 @@ Of course, there are some disadvantages of using Prefect you need to know about:
 ### 5. AWS Step Functions
 Similar to Azure Data Factory, AWS Step Functions provide a visual orchestration tool that allows you to orchestrate services within the AWS cloud ecosystem. It's a serverless offering that is scalable in nature and makes a lot of sense for companies that are already invested in the AWS ecosystem since it has direct integration with over 220 AWS services.
 
-![Image 5 - AWS Step Functions](@assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/5.png)
+![Image 5 - AWS Step Functions](assets/blogs/2023-10-30-top-data-orchestration-platforms-2023/5.png)
 
 Just like with Azure Data Factory, **pricing is almost impossible to ballpark**. It's a cloud environment after all, so the estimated monthly cost depends on various factors, such as the compute region, workflow type, number of workflow requests, number of transitions per workflow, and so on. You get the point - there's a lot of moving parts. The good news is that AWS provides a [cost calculator](https://calculator.aws/#/addService/StepFunctions) you can use to estimate your monthly costs. The bad news is that you need to somehow estimate your requirements before ever using a tool, which is easier said than done.
 

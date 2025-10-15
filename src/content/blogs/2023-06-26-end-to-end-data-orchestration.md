@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "@assets/blogs/2023-06-26-end-to-end-data-orchestration.png"
+image: "assets/blogs/2023-06-26-end-to-end-data-orchestration.png"
 ---
 
 
@@ -36,7 +36,7 @@ Then, you can begin creating your sources, destinations, and connections:
 - The **destination** is typically your data warehouse or a data lake platform (*such as BigQuery, Snowflake, Redshift, Databricks, Dremio, Starburst, Azure Synapse, and more*).
 - Finally, **connections** tie sources and destinations together by specifying how and when to load data from a specific source to a specific destination.
 
-![airbyte1](@assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte1.png)
+![airbyte1](assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte1.png)
 
 
 ## dbt
@@ -68,7 +68,7 @@ Then, run `docker compose up -d` and navigate to the UI under `http://localhost:
 
 The UI ships with Blueprints, which provide ready-to-use flow examples. For instance, you can use [the following Blueprint](/blueprints/airbyte-sync-parallel-with-dbt) that combines all steps needed to orchestrate Airbyte, dbt, and Kestra:
 
-![airbyte2](@assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte2.png)
+![airbyte2](assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte2.png)
 
 
 Here is a copy of that Blueprint. Make sure that you copy the ID of each connection from the Airbyte UI and paste those into the Airbyte task:
@@ -132,7 +132,7 @@ pluginDefaults:
 
 When you execute that workflow, you should see a similar output:
 
-![airbyte3](@assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte3.png)
+![airbyte3](assets/blogs/2023-06-26-end-to-end-data-orchestration/airbyte3.png)
 
 
 The flow runs four Airbyte data ingestion processes in parallel. Once raw data is successfully ingested, the flow clones a Git repository and runs dbt CLI commands that build models committed to that Git repository.

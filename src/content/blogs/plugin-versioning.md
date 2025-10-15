@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   image: mproset
   role:
-image: "@assets/blogs/plugin-versioning.png"
+image: "assets/blogs/plugin-versioning.png"
 ---
 
 Kestra relies on plugins to integrate with various systems and services. As workflows evolve, keeping these plugins up-to-date without breaking existing flows can become a challenge.
@@ -73,7 +73,7 @@ To access this feature, navigate in the Kestra UI to **Administration > Instance
 
 Once you confirm, Kestra will download and install that plugin version into its internal repository. If the plugin was not installed before, it now appears in your list with the specified version. If an older version is already present, the new one will be added **alongside** the old one, not replacing it. The Versioned Plugins table will show the plugin with multiple versions. Kestra even flags when an update is available: you might see a notice like “New Version Available” next to an older version, with an option to **Upgrade**.
 
-![versioned plugin](@assets/blogs/plugin-versioning/versioned-plugin.png)
+![versioned plugin](assets/blogs/plugin-versioning/versioned-plugin.png)
 
 :::alert{type="info"}
 After installing multiple versions, the **Versioned Plugins** page lists each plugin and the versions installed. In this example, Ansible plugin v0.21.2 is installed, and the PostgreSQL plugin v0.19.0 is installed with a newer version available (hence the Upgrade prompt). Kestra preserves the old version when upgrading, adding the new version as a separate entry.

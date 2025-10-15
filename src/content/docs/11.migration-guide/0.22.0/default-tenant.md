@@ -1,6 +1,6 @@
 ---
 title: Default Tenant & Multi-Tenancy
-icon: /docs/icons/migration-guide.svg
+icon: assets/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
 ---

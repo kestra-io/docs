@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image: "@assets/blogs/2023-10-31-kestra-weaviate.jpg"
+image: "assets/blogs/2023-10-31-kestra-weaviate.jpg"
 ---
 
 It's been a year since ChatGPT, an advanced form of a large language model, has been released. And by the looks of it, AI is going only one way - forward. Many wonder how models like these can handle and process such huge volumes of data efficiently, and the answer is simple - **vector databases**. Well, among other things.
@@ -39,7 +39,7 @@ If you want to learn more about the basics of vector databases, here are some re
 ## What is Weaviate Vector Database
 Think of Weaviate as of vector database vendor, similar to MongoDB in the world of NoSQL databases. Weaviate offers an open-source vector database that allows you to store common data objects and vector embeddings from machine learning models:
 
-![Image 1 - Weaviate homepage](@assets/blogs/2023-10-31-kestra-weaviate/1.png)
+![Image 1 - Weaviate homepage](assets/blogs/2023-10-31-kestra-weaviate/1.png)
 
 Weaviate offers client libraries for Python, JavaScript, TypeScript, Go, and Java. There's also an online editor you'll learn about later.
 
@@ -100,23 +100,23 @@ tasks:
 
 This is what your Kestra UI code editor should look like:
 
-![Image 2 - Flow contents](@assets/blogs/2023-10-31-kestra-weaviate/2.png)
+![Image 2 - Flow contents](assets/blogs/2023-10-31-kestra-weaviate/2.png)
 
 Once you're satisfied with your schema definition, you can click on the "Save" button to save the flow code, and then click on the "Execute" button to run it.
 
 You'll immediately see the following window:
 
-![Image 3 - Flow input values](@assets/blogs/2023-10-31-kestra-weaviate/3.png)
+![Image 3 - Flow input values](assets/blogs/2023-10-31-kestra-weaviate/3.png)
 
 The Cluster URL and API key have default values just for convenience of not having to enter them every time, but allowing you to change them if necessary.
 
 You can now once again click on the "Execute" button to start the flow:
 
-![Image 4 - Flow execution](@assets/blogs/2023-10-31-kestra-weaviate/4.png)
+![Image 4 - Flow execution](assets/blogs/2023-10-31-kestra-weaviate/4.png)
 
 If you've entered Weaviate credentials correctly, you'll see a success message. To validate the outcome,  go to the Weaviate console and run the following query to get all data from the `Movie` schema:
 
-![Image 5 - Weaviate console query](@assets/blogs/2023-10-31-kestra-weaviate/5.png)
+![Image 5 - Weaviate console query](assets/blogs/2023-10-31-kestra-weaviate/5.png)
 
 The output validates that the schema has been created successfully. Next, let's insert some data.
 
@@ -163,15 +163,15 @@ tasks:
 
 Here's what your editor should look like:
 
-![Image 6 - Flow contents](@assets/blogs/2023-10-31-kestra-weaviate/6.png)
+![Image 6 - Flow contents](assets/blogs/2023-10-31-kestra-weaviate/6.png)
 
 As in the previous section, save the flow and execute it - you'll see a success message right after:
 
-![Image 7 - Flow execution](@assets/blogs/2023-10-31-kestra-weaviate/7.png)
+![Image 7 - Flow execution](assets/blogs/2023-10-31-kestra-weaviate/7.png)
 
 We haven't yet shown you how to query Weaviate from Kestra, so you'll have to turn back to WCS and run a query manually. It will be the same query you used in the previous section, but this time it will return some data:
 
-![Image 8 - Weaviate console query](@assets/blogs/2023-10-31-kestra-weaviate/8.png)
+![Image 8 - Weaviate console query](assets/blogs/2023-10-31-kestra-weaviate/8.png)
 
 It would be nice to query a Weaviate vector database straight from Kestra, so let's show you how to do that next.
 
@@ -211,19 +211,19 @@ tasks:
 
 This is what your flow code should look like:
 
-![Image 9 - Flow contents](@assets/blogs/2023-10-31-kestra-weaviate/9.png)
+![Image 9 - Flow contents](assets/blogs/2023-10-31-kestra-weaviate/9.png)
 
 You can now save the flow and execute it. This is the output you'll see in the Gantt view:
 
-![Image 10 - Flow execution](@assets/blogs/2023-10-31-kestra-weaviate/10.png)
+![Image 10 - Flow execution](assets/blogs/2023-10-31-kestra-weaviate/10.png)
 
 The results of the query are available in the *Outputs* tab. In there, you can either preview or download the results:
 
-![Image 11 - Flow outputs](@assets/blogs/2023-10-31-kestra-weaviate/11.png)
+![Image 11 - Flow outputs](assets/blogs/2023-10-31-kestra-weaviate/11.png)
 
 Here's what you'll see after clicking on the *Preview* button:
 
-![Image 12 - Output preview](@assets/blogs/2023-10-31-kestra-weaviate/12.png)
+![Image 12 - Output preview](assets/blogs/2023-10-31-kestra-weaviate/12.png)
 
 And that's how easy it is to query a Weaviate vector database from Kestra. Next, let's do a brief recap.
 
