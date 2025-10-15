@@ -1,6 +1,6 @@
 import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
-import { $fetch } from "../../utils/fetch";
-import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
+// import { $fetch } from "../../utils/fetch";
+// import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
 // do not prerender icons there are too many of them
 export const prerender = false
