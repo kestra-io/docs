@@ -1,13 +1,9 @@
 ---
-// do not prerender dynamic blogs pages
-export const prerender = false;
-
 import { slugify, subGroupName, type Plugin } from "@kestra-io/ui-libs";
 import { getCollection } from "astro:content";
 import Layout from "../../components/layout.astro";
 import NavSideBar from "../../../components/docs/NavSideBar.vue";
 import Breadcrumb from "../../../components/layout/Breadcrumb.vue";
-import NavToc from "../../../components/docs/NavToc.vue";
 import { generateNavigationFromSubgroups } from "../../utils/plugins/generateNavigation";
 import PluginsMDCRender from "../../../components/plugins/PluginsMDCRender.vue";
 import { generatePageNames, recursivePages } from "../../../utils/navigation";
@@ -16,19 +12,32 @@ import { getIcon } from "../../utils/plugins/getPluginIcon";
 import { $fetch } from "../../utils/fetch";
 import { getPluginsWithoutDeprecated } from "../../utils/plugins/getListOfPlugins";
 
-const pluginsData = await getCollection('plugins');
-const navigation = generateNavigationFromSubgroups(pluginsData.map(p => p.data as any));
-const pageNames = generatePageNames(navigation[0])
-const pageList = recursivePages(navigation[0])
+export async function getStaticPaths() {
+	const pluginsData = await getCollection('plugins');
+    const navigation = generateNavigationFromSubgroups(pluginsData.map(p => p.data as any));
+    const pageNames = generatePageNames(navigation[0])
+    const pageList = recursivePages(navigation[0])
 
-const params = Astro.params as { slug: string };
 
-const nonProps = {
-            slug: params.slug,
+	return pageList.filter((slug) => slug !== undefined).map((slug) => ({
+		params: { slug: slug.replace(/^\/plugins\//, '') },
+		props: {
+            slug,
             navigation,
             pageNames,
             pageList
-        }
+        },
+	}))
+}
+
+interface Props {
+    slug: string
+    navigation: any[]
+    pageList: string[]
+    pageNames: Record<string, string>
+}
+const props = Astro.props as Props;
+const params = Astro.params as { slug: string };
 
 
 const splitRouteSlug = params.slug.split("/");
@@ -36,12 +45,12 @@ const splitRouteSlug = params.slug.split("/");
 const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
 let pluginType: string | undefined = undefined;
 
-const pageName = nonProps.pageNames[nonProps.slug] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
+const pageName = props.pageNames[props.slug] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
 
 if (lowerCasePluginType !== undefined) {
     let splitPluginType = lowerCasePluginType.split(".");
     const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
-    pluginType = `${packageName}.${nonProps.pageNames[params.slug] ?? splitPluginType[splitPluginType.length - 1]}`;
+    pluginType = `${packageName}.${props.pageNames[params.slug] ?? splitPluginType[splitPluginType.length - 1]}`;
 }
 
 const page = pluginType === undefined
@@ -70,10 +79,10 @@ const transformTitle = (text: string) => {
 
 <Layout>
      <div class="container-fluid bd-gutter bd-layout">
-        <NavSideBar type="plugins" navigation={nonProps.navigation} slug={`/plugins/${params.slug}`} client:load/>
+        <NavSideBar type="plugins" navigation={props.navigation} slug={`/plugins/${params.slug}`} client:load/>
         <article class="bd-main order-1">
             <div class="bd-title">
-                <Breadcrumb slug={params.slug} pageList={nonProps.pageList} pageNames={nonProps.pageNames} />
+                <Breadcrumb slug={params.slug} pageList={props.pageList} pageNames={props.pageNames} />
                 <h1 v-if="page && pageName" class="py-0 title">
                     {pageIcon && <img
                         src={pageIcon}
@@ -86,7 +95,6 @@ const transformTitle = (text: string) => {
                     <span class="text-capitalize" set:html={transformTitle(pageName)} />
                 </h1>
             </div>
-            <NavToc rate-helpful page={page} capitalize class="my-md-0 my-4 right-menu"/>
 
             {page && <PluginsMDCRender
                 page={page}
