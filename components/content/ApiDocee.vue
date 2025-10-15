@@ -11,11 +11,6 @@
             allow-try="false"
             regular-font="Public Sans"
             mono-font="Source Code Pro"
-            style="
-                --textarea-height: auto;
-                --textarea-min-height: 100px;
-                --code-block-max-height: 600px;
-            "
         />
     </ClientOnly>
 </template>
@@ -30,6 +25,9 @@
     rapi-doc {
         background: transparent;
         width: 100%;
+        --textarea-height: auto;
+        --textarea-min-height: 100px;
+        --code-block-max-height: 600px;
 
         &::part(section-endpoint) {
             white-space: nowrap;
