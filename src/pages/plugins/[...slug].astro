@@ -77,7 +77,12 @@ const transformTitle = (text: string) => {
                 <h1 v-if="page && pageName" class="py-0 title">
                     {pageIcon && <img
                         src={pageIcon}
-@@ -86,202 +95,201 @@
+                        alt={pageName}
+                        width="40"
+                        height="40"
+                        loading="lazy"
+                        class="me-3 page-icon"
+                    />}
                     <span class="text-capitalize" set:html={transformTitle(pageName)} />
                 </h1>
             </div>
