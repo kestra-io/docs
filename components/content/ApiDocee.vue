@@ -25,5 +25,28 @@
     rapi-doc {
         background: transparent;
         width: 100%;
+
+        &::part(section-endpoint) {
+            white-space: nowrap;
+        }
+
+        &::part(section-request-body) {
+            min-height: auto;
+        }
+
+        &::part(textarea-request) {
+            min-height: 100px;
+            height: auto;
+        }
+    }
+
+    :deep(textarea) {
+        min-height: 100px !important;
+        height: auto !important;
+    }
+
+    :deep(.textarea) {
+        min-height: 100px !important;
+        height: auto !important;
     }
 </style>
