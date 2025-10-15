@@ -2,6 +2,9 @@ import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
 import { $fetch } from "../../utils/fetch";
 import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
+// do not prerender icons there are too many of them
+export const prerender = false
+
 export async function GET({ params }: { params: { cls: string } }) {
   const cls = params.cls;
   const response = await fetch(`https://api.kestra.io/v1/plugins/icons/${cls}`);
@@ -36,10 +39,10 @@ function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
     }
 }
 
-export async function getStaticPaths() {
-  const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+// export async function getStaticPaths() {
+//   const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
 
-  const allPluginsCls = new Set(getListOfPlugins(plugins).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
-  resolveSubPlugins(plugins, allPluginsCls);
-  return Array.from(allPluginsCls).map(cls => ({ params: { cls } }));
-}
+//   const allPluginsCls = new Set(getListOfPlugins(plugins).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
+//   resolveSubPlugins(plugins, allPluginsCls);
+//   return Array.from(allPluginsCls).map(cls => ({ params: { cls } }));
+// }
