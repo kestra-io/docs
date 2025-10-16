@@ -11,7 +11,7 @@ Build flows without touching YAML.
 The No-Code editor lets you design Kestra flows directly in the UI using structured forms. It’s ideal for teams who want to move fast, enable non-developers, and still keep a clean handoff to code. You can switch between No-Code and YAML at any time — the editor generates schema-validated YAML for you and stays in sync with topology and documentation panels.
 
 <div class="video-container">
-  <iframe src="https://youtube.com/embed/SGlzRmJqFBI?si=O8XFpPH6UgSJehnm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI?si=O8XFpPH6UgSJehnm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Why choose No-Code (or combine it with code):
