@@ -1,6 +1,6 @@
 ---
 title: No-Code Flow Development
-icon: /docs/icons/flows.svg
+icon: /docs/icons/flow.svg
 editions: ["OSS", "EE", "Cloud"]
 ---
 
