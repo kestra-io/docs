@@ -182,6 +182,7 @@ export default defineNuxtConfig({
                         "Workflow Components",
                         "Multi-Language Script Tasks",
                         "AI Tools",
+                        "No-Code",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
