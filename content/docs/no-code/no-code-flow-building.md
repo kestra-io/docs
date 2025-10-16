@@ -17,6 +17,10 @@ The No-Code editor lets you design Kestra flows directly in the UI using structu
 - **Consistency & governance**: UI-driven forms align with plugin schemas and validation, reducing drift. 
 - **No ceiling**: When you outgrow forms, switch to YAML, add files/scripts, and keep everything in one place.
 
+::alert{type="info"}
+In addition to No-Code flow building, avoid writing your own YAML by checking out the Kestra [AI Copilot](../ai-tools/ai-copilot.md) to get your YAML started for you.
+::
+
 # The Multi-Panel Flow Editor
 - **No-Code View:** Form-based editing of tasks, inputs, triggers, and flow structure. Changes auto-generate YAML in real time.
 - **Flow Code View (YAML):** Full editor with autocompletion, validation, and file sidebar.
