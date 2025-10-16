@@ -14,7 +14,7 @@ The No-Code editor lets you design Kestra flows directly in the UI using structu
   <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI?si=O8XFpPH6UgSJehnm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Why choose No-Code (or combine it with code):
+## Why choose No-Code (or combine it with code)
 
 - **Speed & onboarding**: Start building flows without learning YAML first; power users can drop into code view whenever needed. 
 - **Clarity**: Live topology and documentation help you “see” the flow while you edit. 
