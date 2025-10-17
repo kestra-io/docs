@@ -38,14 +38,28 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
-Environment variables override file-based config. Convert keys by replacing special characters with `_`:
+## Environment Variables
+
+Environment variables override file-based configuration.
+
+### Conversion Rules
+
+- Replace dots (`.`), hyphens (`-`), and camelCase word boundaries with underscores (`_`).
+- Use **uppercase** for all letters.
+- Prefix with `KESTRA_` for Kestra-specific settings.
+
+### Examples
 
 | Configuration value | Resulting properties |
-|---|---|
+|----------------------|----------------------|
 | `MYAPP_MYSTUFF` | `myapp.mystuff`, `myapp-mystuff` |
 | `MY_APP_MY_STUFF` | `my.app.my.stuff`, `my.app.my-stuff`, `my-app.my.stuff`, `my-app.my-stuff`, etc. |
 
-Example: replace a config file entry
+---
+
+### Example: Replace a Config File Entry
+
+**File-based configuration:**
 
 ```yaml
 datasources:
@@ -53,13 +67,29 @@ datasources:
     username: kestra
 ```
 
-with an environment variable:
+**Environment variable:**
 
 ```bash
 DATASOURCES_POSTGRES_USERNAME=kestra
 ```
 
-For camelCase keys, use `-`:
+---
+
+### Example: Camel Case and Hyphenated Keys
+
+Regardless of whether your YAML uses camelCase or kebab-case (`-`),  
+convert all separators and case transitions into underscores.
+
+**YAML configuration:**
+
+```yaml
+kestra:
+  storage:
+    s3:
+      accessKey: myKey
+```
+
+or
 
 ```yaml
 kestra:
@@ -68,10 +98,10 @@ kestra:
       access-key: myKey
 ```
 
-becomes:
+**Environment variable:**
 
 ```bash
-KESTRA_STORAGE_S3_ACCESS-KEY=myKey
+KESTRA_STORAGE_S3_ACCESS_KEY=myKey
 ```
 
 ## Setup
