@@ -40,7 +40,8 @@ const generateDefaultSitemap = async () => {
                     }
                     return asSitemapUrl({
                         loc: loc,
-                        _sitemap: sitemapInput.sitemap ?? 'default'
+                        _sitemap: sitemapInput.sitemap ?? 'default',
+                        lastmod: new Date().toISOString()
                     });
                 })
                 .filter(value => value !== null)
