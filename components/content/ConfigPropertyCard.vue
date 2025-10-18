@@ -1,29 +1,38 @@
 <template>
-    <div class="config-property-card">
-        <table class="table table-dark">
-            <tbody>
-                <tr>
-                    <td class="label">Type</td>
-                    <td>{{ type }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Default</td>
-                    <td><prose-code-inline>{{ defaultValue }}</prose-code-inline></td>
-                </tr>
-                <tr v-if="validValues">
-                    <td class="label">Valid values:</td>
-                    <td><prose-code-inline>[ {{ validValues }} ]</prose-code-inline></td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="config-property-card">
+    <!-- Expand/collapse button -->
+    <button @click="toggleProperty" class="expand-btn">
+      {{ isExpanded ? "Hide Details" : "Show Details" }}
+    </button>
+    <!-- Property details table, shown only when expanded -->
+    <div v-show="isExpanded">
+      <table class="table table-dark">
+        <tbody>
+          <tr>
+            <td class="label">Type</td>
+            <td>{{ type }}</td>
+          </tr>
+          <tr>
+            <td class="label">Default</td>
+            <td><prose-code-inline>{{ defaultValue }}</prose-code-inline></td>
+          </tr>
+          <tr v-if="validValues">
+            <td class="label">Valid values:</td>
+            <td><prose-code-inline>[ {{ validValues }} ]</prose-code-inline></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </template>
+
 <script>
+import { defineComponent, ref } from 'vue';
+
 export default defineComponent({
     props: {
         type: {
             type: String,
-            default: undefined,
             required: true
         },
         defaultValue: {
@@ -33,10 +42,23 @@ export default defineComponent({
         validValues: {
             type: String,
             default: ''
-        },
+        }
     },
+    setup() {
+        const isExpanded = ref(false);
+
+        function toggleProperty() {
+            isExpanded.value = !isExpanded.value;
+        }
+
+        return {
+            isExpanded,
+            toggleProperty
+        };
+    }
 });
 </script>
+
 
 <style lang="scss" scoped>
 .config-property-card {
