@@ -4,8 +4,19 @@ import axios from "axios";
 import identify from "../utils/identify";
 
 export default defineNuxtPlugin(nuxtApp => {
-    const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
-    const runtimeConfig = useRuntimeConfig()
+    //const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+    let isEurope = false;
+
+try {
+  const res = await fetch('https://ipapi.co/json/');
+  const data = await res.json();
+  isEurope = data.continent_code === 'EU';
+} catch (err) {
+  // fallback to timezone check if API fails
+  isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.startsWith("Europe");
+}
+
+     const runtimeConfig = useRuntimeConfig()
     const cookieConsent = CookieConsent;
     nuxtApp.provide("cookieConsent", cookieConsent);
 
