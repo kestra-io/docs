@@ -23,4 +23,7 @@
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
         return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
     })
+    await useAsyncData('blueprints-preload', () => {
+        return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?includeContent=true&size=24`)
+    })
 </script>

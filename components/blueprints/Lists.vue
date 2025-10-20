@@ -5,7 +5,7 @@
             <h1 data-aos="fade-left">Blueprints</h1>
             <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
             <div class="col-12 search-input position-relative">
-                <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ of blueprints" v-model="searchQuery">
+                <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ blueprints by title or content" v-model="searchQuery">
                 <Magnify class="search-icon" />
             </div>
         </div>
@@ -141,7 +141,7 @@ watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, 
         clearTimeout(timer)
       }
   timer = setTimeout(async () => {
-      const { data } = await useFetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+      const { data } = await useFetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}&searchContent=true` : ''}&includeContent=true`)
       setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {

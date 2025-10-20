@@ -17,8 +17,7 @@ export default defineEventHandler(async (event) => {
             return {message: "Not Found"};
         }
         
-        if (pageData.tags && pageData.tags.length > 0) {
-            const data = await $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${pageData.tags}`)
+        if (pageData.tags && pageData.tags.length > 0) {const data = await $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${pageData.tags}&includeContent=true`)
             if (data) {
                 const shuffleBlueprints = arr => arr.sort(() => Math.random() - 0.5);
                 relatedBlueprints = shuffleBlueprints(data.results.filter(b => b.id !== pageData.id)).slice(0, 3);
