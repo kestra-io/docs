@@ -1754,7 +1754,7 @@ If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://mi
 
 ### Outscale Object Storage (OOS)
 
-Outscale Object Storage (OOS) is a large-scale, secure, and resilient (S3-like) storage service in the Cloud. Install the MinIO plugin and use an Outscale Object Storage endpoint. Ensure that `secure: true` is configured to use this endpoint with MinIO `type`.
+[Outscale Object Storage (OOS)](https://en.outscale.com/storage/outscale-object-storage/) is a large-scale, secure, and resilient (S3-like) storage service in the Cloud. Install the MinIO plugin and use an Outscale Object Storage endpoint. Ensure that `secure: true` is configured to use this endpoint with MinIO `type`.
 
 ```yaml
 kestra:
