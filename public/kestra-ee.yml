@@ -35,6 +35,109 @@ tags:
 - name: Misc
   description: Misc api
 paths:
+  /api/v1/auditlogs/export:
+    get:
+      tags:
+      - Audit Logs
+      summary: Export all audit logs as a streamed CSV file
+      operationId: exportAuditLogsForAllTenants
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: executionId
+        in: query
+        description: An execution filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: userId
+        in: query
+        description: A user id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: id
+        in: query
+        description: A id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: resources
+        in: query
+        description: A resource filter
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/ResourceType_1"
+      - name: startDate
+        in: query
+        description: The start datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        explode: false
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+      - name: type
+        in: query
+        description: The event that create the audit log
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/CrudEventType"
+      responses:
+        "200":
+          description: exportAuditLogsForAllTenants 200 response
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/auditlogs/search:
     get:
       tags:
@@ -8682,7 +8785,7 @@ paths:
               type: string
           application/json:
             schema:
-              type: string
+              type: object
             example: null
         required: true
       responses:
@@ -8712,7 +8815,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              type: object
         required: true
       responses:
         "200":
@@ -14794,7 +14897,6 @@ components:
       type: object
     AbstractTrigger:
       required:
-      - disabled
       - id
       - type
       type: object
