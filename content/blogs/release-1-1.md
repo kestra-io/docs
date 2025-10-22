@@ -34,6 +34,9 @@ Check the video below for a quick overview of all enhancements.
 
 https://github.com/kestra-io/kestra/issues/10349
 
+## Custom App Branding
+
+https://github.com/kestra-io/kestra-ee/issues/4983
 
 ## No Code for Dashboard
 
@@ -47,6 +50,14 @@ Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/1
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
 
 
+## Human Task
+
+https://github.com/kestra-io/kestra-ee/issues/1435
+
+## Improved Airgap
+
+https://github.com/kestra-io/kestra-ee/issues/3430
+
 ## Improvements
 
 - Added flows as a data source for custom dashboards, enabling you to display and monitor flow metrics, status, and execution details directly within your [custom dashboard views](https://github.com/kestra-io/kestra-ee/issues/2609).
@@ -55,7 +66,7 @@ Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/1
 - [Added flows as a data source for dashboards](https://github.com/kestra-io/kestra-ee/issues/3752), allowing you to display and monitor flow information in table format directly within your dashboard views.
 - [AI Agent can now call remote agent via A2A framework](https://github.com/kestra-io/kestra-ee/issues/5256)
 - Added the ability to [export audit logs as CSV files](https://github.com/kestra-io/kestra-ee/issues/4572), making it easier to analyze and share audit data.
-
+- Secret Manager performance has been optimized, reducing the costs associated with fetching secrets from external secret managers. It also improves the search functionality, making it faster to locate and retrieve secrets.
 
 ## Plugins
 
@@ -78,6 +89,11 @@ This release comes with a wealth of new plugins, thanks largely to the incredibl
 - New [SNMP plugin](https://github.com/kestra-io/kestra-ee/issues/5288) TODO details
 - New [Stripe plugin](https://github.com/kestra-io/kestra/issues/11301)
 - New [Apache Flink plugin](https://github.com/kestra-io/kestra/issues/11298)
+- New LinkedIn plugin for social media automation and data extraction
+- New Messenger task (plugin-notifications) to send messages via Facebook Messenger
+- New LINE task (plugin-notifications) to send notifications through LINE messaging platform
+- New Markdown serialization/deserialization task (plugin-serdes) to convert between Markdown and other formats
+- New `FileCreatedTrigger` for Google Drive (plugin-googleworkspace) to trigger flows when new files are created in Google Drive
 - AI Agent: we added support for [Oracle Cloud Infrastructure GenAI language model](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI model provider](https://github.com/kestra-io/plugin-ai/issues/175), [support for LocalAI language model](https://github.com/kestra-io/plugin-ai/issues/173)
 
 New triggers:
