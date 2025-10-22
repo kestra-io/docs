@@ -108,3 +108,6 @@ pluginDefaults:
         username: admin@kestra.io # pass your Kestra username as secret or KV pair
         password: Admin1234 # pass your Kestra password as secret or KV pair
 ```
+
+::ChildCard
+::

@@ -356,7 +356,6 @@ export default defineNuxtConfig({
         '/docs/ee-server-cli': {redirect: '/docs/server-cli'},
         '/docs/ui/administration/workers': {redirect: '/docs/architecture/server-components#worker'},
         '/docs/ui/administration/users': {redirect: '/docs/enterprise/auth/rbac'}
-
     },
 
     build: {
