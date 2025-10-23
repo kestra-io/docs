@@ -4,7 +4,7 @@ icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 
-## Overview
+## Install Python SDK
 
 To demonstrate how to use the SDKs, let's create a simple flow that logs a message. This example assumes you have a Kestra instance running and accessible via the `KESTRA_HOST` environment variable, along with your username and password set in `.env` file such as:
 
@@ -14,16 +14,18 @@ KESTRA_USERNAME=admin@kestra.io
 KESTRA_PASSWORD=Admin1234
 ```
 
-First, create a virtual environment and install the [Python SDK](https://github.com/kestra-io/client-sdk/blob/main/README_PYTHON_SDK.md):
+First, create a virtual environment and install the [Python SDK](https://github.com/kestra-io/client-sdk/blob/main/README_PYTHON_SDK.md) with `kestrapy` being the core package:
 
-```bash
+```shell
 uv venv
 source .venv/bin/activate
 uv pip install kestrapy
 uv pip install python-dotenv # For loading auth environment variables from .env file
 ```
 
-Now, use the following Python script to create or update a flow that logs a message:
+## Create a flow
+
+Use the following Python script to create or update a flow that logs a message:
 
 ```python
 import kestra_api_client

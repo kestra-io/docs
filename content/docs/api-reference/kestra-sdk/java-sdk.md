@@ -4,7 +4,102 @@ icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 
-## Overview
+## Requirements
+
+Building the API client library requires:
+
+1. **Java** 1.8 or higher  
+2. **Maven** or **Gradle**
+
+## Installation
+
+There are multiple methods to install the Java SDK, depending on your deployment refer to the appropriate option.
+
+### Local installation
+
+To install the API client library in your local Maven repository, run:
+
+```shell
+mvn clean install
+```
+
+### Remote deployment
+
+To deploy the library to a remote Maven repository, configure the repository settings and run:
+
+```shell
+mvn clean deploy
+```
+
+For more information, see the [OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html).
+
+### For Maven users
+
+Add this dependency to your project's **POM** file:
+
+```xml
+<dependency>
+  <groupId>io.kestra</groupId>
+  <artifactId>kestra-api-client</artifactId>
+  <version>1.0.0</version>
+  <scope>compile</scope>
+</dependency>
+```
+
+### For Gradle users
+
+Add this dependency to your **build.gradle** file:
+
+```groovy
+implementation "io.kestra:kestra-api-client:1.0.0"
+```
+
+### Manual installation
+
+If you prefer to install the JAR manually, first generate it by running:
+
+```shell
+mvn clean package
+```
+
+Then install the following JARs:
+
+- `target/kestra-api-client-1.0.0.jar`
+- `target/lib/*.jar`
+
+## Getting started
+
+After installation, you can test the client by running the following Java example:
+
+```java
+import io.kestra.sdk.internal.*;
+import io.kestra.sdk.internal.auth.*;
+import io.kestra.sdk.model.*;
+import io.kestra.sdk.api.AiApi;
+
+public class AiApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        AiApi apiInstance = new AiApi(defaultClient);
+        String tenant = "tenant_example"; // Tenant identifier
+        FlowGenerationPrompt flowGenerationPrompt = new FlowGenerationPrompt(); // Prompt and context for flow generation
+        
+        try {
+            String result = apiInstance.generateFlow(tenant, flowGenerationPrompt);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AiApi#generateFlow");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 ## Kestra plugin
 
