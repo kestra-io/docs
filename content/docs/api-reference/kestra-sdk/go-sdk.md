@@ -4,42 +4,44 @@ icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 
-## Install Go SDK
+## Install the Go SDK
 
-Install the following dependencies:
+To get started with the Kestra Go SDK, install the following dependencies:
 
 ```sh
 go get github.com/stretchr/testify/assert
 go get golang.org/x/net/context
 ```
 
-Put the package under your project folder and add the following `import`:
+Then, import the SDK package into your project:
 
 ```go
 import kestra_api_client "github.com/kestra-io/client-sdk/go-sdk"
 ```
 
-To use a proxy, set the environment variable `HTTP_PROXY`:
+If you need to use a proxy, set the `HTTP_PROXY` environment variable:
 
 ```go
 os.Setenv("HTTP_PROXY", "http://proxy_name:proxy_port")
 ```
 
-## Configuration of Server URL
+---
 
-Default configuration comes with `Servers` field that contains server objects as defined in the OpenAPI specification.
+## Configure the server URL
 
-### Select Server Configuration
+By default, the configuration includes a `Servers` field that contains server objects as defined in the OpenAPI specification. You can customize these values to point to your Kestra instance or a specific environment.
 
-For using other server than the one defined on index 0 set context value `kestra_api_client.ContextServerIndex` of type `int`.
+### Selecting a server configuration
+
+To use a server other than the default (index `0`), set the context value `kestra_api_client.ContextServerIndex`:
 
 ```go
 ctx := context.WithValue(context.Background(), kestra_api_client.ContextServerIndex, 1)
 ```
 
-### Templated Server URL
+### Using templated server URLs
 
-Templated server URL is formatted using default variables from configuration or from context value `kestra_api_client.ContextServerVariables` of type `map[string]string`.
+Templated server URLs can be formatted using variables from either the configuration or context values. Use `kestra_api_client.ContextServerVariables` to define custom values:
 
 ```go
 ctx := context.WithValue(context.Background(), kestra_api_client.ContextServerVariables, map[string]string{
@@ -47,13 +49,16 @@ ctx := context.WithValue(context.Background(), kestra_api_client.ContextServerVa
 })
 ```
 
-::alert{type="info"}
-Note, `enum` values are always validated, and all unused variables are silently ignored.
-::
+:::alert{type="info"}
+**Note:** `enum` values are validated automatically, and unused variables are silently ignored.
+:::
 
-### URL configuration per operation
+### Per-operation URL configuration
 
-Each operation can use a different server URL defined in the `Configuration` through the `OperationServers` map. An operation is uniquely identified by the string `"{classname}Service.{nickname}"`. You can override the default operation server index and variables by using the context maps `kestra_api_client.ContextOperationServerIndices` and `kestra_api_client.ContextOperationServerVariables`.
+Each API operation can use its own server URL, defined through the `OperationServers` map in the `Configuration`.  
+An operation is uniquely identified by the string `"{classname}Service.{nickname}"`.
+
+To override the default operation server index and variables, use these context maps:
 
 ```go
 ctx := context.WithValue(context.Background(), kestra_api_client.ContextOperationServerIndices, map[string]int{
@@ -66,9 +71,11 @@ ctx = context.WithValue(context.Background(), kestra_api_client.ContextOperation
 })
 ```
 
+---
+
 ## Create a flow
 
-Create a flow from a YAML source using the [CreateFlow model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/FlowsAPI.md#CreateFlow):
+You can create a new flow in Kestra by providing its YAML source using the [`CreateFlow` model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/FlowsAPI.md#CreateFlow):
 
 ```go
 package main
@@ -81,24 +88,33 @@ import (
 )
 
 func main() {
-	tenant := "tenant_example" // string | 
-	body := "body_example" // string | The flow source code
+	tenant := "tenant_example" // The tenant identifier
+	body := "body_example"     // The flow source code in YAML
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 	resp, r, err := apiClient.FlowsAPI.CreateFlow(context.Background(), tenant).Body(body).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CreateFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CreateFlow`: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateFlow`: FlowWithSource
+	// Response from `CreateFlow`: FlowWithSource
 	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CreateFlow`: %v\n", resp)
 }
 ```
 
+:::alert{type="info"}
+**Important:**  
+- The `body` variable must contain valid YAML defining the flow.  
+- Make sure the flow is scoped to the correct tenant (multi-tenant setups may reject cross-tenant operations).  
+- The response object (`FlowWithSource`) includes both the flow metadata and its source definition.
+:::
+
+---
+
 ## Execute a flow
 
-Execute a flow using the [CreateExecution model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/ExecutionsAPI.md#CreateExecution):
+You can trigger a flow execution using the [`CreateExecution` model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/ExecutionsAPI.md#CreateExecution):
 
 ```go
 package main
@@ -107,29 +123,55 @@ import (
 	"context"
 	"fmt"
 	"os"
-    "time"
+	"time"
 	openapiclient "github.com/kestra-io/client-sdk/go-sdk"
 )
 
 func main() {
-	namespace := "namespace_example" // string | The flow namespace
-	id := "id_example" // string | The flow id
-	wait := true // bool | If the server will wait the end of the execution (default to false)
-	tenant := "tenant_example" // string | 
-	labels := []string{"Inner_example"} // []string | The labels as a list of 'key:value' (optional)
-	revision := int32(56) // int32 | The flow revision or latest if null (optional)
-	scheduleDate := time.Now() // time.Time | Schedule the flow on a specific date (optional)
-	breakpoints := "breakpoints_example" // string | Set a list of breakpoints at specific tasks 'id.value', separated by a coma. (optional)
-	kind := openapiclient.ExecutionKind("NORMAL") // ExecutionKind | Specific execution kind (optional)
+	namespace := "namespace_example" // The flow namespace
+	id := "id_example"               // The flow ID
+	wait := true                     // Whether to wait for execution completion
+	tenant := "tenant_example"       // Tenant identifier
+	labels := []string{"key:value"}  // Optional labels for traceability
+	revision := int32(56)            // Flow revision (or latest if null)
+	scheduleDate := time.Now()       // Optional scheduled date for execution
+	breakpoints := "task1,task2"     // Optional list of breakpoints
+	kind := openapiclient.ExecutionKind("NORMAL") // Execution kind
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ExecutionsAPI.CreateExecution(context.Background(), namespace, id, tenant).Wait(wait).Labels(labels).Revision(revision).ScheduleDate(scheduleDate).Breakpoints(breakpoints).Kind(kind).Execute()
+	resp, r, err := apiClient.ExecutionsAPI.CreateExecution(context.Background(), namespace, id, tenant).
+		Wait(wait).
+		Labels(labels).
+		Revision(revision).
+		ScheduleDate(scheduleDate).
+		Breakpoints(breakpoints).
+		Kind(kind).
+		Execute()
+
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ExecutionsAPI.CreateExecution``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ExecutionsAPI.CreateExecution`: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateExecution`: []ExecutionControllerExecutionResponse
+	// Response from `CreateExecution`: []ExecutionControllerExecutionResponse
 	fmt.Fprintf(os.Stdout, "Response from `ExecutionsAPI.CreateExecution`: %v\n", resp)
 }
 ```
+
+:::alert{type="info"}
+**Notes:**  
+- The `wait` flag determines whether the API call blocks until execution completes or returns immediately.  
+- If using `scheduleDate`, ensure your Kestra instance supports delayed executions.  
+- `breakpoints` allow pausing at specific tasks for debugging or step-by-step analysis.  
+- The API returns an `ExecutionControllerExecutionResponse`, which includes the execution ID and status for tracking.
+:::
+
+---
+
+## Next steps
+
+- Explore the [Kestra API Reference](https://kestra.io/docs/api/) for details on available endpoints.  
+- Combine executions with event triggers or task templates for more advanced workflows.  
+- For production use, configure retry logic and connection timeouts in your API client.
+
+---
