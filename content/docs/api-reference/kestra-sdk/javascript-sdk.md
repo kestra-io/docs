@@ -88,3 +88,66 @@ var callback = function(error, data, response) {
 };
 api.generateFlow(tenant, flowGenerationPrompt, callback);
 ```
+
+## Create flow
+
+Use the following JavaScript to [create or update a flow](https://github.com/kestra-io/client-sdk/blob/main/javascript-sdk/docs/FlowsApi.md#createflow):
+
+```javascript
+import KestraIoKestraSdk from '@kestra-io/kestra-sdk';
+let defaultClient = KestraIoKestraSdk.ApiClient.instance;
+// Configure HTTP basic authorization: basicAuth
+let basicAuth = defaultClient.authentications['basicAuth'];
+basicAuth.username = 'YOUR USERNAME';
+basicAuth.password = 'YOUR PASSWORD';
+// Configure Bearer (Bearer) access token for authorization: bearerAuth
+let bearerAuth = defaultClient.authentications['bearerAuth'];
+bearerAuth.accessToken = "YOUR ACCESS TOKEN"
+
+let apiInstance = new KestraIoKestraSdk.FlowsApi();
+let tenant = "tenant_example"; // String | 
+let body = "body_example"; // String | The flow source code
+apiInstance.createFlow(tenant, body, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+## Execute a flow
+
+The following executes a flow using the [createExecution model](https://github.com/kestra-io/client-sdk/blob/main/javascript-sdk/docs/ExecutionsApi.md#createexecution):
+
+```javascript
+import KestraIoKestraSdk from '@kestra-io/kestra-sdk';
+let defaultClient = KestraIoKestraSdk.ApiClient.instance;
+// Configure HTTP basic authorization: basicAuth
+let basicAuth = defaultClient.authentications['basicAuth'];
+basicAuth.username = 'YOUR USERNAME';
+basicAuth.password = 'YOUR PASSWORD';
+// Configure Bearer (Bearer) access token for authorization: bearerAuth
+let bearerAuth = defaultClient.authentications['bearerAuth'];
+bearerAuth.accessToken = "YOUR ACCESS TOKEN"
+
+let apiInstance = new KestraIoKestraSdk.ExecutionsApi();
+let namespace = "namespace_example"; // String | The flow namespace
+let id = "id_example"; // String | The flow id
+let wait = false; // Boolean | If the server will wait the end of the execution
+let tenant = "tenant_example"; // String | 
+let opts = {
+  'labels': ["null"], // [String] | The labels as a list of 'key:value'
+  'revision': 56, // Number | The flow revision or latest if null
+  'scheduleDate': new Date("2013-10-20T19:20:30+01:00"), // Date | Schedule the flow on a specific date
+  'breakpoints': "breakpoints_example", // String | Set a list of breakpoints at specific tasks 'id.value', separated by a coma.
+  'kind': new KestraIoKestraSdk.ExecutionKind() // ExecutionKind | Specific execution kind
+};
+apiInstance.createExecution(namespace, id, wait, tenant, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```

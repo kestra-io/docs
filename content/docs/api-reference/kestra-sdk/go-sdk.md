@@ -65,3 +65,71 @@ ctx = context.WithValue(context.Background(), kestra_api_client.ContextOperation
 	},
 })
 ```
+
+## Create a flow
+
+Create a flow from a YAML source using the [CreateFlow model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/FlowsAPI.md#CreateFlow):
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/kestra-io/client-sdk/go-sdk"
+)
+
+func main() {
+	tenant := "tenant_example" // string | 
+	body := "body_example" // string | The flow source code
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.CreateFlow(context.Background(), tenant).Body(body).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CreateFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateFlow`: FlowWithSource
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CreateFlow`: %v\n", resp)
+}
+```
+
+## Execute a flow
+
+Execute a flow using the [CreateExecution model](https://github.com/kestra-io/client-sdk/blob/main/go-sdk/docs/ExecutionsAPI.md#CreateExecution):
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/kestra-io/client-sdk/go-sdk"
+)
+
+func main() {
+	namespace := "namespace_example" // string | The flow namespace
+	id := "id_example" // string | The flow id
+	wait := true // bool | If the server will wait the end of the execution (default to false)
+	tenant := "tenant_example" // string | 
+	labels := []string{"Inner_example"} // []string | The labels as a list of 'key:value' (optional)
+	revision := int32(56) // int32 | The flow revision or latest if null (optional)
+	scheduleDate := time.Now() // time.Time | Schedule the flow on a specific date (optional)
+	breakpoints := "breakpoints_example" // string | Set a list of breakpoints at specific tasks 'id.value', separated by a coma. (optional)
+	kind := openapiclient.ExecutionKind("NORMAL") // ExecutionKind | Specific execution kind (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ExecutionsAPI.CreateExecution(context.Background(), namespace, id, tenant).Wait(wait).Labels(labels).Revision(revision).ScheduleDate(scheduleDate).Breakpoints(breakpoints).Kind(kind).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ExecutionsAPI.CreateExecution``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateExecution`: []ExecutionControllerExecutionResponse
+	fmt.Fprintf(os.Stdout, "Response from `ExecutionsAPI.CreateExecution`: %v\n", resp)
+}
+```
