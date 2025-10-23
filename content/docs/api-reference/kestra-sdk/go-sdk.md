@@ -1,7 +1,7 @@
 ---
 title: Kestra Go SDK
 icon: /docs/icons/api.svg
-release: 0.24.0
+release: 1.0.0
 ---
 
 ## Overview
