@@ -54,7 +54,7 @@ If the library is hosted at a Git repository (for example, `https://github.com/G
 then install it via:
 
 ```shell
-    npm install GIT_USER_ID/GIT_REPO_ID --save
+npm install GIT_USER_ID/GIT_REPO_ID --save
 ```
 
 ### Browser installation
