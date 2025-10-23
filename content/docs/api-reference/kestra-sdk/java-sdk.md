@@ -13,11 +13,11 @@ Building the API client library requires:
 
 ## Installation
 
-There are multiple methods to install the Java SDK, depending on your deployment refer to the appropriate option.
+Choose the installation method that matches your environment.
 
 ### Local installation
 
-To install the API client library in your local Maven repository, run:
+Install the API client library to your **local** Maven repository:
 
 ```shell
 mvn clean install
@@ -25,13 +25,13 @@ mvn clean install
 
 ### Remote deployment
 
-To deploy the library to a remote Maven repository, configure the repository settings and run:
+Deploy the library to a **remote** Maven repository (configure repository credentials first):
 
 ```shell
 mvn clean deploy
 ```
 
-For more information, see the [OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html).
+For details, see the [OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html).
 
 ### For Maven users
 
@@ -56,20 +56,22 @@ implementation "io.kestra:kestra-api-client:1.0.0"
 
 ### Manual installation
 
-If you prefer to install the JAR manually, first generate it by running:
+If you prefer to install the JAR manually, first generate it:
 
 ```shell
 mvn clean package
 ```
 
-Then install the following JARs:
+Then install the following artifacts:
 
 - `target/kestra-api-client-1.0.0.jar`
 - `target/lib/*.jar`
 
+---
+
 ## Getting started
 
-After installation, you can test the client by running the following Java example:
+Run this minimal example to verify your client setup:
 
 ```java
 import io.kestra.sdk.internal.*;
@@ -101,9 +103,18 @@ public class AiApiExample {
 }
 ```
 
+::alert{type="info"}
+**Notes:**  
+- Set `setBasePath` to your Kestra API endpoint (for example, `http://localhost:8080`).  
+- Configure authentication as required by your environment (basic or bearer).  
+- Ensure your Kestra server is running before executing the example.
+::
+
+---
+
 ## Create a flow
 
-Create a flow using the [createFlow model](https://github.com/kestra-io/client-sdk/blob/main/java-sdk/docs/FlowsApi.md#createFlow):
+Create a flow using the [`createFlow` model](https://github.com/kestra-io/client-sdk/blob/main/java-sdk/docs/FlowsApi.md#createFlow). The snippet below shows both **basic** and **bearer** auth examples; use whichever applies to your environment.
 
 ```java
 // Import classes:
@@ -145,9 +156,18 @@ public class Example {
 }
 ```
 
+::alert{type="info"}
+**Important:**  
+- `body` must be **valid YAML** for a Kestra flow. Invalid YAML or missing required fields will result in a `4xx` error.  
+- Set the correct `tenant` for multi-tenant deployments; cross-tenant requests are rejected.  
+- The response (`FlowWithSource`) includes the created flow’s metadata and its source.
+::
+
+---
+
 ## Execute a flow
 
-Execute a flow using the [createExecution model](https://github.com/kestra-io/client-sdk/blob/main/java-sdk/docs/ExecutionsApi.md#createExecution):
+Execute a flow using the [`createExecution` model](https://github.com/kestra-io/client-sdk/blob/main/java-sdk/docs/ExecutionsApi.md#createExecution). Customize parameters to control scheduling, labels, and blocking behavior.
 
 ```java
 // Import classes:
@@ -196,9 +216,20 @@ public class Example {
 }
 ```
 
+::alert{type="info"}
+**Notes:**  
+- `wait=true` makes the call block until the execution finishes; keep it `false` for fire‑and‑forget.  
+- Use `labels` (e.g., `team:platform`) to tag executions for search and observability.  
+- `scheduleDate` submits the run for a future time; ensure delayed executions are enabled on your Kestra instance.  
+- `breakpoints` pause at specific task IDs for step‑through debugging.  
+- The response includes execution identifiers and statuses you can poll or stream via the API.
+::
+
+---
+
 ## Kestra plugin
 
-The [dedicated Kestra plugin](/plugins/plugin-kestra) is developed with the Java SDK. The plugin enables you to interact with [flows](/plugins/plugin-kestra/kestra-flows), [executions](/plugins/plugin-kestra/kestra-executions), and [namespaces](/plugins/plugin-kestra/kestra-namespaces) via tasks and provides tasks to interact with Kestra's own metadata, such as listing all flows in a namespace or exporting flow definitions. To see it in action check out the video below.
+The [Kestra plugin](/plugins/plugin-kestra) is built with the Java SDK. It provides tasks to interact with [flows](/plugins/plugin-kestra/kestra-flows), [executions](/plugins/plugin-kestra/kestra-executions), and [namespaces](/plugins/plugin-kestra/kestra-namespaces), and can also operate on Kestra metadata (for example, listing all flows or exporting definitions). Watch the overview below.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/RkVugo8wD80?si=6sPClrNQ1z3fehsd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -206,7 +237,7 @@ The [dedicated Kestra plugin](/plugins/plugin-kestra) is developed with the Java
 
 ### Example flow
 
-To test the Kestra Plugin, use the following example flow that lists all namespaces and their flows, then logs the output.
+Use this example to list all namespaces and their flows, then log the output.
 
 ```yaml
 id: kestra_plugin
