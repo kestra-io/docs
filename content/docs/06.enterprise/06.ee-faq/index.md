@@ -16,9 +16,10 @@ Yes, there is! Add the following Micronaut setting to your [Kestra configuration
         micronaut:
           security:
             token:
-              generator:
-                access-token:
-                  expiration: 36000
+              jwt:
+                generator:
+                  access-token:
+                    expiration: 36000
               cookie:
                 cookie-max-age: 10h
 ```
