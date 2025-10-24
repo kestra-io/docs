@@ -129,7 +129,7 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 
 ### KV Secrets Engine - Version 2
 
-To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
+To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, AppRole, or Kubernetes [Auth Methods](https://developer.hashicorp.com/vault/docs/auth), all of which require full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
 
 1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
 
@@ -168,6 +168,19 @@ kestra:
         path: approle
         roleId: <your-role-id>
         secretId: <your-secret-id>
+```
+
+4. Finally, here is how you can set up [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      kubernetes:
+        path: "kubernetes"                      # defaults to "kubernetes"
+        role: "kestra"                          # <-- the Vault K8s auth role name to use
 ```
 
 Additionally, you can configure the following properties:
