@@ -221,7 +221,9 @@
     const {origin} = useRequestURL();
 
     if (page?.value){
-        page.value.image = `${origin}/landing/home/header-bg.png`
+        if (pluginType.value) {
+            page.value.image = `${origin}/meta/plugins/${pluginType.value || pluginName.value}.svg?type=${pluginType.value ? 'definitions' : 'plugin'}`;
+        }
         await useContentHead(page);
     }
 

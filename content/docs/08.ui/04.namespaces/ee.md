@@ -4,53 +4,54 @@ icon: /docs/icons/ui.svg
 editions: ["EE", "Cloud"]
 ---
 
-Manage specific enterprise features within a namespace.
+Manage enterprise features at the namespace level.
 
 :::alert{type="info"}
 This feature requires a [commercial license](/pricing).
 :::
 
-There's a number of extra namespace pages available in the enterprise edition:
-- Edit
-- Namespace-wide Variables
-- Namespace-wide Plugin Defaults
-- Secrets
-- Audit Logs
+The Enterprise Edition introduces several additional namespace pages for enhanced governance and configuration:
+
+- Edit  
+- Namespace-wide variables  
+- Namespace-wide plugin defaults  
+- Secrets  
+- Audit logs  
 
 ## Edit
 
-Manage the namespace description, [worker groups](../../06.enterprise/04.scalability/worker-group.md), and permissions.
+The **Edit** page lets you manage namespace-level settings such as descriptions, [worker groups](../../06.enterprise/04.scalability/worker-group.md), and permissions.
 
 ![Edit](/docs/user-interface-guide/edit.png)
 
 ## Variables
 
-Variables defined at the namespace level can be used in any flow defined under the same namespace using the syntax: `{{ namespace.variable_name }}`.
+Define variables at the namespace level for use in any flow under that namespace using the syntax `{{ namespace.variable_name }}`.
 
-Read more about [Variables](../../06.enterprise/02.governance/07.namespace-management.md#variables).
+Read more about [variables](../../06.enterprise/02.governance/07.namespace-management.md#variables).
 
 ![Variables](/docs/user-interface-guide/variables.png)
 
 ## Plugin defaults
 
-Plugin defaults can also be defined at the namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same namespace.
+Define **plugin defaults** at the namespace level. These defaults automatically apply to all tasks of the corresponding type within flows under that namespace.
 
 ![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png)
 
-Read more about [Plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults).
+Read more about [plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults).
 
 ## Secrets
 
-Configure Secrets directly from the UI. These secrets are available to all flows inside of the namespace.
+Manage **secrets** directly in the UI. Namespace-level secrets are accessible to all flows within the same namespace.
 
 ![Secrets](/docs/user-interface-guide/secrets-namespaces.png)
 
-Read more about [Secrets](../../06.enterprise/02.governance/secrets.md).
+Read more about [secrets](../../06.enterprise/02.governance/secrets.md).
 
-## Audit Logs
+## Audit logs
 
-Audit Logs record all activities performed in your Kestra instance by users and service accounts. You can view all of the audit logs related to the selected namespace in this view.
+**Audit logs** record every action performed in your Kestra instance by users or service accounts. This page displays all logs relevant to the selected namespace.
 
 ![Audit Logs](/docs/user-interface-guide/auditlogs-namespaces.png)
 
-Read more about [Audit Logs](../../06.enterprise/02.governance/06.audit-logs.md).
+Read more about [audit logs](../../06.enterprise/02.governance/06.audit-logs.md).

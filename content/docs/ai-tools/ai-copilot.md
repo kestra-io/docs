@@ -224,6 +224,10 @@ kestra:
       base-url: http://localhost:11434
 ```
 
+::alert{type="info"}
+If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
+::
+
 ### OpenAI
 
 ```yaml

@@ -38,14 +38,28 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
-Environment variables override file-based config. Convert keys by replacing special characters with `_`:
+## Environment Variables
+
+Environment variables override file-based configuration.
+
+### Conversion Rules
+
+- Replace dots (`.`), hyphens (`-`), and camelCase word boundaries with underscores (`_`).
+- Use **uppercase** for all letters.
+- Prefix with `KESTRA_` for Kestra-specific settings.
+
+### Examples
 
 | Configuration value | Resulting properties |
-|---|---|
+|----------------------|----------------------|
 | `MYAPP_MYSTUFF` | `myapp.mystuff`, `myapp-mystuff` |
 | `MY_APP_MY_STUFF` | `my.app.my.stuff`, `my.app.my-stuff`, `my-app.my.stuff`, `my-app.my-stuff`, etc. |
 
-Example: replace a config file entry
+---
+
+### Example: Replace a Config File Entry
+
+**File-based configuration:**
 
 ```yaml
 datasources:
@@ -53,13 +67,29 @@ datasources:
     username: kestra
 ```
 
-with an environment variable:
+**Environment variable:**
 
-```
+```bash
 DATASOURCES_POSTGRES_USERNAME=kestra
 ```
 
-For camelCase keys, use `-`:
+---
+
+### Example: Camel Case and Hyphenated Keys
+
+Regardless of whether your YAML uses camelCase or kebab-case (`-`),  
+convert all separators and case transitions into underscores.
+
+**YAML configuration:**
+
+```yaml
+kestra:
+  storage:
+    s3:
+      accessKey: myKey
+```
+
+or
 
 ```yaml
 kestra:
@@ -68,15 +98,16 @@ kestra:
       access-key: myKey
 ```
 
-becomes:
+**Environment variable:**
 
-```
-KESTRA_STORAGE_S3_ACCESS-KEY=myKey
+```bash
+KESTRA_STORAGE_S3_ACCESS_KEY=myKey
 ```
 
 ## Setup
 
 Configure three core components during initial setup:
+
 1. Internal storage
 2. Queue
 3. Repository
@@ -91,11 +122,14 @@ kestra:
     type: gcs
 ```
 
+See [Internal storage](#internal-storage) for details.
+
 ### Queue configuration
 
 Queues must be compatible with the repository type. Defaults depend on your architecture and [installation](../02.installation/index.md).
 
 Available types:
+
 - **In-memory** (with in-memory repository) — for local testing
 - **Database** (JDBC) — H2, MySQL, PostgreSQL
 - **Kafka** (with Elasticsearch repository; **Enterprise Edition**)
@@ -107,6 +141,8 @@ kestra:
   queue:
     type: postgres
 ```
+
+See [database](#database) for details.
 
 ### Repository configuration
 
@@ -140,7 +176,7 @@ kestra:
     type: postgres
 ```
 
-Supported: PostgreSQL, H2, MySQL.  
+Supported: PostgreSQL, H2, MySQL.
 Use H2 for local **development**. For **production**, use PostgreSQL (or MySQL if PostgreSQL isn’t an option).
 
 See [software requirements](../09.administrator-guide/00.requirements.md) for minimum versions.
@@ -155,6 +191,7 @@ After setting repository/queue types, configure `datasources`. Kestra uses [Hika
 
 :::collapse{title="PostgreSQL"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -169,10 +206,12 @@ datasources:
     username: kestra
     password: k3str4
 ```
+
 :::
 
 :::collapse{title="MySQL"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -196,6 +235,7 @@ MySQL `8.0.31` is not supported. Choose another version or ask for help on [Slac
 
 :::collapse{title="H2"}
 Minimal configuration:
+
 ```yaml
 kestra:
   queue:
@@ -210,6 +250,7 @@ datasources:
     password: ""
     driver-class-name: org.h2.Driver
 ```
+
 :::
 
 ### Connection pool size
@@ -226,41 +267,37 @@ Defaults generally suffice.
 
 HikariCP properties:
 
-| Property | Type | Description |
-|---|---|---|
-| `url` | String | JDBC connection string |
-| `catalog` | String | Default catalog |
-| `schema` | String | Default schema |
-| `username` | String | Default username |
-| `password` | String | Default password |
-| `transaction-isolation` | String | Default isolation level |
-| `pool-name` | String | Pool name |
-| `connection-init-sql` | String | SQL run on new connections |
-| `connection-test-query` | String | Validation query |
-| `connection-timeout` | Long | Max wait for a connection (ms) |
-| `idle-timeout` | Long | Max idle time (ms) |
-| `minimum-idle` | Long | Minimum idle connections (defaults to `maximum-pool-size`) |
-| `initialization-fail-timeout` | Long | Initialization failure timeout |
-| `leak-detection-threshold` | Long | Leak detection threshold (ms) |
-| `maximum-pool-size` | Int | Pool size (default 10) |
-| `max-lifetime` | Long | Max connection lifetime (ms) |
-| `validation-timeout` | Long | Max validation time (ms) |
+| Property | Type | Description | Default value |
+|---|---|---|---|
+| `url` | String | JDBC connection string | |
+| `catalog` | String | Default catalog | driver default |
+| `schema` | String | Default schema | driver default |
+| `username` | String | Default username | |
+| `password` | String | Default password | |
+| `transaction-isolation` | String | Default isolation level | driver default |
+| `pool-name` | String | Pool name | `HikariPool-<Generated>` |
+| `connection-init-sql` | String | SQL run on new connections | `null` |
+| `connection-test-query` | String | Validation query | `null` |
+| `connection-timeout` | Long | Max wait for a connection (ms) | `30000` |
+| `idle-timeout` | Long | Max idle time (ms) | `600000` |
+| `minimum-idle` | Long | Minimum idle connections (defaults to `maximum-pool-size`) | `10` |
+| `initialization-fail-timeout` | Long | Initialization failure timeout (ms) | `1` |
+| `leak-detection-threshold` | Long | Leak detection threshold (ms) | `0` |
+| `maximum-pool-size` | Int | Pool size | `10` |
+| `max-lifetime` | Long | Max connection lifetime (ms) | `1800000` |
+| `validation-timeout` | Long | Max validation time (ms) | `5000` |
 
-Defaults:
+Example:
 
 ```yaml
-transaction-isolation: default
-pool-name: HikariPool-<Generated>
-connection-init-sql: null
-connection-test-query: null
-connection-timeout: 30000
-idle-timeout: 600000
-minimum-idle: 10
-initialization-fail-timeout: 1
-leak-detection-threshold: 0
-maximum-pool-size: 10
-max-lifetime: 1800000
-validation-timeout: 5000
+datasources:
+  postgres:
+    url: jdbc:postgresql://localhost:5432/kestra
+    driver-class-name: org.postgresql.Driver
+    username: kestra
+    password: k3str4
+    maximum-pool-size: 20
+    minimum-idle: 10
 ```
 
 ### JDBC queues
@@ -594,7 +631,7 @@ outputs:
 ```
 
 :::alert{type="warning"}
-Without `kestra.encryption.secret-key`, `SECRET` types throw:  
+Without `kestra.encryption.secret-key`, `SECRET` types throw:
 `Illegal argument: Unable to use a SECRET input as encryption is not configured`.
 :::
 
@@ -863,13 +900,23 @@ logger:
     flow: 'OFF'
 ```
 
-Disable logs for a specific flow:
+Disable logs for a specific flow (`hello-world`):
 
 ```yaml
 logger:
   levels:
     flow.hello-world: 'OFF'
 ```
+
+Disable logs for a specific task (taskId = `log`, flowId = `hello-world`):
+
+```yaml
+logger:
+  levels:
+    flow.hello-world.log: 'OFF'
+```
+
+You can also disable specific trigger's logs by its ID.
 
 Execution-related loggers:
 
@@ -895,6 +942,15 @@ logger:
     execution.hello-world: 'OFF'
     task.hello-world: 'OFF'
     trigger.hello-world: 'OFF'
+```
+
+Or per task/trigger:
+
+```yaml
+logger:
+  levels:
+    task.hello-world.log: 'OFF'
+    trigger.hello-world.schedule: 'OFF'
 ```
 
 ### Access log configuration
@@ -1523,13 +1579,13 @@ Kestra servers send heartbeats for liveness.
 
 #### `kestra.server.liveness.interval` (Duration, default `5s`)
 
-#### `kestra.server.liveness.timeout` (Duration, default `45s`)  
+#### `kestra.server.liveness.timeout` (Duration, default `45s`)
 Must match across **all Executors**.
 
-#### `kestra.server.liveness.initial-delay` (Duration, default `45s`)  
+#### `kestra.server.liveness.initial-delay` (Duration, default `45s`)
 Must match across **all Executors**.
 
-#### `kestra.server.liveness.heartbeat-interval` (Duration, default `3s`)  
+#### `kestra.server.liveness.heartbeat-interval` (Duration, default `3s`)
 Must be strictly less than `timeout`.
 
 **Recommended (JDBC / OSS):**
@@ -1675,6 +1731,10 @@ kestra:
 
 Install plugin and set endpoint/port:
 
+```
+./kestra plugins install io.kestra.storage:storage-minio:LATEST
+```
+
 ```yaml
 kestra:
   storage:
@@ -1691,6 +1751,23 @@ kestra:
 ```
 
 If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1) via `kestra.storage.minio.vhost: true`. Keep `endpoint` as base domain (`my.domain.com`), not `bucket.domain`.
+
+### Outscale Object Storage (OOS)
+
+[Outscale Object Storage (OOS)](https://en.outscale.com/storage/outscale-object-storage/) is a large-scale, secure, and resilient (S3-like) storage service in the Cloud. Install the MinIO plugin and use an Outscale Object Storage endpoint. Ensure that `secure: true` is configured to use this endpoint with MinIO `type`.
+
+```yaml
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: https://oos.eu-west-2.outscale.com
+      bucket: your-bucket-name
+      accessKey: YOUR_ACCESS_KEY
+      secretKey: YOUR_SECRET_KEY
+      port: 443
+      secure: true
+```
 
 ### Azure
 

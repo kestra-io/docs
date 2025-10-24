@@ -387,7 +387,7 @@ For each Kestra execution, you can filter logs by specific levels, such as WARN 
 
 Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN`, or `ERROR` logs.
 
-![loglevel_display](blogs/release-0-19/loglevel_display.png)
+![loglevel_display](/blogs/release-0-19/loglevel_display.png)
 
 Using the new log-level navigation, you can quickly jump to the next log of a specific level while having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
 

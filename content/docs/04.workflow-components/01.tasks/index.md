@@ -26,7 +26,7 @@ Read the full list on the [Flowable tasks page](./00.flowable-tasks.md).
 
 Most data processing in Kestra is performed by [Runnable tasks](./01.runnable-tasks.md).
 
-Unlike Flowable tasks, Runnable tasks perform the actual work — such as file system operations, API calls, or database queries. These tasks can be compute-intensive and are executed by [workers](../../architecture/worker).
+Unlike Flowable tasks, Runnable tasks perform the actual work — such as file system operations, API calls, or database queries. These tasks can be compute-intensive and are executed by [workers](../../07.architecture/02.server-components.md#worker).
 
 Example runnable tasks include:
 - `io.kestra.plugin.scripts.python.Commands`
@@ -50,7 +50,7 @@ All tasks share the following core properties:
 | `allowFailure` | A boolean flag allowing to continue the execution even if this task fails                                                                                                                                                                                                                                                                                     |
 | `allowWarning` | A boolean flag allowing to mark a task run as Success despite Warnings                                                                                                                                                                                                                                                                                     |
 | `logLevel`     | Defines the log level persisted to the backend database. By default, all logs are stored. For example, restricting to `INFO` prevents `DEBUG` and `TRACE` logs from being saved.                                                                                                                                                                                                                                                                                                                         |
-| `logToFile`    | A boolean that lets you store logs as a file in internal storage. That file can be previewed and downloaded from the Logs and Gantt Execution tabs. When set to `true`, logs aren't saved in the database, which is useful for tasks that produce a large amount of logs that would otherwise take up too much space. The same property can be set on triggers. |
+| `logToFile`    | A boolean that lets you store logs as a file in [internal storage](../../07.architecture/data-components.md#kestra-internal-storage). That file can be previewed and downloaded from the Logs and Gantt Execution tabs. When set to `true`, logs aren't saved in the database, which is useful for tasks that produce a large amount of logs that would otherwise take up too much space. The same property can be set on [triggers](../../04.workflow-components/07.triggers/index.md). |
 
 ## Dynamic vs. static task properties
 

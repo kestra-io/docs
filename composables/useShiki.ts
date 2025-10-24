@@ -38,17 +38,18 @@ const langs = ['bash',
     'powershell',
     'xml',
     'yaml'] as const
-let shiki: HighlighterGeneric<(typeof langs)[number], 'github-dark'> | null = null
 
-export async function getShiki() {
-    if(!shiki){
-        shiki = await createHighlighter({
+let shikiPromise = null as Promise<HighlighterGeneric<typeof langs[number], 'github-dark'>> | null
+
+export function getShiki() {
+    if(!shikiPromise){
+        shikiPromise = createHighlighter({
             themes: ['github-dark'],
             langs: [...langs],
             engine: createOnigurumaEngine(import('shiki/wasm'))
         })
     }
-    return shiki
+    return shikiPromise
 }
 
 export default function useShiki() {

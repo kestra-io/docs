@@ -3,49 +3,50 @@ title: Namespaces
 icon: /docs/icons/ui.svg
 ---
 
-Manage resources associated with a namespace in one place.
+Manage all resources associated with a namespace in one place.
 
-Starting in 0.18.0, Kestra has introduced the Namespaces tab in the Kestra UI for OSS. In this tab, you can see all the namespaces associated with the different flows in Kestra.
+Starting in **v0.18.0**, Kestra introduces the **Namespaces** tab in the UI for Open Source users. This view displays all namespaces associated with different flows in your Kestra instance.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Interactive Demo
+## Interactive demo
 
-Below is an interactive demo through the Namespace UI from Kestra version 0.23:
+Explore the Namespace UI through this interactive demo (Kestra v0.23):
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/5CbeQf4naMpPJvz8mNbk?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Overview
 
-This is the default landing page of the Namespace. This page contains the dashboards and summary about the executions of different flows in this namespace.
+The **Overview** tab is the default landing page of a namespace. It displays dashboards and summaries of flow executions within that namespace.
 
 ![Overview](/docs/user-interface-guide/overview-namespaces.png)
 
 ## Editor
 
-The built-in editor is where you can add/edit namespace files. This access makes it easier to edit just your namespace files without needing to select a flow inside of the namespace.
+The **Editor** tab allows you to add or edit namespace files directly. This provides convenient access to manage namespace files without navigating to a specific flow.
 
 ![Editor](/docs/user-interface-guide/editor-namespaces.png)
 
 ## Flows
 
-The Flows tab shows all the flows in the namespace. It gives a summary about each of the flows including the flow ID, labels, last execution date and last execution status, and the execution statistics. By selecting the details button on the right of the flow, you can navigate to that flow's page.
+The **Flows** tab lists all flows within the namespace. It displays key information such as the flow ID, labels, last execution date and status, and execution statistics. Selecting the **details** button on a flow opens its detailed page.
 
 ![Flows](/docs/user-interface-guide/flows-namespaces.png)
 
 ## Dependencies
 
-The Dependencies tab shows all the flows and which ones are dependent on each other (e.g., through Subflows or Flow Triggers).
+The **Dependencies** tab visualizes relationships between flows, showing which flows depend on one another (for example, through subflows or flow triggers).
 
-This is similar to the Dependencies page in the Flow Editor, but this page shows you how all flows within a namespace relate even if some of them don't depend on any others.
+This view is similar to the **Dependencies** page in the Flow Editor but focuses on inter-flow relationships within a single namespace — even if some flows are independent.
 
 ![Dependencies](/docs/user-interface-guide/dependencies-namespaces.png)
 
-## KV Store
+## KV store
 
-From the KV Store tab, manage the key-values pairs associated with a namespace. More details, check out the [KV Store concept guide](../../05.concepts/05.kv-store.md).
+The **KV Store** tab lets you manage key-value pairs associated with a namespace.  
+For more information, see the [KV Store concept guide](../../05.concepts/05.kv-store.md).
 
 ![KV Store](/docs/user-interface-guide/kvstore-namespaces.png)
 
@@ -53,9 +54,7 @@ From the KV Store tab, manage the key-values pairs associated with a namespace. 
     <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=llG-CMXRBG9PG3nF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Additional Enterprise pages
+## Additional enterprise pages
 
-In the Enterprise Edition, there's a number of additional pages that give you richer insight and control over your namespaces. To read more about them, check out the page below:
-
-:::ChildCard
-:::
+In the [Enterprise Edition](../../06.enterprise/01.overview/01.enterprise-edition.md), additional namespace pages provide deeper insights and management capabilities.  
+Learn more on the [Enterprise namespace pages](./enterprise-namespace-pages.md) page.
