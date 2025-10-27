@@ -22,6 +22,8 @@ function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
 function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     return {
         body: {
+            title: subGroupsWrappers?.[0]?.title,
+            description: subGroupsWrappers?.[0]?.description,
             plugins: subGroupsWrappers,
             group: subGroupsWrappers?.[0]?.group,
         }
@@ -206,7 +208,9 @@ export default defineEventHandler(async (event) => {
             case "definitions": {
                 let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
 
-                return nuxtBlocksFromJsonSchema(pageData.schema);
+                let name = /^title: (.*)$/m.exec(pageData.markdown)[1];
+                let type = /^type: "(.*)"$/m.exec(pageData.markdown)[1];
+                return {...{name, type}, ...nuxtBlocksFromJsonSchema(pageData.schema)};
             }
             case "plugin": {
                 let subgroups = await $fetch(`${config.public.apiUrl}/plugins/${page}/subgroups`);

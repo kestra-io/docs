@@ -4873,7 +4873,7 @@ paths:
               type: string
           application/json:
             schema:
-              type: string
+              type: object
             example: null
         required: true
       responses:
@@ -4900,7 +4900,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              type: object
         required: true
       responses:
         "200":
@@ -7636,7 +7636,6 @@ components:
       type: object
     AbstractTrigger:
       required:
-      - disabled
       - id
       - type
       type: object

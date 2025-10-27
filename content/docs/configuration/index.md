@@ -1731,6 +1731,10 @@ kestra:
 
 Install plugin and set endpoint/port:
 
+```
+./kestra plugins install io.kestra.storage:storage-minio:LATEST
+```
+
 ```yaml
 kestra:
   storage:
@@ -1747,6 +1751,23 @@ kestra:
 ```
 
 If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1) via `kestra.storage.minio.vhost: true`. Keep `endpoint` as base domain (`my.domain.com`), not `bucket.domain`.
+
+### Outscale Object Storage (OOS)
+
+[Outscale Object Storage (OOS)](https://en.outscale.com/storage/outscale-object-storage/) is a large-scale, secure, and resilient (S3-like) storage service in the Cloud. Install the MinIO plugin and use an Outscale Object Storage endpoint. Ensure that `secure: true` is configured to use this endpoint with MinIO `type`.
+
+```yaml
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: https://oos.eu-west-2.outscale.com
+      bucket: your-bucket-name
+      accessKey: YOUR_ACCESS_KEY
+      secretKey: YOUR_SECRET_KEY
+      port: 443
+      secure: true
+```
 
 ### Azure
 
