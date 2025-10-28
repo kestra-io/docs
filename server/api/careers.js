@@ -1,5 +1,31 @@
 import url from "node:url";
 
+const countryCodeToEmoji = (countryCode) => {
+    let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
+    return String.fromCodePoint(...codePoints);
+}
+
+const baseResponse = (job) => {
+    return {
+        id: job.id,
+        title: job.title,
+        locations: job.locations ? job.locations.map(l => {
+            return l.location_option.display_name === "International" ?
+                {
+                    code: null,
+                    name: "World",
+                    emoji: "🌍"
+                } : {
+                code: l.location_option.country,
+                name: l.location_option.display_name,
+                emoji: countryCodeToEmoji(l.location_option.country)
+            }
+        }) : null,
+        remote: job.locations ? job.locations.filter(l => l.location_type === 'REMOTE').length > 0 : null,
+        link: `https://app.dover.com/apply/Kestra%20Technologies/${job.id}`,
+    }
+}
+
 export default defineEventHandler(async (event) => {
     try {
         const requestUrl = new url.URL("http://localhost" + event.node.req.url);
@@ -9,11 +35,7 @@ export default defineEventHandler(async (event) => {
 
         if (!id) {
             return jobsList.results.map((job) => {
-                return {
-                    id: job.id,
-                    title: job.title,
-                    location: job.location && job.location.length > 0 ? job.location[0].location_option.country : null,
-                }
+                return baseResponse(job);
             })
         } else {
             const job = jobsList.results.filter(job => job.id === id);
@@ -25,12 +47,9 @@ export default defineEventHandler(async (event) => {
 
             const jobDescription = await $fetch(`https://app.dover.com/api/v1/jobs/${id}/get_job_description`);
 
-            return {
-                id: job[0].id,
-                title: job[0].title,
+            return { ... baseResponse(job[0]), ...{
                 description: jobDescription.user_provided_description,
-                link: `https://app.dover.com/apply/Kestra%20Technologies/${job[0].id}`,
-            }
+            }}
         }
     } catch (error) {
         console.error(error);
