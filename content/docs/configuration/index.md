@@ -1653,11 +1653,29 @@ kestra:
       base-path: /tmp/kestra/storage/
 ```
 
-Other backends:
+:::alert{type="warning"}
+**Important**: Local storage behavior differs significantly between standalone and distributed deployments.
+:::
+
+**Standalone deployments:**
+- ✅ **Local storage with persistent volumes is OK** for standalone Kestra deployments
+- ✅ Suitable for single-node installations and development environments
+
+**Distributed deployments:**
+- ❌ **Local storage with ReadWriteOnce persistent volumes is NOT recommended** for distributed services
+- ✅ **Local storage with ReadWriteMany persistent volumes is OK** for distributed services
+- ❌ **Host storage sharing is NOT recommended** — this is difficult to achieve reliably
+
+**When ReadWriteMany is not available:**
+Since ReadWriteMany persistent volumes are rarely available in modern Kubernetes clusters, consider these alternatives:
+- **Cloud storage services**: S3, GCS, Azure Blob Storage
+- **Distributed object storage**: MinIO, Ceph, SeaweedFS, Garage, or similar solutions
+
+Other storage backends are supported via plugins:
 - [S3](#s3)
 - [GCS](#gcs)
-- [MinIO](#minio)
 - [Azure](#azure)
+- [MinIO](#minio)
 
 Isolate storage to specific services (>= 0.22):
 
