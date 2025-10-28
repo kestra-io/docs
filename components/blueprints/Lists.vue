@@ -40,7 +40,6 @@
                     @update:current-page="changePage"
                     v-if="totalPages > 1"
                 />
-                <span class="total-pages">Total {{ totalBlueprints }}</span>
             </div>
         </div>
     </div>
@@ -224,14 +223,6 @@ watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, 
             border-color: var(--bs-border-color);
             box-shadow: none;
         }
-    }
-    .total-pages {
-        font-size: $font-size-sm;
-        color: $white;
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        font-weight: 400;
-        line-height: 22px;
     }
 
     .rounded-button {
