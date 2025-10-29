@@ -1,12 +1,11 @@
 ---
-title: "Kestra 1.1 — Release Title"
-description: "One‑sentence summary of the 1.1 release."
+title: "Kestra 1.1 introduces New Filters, No-Code Dashboards, Human Tasks, and Dozens of New Plugins"
+description: "Kestra 1.1 delivers a polished UI with redesigned filters and no-code dashboard editor, human-in-the-loop workflows for enterprise, improved airgap support, and dozens of new community-driven plugins."
 date: 2025-11-04T17:00:00
 category: News & Product Updates
 authors:
-  - name: "Author Name"
-    image: author
-    role: "Role"
+  - name: "Benoit Pimpaud"
+    image: bpimpaud
 image: /blogs/release-1-1.jpg
 ---
 
