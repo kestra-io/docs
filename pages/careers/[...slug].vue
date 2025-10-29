@@ -9,6 +9,12 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">{{ page.title }}</h1>
+                <h4>
+                    <MapMarkerOutline /> Remote from
+                    <span v-for="loc in page.locations" :key="loc">
+                        {{ loc.emoji }} {{ loc.name }}
+                    </span>
+                </h4>
                 <NuxtLink :href="page.link" class="btn btn-animated btn-purple-animated mt-4" data-aos="zoom-in">
                     Apply for this job
                 </NuxtLink>
@@ -29,6 +35,8 @@
 </template>
 
 <script setup>
+    import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
+
     const route = useRoute()
 
     const {data: page, error} = await useAsyncData(route.path, () => {
@@ -65,6 +73,22 @@
     @import "../../assets/styles/variable";
 
     .container {
+        :deep(h1) {
+            font-size: 2rem;
+        }
+
+        :deep(h2) {
+            font-size: 1.5rem;
+        }
+
+        :deep(h3) {
+            font-size: 1.25rem;
+        }
+
+        :deep(ul > li > p) {
+            margin-bottom: 0;
+        }
+
         :deep(h2 > a) {
             color: $white;
         }
@@ -76,6 +100,12 @@
         :deep(.bd-main) .alert p {
             color: inherit;
         }
+    }
+
+    .bd-main, .bd-gutter {
+        display: block;
+
+
     }
 
     .header-container {
@@ -90,7 +120,7 @@
                 text-align: center;
                 font-weight: 300;
                 margin-bottom: 0;
-                font-size: $font-size-4xl;
+                font-size: $font-size-3xl;
 
                 @include media-breakpoint-down(sm) {
                     font-size: 1.875rem !important;
@@ -102,6 +132,11 @@
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
+            }
+
+            h4 {
+                color: $white;
+                font-weight: normal;
             }
         }
 
