@@ -11,16 +11,19 @@ image: /blogs/release-1-1.jpg
 ---
 
 
-One paragraph intro to the release. Highlight top themes briefly.
+Kestra 1.1 delivers on three fronts: a polished UI, dozens of new plugins, and powerful enterprise features. We've redesigned filters based on your feedback, added a no-code dashboard editor, and improved airgap support for offline deployments. Enterprise users get custom branding and human-in-the-loop workflows with granular permissions. With massive community contributions, this release brings new integrations for everything from Liquibase and dlt to YouTube and Stripe, making it easier to connect Kestra to your entire tech stack.
 
 The table below highlights the key features of this release.
 
 | Feature | Description | Edition |
 |---|---|---|
-| Feature 1 | Short description | Edition |
-| Feature 2 | Short description | Edition |
-| Feature 3 | Short description | Edition |
-| Feature 4 | Short description | Edition |
+| New Filters | Redesigned UI filters with faster autocompletion and improved usability based on user feedback | All Editions |
+| No-Code Dashboard Editor | Create and edit dashboards using a no-code, multi-panel editor without writing code | All Editions |
+| Custom App Branding | Customize your Kestra instance with custom logos, colors, and app thumbnails in the Apps catalog | Enterprise Edition |
+| Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
+| Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
+| AI Helpers for Failures | Get AI-powered suggestions and fixes when task runs fail to quickly diagnose and resolve issues | All Editions |
+| Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
 Check the video below for a quick overview of all enhancements.
