@@ -90,10 +90,16 @@ This release comes with a wealth of new plugins, thanks largely to the incredibl
 - New [Stripe plugin](https://github.com/kestra-io/kestra/issues/11301)
 - New [Apache Flink plugin](https://github.com/kestra-io/kestra/issues/11298)
 - New LinkedIn plugin for social media automation and data extraction
+- New JMS plugin for Java Message Service integration, enabling message-based communication with enterprise systems
+- New Microsoft365 Outlook plugin for email automation and calendar management
+- New Meta plugin for Facebook and Instagram integration
+- New Shopify plugin for e-commerce automation and store management
 - New Messenger task (plugin-notifications) to send messages via Facebook Messenger
 - New LINE task (plugin-notifications) to send notifications through LINE messaging platform
+- New `MailReceivedTrigger` and `RealTimeTrigger` (plugin-notifications) to trigger flows based on incoming emails and real-time events
 - New Markdown serialization/deserialization task (plugin-serdes) to convert between Markdown and other formats
 - New `FileCreatedTrigger` for Google Drive (plugin-googleworkspace) to trigger flows when new files are created in Google Drive
+- New Google Mail tasks (plugin-googleworkspace): `Get`, `List`, `Send`, and `MailReceivedTrigger` for comprehensive email automation with Gmail
 - AI Agent: we added support for [Oracle Cloud Infrastructure GenAI language model](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI model provider](https://github.com/kestra-io/plugin-ai/issues/175), [support for LocalAI language model](https://github.com/kestra-io/plugin-ai/issues/173)
 
 New triggers:
