@@ -18,6 +18,7 @@ The table below highlights the key features of this release.
 |---|---|---|
 | New Filters | Redesigned UI filters with faster autocompletion and improved usability based on user feedback | All Editions |
 | No-Code Dashboard Editor | Create and edit dashboards using a no-code, multi-panel editor without writing code | All Editions |
+| Multi-Agent AI Systems | AI agents can now use other AI agents as tools, enabling sophisticated multi-agent orchestration workflows | All Editions |
 | Custom App Branding | Customize your Kestra instance with custom logos, colors, and app thumbnails in the Apps catalog | Enterprise Edition |
 | Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
 | Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
@@ -59,6 +60,57 @@ https://github.com/kestra-io/kestra-ee/issues/3752
 TODO: Add arcade or screnshot
 
 
+## Multi-Agent AI Systems
+
+One of the most powerful additions in Kestra 1.1 is the ability to use AI agents as tools within other AI agents. This unlocks sophisticated multi-agent orchestration where specialized agents can collaborate to solve complex tasks. By nesting AI agents, you can create workflows where a primary agent delegates specific subtasks to expert agents, each fine-tuned for their domain.
+
+This architecture enables powerful patterns such as:
+- **Agent specialization**: Create expert agents for translation, data analysis, code generation, or content creation, then orchestrate them through a main agent
+- **Hierarchical problem-solving**: Break down complex tasks into smaller, manageable pieces handled by specialized agents
+- **Quality control workflows**: Have one agent generate content and another agent review, validate, or enhance it
+- **Multi-step reasoning**: Chain multiple agents together, with each agent building on the previous agent's output
+
+This capability is a natural extension to existing Kestra tools. You may already be familiar with the Kestra Flow tool and Kestra Task tool, which allow AI agents to invoke other Kestra flows or tasks directly. The new AI Agent tool takes this a step deeper: instead of calling general-purpose workflows or tasks, your agents can now delegate to other specialized AI agents, creating sophisticated hierarchies of AI reasoning and decision-making within your orchestration layer.
+
+The example below demonstrates this capability with a translation workflow. The main agent summarizes user input and delegates translation tasks to a specialized translation agent configured with a lighter, more cost-effective model:
+
+::collapse{title="Multi-Agent Translation Workflow"}
+
+```yaml
+id: ai-agent-with-agent-tools
+namespace: company.ai
+
+inputs:
+  - id: prompt
+    type: STRING
+    defaults: |
+      Please translate the following marketing announcement into French: "Our new product line will launch next week. Contact your sales representative for more details."
+
+tasks:
+  - id: ai-agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-2.5-flash
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
+    systemMessage: Summarize the user message, then translate it into French using the provided tool.
+    prompt: "{{ inputs.prompt }}"
+    tools:
+      - type: io.kestra.plugin.ai.tool.AIAgent
+        description: Translation expert
+        systemMessage: You are an expert in translating text between multiple languages
+        provider:
+          type: io.kestra.plugin.ai.provider.GoogleGemini
+          modelName: gemini-2.5-flash-lite
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+```
+
+::
+
+Here the main agent (`ai-agent`) receives a prompt, summarizes it, and then invokes a specialized translation agent defined as a tool. The translation agent uses a lighter model (`gemini-2.5-flash-lite`), demonstrating how you can optimize costs and performance by matching agent capabilities to task requirements.
+
+
+
 ## AI helpers for failure
 
 Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/11162
@@ -80,6 +132,8 @@ This opens up powerful automation possibilities:
 - **Event-driven integrations**: React to transactional emails, notifications, or alerts from external systems
 
 By combining email triggers with Kestra's extensive plugin ecosystem, you can unleash the full power of workflow orchestration on your email communications. The example below shows how to configure a Gmail inbox trigger using IMAP:
+
+::collapse{title="Email Trigger with AI Summarization"}
 
 ```yaml
 id: summarize_email
@@ -109,7 +163,9 @@ triggers:
     folder: INBOX
     interval: PT3S
     ssl: true
-``` 
+```
+
+:: 
 
 
 
@@ -132,6 +188,8 @@ You can also control how long the trigger remembers file states using the `state
 
 Here's an example using the GCS trigger that responds to file updates:
 
+::collapse{title="GCS File Update Trigger"}
+
 ```yaml
 id: qa_gcs_trigger
 namespace: kestra.qa
@@ -152,6 +210,8 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "GCS trigger executed for updated file: {{ trigger.uri }}"
 ```
+
+::
 
 In this example, the trigger monitors a GCS bucket every 5 seconds and only fires when existing files are updated. Once detected, the updated file is moved to an archive folder.
 
@@ -179,6 +239,8 @@ This is particularly useful for workflows requiring human validation before proc
 
 The example below shows how to implement a human approval step. The workflow pauses at the `approval_request` task until a user from the specified list or group approves it, then continues with the remaining tasks.
 
+::collapse{title="Human-in-the-Loop Approval Workflow"}
+
 ```yaml
 id: human_in_the_loop
 namespace: company.team
@@ -201,6 +263,8 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: Manual approval received! Continuing the execution...
 ```
+
+::
 
 
 ## Improved Airgap Support
