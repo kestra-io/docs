@@ -21,7 +21,7 @@ The table below highlights the key features of this release.
 | Custom App Branding | Customize your Kestra instance with custom logos, colors, and app thumbnails in the Apps catalog | Enterprise Edition |
 | Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
 | Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
-| AI Helpers for Failures | Get AI-powered suggestions and fixes when task runs fail to quickly diagnose and resolve issues | All Editions |
+| Fix with AI | Get AI-powered suggestions for fixes when any of your tasks fail | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
