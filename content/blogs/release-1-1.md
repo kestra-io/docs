@@ -278,6 +278,7 @@ This release brings dozens of new plugins from our growing community:
 - [Shopify plugin](https://github.com/kestra-io/kestra/issues/11595) for e-commerce automation.
 - [Messenger task](https://github.com/kestra-io/plugin-notifications/issues/257) (plugin-notifications) for Facebook Messenger.
 - [LINE task](https://github.com/kestra-io/plugin-notifications/issues/258) for LINE messaging.
+- [XExecution task](https://github.com/kestra-io/plugin-notifications/pull/278) to send X (formerly Twitter) posts with execution information.
 - [Markdown serialization task](https://github.com/kestra-io/plugin-serdes/issues/187) to convert between Markdown and other formats.
 - [`FileCreatedTrigger` for Google Drive](https://github.com/kestra-io/plugin-googleworkspace/issues/277) to trigger flows on new files.
 - [Google Mail tasks](https://github.com/kestra-io/plugin-googleworkspace/issues/276): `Get`, `List`, `Send`, and `MailReceivedTrigger`.
