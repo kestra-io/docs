@@ -48,6 +48,12 @@ TODO: Add arcade or screnshot
 
 ## No Code for Dashboard
 
+Building on the No-Code Multi-Panel Editor we introduced for Apps and Unit Tests in Kestra 1.0, version 1.1 extends the same powerful no-code experience to **Custom Dashboards**. This feature allows you to build and customize dashboards directly from the UI, even if you're not proficient in writing the declarative YAML that defines them.
+
+Traditionally, Custom Dashboards in Kestra are defined as code, specifying data sources, visualizations, and chart configurations in YAML. With the new no-code editor, you can create these elements visually from form-based tabs, while still having the option to open the corresponding code panel to see the generated YAML in real time. You can switch between **Dashboard Code** and **No-Code** panels, see live dashboard preview, and reference documentation or examples without leaving the editor.
+
+Just like with the multi-panel Flow and App Editors, you can open, reorder, and close any combination of panels (incl. No-Code, Dashboard Code, Documentation, and Preview) to build a personalized dorkspace. The No-Code form editor simplifies the creation of complex dashboard layouts, making it easier to design monitoring dashboards, business intelligence views, or executive reports without needing to start from raw YAML.
+
 https://github.com/kestra-io/kestra-ee/issues/3752
 
 TODO: Add arcade or screnshot
@@ -86,13 +92,56 @@ triggers:
 
 
 
-## Allow file detection triggers to react to both new and updated files - https://github.com/kestra-io/kestra/issues/11761
+## Enhanced File Detection Triggers
 
-::::collapse{title="Full list of improvements"}
-- Detailed item A
-- Detailed item B
-- Detailed item C
-::::
+File detection triggers in Kestra 1.1 now support reacting to both new and updated files, not just newly created ones. Previously, triggers like the GCS, S3, or SFTP file watchers could only detect new files. With the new `on` property, you can now configure triggers to respond to file updates, new files, or both.
+
+This enhancement enables more sophisticated file monitoring scenarios, such as:
+- Processing files only when they are modified or updated
+- Detecting and reacting to file changes in shared directories
+- Implementing file versioning workflows that track both creation and modification
+- Building incremental data pipelines that respond to updates in source files
+
+The `on` property accepts three values:
+- **CREATE**: Only trigger on newly discovered files (default behavior)
+- **UPDATE**: Only trigger when an already-seen file changes
+- **CREATE_OR_UPDATE**: Trigger on either new files or updates to existing files
+
+You can also control how long the trigger remembers file states using the `stateTtl` property (e.g., `PT24H` for 24 hours, `P7D` for 7 days, or `P30D` for 30 days), and customize the state storage key with `stateKey` if needed.
+
+Here's an example using the GCS trigger that responds to file updates:
+
+```yaml
+id: qa_gcs_trigger
+namespace: kestra.qa
+
+triggers:
+  - id: gcs_watch
+    type: io.kestra.plugin.gcp.gcs.Trigger
+    interval: "PT5S"
+    on: UPDATE
+    from: gs://test-gcs-trigger-kestra
+    action: MOVE
+    to: gs://test-gcs-trigger-kestra/archive
+    projectId: kestra-sandbox
+    serviceAccount: "{{ secret('GCP_CREDS') }}"
+
+tasks:
+  - id: log_message
+    type: io.kestra.plugin.core.log.Log
+    message: "GCS trigger executed for updated file: {{ trigger.uri }}"
+```
+
+In this example, the trigger monitors a GCS bucket every 5 seconds and only fires when existing files are updated. Once detected, the updated file is moved to an archive folder.
+
+This enhancement is available across all file-based triggers in Kestra 1.1, including:
+- **File System triggers** for local and network file systems
+- **GCP GCS triggers** for Google Cloud Storage buckets
+- **AWS S3 triggers** for Amazon S3 buckets
+- **Azure Blob Storage and ADLS triggers** for Azure cloud storage
+- **Minio triggers** for S3-compatible object storage
+
+Whether you're working with cloud storage or local file systems, you can now build more responsive and intelligent file monitoring workflows that react to the exact file events that matter to your use case.
 
 
 
