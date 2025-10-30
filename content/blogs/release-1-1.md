@@ -44,9 +44,13 @@ Make Kestra truly yours with custom branding for your Apps catalog. Enterprise E
 
 https://github.com/kestra-io/kestra-ee/issues/4983
 
+TODO: Add arcade or screnshot
+
 ## No Code for Dashboard
 
 https://github.com/kestra-io/kestra-ee/issues/3752
+
+TODO: Add arcade or screnshot
 
 
 ## AI helpers for failure
