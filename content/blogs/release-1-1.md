@@ -66,24 +66,45 @@ Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/1
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
 
 
-## - New `MailReceivedTrigger` and `RealTimeTrigger` (plugin-notifications) to trigger flows based on incoming emails and real-time events
+## New `MailReceivedTrigger` and `RealTimeTrigger` for Email-Driven Workflows
 
+Kestra 1.1 introduces the new `MailReceivedTrigger` and `RealTimeTrigger`, enabling you to trigger workflows based on incoming emails and real-time events. These triggers support both batch processing of multiple emails and one-time event handling, giving you full flexibility in how you respond to email-based events.
+
+The email trigger supports standard IMAP and SMTP protocols, making it compatible with any email provider including Gmail, Outlook, Exchange, and custom mail servers. Simply point Kestra to your inbox, and it will automatically monitor for new messages and trigger your workflows accordingly.
+
+This opens up powerful automation possibilities:
+- **AI-powered email triage**: Automatically classify, prioritize, and route incoming emails using AI
+- **Email summarization**: Generate summaries of customer inquiries or support requests
+- **Customer support automation**: Trigger workflows based on customer emails to create tickets, send auto-responses, or escalate issues
+- **Document processing**: Extract attachments from emails and process them through your data pipelines
+- **Event-driven integrations**: React to transactional emails, notifications, or alerts from external systems
+
+By combining email triggers with Kestra's extensive plugin ecosystem, you can unleash the full power of workflow orchestration on your email communications. The example below shows how to configure a Gmail inbox trigger using IMAP:
 
 ```yaml
-id: send_email
+id: summarize_email
 namespace: kestra.qa
 tasks:
-  - id: log
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ trigger }}"
+
+  - id: ai_summary
+    type: io.kestra.plugin.ai.agent.AIAgent
+    systemMessage: "Summarize the content of the email. The summary should include the subject , date, and a concise summary of the body. Output should be a single, clear text."
+    prompt: |
+      {{ trigger.subject }}
+      {{ trigger.date }}
+      {{ trigger.body }} 
+    provider:
+        modelName: gpt-5-mini
+        type: io.kestra.plugin.ai.provider.OpenAI
+        apiKey: "{{ secret('OPENAI_API_KEY') }}"
 
 triggers:
   - id: gmail_inbox_trigger
-    type: io.kestra.plugin.notifications.mail.MailReceivedTrigger
+    type: io.kestra.plugin.notifications.mail.RealTimeTrigger
     protocol: IMAP
     host: imap.gmail.com
     port: 993
-    username: "bpimpaud@kestra.io"
+    username: "user@kestra.io"
     password: "{{ secret('GOOGLE_APP_PASSWORD') }}"
     folder: INBOX
     interval: PT3S
