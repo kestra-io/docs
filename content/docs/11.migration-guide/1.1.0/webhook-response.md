@@ -1,5 +1,5 @@
 ---
-title:  Webhook Execution API Return Type Changed
+title: Webhook Execution API Return Type Changed
 icon: /docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
