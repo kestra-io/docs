@@ -40,6 +40,8 @@ https://github.com/kestra-io/kestra/issues/10349
 
 ## Custom App Branding
 
+Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now upload a custom logo, set brand colors, and define a custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand. Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
+
 https://github.com/kestra-io/kestra-ee/issues/4983
 
 ## No Code for Dashboard
@@ -55,6 +57,28 @@ Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/1
 
 
 ## - New `MailReceivedTrigger` and `RealTimeTrigger` (plugin-notifications) to trigger flows based on incoming emails and real-time events
+
+
+```yaml
+id: send_email
+namespace: kestra.qa
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger }}"
+
+triggers:
+  - id: gmail_inbox_trigger
+    type: io.kestra.plugin.notifications.mail.MailReceivedTrigger
+    protocol: IMAP
+    host: imap.gmail.com
+    port: 993
+    username: "bpimpaud@kestra.io"
+    password: "{{ secret('GOOGLE_APP_PASSWORD') }}"
+    folder: INBOX
+    interval: PT3S
+    ssl: true
+``` 
 
 
 
@@ -105,9 +129,9 @@ tasks:
 ```
 
 
-## Improved Airgap
+## Improved Airgap Support
 
-https://github.com/kestra-io/kestra-ee/issues/3430
+We've [significantly improved airgap support](https://github.com/kestra-io/kestra-ee/issues/3430) for organizations running Kestra in offline or restricted network environments. The UI now fully adapts to work offline: blueprints are fetched directly from the Kestra API, YouTube embeds are hidden when no internet connection is available, and fonts fall back to locally bundled versions if external resources cannot be reached. Sidebar features that require internet connectivity are automatically hidden in airgapped setups. These changes ensure Kestra runs smoothly and reliably even in completely isolated environments.
 
 ## Improvements
 
