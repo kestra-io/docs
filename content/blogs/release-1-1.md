@@ -68,7 +68,7 @@ https://github.com/kestra-io/kestra-ee/issues/3430
 - [Added flows as a data source for dashboards](https://github.com/kestra-io/kestra-ee/issues/3752), allowing you to display and monitor flow information in table format directly within your dashboard views.
 - [AI Agent can now call remote agent via A2A framework](https://github.com/kestra-io/kestra-ee/issues/5256)
 - Added the ability to [export audit logs as CSV files](https://github.com/kestra-io/kestra-ee/issues/4572), making it easier to analyze and share audit data.
-- Secret Manager performance has been optimized, reducing the costs associated with fetching secrets from external secret managers. It also improves the search functionality, making it faster to locate and retrieve secrets.
+- Performance improvements to Secret Manager, KV, and Namespace Files now make searching and retrieving secrets, KV pairs, and Namespace Files much faster. The cost of fetching secrets from external secret managers has been reduced, and similar optimizations have been applied to accessing KV and Namespace Files in storage, resulting in a more efficient and responsive experience across all three systems.
 
 ## Plugins
 
