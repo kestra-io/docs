@@ -18,13 +18,13 @@ The table below highlights the key features of this release.
 |---|---|---|
 | New Filters | Redesigned UI filters with faster autocompletion and improved usability based on user feedback | All Editions |
 | No-Code Dashboard Editor | Create and edit dashboards using a no-code, multi-panel editor without writing code | All Editions |
-| Multi-Agent AI Systems | AI agents can now use other AI agents as tools, enabling sophisticated multi-agent orchestration workflows | All Editions |
 | Custom App Branding | Customize your Kestra instance with custom logos, colors, and app thumbnails in the Apps catalog | Enterprise Edition |
-| Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
-| Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
+| Multi-Agent AI Systems | AI agents can now use other AI agents as tools, enabling sophisticated multi-agent orchestration workflows | All Editions |
 | Fix with AI | Get AI-powered suggestions for fixes when any of your tasks fail | All Editions |
 | Mail Trigger | Trigger workflows based on incoming emails using the new `MailReceivedTrigger` | All Editions |
 | Enhanced File Detection Triggers | File detection triggers now react to both new and updated files, not just new ones | All Editions |
+| Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
+| Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
@@ -39,14 +39,6 @@ Check the video below for a quick overview of all enhancements.
 
 https://github.com/kestra-io/kestra/issues/10349
 
-## Custom App Branding
-
-Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now upload a custom logo, set brand colors, and define a custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand. Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
-
-https://github.com/kestra-io/kestra-ee/issues/4983
-
-TODO: Add arcade or screnshot
-
 ## No Code for Dashboard
 
 Building on the No-Code Multi-Panel Editor we introduced for Apps and Unit Tests in Kestra 1.0, version 1.1 extends the same powerful no-code experience to **Custom Dashboards**. This feature allows you to build and customize dashboards directly from the UI, even if you're not proficient in writing the declarative YAML that defines them.
@@ -59,6 +51,14 @@ https://github.com/kestra-io/kestra-ee/issues/3752
 
 TODO: Add arcade or screnshot
 
+
+## Custom App Branding
+
+Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now upload a custom logo, set brand colors, and define a custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand. Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
+
+https://github.com/kestra-io/kestra-ee/issues/4983
+
+TODO: Add arcade or screnshot
 
 ## Multi-Agent AI Systems
 
