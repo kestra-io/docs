@@ -22,6 +22,8 @@ The table below highlights the key features of this release.
 | Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
 | Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
 | Fix with AI | Get AI-powered suggestions for fixes when any of your tasks fail | All Editions |
+| Mail Trigger | Trigger workflows based on incoming emails using the new `MailReceivedTrigger` | All Editions |
+| Enhanced File Detection Triggers | File detection triggers now react to both new and updated files, not just new ones | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
@@ -52,9 +54,56 @@ Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/1
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
 
 
+## - New `MailReceivedTrigger` and `RealTimeTrigger` (plugin-notifications) to trigger flows based on incoming emails and real-time events
+
+
+
+## Allow file detection triggers to react to both new and updated files - https://github.com/kestra-io/kestra/issues/11761
+
+::::collapse{title="Full list of improvements"}
+- Detailed item A
+- Detailed item B
+- Detailed item C
+::::
+
+
+
 ## Human Task
 
-https://github.com/kestra-io/kestra-ee/issues/1435
+Enterprise users can now add manual approval steps to their workflows using the new [HumanTask](https://github.com/kestra-io/kestra-ee/issues/1435). This feature enables human-in-the-loop workflows where execution pauses until a designated user or group member approves or reviews intermediate results. You can assign approval responsibilities to specific users or groups, providing fine-grained control over who can unpause and continue the workflow execution.
+
+This is particularly useful for workflows requiring human validation before proceeding with critical operations, such as:
+- Data quality checks before loading to production databases
+- Review of generated reports or analytics before distribution
+- Approval of infrastructure changes or deployments
+- Validation of AI-generated content before publishing
+- Sign-off on financial transactions or sensitive data operations
+
+The example below shows how to implement a human approval step. The workflow pauses at the `approval_request` task until a user from the specified list or group approves it, then continues with the remaining tasks.
+
+```yaml
+id: human_in_the_loop
+namespace: company.team
+
+tasks:
+  - id: before_approval
+    type: io.kestra.plugin.core.debug.Return
+    format: Output data that needs to be validated by a human
+
+  - id: approval_request
+    type: io.kestra.plugin.ee.flow.HumanTask
+    assignment:
+      users:
+        - user1@kestra.io
+        - user2@kestra.io
+      groups:
+        - Admins
+
+  - id: post_approval_log
+    type: io.kestra.plugin.core.log.Log
+    message: Manual approval received! Continuing the execution...
+```
+
 
 ## Improved Airgap
 
@@ -91,27 +140,17 @@ This release comes with a wealth of new plugins, thanks largely to the incredibl
 - New [SNMP plugin](https://github.com/kestra-io/kestra-ee/issues/5288) TODO details
 - New [Stripe plugin](https://github.com/kestra-io/kestra/issues/11301)
 - New [Apache Flink plugin](https://github.com/kestra-io/kestra/issues/11298)
-- New LinkedIn plugin for social media automation and data extraction
+- New [LinkedIn plugin](https://github.com/kestra-io/kestra/issues/10287) for social media automation and data extraction
 - New JMS plugin for Java Message Service integration, enabling message-based communication with enterprise systems
-- New Microsoft365 Outlook plugin for email automation and calendar management
-- New Meta plugin for Facebook and Instagram integration
-- New Shopify plugin for e-commerce automation and store management
-- New Messenger task (plugin-notifications) to send messages via Facebook Messenger
-- New LINE task (plugin-notifications) to send notifications through LINE messaging platform
-- New `MailReceivedTrigger` and `RealTimeTrigger` (plugin-notifications) to trigger flows based on incoming emails and real-time events
-- New Markdown serialization/deserialization task (plugin-serdes) to convert between Markdown and other formats
-- New `FileCreatedTrigger` for Google Drive (plugin-googleworkspace) to trigger flows when new files are created in Google Drive
-- New Google Mail tasks (plugin-googleworkspace): `Get`, `List`, `Send`, and `MailReceivedTrigger` for comprehensive email automation with Gmail
+- New [Microsoft365 Outlook](https://github.com/kestra-io/kestra/issues/11571) plugin for email automation and calendar management
+- New [Meta plugin](https://github.com/kestra-io/kestra/issues/11299) for Facebook and Instagram integration
+- New [Shopify plugin](https://github.com/kestra-io/kestra/issues/11595) for e-commerce automation and store management
+- New [Messenger](https://github.com/kestra-io/plugin-notifications/issues/257) task (plugin-notifications) to send messages via Facebook Messenger
+- New [LINE task](https://github.com/kestra-io/plugin-notifications/issues/258) to send notifications through LINE messaging platform
+- New [Markdown serialization/deserialization task](https://github.com/kestra-io/plugin-serdes/issues/187) to convert between Markdown and other formats
+- New `FileCreatedTrigger` [for Google Drive](https://github.com/kestra-io/plugin-googleworkspace/issues/277) to trigger flows when new files are created in Google Drive
+- New [Google Mail tasks](https://github.com/kestra-io/plugin-googleworkspace/issues/276): `Get`, `List`, `Send`, and `MailReceivedTrigger` for comprehensive email automation with Gmail
 - AI Agent: we added support for [Oracle Cloud Infrastructure GenAI language model](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI model provider](https://github.com/kestra-io/plugin-ai/issues/175), [support for LocalAI language model](https://github.com/kestra-io/plugin-ai/issues/173)
-
-New triggers:
-- Allow file detection triggers to react to both new and updated files - https://github.com/kestra-io/kestra/issues/11761
-
-::::collapse{title="Full list of improvements"}
-- Detailed item A
-- Detailed item B
-- Detailed item C
-::::
 
 
 ## Next Steps
