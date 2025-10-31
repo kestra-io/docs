@@ -297,6 +297,7 @@ kestra migrate metadata
 ```
 
 This will properly index existing Key-Value Pairs and Secrets so that the UI displays them correctly.
+Check the proper [migration guide](https://kestra.io/docs/migration-guide) for more details.
 
 ::alert{type="warning"}
 If you upgrade without running the migration, the **Key-Value Store** and **Secrets** pages in the UI will appear empty. This is only a UI issue - your flows and tasks will continue to run normally. To fix the display, simply run the migration command. It's safe to execute this migration retroactively after the upgrade.
