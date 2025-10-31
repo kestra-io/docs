@@ -355,7 +355,8 @@ export default defineNuxtConfig({
         '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
         '/docs/ee-server-cli': {redirect: '/docs/server-cli'},
         '/docs/ui/administration/workers': {redirect: '/docs/architecture/server-components#worker'},
-        '/docs/ui/administration/users': {redirect: '/docs/enterprise/auth/rbac'}
+        '/docs/ui/administration/users': {redirect: '/docs/enterprise/auth/rbac'},
+        '/docs/how-to-guides/synchonous-executions-api': {redirect: '/docs/how-to-guides/synchronous-executions-api'}
     },
 
     build: {
