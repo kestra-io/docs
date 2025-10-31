@@ -4,34 +4,11 @@ icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 
-## Requirements
-
-Building the API client library requires:
-
-1. **Java** 1.8 or higher  
-2. **Maven** or **Gradle**
-
 ## Installation
 
 Choose the installation method that matches your environment.
 
-### Local installation
 
-Install the API client library to your **local** Maven repository:
-
-```shell
-mvn clean install
-```
-
-### Remote deployment
-
-Deploy the library to a **remote** Maven repository (configure repository credentials first):
-
-```shell
-mvn clean deploy
-```
-
-For details, see the [OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html).
 
 ### For Maven users
 
@@ -59,13 +36,8 @@ implementation "io.kestra:kestra-api-client:1.0.0"
 If you prefer to install the JAR manually, first generate it:
 
 ```shell
-mvn clean package
+./gradlew publishToMavenLocal
 ```
-
-Then install the following artifacts:
-
-- `target/kestra-api-client-1.0.0.jar`
-- `target/lib/*.jar`
 
 ---
 
@@ -81,7 +53,7 @@ public class GettingStarted {
     // Instantiate the client once and reuse it (e.g., as a singleton)
     private static final KestraClient CLIENT = KestraClient.builder()
         .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")  // or .bearerToken("...") if you use tokens
+        .basicAuth("root@root.com", "Root!1234")  // or .tokenAuth("...") if you use tokens
         .build();
 
     public static void main(String[] args) {
@@ -302,7 +274,7 @@ public final class KestraClients {
             System.getenv().getOrDefault("KESTRA_USER", "root@root.com"),
             System.getenv().getOrDefault("KESTRA_PASS", "Root!1234")
         )
-        // .bearerToken(System.getenv("KESTRA_TOKEN"))
+        // .tokenAuth(System.getenv("KESTRA_TOKEN"))
         .build();
 }
 ```
