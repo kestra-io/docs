@@ -139,7 +139,7 @@ You can customize your Apps Catalog to align with organization branding by navig
 Here, you can give your catalog a display title, set a primary banner display color, and upload an image for banner (typically an organization logo).
 
 ::alert{type="info"}
-Currently, the uploaded banner display image must me an `.svg` file.
+Currently, the uploaded banner display image must be an `.svg` file.
 ::
 
 Once saved, navigate to the Apps Catalog, and see your branding:
@@ -158,7 +158,7 @@ You can add custom tags to organize and filter apps in the App Catalog. For exam
 
 ## App Thumbnails
 
-Design Apps with thumbnails to clearly display there intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../05.concepts/02.namespace-files.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
+Design Apps with thumbnails to clearly display their intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../05.concepts/02.namespace-files.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
 
 ![Image Namespace File](/docs/enterprise/apps/app-namespace-file.png)
 
