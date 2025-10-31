@@ -10,7 +10,7 @@ image: /blogs/release-1-1.jpg
 ---
 
 
-Kestra 1.1 delivers a polished UI, dozens of new plugins, and powerful enterprise features. We've redesigned filters, added a no-code dashboard editor, and improved airgap support. Enterprise users get custom branding and human-in-the-loop workflows with granular permissions. This release brings new integrations for Liquibase, dlt, YouTube, Stripe, and more—connecting Kestra to your entire tech stack.
+We're excited to announce Kestra 1.1, delivering a polished UI experience, dozens of community-driven plugins, and powerful enterprise features. Following user feedback, we've completely redesigned filters, introduced a no-code dashboard editor, and enhanced airgap support for offline deployments. Enterprise Edition users gain custom branding capabilities and human-in-the-loop workflows with granular permission controls. This release also brings new integrations for Liquibase, dlt, YouTube, Stripe, and many more—connecting Kestra to your entire tech stack.
 
 The table below highlights the key features of this release.
 
@@ -37,35 +37,45 @@ Check the video below for a quick overview of all enhancements.
 
 ## New Filters
 
-Following user feedback, we've completely redesigned the filters UI across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex execution queries. The new filter design is cleaner, more intuitive, and significantly more powerful. You can now easily reset filters with a single click, save your frequently used filter combinations for quick access, reorder table columns to match your workflow, and choose from explicit, user-friendly filter options instead of complex text fields. The redesigned interface provides a more complete filtering experience with better visual design, making it effortless to find exactly what you're looking for - whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
+Following user feedback, we've completely redesigned the filters UI across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex execution queries.
+
+The new filter design is cleaner, more intuitive, and significantly more powerful:
+- **Reset filters with a single click** to start fresh
+- **Save frequently used filter combinations** for quick access
+- **Reorder table columns** to match your workflow
+- **Choose from explicit, user-friendly filter options** instead of complex text fields
+
+The redesigned interface makes it effortless to find exactly what you're looking for—whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/rOfsRLbWk4B20tF0MUtS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions Filters | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 
-## No Code for Dashboard
+## No-Code Dashboard Editor
 
-Kestra 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**. Build and customize dashboards directly from the UI without writing YAML.
+Kestra 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**, bringing the same powerful visual editing experience we introduced for flows to dashboard development. You can now build and customize dashboards directly from the UI without writing YAML.
 
-Create data sources, visualizations, and charts visually using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Open, reorder, and close panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without touching raw YAML.
+Create data sources, visualizations, and charts visually using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Just like with the multi-panel Flow Editor, you can open, reorder, and close any combination of panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without having to start from raw YAML.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 ## Custom App Branding
 
-Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now upload a custom logo, set brand colors, and define a custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand. Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
+Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now customize their instance with a custom logo, brand colors, and custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand.
+
+Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
 
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/qxWXGwyRdd3D5eqC4O8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Apps Catalog &amp; Thumbnail | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Multi-Agent AI Systems
 
-AI agents can now use other AI agents as tools, enabling sophisticated multi-agent orchestration. Create workflows where a primary agent delegates subtasks to specialized expert agents—each fine-tuned for translation, data analysis, code generation, quality control, or content creation.
+AI agents in Kestra can now use other AI agents as tools, enabling sophisticated multi-agent orchestration workflows. You can create workflows where a primary agent delegates subtasks to specialized expert agents—each fine-tuned for specific capabilities like translation, data analysis, code generation, quality control, or content creation.
 
-This extends existing Kestra tools. Just as the Kestra Flow and Task tools let AI agents invoke flows or tasks, the new AI Agent tool enables agents to delegate to other specialized AI agents, creating hierarchies of AI reasoning within your orchestration layer.
+This feature extends Kestra's existing AI tooling. Just as the Kestra Flow and Task tools let AI agents invoke flows or tasks, the new AI Agent tool enables agents to delegate work to other specialized AI agents, creating hierarchies of AI reasoning within your orchestration layer.
 
-The example below shows a translation workflow where the main agent summarizes input and delegates translation to a specialized agent using a lighter, cost-effective model:
+The example below demonstrates a translation workflow where the main agent summarizes input and delegates translation to a specialized agent using a lighter, cost-effective model:
 
 ::collapse{title="Multi-Agent Translation Workflow"}
 
@@ -100,22 +110,29 @@ tasks:
 
 ::
 
-Here the main agent (`ai-agent`) receives a prompt, summarizes it, and then invokes a specialized translation agent defined as a tool. The translation agent uses a lighter model (`gemini-2.5-flash-lite`), demonstrating how you can optimize costs and performance by matching agent capabilities to task requirements.
+In this example, the main agent (`ai-agent`) receives a prompt, summarizes it, and then invokes a specialized translation agent defined as a tool. The translation agent uses a lighter model (`gemini-2.5-flash-lite`), demonstrating how you can optimize costs and performance by matching agent capabilities to specific task requirements.
 
 
 
-## AI helpers for failure
+## Fix with AI
 
-Add AI helper for failed taskruns - https://github.com/kestra-io/kestra/issues/11162
+When task runs fail, Kestra 1.1 can now provide AI-powered suggestions to help you quickly diagnose and resolve issues. The new "Fix with AI" feature analyzes failed task runs and offers intelligent recommendations for fixing the problem, helping you troubleshoot workflow issues faster and get your executions back on track.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
 
 
 ## New `MailReceivedTrigger` and `RealTimeTrigger` for Email-Driven Workflows
 
-Kestra 1.1 introduces the new `MailReceivedTrigger` and `RealTimeTrigger`, enabling you to trigger workflows based on incoming emails and real-time events. These triggers support both batch processing of multiple emails and one-time event handling, giving you full flexibility in how you respond to email-based events.
+Kestra 1.1 introduces the new `MailReceivedTrigger` and `RealTimeTrigger`, allowing you to trigger workflows based on incoming emails and real-time events. These triggers support both batch processing of multiple emails and one-time event handling, giving you full flexibility in how you respond to email-based events.
 
-Automate email-driven workflows: AI-powered triage and classification, email summarization, customer support ticketing, document processing from attachments, and event-driven integrations. The example below configures a Gmail inbox trigger using IMAP:
+You can use these triggers to automate email-driven workflows such as:
+- AI-powered email triage and classification
+- Email summarization and analysis
+- Customer support ticket creation
+- Document processing from attachments
+- Event-driven integrations triggered by specific email patterns
+
+The example below demonstrates how to configure a Gmail inbox trigger using IMAP with AI-powered email summarization:
 
 ::collapse{title="Email Trigger with AI Summarization"}
 
@@ -155,15 +172,15 @@ triggers:
 
 ## Enhanced File Detection Triggers
 
-File detection triggers in Kestra 1.1 now support reacting to both new and updated files, not just newly created ones. Previously, triggers like the GCS, S3, or SFTP file watchers could only detect new files. With the new `on` property, you can now configure triggers to respond to file updates, new files, or both:
+File detection triggers in Kestra 1.1 now support reacting to both new and updated files, not just newly created ones. Previously, triggers like GCS, S3, or SFTP file watchers could only detect new files. With the new `on` property, you can configure triggers to respond to file updates, new files, or both:
 
-- **CREATE**: Trigger on newly discovered files (default)
-- **UPDATE**: Trigger when existing files change
-- **CREATE_OR_UPDATE**: Trigger on new files or updates
+- **CREATE**: Trigger on newly discovered files (default behavior)
+- **UPDATE**: Trigger when existing files are modified
+- **CREATE_OR_UPDATE**: Trigger on both new files and updates
 
-Control state retention with `stateTtl` (`PT24H` for 24 hours, `P7D` for 7 days, `P30D` for 30 days) and customize the state key with `stateKey`.
+You can also control state retention with `stateTtl` (e.g., `PT24H` for 24 hours, `P7D` for 7 days, `P30D` for 30 days) and customize the state key with `stateKey`.
 
-The example below uses a GCS trigger responding to file updates:
+The example below demonstrates a GCS trigger that responds to file updates:
 
 ::collapse{title="GCS File Update Trigger"}
 
@@ -190,24 +207,24 @@ tasks:
 
 ::
 
-This trigger monitors a GCS bucket every 5 seconds, firing only when existing files are updated. Detected files are moved to an archive folder.
+In this example, the trigger monitors a GCS bucket every 5 seconds and fires only when existing files are updated. Detected files are automatically moved to an archive folder.
 
-This enhancement works across all file-based triggers: File System, GCP GCS, AWS S3, Azure Blob Storage and ADLS, and Minio.
+This enhancement is available across all file-based triggers, including File System, GCP GCS, AWS S3, Azure Blob Storage, ADLS, and MinIO.
 
 
 
-## Human Task
+## Human-in-the-Loop Workflows
 
-Enterprise users can now add manual approval steps to workflows using the new [HumanTask](https://github.com/kestra-io/kestra-ee/issues/1435). Execution pauses until designated users or group members approve and unpause. Perfect for data quality checks, report reviews, deployment approvals, AI content validation, and financial sign-offs.
+Enterprise Edition users can now add manual approval steps to workflows using the new `HumanTask`. When an execution reaches a human task, it pauses until designated users or group members approve and unpause it. This is perfect for workflows requiring human validation before proceeding with critical operations.
 
-This is particularly useful for workflows requiring human validation before proceeding with critical operations, such as:
+Use cases include:
 - Data quality checks before loading to production databases
 - Review of generated reports or analytics before distribution
 - Approval of infrastructure changes or deployments
 - Validation of AI-generated content before publishing
 - Sign-off on financial transactions or sensitive data operations
 
-The example below shows how to implement a human approval step. The workflow pauses at the `approval_request` task until a user from the specified list or group approves it, then continues with the remaining tasks.
+The example below demonstrates how to implement a human approval step. The workflow pauses at the `approval_request` task until a user from the specified list or group approves it, then continues with the remaining tasks.
 
 ::collapse{title="Human-in-the-Loop Approval Workflow"}
 
@@ -239,72 +256,103 @@ tasks:
 
 ## Improved Airgap Support
 
-[Airgap support](https://github.com/kestra-io/kestra-ee/issues/3430) is now significantly improved for offline environments. The UI adapts fully: blueprints fetch from the Kestra API, YouTube embeds hide without internet, fonts fall back to local versions, and internet-dependent sidebar features hide automatically, so Kestra runs smoothly in completely isolated environments.
+Kestra 1.1 brings significantly improved support for offline and airgapped environments. The UI now adapts fully to run without internet connectivity: blueprints fetch from the Kestra API instead of external sources, YouTube embeds hide automatically when offline, fonts fall back to local versions, and internet-dependent sidebar features are hidden automatically. These improvements ensure Kestra runs smoothly in completely isolated environments without any degraded functionality.
 
-## Improvements
+## Additional Improvements
 
-- Added flows as a data source for custom dashboards, enabling you to display and monitor flow metrics, status, and execution details directly within your [custom dashboard views](https://github.com/kestra-io/kestra-ee/issues/2609).
-- Introduced "Fix with AI" feature that provides AI-powered suggestions and fixes when task runs fail, helping you quickly [diagnose and resolve workflow issues](https://github.com/kestra-io/kestra/issues/11162).
-- Added a new `syncWorkingDirectory` [property for remote task runners to control whether the working directory is synchronized between remote and local environments](https://github.com/kestra-io/kestra-ee/issues/4761). This ensures consistent behavior across different runner types when working with files and directories in your tasks. Previously, working directories were only synced when output files or directories were specified.
-- [Added flows as a data source for dashboards](https://github.com/kestra-io/kestra-ee/issues/3752), allowing you to display and monitor flow information in table format directly within your dashboard views.
-- [AI Agent can now call remote agent via A2A framework](https://github.com/kestra-io/kestra-ee/issues/5256)
-- Added the ability to [export audit logs as CSV files](https://github.com/kestra-io/kestra-ee/issues/4572), making it easier to analyze and share audit data.
-- Performance improvements to Secret Manager, KV, and Namespace Files now make searching and retrieving secrets, KV pairs, and Namespace Files much faster. The cost of fetching secrets from external secret managers has been reduced, and similar optimizations have been applied to accessing KV and Namespace Files in storage, resulting in a more efficient and responsive experience across all three systems.
+- **Flows as Dashboard Data Source** – You can now use flows as a data source for custom dashboards, allowing you to display and monitor flow metrics, status, and execution details directly within your dashboard views.
+- **Sync Working Directory Control** – Added a new `syncWorkingDirectory` property for remote task runners, giving you control over whether the working directory is synchronized between remote and local environments. This ensures consistent behavior across different runner types when working with files and directories. Previously, working directories were only synced when output files or directories were explicitly specified.
+- **Agent-to-Agent Communication** – AI Agents can now call remote agents via the A2A (Agent-to-Agent) framework, enabling more complex distributed agent architectures.
+- **Audit Log CSV Export** – Enterprise Edition users can now export audit logs as CSV files, making it easier to analyze and share audit data with compliance teams or external auditors.
+- **Performance Optimizations** – Significant performance improvements to Secret Manager, KV Store, and Namespace Files make searching and retrieving data much faster. The cost of fetching secrets from external secret managers has been reduced, and similar optimizations have been applied to accessing KV pairs and Namespace Files in storage, resulting in a more efficient and responsive experience.
 
-## Plugins
+## New Plugins
 
-This release brings dozens of new plugins from our growing community:
+Kestra 1.1 includes dozens of new plugins contributed by our growing community, expanding integration capabilities across databases, APIs, messaging platforms, and AI providers:
 
-- [Liquibase plugin](https://github.com/kestra-io/kestra/issues/9799) with CLI tasks to compare databases and generate diffs or change logs. Use `Diff` to compare schemas and track database changes in Git.
-- [dlt plugin](https://github.com/kestra-io/kestra/issues/11114) with `CLI` task to run dlt pipelines directly from Kestra.
-- [Airtable plugin](https://github.com/kestra-io/kestra/issues/11212) with five tasks: `List`, `Get`, `Create`, `Update`, and `Delete` for managing Airtable records.
-- [Dataform plugin](https://github.com/kestra-io/plugin-gcp/pull/532/files) (GCP) with `InvokeWorkflow` to trigger Dataform workflows on BigQuery.
-- dbt plugin supports [dbt‑fusion engine](https://github.com/kestra-io/plugin-dbt/issues/205) through updated CLI tasks for improved performance.
-- [Resend plugin](https://github.com/kestra-io/plugin-resend/pull/4/files) with `Send` task for transactional emails. Supports templates, dynamic variables, attachments, and multiple recipients.
-- [Odoo plugin](https://github.com/kestra-io/kestra/issues/11300) with `Query` task supporting all major Odoo operations: search_read, create, write, unlink, search, and search_count.
-- [YouTube plugin](https://github.com/kestra-io/plugin-youtube/pull/4/files) with `VideoStats`, `VideoTrigger`, and `CommentTrigger` tasks.
-- [Apify plugin](https://github.com/kestra-io/plugin-apify/pull/4) with `RunActor` and `GetDataset` tasks.
-- [Algolia plugin](https://github.com/kestra-io/plugin-algolia/pull/3) to manage records and indices programmatically.
-- [Prometheus plugin](https://github.com/kestra-io/plugin-prometheus/pull/3) with `Query`, `Push`, and `QueryTrigger` tasks for metrics.
-- [Prefect Cloud plugin](https://github.com/kestra-io/plugin-prefect/pull/3) with `CreateFlowRun` to trigger Prefect flow runs.
-- [AWS CloudWatch plugin](https://github.com/kestra-io/kestra-ee/issues/5290) to push or query metrics and trigger flows when metrics match conditions.
-- [DocumentDB plugin](https://github.com/kestra-io/plugin-documentdb/pull/1) to Create, Read, Update, or Delete records.
-- [SNMP plugin](https://github.com/kestra-io/kestra-ee/issues/5288) for network monitoring.
-- [Stripe plugin](https://github.com/kestra-io/kestra/issues/11301) for payment processing.
-- [Apache Flink plugin](https://github.com/kestra-io/kestra/issues/11298) for stream processing.
-- [LinkedIn plugin](https://github.com/kestra-io/kestra/issues/10287) for social media automation.
-- JMS plugin for Java Message Service integration.
-- [Microsoft365 Outlook plugin](https://github.com/kestra-io/kestra/issues/11571) for email and calendar automation.
-- [Meta plugin](https://github.com/kestra-io/kestra/issues/11299) for Facebook and Instagram.
-- [Shopify plugin](https://github.com/kestra-io/kestra/issues/11595) for e-commerce automation.
-- [Messenger task](https://github.com/kestra-io/plugin-notifications/issues/257) (plugin-notifications) for Facebook Messenger.
-- [LINE task](https://github.com/kestra-io/plugin-notifications/issues/258) for LINE messaging.
-- [XExecution task](https://github.com/kestra-io/plugin-notifications/pull/278) to send X (formerly Twitter) posts with execution information.
-- [Markdown serialization task](https://github.com/kestra-io/plugin-serdes/issues/187) to convert between Markdown and other formats.
-- [`FileCreatedTrigger` for Google Drive](https://github.com/kestra-io/plugin-googleworkspace/issues/277) to trigger flows on new files.
-- [Google Mail tasks](https://github.com/kestra-io/plugin-googleworkspace/issues/276): `Get`, `List`, `Send`, and `MailReceivedTrigger`.
-- AI Agent: Added support for [Oracle Cloud Infrastructure GenAI](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI](https://github.com/kestra-io/plugin-ai/issues/175), and [LocalAI](https://github.com/kestra-io/plugin-ai/issues/173) language models.
+### Data & Database Plugins
+- **Liquibase** – CLI tasks to compare databases and generate diffs or change logs. Use the `Diff` task to compare schemas and track database changes in Git.
+- **dlt** – New `CLI` task to run dlt (data load tool) pipelines directly from Kestra.
+- **DocumentDB** – Tasks to Create, Read, Update, or Delete records in AWS DocumentDB.
+
+### SaaS & API Integrations
+- **Airtable** – Full CRUD operations with `List`, `Get`, `Create`, `Update`, and `Delete` tasks for managing Airtable records.
+- **Stripe** – Plugin for payment processing and Stripe API integration.
+- **Shopify** – E-commerce automation for Shopify stores.
+- **Odoo** – `Query` task supporting all major Odoo operations: search_read, create, write, unlink, search, and search_count.
+- **Notion** – Manage Notion pages and databases programmatically.
+
+### Cloud & Infrastructure
+- **Dataform (GCP)** – `InvokeWorkflow` task to trigger Dataform workflows on BigQuery.
+- **AWS CloudWatch** – Push or query metrics and trigger flows when metrics match specific conditions.
+- **Apache Flink** – Stream processing integration for real-time data pipelines.
+
+### Observability & Monitoring
+- **Prometheus** – `Query`, `Push`, and `QueryTrigger` tasks for metrics collection and monitoring.
+- **SNMP** – Network monitoring and device management capabilities.
+
+### Communication & Notifications
+- **Resend** – Send transactional emails with support for templates, dynamic variables, attachments, and multiple recipients.
+- **Microsoft365 Outlook** – Email and calendar automation for Outlook.
+- **Messenger** – Facebook Messenger notifications (plugin-notifications).
+- **LINE** – LINE messaging platform integration.
+- **XExecution** – Send X (formerly Twitter) posts with execution information.
+
+### Content & Media
+- **YouTube** – `VideoStats`, `VideoTrigger`, and `CommentTrigger` tasks for YouTube automation.
+- **LinkedIn** – Social media automation for LinkedIn.
+- **Meta** – Integration for Facebook and Instagram platforms.
+
+### Developer Tools
+- **Prefect Cloud** – `CreateFlowRun` task to trigger Prefect flow runs from Kestra.
+- **Algolia** – Manage search indices and records programmatically.
+- **Apify** – `RunActor` and `GetDataset` tasks for web scraping automation.
+
+### File & Data Processing
+- **Markdown Serialization** – Convert between Markdown and other formats (plugin-serdes).
+- **Google Drive** – `FileCreatedTrigger` to trigger flows when new files are created.
+- **Google Mail** – `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Gmail integration.
+
+### AI Model Providers
+- **dbt-fusion** – Enhanced dbt plugin now supports the dbt-fusion engine through updated CLI tasks for improved performance.
+- **Oracle Cloud Infrastructure GenAI** – Added OCI GenAI support to the AI plugin.
+- **Cloudflare Workers AI** – Integration with Cloudflare's AI platform.
+- **LocalAI** – Support for locally-hosted AI models.
+
+### Messaging & Integration
+- **JMS** – Java Message Service integration for enterprise messaging systems.
 
 ## Migration Note for Upgrading to 1.1
 
-Version 1.1.0 introduces **metadata indexing** for Key-Value Pairs and Secrets to improve performance and scalability. Previously, the UI fetched all stored entries, which became inefficient with large datasets.
+Version 1.1 changes how Key-Value and Secrets metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored pairs directly from storage, which was inefficient for large datasets. If you do not run the migration after upgrading to 1.1.0, the **Key-Value Store** and **Secrets** pages in the UI will appear empty (though flows and tasks will continue to work as normal; this is a UI-only issue). To restore the missing data in the UI, run the following commands once after upgrading to version 1.1.0 (or later):
 
-When upgrading to **1.1.0** or later, you must run a metadata migration command to ensure existing data is correctly indexed. Simply run the following command before starting the server:
 
 ```shell
-kestra migrate metadata
+/app/kestra migrate metadata-kv
+/app/kestra migrate metadata-secrets
 ```
 
-This will properly index existing Key-Value Pairs and Secrets so that the UI displays them correctly.
-Check the proper [migration guide](https://kestra.io/docs/migration-guide) for more details.
+For **Docker Compose** setups, include the commands in your startup configuration:
 
-::alert{type="warning"}
-If you upgrade without running the migration, the **Key-Value Store** and **Secrets** pages in the UI will appear empty. This is only a UI issue - your flows and tasks will continue to run normally. To fix the display, simply run the migration command. It's safe to execute this migration retroactively after the upgrade.
+```yaml
+kestra:
+  image: registry.kestra.io/docker/kestra:latest
+  commands:
+    - /app/kestra migrate metadata-kv
+    - /app/kestra migrate metadata-secrets
+```
+
+After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
+
+For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
+
+::alert{type="info"}
+Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
 ::
 
 ## Next Steps
 
-This post highlighted the new features and enhancements introduced in Kestra 1.1. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
+This post highlighted the new features and enhancements introduced in Kestra 1.1. Which updates are most exciting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
