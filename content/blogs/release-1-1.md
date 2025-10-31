@@ -37,26 +37,25 @@ Check the video below for a quick overview of all enhancements.
 
 ## New Filters
 
+Following user feedback, we've completely redesigned the filters UI across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex execution queries. The new filter design is cleaner, more intuitive, and significantly more powerful. You can now easily reset filters with a single click, save your frequently used filter combinations for quick access, reorder table columns to match your workflow, and choose from explicit, user-friendly filter options instead of complex text fields. The redesigned interface provides a more complete filtering experience with better visual design, making it effortless to find exactly what you're looking for - whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
+
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/rOfsRLbWk4B20tF0MUtS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions Filters | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-https://github.com/kestra-io/kestra/issues/10349
+
 
 ## No Code for Dashboard
 
-Version 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**. Build and customize dashboards directly from the UI without writing YAML.
+Kestra 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**. Build and customize dashboards directly from the UI without writing YAML.
 
 Create data sources, visualizations, and charts visually using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Open, reorder, and close panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without touching raw YAML.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-
-https://github.com/kestra-io/kestra-ee/issues/3752
 
 
 ## Custom App Branding
 
 Make Kestra truly yours with custom branding for your Apps catalog. Enterprise Edition users can now upload a custom logo, set brand colors, and define a custom title to match their organization's identity. Each app can also have its own thumbnail by simply pointing to a namespace file in your app YAML—perfect for creating a visually cohesive catalog that reflects your brand. Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
 
-https://github.com/kestra-io/kestra-ee/issues/4983
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/qxWXGwyRdd3D5eqC4O8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Apps Catalog &amp; Thumbnail | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
