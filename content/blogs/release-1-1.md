@@ -47,9 +47,9 @@ Version 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**. Bui
 
 Create data sources, visualizations, and charts visually using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Open, reorder, and close panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without touching raw YAML.
 
-https://github.com/kestra-io/kestra-ee/issues/3752
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-TODO: Add arcade or screnshot
+https://github.com/kestra-io/kestra-ee/issues/3752
 
 
 ## Custom App Branding
