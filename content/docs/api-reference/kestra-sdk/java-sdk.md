@@ -3,6 +3,7 @@ title: Kestra Java SDK
 icon: /docs/icons/api.svg
 release: 1.0.0
 ---
+Interact with Kestra's API via Java SDK.
 
 ## Installation
 
@@ -43,7 +44,7 @@ If you prefer to install the JAR manually, first generate it:
 
 ## Getting started
 
-Initialize a single `KestraClient` and reuse it across your application. Run this minimal example to verify your client setup:
+Initialize the `KestraClient` and reuse it across your application. Run this minimal example to verify your client setup:
 
 ```java
 import java.util.*;
@@ -57,7 +58,7 @@ public class GettingStarted {
         .build();
 
     public static void main(String[] args) {
-        // A lightweight no-op example to confirm the client is constructed
+        // A lightweight example to confirm that the client was initialized
         System.out.println("KestraClient initialized: " + (CLIENT != null));
     }
 }
@@ -74,7 +75,7 @@ public class GettingStarted {
 
 ## Create a flow
 
-Create a flow by sending the YAML source as a string. This mirrors what you’d write in the UI, but via the SDK.
+Create a flow by sending the YAML definition as a string. This matches what you’d define in the UI, but through the SDK.
 
 ```java
 import java.util.*;

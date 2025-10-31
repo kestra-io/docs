@@ -3,12 +3,13 @@ title: Kestra Python SDK
 icon: /docs/icons/api.svg
 release: 1.0.0
 ---
+Interact with Kestra's API via Python SDK.
 
 ## Install the Python SDK
 
 This guide demonstrates how to use the Kestra Python SDK to create and execute flows programmatically.  
 Before starting, make sure your Kestra instance is running and accessible via the `KESTRA_HOST` environment variable.  
-You can also set credentials in a `.env` file:
+You can store credentials in an `.env` file:
 
 ```
 KESTRA_HOST=http://localhost:8080
@@ -59,7 +60,7 @@ kestra_client = KestraClient(configuration)
 
 ## Create a flow
 
-Use the following Python script to create a simple Sleep task flow.  
+Use the following Python script to create a simple flow with a `Sleep` task.  
 This example uses the [`create_flow` method](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/FlowsApi.md#create_flow).
 
 ```python
@@ -183,4 +184,3 @@ def follow_execution():
 - **Avoid hardcoding credentials:** Use `.env` or environment variables.  
 - **Validate YAML before submission:** Invalid syntax causes `422` responses.  
 - **Automate your workflows:** Combine `create_flow` and `create_execution` for full CI/CD automation.  
-- **Use CLI and SDK together:** The [Kestra CLI](../../server-cli/index.md) complements the Python SDK for scripting and pipeline management.
