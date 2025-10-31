@@ -19,16 +19,26 @@ To enhance performance and scalability, this release introduces **metadata index
 Because of this change, you must run a metadata migration when upgrading to version **1.1.0** (or later).  
 This ensures existing Key-Value and Secrets data are correctly indexed for the new query structure.
 
-When upgrading, include the migration command `- /app/kestra migrate metadata` in your startup configuration.  
-For example, if you’re using **Docker Compose**, update your service definition as follows:
+When upgrading, include the migration command `- /app/kestra migrate metadata` in your startup configuration.
+For example, if you’re using **Docker Compose**, start your container with the newest version image and add the migration script in `commands` as follows:
+
+```yaml
+kestra:
+    image: registry.kestra.io/docker/kestra:latest
+    commands:
+        - /app/kestra migrate metadata
+```
+
+Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
 
 ```yaml
 kestra:
     image: registry.kestra.io/docker/kestra:latest
     commands:
         - server standalone --worker-thread=128
-        - /app/kestra migrate metadata
 ```
+
+Similarly, for Kubernetes installations, run a pod with the migration script (`- /app/kestra migrate metadata`), so the KV Store and Secrets databases are updated. Then, restart your normal pod for Kestra server components without the script.
 
 ::alert{type="warning"}
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.  
