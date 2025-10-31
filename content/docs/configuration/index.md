@@ -2102,7 +2102,7 @@ Optional parameters:
 
 **Enterprise Edition** supports multiple providers (Bedrock, Anthropic, Azure OpenAI, DeepSeek, Gemini, Vertex AI, Mistral, OpenAI, and Ollama). See [AI Copilot](../ai-tools/ai-copilot.md#enterprise-edition-copilot-configurations).
 
-## Airgapped Kestra Instance
+## Airgapped Kestra Instance (EE)
 
 To keep your Kestra Instance offline, you can use the following in your Kestra configuration to alter blueprint management and remove UI components that rely on external APIs. The UI adapts fully: blueprints fetch from the Kestra API, YouTube embeds hide without internet, fonts fall back to local versions, and internet-dependent sidebar features hide automatically. Kestra runs smoothly in completely isolated environments.
 
@@ -2111,3 +2111,5 @@ kestra:
   ee:
     airgapped: true
 ```
+
+For Enterprise users, check out the [Custom Links configuration](#add-custom-links-to-kestra-ui-ee) to add your own documentation and resources to the Kestra UI sidebar if needed.
