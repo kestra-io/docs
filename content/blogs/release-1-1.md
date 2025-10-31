@@ -286,6 +286,21 @@ This release brings dozens of new plugins from our growing community:
 - [Google Mail tasks](https://github.com/kestra-io/plugin-googleworkspace/issues/276): `Get`, `List`, `Send`, and `MailReceivedTrigger`.
 - AI Agent: Added support for [Oracle Cloud Infrastructure GenAI](https://github.com/kestra-io/plugin-ai/issues/176), [Cloudflare Workers AI](https://github.com/kestra-io/plugin-ai/issues/175), and [LocalAI](https://github.com/kestra-io/plugin-ai/issues/173) language models.
 
+## Migration Note for Upgrading to 1.1
+
+Version 1.1.0 introduces **metadata indexing** for Key-Value Pairs and Secrets to improve performance and scalability. Previously, the UI fetched all stored entries, which became inefficient with large datasets.
+
+When upgrading to **1.1.0** or later, you must run a metadata migration command to ensure existing data is correctly indexed. Simply run the following command before starting the server:
+
+```shell
+kestra migrate metadata
+```
+
+This will properly index existing Key-Value Pairs and Secrets so that the UI displays them correctly.
+
+::alert{type="warning"}
+If you upgrade without running the migration, the **Key-Value Store** and **Secrets** pages in the UI will appear empty. This is only a UI issue - your flows and tasks will continue to run normally. To fix the display, simply run the migration command. It's safe to execute this migration retroactively after the upgrade.
+::
 
 ## Next Steps
 
