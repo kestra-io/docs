@@ -130,12 +130,57 @@ access:
     - Admins
 ```
 
+### Customize the Apps Catalog
+
+You can customize your Apps Catalog to align with organization branding by navigating to the **Administration** tab and then **Tenants->Apps Catalog**.
+
+![Apps Catalog Customization](/docs/enterprise/apps/apps-catalog-customization.png)
+
+Here, you can give your catalog a display title, set a primary banner display color, and upload an image for banner (typically an organization logo).
+
+::alert{type="info"}
+Currently, the uploaded banner display image must me an `.svg` file.
+::
+
+Once saved, navigate to the Apps Catalog, and see your branding:
+
+![Apps Catalog Branding](/docs/enterprise/apps/customized-catalog.png)
+
+From the Apps Catalog, you can also access the customization settings directly at any time by clicking on the **gear icon**.
 
 ---
 
 ## App Tags
 
 You can add custom tags to organize and filter apps in the App Catalog. For example, you might tag apps with `DevOps`, `data-team`, `project-x`. You can then filter apps by tags to quickly find the apps you are looking for.
+
+---
+
+## App Thumbnails
+
+Design Apps with thumbnails to clearly display there intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../05.concepts/02.namespace-files.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
+
+![Image Namespace File](/docs/enterprise/apps/app-namespace-file.png)
+
+In your app code, add the `thumbnail` string property and point it towards the correct namespace file using `nsfiles:///<your-file>`. For example:
+
+```yaml
+id: request_data_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Form to request and download data
+namespace: company.team
+flowId: get_data
+thumbnail: "nsfiles:///kestra-icon.svg" # Point this property to the correct namespace file.
+access: 
+  type: PRIVATE
+tags:
+  - Reporting
+  - Analytics
+```
+
+Once added, navigate to the Apps Catalog, and a new thumbnail will display on the connected app to help designate its use case:
+
+![App with thumbnail](/docs/enterprise/apps/app-with-icon.png)
 
 ---
 
