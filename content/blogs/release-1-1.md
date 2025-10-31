@@ -240,7 +240,7 @@ tasks:
 
 ## Improved Airgap Support
 
-[Airgap support](https://github.com/kestra-io/kestra-ee/issues/3430) is now significantly improved for offline environments. The UI adapts fully: blueprints fetch from the Kestra API, YouTube embeds hide without internet, fonts fall back to local versions, and internet-dependent sidebar features hide automatically. Kestra runs smoothly in completely isolated environments.
+[Airgap support](https://github.com/kestra-io/kestra-ee/issues/3430) is now significantly improved for offline environments. The UI adapts fully: blueprints fetch from the Kestra API, YouTube embeds hide without internet, fonts fall back to local versions, and internet-dependent sidebar features hide automatically, so Kestra runs smoothly in completely isolated environments.
 
 ## Improvements
 
