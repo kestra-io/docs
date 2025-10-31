@@ -443,6 +443,8 @@ paths:
       - basicAuth: []
   /api/v1/forgotten-password:
     get:
+      tags:
+      - Auths
       summary: Sends an email to reset a password.
       description: "Sends an email to reset a password. Note that whatever the username\
         \ is found or not, the response will always be 200 to avoid leaking information."
@@ -999,6 +1001,8 @@ paths:
       - basicAuth: []
   /api/v1/invitation/accept/{invitationId}:
     post:
+      tags:
+      - Auths
       operationId: acceptInvitation
       parameters:
       - name: invitationId
@@ -1015,6 +1019,8 @@ paths:
                 type: object
   /api/v1/invitation/create/{invitationId}:
     post:
+      tags:
+      - Auths
       operationId: createFromInvitation
       parameters:
       - name: invitationId
@@ -1466,7 +1472,7 @@ paths:
   /api/v1/request-code/{email}:
     get:
       tags:
-      - Authentication Code
+      - Auths
       summary: Request an authentication code for login verification
       operationId: requestCode
       parameters:
@@ -1484,6 +1490,8 @@ paths:
                 type: object
   /api/v1/reset-password:
     post:
+      tags:
+      - Auths
       summary: Change a password for given token.
       description: "Change a password for given token. If password does not match\
         \ password policy, use can still retry."
@@ -13072,6 +13080,8 @@ paths:
       - basicAuth: []
   /api/v1/{tenant}/stats/generate-reports:
     get:
+      tags:
+      - Misc
       operationId: generate
       parameters:
       - name: from
@@ -14790,6 +14800,8 @@ paths:
       - basicAuth: []
   /login:
     post:
+      tags:
+      - login
       operationId: login
       requestBody:
         content:

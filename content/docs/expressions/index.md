@@ -1827,6 +1827,9 @@ inputs:
 
 ### isIn
 
+:::badge{version=">=0.24" editions="OSS,EE"}
+:::
+
 Returns true if the value on the left is present in the list on the right. Useful for conditions such as `runIf`.
 
 ```yaml
