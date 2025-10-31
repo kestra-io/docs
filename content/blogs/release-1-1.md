@@ -58,7 +58,7 @@ Make Kestra truly yours with custom branding for your Apps catalog. Enterprise E
 
 https://github.com/kestra-io/kestra-ee/issues/4983
 
-TODO: Add arcade or screnshot
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/qxWXGwyRdd3D5eqC4O8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Apps Catalog &amp; Thumbnail | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Multi-Agent AI Systems
 
