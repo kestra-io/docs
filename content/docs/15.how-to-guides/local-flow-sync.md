@@ -17,9 +17,9 @@ How to synchronize flows from a local directory on a local development instance.
 
 ## Configure your instance
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This feature is only for local development, that is why you can not connect to a distant Kestra instance.
-::
+:::
 
 When developing on a local Kestra instance, it can be more convenient to have your flows in a local directory, maybe synchronize with a GitHub repository on your local machine, and have Kestra automatically load them.
 
@@ -37,12 +37,12 @@ micronaut:
 Multiple paths can be provided, and nested files will also be watched.
 Files have to end with `.yml` or `.yaml` to be considered as a flow. And only valid flows will be loaded, invalid flows will be ignored.
 
-File created locally should use `<namespace>.<flow_id>.yml` or `<namespace>_<flow_id>.yml` syntax to be loaded properly.
+File created locally should use `<tenantId>_<namespace>.<flow_id>.yml` or `<tenantId>_<namespace>_<flow_id>.yml` syntax to be loaded properly. For open-source users, `tenantID` is always `main`.
 
 Flow created inside the UI will be created at the root of the first path supplied in the configuration.
 
 
-::alert{type="info"}
+:::alert{type="info"}
 If you are using the docker-compose installation, you will need to mount a volume so Kestra container can access your local folder.
 
 ```yaml
@@ -58,7 +58,7 @@ If you are using the docker-compose installation, you will need to mount a volum
               paths:
                 - /docker_folder
 ```
-::
+:::
 
 ## Details
 

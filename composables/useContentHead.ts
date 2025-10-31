@@ -13,10 +13,6 @@ export default function useContentHead(page: Ref<undefined | {title?:string, des
 
     const {origin} = useRequestURL()
 
-    useHead({
-        title: title.value
-    })
-
     useSeoMeta({
         title: title.value,
         description: description.value,

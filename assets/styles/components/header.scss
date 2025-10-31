@@ -332,11 +332,9 @@
 }
 
 nav {
-    background: $black-4;
     transform: translateY(0);
     max-height: 100%;
     width: 100vw;
-    background: transparent;
 
     @keyframes chevron-in {
         0% {

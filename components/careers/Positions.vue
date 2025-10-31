@@ -10,7 +10,15 @@
                     <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
                         <div class="d-flex align-items-center gap-3">
                             <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
-                            <span>{{ doc.title }}</span>
+                            <span>
+                                {{ doc.title }}
+                            </span>
+                            <span class="loc">
+
+                                (Remote / <template v-for="loc in doc.locations" :key="loc">
+                                    {{ loc.emoji }}
+                                </template>)
+                            </span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <img src="/landing/careers/arrow_right.svg" alt="arrow_right" />
@@ -43,6 +51,10 @@
             padding: 1.313rem 2rem;
             border-radius: 0.5rem;
             border: $block-border;
+
+            span.loc {
+                font-weight: normal !important;
+            }
 
             div:first-of-type {
                 flex-grow: 1;

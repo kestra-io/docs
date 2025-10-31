@@ -2,10 +2,10 @@
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
         :class="{open: isOpen, scrolled: props.scrolled }">
         <div class="container-xl">
-            <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
+            <component :is="LinkComponent" class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
                 <img :src="isOpen ? '/logo-black.svg' : '/logo-white.svg'"
                     alt="Kestra, Open source declarative data orchestration" />
-            </NuxtLink>
+            </component>
 
             <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
                 <div class="download-logos" @click.stop>
@@ -36,125 +36,128 @@
             <div class="collapse navbar-collapse" id="main-header">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
                     <li class="nav-item dropdown" @mouseover="mouseOver('product')" @mouseleave="mouseOut('product')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button" :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             aria-expanded="false">
                             Product
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'product'"
+                            <ChevronDown v-if="showMenuId !== 'product' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'product' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.product.items" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                             <strong v-if="item.tag" class="tag">{{ item.tag }}</strong>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver('solutions')"
                         @mouseleave="mouseOut('solutions')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button" :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             aria-expanded="false">
                             Solutions
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'solutions'"
+                            <ChevronDown v-if="showMenuId !== 'solutions' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'solutions' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <p class="column-caption">Capabilities</p>
                                 <li v-for="item in menuItems.solutions.capabilities" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Roles</p>
                                 <li v-for="item in menuItems.solutions.roles" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Industries</p>
                                 <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">Resources</p>
                                 <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver('resources')"
                         @mouseleave="mouseOut('resources')">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" role="button" :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             aria-expanded="false">
                             Learn
-                            <ChevronDown v-if="!showMenuId || showMenuId !== 'resources'"
+                            <ChevronDown v-if="showMenuId !== 'resources' || !showMenu"
                                 class="d-inline-block dropdown-chevron" />
-                            <ChevronUp v-else class="d-inline-block dropdown-chevron" />
+                            <ChevronUp v-if="showMenuId === 'resources' && showMenu"
+                                class="d-inline-block dropdown-chevron" />
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.resources.additionalItems" :key="item.link">
-                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </NuxtLink>
+                                    </component>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/plugins" role="button" @click="globalClick(true)">
+                        <component :is="LinkComponent" class="nav-link" href="/plugins" role="button" @click="globalClick(true)">
                             <span>Plugins</span>
-                        </NuxtLink>
+                        </component>
                     </li>
                     <li class="nav-item">
-                        <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button"
+                        <component :is="LinkComponent" class="nav-link dropdown-toggle" href="/pricing" role="button"
                             @click="globalClick(true)">
                             <span>Pricing</span>
-                        </NuxtLink>
+                        </component>
                     </li>
                 </ul>
 
@@ -162,32 +165,32 @@
                     <li class="nav-item">
                         <GithubButton :small="true"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm" />
-                        <NuxtLink @click="globalClick(true)"
+                        <component :is="LinkComponent" @click="globalClick(true)"
                             class="d-none mb-1 mn-sm-0 btn btn-sm btn-secondary btn-sm me-0 me-sm-2 d-lg-inline-block"
                             href="/demo">
                             <span>
                                 Talk to us
                             </span>
-                        </NuxtLink>
-                        <NuxtLink @click="globalClick(true)"
+                        </component>
+                        <component :is="LinkComponent" @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm get-started"
                             href="/docs/getting-started/quickstart#start-kestra">
                             <span>
                                 Get Started!
                             </span>
-                        </NuxtLink>
-                        <NuxtLink @click="globalClick(true)"
+                        </component>
+                        <component :is="LinkComponent" @click="globalClick(true)"
                             class="d-lg-none d-sm-inline-block d-xs-block mb-1 mn-sm-0 btn btn-secondary btn-md"
                             href="/demo">
                             <span>
                                 Talk to Us
                             </span>
-                        </NuxtLink>
-                        <a @click="globalClick(true)" href="#" id="header-search-button"
+                        </component>
+                        <button @click="globalClick(true)" href="#" id="header-search-button"
                             class="btn btn-sm d-none d-lg-inline-block icon-button" data-bs-toggle="modal"
                             data-bs-target="#search-modal" title="Search">
                             <Magnify />
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -197,14 +200,19 @@
             <div class="header-arrow"
                 :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
             <div class="menu-shadow-container">
-                <div class="header-menu" @mouseover="mouseOverMenu()" @mouseleave="mouseLeaveMenu()" :style="headerMenuStyles">
+                <div :style="{
+                    transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
+                    width: headerMenuSize.width,
+                    height: headerMenuSize.height,
+                    pointerEvents: headerMenuPointerEvents
+                }" class="header-menu" @mouseover="mouseOverMenu" @mouseleave="mouseLeaveMenu">
                     <div class="header-menu-card">
                         <div @mouseleave="mouseLeaveMenu()" id="product" class="header-menu-card-section">
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100 gap-2 py-lg-0">
                                         <li v-for="item in menuItems.product.items" :key="item.link">
-                                            <NuxtLink class="dropdown-item" :href="item.link"
+                                            <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                 @click="globalClick(true)">
                                                 <div>
                                                     <div class="same-row">
@@ -214,7 +222,7 @@
                                                     </div>
                                                     <p>{{ item.description }}</p>
                                                 </div>
-                                            </NuxtLink>
+                                            </component>
                                         </li>
                                     </ul>
                                 </div>
@@ -229,7 +237,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.capabilities" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -238,7 +246,7 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                     </div>
@@ -248,7 +256,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.roles" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -256,7 +264,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                         <div class="menu-title">
@@ -264,7 +272,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -272,7 +280,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                     </div>
@@ -282,7 +290,7 @@
                                         </div>
                                         <ul class="d-flex flex-column w-100 list-unstyled">
                                             <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -290,7 +298,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                     </div>
@@ -303,7 +311,7 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -312,14 +320,14 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.additionalItems" :key="item.link">
-                                                <NuxtLink class="dropdown-item" :href="item.link"
+                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -328,7 +336,7 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </NuxtLink>
+                                                </component>
                                             </li>
                                         </ul>
                                     </div>
@@ -342,26 +350,27 @@
     </nav>
 </template>
 
+<script lang="ts">
+export const linkSymbolInjectionKey = Symbol("linkComponent")
+</script>
+
+
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
-import { useRoute, useNuxtApp } from '#app';
+import { ref, onMounted, watch, nextTick, inject } from 'vue';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import GithubButton from "../layout/GithubButton.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import Close from "vue-material-design-icons/Close.vue";
 import Segment from "vue-material-design-icons/Segment.vue";
-import { menuSize } from "~/utils/menu-sizes";
-import { menuItems } from '~/utils/menu-items';
+import { menuSize } from "../../utils/menu-sizes";
+import { menuItems } from '../../utils/menu-items';
 
-interface Props {
-    scrolled: boolean;
-}
+const props = defineProps<{
+    scrolled?: boolean;
+    nuxtApp?: any;
+}>();
 
-const props = defineProps<Props>();
-
-const transparentHeader = ref(false);
-const transparentClass = ref(false);
 const isOpen = ref(false);
 const showDownloadLogos = ref(false);
 const showMenu = ref(false);
@@ -373,8 +382,9 @@ const headerMenuSize = ref({
     width: '0px',
     height: '0px',
 });
-const headerMenuPointerEvents = ref('none');
+const headerMenuPointerEvents = ref<'none' | 'auto'>('none');
 const navbar = ref<HTMLElement | null>(null);
+const isMobile = ref(false);
 
 interface Collapse {
     hide: () => void;
@@ -384,57 +394,24 @@ interface Collapse {
 
 let collapse: Collapse | undefined = undefined;
 
-const route = useRoute();
-const nuxtApp = useNuxtApp();
-transparentHeader.value = route.meta.transparentHeader === true;
-transparentClass.value = route.meta.transparentHeader === true;
-
-if (process.client) {
-    window.addEventListener('scroll', handleScroll);
-}
+const LinkComponent = inject(linkSymbolInjectionKey, "a");
 
 onMounted(() => {
-    if (process.client) {
-        // Wait for bootstrap to be available
-        nextTick(() => {
-            const bootstrap = nuxtApp.$bootstrap as any;
-            collapse = bootstrap?.Collapse 
-                ? new bootstrap.Collapse('#main-header', { toggle: false })
-                : undefined;
-        });
+    // Wait for bootstrap to be available
+    nextTick(() => {
+        const bootstrap = props.nuxtApp?.$bootstrap as any;
+        collapse = bootstrap?.Collapse
+            ? new bootstrap.Collapse('#main-header', { toggle: false })
+            : undefined;
+    });
 
-        document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");
-    }
+    isMobile.value = window.innerWidth <= 991;
+    window.addEventListener('resize', () => {
+        isMobile.value = window.innerWidth <= 991;
+    });
+
+    document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");
 });
-
-onUnmounted(() => {
-    if (process.client) {
-        window.removeEventListener('scroll', handleScroll);
-        document.documentElement.style.removeProperty("--top-bar-height");
-    }
-});
-
-interface MenuStyles {
-    transform: string;
-    width: string;
-    height: string;
-    pointerEvents: string;
-}
-
-const headerMenuStyles = computed<MenuStyles>(() => {
-    return {
-        transform: `translateX(${headerMenuTranslateX.value}) rotateX(-15deg)`,
-        width: headerMenuSize.value.width,
-        height: headerMenuSize.value.height,
-        pointerEvents: headerMenuPointerEvents.value
-    };
-});
-
-watch(() => route, (to) => {
-    transparentHeader.value = to.meta.transparentHeader === true;
-    transparentClass.value = to.meta.transparentHeader === true;
-    globalClick(true);
-}, { deep: true });
 
 function mouseOverMenu() {
     mouseoverMenu.value = true;
@@ -446,14 +423,6 @@ function mouseLeaveMenu() {
     mouseoverMenu.value = false;
     showMenuId.value = null;
     headerMenuPointerEvents.value = 'none';
-}
-
-function mouseElement(element: HTMLElement) {
-    if (element.classList.contains("nav-link")) {
-        return element;
-    } else {
-        return element.closest(".nav-item")?.firstElementChild as HTMLElement;
-    }
 }
 
 function mouseOver(id: string) {
@@ -483,16 +452,6 @@ function mouseOut(id: string) {
         if (menu) {
             headerMenuPointerEvents.value = 'none';
             showMenu.value = false;
-        }
-    }
-}
-
-function handleScroll() {
-    if (transparentHeader.value) {
-        if (window.scrollY > 30) {
-            transparentClass.value = false;
-        } else {
-            transparentClass.value = true;
         }
     }
 }
@@ -536,12 +495,6 @@ function globalClick(close?: boolean) {
 }
 
 function logoClick() {
-    if (route.path === "/") {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
     globalClick(true);
 }
 

@@ -33,6 +33,7 @@ tasks:
 
       - id: upload
         type: io.kestra.plugin.core.namespace.UploadFiles
+        namespace: "{{ flow.namespace }}"
         files:
           - "glob:**/dbt/**"
 ```
@@ -111,12 +112,13 @@ Here’s how you can set up namespace file management:
 tasks:
   - id: download
     type: io.kestra.plugin.core.namespace.DownloadFiles
-    sourceNamespace: "company.team.other"
+    namespace: "company.team.other"
     files:
       - "glob:**/dbt/**"
 
   - id: delete
     type: io.kestra.plugin.core.namespace.DeleteFiles
+    namespace: "company.team.other"
     files:
       - "glob:**/dbt/temp/**"
 ```
@@ -137,7 +139,7 @@ With Kestra, you get a complete platform for orchestrating and scaling dbt workf
 
 Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our [dbt plugin documentation](/plugins/plugin-dbt) for more details.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

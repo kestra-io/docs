@@ -23,7 +23,7 @@ The following examples demonstrate Kestra AI plugins for a variety of workflows.
 
 Different provider plugins may include additional properties beyond those shown in the examples. Refer to each plugin’s documentation for a complete list. Common properties to be aware of include `prompt`, `messages`, `jsonResponseSchema`, to name a few.
 
-::collapse{title="Check the weather is suitable for sports every day using Gemini"}
+:::collapse{title="Check the weather is suitable for sports every day using Gemini"}
 
 This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at 8:00 AM on a schedule.
 
@@ -51,7 +51,7 @@ tasks:
               "type": "boolean"
             }
           }
-        } 
+        }
       }
 
   - id: if
@@ -85,9 +85,9 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "* 8 * * *"
 ```
-::
+:::
 
-::collapse{title="Create tasks with natural language prompts using DeepSeek and Todoist"}
+:::collapse{title="Create tasks with natural language prompts using DeepSeek and Todoist"}
 
 This flow turns natural language prompts into structured Todoist tasks using an AI model. Each item is parsed into a title, description, and due date, then automatically created in your Todoist workspace via the REST API.
 
@@ -152,9 +152,9 @@ tasks:
             "due_datetime": "{{ taskrun.value | jq('.due_date') | first }}"
           }
 ```
-::
+:::
 
-::collapse{title="Generate an image with OpenAI with human approval"}
+:::collapse{title="Generate an image with OpenAI with human approval"}
 
 This flow generates an image from a user prompt, sends it to a Discord channel for review, and waits for approval. If approved, the image is finalized and logged; if rejected, the user can provide feedback to regenerate a new image, which is then shared again on Discord.
 
@@ -193,7 +193,7 @@ tasks:
       - id: feedback
         description: Write the prompt again with more detail
         type: STRING
-        
+
   - id: try_again
     type: io.kestra.plugin.core.flow.If
     condition: "{{ outputs.wait_for_approval.onResume.approve }}"
@@ -208,15 +208,15 @@ tasks:
         flowId: generate_image
         inputs:
           openai_prompt: "{{ outputs.wait_for_approval.onResume.feedback }}"
-      
+
       - id: send_new_image
         type: io.kestra.plugin.notifications.discord.DiscordExecution
         content: "Here's the new image with your feedback: {{ outputs.retry.outputs.image }}"
         url: "{{ vars.discord_webhook }}"
 ```
-::
+:::
 
-::collapse{title="Summarize Git commits from the past week using Ollama"}
+:::collapse{title="Summarize Git commits from the past week using Ollama"}
 
 This flow automatically summarizes Git commits from the past week in a specified repository and branch. Each Friday at 15:00 UTC, it generates a plain-text summary using Ollama and posts it to Slack, keeping teams updated on project progress.
 
@@ -266,7 +266,7 @@ tasks:
           - echo "Fetched $(wc -l < commits.txt) commits from the last 7 days"
         outputFiles:
           - commits.txt
-      
+
       - id: summarize_commits
         type: io.kestra.plugin.ollama.cli.OllamaCLI
         enableModelCaching: true
@@ -282,7 +282,7 @@ tasks:
     payload: |
       {{
         {
-          "text": "This week's repository updates for " ~ inputs.repository ~ ". " ~ read(outputs.summarize_commits.outputFiles['output.txt']) 
+          "text": "This week's repository updates for " ~ inputs.repository ~ ". " ~ read(outputs.summarize_commits.outputFiles['output.txt'])
         }
       }}
 
@@ -291,4 +291,4 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 15 * * 5"  # Every Friday at 15:00 (3:00 PM) UTC
 ```
-::
+:::

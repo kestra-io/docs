@@ -31,7 +31,7 @@ kestra:
           env-vars-prefix: "ENV_" # this is now the default as of v0.23
 ```
 
-You can reference these in your flows as `{{ envs.MY_VARIABLE }}` and `{{ envs.NEW_VARIABLE }}`.
+You can reference these in your flows as `{{ envs.my_variable }}` and `{{ envs.new_variable }}`.
 
 To use a custom prefix e.g., `PROD_`:
 

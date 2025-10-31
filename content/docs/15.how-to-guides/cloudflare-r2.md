@@ -12,9 +12,9 @@ This setup enables Kestra to continue using S3 storage without requiring configu
 
 ---
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This guide assumes that **MinIO runs locally in gateway mode** to access Cloudflare R2. It is intended for **local development and QA environments**, and is **not optimized for production deployments**.
-::
+:::
 
 ## Create an R2 Bucket
 
@@ -97,8 +97,8 @@ storage:
     endpoint: localhost
     port: 9000
     bucket: kestra-bucket
-    accessKey: <R2_ACCESS_KEY>
-    secretKey: <R2_SECRET_KEY>
+    access-key: <R2_ACCESS_KEY>
+    secret-key: <R2_SECRET_KEY>
 ```
 
 Kestra will interact with MinIO, which in turn proxies to R2.

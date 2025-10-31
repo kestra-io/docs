@@ -182,6 +182,7 @@ export default defineNuxtConfig({
                         "Workflow Components",
                         "Multi-Language Script Tasks",
                         "AI Tools",
+                        "No-Code",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -202,8 +203,7 @@ export default defineNuxtConfig({
                         "Expressions",
                         "API Reference",
                         "Terraform Provider",
-                        "Server CLI",
-                        "Kestra EE CLI"
+                        "Kestra CLI"
                     ]
                 }
             },
@@ -353,6 +353,9 @@ export default defineNuxtConfig({
         '/docs/architecture/indexer': {redirect: '/docs/architecture/server-components#indexer'},
         '/docs/architecture/webserver': {redirect: '/docs/architecture/server-components#webserver'},
         '/docs/architecture/internal-storage': {redirect: '/docs/architecture/main-components#internal-storage'},
+        '/docs/ee-server-cli': {redirect: '/docs/server-cli'},
+        '/docs/ui/administration/workers': {redirect: '/docs/architecture/server-components#worker'},
+        '/docs/ui/administration/users': {redirect: '/docs/enterprise/auth/rbac'}
 
     },
 

@@ -171,9 +171,9 @@ triggers:
 
 Because of that dynamicism, we no longer auto-generate webhook keys. You must provide a key when creating a webhook trigger to ensure that the webhook definition remains fully declarative. With that change, the webhook trigger is now defined and managed entirely from the YAML flow configuration, true to the philosophy of Infrastructure as Code.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If you have **existing webhook triggers**, make sure to explicitly set a webhook key before upgrading to Kestra 0.11.0. We recommend using a secret or an environment variable.
-::
+:::
 
 The webhook URL stays the same as before by following the format `https://your_kestra_hostname/api/v1/executions/webhook/{namespace}/{flowId}/{key}`. The only difference is that from this release on, the webhook key can be dynamically rendered from secrets or environment variables.
 
@@ -478,11 +478,11 @@ tasks:
 
 ### Templates
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](https://kestra.io/docs/migration-guide/templates) explains why templates are being phased out and how to transition from templates to subflows.
-::
+:::
 
-If you are using templates and you are not ready to migrate to subflows yet, add the following Kestra configuration option to still be able to use them:
+If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../docs/configuration/index.md) option to still be able to use them:
 
 ```yaml
 kestra:
@@ -494,9 +494,9 @@ kestra:
 
 Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin (the one which is always included in any Kestra distribution). In 0.10.0, we introduced new [script tasks](https://kestra.io/docs/developer-guide/scripts) maintained using [dedicated script plugins](https://github.com/kestra-io/plugin-scripts) which offer script tasks for Python, R, Node.js, Shell and Powershell (and now, also Julia). Since then, the old core scripting tasks have been deprecated and moved out of the core plugin.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If you use one of these `core` script tasks e.g. `io.kestra.core.tasks.scripts.python`, you should **migrate to the new script task** that runs by default in a Docker container and is more feature-rich. Using the same Python task as an example, you should now use the  `io.kestra.plugin.scripts.python.Script` task instead.
-::
+:::
 
 Our `*-full` Docker images include both the new and the deprecated `core` script tasks. If you're not using our `*-full` Docker images in which plugins are preinstalled, make sure to **install the new script plugins**  as the deprecated tasks are now packaged alongside the new script plugins.
 

@@ -117,7 +117,7 @@ We plan to discuss Kestra's performance further in a later blog post, but here i
 The benchmark scenario is a flow triggered by a Kafka Realtime Trigger that performs a JSON transformation for each message and returns the output in a second task.
 We generate 1000 executions by publishing messages to a Kafka topic at 10, 25, 50, 75, and 100 messages per second, then check the execution latency by looking at the last execution of the scenario run.
 
-::collapse{title="Expand to see the Benchmark Flow"}
+:::collapse{title="Expand to see the Benchmark Flow"}
 ```yaml
 id: realtime-kafka-json
 namespace: company.team
@@ -146,7 +146,7 @@ tasks:
     values:
       log: "{{outputs.transform.value}}"
 ```
-::
+:::
 
 ### JDBC backend
 
@@ -183,8 +183,8 @@ tasks:
 
 Version 0.22 brings major efficiency improvements, making Kestra faster and more scalable. As we continue to optimize performance, stay tuned for more updates on how far we can push Kestra’s execution capabilities in upcoming versions.
 
-::alert{type="info"}
+:::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
-::
+:::

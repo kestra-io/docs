@@ -29,26 +29,26 @@ You can configure the authentication to AWS Cloud in multiple ways:
 kestra:
   secret:
     type: aws-secret-manager
-    awsSecretManager:
-      accessKeyId: mysuperaccesskey
-      secretKeyId: mysupersecretkey
+    aws-secret-manager:
+      access-key-id: mysuperaccesskey
+      secret-key-id: mysupersecretkey
       sessionToken: mysupersessiontoken
       region: us-east-1
 ```
 
 Additionally, you can configure the following properties:
 
-- **Prefix**: `kestra.secret.awsSecretManager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. This allows sharing a single secrets backend across multiple Kestra instances.
-- **Endpoint Override**: `kestra.secret.awsSecretManager.endpointOverride` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
+- **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. This allows sharing a single secrets backend across multiple Kestra instances.
+- **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
 
 When adding a secret in AWS, you will need to specify the following tags:
 - `namespace`: the namespace this secret should appear in.
 - `key`: the key which you will use to access the secret inside of your workflow.
 - `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
-::
+:::
 
 ## Azure Key Vault Configuration
 
@@ -68,7 +68,7 @@ Then, paste the `clientSecret` from the Azure portal to the `clientSecret` prope
 kestra:
   secret:
     type: azure-key-vault
-    azureKeyVault:
+    azure-key-vault:
       clientSecret:
         tenantId: "id"
         clientId: "id"
@@ -79,9 +79,9 @@ If no credentials are set in the above configuration, Kestra will use the defaul
 
 Additionally, you can configure the following properties:
 
-- **Vault Name**: `kestra.secret.azureKeyVault.vaultName` is the name of the Azure Key Vault.
-- **Key Vault URI**: `kestra.secret.azureKeyVault.keyVaultUri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
-- **Prefix**: `kestra.secret.azureKeyVault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+- **Vault Name**: `kestra.secret.azure-key-vault.vault-name` is the name of the Azure Key Vault.
+- **Key Vault URI**: `kestra.secret.azure-key-vault.key-vault-uri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
+- **Prefix**: `kestra.secret.azure-key-vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
 
 ## Elasticsearch Configuration
 
@@ -107,9 +107,9 @@ To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as 
 kestra:
   secret:
     type: google-secret-manager
-    googleSecretManager:
+    google-secret-manager:
       project: gcp-project-id
-      serviceAccount: |
+      service-account: |
         Paste the contents of the service account JSON key file here.
 ```
 
@@ -117,7 +117,7 @@ If you opt for authentication using the `GOOGLE_APPLICATION_CREDENTIALS` environ
 
 If no credentials are set in the above configuration, Kestra will use the default Google authentication akin to the Google Cloud SDK.
 
-Additionally, you can configure the `kestra.secret.googleSecretManager.prefix` property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+Additionally, you can configure the `kestra.secret.google-secret-manager.prefix` property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
 
 ## Vault Configuration
 
@@ -129,7 +129,7 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 
 ### KV Secrets Engine - Version 2
 
-To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
+To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, AppRole, or Kubernetes [Auth Methods](https://developer.hashicorp.com/vault/docs/auth), all of which require full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
 
 1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
 
@@ -170,12 +170,25 @@ kestra:
         secretId: <your-secret-id>
 ```
 
+4. Finally, here is how you can set up [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      kubernetes:
+        path: "kubernetes"                      # defaults to "kubernetes"
+        role: "kestra"                          # <-- the Vault K8s auth role name to use
+```
+
 Additionally, you can configure the following properties:
 
 - **Address**: `kestra.secret.vault.address` is a fully qualified address with scheme and port to your Vault instance.
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
-- **Engine Version**: `kestra.secret.vault.engineVersion` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
-- **Root Engine**: `kestra.secret.vault.rootEngine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+- **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
+- **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
@@ -220,10 +233,10 @@ kestra:
   secret:
     cache:
       enabled: true
-      maximumSize: 1000
-      expireAfterWrite: 60s
+      maximum-size: 1000
+      expire-after-write: 60s
 ```
 
 * **`kestra.secret.cache.enabled`**: Specifies whether to enable caching for secrets.
-* **`kestra.secret.cache.maximumSize`**:  The maximum number of entries the cache may contain.
-* **`kestra.secret.cache.expireAfterWrite`**:  Specifies that each entry should be automatically removed from the cache once this duration has elapsed after the entry's creation.
+* **`kestra.secret.cache.maximum-size`**:  The maximum number of entries the cache may contain.
+* **`kestra.secret.cache.expire-after-write`**:  Specifies that each entry should be automatically removed from the cache once this duration has elapsed after the entry's creation.

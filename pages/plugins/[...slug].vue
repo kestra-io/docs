@@ -29,8 +29,10 @@
                             class="plugin-index"
                             :icons="icons"
                             :plugins="pluginsWithoutDeprecated"
-                            :plugin-name="pluginName"
-                            :sub-group="subGroup">
+                            :plugin-name="pluginName ?? '<plugin>'"
+                            :sub-group="subGroup"
+                            :route-path="route.path"
+                >
                     <template v-slot:markdown="{ content }">
                         <MDC :value="content">
                             <template #default="mdcProps">
@@ -219,7 +221,9 @@
     const {origin} = useRequestURL();
 
     if (page?.value){
-        page.value.image = `${origin}/landing/home/header-bg.png`
+        if (pluginType.value) {
+            page.value.image = `${origin}/meta/plugins/${pluginType.value || pluginName.value}.svg?type=${pluginType.value ? 'definitions' : 'plugin'}`;
+        }
         await useContentHead(page);
     }
 

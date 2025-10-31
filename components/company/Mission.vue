@@ -75,7 +75,7 @@ const values = [
   {
     icon: Opacity,
     title: "Transparency",
-    description: "We value openness and honesty in all aspects of our work at every steps.",
+    description: "We value openness and honesty in all aspects of our work at every step.",
   },
 ];
 </script>

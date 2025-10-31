@@ -173,7 +173,7 @@ curl -X GET http://localhost:8080/api/v1/main/executions/MYkTmLrI36s10iVXHwRbR
 
 The response received includes everything about the execution including the times the state changed, and any outputs generated:
 
-::collapse{title="Response Body"}
+:::collapse{title="Response Body"}
 ```json
 {
     "id": "MYkTmLrI36s10iVXHwRbR",
@@ -271,7 +271,7 @@ The response received includes everything about the execution including the time
     }
 }
 ```
-::
+:::
 
 We can modify our flow to generate an output like so:
 
@@ -288,7 +288,7 @@ tasks:
 
 When we fetch the data from an Execution of this flow with Execution ID `59uQXHbkMy5YwHEDom72Xv`, we get the following response:
 
-::collapse{title="Response Body"}
+:::collapse{title="Response Body"}
 ```json
 {
     "id": "59uQXHbkMy5YwHEDom72Xv",
@@ -386,7 +386,7 @@ When we fetch the data from an Execution of this flow with Execution ID `59uQXHb
     "scheduleDate": "2024-11-21T17:09:40.181Z"
 }
 ```
-::
+:::
 
 ## Accessing the KV Store
 
@@ -516,9 +516,9 @@ To do this, we will make the following request:
 curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Note:** Make sure `fileContent` has the correct path to your file.
-::
+:::
 
 When we make this request, we can see it appear in the Namespace Editor:
 

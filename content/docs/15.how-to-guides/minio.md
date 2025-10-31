@@ -11,11 +11,11 @@ Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra us
 
 ---
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This guide is intended for **local development and testing only**.
 MinIO is configured in gateway mode and exposed on `localhost`, without TLS or public access.
 **Do not use this setup in production** without additional security measures (e.g., HTTPS, access controls, and network isolation).
-::
+:::
 
 ## Install and Configure `mc` (MinIO Client)
 
@@ -46,12 +46,12 @@ mc alias set local http://localhost:9000 YOUR_ACCESS_KEY YOUR_SECRET_KEY
 Create the bucket where outputs will be stored:
 
 ```sh
-mc mb local/your_bucket
+mc mb local/your-bucket
 ```
 
 ## Start MinIO Server
 
-Run the MinIO Docker container using the dedicated CI Compose file (e.g., from storage-minio):
+Run the MinIO Docker container using the dedicated CI Compose file (e.g., from [kestra-io/storage-minio](https://github.com/kestra-io/storage-minio/)):
 
 ```sh
 docker compose -f docker-compose-ci.yml up
@@ -67,15 +67,14 @@ storage:
   minio:
     endpoint: localhost
     port: 9000
-    bucket: your_bucket
-    accessKey: YOUR_ACCESS_KEY
-    secretKey: YOUR_SECRET_KEY
+    bucket: your-bucket
+    access-key: YOUR_ACCESS_KEY
+    secret-key: YOUR_SECRET_KEY
 ```
 
 ## Launch Kestra
 
 Start Kestra as usual. Ensure the updated configuration file is correctly mounted or included.
-
 
 
 ## Test with a Flow that Produces Outputs
@@ -124,11 +123,11 @@ tasks:
 You can now validate that the output file is stored in the MinIO bucket:
 
 ```sh
-mc cat local/your_bucket/main/company/team/alligator-743987/executions/23z9cJWEa23kNAxu6sm0CT/tasks/py-outputs/5kxYRM7UqUurvnpVNvHca7/1noPFEiCFGPf2hcqjVzywu-myoutput.json
+mc cat local/your-bucket/main/company/team/alligator-743987/executions/23z9cJWEa23kNAxu6sm0CT/tasks/py-outputs/5kxYRM7UqUurvnpVNvHca7/1noPFEiCFGPf2hcqjVzywu-myoutput.json
 ```
 
 Note that you may need to replace the following placeholders with your own values:
-- the bucket name (here `your_bucket`)
+- the bucket name (here `your-bucket`)
 - the path (namespace) (here `company/team`)
 - the flow id (here `alligator-743987`)
 - the execution id (here `23z9cJWEa23kNAxu6sm0CT`)

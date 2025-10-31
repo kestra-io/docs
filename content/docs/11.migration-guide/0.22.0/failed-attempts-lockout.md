@@ -21,8 +21,8 @@ kestra:
         lock-duration: PT30M    # period the account remains locked
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Note that this change is only relevant for users who leverage LDAP or basic authentication (not relevant for SSO-users).
-::
+:::
 
 Super Admin can unlock the user manually by resetting their password from the user's detail page. The user can also unlock their account by resetting their password using the "Forgot password" link on the login page and following the instructions in the email.

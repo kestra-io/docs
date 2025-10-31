@@ -224,16 +224,8 @@ errors:
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
-::alert{type="info"}
-**Note**: The YAML defines the following:
-
-- The `tutorial` namespace which is the subfolder where the Python file is stored.
-- The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands).
-- `python process_data.py` executes the Python script.
-- The `triggers` section adds the trigger.
-- The `errors` section manages eventual errors and sends a Slack message (you have to set up a dedicated Slack channel to make it work).
-
-::
+:::$1$2
+:::
 
 When you've done, click on **Execute**: you'll be asked to load the CSV file containing the data. When the job is done, in the logs section you'll see the results:
 

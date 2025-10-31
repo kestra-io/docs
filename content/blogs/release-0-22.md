@@ -51,9 +51,9 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
 
 For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Plugin versioning is currently in Beta and may change in upcoming releases.
-::
+:::
 
 ### Read-Only Secrets Backends
 
@@ -79,7 +79,7 @@ For detailed instructions on how to configure and use this feature, visit the [R
 
 This release introduces a new flow property called `afterExecution`, allowing you to run tasks **after** the execution of the flow e.g. to send different alerts depending on some condition. For instance, you can leverage this new property in combination with the `runIf` task property to send a different Slack message for successful and failed Executions — expand the example below to see it in action.
 
-::collapse{title="Example Flow using the new property"}
+:::collapse{title="Example Flow using the new property"}
 ```yaml
 id: alerts_demo
 namespace: company.team
@@ -111,7 +111,7 @@ afterExecution:
         "text": "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
       }
 ```
-::
+:::
 
 The `afterExecution` differs from the `finally` property because:
 1. `finally` runs tasks at the end of the flow while the execution is still in a `RUNNING` state
@@ -133,7 +133,7 @@ For detailed instructions on how to configure and use this feature, check out ou
 Namespace files can now be shared and reused simply by referencing a given `namespace` directly in your script task. If you define multiple namespaces, Kestra will fetch the corresponding namespace files in the same order the namespaces are listed. If you have the same file(s) defined in multiple namespaces, the later namespaces will override files from earlier ones.
 
 
-::collapse{title="Example of Namespace Files inheritance"}
+:::collapse{title="Example of Namespace Files inheritance"}
 ```yaml
 id: namespace_files_inheritance
 namespace: company
@@ -150,7 +150,7 @@ tasks:
     commands:
       - python main.py
 ```
-::
+:::
 
 For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files).
 
@@ -164,7 +164,7 @@ In the example below, the first task will be able to retrieve the key-value pair
 
 For more details on how to use and configure the KV pairs, check our [KV Store documentation](https://kestra.io/docs/concepts/kv-store).
 
-::collapse{title="Example of key-value inheritance"}
+:::collapse{title="Example of key-value inheritance"}
 ```yaml
 id: key_value_inheritance
 namespace: company.team
@@ -178,7 +178,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ kv('test_value', namespace='test') }}"
 ```
-::
+:::
 
 ### LDAP Integration
 
@@ -228,7 +228,7 @@ This release introduces new global views for managing secrets and key-value pair
 ## Notable Backend Enhancements
 
 - We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up to 90% less database space due to aggresive cleaning and perform better. Queues can now sustain a much higher Executions throughput with lower database load. We also haven't forgotten about the Kafka runner, which also benefits from latency improvements due to configuration finetuning.
-- [DevContainer support](docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
+- [DevContainer support](/docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
 - [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
 - Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
@@ -253,7 +253,7 @@ We're pleased to introduce GraalVM integration to Kestra. GraalVM is a high-perf
 
 This integration enables in-memory execution of Python, JavaScript, and Ruby within Kestra workflows, eliminating the requirement for separate language installations or Docker images. The GraalVM plugin is currently in Beta, and we welcome your feedback on this exciting new feature.
 
-::collapse{title="Example parsing JSON data using Python in GraalVM"}
+:::collapse{title="Example parsing JSON data using Python in GraalVM"}
 ```yaml
 id: parse_json_data
 namespace: company.team
@@ -271,7 +271,7 @@ tasks:
       data = {{ read(outputs.download.uri )}}
       data["next_month"] = int(data["month"]) + 1
 ```
-::
+:::
 
 ### DuckDB & SQLite Improvements
 
@@ -279,7 +279,7 @@ This release resolves several issues and enhances persistence capabilities for o
 
 The new `outputDbFile` boolean property enables both plugin tasks to fully support data persistence across your workflow tasks.
 
-::collapse{title="Example with DuckDB"}
+:::collapse{title="Example with DuckDB"}
 ```yaml
 id: duckdb_demo
 namespace: company.team
@@ -306,11 +306,11 @@ tasks:
     sql: SELECT field2, SUM(field1) FROM my_data GROUP BY field2;
     fetchType: STORE
 ```
-::
+:::
 
 Also, it's now possible to avoid using `workingDir()` Pebble method in DuckDB to read local files.
 
-::collapse{title="Reading file without using workingDir in DuckDB"}
+:::collapse{title="Reading file without using workingDir in DuckDB"}
 ```yaml
 id: duckdb_no_working_dir
 namespace: company.team
@@ -329,14 +329,14 @@ tasks:
       data.csv: "{{ outputs.download.uri }}"
     sql: SELECT * FROM read_csv_auto('data.csv');
 ```
-::
+:::
 
 
 ### New Snowflake CLI plugin
 
 Developers can now streamline their Snowflake workflows using the new Snowflake CLI, enabling quick creation, management, and deployment of applications across Snowpark, Streamlit, native app frameworks and all the other possibilities offered by Snowflake. All of this with the automation power of Kestra!
 
-::collapse{title="Snowflake CLI task example"}
+:::collapse{title="Snowflake CLI task example"}
 ```yaml
 id: run_snowpark_function
 namespace: company.team
@@ -355,7 +355,7 @@ pluginDefaults:
       username: "{{secret('SNOWFLAKE_USERNAME')}}"
       password: "{{secret('SNOWFLAKE_PASSWORD')}}"
 ```
-::
+:::
 
 ### New MariaDB tasks
 
@@ -372,13 +372,13 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 - **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given URI location.
 - **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given URI location.
 - **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given URI location is empty.
-- **Environment Name**: `{{ kestra.environment.name }}` — Returns the name given to your environment. This value should be configured in the Kestra configuration.
-- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the Kestra configuration.
+- **Environment Name**: `{{ kestra.environment.name }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../docs/configuration/index.md).
+- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../docs/configuration/index.md).
 
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 Special thanks to [V-Rico](https://github.com/V-Rico) for their [pull request](https://github.com/kestra-io/kestra/pull/7662) resolving an XSS vulnerability in Kestra.
 

@@ -78,7 +78,7 @@ Key components of a Unit Test:
 - **API Access**: You can call the Unit Test programmatically via Kestra API, enabling automation in CI/CD pipelines, custom tooling, or integration with development workflows.
 
 
-::collapse{title="Unit Test example"}
+:::collapse{title="Unit Test example"}
 Let’s look at a simple flow checking if a server is up and sending a Slack alert if it’s not:
 
 ```yaml
@@ -143,7 +143,7 @@ testCases:
       - value: "{{outputs.http_request.code}}"
         notEqualTo: 200
 ```
-::
+:::
 
 
 <div class="video-container">
@@ -167,7 +167,7 @@ Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage
 
 By default, all flow outputs are stored in the shared metadata database. With this new configuration, you can isolate outputs for each tenant or namespace, making sure that sensitive data is not accessible outside its intended scope.
 
-To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your Kestra configuration file:
+To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../docs/configuration/index.md) file:
 
 ```yaml
 kestra:
@@ -191,9 +191,9 @@ With these configuration options, you can control where flow outputs and inputs 
 
 Note that this comes with some tradeoffs — storing that data in the internal storage backend such as S3 rather than in the backend database (like Postgres or Elasticsearch) introduces some additional latency,  especially visible with inputs stored and fetched from internal storage.
 
-::alert{type="info"}
+:::alert{type="info"}
 Currently, the UI is limited and outputs will not be directly visible if using internal storage. You need to preview them or download them as they are not automatically fetched from the internal storage.
-::
+:::
 
 
 ## Customizable Dashboards
@@ -285,7 +285,7 @@ Kestra 0.23.0 introduces Git integration for Dashboards and Apps, enabling versi
 - **Collaborate** with team members using familiar Git workflows
 - **Roll back** to previous versions when needed.
 
-::collapse{title="Example of Pulling Apps from Git to Kestra"}
+:::collapse{title="Example of Pulling Apps from Git to Kestra"}
 
 The following flow allows pulling the configuration of Apps from a GitHub repository and deploying it to the Kestra instance:
 
@@ -305,7 +305,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 * * * *"
 ```
-::
+:::
 
 
 ## Notable Enhancements
@@ -326,7 +326,7 @@ triggers:
 
 **Worker Information in Task Execution**: Task execution details now show the worker ID, hostname, version, and state. Example: `bbbe25da-06fe-42c2-b50f-4deeba2bb3ba: Hostname=postgres-ee-preview-67c9bbcd56-4fnvr, Version=0.23.0-SNAPSHOT, State=RUNNING`.
 
-**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filterOnTags` property lets you filter secrets by tags and sync only those that match.
+**Secret Filtering**: For Google Cloud Secret Manager, Azure Key Vault, and AWS Secrets Manager, the new `filter-on-tags` property lets you filter secrets by tags and sync only those that match.
 
 ## Plugin Enhancements
 
@@ -334,7 +334,7 @@ triggers:
 
 We've introduced a new enterprise Salesforce plugin: the plugin includes tasks for creating, updating, deleting, and querying Salesforce objects, allowing you to seamlessly integrate Salesforce operations into your Kestra workflows.
 
-::collapse{title="Example to import contacts from Postgres to Salesforce"}
+:::collapse{title="Example to import contacts from Postgres to Salesforce"}
 ```yaml
 id: salesforce-postgres-sync
 namespace: company.team
@@ -372,13 +372,13 @@ triggers:
     interval: PT5M
     fetchType: FETCH
 ```
-::
+:::
 
 ### HubSpot
 
 We've introduced a comprehensive HubSpot plugin with tasks for managing companies, contacts, and deals. The plugin provides a complete set of operations (Create, Get, Update, Delete, Search) for each entity type, allowing you to seamlessly integrate HubSpot CRM operations into your Kestra workflows with proper authentication and consistent property handling.
 
-::collapse{title="Example of HubSpot integration to query companies"}
+:::collapse{title="Example of HubSpot integration to query companies"}
 ```yaml
 id: hubspot-query-company
 namespace: company.team
@@ -395,7 +395,7 @@ tasks:
       - propertyName: "createdate"
         direction: "DESCENDING"
 ```
-::
+:::
 
 ### Ollama
 
@@ -407,7 +407,7 @@ With the Ollama CLI task, you can:
 - Chain Ollama commands with other tasks in your workflow
 - Output results to files for downstream processing
 
-::collapse{title="Example using Ollama CLI"}
+:::collapse{title="Example using Ollama CLI"}
 ```yaml
 id: ollama_flow
 namespace: company.team
@@ -420,7 +420,7 @@ tasks:
     outputFiles:
       - completion.txt
 ```
-::
+:::
 
 ### OpenAI Response
 
@@ -434,7 +434,7 @@ The task supports all of OpenAI's built-in tools, including:
 
 You can also format outputs as structured JSON, making it easy to parse and use the generated content in downstream tasks. This is particularly valuable for transforming unstructured requests into structured data that can be directly utilized in your data pipelines.
 
-::collapse{title="Example of OpenAI Responses integration"}
+:::collapse{title="Example of OpenAI Responses integration"}
 ```yaml
 id: web_search
 namespace: company.team
@@ -458,7 +458,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.trends.outputText }}"
 ```
-::
+:::
 
 ### LangChain4j (Beta)
 
@@ -475,7 +475,7 @@ For embeddings, you can choose from several backends, including Elasticsearch, K
 
 The plugins support multiple providers, such as OpenAI, Google Gemini, and others, giving you flexibility to select the best model for your use case.
 
-::collapse{title="Example using Langchain RAG capabilities"}
+:::collapse{title="Example using Langchain RAG capabilities"}
 ```yaml
 id: rag_demo
 namespace: company.team
@@ -515,7 +515,7 @@ tasks:
       type: io.kestra.plugin.langchain4j.embeddings.KestraKVStore
     prompt: Which features were released in Kestra 0.22?
 ```
-::
+:::
 
 ### GitHub Actions Workflow
 
@@ -526,7 +526,7 @@ With the GitHub Actions Workflow plugin, you can:
 - Pass custom inputs and parameters to your workflow
 - Integrate GitHub automation seamlessly with other tasks in your Kestra pipelines
 
-::collapse{title="Example triggering a GitHub Workflow"}
+:::collapse{title="Example triggering a GitHub Workflow"}
 ```yaml
 id: github_runworkflow_flow
 namespace: company.team
@@ -540,7 +540,7 @@ tasks:
     inputs:
       foo:bar
 ```
-::
+:::
 
 ### Jenkins
 
@@ -550,7 +550,7 @@ With the Jenkins plugin, you can:
 - Trigger a Jenkins job build using the `io.kestra.plugin.jenkins.JobBuild` task
 - Retrieve detailed information about a Jenkins job with the `io.kestra.plugin.jenkins.JobInfo` task
 
-::collapse{title="Example using Jenkins JobBuild"}
+:::collapse{title="Example using Jenkins JobBuild"}
 ```yaml
 id: jenkins_job_trigger
 namespace: company.team
@@ -566,7 +566,7 @@ tasks:
       environment:
         - staging
 ```
-::
+:::
 
 ### Go Scripts
 
@@ -575,7 +575,7 @@ Kestra 0.23 introduces powerful new capabilities for running Go code with the ad
 - `Script` task (io.kestra.plugin.scripts.go.Script) - for inline code
 - `Commands` task (io.kestra.plugin.scripts.go.Commands) - for code stored in Namespace Files or passed from a local directory (e.g. cloned from a Git repository) which can be executed using the `go run` command.
 
-::collapse{title="Example using Go Script task"}
+:::collapse{title="Example using Go Script task"}
 ```yaml
 id: go_script
 namespace: company.team
@@ -605,7 +605,7 @@ tasks:
       - go get github.com/go-gota/gota/dataframe
       - go mod tidy
 ```
-::
+:::
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/flGQZeP1MmA?si=BU3kZr2Z6-cBojox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -632,7 +632,7 @@ We've introduced a new GraphQL plugin that enables integration with GraphQL APIs
 
 This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
 
-::collapse{title="Example using GraphQL to query Github API"}
+:::collapse{title="Example using GraphQL to query Github API"}
 ```yaml
 id: graphql-query-github
 namespace: blueprints
@@ -663,7 +663,7 @@ tasks:
         }
       }
 ```
-::
+:::
 
 ### Databricks CLI
 
@@ -683,11 +683,11 @@ We've expanded the ServiceNow plugin with two new tasks:
 
 With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our [dedicated migration guide](https://kestra.io/docs/migration-guide/0.23.0).
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
 - [Open Source](../docs/11.migration-guide/0.23.0/tenant-migration-oss.md)
 - [Enteprise](../docs/11.migration-guide/0.23.0/tenant-migration-ee.md)
-::
+:::
 
 **Key changes include:**
 
@@ -711,7 +711,7 @@ For a complete list of changes and migration instructions, check the [migration 
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
 

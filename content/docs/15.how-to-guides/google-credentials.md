@@ -48,9 +48,9 @@ Inside of Kestra, you can paste the service account JSON directly to the task pr
     }
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This is not recommended as you might expose your key. We'd recommend using [secrets](#add-service-account-as-a-secret) to store your Service Account JSON.
-::
+:::
 
 ## Add Service Account as a Secret
 
@@ -174,7 +174,7 @@ environment:
   ...
 ```
 
-::collapse{title="Full Docker Compose with GOOGLE_APPLICATION_CREDENTIALS"}
+:::collapse{title="Full Docker Compose with GOOGLE_APPLICATION_CREDENTIALS"}
 Here is a full Docker Compose that you can use to add a service account using the environment variable `GOOGLE_APPLICATION_CREDENTIALS`:
 
 ```yaml
@@ -215,12 +215,12 @@ services:
         datasources:
           postgres:
             url: jdbc:postgresql://postgres:5432/kestra
-            driverClassName: org.postgresql.Driver
+            driver-class-name: org.postgresql.Driver
             username: kestra
             password: k3str4
         kestra:
           server:
-            basicAuth:
+            basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -229,7 +229,7 @@ services:
           storage:
             type: local
             local:
-              basePath: "/app/storage"
+              base-path: "/app/storage"
           tutorial-flows:
             enabled: false
           plugins:
@@ -242,7 +242,7 @@ services:
           queue:
             type: postgres
           tasks:
-            tmpDir:
+            tmp-dir:
               path: /tmp/kestra-wd/tmp
           url: http://localhost:8080/
     ports:
@@ -259,6 +259,6 @@ services:
 
 For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
 
-::alert{type="info"}
+:::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-::
+::::

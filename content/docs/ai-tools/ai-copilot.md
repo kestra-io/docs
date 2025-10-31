@@ -19,7 +19,7 @@ The AI Copilot is designed to help build and modify flows directly from natural 
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your Kestra configuration:
+To add Copilot to your flow editor, add the following to your [Kestra configuration](../configuration/index.md):
 
 ```yaml
 kestra:
@@ -38,12 +38,13 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
+- `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
-::alert{type="info"}
-The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
-::
+:::alert{type="info"}
+The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
+:::
 
 ## Build flows with Copilot
 
@@ -75,7 +76,7 @@ You can continuously collaborate with Copilot until the flow is exactly as you i
 
 To get started with Copilot, here are some example prompts to test, iterate on, and use as a starting point for collaboratively building flows with AI in Kestra:
 
-::collapse{title="Example prompts to get started"}
+:::collapse{title="Example prompts to get started"}
 ```markdown
 - Create a flow that runs a dbt build command on DuckDB
 - Create a flow cloning https://github.com/kestra-io/dbt-example Git repository from a main branch, then add a dbt CLI task using DuckDB backend that will run dbt build command for that cloned repository using my_dbt_project profile and dev target. The dbt project is located in the root directory so no dbt project needs to be configured.
@@ -118,4 +119,133 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 - Run a flow whenever 5 records are available in Kafka topic mytopic
 - Submit a run for a Databricks job
 ```
+:::
+
+## Enterprise Edition Copilot configurations
+
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+
+### Amazon Bedrock
+
+```yaml
+kestra:
+  ai:
+    type: bedrock
+    bedrock:
+      model-name: amazon.nova-lite-v1:0
+      access-key-id: BEDROCK_ACCESS_KEY_ID
+      secret-access-key: BEDROCK_SECRET_ACCESS_KEY
+```
+
+### Anthropic
+
+```yaml
+kestra:
+  ai:
+    type: anthropic
+    anthropic:
+      model-name: claude-opus-4-1-20250805
+      api-key: CLAUDE_API_KEY
+```
+
+### Azure OpenAI
+
+```yaml
+kestra:
+  ai:
+    type: azure-openai
+    azure-openai:
+      model-name: gpt-4o-2024-11-20
+      api-key: AZURE_OPENAI_API_KEY
+      tenant-id: AZURE_TENANT_ID
+      client-id: AZURE_CLIENT_ID
+      client-secret: AZURE_CLIENT_SECRET
+      endpoint: "https://your-resource.openai.azure.com/"
+```
+
+### Deepseek
+
+```yaml
+kestra:
+  ai:
+    type: deepseek
+    deepseek:
+      model-name: deepseek-chat
+      api-key: DEEPSEEK_API_KEY
+      base-url: "https://api.deepseek.com/v1"
+```
+
+### Google Gemini
+
+```yaml
+kestra:
+  ai:
+    type: gemini
+    gemini:
+      model-name: gemini-2.5-flash
+      api-key: YOUR_GEMINI_API_KEY
+```
+
+### Google Vertex AI
+
+```yaml
+kestra:
+  ai:
+    type: googlevertexai
+    googlevertexai:
+      model-name: gemini-2.5-flash
+      project: GOOGLE_PROJECT_ID
+      location: GOOGLE_CLOUD_REGION
+      endpoint: VERTEX-AI-ENDPOINT
+```
+
+### Mistral
+
+```yaml
+kestra:
+  ai:
+    type: mistralai
+    mistralai:
+      model-name: mistral:7b
+      api-key: MISTRALAI_API_KEY
+      base-url: "https://api.mistral.ai/v1"
+```
+
+### Ollama
+
+```yaml
+kestra:
+  ai:
+    type: ollama
+    ollama:
+      model-name: llama3
+      base-url: http://localhost:11434
+```
+
+::alert{type="info"}
+If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 ::
+
+### OpenAI
+
+```yaml
+kestra:
+  ai:
+    type: openai
+    openai:
+      model-name: gpt-5-nano
+      api-key: OPENAI_API_KEY
+      base-url: https://api.openai.com/v1
+```
+
+### OpenRouter
+
+```yaml
+kestra:
+  ai:
+    type: openrouter
+    openrouter:
+      api-key: OPENROUTER_API_KEY
+      base-url: "https://openrouter.ai/api/v1"
+      model-name: x-ai/grok-beta
+```

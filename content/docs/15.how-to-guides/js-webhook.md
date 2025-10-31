@@ -9,7 +9,7 @@ topics:
 
 Integrate Kestra into your JavaScript App using Webhooks.
 
-With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server. 
+With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server.
 
 This can be useful if you want a request from your website to be made and start a workflow execution to process orders. For example, you have an online shop where orders are made and you want Kestra to receive these orders and start processing them.
 
@@ -91,7 +91,7 @@ function App() {
           await axios.post('http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 console.log(response.data)
-              }); 
+              });
       } catch (error) {
           console.error('Error:', error);
       }
@@ -137,7 +137,7 @@ function App() {
 }
 ```
 
-The form uses `onSubmit` and `onChange` to call functions. We use `onSubmit` on the button to call our newly added `handleSubmit` function. 
+The form uses `onSubmit` and `onChange` to call functions. We use `onSubmit` on the button to call our newly added `handleSubmit` function.
 
 However, we don't have a function to handle automatically adding our text to our state variable `formData`. We can add a new function called `handleChange` which will use our state updater function `setFormData` to update `formData` everytime new text is added to the input. This means that when we press **Submit**, the text is ready to be sent in a request body.
 
@@ -151,7 +151,7 @@ function App() {
           await axios.post('http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 console.log(response.data)
-              }); 
+              });
       } catch (error) {
           console.error('Error:', error);
       }
@@ -208,7 +208,7 @@ function App() {
           await axios.post('http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/abcdefg',
               formData).then(response => {
                 setResponseData(response.data)
-              }); 
+              });
       } catch (error) {
           console.error('Error:', error);
       }
@@ -248,7 +248,7 @@ When we type in a value and press **Submit**, we can see a new execution is crea
 
 ![kestra-logs](/docs/how-to-guides/js-webhook/kestra-logs.png)
 
-::collapse{title="CSS Styling"}
+:::collapse{title="CSS Styling"}
 
 These are the CSS styles used in the example:
 
@@ -281,4 +281,4 @@ These are the CSS styles used in the example:
 }
 
 ```
-::
+:::

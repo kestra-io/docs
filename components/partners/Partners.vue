@@ -142,6 +142,16 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/conapi.svg" class="card-img-top" alt="Conapi logo">
+                        <div class="card-body">
+                            <p class="card-text">Data Consulting Partner</p>
+                            <h5 class="card-title">Conapi</h5>
+                            <a href="https://www.conapi.at/" target="_blank">Visit Conapi website <OpenInNew /></a>
+                        </div>
+                    </div>
+                    </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/partners-logos/badge-partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">

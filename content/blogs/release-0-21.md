@@ -45,7 +45,7 @@ Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch,
 
 The examples below show how to configure Log Shipper with Datadog and AWS CloudWatch.
 
-::collapse{title="Expand for a LogShipper example with Datadog "}
+:::collapse{title="Expand for a LogShipper example with Datadog "}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -67,12 +67,12 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 ```
-::
+:::
 
 ![datadog logshipper](/blogs/release-0-21/logshipper_datadog.png)
 
 
-::collapse{title="Expand for an example with AWS CloudWatch"}
+:::collapse{title="Expand for an example with AWS CloudWatch"}
 ```yaml
 id: log_shipper
 namespace: company.team
@@ -95,7 +95,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *" # everyday at 9am
 ```
-::
+:::
 
 ![logshipper aws cloudwatch](/blogs/release-0-21/logshipper_aws_cloudwatch.png)
 
@@ -115,7 +115,7 @@ As with everything in Kestra, you can manage dashboards as code (and you can cre
 
 Here’s an example that displays executions over time and a pie chart of execution states:
 
-::collapse{title="Expand for a Custom Dashboard Code example "}
+:::collapse{title="Expand for a Custom Dashboard Code example "}
 ```yaml
 title: Data Team Executions
 description: Data Executions dashboard
@@ -176,7 +176,7 @@ charts:
           type: STARTS_WITH
           value: data
 ```
-::
+:::
 
 ![alt text](/blogs/release-0-21/custom_dashboard1.png)
 
@@ -199,7 +199,7 @@ You can enter Maintenance Mode from the **Administration > Instance** panel.
 
 We've [introduced](https://github.com/kestra-io/kestra/issues/6649) a `finally` property that runs tasks at the end of a flow, regardless of prior task outcomes. It's especially useful for cleanup steps like shutting down temporary resources spun up during a flow execution such as Docker containers or on-demand Spark clusters.
 
-::collapse{title="Example starting and stopping a Docker container"}
+:::collapse{title="Example starting and stopping a Docker container"}
 
 ```yaml
 id: dockerRedis
@@ -263,7 +263,7 @@ finally:
     type: io.kestra.plugin.docker.Stop
     containerId: "{{outputs.start.taskRunner.containerId}}"
 ```
-::
+:::
 
 ## User Interface & Experience Improvements
 
@@ -294,7 +294,7 @@ We’ve [fixed](https://github.com/kestra-io/plugin-jdbc/issues/165) an issue pr
 
 The `Exit` task allows you to terminate an execution in a given state based on a custom condition.
 
-::collapse{title="Exit task example"}
+:::collapse{title="Exit task example"}
 ```yaml
 id: exit
 namespace: company.team
@@ -324,7 +324,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: This is the end
 ```
-::
+:::
 
 ### New `Write` task
 
@@ -351,7 +351,7 @@ tasks:
 
 The new `huggingface.Inference` task integrates with the [HuggingFace Inference API](https://huggingface.co/docs/api-inference/index), letting you incorporate LLM-based capabilities into your Kestra workflows.
 
-::collapse{title="HuggingFace Inference task example"}
+:::collapse{title="HuggingFace Inference task example"}
 ```yaml
 id: hugging_face
 namespace: blueprint
@@ -377,13 +377,13 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "The input is categorized as a {{ json(outputs.classification.output).labels[0] }} message."
 ```
-::
+:::
 
 ### New AWS EMR plugin
 
 The [AWS EMR plugin](/plugins/plugin-aws#emr) lets you create or terminate AWS EMR clusters and manage jobs.
 
-::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
+:::collapse{title="Example to create an AWS EMR cluster with a Spark job"}
 ```yaml
 id: aws_emr
 namespace: company.team
@@ -411,7 +411,7 @@ tasks:
           - spark-submit s3://kestra-test/health_violations.py --data_source s3://kestra-test/food_establishment_data.csv --output_uri s3://kestra-test/test-emr-output
     wait: false
 ```
-::
+:::
 
 ### New Pebble functions
 

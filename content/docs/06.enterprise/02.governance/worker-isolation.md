@@ -29,7 +29,7 @@ To only limit access to certain plugins on a Worker without requiring file path 
 
 ### `kestra.ee.java-security.forbidden-paths`
 
-This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect Kestra configuration files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
+This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect [Kestra configuration](../../configuration/index.md) files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
 
 ### `kestra.ee.java-security.authorized-class-prefix`
 
@@ -50,9 +50,9 @@ kestra:
         - io.kestra.plugin.scripts
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](../../16.scripts/00.languages.md) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
-::
+:::
 
 ## Scripting isolation
 
@@ -85,6 +85,6 @@ Forced plugin defaults:
 - Ensure a property is set globally for a task, and no task can override it.
 - Are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.
-::
+:::

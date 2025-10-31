@@ -2,6 +2,7 @@
 title: OpenTelemetry
 icon: /docs/icons/admin.svg
 version: ">= 0.21.0"
+editions: ["OSS", "EE"]
 ---
 
 **Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data—such as traces, metrics, and logs—to gain insights into system behavior.
@@ -14,15 +15,15 @@ OpenTelemetry defines three different kinds of telemetry data:
 - **Metrics** are measurements of a service captured at runtime.
 - **Logs** are timestamped text records, either structured (recommended) or unstructured, with optional metadata.
 
-Starting with 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry compatible exporters. For more details about OpenTelemetry, check out the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
+Starting with version 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry-compatible exporters. For more details, check out the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
 
 ## Traces
 
-::alert{type="info"}
+:::alert{type="info"}
 Exporting trace data in Kestra is currently a Beta feature.
-::
+:::
 
-The first step is to enable distributed traces inside the Kestra configuration file:
+The first step is to enable distributed traces inside the [Kestra configuration](../configuration/index.md) file:
 
 ```yaml
 kestra:
@@ -30,28 +31,30 @@ kestra:
     root: DEFAULT  # Enable traces inside Kestra flow executions
 otel:
   traces:
-    exporter: otlp # Here we define an exporter, only otlp is supported for now
+    exporter: otlp # Only otlp is supported for now
   exporter:
     otlp:
-      endpoint: http://localhost:4317 # This is the address of the collector, here we point to the gRPC collector deployed in localhost. Replace to match the address of your own collector.
+      endpoint: http://localhost:4317 # Replace with the address of your own collector
 ```
 
 When enabled, Kestra instruments:
 - All calls to its API
-- All flow executions by creating one span by task execution and one span each time the Executor processes an execution message
-- External HTTP calls made by the HTTP tasks (including tasks that use the Kestra HTTP client under the cover)
+- All flow executions (one span per task execution, plus one span for each execution message processed by the Executor)
+- External HTTP calls made by the HTTP tasks (including tasks that use the Kestra HTTP client)
 
+### Trace correlation
 Kestra propagates the trace context so that traces are correlated:
 - The API call trace correlates with the execution it creates.
-- The flow execution trace correlates with the parent flow when the `Subflow` or `ForEachItem` task is used.
-- External HTTP calls include the standard propagation header so correlation happens with downstream systems.
+- Flow execution traces correlate with parent flows when the `Subflow` or `ForEachItem` task is used.
+- External HTTP calls include the standard propagation header for downstream correlation.
 
-Enable [Jaeger](https://www.jaegertracing.io), and OpenTelemetry compatible tracing platform, with Kestra in a docker-compose configuration file with the following:
+### Example: Jaeger with Docker Compose
+
+Enable [Jaeger](https://www.jaegertracing.io), an OpenTelemetry-compatible tracing platform, with Kestra in a Docker Compose configuration file:
 
 ```yaml
 services:
-  restart: on-failure
-
+  # Postgres is included here as a dependency for Kestra during local testing
   postgres:
     image: postgres:14.13
     environment:
@@ -66,52 +69,55 @@ services:
     image: jaegertracing/all-in-one:latest
     ports:
       - "16686:16686"  # Jaeger UI
-      - "14268:14268"  # Receive legacy OpenTracing traces, optional
+      - "14268:14268"  # OpenTracing (optional)
       - "4317:4317"    # OTLP gRPC receiver
       - "4318:4318"    # OTLP HTTP receiver
-      - "14250:14250"  # Receive from external otel-collector, optional
+      - "14250:14250"  # External otel-collector (optional)
     environment:
       - COLLECTOR_OTLP_ENABLED=true
+    restart: on-failure
 ```
 
-The following screenshot displays traces created inside Jaeger:
+The following screenshot shows three correlated traces:
 
-You can see three traces, all correlated:
 - One created from the API call that creates the execution
-- One created from an execution of a flow named `opentelemetry_parent` which has several spans, including one for a `Subflow` task that creates an execution of the flow `opentelemetry_basic`
-- One created from an execution of a flow named `opentelemetry_basic`
+- One created from an execution of a flow named `opentelemetry_parent` which has spans for tasks including a `Subflow`
+- One created from the `opentelemetry_basic` flow execution
 
-![Traces example](/docs/administrator-guide/opentelemetry_traces.png)
+![Example of correlated traces in Jaeger](/docs/administrator-guide/opentelemetry_traces.png)
 
-Kestra traces inside flow executions can be disabled while keeping traces inside the API by disabling the Kestra tracer:
+### Disabling traces
+
+You can disable traces for flows while keeping API traces:
 
 ```yaml
 kestra:
   traces:
-    root: DISABLED # Disable traces inside Kestra flows
+    root: DISABLED
 ```
 
-You can also disable traces at the component level. However, this feature is still experimental, and propagation may not work properly. For example, if the tracer is disabled in the Executor but remains enabled in other components, issues may arise.
+You can also disable traces per component (experimental). For example, disabling only Executor spans:
 
 ```yaml
 kestra:
   traces:
-    root: DEFAULT # Enable traces inside Kestra flows
+    root: DEFAULT
     categories:
-      io.kestra.core.runners.Executor: DISABLED # Disable traces inside the Executor
+      io.kestra.core.runners.Executor: DISABLED
 ```
 
-Supported categories are:
-- `io.kestra.core.runners.Executor`: creates spans for each message in the execution queue.
-- `io.kestra.core.runners.Worker`: creates spans for each runnable tasks execution.
-- `io.kestra.plugin.core.flow.Subflow`: creates spans for each `Subflow` task execution.
-- `io.kestra.plugin.core.flow.ForEachItem`: creates spans for each `ForEachItem`task execution.
+#### Supported categories
 
-You can disable multiple tracers in one configuration item using a category prefix. For example, `io.kestra.plugin.core.flow` disables traces for both the `Subflow` and the `ForEachItem` tasks.
+| Category                               | Description                                       |
+|----------------------------------------|---------------------------------------------------|
+| `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
+| `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
+| `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
+| `io.kestra.plugin.core.flow.ForEachItem` | Spans for each `ForEachItem` task execution     |
 
 ## Metrics
 
-To send metrics to an OpenTelemetry compatible collector, add the following parameters to your Kestra configuration file:
+To send metrics to an OpenTelemetry-compatible collector, add the following parameters to your [Kestra configuration](../configuration/index.md) file:
 
 ```yaml
 micronaut:
@@ -119,14 +125,31 @@ micronaut:
     export:
       otlp:
         enabled: true
-        url: http://localhost:4318/v1/metrics # This is the address of the collector, here we point to the HTTP collector deployed in localhost. Replace to match the address of your own collector.
+        url: http://localhost:4318/v1/metrics # Replace with your collector URL
+```
+
+For example, you can configure an OpenTelemetry Collector to forward metrics to Prometheus:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:9464"
 ```
 
 ## Logs
 
-To send logs to an OpenTelemetry compatible collector, use the new [LogShipper](../06.enterprise/02.governance/logshipper.md) functionality with the built-in OpenTelemetry log exporter. LogShipper is available in the Kestra [Enterprise Edition](/enterprise).
+To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../06.enterprise/02.governance/logshipper.md) with the built-in OpenTelemetry log exporter.
+:::alert{type="warning"}
+LogShipper is only available in the Kestra **Enterprise Edition**.
+:::
 
-The following flow sends logs from all flows to an OpenTelemetry compatible collector daily:
+The following flow sends logs from all flows to a collector daily:
 
 ```yaml
 id: log_shipper
@@ -143,5 +166,5 @@ tasks:
     logExporters:
       - id: OTLPLogExporter
         type: io.kestra.plugin.ee.opentelemetry.LogExporter
-        otlpEndpoint: http://localhost:4318/v1/logs # This is the address of the collector, here we point to the HTTP collector deployed in localhost. Replace to match the address of your own collector.
+        otlpEndpoint: http://localhost:4318/v1/logs # Replace with your collector URL
 ```

@@ -48,10 +48,10 @@ The execution context includes these variables:
 - `envs` — environment variables
 - `globals` — global variables.
 
-::alert{type="info"}
+:::alert{type="info"}
 To see **all metadata** available in the **execution context**, use `{{ printContext() }}` in the Debug Expression console.
 ![printContext](/docs/expressions/printContext.png)
-::
+:::
 
 ---
 
@@ -116,9 +116,9 @@ tasks:
       date: {{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Use the `date` filter to format the `execution.startDate` variable as `yyyy-MM-dd HH:mm:ss.SSSSSS`, e.g., `{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`.
-::
+:::
 
 ---
 
@@ -257,11 +257,11 @@ tasks:
       Second: {{ outputs['second-task'].value }}
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 The `Return`-type task emits an output attribute called `value`. The `print_both_outputs` task demonstrates two ways to access outputs:
 1. Dot notation: `{{ outputs.first.value }}`
 2. Subscript notation: `{{ outputs['second-task'].value }}` — required for task IDs with special characters (e.g., hyphens). We recommend using `camelCase` or `snake_case` for task IDs to avoid this issue.
-::
+:::
 
 ---
 
@@ -334,9 +334,9 @@ Dot notation (`.`) is used to access nested attributes. For attributes with spec
 {{ foo['foo-bar'] }} # Accesses 'foo-bar' in 'foo'
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 For names with hyphens (`-`), use **subscript notation**: `{{ outputs.mytask.myoutput['foo-bar'] }}`. To avoid this, use `camelCase` or `snake_case` for names.
-::
+:::
 
 For lists, access elements by index with square brackets (`[]`):
 
@@ -598,9 +598,9 @@ The `toJson` filter converts any object into a JSON string. Examples:
 {{ "foo" | toJson }} # Outputs: '"foo"'
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 In versions prior to [v0.18.0](/blogs/2024-08-06-release-0-18.md), this filter was named `json`. Using `json` will still work but raises a warning in the UI.
-::
+:::
 
 ---
 
@@ -1247,11 +1247,15 @@ The `timestamp` filter converts a date to a Unix timestamp in seconds.
 
 ### timestampMicro
 
+:::alert{type="warning"}
+Previously, this expression has wrongly returned a nano-precision timestamp.
+:::
+
 The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ```twig
 {{ now() | timestampMicro(timeZone="Asia/Kolkata") }}
-# output: 1720505821000180275
+# output: 1720505821182413
 ```
 
 **Arguments**:
@@ -1823,6 +1827,9 @@ inputs:
 
 ### isIn
 
+:::badge{version=">=0.24" editions="OSS,EE"}
+:::
+
 Returns true if the value on the left is present in the list on the right. Useful for conditions such as `runIf`.
 
 ```yaml
@@ -2371,7 +2378,7 @@ Checks if an integer is odd.
 ## Expressions FAQ
 
 
-::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
+:::collapse{title="Why Kestra doesn't provide an escape function to escape newline characters in multiline strings, often needed in an HTTP JSON request body?"}
 In Kestra, there is no built-in function to specifically escape newline characters in a JSON body. Partial string interpolation can lead to invalid JSON formatting, so the recommended approach is to create a single Pebble expression that parses your entire JSON body and automatically handles any newlines or special characters.
 
 Here is a working example showing the recommended pattern:
@@ -2444,5 +2451,5 @@ tasks:
       } | toJson }}
 ```
 
-::
+:::
 

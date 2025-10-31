@@ -12,9 +12,9 @@ MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as it
 
 ---
 
-::alert{type="warning"}
+:::alert{type="warning"}
 This guide is intended for **local testing only**. It sets up a single-node Ceph cluster using `cephadm` and exposes it via MinIO in gateway mode. This configuration is **not suitable for production** use.
-::
+:::
 
 ## Install `cephadm`
 
@@ -97,9 +97,9 @@ Then deploy RGW on that hostname (e.g., `kestra`):
 sudo cephadm shell -- ceph orch apply rgw default kestra
 ```
 
-::alert{type="warning"}
+:::alert{type="warning"}
 The second argument **must match your system's hostname**. Using `default` or a wrong name will result in an `Unknown hosts` error.
-::
+:::
 
 Verify RGW is running:
 
@@ -180,8 +180,8 @@ storage:
     endpoint: localhost
     port: 9000
     bucket: kestra-bucket
-    accessKey: ABCDEF1234567890
-    secretKey: abc/xyz890foobar==
+    access-key: ABCDEF1234567890
+    secret-key: abc/xyz890foobar==
 ```
 
 Kestra will talk to MinIO as usual, and MinIO will write to Ceph transparently.
