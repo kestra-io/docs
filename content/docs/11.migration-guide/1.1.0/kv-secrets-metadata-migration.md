@@ -26,8 +26,8 @@ For example, if you’re using **Docker Compose**, start your container with the
 kestra:
     image: registry.kestra.io/docker/kestra:latest
     commands:
-        - /app/kestra migrate metadata-kv
-        - /app/kestra migrate metadata-secrets
+        - /app/kestra migrate metadata kv
+        - /app/kestra migrate metadata secrets
 ```
 
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
@@ -39,7 +39,7 @@ kestra:
         - server standalone --worker-thread=128
 ```
 
-Similarly, for Kubernetes installations, run a pod with the migration script (`- /app/kestra migrate metadata-kv && /app/kestra migrate metadata-secrets`), so the KV Store and Secrets databases are updated. Then, restart your normal pod for Kestra server components without the script.
+Similarly, for Kubernetes installations, run a pod with the migration script (`- /app/kestra migrate metadata kv && /app/kestra migrate metadata secrets`), so the KV Store and Secrets databases are updated. Then, restart your normal pod for Kestra server components without the script.
 
 ::alert{type="warning"}
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.  

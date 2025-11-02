@@ -7,4 +7,4 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-`- /app/kestra migrate metadata # run this command for OSS or EE, if not secret are still usable in flow/execution, just UI is not updated`
+`- /app/kestra migrate metadata kv && /app/kestra migrate metadata secret # run this command for OSS or EE, if not secret are still usable in flow/execution, just UI is not updated`
