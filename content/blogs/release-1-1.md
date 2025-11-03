@@ -24,7 +24,7 @@ The table below highlights the key features of this release.
 | Mail Trigger | Trigger workflows based on incoming emails using the new `MailReceivedTrigger` | All Editions |
 | Enhanced File Detection Triggers | File detection triggers now react to both new and updated files, not just new ones | All Editions |
 | Human Task | Allow paused executions to be manually approved only by specific users or groups | Enterprise Edition |
-| Improved Airgap Support | Offline deployments no longer display UI components that rely on external API calls, and blueprints remain accessible in airgapped environments. | All Editions |
+| Improved Air Gap Support | Offline deployments no longer display UI components that rely on external API calls, and blueprints remain accessible in airgapped environments. | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
