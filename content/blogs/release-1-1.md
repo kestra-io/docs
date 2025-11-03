@@ -16,15 +16,15 @@ The table below highlights the key features of this release.
 
 | Feature | Description | Edition |
 |---|---|---|
-| New Filters | Redesigned UI filters with faster autocompletion and improved usability based on user feedback | All Editions |
+| New Filters | Redesigned UI filters with improved usability based on user feedback | All Editions |
 | No-Code Dashboard Editor | Create and edit dashboards using a no-code, multi-panel editor without writing code | All Editions |
 | Custom App Branding | Customize your Kestra instance with custom logos, colors, and app thumbnails in the Apps catalog | Enterprise Edition |
 | Multi-Agent AI Systems | AI agents can now use other AI agents as tools, enabling sophisticated multi-agent orchestration workflows | All Editions |
 | Fix with AI | Get AI-powered suggestions for fixes when any of your tasks fail | All Editions |
 | Mail Trigger | Trigger workflows based on incoming emails using the new `MailReceivedTrigger` | All Editions |
 | Enhanced File Detection Triggers | File detection triggers now react to both new and updated files, not just new ones | All Editions |
-| Human Task | Enable manual approval steps in workflows with unpause tasks and granular user permission controls | Enterprise Edition |
-| Improved Airgap Support | Better blueprint management and removal of UI components relying on external APIs for offline deployments | All Editions |
+| Human Task | Allow paused executions to be manually approved only by specific users or groups | Enterprise Edition |
+| Improved Airgap Support | Offline deployments no longer display UI components that rely on external API calls, and blueprints remain accessible in airgapped environments. | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
@@ -37,12 +37,12 @@ Check the video below for a quick overview of all enhancements.
 
 ## New Filters
 
-Following user feedback, we've completely redesigned the filters UI across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex execution queries.
+Following user feedback, we've completely redesigned the UI filters across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex queries.
 
 The new filter design is cleaner, more intuitive, and significantly more powerful:
 - **Reset filters with a single click** to start fresh
 - **Save frequently used filter combinations** for quick access
-- **Reorder table columns** to match your workflow
+- **Hide, show or reorder table columns** to show only the information you need
 - **Choose from explicit, user-friendly filter options** instead of complex text fields
 
 The redesigned interface makes it effortless to find exactly what you're looking for—whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
@@ -55,7 +55,7 @@ The redesigned interface makes it effortless to find exactly what you're looking
 
 Kestra 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**, bringing the same powerful visual editing experience we introduced for flows to dashboard development. You can now build and customize dashboards directly from the UI without writing YAML.
 
-Create data sources, visualizations, and charts visually using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Just like with the multi-panel Flow Editor, you can open, reorder, and close any combination of panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without having to start from raw YAML.
+Create data sources, visualizations, and charts using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Just like with the multi-panel Flow Editor, you can open, reorder, and close any combination of panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without having to start from raw YAML.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -193,9 +193,9 @@ triggers:
     type: io.kestra.plugin.gcp.gcs.Trigger
     interval: "PT5S"
     on: UPDATE
-    from: gs://test-gcs-trigger-kestra
+    from: "gs://test-gcs-trigger-kestra"
     action: MOVE
-    to: gs://test-gcs-trigger-kestra/archive
+    to: "gs://test-gcs-trigger-kestra/archive"
     projectId: kestra-sandbox
     serviceAccount: "{{ secret('GCP_CREDS') }}"
 
@@ -215,7 +215,7 @@ This enhancement is available across all file-based triggers, including File Sys
 
 ## Human-in-the-Loop Workflows
 
-Enterprise Edition users can now add manual approval steps to workflows using the new `HumanTask`. When an execution reaches a human task, it pauses until designated users or group members approve and unpause it. This is perfect for workflows requiring human validation before proceeding with critical operations.
+Enterprise Edition users can now add manual approval steps to workflows using the new `HumanTask`. When an execution reaches a human task, it pauses until designated users or group members approve and resume it. This is perfect for workflows requiring human validation before proceeding with critical operations.
 
 Use cases include:
 - Data quality checks before loading to production databases
@@ -268,7 +268,7 @@ Kestra 1.1 brings significantly improved support for offline and airgapped envir
 
 ## New Plugins
 
-Kestra 1.1 includes dozens of new plugins contributed by our growing community, expanding integration capabilities across databases, APIs, messaging platforms, and AI providers:
+Kestra 1.1 includes dozens of new plugins contributed by our growing community, expanding integration capabilities across databases, APIs, messaging platforms, and AI providers.
 
 ### Data & Database Plugins
 - **Liquibase** – CLI tasks to compare databases and generate diffs or change logs. Use the `Diff` task to compare schemas and track database changes in Git.
@@ -297,6 +297,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Messenger** – Facebook Messenger notifications (plugin-notifications).
 - **LINE** – LINE messaging platform integration.
 - **XExecution** – Send X (formerly Twitter) posts with execution information.
+- **JMS** – Java Message Service integration for enterprise messaging systems.
 
 ### Content & Media
 - **YouTube** – `VideoStats`, `VideoTrigger`, and `CommentTrigger` tasks for YouTube automation.
@@ -304,7 +305,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Meta** – Integration for Facebook and Instagram platforms.
 
 ### Developer Tools
-- **Prefect Cloud** – `CreateFlowRun` task to trigger Prefect flow runs from Kestra.
+- **Prefect** – `CreateFlowRun` task to trigger Prefect flow runs from Kestra.
 - **Algolia** – Manage search indices and records programmatically.
 - **Apify** – `RunActor` and `GetDataset` tasks for web scraping automation.
 
@@ -319,17 +320,14 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Cloudflare Workers AI** – Integration with Cloudflare's AI platform.
 - **LocalAI** – Support for locally-hosted AI models.
 
-### Messaging & Integration
-- **JMS** – Java Message Service integration for enterprise messaging systems.
-
 ## Migration Note for Upgrading to 1.1
 
-Version 1.1 changes how Key-Value and Secrets metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored pairs directly from storage, which was inefficient for large datasets. If you do not run the migration after upgrading to 1.1.0, the **Key-Value Store** and **Secrets** pages in the UI will appear empty (though flows and tasks will continue to work as normal; this is a UI-only issue). To restore the missing data in the UI, run the following commands once after upgrading to version 1.1.0 (or later):
+Version 1.1 changes how Key-Value and Secrets metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored pairs directly from storage, which was inefficient for large datasets. If you do not run the migration after upgrading to 1.1.0, the **Key-Value Store** and **Secrets** pages in the UI will appear empty (flows and tasks will continue to work as usual; migration is required only for the UI). To restore the missing data in the UI, run the following commands once after upgrading to version 1.1.0 (or later):
 
 
 ```shell
-/app/kestra migrate metadata-kv
-/app/kestra migrate metadata-secrets
+/app/kestra migrate metadata kv
+/app/kestra migrate metadata secrets
 ```
 
 For **Docker Compose** setups, include the commands in your startup configuration:
@@ -338,8 +336,8 @@ For **Docker Compose** setups, include the commands in your startup configuratio
 kestra:
   image: registry.kestra.io/docker/kestra:latest
   commands:
-    - /app/kestra migrate metadata-kv
-    - /app/kestra migrate metadata-secrets
+    - /app/kestra migrate metadata kv
+    - /app/kestra migrate metadata secrets
 ```
 
 After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
