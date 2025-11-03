@@ -118,7 +118,7 @@ In this example, the main agent (`ai-agent`) receives a prompt, summarizes it, a
 
 When task runs fail, Kestra 1.1 can now provide AI-powered suggestions to help you quickly diagnose and resolve issues. The new "Fix with AI" feature analyzes failed task runs and offers intelligent recommendations for fixing the problem, helping you troubleshoot workflow issues faster and get your executions back on track.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/ARCADE_ID_1?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Feature Demo 1 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;"></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/FK3jLC4EmG70aJdVMgOU?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Fix with AI | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 ## New `MailReceivedTrigger` and `RealTimeTrigger` for Email-Driven Workflows
