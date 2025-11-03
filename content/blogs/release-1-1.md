@@ -40,10 +40,11 @@ Check the video below for a quick overview of all enhancements.
 Following user feedback, we've completely redesigned the UI filters across Kestra. The previous implementation was too technical and difficult to navigate, especially when working with complex queries.
 
 The new filter design is cleaner, more intuitive, and significantly more powerful:
+- **Choose from explicit, user-friendly filter options** instead of complex text fields
 - **Reset filters with a single click** to start fresh
 - **Save frequently used filter combinations** for quick access
 - **Hide, show or reorder table columns** to show only the information you need
-- **Choose from explicit, user-friendly filter options** instead of complex text fields
+
 
 The redesigned interface makes it effortless to find exactly what you're looking for—whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
 
