@@ -255,9 +255,9 @@ tasks:
 ::
 
 
-## Improved Airgap Support
+## Improved Air Gap Support
 
-Kestra 1.1 brings significantly improved support for offline and airgapped environments. The UI now adapts fully to run without internet connectivity: blueprints fetch from the Kestra API instead of external sources, YouTube embeds hide automatically when offline, fonts fall back to local versions, and internet-dependent sidebar features are hidden automatically. These improvements ensure Kestra runs smoothly in completely isolated environments without any degraded functionality.
+Kestra 1.1 brings significantly improved support for offline and air-gapped environments. The UI now adapts fully to run without internet connectivity: blueprints fetch from the Kestra API instead of external sources, YouTube embeds hide automatically when offline, fonts fall back to local versions, and internet-dependent sidebar features are hidden automatically. These improvements ensure Kestra runs smoothly in completely isolated environments without any degraded functionality.
 
 ## Additional Improvements
 
