@@ -298,7 +298,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Microsoft365 Outlook** – Email and calendar automation for Outlook.
 - **Messenger** – Facebook Messenger notifications (plugin-notifications).
 - **LINE** – LINE messaging platform integration.
-- **XExecution** – Send X (formerly Twitter) posts with execution information.
+- **X** – Send X (formerly Twitter) posts with execution information.
 - **JMS** – Java Message Service integration for enterprise messaging systems.
 
 ### Content & Media
