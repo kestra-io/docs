@@ -312,7 +312,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 ### File & Data Processing
 - **Markdown Serialization** – Convert between Markdown and other formats (plugin-serdes).
 - **Google Drive** – `FileCreatedTrigger` to trigger flows when new files are created.
-- **Google Mail** – `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Gmail integration.
+- **Gmail** – `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Gmail integration.
 
 ### AI Model Providers
 - **dbt-fusion** – Enhanced dbt plugin now supports the dbt-fusion engine through updated CLI tasks for improved performance.
