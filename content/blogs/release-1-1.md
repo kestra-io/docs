@@ -275,6 +275,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Liquibase** – CLI tasks to compare databases and generate diffs or change logs. Use the `Diff` task to compare schemas and track database changes in Git.
 - **dlt** – New `CLI` task to run dlt (data load tool) pipelines directly from Kestra.
 - **DocumentDB** – Tasks to Create, Read, Update, or Delete records in AWS DocumentDB.
+- **dbt-fusion** – Enhanced dbt plugin now supports the dbt-fusion engine through updated CLI tasks for improved performance.
 
 ### SaaS & API Integrations
 - **Airtable** – Full CRUD operations with `List`, `Get`, `Create`, `Update`, and `Delete` tasks for managing Airtable records.
@@ -316,10 +317,13 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Gmail** – `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Gmail integration.
 
 ### AI Model Providers
-- **dbt-fusion** – Enhanced dbt plugin now supports the dbt-fusion engine through updated CLI tasks for improved performance.
 - **Oracle Cloud Infrastructure GenAI** – Added OCI GenAI support to the AI plugin.
 - **Cloudflare Workers AI** – Integration with Cloudflare's AI platform.
 - **LocalAI** – Support for locally-hosted AI models.
+- **DashScope (Qwen)** – Integration with Alibaba Cloud DashScope, including Qwen models.
+- **ZhipuAI (GLM)** – Integration with Zhipu AI provider and GLM models.
+- **SqlDatabaseRetriever** – Retrieve context from SQL databases to ground agent responses.
+- **PostgreSQL Chat Memory** – Persist agent conversation memory in PostgreSQL for long-running chats.
 
 ## Migration Note for Upgrading to 1.1
 
