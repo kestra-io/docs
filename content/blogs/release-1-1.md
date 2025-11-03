@@ -10,7 +10,7 @@ image: /blogs/release-1-1.jpg
 ---
 
 
-We're excited to announce Kestra 1.1, delivering a polished UI experience, dozens of community-driven plugins, and powerful enterprise features. Following user feedback, we've completely redesigned filters, introduced a no-code dashboard editor, and enhanced airgap support for offline deployments. Enterprise Edition users gain custom branding capabilities and human-in-the-loop workflows with granular permission controls. This release also brings new integrations for Liquibase, dlt, YouTube, Stripe, and many more—connecting Kestra to your entire tech stack.
+We're excited to announce Kestra 1.1, delivering a polished UI experience, dozens of community-driven plugins, and powerful enterprise features. Following user feedback, we've completely redesigned filters, introduced a no-code dashboard editor, and enhanced air gap support for offline deployments. Enterprise Edition users gain custom branding capabilities and human-in-the-loop workflows with granular permission controls. This release also brings new integrations for Liquibase, dlt, YouTube, Stripe, and many more—connecting Kestra to your entire tech stack.
 
 The table below highlights the key features of this release.
 
