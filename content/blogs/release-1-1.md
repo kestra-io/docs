@@ -315,6 +315,8 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 - **Markdown Serialization** – Convert between Markdown and other formats (plugin-serdes).
 - **Google Drive** – `FileCreatedTrigger` to trigger flows when new files are created.
 - **Gmail** – `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Gmail integration.
+- **Microsoft Outlook** - `Get`, `List`, `Send` tasks and `MailReceivedTrigger` for Outlook integration.
+- **Microsoft SharePoint** – `Create`, `Delete`, `Download`, `Export`, `List` tasks for SharePoint files.
 
 ### AI Model Providers
 - **Oracle Cloud Infrastructure GenAI** – Added OCI GenAI support to the AI plugin.
