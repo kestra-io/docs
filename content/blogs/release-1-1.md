@@ -141,8 +141,8 @@ The example below demonstrates how to configure a Gmail inbox trigger using IMAP
 ```yaml
 id: summarize_email
 namespace: kestra.qa
-tasks:
 
+tasks:
   - id: ai_summary
     type: io.kestra.plugin.ai.agent.AIAgent
     systemMessage: "Summarize the content of the email. The summary should include the subject , date, and a concise summary of the body. Output should be a single, clear text."
@@ -166,7 +166,6 @@ triggers:
     folder: INBOX
     interval: PT3S
     ssl: true
-```
 
 :: 
 
