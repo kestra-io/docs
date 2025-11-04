@@ -31,9 +31,8 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Kestra 1.1 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/FywYZmo2vqo?si=mlh2CG85gX8FN4qs" title="Kestra 1.1 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
 
 ## New Filters
 
