@@ -194,7 +194,7 @@ jobs:
           delete: false
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 You can also authenticate using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of username and password:
 
 ```yaml
@@ -202,7 +202,7 @@ with:
   server: ${{secrets.KESTRA_HOSTNAME}}
   apiToken: ${{secrets.KESTRA_API_TOKEN}}
 ```
-::
+:::
 
 ---
 
