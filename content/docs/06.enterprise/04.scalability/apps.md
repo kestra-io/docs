@@ -138,9 +138,9 @@ You can customize your Apps Catalog to align with organization branding by navig
 
 Here, you can give your catalog a display title, set a primary banner display color, and upload an image for banner (typically an organization logo).
 
-::alert{type="info"}
+:::alert{type="info"}
 Currently, the uploaded banner display image must be an `.svg` file.
-::
+:::
 
 Once saved, navigate to the Apps Catalog, and see your branding:
 

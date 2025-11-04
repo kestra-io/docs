@@ -41,10 +41,10 @@ kestra:
 
 Similarly, for Kubernetes installations, run a pod with the migration script (`- /app/kestra migrate metadata kv && /app/kestra migrate metadata secrets`), so the KV Store and Secrets databases are updated. Then, restart your normal pod for Kestra server components without the script.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.  
 This is only a **UI issue** — your flows and tasks will continue to run normally and access their values as expected.  
 
 To fix the UI display, simply run the migration command above.  
 It’s safe to execute this migration **retroactively** after the upgrade if needed.
-::
+:::
