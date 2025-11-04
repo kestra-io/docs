@@ -3,7 +3,7 @@ title: Terraform Provider
 icon: /docs/icons/terraform.svg
 ---
 
-Manage resources and their underlying infrastructure with our official [Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) to facilitate CI/CD and infrastructure management for your Kestra resources.
+Use the official Kestra Terraform Provider to automate the creation, configuration, and management of your Kestra resources. This enables seamless CI/CD workflows and consistent infrastructure management.(https://registry.terraform.io/providers/kestra-io/kestra/latest)
 
 * [Resources](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/binding)
   <ChildTableOfContents page-url="/docs/terraform/resources/" />
