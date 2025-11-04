@@ -1,6 +1,6 @@
 ---
 title: "Kestra 1.1 introduces New Filters, No-Code Dashboards, Human Tasks, AI Agent tool and Dozens of New Plugins"
-description: "Kestra 1.1 delivers a polished UI with redesigned filters and no-code dashboard editor, human-in-the-loop workflows for enterprise, improved airgap support, and dozens of new community-driven plugins."
+description: "Kestra 1.1 delivers a polished UI with redesigned filters and no-code dashboard editor, human-in-the-loop workflows for enterprise, improved air-gapped support, and dozens of new community-driven plugins."
 date: 2025-11-04T17:00:00
 category: News & Product Updates
 authors:
@@ -10,7 +10,7 @@ image: /blogs/release-1-1.jpg
 ---
 
 
-We're excited to announce Kestra 1.1, delivering a polished UI experience, dozens of community-driven plugins, and powerful enterprise features. Following user feedback, we've completely redesigned filters, introduced a no-code dashboard editor, and enhanced air gap support for offline deployments. Enterprise Edition users gain custom branding capabilities and human-in-the-loop workflows with granular permission controls. This release also brings new integrations for Liquibase, dlt, YouTube, Stripe, and many more—connecting Kestra to your entire tech stack.
+We're excited to announce Kestra 1.1, delivering a polished UI experience, dozens of community-driven plugins, and powerful enterprise features. Following user feedback, we've completely redesigned filters, introduced a no-code dashboard editor, and enhanced air-gapped support for offline deployments. Enterprise Edition users gain custom branding capabilities and human-in-the-loop workflows with granular permission controls. This release also brings new integrations for Liquibase, dlt, YouTube, Stripe, and many more—connecting Kestra to your entire tech stack.
 
 The table below highlights the key features of this release.
 
@@ -24,7 +24,7 @@ The table below highlights the key features of this release.
 | Mail Trigger | Trigger workflows based on incoming emails using the new `MailReceivedTrigger` | All Editions |
 | Enhanced File Detection Triggers | File detection triggers now react to both new and updated files, not just new ones | All Editions |
 | Human Task | Allow paused executions to be manually approved only by specific users or groups | Enterprise Edition |
-| Improved Air Gap Support | Offline deployments no longer display UI components that rely on external API calls, and blueprints remain accessible in airgapped environments. | All Editions |
+| Improved Air-Gapped Support | Offline deployments no longer display UI components that rely on external API calls, and blueprints remain accessible in air-gapped environments. | All Editions |
 | Dozens of New Plugins | New integrations for Liquibase, dlt, Airtable, Flink, Stripe, YouTube, Odoo, and many more | All Editions |
 
 
@@ -257,7 +257,7 @@ tasks:
 ::
 
 
-## Improved Air Gap Support
+## Improved Air-Gapped Support
 
 Kestra 1.1 brings significantly improved support for offline and air-gapped environments. The UI now adapts fully to run without internet connectivity: blueprints fetch from the Kestra API instead of external sources, YouTube embeds hide automatically when offline, fonts fall back to local versions, and internet-dependent sidebar features are hidden automatically. These improvements ensure Kestra runs smoothly in completely isolated environments without any degraded functionality.
 
