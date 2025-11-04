@@ -196,7 +196,7 @@ triggers:
     on: UPDATE
     from: "gs://test-gcs-trigger-kestra"
     action: MOVE
-    to: "gs://test-gcs-trigger-kestra/archive"
+    moveDirectory: "gs://test-gcs-trigger-kestra/archive"
     projectId: kestra-sandbox
     serviceAccount: "{{ secret('GCP_CREDS') }}"
 
