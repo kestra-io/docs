@@ -167,6 +167,8 @@ triggers:
     interval: PT3S
     ssl: true
 
+```
+
 :::
 
 
