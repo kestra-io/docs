@@ -267,6 +267,7 @@ Kestra 1.1 brings significantly improved support for offline and air-gapped envi
 - **Agent-to-Agent Communication** – AI Agents can now call remote agents via the A2A (Agent-to-Agent) framework, enabling more complex distributed agent architectures.
 - **Audit Log CSV Export** – Enterprise Edition users can now export audit logs as CSV files, making it easier to analyze and share audit data with compliance teams or external auditors.
 - **Performance Optimizations** – Significant performance improvements to Secret Manager, KV Store, and Namespace Files make searching and retrieving data much faster. The cost of fetching secrets from external secret managers has been reduced, and similar optimizations have been applied to accessing KV pairs and Namespace Files in storage, resulting in a more efficient and responsive experience.
+- **File Input Validation** – Restrict uploaded file types by setting `allowedFileExtensions` on `FILE` inputs.
 
 ## New Plugins
 
