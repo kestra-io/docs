@@ -76,7 +76,7 @@ AI agents in Kestra can now use other AI agents as tools, enabling sophisticated
 
 This feature extends Kestra's existing AI tooling. Just as the Kestra Flow and Task tools let AI agents invoke flows or tasks, the new AI Agent tool enables agents to delegate work to other specialized AI agents, creating hierarchies of AI reasoning within your orchestration layer.
 
-The example below demonstrates a translation workflow where the main agent summarizes input and delegates translation to a specialized agent using a lighter, cost-effective model:
+The following example shows a multi-agent workflow where a main agent handles a user query and delegates web search and expert ranking to a specialized agent—demonstrating how Kestra enables hierarchical AI agent collaboration:
 
 ::collapse{title="Multi-Agent Translation Workflow"}
 
@@ -88,30 +88,32 @@ inputs:
   - id: prompt
     type: STRING
     defaults: |
-      Please translate the following marketing announcement into French: "Our new product line will launch next week. Contact your sales representative for more details."
+      Hello sir, I have issue installing Spotify on my Samsung s6 device, can you help me?
 
 tasks:
   - id: ai-agent
     type: io.kestra.plugin.ai.agent.AIAgent
     provider:
-      type: io.kestra.plugin.ai.provider.GoogleGemini
-      modelName: gemini-2.5-flash
-      apiKey: "{{ secret('GEMINI_API_KEY') }}"
-    systemMessage: Summarize the user message, then translate it into French using the provided tool.
+      type: io.kestra.plugin.ai.provider.OpenAI
+    systemMessage: You are a customer success agent, your goal is to provide a clear, non-technical answer to the customer
     prompt: "{{ inputs.prompt }}"
     tools:
       - type: io.kestra.plugin.ai.tool.AIAgent
-        description: Translation expert
-        systemMessage: You are an expert in translating text between multiple languages
+        description: Web Search and ranking
+        systemMessage: You are a Spotify expert, know everything about the support https://support.spotify.com/us/
         provider:
-          type: io.kestra.plugin.ai.provider.GoogleGemini
-          modelName: gemini-2.5-flash-lite
-          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+          type: io.kestra.plugin.ai.provider.OpenAI
+        contentRetrievers:
+          - type: io.kestra.plugin.ai.retriever.TavilyWebSearch
+            apiKey: "{{ secret('TAVILY_API_KEY') }}"
+pluginDefaults:
+  - type: io.kestra.plugin.ai.provider.OpenAI
+    values:
+      modelName: gpt-5-mini
+      apiKey: "{{ secret('OPENAI_API_KEY') }}"
 ```
 
 ::
-
-In this example, the main agent (`ai-agent`) receives a prompt, summarizes it, and then invokes a specialized translation agent defined as a tool. The translation agent uses a lighter model (`gemini-2.5-flash-lite`), demonstrating how you can optimize costs and performance by matching agent capabilities to specific task requirements.
 
 
 
