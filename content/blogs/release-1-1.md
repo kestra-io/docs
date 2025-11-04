@@ -77,7 +77,7 @@ This feature extends Kestra's existing AI tooling. Just as the Kestra Flow and T
 
 The following example shows a multi-agent workflow where a main agent handles a user query and delegates web search and expert ranking to a specialized agent—demonstrating how Kestra enables hierarchical AI agent collaboration:
 
-::collapse{title="Multi-Agent Translation Workflow"}
+:::collapse{title="Multi-Agent Translation Workflow"}
 
 ```yaml
 id: ai-agent-with-agent-tools
@@ -112,7 +112,7 @@ pluginDefaults:
       apiKey: "{{ secret('OPENAI_API_KEY') }}"
 ```
 
-::
+:::
 
 
 
@@ -136,7 +136,7 @@ You can use these triggers to automate email-driven workflows such as:
 
 The example below demonstrates how to configure a Gmail inbox trigger using IMAP with AI-powered email summarization:
 
-::collapse{title="Email Trigger with AI Summarization"}
+:::collapse{title="Email Trigger with AI Summarization"}
 
 ```yaml
 id: summarize_email
@@ -149,7 +149,7 @@ tasks:
     prompt: |
       {{ trigger.subject }}
       {{ trigger.date }}
-      {{ trigger.body }} 
+      {{ trigger.body }}
     provider:
         modelName: gpt-5-mini
         type: io.kestra.plugin.ai.provider.OpenAI
@@ -166,8 +166,10 @@ triggers:
     folder: INBOX
     interval: PT3S
     ssl: true
+
 ```
-:: 
+
+:::
 
 
 
@@ -183,7 +185,7 @@ You can also control state retention with `stateTtl` (e.g., `PT24H` for 24 hours
 
 The example below demonstrates a GCS trigger that responds to file updates:
 
-::collapse{title="GCS File Update Trigger"}
+:::collapse{title="GCS File Update Trigger"}
 
 ```yaml
 id: qa_gcs_trigger
@@ -206,7 +208,7 @@ tasks:
     message: "GCS trigger executed for updated file: {{ trigger.uri }}"
 ```
 
-::
+:::
 
 In this example, the trigger monitors a GCS bucket every 5 seconds and fires only when existing files are updated. Detected files are automatically moved to an archive folder.
 
@@ -227,7 +229,7 @@ Use cases include:
 
 The example below demonstrates how to implement a human approval step. The workflow pauses at the `approval_request` task until a user from the specified list or group approves it, then continues with the remaining tasks.
 
-::collapse{title="Human-in-the-Loop Approval Workflow"}
+:::collapse{title="Human-in-the-Loop Approval Workflow"}
 
 ```yaml
 id: human_in_the_loop
@@ -252,7 +254,7 @@ tasks:
     message: Manual approval received! Continuing the execution...
 ```
 
-::
+:::
 
 
 ## Improved Air-Gapped Support
@@ -352,9 +354,9 @@ After the migration completes, revert to the standard startup command to run the
 
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
-::alert{type="info"}
+:::alert{type="info"}
 Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
-::
+:::
 
 ## Next Steps
 
