@@ -1,5 +1,5 @@
 ---
-title: New `prefill` Property for Inputs
+title: New prefill Property for Inputs
 icon: /docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
