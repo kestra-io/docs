@@ -25,7 +25,7 @@ For example, if you’re using **Docker Compose**, start your container with the
 ```yaml
 kestra:
     image: registry.kestra.io/docker/kestra:latest
-    commands:
+    command:
         - /app/kestra migrate metadata kv
         - /app/kestra migrate metadata secrets
 ```
@@ -35,7 +35,7 @@ Once the migration is complete, the container will stop automatically. You can t
 ```yaml
 kestra:
     image: registry.kestra.io/docker/kestra:latest
-    commands:
+    command:
         - server standalone --worker-thread=128
 ```
 
