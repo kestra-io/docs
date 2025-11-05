@@ -324,7 +324,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
+              $ref: "#/components/schemas/BasicAuthCredentials"
         required: true
       responses:
         "200":
@@ -550,6 +550,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
+  /api/v1/{tenant}/concurrency-limit/search:
+    get:
+      tags:
+      - Executions
+      - Flows
+      summary: Search for flow concurrency limits
+      operationId: searchConcurrencyLimits
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: searchConcurrencyLimits 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_ConcurrencyLimit_"
+  /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}:
+    put:
+      tags:
+      - Executions
+      - Flows
+      summary: Update a flow concurrency limit
+      operationId: updateConcurrencyLimit
+      parameters:
+      - name: namespace
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConcurrencyLimit"
+        required: true
+      responses:
+        "200":
+          description: updateConcurrencyLimit 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrencyLimit"
   /api/v1/{tenant}/dashboards:
     get:
       tags:
@@ -959,7 +1015,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -967,7 +1023,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -975,7 +1031,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -1014,6 +1070,15 @@ paths:
       summary: Delete executions filter by query parameters
       operationId: deleteExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -1124,7 +1189,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -1132,7 +1197,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -1140,7 +1205,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -1150,18 +1215,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteExecutionsByQuery 200 response
@@ -1217,6 +1270,15 @@ paths:
       summary: Change executions state by query parameters
       operationId: updateExecutionsStatusByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -1328,18 +1390,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: On success
@@ -1433,6 +1483,15 @@ paths:
       summary: Force run executions filter by query parameters
       operationId: forceRunExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -1537,18 +1596,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: forceRunExecutionsByQuery 200 response
@@ -1597,6 +1644,15 @@ paths:
       summary: Kill executions filter by query parameters
       operationId: killExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -1701,18 +1757,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: killExecutionsByQuery 200 response
@@ -1759,6 +1803,15 @@ paths:
       summary: Set label on executions filter by query parameters
       operationId: setLabelsOnTerminatedExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -1869,12 +1922,6 @@ paths:
           application/json:
             schema:
               type: array
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
               items:
                 $ref: "#/components/schemas/Label"
         required: true
@@ -2005,6 +2052,15 @@ paths:
       summary: Pause executions filter by query parameters
       operationId: pauseExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -2109,18 +2165,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: pauseExecutionsByQuery 200 response
@@ -2178,6 +2222,15 @@ paths:
         the flow revision
       operationId: replayExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -2290,18 +2343,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: replayExecutionsByQuery 200 response
@@ -2350,6 +2391,15 @@ paths:
       summary: Restart executions filter by query parameters
       operationId: restartExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -2454,18 +2504,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: restartExecutionsByQuery 200 response
@@ -2514,6 +2552,15 @@ paths:
       summary: Resume executions filter by query parameters
       operationId: resumeExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -2618,18 +2665,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: resumeExecutionsByQuery 200 response
@@ -2912,6 +2947,15 @@ paths:
       summary: Unqueue executions filter by query parameters
       operationId: unqueueExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -3024,18 +3068,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unqueueExecutionsByQuery 200 response
@@ -3079,7 +3111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
     put:
       tags:
       - Executions
@@ -3115,7 +3147,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
     post:
       tags:
       - Executions
@@ -3151,7 +3183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -3192,7 +3224,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -3200,7 +3232,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -3208,7 +3240,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -3458,6 +3490,9 @@ paths:
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/Event_Execution_"
+      x-sdk-customization:
+        x-replace-follow-execution: "true"
+        x-skipped: "true"
   /api/v1/{tenant}/executions/{executionId}/follow-dependencies:
     get:
       tags:
@@ -3500,6 +3535,9 @@ paths:
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/Event_ExecutionStatusEvent_"
+      x-sdk-customization:
+        x-replace-follow-dependencies-execution: "true"
+        x-skipped: "true"
   /api/v1/{tenant}/executions/{executionId}/force-run:
     post:
       tags:
@@ -3746,11 +3784,12 @@ paths:
         schema:
           type: string
       requestBody:
-        description: The inputs
+        description: The inputs (multipart map)
         content:
           multipart/form-data:
             schema:
               type: array
+              additionalProperties: true
               items:
                 type: string
                 format: binary
@@ -3762,6 +3801,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Execution"
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{executionId}/restart:
     post:
       tags:
@@ -4046,6 +4087,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{namespace}/{id}/validate:
     post:
       tags:
@@ -4221,6 +4264,15 @@ paths:
       summary: Delete flows returned by the query parameters.
       operationId: deleteFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -4261,18 +4313,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteFlowsByQuery 200 response
@@ -4315,6 +4355,15 @@ paths:
       summary: Disable flows returned by the query parameters.
       operationId: disableFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -4355,18 +4404,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: disableFlowsByQuery 200 response
@@ -4437,6 +4474,15 @@ paths:
       summary: Enable flows returned by the query parameters.
       operationId: enableFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -4477,18 +4523,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: enableFlowsByQuery 200 response
@@ -4870,7 +4904,7 @@ paths:
         content:
           application/x-yaml:
             schema:
-              type: string
+              type: object
           application/json:
             schema:
               type: object
@@ -5318,6 +5352,61 @@ paths:
                 $ref: "#/components/schemas/Flow"
       deprecated: true
       x-deprecated-message: should not be used anymore
+  /api/v1/{tenant}/kv:
+    get:
+      tags:
+      - KV
+      summary: List all keys
+      operationId: listAllKeys
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listAllKeys 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_KVEntry_"
   /api/v1/{tenant}/logs/search:
     get:
       tags:
@@ -6459,6 +6548,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+      deprecated: true
     delete:
       tags:
       - KV
@@ -6574,9 +6664,6 @@ paths:
       requestBody:
         description: The value of the key
         content:
-          application/json:
-            schema:
-              type: string
           text/plain:
             schema:
               type: string
@@ -6674,13 +6761,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiSecretListResponse"
-  /api/v1/{tenant}/taskruns/search:
+                $ref: "#/components/schemas/ApiSecretListResponse_ApiSecretMeta_"
+      deprecated: true
+  /api/v1/{tenant}/secrets:
     get:
       tags:
-      - Executions
-      summary: "Search for taskruns, only available with the Elasticsearch repository"
-      operationId: searchTaskRun
+      - Secrets
+      summary: Search secrets of all namespaces
+      operationId: listSecrets
       parameters:
       - name: page
         in: query
@@ -6688,7 +6776,6 @@ paths:
         required: true
         explode: false
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -6698,7 +6785,6 @@ paths:
         required: true
         explode: false
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -6720,95 +6806,6 @@ paths:
           type: array
           items:
             $ref: "#/components/schemas/QueryFilter"
-      - name: q
-        in: query
-        description: A string filter
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: startDate
-        in: query
-        description: The start datetime
-        deprecated: true
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        deprecated: true
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: timeRange
-        in: query
-        description: A time range filter relative to the current time
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-        examples:
-          Filter last 5 minutes:
-            value: PT5M
-          Filter last 24 hours:
-            value: P1D
-      - name: state
-        in: query
-        description: A state filter
-        deprecated: true
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/State.Type"
-      - name: labels
-        in: query
-        description: A labels filter as a list of 'key:value'
-        deprecated: true
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: triggerExecutionId
-        in: query
-        description: The trigger execution id
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: childFilter
-        in: query
-        description: A execution child filter
-        deprecated: true
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       - name: tenant
         in: path
         required: true
@@ -6816,11 +6813,11 @@ paths:
           type: string
       responses:
         "200":
-          description: searchTaskRun 200 response
+          description: listSecrets 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_TaskRun_"
+                $ref: "#/components/schemas/ApiSecretListResponse_ApiSecretMeta_"
   /api/v1/{tenant}/triggers:
     put:
       tags:
@@ -6878,6 +6875,15 @@ paths:
       summary: Delete backfill for given triggers
       operationId: deleteBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -6899,18 +6905,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteBackfillByQuery 200 response
@@ -6977,6 +6971,15 @@ paths:
       summary: Pause backfill for given triggers
       operationId: pauseBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -6998,18 +7001,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: pauseBackfillByQuery 200 response
@@ -7076,6 +7067,15 @@ paths:
       summary: Unpause backfill for given triggers
       operationId: unpauseBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -7097,18 +7097,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unpauseBackfillByQuery 200 response
@@ -7239,6 +7227,15 @@ paths:
       summary: Disable/enable triggers by query parameters
       operationId: disabledTriggersByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -7268,18 +7265,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: disabledTriggersByQuery 200 response
@@ -7319,6 +7304,15 @@ paths:
       summary: Unlock triggers by query parameters
       operationId: unlockTriggersByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -7340,18 +7334,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unlockTriggersByQuery 200 response
@@ -7655,9 +7637,16 @@ components:
           pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         description:
           type: string
         conditions:
@@ -7704,9 +7693,16 @@ components:
           pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
     ApiAutocomplete:
       type: object
       properties:
@@ -7720,7 +7716,7 @@ components:
             type: string
         existingOnly:
           type: boolean
-    ApiSecretListResponse:
+    ApiSecretListResponse_ApiSecretMeta_:
       required:
       - readOnly
       - results
@@ -7777,6 +7773,15 @@ components:
           title: The nextExecutionDate before the backfill was created.
           type: string
           format: date-time
+    BasicAuthCredentials:
+      type: object
+      properties:
+        uid:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
     BlueprintController.ApiBlueprintItem:
       type: object
       properties:
@@ -7914,6 +7919,22 @@ components:
       - QUEUE
       - CANCEL
       - FAIL
+    ConcurrencyLimit:
+      required:
+      - flowId
+      - namespace
+      - tenantId
+      type: object
+      properties:
+        tenantId:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        running:
+          type: integer
+          format: int32
     Condition:
       required:
       - type
@@ -7937,6 +7958,9 @@ components:
           type: object
           properties:
             CREATED:
+              type: integer
+              format: int64
+            SUBMITTED:
               type: integer
               format: int64
             RUNNING:
@@ -7979,6 +8003,9 @@ components:
               type: integer
               format: int64
             BREAKPOINT:
+              type: integer
+              format: int64
+            RESUBMITTED:
               type: integer
               format: int64
         groupBy:
@@ -8140,16 +8167,10 @@ components:
             $ref: "#/components/schemas/TaskRun"
         inputs:
           type: object
-          additionalProperties:
-            type: object
         outputs:
           type: object
-          additionalProperties:
-            type: object
         variables:
           type: object
-          additionalProperties:
-            type: object
         state:
           $ref: "#/components/schemas/State"
         parentId:
@@ -8267,35 +8288,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -8360,10 +8352,6 @@ components:
       type: object
       properties:
         dailyExecutionsCount:
-          type: array
-          items:
-            $ref: "#/components/schemas/DailyExecutionStatistics"
-        dailyTaskRunsCount:
           type: array
           items:
             $ref: "#/components/schemas/DailyExecutionStatistics"
@@ -8865,6 +8853,12 @@ components:
           title: The default value to use if no value is specified.
           allOf:
           - $ref: "#/components/schemas/Property_Object_"
+        prefill:
+          title: The suggested value for the input.
+          description: Optional UI hint for pre-filling the input. Cannot be used
+            together with a default value.
+          allOf:
+          - $ref: "#/components/schemas/Property_Object_"
         displayName:
           title: The display name of the input.
           type: string
@@ -8894,8 +8888,13 @@ components:
     KVEntry:
       type: object
       properties:
+        namespace:
+          type: string
         key:
           type: string
+        version:
+          type: integer
+          format: int32
         description:
           type: string
           nullable: true
@@ -9106,15 +9105,6 @@ components:
           $ref: "#/components/schemas/FlowUsage"
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
-    MiscController.BasicAuthCredentials:
-      type: object
-      properties:
-        uid:
-          type: string
-        username:
-          type: string
-        password:
-          type: string
     MiscController.Configuration:
       type: object
       properties:
@@ -9126,12 +9116,12 @@ components:
           $ref: "#/components/schemas/EditionProvider.Edition"
         commitId:
           type: string
+        chartDefaultDuration:
+          type: string
         commitDate:
           type: string
           format: date-time
         isCustomDashboardsEnabled:
-          type: boolean
-        isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
           type: boolean
@@ -9151,10 +9141,6 @@ components:
           type: array
           items:
             type: string
-        resourceToFilters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.ResourceField"
         isAiEnabled:
           type: boolean
         isBasicAuthInitialized:
@@ -9225,6 +9211,19 @@ components:
         total:
           type: integer
           format: int64
+    PagedResults_ConcurrencyLimit_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConcurrencyLimit"
+        total:
+          type: integer
+          format: int64
     PagedResults_Dashboard_:
       required:
       - results
@@ -9261,6 +9260,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Flow"
+        total:
+          type: integer
+          format: int64
+    PagedResults_KVEntry_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/KVEntry"
         total:
           type: integer
           format: int64
@@ -9328,19 +9340,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SearchResult_Flow_"
-        total:
-          type: integer
-          format: int64
-    PagedResults_TaskRun_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/TaskRun"
         total:
           type: integer
           format: int64
@@ -9575,8 +9574,10 @@ components:
       - QUERY
       - SCOPE
       - NAMESPACE
+      - KIND
       - LABELS
       - FLOW_ID
+      - UPDATED
       - START_DATE
       - END_DATE
       - STATE
@@ -9589,17 +9590,6 @@ components:
       - EXISTING_ONLY
       - MIN_LEVEL
       x-type: String
-    QueryFilter.FieldOp:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        operations:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.Operation"
     QueryFilter.Op:
       type: string
       enum:
@@ -9616,22 +9606,6 @@ components:
       - CONTAINS
       - REGEX
       - PREFIX
-    QueryFilter.Operation:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    QueryFilter.ResourceField:
-      type: object
-      properties:
-        name:
-          type: string
-        fields:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.FieldOp"
     Relation:
       type: object
       properties:
@@ -9866,6 +9840,7 @@ components:
       type: string
       enum:
       - CREATED
+      - SUBMITTED
       - RUNNING
       - PAUSED
       - RESTARTED
@@ -9880,6 +9855,7 @@ components:
       - RETRIED
       - SKIPPED
       - BREAKPOINT
+      - RESUBMITTED
     Task:
       required:
       - id
@@ -9898,9 +9874,16 @@ components:
           pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         description:
           type: string
         retry:
@@ -9956,9 +9939,16 @@ components:
           pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         tasks:
           type: array
           items:
@@ -10002,8 +9992,6 @@ components:
             $ref: "#/components/schemas/TaskRunAttempt"
         outputs:
           type: object
-          additionalProperties:
-            type: object
           nullable: true
         state:
           $ref: "#/components/schemas/State"
