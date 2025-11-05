@@ -340,14 +340,12 @@ Version 1.1 changes how Key-Value and Secrets metadata are handled: the backend 
 /app/kestra migrate metadata secrets
 ```
 
-For **Docker Compose** setups, include the commands in your startup configuration:
+For **Docker Compose** setups, replace the command by the following
 
 ```yaml
 kestra:
   image: registry.kestra.io/docker/kestra:latest
-  commands:
-    - /app/kestra migrate metadata kv
-    - /app/kestra migrate metadata secrets
+  command:  migrate metadata kv && migrate metadata secrets
 ```
 
 After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
