@@ -20,14 +20,21 @@ Because of this change, you must run a metadata migration when upgrading to vers
 This ensures existing Key-Value and Secrets data are correctly indexed for the new query structure.
 
 When upgrading, include the migration command `- /app/kestra migrate metadata` in your startup configuration.
-For example, if you’re using **Docker Compose**, start your container with the newest version image and add the migration script in `commands` as follows:
+For example, if you’re using **Docker Compose**, start your container with the newest version image and add the migration script in `command` as follows:
+
 
 ```yaml
 kestra:
-    image: registry.kestra.io/docker/kestra:latest
-    command:
-        - /app/kestra migrate metadata kv
-        - /app/kestra migrate metadata secrets
+  image: registry.kestra.io/docker/kestra:latest
+  command:  migrate metadata kv
+```
+
+and then do the same with
+
+```yaml
+kestra:
+  image: registry.kestra.io/docker/kestra:latest
+  command:  migrate metadata secret
 ```
 
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
