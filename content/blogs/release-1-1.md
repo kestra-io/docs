@@ -345,7 +345,15 @@ For **Docker Compose** setups, replace the command by the following
 ```yaml
 kestra:
   image: registry.kestra.io/docker/kestra:latest
-  command:  migrate metadata kv && migrate metadata secrets
+  command:  migrate metadata kv
+```
+
+and then do the same with
+
+```yaml
+kestra:
+  image: registry.kestra.io/docker/kestra:latest
+  command:  migrate metadata secret
 ```
 
 After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
