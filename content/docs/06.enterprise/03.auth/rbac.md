@@ -107,8 +107,7 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 | User/Role/Group/Bindings Management | Has the permission by default                      | Create/Update/Read/Delete across all tenants         |
 | Flow/Execution Management           | Has the permission by default                      | No                                                   |
 | Set Super Admin privilege           | No                                                 | Yes                                                  |
-
-::
+:::
 
 ### Super Admin
 
@@ -123,7 +122,7 @@ Super Admin is a powerful type of user. Use the role sparingly and only for use 
 a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
 However, you should use Kestra through the role system.
-::
+:::
 
 :::collapse{title="Creating a Super Admin"}
 
@@ -167,13 +166,13 @@ kestra:
 
 For more details, check the [Enterprise Edition Configuration](../../configuration/index.md#super-admin) page.
 
-::
+:::
 
 :::collapse{title="Grant/Revoke Super Admin permissions"}
 
 :::alert{type="info"}
 Note that you need to be a super admin yourself.
-:::::
+:::
 
 #### Through the UI
 
@@ -227,8 +226,7 @@ kestra auths users create prod.admin@kestra.io TopSecret42 --admin
 # schema:
 kestra auths users create <username> <password> --admin
 ```
-
-::
+:::
 
 ## Users, Groups and Service Accounts
 
@@ -248,11 +246,9 @@ Once you have created your first role. You can attach that role to an entity thr
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
 ![create a binding](/docs/enterprise/create_binding.png)
-:::::alert{type="info"}
+
 **Note:** Service Accounts are considered as Users when binding.
 :::
-
-::
 
 :::collapse{title="How many Roles can a User, a Service Account or Group have?"}
 There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.

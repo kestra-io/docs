@@ -54,6 +54,12 @@ For more information, see the [KV Store concept guide](../../05.concepts/05.kv-s
     <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=llG-CMXRBG9PG3nF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+## Files
+
+The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Keep all your resources organized in one place. Learn more in [Namespace Files](../../05.concepts/02.namespace-files.md).
+
+![Namespace Files](/docs/user-interface-guide/namespace-files-tab.png)
+
 ## Additional enterprise pages
 
 In the [Enterprise Edition](../../06.enterprise/01.overview/01.enterprise-edition.md), additional namespace pages provide deeper insights and management capabilities.  
