@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   role: "CTO & Co-Founder"
-image: "assets/blogs/2024-09-25-our-open-source-choices.jpg"
+image: /blogs/2024-09-25-our-open-source-choices.jpg
 ---
 
 Kestra was originally created as part of my consulting project for Leroy Merlin France. The client faced multiple challenges when adopting another data orchestration product — that platform didn't scale for their use cases, led to complex Python dependency management, and introduced a barrier to entry for BI engineers proficient in SQL and YAML. Kestra was born to address these issues and was [open-sourced](https://github.com/kestra-io/kestra) under Apache 2.0 license.
@@ -46,7 +46,7 @@ The key was delivering on enterprise needs: **security** (think SSO, RBAC, SCIM,
 
 ## **On Making Technical Decisions**
 
-![technical decisions](assets/blogs/2024-09-25-our-open-source-choices/technos.jpg)
+![technical decisions](/blogs/2024-09-25-our-open-source-choices/technos.jpg)
 
 ### **Engineering vs. UX: Finding the Right Balance**
 

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2023-08-11-dataframes.jpg"
+image: /blogs/2023-08-11-dataframes.jpg
 ---
 
 Tabular format with rows and columns, popularized by relational databases and Microsoft Excel, is an intuitive way of organizing and manipulating data for analytics.
@@ -214,7 +214,7 @@ As mentioned in the introduction, I believe that, over time, the differences her
 
 It's also worth mentioning that DuckDB integrates exceptionally well with Polars — just add ``.pl()`` to convert your DuckDB table to a Polars DataFrame. You can switch between Polars and DuckDB with zero copy thanks to Apache Arrow. I see using both Polars and DuckDB as complementary, not competitive. Just look at this example from [DuckDB docs](https://duckdb.org/docs/guides/python/polars.html):
 
-![dataframes_polars_duckdb](assets/blogs/2023-08-11-dataframes/dataframes_polars_duckdb.png)
+![dataframes_polars_duckdb](/blogs/2023-08-11-dataframes/dataframes_polars_duckdb.png)
 
 
 **What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
@@ -319,7 +319,7 @@ top.to_json("bestsellers_ponder.json", orient="records")
 ```
 It took some time but eventually Ponder was able to finish the task. However, it also created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task. See the screenshot below for reference.
 
-![ponder](assets/blogs/2023-08-11-dataframes/ponder.png)
+![ponder](/blogs/2023-08-11-dataframes/ponder.png)
 
 My overall impression is that Ponder seems like an interesting product for big data as it executes everything in a cloud data warehouse such as BigQuery. However, for our use case, Ponder felt a bit too *heavy*.
 
@@ -499,7 +499,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how you can easily orchestrate your SQL and Pandas data transformations.
 
-![dataframes_kestra](assets/blogs/2023-08-11-dataframes/dataframes_kestra.png)
+![dataframes_kestra](/blogs/2023-08-11-dataframes/dataframes_kestra.png)
 
 ---
 

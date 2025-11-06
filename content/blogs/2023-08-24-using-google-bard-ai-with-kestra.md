@@ -6,14 +6,14 @@ category: Solutions
 author:
   name: Loïc Mathieu
   image: "lmathieu"
-image: "assets/blogs/2023-08-24-using-google-bard-ai-with-kestra.jpg"
+image: /blogs/2023-08-24-using-google-bard-ai-with-kestra.jpg
 ---
 
 Maybe you’ve already heard about [Bard](https://bard.google.com/?hl=en), an AI experiment by Google. Bard is generative AI, it can respond to questions posed in natural language.
 
 I love jokes, so I asked Bard to tell me a joke, and I love sarcasm, so I asked it to tell me a sarcastic joke.
 
-![Joke bard ai](assets/blogs/2023-08-24-using-google-bard-ai-with-kestra/joke-bard-ai.png)
+![Joke bard ai](/blogs/2023-08-24-using-google-bard-ai-with-kestra/joke-bard-ai.png)
 
 Behind Bard, there is a generative AI based on [Google's PaLM 2](https://ai.google/discover/palm2/) large language models (LLMs) that you can use via the [Google Vertex AI API](https://cloud.google.com/vertex-ai).
 
@@ -41,7 +41,7 @@ tasks:
 
 This task will output Bard's response in the form of predictions.
 
-![outputs](assets/blogs/2023-08-24-using-google-bard-ai-with-kestra/outputs.png)
+![outputs](/blogs/2023-08-24-using-google-bard-ai-with-kestra/outputs.png)
 
 You can see that the joke is in the content property.
 

@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role:
   image: mproset
-image: "assets/blogs/2024-10-03-conditional-inputs.jpg"
+image: /blogs/2024-10-03-conditional-inputs.jpg
 ---
 
 We often encounter workflows where a single set of static inputs just won’t cut it. You need something more flexible, something that reacts to previous selections and adapts on the fly. This is exactly what Conditional **inputs** in Kestra enable you to do.
@@ -45,7 +45,7 @@ In this example, the `cloud` input asks the user to select a cloud provider, and
 
 ### Beyond Cloud Providers
 
-![conditionals](assets/blogs/2024-10-03-conditional-inputs/conditionals.gif)
+![conditionals](/blogs/2024-10-03-conditional-inputs/conditionals.gif)
 
 While cloud orchestration is an obvious use case, dynamic inputs can apply to a variety of scenarios. For instance, in **access control workflows**, different permission levels might need to be displayed based on the user's role. Similarly, in **approval workflows**, different fields could appear depending on who is approving the request—a manager might see budget approval options, while a team lead might not.
 

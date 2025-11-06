@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: "assets/blogs/2022-02-01-kestra-opensource.jpg"
+image: /blogs/2022-02-01-kestra-opensource.jpg
 ---
 
 Today, our team is proud to announce a first public release of [Kestra](https://github.com/kestra-io/kestra), an open-source platform to orchestrate & schedule any kinds of workflow at scale.
@@ -28,7 +28,7 @@ As you can see, Kestra will handle **all your pipelines** !
 ## The History of Kestra!
 Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/kestra/commit/d57e30c0c0d450590a1eaac5df0e82e1ea94e562). At this time, Kestra was at the proof-of-concept stage.
 
-![Initial commit](assets/blogs/2022-02-01-kestra-opensource/initial-commit.jpg)
+![Initial commit](/blogs/2022-02-01-kestra-opensource/initial-commit.jpg)
 
 
 To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](/blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.

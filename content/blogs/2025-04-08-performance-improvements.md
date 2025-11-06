@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: "assets/blogs/optimized-performance-2.png"
+image: /blogs/optimized-performance-2.png
 ---
 
 The engineering team focused on improving Kestra's performance in version 0.22. Here’s a clear overview of the optimizations we've made:

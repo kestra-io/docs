@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
-image: "assets/blogs/2024-03-20-kestra-airbyte.jpg"
+image: /blogs/2024-03-20-kestra-airbyte.jpg
 ---
 
 Airbyte is an open-source data integration platform designed to simplify the process of collecting, integrating, and moving data across various sources. This post demonstrates how we can integrate Airbyte using [Kestra](https://github.com/kestra-io/kestra) and perform operations on Airbyte using Kestra's Airbyte plugin.
@@ -55,25 +55,25 @@ Create an S3 bucket with the name of your choice. In the bucket, create a folder
 
 On the Airbyte homepage, click on "Create your first connection". First, create the Source connection for which we will choose `MySQL`. Here, put in the appropriate DB host name, port, database, username and password. Select "Scan Changes with User Defined Cursor" option. This is how your connection settings should appear:
 
-![airbyte_setup_source_connection](assets/blogs/2024-03-20-kestra-airbyte/airbyte_setup_source_connection.png)
+![airbyte_setup_source_connection](/blogs/2024-03-20-kestra-airbyte/airbyte_setup_source_connection.png)
 
 Now, click on the "Set up source" button, which will first test the connection, and if the connection is successful, proceed to the next page.
 
 For the destination connection, select `S3`. You will have to provide the AWS access key, AWS secret key, bucket name, bucket region and the folder path within the bucket. For the rest of the form, you can leave the default to have the output format as `CSV: Comma-Separated Values` with no compression and no flattening. This is how your connection settings should appear:
 
-![airbyte_setup_destination_connection](assets/blogs/2024-03-20-kestra-airbyte/airbyte_setup_destination_connection.png)
+![airbyte_setup_destination_connection](/blogs/2024-03-20-kestra-airbyte/airbyte_setup_destination_connection.png)
 
 Now, click on "Set up destination" button, which will first test the connection to the destination, and if the connection is successful, proceed to the next page.
 
 On this page is the final connection configuration. Leave everything default. Ensure that the `employees` stream shows up in the below table, and the sync mode for the stream is `Full refresh | Overwrite`.
 
-![airbyte_configure_connection](assets/blogs/2024-03-20-kestra-airbyte/airbyte_configure_connection.png)
+![airbyte_configure_connection](/blogs/2024-03-20-kestra-airbyte/airbyte_configure_connection.png)
 
 Click on "Set up connection", and you are ready to go!
 
 You can test this connection right away by clicking on "Sync now" on the connection page. When the sync is successful, you can go to the S3 bucket and check the CSV file that has got created in the S3 bucket at the given folder path. You can download the CSV file, and open it to check its contents. It should have three lines similar to the image below:
 
-![csv_file_content](assets/blogs/2024-03-20-kestra-airbyte/airbyte_destination_output_three_lines.png)
+![csv_file_content](/blogs/2024-03-20-kestra-airbyte/airbyte_destination_output_three_lines.png)
 
 ### Setup Kestra cluster ###
 
@@ -107,7 +107,7 @@ tasks:
 
 When you run this task, the sync operation should be invoked on the connection. The output of this task should have the job ID of the sync job as shown in the screenshot below.
 
-![kestra_airbyte_sync_flow_output](assets/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_sync_flow_output.png)
+![kestra_airbyte_sync_flow_output](/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_sync_flow_output.png)
 
 Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus).
 
@@ -127,11 +127,11 @@ tasks:
 
 The output of this flow should have the Sync job status.
 
-![kestra_airbyte_check_status_flow_output](assets/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_check_status_flow_output.png)
+![kestra_airbyte_check_status_flow_output](/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_check_status_flow_output.png)
 
 When the Sync job has succeeded, you can verify that the `Full refresh | Overwrite` actually took place by going to the S3 bucket and to the appropriate folder path. Download the newly generated CSV file, and check its contents. It should now have 5 rows and should appear as:
 
-![csv_file_content](assets/blogs/2024-03-20-kestra-airbyte/airbyte_destination_output_five_lines.png)
+![csv_file_content](/blogs/2024-03-20-kestra-airbyte/airbyte_destination_output_five_lines.png)
 
 This example demonstrated how we can integrate Airbyte with Kestra. Kestra can orchestrate any kind of workflow, exposing a rich UI that monitors all executions.
 

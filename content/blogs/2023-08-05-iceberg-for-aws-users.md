@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2023-08-05-iceberg-for-aws-users.png"
+image: /blogs/2023-08-05-iceberg-for-aws-users.png
 ---
 
 This crash course will guide you on how to get started with [Apache Iceberg](https://iceberg.apache.org/) on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, insert and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.
@@ -28,7 +28,7 @@ Then, go to the Athena console and click "Edit Settings" to configure your query
 
 To keep things simple, choose the same AWS region for both Athena and your S3 bucket.
 
-![iceberg1](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg1.png)
+![iceberg1](/blogs/2023-08-05-iceberg-for-aws-users/iceberg1.png)
 
 
 ### Create an Iceberg table
@@ -57,7 +57,7 @@ The `TBLPROPERTIES` keyword tells Athena that we want to use the Iceberg format 
 
 After executing this query, you should see a new Iceberg table called `fruits` in the Athena table list on the left.
 
-![iceberg2](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg2.png)
+![iceberg2](/blogs/2023-08-05-iceberg-for-aws-users/iceberg2.png)
 
 
 ### Insert new rows using `INSERT INTO`
@@ -96,7 +96,7 @@ ORDER BY berry;
 
 You should see the following results:
 
-![iceberg3](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg3.png)
+![iceberg3](/blogs/2023-08-05-iceberg-for-aws-users/iceberg3.png)
 
 Marvellous! We were able to _just_ insert rows to files in a data lake as if we were using a regular relational database. This is the power of Iceberg — it brings transactions to the data lake.
 
@@ -106,7 +106,7 @@ Similarly to how Iceberg allowed us to perform row-level inserts, we can also mo
 
 Let's imagine that, [as Erik](https://twitter.com/bernhardsson/status/1685636090365968384?t=kcOfZyJ1XPhfKBRVbuXfpg&s=19), you grew up eating Bilberries, thinking that those are just regular Blueberries.
 
-![iceberg4](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg4.png)
+![iceberg4](/blogs/2023-08-05-iceberg-for-aws-users/iceberg4.png)
 
 
 Let's correct that in our data:
@@ -132,7 +132,7 @@ FROM fruits
 ORDER BY berry;
 ```
 
-![iceberg5](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg5.png)
+![iceberg5](/blogs/2023-08-05-iceberg-for-aws-users/iceberg5.png)
 
 Excellent! We've just updated and deleted rows in our data lake as if it were a relational data store. Let's now inspect the table metadata to see how Iceberg handles these operations under the hood.
 
@@ -146,7 +146,7 @@ aws s3 ls s3://yourbucket/fruits/ --recursive --summarize --human-readable
 
 You should see 28 files structured in the following way:
 
-![iceberg6](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg6.png)
+![iceberg6](/blogs/2023-08-05-iceberg-for-aws-users/iceberg6.png)
 
 The `data` folder contains `parquet` files with the actual data, and the `metadata` folder contains Iceberg-internal metadata information.
 
@@ -175,7 +175,7 @@ SELECT snapshot_id, summary
 FROM "fruits$snapshots";
 ```
 
-![iceberg7](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg7.png)
+![iceberg7](/blogs/2023-08-05-iceberg-for-aws-users/iceberg7.png)
 
 Let's copy that snapshot ID and inspect the table as of the time when that snapshot was taken:
 
@@ -187,7 +187,7 @@ FOR VERSION AS OF 4739764842480661991;
 
 You can see that back then, Banana was still in our data:
 
-![iceberg8](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg8.png)
+![iceberg8](/blogs/2023-08-05-iceberg-for-aws-users/iceberg8.png)
 
 
 ### Time travel
@@ -205,7 +205,7 @@ WHERE berry = true;
 
 Back then, we were still under the illusion that we grew up eating Blueberries, while these were actually Bilberries:
 
-![iceberg9](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg9.png)
+![iceberg9](/blogs/2023-08-05-iceberg-for-aws-users/iceberg9.png)
 
 ### Bulk data ingestion
 
@@ -254,7 +254,7 @@ SELECT *
 FROM raw_fruits;
 ```
 
-![iceberg10](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg10.png)
+![iceberg10](/blogs/2023-08-05-iceberg-for-aws-users/iceberg10.png)
 
 The data looks good. Alas, the banana strikes back! 🥊🍌 We'll take care of that when building an end-to-end data pipeline in the final section.
 
@@ -288,7 +288,7 @@ WHERE fruit LIKE 'B%';
 
 This looks great! We inserted new data and ensured that no Blueberries or Bananas made it to the final dataset.
 
-![iceberg11](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg11.png)
+![iceberg11](/blogs/2023-08-05-iceberg-for-aws-users/iceberg11.png)
 
 Let's look at the files generated so far by Iceberg:
 
@@ -297,7 +297,7 @@ SELECT *
 FROM "fruits$files";
 ```
 
-![iceberg12](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg12.png)
+![iceberg12](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12.png)
 
 
 That's quite a lot of files for such a small dataset. Luckily, Iceberg provides a simple SQL statement to help with that issue.
@@ -319,7 +319,7 @@ SELECT record_count, file_path
 FROM "fruits$files";
 ```
 
-![iceberg12a](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg12a.png)
+![iceberg12a](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12a.png)
 
 Iceberg automatically clustered all ``berries`` and ``non-berries`` together into separate files based on the partitioning scheme we provided when creating the table.
 
@@ -539,7 +539,7 @@ triggers:
 
 When you execute the flow, you should see the following output in the logs:
 
-![iceberg12b](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg12b.png)
+![iceberg12b](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12b.png)
 
 Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py), your pipeline can be simplified as follows:
 
@@ -630,7 +630,7 @@ The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public reposi
 
 Executing this workflow should give you the following output:
 
-![iceberg12c](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg12c.png)
+![iceberg12c](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12c.png)
 
 This scheduled workflow is simple to understand and easy to run locally. However, in certain circumstances, it might be inefficient. External systems are often unpredictable, making it difficult to figure out the optimal batch pipeline frequency. The flow shown above will run every hour, even if there are no new files in S3 for days or weeks. In such scenarios, event triggers and a decoupled approach to pipelines become incredibly useful.
 
@@ -718,20 +718,20 @@ triggers:
 
 The trigger polls the S3 location, indicated by `prefix`, for new files every second. The flow gets executed as soon as a new S3 key is detected.
 
-![iceberg13](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg13.png)
+![iceberg13](/blogs/2023-08-05-iceberg-for-aws-users/iceberg13.png)
 
 The processed file is moved to the `archive` directory to avoid the flow being triggered multiple times for the same file. The `maxKeys` property is particularly helpful in our use case as it allows us to process each incoming file sequentially as if you were using [a FIFO queue](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)).
 
 See the screenshots below which demonstrate how the flow was triggered for each new S3 object with the `inbox` prefix.
 
-![iceberg14](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg14.png)
-![iceberg15](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg15.png)
+![iceberg14](/blogs/2023-08-05-iceberg-for-aws-users/iceberg14.png)
+![iceberg15](/blogs/2023-08-05-iceberg-for-aws-users/iceberg15.png)
 
 ### Iceberg Blueprints
 
 All Kestra workflows covered in this post are available as [Blueprints](../docs/04.user-interface-guide/blueprints.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../docs/01.getting-started.md) guide, and select the Iceberg tag from the Blueprints section:
 
-![iceberg16](assets/blogs/2023-08-05-iceberg-for-aws-users/iceberg16.png)
+![iceberg16](/blogs/2023-08-05-iceberg-for-aws-users/iceberg16.png)
 
 
 ## Next steps

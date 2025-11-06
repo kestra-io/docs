@@ -7,7 +7,7 @@ authors:
   - name: Anna Geller
     image: ageller
     role: Product Lead
-image: "assets/blogs/introducing-ai-agents.jpg"
+image: /blogs/introducing-ai-agents.jpg
 ---
 
 We're excited to announce **AI Agents** in Kestra 1.0. With AI Agents, workflows are no longer limited to a predefined sequence of tasks and triggers. Instead, you can launch autonomous processes that use Large Language Models (LLMs), memory, and tools to dynamically decide which actions to take and in what order.

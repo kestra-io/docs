@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role:
   image: mproset
-image: "assets/blogs/2024-10-08-dbt-kestra.jpg"
+image: /blogs/2024-10-08-dbt-kestra.jpg
 ---
 
 When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to manage dbt projects in the best way possible, from syncing code with Git, scaling your dbt workflows on-demand with [Task Runners](https://kestra.io/docs/task-runners) to flexible code management using [Namespace Files](https://kestra.io/docs/concepts/namespace-files). Here’s how Kestra can simplify your dbt workflows and make data transformation more scalable.
@@ -101,7 +101,7 @@ This configuration allows you to allocate CPU and memory resources dynamically, 
 
 ## Manage your dbt code with Namespace Files
 
-![editor](assets/blogs/2024-10-08-dbt-kestra/editor.png)
+![editor](/blogs/2024-10-08-dbt-kestra/editor.png)
 
 With the `UploadFiles`, `DownloadFiles`, and `DeleteFiles` tasks, Kestra lets you manage namespace files more flexibly. For example, `DownloadFiles` allows you to pull namespace files from one project into another, making it easy to share code across projects and teams.
 
@@ -125,7 +125,7 @@ This flexibility allows you to easily share code, manage updates, and ensure tha
 
 ## Manage dbt Execution Logs in Large-Scale dbt Projects
 
-![logs](assets/blogs/2024-10-08-dbt-kestra/logs.png)
+![logs](/blogs/2024-10-08-dbt-kestra/logs.png)
 
 Managing a dbt project with hundreds of models means handling a significant amount of log data. Kestra provides enhanced logging options that make it easy to filter by log level and navigate the information you need. This feature is especially helpful for pinpointing issues in large projects, allowing you to identify and address errors more quickly.
 

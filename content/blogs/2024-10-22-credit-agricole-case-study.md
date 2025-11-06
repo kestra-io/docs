@@ -7,7 +7,7 @@ author:
   name: Julien Legrand
   image: jlegrand
   role: Data & AI Product Owner
-image: "assets/blogs/2024-10-22-credit-agricole-case-study.jpg"
+image: /blogs/2024-10-22-credit-agricole-case-study.jpg
 ---
 
 CAGIP is the IT production entity of Crédit Agricole Group, a leading French banking and financial services company, acting as the central provider of IT services for the entire group. In the data team, we own several products that are used by different entities to host transactional, streaming or analytical data. We provide most of our solutions as a SaaS hosted on a private cloud. Expectations regarding security, regulations and high availability imply specific needs regarding infrastructure operations.
@@ -24,7 +24,7 @@ For a long time, we used Ansible & Jenkins to manage all the tasks that must be 
 We probably could have challenged our current tools, but some of us were quickly convinced by Kestra and we wanted to go much further!
 So, we started with a quick installation in order to check the usability of the interface and the flow syntax defined in YAML. It went well and we decided to continue with setting up the right architecture:
 
-![alt text](assets/blogs/2024-10-22-credit-agricole-case-study/architecture.png)
+![alt text](/blogs/2024-10-22-credit-agricole-case-study/architecture.png)
 
 ## Using Kestra in production
 

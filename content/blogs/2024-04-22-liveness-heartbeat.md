@@ -6,7 +6,7 @@ category: Engineering
 author:
   name: Florian Hussonnois
   image: "fhussonnois"
-image: "assets/blogs/2024-04-22-liveness-heartbeat.jpg"
+image: /blogs/2024-04-22-liveness-heartbeat.jpg
 
 ---
 Kestra's servers use a heartbeat mechanism to periodically send their current state to the Kestra backend, indicating their liveness. That mechanism is crucial for the timely detection of server failures and for ensuring seamless continuity in workflow executions.
@@ -19,7 +19,7 @@ Before delving into the details, let's take a moment to touch upon the concept o
 
 As a quick reminder, Kestra operates as a distributed platform with multiple services, each having specific responsibilities (comparable to a microservices architecture). Among these services, the two most important are the **Workers** and **Executors**. Executors oversee flow executions, deciding which tasks to run, while Workers handle the actual execution of these tasks.
 
-![Architecture](assets/blogs/2024-04-22-liveness-heartbeat/architecture.png)
+![Architecture](/blogs/2024-04-22-liveness-heartbeat/architecture.png)
 
 In Kestra, you can deploy as many workers and executors as you need. This not only allows you to scale your platform to handle millions of executions efficiently but also to ensure service redundancy. In fact, having multiple instances of the same service helps reduce downtime and guarantees uninterrupted workflow executions in the face of errors. Being able to deploy multiple instances of any service also reduces the risk of overloading resources as the load is distributed over more than one instance.
 
@@ -41,7 +41,7 @@ In our initial approach, Kestra’s Workers could be considered either as `UP` o
 
 Then, the Executors are responsible for detecting missing heartbeats, acknowledging workers as dead as soon as a limit is reached, and immediately rescheduling tasks for unhealthy workers (i.e., `kestra.heartbeat.heartbeat-missed`). Finally, the worker is removed from the  cluster metadata.
 
-![Schema](assets/blogs/2024-04-22-liveness-heartbeat/schema.png)
+![Schema](/blogs/2024-04-22-liveness-heartbeat/schema.png)
 
 If a worker is alive but unable to send a heartbeat for a short period of time (e.g., in the event of a transient network failure or saturation of the JVM's garbage collector), it will detect that it has been marked as `DEAD` or evicted and shut down automatically.
 
@@ -72,7 +72,7 @@ The Kestra Liveness Mechanism has now been extended to all Kestra service compon
 
 The diagram below illustrates the various states in the lifecycle of each service
 
-![path](assets/blogs/2024-04-22-liveness-heartbeat/path.png)
+![path](/blogs/2024-04-22-liveness-heartbeat/path.png)
 
 First, a service always starts in the `CREATED` state before switching almost immediately to the `RUNNING` state as soon as it is operational. Then, when a service stops, it switches to the `TERMINATING` and then the `TERMINATED GRACEFULLY` states (when a worker is forced to stop, there is also the TERMINATED FORCED state). Finally, the two remaining states, `NOT_RUNNING` and `EMPTY,` are handled by Executors to finalize the service's removal from the cluster.
 
@@ -82,7 +82,7 @@ In addition to these states, a service can be switched to the `DISCONNECTED` sta
 
 The Kestra liveness mechanism relies on heartbeat signals from the services to the Kestra’s backend. Although this approach is similar to the initial implementation, we now use a configurable `timeout` to detect client failures instead of a number of missing heartbeats. On each client, a dedicated thread, called Liveness Manager, is responsible for propagating all state transitions and the current state of services at fixed intervals. If, at any time, an invalid transition is detected, the service will automatically start to shut down gracefully (i.e., it switches to Terminating). Therefore it is not possible for a service to transition from a DISCONNECTED state to a RUNNING state.
 
-![path](assets/blogs/2024-04-22-liveness-heartbeat/liveness.png)
+![path](/blogs/2024-04-22-liveness-heartbeat/liveness.png)
 
 Next, Executors are responsible for detecting unhealthy or unresponsive services. This is handled by a dedicated thread called the Liveness Coordinator. If no status update is detected within a timeout period, the Liveness Coordinator automatically transitions the service to the `DISCONNECTED` state. In some situations, workers also have dedicated logic to proactively switch to "DISCONNECTED" mode, e.g. when they have been disconnected from the backend for too long or when updating the status is not possible.
 
@@ -185,15 +185,15 @@ It’s up to you to find the configuration that suits your context. But, once ag
 
 To provide more visibility into the new service lifecycle and heartbeat mechanism, Kestra EE offers a Cluster Monitor dashboard, giving you all information about the uptime of your cluster services at a glance.
 
-![services](assets/blogs/2024-04-22-liveness-heartbeat/services.png)
+![services](/blogs/2024-04-22-liveness-heartbeat/services.png)
 
 The dashboard provides access to the current state of each service, as well as, to the important liveness configuration. without having to dig into your deployment configuration files.
 
-![overview](assets/blogs/2024-04-22-liveness-heartbeat/overview.png)
+![overview](/blogs/2024-04-22-liveness-heartbeat/overview.png)
 
 Moreover, users can now access the state transition history of each service, making it easier to understand the actual state of the cluster.
 
-![events](assets/blogs/2024-04-22-liveness-heartbeat/events.png)
+![events](/blogs/2024-04-22-liveness-heartbeat/events.png)
 
 ## What's Next
 

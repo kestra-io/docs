@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "assets/blogs/2023-11-08-when-use-kestra-airbyte-fivetran.jpg"
+image: /blogs/2023-11-08-when-use-kestra-airbyte-fivetran.jpg
 ---
 
 As the data stack is maturing, it’s good to ask ourselves what are the overlaps of the tools we have at hand.

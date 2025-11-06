@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: "edarras"
-image: "assets/blogs/2024-03-21-orchestrate-snowflake-with-kestra.jpg"
+image: /blogs/2024-03-21-orchestrate-snowflake-with-kestra.jpg
 ---
 
 Following the announcement of our [partnership with Snowflake](https://kestra.io/blogs/2023-09-25-kestra-snowflake-partnership), we've witnessed a surge in the usage of our plugin. An increasing number of companies are now leveraging Kestra to orchestrate their Snowflake data lakehouses, transforming how they manage their data at scale. This collaboration has significantly improved how data is managed at scale, offering Kestra users advanced capabilities for orchestration within Snowflake's ecosystem.

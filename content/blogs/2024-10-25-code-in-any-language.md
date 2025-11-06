@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: "assets/blogs/2024-10-25-code-in-any-language.jpg"
+image: /blogs/2024-10-25-code-in-any-language.jpg
 ---
 
 There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration.

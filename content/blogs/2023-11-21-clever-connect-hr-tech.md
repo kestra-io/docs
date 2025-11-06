@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "assets/blogs/2023-11-21-clever-connect-hr-tech.jpg"
+image: /blogs/2023-11-21-clever-connect-hr-tech.jpg
 ---
 
 This case study delves into how [CleverConnect](https://cleverconnect.com/), a human resources tech company, leverages Kestra's capabilities to create an integration platform. With a database of over 10 million candidates and partnerships with 2,500 companies across Europe, CleverConnect has developed an AI-driven, integrated solution for job boards, career sites, CRMs, and other HR tools. Using [Kestra](https://github.com/kestra-io/kestra), they've constructed a platform specifically tailored for automating the creation of connectors, streamlining the recruitment process, and enhancing the overall experience.
@@ -36,7 +36,7 @@ This platform allows to generate Kestra flows through a low code interface that 
 * Outbound Connectors: to map data to external providers and deal with corresponding destination authentication and credentials.
 
 
-![connector](assets/blogs/2023-11-21-clever-connect-hr-tech/cleverconnect-connectors.png)
+![connector](/blogs/2023-11-21-clever-connect-hr-tech/cleverconnect-connectors.png)
 
 The more sources and destinations CleverConnect has, the more difficult it gets. Thanks to Kestra, the company has successfully uncoupled the sources and destinations, allowing ease of maintenance and development. The business logic of parsing API and make the codebase flexible has been possible thanks to the following features of Kestra:
 

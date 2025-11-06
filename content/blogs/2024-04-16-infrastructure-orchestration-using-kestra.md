@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
-image: "assets/blogs/2024-04-16-infrastructure-orchestration-using-kestra.jpg"
+image: /blogs/2024-04-16-infrastructure-orchestration-using-kestra.jpg
 
 ---
 

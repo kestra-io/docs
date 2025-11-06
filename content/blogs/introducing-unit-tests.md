@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "assets/blogs/introducing_unittests.png"
+image: /blogs/introducing_unittests.png
 ---
 
 The 0.23 release introduces a major addition to the Kestra platform: **Unit Tests for Flows**. With this new feature, you can verify the logic of your flows in isolation, helping you catch regressions early and maintain reliability as your automations evolve.
@@ -48,7 +48,7 @@ Each test includes:
 
 The image below visualizes the relationship between a flow, its tests, test cases, fixtures and assertions.
 
-![unittest.png](assets/blogs/introducing_unittests/unittest.png)
+![unittest.png](/blogs/introducing_unittests/unittest.png)
 
 ### Fixtures
 
@@ -121,7 +121,7 @@ There are two main ways to create and manage tests in Kestra:
 
 From these UI pages, you can define tests in YAML, run them and observe their results.
 
-![unittest5.png](assets/blogs/introducing_unittests/unittest5.png)
+![unittest5.png](/blogs/introducing_unittests/unittest5.png)
 
 ### How to Run Tests
 
@@ -343,19 +343,19 @@ Finally, let's look at the process of creating and running tests from the Kestra
 
 First, open any flow and switch to the **Tests** tab. Here, you can create and manage your test suite:
 
-![unittest1.png](assets/blogs/introducing_unittests/unittest1.png)
+![unittest1.png](/blogs/introducing_unittests/unittest1.png)
 
 Define your test cases in YAML and save the test.
 
-![unittest2.png](assets/blogs/introducing_unittests/unittest2.png)
+![unittest2.png](/blogs/introducing_unittests/unittest2.png)
 
 Now if you navigate back to the **Tests** tab, you can see your test listed. Click on the **Run** button to execute it. If you have multiple tests, you can use the **Run All** button to execute all tests in parallel.
 
-![unittest3.png](assets/blogs/introducing_unittests/unittest3.png)
+![unittest3.png](/blogs/introducing_unittests/unittest3.png)
 
 Now you can inspect results directly from the UI. Additionally, clicking on the `ExecutionId` link will take you to the execution details page, where you can troubleshoot any issues that may have occurred during the test run.
 
-![unittest4.png](assets/blogs/introducing_unittests/unittest4.png)
+![unittest4.png](/blogs/introducing_unittests/unittest4.png)
 
 
 ## Next Steps

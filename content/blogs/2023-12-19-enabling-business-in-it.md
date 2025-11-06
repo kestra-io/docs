@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "assets/blogs/2023-12-19-enabling-business-in-it.jpg"
+image: /blogs/2023-12-19-enabling-business-in-it.jpg
 ---
 
 Platforms such as Zapier and Make have empowered a new wave of citizen developers—business users who can build applications and workflows to meet their immediate needs without writing a single line of code, helping businesses to innovate rapidly and respond to changing customer demands with minimal delay.
@@ -17,7 +17,7 @@ This is what we are going to talk about in this blog post and how we need tools 
 
 ## The Data Mesh Model: A Prelude to Unified Usage
 
-![datamesh](assets/blogs/2023-12-19-enabling-business-in-it/datamesh.png)
+![datamesh](/blogs/2023-12-19-enabling-business-in-it/datamesh.png)
 
 The concept of a data mesh has made significant inroads into how we handle and disseminate information within organizations. It champions the idea of decentralized data ownership, where domain-specific teams manage their data as a product. However, it's not just the data that needs this democratization; the actual usage and operational workflows need to reflect this model too.
 

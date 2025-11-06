@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: "assets/blogs/release-0-21.jpg"
+image: /blogs/release-0-21.jpg
 ---
 
 Kestra 0.21 introduces no-code forms for simpler workflow creation, customizable dashboards for more flexible monitoring, a new core property for cleanup tasks, advanced log forwarding across your entire infrastructure, and several other improvements.
@@ -69,7 +69,7 @@ triggers:
 ```
 :::
 
-![datadog logshipper](assets/blogs/release-0-21/logshipper_datadog.png)
+![datadog logshipper](/blogs/release-0-21/logshipper_datadog.png)
 
 
 :::collapse{title="Expand for an example with AWS CloudWatch"}
@@ -97,7 +97,7 @@ triggers:
 ```
 :::
 
-![logshipper aws cloudwatch](assets/blogs/release-0-21/logshipper_aws_cloudwatch.png)
+![logshipper aws cloudwatch](/blogs/release-0-21/logshipper_aws_cloudwatch.png)
 
 ### New No Code Experience
 
@@ -178,9 +178,9 @@ charts:
 ```
 :::
 
-![alt text](assets/blogs/release-0-21/custom_dashboard1.png)
+![alt text](/blogs/release-0-21/custom_dashboard1.png)
 
-![alt text](assets/blogs/release-0-21/custom_dashboard2.png)
+![alt text](/blogs/release-0-21/custom_dashboard2.png)
 
 You can find Dashboard blueprints from the left side menu.
 

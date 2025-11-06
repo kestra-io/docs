@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: "edarras"
-image: "assets/blogs/2024-03-07-databricks-partnership.jpg"
+image: /blogs/2024-03-07-databricks-partnership.jpg
 ---
 
 **We're excited to announce a strategic partnership between [Kestra](https://github.com/kestra-io/kestra) and [Databricks](https://www.databricks.com/), uniting our strengths to enhance the data orchestration and analytics landscape. This collaboration is set to empower data teams by integrating Kestra's orchestration capabilities with Databricks' unified analytics platform, offering a comprehensive solution for managing complex data workflows.**
@@ -23,7 +23,7 @@ Kestra leverages this advanced architecture to provide dynamic data workflow man
 
 Kestra's plugin for  Databricks extends the platform's functionality, allowing for efficient data processing and transformation. This integration empowers data teams to leverage Databricks' compute and storage resources more effectively, optimizing data workflows and reducing operational costs.
 
-![plugin](assets/blogs/2024-03-07-databricks-partnership/plugin.png)
+![plugin](/blogs/2024-03-07-databricks-partnership/plugin.png)
 
 ### **Practical Applications of the Kestra-Databricks Integration**
 
@@ -31,11 +31,11 @@ The integration between Kestra and Databricks leverages the strengths of both pl
 
 1. **Dynamic Compute Cluster Management**: Automating compute cluster operations in Databricks with Kestra significantly streamlines resource management. Users can dynamically scale computational resources up or down based on the workflow's requirements, enhancing efficiency and optimizing costs. This is achieved through Kestra's **`CreateCluster`** and **`DeleteCluster`** tasks, which provide granular control over the lifecycle of compute clusters in Databricks. By specifying parameters such as cluster name, node type, number of workers, and Spark version, users ensure that each workflow has the exact computational resources it needs, when it needs them.
 
-![cluster](assets/blogs/2024-03-07-databricks-partnership/cluster.png)
+![cluster](/blogs/2024-03-07-databricks-partnership/cluster.png)
 
 2. **Efficient Data Movement**: The **`Upload`** task in Kestra simplifies moving data to and from the Databricks File System (DBFS), eliminating the manual handling of files and streamlining the data workflow. This capability is particularly useful for workflows that involve preprocessing data in DBFS before analysis or moving results out of Databricks for further processing or visualization. By automating data uploads and downloads, Kestra ensures that the right data is available at the right stage of the workflow, facilitating seamless data pipelines.
 
-![download](assets/blogs/2024-03-07-databricks-partnership/download.png)
+![download](/blogs/2024-03-07-databricks-partnership/download.png)
 
 3. **Streamlined Data Queries**: Executing SQL queries within Databricks using Kestra's task system brings a new level of efficiency to data processing. The **`Query`** task allows users to perform operations directly on data stored in Databricks, from data transformation to analytics. This integration is vital for workflows that require iterative data exploration, complex transformations, or aggregations before downstream processing. By embedding SQL execution within the orchestration workflow, Kestra enhances Databricks' data processing capabilities, enabling more sophisticated data analysis and decision-making based on real-time insights.
 
@@ -47,7 +47,7 @@ Our collaboration with Databricks is the beginning of a strategic partnership de
 
 Stay tuned for updates on additional integrations and case studies showcasing how this partnership is facilitating more efficient, scalable, and effective data management strategies. For a closer look at how Kestra and Databricks are working together today, check out our [blueprints](/blueprints?page=1&size=24&q=databricks). These resources are designed to give you practical insights into leveraging our combined strengths for your data projects.
 
-![Blueprints](assets/blogs/2024-03-07-databricks-partnership/blueprints.png)
+![Blueprints](/blogs/2024-03-07-databricks-partnership/blueprints.png)
 
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).

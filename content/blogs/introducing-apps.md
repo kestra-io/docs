@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "assets/blogs/introducing-apps.jpg"
+image: /blogs/introducing-apps.jpg
 ---
 
 We’re excited to introduce **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
@@ -27,7 +27,7 @@ With Apps, you can:
 
 In short, Apps let you turn any Kestra workflow into a user-facing application.
 
-![image1.png](assets/blogs/introducing-apps/image1.png)
+![image1.png](/blogs/introducing-apps/image1.png)
 
 ---
 
@@ -177,15 +177,15 @@ layout:
 
 Click on `View App` to see it in action:
 
-![image2.png](assets/blogs/introducing-apps/image2.png)
+![image2.png](/blogs/introducing-apps/image2.png)
 
 You should see a page with a form:
 
-![image3.png](assets/blogs/introducing-apps/image3.png)
+![image3.png](/blogs/introducing-apps/image3.png)
 
 Fill out the form and click on `Submit`. Once processing is complete, you should see the results displayed.
 
-![image4.png](assets/blogs/introducing-apps/image4.png)
+![image4.png](/blogs/introducing-apps/image4.png)
 
 The UI display and all actions performed by the app are configurable through `blocks` specified in the `layout` property.
 

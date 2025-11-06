@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: "edarras"
-image: "assets/blogs/2024-03-14-dremio-partnership.jpg"
+image: /blogs/2024-03-14-dremio-partnership.jpg
 ---
 
 **Today, we’re thrilled to announce a strategic partnership between [Kestra](https://github.com/kestra-io/kestra) and [Dremio](https://www.dremio.com/) to simplify data workflows and accelerate time-to-delivery for data teams! This collaboration will empower data professionals to leverage the combined strengths of Kestra's declarative workflow engine and Dremio's Data lakehouse capabilities.**
@@ -23,7 +23,7 @@ Kestra provides a declarative workflow engine that orchestrates Dremio's data ac
 
 Together, we reduce unnecessary coding overhead and eliminate the need for complex ETL pipelines. The intuitive interfaces focus on the user experience, and the rich plugin ecosystems of both tools further amplify their synergy, accelerating development cycles and empowering data professionals to deliver insights faster.
 
-![plugin](assets/blogs/2024-03-14-dremio-partnership/schema.png)
+![plugin](/blogs/2024-03-14-dremio-partnership/schema.png)
 
 ### Practical Application of the Kestra-Dremio Integration
 

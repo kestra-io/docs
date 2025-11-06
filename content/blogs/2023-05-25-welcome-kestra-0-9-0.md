@@ -7,7 +7,7 @@ author:
   name: Benoit Pimpaud
   image: "bpimpaud"
   twitter: "@Ben8t"
-image: "assets/blogs/2023-05-25-welcome-kestra-0-9-0.jpg"
+image: /blogs/2023-05-25-welcome-kestra-0-9-0.jpg
 ---
 
 We're excited to announce the release of Kestra 0.9. This latest update brings a range of user experience improvements to make data orchestration a more enjoyable experience. Let's dive into the key features and enhancements.
@@ -20,9 +20,9 @@ With Kestra 0.9.0, we've introduced a new Metrics tab at the flow-execution leve
 There are two types of metrics that you can track: counter and timer. [This documentation page](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics) includes an example showing how you can leverage these two metric types to track how many rows get processed in each partition and how long this process took.
 
 
-![metric dashboard screenshot](assets/blogs/2023-05-25-welcome-kestra-0-9-0/metric_dashboard_screenshot.png)
+![metric dashboard screenshot](/blogs/2023-05-25-welcome-kestra-0-9-0/metric_dashboard_screenshot.png)
 
-![metric dashboard demo](assets/blogs/2023-05-25-welcome-kestra-0-9-0/metric_dashboard_demo.gif)
+![metric dashboard demo](/blogs/2023-05-25-welcome-kestra-0-9-0/metric_dashboard_demo.gif)
 
 
 ## Save Flows as Drafts
@@ -39,7 +39,7 @@ We've focused on enhancing the user experience with the following improvements:
 * **Task-required properties listed first**: In documentation pages, required properties of any task are now prioritized and listed first, making it clearer which properties are required and which are optional.
 * **Additional improvements and fixes**: We've implemented several enhancements and fixes, including improved flow and inputs validation, enhanced page redirects, fixed Gantt display issues, improved error messaging, resolved theme discrepancies, and more. These refinements ensure a smoother user experience and enhance the overall stability of Kestra.
 
-![editor window with slider](assets/blogs/2023-05-25-welcome-kestra-0-9-0/window_slider.gif)
+![editor window with slider](/blogs/2023-05-25-welcome-kestra-0-9-0/window_slider.gif)
 
 ## Introducing New Plugins
 With Kestra 0.9.0, we're thrilled to introduce new plugins that extend the capabilities of the platform:
@@ -93,7 +93,7 @@ Finally, we also move update Java from version 11 to 17. If you have custom plug
 
 To take the new features for a spin, you can start Kestra using Docker Compose.
 
-![git it a try](assets/blogs/2023-05-25-welcome-kestra-0-9-0/give_it_try.png)
+![git it a try](/blogs/2023-05-25-welcome-kestra-0-9-0/give_it_try.png)
 
 Kestra is continuously improving. While the [Git plugin](/plugins/plugin-git) simplifies working with custom scripts, we are working on further improving the user experience in orchestrating custom business logic built in Python. Follow us on [Twitter](https://twitter.com/kestra_io) or [LinkedIn](https://fr.linkedin.com/company/kestra) to stay up to date with the new releases and updates.
 

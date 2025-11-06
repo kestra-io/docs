@@ -6,7 +6,7 @@ category: Solution
 author:
   name: Kevin Fleming
   image: "kfleming"
-image: "assets/blogs/2024-03-06-guide-integration-ingestion.jpg"
+image: /blogs/2024-03-06-guide-integration-ingestion.jpg
 ---
 
 This blog post serves as a practical guide to cloud data warehouse (CDW) ingestion and integration, focusing on BigQuery, Redshift, and Snowflake. We address the key challenges data teams face, such as manual pipeline maintenance, and offer solutions to streamline these processes. Dive in!
@@ -316,7 +316,7 @@ Each integration is further categorized:
 
 A solution to the problems of the high cost and friction of creating, changing, and managing data pipeline is a few simple architectures based on your data, metadata and your chosen CDW. Depending on your source, either Redshift or BigQuery was the first cloud data warehouse as a service, and in the past 13 years, these products have become incredibly popular, capable, and mature. Have a look at the diagram below created by Google Machine Learning Solution Architect, Rajesh Thallam, for his blog, [How to load, import, or ingest data into BigQuery for analysis | Google Cloud Blog](https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-data-ingestion). It’s an almost complete list of the ways you can load data into BigQuery (see the section above on integration and ingestion).
 
-![diagram](assets/blogs/2024-03-06-guide-integration-ingestion/diagram.png)
+![diagram](/blogs/2024-03-06-guide-integration-ingestion/diagram.png)
 
 
 There are 39 leaf nodes in the above diagram. 39 different data sources that BigQuery knows how to handle. Then there’s logging, monitoring, alerting, permissions, and security.
@@ -329,17 +329,17 @@ Let’s take a look at the work that might be involved in going from a great ide
 
 So, we uploaded some CSV to cloud storage and then queried the data with BigQuery! Simple, straightforward, and easy to maintain.
 
-![Step1](assets/blogs/2024-03-06-guide-integration-ingestion/step1.png)
+![Step1](/blogs/2024-03-06-guide-integration-ingestion/step1.png)
 
 Then one day, some eager beaver says, “You know, we could capture some events from the mobile app, and make it available to BigQuery. The business would love it! Probably wouldn't be too hard…”
 
-![Step2](assets/blogs/2024-03-06-guide-integration-ingestion/step2.png)
+![Step2](/blogs/2024-03-06-guide-integration-ingestion/step2.png)
 
 Ok, that’s adding some complexity but there’s real business value.
 
 A few months later, another bright spark says, “You know, instead of uploading these events every day, we could stream these app events in real time. The business would love it! Probably wouldn't be too hard…”
 
-![Step3](assets/blogs/2024-03-06-guide-integration-ingestion/step3.png)
+![Step3](/blogs/2024-03-06-guide-integration-ingestion/step3.png)
 
 Did we really need to stream the event data in real time? Was the business value worth the cost in added complexity and dev hours? Or did the business team just say, “Yeah, that’d be cool.”
 
@@ -420,7 +420,7 @@ If your organization is adopting a data mesh architecture, Kestra instances can 
 
 You have the ability to quickly implement any of the best-in-class tools like [FiveTran](/plugins/plugin-fivetran), [dlt](https://github.com/dlt-hub/dlt-kestra-demo), [Airbyte](/plugins/plugin-airbyte) or [SQLMesh](/plugins/plugin-sqlmesh).
 
-![schema](assets/blogs/2024-03-06-guide-integration-ingestion/schema.png)
+![schema](/blogs/2024-03-06-guide-integration-ingestion/schema.png)
 
 
 ## Kestra Features

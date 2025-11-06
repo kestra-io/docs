@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "assets/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership.jpg"
+image: /blogs/2023-09-05-2023-kestra-airbyte-technology-partnership.jpg
 ---
 
 We are pleased to announce a technology partnership with [Airbyte](https://airbyte.com/). [Kestra](https://github.com/kestra-io/kestra) and Airbyte share a common vision for the future of the Modern Data Stack. This technical partnership ensures seamless data transfer, task execution, and process automation between Kestra and Airbyte.
@@ -41,11 +41,11 @@ The collaborative efforts offer a unified platform for end-to-end data orchestra
 
 - **Dynamic Data Workflows**: You can use Kestra's Airbyte plugin to trigger various operations, such as parallel syncs, scheduled ingestion, and complex data processing jobs.
 
-![parallel](assets/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/parallel.png)
+![parallel](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/parallel.png)
 
 - **Robust Orchestration Capabilities**: From triggering multiple Airbyte Cloud syncs to running complex dbt jobs, Kestra's flexibility empowers users to control and automate their data processes.
 
-![dbt-airbyte-jobs](assets/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png)
+![dbt-airbyte-jobs](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png)
 
 - **Efficient Data Management**: Learn how this collaboration supports an end-to-end data orchestration approach in [this blog post](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
 

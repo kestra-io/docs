@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda.png"
+image: /blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda.png
 ---
 
 We’re happy to announce Kestra 0.12.0. This release significantly improves **subflow** topology and logs, making navigating complex workflows a breeze. We've also added [Docker](/plugins/plugin-docker) and [SurrealDB](/plugins/plugin-surrealdb) plugins, and **new AWS integrations**, including [AWS Lambda](/plugins/plugin-aws/lambda/io.kestra.plugin.aws.lambda.invoke), [Amazon EventBridge](/plugins/plugin-aws/eventbridge/io.kestra.plugin.aws.eventbridge.putevents), and [Amazon Kinesis Data Streams](/plugins/plugin-aws/kinesis/io.kestra.plugin.aws.kinesis.putrecords).
@@ -39,7 +39,7 @@ Kestra's subflows are modular components helping to build reusable and maintaina
 
 🔹 **Subflow topology:** you can now see the topology of a subflow from the parent flow. [This enhancement](https://github.com/kestra-io/kestra/pull/2007) makes it easier to understand the structure of the subflow and how it fits into the bigger picture.
 
-![subflows](assets/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/subflows.png)
+![subflows](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/subflows.png)
 
 🔹 **Zoom in and out:** expand the subflow to see more details and collapse it to get a bird's eye view of the complete workflow comprised of multiple modular components. With [this change](https://github.com/kestra-io/kestra/pull/2171), you can decompose large workflows into smaller parts.
 
@@ -49,7 +49,7 @@ Kestra's subflows are modular components helping to build reusable and maintaina
 
 🔹 **Subflow logs:** you can view subflow logs directly from the parent flow, and they are beautifully formatted. [The integration of logs](https://github.com/kestra-io/kestra/pull/2140) gives you maximum visibility into the execution of complex workflows while maintaining the modularity and composability of the underlying business logic.
 
-![logs](assets/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/logs.png)
+![logs](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/logs.png)
 
 
 ---
@@ -82,7 +82,7 @@ This integration allows you to:
 
 🔹 (optionally) pass the results of the Lambda function execution to the next task(s) in the workflow.
 
-![plugins](assets/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/plugins.png)
+![plugins](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/plugins.png)
 
 
 With this integration, you can seamlessly incorporate serverless functions as part of an end-to-end workflow and orchestrate microservices running on AWS along with on-prem and cloud-native applications and data pipelines.

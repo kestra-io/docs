@@ -7,7 +7,7 @@ author:
   name: Emmanuel Darras
   image: "edarras"
   role: CEO & Co-Founder
-image: "assets/blogs/2024-10-30-ops-everything.jpg"
+image: /blogs/2024-10-30-ops-everything.jpg
 ---
 
 Despite growing demands for **orchestration, CI/CD, and end-to-end monitoring** across all operational and data workflows, many teams still depend on scattered tools that manage only parts of the process. This tool-driven approach reduces productivity, complicates maintenance, and delays troubleshooting.
@@ -46,7 +46,7 @@ Establishing an effective **Ops-Everything** framework requires a comprehensiv
 
 ## Why Kestra? A Step Toward Unified, Collaborative Operations
 
-![dashoboard](assets/blogs/2024-10-30-ops-everything/dashboard.jpg)
+![dashoboard](/blogs/2024-10-30-ops-everything/dashboard.jpg)
 
 At [**Kestra**](https://github.com/kestra-io/kestra), we’re working to build this **unified approach**, creating an orchestration platform that meets operational needs across data and engineering. Our customers [**Gorgias**](https://kestra.io/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra) and [**Leroy Merlin France**](https://kestra.io/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) underscore the transformative potential of unified workflows. Gorgias integrates Kestra with tools like **Airbyte**, **dbt**, and **Hightouch**, optimizing Infrastructure as Code practices, while Leroy Merlin relies on Kestra to support its **data mesh**, giving business units orchestration access without shadow IT.
 

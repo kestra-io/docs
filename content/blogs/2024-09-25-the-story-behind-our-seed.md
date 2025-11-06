@@ -7,7 +7,7 @@ author:
   name: Emmanuel Darras
   image: "edarras"
   role: "CEO & Co-Founder"
-image: "assets/blogs/2024-09-25-the-story-behind-our-seed.jpg"
+image: /blogs/2024-09-25-the-story-behind-our-seed.jpg
 ---
 
 Discover the story behind our $8M seed funding with some CEO/founders of dbt Labs, Datadog, Airbyte, Hugging Face, Algolia, Talend,Platform.sh and some VCs (Alven, ISAI, Axeleo). Learn how we framed our vision, addressed key challenges in orchestration, and built a compelling pitch that secured investor confidence in the future of unified orchestration.
@@ -22,7 +22,7 @@ Today, **we're sharing the deck that helped us raise $8M in seed funding**—th
 
 ### Framing the Problem: Why Orchestration Matters
 
-![about orchestration](assets/blogs/2024-09-25-the-story-behind-our-seed/about.jpg)
+![about orchestration](/blogs/2024-09-25-the-story-behind-our-seed/about.jpg)
 
 We started by asking a fundamental question: **Why build a company around orchestration?**
 
@@ -34,7 +34,7 @@ This narrative allowed us to connect the dots between the complexity that busine
 
 ### The Pain Points We Address
 
-![complexity](assets/blogs/2024-09-25-the-story-behind-our-seed/complexity.jpg)
+![complexity](/blogs/2024-09-25-the-story-behind-our-seed/complexity.jpg)
 
 Here we talk about the specific problems we aim to solve. It’s no secret that **existing tools are either too rigid or require a high degree of technical knowledge to get started**. This results in bottlenecks, inefficiencies, and shadow IT, where non-engineering users default to **spreadsheets, GitHub Actions, and no-code automation tools** to orchestrate their internal processes—all of which are not visible to the central IT teams.
 
@@ -44,7 +44,7 @@ It was therefore essential for us to explain that **Kestra is different**. We ar
 
 ### Positioning Ourselves in the Market
 
-![positionning](assets/blogs/2024-09-25-the-story-behind-our-seed/market.jpg)
+![positionning](/blogs/2024-09-25-the-story-behind-our-seed/market.jpg)
 
 In the early stages of building Kestra, we noticed the need for a simpler and unified automation platform that can combine **workflows as code and low-code automation**. Most tools fell into one of two categories—either code-based, requiring significant technical expertise, or UI-based drag-and-drop tools with limited flexibility. **Kestra offers both a UI and code-based workflow builder** and an Everything as Code approach.
 
@@ -54,7 +54,7 @@ This hybrid approach became one of our most compelling selling points. We are cr
 
 ### Our Unique Advantages: More Than Yet Another Automation Tool
 
-![simplicity](assets/blogs/2024-09-25-the-story-behind-our-seed/simplicity.jpg)
+![simplicity](/blogs/2024-09-25-the-story-behind-our-seed/simplicity.jpg)
 
 We had to show the **unique advantages of Kestra**. This section of our deck was designed to leave no room for doubt about our value. We focused on three core ideas:
 
@@ -68,7 +68,7 @@ Each point reflected our belief that **Kestra wasn’t just a solution for today
 
 ### Building Community and Platform-Led Growth
 
-![growth](assets/blogs/2024-09-25-the-story-behind-our-seed/growth.jpg)
+![growth](/blogs/2024-09-25-the-story-behind-our-seed/growth.jpg)
 
 The most critical aspect of any open-source project is **adoption**. When we introduced Kestra, we aimed to ensure it wasn’t a top-down tool imposed on engineering teams. Instead, we wanted it to thrive in an open-source environment, where everyone could benefit, contribute, build plugins, and integrate their own systems.
 

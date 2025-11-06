@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2024-03-12-introduction-to-cloudquery.png"
+image: /blogs/2024-03-12-introduction-to-cloudquery.png
 ---
 
 In the [previous article](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved), we've discussed why data ingestion is a challenging problem and how various tools have approached it. In this post, we'll introduce CloudQuery, an open-source, high-performance ELT framework for developers. We'll briefly cover the product's history and its main strengths. We'll also look at a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB, and how to put your CloudQuery syncs to production using Kestra.
@@ -63,11 +63,11 @@ As an authenticated user, you get the following benefits:
 
 CloudQuery ingestion framework is open-source and free to use, but **premium plugins** require a paid subscription. The company behind CloudQuery offers a managed service called CloudQuery Cloud, allowing you to configure and schedule your CloudQuery syncs from a web interface. You can configure the desired amount of vCPU and vRAM for your syncs so that you don't have to worry about the infrastructure.
 
-![cq_sync](assets/blogs/2024-03-12-introduction-to-cloudquery/cq_sync.png)
+![cq_sync](/blogs/2024-03-12-introduction-to-cloudquery/cq_sync.png)
 
 The UI allows you to configure a new plugin by pointing to a Git repository containing your plugin code.
 
-![cq_new_plugin](assets/blogs/2024-03-12-introduction-to-cloudquery/cq_new_plugin.png)
+![cq_new_plugin](/blogs/2024-03-12-introduction-to-cloudquery/cq_new_plugin.png)
 
 ## CloudQuery in action
 

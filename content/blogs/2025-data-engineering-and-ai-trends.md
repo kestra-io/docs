@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: "assets/blogs/2025-data-engineering-and-ai-trends.png"
+image: /blogs/2025-data-engineering-and-ai-trends.png
 ---
 
 Many trends that began shaping [data engineering in 2024](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends) continue to affect data teams in 2025. AI keeps accelerating, and data lakes—along with open table formats—are more popular than ever. Below is our take on the trends influencing data engineering and AI today, and how they impact data professionals.
@@ -95,7 +95,7 @@ The database world’s “Swiss Army knife” keeps getting sharper. In 2025, **
 The [2024 Stack Overflow survey](https://survey.stackoverflow.co/2024/) found 49% of developers now use PostgreSQL – surpassing MySQL for the first time. This growth stems from its *ecosystem-first* strategy: instead of forcing users to adopt new tools, PostgreSQL integrates them, becoming what many call *the Linux of databases* – boringly reliable, and infinitely adaptable.
 
 
-![postgres](assets/blogs/2025-data-engineering-and-ai-trends/postgres.png)
+![postgres](/blogs/2025-data-engineering-and-ai-trends/postgres.png)
 
 Source: [Postgres is eating the database world](https://medium.com/@fengruohang/postgres-is-eating-the-database-world-157c204dcfc4)
 
@@ -107,7 +107,7 @@ Even though many developers love PostgreSQL, migrating databases or moving workl
 
 There’s a bright spot, though. AI is starting to make certain migrations much easier. [AWS Database Migration Service (DMS)](https://aws.amazon.com/blogs/aws/aws-data-migration-service-improves-database-schema-conversion-with-generative-ai/) now uses generative AI to automate many of the time-consuming schema conversion tasks needed to move from commercial databases like Oracle to PostgreSQL. It won’t handle every edge case—proprietary functions and special data types can still be tricky—but it can significantly reduce the pain of database migration. This is a welcome trend for data engineers who typically face long, painstaking processes to convert and migrate data manually.
 
-![aws_dms](assets/blogs/2025-data-engineering-and-ai-trends/aws_dms.png)
+![aws_dms](/blogs/2025-data-engineering-and-ai-trends/aws_dms.png)
 
 ---
 

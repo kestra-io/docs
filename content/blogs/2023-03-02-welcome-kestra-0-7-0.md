@@ -7,7 +7,7 @@ author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: "assets/blogs/2023-03-02-welcome-kestra-0-7-0.jpg"
+image: /blogs/2023-03-02-welcome-kestra-0-7-0.jpg
 ---
 
 We’ve been super busy at [Kestra](https://github.com/kestra-io/kestra) over the last few months, making working with data much more delightful for you. We’ve done much work to elevate the developer experience and introduce powerful features to make Kestra the best data orchestration platform.
@@ -24,7 +24,7 @@ Read the full post 😉
 
 We added a Kestra guided tour in the UI. When there is no flow already created, a guided tour will introduce you to Kestra and flow’s main concepts.
 
-![Kestra guided tour](assets/blogs/2023-03-02-welcome-kestra-0-7-0/onboarding.gif)
+![Kestra guided tour](/blogs/2023-03-02-welcome-kestra-0-7-0/onboarding.gif)
 
 This guided tour can be re-run with the `?` button as shown above.
 
@@ -42,7 +42,7 @@ On the flow editor, you can now use _CTRL + Enter_ to get a suggestion of task t
 
 This works thanks to our validation based on a JSON Schema computed for each task. It will also underline errors like missing mandatory properties when you save your flows.
 
-![Autocomplete](assets/blogs/2023-03-02-welcome-kestra-0-7-0/autocmplete.gif)
+![Autocomplete](/blogs/2023-03-02-welcome-kestra-0-7-0/autocmplete.gif)
 
 ### Improved Flow validation
 
@@ -64,13 +64,13 @@ A flow can have one or multiple dependencies, a dependency is another flow that 
 
 We had a flow page tab on the Enterprise Edition displaying these dependencies (and the dependencies of the dependencies, recursively). **We now moved this tab from the Enterprise Edition to the Open Source Edition**, making it available for everyone!
 
-![Flow Dependencies](assets/blogs/2023-03-02-welcome-kestra-0-7-0/deps.gif)
+![Flow Dependencies](/blogs/2023-03-02-welcome-kestra-0-7-0/deps.gif)
 
 ## Mass actions everywhere
 
 You can have a lot of flows and executions in your Kestra instances. Until now, actions on flows or executions could only be done one by one. That made it challenging to manage a large number of resources.
 
-![Mass actions everywhere](assets/blogs/2023-03-02-welcome-kestra-0-7-0/executions_mass.png)
+![Mass actions everywhere](/blogs/2023-03-02-welcome-kestra-0-7-0/executions_mass.png)
 
 We added support for mass actions for flows, templates, and executions. You can now mass delete all your flows if you want!
 
@@ -84,12 +84,12 @@ You can also select any flows or templates thanks to the new mass action button 
 
 Flow imports and exports can be very handy when switching between Kestra instances or initiating a CI/CD pipeline. If you need to export everything we added new buttons for this in the Settings page.
 
-![Export flows](assets/blogs/2023-03-02-welcome-kestra-0-7-0/flows_mass.png)
+![Export flows](/blogs/2023-03-02-welcome-kestra-0-7-0/flows_mass.png)
 
 ## Dashboard on OSS
 
 On the Enterprise Edition, we had a dashboard on the homepage with many charts, giving some indicators about success, errors, number of executions,…
-![board.jpg](assets/blogs/2023-03-02-welcome-kestra-0-7-0/board.jpg)
+![board.jpg](/blogs/2023-03-02-welcome-kestra-0-7-0/board.jpg)
 
 **We now moved this dashboard from the Enterprise Edition to the Open Source Edition**, making them available for everyone!
 

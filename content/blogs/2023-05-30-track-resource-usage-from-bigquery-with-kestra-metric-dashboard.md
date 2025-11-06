@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "assets/blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard.jpg"
+image: /blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard.jpg
 ---
 
 Data Warehouse solutions can sometimes become costly, especially with an uptick in data processing demand. Cloud-based data warehouses like Google BigQuery offer significant advantages in terms of scalability and performance. Yet, with great scalability comes great responsibility, managing your resources usage effectively.
@@ -51,7 +51,7 @@ So, Kestra will execute this task every hour, running the specified SQL query on
 
 ### UI Results ###
 
-![UI results Query](assets/blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard/query-ui.png)
+![UI results Query](/blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard/query-ui.png)
 
 The Metric dashboard provides a seamless way to look at metrics for every Flow execution. In our example we can see that at some point our query processed more bytes than before - growing our BigQuery bill.
 

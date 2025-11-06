@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin Pierre Roset
   image: "mproset"
-image: "assets/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg"
+image: /blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
 ---
 
 [Kestra](https://github.com/kestra-io/kestra), in collaboration with [DuckDB](https://motherduck.com/), offers a highly efficient way to analyze CSV files. In this blog post, we will focus on how these two platforms can be employed to automate data analysis.
@@ -77,13 +77,13 @@ id:  export_result
 
 The final task, export_result, uses Kestra's CsvWriter plugin to convert the result of the DuckDB query, which is stored as an ION file, into a CSV file. ION (short for Interchange Object Notation) is a data serialization format similar to JSON but designed to be more efficient in terms of storage and transmission, and it's strongly typed, ensuring data integrity. The use of ION allows for compact storage of query results while maintaining the flexibility to easily convert the data into other formats like CSV. In the end, you can download the CSV output directly to your computer for further analysis and sharing.
 
-![tasks execution svg dll](assets/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/image-2.png)
+![tasks execution svg dll](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/image-2.png)
 
 ## Exploring Further with Kestra and DuckDB
 
 For those who are interested in exploring more about the capabilities and use cases of Kestra and DuckDB, the [Blueprints](/blueprints?q=duck) provides valuable resources and pre-built workflows that you can use as a starting point for your own tasks.
 
-![duckdb blueprints](assets/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/blueprints-DuckDB.png)
+![duckdb blueprints](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/blueprints-DuckDB.png)
 
 If you are particularly interested in learning more about DuckDB and its various applications, you can check out this blog post: [DuckDB vs MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck). It provides a comprehensive comparison between DuckDB and its in-memory, shareable version, MotherDuck, and will give you further insights into how to use these tools effectively in your own data workflows.
 

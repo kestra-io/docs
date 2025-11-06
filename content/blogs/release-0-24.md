@@ -7,7 +7,7 @@ authors:
   - name: Anna Geller
     image: ageller
     role: Product Lead
-image: "assets/blogs/release-0-24.jpg"
+image: /blogs/release-0-24.jpg
 ---
 
 
@@ -63,7 +63,7 @@ To see Playground in action, check out the demo below.
 :::alert{type="warning"}
 Note that Playground mode is **currently in Beta**, and we welcome your feedback and suggestions for improvements. You can enable it directly from the Kestra UI from the **Settings** page simply by toggling on the `Playground` button:
 
-![playground_toggle](assets/blogs/release-0-24/playground_toggle.png)
+![playground_toggle](/blogs/release-0-24/playground_toggle.png)
 :::
 
 
@@ -327,14 +327,14 @@ tasks:
     messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
 ```
 
-![slack_formatting](assets/blogs/release-0-24/slack_formatting.png)
+![slack_formatting](/blogs/release-0-24/slack_formatting.png)
 
 
 ## New Execution dependency view
 
 The new Execution dependency view allows you to follow runtime dependencies from the first parent to the last child flow. It simplifies troubleshooting long execution chains by providing a clear overview of the relationships between each execution and those that precede or follow it.
 
-![execution_dependencies](assets/blogs/release-0-24/execution_dependencies.png)
+![execution_dependencies](/blogs/release-0-24/execution_dependencies.png)
 
 ## Listing all flow dependencies (EE only)
 
@@ -346,7 +346,7 @@ When running Kestra locally, you can access the documentation for this endpoint 
 
 The new [CSV Export](https://github.com/kestra-io/kestra/issues/9368) is a handy feature that allows you to export tabular data from any dashboard into a CSV file for reporting and daily operations. You can use it to analyze data in Excel or Google Sheets, or to share data with stakeholders who work with spreadsheets.
 
-![csv_export](assets/blogs/release-0-24/csv_export.png)
+![csv_export](/blogs/release-0-24/csv_export.png)
 
 ## New universal file protocol
 
@@ -389,7 +389,7 @@ pluginDefaults:
         - python hello.py
 ```
 
-![universal_protocol](assets/blogs/release-0-24/universal_protocol.png)
+![universal_protocol](/blogs/release-0-24/universal_protocol.png)
 
 ### Allowed paths
 
@@ -475,11 +475,11 @@ tasks:
 
 We've introduced a new Apps Catalog to the Enterprise Edition, which allows you to showcase your Apps to the entire company in a new list or gallery view. This feature is designed to help teams discover and share Apps, making it easier to build workflows and automate processes across the organization.
 
-![apps_catalog](assets/blogs/release-0-24/apps_catalog.png)
+![apps_catalog](/blogs/release-0-24/apps_catalog.png)
 
 The Apps catalog is offered as a dedicated page without showing any typical Kestra UI elements, such as the sidebar or header. This makes it easy to share the catalog with non-technical users who may not be familiar with Kestra. The catalog is accessible via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`, which can be shared with anyone in your organization who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
 
-![apps_catalog_permissions](assets/blogs/release-0-24/apps_catalog_permissions.png)
+![apps_catalog_permissions](/blogs/release-0-24/apps_catalog_permissions.png)
 
 ## Custom UI Links (EE only)
 
@@ -515,7 +515,7 @@ kestra:
 
 The links will show up in the sidebar, allowing users to quickly access important resources without leaving the Kestra UI.
 
-![custom_links](assets/blogs/release-0-24/custom_links.png)
+![custom_links](/blogs/release-0-24/custom_links.png)
 
 
 ## Unit Test Improvements (EE only)
@@ -558,7 +558,7 @@ testCases:
 
 When you run this test, Kestra will execute the flow and verify that the output value matches the expected value. If the assertion fails, the test will be marked as failed, and you can inspect the execution logs to see what went wrong.
 
-![flow_outputs_unit_tests](assets/blogs/release-0-24/flow_outputs_unit_tests.png)
+![flow_outputs_unit_tests](/blogs/release-0-24/flow_outputs_unit_tests.png)
 
 ## Mandatory Authentication in OSS
 

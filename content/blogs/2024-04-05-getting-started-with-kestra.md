@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: "assets/blogs/2024-04-05-getting-started-with-kestra.png"
+image: /blogs/2024-04-05-getting-started-with-kestra.png
 ---
 
 <div class="video-container">
@@ -87,11 +87,11 @@ tasks:
 
 We can use this as a starting point, replacing the `Log` task type with a Python one. For Python, you can either use a `Commands` or `Script` plugin. `Commands` is best for executing a separate `.py` file whereas Script is useful if you want to write your Python directly within the task. As we’ve written a `.py` file, we’ll use the Commands plugin. We can use the topology editor to add this and searching for Python. This will help us as it will give us the other fields to fill out, giving us some structure to work with!
 
-![python_search](assets/blogs/2024-04-05-getting-started-with-kestra/python_search.png)
+![python_search](/blogs/2024-04-05-getting-started-with-kestra/python_search.png)
 
 Now you’re probably wondering, how do I get my Python file into Kestra? We can use the Editor in the left side menu to create this file on the platform and save it in a new folder called `scripts` as `api_example.py`. On top of this, we can add the property `namespacesFiles` in our flow and set that as enabled to allow our flow to see other files.
 
-![editor](assets/blogs/2024-04-05-getting-started-with-kestra/editor.png)
+![editor](/blogs/2024-04-05-getting-started-with-kestra/editor.png)
 
 Once we’ve done that, we just need to make sure we install any dependencies before the script runs by using the `beforeCommands` property to create and activate a virtual environment and install the dependencies into it. One last thing: we'll need to also make a `requirements.txt` with the `requests` library inside it so this runs without any issues!
 
@@ -116,7 +116,7 @@ tasks:
 
 On the Logs page, we can see the output from the Python execution, including with the desired output at the end. It set ups the virtual environment, installs the dependencies inside of `requirements.txt` and then executes the Python script.
 
-![python_logs](assets/blogs/2024-04-05-getting-started-with-kestra/python_logs.png)
+![python_logs](/blogs/2024-04-05-getting-started-with-kestra/python_logs.png)
 
 ## Using Outputs
 
@@ -143,7 +143,7 @@ With this change made, we can add an additional task that uses this variable to 
 
 Your new task should look like the following which will get out new output and print it out to the logs clearly for us to see. When we execute it, we should see it separated from all the Python logs for easier reading!
 
-![python_output](assets/blogs/2024-04-05-getting-started-with-kestra/python_output.png)
+![python_output](/blogs/2024-04-05-getting-started-with-kestra/python_output.png)
 
 ## Adding a Notification
 
@@ -153,7 +153,7 @@ For this example, we can use the UI to build it rather than YAML as they’ll be
 
 We’re going to use the `DiscordExecution` task as this lets us push a message to a webhook which will send a message to a channel. The other is useful if you want your flow to trigger based on an action inside of Discord. Now we’ve opened the `DiscordExecution` page, we’re presented with a long list of properties which can be overwhelming but we can focus on the required ones for now.
 
-![discord_ui](assets/blogs/2024-04-05-getting-started-with-kestra/discord_ui.png)
+![discord_ui](/blogs/2024-04-05-getting-started-with-kestra/discord_ui.png)
 
 For our Discord message, we’ll need to give this task an `id` , as well as a Webhook URL which we can get from Discord. While nothing else is required, there’s plenty of customisation to make the message feel more polished and clearer such as adding a title and avatar. For this example, we’ll call the task `send_notification` and change the username to be *Kestra*. We can also add an Avatar by using the URL of the GitHub Organisation profile picture.
 
@@ -170,7 +170,7 @@ While we’re creating inputs, we can also make our Webhook URL an input in case
 
 All we need to do is Edit a channel, head to Integrations and we’ll see an option for creating a Webhook. The details of the Webhook aren’t important as our flow will set these instead but we can simply call it Kestra to remind us what it's used for and press save. Once we’ve done that, we can copy the Webhook URL ready to paste into Kestra.
 
-![discord_webhook](assets/blogs/2024-04-05-getting-started-with-kestra/discord_webhook.png)
+![discord_webhook](/blogs/2024-04-05-getting-started-with-kestra/discord_webhook.png)
 
 Now we can easily make another input underneath the `kestra_logo` input using the same format:
 
@@ -238,11 +238,11 @@ tasks:
 
 Let’s execute this and see the outcome!
 
-![full_logs](assets/blogs/2024-04-05-getting-started-with-kestra/full_logs.png)
+![full_logs](/blogs/2024-04-05-getting-started-with-kestra/full_logs.png)
 
 Our Python script is executed once the virtual environment is created and the dependencies are installed. The output of this is passed back to Kestra so it can be handed down to our next two tasks. The log outputs our variable correctly and we also see the variable in our Discord channel too with the correct title as well avatar image we defined as an input!
 
-![discord_message](assets/blogs/2024-04-05-getting-started-with-kestra/discord_message.png)
+![discord_message](/blogs/2024-04-05-getting-started-with-kestra/discord_message.png)
 
 ## Setting up a Trigger
 
@@ -252,7 +252,7 @@ To start with, we can use the `triggers` keyword underneath our tasks to specify
 
 We can use [crontab.guru](https://crontab.guru) to help us figure out what the correct cron schedule expression would be to run once every hour. This tool is super helpful in visualising what the different expressions mean, as well as with a handy glossary to understand the syntax!
 
-![crontab](assets/blogs/2024-04-05-getting-started-with-kestra/crontab.png)
+![crontab](/blogs/2024-04-05-getting-started-with-kestra/crontab.png)
 
 This cron schedule expression will execute it at minute 0 of every hour so we can now put that into our cron property in our trigger.
 
@@ -265,7 +265,7 @@ triggers:
 
 When we look at our topology view, we can now see our trigger has been correctly recognised. There’s no further actions needed to set up the trigger, it will work as soon as you’ve saved your flow! But it is worth noting that if you want to disable it, you can add a `disabled` property set to true so you don’t have to delete it. Helpfully, you can find all these extra properties through the topology edit view.
 
-![topology](assets/blogs/2024-04-05-getting-started-with-kestra/topology.png)
+![topology](/blogs/2024-04-05-getting-started-with-kestra/topology.png)
 
 With that configured, we now have our fully functioning flow that can make an API request to GitHub through our Python script, output a value from that request to the Kestra logs as well as send it as a Discord notification. And on top of that, it will automatically execute once every hour! To recap, our flow should look like this:
 

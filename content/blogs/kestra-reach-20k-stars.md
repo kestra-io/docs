@@ -7,7 +7,7 @@ author:
  name: Emmanuel Darras
  image: edarras
  role: CEO & Co-Founder
-image: "assets/blogs/20000stars.jpg"
+image: /blogs/20000stars.jpg
 ---
 
 We've just hit **20,000 stars on GitHub**.

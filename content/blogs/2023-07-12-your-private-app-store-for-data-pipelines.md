@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2023-07-12-your-private-app-store-for-data-pipelines.png"
+image: /blogs/2023-07-12-your-private-app-store-for-data-pipelines.png
 ---
 
 
@@ -32,7 +32,7 @@ Blueprints is a curated, organized, and searchable catalog of ready-to-use examp
 
 All blueprints are validated and documented so that they *just work*. You can easily customize and integrate them into your new or existing flows with a single click on the “Use” button.
 
-![blueprintsDemo](assets/blogs/2023-07-12-your-private-app-store-for-data-pipelines/blueprintsDemo.png)
+![blueprintsDemo](/blogs/2023-07-12-your-private-app-store-for-data-pipelines/blueprintsDemo.png)
 
 
 ## Getting Started with Blueprints
@@ -44,7 +44,7 @@ Blueprints are accessible from two places in the UI:
 1. The left navigation **sidebar**
 2. A dedicated **tab** in the code editor named *“Source and blueprints”,* showing your source code and Blueprints side by side.
 
-![blueprint2](assets/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
+![blueprint2](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
 
 Once you are on the Blueprints page, you can:
 

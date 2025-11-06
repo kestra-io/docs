@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   image: mproset
   role:
-image: "assets/blogs/orchestrations-differences.jpg"
+image: /blogs/orchestrations-differences.jpg
 ---
 
 Orchestration is often misunderstood because its meaning changes based on your role. To DevOps engineers, orchestration might involve deploying containers with Kubernetes or automating deployments via GitHub Actions. Data engineers see it as managing complex ETL pipelines or streaming analytics workflows. Infrastructure teams understand orchestration as automating the provisioning of servers, networks, and cloud resources.

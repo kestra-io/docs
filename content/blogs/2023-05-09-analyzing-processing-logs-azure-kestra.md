@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "assets/blogs/2023-05-09-analyzing-processing-logs-azure-kestra.jpg"
+image: /blogs/2023-05-09-analyzing-processing-logs-azure-kestra.jpg
 ---
 
 Check out how those three cloud-based technologies are working together to efficiently manage, store, and process large-scale log files.
@@ -21,7 +21,7 @@ Azure Batch is a cloud-based job scheduling service that simplifies running larg
 
 Let's say you want to collect millions of log files daily from various sources, such as web servers, IoT devices, and mobile applications. You will need to process and analyze these logs to gain insights, detect anomalies, and optimize the performance of your systems. To accomplish this, you can utilize Azure Blob Storage, Azure Batch, and an orchestrator such as [Kestra](https://github.com/kestra-io/kestra).
 
-![azure log process topology](assets/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-topology.png)
+![azure log process topology](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-topology.png)
 
 
 ## Storing Log Files with Azure Blob Storage
@@ -100,7 +100,7 @@ Kestra can be used to manage the process of transferring logs from your sources 
 
 You can create a Kestra workflow that gets triggered whenever a new log can be consumed from Kafka. The workflow can perform tasks such as validating the log file's format, uploading it to Azure Blob Storage, and initiating the Azure Batch application to process the logs. Kestra can also monitor the progress of the Azure Batch application, send notifications in case of any issues, and store the results in a designated location.
 
-![analyze process logs azure with kestra editor view](assets/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-editor.png)
+![analyze process logs azure with kestra editor view](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-editor.png)
 
 Here are some resources if you want to reproduce such a use case:
 

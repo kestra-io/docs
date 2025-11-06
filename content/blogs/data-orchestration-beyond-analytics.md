@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   image: ageller
-image: "assets/blogs/data-orchestration-beyond-analytics.png"
+image: /blogs/data-orchestration-beyond-analytics.png
 ---
 
 

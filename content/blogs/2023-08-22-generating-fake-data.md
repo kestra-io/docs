@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: "assets/blogs/2023-08-22-generating-fake-data.jpg"
+image: /blogs/2023-08-22-generating-fake-data.jpg
 ---
 
 Welcome to the world of [Shiny Rocks](https://github.com/kestra-io/shiny_rocks)! Although this company might not exist outside [Kestra](https://github.com/kestra-io/kestra) it has its own purpose.
@@ -15,9 +15,9 @@ We often face the challenge of presenting concepts without real data, due to pri
 
 Shiny Rocks is a fictional company creating smartphones. "Those shiny rocks in our pockets". It provides a means to showcase various data use cases in a realistic manner. In this post, we are not just introducing this mock company, but also offering datasets it "produces" for your hands-on experience. Plus, in the future, anticipate more of Shiny Rocks; it's going to be our gimmick to bring plausible data scenarios, especially when we dive deep into use cases with Kestra.
 
-![architecture](assets/blogs/2023-08-22-generating-fake-data/architecture.png)
+![architecture](/blogs/2023-08-22-generating-fake-data/architecture.png)
 
-![topology](assets/blogs/2023-08-22-generating-fake-data/screenshot_topology.png)
+![topology](/blogs/2023-08-22-generating-fake-data/screenshot_topology.png)
 
 You can find the whole use case in our [live demo in the shiny_rocks namespace](https://github.com/kestra-io/shiny_rocks).
 
@@ -27,7 +27,7 @@ Unlike static files that don't change, Shiny Rocks comes with custom scripts tha
 
 Here is for example the mathematical function used to generate orders volume over a year.
 
-![Function](assets/blogs/2023-08-22-generating-fake-data/function.png)
+![Function](/blogs/2023-08-22-generating-fake-data/function.png)
 
 To create those fake data, we lean on the Faker python library, supplemented by our custom provider.
 

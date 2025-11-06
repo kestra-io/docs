@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: "assets/blogs/rag.jpg"
+image: /blogs/rag.jpg
 ---
 
 Generative AI tools are great. However, relying purely on generative models can lead to outputs that feel generic, inaccurate, or outdated. This is where **Retrieval-Augmented Generation (RAG)** comes in, combining the creativity of Generative AI with real-time, accurate context sourced from custom data.
@@ -64,7 +64,7 @@ tasks:
 
 After executing the flow, you will be able to see a new KV store entry with the serialized form of the computed embeddings.
 
-![Embedding Store KV Entry](assets/blogs/rag-with-gemini-and-langchain4j/embedding-store-kv.png)
+![Embedding Store KV Entry](/blogs/rag-with-gemini-and-langchain4j/embedding-store-kv.png)
 
 ### Define documents from multiple sources
 

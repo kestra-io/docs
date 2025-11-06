@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: "assets/blogs/2023-09-25-kestra-snowflake-partnership.jpg"
+image: /blogs/2023-09-25-kestra-snowflake-partnership.jpg
 ---
 
 We're excited to announce that we are now registered partners with Snowflake, one of the most trusted names in cloud data warehousing. This strategic alliance between [Kestra](https://github.com/kestra-io/kestra) and [Snowflake](https://www.snowflake.com/en/) aims to empower organizations to seamlessly manage, orchestrate, and optimize their workflows.
@@ -29,7 +29,7 @@ Kestra's [Snowflake plugin](/plugins/plugin-jdbc-snowflake) allows you to perfor
 
 ## Build Snowflake Data Pipelines with Kestra
 
-![Kestra x Snowflake](assets/blogs/2023-09-25-kestra-snowflake-partnership/snowflake.png)
+![Kestra x Snowflake](/blogs/2023-09-25-kestra-snowflake-partnership/snowflake.png)
 
 Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodate raw data from multiple sources and transform it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the ELT pipeline. Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns. Discover how you can [build a Snowflake Data pipeline with Kestra](https://kestra.io/blogs/2022-10-05-kestra-snowflake).
 

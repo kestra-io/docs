@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: "assets/blogs/2023-11-27-yaml-crashcourse.png"
+image: /blogs/2023-11-27-yaml-crashcourse.png
 ---
 
 
@@ -224,7 +224,7 @@ tasks:
 
 The image below shows how you can overwrite various input values before starting an Execution. This is extremely useful for experimenting with different values.
 
-![data types](assets/blogs/2023-11-27-yaml-crashcourse/datatypes.png)
+![data types](/blogs/2023-11-27-yaml-crashcourse/datatypes.png)
 
 ---
 

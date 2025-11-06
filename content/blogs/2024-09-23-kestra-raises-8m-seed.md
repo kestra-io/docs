@@ -7,7 +7,7 @@ author:
   name: Emmanuel Darras
   image: "edarras"
   role: "CEO & Co-Founder"
-image: "assets/blogs/2024-09-23-kestra-raises-8m-seed/funding_announcement_8M.jpg"
+image: /blogs/2024-09-23-kestra-raises-8m-seed/funding_announcement_8M.jpg
 ---
 
 Orchestration is at the core of the modern business infrastructure, and today, we're taking a huge step toward transforming how it's done. **We’re thrilled to announce [Kestra](https://github.com/kestra-io/kestra)'s $8 million Seed round**, led by [Alven](https://alven.co/) (Stripe, Dataiku, Qonto, Algolia) with participation from [ISAI](https://www.isai.fr/), [Axeleo](https://www.axc.vc/), and key tech leaders such as [Olivier Pomel](https://www.linkedin.com/in/olivierpomel/), [Tristan Handy](https://www.linkedin.com/in/tristanhandy), [Michel Tricot](https://www.linkedin.com/in/micheltricot/), [Clément Delangue](https://www.linkedin.com/in/clementdelangue). This funding marks the next chapter in our mission to redefine orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale.
@@ -63,7 +63,7 @@ And we’re not stopping there. We continue to expand Kestra’s capabilities wi
 
 At the heart of Kestra’s success is our **global open-source community**. We empower engineers to easily adopt and integrate Kestra into their workflows by embracing open-source principles. This openness accelerates innovation, fosters collaboration, and ensures that Kestra is continuously improving based on **real-world needs**. It’s why thousands of production environments around the world depend on Kestra to power their **most critical workflows**.
 
-![Kestra dashboard](assets/blogs/2024-09-23-kestra-raises-8m-seed/dashboard.jpg)
+![Kestra dashboard](/blogs/2024-09-23-kestra-raises-8m-seed/dashboard.jpg)
 
 ## Scaling Beyond Limits: Orchestrating the Future
 
@@ -86,7 +86,7 @@ Building on Kestra’s core strengths, we offer enhanced **security**, **governa
 
 With Kestra, organizations gain the **reliability** required to scale their workflows confidently, no matter the complexity or size of their operations.
 
-![Kestra customers](assets/blogs/2024-09-23-kestra-raises-8m-seed/customers.jpg)
+![Kestra customers](/blogs/2024-09-23-kestra-raises-8m-seed/customers.jpg)
 *Orchestrating with Kestra Enterprise: Trusted by Industry Leaders for Mission-Critical Workflows.*
 
 ## Looking Ahead: Innovating and Expanding

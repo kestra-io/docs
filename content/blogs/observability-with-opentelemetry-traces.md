@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: "assets/blogs/kestra-observability.png"
+image: /blogs/kestra-observability.png
 ---
 
 **Observability** is essential when running workflows in production. You need to know what happened, when, and why — especially when things go wrong.
@@ -95,11 +95,11 @@ After launching a flow execution, go to the Jaeger UI (http://localhost:16686/),
 
 You will see traces for every API call, providing a detailed view of execution flows and interactions within the system.
 
-![postgres](assets/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-01.png)
+![postgres](/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-01.png)
 
 Most interesting is the trace that starts an execution. Its name is **POST /api/v1/executions/{namespace}/{id}** and you can see it has 7 spans. Click on it to view span details, including execution order and timing.
 
-![postgres](assets/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-02.png)
+![postgres](/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-02.png)
 
 The trace starts inside the API, then you can see 6 spans inside Kestra itself. Those spans are children of the API span, and each span has a duration that is displayed in a timeline, making it easy to analyze performance bottlenecks.
 
@@ -109,7 +109,7 @@ Inside Kestra, there a multiple kinds of spans, but two are particularly relevan
 
 If you click on a span, you will see additional information stored inside the span. Here, clicking on **Tags** reveals execution details such as namespace, flow ID, execution ID, and task run ID. This metadata helps track executions and correlate logs with traces.
 
-![postgres](assets/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-03.png)
+![postgres](/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-03.png)
 
 ## Tracing parent and subflow executions
 
@@ -135,7 +135,7 @@ tasks:
 
 If you start an execution and inspect its trace, you will see 19 spans and a correlated sub-trace for the subflow execution.
 
-![postgres](assets/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-04.png)
+![postgres](/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-04.png)
 
 The parent execution includes a span named **EXECUTOR - io.kestra.plugin.core.flow.Subflow**; this is the Subflow task that creates it. Following this span, you will see a correlated trace containing the 7 spans from the subflow execution. This structure helps track workflow dependencies across multiple flow executions.
 
@@ -153,7 +153,7 @@ In the following screenshot, you can see a trace starting in an external service
 This service triggers a new flow execution via a webhook. The flow then makes an HTTP request using the `io.kestra.plugin.core.http.Request`, calling the **downstream** external service.
 Finally, you can see a trace inside the **downstream** external service for the `/hello` HTTP endpoint, linking all interactions together.
 
-![postgres](assets/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-05.png)
+![postgres](/blogs/observability-with-opentelemetry-traces/opentelemetry-traces-05.png)
 
 ## Conclusion
 
