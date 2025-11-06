@@ -1,6 +1,6 @@
 ---
 title: Performance Tuning
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 ---
 
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.

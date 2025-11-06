@@ -1,6 +1,6 @@
 ---
 title: Guides
-icon: assets/docs/icons/terraform.svg
+icon: /docs/icons/terraform.svg
 ---
 
 :::ChildCard

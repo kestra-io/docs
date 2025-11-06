@@ -1,6 +1,6 @@
 ---
 title: Installation Guide
-icon: assets/docs/icons/installation.svg
+icon: /docs/icons/installation.svg
 ---
 
 You can install Kestra using different methods. Select one that matches your preferred environment.

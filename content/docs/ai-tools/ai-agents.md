@@ -1,6 +1,6 @@
 ---
 title: AI Agents
-icon: assets/docs/icons/ai.svg
+icon: /docs/icons/ai.svg
 editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---
@@ -102,7 +102,7 @@ The goal of the AI Agent is to summarize text. The flow uses three inputs -- `su
 
 All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../expressions/index.md). When executing the flow, all the inputs can be selected or modified from the defaults.
 
-![AI Agent Flow Inputs](assets/docs/ai-tools/ai-agent-inputs.png)
+![AI Agent Flow Inputs](/docs/ai-tools/ai-agent-inputs.png)
 
 Continuing below for reference, we select `short` for the summary length and German (`de`) for the summary language.
 
@@ -112,11 +112,11 @@ In the flow, there are two tasks using the [AI Agent plugin](/plugins/plugin-ai/
 
 Now that the AI Agent is familiar with its role, the `prompt` property tells it what to do, which is to summarize the inputted text. Taking a look at the output for a short summary, the `multilingual_agent` task does provide a 1–2 sentence summary of Kestra in German.
 
-![AI Agent Initial Summary](assets/docs/ai-tools/ai-agent-summary.png)
+![AI Agent Initial Summary](/docs/ai-tools/ai-agent-summary.png)
 
 Following `multilingual_agent` is the `english_brevity` task, which only needs a `prompt` because the `systemMessage` moves downstream in the flow. Whether a shorter English translation is needed, or the original outputted summary is in a different language, the `english_brevity` task provides a different output to match the need. In the execution context, the output is abbreviated and limited to exactly one sentence per the prompt.
 
-![AI Agent Abbreviated Summary](assets/docs/ai-tools/ai-agent-brevity.png)
+![AI Agent Abbreviated Summary](/docs/ai-tools/ai-agent-brevity.png)
 
 These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
 

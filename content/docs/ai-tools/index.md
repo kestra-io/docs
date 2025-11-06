@@ -1,6 +1,6 @@
 ---
 title: AI Tools
-icon: assets/docs/icons/ai.svg
+icon: /docs/icons/ai.svg
 ---
 
 Create, refine, and orchestrate workflows using natural language or autonomous decision-making.

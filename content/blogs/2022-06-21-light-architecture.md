@@ -20,7 +20,7 @@ We have interview many people on our slack community, twitter, ... also that **c
 
 For now, we continue to think a high-availability solution is a **must-have**, a solution that can ensure you that if your needs increase, you will have a solution to scale without having to do without the features. So we decide to create a new version of Kestra (in Beta for now) that will work for a Medium-sized environment.
 
-![Kestra Architecture](assets/docs/architecture/architecture-sql.svg)
+![Kestra Architecture](/docs/architecture/architecture-sql.svg)
 
 
 The solution is to **remove the dependencies of Kafka & ElasticSearch** and to allow to replace them with a **simple MySQL of Postgres** database for the both of them.

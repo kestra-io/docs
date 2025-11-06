@@ -5,11 +5,11 @@ hideSidebar: true
 ---
 
 
-![logo](assets/docs/tutorial/logos/kestra-logo.png)
+![logo](/docs/tutorial/logos/kestra-logo.png)
 
 ## Our Story
 
-![timeline](assets/docs/tutorial/logos/our-story.png)
+![timeline](/docs/tutorial/logos/our-story.png)
 
 Kestra strives to be a simple yet powerful orchestration platform, enabling our clients to manage complex workflows with the same agility as a conductor who leads a symphony. This is how our logo was born, which embodies Kestra’s ability to orchestrate a wide variety of workflows anywhere at any scale.
 
