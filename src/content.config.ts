@@ -10,7 +10,7 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: ".content/docs",
+        base: "./content/docs",
         generateId,
     }),
     schema: ({ image }) => z.object({
@@ -51,7 +51,7 @@ export const collections = {
             name: z.string(),
             image: z.string(),
             twitter: z.string().optional(),
-            role: z.string(),
+            role: z.string().nullable().optional(),
         })).optional(),
         image: image(),
       })

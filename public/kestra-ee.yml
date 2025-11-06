@@ -35,6 +35,109 @@ tags:
 - name: Misc
   description: Misc api
 paths:
+  /api/v1/auditlogs/export:
+    get:
+      tags:
+      - Audit Logs
+      summary: Export all audit logs as a streamed CSV file
+      operationId: exportAuditLogsForAllTenants
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: executionId
+        in: query
+        description: An execution filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: userId
+        in: query
+        description: A user id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: id
+        in: query
+        description: A id filter
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: resources
+        in: query
+        description: A resource filter
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/ResourceType_1"
+      - name: startDate
+        in: query
+        description: The start datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        explode: false
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        explode: false
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+      - name: type
+        in: query
+        description: The event that create the audit log
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/CrudEventType"
+      responses:
+        "200":
+          description: exportAuditLogsForAllTenants 200 response
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/auditlogs/search:
     get:
       tags:
@@ -340,6 +443,8 @@ paths:
       - basicAuth: []
   /api/v1/forgotten-password:
     get:
+      tags:
+      - Auths
       summary: Sends an email to reset a password.
       description: "Sends an email to reset a password. Note that whatever the username\
         \ is found or not, the response will always be 200 to avoid leaking information."
@@ -896,6 +1001,8 @@ paths:
       - basicAuth: []
   /api/v1/invitation/accept/{invitationId}:
     post:
+      tags:
+      - Auths
       operationId: acceptInvitation
       parameters:
       - name: invitationId
@@ -912,6 +1019,8 @@ paths:
                 type: object
   /api/v1/invitation/create/{invitationId}:
     post:
+      tags:
+      - Auths
       operationId: createFromInvitation
       parameters:
       - name: invitationId
@@ -947,6 +1056,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.LicenseInfo"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/main-tenant-flows:
+    get:
+      tags:
+      - Misc
+      summary: Check if flows are present on the main tenant.
+      operationId: mainTenantFlows
+      responses:
+        "200":
+          description: mainTenantFlows 200 response
+          content:
+            application/json:
+              schema:
+                type: boolean
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -987,7 +1112,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/MeController.ApiMe"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -1004,7 +1129,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ApiTokenList"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -1025,7 +1150,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/CreateApiTokenResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -1363,7 +1488,7 @@ paths:
   /api/v1/request-code/{email}:
     get:
       tags:
-      - Authentication Code
+      - Auths
       summary: Request an authentication code for login verification
       operationId: requestCode
       parameters:
@@ -1381,6 +1506,8 @@ paths:
                 type: object
   /api/v1/reset-password:
     post:
+      tags:
+      - Auths
       summary: Change a password for given token.
       description: "Change a password for given token. If password does not match\
         \ password policy, use can still retry."
@@ -1556,9 +1683,9 @@ paths:
   /api/v1/service-accounts/{id}/api-tokens:
     get:
       tags:
-      - Users
-      summary: List API tokens for a specific user
-      operationId: listApiTokens
+      - ServiceAccount
+      summary: List API tokens for a specific service account
+      operationId: listApiTokensForServiceAccount
       parameters:
       - name: id
         in: path
@@ -1568,7 +1695,7 @@ paths:
           type: string
       responses:
         "200":
-          description: listApiTokens 200 response
+          description: listApiTokensForServiceAccount 200 response
           content:
             application/json:
               schema:
@@ -1578,9 +1705,9 @@ paths:
       - basicAuth: []
     post:
       tags:
-      - Users
-      summary: Create new API Token for a specific user
-      operationId: createApiTokensForUser
+      - ServiceAccount
+      summary: Create new API Token for a specific service account
+      operationId: createApiTokensForServiceAccount
       parameters:
       - name: id
         in: path
@@ -1597,7 +1724,7 @@ paths:
         required: true
       responses:
         "200":
-          description: createApiTokensForUser 200 response
+          description: createApiTokensForServiceAccount 200 response
           content:
             application/json:
               schema:
@@ -1608,9 +1735,9 @@ paths:
   /api/v1/service-accounts/{id}/api-tokens/{tokenId}:
     delete:
       tags:
-      - Users
-      summary: Delete an API Token for specific user and token id
-      operationId: deleteApiToken
+      - ServiceAccount
+      summary: Delete an API Token for specific service account and token id
+      operationId: deleteApiTokenForServiceAccount
       parameters:
       - name: id
         in: path
@@ -1626,7 +1753,7 @@ paths:
           type: string
       responses:
         "200":
-          description: deleteApiToken 200 response
+          description: deleteApiTokenForServiceAccount 200 response
           content:
             application/json:
               schema:
@@ -1833,6 +1960,105 @@ paths:
       responses:
         "204":
           description: On success
+  /api/v1/tenants/{id}/apps-catalog:
+    get:
+      tags:
+      - Tenants
+      summary: Get the apps catalog config for the specified tenant.
+      description: Superadmin-only.
+      operationId: getAppsCatalogConfig
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getAppsCatalogConfig 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantController.AppsCatalogConfigResponse"
+    post:
+      tags:
+      - Tenants
+      summary: Set the apps catalog config for the specified tenant.
+      description: Superadmin-only.
+      operationId: setAppsCatalogConfig
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantController.AppsCatalogConfigRequest"
+        required: true
+      responses:
+        "200":
+          description: setAppsCatalogConfig 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantController.AppsCatalogConfigResponse"
+  /api/v1/tenants/{id}/apps-catalog/logo:
+    post:
+      tags:
+      - Tenants
+      summary: Set the apps catalog logo for the specified tenant.
+      description: Superadmin-only.
+      operationId: setAppsCatalogLogo
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  description: The logo file
+                  format: binary
+            encoding:
+              logo:
+                contentType: application/octet-stream
+                explode: false
+        required: true
+      responses:
+        "200":
+          description: setAppsCatalogLogo 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantController.AppsCatalogConfigResponse"
+    delete:
+      tags:
+      - Tenants
+      summary: Remove the apps catalog logo for the specified tenant.
+      description: Superadmin-only.
+      operationId: deleteAppsCatalogLogo
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteAppsCatalogLogo 200 response
   /api/v1/tenants/{id}/logo:
     post:
       tags:
@@ -1936,6 +2162,10 @@ paths:
       responses:
         "201":
           description: User was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IAMUserController.ApiUser"
         "404":
           description: "Tenant, or group not found"
       security:
@@ -2056,7 +2286,7 @@ paths:
       - Users
       summary: List API tokens for a specific user
       description: Superadmin-only. Get all API token existing for a user.
-      operationId: listApiTokens_1
+      operationId: listApiTokensForUser
       parameters:
       - name: id
         in: path
@@ -2068,11 +2298,11 @@ paths:
         "404":
           description: User not found
         "200":
-          description: listApiTokens_1 200 response
+          description: listApiTokensForUser 200 response
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ApiTokenList"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -2081,7 +2311,7 @@ paths:
       - Users
       summary: Create new API Token for a specific user
       description: Superadmin-only. Create a new API token for a user.
-      operationId: createApiTokensForUser_1
+      operationId: createApiTokensForUser
       parameters:
       - name: id
         in: path
@@ -2097,7 +2327,7 @@ paths:
               $ref: "#/components/schemas/CreateApiTokenRequest"
         required: true
       responses:
-        "200":
+        "201":
           description: API token successfully created
           content:
             application/json:
@@ -2114,7 +2344,7 @@ paths:
       - Users
       summary: Delete an API Token for specific user and token id
       description: Superadmin-only. Delete an API token for a user.
-      operationId: deleteApiToken_1
+      operationId: deleteApiTokenForUser
       parameters:
       - name: id
         in: path
@@ -2220,7 +2450,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/IAMUserController.ApiUser"
         "404":
           description: User not found
       security:
@@ -2588,7 +2818,7 @@ paths:
   /api/v1/{tenant}/apps/import:
     post:
       tags:
-      - Flows
+      - Apps
       summary: |2
             Import apps as a ZIP archive of yaml sources or a multi-objects YAML file.
             When sending a Yaml that contains one or more apps, a list of index is returned.
@@ -3558,7 +3788,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
+              $ref: "#/components/schemas/BasicAuthCredentials"
         required: true
       responses:
         "200":
@@ -4190,6 +4420,62 @@ paths:
             application/yaml:
               schema:
                 type: string
+  /api/v1/{tenant}/concurrency-limit/search:
+    get:
+      tags:
+      - Executions
+      - Flows
+      summary: Search for flow concurrency limits
+      operationId: searchConcurrencyLimits
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: searchConcurrencyLimits 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_ConcurrencyLimit_"
+  /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}:
+    put:
+      tags:
+      - Executions
+      - Flows
+      summary: Update a flow concurrency limit
+      operationId: updateConcurrencyLimit
+      parameters:
+      - name: flowId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: namespace
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConcurrencyLimit"
+        required: true
+      responses:
+        "200":
+          description: updateConcurrencyLimit 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrencyLimit"
   /api/v1/{tenant}/dashboards:
     get:
       tags:
@@ -4630,7 +4916,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4638,7 +4924,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4646,7 +4932,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4688,9 +4974,19 @@ paths:
       summary: Delete executions filter by query parameters
       operationId: deleteExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4698,6 +4994,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -4707,6 +5004,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4714,6 +5012,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4721,6 +5020,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -4728,6 +5028,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -4735,6 +5036,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4747,6 +5049,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -4756,6 +5059,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -4764,6 +5068,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4771,6 +5076,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -4787,7 +5093,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4795,7 +5101,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4803,7 +5109,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -4813,19 +5119,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteExecutionsByQuery 200 response
@@ -4887,9 +5180,19 @@ paths:
       summary: Change executions state by query parameters
       operationId: updateExecutionsStatusByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4897,6 +5200,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -4906,6 +5210,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4913,6 +5218,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4920,6 +5226,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -4927,6 +5234,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -4934,6 +5242,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4946,6 +5255,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -4955,6 +5265,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -4963,6 +5274,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -4970,6 +5282,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -4987,19 +5300,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: On success
@@ -5102,9 +5402,19 @@ paths:
       summary: Force run executions filter by query parameters
       operationId: forceRunExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5112,6 +5422,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5121,6 +5432,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5128,6 +5440,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5135,6 +5448,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5142,6 +5456,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5149,6 +5464,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5161,6 +5477,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5170,6 +5487,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -5178,6 +5496,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5185,6 +5504,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -5195,19 +5515,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: forceRunExecutionsByQuery 200 response
@@ -5262,9 +5569,19 @@ paths:
       summary: Kill executions filter by query parameters
       operationId: killExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5272,6 +5589,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5281,6 +5599,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5288,6 +5607,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5295,6 +5615,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5302,6 +5623,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5309,6 +5631,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5321,6 +5644,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5330,6 +5654,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -5338,6 +5663,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5345,6 +5671,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -5355,19 +5682,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: killExecutionsByQuery 200 response
@@ -5420,9 +5734,19 @@ paths:
       summary: Set label on executions filter by query parameters
       operationId: setLabelsOnTerminatedExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5430,6 +5754,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5439,6 +5764,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5446,6 +5772,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5453,6 +5780,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5460,6 +5788,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5467,6 +5796,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5479,6 +5809,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5488,6 +5819,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -5496,6 +5828,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5503,6 +5836,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -5519,13 +5853,6 @@ paths:
           application/json:
             schema:
               type: array
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
               items:
                 $ref: "#/components/schemas/Label"
         required: true
@@ -5671,9 +5998,19 @@ paths:
       summary: Pause executions filter by query parameters
       operationId: pauseExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5681,6 +6018,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5690,6 +6028,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5697,6 +6036,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5704,6 +6044,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5711,6 +6052,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5718,6 +6060,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5730,6 +6073,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5739,6 +6083,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -5747,6 +6092,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5754,6 +6100,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -5764,19 +6111,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: pauseExecutionsByQuery 200 response
@@ -5840,9 +6174,19 @@ paths:
         the flow revision
       operationId: replayExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5850,6 +6194,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5859,6 +6204,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5866,6 +6212,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5873,6 +6220,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5880,6 +6228,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -5887,6 +6236,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5899,6 +6249,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -5908,6 +6259,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -5916,6 +6268,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -5923,6 +6276,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -5941,19 +6295,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: replayExecutionsByQuery 200 response
@@ -6008,9 +6349,19 @@ paths:
       summary: Restart executions filter by query parameters
       operationId: restartExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6018,6 +6369,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6027,6 +6379,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6034,6 +6387,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6041,6 +6395,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6048,6 +6403,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6055,6 +6411,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6067,6 +6424,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6076,6 +6434,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -6084,6 +6443,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6091,6 +6451,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -6101,19 +6462,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: restartExecutionsByQuery 200 response
@@ -6168,9 +6516,19 @@ paths:
       summary: Resume executions filter by query parameters
       operationId: resumeExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6178,6 +6536,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6187,6 +6546,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6194,6 +6554,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6201,6 +6562,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6208,6 +6570,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6215,6 +6578,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6227,6 +6591,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6236,6 +6601,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -6244,6 +6610,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6251,6 +6618,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -6261,19 +6629,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: resumeExecutionsByQuery 200 response
@@ -6565,9 +6920,19 @@ paths:
       summary: Unqueue executions filter by query parameters
       operationId: unqueueExecutionsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6575,6 +6940,7 @@ paths:
       - name: scope
         in: query
         description: The scope of the executions to include
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6584,6 +6950,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6591,6 +6958,7 @@ paths:
       - name: flowId
         in: query
         description: A flow id filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6598,6 +6966,7 @@ paths:
       - name: startDate
         in: query
         description: The start datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6605,6 +6974,7 @@ paths:
       - name: endDate
         in: query
         description: The end datetime
+        deprecated: true
         schema:
           type: string
           format: date-time
@@ -6612,6 +6982,7 @@ paths:
       - name: timeRange
         in: query
         description: A time range filter relative to the current time
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6624,6 +6995,7 @@ paths:
       - name: state
         in: query
         description: A state filter
+        deprecated: true
         explode: false
         schema:
           type: array
@@ -6633,6 +7005,7 @@ paths:
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
+        deprecated: true
         schema:
           type: array
           nullable: true
@@ -6641,6 +7014,7 @@ paths:
       - name: triggerExecutionId
         in: query
         description: The trigger execution id
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -6648,6 +7022,7 @@ paths:
       - name: childFilter
         in: query
         description: A execution child filter
+        deprecated: true
         explode: false
         schema:
           nullable: true
@@ -6666,19 +7041,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unqueueExecutionsByQuery 200 response
@@ -6725,7 +7087,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -6764,7 +7126,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -6803,7 +7165,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -6850,7 +7212,7 @@ paths:
       - name: deleteLogs
         in: query
         description: Whether to delete execution logs
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -6858,7 +7220,7 @@ paths:
       - name: deleteMetrics
         in: query
         description: Whether to delete execution metrics
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -6866,7 +7228,7 @@ paths:
       - name: deleteStorage
         in: query
         description: Whether to delete execution files in the internal storage
-        required: true
+        required: false
         explode: false
         schema:
           type: boolean
@@ -7142,6 +7504,9 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+      x-sdk-customization:
+        x-replace-follow-execution: "true"
+        x-skipped: "true"
   /api/v1/{tenant}/executions/{executionId}/follow-dependencies:
     get:
       tags:
@@ -7187,6 +7552,9 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+      x-sdk-customization:
+        x-replace-follow-dependencies-execution: "true"
+        x-skipped: "true"
   /api/v1/{tenant}/executions/{executionId}/force-run:
     post:
       tags:
@@ -7459,11 +7827,12 @@ paths:
         schema:
           type: string
       requestBody:
-        description: The inputs
+        description: The inputs (multipart map)
         content:
           multipart/form-data:
             schema:
               type: array
+              additionalProperties: true
               items:
                 type: string
                 format: binary
@@ -7478,6 +7847,8 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{executionId}/restart:
     post:
       tags:
@@ -7792,16 +8163,16 @@ paths:
         "409":
           description: if the flow is disabled
         "200":
-          description: createExecution 200 response
+          description: On execution created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{namespace}/{id}/validate:
     post:
       tags:
@@ -7990,6 +8361,15 @@ paths:
       summary: Delete flows returned by the query parameters.
       operationId: deleteFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -8030,19 +8410,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteFlowsByQuery 200 response
@@ -8091,6 +8458,15 @@ paths:
       summary: Disable flows returned by the query parameters.
       operationId: disableFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -8131,19 +8507,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: disableFlowsByQuery 200 response
@@ -8223,6 +8586,15 @@ paths:
       summary: Enable flows returned by the query parameters.
       operationId: enableFlowsByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
@@ -8263,19 +8635,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: enableFlowsByQuery 200 response
@@ -8681,10 +9040,10 @@ paths:
         content:
           application/x-yaml:
             schema:
-              type: string
+              type: object
           application/json:
             schema:
-              type: string
+              type: object
             example: null
         required: true
       responses:
@@ -8714,7 +9073,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
+              type: object
         required: true
       responses:
         "200":
@@ -8759,12 +9118,18 @@ paths:
     post:
       tags:
       - Flows
-      summary: Update a complete namespace from json object
+      summary: Update a complete namespace from yaml source
       description: |-
         All flow will be created / updated for this namespace.
         Flow that already created but not in `flows` will be deleted if the query delete is `true`
-      operationId: updateFlowsInNamespaceFromJson
+      operationId: updateFlowsInNamespace
       parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -8773,45 +9138,27 @@ paths:
         schema:
           type: boolean
           default: true
-      - name: namespace
-        in: path
-        description: The flow namespace
-        required: true
-        schema:
-          type: string
       - name: tenant
         in: path
         required: true
         schema:
           type: string
       requestBody:
-        description: A list of flows
+        description: A list of flows source code
         content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/Flow"
           application/x-yaml:
             schema:
               type: string
-            example: null
         required: true
       responses:
         "200":
-          description: updateFlowsInNamespaceFromJson 200 response
+          description: updateFlowsInNamespace 200 response
           content:
             application/json:
               schema:
-                oneOf:
-                - type: array
-                  items:
-                    $ref: "#/components/schemas/Flow"
-                - type: array
-                  items:
-                    $ref: "#/components/schemas/FlowInterface"
-              example: null
-      deprecated: true
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowInterface"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -8879,15 +9226,15 @@ paths:
       summary: Update a flow
       operationId: updateFlow
       parameters:
-      - name: id
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
       - name: namespace
         in: path
         description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
         required: true
         schema:
           type: string
@@ -8902,23 +9249,14 @@ paths:
           application/x-yaml:
             schema:
               type: string
-            example: null
-          '*/*':
-            schema:
-              $ref: "#/components/schemas/Flow"
-            example: null
         required: true
       responses:
         "200":
-          description: updateFlow 200 response
+          description: On success
           content:
             application/json:
               schema:
-                oneOf:
-                - $ref: "#/components/schemas/FlowWithSource"
-                - $ref: "#/components/schemas/Flow"
-              example: null
-      deprecated: true
+                $ref: "#/components/schemas/FlowWithSource"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -10633,6 +10971,64 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/kv:
+    get:
+      tags:
+      - KV
+      summary: List all keys
+      operationId: listAllKeys
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listAllKeys 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_KVEntry_"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/{tenant}/logs/search:
     get:
       tags:
@@ -11998,6 +12394,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+      deprecated: true
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12125,9 +12522,6 @@ paths:
       requestBody:
         description: The value of the key
         content:
-          application/json:
-            schema:
-              type: string
           text/plain:
             schema:
               type: string
@@ -12231,7 +12625,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiSecretListResponse"
+                $ref: "#/components/schemas/ApiSecretListResponse_ApiSecretMeta_"
+      deprecated: true
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12266,7 +12661,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ApiSecretMeta"
+                  $ref: "#/components/schemas/ApiSecretMetaEE"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12297,12 +12692,6 @@ paths:
       responses:
         "200":
           description: deleteSecret 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12318,12 +12707,13 @@ paths:
         required: true
         schema:
           type: string
-      - name: tenant
+      - name: key
         in: path
+        description: The secret key
         required: true
         schema:
           type: string
-      - name: key
+      - name: tenant
         in: path
         required: true
         schema:
@@ -12342,7 +12732,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ApiSecretMeta"
+                  $ref: "#/components/schemas/ApiSecretMetaEE"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12584,6 +12974,61 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/secrets:
+    get:
+      tags:
+      - Secrets
+      summary: Search secrets of all namespaces
+      operationId: listSecrets
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listSecrets 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiSecretListResponse_ApiSecretMeta_"
   /api/v1/{tenant}/security-integrations:
     get:
       tags:
@@ -12876,9 +13321,9 @@ paths:
   /api/v1/{tenant}/service-accounts/{id}/api-tokens:
     get:
       tags:
-      - Users
-      summary: List API tokens for a specific user
-      operationId: listApiTokensWithTenant
+      - ServiceAccount
+      summary: List API tokens for a specific service account
+      operationId: listApiTokensForServiceAccountWithTenant
       parameters:
       - name: id
         in: path
@@ -12893,7 +13338,7 @@ paths:
           type: string
       responses:
         "200":
-          description: listApiTokensWithTenant 200 response
+          description: listApiTokensForServiceAccountWithTenant 200 response
           content:
             application/json:
               schema:
@@ -12903,9 +13348,9 @@ paths:
       - basicAuth: []
     post:
       tags:
-      - Users
-      summary: Create new API Token for a specific user
-      operationId: createApiTokensForUserWithTenant
+      - ServiceAccount
+      summary: Create new API Token for a specific service account
+      operationId: createApiTokensForServiceAccountWithTenant
       parameters:
       - name: id
         in: path
@@ -12927,7 +13372,7 @@ paths:
         required: true
       responses:
         "200":
-          description: createApiTokensForUserWithTenant 200 response
+          description: createApiTokensForServiceAccountWithTenant 200 response
           content:
             application/json:
               schema:
@@ -12938,9 +13383,9 @@ paths:
   /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}:
     delete:
       tags:
-      - Users
-      summary: Delete an API Token for specific user and token id
-      operationId: deleteApiTokenWithTenant
+      - ServiceAccount
+      summary: Delete an API Token for specific service account and token id
+      operationId: deleteApiTokenForServiceAccountWithTenant
       parameters:
       - name: id
         in: path
@@ -12961,7 +13406,7 @@ paths:
           type: string
       responses:
         "200":
-          description: deleteApiTokenWithTenant 200 response
+          description: deleteApiTokenForServiceAccountWithTenant 200 response
           content:
             application/json:
               schema:
@@ -12971,6 +13416,8 @@ paths:
       - basicAuth: []
   /api/v1/{tenant}/stats/generate-reports:
     get:
+      tags:
+      - Misc
       operationId: generate
       parameters:
       - name: from
@@ -12993,155 +13440,6 @@ paths:
               schema:
                 type: string
                 format: byte
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/{tenant}/taskruns/search:
-    get:
-      tags:
-      - Executions
-      summary: "Search for taskruns, only available with the Elasticsearch repository"
-      operationId: searchTaskRun
-      parameters:
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        explode: false
-        schema:
-          minimum: 1
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        explode: false
-        schema:
-          minimum: 1
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: filters
-        in: query
-        description: Filters
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/QueryFilter"
-      - name: q
-        in: query
-        description: A string filter
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: startDate
-        in: query
-        description: The start datetime
-        deprecated: true
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        deprecated: true
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: timeRange
-        in: query
-        description: A time range filter relative to the current time
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-        examples:
-          Filter last 5 minutes:
-            value: PT5M
-          Filter last 24 hours:
-            value: P1D
-      - name: state
-        in: query
-        description: A state filter
-        deprecated: true
-        explode: false
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/State.Type"
-      - name: labels
-        in: query
-        description: A labels filter as a list of 'key:value'
-        deprecated: true
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: triggerExecutionId
-        in: query
-        description: The trigger execution id
-        deprecated: true
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: childFilter
-        in: query
-        description: A execution child filter
-        deprecated: true
-        explode: false
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: searchTaskRun 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PagedResults_TaskRun_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -13915,9 +14213,19 @@ paths:
       summary: Delete backfill for given triggers
       operationId: deleteBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -13925,6 +14233,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -13934,19 +14243,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: deleteBackfillByQuery 200 response
@@ -14022,9 +14318,19 @@ paths:
       summary: Pause backfill for given triggers
       operationId: pauseBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14032,6 +14338,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14041,19 +14348,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: pauseBackfillByQuery 200 response
@@ -14129,9 +14423,19 @@ paths:
       summary: Unpause backfill for given triggers
       operationId: unpauseBackfillByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14139,6 +14443,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14148,19 +14453,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unpauseBackfillByQuery 200 response
@@ -14300,9 +14592,19 @@ paths:
       summary: Disable/enable triggers by query parameters
       operationId: disabledTriggersByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14310,6 +14612,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14327,19 +14630,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: disabledTriggersByQuery 200 response
@@ -14385,9 +14675,19 @@ paths:
       summary: Unlock triggers by query parameters
       operationId: unlockTriggersByQuery
       parameters:
+      - name: filters
+        in: query
+        description: Filters
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14395,6 +14695,7 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14404,19 +14705,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  description: Filters
-                  nullable: true
-                  items:
-                    $ref: "#/components/schemas/QueryFilter"
-        required: true
       responses:
         "200":
           description: unlockTriggersByQuery 200 response
@@ -14689,6 +14977,8 @@ paths:
       - basicAuth: []
   /login:
     post:
+      tags:
+      - login
       operationId: login
       requestBody:
         content:
@@ -14752,7 +15042,7 @@ components:
             $ref: "#/components/schemas/Label"
         variables:
           type: object
-          additionalProperties: true
+          additionalProperties: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         deleted:
@@ -14796,7 +15086,6 @@ components:
       type: object
     AbstractTrigger:
       required:
-      - disabled
       - id
       - type
       type: object
@@ -14813,13 +15102,19 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         description:
           type: string
         conditions:
@@ -14829,6 +15124,7 @@ components:
             $ref: "#/components/schemas/Condition"
         disabled:
           type: boolean
+          default: false
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
         logLevel:
@@ -14862,13 +15158,19 @@ components:
         type:
           title: The class name for this current trigger.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
     AbstractUser:
       required:
       - email
@@ -14924,10 +15226,6 @@ components:
       - UPDATE
       - DELETE
     ApiAuth:
-      required:
-      - name
-      - type
-      - uid
       type: object
       properties:
         uid:
@@ -14950,9 +15248,6 @@ components:
         existingOnly:
           type: boolean
     ApiGroupSummary:
-      required:
-      - id
-      - name
       type: object
       properties:
         id:
@@ -14960,8 +15255,6 @@ components:
         name:
           type: string
     ApiIds:
-      required:
-      - ids
       type: object
       properties:
         ids:
@@ -14976,11 +15269,6 @@ components:
         superAdmin:
           type: boolean
     ApiRoleSummary:
-      required:
-      - id
-      - isDefault
-      - isManaged
-      - name
       type: object
       properties:
         id:
@@ -14991,11 +15279,10 @@ components:
           type: boolean
         isManaged:
           type: boolean
-    ApiSecretListResponse:
+    ApiSecretListResponse_ApiSecretMeta_:
       required:
       - readOnly
       - results
-      - total
       type: object
       properties:
         readOnly:
@@ -15003,7 +15290,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/ApiSecretMeta"
+            $ref: "#/components/schemas/ApiSecretMetaEE"
         total:
           type: integer
           format: int64
@@ -15020,6 +15307,8 @@ components:
       - tags
       type: object
       properties:
+        namespace:
+          type: string
         description:
           type: string
         tags:
@@ -15040,9 +15329,7 @@ components:
           type: string
     ApiSecretValue:
       required:
-      - description
       - key
-      - tags
       - value
       type: object
       properties:
@@ -15061,7 +15348,6 @@ components:
     ApiTenant:
       required:
       - deleted
-      - logo
       type: object
       allOf:
       - $ref: "#/components/schemas/Tenant"
@@ -15072,15 +15358,46 @@ components:
           logo:
             type: string
     ApiTenantSummary:
-      required:
-      - id
-      - name
       type: object
       properties:
         id:
           type: string
         name:
           type: string
+    ApiToken:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        prefix:
+          type: string
+        iat:
+          type: string
+          format: date-time
+        exp:
+          type: string
+          format: date-time
+        lastUsed:
+          type: string
+          format: date-time
+        extended:
+          type: boolean
+        expired:
+          type: boolean
+    ApiTokenList:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiToken"
     ApiUser:
       type: object
       allOf:
@@ -15092,10 +15409,6 @@ components:
             items:
               $ref: "#/components/schemas/ApiAuth"
     AppResponse:
-      required:
-      - dispatch
-      - layout
-      - stream
       type: object
       properties:
         dispatch:
@@ -15107,8 +15420,6 @@ components:
     AppResponse.UIBlock:
       type: object
     AppResponse.UILayout:
-      required:
-      - blocks
       type: object
       properties:
         blocks:
@@ -15116,16 +15427,6 @@ components:
           items:
             $ref: "#/components/schemas/AppResponse.UIBlock"
     AppsController.ApiApp:
-      required:
-      - created
-      - enabled
-      - id
-      - name
-      - namespace
-      - tags
-      - type
-      - uid
-      - updated
       type: object
       properties:
         uid:
@@ -15137,6 +15438,8 @@ components:
         type:
           type: string
         namespace:
+          type: string
+        flowId:
           type: string
         tags:
           type: array
@@ -15151,12 +15454,6 @@ components:
           type: string
           format: date-time
     AppsController.ApiAppCatalogItem:
-      required:
-      - description
-      - name
-      - tags
-      - type
-      - uid
       type: object
       properties:
         uid:
@@ -15171,16 +15468,9 @@ components:
           type: array
           items:
             type: string
+        thumbnail:
+          type: string
     AppsController.ApiAppSource:
-      required:
-      - created
-      - disabled
-      - name
-      - namespace
-      - source
-      - tags
-      - uid
-      - updated
       type: object
       properties:
         uid:
@@ -15204,8 +15494,6 @@ components:
           type: string
           format: date-time
     AppsController.ApiAppTags:
-      required:
-      - tags
       type: object
       properties:
         tags:
@@ -15213,9 +15501,6 @@ components:
           items:
             type: string
     AppsController.ApiBulkImportResponse:
-      required:
-      - errors
-      - success
       type: object
       properties:
         success:
@@ -15227,9 +15512,6 @@ components:
           items:
             $ref: "#/components/schemas/AppsController.ApiBulkImportResponse.Error"
     AppsController.ApiBulkImportResponse.Error:
-      required:
-      - message
-      - source
       type: object
       properties:
         source:
@@ -15237,8 +15519,6 @@ components:
         message:
           type: string
     AppsController.ApiBulkOperationRequest:
-      required:
-      - uids
       type: object
       properties:
         uids:
@@ -15287,12 +15567,9 @@ components:
     AssertionResult:
       required:
       - actual
-      - description
-      - errorMessage
       - expected
       - isSuccess
       - operator
-      - taskId
       type: object
       properties:
         operator:
@@ -15311,7 +15588,6 @@ components:
           type: string
     AssertionRunError:
       required:
-      - details
       - message
       type: object
       properties:
@@ -15335,9 +15611,6 @@ components:
         subAttributeName:
           type: string
     AuditLog:
-      required:
-      - appliedPatch
-      - revertPatch
       type: object
       allOf:
       - $ref: "#/components/schemas/BaseAuditLog"
@@ -15354,9 +15627,6 @@ components:
             items:
               type: object
     AuditLogController.ApiAuditLogItem:
-      required:
-      - auditLog
-      - user
       type: object
       properties:
         auditLog:
@@ -15364,9 +15634,6 @@ components:
         user:
           $ref: "#/components/schemas/ApiUser"
     AuditLogController.AuditLogDiff:
-      required:
-      - after
-      - before
       type: object
       properties:
         before:
@@ -15374,10 +15641,6 @@ components:
         after:
           type: string
     AuditLogController.AuditLogOption:
-      required:
-      - date
-      - id
-      - username
       type: object
       properties:
         id:
@@ -15388,9 +15651,6 @@ components:
         username:
           type: string
     AuditLogController.FindRequest:
-      required:
-      - detail
-      - resource
       type: object
       properties:
         resource:
@@ -15443,9 +15703,6 @@ components:
         password:
           type: string
     AuthController.ResetPasswordRequest:
-      required:
-      - password
-      - token
       type: object
       properties:
         token:
@@ -15520,12 +15777,8 @@ components:
     BaseAuditLog:
       required:
       - date
-      - deleted
       - detail
       - id
-      - impersonatedBy
-      - ipAddress
-      - tenantId
       - type
       - userId
       type: object
@@ -15573,12 +15826,19 @@ components:
           type: array
           items:
             type: string
+    BasicAuthCredentials:
+      type: object
+      properties:
+        uid:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
     Binding:
       required:
       - deleted
       - externalId
-      - id
-      - namespaceId
       - roleId
       - type
       type: object
@@ -15603,11 +15863,6 @@ components:
     Blueprint:
       required:
       - deleted
-      - description
-      - id
-      - includedTasks
-      - publishedAt
-      - tags
       - title
       type: object
       properties:
@@ -15633,13 +15888,6 @@ components:
         deleted:
           type: boolean
     BlueprintController.ApiBlueprintItem:
-      required:
-      - description
-      - id
-      - includedTasks
-      - publishedAt
-      - tags
-      - title
       type: object
       properties:
         id:
@@ -15670,10 +15918,6 @@ components:
           kind:
             $ref: "#/components/schemas/BlueprintController.Kind"
     BlueprintController.ApiBlueprintTagItem:
-      required:
-      - id
-      - name
-      - publishedAt
       type: object
       properties:
         id:
@@ -15772,8 +16016,7 @@ components:
           type: string
         type:
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         chartOptions:
           type: object
@@ -15795,14 +16038,29 @@ components:
       - QUEUE
       - CANCEL
       - FAIL
+    ConcurrencyLimit:
+      required:
+      - flowId
+      - namespace
+      - tenantId
+      type: object
+      properties:
+        tenantId:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        running:
+          type: integer
+          format: int32
     Condition:
       required:
       - type
       type: object
       properties:
         type:
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
     ConversionService:
       type: object
@@ -15834,9 +16092,6 @@ components:
             $ref: "#/components/schemas/ConversionService"
     CreateApiTokenRequest:
       required:
-      - description
-      - extended
-      - maxAge
       - name
       type: object
       properties:
@@ -15850,10 +16105,6 @@ components:
         extended:
           type: boolean
     CreateApiTokenResponse:
-      required:
-      - fullToken
-      - id
-      - name
       type: object
       properties:
         id:
@@ -15894,8 +16145,6 @@ components:
     DailyExecutionStatistics:
       required:
       - duration
-      - executionCounts
-      - groupBy
       - startDate
       type: object
       properties:
@@ -15908,6 +16157,9 @@ components:
           type: object
           properties:
             CREATED:
+              type: integer
+              format: int64
+            SUBMITTED:
               type: integer
               format: int64
             RUNNING:
@@ -15950,6 +16202,9 @@ components:
               type: integer
               format: int64
             BREAKPOINT:
+              type: integer
+              format: int64
+            RESUBMITTED:
               type: integer
               format: int64
         groupBy:
@@ -16095,9 +16350,6 @@ components:
         retry:
           type: string
     ExecutableTask.SubflowId:
-      required:
-      - flowId
-      - namespace
       type: object
       properties:
         namespace:
@@ -16114,18 +16366,8 @@ components:
       - flowId
       - flowRevision
       - id
-      - inputs
-      - labels
-      - metadata
       - namespace
-      - originalId
-      - outputs
-      - parentId
       - state
-      - taskRunList
-      - traceParent
-      - trigger
-      - variables
       type: object
       properties:
         labels:
@@ -16147,16 +16389,10 @@ components:
             $ref: "#/components/schemas/TaskRun"
         inputs:
           type: object
-          additionalProperties:
-            type: object
         outputs:
           type: object
-          additionalProperties:
-            type: object
         variables:
           type: object
-          additionalProperties:
-            type: object
         state:
           $ref: "#/components/schemas/State"
         parentId:
@@ -16190,10 +16426,6 @@ components:
           items:
             $ref: "#/components/schemas/Breakpoint"
     ExecutionController.ApiValidateExecutionInputsResponse:
-      required:
-      - id
-      - inputs
-      - namespace
       type: object
       properties:
         id:
@@ -16205,12 +16437,6 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue:
-      required:
-      - enabled
-      - errors
-      - input
-      - isDefault
-      - value
       type: object
       properties:
         input:
@@ -16226,8 +16452,6 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
-      required:
-      - message
       type: object
       properties:
         message:
@@ -16244,7 +16468,6 @@ components:
     ExecutionController.ExecutionResponse:
       required:
       - deleted
-      - url
       type: object
       allOf:
       - $ref: "#/components/schemas/Execution"
@@ -16256,12 +16479,6 @@ components:
             type: string
             format: uri
     ExecutionController.LastExecutionResponse:
-      required:
-      - flowId
-      - id
-      - namespace
-      - startDate
-      - status
       type: object
       properties:
         id:
@@ -16276,9 +16493,6 @@ components:
         status:
           $ref: "#/components/schemas/State.Type"
     ExecutionController.SetLabelsByIdsRequest:
-      required:
-      - executionLabels
-      - executionsId
       type: object
       properties:
         executionsId:
@@ -16290,55 +16504,12 @@ components:
           items:
             $ref: "#/components/schemas/Label"
     ExecutionController.StateRequest:
-      required:
-      - state
-      - taskRunId
       type: object
       properties:
         taskRunId:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      required:
-      - flowId
-      - flowRevision
-      - id
-      - labels
-      - namespace
-      - outputs
-      - state
-      - tenantId
-      - trigger
-      - url
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -16346,9 +16517,6 @@ components:
       - TEST
       - PLAYGROUND
     ExecutionMetadata:
-      required:
-      - attemptNumber
-      - originalCreatedDate
       type: object
       properties:
         attemptNumber:
@@ -16373,12 +16541,6 @@ components:
         id:
           type: string
     ExecutionStatusEvent:
-      required:
-      - executionId
-      - flowId
-      - namespace
-      - state
-      - tenantId
       type: object
       properties:
         executionId:
@@ -16394,9 +16556,7 @@ components:
     ExecutionTrigger:
       required:
       - id
-      - logFile
       - type
-      - variables
       type: object
       properties:
         id:
@@ -16414,10 +16574,6 @@ components:
       type: object
       properties:
         dailyExecutionsCount:
-          type: array
-          items:
-            $ref: "#/components/schemas/DailyExecutionStatistics"
-        dailyTaskRunsCount:
           type: array
           items:
             $ref: "#/components/schemas/DailyExecutionStatistics"
@@ -16458,8 +16614,6 @@ components:
           type: integer
           format: int64
     Filter:
-      required:
-      - filter
       type: object
       properties:
         filter:
@@ -16541,8 +16695,7 @@ components:
               $ref: "#/components/schemas/PluginDefault"
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           tasks:
             minItems: 1
             type: array
@@ -16639,7 +16792,7 @@ components:
               $ref: "#/components/schemas/Label"
           variables:
             type: object
-            additionalProperties: true
+            additionalProperties: false
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -16668,7 +16821,6 @@ components:
     FlowGenerationPrompt:
       required:
       - conversationId
-      - flowYaml
       - userPrompt
       type: object
       properties:
@@ -16679,11 +16831,6 @@ components:
         flowYaml:
           type: string
     FlowGraph:
-      required:
-      - clusters
-      - edges
-      - flowables
-      - nodes
       type: object
       properties:
         nodes:
@@ -16703,12 +16850,6 @@ components:
           items:
             type: string
     FlowGraph.Cluster:
-      required:
-      - cluster
-      - end
-      - nodes
-      - parents
-      - start
       type: object
       properties:
         cluster:
@@ -16726,10 +16867,6 @@ components:
         end:
           type: string
     FlowGraph.Edge:
-      required:
-      - relation
-      - source
-      - target
       type: object
       properties:
         source:
@@ -16792,8 +16929,6 @@ components:
             type: string
     FlowNode:
       required:
-      - id
-      - namespace
       - uid
       type: object
       properties:
@@ -16814,9 +16949,6 @@ components:
       - USER
       - SYSTEM
     FlowTopologyGraph:
-      required:
-      - edges
-      - nodes
       type: object
       properties:
         nodes:
@@ -16828,10 +16960,6 @@ components:
           items:
             $ref: "#/components/schemas/FlowTopologyGraph.Edge"
     FlowTopologyGraph.Edge:
-      required:
-      - relation
-      - source
-      - target
       type: object
       properties:
         source:
@@ -16912,8 +17040,7 @@ components:
             type: boolean
           variables:
             type: object
-            additionalProperties:
-              type: object
+            additionalProperties: false
           concurrency:
             $ref: "#/components/schemas/Concurrency"
           outputs:
@@ -16929,11 +17056,6 @@ components:
             items:
               $ref: "#/components/schemas/SLA"
     GroupIdentifier:
-      required:
-      - groupId
-      - managedExternally
-      - membership
-      - tenantId
       type: object
       properties:
         tenantId:
@@ -16963,10 +17085,6 @@ components:
       - $ref: "#/components/schemas/ConvertibleValues_List_String__"
       - $ref: "#/components/schemas/ConversionServiceProvider"
     IAMBindingController.ApiBindingDetail:
-      required:
-      - id
-      - role
-      - type
       type: object
       properties:
         id:
@@ -16987,9 +17105,6 @@ components:
           allOf:
           - $ref: "#/components/schemas/IAMBindingController.ApiBindingUser"
     IAMBindingController.ApiBindingGroup:
-      required:
-      - id
-      - name
       type: object
       properties:
         id:
@@ -16997,11 +17112,6 @@ components:
         name:
           type: string
     IAMBindingController.ApiBindingUser:
-      required:
-      - displayName
-      - id
-      - type
-      - username
       type: object
       properties:
         id:
@@ -17029,9 +17139,6 @@ components:
           type: string
           nullable: true
     IAMBindingController.ApiRole:
-      required:
-      - id
-      - name
       type: object
       properties:
         id:
@@ -17040,8 +17147,6 @@ components:
           type: string
     IAMGroupController.ApiCreateGroupRequest:
       required:
-      - description
-      - membersId
       - name
       type: object
       properties:
@@ -17054,10 +17159,6 @@ components:
           items:
             type: string
     IAMGroupController.ApiGroupDetail:
-      required:
-      - description
-      - id
-      - name
       type: object
       properties:
         id:
@@ -17067,11 +17168,6 @@ components:
         description:
           type: string
     IAMGroupController.ApiGroupMember:
-      required:
-      - displayName
-      - groups
-      - id
-      - username
       type: object
       properties:
         id:
@@ -17085,11 +17181,6 @@ components:
           items:
             $ref: "#/components/schemas/IAMGroupController.ApiGroupMembership"
     IAMGroupController.ApiGroupMembership:
-      required:
-      - external
-      - id
-      - membership
-      - name
       type: object
       properties:
         id:
@@ -17102,7 +17193,6 @@ components:
           $ref: "#/components/schemas/GroupIdentifier.Membership"
     IAMGroupController.ApiUpdateGroupRequest:
       required:
-      - description
       - name
       type: object
       properties:
@@ -17115,11 +17205,7 @@ components:
       description: Represents updatable properties for a Group.
     IAMInvitationController.ApiInvitationCreateRequest:
       required:
-      - createUserIfNotExist
       - email
-      - groups
-      - roles
-      - superAdmin
       type: object
       properties:
         createUserIfNotExist:
@@ -17137,18 +17223,6 @@ components:
         email:
           type: string
     IAMInvitationController.ApiInvitationDetail:
-      required:
-      - acceptedAt
-      - email
-      - expiredAt
-      - groups
-      - id
-      - link
-      - roles
-      - sentAt
-      - status
-      - superAdmin
-      - tenantId
       type: object
       properties:
         id:
@@ -17183,7 +17257,6 @@ components:
     IAMInvitationController.ApiInvitationRole:
       required:
       - id
-      - namespaces
       type: object
       properties:
         id:
@@ -17194,8 +17267,6 @@ components:
             type: string
     IAMRoleController.ApiRoleCreateOrUpdateRequest:
       required:
-      - description
-      - isDefault
       - name
       - permissions
       type: object
@@ -17258,13 +17329,6 @@ components:
         isDefault:
           type: boolean
     IAMRoleController.ApiRoleDetail:
-      required:
-      - description
-      - id
-      - isDefault
-      - isManaged
-      - name
-      - permissions
       type: object
       properties:
         id:
@@ -17330,10 +17394,7 @@ components:
           type: boolean
     IAMServiceAccountController.ApiCreateServiceAccountRequest:
       required:
-      - description
       - name
-      - superAdmin
-      - tenants
       type: object
       properties:
         name:
@@ -17349,15 +17410,12 @@ components:
             type: string
       description: Request payload for updating service account details
     IAMServiceAccountController.ApiGroup:
-      required:
-      - id
       type: object
       properties:
         id:
           type: string
     IAMServiceAccountController.ApiPatchServiceAccountRequest:
       required:
-      - description
       - name
       type: object
       properties:
@@ -17369,11 +17427,7 @@ components:
       description: Request payload for updating service account details
     IAMServiceAccountController.ApiServiceAccountDetail:
       required:
-      - description
-      - id
       - name
-      - superAdmin
-      - tenants
       type: object
       properties:
         id:
@@ -17395,10 +17449,7 @@ components:
       description: A User Service Account.
     IAMServiceAccountController.ApiServiceAccountRequest:
       required:
-      - description
-      - groups
       - name
-      - superAdmin
       type: object
       properties:
         groups:
@@ -17415,11 +17466,7 @@ components:
       description: A User Service Account.
     IAMServiceAccountController.ApiServiceAccountResponse:
       required:
-      - description
-      - groups
-      - id
       - name
-      - superAdmin
       type: object
       properties:
         id:
@@ -17440,9 +17487,6 @@ components:
           type: boolean
       description: A User Service Account.
     IAMTenantAccessController.ApiAuthentication:
-      required:
-      - name
-      - type
       type: object
       properties:
         name:
@@ -17457,10 +17501,6 @@ components:
         email:
           type: string
     IAMTenantAccessController.ApiGroup:
-      required:
-      - external
-      - id
-      - name
       type: object
       properties:
         id:
@@ -17470,13 +17510,6 @@ components:
         external:
           type: boolean
     IAMTenantAccessController.ApiRoleAssignment:
-      required:
-      - id
-      - name
-      - namespace
-      - origin
-      - permissions
-      - sourceId
       type: object
       properties:
         id:
@@ -17494,14 +17527,6 @@ components:
           items:
             $ref: "#/components/schemas/IAMTenantAccessController.ApiUserPermission"
     IAMTenantAccessController.ApiTenantAccess:
-      required:
-      - displayName
-      - groups
-      - roles
-      - superAdmin
-      - tenantId
-      - userId
-      - username
       type: object
       properties:
         tenantId:
@@ -17523,9 +17548,6 @@ components:
         superAdmin:
           type: boolean
     IAMTenantAccessController.ApiUserPermission:
-      required:
-      - actions
-      - permission
       type: object
       properties:
         permission:
@@ -17535,13 +17557,6 @@ components:
           items:
             $ref: "#/components/schemas/Action"
     IAMTenantAccessController.ApiUserTenantAccess:
-      required:
-      - auths
-      - description
-      - displayName
-      - groups
-      - id
-      - username
       type: object
       properties:
         id:
@@ -17572,13 +17587,6 @@ components:
     IAMUserController.ApiCreateOrUpdateUserRequest:
       required:
       - email
-      - firstName
-      - groups
-      - lastName
-      - password
-      - restricted
-      - superAdmin
-      - tenants
       type: object
       properties:
         tenants:
@@ -17602,9 +17610,6 @@ components:
         restricted:
           type: boolean
     IAMUserController.ApiGroup:
-      required:
-      - id
-      - tenantId
       type: object
       properties:
         id:
@@ -17626,18 +17631,6 @@ components:
         password:
           type: string
     IAMUserController.ApiUser:
-      required:
-      - auths
-      - displayName
-      - email
-      - firstName
-      - groups
-      - id
-      - lastName
-      - restricted
-      - superAdmin
-      - tenants
-      - username
       type: object
       properties:
         id:
@@ -17669,10 +17662,6 @@ components:
         restricted:
           type: boolean
     IAMUserController.ApiUserAuth:
-      required:
-      - id
-      - name
-      - type
       type: object
       properties:
         id:
@@ -17682,13 +17671,6 @@ components:
         type:
           type: string
     IAMUserController.ApiUserSummary:
-      required:
-      - auths
-      - displayName
-      - id
-      - superAdmin
-      - tenants
-      - username
       type: object
       properties:
         id:
@@ -17708,8 +17690,6 @@ components:
         superAdmin:
           type: boolean
     IAMUserGroupController.ApiUpdateUserGroupsRequest:
-      required:
-      - groupIds
       type: object
       properties:
         groupIds:
@@ -17724,11 +17704,6 @@ components:
         id:
           type: string
     IdentityProvider:
-      required:
-      - attributes
-      - externalId
-      - securityIntegrationId
-      - securityIntegrationName
       type: object
       properties:
         attributes:
@@ -17742,9 +17717,6 @@ components:
         securityIntegrationName:
           type: string
     InputType:
-      required:
-      - cls
-      - type
       type: object
       properties:
         type:
@@ -17782,13 +17754,16 @@ components:
           title: The default value to use if no value is specified.
           allOf:
           - $ref: "#/components/schemas/Property_Object_"
+        prefill:
+          title: The suggested value for the input.
+          description: Optional UI hint for pre-filling the input. Cannot be used
+            together with a default value.
+          allOf:
+          - $ref: "#/components/schemas/Property_Object_"
         displayName:
           title: The display name of the input.
           type: string
     InstanceController.ApiActiveService:
-      required:
-      - total
-      - type
       type: object
       properties:
         type:
@@ -17797,9 +17772,6 @@ components:
           type: integer
           format: int64
     InstanceController.ApiActiveServiceList:
-      required:
-      - services
-      - total
       type: object
       properties:
         total:
@@ -17811,8 +17783,6 @@ components:
             $ref: "#/components/schemas/InstanceController.ApiActiveService"
     InstanceController.ApiCreateOrUpdateWorkerGroupRequest:
       required:
-      - allowedTenants
-      - description
       - key
       type: object
       properties:
@@ -17828,12 +17798,6 @@ components:
             type: string
       description: ApiCreateWorkerGroupRequest.
     InstanceController.ApiPluginArtifact:
-      required:
-      - artifactId
-      - groupId
-      - icon
-      - title
-      - versions
       type: object
       properties:
         title:
@@ -17849,9 +17813,6 @@ components:
           items:
             type: string
     InstanceController.ApiPluginArtifactList_PluginArtifact_:
-      required:
-      - results
-      - total
       type: object
       properties:
         total:
@@ -17862,9 +17823,6 @@ components:
           items:
             type: object
     InstanceController.ApiPluginArtifactList_PluginResolutionResult_:
-      required:
-      - results
-      - total
       type: object
       properties:
         total:
@@ -17875,8 +17833,6 @@ components:
           items:
             type: object
     InstanceController.ApiPluginListRequest:
-      required:
-      - plugins
       type: object
       properties:
         plugins:
@@ -17884,14 +17840,6 @@ components:
           items:
             type: string
     InstanceController.ApiPluginVersionDetails:
-      required:
-      - artifactId
-      - classes
-      - description
-      - groupId
-      - icon
-      - title
-      - version
       type: object
       properties:
         artifactId:
@@ -17911,9 +17859,6 @@ components:
           items:
             $ref: "#/components/schemas/InstanceController.ApiPluginVersionDetails.ApiPluginClasses"
     InstanceController.ApiPluginVersionDetails.ApiPluginClass:
-      required:
-      - icon
-      - name
       type: object
       properties:
         name:
@@ -17921,9 +17866,6 @@ components:
         icon:
           type: string
     InstanceController.ApiPluginVersionDetails.ApiPluginClasses:
-      required:
-      - classes
-      - type
       type: object
       properties:
         type:
@@ -17933,10 +17875,6 @@ components:
           items:
             $ref: "#/components/schemas/InstanceController.ApiPluginVersionDetails.ApiPluginClass"
     InstanceController.ApiPluginVersions:
-      required:
-      - artifactId
-      - groupId
-      - versions
       type: object
       properties:
         groupId:
@@ -17948,9 +17886,6 @@ components:
           items:
             $ref: "#/components/schemas/InstanceController.ApiPluginVersions.ApiPluginVersionAndMetadata"
     InstanceController.ApiPluginVersions.ApiPluginVersionAndMetadata:
-      required:
-      - metadata
-      - version
       type: object
       properties:
         version:
@@ -17958,11 +17893,6 @@ components:
         metadata:
           $ref: "#/components/schemas/PluginArtifactMetadata"
     InstanceController.ApiServerInstance:
-      required:
-      - hostname
-      - id
-      - type
-      - version
       type: object
       properties:
         id:
@@ -17974,13 +17904,6 @@ components:
         hostname:
           type: string
     InstanceController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
       type: object
       properties:
         id:
@@ -17998,11 +17921,6 @@ components:
           type: string
           format: date-time
     InstanceController.ApiWorkerGroup:
-      required:
-      - allowedTenants
-      - description
-      - id
-      - key
       type: object
       properties:
         id:
@@ -18020,12 +17938,6 @@ components:
             type: string
       description: ApiWorkerGroup.
     InstanceController.ApiWorkerGroupDetails:
-      required:
-      - allowedTenants
-      - description
-      - id
-      - key
-      - workers
       type: object
       properties:
         id:
@@ -18048,11 +17960,6 @@ components:
             $ref: "#/components/schemas/ServiceInstance"
       description: ApiWorkerGroupDetails.
     InstanceController.ApiWorkerGroupItem:
-      required:
-      - activeWorkers
-      - description
-      - id
-      - key
       type: object
       properties:
         id:
@@ -18070,8 +17977,6 @@ components:
           format: int32
       description: ApiWorkerGroup.
     InstanceController.ApiWorkerGroupList:
-      required:
-      - workerGroups
       type: object
       properties:
         workerGroups:
@@ -18082,20 +17987,8 @@ components:
       description: ApiWorkerGroupList.
     Invitation:
       required:
-      - acceptedAt
-      - bindings
       - deleted
       - email
-      - expiredAt
-      - groupIds
-      - id
-      - isExpired
-      - link
-      - sentAt
-      - status
-      - superAdmin
-      - tenantId
-      - userType
       type: object
       properties:
         isExpired:
@@ -18141,9 +18034,6 @@ components:
       - ACCEPTED
       - EXPIRED
     Isolation:
-      required:
-      - deniedServices
-      - enabled
       type: object
       properties:
         deniedServices:
@@ -18153,8 +18043,6 @@ components:
         enabled:
           type: boolean
     KVController.ApiDeleteBulkRequest:
-      required:
-      - keys
       type: object
       properties:
         keys:
@@ -18162,8 +18050,6 @@ components:
           items:
             type: string
     KVController.ApiDeleteBulkResponse:
-      required:
-      - keys
       type: object
       properties:
         keys:
@@ -18171,9 +18057,6 @@ components:
           items:
             type: string
     KVController.TypedValue:
-      required:
-      - type
-      - value
       type: object
       properties:
         type:
@@ -18181,14 +18064,15 @@ components:
         value:
           type: object
     KVEntry:
-      required:
-      - creationDate
-      - key
-      - updateDate
       type: object
       properties:
+        namespace:
+          type: string
         key:
           type: string
+        version:
+          type: integer
+          format: int32
         description:
           type: string
           nullable: true
@@ -18243,8 +18127,6 @@ components:
       - TRACE
     Listener:
       required:
-      - conditions
-      - description
       - tasks
       type: object
       properties:
@@ -18263,11 +18145,7 @@ components:
       required:
       - deleted
       - flowId
-      - level
-      - message
       - namespace
-      - thread
-      - timestamp
       type: object
       properties:
         namespace:
@@ -18311,13 +18189,6 @@ components:
         empty:
           type: boolean
     MeController.ApiMe:
-      required:
-      - auths
-      - id
-      - profile
-      - restricted
-      - superAdmin
-      - tenants
       type: object
       properties:
         id:
@@ -18337,11 +18208,6 @@ components:
           items:
             $ref: "#/components/schemas/MeController.ApiTenant"
     MeController.ApiProfile:
-      required:
-      - email
-      - firstName
-      - lastName
-      - username
       type: object
       properties:
         email:
@@ -18353,10 +18219,6 @@ components:
         username:
           type: string
     MeController.ApiTenant:
-      required:
-      - id
-      - logo
-      - name
       type: object
       properties:
         id:
@@ -18366,9 +18228,6 @@ components:
         logo:
           type: string
     MeController.ApiUpdatePasswordRequest:
-      required:
-      - newPassword
-      - oldPassword
       type: object
       properties:
         oldPassword:
@@ -18376,10 +18235,6 @@ components:
         newPassword:
           type: string
     MeController.ApiUserDetailsRequest:
-      required:
-      - email
-      - firstName
-      - lastName
       type: object
       properties:
         firstName:
@@ -18405,13 +18260,6 @@ components:
         version:
           type: string
     Metric:
-      required:
-      - baseUnit
-      - description
-      - name
-      - tags
-      - type
-      - value
       type: object
       properties:
         name:
@@ -18429,9 +18277,6 @@ components:
         value:
           type: object
     Metric.Tag:
-      required:
-      - key
-      - value
       type: object
       properties:
         key:
@@ -18442,7 +18287,6 @@ components:
       required:
       - date
       - name
-      - value
       type: object
       properties:
         name:
@@ -18517,19 +18361,6 @@ components:
           $ref: "#/components/schemas/FlowUsage"
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
-    MiscController.BasicAuthCredentials:
-      required:
-      - password
-      - uid
-      - username
-      type: object
-      properties:
-        uid:
-          type: string
-        username:
-          type: string
-        password:
-          type: string
     MiscController.Configuration:
       type: object
       properties:
@@ -18541,12 +18372,12 @@ components:
           $ref: "#/components/schemas/EditionProvider.Edition"
         commitId:
           type: string
+        chartDefaultDuration:
+          type: string
         commitDate:
           type: string
           format: date-time
         isCustomDashboardsEnabled:
-          type: boolean
-        isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
           type: boolean
@@ -18566,10 +18397,6 @@ components:
           type: array
           items:
             type: string
-        resourceToFilters:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.ResourceField"
         isAiEnabled:
           type: boolean
         isBasicAuthInitialized:
@@ -18615,10 +18442,9 @@ components:
             type: string
           passwordlessEnabled:
             type: boolean
+          airgapped:
+            type: boolean
     MiscController.Environment:
-      required:
-      - color
-      - name
       type: object
       properties:
         name:
@@ -18626,13 +18452,6 @@ components:
         color:
           type: string
     MiscController.LicenseInfo:
-      required:
-      - expired
-      - expiry
-      - maxServers
-      - standalone
-      - type
-      - workerGroups
       type: object
       properties:
         type:
@@ -18650,9 +18469,6 @@ components:
         workerGroups:
           type: boolean
     MiscController.PluginIdAndVersion:
-      required:
-      - id
-      - version
       type: object
       properties:
         id:
@@ -18660,9 +18476,6 @@ components:
         version:
           type: string
     MiscController.Preview:
-      required:
-      - initial
-      - max
       type: object
       properties:
         initial:
@@ -18672,9 +18485,6 @@ components:
           type: integer
           format: int32
     MiscController.TenantConfigurationInfo:
-      required:
-      - secretByTenant
-      - storageByTenant
       type: object
       properties:
         storageByTenant:
@@ -18691,13 +18501,8 @@ components:
       description: Scim core schema.
     Namespace:
       required:
-      - allowedNamespaces
       - deleted
-      - description
       - id
-      - pluginDefaults
-      - variables
-      - workerGroup
       type: object
       properties:
         id:
@@ -18759,7 +18564,6 @@ components:
           type: string
     Namespace.AllowedTrigger:
       required:
-      - flowId
       - namespace
       type: object
       properties:
@@ -18793,7 +18597,9 @@ components:
         description:
           type: string
         value:
-          type: object
+          oneOf:
+          - type: object
+          - type: string
         type:
           $ref: "#/components/schemas/Type"
         displayName:
@@ -18897,6 +18703,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Blueprint"
+        total:
+          type: integer
+          format: int64
+    PagedResults_ConcurrencyLimit_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConcurrencyLimit"
         total:
           type: integer
           format: int64
@@ -19043,6 +18862,19 @@ components:
         total:
           type: integer
           format: int64
+    PagedResults_KVEntry_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/KVEntry"
+        total:
+          type: integer
+          format: int64
     PagedResults_LogEntry_:
       required:
       - results
@@ -19107,19 +18939,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SearchResult_Flow_"
-        total:
-          type: integer
-          format: int64
-    PagedResults_TaskRun_:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/TaskRun"
         total:
           type: integer
           format: int64
@@ -19204,8 +19023,6 @@ components:
       - REMOVE
       - REPLACE
     PatchOperationPath:
-      required:
-      - valuePathExpression
       type: object
       properties:
         valuePathExpression:
@@ -19339,9 +19156,6 @@ components:
         subGroup:
           type: string
     Plugin.PluginElementMetadata:
-      required:
-      - cls
-      - deprecated
       type: object
       properties:
         cls:
@@ -19349,13 +19163,6 @@ components:
         deprecated:
           type: boolean
     PluginArtifact:
-      required:
-      - artifactId
-      - classifier
-      - extension
-      - groupId
-      - uri
-      - version
       type: object
       properties:
         groupId:
@@ -19372,12 +19179,6 @@ components:
           type: string
           format: uri
     PluginArtifactMetadata:
-      required:
-      - creationTime
-      - lastModifiedTime
-      - name
-      - size
-      - uri
       type: object
       properties:
         uri:
@@ -19395,9 +19196,6 @@ components:
           type: integer
           format: int64
     PluginController.ApiPluginVersions:
-      required:
-      - type
-      - versions
       type: object
       properties:
         type:
@@ -19408,9 +19206,7 @@ components:
             type: string
     PluginDefault:
       required:
-      - forced
       - type
-      - values
       type: object
       properties:
         type:
@@ -19419,8 +19215,7 @@ components:
           type: boolean
         values:
           type: object
-          additionalProperties:
-            type: object
+          additionalProperties: false
     PluginIcon:
       type: object
       properties:
@@ -19463,17 +19258,16 @@ components:
       - INGESTION
       - BI
     Property_Boolean_:
-      required:
-      - expression
       type: object
       properties:
         expression:
           type: string
         value:
           type: boolean
+      oneOf:
+      - type: object
+      - type: string
     Property_Double_:
-      required:
-      - expression
       type: object
       properties:
         expression:
@@ -19481,18 +19275,20 @@ components:
         value:
           type: number
           format: double
+      oneOf:
+      - type: object
+      - type: string
     Property_Duration_:
-      required:
-      - expression
       type: object
       properties:
         expression:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
     Property_List_String__:
-      required:
-      - expression
       type: object
       properties:
         expression:
@@ -19501,29 +19297,30 @@ components:
           type: array
           items:
             type: string
+      oneOf:
+      - type: object
+      - type: string
     Property_Object_:
-      required:
-      - expression
       type: object
       properties:
         expression:
           type: string
         value:
           type: object
+      oneOf:
+      - type: object
+      - type: string
     Property_String_:
-      required:
-      - expression
       type: object
       properties:
         expression:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
     QueryFilter:
-      required:
-      - field
-      - operation
-      - value
       type: object
       properties:
         field:
@@ -19538,8 +19335,10 @@ components:
       - QUERY
       - SCOPE
       - NAMESPACE
+      - KIND
       - LABELS
       - FLOW_ID
+      - UPDATED
       - START_DATE
       - END_DATE
       - STATE
@@ -19552,21 +19351,6 @@ components:
       - EXISTING_ONLY
       - MIN_LEVEL
       x-type: String
-    QueryFilter.FieldOp:
-      required:
-      - name
-      - operations
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        operations:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.Operation"
     QueryFilter.Op:
       type: string
       enum:
@@ -19583,37 +19367,12 @@ components:
       - CONTAINS
       - REGEX
       - PREFIX
-    QueryFilter.Operation:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-    QueryFilter.ResourceField:
-      required:
-      - fields
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        fields:
-          type: array
-          items:
-            $ref: "#/components/schemas/QueryFilter.FieldOp"
     RBACService.RoleAssignment.RoleOrigin:
       type: string
       enum:
       - BINDING
       - GROUP
     Relation:
-      required:
-      - relationType
-      - value
       type: object
       properties:
         relationType:
@@ -19702,9 +19461,6 @@ components:
           additionalProperties:
             $ref: "#/components/schemas/RightSidebarConfiguration.CustomLink"
     RightSidebarConfiguration.CustomLink:
-      required:
-      - title
-      - url
       type: object
       properties:
         title:
@@ -19714,12 +19470,8 @@ components:
     Role:
       required:
       - deleted
-      - description
-      - id
-      - isDefault
       - isManaged
       - name
-      - permissions
       type: object
       properties:
         isManaged:
@@ -19937,7 +19689,6 @@ components:
     ScimResource:
       required:
       - meta
-      - resourceType
       type: object
       allOf:
       - $ref: "#/components/schemas/BaseResource_ScimResource_"
@@ -20024,9 +19775,6 @@ components:
             type: integer
             format: int32
     SearchResult_Flow_:
-      required:
-      - fragments
-      - model
       type: object
       properties:
         model:
@@ -20041,7 +19789,6 @@ components:
       - SCIM
     ServerConfig:
       required:
-      - liveness
       - terminationGracePeriod
       type: object
       properties:
@@ -20079,13 +19826,6 @@ components:
           type: string
           default: 3s
     ServerInstance:
-      required:
-      - hostname
-      - id
-      - metrics
-      - props
-      - type
-      - version
       type: object
       properties:
         id:
@@ -20123,18 +19863,6 @@ components:
       - INACTIVE
       - MAINTENANCE
     ServiceInstance:
-      required:
-      - config
-      - createdAt
-      - events
-      - id
-      - metrics
-      - props
-      - seqId
-      - server
-      - state
-      - type
-      - updatedAt
       type: object
       properties:
         server:
@@ -20169,11 +19897,6 @@ components:
           type: integer
           format: int64
     ServiceInstance.TimestampedEvent:
-      required:
-      - state
-      - ts
-      - type
-      - value
       type: object
       properties:
         ts:
@@ -20270,9 +19993,6 @@ components:
       - WORKER
       - INVALID
     SetupConfiguration:
-      required:
-      - done
-      - passwordRegexp
       type: object
       properties:
         done:
@@ -20290,10 +20010,6 @@ components:
         haveAuthNotBasic:
           type: boolean
     SetupConfiguration.SetupData:
-      required:
-      - password
-      - tenant
-      - username
       type: object
       properties:
         username:
@@ -20352,6 +20068,7 @@ components:
       type: string
       enum:
       - CREATED
+      - SUBMITTED
       - RUNNING
       - PAUSED
       - RESTARTED
@@ -20366,6 +20083,7 @@ components:
       - RETRIED
       - SKIPPED
       - BREAKPOINT
+      - RESUBMITTED
     Task:
       required:
       - id
@@ -20381,13 +20099,19 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         description:
           type: string
         retry:
@@ -20440,13 +20164,19 @@ components:
         type:
           title: The class name of this task.
           minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          pattern: "^[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*$"
           type: string
         version:
-          title: The version of the plugin to use.
-          pattern: "\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9-]+)?|([a-zA-Z0-9]+)"
+          title: Plugin Version
           type: string
+          description: |
+            Defines the version of the plugin to use.
+
+            The version must follow the Semantic Versioning (SemVer) specification:
+              - A single-digit MAJOR version (e.g., `1`).
+              - A MAJOR.MINOR version (e.g., `1.1`).
+              - A MAJOR.MINOR.PATCH version, optionally with any qualifier
+                (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
         tasks:
           type: array
           items:
@@ -20459,18 +20189,12 @@ components:
           $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
-      - attempts
-      - dynamic
       - executionId
       - flowId
       - id
-      - iteration
       - namespace
-      - outputs
-      - parentTaskRunId
       - state
       - taskId
-      - value
       type: object
       properties:
         items:
@@ -20496,8 +20220,7 @@ components:
             $ref: "#/components/schemas/TaskRunAttempt"
         outputs:
           type: object
-          additionalProperties:
-            type: object
+          nullable: true
         state:
           $ref: "#/components/schemas/State"
         iteration:
@@ -20507,7 +20230,6 @@ components:
           type: boolean
         forceExecution:
           type: boolean
-          nullable: true
     TaskRunAttempt:
       required:
       - state
@@ -20532,16 +20254,6 @@ components:
       - deleted
       - id
       - name
-      - outputsInInternalStorage
-      - requireExistingNamespace
-      - secretConfiguration
-      - secretIsolation
-      - secretReadOnly
-      - secretType
-      - storageConfiguration
-      - storageIsolation
-      - storageType
-      - workerGroup
       type: object
       properties:
         storageIsolation:
@@ -20575,6 +20287,37 @@ components:
           type: boolean
         outputsInInternalStorage:
           type: boolean
+        appCatalogConfig:
+          $ref: "#/components/schemas/Tenant.AppCatalogConfig"
+    Tenant.AppCatalogConfig:
+      type: object
+      properties:
+        title:
+          type: string
+        titleColor:
+          type: string
+        primaryColor:
+          type: string
+    TenantController.AppsCatalogConfigRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        titleColor:
+          type: string
+        primaryColor:
+          type: string
+    TenantController.AppsCatalogConfigResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        titleColor:
+          type: string
+        primaryColor:
+          type: string
+        logo:
+          type: string
     TenantInterface:
       type: object
       properties:
@@ -20629,8 +20372,6 @@ components:
         disabled:
           type: boolean
     TestSuiteController.RunRequest:
-      required:
-      - testCases
       type: object
       properties:
         testCases:
@@ -20638,8 +20379,6 @@ components:
           items:
             type: string
     TestSuiteController.SearchTestsLastResult:
-      required:
-      - testSuiteIds
       type: object
       properties:
         testSuiteIds:
@@ -20669,8 +20408,6 @@ components:
           items:
             $ref: "#/components/schemas/TestSuiteController.TestSuiteApiId"
     TestSuiteController.TestsLastResultResponse:
-      required:
-      - results
       type: object
       properties:
         results:
@@ -20683,7 +20420,6 @@ components:
       - flowId
       - id
       - namespace
-      - results
       - startDate
       - state
       - testSuiteId
@@ -20711,9 +20447,7 @@ components:
             $ref: "#/components/schemas/UnitTestResult"
     TestSuiteService.RunByQueryRequest:
       required:
-      - flowId
       - includeChildNamespaces
-      - namespace
       type: object
       properties:
         namespace:
@@ -20727,12 +20461,6 @@ components:
           description: Should child namespaces be included or not
           default: true
     TestSuiteService.TestRunByQueryResult:
-      required:
-      - numberOfTestCasesToBeRun
-      - numberOfTestSuitesToBeRun
-      - requestMade
-      - results
-      - tenantId
       type: object
       properties:
         requestMade:
@@ -20786,6 +20514,7 @@ components:
       properties:
         disabled:
           type: boolean
+          default: false
         tenantId:
           pattern: "^[a-z0-9][a-z0-9_-]"
           type: string
@@ -20825,9 +20554,6 @@ components:
         disabled:
           type: boolean
     TriggerController.Triggers:
-      required:
-      - abstractTrigger
-      - triggerContext
       type: object
       properties:
         abstractTrigger:
@@ -20895,12 +20621,9 @@ components:
       required:
       - assertionResults
       - errors
-      - executionId
-      - fixtures
       - state
       - testId
       - testType
-      - url
       type: object
       properties:
         testId:
@@ -20998,14 +20721,7 @@ components:
           nullable: true
     ValidateConstraintViolation:
       required:
-      - constraints
-      - deprecationPaths
-      - flow
       - index
-      - infos
-      - namespace
-      - outdated
-      - warnings
       type: object
       properties:
         flow:
@@ -21032,8 +20748,6 @@ components:
           items:
             type: string
     ValuePathExpression:
-      required:
-      - attributePath
       type: object
       properties:
         attributePath:
