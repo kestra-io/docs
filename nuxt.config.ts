@@ -18,6 +18,23 @@ export default defineNuxtConfig({
         "nitro-cloudflare-dev",
         "nuxt-security"
     ],
+    security: {
+        headers: {
+            contentSecurityPolicy: {
+                'img-src': [
+                    "'self'", 
+                    "data:", 
+                    "https://alb.reddit.com",
+                    "https://storage.googleapis.com",
+                    "https://kestra.io",
+                    "https://*.kestra-io.pages.dev",
+                    "https://*.hubspot.com",
+                    "https://*.ads.linkedin.com",
+                    "https://*.hsforms.com",
+                ],
+            }
+        }
+    },
     image: {
         dir: 'public',
         provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
