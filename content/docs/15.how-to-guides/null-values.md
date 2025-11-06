@@ -1,7 +1,7 @@
 ---
 title: Handling null and undefined values
-icon: assets/docs/icons/tutorial.svg
-stage: Getting Started 
+icon: /docs/icons/tutorial.svg
+stage: Getting Started
 topics:
   - Best Practices
 ---
@@ -80,7 +80,7 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '??'
       This expression "{{ inputs.optional_input ?? 'mydefault' }}" will return 'mydefault'
-      because the coalesce-operator '??' returns the right-hand value 
+      because the coalesce-operator '??' returns the right-hand value
       if the left-hand value is null or undefined.
       Only if you provide a value at runtime, that value will be used instead of 'mydefault'.
 
@@ -92,7 +92,7 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '??'
       The expression "{{ inputs.undefined_input ?? 'mydefault' }}" will return 'mydefault'
-      because the coalesce-operator '??' returns the right-hand value 
+      because the coalesce-operator '??' returns the right-hand value
       if the left-hand value is null or undefined.
 
   - id: coalesce_only_undefined_input_1
@@ -103,7 +103,7 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '???'
       The expression "{{ inputs.undefined_input ??? 'mydefault' }}" will return 'mydefault'
-      because he undefined-coalesce-operator '???' returns the right-hand value 
+      because he undefined-coalesce-operator '???' returns the right-hand value
       if the left-hand value is undefined.
 
   - id: coalesce_only_undefined_input_2
@@ -114,7 +114,7 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '???'
       The expression "{{ inputs.optional_input ??? 'mydefault' }}" will return "" i.e. no value aka null value
-      because optional_input is defined and the undefined-coalesce-operator '???' only returns the right-hand value 
+      because optional_input is defined and the undefined-coalesce-operator '???' only returns the right-hand value
       if the left-hand value is undefined.
 
   - id: both_operators_combined
@@ -125,7 +125,7 @@ tasks:
       Right-hand value: 'other_default'
       Operator used: '??'
       The expression "{{ (inputs.optional_input ??? 'mydefault') ?? 'other_default' }}" will return 'other_default'
-      because the first expression using the undefined-coalesce-operator '???' will return null, 
+      because the first expression using the undefined-coalesce-operator '???' will return null,
       and the coalesce-operator '??' will return the default value 'other_default'.
 ```
 
@@ -149,7 +149,7 @@ triggers:
     key: abcdefg
 ```
 
-You can also use this for Schedule triggers. Here's an example that uses the date when the Schedule trigger starts an execution but in combination with the null coalescing operator to use an input value if an execution is started manually. 
+You can also use this for Schedule triggers. Here's an example that uses the date when the Schedule trigger starts an execution but in combination with the null coalescing operator to use an input value if an execution is started manually.
 
 ```yaml
 id: scheduling

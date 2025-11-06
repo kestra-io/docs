@@ -1,6 +1,6 @@
 ---
 title: Working Directory
-icon: assets/docs/icons/dev.svg
+icon: /docs/icons/dev.svg
 ---
 
 Run multiple tasks in the same working directory sequentially.
@@ -47,14 +47,14 @@ tasks:
           do
             echo "$i,$RANDOM,$RANDOM" >> file.csv
           done
-      
+
       - id: inspect_file
         type: io.kestra.plugin.scripts.shell.Commands
         taskRunner:
           type: io.kestra.plugin.core.runner.Process
         commands:
-          - cat file.csv  
-      
+          - cat file.csv
+
       - id: filter_file
         type: io.kestra.plugin.scripts.shell.Commands
         description: select only the first five rows of the second column

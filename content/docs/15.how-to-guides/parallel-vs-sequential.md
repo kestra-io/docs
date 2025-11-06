@@ -1,7 +1,7 @@
 ---
 title: Parallel vs. Sequential Tasks
-icon: assets/docs/icons/tutorial.svg
-stage: Getting Started 
+icon: /docs/icons/tutorial.svg
+stage: Getting Started
 topics:
   - Kestra Concepts
 ---

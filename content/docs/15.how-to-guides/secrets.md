@@ -1,6 +1,6 @@
 ---
 title: Configure Secrets
-icon: assets/docs/icons/tutorial.svg
+icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
@@ -99,7 +99,7 @@ tasks:
     password: "{{ secret('POSTGRES_PASSWORD') }}"
     sql: select id, first_name, last_name, city from users
     fetchType: STORE
-  
+
   - id: write_to_s3
     type: "io.kestra.plugin.aws.s3.Upload"
     accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
