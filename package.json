@@ -17,9 +17,9 @@
     "analyze": "nuxt analyze"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.9",
-    "@astrojs/mdx": "^4.3.6",
-    "@astrojs/vue": "^5.1.1",
+    "@astrojs/cloudflare": "^12.6.10",
+    "@astrojs/mdx": "^4.3.9",
+    "@astrojs/vue": "^5.1.2",
     "@kestra-io/ui-libs": "^0.0.252",
     "@popperjs/core": "^2.11.8",
     "@rive-app/canvas": "^2.31.2",
@@ -57,7 +57,7 @@
     "@types/aos": "^3.0.7",
     "@types/bootstrap": "^5.2.10",
     "@types/node": "^24.3.0",
-    "astro": "^5.14.1",
+    "astro": "^5.15.3",
     "nitro-cloudflare-dev": "^0.2.2",
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-directive": "^4.0.0",
