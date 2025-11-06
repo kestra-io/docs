@@ -16,6 +16,7 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
         "nitro-cloudflare-dev",
+        "nuxt-security"
     ],
     image: {
         dir: 'public',
