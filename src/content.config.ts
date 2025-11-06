@@ -16,7 +16,8 @@ export const collections = {
     schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string().optional(),
-        icon: image().optional(),
+        // icon: image().optional(),
+        icon: z.string().optional(),
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE", "Cloud"])).optional(),
@@ -53,7 +54,8 @@ export const collections = {
             twitter: z.string().optional(),
             role: z.string().nullable().optional(),
         })).optional(),
-        image: image(),
+        // image: image(),
+        image: z.string().optional(),
       })
   }),
   misc: defineCollection({
