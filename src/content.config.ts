@@ -10,7 +10,7 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./src/content/docs",
+        base: ".content/docs",
         generateId,
     }),
     schema: ({ image }) => z.object({
@@ -32,7 +32,7 @@ export const collections = {
   blogs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./src/content/blogs",
+        base: "./content/blogs",
         generateId,
     }),
     schema: ({ image }) =>
@@ -59,7 +59,7 @@ export const collections = {
   misc: defineCollection({
     loader: glob({
         pattern: "./*.md{,x}",
-        base: "./src/content",
+        base: "./content",
         generateId,
     }),
     schema: z.object({
