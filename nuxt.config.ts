@@ -31,6 +31,22 @@ export default defineNuxtConfig({
                     "https://*.hubspot.com",
                     "https://*.ads.linkedin.com",
                     "https://*.hsforms.com",
+                    "https://i.ytimg.com",
+                    "https://www.googletagmanager.com",
+                    "https://www.google-analytics.com",
+                ],
+                'script-src-attr': [
+                    "'unsafe-inline'",
+                ],
+                'script-src': [
+                    "'self'",
+                    'https:', 
+                    "'unsafe-inline'", 
+                    "'strict-dynamic'", 
+                    "'nonce-{{nonce}}'",
+                    "'wasm-unsafe-eval'",
+                    "https://www.youtube.com",
+                    "https://s.ytimg.com",
                 ],
             }
         }
