@@ -1,6 +1,6 @@
 ---
 title: Custom plugins
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.20.0
 ---
 

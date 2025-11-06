@@ -1,6 +1,6 @@
 ---
 title: How-to Guides
-icon: assets/docs/icons/tutorial.svg
+icon: /docs/icons/tutorial.svg
 hideSubMenus: true
 ---
 

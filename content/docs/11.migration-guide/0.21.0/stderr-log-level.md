@@ -1,6 +1,6 @@
 ---
 title: Log level for stderr output
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS", "EE"]
 ---
@@ -37,10 +37,10 @@ errors:
 
 Here is the output of the `fail` task before the change:
 
-![log.png](assets/docs/migration-guide/0-21/stderr-log-level1.png)
+![log.png](/docs/migration-guide/0-21/stderr-log-level1.png)
 
 ## After 0.21.0
 
 Here is the output of the `fail` task after the change:
 
-![log2.png](assets/docs/migration-guide/0-21/stderr-log-level2.png)
+![log2.png](/docs/migration-guide/0-21/stderr-log-level2.png)

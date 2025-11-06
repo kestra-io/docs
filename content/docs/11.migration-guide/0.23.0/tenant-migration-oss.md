@@ -1,6 +1,6 @@
 ---
 title: Open-Source Migration Guide to introduce defaultTenant
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]
 ---

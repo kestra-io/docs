@@ -1,6 +1,6 @@
 ---
 title: Pass Inputs via an API call
-icon: assets/docs/icons/api.svg
+icon: /docs/icons/api.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components
@@ -70,4 +70,4 @@ tasks:
 
 When you execute the `api_call` flow, this will execute the `input_api` flow with the new `user` input
 
-![input_api_log](assets/docs/how-to-guides/inputs/input_api_log.png)
+![input_api_log](/docs/how-to-guides/inputs/input_api_log.png)

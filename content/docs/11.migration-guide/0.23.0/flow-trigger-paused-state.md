@@ -1,6 +1,6 @@
 ---
 title: Flow trigger now also reacts to PAUSED state by default
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

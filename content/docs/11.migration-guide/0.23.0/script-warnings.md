@@ -1,6 +1,6 @@
 ---
 title: No more WARNING state on script tasks when ERROR logs are present
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

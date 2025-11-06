@@ -1,6 +1,6 @@
 ---
 title: Internal Storage Migration Guide for S3 and GCS Users
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS","EE"]
 ---

@@ -1,6 +1,6 @@
 ---
 title: Deprecation of Listeners
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.12.0
 ---
 
@@ -132,7 +132,7 @@ Anytime you execute that `demo` flow, the Slack notification will be sent, thank
 
 You can look at both a flow with a listener and a flow with a Flow trigger side by side to see the syntax difference:
 
-![listeners-vs-flow-triggers](assets/docs/migration-guide/listeners-vs-flow-triggers.png)
+![listeners-vs-flow-triggers](/docs/migration-guide/listeners-vs-flow-triggers.png)
 
 If you still have questions about migrating from listeners to flow triggers, reach out via our [Community Slack](/slack).
 

@@ -1,6 +1,6 @@
 ---
 title: Run Julia inside of your Flows
-icon: assets/docs/icons/julia.svg
+icon: /docs/icons/julia.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -108,7 +108,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![julia_outputs](assets/docs/how-to-guides/julia/outputs.png)
+![julia_outputs](/docs/how-to-guides/julia/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -179,4 +179,4 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](assets/docs/how-to-guides/julia/metrics.png)
+![metrics](/docs/how-to-guides/julia/metrics.png)

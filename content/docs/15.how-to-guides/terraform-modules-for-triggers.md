@@ -1,6 +1,6 @@
 ---
 title: Modularize your triggers and schedules with Terraform
-icon: assets/docs/icons/terraform.svg
+icon: /docs/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps

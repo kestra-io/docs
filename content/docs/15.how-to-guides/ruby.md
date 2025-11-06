@@ -1,6 +1,6 @@
 ---
 title: Run Ruby inside of your Flow
-icon: assets/docs/icons/ruby.svg
+icon: /docs/icons/ruby.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -115,7 +115,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![ruby_outputs](assets/docs/how-to-guides/ruby/outputs.png)
+![ruby_outputs](/docs/how-to-guides/ruby/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -186,7 +186,7 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](assets/docs/how-to-guides/ruby/metrics.png)
+![metrics](/docs/how-to-guides/ruby/metrics.png)
 
 ## Execute GraalVM Task
 

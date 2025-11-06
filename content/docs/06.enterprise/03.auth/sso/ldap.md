@@ -1,6 +1,6 @@
 ---
 title: LDAP
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: "0.22.0"
 ---
@@ -59,7 +59,7 @@ Once LDAP is configured, when a user logs into Kestra for the first time, their 
 
 If they are a part of any groups specified in the directory, those groups will be added to Kestra. If the group already exists in Kestra, they will be automatically added. If a user is added to a group after their initial login, they must log out and log back in for the new group assignment to sync, as synchronization occurs only at login. Any user authenticated via LDAP will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
 
-![ldap-1](assets/docs/enterprise/sso/ldap-1.png)
+![ldap-1](/docs/enterprise/sso/ldap-1.png)
 
 Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 

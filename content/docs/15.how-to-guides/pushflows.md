@@ -1,6 +1,6 @@
 ---
 title: Push Flows to a Git Repository
-icon: assets/docs/icons/git.svg
+icon: /docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
@@ -78,7 +78,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
 
-![git1](assets/docs/how-to-guides/pushflows/git1.png)
+![git1](/docs/how-to-guides/pushflows/git1.png)
 
 ## Pushing a single flow to Git
 
@@ -97,19 +97,19 @@ tasks:
 
 You should see the following log message:
 
-![git2.png](assets/docs/how-to-guides/pushflows/git2.png)
+![git2.png](/docs/how-to-guides/pushflows/git2.png)
 
 And here is what you should see in the Outputs tab:
 
-![git3.png](assets/docs/how-to-guides/pushflows/git3.png)
+![git3.png](/docs/how-to-guides/pushflows/git3.png)
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 
-![git4.png](assets/docs/how-to-guides/pushflows/git4.png)
+![git4.png](/docs/how-to-guides/pushflows/git4.png)
 
 Now, you can create a pull request and merge the changes to the main branch.
 
-![git5_pr.png](assets/docs/how-to-guides/pushflows/git5_pr.png)
+![git5_pr.png](/docs/how-to-guides/pushflows/git5_pr.png)
 
 ## Pushing all flows from a single namespace to Git
 
@@ -134,7 +134,7 @@ tasks:
     message: the simplest dev-to-prod workflow ever
 ```
 
-![git6_all_flows.png](assets/docs/how-to-guides/pushflows/git6_all_flows.png)
+![git6_all_flows.png](/docs/how-to-guides/pushflows/git6_all_flows.png)
 
 Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
 
@@ -158,11 +158,11 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
-![git7.png](assets/docs/how-to-guides/pushflows/git7.png)
+![git7.png](/docs/how-to-guides/pushflows/git7.png)
 
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
-![git8.png](assets/docs/how-to-guides/pushflows/git8.png)
+![git8.png](/docs/how-to-guides/pushflows/git8.png)
 
 
 ## Pushing all flows including child namespaces
@@ -225,11 +225,11 @@ tasks:
 
 When you run this final system flow, you should see the following output:
 
-![git9.png](assets/docs/how-to-guides/pushflows/git9.png)
+![git9.png](/docs/how-to-guides/pushflows/git9.png)
 
 And here is a confirmation that all flows from the `dev` namespace and its child namespaces have been pushed to the Git repository:
 
-![git10.png](assets/docs/how-to-guides/pushflows/git10.png)
+![git10.png](/docs/how-to-guides/pushflows/git10.png)
 
 Here is a simple table to illustrate how flows are mapped to files in the Git repository:
 
@@ -254,4 +254,4 @@ You can see that each child namespace is represented as a subfolder in the Git r
 - If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow.
 - Git does not guarantee the order of push operations to a remote repository, which can lead to potential conflicts when multiple users or flows attempt to push changes simultaneously. To minimize the risk of data loss and merge conflicts, it is strongly recommended to use sequential workflows or push changes to separate branches.
 
-![git11_credential_detected.png](assets/docs/how-to-guides/pushflows/git11_credential_detected.png)
+![git11_credential_detected.png](/docs/how-to-guides/pushflows/git11_credential_detected.png)

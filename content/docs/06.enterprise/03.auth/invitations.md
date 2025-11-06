@@ -1,6 +1,6 @@
 ---
 title: Invitations
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
 docId: users
@@ -26,13 +26,13 @@ By default, if the [email server is configured in Kestra EE](../../configuration
 4. Fill in the user's email address, and select the desired group or attach the role directly—optionally restricting the permission to one or more namespaces
 5. Click the **Add** button—this will send an email to the user with an invitation link, or display the link you can share with the user manually.
 
-![Add User Interface](assets/docs/enterprise/invitations/invite1.png)
+![Add User Interface](/docs/enterprise/invitations/invite1.png)
 
 :::alert{type="info"}
 You can check the box to **Create user directly (skip invitation)** if one is not required. This action is recommended only with third-party authentication such as SSO or LDAP.
 :::
 
-![invite2](assets/docs/enterprise/invitations/invite2.png)
+![invite2](/docs/enterprise/invitations/invite2.png)
 
 ## Accepting Invitations
 

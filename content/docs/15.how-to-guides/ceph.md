@@ -1,6 +1,6 @@
 ---
 title: Configure Local Ceph Storage for Kestra via MinIO Gateway
-icon: assets/docs/icons/ceph.svg
+icon: /docs/icons/ceph.svg
 stage: Intermediate
 topics:
 - DevOps

@@ -1,6 +1,6 @@
 ---
 title: Task Runner Types
-icon: assets/docs/icons/concepts.svg
+icon: /docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
 ---

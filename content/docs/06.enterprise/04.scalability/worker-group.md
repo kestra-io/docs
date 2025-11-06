@@ -1,6 +1,6 @@
 ---
 title: Worker Group
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.10.0"
 ---
@@ -24,17 +24,17 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 
 To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
 
-![Create Worker Group UI](assets/docs/enterprise/create-worker-group.png)
+![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 
 ## Starting Workers for a Worker Group
 
 Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
 
-![Worker Group UI](assets/docs/enterprise/worker-group-ui.png)
+![Worker Group UI](/docs/enterprise/worker-group-ui.png)
 
 The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
 
-![Worker Group UI Details](assets/docs/enterprise/worker-group-details.png)
+![Worker Group UI Details](/docs/enterprise/worker-group-details.png)
 
 :::alert{type="info"}
 In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../server-cli/index.md#kestra-with-server-components-in-different-services).
@@ -119,13 +119,13 @@ When Fallback behavior is set in multiple places, Kestra resolves which action t
 
 Namespaces can be configured to have a default `fallback` behavior. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
 
-![Configure Worker Group for a Namespace](assets/docs/enterprise/worker-group-namespace.png)
+![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
 
 ### Fallback Behavior at the Tenant Level
 
 Tenants can be configured to have a default `fallback` behavior. It can be configured when creating a tenant on in the tenant's properties.
 
-![Configure Worker Group for a Tenant](assets/docs/enterprise/worker-group-tenant.png)
+![Configure Worker Group for a Tenant](/docs/enterprise/worker-group-tenant.png)
 
 ## When to use Worker Groups
 
@@ -170,7 +170,7 @@ You can use a Worker Group to designate a worker to execute **any** task on a re
 
 The Distant Worker use case requires a connection to the Kestra metastore, and it solves for scenarios of always-on, intensive workloads and workloads that need to execute workloads on an external environment.
 
-![Distant Worker Architecture](assets/docs/enterprise/distant-worker.png)
+![Distant Worker Architecture](/docs/enterprise/distant-worker.png)
 
 ### Task Runners
 
@@ -178,7 +178,7 @@ If you are using scripting tasks, you can set up Worker Group of Task Runners to
 
 This is particularly useful for script task workloads that have bursts in resource demand.
 
-![Task Runner Architecture](assets/docs/enterprise/task-runners.png)
+![Task Runner Architecture](/docs/enterprise/task-runners.png)
 
 ### Data Isolation
 
@@ -186,7 +186,7 @@ Worker Groups strongly fits **Data Isolation** use cases. Multi-tenancy requirem
 
 In the below architecture, it is not possible to execute tasks on worker 1 from tenant 3.
 
-![Data Isolation Architecture](assets/docs/enterprise/data-isolation.png)
+![Data Isolation Architecture](/docs/enterprise/data-isolation.png)
 
 :::alert{type="warning"}
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.

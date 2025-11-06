@@ -1,6 +1,6 @@
 ---
 title: Extend Kestra with the API
-icon: assets/docs/icons/api.svg
+icon: /docs/icons/api.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
@@ -22,7 +22,7 @@ In this guide, we're going to specifically look at the Kestra API and how that c
 
 In the documentation, there's references for both the [Open Source](../api-reference/open-source.md) as well as [Cloud & Enterprise ](../api-reference/enterprise.md) APIs to make it easy to know what you can do with them. We're going to look at a number examples we can create with both references. When we open the [Open Source API Reference](../api-reference/open-source.md), we can see there's a number of sections to make it easy to navigate:
 
-![api_reference](assets/docs/how-to-guides/api/api_reference.png)
+![api_reference](/docs/how-to-guides/api/api_reference.png)
 
 ## Making Requests with Authentication
 
@@ -398,7 +398,7 @@ To start with, we can add a KV pair to the KV Store with the following [PUT requ
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key -d '"Hello, World"'
 ```
 We can check in Kestra that it was added successfully:
-![kv_api](assets/docs/how-to-guides/api/kv_api.png)
+![kv_api](/docs/how-to-guides/api/kv_api.png)
 
 We can modify this by changing the body. For example, we will change the body to `"This is a modified value"`:
 
@@ -408,11 +408,11 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 
 We can see the key has been modified since it was created:
 
-![modified_kv](assets/docs/how-to-guides/api/modified_kv.png)
+![modified_kv](/docs/how-to-guides/api/modified_kv.png)
 
 When we open the key, we will see the value has also been modified to reflect our request.
 
-![modified_value_kv](assets/docs/how-to-guides/api/modified_value_kv.png)
+![modified_value_kv](/docs/how-to-guides/api/modified_value_kv.png)
 
 If we want to fetch the value from the KV Store, we will do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
 
@@ -437,7 +437,7 @@ Along with managing your Flows with the API, you can also manage your Namespace 
 
 Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/main/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
 
-![files](assets/docs/how-to-guides/api/files.png)
+![files](/docs/how-to-guides/api/files.png)
 
 We will make this request for the `company.team` namespace with the following command:
 
@@ -522,4 +522,4 @@ curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pa
 
 When we make this request, we can see it appear in the Namespace Editor:
 
-![upload_file](assets/docs/how-to-guides/api/upload_file.png)
+![upload_file](/docs/how-to-guides/api/upload_file.png)

@@ -1,6 +1,6 @@
 ---
 title: Administrator Guide
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 ---
 
 The Administrator Guide covers everything you need to know about managing your Kestra cluster.

@@ -1,6 +1,6 @@
 ---
 title: Use Azure Managed Workload on Kestra
-icon: assets/docs/icons/azure-aks.svg
+icon: /docs/icons/azure-aks.svg
 stage: Advanced
 topics:
   - Kestra Concepts

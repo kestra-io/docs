@@ -1,6 +1,6 @@
 ---
 title: Trigger a Flow on a Prometheus Alert
-icon: assets/docs/icons/prometheus.svg
+icon: /docs/icons/prometheus.svg
 stage: Intermediate
 topics:
   - DevOps
@@ -85,11 +85,11 @@ services:
 
 You can verify Prometheus is up and running by going to `http://localhost:9090/graph` and visualizing some metrics using the PromQL. Below is one of the graphs for `kestra_executor_execution_started_count_total` metric:
 
-![Prometheus metric graph](assets/docs/how-to-guides/setup-monitoring/promql_graph.png)
+![Prometheus metric graph](/docs/how-to-guides/setup-monitoring/promql_graph.png)
 
 Similarly, you can go to `http://localhost:9093/status` and see that the Alertmanager is ready.
 
-![Alertmanager Status](assets/docs/how-to-guides/alertmanager-status.png)
+![Alertmanager Status](/docs/how-to-guides/alertmanager-status.png)
 
 ### Step 1: Define a Prometheus Alert
 
@@ -158,11 +158,11 @@ Make sure that your `groups.name` and `rule_files` have the same name so that Al
 
 To check that your rules are picked up by Prometheus, go to `http://localhost:9090/rules`.
 
-![Prometheus Rules](assets/docs/how-to-guides/alert-rules.png)
+![Prometheus Rules](/docs/how-to-guides/alert-rules.png)
 
 From there, you can see a list of the rules set in the `alert.rules.yml` file:
 
-![Prometheus Rules List](assets/docs/how-to-guides/alert-rules-list.png)
+![Prometheus Rules List](/docs/how-to-guides/alert-rules-list.png)
 
 ### Step 2: Configure Alertmanager to Use a Webhook
 
@@ -206,7 +206,7 @@ tasks:
 
 Once the flow is written, you can verify the trigger is active from the **Flows -> Triggers** tab in the UI.
 
-![Prometheus Webhook Trigger](assets/docs/how-to-guides/prometheus-webhook-trigger.png)
+![Prometheus Webhook Trigger](/docs/how-to-guides/prometheus-webhook-trigger.png)
 
 ### How It Works
 

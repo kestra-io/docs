@@ -1,6 +1,6 @@
 ---
 title: OpenTelemetry
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 ---
@@ -84,7 +84,7 @@ The following screenshot shows three correlated traces:
 - One created from an execution of a flow named `opentelemetry_parent` which has spans for tasks including a `Subflow`
 - One created from the `opentelemetry_basic` flow execution
 
-![Example of correlated traces in Jaeger](assets/docs/administrator-guide/opentelemetry_traces.png)
+![Example of correlated traces in Jaeger](/docs/administrator-guide/opentelemetry_traces.png)
 
 ### Disabling traces
 

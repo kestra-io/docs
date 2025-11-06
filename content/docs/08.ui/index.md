@@ -1,13 +1,13 @@
 ---
 title: User Interface
-icon: assets/docs/icons/ui.svg
+icon: /docs/icons/ui.svg
 ---
 
 Kestra comes with a rich web user interface located by default on port 8080.
 
 When you first navigate to the Kestra UI, you will see the **Welcome** page.
 
-![Kestra User Interface Welcome Page](assets/docs/user-interface-guide/01-Welcome.png)
+![Kestra User Interface Welcome Page](/docs/user-interface-guide/01-Welcome.png)
 
 On this page, click on **Create my first flow** to open the Kestra __Guided Tour__, which will guide you through creating and executing your first flow step by step.
 

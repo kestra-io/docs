@@ -1,6 +1,6 @@
 ---
 title: Renamed Plugins
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
@@ -15,7 +15,7 @@ We've also renamed `taskDefaults` to `pluginDefaults` to highlight that you can 
 
 All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
-![renamed-core-plugins](assets/docs/migration-guide/renamed-core-plugins.png)
+![renamed-core-plugins](/docs/migration-guide/renamed-core-plugins.png)
 
 It's worth taking a couple of minutes to rename those in your flows to future-proof your code.
 

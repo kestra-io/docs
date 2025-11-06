@@ -1,6 +1,6 @@
 ---
 title: Set Up Secrets from a Helm Chart
-icon: assets/docs/icons/helm.svg
+icon: /docs/icons/helm.svg
 stage: Getting Started
 topics:
   - Kestra Concepts

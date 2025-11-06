@@ -1,6 +1,6 @@
 ---
 title: System Labels & Hidden Labels
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["OSS", "EE"]
 version: ">= 0.20.0"
 ---
@@ -11,7 +11,7 @@ Special labels for system use only.
 
 System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 4DhfCBCDznBqipTAnd7zfm`.
 
-![correlationId](assets/docs/concepts/correlationId.png)
+![correlationId](/docs/concepts/correlationId.png)
 
 ---
 
@@ -79,7 +79,7 @@ tasks:
 
 Once this label is set, the editor for this flow will be disabled in the UI.
 
-![readOnly](assets/docs/concepts/system-labels/readOnly.png)
+![readOnly](/docs/concepts/system-labels/readOnly.png)
 
 :::alert{type="info"}
 In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.

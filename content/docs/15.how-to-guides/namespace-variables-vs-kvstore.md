@@ -1,6 +1,6 @@
 ---
 title: Namespace Variables vs KV Store
-icon: assets/docs/icons/tutorial.svg
+icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts

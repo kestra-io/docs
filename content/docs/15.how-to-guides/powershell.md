@@ -1,6 +1,6 @@
 ---
 title: Run Powershell inside of your Flows
-icon: assets/docs/icons/powershell.svg
+icon: /docs/icons/powershell.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -114,7 +114,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![powershell_outputs](assets/docs/how-to-guides/powershell/outputs.png)
+![powershell_outputs](/docs/how-to-guides/powershell/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -183,4 +183,4 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![powershell_metrics](assets/docs/how-to-guides/powershell/metrics.png)
+![powershell_metrics](/docs/how-to-guides/powershell/metrics.png)

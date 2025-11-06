@@ -1,6 +1,6 @@
 ---
 title: Setup Webhooks to trigger Flows
-icon: assets/docs/icons/webhook.svg
+icon: /docs/icons/webhook.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -67,9 +67,9 @@ You can also copy the formed Webhook URL from the **Triggers** tab.
 
 Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
 
-![navigate_to_secrets](assets/docs/how-to-guides/webhooks/navigate_to_secrets.png)
+![navigate_to_secrets](/docs/how-to-guides/webhooks/navigate_to_secrets.png)
 
-![assign_secret_value](assets/docs/how-to-guides/webhooks/assign_secret_value.png)
+![assign_secret_value](/docs/how-to-guides/webhooks/assign_secret_value.png)
 
 Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
 

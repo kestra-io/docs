@@ -1,6 +1,6 @@
 ---
 title: Plugin Discovery Mechanism
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 

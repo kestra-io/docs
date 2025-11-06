@@ -1,6 +1,6 @@
 ---
 title: Slack Events API
-icon: assets/docs/icons/slack.svg
+icon: /docs/icons/slack.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -17,28 +17,28 @@ To use the Slack Events API, you'll need to create a Slack app. You can do this 
 First, click on the "Create New App" button:
 
 
-![img.png](assets/docs/how-to-guides/slack-webhook/img.png)
+![img.png](/docs/how-to-guides/slack-webhook/img.png)
 
 Choose the option "From scratch":
 
-![img_1.png](assets/docs/how-to-guides/slack-webhook/img_1.png)
+![img_1.png](/docs/how-to-guides/slack-webhook/img_1.png)
 
 
 Then, give your app a name and select the workspace where you want to install it:
 
-![img_2.png](assets/docs/how-to-guides/slack-webhook/img_2.png)
+![img_2.png](/docs/how-to-guides/slack-webhook/img_2.png)
 
 Now, you need to enable the "Event Subscriptions" feature:
 
-![img_3.png](assets/docs/how-to-guides/slack-webhook/img_3.png)
+![img_3.png](/docs/how-to-guides/slack-webhook/img_3.png)
 
 In the "Subscribe to bot events" section, you can add events you want to listen to.
 
-![img_4.png](assets/docs/how-to-guides/slack-webhook/img_4.png)
+![img_4.png](/docs/how-to-guides/slack-webhook/img_4.png)
 
 For example, you can listen to the `app_mentions` and `reaction_added` events:
 
-![img_5.png](assets/docs/how-to-guides/slack-webhook/img_5.png)
+![img_5.png](/docs/how-to-guides/slack-webhook/img_5.png)
 
 ## Create a flow with a Webhook trigger
 
@@ -73,11 +73,11 @@ We'll look at how to do this using Python and FastAPI. For deployments, we'll sh
 
 First, sign up for a free account on [Modal](https://modal.com/). Then, go to your Settings:
 
-![img_6.png](assets/docs/how-to-guides/slack-webhook/img_6.png)
+![img_6.png](/docs/how-to-guides/slack-webhook/img_6.png)
 
 And create a new API token:
 
-![img_7.png](assets/docs/how-to-guides/slack-webhook/img_7.png)
+![img_7.png](/docs/how-to-guides/slack-webhook/img_7.png)
 
 
 You will see a similar command:
@@ -165,12 +165,12 @@ tasks:
       MODAL_TOKEN_ID: "{{ secret('MODAL_TOKEN_ID') }}"
       MODAL_TOKEN_SECRET: "{{ secret('MODAL_TOKEN_SECRET') }}"
 ```
-![img_8.png](assets/docs/how-to-guides/slack-webhook/img_8.png)
+![img_8.png](/docs/how-to-guides/slack-webhook/img_8.png)
 :::
 
 Once you execute that flow, you will see the endpoint to your app in the logs:
 
-![img_9.png](assets/docs/how-to-guides/slack-webhook/img_9.png)
+![img_9.png](/docs/how-to-guides/slack-webhook/img_9.png)
 
 Go back to Slack and add the URL to the "Request URL" field in the "Event Subscriptions" section. Make sure to add `slack/events` at the end of the URL, e.g.:
 
@@ -180,31 +180,31 @@ https://anna-geller--slack-app-fastapi-app.modal.run/slack/events
 
 You should see the `Verified` message. Hit `Save Changes` and you're all set!
 
-![img_10.png](assets/docs/how-to-guides/slack-webhook/img_10.png)
+![img_10.png](/docs/how-to-guides/slack-webhook/img_10.png)
 
 ## Install the Slack app to a Workspace and test it
 
 First, we need to install the app to the workspace. Go to "Install App" and click on "Install to Workspace":
 
-![img_11.png](assets/docs/how-to-guides/slack-webhook/img_11.png)
+![img_11.png](/docs/how-to-guides/slack-webhook/img_11.png)
 
-![img_12.png](assets/docs/how-to-guides/slack-webhook/img_12.png)
+![img_12.png](/docs/how-to-guides/slack-webhook/img_12.png)
 
 
 Now you can test the integration by mentioning your app in a channel. For example, you can write a hello message `hello @kestra`:
 
-![img_13.png](assets/docs/how-to-guides/slack-webhook/img_13.png)
+![img_13.png](/docs/how-to-guides/slack-webhook/img_13.png)
 
 Confirm to invite the app to the channel and congratulate yourself with the "Nicely done!" emoji 🙌:
 
-![img_14.png](assets/docs/how-to-guides/slack-webhook/img_14.png)
+![img_14.png](/docs/how-to-guides/slack-webhook/img_14.png)
 
 
 You should see that both events (`app mention` and `reaction added`) have triggered an execution of your Kestra flow:
 
-![img_15.png](assets/docs/how-to-guides/slack-webhook/img_15.png)
+![img_15.png](/docs/how-to-guides/slack-webhook/img_15.png)
 
-![img_16.png](assets/docs/how-to-guides/slack-webhook/img_16.png)
+![img_16.png](/docs/how-to-guides/slack-webhook/img_16.png)
 
 Now it's up to you to automate your daily operations with Slack and Kestra!
 
@@ -214,14 +214,14 @@ You can extend the `slack_events` flow to automate your daily business operation
 
 To do something more useful than just logging the Slack event, you can create a flow that listens to the `app_mention` event and responds to that message with a GPT-4 chatbot. First, create an incoming webhook in your Slack app:
 
-![img_17.png](assets/docs/how-to-guides/slack-webhook/img_17.png)
+![img_17.png](/docs/how-to-guides/slack-webhook/img_17.png)
 
-![img_18.png](assets/docs/how-to-guides/slack-webhook/img_18.png)
+![img_18.png](/docs/how-to-guides/slack-webhook/img_18.png)
 
 
 Copy the webhook URL:
 
-![img_19.png](assets/docs/how-to-guides/slack-webhook/img_19.png)
+![img_19.png](/docs/how-to-guides/slack-webhook/img_19.png)
 
 ...and paste it into the `url` field of the `SlackIncomingWebhook` task in the flow below:
 
@@ -265,9 +265,9 @@ Note that the `SlackIncomingWebhook` task also has the `messageText` property th
 
 And here is the result:
 
-![img_20.png](assets/docs/how-to-guides/slack-webhook/img_20.png)
+![img_20.png](/docs/how-to-guides/slack-webhook/img_20.png)
 
-![img_21.png](assets/docs/how-to-guides/slack-webhook/img_21.png)
+![img_21.png](/docs/how-to-guides/slack-webhook/img_21.png)
 
 ---
 

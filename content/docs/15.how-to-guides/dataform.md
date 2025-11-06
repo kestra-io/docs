@@ -1,6 +1,6 @@
 ---
 title: Using Dataform in Kestra
-icon: assets/docs/icons/tutorial.svg
+icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations

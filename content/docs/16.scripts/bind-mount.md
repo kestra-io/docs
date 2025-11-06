@@ -1,6 +1,6 @@
 ---
 title: Bind Mount
-icon: assets/docs/icons/dev.svg
+icon: /docs/icons/dev.svg
 ---
 
 Use bind-mount to execute locally stored scripts.

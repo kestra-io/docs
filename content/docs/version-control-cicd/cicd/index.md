@@ -1,6 +1,6 @@
 ---
 title: CI/CD Pipeline
-icon: assets/docs/icons/dev.svg
+icon: /docs/icons/dev.svg
 ---
 
 Kestra provides several ways to create a CI/CD pipeline for your flows.
@@ -135,7 +135,7 @@ https://github.com/your_username/your_repository_name/settings/hooks
 
 Select "Add webhook":
 
-![github_webhook_1](assets/docs/developer-guide/ci-cd/github_webhook_1.png)
+![github_webhook_1](/docs/developer-guide/ci-cd/github_webhook_1.png)
 
 Paste Kestra's webhook URL into the *Payload URL* field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
@@ -143,7 +143,7 @@ Paste Kestra's webhook URL into the *Payload URL* field, as shown below. The web
 https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook_key
 ```
 
-![github_webhook_2](assets/docs/developer-guide/ci-cd/github_webhook_2.png)
+![github_webhook_2](/docs/developer-guide/ci-cd/github_webhook_2.png)
 
 
 Note that we configured this webhook to be sent upon a push event to the default branch, but you can choose the option "Let me select individual events" for further customization e.g. to trigger the flow any time there is a new pull request.

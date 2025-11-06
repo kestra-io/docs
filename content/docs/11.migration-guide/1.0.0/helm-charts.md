@@ -1,6 +1,6 @@
 ---
 title: Helm Chart Updates
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
 ---

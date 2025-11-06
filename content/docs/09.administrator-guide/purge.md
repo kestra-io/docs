@@ -1,6 +1,6 @@
 ---
 title: Purge
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 version: ">= 0.18.0"
 ---
 

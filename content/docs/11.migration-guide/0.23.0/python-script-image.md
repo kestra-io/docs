@@ -1,6 +1,6 @@
 ---
 title: Python script tasks now use official python:3-13-slim image
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

@@ -1,6 +1,6 @@
 ---
 title: MITM Proxy for Kestra
-icon: assets/docs/icons/padlock.svg
+icon: /docs/icons/padlock.svg
 ---
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.

@@ -1,6 +1,6 @@
 ---
 title: Restarting parent flow
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS", "EE"]
 ---

@@ -1,6 +1,6 @@
 ---
 title: Role-Based Access Control (RBAC)
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: iam
 ---
@@ -19,7 +19,7 @@ assigning Roles to Users, Groups, and Service Accounts.
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the
 Access page in the UI).
 
-![bindings](assets/docs/enterprise/rbac.png)
+![bindings](/docs/enterprise/rbac.png)
 
 ## Roles and Bindings
 
@@ -88,7 +88,7 @@ Currently, Kestra only creates an **Admin** role by default. That role grants fu
 
 Apart from that, you can create additional Roles with custom permission combinations. You can create roles and select the permissions and actions in the **IAM - Roles** tab.
 
-![role-creation](assets/docs/enterprise/role-creation.png)
+![role-creation](/docs/enterprise/role-creation.png)
 
 ## Super Admin and Admin
 
@@ -179,7 +179,7 @@ Note that you need to be a super admin yourself.
 
 You can grant or revoke the Super Admin privilege using the switch in the User Edit page.
 
-![superadmin switch](assets/docs/enterprise/superadmin_switch.png)
+![superadmin switch](/docs/enterprise/superadmin_switch.png)
 
 #### Through the CLI
 
@@ -247,7 +247,7 @@ Once you have created your first role. You can attach that role to an entity thr
 
 The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
-![create a binding](assets/docs/enterprise/create_binding.png)
+![create a binding](/docs/enterprise/create_binding.png)
 :::::alert{type="info"}
 **Note:** Service Accounts are considered as Users when binding.
 :::
@@ -298,16 +298,16 @@ To add users to your Kestra instance, you can do one of the following:
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
 
 :::collapse{title="Change password in the UI"}
-![change_password](assets/docs/enterprise/change_password.png)
+![change_password](/docs/enterprise/change_password.png)
 :::
 
 #### Reset password (by a Super Admin)
 
 Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **Users**.
 
-![Reset Password](assets/docs/enterprise/forgot-password.png)
+![Reset Password](/docs/enterprise/forgot-password.png)
 
-![Superadmin Change Password](assets/docs/enterprise/create-user-password.png)
+![Superadmin Change Password](/docs/enterprise/create-user-password.png)
 
 ### Groups
 
@@ -317,7 +317,7 @@ Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
 - Each `User` can be assigned to zero, one, or more `Groups`.
 - Each `Service Account` can also be assigned to zero, one, or more `Groups`.
 
-![Group Owner](assets/docs/enterprise/group-owner.png)
+![Group Owner](/docs/enterprise/group-owner.png)
 
 Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group. Users with the `GROUP_MEMBERSHIP` permission can add members to groups and change their membership type.
 

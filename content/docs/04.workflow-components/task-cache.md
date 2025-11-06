@@ -1,6 +1,6 @@
 ---
 title: Task Cache
-icon: assets/docs/icons/flow.svg
+icon: /docs/icons/flow.svg
 version: "0.24.0"
 ---
 

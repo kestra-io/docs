@@ -1,6 +1,6 @@
 ---
 title: Validate and Deploy your Flows with GitHub Actions
-icon: assets/docs/icons/github.svg
+icon: /docs/icons/github.svg
 stage: Intermediate
 topics:
   - Integrations
@@ -158,10 +158,10 @@ The goal of this ruleset is to protect the `main` branch as our GitHub Action wi
 - Require a pull request before merging - No commits can be made directly to the `main` branch
 - Require status checks to pass - Requires our Validate Action to pass before we can merge our Pull Requests
 
-![ruleset](assets/docs/how-to-guides/github-actions/ruleset.png)
+![ruleset](/docs/how-to-guides/github-actions/ruleset.png)
 
 With these enabled, we are required to make a Pull Request before our flows end up in production. This enables us to run our validate check and require that to pass before we can merge any pull requests.
 
-![pr](assets/docs/how-to-guides/github-actions/pr.png)
+![pr](/docs/how-to-guides/github-actions/pr.png)
 
 In the example above, the flow was had an incorrect indentation so it failed the validate check. As a result of this, the Pull Request is unable to be merged until it is fixed.

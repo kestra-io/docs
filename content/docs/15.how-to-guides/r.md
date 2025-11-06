@@ -1,6 +1,6 @@
 ---
 title: Run R inside of your Flows
-icon: assets/docs/icons/r.svg
+icon: /docs/icons/r.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -114,7 +114,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![r_outputs](assets/docs/how-to-guides/r/outputs.png)
+![r_outputs](/docs/how-to-guides/r/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -183,4 +183,4 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](assets/docs/how-to-guides/r/metrics.png)
+![metrics](/docs/how-to-guides/r/metrics.png)

@@ -1,6 +1,6 @@
 ---
 title: Notion Webhook Integration
-icon: assets/docs/icons/notion.svg
+icon: /docs/icons/notion.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -88,7 +88,7 @@ Set up webhooks directly in your Notion integration:
    - `database.created` - When new databases are created
 7. Click **"Create"** to save the webhook
 
-![Notion Integration UI](assets/docs/how-to-guides/notion/kestra-webhook-notion.png)
+![Notion Integration UI](/docs/how-to-guides/notion/kestra-webhook-notion.png)
 
 For more details, see the [Notion Webhooks API documentation](https://developers.notion.com/reference/webhooks).
 
@@ -112,7 +112,7 @@ http://your-kestra-host:8080/api/v1/main/executions/webhook/company.team/notion-
 
 You can copy your webhook URL directly from the Kestra UI from the **Triggers** tab and paste it in Notion:
 
-![Copy Webhook URL](assets/docs/how-to-guides/notion/copy-webhook-url.png)
+![Copy Webhook URL](/docs/how-to-guides/notion/copy-webhook-url.png)
 
 ## Testing the integration
 

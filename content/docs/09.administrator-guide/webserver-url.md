@@ -1,6 +1,6 @@
 ---
 title: Webserver URL
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 ---
 
 Configure the URL of your Kestra webserver.

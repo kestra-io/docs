@@ -1,6 +1,6 @@
 ---
 title: Usage
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 ---
 
 Configuration options for the usage report.

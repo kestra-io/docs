@@ -1,6 +1,6 @@
 ---
 title: Versioned Plugins
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
@@ -77,26 +77,26 @@ Below is an video demonstration walking through each step from installation to a
 
 Here are the steps again, listed one by one. Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Administration > Instance** section and then **Versioned Plugins**. You can click **+ Install** and open up the full library of available plugins.
 
-![versioned-plugins-1](assets/docs/enterprise/versioned-plugins/versioned-plugins-1.png)
+![versioned-plugins-1](/docs/enterprise/versioned-plugins/versioned-plugins-1.png)
 
 From the list, search and select the plugin to install and select the version.
 
-![versioned-plugins-2](assets/docs/enterprise/versioned-plugins/versioned-plugins-2.png)
+![versioned-plugins-2](/docs/enterprise/versioned-plugins/versioned-plugins-2.png)
 
 After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the latest version. When upgrading, the previous version of the plugin is preserved, and a separate, fresh installation of the latest version is added.
 
-![versioned-plugins-3](assets/docs/enterprise/versioned-plugins/versioned-plugins-3.png)
+![versioned-plugins-3](/docs/enterprise/versioned-plugins/versioned-plugins-3.png)
 
 For a custom plugin, after clicking **+ Install**, switch from Official plugin to Custom plugin. You need to specify two identifiers for each custom plugin installation:
 
 - Group ID: The group identifier of the plugin to be installed.
 - Artifact ID: The artifact identifier of the plugin to be installed.
 
-![versioned-plugins-5](assets/docs/enterprise/versioned-plugins/versioned-plugins-4.png)
+![versioned-plugins-5](/docs/enterprise/versioned-plugins/versioned-plugins-4.png)
 
 Instead of installing a new plugin, you can **Upload** a plugin by choosing a valid Java archive file (`.jar`).
 
-![versioned-plugins-4](assets/docs/enterprise/versioned-plugins/versioned-plugins-5.png)
+![versioned-plugins-4](/docs/enterprise/versioned-plugins/versioned-plugins-5.png)
 
 ### From the API
 

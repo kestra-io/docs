@@ -1,6 +1,6 @@
 ---
 title: Connect Neon Database to Kestra
-icon: assets/docs/icons/neon.svg
+icon: /docs/icons/neon.svg
 stage: Intermediate
 topics:
   - Integrations
@@ -18,25 +18,25 @@ To get started, make sure you have a [Neon account](https://neon.tech/home) set 
 
 Once you've logged into Neon, you'll need to set up a project where you'll give it a name, select your desired PostgreSQL version, and select your cloud provider and region.
 
-![neon-1](assets/docs/how-to-guides/neon-db/neon-1.png)
+![neon-1](/docs/how-to-guides/neon-db/neon-1.png)
 
 Once your project is created, you'll arrive at the Project Dashboard page. From here, you can connect to your database, import data, get sample data, view database content, and much more.
 
-![neon-2](assets/docs/how-to-guides/neon-db/neon-2.png)
+![neon-2](/docs/how-to-guides/neon-db/neon-2.png)
 
 ## Connecting Neon to Kestra
 
 For our example, we want Kestra to supply the data, so you can select to connect to your database. We'll leave the Branch, Compute, Database, and Role as their defaults, but feel free to adjust as needed. Click on the **Connection string** dropdown list, and select Java. This is the connection string we will use in Kestra to connect to our Neon database. Make note of the password and save it for later steps.
 
-![neon-3](assets/docs/how-to-guides/neon-db/neon-3.png)
+![neon-3](/docs/how-to-guides/neon-db/neon-3.png)
 
 Now that we have a database set up in Neon, we need to create a table for our incoming data. Click on **Tables** on the left sidebar.
 
-![neon-4](assets/docs/how-to-guides/neon-db/neon-4.png)
+![neon-4](/docs/how-to-guides/neon-db/neon-4.png)
 
 Next, click on the '+' icon to add a table, name it, and create it. You can leave just the default `id` column or add in the columns of your data set now. We are going to use Kestra to alter the table, so we will leave the table empty for now.
 
-![neon-5](assets/docs/how-to-guides/neon-db/neon-5.png)
+![neon-5](/docs/how-to-guides/neon-db/neon-5.png)
 
 
 With the setup in Neon done, we can go Kestra to set up our connection. While there's no official Neon plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres), which supports a number of tasks such as `Query`, `CopyIn`, and `CopyOut`.
@@ -127,4 +127,4 @@ pluginDefaults:
 
 Once this flow completes, we can view the contents of our database in Neon:
 
-![neon-6](assets/docs/how-to-guides/neon-db/neon-6.png)
+![neon-6](/docs/how-to-guides/neon-db/neon-6.png)

@@ -1,6 +1,6 @@
 ---
 title: Deprecation of runner property in favor of taskRunner
-icon: assets/docs/icons/migration-guide.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.18.0
 ---
 

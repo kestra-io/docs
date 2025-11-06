@@ -1,6 +1,6 @@
 ---
 title: Tenants
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.13.0"
 docId: tenants
@@ -28,7 +28,7 @@ Data stored inside the internal storage is also separated by tenants.
 
 End-users can use the tenant selection dropdown menu from the [UI](../08.ui/index.md) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
 
-![Tenants selection dropdown](assets/docs/enterprise/tenants.png)
+![Tenants selection dropdown](/docs/enterprise/tenants.png)
 
 Most [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
 
@@ -51,10 +51,10 @@ Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terr
 ### Creating a Tenant from the UI
 
 Tenants can be created and managed directly through Kestra's user interface. Go to **Administration -> Tenants**. Then, click on the **Create** button:
-![create tenant from the UI](assets/docs/enterprise/tenant-create.png)
+![create tenant from the UI](/docs/enterprise/tenant-create.png)
 
 Fill in the form and click **Save**:
-![create tenant from the UI](assets/docs/enterprise/tenant-create-2.png)
+![create tenant from the UI](/docs/enterprise/tenant-create-2.png)
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
@@ -146,7 +146,7 @@ By default, each tenant uses the same [internal storage](../../configuration/ind
 
 To configure a dedicated storage and secrets backend per tenant, navigate to the respective tenant in the UI and click on the **Edit** button. Then, select the storage and secrets backend you want to use for that tenant:
 
-![tenants-dedicated-internal-storage](assets/docs/enterprise/tenants-dedicated-internal-storage.png)
+![tenants-dedicated-internal-storage](/docs/enterprise/tenants-dedicated-internal-storage.png)
 
 
 :::alert{type="warning"}

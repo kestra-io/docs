@@ -1,6 +1,6 @@
 ---
 title: Kestra EE API
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 

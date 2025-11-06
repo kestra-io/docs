@@ -1,6 +1,6 @@
 ---
 title: Conditional Branching
-icon: assets/docs/icons/tutorial.svg
+icon: /docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts

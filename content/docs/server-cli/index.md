@@ -1,6 +1,6 @@
 ---
 title: Kestra CLI
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["OSS","EE"]
 ---
 

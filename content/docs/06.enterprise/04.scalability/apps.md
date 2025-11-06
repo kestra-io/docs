@@ -1,6 +1,6 @@
 ---
 title: Apps
-icon: assets/docs/icons/admin.svg
+icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
 docId: apps
@@ -60,7 +60,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`. Like Flows, Apps also have different editor views. You can configure your App while simultaneously viewing documentation, previewing your App layout, or searching the App blueprint repository.
 
-![App Editor Views](assets/docs/enterprise/apps/app-editor-views.png)
+![App Editor Views](/docs/enterprise/apps/app-editor-views.png)
 
 ### App to run a Hello World flow
 
@@ -107,7 +107,7 @@ Then, add your app configuration to create a form that requests compute resource
 
 Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
 
-![Apps No Code](assets/docs/enterprise/apps/app-no-code.png)
+![Apps No Code](/docs/enterprise/apps/app-no-code.png)
 
 ---
 
@@ -115,7 +115,7 @@ Like flows, Apps can also be created using the no-code editor. Every element ava
 
 The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.
 
-![apps_catalog](assets/docs/enterprise/apps/apps_catalog.png)
+![apps_catalog](/docs/enterprise/apps/apps_catalog.png)
 
 Kestra provides a direct access URL to the Apps Catalog via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`. This URL can be accessed by any Kestra user who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
 

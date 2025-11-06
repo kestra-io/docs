@@ -1,6 +1,6 @@
 ---
 title: Interacting with JSONs in Kestra
-icon: assets/docs/icons/api.svg
+icon: /docs/icons/api.svg
 stage: Getting Started
 topics:
   - Integrations
@@ -127,4 +127,4 @@ The log message returns `My response: test`.
 
 You can use [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
 
-![debug_outputs](assets/docs/how-to-guides/json/json1.png)
+![debug_outputs](/docs/how-to-guides/json/json1.png)

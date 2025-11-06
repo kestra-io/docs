@@ -1,6 +1,6 @@
 ---
 title: Run Go inside of your Flows
-icon: assets/docs/icons/golang.svg
+icon: /docs/icons/golang.svg
 stage: Getting Started
 topics:
   - Scripting
@@ -124,7 +124,7 @@ tasks:
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![golang_outputs](assets/docs/how-to-guides/golang/outputs.png)
+![golang_outputs](/docs/how-to-guides/golang/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -212,4 +212,4 @@ tasks:
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](assets/docs/how-to-guides/golang/metrics.png)
+![metrics](/docs/how-to-guides/golang/metrics.png)

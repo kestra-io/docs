@@ -1,6 +1,6 @@
 ---
 title: Build a Custom Plugin for Kestra
-icon: assets/docs/icons/plugins.svg
+icon: /docs/icons/plugins.svg
 stage: Advanced
 topics:
   - Kestra Concepts
@@ -44,7 +44,7 @@ Here are the steps:
 
 Once you completed the steps above, you should see a similar directory structure:
 
-![Structure](assets/docs/plugin-developer-guide/plugins-architecture.png)
+![Structure](/docs/plugin-developer-guide/plugins-architecture.png)
 
 As you can see, there is one generated plugin: the `Example` class representing the `Example` plugin (a task).
 
@@ -426,6 +426,6 @@ tasks:
 
 On executing the flow, you can go to the `Outputs` tab, and check out the output.
 
-![custom_plugin_output](assets/docs/how-to-guides/build-custom-plugin/custom_plugin_output.png)
+![custom_plugin_output](/docs/how-to-guides/build-custom-plugin/custom_plugin_output.png)
 
 You are now all set to build more plugins and explore Kestra to its fullest!
