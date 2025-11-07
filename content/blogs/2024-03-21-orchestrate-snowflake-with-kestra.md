@@ -39,21 +39,21 @@ fetchType: FETCH
 ### Simplifying Data Movement
 
 - **Downloading from Snowflake**: The plugin makes it easier to transfer data from Snowflake to an internal Kestra stage, incorporating advanced features for data compression and role-based access control to enhance the downloading process.
-
+    
     Here is the snippet for downloading data:
-
+    
     ```yaml
     id: "download"
     type: "io.kestra.plugin.jdbc.snowflake.Download"
     stageName: MYSTAGE
     fileName: prefix/destFile.csv
-
+    
     ```
-
+    
 - **Uploading to Snowflake**: Similar to downloading, this functionality simplifies uploading data to Snowflake stages, with options for data compression and transformation that streamline the ETL process.
-
+    
     Here is the snippet for uploading data:
-
+    
     ```yaml
     yamlCopy code
     id: "upload"
@@ -61,9 +61,9 @@ fetchType: FETCH
     stageName: MYSTAGE
     prefix: testUploadStream
     fileName: destFile.csv
-
+    
     ```
-
+    
 
 ### Implementing Git Workflow for dbt with Snowflake
 

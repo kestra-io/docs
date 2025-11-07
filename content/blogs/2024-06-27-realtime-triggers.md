@@ -117,14 +117,14 @@ We will need a Cassandra cluster in which we will be putting in the product deta
 CREATE keyspace IF NOT EXISTS kestra WITH replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
 
 # Use the newly created keyspace
-USE kestra;
+USE kestra; 
 
 # Create the `products` table
 CREATE TABLE kestra.products (
    product_id int,
-   product_name text,
-   product_category text,
-   brand text,
+   product_name text, 
+   product_category text, 
+   brand text, 
    PRIMARY KEY (product_id));
 
 # Populate the `products` table from the csv

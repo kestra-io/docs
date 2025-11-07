@@ -3,7 +3,7 @@ title: "The Road from Kestra 0.1 to 1.0"
 description: We are getting closer to the 1.0 release, this is our journey
 date: 2025-09-04T13:00:00
 category: News & Product Updates
-author:
+author: 
  name: Ludovic Dehon
  image: ldehon
  role: CTO & Co-Founder
@@ -40,7 +40,7 @@ This is how Kestra turned declarative orchestration into something universal, us
 
 ## Open source as a foundation, not a tactic
 
-We chose **open source** from day one. Not as a marketing lever, but because orchestration is too critical to be a black box. The code should be inspectable. The community could report, contribute.
+We chose **open source** from day one. Not as a marketing lever, but because orchestration is too critical to be a black box. The code should be inspectable. The community could report, contribute. 
 
 By keeping Kestra open, we gave the community a lever to make Kestra better, and they did.
 
@@ -82,4 +82,4 @@ We are proud of where we landed. **Kestra 1.0** is ready. The release you’ll s
 
 If you’ve been with us since the early days, thank you for the issues you opened, the pull requests you sent, and the ideas you pushed us to test. If you’re just discovering Kestra now, welcome. You’ll find a platform that values clarity, reliability, and openness over lock‑in.
 
-The countdown is on. In 5 days, we’ll reveal what will **permanently redefine orchestration.**
+The countdown is on. In 5 days, we’ll reveal what will **permanently redefine orchestration.** 

@@ -54,8 +54,8 @@ What new data technologies such as DuckDB, Iceberg table format, SQLmesh or Mall
 What’s new is the developer experience.
 
 Back then we were dealing with hardly maintainable Python code, very long SQL queries, and complex infrastructure management. New tools try to carry off the burden of complexity by providing better abstractions, interfaces and onboarding. Long story short: they provide a better experience.
-
-Our ultimate goal is to model reality thanks to data; and take action on it.
+ 
+Our ultimate goal is to model reality thanks to data; and take action on it. 
 
 A good product is a good user experience. A good user experience is what makes us achieve what we want to do as we planned. To do so our data experience should enable a choreography of different assets and requirements:
 
@@ -63,7 +63,7 @@ A good product is a good user experience. A good user experience is what makes u
 * **Role Focus**: we should design an experience where everyone can do their job rather than asking them to be a data-engineer, devops wizard and an analyst at the same time.
 While acknowledging that data teams are melting pots of talents and skill sets, everyone should find its space for work. Not to learn another language or abstraction everytime there is a new need. You don't ask the violinist to play the trumpet.
 
-* **Data Trust**: we should have trust in our data: this comes from good observability and explicit status. Does my data land correctly this morning? Is my dashboard up to date? Where can I find the logs for this specific task?
+* **Data Trust**: we should have trust in our data: this comes from good observability and explicit status. Does my data land correctly this morning? Is my dashboard up to date? Where can I find the logs for this specific task? 
 These are typical questions that shouldn't demand hours of searching for answers. That should be as smooth as possible, like checking the weather on your phone.
 
 * **Logic Separation**: the experience of writing business logic should be decoupled from orchestration logic. While it’s mostly a human policy matter, our tools should make this as clear as possible and give us good guidelines.
@@ -77,13 +77,13 @@ Choreography here isn't a buzz-word. It's about having an ecosystem where tools 
 Reaching real data choreography will be a long journey and it wouldn't be only about tools.
 Still we can foresee a future where the data stack lands in a space where experience and simplicity make working with data something pleasant and seamlessly integrated within business and product processes.
 
-We think Kestra helps to achieve this vision.
+We think Kestra helps to achieve this vision. 
 
-[Kestra](https://github.com/kestra-io/kestra) is a declarative orchestration tool. Bringing declarative to the party isn’t just a trend: it's the realization that consistency and efficiency can't be done without a proper domain system language.
+[Kestra](https://github.com/kestra-io/kestra) is a declarative orchestration tool. Bringing declarative to the party isn’t just a trend: it's the realization that consistency and efficiency can't be done without a proper domain system language. 
 
-That’s why we created a rich user interface. In Kestra, every click, every drag, is translated to code at some point. It allows speed and great user experience.
+That’s why we created a rich user interface. In Kestra, every click, every drag, is translated to code at some point. It allows speed and great user experience. 
 
-Still it sometimes fails in automation and consistency. That’s why we integrate with CI/CD solutions and provide space for developers who like to craft their own way. Kestra is an API by design.
+Still it sometimes fails in automation and consistency. That’s why we integrate with CI/CD solutions and provide space for developers who like to craft their own way. Kestra is an API by design. 
 Our goal is not to create another tool to replace old ones. It’s to create a product that suits different needs of data practitioners and that can blend everywhere.
 
 Data is not software and the data experience needs evolution. We always have this consideration in mind when designing new features and improving Kestra. How will users put their flow in production? How will they build them locally? How will they test them? etc.
@@ -91,7 +91,7 @@ Data is not software and the data experience needs evolution. We always have thi
 We think this vision is the good starting point for reaching a real data experience. For achieving real data choreography.
 
 
-Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
 

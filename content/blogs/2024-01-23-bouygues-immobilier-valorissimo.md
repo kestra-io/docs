@@ -67,11 +67,11 @@ A critical aspect of Kestra’s functionality within Valorissimo’s data ecosys
 
 ## Going Further with Hanalytics
 
-Hanalytics' expertise in building a modern data stack, complemented by Kestra's advanced workflow automation has been pivotal for Valorissimo.
+Hanalytics' expertise in building a modern data stack, complemented by Kestra's advanced workflow automation has been pivotal for Valorissimo. 
 This integration of technologies like Airbyte, dbt Core, and Hightouch, managed by Kestra, ensures that Bouygues Immobilier remains a leader in a competitive market, driven by innovation and a deep understanding of the real estate ecosystem.
 
 We are proud to have such partners has [Hanalytics](https://www.data-hanalytics.io/) and we are looking forward to further enhance our collaboration with their amazing team!
 
----
+--- 
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

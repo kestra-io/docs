@@ -84,7 +84,7 @@ htmlTextContent: "{{outputs['ask-for-jokes'].predictions[0].candidates[0].conten
 
 The expression `{{outputs['ask-for-jokes'].predictions[0].candidates[0].content}}` will refer to the content of the first candidate of the first prediction. Predictions are the output of the ask-for-job task.
 
-If you want to test this example, you can use this Docker command to start a GreenMail test mail server:
+If you want to test this example, you can use this Docker command to start a GreenMail test mail server: 
 ```shell
 docker run -t -i -p 3025:3025 -p 3110:3110 -p 3143:3143 \
         -p 3465:3465 -p 3993:3993 -p 3995:3995 -p 8888:8080 \
@@ -157,11 +157,11 @@ tasks:
 
 ## Conclusion ##
 
-For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks.
+For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks. 
 
 Integrating humor with technology, as demonstrated in this guide with Bard's generative AI and Kestra, is an example of the interesting things that can be achieved. This is just a glimpse into the potential applications. Experiment with daily jokes is a fun exploration of what's possible. It's an invitation to think creatively and see how technology can be leveraged for different purposes, including brightening your day.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
 

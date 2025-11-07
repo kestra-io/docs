@@ -105,7 +105,7 @@ Here is a general feature comparison between dbt and SQLMesh:
 | Data audits | Yes | Yes |
 | Schema contracts | Yes | Yes |
 | Data contracts | No | Yes |
-| **Deployment** | | |
+| **Deployment** | | | 
 | Virtual Data Environments | No | Yes |
 | Open-source CI/CD bot | No | Yes |
 | Data consistency enforcement | No | Yes |
@@ -117,7 +117,7 @@ Here is a general feature comparison between dbt and SQLMesh:
 | Visualization | No | Yes |
 | Documentation generation | Yes | Yes |
 | Column-level lineage | Yes (Cloud) | Yes (OSS) |
-| **Miscellaneous** | | |
+| **Miscellaneous** | | | 
 | Package manager | Yes | No |
 | Multi-repository support | No | Yes |
 | SQL transpilation | No | Yes |

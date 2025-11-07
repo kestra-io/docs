@@ -9,7 +9,7 @@ topics:
 
 Access locally stored files on your machine inside Kestra workflows.
 
-In Kestra, you can access files stored on your local machine from within your flows.
+In Kestra, you can access files stored on your local machine from within your flows.  
 This is useful when you have a directory of files to process or scripts to execute without needing to copy them into Kestra.
 
 <div class="video-container">
@@ -20,7 +20,7 @@ This is useful when you have a directory of files to process or scripts to execu
 
 If you're running Kestra with [Docker](../02.installation/02.docker.md), you’ll need to create a bind mount to a local directory on your machine so that Kestra can access those files inside the container.
 
-In your [Docker Compose](../02.installation/03.docker-compose.md) file, add the absolute path of the local directory and define its mount point inside the container.
+In your [Docker Compose](../02.installation/03.docker-compose.md) file, add the absolute path of the local directory and define its mount point inside the container.  
 
 In this example, the local path `/Users/username/Documents/files` is mounted to `/files` inside the container using `- /Users/username/Documents/files:/files`.
 
@@ -45,7 +45,7 @@ You can now access any files or directories within `/Users/username/Documents/fi
 
 ## Accessing files inside Script tasks
 
-By default, a Script task runs inside a [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md).
+By default, a Script task runs inside a [Docker Task Runner](../task-runners/04.types/02.docker-task-runner.md).  
 To access local files, change the Task Runner type to [Process](../task-runners/04.types/01.process-task-runner.md), so it runs as a subprocess on your Kestra instance:
 
 ```yaml

@@ -1,6 +1,6 @@
 ---
 title: "Track Resource Usage from BigQuery with Kestra's Metric Dashboard"
-description: Get insight on the bytes processed by your queries on BigQuery to manage your costs.
+description: Get insight on the bytes processed by your queries on BigQuery to manage your costs. 
 date: 2023-05-30T12:00:00
 category: Solutions
 author:
@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-05-30-track-resource-usage-from-bigquery-with-kestra-metric-dashboard.jpg
 ---
 
-Data Warehouse solutions can sometimes become costly, especially with an uptick in data processing demand. Cloud-based data warehouses like Google BigQuery offer significant advantages in terms of scalability and performance. Yet, with great scalability comes great responsibility, managing your resources usage effectively.
+Data Warehouse solutions can sometimes become costly, especially with an uptick in data processing demand. Cloud-based data warehouses like Google BigQuery offer significant advantages in terms of scalability and performance. Yet, with great scalability comes great responsibility, managing your resources usage effectively. 
 
 ## Track BigQuery usage ##
 
@@ -26,8 +26,8 @@ tasks:
   - id: query
     type: io.kestra.plugin.gcp.bigquery.Query
     sql: |
-      SELECT
-        SUM(price) as sum_price
+      SELECT 
+        SUM(price) as sum_price 
       FROM sales.event_partitioned
       WHERE date = '{{ trigger.date }}'
 
@@ -70,5 +70,5 @@ In future releases we will add [proper SLA capabilities](https://github.com/kest
 For a deeper exploration of the potential applications of the Metric Dashboard you can learn more with our [documentation](https://kestra.io/docs/developer-guide/outputs).
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

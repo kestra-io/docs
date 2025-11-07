@@ -46,7 +46,7 @@ One killer use case is adding critical observability to your company’s use of 
 Another use case for any kind of programmer is improving your help or documentation search results. You can easily replace lexical search with semantic search just by adding a VDB of your documents broken down into manageable chunks, and links to the original docs. No LLMs or massive GPUs needed.
 
 
-### What is a vector?
+### What is a vector? 
 
 Vectors are lists of values, usually doubles or floats. They are encoded forms of text or images, video, and audio usually, but in fact, vectors can represent any complex data that you have an encoder for.**
 
@@ -55,7 +55,7 @@ For the rest of the article examples, the vectors I will be referring to are cre
 
 ---
 
-### Search algorithms and indexes
+### Search algorithms and indexes 
 
 Let’s use the previous example to help understand how search works in VDBs. Consider a corpus of help documents. One of the sections in the document explains how to enable and disable a workflow. Your customers or users, come from all over the world and will probably express their query with a set of related terms. With lexical search, the user must use “enable” or “disable”, and “workflow” to retrieve a result. If the user writes, “How do I start a workflow?” they get nothing, or they get unrelated results. That’s friction; I hate friction.
 
@@ -98,7 +98,7 @@ What really matters is how well a particular VDB handles your use cases.
 
 ---
 
-## Comparing VDB metrics and benchmarks
+## Comparing VDB metrics and benchmarks 
 
 This is where the rubber meets the vector database road. The solution to the search problem is what separates the leaders from the hackers.
 
@@ -349,7 +349,7 @@ SentenceTransformers provides models that allow us to embed images and text into
 
 ---
 
-## Vector/database use cases
+## Vector/database use cases 
 
 **Natural Language Processing (NLP):**
 

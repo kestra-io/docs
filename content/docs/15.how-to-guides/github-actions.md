@@ -80,7 +80,7 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v4
-
+      
       - name: Deploy flows
         uses: kestra-io/deploy-action@master
         with:
@@ -108,7 +108,7 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v4
-
+      
       - name: Deploy flows
         uses: kestra-io/deploy-action@master
         with:
@@ -137,7 +137,7 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v4
-
+      
       - name: Deploy flows
         uses: kestra-io/deploy-action@master
         with:
@@ -160,7 +160,7 @@ The goal of this ruleset is to protect the `main` branch as our GitHub Action wi
 
 ![ruleset](/docs/how-to-guides/github-actions/ruleset.png)
 
-With these enabled, we are required to make a Pull Request before our flows end up in production. This enables us to run our validate check and require that to pass before we can merge any pull requests.
+With these enabled, we are required to make a Pull Request before our flows end up in production. This enables us to run our validate check and require that to pass before we can merge any pull requests. 
 
 ![pr](/docs/how-to-guides/github-actions/pr.png)
 

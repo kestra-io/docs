@@ -62,7 +62,7 @@ inputs:
         - Allows non-developers to automate tasks with a no-code interface
         - Keeps everything versioned and governed, so it stays secure and auditable
         - Extends easily for custom use cases through plugins and custom scripts.
-        Kestra follows a "start simple and grow as needed" philosophy. You can schedule a basic workflow in a few minutes, then later add Python scripts, Docker containers, or complicated branching logic if the situation calls for it.
+        Kestra follows a "start simple and grow as needed" philosophy. You can schedule a basic workflow in a few minutes, then later add Python scripts, Docker containers, or complicated branching logic if the situation calls for it. 
 tasks:
   - id: multilingual_agent
     type: io.kestra.plugin.ai.agent.AIAgent
@@ -92,7 +92,7 @@ pluginDefaults:
           configuration:
             logRequests: true
             logResponses: true
-            responseFormat:
+            responseFormat: 
               type: TEXT
 ```
 

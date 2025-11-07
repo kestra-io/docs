@@ -43,10 +43,10 @@ kubectl create configmap dind-daemon-config \
 -n kestra
 ```
 
-2. Create a ConfigMap for the MITM Proxy CA certificate.
+2. Create a ConfigMap for the MITM Proxy CA certificate.  
 
 Assuming you have the CA file saved as `mitmproxy-ca.crt`, run:
-
+    
 ```bash
 kubectl create configmap dind-ca-certs \
 --from-file=ca.crt=./mitmproxy-ca.crt \
@@ -58,14 +58,14 @@ kubectl create configmap dind-ca-certs \
 Here is a configuration sample you can include in your Helm `values.yaml`:
 
 ```yaml
-configuration:
+configuration: 
   kestra:
     plugins:
       configurations:
         - type:  io.kestra.plugin.scripts.runner.docker.Docker
           values:
             volume-enabled: true
-extraVolumes:
+extraVolumes: 
   - name: docker-daemon-config
     configMap:
       name: dind-daemon-config
@@ -98,7 +98,7 @@ dind:
       mountPath: /home/rootless/mitmproxy
       readOnly: true
   extraEnv:
-    - name: SSL_CERT_FILE
+    - name: SSL_CERT_FILE 
       value: /home/rootless/mitmproxy/ca.crt
 ```
 
@@ -108,7 +108,7 @@ Here, `volume-enabled: true` ensures that the CA certificate is mounted from the
 
 The configuration will help the DinD Pod pull the required Container Images successfully through the MITM Proxy.
 
-For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
+For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.  
 For consistency across tasks, consider configuring these settings as plugin defaults.
 
 ```yaml
@@ -120,15 +120,15 @@ tasks:
     containerImage: alpine/curl
     beforeCommands:
       - apk add --no-cache ca-certificates
-      - update-ca-certificates
-    taskRunner:
+      - update-ca-certificates  
+    taskRunner: 
       type: io.kestra.plugin.scripts.runner.docker.Docker
       volumes:
         - /home/rootless/mitmproxy/ca.crt:/usr/local/share/ca-certificates/mitmproxy.crt
     env:
       HTTPS_PROXY: "mitmproxy.default.svc.cluster.local:8000"
     script: |
-      curl https://httpbin.org/get
+      curl https://httpbin.org/get 
 ```
 
 ##  How it Works

@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-10-25-code-in-any-language.jpg
 ---
 
-There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration.
+There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration. 
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=7BHcOIvSgxELwh33" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -21,11 +21,11 @@ In this post, we'll look at the different ways that you can run your code inside
 
 ## Why use different languages?
 
-While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python.
+While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. 
 
 Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic, as operating faster is more important than performance. Kestra makes this easy by allowing you to use any programming language interchangeably.
 
-Inside Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks.
+Inside Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
 
 This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute. Also, this works for languages without dedicated plugins too with a few extra lines of YAML.
 
@@ -68,7 +68,7 @@ tasks:
 
 And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.md) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
 
-Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` .
+Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` . 
 
 In this case, we’re using the `pydata` image which comes with a few useful libraries like `pandas` bundled in. When we run this example, it pulls the docker image and then starts to run our code without issue as the dependencies we need are baked into the image:
 
@@ -173,7 +173,7 @@ Both the `Script` and `Commands` tasks have their benefits allowing you to decid
 
 ## Write code in a separate file with the Shell task
 
-While not all languages have dedicated plugins, it’s still simple to use other languages and integrate them into your workflows.
+While not all languages have dedicated plugins, it’s still simple to use other languages and integrate them into your workflows. 
 
 For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the Python example using the `pydata` image with bundled in dependencies. Lastly, we can run any setup or compile commands prior to running our code.
 
@@ -198,7 +198,7 @@ tasks:
 
 ## Write code inline with the Shell task
 
-We can still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task.
+We can still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. 
 
 Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same commands as if the file was a namespace file, but because this isn't a namespace file, we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
 
@@ -255,7 +255,7 @@ tasks:
                 char *token = strtok(line, ",");
                 int i = 0;
                 double total = 0.0;
-
+                
                 while (token) {
                     if (i == 6) {
                         total = atof(token);

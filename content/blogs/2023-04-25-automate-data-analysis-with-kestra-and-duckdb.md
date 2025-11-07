@@ -1,6 +1,6 @@
 ---
 title: "Automate Data Analysis With Kestra and DuckDB"
-description: Use Kestra and DuckDB to extract, process, and organize tech job salary data for better insights.
+description: Use Kestra and DuckDB to extract, process, and organize tech job salary data for better insights. 
 date: 2023-04-25T18:00:00
 category: Solutions
 author:
@@ -29,7 +29,7 @@ tasks:
     inputFiles:
       data.csv:  "{{  outputs.download_csv.uri  }}"
     sql:  |
-      SELECT
+      SELECT 
         job_title,
         ROUND(AVG(salary),2)  AS  avg_salary
       FROM  read_csv_auto('{{workingDir}}/data.csv',  header=True)
@@ -55,7 +55,7 @@ Creating a flow in Kestra to execute this task becomes a straightforward process
     inputFiles:
       data.csv:  "{{  outputs.download_csv.uri  }}"
     sql:  |
-      SELECT
+      SELECT 
         job_title,
         ROUND(AVG(salary),2)  AS  avg_salary
       FROM  read_csv_auto('{{workingDir}}/data.csv',  header=True)

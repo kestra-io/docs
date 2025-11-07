@@ -123,7 +123,7 @@ The catalog page requires authentication, so the Apps Catalog is never publicly 
 
 
 ```yaml
-access:
+access: 
   catalog: true
   type: PRIVATE
   groups:

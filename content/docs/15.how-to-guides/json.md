@@ -1,5 +1,5 @@
 ---
-title: Interacting with JSONs in Kestra
+title: Interacting with JSONs in Kestra 
 icon: /docs/icons/api.svg
 stage: Getting Started
 topics:

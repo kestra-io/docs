@@ -1,7 +1,7 @@
 ---
 title: Revision History & Rollback
 icon: /docs/icons/tutorial.svg
-stage: Getting Started
+stage: Getting Started 
 topics:
   - Kestra Concepts
   - Version Control

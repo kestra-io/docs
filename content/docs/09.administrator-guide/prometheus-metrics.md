@@ -7,7 +7,7 @@ This page provides an overview of all available Prometheus metrics in Kestra.
 
 ## Overview
 
-Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](./open-telemetry.md), which must be explicitly enabled in the configuration file.
+Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](./open-telemetry.md), which must be explicitly enabled in the configuration file. 
 
 Each Prometheus metric is described with its purpose and the type of data it represents. You can access these metrics via the `http://localhost:8081/prometheus` endpoint in Kestra.
 

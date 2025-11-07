@@ -24,7 +24,7 @@ Kestra is open source meaning anyone can run it on their machine for free. To ge
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /tmp:/tmp kestra/kestra:latest server local
+  -v /tmp:/tmp kestra/kestra:latest server local 
 ```
 
 Once you’ve run this command, head over to your browser and open [https://localhost:8080](https://localhost:8080) to launch the interface so we can start building workflows!
@@ -62,7 +62,7 @@ While that might be a lot of properties to get your head around, the Kestra plat
 
 ## Building our First Flow
 
-For our first flow, we're going to set up a simple automation that runs a Python script once every hour and sends its output to Discord as a notification. Let's start with the Python part. Firstly, we need a Python file for Kestra to execute! We’ll use something really simple that generates an output from an API request.
+For our first flow, we're going to set up a simple automation that runs a Python script once every hour and sends its output to Discord as a notification. Let's start with the Python part. Firstly, we need a Python file for Kestra to execute! We’ll use something really simple that generates an output from an API request. 
 
 ```python
 import requests
@@ -147,15 +147,15 @@ Your new task should look like the following which will get out new output and p
 
 ## Adding a Notification
 
-Now we can take this one step further and send this output to a messaging app to notify us more easily on the number of stars, rather than digging through logs to find out the final value. For this example, we’ll use Discord but this will work with any of the Plugins in the Notifications group.
+Now we can take this one step further and send this output to a messaging app to notify us more easily on the number of stars, rather than digging through logs to find out the final value. For this example, we’ll use Discord but this will work with any of the Plugins in the Notifications group. 
 
-For this example, we can use the UI to build it rather than YAML as they’ll be a lot more customisable fields. When we edit our flow, we can open a view that shows YAML on one side, and the topology view on the other giving you the best of both worlds. Underneath the `python_output` task, we can press the ➕ to add a new task and search for Discord.
+For this example, we can use the UI to build it rather than YAML as they’ll be a lot more customisable fields. When we edit our flow, we can open a view that shows YAML on one side, and the topology view on the other giving you the best of both worlds. Underneath the `python_output` task, we can press the ➕ to add a new task and search for Discord. 
 
 We’re going to use the `DiscordExecution` task as this lets us push a message to a webhook which will send a message to a channel. The other is useful if you want your flow to trigger based on an action inside of Discord. Now we’ve opened the `DiscordExecution` page, we’re presented with a long list of properties which can be overwhelming but we can focus on the required ones for now.
 
 ![discord_ui](/blogs/2024-04-05-getting-started-with-kestra/discord_ui.png)
 
-For our Discord message, we’ll need to give this task an `id` , as well as a Webhook URL which we can get from Discord. While nothing else is required, there’s plenty of customisation to make the message feel more polished and clearer such as adding a title and avatar. For this example, we’ll call the task `send_notification` and change the username to be *Kestra*. We can also add an Avatar by using the URL of the GitHub Organisation profile picture.
+For our Discord message, we’ll need to give this task an `id` , as well as a Webhook URL which we can get from Discord. While nothing else is required, there’s plenty of customisation to make the message feel more polished and clearer such as adding a title and avatar. For this example, we’ll call the task `send_notification` and change the username to be *Kestra*. We can also add an Avatar by using the URL of the GitHub Organisation profile picture. 
 
 Instead of hard coding this straight into the `avatarUrl` box, we can create an **input** to allow us to reuse this later on in case we send notifications to multiple platforms for example. Our input should look like the example below which we can put above the tasks in our flow, similar to what you would do with constants in Python.
 
@@ -166,7 +166,7 @@ inputs:
     defaults: https://avatars.githubusercontent.com/u/59033362?v=4
 ```
 
-While we’re creating inputs, we can also make our Webhook URL an input in case we want to reuse it too. Discord has a [great guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) on how to generate the Webhook URL for a specific channel so all the messages are sent there.
+While we’re creating inputs, we can also make our Webhook URL an input in case we want to reuse it too. Discord has a [great guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) on how to generate the Webhook URL for a specific channel so all the messages are sent there. 
 
 All we need to do is Edit a channel, head to Integrations and we’ll see an option for creating a Webhook. The details of the Webhook aren’t important as our flow will set these instead but we can simply call it Kestra to remind us what it's used for and press save. Once we’ve done that, we can copy the Webhook URL ready to paste into Kestra.
 
@@ -246,9 +246,9 @@ Our Python script is executed once the virtual environment is created and the de
 
 ## Setting up a Trigger
 
-Now that we have everything running, there’s one last step we need to complete this workflow: set up a trigger to execute our flow automatically! As mentioned earlier, you can set flows to execute based on an event, such as a schedule or webhook. For our example, we’re going to use a schedule to run it once every hour.
+Now that we have everything running, there’s one last step we need to complete this workflow: set up a trigger to execute our flow automatically! As mentioned earlier, you can set flows to execute based on an event, such as a schedule or webhook. For our example, we’re going to use a schedule to run it once every hour. 
 
-To start with, we can use the `triggers` keyword underneath our tasks to specify our schedule. Similar to tasks, each trigger has an `id` and a `type`. With this in mind, we can call our trigger `hour_trigger` and we will want the `Schedule` type. For the `Schedule` type, we will also need to fill in a `cron` property so it knows what schedule to use.
+To start with, we can use the `triggers` keyword underneath our tasks to specify our schedule. Similar to tasks, each trigger has an `id` and a `type`. With this in mind, we can call our trigger `hour_trigger` and we will want the `Schedule` type. For the `Schedule` type, we will also need to fill in a `cron` property so it knows what schedule to use. 
 
 We can use [crontab.guru](https://crontab.guru) to help us figure out what the correct cron schedule expression would be to run once every hour. This tool is super helpful in visualising what the different expressions mean, as well as with a handy glossary to understand the syntax!
 
@@ -314,6 +314,6 @@ triggers:
 
 ## What’s Next
 
-Did you find this useful for getting started with Kestra? Let us know via [Slack](https://kestra.io/slack)!
+Did you find this useful for getting started with Kestra? Let us know via [Slack](https://kestra.io/slack)! 
 
 If you want to learn more about Kestra, check out our [documentation](https://kestra.io/docs) or [request a demo](https://kestra.io/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).

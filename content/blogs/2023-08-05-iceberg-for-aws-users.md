@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-08-05-iceberg-for-aws-users.png
 ---
 
-This crash course will guide you on how to get started with [Apache Iceberg](https://iceberg.apache.org/) on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, insert and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.
+This crash course will guide you on how to get started with [Apache Iceberg](https://iceberg.apache.org/) on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, insert and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.  
 
 
 ## What is Iceberg
@@ -20,11 +20,11 @@ It still may sound too abstract, so let’s see it in action.
 
 ## Iceberg demo with Amazon Athena and S3 from the AWS console
 
-To follow along with this demo, you need an AWS account. We'll be using Amazon Athena, Amazon S3, and the AWS Glue catalog.
+To follow along with this demo, you need an AWS account. We'll be using Amazon Athena, Amazon S3, and the AWS Glue catalog. 
 
 If you don't have an S3 bucket yet, you can create one following [this AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html).
 
-Then, go to the Athena console and click "Edit Settings" to configure your query result location. This is required by Athena to e.g. cache query results. You can use the same bucket you created earlier as a location for query results.
+Then, go to the Athena console and click "Edit Settings" to configure your query result location. This is required by Athena to e.g. cache query results. You can use the same bucket you created earlier as a location for query results. 
 
 To keep things simple, choose the same AWS region for both Athena and your S3 bucket.
 
@@ -47,7 +47,7 @@ LOCATION 's3://kestraio/fruits/' -- adjust to your S3 bucket name
 TBLPROPERTIES ('table_type'='ICEBERG');
 ```
 
-Let's explain what the query does. First, we define the columns and their data types. The `berry` column is a `boolean` property that we'll use for partitioning. It will divide the data into two partitions: `berry=true` and `berry=false`.
+Let's explain what the query does. First, we define the columns and their data types. The `berry` column is a `boolean` property that we'll use for partitioning. It will divide the data into two partitions: `berry=true` and `berry=false`. 
 
 The `LOCATION` keyword determines where Iceberg will store `data` and `metadata` files:
 - **Data** files contain the actual data stored in a `parquet` format
@@ -65,12 +65,12 @@ After executing this query, you should see a new Iceberg table called `fruits` i
 So far, we've created an empty table. Let's insert some data into it.
 
 ```sql
-INSERT INTO fruits (id, fruit, berry)
-    VALUES (1,'Apple', false),
-           (2, 'Banana', false),
-           (3, 'Orange', false),
-           (4, 'Blueberry', true),
-           (5, 'Raspberry', true),
+INSERT INTO fruits (id, fruit, berry) 
+    VALUES (1,'Apple', false), 
+           (2, 'Banana', false), 
+           (3, 'Orange', false), 
+           (4, 'Blueberry', true), 
+           (5, 'Raspberry', true), 
            (6, 'Pear', false);
 ```
 
@@ -79,18 +79,18 @@ INSERT INTO fruits (id, fruit, berry)
 Let's add a couple of new rows in a separate SQL statement to demonstrate later how Iceberg handles transactions and file partitioning.
 
 ```sql
-INSERT INTO fruits (id, fruit, berry)
-    VALUES (7,'Mango', false),
-           (8, 'Strawberry', true),
-           (9, 'Kiwi', false),
+INSERT INTO fruits (id, fruit, berry) 
+    VALUES (7,'Mango', false), 
+           (8, 'Strawberry', true), 
+           (9, 'Kiwi', false), 
            (10, 'Cranberry', true);
 ```
 
 Finally, let's inspect the data we've just inserted.
 
 ```sql
-SELECT *
-FROM fruits
+SELECT * 
+FROM fruits 
 ORDER BY berry;
 ```
 
@@ -100,11 +100,11 @@ You should see the following results:
 
 Marvellous! We were able to _just_ insert rows to files in a data lake as if we were using a regular relational database. This is the power of Iceberg — it brings transactions to the data lake.
 
-### Modify rows using ``UPDATE`` and ``DELETE``
+### Modify rows using ``UPDATE`` and ``DELETE`` 
 
 Similarly to how Iceberg allowed us to perform row-level inserts, we can also modify data in the table using `UPDATE` and `DELETE` SQL statements.
 
-Let's imagine that, [as Erik](https://twitter.com/bernhardsson/status/1685636090365968384?t=kcOfZyJ1XPhfKBRVbuXfpg&s=19), you grew up eating Bilberries, thinking that those are just regular Blueberries.
+Let's imagine that, [as Erik](https://twitter.com/bernhardsson/status/1685636090365968384?t=kcOfZyJ1XPhfKBRVbuXfpg&s=19), you grew up eating Bilberries, thinking that those are just regular Blueberries. 
 
 ![iceberg4](/blogs/2023-08-05-iceberg-for-aws-users/iceberg4.png)
 
@@ -112,23 +112,23 @@ Let's imagine that, [as Erik](https://twitter.com/bernhardsson/status/1685636090
 Let's correct that in our data:
 
 ```sql
-UPDATE fruits
-SET fruit = 'Bilberry'
+UPDATE fruits 
+SET fruit = 'Bilberry' 
 WHERE fruit = 'Blueberry';
 ```
 
 Let’s also remove the banana to avoid debates about whether a banana is actually a berry or not.
 
 ```sql
-DELETE FROM fruits
+DELETE FROM fruits 
 WHERE fruit = 'Banana';
 ```
 
 Let's validate what we have so far in the table:
 
 ```sql
-SELECT *
-FROM fruits
+SELECT * 
+FROM fruits 
 ORDER BY berry;
 ```
 
@@ -138,11 +138,11 @@ Excellent! We've just updated and deleted rows in our data lake as if it were a 
 
 ### Iceberg metadata
 
-First, let's look at files that are stored in our S3 bucket. You can explore them in the AWS console or using the AWS CLI.
+First, let's look at files that are stored in our S3 bucket. You can explore them in the AWS console or using the AWS CLI. 
 
 ```bash
 aws s3 ls s3://yourbucket/fruits/ --recursive --summarize --human-readable
-```
+``` 
 
 You should see 28 files structured in the following way:
 
@@ -150,7 +150,7 @@ You should see 28 files structured in the following way:
 
 The `data` folder contains `parquet` files with the actual data, and the `metadata` folder contains Iceberg-internal metadata information.
 
-Note that as an end-user, you shouldn't have to worry about the storage layer. Those files are managed by Iceberg. Instead, you can use dedicated metadata properties that Iceberg exposes on each table, as shown in the code block below. This allows you to inspect the table's history, partitions, snapshots, files on S3, and more — you can query all that metadata in plain SQL.
+Note that as an end-user, you shouldn't have to worry about the storage layer. Those files are managed by Iceberg. Instead, you can use dedicated metadata properties that Iceberg exposes on each table, as shown in the code block below. This allows you to inspect the table's history, partitions, snapshots, files on S3, and more — you can query all that metadata in plain SQL. 
 
 ```sql
 SELECT * FROM "fruits$files";
@@ -164,14 +164,14 @@ SELECT * FROM "fruits$refs";
 Let's look at the table history:
 
 ```sql
-SELECT *
+SELECT * 
 FROM "fruits$history";
 ```
 
 You should see four rows, which reflect two INSERTS, one UPDATE and one DELETE operations that we have executed so far. The ``fruits$snapshots`` provides a summary of each operation (*showing which files or partitions have been added, modified or deleted*), as you can see in the image below:
 
 ```sql
-SELECT snapshot_id, summary
+SELECT snapshot_id, summary 
 FROM "fruits$snapshots";
 ```
 
@@ -180,8 +180,8 @@ FROM "fruits$snapshots";
 Let's copy that snapshot ID and inspect the table as of the time when that snapshot was taken:
 
 ```sql
-SELECT *
-FROM fruits
+SELECT * 
+FROM fruits 
 FOR VERSION AS OF 4739764842480661991;
 ```
 
@@ -197,9 +197,9 @@ Apart from inspecting a specific table's snapshot version, you can also query th
 Let’s see what berries existed in our data 5 minutes ago:
 
 ```sql
-SELECT *
-FROM fruits
-FOR TIMESTAMP AS OF (current_timestamp - interval '5' minute)
+SELECT * 
+FROM fruits 
+FOR TIMESTAMP AS OF (current_timestamp - interval '5' minute) 
 WHERE berry = true;
 ```
 
@@ -209,9 +209,9 @@ Back then, we were still under the illusion that we grew up eating Blueberries, 
 
 ### Bulk data ingestion
 
-So far, we've been inserting data into our table row by row. However, data lakes are typically used for big data processed via batch or streaming jobs.
+So far, we've been inserting data into our table row by row. However, data lakes are typically used for big data processed via batch or streaming jobs. 
 
-There are two common patterns of ingesting data to existing Iceberg tables: inserts and upserts. Both of them require loading data into a different (temporary) table before being ingested to the final destination via a separate query.
+There are two common patterns of ingesting data to existing Iceberg tables: inserts and upserts. Both of them require loading data into a different (temporary) table before being ingested to the final destination via a separate query. 
 
 Let's ingest new rows from a file into a temporary table. We'll use `pandas` and ``awswrangler`` libraries to read data from a CSV file into a dataframe. Then, we'll insert that dataframe into a temporary table called `raw_fruits`:
 
@@ -250,13 +250,13 @@ pip install awswrangler
 We can validate that the table was successfully created by running the following query:
 
 ```sql
-SELECT *
+SELECT * 
 FROM raw_fruits;
 ```
 
 ![iceberg10](/blogs/2023-08-05-iceberg-for-aws-users/iceberg10.png)
 
-The data looks good. Alas, the banana strikes back! 🥊🍌 We'll take care of that when building an end-to-end data pipeline in the final section.
+The data looks good. Alas, the banana strikes back! 🥊🍌 We'll take care of that when building an end-to-end data pipeline in the final section.  
 
 ### Inserts and upserts in Iceberg
 
@@ -281,8 +281,8 @@ MERGE INTO fruits f USING raw_fruits r
 Let's inspect all fruits that start with B (to check on our beloved Bilberry, Blueberry and Banana):
 
 ```sql
-SELECT *
-FROM fruits
+SELECT * 
+FROM fruits 
 WHERE fruit LIKE 'B%';
 ```
 
@@ -293,7 +293,7 @@ This looks great! We inserted new data and ensured that no Blueberries or Banana
 Let's look at the files generated so far by Iceberg:
 
 ```sql
-SELECT *
+SELECT * 
 FROM "fruits$files";
 ```
 
@@ -304,7 +304,7 @@ That's quite a lot of files for such a small dataset. Luckily, Iceberg provides 
 
 ### Time for some Iceberg magic: ``OPTIMIZE`` 🪄
 
-The common challenge in managing data lakes is the ["Small Files Problem"](https://www.acceldata.io/blog/managing-small-files-in-data-lake), where a large number of small files leads to wasted storage, slower reads and longer processing times. Iceberg provides a simple solution to that problem — the `OPTIMIZE` operation.
+The common challenge in managing data lakes is the ["Small Files Problem"](https://www.acceldata.io/blog/managing-small-files-in-data-lake), where a large number of small files leads to wasted storage, slower reads and longer processing times. Iceberg provides a simple solution to that problem — the `OPTIMIZE` operation. 
 
 The `OPTIMIZE table REWRITE DATA` is a SQL statement in Amazon Athena that, under the hood, uses Iceberg stored procedures to consolidate small files into bigger files optimized for analytics. The command shown below will automatically rewrite data stored in S3 based on their size, partitioning schema and the number of associated delete files. Magic! 🪄
 
@@ -315,18 +315,18 @@ OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
 Let's look at the files again:
 
 ```sql
-SELECT record_count, file_path
+SELECT record_count, file_path 
 FROM "fruits$files";
 ```
 
 ![iceberg12a](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12a.png)
 
-Iceberg automatically clustered all ``berries`` and ``non-berries`` together into separate files based on the partitioning scheme we provided when creating the table.
+Iceberg automatically clustered all ``berries`` and ``non-berries`` together into separate files based on the partitioning scheme we provided when creating the table. 
 
-###  Iceberg magic part 2: ``VACUUM`` 🪄
+###  Iceberg magic part 2: ``VACUUM`` 🪄 
 
-Iceberg provides even more useful operations for data management. The `VACUUM` statement will do the following:
-- [expire snapshots](https://iceberg.apache.org/docs/latest/spark-procedures/#expire_snapshots) i.e. the files that exceeded the retention period specified for the table
+Iceberg provides even more useful operations for data management. The `VACUUM` statement will do the following: 
+- [expire snapshots](https://iceberg.apache.org/docs/latest/spark-procedures/#expire_snapshots) i.e. the files that exceeded the retention period specified for the table 
 - [remove orphan files](https://iceberg.apache.org/docs/latest/spark-procedures/#remove_orphan_files) i.e. files no longer referenced in any metadata files.
 
 
@@ -443,7 +443,7 @@ tasks:
     secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
     region: "{{ secret('AWS_DEFAULT_REGION') }}"
     bucket: "{{vars.bucket}}"
-
+  
   - id: check
     type: io.kestra.plugin.core.flow.If
     condition: "{{outputs.listObjects.objects}}"
@@ -528,7 +528,7 @@ tasks:
         secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
         region: "{{ secret('AWS_DEFAULT_REGION') }}"
         commands:
-          - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive
+          - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive      
 
 triggers:
   - id: hourlySchedule
@@ -618,7 +618,7 @@ tasks:
       secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
       region: "{{ secret('AWS_DEFAULT_REGION') }}"
       commands:
-        - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive
+        - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive      
 
 triggers:
   - id: hourlySchedule
@@ -632,14 +632,14 @@ Executing this workflow should give you the following output:
 
 ![iceberg12c](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12c.png)
 
-This scheduled workflow is simple to understand and easy to run locally. However, in certain circumstances, it might be inefficient. External systems are often unpredictable, making it difficult to figure out the optimal batch pipeline frequency. The flow shown above will run every hour, even if there are no new files in S3 for days or weeks. In such scenarios, event triggers and a decoupled approach to pipelines become incredibly useful.
+This scheduled workflow is simple to understand and easy to run locally. However, in certain circumstances, it might be inefficient. External systems are often unpredictable, making it difficult to figure out the optimal batch pipeline frequency. The flow shown above will run every hour, even if there are no new files in S3 for days or weeks. In such scenarios, event triggers and a decoupled approach to pipelines become incredibly useful. 
 
 
 ### Event-driven data pipeline
 
-Kestra makes it easy to switch between scheduled and event-driven workflows simply by adjusting the trigger configuration.
+Kestra makes it easy to switch between scheduled and event-driven workflows simply by adjusting the trigger configuration. 
 
-The flow code below uses [the same Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) we used for a scheduled workflow. The only difference is that, when calling the script, we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before.
+The flow code below uses [the same Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) we used for a scheduled workflow. The only difference is that, when calling the script, we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before. 
 
 You can see here a significant advantage of Kestra: a separation of concerns between orchestration and business logic. You don't have to modify your code in any way - Kestra can orchestrate your custom code written in any language with no modifications.
 
@@ -698,7 +698,7 @@ tasks:
     database: "{{vars.database}}"
     outputLocation: "s3://{{vars.bucket}}/query_results/"
     query: |
-      OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
+      OPTIMIZE fruits REWRITE DATA USING BIN_PACK;       
 
 triggers:
   - id: waitForNewS3objects
@@ -716,11 +716,11 @@ triggers:
     secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
 ```
 
-The trigger polls the S3 location, indicated by `prefix`, for new files every second. The flow gets executed as soon as a new S3 key is detected.
+The trigger polls the S3 location, indicated by `prefix`, for new files every second. The flow gets executed as soon as a new S3 key is detected. 
 
 ![iceberg13](/blogs/2023-08-05-iceberg-for-aws-users/iceberg13.png)
 
-The processed file is moved to the `archive` directory to avoid the flow being triggered multiple times for the same file. The `maxKeys` property is particularly helpful in our use case as it allows us to process each incoming file sequentially as if you were using [a FIFO queue](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)).
+The processed file is moved to the `archive` directory to avoid the flow being triggered multiple times for the same file. The `maxKeys` property is particularly helpful in our use case as it allows us to process each incoming file sequentially as if you were using [a FIFO queue](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)). 
 
 See the screenshots below which demonstrate how the flow was triggered for each new S3 object with the `inbox` prefix.
 
@@ -736,6 +736,6 @@ All Kestra workflows covered in this post are available as [Blueprints](../docs/
 
 ## Next steps
 
-This tutorial demonstrated how to use Apache Iceberg with Amazon Athena, AWS Glue and Amazon S3, and how to manage a scheduled and event-driven data ingestion process with Kestra.
+This tutorial demonstrated how to use Apache Iceberg with Amazon Athena, AWS Glue and Amazon S3, and how to manage a scheduled and event-driven data ingestion process with Kestra. 
 
-If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra). 

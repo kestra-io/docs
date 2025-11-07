@@ -19,7 +19,7 @@ This is what we are going to talk about in this blog post and how we need tools 
 
 ![datamesh](/blogs/2023-12-19-enabling-business-in-it/datamesh.png)
 
-The concept of a data mesh has made significant inroads into how we handle and disseminate information within organizations. It champions the idea of decentralized data ownership, where domain-specific teams manage their data as a product. However, it's not just the data that needs this democratization; the actual usage and operational workflows need to reflect this model too.
+The concept of a data mesh has made significant inroads into how we handle and disseminate information within organizations. It champions the idea of decentralized data ownership, where domain-specific teams manage their data as a product. However, it's not just the data that needs this democratization; the actual usage and operational workflows need to reflect this model too. 
 
 Business users must become the owners of their workflows—designers of their processes and architects of their outcomes. To realize this vision, the empowerment of business users through technology is critical. Some of those tools as mentioned in the introduction have, quite literally, put the power of automation into the hands of the marketer, the sales executive, or the HR manager.
 
@@ -29,7 +29,7 @@ Business users must become the owners of their workflows—designers of their pr
 
 The heart of the matter lies in the balance between empowerment and control. Business users need the freedom to manipulate their tools and workflows, yet this needs to be under the umbrella of a centralized IT strategy to avoid the pitfalls of shadow IT. When business departments take tech matters into their own hands without IT oversight, the risks can escalate—data breaches, compliance issues, and inefficiencies are just the tip of the iceberg.
 
-In the name of digital agility, businesses often encourage their teams to solve problems using the most immediate and accessible technological solutions. This trend has given rise to no-code and low-code platforms, empowering non-technical business users to create applications and automate processes independently.
+In the name of digital agility, businesses often encourage their teams to solve problems using the most immediate and accessible technological solutions. This trend has given rise to no-code and low-code platforms, empowering non-technical business users to create applications and automate processes independently. 
 
 ### Understanding the Implications of Empowerment and Shadow IT
 

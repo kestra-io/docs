@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-06-25-kestra-become-real-time.jpg
 ---
 
-Today, we are thrilled to announce Kestra's Realtime Triggers, an innovative feature that sets a new standard for orchestration. This powerful feature provides everything to build and operationalize business-critical workflows in real-time, including powerful, millisecond-latency integrations with messaging systems (Kafka, Pulsar, AMQP, MQTT, AWS SQS, Google Pub/Sub, Azure Event Hubs, NATS, Redis) and SQL databases.
+Today, we are thrilled to announce Kestra's Realtime Triggers, an innovative feature that sets a new standard for orchestration. This powerful feature provides everything to build and operationalize business-critical workflows in real-time, including powerful, millisecond-latency integrations with messaging systems (Kafka, Pulsar, AMQP, MQTT, AWS SQS, Google Pub/Sub, Azure Event Hubs, NATS, Redis) and SQL databases. 
 
 With Realtime Triggers, you can react to events as they happen and automate any business process instantly. Additionally, Kestra simplifies the configuration and management of these workflows, making it an ideal choice for developers and business users.
 
@@ -51,11 +51,11 @@ Coordinate complex microservice interactions in real-time with Kestra. Realtime 
 
 With Kestra’s ability to consume messages from various messaging systems in real-time, software engineers can create workflows that immediately process incoming messages, reducing latency and improving the responsiveness of applications.
 
-## Unified Batch and Real-Time Processing
+## Unified Batch and Real-Time Processing 
 
-Whether you’re processing data in **batch or real-time**, Kestra provides fine-grained visibility into the health of your platform. You can batch real-time data into a staging area, like a data lake, before loading it into your data warehouse, ensuring that both real-time and batch needs are met.
+Whether you’re processing data in **batch or real-time**, Kestra provides fine-grained visibility into the health of your platform. You can batch real-time data into a staging area, like a data lake, before loading it into your data warehouse, ensuring that both real-time and batch needs are met. 
 
-With Kestra, you can **lower latency** for reporting and analytics, transitioning seamlessly from batch to real-time as your needs evolve. Unlike complex orchestration systems that require extensive sensor setup and complex deployment processes, Kestra’s **intuitive design** and **simple configuration** mean you can get started in minutes.
+With Kestra, you can **lower latency** for reporting and analytics, transitioning seamlessly from batch to real-time as your needs evolve. Unlike complex orchestration systems that require extensive sensor setup and complex deployment processes, Kestra’s **intuitive design** and **simple configuration** mean you can get started in minutes. 
 
 ![code](/blogs/2024-06-25-kestra-become-real-time/yamlloop.gif)
 
@@ -73,7 +73,7 @@ With Kestra’s Realtime Triggers, businesses can:
 
 ## Next steps
 
-[Get started](https://kestra.io/docs/getting-started) today and transform the way you manage your workflows. The future of orchestration is real-time, and it’s already here with Kestra.
+[Get started](https://kestra.io/docs/getting-started) today and transform the way you manage your workflows. The future of orchestration is real-time, and it’s already here with Kestra. 
 
 ---
 

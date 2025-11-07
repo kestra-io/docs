@@ -101,9 +101,9 @@ Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, fr
 - **Best for Microsoft ecosystems**: Less ideal for projects that aren't centered around Microsoft technologies.
 
 ### CircleCI
-[CircleCI](https://circleci.com/) is a cloud-based CI/CD platform that automates development workflows and accelerates software delivery. It supports rapid setup and provides powerful customization options for building, testing, and deploying applications.
+[CircleCI](https://circleci.com/) is a cloud-based CI/CD platform that automates development workflows and accelerates software delivery. It supports rapid setup and provides powerful customization options for building, testing, and deploying applications. 
 
-Known for its emphasis on speed - allowing developers to create efficient pipelines that run with minimal delays - the platform supports a variety of configurations, giving teams the ability to tailor workflows to their specific needs, whether they are working with traditional applications, containerized microservices, or other deployment strategies. Additionally, its cloud-based nature means that CircleCI can easily scale to meet the demands of growing projects, handling parallel tasks effectively to minimize build times.
+Known for its emphasis on speed - allowing developers to create efficient pipelines that run with minimal delays - the platform supports a variety of configurations, giving teams the ability to tailor workflows to their specific needs, whether they are working with traditional applications, containerized microservices, or other deployment strategies. Additionally, its cloud-based nature means that CircleCI can easily scale to meet the demands of growing projects, handling parallel tasks effectively to minimize build times. 
 
 **Unique feature: optimized for speed and parallelism**
 CircleCI excels at running pipelines quickly by allowing tasks to run in parallel, significantly reducing build times. This makes it ideal for teams that need fast feedback on their code changes.
@@ -121,9 +121,9 @@ CircleCI excels at running pipelines quickly by allowing tasks to run in paralle
 - **Reliance on cloud**: Less suitable for on-premises environments, which can limit its adoption in organizations with strict data residency requirements.
 
 ### Jenkins
-[Jenkins](https://www.jenkins.io/) is an open-source automation server that helps developers build, test, and deploy their software. It's one of the most popular tools in the CI/CD space, thanks to its extensive plugin ecosystem that allows it to integrate with almost any tool or platform. It has also been around for over a decade, and its longevity speaks to its reliability and flexibility.
+[Jenkins](https://www.jenkins.io/) is an open-source automation server that helps developers build, test, and deploy their software. It's one of the most popular tools in the CI/CD space, thanks to its extensive plugin ecosystem that allows it to integrate with almost any tool or platform. It has also been around for over a decade, and its longevity speaks to its reliability and flexibility. 
 
-However, Jenkins' extensibility comes with its challenges. Managing a large number of plugins - in fact - can lead to compatibility issues, and keeping everything up to date requires ongoing maintenance. Additionally, configuring Jenkins for optimal performance — especially in distributed environments — can be complex and time-consuming.
+However, Jenkins' extensibility comes with its challenges. Managing a large number of plugins - in fact - can lead to compatibility issues, and keeping everything up to date requires ongoing maintenance. Additionally, configuring Jenkins for optimal performance — especially in distributed environments — can be complex and time-consuming. 
 
 **Unique feature: self-hosted, customizable agent management**
 Jenkins offers the ability to set up and manage self-hosted agents (nodes) with full customization. This feature allows teams to control the environment in which their CI/CD tasks run, giving them the flexibility to configure build environments specifically to their needs.
@@ -189,7 +189,7 @@ Unlike Jenkins, which can be slow and challenging to configure, Kestra’s inter
 
 In fact, in Jenkins debugging pipelines can be difficult to set up as logs can become scattered across different plugins and stages, making it hard to trace the root cause of an issue.
 
-Kestra, instead, provides centralized logging and error-handling across all tasks in a workflow. So, if a pipeline fails, developers can easily view the entire execution history and debug issues with a unified logging system.
+Kestra, instead, provides centralized logging and error-handling across all tasks in a workflow. So, if a pipeline fails, developers can easily view the entire execution history and debug issues with a unified logging system. 
 
 ![An error in Kestra](/blogs/2024-10-17-ci-cd-kestra-comparison/error.png)
 

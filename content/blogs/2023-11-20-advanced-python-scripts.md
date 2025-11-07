@@ -23,7 +23,7 @@ Today, we'll explore both methods in detail. But first, let's develop a large Py
 
 ## Writing a Long Python Script for Web Scraping
 
-So, what will our "complex" Python script do?
+So, what will our "complex" Python script do? 
 
 In a nutshell, it will scrape a website and organize the results in a Pandas DataFrame. We'll leverage a website that was designed for beginners to learn web scraping - [Books to Scrape](http://books.toscrape.com/).
 

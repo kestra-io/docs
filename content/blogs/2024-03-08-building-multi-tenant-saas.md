@@ -13,7 +13,7 @@ One of the recent Kestra evolutions I was responsible for was multitenancy suppo
 
 ## What’s Multi-Tenancy
 
-Multi-tenancy is a software architecture model that enable a single instance of software to serve multiple tenants or client organizations, It simulates several logical instances within a single physical instance. The goal is to maximize resource efficiency while ensuring data isolation and operational cost control.
+Multi-tenancy is a software architecture model that enable a single instance of software to serve multiple tenants or client organizations, It simulates several logical instances within a single physical instance. The goal is to maximize resource efficiency while ensuring data isolation and operational cost control. 
 
 ## Exploring Multi-Tenancy Models
 
@@ -88,7 +88,7 @@ As one of Kestra’s runners uses Kafka and Elasticsearch, which do not support 
 
 Ultimately, we selected the **`tenantId`** model for its flexibility and alignment with Kestra's distributed architecture. This approach enables us to maintain the granular control needed for effective multi-tenancy, such as data isolation and tenant-specific configurations, without limiting user functionalities in the cloud or complicating the underlying system.
 
-Using namespace would have been convenient, as we already had namespace-based flow isolation as well as role-based access management. But it would have greatly reduced the functionality of a user of our Cloud, as a namespace or basic namespace could not have been used by different users.
+Using namespace would have been convenient, as we already had namespace-based flow isolation as well as role-based access management. But it would have greatly reduced the functionality of a user of our Cloud, as a namespace or basic namespace could not have been used by different users. 
 
 ### Implementation Journey
 
@@ -100,7 +100,7 @@ Incorporating a **`tenantId`** across Kestra required us to:
 
 You see it comming, it was not that simple!
 
-Adding a property to a large number of classes / filters / queries / … brings a high risk of oversight, and therefore of bugs. And that’s exactly what happened.
+Adding a property to a large number of classes / filters / queries / … brings a high risk of oversight, and therefore of bugs. And that’s exactly what happened. 
 
 Despite great care during implementation, there were a few places where the tenant was not passed:
 

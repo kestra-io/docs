@@ -44,7 +44,7 @@ inputs:
 
   - id: postgres_username
     type: STRING
-
+    
   - id: postgres_password
     type: STRING
 
@@ -226,7 +226,7 @@ tasks:
       FLOW_ID: "{{ inputs.flow_id }}"
       FLOW_NAMESPACE: "{{ inputs.flow_namespace }}"
       EXTRACT_ITEMS: "{{ inputs.extract_items }}"
-    beforeCommands:
+    beforeCommands: 
       - pip install -q ruamel.yaml
     namespaceFiles:
       enabled: true
@@ -241,13 +241,13 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     inputFiles:
       flow.yaml: "{{ outputs.create_kestra_flow.outputFiles['kestra_flow.yaml'] }}"
-    beforeCommands:
+    beforeCommands: 
       - apt-get update
       - apt-get -y install curl
     commands:
       - curl -X POST http://{{inputs.kestra_host}}/api/v1/main/flows/import -F fileUpload=@flow.yaml
       - echo "Executing the flow from http://{{inputs.kestra_host}}/ui/flows/edit/{{ inputs.flow_namespace }}/{{ inputs.flow_id }}"
-
+  
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
     namespace: "{{ inputs.flow_namespace }}"

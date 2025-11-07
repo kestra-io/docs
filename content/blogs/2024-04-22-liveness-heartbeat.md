@@ -64,7 +64,7 @@ Another problem was the risk of duplicate executions when a worker was considere
 Finally, in very rare situations, certain tasks can operate as veritable time bombs. Let's imagine that a user of your platform writes a simple Flow to download, decompress, and query a very large Parquet file. If the file turns out to be too large your worker can run out of disk space and crash.  Unfortunately, the task will be rescheduled to another worker, which will eventually fail itself, creating a cascading failure. To avoid this, it might be useful to be able to isolate unstable tasks in a worker group for which tasks are not re-emit in case of failure.
 
 To resolve these limitations and offer additional functionalities,  we came up with a new mechanism that would offer our users greater flexibility..
-
+ 
 
 ## The Kestra Service’s Lifecycle
 

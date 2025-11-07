@@ -142,10 +142,10 @@ When both multiplecondition_flow_a and multiplecondition_flow_b succeed within 2
 
 ## Common Pitfalls and Troubleshooting
 
-  1. **Conditions Not Met**:
+  1. **Conditions Not Met**:  
     If the flow doesn't trigger, ensure both `multiplecondition_flow_a` and `multiplecondition_flow_b` have completed successfully within the time window.
 
-  2. **Incorrect Output Reference**:
+  2. **Incorrect Output Reference**:  
     Double-check the flow IDs and namespaces to make sure the trigger is referencing the correct flows.
 
 ## Conclusion

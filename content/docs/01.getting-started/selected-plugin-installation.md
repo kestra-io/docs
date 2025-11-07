@@ -3,7 +3,7 @@ title: Install Only Selected Plugins in Kestra OSS
 icon: /docs/icons/plugins.svg
 ---
 
-Install a selection of Kestra plugins in the open-source (OSS) version.
+Install a selection of Kestra plugins in the open-source (OSS) version. 
 
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 

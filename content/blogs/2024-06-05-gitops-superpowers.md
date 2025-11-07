@@ -29,15 +29,15 @@ If you have a production environment that needs to stay updated with the latest 
 
 With the ability to target specific flows or namespace files, you can ensure that only the necessary changes are committed.
 
-If you’re working on a major feature branch and only want to push changes related to a particular flow, the **PushNamespaceFiles** task makes it easy.
+If you’re working on a major feature branch and only want to push changes related to a particular flow, the **PushNamespaceFiles** task makes it easy. 
 
 ## Moving From Development to Production Made Easy
 
-By combining the **PushFlows** and **SyncFlows** tasks, you can create a comprehensive Git workflow that covers the full software development lifecycle for your workflows.
+By combining the **PushFlows** and **SyncFlows** tasks, you can create a comprehensive Git workflow that covers the full software development lifecycle for your workflows. 
 
-Here is how that works:
+Here is how that works: 
 1. You push your flows from a development environment to a Git repository
-2. You then sync them to your Kestra production environment after they have been reviewed and merged into the production branch.
+2. You then sync them to your Kestra production environment after they have been reviewed and merged into the production branch. 
 
 ![dev to prod](/blogs/2024-06-05-gitops-superpowers/devtoprod.png)
 

@@ -15,7 +15,7 @@ Indeed, taking data-driven decisions in sport is now a keystone to improve athle
 ## Football Analytics: What, Why & How?
 
 Football analytics emerged from the established analytical practices in sports like baseball and basketball.
-Clubs, players, competition stakeholders, and betting companies are leaning on data to drive their decisions.
+Clubs, players, competition stakeholders, and betting companies are leaning on data to drive their decisions. 
 
 The first objective of this transformation is to analyze and model the game in the most objective way. To improve sports performances. Understand players' choices, forecast team performance trends, study tactics and rules evolution, forecast injuries, optimize transfer decisions, find valuable — underrated — players, etc…
 
@@ -27,7 +27,7 @@ To make this a reality, clubs and sport institutions had to invest in new types 
 Like more classic businesses, it involves many tools and practices. Unlike the way it came through in traditional B2B or B2C businesses, sports ventures move fast as they are quite small and pressured by weekly sport performances.
 Hence, they need efficient and scalable tools, enabling them to develop insight at pace while keeping cost low.
 
-Football clubs can rely on different type of data to improve performances and drive decisions:
+Football clubs can rely on different type of data to improve performances and drive decisions: 
 
 * **Contextual data**: main events like goals, replacement, yellow cards, etc… It’s characterized by the minute of the event, so it's quite basic. Still useful for common statistics and general view.
 * **Event data**: much detailed, they track every ball action: passes, tackles, crosses, dribbles, shoots, etc… They are characterized by coordinate data (sometimes in three dimensions), so very useful for any person looking to analyze and create models of the game. Used by football clubs, they are gathered by hand and algorithms and often exposed through provider APIs.

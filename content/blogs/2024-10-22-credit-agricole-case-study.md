@@ -14,9 +14,9 @@ CAGIP is the IT production entity of Crédit Agricole Group, a leading French ba
 
 ## The challenges we faced in scaling data pipelines
 
-For a long time, we used Ansible & Jenkins to manage all the tasks that must be done on every of our deployments. Lately, we faced a significant scale up in the number of clusters and services that we manage. To keep up with the requirements related to hosting critical services in a banking environment, we had to:
-⁃ run more infrastructure services in parallel (operating on over 50 MongoDB clusters)
-⁃ optimize the consumed resources (using containers instead of virtual machines)
+For a long time, we used Ansible & Jenkins to manage all the tasks that must be done on every of our deployments. Lately, we faced a significant scale up in the number of clusters and services that we manage. To keep up with the requirements related to hosting critical services in a banking environment, we had to:  
+⁃ run more infrastructure services in parallel (operating on over 50 MongoDB clusters)  
+⁃ optimize the consumed resources (using containers instead of virtual machines)  
 ⁃ enhance the security (activating key rotation at scale).
 
 ## Experimenting with Kestra
@@ -29,7 +29,7 @@ So, we started with a quick installation in order to check the usability of the 
 ## Using Kestra in production
 
 Before releasing the new tool to the teams, we wanted to define guidelines regarding CI/CD patterns and security. To do so, we prepared a few subflows simplifying the use of the solution such as Vault to store and retrieve secrets. We also tried multiple delivery patterns to agree on: development on the Kestra interface, test it in a specific namespace, then commit the flow to Git and finally use a Git Sync to make sure that each of our production flow is managed in a Git repository. Recently, we even connected it to our alerting service to get notified instantly when something goes wrong.
-
+ 
 It tooks us time, but we are now confident to open access to the platform built on top of Kestra across our 7 data teams this fall!
 
 ## Expanding Kestra to even more use cases

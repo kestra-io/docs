@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator.jpg
 ---
 
-We are thrilled to announce that Kestra has raised **$3 million of funding** to make orchestration more accessible, collaborative, and scalable.
+We are thrilled to announce that Kestra has raised **$3 million of funding** to make orchestration more accessible, collaborative, and scalable. 
 
 We aim to empower a wide range of users, from software engineers to data professionals, by simplifying and unifying their automation and orchestration needs. We envision Kestra as the go-to solution for organizations seeking **simple** and **versatile** orchestration.
 
@@ -64,30 +64,30 @@ If you want to support us in our journey, give us a [GitHub star](https://github
 ## Trusted by Leading Tech Investors
 
 This funding was co-led by [ISAI](http://www.isai.vc/), [Axeleo Capital](https://www.axc.vc/), alongside several SaaS and open-source experts angel investors, including: <br>
->Olivier Pomel (CEO & Co-founder at Datadog),
-Stijn Christiaens (Co-founder & CDC at Collibra),
-Olivier Bonnet (CTO at Blablacar),
-Pierre Burgy (Co-founder & CEO at Strapi),
-Luc Delsalle (VP Engineering at Tenable),
-Gabriel-James Safar (Director of Product Management at Datadog),
-Fabrice Bernhard (Co-founder & CTO at Theodo Group),
-Vincent Pineau (Tech Entrepreneur),
-Yacine Terki (Co-founder & CEO at Data Impact by NielsenIQ),
-Ludovic Gallen (Co-founder at Data Impact by NielsenIQ),
-Emmanuel Martin-Chave (VP Data at Blablacar),
-Nicolas Fonrose (Founder & CEO at Teevity),
-Amirhossein Malekzadeh (Entrepreneur & Investor),
-Philippe Besnard (Entrepreneur & Investor),
-Yann Fleureau (Tech Entrepreneur & Investor),
-Baptiste Hamel (Entrepreneur & Investor),
-Romain Hervé (Entrepreneur & Investor),
-Eric Mahe (Entrepreneur & Investor),
-Denis Lafont-Trevisan (Entrepreneur & Investor),
-Abdelillah Hassam (Software Engineer & Investor),
-Arnaud Ladrière (Entrepreneur & Investor),
-Marc Chancerel (Investor at Blueprint Partners),
-Romain Dardour (Head of Product at L’Oréal Beauty Tech),
-Jia Li (Co-founder & CSO/CTO at CardioLogs),
+>Olivier Pomel (CEO & Co-founder at Datadog),  
+Stijn Christiaens (Co-founder & CDC at Collibra),  
+Olivier Bonnet (CTO at Blablacar),  
+Pierre Burgy (Co-founder & CEO at Strapi),  
+Luc Delsalle (VP Engineering at Tenable),  
+Gabriel-James Safar (Director of Product Management at Datadog),  
+Fabrice Bernhard (Co-founder & CTO at Theodo Group),  
+Vincent Pineau (Tech Entrepreneur),  
+Yacine Terki (Co-founder & CEO at Data Impact by NielsenIQ),  
+Ludovic Gallen (Co-founder at Data Impact by NielsenIQ),  
+Emmanuel Martin-Chave (VP Data at Blablacar),  
+Nicolas Fonrose (Founder & CEO at Teevity),  
+Amirhossein Malekzadeh (Entrepreneur & Investor),  
+Philippe Besnard (Entrepreneur & Investor),  
+Yann Fleureau (Tech Entrepreneur & Investor),  
+Baptiste Hamel (Entrepreneur & Investor),  
+Romain Hervé (Entrepreneur & Investor),  
+Eric Mahe (Entrepreneur & Investor),  
+Denis Lafont-Trevisan (Entrepreneur & Investor),  
+Abdelillah Hassam (Software Engineer & Investor),  
+Arnaud Ladrière (Entrepreneur & Investor),  
+Marc Chancerel (Investor at Blueprint Partners),  
+Romain Dardour (Head of Product at L’Oréal Beauty Tech),  
+Jia Li (Co-founder & CSO/CTO at CardioLogs),  
 Noé Gersanois (Co-Head at Raise Sherpas & Angel Investor).
 
 

@@ -16,10 +16,10 @@ Before you begin:
 
 - Deploy [Kestra](../02.installation/index.md) in your preferred development environment.
 - Ensure you have a [basic understanding of how to run Kestra flows.](../01.getting-started/03.tutorial.md)
-
+  
 ## Loop over nested lists of values
 
-This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string.
+This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string. 
 
 You can access the current iteration value using the variable `{{ taskrun.value }}` or `{{ parent.taskrun.value }}` if you are in a nested child task. Additionally, you can access the batch or iteration number with `{{ taskrun.iteration }}`.
 
@@ -62,13 +62,13 @@ The above flow, when executed, iterates over a nested list of values, logging me
 Within the flow:
 
 - `1_each`: Uses the `ForEach` task to iterate over the list `["s1", "s2", "s3"]`. For each value, it runs the nested tasks defined within.
-
+  
   - `1-1_return`: Logs the task ID, the current list value, and the task run start time.
-
+  
   - `1-2_each`: Iterates over a second list `["a a", "b b"]` and runs a set of tasks for each value in this nested list.
-
+    
     - `1-2-1_return`: Logs the task ID, the nested list value, and the start time of the task run.
-
+    
     - `1-2-2_return`: Logs a custom output from `1-2-1_return`, which shows how to access outputs from previous iterations within the nested loop.
 
   - `1-3_return`: Logs the output from `1-1_return` after the inner loop is completed and displays the corresponding value processed in the outer loop.

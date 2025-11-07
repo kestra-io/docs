@@ -3,7 +3,7 @@ title: "Kestra 1.0 is Coming: the next big Thing in Orchestration"
 description: In just 7 days, we will release Kestra 1.0, and it will redefine orchestration.
 date: 2025-09-02T13:00:00
 category: News & Product Updates
-author:
+author: 
  name: Emmanuel Darras
  image: edarras
  role: CEO & Co-Founder
@@ -52,4 +52,4 @@ We have built the foundation for the next decade of orchestration.
 - **AI-powered:** built to orchestrate workflows that are increasingly dynamic and intelligent.
 - **Extensible:**  powered by :PluginCount plugins to integrate with everything that matters.
 
-The countdown is on. In 7 days, we’ll reveal what will **permanently redefine orchestration.**
+The countdown is on. In 7 days, we’ll reveal what will **permanently redefine orchestration.** 

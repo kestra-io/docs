@@ -28,7 +28,7 @@ The database packs a wide array of disruptive features, such as an SQL-style que
 
 **Some find it to be the next generation of a serverless database.**
 
-Further, SurrealDB is a multi-model database, which means you can store your data in tables, documents, and graphs. You don't have to choose the method in advance. It allows you to add inter-document record links which results in completely avoiding traditional SQL JOINs.
+Further, SurrealDB is a multi-model database, which means you can store your data in tables, documents, and graphs. You don't have to choose the method in advance. It allows you to add inter-document record links which results in completely avoiding traditional SQL JOINs. 
 
 This database also has machine learning and real-time functionalities built in, but that's out of the scope of today's article.
 
@@ -274,7 +274,7 @@ We'll modify the flow in a way that it uses three tasks of type `io.kestra.plugi
 
 **Task 1 - createEmployee**
 - Creates a new type of record called `employee` and insert a new record with the ID of `dario` (my first name)
-- Uses the dot notation in attribute names to leverage a nested JSON structure (e.g., `name.first` will equal to `"name": {"first": "value"}`
+- Uses the dot notation in attribute names to leverage a nested JSON structure (e.g., `name.first` will equal to `"name": {"first": "value"}` 
 - Creates a derived attribute of full name by combining the existing attributes for first and last name. This is done with the built-in `string::join()` function
 - Creates a derived attribute for email that concatenates the lowercased values of first and last names, alongside the dot in between and a domain name after (more SurrealDB string functions)
 - Creates a field named `year_of_birth` which is derived from an existing attribute age
@@ -333,8 +333,8 @@ tasks:
   - id: getData
     type: io.kestra.plugin.surrealdb.Query
     query: |
-      SELECT * FROM employee, laptop
-      WHERE employee.year_of_birth >= 1995
+      SELECT * FROM employee, laptop 
+      WHERE employee.year_of_birth >= 1995 
       FETCH employee, laptop
       ;
     fetchType: STORE
