@@ -19,37 +19,78 @@ export default defineNuxtConfig({
         "nuxt-security"
     ],
     security: {
+        enabled: true,
+        strict: false,
+        nonce: true,
+        sri: true,
         headers: {
+            crossOriginResourcePolicy: 'same-origin',
+            crossOriginOpenerPolicy: 'same-origin',
+            crossOriginEmbedderPolicy: !process.env.CF_PAGES_BRANCH ? 'unsafe-none' : 'credentialless',
+
+            // ✅ CSP directives
             contentSecurityPolicy: {
-                'img-src': [
-                    "'self'", 
-                    "data:", 
-                    "https://alb.reddit.com",
-                    "https://storage.googleapis.com",
-                    "https://kestra.io",
-                    "https://*.kestra-io.pages.dev",
-                    "https://*.hubspot.com",
-                    "https://*.ads.linkedin.com",
-                    "https://*.hsforms.com",
-                    "https://i.ytimg.com",
-                    "https://www.googletagmanager.com",
-                    "https://www.google-analytics.com",
-                ],
-                'script-src-attr': [
-                    "'unsafe-inline'",
-                ],
+                // hardening
+                'base-uri': ["'none'"],
+                'object-src': ["'none'"],
+                'script-src-attr': ["'none'"],
+                // scripts
                 'script-src': [
-                    "'self'",
-                    'https:', 
-                    "'unsafe-inline'", 
-                    "'strict-dynamic'", 
-                    "'nonce-{{nonce}}'",
-                    "'wasm-unsafe-eval'",
-                    "https://www.youtube.com",
-                    "https://s.ytimg.com",
+                "'self'",
+                "'nonce-{{nonce}}'",
+                "'strict-dynamic'",
+                "'wasm-unsafe-eval'",              // remove if no WASM
+                'https:',
+                'https://www.youtube.com',
+                'https://s.ytimg.com',
+                'https://www.googletagmanager.com',
+                'https://www.google-analytics.com',
                 ],
-            }
-        }
+                // styles & fonts
+                'style-src': ["'self'", 'https:', "'unsafe-inline'"],
+                'font-src': ["'self'", 'https:', 'data:'],
+                // images
+                'img-src': [
+                "'self'",
+                'data:',
+                'blob:',
+                'https://i.ytimg.com',
+                'https://storage.googleapis.com',
+                'https://*.storage.googleapis.com',
+                'https://kestra.io',
+                'https://*.kestra-io.pages.dev',
+                'https://*.hubspot.com',
+                'https://*.ads.linkedin.com',
+                'https://*.hsforms.com',
+                'https://www.googletagmanager.com',
+                'https://www.google-analytics.com',
+                'https://www.google.fr',
+                'https://www.google.com',
+                'https://googleads.g.doubleclick.net',
+                'https://alb.reddit.com',
+                ],
+                // iframes
+                'frame-src': [
+                "'self'",
+                'https://www.googletagmanager.com',
+                'https://www.youtube.com',
+                'https://www.youtube-nocookie.com',
+                ],
+                // XHR/fetch/WebSocket
+                'connect-src': [
+                "'self'",
+                'https://www.youtube.com',
+                'https://www.googleapis.com',
+                'https://www.google-analytics.com',
+                'https://*.analytics.google.com',
+                ...(!process.env.CF_PAGES_BRANCH ? ['*', 'blob:', 'ws://localhost:*', 'http://localhost:*', 'https://localhost:*'] : []),
+                ],
+                // workers
+                'worker-src': ["'self'", 'blob:'],
+                // mixed content
+                'upgrade-insecure-requests': true,
+            },
+        },
     },
     image: {
         dir: 'public',
