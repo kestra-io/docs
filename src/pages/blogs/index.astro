@@ -8,7 +8,11 @@ const blogs = await getCollection('blogs');
 
 <LayoutBlogs activeStem={`/blogs`}>
     <BlogsList
-        blogs={blogs.map(blog => ({ ...blog.data, slug: blog.id }))}
+        blogs={blogs.map(blog => ({
+            ...blog.data,
+            slug: blog.id,
+            path: `/blogs/${blog.id}`
+        }))}
         externalNews={[]}
     />
 </LayoutBlogs>
