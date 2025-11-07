@@ -23,6 +23,7 @@ export default defineNuxtConfig({
         strict: false,
         headers: {
             referrerPolicy: 'strict-origin-when-cross-origin',
+            crossOriginEmbedderPolicy: false,
             permissionsPolicy: {
                 // ✅ allow fullscreen on your own pages and for YouTube iframes
                 fullscreen: ['*'],
