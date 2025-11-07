@@ -46,7 +46,7 @@ In the **`patchVM`** subflow, after the patch is successfully applied (`checkSuc
 
 1. **Notification:** A Slack notification (`notifyChannel`) immediately informs the team that the UAT VM has been patched. This notification includes a dynamic link to the Kestra execution: `[Here]({{ appLink() }})`.
     
-    ![Slack Notification](/blog/uat-prod-vm-patching/slack-notification.png)
+    ![Slack Notification](/blogs/uat-prod-vm-patching/slack-notification.png)
     
 2. **Pause for Approval:** The flow reaches the **`waitForApproval`** task, a `io.kestra.plugin.ee.flow.HumanTask`.
     - This task **pauses the workflow** right after the UAT patch.
@@ -55,7 +55,7 @@ In the **`patchVM`** subflow, after the patch is successfully applied (`checkSuc
         - `approvePatch` (Type: `BOOL`): The critical **Approve/Reject** switch.
         - `reason` (Type: `STRING`): A required field for documenting the decision.
     
-    ![App Approval](/blog/uat-prod-vm-patching/app-approval.png)
+    ![App Approval](/blogs/uat-prod-vm-patching/app-approval.png)
 
 This mechanism transforms a manual, often email-based approval process into a **simple, self-documenting step within the automated workflow.**
 
@@ -84,7 +84,7 @@ A rollback executes if:
 
 By abstracting infrastructure complexity into simple YAML definitions and introducing a seamless human approval gate, Kestra makes what was once a complicated, error-prone patching process **reliable, transparent, and easy to manage.**
 
-![VM Patch Orchestration](/blog/uat-prod-vm-patching/vm-patch-orchestration.png)
+![VM Patch Orchestration](/blogs/uat-prod-vm-patching/vm-patch-orchestration.png)
 
 :::collapse{title="Sample Flow Code"}
 
