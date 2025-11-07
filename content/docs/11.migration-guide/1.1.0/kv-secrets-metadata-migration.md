@@ -34,7 +34,7 @@ and then do the same with
 ```yaml
 kestra:
   image: registry.kestra.io/docker/kestra:latest
-  command:  migrate metadata secret
+  command:  migrate metadata secrets
 ```
 
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
