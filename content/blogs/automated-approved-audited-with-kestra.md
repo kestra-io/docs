@@ -18,13 +18,13 @@ This Kestra solution solves the challenges of slow, risky, and compliance-heavy 
 
 For IT and DevOps teams, patching is a non-negotiable security requirement, but the process itself is often a source of enormous friction. The core problem isn't the patching itself, but the **gaps between environments and the human approval required to bridge them.**
 
-![App Display](/blog/uat-prod-vm-patching/app-display.png)
+![App Display](/blogs/uat-prod-vm-patching/app-display.png)
 
 ## Simplifying Complex Patching Workflows with Kestra
 
 The **`patchOrchestration`** flow handles the overall orchestration and enforces a standard best practice: **patch UAT first, then proceed to Production only if the UAT patch succeeds and is approved by a Human.**
 
-![Topology View](/blog/uat-prod-vm-patching/topology-view.png)
+![Topology View](/blogs/uat-prod-vm-patching/topology-view.png)
 
 - **Sequential Execution:** The workflow starts by calling the `patchVM` subflow for the UAT VM (`processUatVM`).
 - **Conditional Gate:** The Production VM task (`processProdVM`) is protected by a Kestra expression:
@@ -78,9 +78,9 @@ A rollback executes if:
 - **Rollback Action:** If the condition is met, the `rollBackVM` task executes the SSH command to reinstall the old package version, rolling back to the previous working state. The old version number is extracted from the `patchId` input string using JINJA templating.
 - **Clear Outputs:** The subflow uses `OutputValues` and the `outputs` section to report the action taken (`PATCH` or `ROLLBACK`) and the final state (`SUCCESS` or `FAILED`). The main `patchOrchestration` flow uses these outputs for conditional logic.
 
-![CheckSuccess Topology](/blog/uat-prod-vm-patching/checkSuccess-topology.png)
+![CheckSuccess Topology](/blogs/uat-prod-vm-patching/checkSuccess-topology.png)
 
-![Rollback Topology](/blog/uat-prod-vm-patching/rollback-topology.png)
+![Rollback Topology](/blogs/uat-prod-vm-patching/rollback-topology.png)
 
 By abstracting infrastructure complexity into simple YAML definitions and introducing a seamless human approval gate, Kestra makes what was once a complicated, error-prone patching process **reliable, transparent, and easy to manage.**
 
