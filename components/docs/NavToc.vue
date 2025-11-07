@@ -74,7 +74,6 @@ const props = withDefaults(defineProps<{
 });
 
 const tableOfContentsExpanded = ref(false);
-const showThankYou = ref(false);
 
 const route = useRoute();
 
@@ -178,14 +177,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
-
-watch(
-  () => route.params,
-  () => {
-    showThankYou.value = false;
-  },
-  { deep: true, immediate: true }
-);
 </script>
 
 <style lang="scss" scoped>

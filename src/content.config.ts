@@ -56,6 +56,7 @@ export const collections = {
         })).optional(),
         // image: image(),
         image: z.string().optional(),
+        rightBar: z.boolean().optional()
       })
   }),
   misc: defineCollection({

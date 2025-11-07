@@ -1,5 +1,6 @@
 import posthog from 'posthog-js'
-const gtm = useGtm()
+// FIXME: implement useGtm
+const gtm = null// useGtm()
 
 export default function(email) {
     gtm?.trackEvent({

@@ -20,15 +20,17 @@
             <div class="mt-1">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h6 class="my-1">{{ blog.title }}</h6>
-                <BlogsBlogCardDetails 
+                <BlogCardDetails
                     :authors="blog.authors || (blog.author ? [blog.author] : [])"
-                    :date="blog.date"
+                    :date="blog.date.toString()"
                 />
             </div>
         </NuxtLink>
     </div>
 </template>
-
+<script setup>
+import BlogCardDetails from './BlogCardDetails.vue';
+</script>
 <script>
     export default {
         name: "BlogCard",

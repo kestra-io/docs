@@ -11,6 +11,7 @@ import remarkDirective from 'remark-directive';
 // @ts-expect-error no types provided by package
 import remarkLinkRewrite from 'remark-link-rewrite';
 import remarkCustomElements from './utils/remark-custom-elements/index.mjs';
+import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import generateId from './utils/generateId';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
@@ -52,7 +53,10 @@ export default defineConfig({
           return url;
         }
       }]
-    ]
+    ],
+    rehypePlugins: [
+      rehypeHeadingIds,
+    ],
   },
   vite: {
     resolve:{

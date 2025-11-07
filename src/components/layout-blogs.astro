@@ -1,0 +1,47 @@
+---
+import NavSideBar from "../../components/docs/NavSideBar.vue";
+import Updateletter from "../../components/layout/Updateletter.vue";
+import Layout from "./layout.astro";
+
+interface Props {
+    activeStem: string,
+}
+
+const props = Astro.props;
+---
+
+<Layout>
+    <div class={`layout-docs-wrapper`}>
+        <main class="bd-content">
+            <div class="container-fluid">
+                <div class="container">
+                    <slot/>
+                </div>
+            </div>
+            <div class="bottom"><Updateletter /></div>
+        </main>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "../../assets/styles/variable";
+    .layout-docs-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 100%;
+    }
+    .bd-sidebar{
+        min-width: 250px;
+        white-space: normal;
+        .ai-button-wrapper, .search {
+            height: 32px;
+            width: 209px;
+        }
+    }
+</style>

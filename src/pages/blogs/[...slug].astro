@@ -1,0 +1,64 @@
+---
+// use astro content collection to fetch markdown files from /content/docs
+import { render, getCollection, type CollectionEntry } from "astro:content";
+import LayoutBlogs from "../../components/layout-blogs.astro";
+import BlogDetails from "../../../components/blogs/BlogDetails.vue";
+import NavToc from "../../../components/docs/NavToc.vue";
+import Updateletter from "../../../components/layout/Updateletter.vue";
+
+export async function getStaticPaths() {
+	const blogsPages = await getCollection('blogs');
+	return blogsPages.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+
+type Props = CollectionEntry<'blogs'>;
+const post = Astro.props;
+const { Content, headings } = await render(post);
+const page = post.data
+
+const links = headings.map(h => ({
+                text: h.text,
+                id: h.slug,
+                depth: h.depth
+            }))
+---
+<LayoutBlogs activeStem={`/blogs/${post.id}`}>
+    <div class="container bd-gutter bd-layout margin">
+        {post && (
+        <article
+            class="bd-main order-1"
+            class:list={[{ full: page.rightBar === false }]}
+        >
+            <div class="bd-content">
+            <div class="bd-title">
+                <p class="d-flex breadcrumb" data-aos="fade-right">
+                <a href="/">Home</a> / <a href="/blogs">Blog</a>
+                </p>
+                <h2 data-aos="fade-left" class="pt-0">
+                {page.title}
+                </h2>
+                <BlogDetails blog={post} class="mt-3" />
+                <div class="d-lg-none d-block" data-aos="fade-zoom">
+                    <NavToc links={links} />
+                </div>
+            </div>
+            <img
+                loading="lazy"
+                data-aos="fade-right"
+                class="mb-2 rounded-3 img"
+                alt={page.title}
+                src={page.image}
+            />
+            <div class="subtitle">
+                <p>{page.description}</p>
+            </div>
+                <Content/>
+            </div>
+            <NavToc links={links}/>
+        </article>
+        )}
+    </div>
+</LayoutBlogs>

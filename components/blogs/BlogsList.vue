@@ -8,7 +8,7 @@
                     :key="news.id"
                     class="col-lg-4 col-md-6 col-12"
                 >
-                    <BlogsBlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-aos="zoom-in" />
                 </div>
             </div>
         </div>
@@ -55,7 +55,8 @@
                         role="tabpanel"
                         :aria-labelledby="`${cat.name}-tab`"
                     >
-                        <BlogsHighlightBlogCard
+                        <HighlightBlogCard
+                            v-if="getHighlightBlog(cat.name)"
                             :blog="getHighlightBlog(cat.name)"
                             class="mt-5"
                         />
@@ -68,14 +69,14 @@
                         :ref="`blog-${index}`"
                         class="col-lg-6 col-md-6"
                     >
-                        <BlogsBlogCard :blog="blog" data-aos="zoom-in" />
+                        <BlogCard :blog="blog" data-aos="zoom-in" />
                     </div>
                 </div>
             </div>
             <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
                 <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
-                    <BlogsBlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-aos="zoom-in" />
                 </div>
                 <NuxtLink href="/blogs/community">
                     <button class="btn btn-dark w-100">More news</button>
@@ -94,7 +95,7 @@
                         <option :value="50">50</option>
                     </select>
                 </div>
-                <CommonPagination
+                <Pagination
                     :totalPages="totalPages"
                     v-model:current-page="pageNo"
                     v-if="totalPages > 1"
@@ -103,8 +104,13 @@
         </div>
     </div>
 </template>
-
+<script setup>
+import Pagination from '../common/Pagination.vue';
+import BlogCard from './BlogCard.vue';
+import HighlightBlogCard from './HighlightBlogCard.vue';
+</script>
 <script>
+
 export default {
     name: "BlogsList",
     props: {
@@ -115,6 +121,10 @@ export default {
         externalNews: {
             type: Array,
             required: true,
+        },
+        slug: {
+            type: String | Array,
+            required: false,
         },
     },
     data() {
@@ -134,7 +144,7 @@ export default {
                     name: "Solutions",
                 },
             ],
-            slug: "",
+            fullSlug: "",
             pageList: [],
             itemsPerPage: 25,
             pageNo: 1,
@@ -179,13 +189,13 @@ export default {
         },
     },
     created() {
-        this.slug =
+        this.fullSlug =
             "/blogs/" +
-            (this.$route.params.slug instanceof Array
-                ? this.$route.params.slug.join("/")
-                : this.$route.params.slug);
+            (this.slug instanceof Array
+                ? this.slug.join("/")
+                : this.slug);
         const breadcrumbs = [
-            ...new Set(this.slug.split("/").filter((r) => r !== "")),
+            ...new Set(this.fullSlug.split("/").filter((r) => r !== "")),
         ];
         this.pageList = breadcrumbs.map(
             (___, index) => "/" + breadcrumbs.slice(0, index + 1).join("/"),
