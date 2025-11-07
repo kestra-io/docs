@@ -21,12 +21,11 @@ export default defineNuxtConfig({
     security: {
         enabled: true,
         strict: false,
-        nonce: true,
-        sri: true,
         headers: {
-            crossOriginResourcePolicy: 'same-origin',
-            crossOriginOpenerPolicy: 'same-origin',
-            crossOriginEmbedderPolicy: !process.env.CF_PAGES_BRANCH ? 'unsafe-none' : 'credentialless',
+            permissionsPolicy: {
+                // ✅ allow fullscreen on your own pages and for YouTube iframes
+                fullscreen: ['*'],
+            },
             // ✅ CSP directives
             contentSecurityPolicy: {
                 // hardening
@@ -39,7 +38,6 @@ export default defineNuxtConfig({
                     "'nonce-{{nonce}}'",
                     "'strict-dynamic'",
                     "'wasm-unsafe-eval'", 
-                    'https:',
                 ],
                 // styles & fonts
                 'style-src': ["'self'", 'https:', "'unsafe-inline'"],
@@ -49,20 +47,36 @@ export default defineNuxtConfig({
                     "'self'",
                     'data:',
                     'blob:',
-                    'https:',
+                    "https://*.google.fr",
+                    "https://*.google.com",
+                    "https://*.ads.linkedin.com",
+                    "https://*.reddit.com",
+                    "https://*.hubspot.com",
+                    "https://*.hsforms.com",
+                    "https://*.googleapis.com",
+                    "https://i.ytimg.com",
                 ],
                 // iframes
                 'frame-src': [
                     "'self'",
-                    'https:',
+                    "https://*.youtube.com",
+                    "https://*.googletagmanager.com",
                 ],
                 'connect-src': [
                     "'self'",
-                    'https:',
-                    // keep your dev openness
-                    ...(!process.env.CF_PAGES_BRANCH
-                        ? ['*', 'blob:', 'ws://localhost:*', 'http://localhost:*', 'https://localhost:*']
-                        : []),
+                    "ws://localhost:*",
+                    "https://api.kestra.io",
+                    "https://kestra.io",
+                    "https://*.google.com",
+                    "https://*.reddit.com",
+                    "https://*.redditstatic.com",
+                    "https://*.hubspot.com",
+                    "https://*.hubapi.com",
+                    "https://*.cr-relay.com",
+                    "https://*.ads.linkedin.com",
+                    "https://*.hsappstatic.net",
+                    "https://unpkg.com",
+                    "https://cdn.jsdelivr.net",
                 ],
                 // workers
                 'worker-src': ["'self'", 'blob:'],
