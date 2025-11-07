@@ -12,23 +12,27 @@ image: /blogs/automated-approved-and-audited-patching-with-kestra.png
 
 ## Overview
 
-This Kestra solution solves the challenges of slow, risky, and compliance heavy patching. It transforms a complex, multi-stage workflow spanning staging environments, human validation, and rollback logic into a **single, resilient automation flow**.
+This Kestra solution solves the challenges of slow, risky, and compliance-heavy patching. It transforms a complex, multi-stage workflow spanning staging environments, human validation, and rollback logic into a **single, resilient automation flow**.
 
 ## The Patching Process Pain Point: UAT to Production
 
 For IT and DevOps teams, patching is a non-negotiable security requirement, but the process itself is often a source of enormous friction. The core problem isn't the patching itself, but the **gaps between environments and the human approval required to bridge them.**
 
-![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/image.png)
+![App Display](/blog/uat-prod-vm-patching/app-display.png)
 
 ## Simplifying Complex Patching Workflows with Kestra
 
 The **`patchOrchestration`** flow handles the overall orchestration and enforces a standard best practice: **patch UAT first, then proceed to Production only if the UAT patch succeeds and is approved by a Human.**
 
-![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/image%201.png)
+![Topology View](/blog/uat-prod-vm-patching/topology-view.png)
 
 - **Sequential Execution:** The workflow starts by calling the `patchVM` subflow for the UAT VM (`processUatVM`).
 - **Conditional Gate:** The Production VM task (`processProdVM`) is protected by a Kestra expression:
-`runIf: "{{ outputs.processUatVM.outputs.actionPerformed == 'PATCH' and outputs.processUatVM.outputs.actionState == 'SUCCESS' }}"`
+
+```yaml
+runIf: "{{ outputs.processUatVM.outputs.actionPerformed == 'PATCH' and outputs.processUatVM.outputs.actionState == 'SUCCESS' }}"
+```
+
 *Production patching runs only if the UAT process successfully applied the patch and received approval (resulting in `actionState` of `SUCCESS`).*
 - **Final Notifications:** The flow concludes with tasks (`logResult`, `notifyResult`) that use Kestra's output mapping to generate a comprehensive result log and send a Slack notification with patch status for both UAT and Production VMs.
 
@@ -42,7 +46,7 @@ In the **`patchVM`** subflow, after the patch is successfully applied (`checkSuc
 
 1. **Notification:** A Slack notification (`notifyChannel`) immediately informs the team that the UAT VM has been patched. This notification includes a dynamic link to the Kestra execution: `[Here]({{ appLink() }})`.
     
-    ![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/image%202.png)
+    ![Slack Notification](/blog/uat-prod-vm-patching/slack-notification.png)
     
 2. **Pause for Approval:** The flow reaches the **`waitForApproval`** task, a `io.kestra.plugin.ee.flow.HumanTask`.
     - This task **pauses the workflow** right after the UAT patch.
@@ -51,8 +55,7 @@ In the **`patchVM`** subflow, after the patch is successfully applied (`checkSuc
         - `approvePatch` (Type: `BOOL`): The critical **Approve/Reject** switch.
         - `reason` (Type: `STRING`): A required field for documenting the decision.
     
-    ![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/image%203.png)
-    
+    ![App Approval](/blog/uat-prod-vm-patching/app-approval.png)
 
 This mechanism transforms a manual, often email-based approval process into a **simple, self-documenting step within the automated workflow.**
 
@@ -64,22 +67,26 @@ Kestra ensures your patching process isn't a one-way street, it's designed to be
 
 - **Patch Execution:** The `patchVM` task uses the SSH plugin to securely connect to the VM and execute patching commands (`apt install -y ...`).
 - **Conditional Rollback:** The `rollBackIfRequired` task defines rollback conditions with a clear expression:
-`condition: "{{ outputs.patchVM.exitCode != 0 or outputs.waitForApproval.onResume.approvePatch == false }}"`
+
+```yaml
+condition: "{{ outputs.patchVM.exitCode != 0 or outputs.waitForApproval.onResume.approvePatch == false }}"
+```
+
 A rollback executes if:
     1. The patch **failed** (`patchVM.exitCode != 0`).
     2. The patch succeeded but the operator **rejected** it (`approvePatch == false`).
 - **Rollback Action:** If the condition is met, the `rollBackVM` task executes the SSH command to reinstall the old package version, rolling back to the previous working state. The old version number is extracted from the `patchId` input string using JINJA templating.
 - **Clear Outputs:** The subflow uses `OutputValues` and the `outputs` section to report the action taken (`PATCH` or `ROLLBACK`) and the final state (`SUCCESS` or `FAILED`). The main `patchOrchestration` flow uses these outputs for conditional logic.
 
-![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/223be655-4230-4f24-9bfd-7ba8ac7924d2.png)
+![CheckSuccess Topology](/blog/uat-prod-vm-patching/checkSuccess-topology.png)
 
-![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/88891f18-3097-4395-be2f-06998633a0c8.png)
+![Rollback Topology](/blog/uat-prod-vm-patching/rollback-topology.png)
 
 By abstracting infrastructure complexity into simple YAML definitions and introducing a seamless human approval gate, Kestra makes what was once a complicated, error-prone patching process **reliable, transparent, and easy to manage.**
 
-![image.png](Blog%20Automated,%20Approved,%20and%20Audited%20Patching%20wit/image%204.png)
+![VM Patch Orchestration](/blog/uat-prod-vm-patching/vm-patch-orchestration.png)
 
-Sample Flow Codes
+:::collapse{title="Sample Flow Code"}
 
 - `patchOrchestration`
     
@@ -98,7 +105,7 @@ Sample Flow Codes
         displayName: Name of the Prod VM
       - id: patchId
         type: SELECT
-        expression: "{{ kv('approvedPacthes') }}"
+        expression: "{{ kv('approvedPatches') }}"
         defaults: "apt/focal-updates 2.0.11 amd64 [upgradable from: 2.0.10]"
         displayName: Select the Patch to be applied
     tasks:
@@ -177,7 +184,6 @@ Sample Flow Codes
         value: infra
       - key: maintainer
         value: fqazi@kestra.io
-    
     ```
     
 - `patchVM`
@@ -222,17 +228,17 @@ Sample Flow Codes
             type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
             url: "{{ secret('slackWebhook') }}"
             messageText: |
-              Patch: **{{ inputs.patchId }}** has been succesfully applied on {{ inputs.vmType | upper  }} VM: **{{ inputs.vmName }}**. 
+              Patch: **{{ inputs.patchId }}** has been successfully applied on {{ inputs.vmType | upper  }} VM: **{{ inputs.vmName }}**. 
               
               Please validate and approve the patch {% if inputs.vmType == 'uat'%}to production VM {% endif %}or rollback.
               Approve/Reject: [Here]({{ appLink() }}) 
     
           - id: waitForApproval
             type: io.kestra.plugin.ee.flow.HumanTask
-                assignment:
-                  users:
-                    - it-admin@company.com
-                    - infrastructure-lead@company.com
+            assignment:
+              users:
+                - it-admin@company.com
+                - infrastructure-lead@company.com
             onResume:
               - id: approvePatch
                 description: Whether to approve the patch
@@ -279,7 +285,7 @@ Sample Flow Codes
         value: "{{ outputs.rollBackIfRequired.evaluationResult == true ? outputs.rollBackState.values.reason : outputs.patchState.values.reason }}"
       - id: actionCause
         type: STRING
-        value: "{{ outputs.waitForApproval.onResume.reason ?? 'Patching Failed. Not went for approval.' }}"
+        value: "{{ outputs.waitForApproval.onResume.reason ?? 'Patching failed before the approval step.' }}"
       - id: vmName
         type: STRING
         value: "{{ inputs.vmName }}"
@@ -295,11 +301,11 @@ Sample Flow Codes
         value: infra
       - key: maintainer
         value: fqazi@kestra.io
-    
     ```
+:::
     
 
-Sample App Codes
+:::collapse{title="Sample App Code"}
 
 - `company_team_patchOrchestration`
     
@@ -378,3 +384,4 @@ Sample App Codes
           - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm
           - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton
     ```
+:::
