@@ -46,9 +46,6 @@
                             @update:current-page="changePage"
                             v-if="totalPages > 1"
                         />
-                        <div class="d-flex align-items-baseline">
-                            <span class="total-pages">Total: {{ totalGroups }}</span>
-                        </div>
                     </div>
                 </div>
             </div>

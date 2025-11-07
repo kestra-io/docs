@@ -6,21 +6,27 @@ topics:
   - Kestra Concepts
 ---
 
-How you can use secrets in various Kestra use cases.
+Learn how to securely configure and use secrets in Kestra.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What are Secrets
+## What are secrets
 
-Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../05.concepts/04.secret.md) documentation page. Through this guide, we'll show you how to add secrets to your Kestra server by providing a `.env` file to the server.
+Secrets are sensitive values that should not be exposed in plain text, such as passwords, API tokens, access keys, or other confidential information.  
+For a detailed overview, see the [Secrets](../05.concepts/04.secret.md) documentation.
 
-If you're looking for a much easier experience for managing secrets directly in the Kestra UI, you should check out the [Enterprise Edition](/enterprise) where you can manage secrets by namespaces seamlessly without needing to touch the server configuration.
+This guide demonstrates how to add secrets to your Kestra server using an environment file (`.env`).  
+If you prefer a simpler, UI-based experience, check out the [Enterprise Edition](/enterprise), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
 
-## Using Secrets in Kestra
+---
 
-While using secrets with any application, you put together all the secret values in an environment file. Lets have these variables in an environment file named `.env`. This is how the contents of the file would be:
+## Using secrets in Kestra
+
+### Step 1: Create a `.env` file
+
+Start by defining your secrets in a standard environment file:
 
 ```
 POSTGRES_PASSWORD=actual_postgres_password
@@ -29,7 +35,10 @@ AWS_ACCESS_KEY=actual_aws_access_key
 AWS_SECRET_KEY=actual_aws_secret_key
 ```
 
-When using the secrets in Kestra, it expects the keys to be prefixed with `SECRET_` and values to be base64 encoded. So, we want to convert the `.env` file contents into something like:
+### Step 2: Encode and prefix your secrets
+
+Kestra expects all secret keys to be **prefixed with `SECRET_`** and their values **base64-encoded**.  
+The resulting `.env_encoded` file should look like this:
 
 ```
 SECRET_POSTGRES_PASSWORD=base64_encoded_postgres_password
@@ -38,19 +47,7 @@ SECRET_AWS_ACCESS_KEY=base64_encoded_aws_access_key
 SECRET_AWS_SECRET_KEY=base64_encoded_aws_secret_key
 ```
 
-Lets say we save these contents into `.env_encoded` file.
-
-This can be achieved by manually changing the keys to be prefixed with `SECERT_`, and getting the base64 encoded values by using `base64` command in shell as follows:
-
-```sh
-echo -n "actual_postgres_password" | base64
-```
-
-But there are some easy ways to do this. One way is to use the bash script for converting `.env` file into the desired format. The bash script will perform the following actions:
-
-1. Encode all values using base64-encoding.
-2. Add a SECRET_ prefix to all environment variable names.
-3. Store the result into `.env_encoded` file.
+To generate this file automatically, use the following Bash script:
 
 ```bash
 while IFS='=' read -r key value; do
@@ -58,16 +55,14 @@ while IFS='=' read -r key value; do
 done < .env > .env_encoded
 ```
 
-The newly generated `.env_encoded` file should look as follows:
+This script:
+1. Base64-encodes all values.
+2. Adds the `SECRET_` prefix to all variable names.
+3. Saves the result as `.env_encoded`.
 
-```
-SECRET_POSTGRES_PASSWORD=base64_encoded_postgres_password
-SECRET_OPENAI_KEY=base64_encoded_openai_key
-SECRET_AWS_ACCESS_KEY=base64_encoded_aws_access_key
-SECRET_AWS_SECRET_KEY=base64_encoded_aws_secret_key
-```
+You can verify the output by opening `.env_encoded` — it should look like the example above.
 
-Yet another way to achieve this is by manually appending `SECRET_` to keys, but using macros for converting password into base64 encoded format. So, the `.env` file contents can be modified into the following and saved in `.env_encoded` file:
+Alternatively, you can manually write the file using macros to encode secrets dynamically:
 
 ```
 SECRET_POSTGRES_PASSWORD={{ "actual_postgres_password" | base64encode }}
@@ -76,16 +71,28 @@ SECRET_AWS_ACCESS_KEY={{ "actual_aws_access_key" | base64encode }}
 SECRET_AWS_SECRET_KEY={{ "actual_aws_secret_key" | base64encode }}
 ```
 
-Now, you can change the contents of the docker-compose.yaml file to point to the correct environment file that has the keys prefixed with `SECRET_`, and values in base64 encoded format. Lets say that file is named `.env_encoded`, then the docker-compose.yaml file will look like:
+---
+
+### Step 3: Point Docker to the encoded file
+
+Update your `docker-compose.yaml` to use the `.env_encoded` file:
 
 ```yaml
-  kestra:
-    image: kestra/kestra:latest
-    env_file:
-      - .env_encoded
+kestra:
+  image: kestra/kestra:latest
+  env_file:
+    - .env_encoded
 ```
 
-Let us use these secrets in a Kestra flow. In the following Kestra flow, we will first connect with PostgresDB using the `SECRET_POSTGRES_PASSWORD`, and query the data from the database. Then, we will dump the resulting output into AWS S3 using `SECRET_AWS_ACCESS_KEY` and `SECRET_AWS_SECRET_KEY`.
+This ensures your secrets are loaded when Kestra starts.
+
+---
+
+### Step 4: Use secrets in a flow
+
+Once your secrets are loaded, reference them in your flows using the `secret()` function — **without** including the `SECRET_` prefix.
+
+For example, this flow connects to PostgreSQL using `SECRET_POSTGRES_PASSWORD` and uploads query results to AWS S3 using `SECRET_AWS_ACCESS_KEY` and `SECRET_AWS_SECRET_KEY`.
 
 ```yaml
 id: postgres_to_s3
@@ -101,7 +108,7 @@ tasks:
     fetchType: STORE
 
   - id: write_to_s3
-    type: "io.kestra.plugin.aws.s3.Upload"
+    type: io.kestra.plugin.aws.s3.Upload
     accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
     region: "eu-central-1"
@@ -110,4 +117,13 @@ tasks:
     key: "data/users.csv"
 ```
 
-As can be seen from the example above, while using secrets in the Kestra flow, we do NOT prefix `SECRET_`. We directly use the key as follows: `{{ secret('POSTGRES_PASSWORD') }}`. This syntax will refer to the corresponding `SECRET_` prefixed variable from the environment file, will base64 decode the value of that variable, and will thus get the correct password for use.
+---
+
+### How secrets are resolved
+
+When you reference a secret using `{{ secret('POSTGRES_PASSWORD') }}`, Kestra automatically:
+1. Finds the corresponding environment variable (e.g., `SECRET_POSTGRES_PASSWORD`).
+2. Base64-decodes its value.
+3. Injects it securely into the execution context.
+
+This ensures your sensitive data stays encrypted at rest and never appears in logs or flow definitions.

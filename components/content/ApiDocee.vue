@@ -25,5 +25,12 @@
     rapi-doc {
         background: transparent;
         width: 100%;
+        --textarea-height: auto;
+        --textarea-min-height: 100px;
+        --code-block-max-height: 600px;
+
+        &::part(section-endpoint) {
+            white-space: nowrap;
+        }
     }
 </style>
