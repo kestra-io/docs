@@ -82,6 +82,8 @@ export default defineNuxtConfig({
                 'connect-src': [
                     "'self'",
                     'https://www.google.com',
+                    'https://pixel-config.reddit.com',
+                    'https://www.redditstatic.com',
                     "https://kestra.io",
                     "https://api.kestra.io",
                     'https://unpkg.com/',
