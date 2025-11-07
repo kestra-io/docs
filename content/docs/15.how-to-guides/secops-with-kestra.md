@@ -22,14 +22,18 @@ This how-to shows how to operationalize SecOps benchmarks with Kestra. You will 
 1. Go to [https://downloads.cisecurity.org/#/](https://downloads.cisecurity.org/#/) and download the **CIS_Ubuntu_Linux_24.04_LTS_Benchmark_v1.0.0** (or the benchmark that matches your OS).
 2. Review the controls you plan to enforce and note the recommended settings.
 
-![Benchmark download placeholder](./images/secops-benchmark.png)
+![Benchmark download placeholder](/docs/how-to-guides/secops-with-kestra/secops-benchmark.png)
 
 ## Step 2: Define the Namespace and Settings Structure
 
 1. Decide how to segment namespaces per team or environment. Examples:
    - `company.security.cis.linux.ubuntu.22-04-lts.devops`
    - `company.security.cis.linux.ubuntu.22-04-lts.dataeng`
-2. Create settings (KV pairs) for every control you want to validate. For instance, controls under section **1.6** can be stored by following this hierarchy:
+2. Create settings (KV pairs) for every control you want to validate. For instance, controls under section **1.6**:
+
+![Configure Command Line Warning Banners](/docs/how-to-guides/secops-with-kestra/command-line-warning-banners.png)
+
+And they can be stored by following this hierarchy:
 
 ```text
 1
@@ -44,7 +48,7 @@ This how-to shows how to operationalize SecOps benchmarks with Kestra. You will 
 3. Use consistent KV naming so any flow can dynamically fetch a control setting. Example naming convention: `control-1-1_6-1_6_4` for control **1.6.4**.
 4. Store the recommended permission string or configuration snippet for each control. Control 1.6.4, for example, ensures `/etc/motd` permissions follow security guidance.
 
-![KV structure placeholder](./images/secops-kv-structure.png)
+![KV structure placeholder](/docs/how-to-guides/secops-with-kestra/secops-kv-structure.png)
 
 Repeat this process for every control you intend to enforce. The walkthrough below focuses on 1.6.4, 1.6.5, and 1.6.6.
 
@@ -53,7 +57,9 @@ Repeat this process for every control you intend to enforce. The walkthrough bel
 1. Add secrets for the SSH username (`vmUser`) and private key (`vmKey`) used to connect to the VM.
 2. Store any additional secrets (for example, webhook secrets) you will reference in flows and triggers.
 
-![Secrets list placeholder](./images/secops-secrets.png)
+![vmKey Secret](/docs/how-to-guides/secops-with-kestra/vmKey-secret.png)
+
+![vmUser Secret](/docs/how-to-guides/secops-with-kestra/vmUser-secret.png)
 
 ## Step 4: Model the Parent Flow
 
@@ -65,7 +71,7 @@ Start → Execute Control 1.6.4 → Assess Compliance
 → If not compliant → Remediate → Re-assess → Next control
 ```
 
-![Flow overview placeholder](./images/secops-flow-overview.png)
+![Flow Topology](/docs/how-to-guides/secops-with-kestra/flow-topology.jpeg)
 
 ## Step 5: Create Reusable Control Subflows
 
@@ -228,31 +234,37 @@ triggers:
 
 Each control runs in parallel but only one at a time because `concurrent: 1`. This makes it easy to rerun non-compliant controls individually without re-running the entire benchmark.
 
-![Topology placeholder](./images/secops-topology.png)
+![Trigger Topology placeholder](/docs/how-to-guides/secops-with-kestra/trigger-topology.png)
 
 ## Demo
 
 1. **Execute the flow.** Observe the initial compliance check.
    
-   ![Flow execution placeholder](./images/secops-demo-run.png)
+   ![Flow execution](/docs/how-to-guides/secops-with-kestra/execute-flow.png)
+
 2. **Check the results.** Review the compliance summary.
    
-   ![Result summary placeholder](./images/secops-demo-summary.png)
+   ![Result summary](/docs/how-to-guides/secops-with-kestra/result-summary.png)
+
 3. **Inspect the subflow.** Confirm whether the VM was already compliant.
    
-   ![Subflow placeholder](./images/secops-demo-subflow.png)
+   ![Subflow placeholder](/docs/how-to-guides/secops-with-kestra/subflow-summary.png)
+
 4. **Force a drift.** Change the VM setting for control `1_6_5` (for example, from `644` to `664`).
    
-   ![Permission change placeholder](./images/secops-demo-change.png)
+   ![Permission change](/docs/how-to-guides/secops-with-kestra/permission-change.png)
+
 5. **Retrigger only control `1_6_5`.**
    
-   ![Retrigger placeholder](./images/secops-demo-retrigger.png)
+   ![Retrigger](/docs/how-to-guides/secops-with-kestra/retrigger.png)
+
 6. **Review the logs.** Verify that remediation executed for `1_6_5`.
    
-   ![Remediation logs placeholder](./images/secops-demo-logs.png)
+   ![Remediation logs](/docs/how-to-guides/secops-with-kestra/remediation-logs.png)
+
 7. **Validate the VM permissions.** Confirm they returned to `644`.
    
-   ![Permission validation placeholder](./images/secops-demo-validate.png)
+   ![Permission validation placeholder](/docs/how-to-guides/secops-with-kestra/permission-validation.png)
 
 ## Result
 
