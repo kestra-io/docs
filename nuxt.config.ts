@@ -81,6 +81,9 @@ export default defineNuxtConfig({
                 ],
                 'connect-src': [
                     "'self'",
+                    'https://www.google.com',
+                    "https://kestra.io",
+                    "https://api.kestra.io",
                     'https://unpkg.com/',
                     'https://cdn.jsdelivr.net',
                     'https://www.youtube.com',
