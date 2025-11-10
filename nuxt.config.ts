@@ -1,5 +1,6 @@
 import * as sass from "sass";
 import { CollectionNames } from "./content.config.names";
+import contentSecurityPolicy from "./content-security-policy.config";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -29,62 +30,7 @@ export default defineNuxtConfig({
                 fullscreen: ['*'],
             },
             // ✅ CSP directives
-            contentSecurityPolicy: {
-                // hardening
-                'base-uri': ["'none'"],
-                'object-src': ["'none'"],
-                'script-src-attr': ["'unsafe-inline'"],
-                // scripts
-                'script-src': [
-                    "'self'",
-                    "'nonce-{{nonce}}'",
-                    "'strict-dynamic'",
-                    "'wasm-unsafe-eval'", 
-                ],
-                // styles & fonts
-                'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-                'font-src': ["'self'", 'https:', 'data:'],
-                // images
-                'img-src': [
-                    "'self'",
-                    'data:',
-                    'blob:',
-                    "https://*.google.fr",
-                    "https://*.google.com",
-                    "https://*.ads.linkedin.com",
-                    "https://*.reddit.com",
-                    "https://*.hubspot.com",
-                    "https://*.hsforms.com",
-                    "https://*.googleapis.com",
-                    "https://i.ytimg.com",
-                ],
-                // iframes
-                'frame-src': [
-                    "'self'",
-                    "https://*.youtube.com",
-                    "https://*.googletagmanager.com",
-                ],
-                'connect-src': [
-                    "'self'",
-                    "ws://localhost:*",
-                    "https://api.kestra.io",
-                    "https://kestra.io",
-                    "https://*.google.com",
-                    "https://*.reddit.com",
-                    "https://*.redditstatic.com",
-                    "https://*.hubspot.com",
-                    "https://*.hubapi.com",
-                    "https://*.cr-relay.com",
-                    "https://*.ads.linkedin.com",
-                    "https://*.hsappstatic.net",
-                    "https://unpkg.com",
-                    "https://cdn.jsdelivr.net",
-                ],
-                // workers
-                'worker-src': ["'self'", 'blob:'],
-                // mixed content
-                'upgrade-insecure-requests': true,
-            },
+            contentSecurityPolicy
         },
     },
     image: {
