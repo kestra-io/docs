@@ -22,9 +22,6 @@ export default {
         pageNames: {
             type: Object,
         },
-        pageTitle: {
-            type: String,
-        }
     },
     methods: {
         breadcrumbLink(_item, index) {
@@ -54,7 +51,6 @@ export default {
 .slug {
     white-space: pre-wrap;
     width: 100%;
-    max-width: 45.8rem;;
     font-size: $font-size-sm;
     font-family: $font-family-sans-serif;
     font-weight: 400;

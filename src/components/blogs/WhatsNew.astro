@@ -6,11 +6,11 @@ const blogs = await getCollection('blogs')
 
 const recentBlogs = await Promise.all(blogs
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3)
+  .slice(0, 4)
   .map(async blog => ({
     path: `/blogs/${blog.id}`,
     ...blog.data,
-    image: blog.data.image.src,
+    image: blog.data.image,
   })))
 ---
 

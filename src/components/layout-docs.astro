@@ -5,6 +5,8 @@ import { getCollection } from "astro:content";
 import NavSideBar from "../../components/docs/NavSideBar.vue";
 import Layout from "./layout.astro";
 import { getNavigationTree } from "../utils/getNavigationTree";
+import Breadcrumb from "../../components/layout/Breadcrumb.vue";
+import { generatePageNames, recursivePages } from "~/utils/navigation";
 
 const docsPages = await getCollection('docs')
 
@@ -23,6 +25,9 @@ const navigation = [{
     children: getNavigationTree(docsPages)
 }]
 
+const pageList = recursivePages(navigation);
+const pageNames = generatePageNames(navigation);
+
 interface Props {
     activeStem: string,
     isHomePage?: boolean
@@ -34,7 +39,8 @@ const props = Astro.props;
 <Layout>
     <div class={`layout-docs-wrapper ${props.isHomePage ? 'homepage' : ''}`}>
         <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
-        <main class="bd-content">
+        <main class="bd-content container-fluid">
+            <Breadcrumb slug={props.activeStem} pageList={pageList} pageNames={pageNames} />
             <slot/>
         </main>
     </div>
@@ -43,15 +49,18 @@ const props = Astro.props;
 <style lang="scss">
     @import "../../assets/styles/variable";
     .layout-docs-wrapper {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-areas: "sidebar content";
+        grid-template-columns: 1fr 5fr;
         margin: 0;
         padding: 0;
+        margin-top: 3rem;
     }
     main {
         flex: 1;
         padding: 2rem;
         max-width: 100%;
+        margin-top: 3rem;
     }
     .bd-sidebar{
         min-width: 250px;
