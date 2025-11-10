@@ -10,16 +10,7 @@ import { generatePageNames, recursivePages } from "~/utils/navigation";
 
 const docsPages = await getCollection('docs')
 
-// transform the flat list of docsPages into a nested structure based on the '/' in the id
-
-// first sort the docsPages by depth (number of '/' in the id)
-docsPages.sort((a, b) => {
-    const aDepth = a.id.split('/').length;
-    const bDepth = b.id.split('/').length;
-    return aDepth - bDepth;
-});
-
-// then create a nested structure
+// create a nested structure
 const navigation = [{
     title: 'Documentation',
     children: getNavigationTree(docsPages)

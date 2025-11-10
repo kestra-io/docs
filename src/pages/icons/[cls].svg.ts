@@ -24,20 +24,20 @@ export async function GET({ params }: { params: { cls: string } }) {
   });
 }
 
-function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
-    for (const plugin of plugins || []) {
-        const entries = Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value)) as [string, any][];
-        for (const [key, sectionEntries] of entries) {
-            if (sectionEntries) {
-                for (const {cls} of sectionEntries.filter(({deprecated}: {deprecated: boolean}) => !deprecated)) {
-                    if(cls){
-                        allPluginsCls.add(cls);
-                    }
-                }
-            }
-        }
-    }
-}
+// function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
+//     for (const plugin of plugins || []) {
+//         const entries = Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value)) as [string, any][];
+//         for (const [key, sectionEntries] of entries) {
+//             if (sectionEntries) {
+//                 for (const {cls} of sectionEntries.filter(({deprecated}: {deprecated: boolean}) => !deprecated)) {
+//                     if(cls){
+//                         allPluginsCls.add(cls);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
 // export async function getStaticPaths() {
 //   const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
