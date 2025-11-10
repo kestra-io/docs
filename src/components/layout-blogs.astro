@@ -1,5 +1,4 @@
 ---
-import NavSideBar from "../../components/docs/NavSideBar.vue";
 import Updateletter from "../../components/layout/Updateletter.vue";
 import Layout from "./layout.astro";
 
@@ -11,14 +10,16 @@ const props = Astro.props;
 ---
 
 <Layout>
-    <div class={`layout-docs-wrapper`}>
+    <div class="layout-docs-wrapper">
         <main class="bd-content">
             <div class="container-fluid">
                 <div class="container">
                     <slot/>
                 </div>
             </div>
-            <div class="bottom"><Updateletter /></div>
+            <div class="bottom">
+                <Updateletter />
+            </div>
         </main>
     </div>
 </Layout>

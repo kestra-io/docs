@@ -35,7 +35,7 @@ const links = headings.map(h => ({
             <div class="bd-content">
             <div class="bd-title">
                 <p class="d-flex breadcrumb" data-aos="fade-right">
-                <a href="/">Home</a> / <a href="/blogs">Blog</a>
+                    <a href="/">Home</a>/<a href="/blogs">Blog</a>
                 </p>
                 <h2 data-aos="fade-left" class="pt-0">
                 {page.title}
@@ -62,3 +62,9 @@ const links = headings.map(h => ({
         )}
     </div>
 </LayoutBlogs>
+
+<style>
+    .breadcrumb a {
+        margin: 0 0.2rem;
+    }
+</style>
