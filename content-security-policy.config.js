@@ -73,7 +73,9 @@ export default {
         "https://*.hs-scripts.com",
         "https://*.hsforms.net",
         "https://*.hsforms.com",
-        "https://*.s3.amazonaws.com"
+        "https://*.s3.amazonaws.com",
+        "https://stats.g.doubleclick.net",
+        "https://stats.g.doubleclick.com"
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],
