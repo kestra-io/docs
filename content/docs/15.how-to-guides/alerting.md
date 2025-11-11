@@ -1,5 +1,5 @@
 ---
-title: Configure Alerts inside of Kestra
+title: Configure Alerts in Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,7 +7,7 @@ topics:
   - Kestra Concepts
 ---
 
-Configure alerts when workflow failures occurs.
+Configure alerts that fire whenever a workflow fails.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -15,26 +15,26 @@ Configure alerts when workflow failures occurs.
 
 ---
 
-Alerting is a crucial part to a production environment to ensure high uptime and reliability. Kestra makes this easy by having multiple ways you can add alerts to your workflows so you always know what’s going on.
+Alerting is essential to keeping production systems reliable. Kestra makes it easy with multiple ways to attach alerts to workflows so you always know what’s happening.
 
 ## Setting up Alerts in Kestra
 
-Kestra has a Notifications plugin group that has tasks for all your favorite platforms, like Slack, Teams and PagerDuty. This makes it really easy to configure them directly inside of your workflows.
+Kestra’s Notifications plugin group ships tasks for popular platforms such as Slack, Teams, and PagerDuty, making it straightforward to configure alerts directly inside workflows.
 
 ![notifications](/docs/how-to-guides/alerting/notifications.png)
 
-There’s 2 tasks for each of these platforms:
+Each platform exposes two task types:
 
-- **Execution Task**: that allows us to send execution information directly in the notification. This includes a link to the execution page in the UI as well as the execution ID, namespace, flow name, start date, duration and the final status of the execution.
-- **Send Task**: that allows us to send a custom message of our choice. This is useful if we want to send a more detailed status about a specific task or output.
+- **Execution task** – sends execution metadata directly in the notification, including a link to the run, ID, namespace, flow name, start time, duration, and final status.
+- **Send task** – sends a custom message, useful when you want to describe the state of a specific task or output.
 
-For this example, we’re going to use the `SlackExecution task to send us a detailed message about our execution.
+For this walkthrough we’ll use the `SlackExecution` task to send a detailed execution summary.
 
 ## `errors` property
 
-Now if we add this to our workflow, it will run this task every execution which isn’t helpful. We can use the `errors` block to allow us to run separate tasks only when our execution fails.
+If we add the task directly to a workflow, it runs every time—which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
 
-Just like the `tasks` block, we can define our `SlackExecution` task as below:
+Just like the `tasks` block, define `SlackExecution` under `errors`:
 
 ```yaml
 errors:
@@ -50,9 +50,9 @@ When executed, it looks like this in Slack:
 
 ## Subflows
 
-At the moment, we'll need to copy and paste this across all of our flows. This can get repetitive, as well as make it difficult to maintain. By using a Subflow, we can put all of our alert logic in one flow, and reference it in the flows which we want alerting.
+Copying that snippet into every flow is repetitive and hard to maintain. Instead, move the alerting logic into a Subflow and reference it from any workflow that needs alerts.
 
-The tasks underneath the `errors` block will be moved into their own Subflow. This wraps all the logic together into one task that we can call from `errors`. The benefit here is we can modify our alerting logic in one place for all of our workflows.
+Move the `errors` tasks into their own Subflow so the `errors` block only calls that subflow. Update the alert logic once and every consumer benefits.
 
 Subflow which contains the alert logic:
 
@@ -79,7 +79,7 @@ errors:
 
 ## Flow Trigger
 
-While our new method using a Subflow is neater and easier to maintain, we still have to write the same `error` block on every flow in order to have alerting. We can resolve this by using a **Flow Trigger** to automatically send alerts based on the execution status of workflows. This is much easier for being able to have all the alert logic in one place, without having to configure it to work for each workflow. By using the Trigger Conditions, we can fine tune the Flow Trigger to alert us in specific cases, such as when Executions finish with a FAILED or WARNING status. We could even setup separate Flow Triggers for different statuses.
+Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. Trigger conditions let you target specific states (for example, FAILED or WARNING), and you can define separate triggers per status if needed.
 
 ```yaml
 id: failure_alert_slack
@@ -103,4 +103,4 @@ triggers:
 
 ```
 
-With multiple ways to set up automatic alerting inside of Kestra, there's something for every use case.
+With multiple options for automatic alerting in Kestra, you can choose the level of centralization and customization that fits each use case.
