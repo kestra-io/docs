@@ -5,7 +5,7 @@
                 Trusted by Industry Leaders
             </h2>
             <div
-                v-for="(img, index) in shuffledCompanies?.slice(0, 20)"
+                v-for="(img, index) in logos?.slice(0, 20)"
                 :key="img.name"
                 class="logo-box"
                 :class="{'hide-small': index > 17}"
@@ -17,22 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-const companies = import.meta.glob('~/public/landing/home/trusted-companies/*.svg', {
-    import: "default",
-    query: 'url',
-})
-
-const {data: shuffledCompanies} = await useAsyncData(() => {
-    // get all svg/png files in the /public/landing/companies folder
-    return Promise.all(Object.entries(companies).map(([filePath, mod]) => {
-        return mod().then((img: any) => {
-            return {
-                name: filePath.split('/').pop()?.split('.').shift(),
-                url: img,
-            }
-        })
-    })).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
-})
+defineProps<{
+    // list of companies with name and logo url
+    logos: Array<{
+        name: string;
+        url: string
+    }>
+}>()
 </script>
 
 <style lang="scss" scoped>

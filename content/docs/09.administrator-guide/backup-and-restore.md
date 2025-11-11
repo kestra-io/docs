@@ -25,14 +25,6 @@ kestra backups create FULL
 
 `FULL` backs up the entire instance. To back up a single tenant (when multi-tenancy is enabled), use `TENANT`. In `TENANT` mode, only the selected tenant’s data is included (global users/tenants are excluded).
 
-Alternatively, you can also create a backup of only specific resources by using the `--resources` flag in the command. For example, to only create a backup of the [KV Store](../05.concepts/05.kv-store.md), use:
-
-```bash
-kestra backups create --resources KV_STORE
-```
-
-Other resources include: `FLOW`, `NAMESPACE_FILE`, `TRIGGER`, `LOG`, `SECRET`, and more.
-
 By default, backups are encrypted with the embedded Kestra encryption key. You can change this behavior with:
 
 - `--tenant` (for `TENANT` backups): the tenant name to back up. Defaults to the “default” tenant.

@@ -53,6 +53,7 @@ const changePage = () => {
     window.scrollTo(0, 0)
     fetchPageData()
 }
+
 const fetchPageData = () => {
     emits('fetchPageData', { currentPage: currentPage.value, itemsPerPage: itemsPerPage.value })
 }

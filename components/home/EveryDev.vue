@@ -44,6 +44,7 @@
 
 <script setup>
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
+import HomeCard from './Card.vue';
 </script>
 
 

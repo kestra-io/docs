@@ -1,0 +1,49 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "@kestra-io/ui-libs/style.css";
+import "../../assets/styles/vendor.scss";
+import "../../assets/styles/app.scss";
+import Header from "../../components/layout/Header.vue";
+import LayoutFooter from "../../components/layout/Footer.vue";
+import LayoutFixed from "../../components/layout/Fixed.vue";
+
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const props = Astro.props;
+
+const title = props.title ?? "Kestra, Open Source Declarative Data Orchestration";
+const description = props.description ?? "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
+---
+
+
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <Header client:load />
+    <slot />
+    <LayoutFooter />
+    <LayoutFixed />
+    <script>
+      import AOS from "aos";
+      setTimeout(() => {
+        AOS.init();
+      }, 300);
+    </script>
+  </body>
+</html>

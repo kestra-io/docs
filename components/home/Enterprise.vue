@@ -1,9 +1,18 @@
 <template>
     <section class="home-enterprise">
         <HomeEnterpriseHeaderBox />
-        <HomeEnterpriseStories />
+        <HomeEnterpriseStories :stories />
     </section>
 </template>
+
+<script setup lang="ts">
+import HomeEnterpriseHeaderBox from "./EnterpriseHeaderBox.vue"
+import HomeEnterpriseStories, { type Story } from "./EnterpriseStories.vue"
+
+defineProps<{
+    stories: Story[]
+}>()
+</script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";

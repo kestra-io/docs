@@ -29,11 +29,10 @@
                             class="plugin-index"
                             :icons="icons"
                             :plugins="pluginsWithoutDeprecated"
-                            :plugin-name="pluginName ?? '<plugin>'"
+                            :plugin-name="pluginName"
                             :sub-group="subGroup"
-                            :route-path="route.path"
-                >
-                    <template v-slot:markdown="{ content }">
+                            :route-path="route.path">
+                    <template #markdown="{ content }">
                         <MDC :value="content">
                             <template #default="mdcProps">
                                 <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>

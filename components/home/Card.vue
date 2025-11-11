@@ -6,6 +6,7 @@
 
 <script lang="ts" setup>
 import {useMouse} from "@vueuse/core"
+import { ref, watch } from "vue"
 
 const box = ref<HTMLDivElement | null>(null)
 const {x:absX, y:absY} = useMouse()

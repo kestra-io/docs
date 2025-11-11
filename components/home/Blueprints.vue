@@ -1,14 +1,5 @@
 <template>
-    <section>
-        <div class="container">
-            <h2><span>250+ Blueprints,</span> Ready to Build.</h2>
-            <p>Jump start your workflows with a growing library of workflow templates</p>
-        </div>
-        <HomeBlueprintsCarousel :blueprints="blueprints" />
-        <div class="button-container">
-            <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
-        </div>
-    </section>
+    <HomeBlueprintsRender :blueprints />
 </template>
 
 <script lang="ts" setup>

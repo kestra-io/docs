@@ -21,7 +21,9 @@
 </template>
 
 <script>
+    import CommonTaskIcon from "../common/TaskIcon.vue"
     export default {
+        components: { CommonTaskIcon },
         props: {
             blueprint: {
                 type: Object,

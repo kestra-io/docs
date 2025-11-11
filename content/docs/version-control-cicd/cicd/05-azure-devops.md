@@ -5,35 +5,28 @@ icon: /docs/icons/dev.svg
 
 How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
-## Setup an Azure DevOps pipeline
+## Setup an Azure DevOps Pipeline
 
-Azure DevOps allows you to automate the validation and deployment of your Kestra flows using YAML-based pipelines. Follow the steps below to configure a simple Terraform-based CI/CD setup.
-
-### 1. Connect to your repository
-
-First, connect your pipeline to a code repository such as **GitHub**, **Azure Repos Git**, or **Bitbucket**.
+1. To create an Azure Devops Pipeline, first connect to your code repository. You can choose from several providers such as GitHub, Azure Repos Git or Bitbucket.
 
 ![az-devops-image-repo](/docs/developer-guide/ci-cd/az-devops-image-repo.png)
 
-### 2. Select your repository
 
-Choose the repository where your Kestra flows are stored.
+2. Then, choose the repository where your Kestra flows are located.
 
-### 3. Configure your pipeline
 
-Start with a minimal pipeline template or an existing configuration.
+3. Start with a minimal pipeline template or use an existing one.
 
 ![az-devops-image-config](/docs/developer-guide/ci-cd/az-devops-image-config.png)
 
-### 4. Example pipeline
 
-Below is a complete example of a Terraform pipeline that validates and deploys Kestra resources.
+4. Consider the following pipeline:
 
 ```yaml
 trigger:
-  branches:
-    include:
-      - main
+ branches:
+   include:
+     - main
 
 pool:
   name: test-pool
@@ -68,27 +61,23 @@ stages:
               environmentServiceNameAWS: 'aws_s3'
 ```
 
-### How it works
+- The pipeline is triggered whenever the `main` branch is updated, so when you merge a PR into the `main` branch, the pipeline will run
 
-- The pipeline runs automatically whenever the **`main`** branch is updated (for example, after merging a pull request).  
-- The **pool** defines the agent that runs your pipeline. For setup details, refer to the [Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser).  
-- The **Terraform extension** manages installation, validation, and deployment of Terraform resources.
+- Choose a pool created beforehand. Check the [official Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser) to create and manage agent pools
 
-To install the Terraform extension, navigate to **Organization Settings → Extensions**, then browse the Marketplace to install it.
+- Use the Terraform extension to install, validate, and apply Terraform resources. You can install the Terraform extension task by navigating to the Organization Settings > Extensions and then browse the marketplace to install the Terraform extension.
 
 ![image-terraform](/docs/developer-guide/ci-cd/az-devops-image-terraform.png)
 
-### Task breakdown
+The first task is to use the `TerraformInstaller@1` to install Terraform when the pipeline runs. Then, we use the `TerraformTaskV4@4`` three times:
 
-This pipeline includes one installation step and three Terraform tasks:
+1. run the `init`` command. Here, we use an AWS S3 bucket for the Terraform backend, but you can use either Azure RM backend, AWS, or GCP
 
-1. **Install Terraform** — The `TerraformInstaller@1` task installs Terraform at runtime.  
-2. **Initialize Terraform** — The first `TerraformTaskV4@4` runs the `init` command. In this example, the backend uses an AWS S3 bucket, but you can use Azure RM, AWS, or GCP.  
-3. **Validate configuration** — The second task runs the `validate` command to ensure the configuration is correct.  
-4. **Apply changes** — The final task executes the `apply` command to deploy your Terraform-managed resources.
+2. run the `validate`` command, which will check whether the configuration is syntactically valid and internally consistent
+
+3. run the `apply`` command to execute the actions proposed in the Terraform plan
+
 
 ![image-green-pipeline](/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
 
----
-
-For more details, refer to the [Kestra Terraform provider documentation](../../13.terraform/index.md).
+You can find the specification of the [Kestra Terraform provider in the corresponding documentation](../../13.terraform/index.md)

@@ -24,11 +24,8 @@
                 href: "/favicon-192x192.png",
             },
         ],
-        titleTemplate: (titleChunk) => {
-            return titleChunk &&
-                titleChunk != "Kestra, Open Source Declarative Data Orchestration"
-                ? `${titleChunk}`
-                : "Kestra, Open Source Declarative Data Orchestration";
+        titleTemplate: (titleChunk: string | undefined) => {
+            return titleChunk ?? "Kestra, Open Source Declarative Data Orchestration";
         },
     });
 </script>
