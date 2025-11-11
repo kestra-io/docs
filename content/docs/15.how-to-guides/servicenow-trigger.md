@@ -6,6 +6,8 @@ topics:
   - Integrations
 ---
 
+Execute Kestra flows with a ServiceNow webhook trigger.
+
 ## Overview
 
 ServiceNow often acts as the front door for enterprise automation. This guide shows how to let analysts request an on-demand compliance scan from a ServiceNow catalog item while Kestra executes the workflow behind the scenes through a webhook trigger.
