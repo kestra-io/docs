@@ -240,7 +240,7 @@ Each control runs in parallel but only one at a time because `concurrent: 1`. Th
 
 1. **Execute the flow.** Observe the initial compliance check.
    
-   ![Flow execution](/docs/how-to-guides/secops-with-kestra/execute-flow.png)
+   ![Flow execution](/docs/how-to-guides/secops-with-kestra/flow-execution.png)
 
 2. **Check the results.** Review the compliance summary.
    
