@@ -10,15 +10,15 @@ author:
 image: /blogs/kestra-performance-1-1.jpg
 ---
 
-In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), we optimized MySQL queries, scaled worker threads, and fine-tuned Kafka Streams. Version 1.1 continues that momentum, focusing on query efficiency in large deployments and faster purge operations that keep storage tidy without impacting throughput.
+In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), we optimized MySQL queries, scaled worker threads, and fine-tuned Kafka Streams. Version 1.1 continues that momentum with upgrades that matter most at enterprise scale: better MySQL query planning so dashboards stay responsive and a faster purge pipeline so routine maintenance doesn’t slow you down.
 
 ## MySQL query improvements with the help of Xiaomi
 
 [Lw-Yang](https://github.com/lw-yang) from Xiaomi contributed significant improvements to our MySQL queries on the `executions` table.
 
-In Kestra, we use soft delete for most tables via a boolean `deleted` column. When listing tables, we filter out deleted records with `WHERE deleted = false`, but when the API allowed listing deleted records, we didn’t add any clause. In MySQL, this resulted in full table scans because all of our indexes start with `deleted` and the optimizer requires the leftmost index column to participate in the query.
+Kestra relies on soft deletes via a boolean `deleted` column. We normally filter with `WHERE deleted = false`, but when the API allowed listing both deleted and non-deleted rows we omitted the clause. Because every relevant index begins with `deleted`, MySQL fell back to full table scans.
 
-By adding `WHERE deleted in (true, false)` we now keep the optimizer happy and avoid the full scan.
+Adding `WHERE deleted IN (true, false)` keeps the optimizer aligned with the index definition and prevents the scan altogether.
 
 At Xiaomi's scale (>2M records in the `executions` table), query execution time dropped from 63 seconds to 8 milliseconds!
 
@@ -28,9 +28,9 @@ Check out [PR #12181](https://github.com/kestra-io/kestra/pull/12181) for more d
 
 ## Purge task improvements
 
-The `PurgeExecutions` task removes executions and their associated logs, metrics, and files. Previously, it listed executions to purge, then deleted related artifacts one by one before removing each execution. At large volume, this approach was slow.
+The `PurgeExecutions` task removes executions plus their logs, metrics, and files. Previously it followed a linear process—list executions to purge, delete each execution’s artifacts one by one, then delete the executions themselves—which dragged at high volume.
 
-The task now uses bulk deletes for logs and metrics, cutting purge time by roughly 2.5x on average and dramatically reducing maintenance windows.
+Now the task uses bulk deletes for logs and metrics before removing executions, cutting purge time by roughly 2.5x on average and dramatically reducing maintenance windows.
 
 Check out [PR #11685](https://github.com/kestra-io/kestra/pull/11685) for more details.
 
