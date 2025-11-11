@@ -27,7 +27,6 @@ This guide assumes the existence of a flow like in our [SecOps with Kestra guide
 - A reusable ServiceNow Action that calls the Kestra webhook
 - A Flow Designer flow that ties the catalog submission to the Action
 
-Add the screenshots referenced below once they are available; placeholders have been left in the Markdown for convenience.
 
 ## Step 1: Create the Catalog Item
 
