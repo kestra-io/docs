@@ -89,14 +89,14 @@ jobs:
           fi
 
       - name: upload docs.html to artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: docs.html
           path: docs.html
 
       - name: upload blogs.html to artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: blogs.html
