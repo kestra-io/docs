@@ -7,7 +7,7 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/kestra-performance-1-1.jpg
+image: /blogs/kestra-performance-1-1.png
 ---
 
 In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), we optimized MySQL queries, scaled worker threads, and fine-tuned Kafka Streams. Version 1.1 continues that momentum with upgrades that matter most at enterprise scale: better MySQL query planning so dashboards stay responsive and a faster purge pipeline so routine maintenance doesn’t slow you down.
