@@ -88,7 +88,7 @@ If you use Docker, change the [Docker image tag](https://hub.docker.com/r/kestra
 
 ### Docker Compose
 
-If you use Docker Compose, update your compose file to the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker-compose up -d` to restart the container(s).
+If you use Docker Compose, update your compose file to the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker compose up -d` to restart the container(s).
 
 ## Migration in Kubernetes using Helm
 
