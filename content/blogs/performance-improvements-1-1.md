@@ -25,7 +25,7 @@ Kestra uses **soft deletes** a boolean `deleted` column marks an execution as re
 The impact of this change is enormous. At Xiaomi’s scale (with over **2 million** execution records), a representative query that previously took **63 seconds** now completes in about **8 milliseconds**: literally **thousands of times faster**! This improvement makes Kestra’s **executions dashboard** and related API endpoints *feel instantaneous*, whereas before they could time out or stall under heavy data loads. It’s a testament to how a one-line change guided MySQL’s planner to do the right thing.
 
 :::alert{type="info"}
-Huge thanks to **lw-yang** and the Xiaomi team for identifying and contributing this fix. It’s a perfect example of open-source collaboration helping Kestra run better at scale! For more technical details on this change, Check out [PR #12181](https://github.com/kestra-io/kestra/pull/12181) for more details.
+Huge thanks to **lw-yang** and the Xiaomi team for identifying and contributing this fix. It’s a perfect example of open-source collaboration helping Kestra run better at scale! For more technical details on this change, check out [PR #12181](https://github.com/kestra-io/kestra/pull/12181).
 :::
 
 ## Purge task improvements
