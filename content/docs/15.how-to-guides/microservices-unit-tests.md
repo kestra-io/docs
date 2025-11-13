@@ -67,7 +67,7 @@ tasks:
         message: Everything is fine!
 ```
 
-![Microservices Flow Code](/docs/how-to-guides/microservices-unit-test/monitoring-flow-code.png)
+![Microservices Flow Code](/docs/how-to-guides/microservices-unit-tests/monitoring-flow-code.png)
 
 This flow issues an HTTP request, lets it fail gracefully (`allowFailed: true`), then either sends a Slack alert or logs a healthy status.
 
@@ -110,7 +110,7 @@ testCases:
         notEqualTo: 200
 ```
 
-![Unit Test Code](/docs/how-to-guides/microservices-unit-test/unit-test-code.png)
+![Unit Test Code](/docs/how-to-guides/microservices-unit-tests/unit-test-code.png)
 
 Each test case supplies fixtures (inputs and optional task overrides) and assertions. The second test disables the Slack call while still confirming that the alert path runs when the endpoint fails.
 
@@ -145,7 +145,7 @@ tasks:
         message: hello
 ```
 
-![Downstream Logic Flow Code](/docs/how-to-guides/microservices-unit-test/downstream-logic-flow-code.png)
+![Downstream Logic Flow Code](/docs/how-to-guides/microservices-unit-tests/downstream-logic-flow-code.png)
 
 Replace the final `log` task with deployments, escalations, or other automations that should run only after the tests succeed.
 
@@ -158,7 +158,7 @@ Breakdown:
 
 Run the unit tests from the Kestra UI or CLI to verify both assertions pass. A successful run confirms the monitor behaves correctly without sending Slack noise during testing.
 
-![Unit Test Assertions](/docs/how-to-guides/microservices-unit-test/unit-test-run.png)
+![Unit Test Assertions](/docs/how-to-guides/microservices-unit-tests/unit-test-run.png)
 
 ## Next steps
 
