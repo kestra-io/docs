@@ -673,7 +673,7 @@ You can also set this via the UI **Settings** page.
 Set JVM options with `JAVA_OPTS`:
 
 ```shell
-export JAVA_OPTS="-user.timezone=Europe/Paris"
+export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 ```
 
 Proxy example (see [Java docs](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html)):
