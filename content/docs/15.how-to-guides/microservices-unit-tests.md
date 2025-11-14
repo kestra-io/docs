@@ -94,7 +94,7 @@ testCases:
       inputs:
         server_uri: https://kestra.io
     assertions:
-      - value: "{{outputs.http_request.code}}"
+      - value: "{{ outputs.http_request.code }}"
         equalTo: 200
 
   - id: server_should_be_unreachable
@@ -106,7 +106,7 @@ testCases:
         - id: server_unreachable_alert
           description: no Slack message from tests
     assertions:
-      - value: "{{outputs.http_request.code}}"
+      - value: "{{ outputs.http_request.code }}"
         notEqualTo: 200
 ```
 
