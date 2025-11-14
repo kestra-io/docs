@@ -75,7 +75,7 @@ Breakdown of the components:
 
 - **Inputs**
   - `server_uri`: parameterizes the target so you can reuse the flow for staging, production, or any other health endpoint.
-  - `slack_webhook_uri`: stores the Slack webhook that receives alerts without hardcoding secrets in the flow body.
+  - `slack_webhook_uri`: stores the Slack webhook that receives alerts without hardcoding secrets in the flow body. Instead of an input, you can also use the [KV Store](../05.concepts/05.kv-store.md) or a [secret](../05.concepts/04.secret.md) in the `url` property.
 - **`http_request` task**: performs the status check and captures the HTTP code; `allowFailed` ensures the flow continues even if the request fails.
 - **`check_status` conditional**: branches on the HTTP response, triggering the Slack alert when the service is down or logging “Everything is fine!” when the endpoint returns 200.
 
@@ -118,7 +118,7 @@ Breakdown:
 
 - **Test definition**: `id`, `flowId`, and `namespace` tie this test suite to the flow created in Step 1.
 - **`server_should_be_reachable` case**: feeds a valid `server_uri` and asserts the HTTP response code is 200.
-- **`server_should_be_unreachable` case**: points to a bad URL, stubs the Slack task so no message is sent during testing, and asserts the HTTP code differs from 200.
+- **`server_should_be_unreachable` case**: points to a bad URL, stubs the Slack task so no message is sent during testing (reduce channel noise or spamming test messages), and asserts the HTTP code differs from 200.
 
 ## Step 3: Run downstream logic only when tests pass
 
