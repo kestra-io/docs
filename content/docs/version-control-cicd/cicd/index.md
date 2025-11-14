@@ -10,6 +10,15 @@ Automate the validation and deployment of your Kestra flows using CI/CD pipeline
 Continous integration and deliver (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.  
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
 
+:::alert{type="info"}
+When flows are deployed through CI/CD, add the [`system.readOnly`](../../05.concepts/06.system-labels.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
+
+```yaml
+labels:
+  system.readOnly: true
+```
+:::
+
 ---
 
 ## Why use a CI/CD pipeline?

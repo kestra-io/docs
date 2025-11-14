@@ -41,15 +41,6 @@ Additionally, you can configure the following properties:
 - **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. This allows sharing a single secrets backend across multiple Kestra instances.
 - **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
 
-When adding a secret in AWS, you will need to specify the following tags:
-- `namespace`: the namespace this secret should appear in.
-- `key`: the key which you will use to access the secret inside of your workflow.
-- `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
-
-:::alert{type="info"}
-The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
-:::
-
 ## Azure Key Vault Configuration
 
 To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including:
