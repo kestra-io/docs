@@ -10,6 +10,13 @@ import { generatePageNames, recursivePages } from "~/utils/navigation";
 
 const docsPages = await getCollection('docs')
 
+docsPages.sort((a, b) => {
+    if(a.filePath && b.filePath) {
+        return a.filePath.localeCompare(b.filePath);
+    }
+    return a.id.localeCompare(b.id);
+});
+
 // create a nested structure
 const navigation = [{
     title: 'Documentation',
