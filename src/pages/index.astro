@@ -14,6 +14,7 @@ import { calculateTotalPlugins } from "../../composables/usePluginsCount";
 import Enterprise from "../../components/home/Enterprise.vue";
 import EnterpriseQuotesRender from "../../components/home/EnterpriseQuotesRender.vue";
 import CTA from "../../components/home/CTA.vue";
+import * as githubApi from "./api/github";
 
 const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
@@ -25,11 +26,7 @@ const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePat
             })
 })).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()));
 
-const githubData = await $fetch('https://api.github.com/repos/flowiseai/Flowise', {
-    headers: {
-        'Accept': 'application/vnd.github.v3+json'
-    }
-});
+const githubData = await githubApi.getValues();
 const quotes = await import('../../data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 
 const pluginLogos = await import.meta.glob('/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
