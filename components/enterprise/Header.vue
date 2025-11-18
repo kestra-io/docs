@@ -99,6 +99,10 @@
     </div>
 </template>
 
+<script setup lang="ts">
+import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue";
+</script>
+
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
@@ -274,8 +278,8 @@
                     img {
                         height: 75px;       // Fixed height for uniformity
                         width: auto;        // Let the width adjust automatically
-                        object-fit: contain; 
-                        
+                        object-fit: contain;
+
                     }
 
                     @include media-breakpoint-down(sm) {
