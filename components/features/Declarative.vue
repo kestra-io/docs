@@ -20,7 +20,7 @@
                 <div class="list list-1">
                     <h5>Everything From The UI</h5>
                     <ul class="list-unstyled">
-                        <li><ArrowRightThick />Live Update Depency Graph</li>
+                        <li><ArrowRightThick />Live Update dependency Graph</li>
                         <li><ArrowRightThick />Integrated No-Code & Code Editor</li>
                         <li><ArrowRightThick />Run Backfills in Few Clicks</li>
                         <li><ArrowRightThick />Built-in Documentation & Blueprints</li>
@@ -33,7 +33,7 @@
                     <ul class="list-unstyled mt-1">
                         <div class="d-flex flex-column align-items-center justify-center">
                             <div class="d-flex flex-row align-items-center justify-center gap-3">
-                                <li><ArrowRightThick />Autocompletion & Synthax Validation</li>
+                                <li><ArrowRightThick />Autocompletion & Syntax Validation</li>
                                 <li><ArrowRightThick />Git Sync</li>
                                 <li><ArrowRightThick />CI/CD Integrations</li>
                             </div>
