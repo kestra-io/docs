@@ -19,6 +19,9 @@
         "./utils/*",
         "./src/utils/*"
       ],
+      "~/components/*": [
+        "./components/*",
+      ]
     }
   }
 }
