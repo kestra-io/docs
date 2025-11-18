@@ -189,9 +189,10 @@ import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import posthog from "posthog-js";
 import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting.js";
+import { ref, useTemplateRef } from "vue";
+import identify from "~/utils/identify";
 
-const route = useRoute();
-const gtm = useGtm();
+// const gtm = useGtm();
 const formRef = useTemplateRef("cloud-form");
 
 const valid = ref(false);
@@ -201,7 +202,7 @@ const meetingUrl = ref<string>("");
 const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03";
 
 // the user don't have cookie enable, the form is useless, since we will need to refill information on hubspot agenda
-if (process.client && getHubspotTracking() === null) {
+if (typeof window !== "undefined" && getHubspotTracking() === null) {
     meetingUrl.value = getMeetingUrl();
     valid.value = true;
 }
@@ -242,14 +243,14 @@ const onSubmit = async (e: Event) => {
     context: {
       hutk: getHubspotTracking() || undefined,
       ipAddress: ip.data.ip,
-      pageUri: route.path,
+      pageUri: "cloud",
       pageName: document.title,
     },
   };
 
   posthog.capture("cloud_form");
   hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
-  gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
+//   gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
   identify((form as any)["email"].value);
 
   try {
