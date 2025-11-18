@@ -11,6 +11,7 @@ import remarkDirective from 'remark-directive';
 // @ts-expect-error no types provided by package
 import remarkLinkRewrite from 'remark-link-rewrite';
 import remarkCustomElements from './utils/remark-custom-elements/index.mjs';
+import remarkClassname from './utils/remark-classname/index.mjs';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import generateId from './utils/generateId';
 
@@ -40,6 +41,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [
+      remarkClassname,
       remarkDirective,
       remarkCustomElements,
       // when internal docs links we point to real files
