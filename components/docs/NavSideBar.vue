@@ -43,16 +43,14 @@
                             :parent-slug="'/' + type"
                             :type="type"
                             :item="item"
-                            :depth-level="1"
+                            :depth-level="0"
                             :disabled-pages="disabledPages"
                         />
                     </ul>
                 </nav>
             </div>
         </div>
-
     </aside>
-
 </template>
 
 <script lang="ts" setup>

@@ -2,7 +2,7 @@
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import LayoutDocs from "../../components/layout-docs.astro";
-import Breadcrumb from "../../../components/layout/Breadcrumb.vue";
+import NavToc from "../../../components/docs/NavToc.vue";
 
 export async function getStaticPaths() {
 	const docsPages = await getCollection('docs');
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'docs'>;
 
 const doc = Astro.props;
-const { Content } = await render(doc);
+const { Content, headings } = await render(doc);
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`}>
@@ -25,6 +25,11 @@ const { Content } = await render(doc);
   <div class="bd-markdown">
     <Content />
   </div>
+    <NavToc links={headings.map(heading => ({
+        id: heading.slug,
+        text: heading.text,
+        depth: heading.depth,
+    }))} slot="headings" />
 </LayoutDocs>
 
 <style lang="scss">
@@ -37,5 +42,4 @@ const { Content } = await render(doc);
     margin: 0 auto;
     margin-bottom: 2rem;
   }
-
 </style>

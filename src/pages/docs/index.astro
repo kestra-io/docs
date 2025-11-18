@@ -1,4 +1,5 @@
 ---
+import NavToc from "../../../components/docs/NavToc.vue";
 import LayoutDocs from "../../components/layout-docs.astro";
 import { getEntry, render } from "astro:content";
 const doc = await getEntry('docs', '<index>');
@@ -6,7 +7,8 @@ if (!doc) {
     throw new Error('Index document not found');
 }
 
-const { Content } = await render(doc);
+
+const { Content, headings } = await render(doc);
 ---
 
 <LayoutDocs activeStem="/docs" isHomePage>
@@ -14,4 +16,9 @@ const { Content } = await render(doc);
     <div class="bd-markdown">
         <Content />
     </div>
+    <NavToc links={headings.map(heading => ({
+        id: heading.slug,
+        text: heading.text,
+        depth: heading.depth,
+    }))} slot="headings" />
 </LayoutDocs>

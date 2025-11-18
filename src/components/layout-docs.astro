@@ -41,6 +41,7 @@ const props = Astro.props;
             <Breadcrumb slug={props.activeStem} pageList={pageList} pageNames={pageNames} />
             <slot/>
         </main>
+        <slot name="headings" />
     </div>
 </Layout>
 
@@ -48,16 +49,17 @@ const props = Astro.props;
     @import "../../assets/styles/variable";
     .layout-docs-wrapper {
         display: grid;
-        grid-template-areas: "sidebar content";
-        grid-template-columns: 1fr 5fr;
-        margin: 0;
+        grid-template-areas: "sidebar content toc";
+        grid-template-columns: 1fr 5fr 1fr;
+        margin: 1.5rem;
         padding: 0;
         margin-top: 3rem;
     }
     main {
         flex: 1;
         padding: 2rem;
-        max-width: 100%;
+        max-width: 45rem;
+        margin: auto;
         margin-top: 3rem;
     }
     .bd-sidebar{

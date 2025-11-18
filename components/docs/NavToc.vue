@@ -75,8 +75,6 @@ const props = withDefaults(defineProps<{
 
 const tableOfContentsExpanded = ref(false);
 
-const route = useRoute();
-
 function closeToc() {
   tableOfContentsExpanded.value = false;
   const toc = document.getElementById('tocContents');
@@ -162,7 +160,8 @@ function menuNavigate(e: Event) {
 }
 
 function scrollToHash() {
-  const hash = route.hash;
+  if(typeof window === 'undefined') return;
+  const hash = window.location.hash;
   if (hash) {
     const targetId = hash.substring(1);
     scrollIntoView(targetId);
