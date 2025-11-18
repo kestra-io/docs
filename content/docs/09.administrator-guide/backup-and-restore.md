@@ -7,6 +7,10 @@ Back up and restore your Kestra instance.
 
 Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
 
+:::alert{type="info"}
+The commands in the next section assume Kestra runs locally on the host. If you run Kestra in Docker, see the [container example](#example-backup-and-restore-inside-docker) below.
+:::
+
 ## Metadata-only Backup & Restore (Enterprise Edition)
 
 Since 0.19, [Kestra Enterprise Edition](/enterprise) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another—even across different Kestra versions or repository/queue backends.
@@ -67,6 +71,24 @@ Starting the restore process from the command line will display the following lo
 2024-09-17 16:41:06,150 INFO  restore      io.kestra.ee.backup.BackupService Backup summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, TRIGGER: 2, USER: 1]
 2024-09-17 16:41:07,182 INFO  restore      io.kestra.ee.backup.BackupService Restore summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, USER: 1, TRIGGER: 2]
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
+```
+
+### Example: Backup and restore inside Docker
+
+If Kestra runs in Docker, use `docker exec` and `docker cp` to move the backup file in and out of the container:
+
+```bash
+# Create a full backup (with execution data) from inside the container
+docker exec your_container bash -c "./kestra backups create FULL --include-data --no-encryption"
+
+# Copy the backup file from the container to a local directory
+docker cp your_container:/app/storage/backups/full/backup123.kestra .
+
+# After upgrading Kestra, copy the backup back into the container
+docker cp ./backup123.kestra your_container:/app/storage/backups/full/
+
+# Restore the backup from inside the container
+docker exec your_container bash -c "./kestra backups restore kestra:///backups/full/backup123.kestra"
 ```
 
 ## Full Backup & Restore with Backend Tools

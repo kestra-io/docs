@@ -13,8 +13,7 @@
     "pages:dev": "NITRO_PRESET=cloudflare-pages wrangler pages dev -- npm run dev",
     "pages:build": "NITRO_PRESET=cloudflare-pages npm run build",
     "pages:deploy": "wrangler pages deploy --project-name docs ./dist",
-    "pages:build-deploy": "npm run pages:build && npm run pages:deploy",
-    "analyze": "nuxt analyze"
+    "pages:build-deploy": "npm run pages:build && npm run pages:deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.10",

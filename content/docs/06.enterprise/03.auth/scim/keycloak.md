@@ -111,7 +111,7 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
           - ./providers:/opt/keycloak/providers
         network_mode: "host" # Optional: for accessing external Kestra
     ```
-   - Run `docker-compose up` to start Keycloak.
+   - Run `docker compose up` to start Keycloak.
 4. **Configure the SCIM for Keycloak**:
    - To synchronize Users and Groups from Keycloak to Kestra, connect to the `SCIM Administration Console` for Keycloak with SCIM.
   ![scim-for-keycloak-3](/docs/enterprise/keycloak3.png)

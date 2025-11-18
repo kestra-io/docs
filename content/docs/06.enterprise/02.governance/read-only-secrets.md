@@ -49,6 +49,15 @@ kestra:
       region: us-east-1
 ```
 
+When adding a secret in AWS, you will need to specify the following tags:
+- `namespace`: the namespace this secret should appear in.
+- `key`: the key which you will use to access the secret inside of your workflow.
+- `prefix`: used to store secrets separately. Will be set to `kestra` by default if secret is created inside Kestra.
+
+:::alert{type="info"}
+The secret name in AWS will not display inside of Kestra. Instead set this to something easy to differentiate between other secrets.
+:::
+
 ### Azure Key Vault
 
 The following example shows the configuration for Azure Key Vault with a read-only secrets backend:

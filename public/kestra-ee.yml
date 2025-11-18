@@ -13799,10 +13799,10 @@ paths:
       - name: testSuiteId
         in: query
         description: The test suite id to filter on
-        required: true
         explode: false
         schema:
           type: string
+          nullable: true
       - name: namespace
         in: query
         description: The namespace to filter on
