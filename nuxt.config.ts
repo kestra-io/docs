@@ -17,7 +17,7 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
         "nitro-cloudflare-dev",
-        "nuxt-security"
+        // "nuxt-security"
     ],
     security: {
         enabled: true,
