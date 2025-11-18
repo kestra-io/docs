@@ -7927,6 +7927,8 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint:
     post:
       tags:
@@ -8792,6 +8794,14 @@ paths:
             When sending a ZIP archive, a list of files that couldn't be imported is returned.
       operationId: importFlows
       parameters:
+      - name: failOnError
+        in: query
+        description: If should fail on invalid flows
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
