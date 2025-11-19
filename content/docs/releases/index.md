@@ -11,6 +11,7 @@ Kestra maintains two tracks:
 
 - **LTS (Long Term Support)** releases receive critical fixes for a defined window so production environments can upgrade on a predictable cadence.
 - **Feature** releases deliver new functionality more frequently; they become candidates for the next LTS once they stabilize.
+- **Patch** releases apply weekly backports (security fixes and non-breaking bug fixes) on top of the currently supported feature and LTS lines.
 
 ### Tracking the latest LTS
 
