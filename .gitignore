@@ -36,3 +36,7 @@ dist
 
 ## Astro
 .astro
+
+## mkcert
+localhost.pem
+localhost-key.pem
