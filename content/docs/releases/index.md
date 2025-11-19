@@ -35,13 +35,6 @@ Pin these tags to stay on the most recent stable production release without trac
 |-------------|--------------|-----------------|---------------|
 | 1.0 | 2025‑09‑09 | 2026‑09‑09 (planned) | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.0.0) |
 
-## Upcoming milestones
-
-| Track | Planned Release | Notes |
-|-------|-----------------|-------|
-| 1.x LTS | 2026 (TBD) | Final support window and release notes will be announced as the feature branch stabilizes. |
-| Feature | Rolling | See the [GitHub releases feed](https://github.com/kestra-io/kestra/releases) for the latest features. |
-
 :::alert{type="info"}
 Need an earlier version’s status? Check the [GitHub releases archive](https://github.com/kestra-io/kestra/releases).
 :::
