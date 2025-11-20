@@ -7,7 +7,7 @@ author:
   name: Faizan Qazi
   image: fqazi
   role: Solution Engineer
-image: /blogs/automated-approved-and-audited-patching-with-kestra.png
+image: /blogs/uat-prod-vm-patching/automated-approved-and-audited-patching-with-kestra.png
 ---
 
 ## Overview
