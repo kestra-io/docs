@@ -160,12 +160,19 @@ The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a pr
 Only scheduled-based triggers (triggers handled by the Scheduler) will be visible in the UI. Triggers handled by the Executor and Webserver will not be displayed. This also applies when fetching triggers from the API.
 :::
 
-### Toggle or unlock triggers from the Administation page
+### Toggle, unlock, or delete triggers from the Administration page
 
-You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:
+From **Administration → Triggers** you can bulk manage trigger state:
+
+- **Toggle** — enable or disable one or more triggers without editing the flow YAML.
+- **Unlock** — clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
+- **Delete trigger** — remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
 
 ![triggers_administration](/docs/workflow-components/triggers/triggers_administration.png)
 
+Deleting a trigger is different from deleting a backfill: removing a backfill only cancels pending catch-up runs, while deleting a trigger resets the trigger entity itself. Use **Delete backfill** to stop scheduled replays and **Delete trigger** to rebuild the trigger state.
+
+![Delete a trigger](/docs/workflow-components/triggers/delete-trigger.png)
 
 ## Troubleshooting a trigger from the UI
 
