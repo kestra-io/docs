@@ -164,7 +164,7 @@ Only scheduled-based triggers (triggers handled by the Scheduler) will be visibl
 
 From **Administration → Triggers** you can bulk manage trigger state:
 
-- **Toggle** — enable or disable one or more triggers without editing the flow YAML.
+- **Toggle** — enable or disable one or more triggers without editing the flow code.
 - **Unlock** — clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
 - **Delete trigger** — remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
 
