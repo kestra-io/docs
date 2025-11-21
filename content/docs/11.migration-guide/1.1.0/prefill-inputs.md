@@ -30,4 +30,4 @@ inputs:
     required: false
 ```
 
-**Migration:** No migration is required. For optional inputs that previously used `defaults` but need to allow clearing or null values, switch to using `prefill`.
+**Migration:** No migration is required. For optional inputs that previously used `defaults` but need to allow clearing or null values, switch those definitions to `prefill` instead.

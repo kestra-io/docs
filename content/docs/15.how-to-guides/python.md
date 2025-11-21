@@ -40,11 +40,11 @@ description: This flow will install the pip package in a Docker container, and u
 tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Script
-    beforeCommands:
-      - pip install requests
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
+    dependencies:
+      - requests
     script: |
       import requests
 
@@ -76,11 +76,11 @@ inputs:
 tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Script
-    beforeCommands:
-      - pip install requests
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
+    dependencies:
+      - requests
     script: |
       import requests
 
@@ -114,8 +114,8 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    beforeCommands:
-      - pip install requests
+    dependencies:
+      - requests
     commands:
       - python outputs_metrics.py
 ```
@@ -184,8 +184,9 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
-    beforeCommands:
-      - pip install requests kestra
+    dependencies:
+      - requests
+      - kestra
     commands:
       - python outputs_metrics.py
 
@@ -209,11 +210,11 @@ namespace: company.team
 tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Script
-    beforeCommands:
-      - pip install requests
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:slim
+    dependencies:
+      - requests
     outputFiles:
       - downloads.txt
     script: |
@@ -388,7 +389,6 @@ tasks:
   - id: python
     type: io.kestra.plugin.scripts.python.Script
     script: |
-
       response = {{ trigger.body ?? '' }}
 
       print(f"{response['first_name']} {response['last_name']}")
@@ -410,7 +410,10 @@ namespace: company.team
 tasks:
   - id: process_data
     type: io.kestra.plugin.scripts.python.Script
-    containerImage: ghcr.io/kestra-io/pydata:latest
+    containerImage: python:slim
+    dependencies:
+      - pandas
+      - kestra
     inputFiles:
       input.csv: "{{ read(trigger.objects[0].uri) }}"
     outputFiles:
