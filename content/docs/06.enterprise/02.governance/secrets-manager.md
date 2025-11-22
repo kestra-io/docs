@@ -92,7 +92,7 @@ Your secret key should be encrypted. You can find an example key in our [encrypt
 
 ## Google Secret Manager Configuration
 
-To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a **service account** with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission.  For configuring the Kestra secret manager in _READ_ONLY_ mod, only [roles/secretmanager.secretAccessor](https://cloud.google.com/secret-manager/docs/access-control) permission is sufficient. 
+To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a **service account** with the [`roles/secretmanager.admin`](https://cloud.google.com/secret-manager/docs/access-control) permission.  For configuring the secret manager in _READ_ONLY_ mode, only `roles/secretmanager.secretAccessor` permission is sufficient. 
 
 Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
 
