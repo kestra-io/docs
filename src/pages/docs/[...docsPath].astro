@@ -2,7 +2,7 @@
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import LayoutDocs from "../../components/layout-docs.astro";
-import NavToc from "../../../components/docs/NavToc.vue";
+import NavToc from "~/components/docs/NavToc.vue";
 
 export async function getStaticPaths() {
 	const docsPages = await getCollection('docs');

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../components/layout.astro";
-import PluginsLists from "../../../components/plugins/PluginsLists.vue";
-import LayoutFooterContact from "../../../components/layout/FooterContact.vue";
+import PluginsLists from "~/components/plugins/PluginsLists.vue";
+import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 import type { Plugin } from "@kestra-io/ui-libs";
 
 const pluginsData = (await getCollection('plugins')) as unknown as {data: Plugin}[]
