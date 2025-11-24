@@ -21,6 +21,10 @@
       ],
       "~/components/*": [
         "./components/*",
+      ],
+      "~/data/*": [
+        "./data/*",
+        "./src/data/*"
       ]
     }
   }

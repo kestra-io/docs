@@ -1,0 +1,46 @@
+---
+import Layout from "../../../components/layout.astro";
+import FeaturesLanguageSubPagesHeader from "~/components/features/language/sub-pages/Header.vue";
+import FeaturesLanguageSubPagesFeatures from "~/components/features/language/sub-pages/Features.vue";
+import FeaturesLanguageSubPagesPower from "~/components/features/language/sub-pages/Power.vue";
+import FeaturesLanguageSubPagesScripts from "~/components/features/language/sub-pages/Scripts.vue";
+import FeaturesLanguageSubPagesOrchestrator from "~/components/features/language/sub-pages/Orchestrator.vue";
+import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
+import { rFeatures, rPowerDesc, rScripts, rOrchestratorDesc } from "~/data/languages/r";
+import LayoutFooterContact from "../../../../components/layout/FooterContact.vue";
+---
+
+<Layout>
+    <div style="height: 120px;" />
+    <FeaturesLanguageSubPagesHeader
+        title="R Scripts"
+        description="Build declaratively your workflows and seamlessly run all your R Scripts"
+        source="/landing/features/language/r/header.svg"
+    />
+
+    <FeaturesLanguageSubPagesFeatures
+        features={rFeatures}
+    />
+    <FeaturesLanguageSubPagesPower
+        title="with R"
+        description={rPowerDesc}
+        source="/landing/features/language/r/power.svg"
+    />
+
+    <FeaturesLanguageSubPagesScripts
+        title="R"
+        scripts={rScripts}
+    />
+    <FeaturesLanguageSubPagesOrchestrator
+        description={rOrchestratorDesc}
+        source="/landing/features/language/r/scripts/r-puzzle.svg"
+    />
+    <FeaturesLanguagePlugins />
+    <LayoutFooterContact
+        title="Getting Started with  Declarative Orchestration"
+        darkButtonText="Get started"
+        darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+        purpleButtonText="Talk to us"
+        purpleButtonHref="/demo"
+    />
+</Layout>

@@ -1,0 +1,44 @@
+---
+import Layout from "../../../components/layout.astro";
+import FeaturesLanguageSubPagesHeader from "~/components/features/language/sub-pages/Header.vue";
+import FeaturesLanguageSubPagesFeatures from "~/components/features/language/sub-pages/Features.vue";
+import FeaturesLanguageSubPagesPower from "~/components/features/language/sub-pages/Power.vue";
+import FeaturesLanguageSubPagesScripts from "~/components/features/language/sub-pages/Scripts.vue";
+import FeaturesLanguageSubPagesOrchestrator from "~/components/features/language/sub-pages/Orchestrator.vue";
+import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
+import { juliaFeatures, juliaPowerDesc, juliaScripts, juliaOrchestratorDesc } from "~/data/languages/julia";
+import LayoutFooterContact from "../../../../components/layout/FooterContact.vue";
+---
+
+<Layout>
+    <div style="height: 120px;" />
+    <FeaturesLanguageSubPagesHeader
+            title="Julia Scripts"
+            description="Build declaratively your workflows and seamlessly run all your Python Scripts"
+            source="/landing/features/language/julia/header.svg"
+    />
+    <FeaturesLanguageSubPagesFeatures
+        features={juliaFeatures}
+    />
+    <FeaturesLanguageSubPagesPower
+        title="with Julia"
+        description={juliaPowerDesc}
+        source="/landing/features/language/julia/power.svg"
+    />
+    <FeaturesLanguageSubPagesScripts
+        title="Julia"
+        scripts={juliaScripts}
+    />
+    <FeaturesLanguageSubPagesOrchestrator
+        description={juliaOrchestratorDesc}
+        source="/landing/features/language/julia/scripts/julia-puzzle.svg"
+    />
+    <FeaturesLanguagePlugins />
+    <LayoutFooterContact
+        title="Getting Started with  Declarative Orchestration"
+        darkButtonText="Get started"
+        darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+        purpleButtonText="Talk to us"
+        purpleButtonHref="/demo"
+    />
+</Layout>

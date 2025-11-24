@@ -1,0 +1,21 @@
+---
+import Layout from '../../components/layout.astro';
+import Header from '../../../components/features/declaratives/Header.vue';
+import Main from '../../../components/features/declaratives/Main.vue';
+import Features from '../../../components/features/declaratives/Features.vue';
+import Empower from '../../../components/features/declaratives/Empower.vue';
+import PluginsBox from '../../components/PluginsBox.astro';
+import LayoutFooterContact from '../../../components/layout/FooterContact.vue';
+---
+<Layout>
+    <Header />
+    <Main />
+    <Features />
+    <Empower />
+    <PluginsBox />
+    <LayoutFooterContact
+        title="Getting Started with Declarative Orchestration"
+        darkButtonText="Read the docs"
+        purpleButtonText="Get started"
+    />
+</Layout>

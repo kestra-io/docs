@@ -84,7 +84,7 @@
 
 <script>
     import Section from '../../layout/Section.vue';
-    import Card from '../../components/card/Card.vue';
+    import Card from '../../card/Card.vue';
 
 
     export default {

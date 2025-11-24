@@ -10,15 +10,8 @@
     </div>
 </template>
 
-<script>
-
-  export default {
-    data() {
-      return {
-        active: 1,
-      };
-    },
-  }
+<script lang="ts" scoped>
+import LayoutPlugins from '../../layout/Plugins.vue';
 </script>
 
 <style lang="scss" scoped>
