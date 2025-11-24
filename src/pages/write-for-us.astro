@@ -1,0 +1,49 @@
+---
+import Layout from '../components/layout.astro';
+import community from "~/data/community.js";
+import Examples from "~/components/use-cases/Examples.vue";
+import Line from "~/components/use-cases/Line.vue";
+import HeaderCard from "~/components/use-cases/Card.vue";
+import Faqs from "~/components/write-for-us/Faqs.vue";
+import Process from "~/components/write-for-us/Process.vue";
+import Write from "~/components/write-for-us/Write.vue";
+import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+
+const data = { ...community };
+const title = data.header.title;
+const description = data.header.description;
+---
+
+<Layout title={title} description={description}>
+    <div class="main">
+        <div>
+            <HeaderCard content={data.header} />
+            <Line class="divider-md" />
+            <Examples content={data.drafts} client:visible />
+            <Line class="mb-0" />
+            <Write content={data.write} client:visible />
+            <Line class="mt-0 mb-0" />
+            <Process content={data.process} client:visible />
+            <Faqs content={data.faqs} client:visible />
+            <Line />
+            <LayoutFooterContact
+                title={data.footer.title}
+                darkButtonText={data.footer.cta[0].text}
+                darkButtonHref={data.footer.cta[0].href}
+                purpleButtonText={data.footer.cta[1].text}
+                purpleButtonHref={data.footer.cta[1].href}
+                client:visible
+            />
+        </div>
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+@import "../../assets/styles/variable";
+
+.main {
+    background-color: $black-4;
+    color: $white;
+    font-weight: 300;
+}
+</style>
