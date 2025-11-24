@@ -1,0 +1,22 @@
+---
+import Layout from '../components/layout.astro';
+import { getEntry, render } from 'astro:content';
+
+const entry = await getEntry('misc', 'kestra-cloud-tos');
+
+if (!entry) {
+  throw new Error('Kestra Cloud ToS not found');
+}
+
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <article class="bd-main order-1">
+            <div class="bd-markdown">
+                <Content />
+            </div>
+        </article>
+    </div>
+</Layout>
