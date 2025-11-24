@@ -186,9 +186,9 @@ volumes:
 
 services:
   postgres:
-    image: postgres:16.6
+    image: postgres:18
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     environment:
       POSTGRES_DB: kestra
       POSTGRES_USER: kestra
@@ -232,13 +232,6 @@ services:
               base-path: "/app/storage"
           tutorial-flows:
             enabled: false
-          plugins:
-            defaults:
-              - type: io.kestra.plugin.jdbc.postgresql
-                values:
-                  url: jdbc:postgresql://host.docker.internal:5432/ny_taxi
-                  username: root
-                  password: root
           queue:
             type: postgres
           tasks:
