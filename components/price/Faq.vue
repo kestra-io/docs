@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import type { PropType } from "vue";
 import CustomDetails from "../layout/CustomDetails.vue";
 
 const props = defineProps({
@@ -24,7 +25,7 @@ const props = defineProps({
         default: "FAQ"
     },
     items: {
-        type: Array,
+        type: Array as PropType<Array<{ question: string; answer: string }>>,
         default: () => [
             {
                 question: "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
