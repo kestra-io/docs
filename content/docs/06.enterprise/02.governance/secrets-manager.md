@@ -92,7 +92,9 @@ Your secret key should be encrypted. You can find an example key in our [encrypt
 
 ## Google Secret Manager Configuration
 
-To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
+To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a **service account** with the [`roles/secretmanager.admin`](https://cloud.google.com/secret-manager/docs/access-control) permission.  For configuring the secret manager in _READ_ONLY_ mode, only `roles/secretmanager.secretAccessor` permission is sufficient. 
+
+Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
 
 ```yaml
 kestra:
@@ -100,8 +102,14 @@ kestra:
     type: google-secret-manager
     google-secret-manager:
       project: gcp-project-id
-      service-account: |
-        Paste the contents of the service account JSON key file here.
+      serviceAccount: |
+        {
+          "type": "service_account",
+          "project_id": "gcp-project-id",
+          "private_key_id": "...",
+          "private_key": "...",
+          ...
+        }
 ```
 
 If you opt for authentication using the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, make sure that it's set on all worker nodes. Keep in mind that this authentication method is less secure than using the `serviceAccount` property.
@@ -109,6 +117,10 @@ If you opt for authentication using the `GOOGLE_APPLICATION_CREDENTIALS` environ
 If no credentials are set in the above configuration, Kestra will use the default Google authentication akin to the Google Cloud SDK.
 
 Additionally, you can configure the `kestra.secret.google-secret-manager.prefix` property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+
+When configuring the secret manager using the UI, either under Namespace or Tenant, you only need to configure the `project` and `serviceAccount` YAML configuration:
+
+![GCP Secret Manager Configuration via UI](/docs/enterprise/gcp-secret-configuration.png)
 
 ## Vault Configuration
 
