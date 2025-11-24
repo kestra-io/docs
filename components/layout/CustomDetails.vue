@@ -22,16 +22,10 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 
-    const props = defineProps({
-        title: {
-            type: String,
-            required: true,
-        },
-        defaultOpen: {
-            type: Boolean,
-            default: false,
-        }
-    })
+    const props = defineProps<{
+        title: string,
+        defaultOpen?: boolean
+    }>()
 
     const isOpen = ref(props.defaultOpen)
 
@@ -106,7 +100,7 @@
                 .chevron-up-icon, .chevron-down-icon {
                     font-size: 24px;
                 }
-                
+
                 .chevron-up-icon {
                     display: none;
                 }
