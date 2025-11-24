@@ -655,6 +655,34 @@ The following expression extracts the `value` of `task1`:
 **Arguments**
 - `expression`: The JQ expression to apply.
 
+Example flow using `jq` inside a `ForEach` task to iterate over array items and log each name with a doubled value:
+
+```yaml
+id: jq_with_foreach
+namespace: company.team
+
+tasks:
+  - id: generate
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      [
+        {"name": "alpha", "value": 1},
+        {"name": "bravo", "value": 2}
+      ]
+
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ json(outputs.generate.value) }}"
+    tasks:
+      - id: log_filtered
+        type: io.kestra.plugin.core.log.Log
+        message: |
+          Name: {{ json(taskrun.value).name }}
+          Doubled value: {{ json(taskrun.value) | jq('.value * 2') | first }}
+```
+
+For additional examples that access partial JSON bodies using `jq`, see the [JSON How-to guide](../15.how-to-guides/json.md).
+
 ---
 
 ### Manipulating JSON Payloads
@@ -2452,4 +2480,3 @@ tasks:
 ```
 
 :::
-
