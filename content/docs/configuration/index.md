@@ -1641,6 +1641,10 @@ kestra:
     termination-grace-period: 5m
 ```
 
+:::alert{type="warning"}
+Ensure the supervising platform (Kubernetes, Docker Compose, systemd, etc.) uses a termination grace period longer than Kestra’s setting. For example, when Kestra uses `5m`, configure Kubernetes `terminationGracePeriodSeconds` to at least 6 minutes. If the external timeout is shorter, the orchestrator may send SIGKILL before Kestra finishes its graceful shutdown.
+:::
+
 ## Internal storage
 
 Default **local** storage (not for production):
