@@ -1,4 +1,4 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
+// import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
 // import { $fetch } from "../../utils/fetch";
 // import { getListOfPlugins } from "../../utils/plugins/getListOfPlugins";
 
