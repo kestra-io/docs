@@ -1,4 +1,5 @@
 <script>
+    import {defineComponent, h, toRefs, computed} from 'vue';
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import {NuxtLink} from "#components";

@@ -116,9 +116,13 @@
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
   import posthog from "posthog-js";
+import { ref, useTemplateRef } from "vue";
+import identify from "~/utils/identify";
 
-  const route = useRoute();
-  const gtm = useGtm();
+//   const gtm = useGtm();
+  const props = defineProps<{
+    routePath: string;
+  }>();
   const formRef = useTemplateRef("cloud-form");
 
   const valid = ref(false);
@@ -157,13 +161,13 @@
         context: {
           hutk: getHubspotTracking(),
           ipAddress: ip.data.ip,
-          pageUri: route.path,
+          pageUri: props.routePath,
           pageName: document.title,
         },
       };
       posthog.capture("cloud_form");
       hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
-      gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
+    //   gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
       identify(form["email"].value);
       axios
         .post(hubSpotUrl, formData, {})

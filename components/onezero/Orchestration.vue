@@ -39,8 +39,6 @@
 </template>
 
 <script lang="ts" setup>
-    import { NuxtImg } from "#components";
-
     const features = [
         {
             title: "Define Goals, Not Tasks",

@@ -11,7 +11,7 @@ const description = "Instantly access a read-only version of Kestra to explore i
 <Layout title={title} description={description}>
     <div class="livedemo">
         <PreviewAccessHeader />
-        <PreviewAccessFeatures />
+        <PreviewAccessFeatures routePath={new URL(Astro.request.url).pathname} />
         <PreviewAccessDiscoverCloud />
     </div>
 </Layout>

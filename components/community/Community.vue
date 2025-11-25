@@ -102,6 +102,8 @@ import DirectionsFork from 'vue-material-design-icons/DirectionsFork.vue'
 import BugOutline from 'vue-material-design-icons/BugOutline.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
 import { useApi } from '../../composables/useApi'
+import { onMounted, ref } from 'vue'
+import { $fetch } from '~/utils/fetch'
 
 interface GitHubMetrics {
     stars: number

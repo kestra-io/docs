@@ -37,18 +37,11 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
   import Extensibility from "vue-material-design-icons/Connection.vue";
   import TerraformIntegration from "vue-material-design-icons/Terraform.vue";
   import ServerNetwork from "vue-material-design-icons/ServerNetwork.vue";
-</script>
-
-<script>
-  import Section from '../../components/layout/Section.vue';
-
-  export default {
-    components: {Section}
-  }
+  import Section from '../../layout/Section.vue';
 </script>
 
 <style scoped lang="scss">

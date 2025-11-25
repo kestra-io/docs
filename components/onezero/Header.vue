@@ -2,7 +2,7 @@
     <section class="main">
         <div class="container">
             <div class="d-flex flex-column align-items-center justify-content-center">
-                <NuxtImg 
+                <NuxtImg
                     src="/landing/onezero/one.png"
                     alt="1-0"
                     format="webp"
@@ -27,10 +27,10 @@
                     </NuxtLink>
                 </div>
                 <div class="highlights" data-aos="fade-up" data-aos-delay="300">
-                    <div 
-                        v-for="({ title }, index) of releaseHighlights" 
+                    <div
+                        v-for="({ title }, index) of releaseHighlights"
                         :key="title" class="highlight"
-                        data-aos="zoom-in" 
+                        data-aos="zoom-in"
                         :data-aos-delay="500 + (index * 100)"
                     >
                         <p>{{ title }}</p>
@@ -50,6 +50,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { usePluginsCount } from '~/composables/usePluginsCount';
+
 const { totalPlugins } = usePluginsCount();
 
 const releaseHighlights = computed(() => [

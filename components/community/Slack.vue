@@ -1,7 +1,7 @@
 <template>
     <div v-if="widget" class="widget-chat">
         <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-sm btn-primary rounded">
-            <slack title=""/>
+            <Slack title=""/>
             Slack <ClientOnly><span v-if="online" class="online">{{ onlineText }} members</span></ClientOnly>
         </NuxtLink>
     </div>

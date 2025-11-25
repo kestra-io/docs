@@ -103,20 +103,26 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import posthog from "posthog-js";
 import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import { getMeetingUrl } from "~/composables/useMeeting.js";
 import { useMediaQuery } from "@vueuse/core";
+import { ref, watch, useTemplateRef, onMounted, onUnmounted } from "vue";
+import identify from "~/utils/identify";
 
-const route = useRoute();
-const gtm = useGtm();
+// const route = useRoute();
+// const gtm = useGtm();
 const formRef = useTemplateRef("demo-form");
+
+defineProps<{
+  routePath: string;
+}>();
 
 const valid = ref(false);
 const message = ref("");
-const meetingUrl = ref(undefined);
+const meetingUrl = ref<string>();
 const isMobile = useMediaQuery("(max-width: 767px)");
 
 const cards = ref([
@@ -140,7 +146,7 @@ const cards = ref([
   }
 ]);
 
-function withContactParams(base, { firstname, lastname, email }) {
+function withContactParams(base: string, { firstname, lastname, email }: { firstname?: string | null; lastname?: string | null; email?: string | null } = {}) {
   try {
     const url = new URL(base, window.location.origin);
     if (firstname) url.searchParams.set("firstname", String(firstname).trim());
@@ -162,7 +168,7 @@ if (process.client && getHubspotTracking() === null) {
   const base = getMeetingUrl();
   const current = new URLSearchParams(window.location.search);
   meetingUrl.value = withContactParams(base, {
-    firstname: current.get("firstname"),
+    firstname:  current.get("firstname"),
     lastname:  current.get("lastname"),
     email:     current.get("email")
   });
@@ -189,7 +195,7 @@ onUnmounted(() => {
 
 const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2";
 
-const onSubmit = async (e) => {
+const onSubmit = async (e: Event) => {
   e.preventDefault();
   e.stopPropagation();
 
@@ -202,7 +208,7 @@ const onSubmit = async (e) => {
     const form = formRef.value;
     const hsq = (window._hsq = window._hsq || []);
 
-    if (!form.checkValidity()) {
+    if (!form?.checkValidity()) {
       valid.value = false;
       message.value = "Invalid form, please review the fields.";
       return;
@@ -233,14 +239,14 @@ const onSubmit = async (e) => {
       context: {
         hutk: getHubspotTracking() || undefined,
         ipAddress: ip.data.ip,
-        pageUri: route.path,
+        pageUri: props.routePath,
         pageName: document.title,
       },
     };
 
     posthog.capture("bookdemo_form");
     hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }]);
-    gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
+    // gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
     // Guarded in case identify() isn't globally defined
     // eslint-disable-next-line no-undef
     if (typeof identify === "function") identify(em);
@@ -260,7 +266,7 @@ const onSubmit = async (e) => {
       })
       .catch((error) => {
         valid.value = false;
-        if (error?.response?.data?.errors?.some?.(e => e.errorType === "BLOCKED_EMAIL")) {
+        if (error?.response?.data?.errors?.some?.((e: any) => e.errorType === "BLOCKED_EMAIL")) {
           message.value = "Please use a professional email address";
         } else {
           message.value =
