@@ -92,11 +92,13 @@
             <div class="container">
                 <textarea
                     id="ai-chat-input"
+                    ref="textareaRef"
                     v-model="userInput"
                     :disabled="isLoading"
                     placeholder="Enter a prompt for Kestra"
                     rows="1"
-                    @keydown.enter="sendMessage"
+                    @keydown.enter="handleEnterKey"
+                    @input="autoResize"
                 ></textarea>
                 <Send @click="sendMessage" :disabled="isLoading || !userInput.trim()" />
             </div>
@@ -193,6 +195,7 @@
     const messages = ref<Message[]>([])
     const isLoading = ref<boolean>(false)
     const contentContainer = ref<HTMLElement | null>(null)
+    const textareaRef = ref<HTMLTextAreaElement | null>(null)
     const conversationId = ref<string>(createUUID())
     const abortController = ref<AbortController>(new AbortController());
 
@@ -208,6 +211,27 @@
         isLoading.value = false;
         conversationId.value = createUUID();
         messages.value = [];
+        if (textareaRef.value) {
+            textareaRef.value.style.height = 'auto';
+        }
+    }
+
+    const handleEnterKey = (event: KeyboardEvent): void => {
+        if (event.shiftKey) {
+            return;
+        }
+        event.preventDefault();
+        sendMessage();
+    }
+
+    const autoResize = (): void => {
+        if (textareaRef.value) {
+            textareaRef.value.style.height = 'auto';
+            const maxHeight = 150;
+            const newHeight = Math.min(textareaRef.value.scrollHeight, maxHeight);
+            textareaRef.value.style.height = `${newHeight}px`;
+            textareaRef.value.style.overflowY = textareaRef.value.scrollHeight > maxHeight ? 'auto' : 'hidden';
+        }
     }
 
     const formatTimestamp = (timestamp: string): string => {
@@ -295,6 +319,10 @@
         const userMessage = createUserMessage(trimmedInput)
         messages.value.push(userMessage)
         userInput.value = ''
+        if (textareaRef.value) {
+            textareaRef.value.style.height = 'auto'
+            textareaRef.value.style.overflowY = 'hidden'
+        }
         isLoading.value = true
 
         const loadingMessage = createAssistantMessage()

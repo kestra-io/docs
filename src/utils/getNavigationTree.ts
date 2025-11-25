@@ -31,6 +31,7 @@ const navigationTree = {
     ],
     "Reference Docs": [
         "Configuration",
+        "Releases & LTS Policy",
         "Expressions",
         "API Reference",
         "Terraform Provider",
