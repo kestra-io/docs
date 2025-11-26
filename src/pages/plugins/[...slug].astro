@@ -1,6 +1,7 @@
 ---
+export const prerender = false
 import { slugify, subGroupName, type Plugin } from "@kestra-io/ui-libs";
-import { getCollection, type CollectionEntry } from "astro:content";
+// import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../components/layout.astro";
 import NavSideBar from "~/components/docs/NavSideBar.vue";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -13,49 +14,48 @@ import { getIcon } from "../../utils/plugins/getPluginIcon";
 import { $fetch } from "../../utils/fetch";
 import { getPluginsWithoutDeprecated } from "../../utils/plugins/getListOfPlugins";
 
-export async function getStaticPaths() {
-	const pluginsData = await getCollection('plugins');
-    const navigation = generateNavigationFromSubgroups(pluginsData.map(p => p.data as any));
-    const pageNames = generatePageNames(navigation[0])
-    const pageList = recursivePages(navigation[0])
+// export async function getStaticPaths() {
+// 	const pluginsData = await getCollection('plugins');
+//     const navigation = generateNavigationFromSubgroups(pluginsData.map(p => p.data as any));
+//     const pageNames = generatePageNames(navigation[0])
+//     const pageList = recursivePages(navigation[0])
 
-	return pageList.filter(p => p.length > 8).map((plugin) => {
-        return {
-            params: {
-                slug: plugin.slice(9)
-            },
-            props: {
-                plugin: {},
-                pluginsData,
-                navigation,
-                pageNames,
-                pageList,
-            },
-        }
-	});
-}
+// 	return pageList.filter(p => p.length > 8).map((plugin) => {
+//         return {
+//             params: {
+//                 slug: plugin.slice(9)
+//             },
+//             props: {
+//                 plugin: {},
+//                 pluginsData,
+//                 navigation,
+//                 pageNames,
+//                 pageList,
+//             },
+//         }
+// 	});
+// }
+
+
 
 const params = Astro.params as { slug: string };
 
-const props = Astro.props as {
-    plugin: any;
-    pluginsData: CollectionEntry<'plugins'>[];
-    navigation: any[];
-    pageNames: Record<string, string>;
-    pageList: string[];
-};
+const pluginsData = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
+const navigation = generateNavigationFromSubgroups(pluginsData);
+const pageNames = generatePageNames(navigation[0])
+const pageList = recursivePages(navigation[0])
 
 const splitRouteSlug = params.slug.split("/");
 
 const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
 let pluginType: string | undefined = undefined;
 
-const pageName = props.pageNames[`/plugins/${params.slug}`] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
+const pageName = pageNames[`/plugins/${params.slug}`] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
 
 if (lowerCasePluginType !== undefined) {
     let splitPluginType = lowerCasePluginType.split(".");
     const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
-    pluginType = `${packageName}.${props.pageNames[`/plugins/${params.slug}`] ?? splitPluginType[splitPluginType.length - 1]}`;
+    pluginType = `${packageName}.${pageNames[`/plugins/${params.slug}`] ?? splitPluginType[splitPluginType.length - 1]}`;
 }
 
 const page = pluginType === undefined || (lowerCasePluginType?.split(".").length ?? 6) < 6
@@ -84,10 +84,10 @@ const transformTitle = (text: string) => {
 
 <Layout>
      <div class="container-fluid bd-gutter bd-layout">
-        <NavSideBar type="plugins" navigation={props.navigation} slug={`/plugins/${params.slug}`} client:load/>
+        <NavSideBar type="plugins" navigation={navigation} slug={`/plugins/${params.slug}`} client:load/>
         <article class="bd-main order-1">
             <div class="bd-title">
-                <Breadcrumb slug={params.slug} pageList={props.pageList} pageNames={props.pageNames} />
+                <Breadcrumb slug={params.slug} pageList={pageList} pageNames={pageNames} />
                 <h1 v-if="page && pageName" class="py-0 title">
                     {pageIcon && <img
                         src={pageIcon}
