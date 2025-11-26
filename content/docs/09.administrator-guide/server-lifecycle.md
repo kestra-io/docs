@@ -47,12 +47,12 @@ Configure this behavior via `kestra.server.workerTaskRestartStrategy`:
 
 Resubmitted task runs show multiple attempts in the UI.
 
-![resubmitted task run](/public/docs/server/taskrun-resubmitted-attempts.png)
+![resubmitted task run](/docs/server/taskrun-resubmitted-attempts.png)
 
 In the timeline, one of the states will be `RESUBMITTED`.
 
-![resubmitted task run states](/public/docs/server/taskrun-resubmitted-states.png)
+![resubmitted task run states](/docs/server/taskrun-resubmitted-states.png)
 
 ## Instance view (EE only)
 
-Kestra Enterprise exposes an instance dashboard (Administration → Instance) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../06.enterprise/05.instance/dashboard.md) for a walkthrough.
+Kestra Enterprise exposes an instance dashboard (**Administration → Instance**) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../06.enterprise/05.instance/dashboard.md) for a walkthrough.
