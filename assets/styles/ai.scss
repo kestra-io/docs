@@ -314,11 +314,15 @@
         }
 
         .send-icon {
+            height: 28px;
             font-size: 24px;
             color: #B9B9BA;
             cursor: pointer;
             transition: color 0.2s ease-in-out;
-
+            align-self: flex-end !important;
+            :deep(.material-design-icon__svg) {
+                top: 2.002px;
+            }
             &:hover {
                 color: $purple;
             }
