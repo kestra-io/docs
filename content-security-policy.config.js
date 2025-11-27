@@ -12,12 +12,12 @@ export default {
     // scripts
     'script-src': [
         "'self'",
-        "'ajax.cloudflare.com'",
         "'nonce-{{nonce}}'",
         "'strict-dynamic'",
         "'wasm-unsafe-eval'", 
         "'unsafe-inline'",
-        "'static.cloudflareinsights.com'",
+        "ajax.cloudflare.com",
+        "static.cloudflareinsights.com",
         "https://cdn.cr-relay.com",
         "https://*.kestra-io.pages.dev",
         "https://*.hs-analytics.net",
@@ -60,7 +60,7 @@ export default {
     ],
     'connect-src': [
         "'self'",
-        "'cloudflareinsights.com'",
+        "cloudflareinsights.com",
         "ws://localhost:4000",
         "https://api.kestra.io",
         "https://kestra.io",
