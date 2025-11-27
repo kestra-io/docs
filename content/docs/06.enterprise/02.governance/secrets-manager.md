@@ -130,6 +130,73 @@ Kestra currently supports the [KV secrets engine - version 2](https://developer.
 
 Follow the steps below to configure the [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2) as your secrets backend.
 
+## CyberArk Configuration
+
+Kestra integrates with CyberArk as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.
+
+To use CyberArk, configure the CyberArk endpoint and credentials. This configuration can be set globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+
+```yaml
+kestra:
+  secret:
+    type: cyberark
+    cyberark:
+      address: https://your-cyberark-host
+      username: YOUR_USERNAME
+      password: YOUR_PASSWORD
+```
+
+**Configuration properties:**
+
+* **address**: The CyberArk API base URL.
+* **username**: Username used to authenticate to CyberArk.
+* **password**: Password used to authenticate to CyberArk.
+
+## Doppler Configuration
+
+Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. Doppler securely stores your secrets and exposes them through its API, which Kestra workers access at runtime. Secrets are only kept in memory by Kestra and are never persisted internally.
+
+To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+
+```yaml
+secret:
+  type: doppler
+  doppler:
+    token: YOUR_TOKEN
+    config: kestra_unit_test
+    project: kestra_unit_test
+    secretNamePrefix: kestra
+```
+
+**Configuration properties:**
+
+* **token**: Your Doppler service token.
+* **project**: The Doppler project containing the secrets.
+* **config**: The Doppler config/environment to read from.
+* **secretNamePrefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+
+## 1Password Configuration
+
+Kestra integrates with 1Password as a secrets backend. Under the hood, it relies on the [1Password Connect API](https://developer.1password.com/docs/connect/api-reference/) to read and manage secrets securely. Workers access secrets at runtime and store them only in memory.
+
+To use 1Password, you need a running 1Password Connect server and a Connect token with access to the target vault. Then, add the following configuration either globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+
+```yaml
+kestra:
+  secret:
+    type: 1password
+    1password:
+      address: http://localhost:18080
+      token: YOUR_TOKEN
+      vaultId: YOUR_VAULT_ID
+```
+
+**Configuration properties:**
+
+* **address**: The base URL of your 1Password Connect server.
+* **token**: Your 1Password Connect API token.
+* **vaultId**: The ID of the vault containing your secrets.
+
 ### KV Secrets Engine - Version 2
 
 To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, AppRole, or Kubernetes [Auth Methods](https://developer.hashicorp.com/vault/docs/auth), all of which require full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
