@@ -179,7 +179,7 @@ secret:
 
 Kestra integrates with 1Password as a secrets backend. Under the hood, it relies on the [1Password Connect API](https://developer.1password.com/docs/connect/api-reference/) to read and manage secrets securely. Workers access secrets at runtime and store them only in memory.
 
-To use 1Password, you need a running 1Password Connect server and a Connect token with access to the target vault. Then, add the following configuration either globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use 1Password, you need a running 1Password Connect server and a Connect token with access to the target vault. Then, add the following configuration either globally in your [Kestra configuration file](../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 kestra:
