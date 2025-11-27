@@ -130,6 +130,69 @@ Kestra currently supports the [KV secrets engine - version 2](https://developer.
 
 Follow the steps below to configure the [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2) as your secrets backend.
 
+### KV Secrets Engine - Version 2
+
+To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, AppRole, or Kubernetes [Auth Methods](https://developer.hashicorp.com/vault/docs/auth), all of which require full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
+
+1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      password:
+        user: john
+        password: foo
+```
+
+2. Here is how you can set up [Token Auth Method](https://www.vaultproject.io/docs/auth/token) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      token:
+        token: <your-secret-token>
+```
+
+3. Finally, here is how you can set up [AppRole Auth Method](https://www.vaultproject.io/docs/auth/approle) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      appRole:
+        path: approle
+        roleId: <your-role-id>
+        secretId: <your-secret-id>
+```
+
+4. Finally, here is how you can set up [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes) in your Kestra configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      kubernetes:
+        path: "kubernetes"                      # defaults to "kubernetes"
+        role: "kestra"                          # <-- the Vault K8s auth role name to use
+```
+
+Additionally, you can configure the following properties:
+
+- **Address**: `kestra.secret.vault.address` is a fully qualified address with scheme and port to your Vault instance.
+- **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
+- **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
+- **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+
 ## CyberArk Configuration
 
 Kestra integrates with [CyberArk](https://www.cyberark.com/products/secrets-management/) as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.
@@ -196,69 +259,6 @@ kestra:
 * **address**: The base URL of your 1Password Connect server.
 * **token**: Your 1Password Connect API token.
 * **vaultId**: The ID of the vault containing your secrets.
-
-### KV Secrets Engine - Version 2
-
-To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token, AppRole, or Kubernetes [Auth Methods](https://developer.hashicorp.com/vault/docs/auth), all of which require full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `rootEngine` or `namespace` (_if you use Vault Enterprise_).
-
-1. Here is how you can set up [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) in your Kestra configuration:
-
-```yaml
-kestra:
-  secret:
-    type: vault
-    vault:
-      address: "http://localhost:8200"
-      password:
-        user: john
-        password: foo
-```
-
-2. Here is how you can set up [Token Auth Method](https://www.vaultproject.io/docs/auth/token) in your Kestra configuration:
-
-```yaml
-kestra:
-  secret:
-    type: vault
-    vault:
-      address: "http://localhost:8200"
-      token:
-        token: <your-secret-token>
-```
-
-3. Finally, here is how you can set up [AppRole Auth Method](https://www.vaultproject.io/docs/auth/approle) in your Kestra configuration:
-
-```yaml
-kestra:
-  secret:
-    type: vault
-    vault:
-      address: "http://localhost:8200"
-      appRole:
-        path: approle
-        roleId: <your-role-id>
-        secretId: <your-secret-id>
-```
-
-4. Finally, here is how you can set up [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes) in your Kestra configuration:
-
-```yaml
-kestra:
-  secret:
-    type: vault
-    vault:
-      address: "http://localhost:8200"
-      kubernetes:
-        path: "kubernetes"                      # defaults to "kubernetes"
-        role: "kestra"                          # <-- the Vault K8s auth role name to use
-```
-
-Additionally, you can configure the following properties:
-
-- **Address**: `kestra.secret.vault.address` is a fully qualified address with scheme and port to your Vault instance.
-- **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
-- **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
-- **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
