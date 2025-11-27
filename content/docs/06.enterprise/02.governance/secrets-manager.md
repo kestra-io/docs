@@ -4,11 +4,11 @@ icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-How to configure the secrets manager.
+How to configure a secrets manager.
 
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 
-Kestra respects your privacy. Therefore, Secrets are persisted externally in a backend of your choice. They are accessed by workers at runtime and stored only in memory.
+Kestra respects your privacy. Therefore, secrets are persisted externally in a backend of your choice. Workers fetch them at runtime and keep them only in memory.
 
 You can add, modify, or delete secrets from the **Secrets** tab of any given namespace in the Kestra UI or programmatically via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/namespace_secret).
 
@@ -18,7 +18,7 @@ You can add, modify, or delete secrets from the **Secrets** tab of any given nam
 
 ## AWS Secrets Manager Configuration
 
-In order to use [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) as a secrets backend, make sure that your AWS IAM user or role have the required permissions, including `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
+To use [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) as a secrets backend, make sure your AWS IAM user or role has the required permissions, including `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, and `UpdateSecret`.
 
 You can configure the authentication to AWS Cloud in multiple ways:
 - Use `accessKeyId`, `secretKeyId`, and `region` properties.
@@ -38,12 +38,12 @@ kestra:
 
 Additionally, you can configure the following properties:
 
-- **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. This allows sharing a single secrets backend across multiple Kestra instances.
-- **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace AWS default endpoint by an AWS-compatible service such as [MinIO](https://min.io/).
+- **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value. This allows sharing a single secrets backend across multiple Kestra instances.
+- **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace the default AWS endpoint with an AWS-compatible service such as [MinIO](https://min.io/).
 
 ## Azure Key Vault Configuration
 
-To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that Kestra's user or service principal (`clientId`) has the necessary permissions, including:
+To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure Kestra's user or service principal (`clientId`) has the necessary permissions, including:
 - `"Get"`
 - `"List"`
 - `"Set"`
@@ -66,13 +66,13 @@ kestra:
         clientSecret: "secret"
 ```
 
-If no credentials are set in the above configuration, Kestra will use the default Azure authentication akin to the Azure CLI.
+If no credentials are set in the above configuration, Kestra uses the default Azure authentication (the same mechanism as the Azure CLI).
 
 Additionally, you can configure the following properties:
 
 - **Vault Name**: `kestra.secret.azure-key-vault.vault-name` is the name of the Azure Key Vault.
 - **Key Vault URI**: `kestra.secret.azure-key-vault.key-vault-uri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
-- **Prefix**: `kestra.secret.azure-key-vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
+- **Prefix**: `kestra.secret.azure-key-vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value, which is useful when sharing one vault across multiple Kestra instances.
 
 ## Elasticsearch Configuration
 
@@ -132,9 +132,9 @@ Follow the steps below to configure the [KV Secrets Engine - Version 2](https://
 
 ## CyberArk Configuration
 
-Kestra integrates with CyberArk as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.
+Kestra integrates with [CyberArk](https://www.cyberark.com/products/secrets-management/) as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.
 
-To use CyberArk, configure the CyberArk endpoint and credentials. This configuration can be set globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use CyberArk, configure the CyberArk endpoint and credentials. This configuration can be set globally in your [Kestra configuration file](../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 kestra:
@@ -156,7 +156,7 @@ kestra:
 
 Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. Doppler securely stores your secrets and exposes them through its API, which Kestra workers access at runtime. Secrets are only kept in memory by Kestra and are never persisted internally.
 
-To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your Kestra configuration file or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra configuration file](../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 secret:
