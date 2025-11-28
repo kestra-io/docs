@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href">
+    <a :href="href">
         <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toggle="tooltip"
              data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
             <div class="icon-content">
@@ -9,12 +9,13 @@
                 {{ plugin.title }}
             </h6>
         </div>
-    </NuxtLink>
+    </a>
 </template>
-<script setup>
-    import {slugify} from "@kestra-io/ui-libs"
 
-    const {$bootstrap} = useNuxtApp();
+<script setup lang="ts">
+    import {slugify} from "@kestra-io/ui-libs"
+    import {onMounted, useTemplateRef} from "vue";
+
     const props = defineProps({
         plugin: {
             type: Object,
@@ -26,44 +27,38 @@
         },
     });
 
-    const root = ref(null);
+    const root = useTemplateRef("root");
 
     const href = `/plugins/${props.plugin.name}${props.plugin.subGroup === undefined ? '' : ('/' + slugify(props.plugin.title))}`
 
-    onMounted(() => {
-      if (process.client) {
-        new $bootstrap.Tooltip(root.value, {
-          trigger: 'manual',
-          boundary: 'window'
-        });
+    onMounted(async () => {
+        if (root.value && typeof document !== 'undefined') {
+            const { default: Tooltip } = await import('bootstrap/js/dist/tooltip');
+            new Tooltip(root.value, {
+                trigger: 'manual',
+                boundary: document.documentElement
+            });
 
-        root.value.addEventListener('mouseenter', () => {
-            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-            if (tooltip) {
-                removeAllTooltips();
-                tooltip.show();
-                tooltip.tip.addEventListener('mouseleave', () => {
-                tooltip.hide();
-                });
-            }
-        });
-      }
-    });
-
-    onBeforeUnmount(() => {
-        if (process.client) {
-            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-            if (tooltip) {
-                tooltip.dispose();
-            }
+            root.value.addEventListener('mouseenter', () => {
+                if(root.value){
+                    const tooltip = Tooltip.getInstance(root.value);
+                    if (tooltip) {
+                        removeAllTooltips();
+                        tooltip.show();
+                        tooltip.tip.addEventListener('mouseleave', () => {
+                            tooltip?.hide();
+                        });
+                    }
+                }
+            });
         }
     });
 
-    function removeAllTooltips() {
-      const tooltips = document.querySelectorAll('.tooltip');
-      tooltips.forEach(tooltip => {
-        tooltip.parentNode.removeChild(tooltip);
-      });
+    function removeAllTooltips(){
+        const tooltips = document.querySelectorAll('.tooltip');
+        tooltips.forEach(tooltip => {
+            tooltip.parentNode?.removeChild(tooltip);
+        });
     }
 </script>
 

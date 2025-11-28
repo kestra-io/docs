@@ -19,7 +19,7 @@
                 </h1>
             </div>
 
-            <NavToc :page="page" class="right-menu"/>
+            <NavToc :links="page.body?.toc?.links" :editLink="page.editLink" :stem="page.stem" :extension="page.extension" class="right-menu"/>
 
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"

@@ -1,0 +1,31 @@
+---
+import StoriesList from '~/components/stories/StoriesList.vue';
+import Layout from '../../../components/layout.astro';
+import LayoutFooterContact from '~/components/layout/FooterContact.vue';
+import { $fetch } from '~/utils/fetch';
+
+const title = "Kestra's Customers Stories";
+const description = "Learn how we helped companies manage their critical operations.";
+
+const currentPage = Astro.url.searchParams.get('page') ?? 1;
+const itemsPerPage = Astro.url.searchParams.get('page') ?? 25;
+
+const data = await $fetch(`https://api.kestra.io/v1/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
+const stories = data.results;
+const totalStories = data.total
+---
+
+<Layout title={title} description={description}>
+    <div class="main">
+        <StoriesList stories={stories} totalStories={totalStories}/>
+        <LayoutFooterContact
+            title="Getting started with Kestra"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Get started"
+            darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+            purpleButtonText="Read the docs"
+            purpleButtonHref="/docs"
+            client:visible
+        />
+    </div>
+</Layout>

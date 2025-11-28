@@ -1,0 +1,46 @@
+---
+import Layout from "../../../components/layout.astro";
+import FeaturesLanguageSubPagesHeader from "~/components/features/language/sub-pages/Header.vue";
+import FeaturesLanguageSubPagesFeatures from "~/components/features/language/sub-pages/Features.vue";
+import FeaturesLanguageSubPagesPower from "~/components/features/language/sub-pages/Power.vue";
+import FeaturesLanguageSubPagesScripts from "~/components/features/language/sub-pages/Scripts.vue";
+import FeaturesLanguageSubPagesOrchestrator from "~/components/features/language/sub-pages/Orchestrator.vue";
+import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
+import { pythonFeatures, pythonPowerDesc, pythonScripts, pythonOrchestratorDesc } from "~/data/languages/python";
+import LayoutFooterContact from "../../../../components/layout/FooterContact.vue";
+---
+
+<Layout>
+    <div style="height: 120px;" />
+    <FeaturesLanguageSubPagesHeader
+        title="Python Scripts"
+        description="Build declaratively your workflows and seamlessly run all your Python Scripts"
+        source="/landing/features/language/python/header.svg"
+    />
+
+    <FeaturesLanguageSubPagesFeatures
+        features={pythonFeatures}
+    />
+    <FeaturesLanguageSubPagesPower
+        title="with Python"
+        description={pythonPowerDesc}
+        source="/landing/features/language/python/power.svg"
+    />
+
+    <FeaturesLanguageSubPagesScripts
+        title="Python"
+        scripts={pythonScripts}
+    />
+    <FeaturesLanguageSubPagesOrchestrator
+        description={pythonOrchestratorDesc}
+        source="/landing/features/language/python/scripts/python-puzzle.svg"
+    />
+    <FeaturesLanguagePlugins/>
+    <LayoutFooterContact
+        title="Getting Started with  Declarative Orchestration"
+        darkButtonText="Get started"
+        darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+        purpleButtonText="Talk to us"
+        purpleButtonHref="/demo"
+    />
+</Layout>

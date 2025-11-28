@@ -14,20 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
-type EditionInfo = Record<string, { label: string; color: string }>;
+import { editionLabelAndColorByPrefix } from '../../utils/badgeMaps.mjs';
 
 defineProps({ version: { type: String, default: '' }, editions: { type: String, default: '' } })
-
-const color = ref('secondary')
-
-const editionLabelAndColorByPrefix: EditionInfo = {
-  OSS: {label: "Open Source Edition", color: "primary"},
-  EE: {label: "Enterprise Edition", color: "secondary"},
-  CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
-  CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
-}
 
 const editionInfo = (edition: string): { label: string; color: string } => {
   return editionLabelAndColorByPrefix?.[edition] ?? {

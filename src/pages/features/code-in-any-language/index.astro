@@ -1,0 +1,27 @@
+---
+import Layout from "../../../components/layout.astro";
+import FeaturesLanguageHeader from "~/components/features/language/Header.vue";
+import FeaturesLanguageFeatures from "~/components/features/language/Features.vue";
+import FeaturesLanguageGitOptions from "~/components/features/language/GitOptions.vue";
+import FeaturesLanguageIntegrationsInfo from "~/components/features/language/IntegrationsInfo.vue";
+import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
+import FeaturesLanguageAgnosticOrchestration from "~/components/features/language/AgnosticOrchestration.vue";
+import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+---
+
+<Layout>
+    <div style="height: 120px;" />
+    <FeaturesLanguageHeader />
+    <FeaturesLanguageFeatures />
+    <FeaturesLanguageGitOptions />
+    <FeaturesLanguageIntegrationsInfo />
+    <FeaturesLanguagePlugins />
+    <FeaturesLanguageAgnosticOrchestration />
+    <LayoutFooterContact
+        title="Getting Started with  Declarative Orchestration"
+        darkButtonText="Get started"
+        darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+        purpleButtonText="Talk to us"
+        purpleButtonHref="/demo"
+    />
+</Layout>

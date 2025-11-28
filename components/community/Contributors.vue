@@ -50,7 +50,7 @@
 
 <script>
     import Section from '../../components/layout/Section.vue';
-    import {useApi} from "~/composables/useApi.js";
+    import {useApi} from "~/composables/useApi.ts";
 
     export default {
         components: {Section},

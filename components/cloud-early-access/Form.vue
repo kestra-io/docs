@@ -3,10 +3,10 @@
     <div class="left-column">
       <div class="form-container">
         <h1 class="form-title">Apply for Your Free<br>30-Day Kestra Cloud Trial</h1>
-        
+
         <p class="form-description">
-          Get early access to Kestra Cloud with 0 setup, 0 cost, 
-          and full orchestration power. Fill out this short form to 
+          Get early access to Kestra Cloud with 0 setup, 0 cost,
+          and full orchestration power. Fill out this short form to
           tell us more about your use case and request your invite.
         </p>
         <div v-if="valid" v-html="validMessage" class="success" />
@@ -19,17 +19,17 @@
             <label for="firstname"><span class="required-field">*</span> First Name</label>
             <input type="text" class="form-control" name="firstname" id="firstname" required>
           </div>
-          
+
           <div class="form-group">
             <label for="lastname"><span class="required-field">*</span> Last Name</label>
             <input type="text" class="form-control" name="lastname" id="lastname" required>
           </div>
-          
+
           <div class="form-group">
             <label for="email"><span class="required-field">*</span> Company Mail</label>
             <input type="email" class="form-control" name="email" id="email" required>
           </div>
-          
+
           <div class="form-group">
             <label for="company"><span class="required-field">*</span> Company Name</label>
             <input type="text" class="form-control" name="company" id="company" required>
@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="form-group">
             <label><span class="required-field">*</span> Expected Production Timeline</label>
             <div class="radio-options">
@@ -106,13 +106,13 @@
         </form>
       </div>
     </div>
-    
+
     <div class="right-column">
       <div class="box"></div>
       <div class="testimonial">
         <p class="testimonial-quote">
           “Kestra Cloud has been a pivotal part of giving us flexibility and
-          scalability we need to pull off complex processes we do at 
+          scalability we need to pull off complex processes we do at
           Foundation Direct.”
         </p>
         <p class="testimonial-author">
@@ -132,12 +132,18 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
 import axios from "axios";
 import { getHubspotTracking } from "~/utils/hubspot.js";
 import posthog from "posthog-js";
+import identify from "~/utils/identify";
 
-const route = useRoute();
-const gtm = useGtm();
+const props = defineProps<{
+  routePath: string;
+}>();
+
+// const route = useRoute();
+// const gtm = useGtm();
 const formRef = useTemplateRef("cloud-form");
 
 const valid = ref(false);
@@ -225,7 +231,7 @@ const onSubmit = async (e: Event) => {
       context: {
         hutk: getHubspotTracking(),
         ipAddress: ip.data.ip,
-        pageUri: route.path,
+        pageUri: props.routePath,
         pageName: document.title,
       },
     };
@@ -233,10 +239,10 @@ const onSubmit = async (e: Event) => {
     posthog.capture("cloud_form");
     hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
 
-    gtm?.trackEvent({
-      event: "cloud_form",
-      noninteraction: false,
-    });
+    // gtm?.trackEvent({
+    //   event: "cloud_form",
+    //   noninteraction: false,
+    // });
 
     identify(form["email"].value);
 

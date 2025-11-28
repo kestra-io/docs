@@ -1,0 +1,23 @@
+---
+import Layout from '../../components/layout.astro';
+import CareersHeader from '~/components/careers/Header.vue';
+import CareersPositions from '~/components/careers/Positions.vue';
+import CareersPerks from '~/components/careers/Perks.vue';
+import LayoutFooterContact from '~/components/layout/FooterContact.vue';
+
+const title = "Join Us and Shape the Future of Data Orchestration";
+const description = "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of data orchestration";
+---
+
+<Layout title={title} description={description}>
+    <CareersHeader />
+    <CareersPositions client:visible />
+    <CareersPerks />
+    <LayoutFooterContact
+        title="Join our community"
+        darkButtonText="Join our Slack"
+        darkButtonHref="https://kestra.io/slack"
+        purpleButtonText="Contribute"
+        purpleButtonHref="/docs/plugin-developer-guide"
+    />
+</Layout>

@@ -50,12 +50,8 @@
     </Section>
 </template>
 
-<script>
-  import Section from '../../components/layout/Section.vue';
-
-  export default {
-    components: {Section}
-  }
+<script lang="ts" setup>
+  import Section from '../../layout/Section.vue';
 </script>
 
 <style scoped lang="scss">

@@ -54,7 +54,7 @@
                                     <div class="dots">
                                         <div class="slide-counter">
                                             <div class="slider-actions">
-                                                <navigation>
+                                                <Navigation>
                                                     <template #prev>
                                                         <div
                                                             class="mobile-btn-prev carousel-control carousel-control-prev">
@@ -69,7 +69,7 @@
                                                                  alt="next"/>
                                                         </div>
                                                     </template>
-                                                </navigation>
+                                                </Navigation>
                                             </div>
                                             <div
                                                 class="dot"
@@ -82,7 +82,7 @@
                             </div>
                         </Slide>
                         <template #addons>
-                            <navigation>
+                            <Navigation>
                                 <template #next>
                                     <div class="carousel-btn carousel-control carousel-control-next">
                                         <img src="/landing/enterprise/slider-right-arrow.svg" alt="next"/>
@@ -93,7 +93,7 @@
                                         <img src="/landing/enterprise/slider-left-arrow.svg" alt="prev"/>
                                     </div>
                                 </template>
-                            </navigation>
+                            </Navigation>
                         </template>
                     </Carousel>
                 </div>
@@ -116,6 +116,7 @@
 
 <script>
   import Section from '../layout/Section.vue';
+  import {Carousel, Slide, Navigation} from 'vue3-carousel';
   import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
   import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
   import 'vue3-carousel/dist/carousel.css'
@@ -125,6 +126,9 @@
       Section,
       ArrowLeft,
       ArrowRight,
+      Carousel,
+      Slide,
+      Navigation,
     },
     data() {
       return {

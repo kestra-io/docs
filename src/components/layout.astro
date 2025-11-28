@@ -1,0 +1,59 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "@kestra-io/ui-libs/style.css";
+import "../../assets/styles/vendor.scss";
+import "../../assets/styles/app.scss";
+import Header from "~/components/layout/Header.vue";
+import LayoutFooter from "~/components/layout/Footer.vue";
+import LayoutFixed from "~/components/layout/Fixed.vue";
+
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const props = Astro.props;
+
+const title = props.title ?? "Kestra, Open Source Declarative Data Orchestration";
+const description = props.description ?? "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
+---
+
+
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="msapplication-TileColor" content="#2c0059" />
+    <meta name="theme-color" content="#2c0059" />
+    <meta property="og:image" content="http://localhost:3001/og-image.png" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2c0059" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <slot name="head" />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <Header client:load />
+    <slot />
+    <LayoutFooter />
+    <LayoutFixed />
+    <script>
+      import AOS from "aos";
+      setTimeout(() => {
+        AOS.init();
+      }, 300);
+    </script>
+  </body>
+</html>

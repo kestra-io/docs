@@ -1,6 +1,7 @@
 import posthog from "posthog-js";
 import identify from "./identify";
-const gtm = useGtm();
+// FIXME: implement useGtm
+const gtm = null// useGtm();
 
 export function hubspotFormCreate(eventType, data) {
     scriptLoad(() => {

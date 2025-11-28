@@ -399,4 +399,4 @@ Most S3-compatible providers (including AWS S3, MinIO, and Cloudflare R2) allow 
    * If your R2/MinIO/Ceph console does not support move/rename in-place, you may need to copy the object to the new location and then delete the original.
 5. **Verify** that all data now resides under the tenant folder.
 
-![s3 migration](/docs/migration-guide/0.23.0/s3_migrate.png)
+![s3 migration](/docs/migration-guide/0-23/s3_migrate.png)
