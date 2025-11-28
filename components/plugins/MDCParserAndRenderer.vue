@@ -18,12 +18,15 @@ const proseComponents = {}
 //     ]);
 
 const docAst = ref<any>();
-onMounted(async () => {
-        const parse = await getMDCParser();
-        docAst.value = await parse(props.content);
-});
+async function parseContent() {
+    const parse = await getMDCParser();
+    docAst.value = await parse(props.content);
+}
+parseContent();
 </script>
 
 <template>
- <MDCRenderer v-if="docAst?.body" :body="docAst.body" :data="docAst.data" :key="content" :components="proseComponents" />
+   <MDCRenderer v-if="docAst?.body" :body="docAst.body" :data="docAst.data" :key="content" :components="proseComponents" />
+   <div v-else-if="docAst">No body...</div>
+    <div v-else>Loading...</div>
 </template>
