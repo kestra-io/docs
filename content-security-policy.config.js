@@ -12,7 +12,6 @@ export default {
     // scripts
     'script-src': [
         "'self'",
-        "'strict-dynamic'",
         "'wasm-unsafe-eval'", 
         "'unsafe-inline'",
         "ajax.cloudflare.com",
