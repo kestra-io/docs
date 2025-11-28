@@ -54,7 +54,10 @@
                     "database_id": "d65b1553-56e9-444e-9f3b-811e87a22f32"
                 }
             ],
-            "vars": { "NITRO_PRESET": "cloudflare-pages" }
+            "vars": {
+                "NITRO_PRESET": "cloudflare-pages",
+                "NUXT_SITE_ENV": "staging"
+            }
         }
     },
 
