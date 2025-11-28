@@ -12,7 +12,6 @@ export default {
     // scripts
     'script-src': [
         "'self'",
-        "'nonce-{{nonce}}'",
         "'strict-dynamic'",
         "'wasm-unsafe-eval'", 
         "'unsafe-inline'",
