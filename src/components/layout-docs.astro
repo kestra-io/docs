@@ -27,6 +27,8 @@ const pageList = recursivePages(navigation);
 const pageNames = generatePageNames(navigation);
 
 interface Props {
+    title?: string,
+    description?: string,
     activeStem: string,
     isHomePage?: boolean
 }
@@ -34,7 +36,7 @@ interface Props {
 const props = Astro.props;
 ---
 
-<Layout>
+<Layout title={props.title} description={props.description}>
     <div class={`layout-docs-wrapper ${props.isHomePage ? 'homepage' : ''}`}>
         <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
         <main class="bd-content container-fluid">
