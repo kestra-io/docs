@@ -20,6 +20,9 @@ const proseComponents = {}
 const docAst = ref<any>();
 async function parseContent() {
     const parse = await getMDCParser();
+    if(!props.content){
+        throw new Error("No content provided to MDCParserAndRenderer.vue");
+    }
     docAst.value = await parse(props.content);
 }
 parseContent();

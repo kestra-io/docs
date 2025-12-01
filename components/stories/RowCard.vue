@@ -15,15 +15,15 @@
                         <div class="card-stories-info">
                             <div class="info-item" v-if="story.kpi1">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <MDCParserAndRenderer :value="story.kpi1" class="item-content"/>
+                                <MDCParserAndRenderer :content="story.kpi1" class="item-content"/>
                             </div>
                             <div class="info-item" v-if="story.kpi2">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <MDCParserAndRenderer :value="story.kpi2" class="item-content" />
+                                <MDCParserAndRenderer :content="story.kpi2" class="item-content" />
                             </div>
                             <div class="info-item" v-if="story.kpi3">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <MDCParserAndRenderer :value="story.kpi3" class="item-content" />
+                                <MDCParserAndRenderer :content="story.kpi3" class="item-content" />
                             </div>
                         </div>
                         <span class="author">

@@ -17,7 +17,7 @@ const totalStories = data.total
 
 <Layout title={title} description={description}>
     <div class="main">
-        <StoriesList stories={stories} totalStories={totalStories}/>
+        <StoriesList stories={stories} totalStories={totalStories} client:idle/>
         <LayoutFooterContact
             title="Getting started with Kestra"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."

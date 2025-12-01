@@ -6,12 +6,12 @@ import CareersPerks from '~/components/careers/Perks.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 import { $fetch } from '~/utils/fetch';
 
-const countryCodeToEmoji = (countryCode) => {
+const countryCodeToEmoji = (countryCode: string) => {
     let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
     return String.fromCodePoint(...codePoints);
 }
 
-const baseResponse = (job) => {
+const baseResponse = (job: any) => {
     return {
         id: job.id,
         title: job.title,
