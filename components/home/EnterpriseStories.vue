@@ -19,11 +19,11 @@
     <div class="dots">
         <ClientOnly>
            <button
-  v-for="(story, index) in stories"
-  :key="story.id"
-  :class="{ active: index === activeStory }"
-  @click="manualScrollTo(index)"
-/>
+                v-for="(story, index) in stories"
+                :key="story.id"
+                :class="{ active: index === activeStory }"
+                @click="manualScrollTo(index)"
+            />
         </ClientOnly>
     </div>
 
