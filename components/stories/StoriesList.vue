@@ -33,6 +33,10 @@
 </template>
 
 <script setup>
+import StoriesRowCard from './RowCard.vue'
+import CommonPagination from '../common/Pagination.vue'
+import { ref, computed } from 'vue'
+
 const props = defineProps({
     stories: {
         type: Array,

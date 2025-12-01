@@ -19,7 +19,7 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints />
+            <UseCasesEngineersExploreBlueprints :blueprintsData="blueprintsData" />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration
@@ -111,4 +111,9 @@
             }
         },
     }
+
+    const config = useRuntimeConfig();
+    const {data: blueprintsData} = await useAsyncData('blueprints', () => {
+        return $fetch(`${config.public.apiUrl}/blueprints/versions/latest`)
+    });
 </script>

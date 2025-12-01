@@ -57,23 +57,17 @@
         </Section>
     </div>
 </template>
-<script setup>
+<script lang="ts" setup>
     import Earth from "vue-material-design-icons/Earth.vue";
     import CalendarClock from "vue-material-design-icons/CalendarClock.vue";
     import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue";
     import MedicalBag from "vue-material-design-icons/MedicalBag.vue";
     import ChairRolling from "vue-material-design-icons/ChairRolling.vue";
     import Laptop from "vue-material-design-icons/Laptop.vue";
-</script>
-
-<script>
     import Section from '../../components/layout/Section.vue';
     import Card from '../card/Card.vue';
-
-    export default {
-        components: {Section, Card}
-    }
 </script>
+
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 

@@ -12,10 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-  const config = useRuntimeConfig();
-  const {data: blueprintsData} = await useAsyncData<{results:any[]}>('blueprints', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest`)
-  });
+import HomeBlueprintsCarousel from '../../home/BlueprintsCarousel.vue';
+defineProps<{
+blueprintsData: {
+    results: {id: string}[]
+} | null
+}>()
 </script>
 
 <style lang="scss" scoped>

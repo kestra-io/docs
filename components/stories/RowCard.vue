@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`">
+    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
         <div class="card" data-aos="fade-right">
             <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div class="d-flex align-items-center card-body-container">
@@ -13,17 +13,17 @@
                         <p class="card-meta-description">{{ story.quote }}</p>
                         <p class="card-meta-quote">{{ story.quotePerson }}</p>
                         <div class="card-stories-info">
-                            <div class="info-item">
+                            <div class="info-item" v-if="story.kpi1">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <ContentRenderer :value="kpi1Content" class="item-content"/>
+                                <MDCParserAndRenderer :value="story.kpi1" class="item-content"/>
                             </div>
-                            <div class="info-item">
+                            <div class="info-item" v-if="story.kpi2">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <ContentRenderer :value="kpi2Content" class="item-content" />
+                                <MDCParserAndRenderer :value="story.kpi2" class="item-content" />
                             </div>
-                            <div class="info-item">
+                            <div class="info-item" v-if="story.kpi3">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
-                                <ContentRenderer :value="kpi3Content" class="item-content" />
+                                <MDCParserAndRenderer :value="story.kpi3" class="item-content" />
                             </div>
                         </div>
                         <span class="author">
@@ -45,6 +45,7 @@
 
 <script setup>
     import {slugify} from "@kestra-io/ui-libs";
+    import MDCParserAndRenderer from "../plugins/MDCParserAndRenderer.vue";
 
     const props = defineProps({
         story: {
@@ -52,16 +53,6 @@
             required: true,
         }
     });
-
-    const kpi1Content = ref('');
-    const kpi2Content = ref('');
-    const kpi3Content = ref('');
-
-
-    kpi1Content.value = await parseMarkdown(props.story.kpi1, {});
-    kpi2Content.value = await parseMarkdown(props.story.kpi2, {});
-    kpi3Content.value = await parseMarkdown(props.story.kpi3, {});
-
 </script>
 
 <style lang="scss" scoped>
