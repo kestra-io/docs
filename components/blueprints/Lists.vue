@@ -121,6 +121,7 @@ if(blueprintsData.value) {
 }
 
 const changePage = () => {
+    // FIXME: find an astro friendly way to do this
     window.scrollTo(0, 0)
 };
 

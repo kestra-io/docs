@@ -54,6 +54,7 @@ const totalPages = computed(()=>{
     return Math.ceil(props.totalStories / itemsPerPage.value)
 })
 const changePage = () => {
+    // FIXME: find an astro friendly way to do this
     window.scrollTo(0, 0)
     fetchPageData()
 }
