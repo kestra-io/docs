@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getMDCParser, MDCRenderer } from '@kestra-io/ui-libs';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
     content: string,
@@ -28,5 +28,5 @@ parseContent();
 <template>
    <MDCRenderer v-if="docAst?.body" :body="docAst.body" :data="docAst.data" :key="content" :components="proseComponents" />
    <div v-else-if="docAst">No body...</div>
-    <div v-else>Loading...</div>
+   <div v-else>Loading...</div>
 </template>
