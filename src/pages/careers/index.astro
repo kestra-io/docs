@@ -7,11 +7,23 @@ import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 import { $fetch } from '~/utils/fetch';
 
 const countryCodeToEmoji = (countryCode: string) => {
-    let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
+    let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + (char as any).charCodeAt());
     return String.fromCodePoint(...codePoints);
 }
 
-const baseResponse = (job: any) => {
+interface Job {
+    id: string;
+    title:  string;
+    locations: Array<{
+        location_type: string;
+        location_option: {
+            country: string;
+            display_name: string;
+        }
+    }>;
+}
+
+const baseResponse = (job: Job):{id: string, title: string, locations: Array<{code: string | null, name: string, emoji: string}> | null, remote: boolean | null, link: string} => {
     return {
         id: job.id,
         title: job.title,
@@ -32,7 +44,7 @@ const baseResponse = (job: any) => {
     }
 }
 
-const jobsList = await $fetch(`https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`);
+const jobsList = await $fetch<{ results: Job[] }>(`https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`);
 
 const positions = jobsList.results.map((job) => {
                 return baseResponse(job);

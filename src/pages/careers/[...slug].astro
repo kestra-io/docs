@@ -1,0 +1,52 @@
+---
+export const prerender = false
+import Layout from "../../components/layout.astro";
+import LayoutFooterContact from '~/components/layout/FooterContact.vue';
+import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue";
+import { $fetch } from "~/utils/fetch";
+
+async function fetchJobApplication(slug?: string){
+    if(!slug){
+        return null;
+    }
+    const jobsList = await $fetch(`https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`);
+    const res = jobsList.jobs.find((job: any) => job.id === slug);
+    const resJobDesc = await $fetch(`https://app.dover.com/api/v1/jobs/${slug}/get_job_description`);
+
+    return {...res, description: resJobDesc.user_provided_description,};
+}
+
+const { slug } = Astro.params;
+const page = await fetchJobApplication(slug);
+---
+
+<Layout
+    title="Join Us and Shape the Future of Orchestration Software"
+    description="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
+>
+    <div class="header-container">
+        <div class="header container d-flex flex-column align-items-center gap-3">
+            <h1 data-aos="fade-left">{ page.title }</h1>
+            <h4>
+                <MapMarkerOutline /> Remote from
+                {page.locations.map((loc: any) => <span>
+                    { loc.emoji } { loc.name }
+                </span>)}
+            </h4>
+            <a href={page.link} class="btn btn-animated btn-purple-animated mt-4" data-aos="zoom-in">
+                Apply for this job
+            </a>
+        </div>
+    </div>
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <article class="bd-main order-1">
+            <div v-html="page.description" />
+        </article>
+    </div>
+    <LayoutFooterContact
+        title="Join our team"
+        subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
+        purpleButtonText="Apply for this job"
+        :purpleButtonHref="page.link"
+    />
+</Layout>

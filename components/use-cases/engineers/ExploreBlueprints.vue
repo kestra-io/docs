@@ -14,9 +14,9 @@
 <script lang="ts" setup>
 import HomeBlueprintsCarousel from '../../home/BlueprintsCarousel.vue';
 defineProps<{
-blueprintsData: {
-    results: {id: string}[]
-} | null
+    blueprintsData: {
+        results: {id: string}[]
+    } | null
 }>()
 </script>
 

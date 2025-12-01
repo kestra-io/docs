@@ -9,27 +9,14 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            subtitle: {
-              type: String,
-              required: true,
-            },
-            subtitleBefore: {
-              type: String,
-              required: true,
-            },
-            baseline: {
-              type: String,
-              required: true,
-            },
-            mainContent: {
-              type: Array,
-              required: true,
-            }
-        },
-    }
+<script setup lang="ts">
+    import LayoutDetailMainContent, { type DetailMainContentItem } from "~/components/layout/DetailMainContent.vue";
+    defineProps<{
+        subtitle: string;
+        subtitleBefore: string;
+        baseline: string;
+        mainContent: Array<DetailMainContentItem>;
+    }>();
 </script>
 
 <style lang="scss" scoped>

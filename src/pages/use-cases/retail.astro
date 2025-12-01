@@ -1,0 +1,41 @@
+---
+import Layout from '../../components/layout.astro';
+import RetailCard from '~/components/use-cases/Card.vue';
+import Line from '~/components/use-cases/Line.vue';
+import UseCasesExamples from '~/components/use-cases/Examples.vue';
+import LeroyMerlin from '~/components/use-cases/LeroyMerlin.vue';
+import RetailOps from '~/components/use-cases/RetailOps.vue';
+import Plugins from '~/components/use-cases/Plugins.vue';
+import Footer from '~/components/use-cases/Footer.vue';
+import retail from '~/data/retail.js';
+
+const { header, solutions, leroy, ops, plugins, footer } = retail;
+
+const title = header.title;
+const description = header.description;
+---
+
+<Layout title={title} description={description}>
+    <div class="main">
+        <RetailCard content={header} />
+        <Line />
+        <UseCasesExamples content={solutions} client:visible />
+        <Line />
+        <LeroyMerlin content={leroy} client:visible />
+        <Line />
+        <RetailOps content={ops} client:visible />
+        <Plugins content={plugins} client:visible />
+        <Line />
+        <Footer content={footer} client:visible />
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "../../../assets/styles/variable";
+
+    .main {
+        background-color: $black-4;
+        color: $white;
+        font-weight: 300;
+    }
+</style>

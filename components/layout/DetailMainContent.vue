@@ -32,8 +32,19 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
     import Section from './Section.vue';
+
+    export interface DetailMainContentItem {
+        title: string;
+        description?: string;
+        content: string;
+        img: string;
+        imgAlt: string;
+        imgWidth: number;
+        imgHeight: number;
+    }
+
     export default {
         components: {Section},
         props: {
@@ -54,7 +65,7 @@
                 required: false,
             },
             items: {
-                type: Array,
+                type: Array as () => Array<DetailMainContentItem>,
                 required: false,
             },
         }

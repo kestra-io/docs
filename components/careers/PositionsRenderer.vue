@@ -14,7 +14,6 @@
                                 {{ doc.title }}
                             </span>
                             <span class="loc">
-
                                 (Remote / <template v-for="loc in doc.locations" :key="loc">
                                     {{ loc.emoji }}
                                 </template>)
@@ -37,7 +36,7 @@
             title: string;
             locations: Array<{
                 emoji: string;
-            }>;
+            }> | null;
         }>;
     }>();
 </script>
