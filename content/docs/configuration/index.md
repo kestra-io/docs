@@ -1573,7 +1573,7 @@ kestra:
 
 ### Server liveness & heartbeats
 
-Kestra servers send heartbeats for liveness.
+Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../09.administrator-guide/server-lifecycle.md) documentation for more details.
 
 #### `kestra.server.liveness.enabled` (Boolean, default `true`)
 
@@ -1615,10 +1615,6 @@ kestra:
 Worker liveness in Kafka mode is handled by Kafka’s protocol guarantees.
 :::
 
-#### Prior to 0.16.0
-
-Workers only; Executors marked workers unhealthy by heartbeat thresholds.
-
 ### Heartbeat frequency
 
 Workers send heartbeats every `kestra.heartbeat.frequency` (default `10s`).
@@ -1627,7 +1623,7 @@ Workers send heartbeats every `kestra.heartbeat.frequency` (default `10s`).
 
 Executors consider a worker `DEAD` after `kestra.heartbeat.heartbeat-missed` intervals (default `3`).
 
-### Worker task restart strategy (>= 0.16.0)
+### Worker task restart strategy
 
 `kestra.server.worker-task-restart-strategy`: `NEVER` | `IMMEDIATELY` | `AFTER_TERMINATION_GRACE_PERIOD` (default).
 
