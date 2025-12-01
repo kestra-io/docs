@@ -3,7 +3,7 @@
         <div class="header container d-flex flex-column align-items-center gap-3">
             <h1 data-aos="fade-left">Join our <span>Team</span></h1>
             <h4 data-aos="fade-right">Drive innovation in a globally distributed, collaborative environment</h4>
-            <NuxtLink :href="(route.fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+            <NuxtLink :href="(fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                 Open positions
             </NuxtLink>
         </div>
@@ -54,5 +54,7 @@
     }
 </style>
 <script setup lang="ts">
-    const route = useRoute()
+    defineProps<{
+        fullPath: string;
+    }>();
 </script>
