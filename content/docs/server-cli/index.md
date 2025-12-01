@@ -521,7 +521,7 @@ Create a user.
 **Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
 
 ```bash
-kestra auths users create --superadmin --tenant=default admin admin_password123
+kestra auths users create --superadmin --tenant=default admin Admin_password@123
 ```
 
 ### `kestra auths users create-basic-auth`
