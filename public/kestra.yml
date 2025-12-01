@@ -3107,11 +3107,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByGetWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     put:
       tags:
       - Executions
@@ -3143,11 +3143,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByPutWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     post:
       tags:
       - Executions
@@ -3179,11 +3179,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByPostWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -5074,11 +5074,11 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlow 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/FlowWithSource"
     put:
       tags:
       - Flows
@@ -8298,6 +8298,35 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
+    ExecutionController.WebhookResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -8353,8 +8382,7 @@ components:
           type: string
         variables:
           type: object
-          additionalProperties:
-            type: object
+          additionalProperties: true
         logFile:
           type: string
           format: uri
