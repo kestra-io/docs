@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useTemplateRef, watch } from 'vue';
+
 const show = defineModel<boolean>("show")
 const modalRef = useTemplateRef<HTMLDialogElement>("modalRef")
 
