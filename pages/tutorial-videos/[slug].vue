@@ -5,11 +5,37 @@
             <Meta name="description"
                   content="Discover all our video tutorials, hands-on video, and more"/>
         </Head>
-        <VideosTutorialsList />
+        <VideosTutorialsList
+            :tutorialVideo
+            :page
+            :itemsPerPage
+            @update:currentCategory="async (newCategory) => {
+                router.push(`/tutorial-videos/${newCategory}`)
+            }"
+        >
+            <template #pagination>
+                <CommonPagination
+                    :current-page="page"
+                    :total-pages="tutorialVideo.totalPages"
+                    @update:currentPage="async (newPage) => {
+                        router.push({
+                            params: { ...route.params, slug: currentCategory.value },
+                            query: { ...route.query, page: newPage, size: itemsPerPage }
+                        })
+                    }"
+                />
+            </template>
+        </VideosTutorialsList>
     </div>
 </template>
 
 <script setup>
+    import { computed } from 'vue'
+    import VideosTutorialsList from '~/components/videos/TutorialsList.vue'
+    import CommonPagination from '~/components/common/Pagination.vue'
+
+    const router = useRouter()
+
     const { origin } = useRequestURL()
 
     useHead({
@@ -33,4 +59,23 @@
             { property: 'og:image:alt', content: "All Things Kestra in Video" },
         ]
     })
+
+    const config = useRuntimeConfig()
+
+    const route = useRoute()
+    const currentCategory = computed(() => route.params.slug)
+
+    const page = computed(() => {
+        const pageParam = route.query.page
+        return pageParam ? Number(pageParam) : 1
+    })
+
+    const itemsPerPage = computed(() => {
+        const sizeParam = route.query.size
+        return sizeParam ? Number(sizeParam) : 25
+    })
+
+    const { data: tutorialVideo } = await useFetch(
+        () => `${config.public.apiUrl}/tutorial-videos?page=${page.value}&size=${itemsPerPage.value}&category=${currentCategory.value}`
+    )
 </script>

@@ -1,0 +1,69 @@
+---
+export const prerender = false;
+import Layout from '../../components/layout.astro';
+import VideosTutorialsList from '~/components/videos/TutorialsList.vue'
+import CommonPagination from '~/components/common/Pagination.vue'
+import { $fetch } from '~/utils/fetch';
+
+export function getStaticPaths() {
+  return [
+    'all',
+    'deep-dive',
+    'quick-start',
+    'feature-highlight'
+  ].map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const tags = new Map([
+  ['all', 'All videos'],
+  ['deep-dive', 'Deep Dive Tutorials'],
+  ['quick-start', 'Quick Start Tutorials'],
+  ['feature-highlight', 'Feature Highlight']
+])
+
+const { slug } = Astro.params;
+
+const currentCategory = tags.get(slug) || '';
+
+const PageURL = new URL(Astro.request.url);
+
+const itemsPerPageStr = PageURL.searchParams.get('size')
+const itemsPerPage = itemsPerPageStr ? parseInt(itemsPerPageStr) : 25;
+
+const pageStr = PageURL.searchParams.get('page')
+const page = pageStr ? parseInt(pageStr) : 1;
+
+const currentCategoryFilter = slug === 'all' ? '' : currentCategory;
+
+const API_URL = `https://api.kestra.io/v1/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`;
+
+const tutorialVideo = await $fetch(API_URL);
+---
+
+<Layout>
+    <div style="height: 120px"></div>
+    <VideosTutorialsList {...{tutorialVideo, page, itemsPerPage, currentCategory}} client:idle>
+        <CommonPagination
+            slot="pagination"
+            data-id="pagination"
+            currentPage={page}
+            totalPages={Math.ceil(tutorialVideo.total/itemsPerPage)}
+            client:visible
+        />
+    </VideosTutorialsList>
+</Layout>
+
+<script>
+    import { navigate } from "astro:transitions/client";
+
+    document.querySelectorAll('[data-id="pagination"]').forEach((el) => {
+        el.addEventListener('update:currentPage', (e) => {
+            const detail = (e as CustomEvent<number>).detail;
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', detail.toString());
+            navigate(url.pathname + url.search);
+        });
+    });
+</script>

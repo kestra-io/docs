@@ -1,5 +1,5 @@
 <template>
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" ref="nav">
         <ul class="pagination mb-0">
              <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
                 <span class="page-link fw-bold arrow-button bg-dark-2" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
@@ -22,15 +22,30 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
+import { computed, useTemplateRef, watch } from 'vue'
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
 const morePagesPlaceholder = '...' as const
 
+const navigationHTML = useTemplateRef<HTMLElement>('nav')
+
 const props = defineProps<{
-    totalPages: number
+    totalPages: number,
+    currentPage: number
 }>()
+
+const emit = defineEmits<{
+    (e: 'update:currentPage', value: number): void
+}>()
+
+const custEmit = (e: 'update:currentPage', value:number) => {
+    const ce = new CustomEvent(e, { detail: value });
+    navigationHTML.value?.dispatchEvent(ce);
+    emit(e, value);
+}
+
+
 
 const currentPage = defineModel<number>('currentPage', { required: true })
 
@@ -40,11 +55,11 @@ watch(() => props.totalPages, () => {
 
 function changePage(event: { direction?: 'previous' | 'next', pageNo?: number | "..." }) {
     if (event.direction === 'previous' && currentPage.value > 1) {
-        currentPage.value--
+        custEmit('update:currentPage', currentPage.value - 1)
     } else if (event.direction === 'next' && currentPage.value < props.totalPages) {
-        currentPage.value++
+        custEmit('update:currentPage', currentPage.value + 1)
     } else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
-        currentPage.value = event.pageNo
+        custEmit('update:currentPage', event.pageNo)
     }
 }
 

@@ -14,32 +14,30 @@
                     >
                         <li
                             v-for="category in categories"
-                            :key="category.name"
+                            :key="category"
                             class="nav-item text-nowrap"
                             role="presentation"
                         >
-                            <button
+                            <a
                                 class="nav-link"
-                                :class="{ 'active': activeTag.name === category.name }"
+                                :class="{ 'active': currentCategory === category }"
                                 id="home-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#home"
                                 type="button"
-                                @click="setCatVideos(category)"
+                                :href="`/tutorial-videos/${findKeyByValue(tags, category)}`"
                             >
-                                {{ category.name }}
-                            </button>
+                                {{ category }}
+                            </a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div
                             v-for="category in categories"
-                            :key="category.name"
+                            :key="category"
                             class="tab-pane fade"
-                            :class="{ 'show active': activeTag.name === category.name }"
-                            :id="category.name"
+                            :class="{ 'show active': currentCategory === category }"
+                            :id="category"
                             role="tabpanel"
-                            :aria-labelledby="`${category.name}-tab`"
+                            :aria-labelledby="`${category}-tab`"
                         >
                             <div class="tutorials-container">
                                 <div class="row" v-if="featuredVideo">
@@ -88,7 +86,7 @@
                         <select
                             class="form-select bg-dark-2"
                             aria-label="Default select example"
-                            v-model="itemsPerPage"
+                            :modelValue="itemsPerPage"
                         >
                             <option :value="10">10</option>
                             <option :value="25">25</option>
@@ -96,14 +94,9 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <CommonPagination
-                            :totalPages="totalPages"
-                            v-model:current-page="page"
-                            @update:current-page="changePage"
-                            v-if="totalPages > 1"
-                        />
+                        <slot name="pagination" />
                         <div class="d-flex align-items-baseline">
-                            <span class="total-pages">Total: {{ totalVideos }}</span>
+                            <span class="total-pages">Total: {{ tutorialVideo.total }}</span>
                         </div>
                     </div>
                 </div>
@@ -139,15 +132,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useYoutube } from '~/utils/useYoutube'
 import Modal from '../common/Modal.vue'
 import VideosTutorialVideo from './TutorialVideo.vue'
-import CommonPagination from '../common/Pagination.vue'
-
-interface Category {
-  name: string
-}
 
 interface VideoData {
   title: string
@@ -165,28 +153,34 @@ interface TutorialVideoResponse {
   total: number
 }
 
-const config = useRuntimeConfig()
-const route = useRoute()
-const router = useRouter()
-const { start } = useLoadingIndicator()
+const props = withDefaults(defineProps<{
+    page?: number
+    itemsPerPage?: number
+    currentCategory?: string
+    tutorialVideo?: TutorialVideoResponse
+}>(), {
+    page: 1,
+    itemsPerPage: 25,
+    currentCategory: 'All videos',
+    tutorialVideo: undefined
+});
+
 const { extractVideoId } = useYoutube()
 
-const youtubeVideoModal = ref<HTMLElement | null>(null)
-const activeTag = ref<Category>({ name: 'All videos' })
 const videos = ref<VideoData[]>([])
 const featuredVideo = ref<VideoData | null>(null)
 const videoVisible = ref(false)
 const visibleVideoData = ref<VideoData>({} as VideoData)
 const totalPages = ref(0)
-const totalVideos = ref(0)
-const itemsPerPage = ref(25)
 
-const categories: Category[] = [
-  { name: 'All videos' },
-  { name: 'Deep Dive Tutorials' },
-  { name: 'Quick Start Tutorials' },
-  { name: 'Feature Highlight' }
-]
+const categories = [
+  'All videos',
+  'Deep Dive Tutorials',
+  'Quick Start Tutorials',
+  'Feature Highlight',
+] as const
+
+export type CategoryName = typeof categories[number]
 
 const tags = new Map([
   ['all', 'All videos'],
@@ -195,14 +189,6 @@ const tags = new Map([
   ['feature-highlight', 'Feature Highlight']
 ])
 
-const page = computed(() =>
-  route.query.page ? parseInt(route.query.page as string) : 1
-)
-
-const currentCategory = computed(() => {
-  const slug = route.params.slug as string
-  return slug === 'all' ? '' : tags.get(slug) || ''
-})
 
 function getYMD(dateString: string): string {
   const date = new Date(dateString)
@@ -212,6 +198,10 @@ function getYMD(dateString: string): string {
     year: 'numeric'
   }).format(date)
 }
+
+const emit = defineEmits<{
+  (e: 'update:currentCategory', value: string): void
+}>()
 
 function embedUrl(url: string): string {
   const videoId = extractVideoId(url)
@@ -231,7 +221,7 @@ function setVideos(data: VideoData[], total: number): void {
     youtubeUrl: item.url
   }))
 
-  if (activeTag.value.name === 'All videos') {
+  if (props.currentCategory === 'All videos') {
     featuredVideo.value = videoData.find(item => item.isFeatured) || null
     videos.value = videoData.filter(video => !video.isFeatured)
   } else {
@@ -239,17 +229,7 @@ function setVideos(data: VideoData[], total: number): void {
     videos.value = [...videoData]
   }
 
-  totalVideos.value = total
-  totalPages.value = Math.ceil(total / itemsPerPage.value)
-}
-
-function changePage(pageNo: number): void {
-  router.push({
-    query: {
-      ...route.query,
-      page: pageNo
-    }
-  })
+  totalPages.value = Math.ceil(total / props.itemsPerPage)
 }
 
 function closeModal(): void {
@@ -262,47 +242,10 @@ function openVideoModal(video: VideoData): void {
   visibleVideoData.value = video
 }
 
-function setCatVideos(category: Category): void {
-  start()
-  router.push({
-    query: {
-      ...route.query,
-      page: 1
-    },
-    params: {
-      ...route.params,
-      slug: findKeyByValue(tags, category.name)
-    }
-  })
-}
-
-watch(() => route.params.slug, (newSlug) => {
-  const slug = newSlug as string
-  activeTag.value = { name: tags.get(slug) || 'All videos' }
-}, { immediate: true })
-
-watch(() => route.query.size, (newSize) => {
-  itemsPerPage.value = newSize ? parseInt(newSize as string) : 25
-}, { immediate: true })
-
-watch(itemsPerPage, (newVal) => {
-  router.push({
-    query: {
-      ...route.query,
-      size: newVal,
-      page: 1
-    }
-  })
-})
-
-const { data: tutorialVideo } = await useFetch<TutorialVideoResponse>(
-  () => `${config.public.apiUrl}/tutorial-videos?page=${page.value}&size=${itemsPerPage.value}&category=${currentCategory.value}`
-)
-
-watch(tutorialVideo, (newVal) => {
+watch(() => props.tutorialVideo, (newVal) => {
   if (newVal?.total) {
     setVideos(newVal.results, newVal.total)
-    if (process.client) {
+    if (typeof window !== 'undefined') {
       window.scrollTo(0, 0)
     }
   }
