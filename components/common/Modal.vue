@@ -40,14 +40,18 @@ dialog {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 0;
-    width: 60%;
-    max-width: 90%;
-    max-height: 90%;
     overflow: auto;
     animation: fadeOut 1s forwards;
+    display: inline-block;
+    width: 90%;
+
+    @media screen and (min-width: 820px) {
+        width: 800px;
+    }
 
     &::backdrop {
         background-color: #26282d;
+        backdrop-filter: blur(2px);
         opacity: .5;
     }
     &::backdrop {
