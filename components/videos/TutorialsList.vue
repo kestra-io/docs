@@ -139,7 +139,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { useYoutube } from '~/utils/useYoutube'
 import Modal from '../common/Modal.vue'
+import VideosTutorialVideo from './TutorialVideo.vue'
+import CommonPagination from '../common/Pagination.vue'
 
 interface Category {
   name: string
