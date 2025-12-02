@@ -1,24 +1,24 @@
 <template>
     <article class="video-container">
         <div class="thumbnail">
-            <NuxtImg 
-                class="thumbnail-img" 
-                :src="thumbnailUrl" 
-                :alt="video.title" 
+            <NuxtImg
+                class="thumbnail-img"
+                :src="thumbnailUrl"
+                :alt="video.title"
                 loading="lazy"
                 densities="1x"
                 sizes="sm:100vw md:50vw lg:33vw"
                 @error="handleImageError"
             />
-            <NuxtImg 
-                loading="lazy" 
-                class="youtube-icon" 
-                src="/landing/tutorial-videos/youtube-icon.svg" 
+            <NuxtImg
+                loading="lazy"
+                class="youtube-icon"
+                src="/landing/tutorial-videos/youtube-icon.svg"
                 alt=""
                 aria-hidden="true"
             />
         </div>
-        
+
         <div class="video-content">
             <p class="category">{{ video.category }}</p>
             <h3 class="title">{{ video.title }}</h3>
@@ -31,6 +31,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useYoutube } from '~/utils/useYoutube'
+
 interface VideoData {
   title: string
   category: string
@@ -56,13 +59,13 @@ const DEFAULT_THUMBNAIL = '/logo.png'
 const videoId = computed(() => {
   const urlOrId = props.video.youtubeUrl || props.video.videoId
   if (!urlOrId) return null
-  
+
   return isValidVideoId(urlOrId) ? urlOrId : extractVideoId(urlOrId)
 })
 
-const thumbnailUrl = computed(() => 
-  hasImageFailed.value || !videoId.value 
-    ? DEFAULT_THUMBNAIL 
+const thumbnailUrl = computed(() =>
+  hasImageFailed.value || !videoId.value
+    ? DEFAULT_THUMBNAIL
     : getThumbnailUrl(videoId.value) || DEFAULT_THUMBNAIL
 )
 
@@ -86,7 +89,7 @@ const handleImageError = () => hasImageFailed.value = true
         aspect-ratio: 16/9;
         width: 100%;
         background-color: $black-2;
-        
+
         .thumbnail-img {
             width: 100%;
             height: 100%;
@@ -94,7 +97,7 @@ const handleImageError = () => hasImageFailed.value = true
             object-position: center;
             transition: scale 0.3s ease;
         }
-        
+
         .youtube-icon {
             position: absolute;
             top: 50%;
