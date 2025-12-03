@@ -41,6 +41,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <CommonPagination
+                            :current-url="fullPath"
                             :totalPages="totalPages"
                             v-model:current-page="currentPage"
                             @update:current-page="changePage"
@@ -70,7 +71,8 @@
     const props = withDefaults(defineProps<{
         plugins: Plugin[],
         categories: string[],
-        searchQuery?: string
+        fullPath: string,
+        searchQuery?: string,
     }>(), {
         searchQuery: ''
     });

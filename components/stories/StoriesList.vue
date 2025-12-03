@@ -24,6 +24,7 @@
             </div>
             <CommonPagination
                 v-if="totalPages > 1"
+                :current-url="fullPath"
                 :totalPages="totalPages"
                 v-model:current-page="currentPage"
                 @update:current-page="changePage"
@@ -32,20 +33,17 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
 import StoriesRowCard from './RowCard.vue'
 import CommonPagination from '../common/Pagination.vue'
-import { ref, computed } from 'vue'
 
-const props = defineProps({
-    stories: {
-        type: Array,
-        required: true
-    },
-    totalStories: {
-        type: Number,
-        default: 1
-    }
+const props = withDefaults(defineProps<{
+    fullPath: string,
+    stories: Array<any>,
+    totalStories?: number,
+}>(), {
+    totalStories: 1
 })
 const emits = defineEmits(['fetchPageData'])
 const itemsPerPage = ref(25);

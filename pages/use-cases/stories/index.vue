@@ -5,7 +5,12 @@
             <Meta name="description"
                   content="Learn how we helped companies manage their critical operations." />
         </Head>
-        <StoriesList :stories="stories" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        <StoriesList
+            :stories="stories"
+            :total-stories="totalStories"
+            :full-path="route.fullPath"
+            @fetch-page-data="fetchStories"
+        />
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 title="Getting started with Kestra"

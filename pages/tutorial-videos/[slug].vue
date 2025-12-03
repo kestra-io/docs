@@ -15,6 +15,7 @@
         >
             <template #pagination>
                 <CommonPagination
+                    :current-url="route.fullPath"
                     :current-page="page"
                     :total-pages="tutorialVideo.totalPages"
                     @update:currentPage="async (newPage) => {

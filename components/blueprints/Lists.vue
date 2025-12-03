@@ -35,10 +35,11 @@
             </div>
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <CommonPagination
+                    :current-url="route.fullPath"
+                    v-if="totalPages > 1"
                     :totalPages="totalPages"
                     v-model:current-page="currentPage"
                     @update:current-page="changePage"
-                    v-if="totalPages > 1"
                 />
             </div>
         </div>

@@ -46,6 +46,7 @@ const tutorialVideo = await $fetch(API_URL);
     <div style="height: 120px"></div>
     <VideosTutorialsList {...{tutorialVideo, page, itemsPerPage, currentCategory}} client:idle>
         <CommonPagination
+            currentUrl={Astro.request.url}
             slot="pagination"
             data-id="pagination"
             currentPage={page}
@@ -54,16 +55,3 @@ const tutorialVideo = await $fetch(API_URL);
         />
     </VideosTutorialsList>
 </Layout>
-
-<script>
-    import { navigate } from "astro:transitions/client";
-
-    document.querySelectorAll('[data-id="pagination"]').forEach((el) => {
-        el.addEventListener('update:currentPage', (e) => {
-            const detail = (e as CustomEvent<number>).detail;
-            const url = new URL(window.location.href);
-            url.searchParams.set('page', detail.toString());
-            navigate(url.pathname + url.search);
-        });
-    });
-</script>

@@ -4,7 +4,10 @@
         <Meta name="description"
               content="Connect Kestra with tools you already know and love"/>
     </Head>
-    <PluginsLists :plugins="pluginsList" :categories="categories ?? []"
+    <PluginsLists
+        :plugins="pluginsList"
+        :categories="categories ?? []"
+        :fullPath="route.fullPath"
         v-model:searchQuery="searchQuery"
         v-model:currentPage="currentPage"
         v-model:itemsPerPage="itemsPerPage"

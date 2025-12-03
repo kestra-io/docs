@@ -11,7 +11,12 @@ const categoriesRes = await fetch(`https://api.kestra.io/v1/plugins/categories`)
 const categoriesData = await categoriesRes.json();
 ---
 <Layout>
-    <PluginsLists plugins={pluginsData.map(p => p.data)} categories={categoriesData ?? []} client:idle />
+    <PluginsLists
+        plugins={pluginsData.map(p => p.data)}
+        categories={categoriesData ?? []}
+        fullPath={Astro.request.url}
+        client:idle
+    />
     <LayoutFooterContact
         title="Didn’t find the plugin you were looking for?"
         darkButtonText="Ask on slack"
