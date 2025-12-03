@@ -14,7 +14,7 @@
         </div>
         <div class="row content justify-content-around" v-else>
             <div class="col-12 col-md-8">
-                <h1 data-aos="fade-left title">All things Kestra - {{ pageNo }}</h1>
+                <h1 data-aos="fade-left title">All things Kestra</h1>
                 <h4 data-aos="fade-right" class="fw-normal">
                     Company news, product updates, and engineering deep dives.
                 </h4>
