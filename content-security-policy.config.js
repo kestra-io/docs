@@ -29,7 +29,8 @@ export default {
         "https://*.googletagmanager.com",
         "https://*.redditstatic.com",
         "https://*.hs-scripts.com",
-        "https://*.hsforms.net"
+        "https://*.hsforms.net",
+        "https://*.hsappstatic.net",
     ],
     // styles & fonts
     'style-src': ["'self'", 'https:', "'unsafe-inline'"],
