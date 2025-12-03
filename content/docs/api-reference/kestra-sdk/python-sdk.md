@@ -173,6 +173,7 @@ def follow_execution():
 **Notes:**  
 - Use `follow_execution` to monitor running flows in real-time.  
 - The stream yields execution state updates (e.g., RUNNING, SUCCESS, FAILED).  
+- The first SSE payload is intentionally empty; it acts as a keepalive so you can ignore it before processing subsequent events.  
 - Use this method in CI/CD, CLI tools, or real-time dashboards.
 ::
 

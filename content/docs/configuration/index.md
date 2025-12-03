@@ -971,9 +971,10 @@ micronaut:
 
 ### Log format
 
-Kestra uses Logback. Customize via a `logback.xml` on the classpath and set:
+Kestra uses [Logback](https://logback.qos.ch/), a logging framework for Java.
+You can customize its configuration by providing a `logback.xml` file as:
 
-```
+```shell
 JAVA_OPTS="-Dlogback.configurationFile=file:/path/to/logback.xml"
 ```
 
