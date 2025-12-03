@@ -71,16 +71,17 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
                     {{ option }}
                 </option>
             </select>
-            <pre>Items per page {{ itemsPerPage }}</pre>
         </div>
-        <CommonPagination
-            v-if="totalPages > 1"
-            :current-url="currentUrl"
-            :totalPages="totalPages"
-            v-model:current-page="currentPage"
-        />
-        <div class="d-flex align-items-baseline">
-            <span class="total-pages">Total: {{ totalItems }}</span>
+        <div class="d-flex align-items-center gap-3">
+            <CommonPagination
+                v-if="totalPages > 1"
+                :current-url="currentUrl"
+                :totalPages="totalPages"
+                v-model:current-page="currentPage"
+            />
+            <div class="d-flex align-items-baseline">
+                <span class="total-pages">Total: {{ totalItems }}</span>
+            </div>
         </div>
     </div>
 </template>
