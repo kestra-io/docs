@@ -14,7 +14,7 @@
         </div>
         <div class="row content justify-content-around" v-else>
             <div class="col-12 col-md-8">
-                <h1 data-aos="fade-left title">All things Kestra</h1>
+                <h1 data-aos="fade-left title">All things Kestra - {{ pageNo }}</h1>
                 <h4 data-aos="fade-right" class="fw-normal">
                     Company news, product updates, and engineering deep dives.
                 </h4>
@@ -83,9 +83,8 @@
                 </NuxtLink>
             </div>
             <CommonPaginationContainer
-                :current-url="currentUrl"
-                :total-pages="totalPages"
-                :total-items="blogs.length"
+                :current-url="fullPath"
+                :total-items="blogsList.length"
                 @update="(payload) => {
                     pageNo = payload.page;
                     itemsPerPage = payload.size
@@ -142,9 +141,15 @@ export default {
             pageList: [],
             itemsPerPage: 25,
             pageNo: 1,
+            query: "",
         };
     },
     computed: {
+        fullPath() {
+            const url = new URL(this.currentUrl);
+            url.search = this.query;
+            return url.toString();
+        },
         blogsList() {
             const blogs = this.blogs.filter(
                 (e) => e.category === this.filter || this.filter === "All news",
@@ -159,7 +164,7 @@ export default {
                 .reverse();
         },
         totalPages() {
-            return Math.ceil(this.blogs.length / this.itemsPerPage);
+            return Math.ceil(this.blogsList.length / this.itemsPerPage);
         },
         paginatedBlogs() {
             return this.blogsList.slice(
@@ -211,6 +216,11 @@ export default {
             });
         },
     },
+    mounted() {
+        this.$nextTick(() => {
+            this.query = window.location.search;
+        })
+    }
 };
 </script>
 

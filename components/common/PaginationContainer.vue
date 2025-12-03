@@ -1,25 +1,29 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import CommonPagination from './Pagination.vue'
 
 const props = withDefaults(defineProps<{
     totalItems: number,
     currentUrl: string,
     sizeOptions?: number[]
+    defaultSize?: number
 }>(), {
-    sizeOptions: () => [12, 24, 48]
+    sizeOptions: () => [12, 24, 48],
+    defaultSize: 24
 })
 
 const localCurrentUrl = ref(props.currentUrl);
 
-const urlParams = computed(() => new URL(localCurrentUrl.value).searchParams);
+const urlParams = computed(() => {
+    return new URL(localCurrentUrl.value).searchParams;
+})
 
 const size = computed(() => {
-    return parseInt(urlParams.value.get('size') || '24')
+    return parseInt(urlParams.value.get('size') ?? props.defaultSize.toString())
 })
 
 const page = computed(() => {
-    return parseInt(urlParams.value.get('page') || '1')
+    return parseInt(urlParams.value.get('page') ?? '1')
 })
 
 const itemsPerPage = ref(size.value);
@@ -37,7 +41,7 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     // Update URL without navigation
     const newUrl = new URL(localCurrentUrl.value);
     const params = newUrl.searchParams
-    if( newSize === 24 ){
+    if( newSize === props.defaultSize ){
         params.delete('size')
     } else {
         params.set('size', newSize.toString())
@@ -48,10 +52,17 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
         params.set('page', newPage.toString())
     }
     localCurrentUrl.value = newUrl.toString();
+
     emit('update', { size: newSize, page: newPage });
     if( typeof window !== 'undefined' ){
         window.history.pushState({}, '', newUrl.toString());
     }
+})
+
+watch(() => props.currentUrl, (newUrl) => {
+    localCurrentUrl.value = newUrl;
+    itemsPerPage.value = size.value;
+    currentPage.value = page.value;
 })
 </script>
 
@@ -59,6 +70,7 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     <div class="d-flex justify-content-between my-5 pagination-container">
         <div class="items-per-page">
             <select
+                v-if="totalPages > 1"
                 class="form-select bg-dark-2"
                 v-model="itemsPerPage"
             >

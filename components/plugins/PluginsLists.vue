@@ -6,7 +6,7 @@
                 <h4 data-aos="fade-right">Extend Kestra with our {{ totalPlugins }} plugins</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg"
-                           :placeholder="`Search across ${totalPlugins} plugins`" v-model="searchQuery">
+                           :placeholder="`Search across ${totalPlugins} plugins`" v-model="searchQueryLocal">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -30,25 +30,15 @@
                 <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">
                     No results found for the current search
                 </div>
-                <div class="d-flex justify-content-between pagination-container" v-if="totalGroups > itemsPerPage">
-                    <div class="items-per-page">
-                        <select class="form-select bg-dark-2" aria-label="Default select example"
-                                v-model="itemsPerPage">
-                            <option :value="20">20</option>
-                            <option :value="40">40</option>
-                            <option :value="60">60</option>
-                        </select>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <CommonPagination
-                            :current-url="fullPath"
-                            :totalPages="totalPages"
-                            v-model:current-page="currentPage"
-                            @update:current-page="changePage"
-                            v-if="totalPages > 1"
-                        />
-                    </div>
-                </div>
+                <CommonPaginationContainer
+                    v-if="totalPages > 1"
+                    :current-url="fullPath + (searchQueryLocal ? `?search=${searchQueryLocal}` : '')"
+                    :totalItems="totalGroups"
+                    :size-options="[20, 40, 60]"
+                    :default-size="40"
+                    class="pagination-container"
+                    @update="changePage"
+                />
             </div>
         </div>
     </div>
@@ -60,7 +50,7 @@
     import { computed, ref } from "vue";
     import { usePluginsCount } from "../../composables/usePluginsCount";
     import PluginsPluginCard from "./PluginCard.vue";
-    import CommonPagination from "../common/Pagination.vue";
+    import CommonPaginationContainer from "../common/PaginationContainer.vue";
 
     const DONT_CAPITALIZE_CATEGORIES = ["AI", "BI"];
 
@@ -76,7 +66,8 @@
     }>(), {
         searchQuery: ''
     });
-    const searchQuery = ref('');
+
+    const searchQueryLocal = ref(props.searchQuery);
 
     function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
         return isEntryAPluginElementPredicate(...elementsArray);
@@ -123,7 +114,7 @@ ${elements.map(({cls}) => `<li>
             } as Plugin
         }).filter((plugin): plugin is Plugin => plugin !== undefined);
 
-        let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
+        let searchResults = setSearchPlugins(searchQueryLocal.value, filteredPlugins)
         if (activeCategory.value !== 'All Categories') {
             currentPage.value = 1;
             searchResults = searchResults.filter((item) => {
@@ -159,8 +150,9 @@ ${elements.map(({cls}) => `<li>
         });
     }
 
-    const changePage = () => {
-        // FIXME: find an astro friendly way to do this
+    const changePage = (payload: { page: number, size: number }) => {
+        currentPage.value = payload.page;
+        itemsPerPage.value = payload.size;
         window.scrollTo(0, 0)
     };
 
