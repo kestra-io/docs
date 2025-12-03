@@ -80,7 +80,8 @@ export default {
         "https://*.hsforms.com",
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
-        "https://*.g.doubleclick.com"
+        "https://*.g.doubleclick.com",
+        "https://*.ipify.org"
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],
