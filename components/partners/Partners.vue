@@ -127,7 +127,7 @@
                         <div class="card-body">
                             <p class="card-text">Data Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
-                            <a href="https://www.ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
+                            <a href="/partners/ntico/" target="_blank">Learn more <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
