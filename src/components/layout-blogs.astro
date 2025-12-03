@@ -4,12 +4,27 @@ import Layout from "./layout.astro";
 
 interface Props {
     activeStem: string,
+    title?: string,
+    description?: string
 }
 
 const props = Astro.props;
+
+const title = props.title ?? "Insights & News on Data Orchestration"
+const description = props.description ?? "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
 ---
 
-<Layout>
+<Layout title={title} description={description}>
+    <Fragment slot="head">
+        <slot name="head">
+            <meta name="title" content={title} />
+            <meta name="description" content={description} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
+            <meta property="twitter:title" content={title} />
+            <meta property="twitter:description" content={description} />
+        </slot>
+    </Fragment>
     <div class="layout-docs-wrapper">
         <main class="bd-content">
             <div class="container-fluid">

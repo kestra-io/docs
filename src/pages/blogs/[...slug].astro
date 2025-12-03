@@ -24,8 +24,38 @@ const links = headings.map(h => ({
                 id: h.slug,
                 depth: h.depth
             }))
+
+const {title, description, image, date, authors} = page
+
+const jsonLinkedData = {
+            "@context" : "http://schema.org",
+            "@type" : "BlogPosting",
+            "mainEntityofPage" : {
+                "@type" : "Webpage",
+                "@id" : `/blogs/${post.id}`,
+            },
+            "headline": title,
+            "image": [image ],
+            "datePublished": date,
+            "author": (authors ?? []).map(author => ({ "@type": "Person", "name": author.name })),
+            "publisher": { "@type": "Organization", "name": "Kestra", "logo": { "@type": "ImageObject", "url": "https://kestra.io/logo.svg" } },
+            "description": description,
+        }
 ---
-<LayoutBlogs activeStem={`/blogs/${post.id}`}>
+<LayoutBlogs activeStem={`/blogs/${post.id}`} title={title} description={description}>
+    <Fragment slot="head">
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:type" content="article" />
+        <meta property="article:published_time" content={new Date(date).toISOString()} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={image} />
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLinkedData)}/>
+    </Fragment>
     <div class="container bd-gutter bd-layout margin">
         {post && (
         <article
