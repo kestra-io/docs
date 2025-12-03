@@ -30,9 +30,10 @@
                 <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">
                     No results found for the current search
                 </div>
+
                 <CommonPaginationContainer
                     v-if="totalPages > 1"
-                    :current-url="fullPath + (searchQueryLocal ? `?search=${searchQueryLocal}` : '')"
+                    :current-url="currentUrl"
                     :totalItems="totalGroups"
                     :size-options="[20, 40, 60]"
                     :default-size="40"
@@ -47,7 +48,7 @@
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import {isEntryAPluginElementPredicate, type Plugin, type PluginElement} from "@kestra-io/ui-libs";
-    import { computed, ref } from "vue";
+    import { computed, onMounted, ref } from "vue";
     import { usePluginsCount } from "../../composables/usePluginsCount";
     import PluginsPluginCard from "./PluginCard.vue";
     import CommonPaginationContainer from "../common/PaginationContainer.vue";
@@ -68,6 +69,13 @@
     });
 
     const searchQueryLocal = ref(props.searchQuery);
+
+    const currentUrl = computed(() => {
+        if (typeof window !== 'undefined') {
+            return window.location.href;
+        }
+        return props.fullPath;
+    });
 
     function isFullEntryAPluginElementPredicate(elementsArray :[elementType: string, elements: any]): elementsArray is [key: string, el:PluginElement[]] {
         return isEntryAPluginElementPredicate(...elementsArray);
