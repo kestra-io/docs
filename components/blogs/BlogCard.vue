@@ -28,19 +28,20 @@
         </NuxtLink>
     </div>
 </template>
-<script setup>
+
+<script lang="ts" setup>
 import BlogCardDetails from './BlogCardDetails.vue';
-</script>
-<script>
-    export default {
-        name: "BlogCard",
-        props: {
-            blog: {
-                type: Object,
-                required: true,
-            },
-        },
+defineProps<{
+    blog: {
+        path: string;
+        image?: string;
+        category?: string;
+        authors?: { name: string }[];
+        author?: { name: string };
+        title: string;
+        date: Date | string;
     }
+}>();
 </script>
 
 <style scoped lang="scss">

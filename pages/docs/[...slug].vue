@@ -50,7 +50,7 @@
     const config = useRuntimeConfig();
 
     const route = useRoute()
-    const slug = computed(() => `/docs/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    const slug = computed(() => `/docs/${Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug}`);
 
     const fetchNavigation = async () => {
         const {data: fetched, error} = await useAsyncData(

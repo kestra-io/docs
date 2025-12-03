@@ -82,30 +82,20 @@
                     <button class="btn btn-dark w-100">More news</button>
                 </NuxtLink>
             </div>
-            <div class="d-flex justify-content-between my-5">
-                <div class="items-per-page">
-                    <select
-                        class="form-select bg-dark-2"
-                        aria-label="Default select example"
-                        v-model="itemsPerPage"
-                        @change="fetchPageData"
-                    >
-                        <option :value="10">10</option>
-                        <option :value="25">25</option>
-                        <option :value="50">50</option>
-                    </select>
-                </div>
-                <Pagination
-                    :totalPages="totalPages"
-                    v-model:current-page="pageNo"
-                    v-if="totalPages > 1"
-                />
-            </div>
+            <CommonPaginationContainer
+                :current-url="currentUrl"
+                :total-pages="totalPages"
+                :total-items="blogs.length"
+                @update="(payload) => {
+                    pageNo = payload.page;
+                    itemsPerPage = payload.size
+                }"
+            />
         </div>
     </div>
 </template>
 <script setup>
-import Pagination from '../common/Pagination.vue';
+import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
 import BlogCard from './BlogCard.vue';
 import HighlightBlogCard from './HighlightBlogCard.vue';
 </script>
@@ -123,7 +113,11 @@ export default {
             required: true,
         },
         slug: {
-            type: String | Array,
+            type: String,
+            required: false,
+        },
+        currentUrl: {
+            type: String,
             required: false,
         },
     },
@@ -189,11 +183,9 @@ export default {
         },
     },
     created() {
-        this.fullSlug =
-            "/blogs/" +
-            (this.slug instanceof Array
-                ? this.slug.join("/")
-                : this.slug);
+        this.fullSlug = Array.isArray(this.slug)
+            ? `/blogs/${this.slug.join("/")}`
+            : this.slug || "";
         const breadcrumbs = [
             ...new Set(this.fullSlug.split("/").filter((r) => r !== "")),
         ];

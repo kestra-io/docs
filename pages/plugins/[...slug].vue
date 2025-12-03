@@ -68,7 +68,7 @@
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
     const route = useRoute()
-    const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
+    const routeSlug: string = Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);

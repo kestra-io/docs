@@ -1,17 +1,10 @@
 ---
 export const prerender = false
-import { getCollection } from "astro:content";
 import BlogsList from "~/components/blogs/BlogsList.vue";
 import LayoutBlogs from "../../components/layout-blogs.astro";
 import { $fetch } from "~/utils/fetch";
 
-const blogs = await getCollection('blogs');
-
-const sortedBlogs = blogs.sort((a, b) => {
-    return a.data.date > b.data.date ? 1 : -1;
-});
-
-const externalNewsData = await $fetch(`https://api.kestra.io/v1/external-blogs?size=4`);
+const externalNewsData = await $fetch(`https://api.kestra.io/v1/external-blogs`);
 
 const externalNews = externalNewsData.results.map((data: any) => {
     return {
@@ -28,12 +21,9 @@ const externalNews = externalNewsData.results.map((data: any) => {
 
 <LayoutBlogs activeStem={`/blogs`}>
     <BlogsList
+        slug="/blogs/community"
+        blogs={[]}
         currentUrl={Astro.request.url}
-        blogs={sortedBlogs.map(blog => ({
-            ...blog.data,
-            slug: blog.id,
-            path: `/blogs/${blog.id}`
-        }))}
         externalNews={externalNews}
     />
 </LayoutBlogs>

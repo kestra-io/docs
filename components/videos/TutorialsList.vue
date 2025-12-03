@@ -81,25 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class=" d-flex justify-content-between my-5">
-                    <div class="items-per-page">
-                        <select
-                            class="form-select bg-dark-2"
-                            aria-label="Default select example"
-                            :modelValue="itemsPerPage"
-                        >
-                            <option :value="10">12</option>
-                            <option :value="25">24</option>
-                            <option :value="50">48</option>
-                        </select>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <slot name="pagination" />
-                        <div class="d-flex align-items-baseline">
-                            <span class="total-pages">Total: {{ tutorialVideo.total }}</span>
-                        </div>
-                    </div>
-                </div>
+                <slot name="pagination"/>
             </div>
         </div>
         <Modal

@@ -1,8 +1,13 @@
 <template>
     <div class="container-fluid">
         <div class="container">
-            <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
-                       :external-news="externalNews"/>
+            <BlogsList
+                v-if="slug === '/blogs/' || slug === '/blogs/community'"
+                :blogs="page"
+                :slug="slug"
+                :external-news="externalNews"
+                :current-url="route?.fullPath + querystring"
+            />
             <div v-else class="container bd-gutter bd-layout margin">
                 <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                     <div class="bd-content">
@@ -60,10 +65,15 @@
     const {public:{CollectionNames}} = useRuntimeConfig()
 
     const route = useRoute()
-    const slug = computed(() => "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
+    const slug = computed(() => "/blogs/" + (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug));
     const externalNews = ref()
     const page = ref([]);
     const config = useRuntimeConfig();
+
+    const querystring = computed(() => {
+        const params = new URLSearchParams(route?.query);
+        return `?${params.toString()}`;
+    });
 
     const handleHash = (hashValue) => {
         setTimeout(() => {
