@@ -57,7 +57,7 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     if( typeof window !== 'undefined' ){
         window.history.pushState({}, '', newUrl.toString());
     }
-})
+}, { immediate: true })
 
 watch(() => props.currentUrl, (newUrl) => {
     localCurrentUrl.value = newUrl;

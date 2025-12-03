@@ -139,7 +139,7 @@ export default {
             ],
             fullSlug: "",
             pageList: [],
-            itemsPerPage: 25,
+            itemsPerPage: 24,
             pageNo: 1,
             query: "",
         };
