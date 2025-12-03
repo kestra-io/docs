@@ -19,19 +19,19 @@
                     Company news, product updates, and engineering deep dives.
                 </h4>
                 <ul
-                    class="nav nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
+                    class="ks-nav ks-nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
                     id="myTab"
                     role="tablist"
                 >
                     <li
                         v-for="cat in categories"
                         :key="cat.name"
-                        class="nav-item text-nowrap"
+                        class="ks-nav-item text-nowrap"
                         role="presentation"
                         @click="setFilterBlogs(cat.name)"
                     >
                         <button
-                            class="nav-link"
+                            class="ks-nav-link"
                             :class="{ active: filter === cat.name }"
                             id="home-tab"
                             data-bs-toggle="tab"
@@ -235,15 +235,23 @@ export default {
     }
 }
 
-.nav-tabs {
+.ks-nav-tabs {
     border-bottom: 1px solid $black-6;
+    display: flex;
+    padding: 0;
+    list-style-type: none;
+    justify-items: start;
 }
 
-.nav-item {
-    .nav-link {
+.ks-nav-item {
+    height: 41px;
+    .ks-nav-link {
+        border-color: transparent;
         color: $white;
+        background-color: transparent;
         font-size: $font-size-md;
         font-weight: 400;
+        padding: .5rem 1rem;
 
         &:hover, &:focus {
             border-color: transparent;
@@ -267,11 +275,11 @@ export default {
     }
 }
 
-.nav::-webkit-scrollbar {
+.ks-nav::-webkit-scrollbar {
     display: none;
 }
 
-.nav {
+.ks-nav {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
