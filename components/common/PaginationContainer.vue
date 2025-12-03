@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import CommonPagination from './Pagination.vue'
 
 const props = withDefaults(defineProps<{
     totalItems: number,
-    totalPages: number,
     currentUrl: string,
     sizeOptions?: number[]
 }>(), {
@@ -26,6 +25,10 @@ const page = computed(() => {
 const itemsPerPage = ref(size.value);
 const currentPage = ref(page.value);
 
+const totalPages = computed(() => {
+    return Math.ceil(props.totalItems / itemsPerPage.value);
+});
+
 const emit = defineEmits<{
     (e: 'update', payload: { size: number, page: number }): void
 }>()
@@ -46,7 +49,9 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     }
     localCurrentUrl.value = newUrl.toString();
     emit('update', { size: newSize, page: newPage });
-    window.history.pushState({}, '', newUrl.toString());
+    if( typeof window !== 'undefined' ){
+        window.history.pushState({}, '', newUrl.toString());
+    }
 })
 </script>
 
@@ -66,6 +71,7 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
                     {{ option }}
                 </option>
             </select>
+            <pre>Items per page {{ itemsPerPage }}</pre>
         </div>
         <CommonPagination
             v-if="totalPages > 1"
