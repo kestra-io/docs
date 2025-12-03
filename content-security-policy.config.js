@@ -12,7 +12,7 @@ export default {
     // scripts
     'script-src': [
         "'self'",
-        "'wasm-unsafe-eval'", 
+        "'wasm-unsafe-eval'",
         "'unsafe-inline'",
         "ajax.cloudflare.com",
         "static.cloudflareinsights.com",
@@ -55,6 +55,7 @@ export default {
         "https://*.google.com",
         "https://*.youtube.com",
         "https://*.googletagmanager.com",
+        "https://*.kestra.io/",
     ],
     'connect-src': [
         "'self'",
