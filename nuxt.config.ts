@@ -23,6 +23,7 @@ export default defineNuxtConfig({
         enabled: true,
         strict: false,
         hidePoweredBy: true,
+        sri: true,
         headers: {
             referrerPolicy: 'strict-origin-when-cross-origin',
             crossOriginEmbedderPolicy: false,
