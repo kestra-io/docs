@@ -88,9 +88,9 @@
                             aria-label="Default select example"
                             :modelValue="itemsPerPage"
                         >
-                            <option :value="10">10</option>
-                            <option :value="25">25</option>
-                            <option :value="50">50</option>
+                            <option :value="10">12</option>
+                            <option :value="25">24</option>
+                            <option :value="50">48</option>
                         </select>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
@@ -160,7 +160,7 @@ const props = withDefaults(defineProps<{
     tutorialVideo?: TutorialVideoResponse
 }>(), {
     page: 1,
-    itemsPerPage: 25,
+    itemsPerPage: 24,
     currentCategory: 'All videos',
     tutorialVideo: undefined
 });

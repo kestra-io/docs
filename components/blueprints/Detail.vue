@@ -3,9 +3,9 @@
         <div class="col-md-10">
             <h3>Source</h3>
             <div class="mt-4 relative code mb-3 main-code-block" :class="{ hide: hideCode }">
-                <ContentRenderer
+                <MDCParserAndRenderer
                     class="bd-markdown"
-                    :value="flow"
+                    :content="flow"
                 />
                 <div class="show-more" :class="{ hide: !hideCode }">
                     <a href="" @click.prevent="hideCode = !hideCode">
@@ -19,9 +19,9 @@
             <div class="title">
                 <p>{{ tagsList }}</p>
             </div>
-            <ContentRenderer
+            <MDCParserAndRenderer
                 class="bd-markdown"
-                :value="description"
+                :content="description"
             />
         </div>
         <div class="col-md-2">
@@ -41,11 +41,15 @@
 <script>
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+import CommonTaskIcon from '~/components/common/TaskIcon.vue';
+import MDCParserAndRenderer from "../plugins/MDCParserAndRenderer.vue";
 
 export default {
     components: {
       ChevronUp,
-      ChevronDown
+      ChevronDown,
+      CommonTaskIcon,
+      MDCParserAndRenderer
     },
     props: {
         page: {
@@ -57,7 +61,7 @@ export default {
             required: true
         },
         flow: {
-            type: Object,
+            type: String,
             required: true
         },
         tags: {

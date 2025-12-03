@@ -30,7 +30,7 @@ const currentCategory = tags.get(slug) || '';
 const PageURL = new URL(Astro.request.url);
 
 const itemsPerPageStr = PageURL.searchParams.get('size')
-const itemsPerPage = itemsPerPageStr ? parseInt(itemsPerPageStr) : 25;
+const itemsPerPage = itemsPerPageStr ? parseInt(itemsPerPageStr) : 24;
 
 const pageStr = PageURL.searchParams.get('page')
 const page = pageStr ? parseInt(pageStr) : 1;
@@ -48,10 +48,8 @@ const tutorialVideo = await $fetch(API_URL);
         <CommonPagination
             currentUrl={Astro.request.url}
             slot="pagination"
-            data-id="pagination"
             currentPage={page}
             totalPages={Math.ceil(tutorialVideo.total/itemsPerPage)}
-            client:visible
         />
     </VideosTutorialsList>
 </Layout>

@@ -1,76 +1,87 @@
 <template>
-<div class="mt-5">
-    <div class="header-container">
-        <div class="header container d-flex flex-column align-items-center gap-3">
-            <h1 data-aos="fade-left">Blueprints</h1>
-            <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
-            <div class="col-12 search-input position-relative">
-                <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ blueprints" v-model="searchQuery">
-                <Magnify class="search-icon" />
+    <div class="mt-5">
+        <div class="header-container">
+            <div class="header container d-flex flex-column align-items-center gap-3">
+                <h1 data-aos="fade-left">Blueprints</h1>
+                <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
+                <div class="col-12 search-input position-relative">
+                    <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ blueprints" v-model="searchQuery">
+                    <Magnify class="search-icon" />
+                </div>
+            </div>
+        </div>
+        <div class="mt-5" data-aos="fade-left">
+            <button
+                v-for="tag in tagsComplete"
+                :key="tag.name"
+                :class="{ 'active': activeTags.some(item => item.id === tag.id) }"
+                @click="setTagBlueprints(tag)"
+                class="m-1 rounded-button"
+            >
+                {{ tag.name }}
+            </button>
+        </div>
+        <div class="row my-5">
+            <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
+                <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)"/>
+            </div>
+            <div class="d-flex justify-content-between pagination-container">
+                <div class="items-per-page">
+                    <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
+                        <option :value="12">12</option>
+                        <option :value="24">24</option>
+                        <option :value="48">48</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
+                    <CommonPagination
+                        v-if="totalPages > 1"
+                        :current-url="props.currentUrl"
+                        :totalPages="totalPages"
+                        v-model:current-page="currentPage"
+                        @update:current-page="changePage"
+                    />
+                </div>
             </div>
         </div>
     </div>
-    <div class="mt-5" data-aos="fade-left">
-        <button
-            v-for="tag in tags"
-            :key="tag.name"
-            :class="{ 'active': activeTags.some(item => item.name === tag.name) }"
-            @click="setTagBlueprints(tag)"
-            class="m-1 rounded-button"
-        >
-            {{ tag.name }}
-        </button>
-    </div>
-    <div class="row my-5">
-        <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
-            <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)"/>
-        </div>
-        <div class="d-flex justify-content-between pagination-container">
-            <div class="items-per-page">
-                <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
-                    <option :value="12">12</option>
-                    <option :value="24">24</option>
-                    <option :value="48">48</option>
-                </select>
-            </div>
-            <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
-                <CommonPagination
-                    :current-url="route.fullPath + querystring"
-                    v-if="totalPages > 1"
-                    :totalPages="totalPages"
-                    v-model:current-page="currentPage"
-                    @update:current-page="changePage"
-                />
-            </div>
-        </div>
-    </div>
-</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref, computed, watch } from 'vue'
 import Magnify from "vue-material-design-icons/Magnify.vue"
-import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+import { useBlueprintsList } from '~/composables/useBlueprintsList'
+import CommonPagination from '~/components/common/Pagination.vue'
+import BlueprintsListCard from '~/components/blueprints/ListCard.vue'
 
-const currentPage = ref(1)
-const itemsPerPage = ref(24)
-const blueprints = ref([])
-const activeTags = ref([{ name: 'All tags' }])
-const tags = ref([])
-const props = defineProps(["tags"])
+const props = defineProps<{
+    tags: { id: string, name: string }[],
+    currentUrl: string
+}>()
+
+const localCurrentUrl = ref(props.currentUrl);
+
+watch(() => props.currentUrl, (newUrl) => {
+    localCurrentUrl.value = newUrl;
+});
+
+const urlParams = computed(() => new URL(localCurrentUrl.value).searchParams);
+
+const currentPage = ref(parseInt(urlParams.value.get('page') ?? '1'))
+const itemsPerPage = computed(() => parseInt(urlParams.value?.get('size') ?? '24'))
+const activeTags = ref<{ id: string }[]>([])
+const tagsComplete = computed(() => {
+    return [{ id: 'All tags', name: 'All tags' }, ...props.tags]
+})
 const totalPages = ref(0)
-const totalBlueprints = ref(0)
-const searchQuery = ref('')
-const route = useRoute()
-const router = useRouter()
-const config = useRuntimeConfig()
+const searchQuery = computed(() => urlParams.value?.get('q'))
 
-const querystring = computed(() =>  `?${new URLSearchParams(route.query).toString()}`)
+watch(urlParams, (newParams) => {
+    currentPage.value = parseInt(newParams.get('page') ?? '1')
+    activeTags.value = newParams.get('tags') ? newParams.get('tags')!.split(',').map(tagId => ({ id: tagId })) : []
+}, { immediate: true })
 
-if(props.tags) {
-    tags.value = [{ name: 'All tags' }, ...props.tags]
-}
-
-const toggleArrayElement = (array, element) => {
+function toggleArrayElement<T>(array: T[], element: T): T[] {
   const index = array.indexOf(element);
 
   if (index === -1) {
@@ -78,94 +89,55 @@ const toggleArrayElement = (array, element) => {
   } else {
     array.splice(index, 1);
   }
-  return  array;
+  return array;
 }
 
-const setTagBlueprints = async (tagVal) => {
-  if (tagVal.name === 'All tags') {
+const setTagBlueprints = async (tagVal: { id: string }) => {
+  if (tagVal.id === 'All tags') {
     activeTags.value = [tagVal];
   } else {
-    if (activeTags.value.some(item => item.name === 'All tags')) {
+    if (activeTags.value.some(item => item.id === 'All tags')) {
       activeTags.value = []
     }
     activeTags.value = toggleArrayElement(activeTags.value, tagVal);
   }
 }
 
-if(route.query.page) currentPage.value = parseInt(route.query.page)
-if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-if(route.query.tags) {
-  activeTags.value = tags.value.filter(item => route.query.tags.split(',').includes(item.id));
-}
-if(route.query.q) searchQuery.value = route.query.q;
-
-const { data: blueprintsData, error } = await useAsyncData(
-  `blueprints`,
-  () => useBlueprintsList({
-    page: currentPage.value,
-    size: itemsPerPage.value,
-    tags: activeTags.value.map(tag => tag.id).join(','),
-    q: searchQuery.value
-  })
-)
-
-if ((error && error.value) || !activeTags) {
-  throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
-}
-
-const setBlueprints = (allBlueprints, total) => {
-    blueprints.value = allBlueprints
-    totalBlueprints.value = total
+const setBlueprints = (total: number) => {
     totalPages.value = Math.ceil(total / itemsPerPage.value)
 }
 
-if(blueprintsData.value) {
-    setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
-}
+const {blueprints, total: totalBlueprints} = await useBlueprintsList({
+    page: currentPage,
+    size: itemsPerPage,
+    tags: activeTags,
+    q: searchQuery
+});
 
 const changePage = () => {
-    // FIXME: find an astro friendly way to do this
     window.scrollTo(0, 0)
 };
 
-const generateCardHref = (blueprint) => {
+const generateCardHref = (blueprint: { id: string }) => {
   return `/blueprints/${blueprint.id}`
 }
 
-let timer;
-watch(() => route.query, async () => {
-  if (!route.query.tags && !route.query.page && !route.query.size) {
-    activeTags.value = [{ name: 'All tags' }]
-  }
-});
+let timer: any;
 
-watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, searchVal, activeTagsVal], [__, oldItemVal, oldTagVal]) => {
-      if(timer) {
+watch([searchQuery, activeTags], ([searchVal, activeTagsVal]) => {
+    if(timer) {
         clearTimeout(timer)
-      }
-  timer = setTimeout(async () => {
-      const { data } = await useFetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
-      setBlueprints(data.value.results, data.value.total)
+    }
 
-        function getQuery() {
-            let query = {
-                page: (itemVal != oldItemVal) ? 1 : pageVal,
-                size: itemVal,
-            };
-            if (!!activeTagsVal.map(item => item.id).join(',')) {
-              query['tags'] = activeTagsVal.map(item => item.id).join(',')
-            }
-            if(searchVal.length) {
-                query['q'] = searchVal
-            }
-
-            return query
-        }
-
-        router.push({
-            query: getQuery()
-        })
-
+    timer = setTimeout(async () => {
+        setBlueprints(totalBlueprints.value)
+        // Update URL without navigation
+        const newUrl = new URL(localCurrentUrl.value);
+        Object.entries(urlParams.value).forEach(([key, value]) => {
+            newUrl.searchParams.set(key, value.toString());
+        });
+        localCurrentUrl.value = newUrl.toString();
+        window.history.pushState({}, '', newUrl.toString());
     }, 500)
 }, { deep: true })
 </script>

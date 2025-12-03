@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+import { useBlueprintsList } from '~/composables/useBlueprintsList'
 const { data: blueprintsData } = await useAsyncData(
   `blueprints`,
   () => useBlueprintsList({ page: 1, size: 20 })

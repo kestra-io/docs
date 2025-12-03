@@ -1,0 +1,28 @@
+---
+import Layout from "../../components/layout.astro";
+import BlueprintsLists from "~/components/blueprints/Lists.vue";
+import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+import { $fetch } from "~/utils/fetch";
+
+const tagsRes = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`);
+const tags = tagsRes || [];
+
+const title = "Kestra Blueprints Library";
+const description = "Get started with our library of workflows ready to use";
+---
+<Layout title={title} description={description}>
+    <div class="container">
+        <BlueprintsLists
+            tags={tags}
+            currentUrl={Astro.request.url}
+            client:load
+        />
+        <LayoutFooterContact
+            title="New to Kestra?"
+            subtitle="Use blueprints to kickstart your first workflows."
+            purpleButtonText="Get started with Kestra"
+            purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
+            client:visible
+        />
+    </div>
+</Layout>

@@ -4,8 +4,8 @@
              <li class="page-item" role="button">
                 <NuxtLink
                     class="page-link fw-bold arrow-button bg-dark-2"
-                    :href="getPageUrl(currentPage - 1)"
-                    @click="changePage({ direction: 'previous' })"
+                    :to="getPageUrl(currentPage - 1)"
+                    @click.prevent="changePage({ direction: 'previous' })"
                 >
                         <ChevronLeft />
                 </NuxtLink>
@@ -16,16 +16,16 @@
                 :role="n === morePagesPlaceholder ? '' : 'button'"
                 class="page-item"
                 :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }"
-                @click="changePage({ pageNo: n })"
+
             >
                 <span v-if="n === morePagesPlaceholder" class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span>
-                <NuxtLink v-else class="page-list-item bg-dark-2 page-link fw-bold" :href="getPageUrl(n)">{{ n }}</NuxtLink>
+                <NuxtLink v-else class="page-list-item bg-dark-2 page-link fw-bold" :to="getPageUrl(n)" @click.prevent="changePage({ pageNo: n })">{{ n }}</NuxtLink>
             </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <NuxtLink
                     class="page-link fw-bold arrow-button bg-dark-2"
-                    :href="getPageUrl(currentPage + 1)"
-                    @click="changePage({ direction: 'next' })"
+                    :to="getPageUrl(currentPage + 1)"
+                    @click.prevent="changePage({ direction: 'next' })"
                 >
                         <ChevronRight />
                 </NuxtLink>
