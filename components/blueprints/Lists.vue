@@ -35,7 +35,7 @@
             </div>
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <CommonPagination
-                    :current-url="route.fullPath"
+                    :current-url="route.fullPath + querystring"
                     v-if="totalPages > 1"
                     :totalPages="totalPages"
                     v-model:current-page="currentPage"
@@ -63,6 +63,8 @@ const searchQuery = ref('')
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
+
+const querystring = computed(() =>  `?${new URLSearchParams(route.query).toString()}`)
 
 if(props.tags) {
     tags.value = [{ name: 'All tags' }, ...props.tags]

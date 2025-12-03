@@ -7,7 +7,7 @@
     <PluginsLists
         :plugins="pluginsList"
         :categories="categories ?? []"
-        :fullPath="route.fullPath"
+        :current-url="route.fullPath + querystring"
         v-model:searchQuery="searchQuery"
         v-model:currentPage="currentPage"
         v-model:itemsPerPage="itemsPerPage"
@@ -35,6 +35,8 @@
     const currentPage = ref(1);
     const itemsPerPage = ref(20);
     const activeCategory = ref('All Categories');
+
+    const querystring = computed(() =>  `?${new URLSearchParams(route.query).toString()}`)
 
     if(status.value !== 'success'){
         console.error("Error in plugins page - blob", error)

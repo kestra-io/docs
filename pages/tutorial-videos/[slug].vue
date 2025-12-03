@@ -15,7 +15,7 @@
         >
             <template #pagination>
                 <CommonPagination
-                    :current-url="route.fullPath"
+                    :current-url="route.fullPath + querystring"
                     :current-page="page"
                     :total-pages="tutorialVideo.totalPages"
                     @update:currentPage="async (newPage) => {
@@ -36,6 +36,8 @@
     import CommonPagination from '~/components/common/Pagination.vue'
 
     const router = useRouter()
+
+    const querystring = computed(() =>  `?${new URLSearchParams(route.query).toString()}`)
 
     const { origin } = useRequestURL()
 
