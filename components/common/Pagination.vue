@@ -1,8 +1,14 @@
 <template>
-    <nav aria-label="Page navigation" ref="nav">
+    <nav aria-label="Page navigation">
         <ul class="pagination mb-0">
-             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
-                <span class="page-link fw-bold arrow-button bg-dark-2" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
+             <li class="page-item" role="button">
+                <NuxtLink
+                    class="page-link fw-bold arrow-button bg-dark-2"
+                    :href="getPageUrl(currentPage - 1)"
+                    @click="changePage({ direction: 'previous' })"
+                >
+                        <ChevronLeft />
+                </NuxtLink>
             </li>
             <li
                 v-for="n in pages"
@@ -12,10 +18,17 @@
                 :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }"
                 @click="changePage({ pageNo: n })"
             >
-                <span class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span>
+                <span v-if="n === morePagesPlaceholder" class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span>
+                <NuxtLink v-else class="page-list-item bg-dark-2 page-link fw-bold" :href="getPageUrl(n)">{{ n }}</NuxtLink>
             </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
-                <span class="page-link fw-bold arrow-button bg-dark-2"><ChevronRight /></span>
+                <NuxtLink
+                    class="page-link fw-bold arrow-button bg-dark-2"
+                    :href="getPageUrl(currentPage + 1)"
+                    @click="changePage({ direction: 'next' })"
+                >
+                        <ChevronRight />
+                </NuxtLink>
             </li>
         </ul>
     </nav>
@@ -28,38 +41,39 @@ import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
 const morePagesPlaceholder = '...' as const
 
-const navigationHTML = useTemplateRef<HTMLElement>('nav')
-
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     totalPages: number,
-    currentPage: number
-}>()
+    currentUrl: string,
+    currentPage?: number
+}>(), {
+    currentPage: 1
+})
+
+function getPageUrl(page?: number) {
+    if( page === undefined || page < 1 || page > props.totalPages ){
+        return undefined
+    }
+    const url = new URL(props.currentUrl)
+    url.searchParams.set('page', page.toString())
+    return url.pathname + url.search
+}
 
 const emit = defineEmits<{
     (e: 'update:currentPage', value: number): void
 }>()
 
-const custEmit = (e: 'update:currentPage', value:number) => {
-    const ce = new CustomEvent(e, { detail: value });
-    navigationHTML.value?.dispatchEvent(ce);
-    emit(e, value);
-}
-
-
-
-const currentPage = defineModel<number>('currentPage', { required: true })
-
 watch(() => props.totalPages, () => {
-    currentPage.value = 1
+    emit('update:currentPage', 1)
 })
 
 function changePage(event: { direction?: 'previous' | 'next', pageNo?: number | "..." }) {
-    if (event.direction === 'previous' && currentPage.value > 1) {
-        custEmit('update:currentPage', currentPage.value - 1)
-    } else if (event.direction === 'next' && currentPage.value < props.totalPages) {
-        custEmit('update:currentPage', currentPage.value + 1)
+    const currentPage = props.currentPage
+    if (event.direction === 'previous' && currentPage > 1) {
+        emit('update:currentPage', currentPage - 1)
+    } else if (event.direction === 'next' && currentPage < props.totalPages) {
+        emit('update:currentPage', currentPage + 1)
     } else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
-        custEmit('update:currentPage', event.pageNo)
+        emit('update:currentPage', event.pageNo)
     }
 }
 
@@ -84,7 +98,7 @@ function paginate(current_page: number, last_page: number): (number | "...")[] {
     return pages
 }
 
-const pages = computed<(number | "...")[]>(() => paginate(currentPage.value, props.totalPages))
+const pages = computed<(number | "...")[]>(() => paginate(props.currentPage, props.totalPages))
 </script>
 
 <style scoped lang="scss">
