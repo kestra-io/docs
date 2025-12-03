@@ -1,22 +1,19 @@
 ---
 export const prerender = false;
+import { $fetch } from "~/utils/fetch";
 import Layout from "../../components/layout.astro";
 import BlueprintsHeader from "~/components/blueprints/Header.vue";
 import BlueprintsDetail from "~/components/blueprints/Detail.vue";
 import BlueprintsRelated from "~/components/blueprints/Related.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
-import { $fetch } from "~/utils/fetch";
-import { parseMarkdown } from '@nuxtjs/mdc/runtime';
+
+
 
 const { id } = Astro.params;
 
 // Fetch blueprint data
 let pageData;
 let relatedBlueprints = [];
-let graph = {};
-let descriptionAsMd;
-let flowAsMd;
-let metaDescription;
 
 try {
     pageData = await $fetch(`https://api.kestra.io/v1/blueprints/${id}/versions/latest`);
@@ -35,34 +32,18 @@ if (pageData.tags && pageData.tags.length > 0) {
 
 // Parse markdown
 const flowMd = '```yaml\n' + pageData.flow + '\n```';
-metaDescription = pageData.metaDescription;
 
 // Fetch graph data
-graph = await $fetch(`https://api.kestra.io/v1/blueprints/${id}/versions/latest/graph`);
+const graph = await $fetch(`https://api.kestra.io/v1/blueprints/${id}/versions/latest/graph`);
 
 // Fetch tags
 const tags = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`);
 
 const title = pageData.title;
-const description = metaDescription;
-const ogImage = `${Astro.url.origin}/og-image.png`;
+const description = pageData.metaDescription;
 ---
 
 <Layout title={title} description={description}>
-    <Fragment slot="head">
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@kestra_io" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
-        <meta name="twitter:image:alt" content={title} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:type" content="image/svg+xml" />
-        <meta property="og:image:alt" content={title} />
-    </Fragment>
-
     <div>
         <BlueprintsHeader
             page={pageData}

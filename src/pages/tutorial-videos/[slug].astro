@@ -43,7 +43,6 @@ const tutorialVideo = await $fetch(API_URL);
 ---
 
 <Layout>
-    <div style="height: 120px"></div>
     <VideosTutorialsList {...{tutorialVideo, page, itemsPerPage, currentCategory}} client:idle>
         <CommonPagination
             currentUrl={Astro.request.url}
