@@ -1,7 +1,6 @@
 ---
 export const prerender = false
 import { slugify, subGroupName, type Plugin } from "@kestra-io/ui-libs";
-// import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../components/layout.astro";
 import NavSideBar from "~/components/docs/NavSideBar.vue";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -13,30 +12,6 @@ import { nuxtBlocksFromJsonSchema, nuxtBlocksFromSubGroupsWrappers } from "../..
 import { getIcon } from "../../utils/plugins/getPluginIcon";
 import { $fetch } from "../../utils/fetch";
 import { getPluginsWithoutDeprecated } from "../../utils/plugins/getListOfPlugins";
-
-// export async function getStaticPaths() {
-// 	const pluginsData = await getCollection('plugins');
-//     const navigation = generateNavigationFromSubgroups(pluginsData.map(p => p.data as any));
-//     const pageNames = generatePageNames(navigation[0])
-//     const pageList = recursivePages(navigation[0])
-
-// 	return pageList.filter(p => p.length > 8).map((plugin) => {
-//         return {
-//             params: {
-//                 slug: plugin.slice(9)
-//             },
-//             props: {
-//                 plugin: {},
-//                 pluginsData,
-//                 navigation,
-//                 pageNames,
-//                 pageList,
-//             },
-//         }
-// 	});
-// }
-
-
 
 const params = Astro.params as { slug: string };
 

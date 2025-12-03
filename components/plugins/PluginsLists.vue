@@ -153,6 +153,7 @@ ${elements.map(({cls}) => `<li>
     const changePage = (payload: { page: number, size: number }) => {
         currentPage.value = payload.page;
         itemsPerPage.value = payload.size;
+        if(typeof window === 'undefined') return;
         window.scrollTo(0, 0)
     };
 
