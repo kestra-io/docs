@@ -53,6 +53,7 @@ export default {
     // iframes
     'frame-src': [
         "'self'",
+        'data:',
         "https://*.google.com",
         "https://*.youtube.com",
         "https://*.googletagmanager.com",
