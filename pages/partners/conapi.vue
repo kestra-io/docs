@@ -12,11 +12,11 @@
 
         <NuxtLazyHydrate when-visible>
             <div class="container">
-                <div class="row justify-content-center ntico-info-content">
+                <div class="row justify-content-center conapi-info-content">
                     <div class="col-md-9">
-                        <h3 class="text-center">Conapi: Pragmatic System Integration</h3>
+                        <h3 class="text-center">Conapi: 20+ Years of Integration Expertise</h3>
                         <p class="text-center">
-                            With 20+ years of expertise, Conapi specializes in pragmatic system integration. They connect legacy systems with modern tools, ensuring production-ready integration without a complete "rip-and-replace" of existing infrastructure.
+                            Conapi specializes in connecting legacy systems with modern tools. They ensure production-ready integration without a complete "rip-and-replace" of existing infrastructure, acting as the bridge between API management, messaging systems, and workflow automation.
                         </p>
                     </div>
                 </div>
@@ -36,16 +36,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="ntico-content">
+                <div class="conapi-content">
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-1.svg"
+                                     src="/partners/conapi/artworks_features-1.png"
                                      alt="Pragmatic Integration Approach"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
                             <div>
-                                <h3>Pragmatic Integration Approach</h3>
+                                <h3>Pragmatic Approach</h3>
                                 <p class="mt-3">
                                     Conapi specializes in connecting existing enterprise landscapes with modern requirements without unnecessary complexity. Their focus is on making enterprise integration actually work in production, not just in theory. By prioritizing practical bridges over total system replacements, they help organizations connect what they have with what they need, ensuring a smooth transition to modern orchestration without discarding valuable legacy investments.
                                 </p>
@@ -64,14 +64,14 @@
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-2.svg"
+                                     src="/partners/conapi/artworks_features-2.png"
                                      alt="Native JMS Support"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-3.svg"
+                                     src="/partners/conapi/artworks_features-3.png"
                                      alt="Unifying API Management"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -96,21 +96,21 @@
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-4.svg"
+                                     src="/partners/conapi/artworks_features-4.png"
                                      alt="Bridging Legacy and Modern"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-5.svg"
+                                     src="/partners/conapi/artworks_features-5.png"
                                      alt="Tailored Migration Solutions"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
                             <div>
                                 <h3>Tailored Migration Solutions</h3>
                                 <p class="mt-3">
-                                    Conapi provides more than just tooling; they deliver tested patterns and a clear migration path from legacy systems. Whether you need to bridge synchronous API calls with asynchronous backend processes or require specific guidance on robust message queuing, Conapi provides the plumbing without the pain. Their expertise allows teams to implement these patterns today, ensuring a scalable and reliable integration strategy.
+                                    Conapi deliver tested patterns and a clear migration path from legacy systems. Whether you need to bridge synchronous API calls with asynchronous backend processes or require specific guidance on robust message queuing, Conapi provides the plumbing without the pain. Their expertise allows teams to implement these patterns today, ensuring a scalable and reliable integration strategy.
                                 </p>
                             </div>
                         </div>
@@ -166,7 +166,7 @@
 
     }
 
-    .ntico-info-content {
+    .conapi-info-content {
         margin-top: 5rem;
         @include media-breakpoint-down(lg) {
             margin-top: 16rem;
@@ -304,7 +304,7 @@
         }
     }
 
-    .ntico-content {
+    .conapi-content {
 
         h3 {
             color: $white;

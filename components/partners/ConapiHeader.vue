@@ -12,7 +12,7 @@
                             :alt="logo"
                         />
                         <h1>Conapi & Kestra Partnership</h1>
-                        <p class="text-white baseline fs-4">The Conapi team delivers the plumbing without the pain, enabling simple integration between Kestra workflows, JMS architectures, and Gravitee API management.</p>
+                        <p class="text-white baseline fs-4">Conapi brings its integration expertise to the Kestra ecosystem, specializing in connecting legacy infrastructure with modern solutions</p>
                         <div class="cta">
                             <NuxtLink
                                 href="/demo"
@@ -26,7 +26,7 @@
                 <div class="col-lg-7 order-0 order-lg-1">
                     <img
                         class="hero-image"
-                        src="/partners/ntico/hero-img.svg"
+                        src="/partners/conapi/hero-conapi.png"
                     />
                 </div>
             </div>
@@ -39,7 +39,7 @@
             >
                 <div class="metrics">
                     <div class="counter-box">
-                        <img src="/partners/ntico/logo.svg" alt="">
+                        <img src="/partners/conapi/logo.svg" alt="">
                     </div>
                     <div class="counter-box">
                         <h6>Kestra Expertise</h6>
@@ -53,7 +53,7 @@
                     <div class="line-separator"></div>
                     <div class="counter-box">
                         <h6>Solution</h6>
-                        <p>Conapi is an integration-focused consultancy and Gravitee partner with 20+ years of experience. They specialize in bridging the gap between legacy enterprise systems and modern workflow automation.</p>
+                        <p>Conapi is an integration-focused consultancy and Gravitee partner.</p>
                     </div>
                 </div>
             </Section>
