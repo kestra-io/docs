@@ -11,8 +11,8 @@
                             :src="logo"
                             :alt="logo"
                         />
-                        <h1>Ashisuto & Kestra: Strategic Partner for Critical Orchestration in Japan</h1>
-                        <p class="text-white baseline fs-4">The Ashisuto team is ready to support you in the Japanese market for your data orchestration and platform engineering projects with Kestra.</p>
+                        <h1>Ashisuto & Kestra: Stragetic Partner in Japan</h1>
+                        <p class="text-white baseline fs-4">The Ashisuto team is ready to support you in the Japanese market for your engineering projects with Kestra</p>
                         <div class="cta">
                             <NuxtLink
                                 href="https://www.ashisuto.co.jp/"
@@ -26,7 +26,7 @@
                 <div class="col-lg-7 order-0 order-lg-1">
                     <img
                         class="hero-image"
-                        src="/partners/ntico/hero-img.svg"
+                        src="/partners/ashisuto/hero-img.svg"
                     />
                 </div>
             </div>
@@ -39,7 +39,7 @@
             >
                 <div class="metrics">
                     <div class="counter-box">
-                        <img src="/partners/ntico/logo.svg" alt="">
+                        <img src="/partners/ashisuto/logo.svg" alt="">
                     </div>
                     <div class="counter-box">
                         <h6>Kestra Expertise</h6>
@@ -53,7 +53,7 @@
                     <div class="line-separator"></div>
                     <div class="counter-box">
                         <h6>Solution</h6>
-                        <p>Ashisuto is a leading Japanese technology partner supporting 600+ technical staff and nationwide digital transformation.</p>
+                        <p>Leading Japanese partner for digital transformation..</p>
                     </div>
                 </div>
             </Section>

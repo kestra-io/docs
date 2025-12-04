@@ -1,10 +1,10 @@
 <template>
     <div class="main">
         <Head>
-            <Title>Ashisuto & Kestra: Strategic Partner for Critical Orchestration in Japan</Title>
+            <Title>Ashisuto & Kestra: Stragetic Partner in Japan</Title>
             <Meta
                 name="description"
-                content="The Ashisuto team is ready to support you in the Japanese market for your data orchestration and platform engineering projects with Kestra"
+                content="The Ashisuto team is ready to support you in the Japanese market for your engineering projects with Kestra"
             />
         </Head>
         <PartnersAshisutoHeader/>
@@ -12,7 +12,7 @@
 
         <NuxtLazyHydrate when-visible>
             <div class="container">
-                <div class="row justify-content-center ntico-info-content">
+                <div class="row justify-content-center ashisuto-info-content">
                     <div class="col-md-9">
                         <h3 class="text-center">Ashisuto: Expertise in Orchestration For The Japanese Market</h3>
                         <p class="text-center">
@@ -36,11 +36,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="ntico-content">
+                <div class="ashisuto-content">
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-1.svg"
+                                     src="/partners/ashisuto/artworks_features-1.png"
                                      alt="Assessment and Strategy"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -64,14 +64,14 @@
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-2.svg"
+                                     src="/partners/ashisuto/artworks_features-2.png"
                                      alt="Implementation and Migration"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-3.svg"
+                                     src="/partners/ashisuto/artworks_features-3.png"
                                      alt="Ongoing Support and Optimization"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -96,14 +96,14 @@
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-4.svg"
+                                     src="/partners/ashisuto/artworks_features-4.png"
                                      alt="Modernization and Data Engineering"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
                             <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
-                                     src="/partners/ntico/artworks_features-5.svg"
+                                     src="/partners/ashisuto/artworks_features-5.png"
                                      alt="Tailored Solutions for Your Business"/>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -166,7 +166,7 @@
 
     }
 
-    .ntico-info-content {
+    .ashisuto-info-content {
         margin-top: 5rem;
         @include media-breakpoint-down(lg) {
             margin-top: 16rem;
@@ -304,7 +304,7 @@
         }
     }
 
-    .ntico-content {
+    .ashisuto-content {
 
         h3 {
             color: $white;
