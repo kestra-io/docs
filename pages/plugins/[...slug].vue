@@ -48,7 +48,7 @@
                             <MDC :value="content">
                                 <template #default="mdcProps">
                                     <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
-                                    <ContentRenderer v-else class="markdown" :value="mdcProps?.body"/>
+                                    <ContentRenderer v-else-if="mdcProps?.body" class="markdown" :value="mdcProps?.body"/>
                                 </template>
                             </MDC>
                         </template>

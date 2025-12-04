@@ -128,7 +128,7 @@ Kestra provides access to environment variables prefixed with `ENV_` by default,
 
 To use an environment variable, such as `ENV_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `ENV_` prefix and converting the remainder to **lowercase**.
 
-To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
+To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
 
 ### Global Variables
 

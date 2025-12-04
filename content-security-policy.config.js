@@ -12,11 +12,11 @@ export default {
     // scripts
     'script-src': [
         "'self'",
-        "'wasm-unsafe-eval'", 
+        "'wasm-unsafe-eval'",
         "'unsafe-inline'",
         "ajax.cloudflare.com",
         "static.cloudflareinsights.com",
-        "https://cdn.cr-relay.com",
+        "https://*.cr-relay.com",
         "https://*.kestra-io.pages.dev",
         "https://*.hs-analytics.net",
         "https://*.hs-banner.com",
@@ -29,7 +29,8 @@ export default {
         "https://*.googletagmanager.com",
         "https://*.redditstatic.com",
         "https://*.hs-scripts.com",
-        "https://*.hsforms.net"
+        "https://*.hsforms.net",
+        "https://*.hsappstatic.net",
     ],
     // styles & fonts
     'style-src': ["'self'", 'https:', "'unsafe-inline'"],
@@ -46,22 +47,25 @@ export default {
         "https://*.hubspot.com",
         "https://*.hsforms.com",
         "https://*.googleapis.com",
-        "https://i.ytimg.com",
+        "https://*.ytimg.com",
         "https://*.googletagmanager.com"
     ],
     // iframes
     'frame-src': [
         "'self'",
+        'data:',
         "https://*.google.com",
         "https://*.youtube.com",
         "https://*.googletagmanager.com",
+        "https://*.kestra.io/",
+        "https://*.arcade.software"
     ],
     'connect-src': [
         "'self'",
         "cloudflareinsights.com",
         "ws://localhost:4000",
-        "https://api.kestra.io",
         "https://kestra.io",
+        "https://*.kestra.io",
         "https://*.google.com",
         "https://*.reddit.com",
         "https://*.redditstatic.com",
@@ -71,13 +75,14 @@ export default {
         "https://*.ads.linkedin.com",
         "https://*.hsappstatic.net",
         "https://unpkg.com",
-        "https://cdn.jsdelivr.net",
+        "https://*.jsdelivr.net",
         "https://*.hs-scripts.com",
         "https://*.hsforms.net",
         "https://*.hsforms.com",
         "https://*.s3.amazonaws.com",
-        "https://stats.g.doubleclick.net",
-        "https://stats.g.doubleclick.com"
+        "https://*.g.doubleclick.net",
+        "https://*.g.doubleclick.com",
+        "https://*.ipify.org"
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],

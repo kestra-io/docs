@@ -34,3 +34,39 @@ data "kestra_tenant" "example" {
 
 - `id` (String) The ID of this resource.
 - `name` (String) The tenant name.
+- `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
+- `require_existing_namespace` (Boolean) Whether the tenant requires existing namespaces.
+- `secret_configuration` (Map of String) The secret configuration.
+- `secret_isolation` (List of Object) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedatt--secret_isolation))
+- `secret_read_only` (Boolean) Whether secrets are read-only in this tenant.
+- `secret_type` (String) The secret type.
+- `storage_configuration` (Map of String) The storage configuration.
+- `storage_isolation` (List of Object) Storage isolation configuration. (see [below for nested schema](#nestedatt--storage_isolation))
+- `storage_type` (String) The storage type.
+- `worker_group` (List of Object) The worker group. (see [below for nested schema](#nestedatt--worker_group))
+
+<a id="nestedatt--secret_isolation"></a>
+### Nested Schema for `secret_isolation`
+
+Read-Only:
+
+- `denied_services` (List of String)
+- `enabled` (Boolean)
+
+
+<a id="nestedatt--storage_isolation"></a>
+### Nested Schema for `storage_isolation`
+
+Read-Only:
+
+- `denied_services` (List of String)
+- `enabled` (Boolean)
+
+
+<a id="nestedatt--worker_group"></a>
+### Nested Schema for `worker_group`
+
+Read-Only:
+
+- `fallback` (String)
+- `key` (String)
