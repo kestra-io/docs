@@ -50,6 +50,7 @@ const generateTagName = (task: string) => {
             kpi1={story.kpi1}
             kpi2={story.kpi2}
             kpi3={story.kpi3}
+            client:idle
         />
         <div class="container">
             <div class="business-container">
@@ -68,7 +69,7 @@ const generateTagName = (task: string) => {
             <div class="row">
                 <div class="col-md-8 mb-4">
                     <div class="story-container">
-                        <MDCParserAndRenderer content={story.content} class="item-content"/>
+                        <MDCParserAndRenderer content={story.content} class="item-content bd-markdown"/>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -78,8 +79,8 @@ const generateTagName = (task: string) => {
                                 width="112"
                                 height="68"
                                 loading="lazy"
-                                :src="story.logo"
-                                :alt="story.logo"
+                                src={story.logo}
+                                alt={story.logo}
                             />
                         </div>
                         <div class="info-block">
@@ -154,3 +155,246 @@ const generateTagName = (task: string) => {
         </div>
     </div>
 </Layout>
+
+<style lang="scss">
+    @import "../../../../assets/styles/variable";
+
+    p {
+        color: $white;
+    }
+
+    .story-container {
+        :global(.bd-markdown) {
+            :global(p) {
+                font-size: $h6-font-size;
+                line-height: calc($spacer * 1.6);
+            }
+
+            :global(h2) {
+                color: $white;
+                margin-top: auto;
+                padding-top: 3rem;
+                margin-bottom: 1rem;
+                font-size: calc($font-size-base * 1.8) !important;
+                font-weight: 400 !important;
+                line-height: calc($spacer * 2.7);
+                border-left: none;
+                padding-left: 0 !important;
+
+                &:before {
+                    display: none;
+                }
+            }
+
+            :global(h3) {
+                margin-top: calc($spacer * 4.12);
+                margin-bottom: 3rem;
+                padding-left: calc($spacer * 0.6) !important;
+                font-size: calc($font-size-base * 2.25);
+                line-height: calc($spacer * 2.3);
+            }
+
+            :global(ul > li::marker) {
+                color: #736BCD ;
+            }
+
+            :global(blockquote) {
+                border-left: 4px solid var(--bs-gray-500);
+                padding-left: $spacer;
+            }
+        }
+    }
+
+    .story-info {
+        padding: calc($spacer * 2);
+        border: 1px solid $black-6;
+        background-color: $black-2;
+        border-radius: calc($spacer / 2);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .title {
+                font-size: $h6-font-size;
+                font-weight: 600;
+                color: $white;
+                margin: 0;
+            }
+
+            .subtitle {
+                font-size: $h6-font-size;
+                font-weight: 300;
+                color: $white-1;
+                margin: 0;
+            }
+        }
+    }
+
+
+    .ready-bar {
+        margin-top: 2rem;
+        padding: 2rem;
+        &, &::after {
+            border-radius: 8px;
+            background: $black-4 !important;
+        }
+    }
+    p, ul > li {
+        line-height: 1.5rem;
+    }
+
+    .section-content {
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+        padding: 2.875rem 0;
+        :deep(.subtitle > p) {
+            background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            span {
+                color: $white;
+                -webkit-background-clip: $white;
+                -webkit-text-fill-color: $white;
+            }
+        }
+    }
+
+    .card {
+        border: 1px solid $black-3;
+        border-right: 8px;
+        padding-top: calc($spacer * 0.938);
+        padding-bottom: calc($spacer * 0.8);
+        width: calc($spacer * 8.3);
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: calc($spacer / 4);
+            align-items: center;
+            padding: 0;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 22px;
+        }
+    }
+
+
+    :global(section div.main) {
+        padding-top: 4rem;
+    }
+
+
+    .task-card {
+        background-color: $black-3;
+        min-width: 9rem;
+        :deep(.icon-wrapper) {
+            width: 42px;
+            height: 42px;
+        }
+    }
+
+
+
+    .business-container {
+        margin-top: calc($spacer * 11.3);
+        margin-bottom: calc($spacer * 2.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: calc($spacer * 2);
+        background-color: $black-2;
+        border-radius: calc($spacer * 0.5);
+        border: 1px solid #252526;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+
+        @include media-breakpoint-down(lg) {
+            margin-top: 22.3rem;
+        }
+
+        &::after,
+        &::before {
+            content: "";
+            position: absolute;
+            width: 18rem;
+            height: 18rem;
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+            filter: blur(60px);
+            z-index: 0;
+        }
+        &::after {
+            left: 80%;
+            top: -43%;
+        }
+
+        &::before {
+            right: 77%;
+            bottom: -15%;
+        }
+
+        .business-by-us {
+            .info-content {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                gap: 2rem;
+                justify-content: center;
+                align-items: center;
+
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column;
+                }
+
+                .vertical-line {
+                    background-color: #FFFFFF30;
+                    min-height: calc($spacer * 6.875);
+                    width: 1px;
+                    @include media-breakpoint-down(lg) {
+                        height: 1px;
+                        min-height: 1px;
+                        width: 100%;
+                    }
+                }
+
+                .info-item {
+                    display: flex;
+                    flex-direction: column;
+
+                    h3 , p  {
+                        margin: 0;
+                        font-weight: 600;
+                        color: $white;
+                    }
+
+                    h3 {
+                        font-size: $h3-font-size;
+                        line-height: 48px;
+                        margin-top: 0 !important;
+                    }
+
+                    p {
+                        font-size: $font-size-lg;
+                        line-height: 30px;
+                    }
+
+                    span {
+                        font-size: $font-size-sm;
+                        line-height: 30px;
+                        color: $purple;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+</style>
