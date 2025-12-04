@@ -1,18 +1,18 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../../components/layout.astro";
 import PluginsLists from "~/components/plugins/PluginsLists.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 import type { Plugin } from "@kestra-io/ui-libs";
+import { $fetch } from "~/utils/fetch";
 
-const pluginsData = (await getCollection('plugins')) as unknown as {data: Plugin}[]
+const pluginsData = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
 
 const categoriesRes = await fetch(`https://api.kestra.io/v1/plugins/categories`);
 const categoriesData = await categoriesRes.json();
 ---
 <Layout>
     <PluginsLists
-        plugins={pluginsData.map(p => p.data)}
+        plugins={pluginsData}
         categories={categoriesData ?? []}
         fullPath={Astro.request.url}
         client:idle

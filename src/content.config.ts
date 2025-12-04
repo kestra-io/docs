@@ -1,12 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import generateId from '../utils/generateId';
-import plugins from './loaders/plugins';
 
 export const collections = {
-  plugins: defineCollection({
-    loader: plugins
-  }),
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
