@@ -44,7 +44,7 @@ Inside of Supabase, select the **Connect** button at the top to get information 
 
 ![supabase-4](/docs/how-to-guides/supabase-db/supabase-4.png)
 
-To connect, we can copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. To prevent exposing the password in our flow, we can store it as [secrets](../05.concepts/04.secret.md) or in the [KV Store](../05.concepts/05.kv-store.md).
+To connect, we can copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. To prevent exposing the password in our flow, store it as a [secret](../05.concepts/04.secret.md).
 
 By using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md), we can configure our connection to Supabase once for all tasks inside of our flow rather than individually for each task.
 
@@ -55,7 +55,7 @@ pluginDefaults:
   - forced: true
     type: io.kestra.plugin.jdbc.postgresql
     values:
-      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{kv('SUPABASE_PASSWORD')}}"
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
 
 ```
 
@@ -69,7 +69,7 @@ pluginDefaults:
     values:
       url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres"
       username: "postgres.nqxaafovehwkjapsqqlk"
-      password: "{{ kv('SUPABASE_PASSWORD') }}
+      password: "{{ secret('SUPABASE_PASSWORD') }}"
 ```
 
 :::
@@ -99,7 +99,7 @@ pluginDefaults:
   - forced: true
     type: io.kestra.plugin.jdbc.postgresql
     values:
-      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{kv('SUPABASE_PASSWORD')}}"
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
 ```
 
 Once your columns are configured, you can use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task to download the CSV file and copy it directly into our database. As we set up the database connection with our [Plugin Defaults](#connecting-supabase-to-kestra), the CopyIn task will connect directly and copy the CSV file into the database.
@@ -125,7 +125,7 @@ pluginDefaults:
   - forced: true
     type: io.kestra.plugin.jdbc.postgresql
     values:
-      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{kv('SUPABASE_PASSWORD')}}"
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
 ```
 
 Once this flow completes, we can view the contents of our database in Supabase:
