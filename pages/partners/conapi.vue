@@ -25,7 +25,7 @@
                         <div class="info-content">
                             <div class="info-item w-75 ">
                                 <h3>
-                                    "Our clients need to connect legacy JMS systems to modern automation without throwing everything away. This integration protects existing infrastructure while enriching APIs with Kestra data. It's the practical bridge enterprises actually need."
+                                    "Our clients need to connect legacy systems to modern automation without throwing everything away. This integration protects existing infrastructure while enriching APIs with Kestra data. It's the practical bridge enterprises actually need."
                                 </h3>
                             </div>
                             <div class="vertical-line"></div>
@@ -78,7 +78,7 @@
                             <div>
                                 <h3>Unifying API Management and Orchestration</h3>
                                 <p class="mt-3">
-                                    As a key partner of both Kestra and Gravitee, Conapi has developed a powerful bridge between API management and workflow orchestration. This integration enables direct synchronous data enrichment for real-time scenarios like dynamic pricing, as well as JMS-based integration for long-running processes. This dual approach prevents API timeouts by triggering workflows via queues with correlation IDs, maintaining system responsiveness.
+                                    As a key partner of both Kestra and Gravitee, Conapi has developed a powerful bridge between API management and workflow orchestration. This integration enables executing Kestra flows directly from the API layer for real-time scenarios like dynamic pricing, as well as JMS-based integration for long-running processes. For longer workflows, we trigger them via queues with correlation IDs. This keeps APIs responsive and prevents timeouts.
                                 </p>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                 title="Contact Conapi"
                 subtitle="Ready to bridge your legacy systems with modern orchestration? Conapi's experts are here to assist you."
                 purpleButtonText="Contact Conapi"
-                purpleButtonHref="https://conapi.at/contact"
+                purpleButtonHref="https://conapi.at/#contact"
             />
         </NuxtLazyHydrate>
     </div>
