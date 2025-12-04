@@ -5,17 +5,6 @@ import VideosTutorialsList from '~/components/videos/TutorialsList.vue'
 import CommonPagination from '~/components/common/Pagination.vue'
 import { $fetch } from '~/utils/fetch';
 
-export function getStaticPaths() {
-  return [
-    'all',
-    'deep-dive',
-    'quick-start',
-    'feature-highlight'
-  ].map((slug) => ({
-    params: { slug },
-  }));
-}
-
 const tags = new Map([
   ['all', 'All videos'],
   ['deep-dive', 'Deep Dive Tutorials'],
@@ -25,7 +14,7 @@ const tags = new Map([
 
 const { slug } = Astro.params;
 
-const currentCategory = tags.get(slug) || '';
+const currentCategory = slug ? tags.get(slug) ?? '' : '';
 
 const PageURL = new URL(Astro.request.url);
 
