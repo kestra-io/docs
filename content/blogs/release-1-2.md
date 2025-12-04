@@ -100,7 +100,17 @@ Check the video below for a quick overview of all enhancements.
 
 ## New Plugins
 
-
+- **AWS EMR Serverless** – Serverless big data processing on Amazon EMR without managing clusters. Run Spark and Hive jobs with automatic scaling and pay-per-second billing.
+- **NFS** – Network File System tasks including `CheckMount`, `List`, `Copy`, `Move`, and `Delete` operations for managing files across network-attached storage.
+- **Pipedrive** – CRM integration supporting deal and person management. Create or update deals, and create or retrieve person records programmatically.
+- **n8n** – Workflow automation platform integration to trigger and manage n8n workflows from Kestra.
+- **Dagster** – Data orchestration platform integration to trigger Dagster jobs and pipelines.
+- **OneShare** – File sharing and collaboration platform integration for enterprise document management.
+- **Serialization Enhancements** – New data format conversions including JSON to JSONL, JSON to Ion, Protobuf to Ion, and improved CSV to Ion handling with better error management for malformed lines.
+- **TCP/UDP** – Send messages over TCP and UDP protocols with real-time trigger capabilities for network-based workflows.
+- **Grafana Loki** – Log aggregation and querying integration for centralized logging and observability.
+- **Google Calendar** – `EventCreatedTrigger` to automatically trigger workflows when new calendar events are created.
+- **Google Sheets** – `SheetModifiedTrigger` to monitor and react to changes in Google Sheets documents.
 
 ## Migration Note for Upgrading to 1.2
 
