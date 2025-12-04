@@ -104,15 +104,24 @@ Check the video below for a quick overview of all enhancements.
 
 ## Migration Note for Upgrading to 1.2
 
-Version 1.2 changes how ... are handled. To restore the missing data in the UI, run the following commands once after upgrading to version 1.2.0 (or later):
+Version 1.2 changes how Namespace Files metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored files directly from storage, which was inefficient for large datasets. Additionally, Namespace Files can now be versioned and restored.
+
 
 ```shell
-/app/kestra migrate metadata ...
+/app/kestra migrate metadata nsfiles
 ```
 
-For **Docker Compose** setups...
+For **Docker Compose** setups, replace the command by the following
 
-For **Kubernetes** deployments...
+```yaml
+kestra:
+  image: registry.kestra.io/docker/kestra:latest
+  command:  migrate metadata nsfiles
+```
+
+After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
+
+For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
 Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
