@@ -27,6 +27,7 @@
 
 <script setup>
     import {slugify} from "@kestra-io/ui-libs";
+    import CommonTaskIcon from '../common/TaskIcon.vue'
 
     defineProps({
         story: {
