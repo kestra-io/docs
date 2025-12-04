@@ -1,0 +1,156 @@
+---
+export const prerender = false;
+import { $fetch } from "~/utils/fetch"
+import Layout from "../../../components/layout.astro"
+import StoriesHeader from "~/components/stories/Header.vue"
+import LayoutSection from "~/components/layout/Section.vue"
+import StoriesCard from "~/components/stories/Card.vue"
+import CommonTaskIcon from "~/components/common/TaskIcon.vue"
+import MDCParserAndRenderer from "../../../components/MDCParserAndRenderer.astro";
+
+const { slug, id } = Astro.params;
+interface Story {
+    title: string,
+    excerpt: string,
+    description: string,
+    heroImage: string,
+    logo: string,
+    kpi1: string,
+    kpi2: string,
+    kpi3: string,
+    quote: string,
+    quotePerson: string,
+    industry: string,
+    headquarter: string,
+    solution: string,
+    tasks: Array<string>
+    content: string
+}
+const story = await $fetch<Story>(`https://api.kestra.io/v1/customer-stories-v2/${id}`)
+
+const related = await $fetch<{
+    results: Array<Story>
+}>(`https://api.kestra.io/v1/customer-stories-v2?size=3`)
+
+const generateTagName = (task: string) => {
+      const splittedTask = task.split(".");
+      const taskName = splittedTask[splittedTask.length - 1];
+
+      return taskName.length > 13 ? taskName.slice(0,13) + "..." : taskName;
+    };
+---
+<Layout title={story.title} description={story.excerpt}>
+    <div class="main">
+        <StoriesHeader
+            slug={slug ?? ""}
+            title={story.title}
+            metaDescription={story.description}
+            heroImage={story.heroImage}
+            logo={story.logo}
+            kpi1={story.kpi1}
+            kpi2={story.kpi2}
+            kpi3={story.kpi3}
+        />
+        <div class="container">
+            <div class="business-container">
+                <div class="business-by-us">
+                    <div class="info-content">
+                        <div class="info-item w-75">
+                            <h3>{story.quote}</h3>
+                        </div>
+                        <div class="vertical-line"></div>
+                        <div class="info-item">
+                            <p>{story.quotePerson}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="story-container">
+                        <MDCParserAndRenderer content={story.content} class="item-content"/>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="story-info">
+                        <div class="mx-auto">
+                            <img
+                                width="112"
+                                height="68"
+                                loading="lazy"
+                                :src="story.logo"
+                                :alt="story.logo"
+                            />
+                        </div>
+                        <div class="info-block">
+                            <p class="title">
+                                Industry
+                            </p>
+                            <p class="subtitle">{story.industry}</p>
+                        </div>
+                        <div class="info-block">
+                            <p class="title">
+                                Headquarters
+                            </p>
+                            <p class="subtitle">{story.headquarter}</p>
+                        </div>
+                        <div class="info-block">
+                            <p class="title">
+                                Solution
+                            </p>
+                            <p class="subtitle">{story.solution}</p>
+                        </div>
+                        <div>
+                            <p>Data Stack</p>
+                            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                <div class="card task-card">
+                                    <div class="card-body">
+                                        <div class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
+                                            <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+                                        </div>
+                                        <p class="card-title">Kestra</p>
+                                    </div>
+                                </div>
+                                {story.tasks.map(task => {
+                                    return (<div class="card task-card">
+                                        <div class="card-body">
+                                            <CommonTaskIcon cls={task} />
+                                            <p class="card-title">{generateTagName(task)}</p>
+                                        </div>
+                                    </div>)
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ready-bar btn-animated btn-purple-animated">
+                        <div class="d-flex flex-column px-lg-5 px-0">
+                            <p>Ready to explore Kestra solutions?</p>
+                            <a
+                                href="/demo"
+                                class="btn text-white btn-animated btn-purple-animated mt-2"
+                            >
+                                Talk to us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-content">
+                <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
+                    <div class="row">
+                        {related.results.map(s => {
+                            return (<div class="col-12 col-md-6 col-lg-4">
+                                <StoriesCard story={s} />
+                            </div>)
+                        })}
+                    </div>
+                </LayoutSection>
+                <div class="d-flex justify-content-center">
+                    <a href="/use-cases/stories">
+                        <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">See all stories</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
