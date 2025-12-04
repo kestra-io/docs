@@ -1,0 +1,13 @@
+---
+export const prerender = false
+import Layout from "../components/layout.astro";
+import Error from "~/components/error/error.vue";
+---
+
+<Layout>
+    <Error
+        error={{statusCode: 404, message: ""}}
+        title="404 - Not Found"
+        description="The page you are looking for does not exist."
+    client:idle/>
+</Layout>
