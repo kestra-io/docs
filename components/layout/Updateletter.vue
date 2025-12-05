@@ -16,15 +16,16 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 
+    import { ref } from "vue";
     import newsletterSubmit from "../../utils/newsletterSubmit.js";
 
     const valid = ref(false);
     const message = ref(null);
     const newsletter = ref(null);
 
-    function checkForm(e) {
+    function checkForm(e: SubmitEvent) {
         newsletterSubmit({ newsletter, valid, message }, e);
     }
 </script>

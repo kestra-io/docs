@@ -6,9 +6,9 @@
                   content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
         <HomeHeader/>
-        <HomeLogosTable/>
-        <HomeOpenSource/>
-        <HomeOpenSourceQuotes/>
+        <HomeLogosTable :logos="logos" />
+        <HomeOpenSource v-bind="githubData" :error="githubError" />
+        <HomeOpenSourceQuotes :quotes="randomizedQuotes" />
         <NuxtLazyHydrate when-visible>
             <HomeFeatures/>
         </NuxtLazyHydrate>
@@ -21,7 +21,7 @@
             <HomeBlueprints/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <HomeEnterprise/>
+            <HomeEnterprise :stories/>
             <HomeEnterpriseQuotes />
             <HomeCTA/>
         </NuxtLazyHydrate>
@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+
     definePageMeta({
         transparentHeader: true,
     })
@@ -52,6 +53,36 @@
             { property: 'og:url', content: `${origin}` },
         ]
     })
+
+    const companies = import.meta.glob('~/public/landing/home/trusted-companies/*.svg', {
+        import: "default",
+        query: 'url',
+    })
+
+    const {data: logos} = await useAsyncData(() => {
+        // get all svg/png files in the /public/landing/companies folder
+        return Promise.all(Object.entries(companies).map(([filePath, mod]) => {
+            return mod().then((img) => {
+                return {
+                    name: filePath.split('/').pop()?.split('.').shift(),
+                    url: img,
+                }
+            })
+        })).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
+    })
+
+    // fetch the number of contributors from the GitHub API
+    const {data:githubData, error: githubError} = await useFetch("/api/github", {
+        pick:["stargazers", "contributors"],
+    })
+
+    const {data:randomizedQuotes} = await useAsyncData('randomizedQuotes-oss', () => {
+        return import('@/data/oss-quotes.json').then((quotes) => quotes.default.sort(() => Math.random() - 0.5))
+    })
+
+    const config = useRuntimeConfig();
+    const {data: storiesData} = await useFetch(`${config.public.apiUrl}/customer-stories-v2?featured=true`);
+    const stories = computed(() => storiesData.value?.results);
 
 </script>
 

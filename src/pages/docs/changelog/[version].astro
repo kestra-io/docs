@@ -1,0 +1,63 @@
+---
+export const prerender = false;
+import NavSideBar from '~/components/docs/NavSideBar.vue';
+import Layout from '../../../components/layout.astro';
+import MDCParserAndRenderer from '../../../components/MDCParserAndRenderer.astro';
+import { fetchLast3ReleaseGroups } from '~/utils/fetchChangelogVersions';
+
+const title = "Release Notes";
+const description = "Kestra Release Notes";
+
+const selectedGroupKey = Astro.params.version || Astro.url.searchParams.get('version') || '';
+
+const releaseGroups = await fetchLast3ReleaseGroups();
+
+const selectedGroup = releaseGroups.find(g => g.version === selectedGroupKey) || releaseGroups[0];
+
+const navMenu = [{
+            children: selectedGroup.releases.map(r => ({
+                title: r.tag_name,
+                path: `#${r.tag_name}`
+            }))
+        }]
+---
+
+<Layout title={title} description={description}>
+    <div class="container-fluid bd-gutter bd-layout type-docs">
+        <NavSideBar type="docs" navigation={navMenu}/>
+        <article class="bd-main order-1 docs full">
+            <div>
+                <h1>Release Notes</h1>
+                <select class="form-select bg-dark-2">
+                    {releaseGroups.map((g) =>
+                        (<option value={g.version} selected={g.version === selectedGroupKey}>
+                            { g.version }
+                        </option>)
+                    )}
+                </select>
+                <div class="bd-content" v-if="selectedGroup">
+                    {selectedGroup.releases.map((release) => (
+                        <div>
+                            <h2 id={release.tag_name}>{ release.name || release.tag_name }</h2>
+                            <MDCParserAndRenderer content={release.body} />
+                            {release.body.trim() === '' && (
+                                <p>No release notes available.</p>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </article>
+    </div>
+</Layout>
+
+<script>
+  // Find all buttons with the `alert` class on the page.
+  const select = document.querySelectorAll('select.form-select')[0];
+
+  // Handle clicks on each button.
+  select.addEventListener('change', (event) => {
+    const version = (event.target as any)?.value as string;
+    window.location.href = `/docs/changelog/${version}`;
+  });
+</script>

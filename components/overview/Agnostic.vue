@@ -20,7 +20,7 @@
                             <NuxtImg :src="workflowSteps[currentStep]?.image" :alt="workflowSteps[currentStep]?.alt" width="600" height="371" />
                         </div>
                     </div>
-                    
+
                     <template v-else>
                         <div v-for="(step, index) in workflowSteps" :key="step.id" class="workflow-step"
                             :data-step="index + 1" :class="{ active: index === currentStep }">
@@ -55,6 +55,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { useWindowScroll, useEventListener, useElementBounding, useWindowSize } from '@vueuse/core'
+import { usePluginsCount } from '~/composables/usePluginsCount';
 
 const { totalPlugins } = usePluginsCount();
 
@@ -269,7 +270,7 @@ const handleTouchMove = (event: TouchEvent) => {
     if (isExiting.value || window.innerWidth <= 992 || !isTouching.value) return
 
     const inSection = isSectionCentered.value
-    
+
     if (inSection || isInWorkflowSection.value) {
         event.preventDefault()
     }
@@ -281,9 +282,9 @@ const handleTouchEnd = (event: TouchEvent) => {
     const touch = event.changedTouches[0]
     const deltaY = touchStartY.value - touch.clientY
     const deltaX = Math.abs(touchStartX.value - touch.clientX)
-    
+
     const minSwipeDistance = 50
-    
+
     if (Math.abs(deltaY) < minSwipeDistance || deltaX > Math.abs(deltaY)) {
         isTouching.value = false
         return
@@ -583,11 +584,11 @@ $label-colors: (
             max-width: 48.313rem;
             margin: 0;
         }
-        
+
         .buttons {
             text-align: center;
             white-space: nowrap;
-        
+
             .btn {
                 border-radius: 8px;
             }

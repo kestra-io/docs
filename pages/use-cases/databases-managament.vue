@@ -121,7 +121,7 @@
                   imgAlt: 'Automated Database Migrations',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Kestra enables you to automate database migrations, ensuring that schema changes are applied consistently across all environments. ',
+                  description: 'Kestra enables you to automate database migrations, ensuring that schema changes are applied consistently across all environments.',
                   content: `
                     <ul>
                         <li>
@@ -145,7 +145,7 @@
                   imgAlt: 'Ensure Data Protection',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Automate regular database backups with Kestra to safeguard your data against loss and ensure its availability when needed. ',
+                  description: 'Automate regular database backups with Kestra to safeguard your data against loss and ensure its availability when needed.',
                   content: `
                     <ul>
                         <li>
@@ -175,7 +175,7 @@
                   imgAlt: 'Quick Recovery',
                   imgWidth: '604px',
                   imgHeight: '477px',
-                  description: 'Implement automated restoration processes with Kestra to recover data swiftly in the event of a failure, minimizing downtime and data loss. ',
+                  description: 'Implement automated restoration processes with Kestra to recover data swiftly in the event of a failure, minimizing downtime and data loss.',
                   content: `
                     <ul>
                         <li>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useTemplateRef, watch } from 'vue';
+
 const show = defineModel<boolean>("show")
 const modalRef = useTemplateRef<HTMLDialogElement>("modalRef")
 
@@ -44,6 +46,7 @@ dialog {
     animation: fadeOut 1s forwards;
     display: inline-block;
     width: 90%;
+    z-index: -1;
 
     @media screen and (min-width: 820px) {
         width: 800px;
@@ -59,6 +62,7 @@ dialog {
     }
 
     &[open] {
+        z-index: 1050;
         animation: fadeIn 1s forwards;
         &::backdrop {
             animation: fadeInHalf 1s forwards;

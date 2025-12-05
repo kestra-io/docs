@@ -1,0 +1,18 @@
+---
+import Layout from '../components/layout.astro';
+import EnterpriseHeader from '~/components/enterprise/Header.vue';
+import EnterpriseSecurity from '~/components/enterprise/Security.vue';
+import EnterpriseSuccessProgram from '~/components/enterprise/SuccessProgram.vue';
+import EnterpriseProjectDetails from '~/components/enterprise/ProjectDetails.vue';
+import EnterpriseOrchestraCore from '~/components/enterprise/OrchestraCore.vue';
+---
+<Layout>
+    <EnterpriseHeader />
+    <div>
+        <EnterpriseSecurity client:visible />
+        <EnterpriseSuccessProgram />
+        <EnterpriseProjectDetails client:visible/>
+    </div>
+
+    <EnterpriseOrchestraCore client:visible/>
+</Layout>

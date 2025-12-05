@@ -69,6 +69,8 @@
 import GamepadSquare from "vue-material-design-icons/GamepadSquare.vue";
 import TimerCheck from "vue-material-design-icons/TimerCheck.vue";
 import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue";
+import { usePluginsCount } from "~/composables/usePluginsCount";
+import { computed } from "vue";
 
 const { totalPlugins } = usePluginsCount();
 

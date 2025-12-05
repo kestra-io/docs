@@ -1,4 +1,31 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "paths": {
+      "assets/*": ["./src/assets/*"],
+      "~/composables/*": [
+        "./composables/*",
+        "./src/composables/*"
+      ],
+      "~/utils/*": [
+        "./utils/*",
+        "./src/utils/*"
+      ],
+      "~/components/*": [
+        "./components/*",
+      ],
+      "~/data/*": [
+        "./data/*",
+        "./src/data/*"
+      ]
+    }
+  }
 }

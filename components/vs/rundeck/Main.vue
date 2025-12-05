@@ -190,15 +190,16 @@
             </div>
         </Section>
     </div>
-    <LayoutFooterContact 
+    <LayoutFooterContact
         title="Getting Started"
         subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-        darkButtonText="Read the docs" 
-        purpleButtonText="Get started!" 
+        darkButtonText="Read the docs"
+        purpleButtonText="Get started!"
     />
 </template>
 
 <script setup lang="ts">
+import { usePluginsCount } from '~/composables/usePluginsCount';
 import Section from '../../layout/Section.vue';
 
 const { totalPlugins } = usePluginsCount();
@@ -237,7 +238,7 @@ const { totalPlugins } = usePluginsCount();
     }
 
     .content-section {
-        margin-bottom: 1rem; 
+        margin-bottom: 1rem;
 
         p, ul > li {
             margin-bottom: 1rem;
@@ -250,7 +251,7 @@ const { totalPlugins } = usePluginsCount();
         h2, h3 {
             color: $white;
             font-weight: 300;
- 
+
 
             span {
                 background: linear-gradient(90deg, #E151F7 18.28%, #5C47F5 35.74%);

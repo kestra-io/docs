@@ -1,0 +1,93 @@
+---
+import "../../assets/styles/docs.scss";
+import "../style/custom-elements.scss";
+import { getCollection } from "astro:content";
+import NavSideBar from "~/components/docs/NavSideBar.vue";
+import Layout from "./layout.astro";
+import { getNavigationTree } from "../utils/getNavigationTree";
+import Breadcrumb from "~/components/layout/Breadcrumb.vue";
+import { generatePageNames, recursivePages } from "~/utils/navigation";
+
+const docsPages = await getCollection('docs')
+
+docsPages.sort((a, b) => {
+    if(a.filePath && b.filePath) {
+        return a.filePath.localeCompare(b.filePath);
+    }
+    return a.id.localeCompare(b.id);
+});
+
+// create a nested structure
+const navigation = [{
+    title: 'Documentation',
+    children: getNavigationTree(docsPages)
+}]
+
+const pageList = recursivePages(navigation);
+const pageNames = generatePageNames(navigation);
+
+interface Props {
+    title?: string,
+    description?: string,
+    activeStem: string,
+    isHomePage?: boolean
+}
+
+const props = Astro.props;
+---
+
+<Layout title={props.title} description={props.description}>
+    <div class={`layout-docs-wrapper ${props.isHomePage ? 'homepage' : ''}`}>
+        <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
+        <main class="bd-content container-fluid">
+            <Breadcrumb slug={props.activeStem} pageList={pageList} pageNames={pageNames} />
+            <slot/>
+        </main>
+        <slot name="headings" />
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "../../assets/styles/variable";
+    .layout-docs-wrapper {
+        display: grid;
+        grid-template-areas: "sidebar content toc";
+        grid-template-columns: 250px 1fr 250px;
+        margin: 1.5rem;
+        padding: 0;
+        margin-top: 3rem;
+    }
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 50rem;
+        margin: auto;
+        margin-top: 3rem;
+    }
+    .bd-sidebar{
+        min-width: 250px;
+        white-space: normal;
+        .ai-button-wrapper, .search {
+            height: 32px;
+            width: 209px;
+        }
+    }
+
+    .homepage {
+        .bd-title {
+            @media only screen and (min-width: 1920px) {
+                width: 45.8rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        .bd-content {
+            background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
+            background-size: 500px 250px, 1261px 984px;
+            background-position: top 110px right -30px, top -200px right -350px;
+            max-width: 45.8rem;
+        }
+    }
+</style>
+

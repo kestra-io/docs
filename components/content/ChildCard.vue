@@ -57,12 +57,6 @@
         `ChildCardCurrentPage-${hash(currentPageSlug)}`,
         () => queryCollection(CollectionNames.docs).path(currentPageSlug).first()
     );
-
-    // if (currentPage == "/docs/faq") {
-    //   navigation.value = navigation.value.map(item => {
-    //     return { ...item, icon: item.icon ? item.icon : '/docs/icons/faq.svg'}
-    //   })
-    // }
 </script>
 
 <style lang="scss" scoped>

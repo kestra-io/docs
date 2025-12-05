@@ -29,11 +29,10 @@
                             class="plugin-index"
                             :icons="icons"
                             :plugins="pluginsWithoutDeprecated"
-                            :plugin-name="pluginName ?? '<plugin>'"
+                            :plugin-name="pluginName"
                             :sub-group="subGroup"
-                            :route-path="route.path"
-                >
-                    <template v-slot:markdown="{ content }">
+                            :route-path="route.path">
+                    <template #markdown="{ content }">
                         <MDC :value="content">
                             <template #default="mdcProps">
                                 <pre v-if="mdcProps.error" style="color: white;">{{ mdcProps.error }}</pre>
@@ -69,7 +68,7 @@
     import {generatePageNames, recursivePages} from "~/utils/navigation.js";
 
     const route = useRoute()
-    const routeSlug: string = route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug;
+    const routeSlug: string = Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug;
     const slug = computed(() => `/plugins/${routeSlug}`);
     const splitRouteSlug = routeSlug.split("/");
     const pluginName = computed(() => splitRouteSlug?.[0]);

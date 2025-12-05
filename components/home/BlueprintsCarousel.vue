@@ -9,8 +9,10 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+import BlueprintsListCard from "../blueprints/ListCard.vue"
 
 defineProps<{
     blueprints: {id: string}[]

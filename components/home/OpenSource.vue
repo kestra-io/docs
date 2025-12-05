@@ -25,8 +25,13 @@
 </template>
 
 <script lang="ts" setup>
-    import { NuxtImg } from "#components";
-import {computed} from "vue";
+    import {computed} from "vue";
+
+    const props = defineProps<{
+        stargazers: number,
+        contributors: number,
+        error?: unknown
+    }>()
 
     const features = [
         {
@@ -46,19 +51,16 @@ import {computed} from "vue";
         }
     ]
 
-    // fetch the number of contributors from the GitHub API
-    const {data, error} = await useFetch<{contributors: number, stargazers: number}>("/api/github", {
-        pick:["stargazers", "contributors"],
-    })
+
 
     const numberOfStargazersFormatted = computed(() => new Intl.NumberFormat('en', {
         notation: 'compact',
         maximumFractionDigits: 1
-    }).format(data.value?.stargazers ?? 0).toLowerCase());
+    }).format(props?.stargazers ?? 0).toLowerCase());
 
     const leadIndicators = computed(() => [
         { title: "Contributors", value: "750+" },
-        ...(!error.value ? [{ title: "GitHub Stars", value: numberOfStargazersFormatted.value }] : []),
+        ...(props.error ? [] : [{ title: "GitHub Stars", value: numberOfStargazersFormatted.value }]),
         { title: "Kestra Deployments", value: "120k" },
         { title: "Workflows Executed", value: "1b+" }
     ])
@@ -137,12 +139,12 @@ import {computed} from "vue";
         grid-template-columns: repeat(2, 1fr);
         row-gap: 1rem;
         margin-top: 2rem;
-        
+
         @include media-breakpoint-up(lg) {
             grid-template-columns: repeat(4, 1fr);
             row-gap: 2rem;
             width: 100%;
-            
+
             &:has(.lead-indicator:nth-child(3):last-child) {
                 grid-template-columns: repeat(3, minmax(200px, 300px));
                 justify-content: center;

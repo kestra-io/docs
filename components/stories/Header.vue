@@ -37,15 +37,15 @@
             <section>
                 <div class="metrics">
                     <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi1Content" />
+                        <MDCParserAndRenderer :content="kpi1" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi2Content" />
+                        <MDCParserAndRenderer :content="kpi2" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi3Content" />
+                        <MDCParserAndRenderer :content="kpi3" />
                     </div>
                 </div>
             </section>
@@ -53,8 +53,8 @@
     </div>
 </template>
 
-<script setup>
-  import {parseMarkdown} from '@nuxtjs/mdc/runtime'
+<script lang="ts" setup>
+  import MDCParserAndRenderer from '../plugins/MDCParserAndRenderer.vue';
 
   const props = defineProps({
     slug: {
@@ -90,16 +90,6 @@
       required: true
     }
   });
-  const kpi1Content = ref('');
-  const kpi2Content = ref('');
-  const kpi3Content = ref('');
-
-  const pagelist = ['/stories', props.slug];
-
-  kpi1Content.value = await parseMarkdown(props.kpi1, {});
-  kpi2Content.value = await parseMarkdown(props.kpi2, {});
-  kpi3Content.value = await parseMarkdown(props.kpi3, {});
-
 </script>
 
 <style scoped lang="scss">

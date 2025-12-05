@@ -97,10 +97,10 @@
                 <div class="info-block">
                     <span>Run on Any Cloud or On-Premise</span>
                     <div class="info-images">
-                        <img src="../../public/landing/enterprise/AWS-white.svg" alt="aws"/>
-                        <img src="../../public/landing/enterprise/Vector.svg" alt="vector"/>
-                        <img src="../../public/landing/enterprise/google.svg" alt="google drive"/>
-                        <img src="../../public/landing/enterprise/home-roof.svg" alt="home"/>
+                        <img src="/landing/enterprise/AWS-white.svg" alt="aws"/>
+                        <img src="/landing/enterprise/Vector.svg" alt="vector"/>
+                        <img src="/landing/enterprise/google.svg" alt="google drive"/>
+                        <img src="/landing/enterprise/home-roof.svg" alt="home"/>
                     </div>
                 </div>
                 <div class="info-block">
@@ -109,7 +109,7 @@
             </div>
         </div>
         <div class="plus-icon">
-            <img src="../../public/landing/enterprise/plus.svg" alt="plus"/>
+            <img src="/landing/enterprise/plus.svg" alt="plus"/>
         </div>
         <div class="bottom-block">
             <span>Kestra CORE</span>
@@ -120,7 +120,7 @@
                 </div>
                 <div>
                     <WebBox/>
-                    <span>Orchestration Logic  Declarative</span>
+                    <span>Orchestration Logic Declarative</span>
                 </div>
                 <div>
                     <CalendarMultiselect/>

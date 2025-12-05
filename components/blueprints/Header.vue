@@ -28,33 +28,20 @@
     </div>
 </div>
 </template>
-<script>
-    export default {
-    props: {
+<script setup lang="ts">
+    import BlueprintsTopology from '~/components/blueprints/Topology.client.vue';
+    import BlueprintsCopy from '~/components/blueprints/Copy.vue';
+
+    defineProps<{
+        slug?: string,
         page: {
-            type: Object,
-            required: true
+            id: string,
+            title: string,
+            flow: string,
+            includedTasks?: string[]
         },
-        graph: {
-            type: Object,
-            required: true,
-        },
-        flow: {
-            type: Object,
-            required: true,
-        }
-    },
-    data() {
-        return {
-            activeTab: 'topology'
-        }
-    },
-    methods: {
-        setTab(tabName) {
-            this.activeTab = tabName
-        },
-    }
-}
+        graph: any
+    }>();
 </script>
 
 <style scoped lang="scss">

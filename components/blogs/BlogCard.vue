@@ -20,25 +20,28 @@
             <div class="mt-1">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h6 class="my-1">{{ blog.title }}</h6>
-                <BlogsBlogCardDetails 
+                <BlogCardDetails
                     :authors="blog.authors || (blog.author ? [blog.author] : [])"
-                    :date="blog.date"
+                    :date="blog.date.toString()"
                 />
             </div>
         </NuxtLink>
     </div>
 </template>
 
-<script>
-    export default {
-        name: "BlogCard",
-        props: {
-            blog: {
-                type: Object,
-                required: true,
-            },
-        },
+<script lang="ts" setup>
+import BlogCardDetails from './BlogCardDetails.vue';
+defineProps<{
+    blog: {
+        path: string;
+        image?: string;
+        category?: string;
+        authors?: { name: string }[];
+        author?: { name: string };
+        title: string;
+        date: Date | string;
     }
+}>();
 </script>
 
 <style scoped lang="scss">

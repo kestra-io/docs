@@ -79,8 +79,8 @@ stages:
 
 ### How it works
 
-- The pipeline runs automatically whenever the **`main`** branch is updated (for example, after merging a pull request).  
-- The **pool** defines the agent that runs your pipeline. For setup details, refer to the [Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser).  
+- The pipeline runs automatically whenever the **`main`** branch is updated (for example, after merging a pull request).
+- The **pool** defines the agent that runs your pipeline. For setup details, refer to the [Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser).
 - The **Terraform extension** manages installation, validation, and deployment of Terraform resources.
 
 To install the Terraform extension, navigate to **Organization Settings → Extensions**, then browse the Marketplace to install it.
@@ -91,9 +91,9 @@ To install the Terraform extension, navigate to **Organization Settings → Exte
 
 This pipeline includes one installation step and three Terraform tasks:
 
-1. **Install Terraform** — The `TerraformInstaller@1` task installs Terraform at runtime.  
-2. **Initialize Terraform** — The first `TerraformTaskV4@4` runs the `init` command. In this example, the backend uses an AWS S3 bucket, but you can use Azure RM, AWS, or GCP.  
-3. **Validate configuration** — The second task runs the `validate` command to ensure the configuration is correct.  
+1. **Install Terraform** — The `TerraformInstaller@1` task installs Terraform at runtime.
+2. **Initialize Terraform** — The first `TerraformTaskV4@4` runs the `init` command. In this example, the backend uses an AWS S3 bucket, but you can use Azure RM, AWS, or GCP.
+3. **Validate configuration** — The second task runs the `validate` command to ensure the configuration is correct.
 4. **Apply changes** — The final task executes the `apply` command to deploy your Terraform-managed resources.
 
 ![image-green-pipeline](/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
