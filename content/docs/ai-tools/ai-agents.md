@@ -88,7 +88,7 @@ pluginDefaults:
         provider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
           modelName: gemini-2.5-flash
-          apiKey: "{{ kv('GEMINI_API_KEY') }}"
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
           configuration:
             logRequests: true
             logResponses: true

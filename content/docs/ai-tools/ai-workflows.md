@@ -34,7 +34,7 @@ namespace: company.ai
 tasks:
   - id: ask_ai
     type: io.kestra.plugin.gemini.StructuredOutputCompletion
-    apiKey: "{{ kv('GEMINI_API_KEY') }}"
+    apiKey: "{{ secret('GEMINI_API_KEY') }}"
     model: "gemini-2.5-flash-preview-05-20"
     prompt: "I like to go sailing when the wind is above 10 knots but below 30 knots. I sail in Cambridgeshire. If the wind is within that range, I want to know if I should go sailing or not. Also tell me the current wind speed speeds"
     jsonResponseSchema: |
@@ -60,15 +60,15 @@ tasks:
     then:
       - id: notify_me
         type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-        url: "{{ kv('SLACK_WEBHOOK') }}"
+        url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
             "text": "{{ outputs.ask_ai['predictions'] | first | jq('.content') | first }}"
           }
       - id: block_calendar
         type: io.kestra.plugin.googleworkspace.calendar.InsertEvent
-        calendarId: "{{ kv('CALENDAR_ID') }}"
-        serviceAccount: "{{ kv('GOOGLE_SA') }}"
+        calendarId: "{{ secret('CALENDAR_ID') }}"
+        serviceAccount: "{{ secret('GOOGLE_SA') }}"
         summary: Out of office
         description: "Gone sailing because the wind is {{ outputs.ask_ai['predictions'] | first | jq('.wind') | first }} knots"
         startTime:
@@ -105,7 +105,7 @@ inputs:
 tasks:
   - id: create_task_fields
     type: io.kestra.plugin.deepseek.ChatCompletion
-    apiKey: '{{ kv("DEEPSEEK_API_KEY") }}'
+    apiKey: '{{ secret("DEEPSEEK_API_KEY") }}'
     modelName: deepseek-chat
     messages:
       - type: SYSTEM
@@ -144,7 +144,7 @@ tasks:
         method: POST
         contentType: application/json
         headers:
-          Authorization: "Bearer {{ kv('TODOIST_API_TOKEN') }}"
+          Authorization: "Bearer {{ secret('TODOIST_API_TOKEN') }}"
         body: |
           {
             "content": "{{ taskrun.value | jq('.title') | first }}",
@@ -273,12 +273,12 @@ tasks:
         modelCachePath: "{{ kv('OLLAMA_CACHE_PATH') }}"
         commands:
           - "ollama run gemma3:1b \"Summarize the following Git commits into a clear and concise weekly development update for users. Output plain text for Slack, no markdown or extra formatting. Ensure no markdown syntax like **bold text** in the response — stick to plain text! Here are the commit messages: {{ read(outputs.fetch_commits.outputFiles['commits.txt']) }}\" > output.txt"
-        outputFiles:
-          - output.txt
+    outputFiles:
+      - output.txt
 
   - id: slack
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ kv('SLACK_WEBHOOK') }}"
+    url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {{
         {

@@ -78,7 +78,7 @@ tasks:
     type: io.kestra.plugin.ai.agent.AIAgent
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
       modelName: gemini-2.5-flash
     prompt: "{{ inputs.prompt }}"
     systemMessage: |
@@ -94,7 +94,7 @@ tasks:
 
     contentRetrievers:
       - type: io.kestra.plugin.ai.retriever.TavilyWebSearch
-        apiKey: "{{ kv('TAVILY_API_KEY') }}"
+        apiKey: "{{ secret('TAVILY_API_KEY') }}"
         maxResults: 10
 
     tools:
@@ -131,7 +131,7 @@ pluginDefaults:
     values:
       provider:
         type: io.kestra.plugin.ai.provider.OpenAI
-        apiKey: "{{ kv('OPENAI_API_KEY') }}"
+        apiKey: "{{ secret('OPENAI_API_KEY') }}"
         modelName: gpt-5-mini
       memory:
         type: io.kestra.plugin.ai.memory.KestraKVStore
@@ -179,7 +179,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       modelName: gemini-2.5-flash
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
     tools:
       - type: io.kestra.plugin.ai.tool.KestraFlow
 ```
@@ -229,7 +229,7 @@ tasks:
     type: io.kestra.plugin.ai.agent.AIAgent
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
       modelName: gemini-2.5-flash
     systemMessage: You are an expert data analyst. Extract insights based on the provided data.
     prompt: "Analyze the following dataset: {{ inputs.data }}"
@@ -266,4 +266,3 @@ For a demo of AI Agents in action, check out the video below:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=POI9pQyGefA0RhjQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
