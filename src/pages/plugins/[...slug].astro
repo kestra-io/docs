@@ -25,7 +25,7 @@ const splitRouteSlug = params.slug.split("/");
 const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
 let pluginType: string | undefined = undefined;
 
-const pageName = pageNames[`/plugins/${params.slug}`] ?? (lowerCasePluginType ? lowerCasePluginType.split(".").slice(-1)[0] : undefined);
+const pageName = pageNames[`/plugins/${params.slug}`];
 
 if (lowerCasePluginType !== undefined) {
     let splitPluginType = lowerCasePluginType.split(".");
@@ -52,9 +52,12 @@ const {pageIcon, icons} = await getIcon(splitRouteSlug?.[0], pluginType, "group"
 
 const transformTitle = (text: string) => {
     return text
-        .replace(/([A-Z])/g, '&#x200B;$1')
-        .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-}
+        ?.replace(/([A-Z])/g, '&#x200B;$1')
+        .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '') ?? "No Title";
+};
+
+
+const pluginName = splitRouteSlug?.[0];
 ---
 
 <Layout>
@@ -76,15 +79,16 @@ const transformTitle = (text: string) => {
                 </h1>
             </div>
             <NavToc rate-helpful page={page} capitalize class="my-md-0 my-4 right-menu"/>
-
-            {page && <PluginsMDCRender
+            <PluginsMDCRender
+                routePath={`/plugins/${params.slug}`}
                 page={page}
-                pluginName={pageName ?? ""}
+                pluginName={pluginName ?? '<plugin>'}
                 pluginType={pluginType}
                 plugins={pluginsWithoutDeprecated}
                 icons={icons}
+                subGroup={subGroup}
                 client:idle
-            />}
+            />
         </article>
     </div>
 </Layout>

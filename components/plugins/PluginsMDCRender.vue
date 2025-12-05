@@ -2,13 +2,14 @@
     <div class="bd-content" v-if="page">
         <FeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
                                 :page="page"/>
-        <PluginIndex v-if="pluginType === undefined"
+        <PluginIndex
+                    v-if="pluginType === undefined"
                     class="plugin-index"
                     :icons="icons"
                     :plugins="pluginsWithoutDeprecated"
                     :plugin-name="pluginName"
                     :sub-group="subGroup"
-                    :routePath="`/plugins/${pluginName?.toLowerCase()}`"
+                    :routePath="routePath"
         >
             <template v-slot:markdown="{ content }">
                 <MDCParserAndRenderer :content />
@@ -34,6 +35,7 @@ import MDCParserAndRenderer from './MDCParserAndRenderer.vue';
 
 const props = withDefaults(defineProps<{
     page: any,
+    routePath: string,
     pluginType?: string,
     icons?: Record<string, string>,
     plugins?: any[],
