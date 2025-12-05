@@ -25,12 +25,14 @@ const splitRouteSlug = params.slug.split("/");
 const lowerCasePluginType = splitRouteSlug[splitRouteSlug.length - 1].includes(".") ? splitRouteSlug[splitRouteSlug?.length - 1].replace(/.md$/, "") : undefined;
 let pluginType: string | undefined = undefined;
 
-const pageName = pageNames[`/plugins/${params.slug}`];
+const fullPath = `/plugins/${params.slug}`
+
+const pageName = pageNames[fullPath];
 
 if (lowerCasePluginType !== undefined) {
     let splitPluginType = lowerCasePluginType.split(".");
     const packageName = splitPluginType.slice(0, splitPluginType.length - 1).join(".");
-    pluginType = `${packageName}.${pageNames[`/plugins/${params.slug}`] ?? splitPluginType[splitPluginType.length - 1]}`;
+    pluginType = `${packageName}.${pageNames[fullPath] ?? splitPluginType[splitPluginType.length - 1]}`;
 }
 
 const page = pluginType === undefined || (lowerCasePluginType?.split(".").length ?? 6) < 6
@@ -58,14 +60,15 @@ const transformTitle = (text: string) => {
 
 
 const pluginName = splitRouteSlug?.[0];
+;
 ---
 
 <Layout>
      <div class="container-fluid bd-gutter bd-layout">
-        <NavSideBar type="plugins" navigation={navigation} slug={`/plugins/${params.slug}`} client:load/>
+        <NavSideBar type="plugins" navigation={navigation} slug={fullPath} client:load/>
         <article class="bd-main order-1">
             <div class="bd-title">
-                <Breadcrumb slug={params.slug} pageList={pageList} pageNames={pageNames} />
+                <Breadcrumb pageTitle="Plugins" slug={fullPath} pageList={pageList} pageNames={pageNames} />
                 <h1 v-if="page && pageName" class="py-0 title">
                     {pageIcon && <img
                         src={pageIcon}

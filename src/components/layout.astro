@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
+import "../../assets/styles/theme.scss";
 import Header from "~/components/layout/Header.vue";
 import LayoutFooter from "~/components/layout/Footer.vue";
 import LayoutFixed from "~/components/layout/Fixed.vue";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const props = Astro.props;
+const currentOrigin = Astro.url.origin ?? "https://kestra.io";
 
 const title = props.title ?? "Kestra, Open Source Declarative Data Orchestration";
 const description = props.description ?? "Documentation for Kestra, the open-source data orchestration and scheduling platform.";
@@ -26,7 +28,7 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="msapplication-TileColor" content="#2c0059" />
     <meta name="theme-color" content="#2c0059" />
-    <meta property="og:image" content="http://localhost:3001/og-image.png" />
+    <meta property="og:image" content={`${currentOrigin}/og-image.png`} />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
