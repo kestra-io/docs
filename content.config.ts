@@ -40,6 +40,7 @@ export default defineContentConfig({
             role: z.string(),
         })).optional(),
         image: z.string(),
+        plugins: z.array(z.string()).optional(),
       })
     }),
     [CollectionNames.misc]: defineCollection({

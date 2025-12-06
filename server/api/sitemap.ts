@@ -1,4 +1,4 @@
-import {recursivePages} from "~/utils/navigation.js";
+import {recursivePages} from "~/utils/navigation";
 import {slugify} from "@kestra-io/ui-libs";
 import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
