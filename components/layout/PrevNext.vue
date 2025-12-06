@@ -36,7 +36,7 @@
 import {upperFirst} from 'scule'
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-import {prevNext} from "~/utils/navigation.js";
+import {prevNext} from "~/utils/navigation";
 
 // const {navDirFromPath} = useContentHelpers()
 const navDirFromPath = () => []

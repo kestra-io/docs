@@ -1,6 +1,6 @@
 <template>
     <div>
-        <strong class="h6 my-2 title text-white">Contribute</strong>
+        <strong class="title-contribute my-2 text-white">Contribute</strong>
         <nav class="social mt-1">
             <ul>
                 <li v-if="page.editLink !== false && editLink">
@@ -9,47 +9,17 @@
                         Edit this page
                     </a>
                 </li>
-                <li>
-                    <a class="text-white" href="https://kestra.io/slack" target="_blank">
-                        <Slack />
-                        Join us on Slack
-                    </a>
-                </li>
-                <li>
-                    <a class="text-white" href="https://www.youtube.com/@kestra-io" target="_blank">
-                        <Youtube />
-                        YouTube
-                    </a>
-                </li>
-                <li>
-                    <a class="text-white" href="https://github.com/kestra-io/kestra" target="_blank">
-                        <Github />
-                        GitHub
-                    </a>
-                </li>
-                <li>
-                    <a class="text-white" href="https://twitter.com/kestra_io" target="_blank">
-                        <twitter />
-                        Twitter
-                    </a>
-                </li>
-                <li>
-                    <a class="text-white" href="https://web-cdn.bsky.app/profile/kestra.io" target="_blank">
-                        <BlueSky />
-                        BlueSky
-                    </a>
-                </li>
-                <li>
-                    <a class="text-white" href="https://www.linkedin.com/company/kestra" target="_blank">
-                        <linkedin />
-                        LinkedIn
+                <li v-for="link in socialLinks" :key="link.href">
+                    <a class="text-white" :href="link.href" target="_blank">
+                        <component :is="link.icon" />
+                        {{ link.text }}
                     </a>
                 </li>
             </ul>
         </nav>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
     import Slack from "vue-material-design-icons/Slack.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import Github from "vue-material-design-icons/Github.vue";
@@ -64,31 +34,44 @@
         },
     });
 
+    const socialLinks = [
+        { href: "https://kestra.io/slack", icon: Slack, text: "Join us on Slack" },
+        { href: "https://www.youtube.com/@kestra-io", icon: Youtube, text: "YouTube" },
+        { href: "https://github.com/kestra-io/kestra", icon: Github, text: "GitHub" },
+        { href: "https://twitter.com/kestra_io", icon: Twitter, text: "Twitter" },
+        { href: "https://web-cdn.bsky.app/profile/kestra.io", icon: BlueSky, text: "BlueSky" },
+        { href: "https://www.linkedin.com/company/kestra", icon: Linkedin, text: "LinkedIn" },
+    ];
+
     const editLink = computed(() => {
-        if (!props.page.stem || !props.page.extension) {
+        if (!props.page?.stem || !props.page?.extension) {
             return false;
         }
         return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.page.stem}.${props.page.extension}`;
     });
 </script>
+
 <style lang="scss" scoped>
+    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../assets/styles/variable";
+    
     strong {
         margin-left: calc($spacer * 2);
     }
+    
     nav {
         @include font-size($font-size-xs);
         line-height: 1.188rem;
-
+    
         ul {
             padding-left: 0;
             margin-bottom: 0;
             list-style: none;
-
+        
             li {
                 a {
-                    padding-left: 2rem;
-
+                    padding-left: 2.5rem;
+                
                     &:hover,
                     &.active {
                         color: var(--bs-primary);
@@ -99,24 +82,31 @@
             }
         }
     }
-
-    .h6 {
-        color: var(--bs-gray-700);
-        font-size: $font-size-sm;
+    
+    .title-contribute {
+        color: color-palette.$base-gray-300 !important;
+        font-size: 14px;
         line-height: 1.875rem;
         font-weight: 600;
+        margin-bottom: 0.25rem;
     }
-
+    
     .social ul li a {
         line-height: 1.5rem;
         font-size: $font-size-sm;
     }
-
+    
     a {
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         padding: 0.125rem 0.75rem;
         color: inherit;
         text-decoration: none;
         color: var(--bs-gray-700);
+    
+        :deep(svg) {
+            font-size: 20px;
+        }
     }
 </style>
