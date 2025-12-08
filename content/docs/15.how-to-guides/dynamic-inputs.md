@@ -97,3 +97,37 @@ tasks:
       You selected Category: {{ inputs.category }}
       And Product: {{ inputs.product }}
 ```
+
+---
+
+Dynamic inputs are useful for flows using authenticated API requests like the following:
+
+```yaml
+id: approversFlow
+namespace: company.team
+
+inputs:
+  - id: executionIdsToBeApproved
+    type: MULTISELECT
+    expression: >-
+      {{
+      http(
+        uri = 'http://localhost:8080/api/v1/internal/executions/search?state=PAUSED',
+        method = 'GET',
+        contentType = 'application/json',
+        headers={
+          'User-Agent': 'kestra',
+          'Connection': 'keep-alive',
+          'Authorization': 'Bearer ' ~ secret("bearerToken")
+        }
+      ) | jq('.results[] | "ExecutionId: \(.id), FlowId: \(.flowId), RequestedBy: \(.labels[] | select(.key == "system.username").value) InputParams: \( .inputs | to_entries | map("\(.key):\(.value)") | join(" ") )"')  }}
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World! 🚀
+```
+
+:::alert{type="info"}
+When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
+:::
