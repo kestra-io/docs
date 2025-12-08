@@ -8,5 +8,8 @@ export default (app: App) => {
     props: ['to', 'href']
   }));
   app.component('NuxtImg', defineComponent(() => () => h('img')))
-  app.component('ClientOnly', defineComponent((_, { slots }) => () => slots.default?.()))
+  app.component('ClientOnly', defineComponent({
+    setup: (_, { slots }) => () => slots.default?.(),
+    props: [ 'fallback']
+}));
 };

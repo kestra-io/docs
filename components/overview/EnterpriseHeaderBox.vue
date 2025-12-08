@@ -4,7 +4,9 @@
     </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import HomeEnterpriseHeaderBox from '../home/EnterpriseHeaderBox.vue'
+</script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
