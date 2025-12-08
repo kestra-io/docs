@@ -39,8 +39,8 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
-- `clientPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
-- `caPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
+- `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
+- `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 

@@ -168,7 +168,7 @@ tasks:
     url: https://github.com/anna-geller/python-in-kestra
     branch: main
     username: anna-geller
-    password: "{{ kv('GITHUB_ACCESS_TOKEN') }}"
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 
   - id: build
     type: io.kestra.plugin.scripts.python.Commands

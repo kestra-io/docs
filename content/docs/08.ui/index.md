@@ -26,13 +26,13 @@ On the left menu, you will see the following UI pages:
 The [Kestra Enterprise Edition](/enterprise) comes with additional functionalities provided by the Kestra UI:
 
 - The **Apps** page takes you to your list of Apps and is also where you create new Apps.
+- The **Tests** page takes you to your flow unit tests where you can view, edit, and create test assertions against your flows without creating executions.
 - The **Secrets** page lists all secrets and their associated namespace and provides a place to create new secrets.
 - The **Administration** tab has additional Enterprise sections such as:
   - **IAM** for managing Users, Groups, and Roles.
   - **Audit Logs** to access Kestra audit logs.
   - **Instance** to have an overview of Kestra server component statuses, make announcements, and enable maintenance mode.
   - **Tenants** to manage your tenants (page accessible only by users with admin permissions).
-- The **Task Runs** page is available if you are running Kestra with the [Kafka / Elasticsearch backend](../07.architecture/index.md#architecture-with-kafka-and-elasticsearch-backend).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
