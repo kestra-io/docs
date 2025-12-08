@@ -16,7 +16,7 @@ export function calculateTotalPlugins(plugins: Plugin[]): number {
     return classes.size;
 }
 
-export const usePluginsCount = (pluginsRef?: Ref<Plugin[]>) => {
+export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
     let plugins = pluginsRef
     const status = ref<string>("")
     if( !plugins ) {
@@ -42,4 +42,4 @@ export const usePluginsCount = (pluginsRef?: Ref<Plugin[]>) => {
     });
 
     return { totalPlugins, plugins };
-};
+}
