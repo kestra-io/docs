@@ -10,7 +10,15 @@
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
                 <h1 v-if="page && currentPageName" class="py-0 title">
                     <div v-if="currentPageIcon" class="pageIcon">
-                        <div class="blurred-bg" :style="{backgroundImage: `url(${currentPageIcon})`}"></div>
+                        <NuxtImg
+                            :src="currentPageIcon"
+                            :alt="currentPageName"
+                            loading="lazy"
+                            format="webp"
+                            quality="80"
+                            densities="x1 x2"
+                            class="blurred-bg"
+                        />
                         <NuxtImg
                             :src="currentPageIcon"
                             :alt="currentPageName"
@@ -302,12 +310,21 @@
      */
 
     const currentPluginMetadata = computed(() => {
-        const groupId = currentSubgroupPlugin.value?.subGroup ?? currentSubgroupPlugin.value?.group;
-        if (groupId) {
-            const found = allPluginMetadata.value?.find(m => m.group === groupId);
+
+        const subgroupId = currentSubgroupPlugin.value?.subGroup ?? currentSubgroupPlugin.value?.group;
+        const rootGroupId = rootPlugin.value?.group ?? pluginName.value;
+
+        if (subgroupId) {
+            const found = allPluginMetadata.value?.find(m => m.group === subgroupId);
             return found ? [found] : [];
         }
-        return allPluginMetadata.value;
+
+        if (rootGroupId) {
+            const found = allPluginMetadata.value?.find(m => m.group === rootGroupId);
+            return found ? [found] : [];
+        }
+
+        return [];
     });
 
     const currentPageMetadata = computed(() => {
@@ -705,9 +722,8 @@
             width: 120%;
             height: 50%;
             filter: blur(50px);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            object-fit: cover;
+            object-position: center;
             z-index: -1;
             transform: translateX(-20px);
         }

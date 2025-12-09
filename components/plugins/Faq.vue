@@ -42,11 +42,11 @@
     }
 
     :deep(.que) {
-        background-color: transparent !important;
+        background-color: #0A0B0D !important;
     }
 
     :deep(.ans) {
-        background-color: transparent !important;
+        background-color: #0A0B0D !important;
     }
 
     :deep(.accordion-button) {

@@ -31,8 +31,6 @@ export default defineEventHandler(async (event) => {
 
     try {
         const headers: Record<string, string> = { 'User-Agent': 'request' }
-        if (process.env.GITHUB_TOKEN)
-            headers.Authorization = `token ${process.env.GITHUB_TOKEN}`
 
         const response = await fetch(`https://api.github.com/repos/kestra-io/${repo}/releases`, { headers })
 

@@ -112,7 +112,6 @@
                 padding: 0;
                 display: flex;
                 flex-direction: column;
-                gap: calc(var(--spacer, 1rem) / 4);
 
                 li {
                     a {
