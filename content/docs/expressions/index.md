@@ -325,7 +325,7 @@ Pebble templates use two primary delimiters:
 - `{{ ... }}`: outputs the result of an expression. Expressions can be simple variables or complex calculations.
 - `{% ... %}`: controls the template’s flow, such as with `if` statements or `for` loops.
 
-To escape expressions or control structures, use the `raw` tag. This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
+To escape expressions or control structures, use the [`raw` tag](./index.md#raw). This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
 
 Dot notation (`.`) is used to access nested attributes. For attributes with special characters, use square brackets:
 
@@ -2262,9 +2262,7 @@ The `raw` tag prevents Pebble from parsing its content.
 Example:
 
 ```twig
-{% raw %}
-    {{ user.name }}
-{% endraw %}
+{% raw %}{{ user.name }}{% endraw %}
 ```
 
 Output:
