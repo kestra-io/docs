@@ -1,95 +1,226 @@
 <template>
     <NuxtLink :href="href">
-        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toggle="tooltip"
-             data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
-            <div class="icon-content">
-                <img :src="`/icons/${plugin.subGroup || plugin.group}.svg`" :alt="plugin.title">
+        <div class="plugin">
+            <div class="top-row">
+                <div class="icon-content">
+                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" />
+                </div>
+                <div class="content">
+                    <h6>{{ capitalizedTitle }}</h6>
+                    <p v-if="description" class="description">{{ description }}</p>
+                </div>
             </div>
-            <h6>
-                {{ plugin.title }}
-            </h6>
+            <div v-if="plugin.categories?.length" class="categories">
+                <span v-for="category in plugin.categories" :key="category" class="category-tag">
+                    {{ formatCategoryName(category) }}
+                </span>
+            </div>
+            <div class="footer">
+                <hr>
+                <div class="bottom-row">
+                    <div class="left">
+                        <p v-if="elementTotal">{{ elementTotal }} <span>Tasks</span></p>
+                        <p v-if="blueprintsCount">{{ blueprintsCount }} <span>Blueprints</span></p>
+                    </div>
+                    <ChevronRight />
+                </div>
+            </div>
         </div>
     </NuxtLink>
 </template>
-<script setup>
-    import {slugify} from "@kestra-io/ui-libs"
 
-    const {$bootstrap} = useNuxtApp();
-    const props = defineProps({
-        plugin: {
-            type: Object,
-            required: true
-        },
-        icons: {
-            type: Object,
-            default: undefined
-        },
+<script setup lang="ts">
+    import {slugify, usePluginElementCounts, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs"
+    import {formatCategoryName} from "../../utils/pluginUtils";
+    import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
+
+    const props = withDefaults(defineProps<{
+        plugin: Plugin;
+        icons?: Record<string, any>;
+        blueprintsCount?: number;
+        metadataMap?: Record<string, PluginMetadata>;
+    }>(), {
+        icons: undefined,
+        blueprintsCount: 0,
+        metadataMap: undefined
     });
 
-    const root = ref(null);
-
-    const href = `/plugins/${props.plugin.name}${props.plugin.subGroup === undefined ? '' : ('/' + slugify(props.plugin.title))}`
-
-    onMounted(() => {
-      if (process.client) {
-        new $bootstrap.Tooltip(root.value, {
-          trigger: 'manual',
-          boundary: 'window'
-        });
-
-        root.value.addEventListener('mouseenter', () => {
-            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-            if (tooltip) {
-                removeAllTooltips();
-                tooltip.show();
-                tooltip.tip.addEventListener('mouseleave', () => {
-                tooltip.hide();
-                });
-            }
-        });
-      }
+    const metadata = computed(() => {
+        const key = props.plugin.subGroup ?? props.plugin.group;
+        return props.metadataMap?.[key];
     });
 
-    onBeforeUnmount(() => {
-        if (process.client) {
-            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-            if (tooltip) {
-                tooltip.dispose();
-            }
+    const iconSrc = computed(() => {
+        const key = props.plugin.subGroup || props.plugin.group;
+        
+        if (props.icons?.[key]) {
+            return `data:image/svg+xml;base64,${props.icons[key]}`;
         }
+        
+        return "/icon.svg";
     });
 
-    function removeAllTooltips() {
-      const tooltips = document.querySelectorAll('.tooltip');
-      tooltips.forEach(tooltip => {
-        tooltip.parentNode.removeChild(tooltip);
-      });
-    }
+    const href = computed(() => {
+        const base = `/plugins/${props.plugin.name}`;
+        if (props.plugin.subGroup === undefined) {
+            return base;
+        }
+        return `${base}/${slugify(props.plugin.title)}`;
+    });
+
+    const capitalizedTitle = computed(() => {
+        const title = metadata.value?.title ?? props.plugin.title;
+        return title?.charAt(0).toUpperCase() + title?.slice(1);
+    });
+
+    const description = computed(() => metadata.value?.description ?? props.plugin.description);
+
+    const {total: elementTotal} = usePluginElementCounts(props.plugin);
+
 </script>
 
-
 <style scoped lang="scss">
+    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../assets/styles/variable";
-
+    
     .plugin {
-        border-radius: 4px;
-        border: $block-border;
-        padding: calc($rem-1 / 2) $rem-2;
-
-        .icon-content img {
-            width: 32px;
-            height: 32px;
+        height: 188px;
+        border-radius: 12px;
+        border: 1px solid var(--kestra-io-token-color-border-secondary);
+        padding: $rem-1;
+        padding-bottom: 2px;
+        background: var(--kestra-io-token-color-background-secondary);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        transition: 0.4s ease-out;
+    
+        &:hover {
+            border-color: var(--kestra-io-token-color-border-active);
+            box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+            transform: scale(1.025);
         }
-
+    
+        .top-row {
+            display: flex;
+            flex-direction: row;
+            gap: $rem-1;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+    
+        .icon-content {
+            width: 60px;
+            height: 60px;
+            background: color-palette.$base-gray-50;
+            border-radius: 8px;
+            border: 1px solid color-palette.$base-gray-100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        
+            img {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+    
         h6 {
             color: $white;
+            font-size: $font-size-md;
+            font-weight: 700;
+            margin: 0;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            text-transform: capitalize;
-            font-size: $font-size-md;
-            font-weight: 400;
-            margin-bottom: 0;
+        }
+    
+        .categories {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        
+            .category-tag {
+                display: inline-block;
+                margin-right: 0.25rem;
+                background: color-palette.$base-purple-800;
+                color: $white;
+                padding: 0.125rem 0.5rem;
+                border-radius: 40px;
+                border: 1px solid color-palette.$base-purple-600;
+                font-size: 0.625rem;
+                font-weight: 500;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    
+        .description {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-xs !important;
+            line-height: $rem-1;
+            margin: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    
+        hr {
+            border: 1px solid $black-3;
+            margin: 0;
+        }
+    
+        .footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+    
+        .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: $gray-100;
+            height: 45px;
+        
+            .left {
+                display: flex;
+                gap: $rem-1;
+                align-items: center;
+            
+                p {
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: $font-size-xs !important;
+                }
+            
+                span {
+                    color: color-palette.$base-gray-300;
+                    font-weight: normal;
+                    margin-left: 2px;
+                }
+            }
+        
+            :deep(svg) {
+                font-size: $rem-1;
+                color: var(--kestra-io-token-text-link-default);
+            }
         }
     }
 </style>

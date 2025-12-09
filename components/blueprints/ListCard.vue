@@ -20,54 +20,44 @@
     </NuxtLink>
 </template>
 
-<script>
-    export default {
-        props: {
-            blueprint: {
-                type: Object,
-                required: true
-            },
-            tags: {
-                type: Array,
-                default: []
-            },
-            href: {
-              type: String,
-              required: true
-            }
-        },
-        computed: {
-            tagsList() {
-                if(this.tags?.length && this.blueprint.tags) {
-                    return this.tags.filter(t => this.blueprint.tags.includes(t.id)).map(t => t.name)
-                }else if(this.blueprint.tags?.length) {
-                    return this.blueprint.tags
-                }
-                return ""
-            }
+<script setup lang="ts">
+    const props = withDefaults(defineProps<{
+        blueprint: Record<string, any>;
+        tags?: Array<any>;
+        href: string;
+    }>(), {
+        tags: []
+    });
+
+    const { getName } = useBlueprintsTags();
+
+    const tagsList = computed(() => {
+        if(props.tags?.length) {
+            return props.tags.filter((t: any) => props.blueprint.tags?.includes(t.id)).map((t: any) => t.name)
         }
-    }
+        return props.blueprint.tags?.map((id: any) => getName(id)) ?? []
+    })
 </script>
 
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
-
+    
     .card {
         border-radius: 8px;
         border: $block-border;
         height: 100%;
-        background-image: linear-gradient(180deg, #21242EFF 0%, #1A1C2444 100%);
-
+        background-image: linear-gradient(180deg, $black-9 0%, rgba($black-9, .27) 100%);
+    
         .card-body {
             padding: 2rem !important;
-
+        
             .icon {
-                border: 1px solid #E5E4F7;
+                border: 1px solid $white-2;
                 padding: 0.313rem 0.625rem;
                 width: 44px;
             }
         }
-
+    
         .title {
             color: $white-1;
             font-family: $font-family-monospace;
@@ -75,31 +65,32 @@
             font-weight: 400;
             text-transform: uppercase;
         }
-
+    
         .description {
             color: $white;
             font-size: $h6-font-size;
             font-weight: 400;
         }
-
+    
         .icon {
             border-radius: 4px;
             border: 1px solid $black-6 !important;
         }
-
+    
         .card-text {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1rem;
             flex-wrap: wrap;
         }
+    
         .tag-box {
-            background-color: #444955;
+            background-color: $black-6;
             color: $white;
             padding: .3rem .7rem;
             border-radius: 4px;
             font-size: $font-size-sm;
         }
-
+    
     }
 </style>
