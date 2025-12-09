@@ -111,6 +111,7 @@
             border-left: 1px solid color-palette.$base-purple-300;
             margin-left: 1rem;
             margin-bottom: 1rem;
+            background-color: #0A0B0D
         }
     }
 

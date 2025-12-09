@@ -55,5 +55,10 @@
 
     :deep(.accordion-body) {
         margin-left: 0 !important;
+        background-color: #0A0B0D !important;
+    }
+
+    :deep(.accordion-item), :deep(.accordion-header), :deep(.custom-details) {
+        background-color: #0A0B0D !important;
     }
 </style>
