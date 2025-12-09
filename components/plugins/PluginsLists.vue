@@ -8,8 +8,7 @@
             @update:active-category="setActiveCategory"
         />
         <div class="container bd-gutter">
-            <div class="d-flex justify-content-between align-items-center my-4">
-                <div class="count">{{ totalPlugins }} plugins</div>
+            <div class="d-flex justify-content-end align-items-center my-4">
                 <div class="d-flex align-items-center">
                     <CustomSelect
                         v-model="sortBy"
@@ -40,11 +39,16 @@
 
             <div class="d-flex justify-content-between pagination-container" v-if="totalGroups > itemsPerPage">
                 <div class="items-per-page">
-                    <select class="form-select bg-dark-2" aria-label="Default select example"
-                            v-model="itemsPerPage">
+                    <select 
+                        class="form-select bg-dark-2" 
+                        aria-label="Default select example"
+                        v-model="itemsPerPage"
+                    >
                         <option :value="20">20</option>
                         <option :value="40">40</option>
                         <option :value="60">60</option>
+                        <option :value="80">80</option>
+                        <option :value="100">100</option>
                     </select>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">

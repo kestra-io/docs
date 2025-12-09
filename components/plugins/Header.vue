@@ -18,6 +18,14 @@
                     :placeholder="`Search across ${totalPlugins} plugins`" 
                 />
                 <Magnify class="search-icon" />
+                <button 
+                    v-if="searchQuery" 
+                    class="clear-icon" 
+                    @click="searchQuery = ''"
+                    title="Clear search"
+                >
+                    <Close />
+                </button>
                 <div class="ai-wrapper">
                     <span class="or-text">or</span>
                     <div class="ai-button-inside">
@@ -50,6 +58,7 @@
 
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
+    import Close from "vue-material-design-icons/Close.vue"
     import {useMediaQuery} from '@vueuse/core'
     import {formatCategoryName} from "../../utils/pluginUtils";
 
@@ -153,9 +162,10 @@
             border-radius: 23px;
             border: none;
             background-color: #000;
+            color: $white;
 
-            &, &::placeholder {
-                color: $white;
+            &::placeholder {
+                color: var(--ks-content-tertiary);
                 font-size: 1rem;
                 font-weight: 400;
 
@@ -180,10 +190,26 @@
 
     .search-icon {
         position: absolute;
-        top: 9px;
+        top: 10px;
         left: calc($spacer * 1.125);
         font-size: 25px;
-        color: $white;
+        color: var(--ks-content-primary);
+    }
+
+    .clear-icon {
+        position: absolute;
+        top: 15px;
+        right: 130px;
+        background: none;
+        border: none;
+        color: var(--ks-content-secondary);
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0;
+
+        &:hover {
+            color: var(--ks-content-tertiary);
+        }
     }
 
     .ai-wrapper {
