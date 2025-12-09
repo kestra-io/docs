@@ -62,7 +62,7 @@
     @import "../../assets/styles/variable";
 
     .custom-details {
-        background: $black-4 !important;
+        background: $black-4;
         border: none !important;
         border-bottom: 1px solid $black-3 !important;
 
@@ -111,7 +111,6 @@
             border-left: 1px solid color-palette.$base-purple-300;
             margin-left: 1rem;
             margin-bottom: 1rem;
-            background-color: #0A0B0D
         }
     }
 
