@@ -8,7 +8,7 @@ description: Review our Enterprise license agreement
 
 </head>
 
-# KESTRA TECHNOLOGIES, INC. MASTER SOFTWARE LICENSE AGREEMENT
+## KESTRA TECHNOLOGIES, INC. MASTER SOFTWARE LICENSE AGREEMENT
 
 This Master Software License Agreement (this “Agreement”) is entered into by and between:
 
