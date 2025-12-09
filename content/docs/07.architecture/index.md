@@ -79,7 +79,7 @@ Elasticsearch contributes to scalability by providing a robust, horizontally sca
 
 ## Comparison between JDBC and Kafka architectures
 
-When comparing both diagrams, the main difference between the **JDBC** and an **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
+When comparing both diagrams, the main difference between the **JDBC** and **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
 
 :::alert{type="info"}
 Note that it's possible to use the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.
