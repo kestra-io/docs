@@ -1,22 +1,20 @@
-<script>
-    export default {
-        props: {
-            relatedBlueprints: {
-                type: Array,
-                default: []
-            },
-            tags: {
-                type: Array,
-                default: []
-            }
-        },
-        methods: {
-          generateCardHref (blueprint) {
-            return `/blueprints/${blueprint.id}`
-          }
-        },
-    }
+<script setup lang="ts">
+import LayoutSection from '~/components/layout/Section.vue';
+import BlueprintsListCard from '~/components/blueprints/ListCard.vue';
+defineProps<{
+    relatedBlueprints: Array<{
+        id: string,
+        title: string,
+        description: string,
+        tags: { id: string, name: string }[]
+    }>,
+    tags: { id: string, name: string }[]
+}>();
+function generateCardHref (blueprint: { id: string }) {
+  return `/blueprints/${blueprint.id}`
+}
 </script>
+
 
 <template>
     <LayoutSection subtitle="More Related" subtitle-after="Blueprints">

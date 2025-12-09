@@ -1,0 +1,29 @@
+---
+export const prerender = false
+import BlogsList from "~/components/blogs/BlogsList.vue";
+import LayoutBlogs from "../../components/layout-blogs.astro";
+import { $fetch } from "~/utils/fetch";
+
+const externalNewsData = await $fetch(`https://api.kestra.io/v1/external-blogs`);
+
+const externalNews = externalNewsData.results.map((data: any) => {
+    return {
+        id: data.id,
+        path: data.link,
+        image: data.image,
+        category: data.media,
+        author: {name: data.author},
+        title: data.title,
+        date: data.publicationDate
+    }
+})
+---
+
+<LayoutBlogs activeStem={`/blogs`}>
+    <BlogsList
+        slug="/blogs/community"
+        blogs={[]}
+        currentUrl={Astro.request.url}
+        externalNews={externalNews}
+    />
+</LayoutBlogs>

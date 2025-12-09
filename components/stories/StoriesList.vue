@@ -9,7 +9,7 @@
         <div class="row mb-4">
             <template v-for="(story, index) in stories" :key="index">
                 <div class="col-12">
-                    <StoriesRowCard :story="story" />
+                    <StoriesRowCard :story />
                 </div>
                 <div class="line" />
             </template>
@@ -24,6 +24,7 @@
             </div>
             <CommonPagination
                 v-if="totalPages > 1"
+                :current-url="fullPath"
                 :totalPages="totalPages"
                 v-model:current-page="currentPage"
                 @update:current-page="changePage"
@@ -32,16 +33,17 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    stories: {
-        type: Array,
-        required: true
-    },
-    totalStories: {
-        type: Number,
-        default: 1
-    }
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+import StoriesRowCard from './RowCard.vue'
+import CommonPagination from '../common/Pagination.vue'
+
+const props = withDefaults(defineProps<{
+    fullPath: string,
+    stories: Array<any>,
+    totalStories?: number,
+}>(), {
+    totalStories: 1
 })
 const emits = defineEmits(['fetchPageData'])
 const itemsPerPage = ref(25);
@@ -50,9 +52,11 @@ const totalPages = computed(()=>{
     return Math.ceil(props.totalStories / itemsPerPage.value)
 })
 const changePage = () => {
+    // FIXME: find an astro friendly way to do this
     window.scrollTo(0, 0)
     fetchPageData()
 }
+
 const fetchPageData = () => {
     emits('fetchPageData', { currentPage: currentPage.value, itemsPerPage: itemsPerPage.value })
 }

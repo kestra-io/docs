@@ -101,6 +101,7 @@
 import Socials from "./Socials.vue";
 import Certifications from "./Certifications.vue";
 import Heart from "vue-material-design-icons/Heart.vue";
+import LayoutNewsletter from "./Newsletter.vue"
 </script>
 
 <style lang="scss" scoped>
@@ -111,7 +112,7 @@ footer {
     position: relative;
     font-size: var(--bs-font-size-sm);
     background-color: #15171e !important;
-    
+
     h5, a, p{
         color: var(--bs-white);
         font-size: var(--bs-badge-font-size);

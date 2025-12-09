@@ -135,7 +135,7 @@
     const {$bootstrap} = useNuxtApp()
     const route = useRoute()
     const config = useRuntimeConfig();
-    const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
+    const slug = (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug);
     const story = ref({})
     const content = ref('')
     const root = ref(null)

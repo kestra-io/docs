@@ -5,7 +5,12 @@
             <Meta name="description"
                   content="Learn how we helped companies manage their critical operations." />
         </Head>
-        <StoriesList :stories="stories" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        <StoriesList
+            :stories="stories"
+            :total-stories="totalStories"
+            :full-path="route.fullPath + querystring"
+            @fetch-page-data="fetchStories"
+        />
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 title="Getting started with Kestra"
@@ -23,6 +28,8 @@
     const config = useRuntimeConfig();
     const stories = ref([])
     const totalStories = ref(0)
+
+    const querystring = computed(() =>  `?${new URLSearchParams(route.query).toString()}`)
 
     const fetchStories = async ({currentPage, itemsPerPage}) => {
         const {data} = await useAsyncData('use-cases/stories', () => {

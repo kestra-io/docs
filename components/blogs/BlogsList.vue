@@ -8,7 +8,7 @@
                     :key="news.id"
                     class="col-lg-4 col-md-6 col-12"
                 >
-                    <BlogsBlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-aos="zoom-in" />
                 </div>
             </div>
         </div>
@@ -19,19 +19,19 @@
                     Company news, product updates, and engineering deep dives.
                 </h4>
                 <ul
-                    class="nav nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
+                    class="ks-nav ks-nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
                     id="myTab"
                     role="tablist"
                 >
                     <li
                         v-for="cat in categories"
                         :key="cat.name"
-                        class="nav-item text-nowrap"
+                        class="ks-nav-item text-nowrap"
                         role="presentation"
                         @click="setFilterBlogs(cat.name)"
                     >
                         <button
-                            class="nav-link"
+                            class="ks-nav-link"
                             :class="{ active: filter === cat.name }"
                             id="home-tab"
                             data-bs-toggle="tab"
@@ -55,7 +55,8 @@
                         role="tabpanel"
                         :aria-labelledby="`${cat.name}-tab`"
                     >
-                        <BlogsHighlightBlogCard
+                        <HighlightBlogCard
+                            v-if="getHighlightBlog(cat.name)"
                             :blog="getHighlightBlog(cat.name)"
                             class="mt-5"
                         />
@@ -68,43 +69,37 @@
                         :ref="`blog-${index}`"
                         class="col-lg-6 col-md-6"
                     >
-                        <BlogsBlogCard :blog="blog" data-aos="zoom-in" />
+                        <BlogCard :blog="blog" data-aos="zoom-in" />
                     </div>
                 </div>
             </div>
             <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
                 <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
-                    <BlogsBlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-aos="zoom-in" />
                 </div>
                 <NuxtLink href="/blogs/community">
                     <button class="btn btn-dark w-100">More news</button>
                 </NuxtLink>
             </div>
-            <div class="d-flex justify-content-between my-5">
-                <div class="items-per-page">
-                    <select
-                        class="form-select bg-dark-2"
-                        aria-label="Default select example"
-                        v-model="itemsPerPage"
-                        @change="fetchPageData"
-                    >
-                        <option :value="10">10</option>
-                        <option :value="25">25</option>
-                        <option :value="50">50</option>
-                    </select>
-                </div>
-                <CommonPagination
-                    :totalPages="totalPages"
-                    v-model:current-page="pageNo"
-                    v-if="totalPages > 1"
-                />
-            </div>
+            <CommonPaginationContainer
+                :current-url="fullPath"
+                :total-items="blogsList.length"
+                @update="(payload) => {
+                    pageNo = payload.page;
+                    itemsPerPage = payload.size
+                }"
+            />
         </div>
     </div>
 </template>
-
+<script setup>
+import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
+import BlogCard from './BlogCard.vue';
+import HighlightBlogCard from './HighlightBlogCard.vue';
+</script>
 <script>
+
 export default {
     name: "BlogsList",
     props: {
@@ -115,6 +110,14 @@ export default {
         externalNews: {
             type: Array,
             required: true,
+        },
+        slug: {
+            type: String,
+            required: false,
+        },
+        currentUrl: {
+            type: String,
+            required: false,
         },
     },
     data() {
@@ -134,13 +137,19 @@ export default {
                     name: "Solutions",
                 },
             ],
-            slug: "",
+            fullSlug: "",
             pageList: [],
-            itemsPerPage: 25,
+            itemsPerPage: 24,
             pageNo: 1,
+            query: "",
         };
     },
     computed: {
+        fullPath() {
+            const url = new URL(this.currentUrl);
+            url.search = this.query;
+            return url.toString();
+        },
         blogsList() {
             const blogs = this.blogs.filter(
                 (e) => e.category === this.filter || this.filter === "All news",
@@ -155,7 +164,7 @@ export default {
                 .reverse();
         },
         totalPages() {
-            return Math.ceil(this.blogs.length / this.itemsPerPage);
+            return Math.ceil(this.blogsList.length / this.itemsPerPage);
         },
         paginatedBlogs() {
             return this.blogsList.slice(
@@ -179,13 +188,11 @@ export default {
         },
     },
     created() {
-        this.slug =
-            "/blogs/" +
-            (this.$route.params.slug instanceof Array
-                ? this.$route.params.slug.join("/")
-                : this.$route.params.slug);
+        this.fullSlug = Array.isArray(this.slug)
+            ? `/blogs/${this.slug.join("/")}`
+            : this.slug || "";
         const breadcrumbs = [
-            ...new Set(this.slug.split("/").filter((r) => r !== "")),
+            ...new Set(this.fullSlug.split("/").filter((r) => r !== "")),
         ];
         this.pageList = breadcrumbs.map(
             (___, index) => "/" + breadcrumbs.slice(0, index + 1).join("/"),
@@ -209,6 +216,11 @@ export default {
             });
         },
     },
+    mounted() {
+        this.$nextTick(() => {
+            this.query = window.location.search;
+        })
+    }
 };
 </script>
 
@@ -233,15 +245,23 @@ export default {
     }
 }
 
-.nav-tabs {
+.ks-nav-tabs {
     border-bottom: 1px solid $black-6;
+    display: flex;
+    padding: 0;
+    list-style-type: none;
+    justify-items: start;
 }
 
-.nav-item {
-    .nav-link {
+.ks-nav-item {
+    height: 41px;
+    .ks-nav-link {
+        border-color: transparent;
         color: $white;
+        background-color: transparent;
         font-size: $font-size-md;
         font-weight: 400;
+        padding: .5rem 1rem;
 
         &:hover, &:focus {
             border-color: transparent;
@@ -265,11 +285,11 @@ export default {
     }
 }
 
-.nav::-webkit-scrollbar {
+.ks-nav::-webkit-scrollbar {
     display: none;
 }
 
-.nav {
+.ks-nav {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }

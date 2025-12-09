@@ -129,7 +129,7 @@
                   imgAlt: 'Automated Backup',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Kestra enables automated backup processes, ensuring that your data is regularly and securely backed up. This minimizes data loss and facilitates quick recovery in the event of a disaster.  ',
+                  description: 'Kestra enables automated backup processes, ensuring that your data is regularly and securely backed up. This minimizes data loss and facilitates quick recovery in the event of a disaster.',
                   content: `
                     <ul>
                         <li>
@@ -149,7 +149,7 @@
                   imgAlt: 'Leverage API Integrations',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Kestra integrates with various APIs, enabling you to automate and manage disaster recovery processes efficiently. Utilize API capabilities to trigger backups, initiate failover procedures, and streamline recovery workflows. ',
+                  description: 'Kestra integrates with various APIs, enabling you to automate and manage disaster recovery processes efficiently. Utilize API capabilities to trigger backups, initiate failover procedures, and streamline recovery workflows.',
                   content: `
                     <ul>
                         <li>
@@ -168,12 +168,12 @@
                 `
                 },
                 {
-                  title: 'Automated Failover  and Restoration',
+                  title: 'Automated Failover and Restoration',
                   img: '/landing/usecases/databases/quick-recovery.svg',
-                  imgAlt: 'Automated Failover  and Restoration',
+                  imgAlt: 'Automated Failover and Restoration',
                   imgWidth: '604px',
                   imgHeight: '477px',
-                  description: 'Kestra\'s automation capabilities enable you to set up workflows that automatically trigger failover and restoration processes, reducing downtime and ensuring business continuity. ',
+                  description: 'Kestra\'s automation capabilities enable you to set up workflows that automatically trigger failover and restoration processes, reducing downtime and ensuring business continuity.',
                   content: `
                     <ul>
                         <li>

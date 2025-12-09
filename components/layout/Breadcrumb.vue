@@ -40,7 +40,7 @@ export default {
     },
     computed: {
         breadcrumb() {
-            let breadcrumbs = [...new Set(this.slug.split("/")
+            let breadcrumbs = [...new Set(this.slug?.split("/")
                 .filter(r => r !== ""))].slice(0, -1);
             return (breadcrumbs && breadcrumbs.length > 0) ? breadcrumbs : ['docs']
         },
@@ -54,7 +54,6 @@ export default {
 .slug {
     white-space: pre-wrap;
     width: 100%;
-    max-width: 45.8rem;;
     font-size: $font-size-sm;
     font-family: $font-family-sans-serif;
     font-weight: 400;

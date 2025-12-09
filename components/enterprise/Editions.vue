@@ -555,9 +555,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import Section from '../layout/Section.vue';
+import { usePluginsCount } from "~/composables/usePluginsCount";
 
 const { totalPlugins } = usePluginsCount();
 const isOpen = ref(false);

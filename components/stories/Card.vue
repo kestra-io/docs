@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`">
+    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
         <div class="card" data-aos="fade-right">
             <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div>
@@ -27,6 +27,7 @@
 
 <script setup>
     import {slugify} from "@kestra-io/ui-libs";
+    import CommonTaskIcon from '../common/TaskIcon.vue'
 
     defineProps({
         story: {

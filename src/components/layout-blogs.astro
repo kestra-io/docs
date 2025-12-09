@@ -1,0 +1,63 @@
+---
+import Updateletter from "~/components/layout/Updateletter.vue";
+import Layout from "./layout.astro";
+
+interface Props {
+    activeStem: string,
+    title?: string,
+    description?: string
+}
+
+const props = Astro.props;
+
+const title = props.title ?? "Insights & News on Data Orchestration"
+const description = props.description ?? "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
+---
+
+<Layout title={title} description={description}>
+    <Fragment slot="head">
+        <slot name="head">
+            <meta name="title" content={title} />
+            <meta name="description" content={description} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
+            <meta property="twitter:title" content={title} />
+            <meta property="twitter:description" content={description} />
+        </slot>
+    </Fragment>
+    <div class="layout-docs-wrapper">
+        <main class="bd-content">
+            <div class="container-fluid">
+                <div class="container">
+                    <slot/>
+                </div>
+            </div>
+            <div class="bottom">
+                <Updateletter />
+            </div>
+        </main>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "../../assets/styles/variable";
+    .layout-docs-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 100%;
+    }
+    .bd-sidebar{
+        min-width: 250px;
+        white-space: normal;
+        .ai-button-wrapper, .search {
+            height: 32px;
+            width: 209px;
+        }
+    }
+</style>

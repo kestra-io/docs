@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { HomeCard } from '#components';
+import HomeCard from './Card.vue';
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 
 const valueSet = [

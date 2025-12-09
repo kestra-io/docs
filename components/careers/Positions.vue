@@ -1,36 +1,10 @@
 <template>
-    <div class="container" id="positions">
-        <LayoutSection
-            subtitle="It's a"
-            subtitle-after="Match"
-            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
-        >
-            <ul class="list-unstyled d-flex flex-column gap-3">
-                <li data-aos="fade-left" v-for="doc in pageData">
-                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
-                            <span>
-                                {{ doc.title }}
-                            </span>
-                            <span class="loc">
-
-                                (Remote / <template v-for="loc in doc.locations" :key="loc">
-                                    {{ loc.emoji }}
-                                </template>)
-                            </span>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/careers/arrow_right.svg" alt="arrow_right" />
-                        </div>
-                    </NuxtLink>
-                </li>
-            </ul>
-        </LayoutSection>
-    </div>
+    <PositionsRenderer :positions="pageData" />
 </template>
 
 <script setup>
+import PositionsRenderer from './PositionsRenderer.vue';
+
     const {data: pageData} = await useAsyncData(
         `Career-Positions`,
         () => $fetch(`/api/careers`),

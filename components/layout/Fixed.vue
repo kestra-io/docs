@@ -17,6 +17,12 @@ import Slack from '../community/Slack.vue'
 
 export default {
     components: {Slack, ChevronUp},
+    props:{
+        displaySlack: {
+            type: Boolean,
+            default: true
+        }
+    },
     data() {
         return {
             yScroll: 0
@@ -31,11 +37,6 @@ export default {
                 top: 0,
                 behavior: "smooth"
             });
-        }
-    },
-    computed: {
-        displaySlack() {
-            return this.$route.name !== "enterprise";
         }
     },
     created() {

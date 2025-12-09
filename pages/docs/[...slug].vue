@@ -19,7 +19,7 @@
                 </h1>
             </div>
 
-            <NavToc :page="page" class="right-menu"/>
+            <NavToc :links="page.body?.toc?.links" :editLink="page.editLink" :stem="page.stem" :extension="page.extension" class="right-menu"/>
 
             <div class="bd-content">
                 <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
@@ -50,7 +50,7 @@
     const config = useRuntimeConfig();
 
     const route = useRoute()
-    const slug = computed(() => `/docs/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    const slug = computed(() => `/docs/${Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug}`);
 
     const fetchNavigation = async () => {
         const {data: fetched, error} = await useAsyncData(

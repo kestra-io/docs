@@ -112,6 +112,7 @@
   import Information from 'vue-material-design-icons/Information.vue'
   import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
   import { tableHeadData, getTableSortedData } from "../../data/compare-features"
+import { usePluginsCount } from "~/composables/usePluginsCount";
 
   const { totalPlugins } = usePluginsCount();
 
