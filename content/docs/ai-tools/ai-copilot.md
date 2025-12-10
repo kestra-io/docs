@@ -126,7 +126,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 ## Enterprise Edition Copilot configurations
 
 Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
-Only non-thinking modes are supported. If the used LLM is a pure thinking model (has the thinking ability and doesn't support disabling it), the generated Flow will be wrong and contain thinking in it.
+Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
 
@@ -229,10 +229,10 @@ kestra:
 If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 ::
 
-::alert{type="info"}
-Some Ollama models naming can be confused. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to sha `ad815644918f` which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scene which is a thinking model that doesn't support disabling it.
-Please double-check that the chosen model has a non-thinking version or toggle available.
-::
+:::alert{type="info"}
+Some Ollama model names can be confusing. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to SHA `ad815644918f`, which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scenes. This is a thinking model that doesn't support disabling it.
+Please double-check that the chosen model has a non-thinking version or that a toggle is available.
+:::
 
 ### OpenAI
 
