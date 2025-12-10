@@ -7,8 +7,6 @@ authors:
   - name: "Benoit Pimpaud"
     image: bpimpaud
 image: /blogs/release-1-1.jpg
-plugins:
-  - plugin-ai
 ---
 
 

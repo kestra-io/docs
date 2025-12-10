@@ -320,8 +320,7 @@
         }
 
         if (rootGroupId) {
-            const found = allPluginMetadata.value?.find(m => m.group === rootGroupId);
-            return found ? [found] : [];
+            return allPluginMetadata.value?.filter(m => m.group && (m.group === rootGroupId || m.group.startsWith(rootGroupId + "."))) ?? [];
         }
 
         return [];
