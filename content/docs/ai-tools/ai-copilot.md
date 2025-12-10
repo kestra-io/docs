@@ -10,7 +10,7 @@ Build and modify flows directly from natural language prompts.
 The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
 
 <div class="video-container">
-  <iframe src="https://youtube.com/embed/nNEb5DZB-xo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Overview
