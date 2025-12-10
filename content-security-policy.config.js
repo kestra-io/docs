@@ -42,6 +42,7 @@ export default {
         'blob:',
         "https://*.google.fr",
         "https://*.google.com",
+        "https://*.linkedin.com",
         "https://*.ads.linkedin.com",
         "https://*.reddit.com",
         "https://*.hubspot.com",
