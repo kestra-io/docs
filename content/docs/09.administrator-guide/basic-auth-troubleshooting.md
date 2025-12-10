@@ -5,7 +5,7 @@ icon: /docs/icons/faq.svg
 
 Troubleshoot issues with Basic Authentication.
 
-## Troubleshooting Scenarios
+## Troubleshooting scenarios
 
 Starting with version 0.24, every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup Page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
 

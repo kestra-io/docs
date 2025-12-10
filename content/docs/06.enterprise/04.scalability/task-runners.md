@@ -13,7 +13,7 @@ Task Runner capabilities and supported plugins.
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Task Runner Types
+## Task runner types
 
 There are a number of task runner types. The [Docker](../../task-runners/04.types/02.docker-task-runner.md) and [Process](../../task-runners/04.types/01.process-task-runner.md) task runners are included in the Open Source edition. All other types require an [Enterprise Edition](./index.md) license or a [Kestra Cloud](/cloud) account.
 
@@ -24,7 +24,7 @@ Enterprise Edition Task Runners:
 - [Google Batch](../../task-runners/04.types/06.google-batch-task-runner.md)
 - [Google Cloud Run](../../task-runners/04.types/07.google-cloudrun-task-runner.md)
 
-## Task Runners vs Worker Groups
+## Task runners vs Worker Groups
 
 [Task Runners](../../task-runners/index.md) and [Worker Groups](worker-group.md) both **offload compute-intensive tasks to dedicated workers**. However, **worker groups have a broader scope**, applying to **all tasks** in Kestra, whereas **task runners** are limited to **scripting tasks** (Python, R, JavaScript, Shell, dbt, etc. — see the full list in the [Task Runner Overview](../../task-runners/01.overview.md#plugins-supporting-task-runners)). Worker groups can be used with any plugins.
 

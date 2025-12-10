@@ -18,7 +18,7 @@ kestra --api-token <your-api-token> --help
 
 ---
 
-## Global Options
+## Global options
 
 These options can be used with **any** Kestra CLI command.
 
@@ -35,7 +35,7 @@ kestra plugins list -vv
 kestra plugins install --log-level DEBUG
 ```
 
-## API Options
+## API options
 
 Available for commands that talk to the server API.
 
@@ -80,7 +80,7 @@ Commands:
 
 ---
 
-## Configuration Commands
+## Configuration commands
 
 ### `kestra configs properties`
 
@@ -92,7 +92,7 @@ kestra configs properties
 
 ---
 
-## Flow Commands
+## Flow commands
 
 ### `kestra flow validate`
 
@@ -182,7 +182,7 @@ kestra flow delete my-namespace my-flow-id
 
 ---
 
-## Migration Commands
+## Migration commands
 
 ### `kestra migrate default-tenant`
 
@@ -196,7 +196,7 @@ kestra migrate default-tenant --tenant-id my-tenant --tenant-name "My Tenant" --
 
 ---
 
-## Namespace Commands
+## Namespace commands
 
 ### `kestra namespace files update`
 
@@ -221,7 +221,7 @@ kestra namespace kv update my-ns my-key "my-value" -e 1d
 
 ---
 
-## Plugin Commands
+## Plugin commands
 
 ### `kestra plugins install`
 
@@ -272,7 +272,7 @@ kestra plugins search jdbc
 
 ---
 
-## Server Commands
+## Server commands
 
 ### `kestra server executor`
 
@@ -473,7 +473,7 @@ In production you might run a similar pattern either by:
 
 ---
 
-## System Commands
+## System commands
 
 ### `kestra sys reindex`
 

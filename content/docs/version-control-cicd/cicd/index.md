@@ -28,7 +28,7 @@ It removes manual steps, reduces human error, and accelerates delivery from deve
 
 ---
 
-## CI/CD for Kestra Flows
+## CI/CD for Kestra flows
 
 Kestra supports several approaches for automating flow validation and deployment. Choose the one that best fits your environment and tooling preferences.
 
@@ -77,7 +77,7 @@ To process all flows in a directory:
 
 Use `--no-delete` to preserve existing flows. Omit it if your Git repository or local directory should serve as the **single source of truth** — Kestra will then delete any previously stored flows not present in the directory.
 
-#### CLI Options
+#### CLI options
 
 The CLI provides options to tailor the validation and deployment process:
 
@@ -93,7 +93,7 @@ For a full list of available options, use:
 
 ---
 
-### Automate Deployments within Kestra
+### Automate deployments within Kestra
 
 You can run CLI commands directly from a Kestra flow to manage your CI/CD pipeline within Kestra itself.
 
@@ -135,7 +135,7 @@ triggers:
 
 You can trigger this CI/CD flow manually via the UI or API — or automatically using a Git webhook.
 
-#### Configuring a GitHub Webhook
+#### Configuring a GitHub webhook
 
 To trigger your Kestra CI/CD flow on each Git push:
 
@@ -153,14 +153,14 @@ https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook
 
 ---
 
-### Deploy Flows with GitHub Actions
+### Deploy flows with GitHub Actions
 
 Kestra provides [official GitHub Actions](./01.github-action.md) to validate and deploy flows.
 
 1. **Validate** flows and templates — [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)  
 2. **Deploy** flows and templates — [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action)
 
-#### Example GitHub Actions Workflow
+#### Example GitHub Actions workflow
 
 ```yaml
 name: Kestra CI/CD
@@ -215,14 +215,14 @@ with:
 
 ---
 
-### Deploy Flows with GitLab CI/CD
+### Deploy flows with GitLab CI/CD
 
 GitLab CI/CD uses a similar approach to GitHub Actions.  
 See the [GitLab guide](./02.gitlab.md) for examples and configuration details.
 
 ---
 
-### Deploy Flows with Terraform
+### Deploy flows with Terraform
 
 Terraform provides the most flexible, **Infrastructure-as-Code** approach to managing Kestra deployments.  
 It allows you to define, validate, and deploy flows alongside the rest of your cloud infrastructure.
@@ -263,6 +263,6 @@ terraform apply -auto-approve   # Deploy your flows automatically
 
 ---
 
-## Next Steps
+## Next steps
 
 Explore detailed documentation for each CI/CD option below to choose the best fit for your workflow and deployment process.

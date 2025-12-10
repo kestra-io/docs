@@ -4,7 +4,7 @@ icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-## Using Microsoft as an OIDC SSO Provider
+## Using Microsoft as an OIDC SSO provider
 
 To configure Microsoft authentication, follow these steps:
 
@@ -23,7 +23,7 @@ micronaut:
 
 To get your `client-id` and `client-secret`, refer to the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
 
-## Using Microsoft Entra ID as an OIDC SSO Provider
+## Using Microsoft Entra ID as an OIDC SSO provider
 
 ### Create an Enterprise Application
 
@@ -35,13 +35,13 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 - Set **Supported account types** (e.g., "Default Directory only - Single tenant").
 - Under **Redirect URI**, select *Web* and enter `https://{{ url }}/oauth/callback/microsoft`. Be sure to use `https` and the actual URL of your webserver.
 
-### Generate Client Secret
+### Generate client secret
 
 1. Go to **Certificates & secrets**.
 2. Under **Client secrets**, click on **New client secret**.
 3. Copy the generated secret and use it in the `{{ clientSecret }}` field in your [configuration](../../../configuration/index.md).
 
-### Kestra Configuration
+### Kestra configuration
 
 - Copy the **Application (client) ID** from the **Overview** section and use it as your `{{ clientId }}`.
 - In the **Endpoints** section, locate the **OpenID Connect metadata document** URL. Remove the `.well-known/openid-configuration` suffix, and use the remainining base URL as your `{{ issuerUrl }}`.

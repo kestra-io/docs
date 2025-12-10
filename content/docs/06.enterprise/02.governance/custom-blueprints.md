@@ -17,7 +17,7 @@ In addition to the publicly available [Community Blueprints](../../05.concepts/0
 
 You can think of Custom Blueprints as your team's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.
 
-### How to create a new Custom Blueprint
+### How to create a new custom blueprint
 
 From the left navigation menu, go to **Blueprints**. Then, select the **Custom Blueprints** tab. Click on **Create**.
 
@@ -27,7 +27,7 @@ Add a title, description, and the contents of the flow. You can add as many tags
 
 You can edit Blueprints at any time, for example, to add new tasks or expand the documentation.
 
-### Benefits of Custom Blueprints
+### Benefits of custom blueprints
 
 Custom Blueprints promote code reusability and facilitate collaboration within a team. Sharing team orchestration code and documentation is now built into Kestra.
 

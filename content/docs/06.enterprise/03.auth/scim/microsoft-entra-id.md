@@ -19,7 +19,7 @@ kestra:
       enabled: true
 ```
 
-## Kestra SCIM Setup: Create a New Provisioning Integration
+## Kestra SCIM setup: create a new provisioning integration
 
 1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
@@ -72,7 +72,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ---
 
-## Microsoft Entra ID SCIM Setup
+## Microsoft Entra ID SCIM setup
 
 ### 1. Register Kestra as an Enterprise Application:
    - Navigate to Microsoft Entra ID → Enterprise Applications.
@@ -100,7 +100,7 @@ Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ie
 - **Group Resource**:
   - Example attributes: `displayName`, `members`
 
-#### Retrieve Supported Schemas
+#### Retrieve supported schemas
 
 Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes automatically.
 
@@ -114,7 +114,7 @@ Replace `<tenant>` with your actual tenant, and `<integration_id>` with your act
 
 This endpoint returns a list of supported schemas and their attributes. Use it as a reference when configuring attribute mappings in Entra ID.
 
-#### Configure User and Group mapping
+#### Configure user and group mapping
 
 To configure mappings:
 
@@ -144,6 +144,6 @@ After mappings are configured:
 ### 4. Enable Provisioning:
    - Once everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
 
-## Additional Resources
+## Additional resources
 
 - [Microsoft Entra ID SCIM Documentation](https://docs.microsoft.com/en-us/azure/active-directory/app-provisioning/)

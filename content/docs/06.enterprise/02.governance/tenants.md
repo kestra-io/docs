@@ -36,7 +36,7 @@ For example, the URL of the API operation to list flows of the `products` namesp
 
 Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.
 
-## Key Benefits of Multi-Tenancy
+## Key benefits of multi-tenancy
 
 1. **Data Isolation**: each tenant's data, configuration, and code is isolated and inaccessible to other tenants.
 2. **Resource Isolation**: each tenant's resources are isolated from other tenants — including flows, triggers, executions, logs, audit logs, secrets, etc.
@@ -134,13 +134,13 @@ Deleting a tenant is irreversible. All resources under the tenant will be perman
 
 Key-value pairs and namespace files will not be deleted as they are persisted in internal storage.
 
-### Admin Role Assignment
+### Admin role assignment
 
 Regardless of which of the above methods you use to create a tenant, the User who creates the tenant automatically gets the Admin Role assigned. That role grants admin rights to that user on that tenant.
 
 Note that there is an exception to this rule if a tenant is created by a Superadmin. In that case, the Superadmin has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
 
-### Dedicated Storage and Secrets backend per Tenant
+### Dedicated storage and secrets backend per tenant
 
 By default, each tenant uses the same [internal storage](../../configuration/index.md#internal-storage) and [secrets backend](./secrets-manager.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
@@ -155,7 +155,7 @@ Note that this feature has been introduced in Kestra 0.20.0. If you are using an
 Also, make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
 :::
 
-### Isolate Kestra Services
+### Isolate Kestra services
 
 When using [Dedicated Storage or Secret backends](./tenants.md#dedicated-storage-and-secrets-backend-per-tenant), you can isolate specific [Kestra services](../../07.architecture/02.server-components.md) to prevent them from accessing the storage or secret backend. For example, you may not want the [Webserver](../../07.architecture/08.webserver.md) to be able to access the dedicated internal storage. This isolation is intended for Kestra instances where multiple teams or organizations share access, but storage or secret data access must be limited to specific segments.
 

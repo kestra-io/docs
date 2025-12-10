@@ -120,6 +120,6 @@ Following `multilingual_agent` is the `english_brevity` task, which only needs a
 
 These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
 
-### Plugin Defaults
+### Plugin defaults
 
 Each task using the AI Agent requires the `provider` property. To avoid repetition and simplify the flow building experience, first consider using [Kestra's AI Copilot](ai-copilot.md), next consider using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md) to ensure consistency and remove repetition. Additionally, for your provider API key, make sure to secure it either through the [Key-Value Store](../05.concepts/05.kv-store.md) or as a [Secret](../05.concepts/04.secret.md) if using [Kestra Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md).

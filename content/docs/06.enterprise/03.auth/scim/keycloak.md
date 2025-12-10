@@ -23,7 +23,7 @@ kestra:
 As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/0.23.0/tenant-migration-ee.md) to assist with upgrading.
 :::
 
-## Kestra SCIM Setup: Create a New Provisioning Integration
+## Kestra SCIM setup: create a new provisioning integration
 
 1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
@@ -76,7 +76,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ---
 
-## Keycloak SCIM Setup
+## Keycloak SCIM setup
 
 Keycloak [does not provide](https://github.com/keycloak/keycloak/issues/13484) any built-in support for SCIM v2.0. Some [open-source solutions](https://github.com/mitodl/keycloak-scim/) support groups synchronization but not users and membership synchronization.
 
@@ -128,6 +128,6 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
    - Now that everything is configured, you can toggle the `Enabled` field on in the Kestra Provisioning Integration to start syncing users and groups from Keycloak to Kestra.
 
 
-## Additional Resources
+## Additional resources
 
 - [SCIM for Keycloak Documentation](https://scim-for-keycloak.de/documentation/administration/scim-client)

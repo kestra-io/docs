@@ -16,7 +16,7 @@ How to create and manage Service Accounts.
 
 A Service Account represents an **application** that can access Kestra. It is not tied to a specific person and does not have personal information (such as the first name, last name, or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
 
-## Service Accounts vs. Users
+## Service accounts vs. users
 
 In contrast to regular users, Service Accounts don't have a password and they do not have access to the Kestra UI — they only have a programmatic API access to Kestra. You can think of Service Accounts as bots authenticating with Kestra using an API token.
 
@@ -48,11 +48,11 @@ You can create an **API token** for a regular user as well. While Service Accoun
 
 Therefore, the difference between a service account and a user is that a service account is designed for programmatic access and doesn't have a password or personal information attached to it. Instead, it is authenticated exclusively using an API token. A user, on the other hand, can interact with both the Kestra UI and the API, and can be authenticated using a password or an API token.
 
-## The Purpose of Service Accounts
+## The purpose of service accounts
 
 Service Accounts are intended for programmatic access to Kestra from any other application, such as CI/CD pipelines or your own custom APIs. For example, you can use the token **to authenticate with Kestra Terraform provider or Kestra's GitHub Actions CI/CD pipeline**.
 
-## Allocating Service Accounts to Groups
+## Allocating service accounts to groups
 
 Each Service Account can be attached to one or more Groups such as a group called “Bots” that centrally governs programmatic access for CI/CD across multiple projects with just one Role. This is useful to manage programmatic access used by Terraform, GitHub Actions, or other external applications, in one place by attaching a single Role to that Group.
 
@@ -72,7 +72,7 @@ Speaking of CI/CD, note that Kestra currently supports authenticating with eithe
 --server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
 ```
 
-## Service Account Name Convention
+## Service account name convention
 
 When creating a new Service Account, make sure to follow the DNS naming convention. Specifically, the `name` property needs to:
 - contain at most 63 characters
@@ -89,7 +89,7 @@ Some examples to make that clear:
 
 **Why do we follow such a restrictive convention?** We follow the standard DNS-style pattern to be ready for potential future use cases where we could, for example, forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
 
-## Impersonate Service Account (Admin)
+## Impersonate service account (admin)
 
 As an Admin of your Kestra environment, you can test the access of Service Accounts with the **Impersonate** feature.
 

@@ -34,11 +34,11 @@ You can check the box to **Create user directly (skip invitation)** if one is no
 
 ![invite2](/docs/enterprise/invitations/invite2.png)
 
-## Accepting Invitations
+## Accepting invitations
 
 When a user receives an invitation, they can click on the link in the email to accept it. The user will be redirected to the Kestra login page, where they set up their account (i.e., create a password), or log in using SSO if it's enabled.
 
-## Invite Expiration Time
+## Invite expiration time
 
 Users have 7 days to accept the invitation. After this period, the invitation will expire and must be reissued.
 

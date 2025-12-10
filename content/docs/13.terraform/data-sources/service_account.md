@@ -15,7 +15,7 @@ Use this data source to access information about an existing Kestra Service Acco
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_user_service_account" "example" {
@@ -38,7 +38,7 @@ data "kestra_user_service_account" "example" {
 - `super_admin` (Boolean) The service account description.
 
 <a id="nestedblock--groups"></a>
-### Nested Schema for `groups`
+### Nested schema for `groups`
 
 Read-Only:
 

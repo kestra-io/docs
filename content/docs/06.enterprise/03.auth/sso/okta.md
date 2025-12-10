@@ -26,7 +26,7 @@ Next, select **Create App Integration**, select **OIDC - OpenID Connect** as the
 
 ![okta-2](/docs/enterprise/sso/okta-2.png)
 
-## Step 2: Configure the Web App Integration
+## Step 2: Configure the web app integration
 
 In the General Settings, give your App integration a name and set your grant type. For this example, we are using Authorization Code. You can open **Advanced Settings** to configure more sensitive grants. Okta has several direct-auth API grants, such as OTP, OOB, MFA OTP, and MFA OOB that you can select only if necessary.
 

@@ -23,7 +23,7 @@ kestra:
 As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/0.23.0/tenant-migration-ee.md) to assist with upgrading.
 :::
 
-## Kestra SCIM Setup: Create a New Provisioning Integration
+## Kestra SCIM setup: create a new provisioning integration
 
 1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
@@ -46,7 +46,7 @@ https://<your_kestra_host>/api/v1/<your_tenantID>/integrations/integration_id/sc
 
 The Secret Token will be a long string (approximately 200 characters) used to authenticate requests from authentik to Kestra.
 
-### Enable or Disable SCIM Integration
+### Enable or disable SCIM integration
 
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
 
@@ -56,7 +56,7 @@ Note that you can disable or completely remove the SCIM Integration at any time.
 At first, you can disable the integration to configure your authentik SCIM integration, and then enable it once the configuration is complete.
 :::
 
-### IAM Role and Service Account
+### IAM role and service account
 
 When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
 
@@ -75,7 +75,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ---
 
-## authentik SCIM 2.0 Setup
+## authentik SCIM 2.0 setup
 
 Configuring SCIM 2.0 follows a process similar to SSO — you'll need to create a new `Application`. Then, in the second step, select `SCIM` as the Provider Type.
 
@@ -112,7 +112,7 @@ Then, to verify access, log in as one of those new authentik users in a separate
 
 ---
 
-## Additional Resources
+## Additional resources
 
 - [SCIM for authentik Documentation](https://docs.goauthentik.io/docs/providers/scim/)
 - [Manage applications in authentik Documentation](https://docs.goauthentik.io/docs/applications/manage_apps)
