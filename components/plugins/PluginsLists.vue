@@ -19,20 +19,22 @@
                 </div>
             </div>
 
-            <div class="row my-2" data-aos="fade-right">
-                <div
-                    class="col-lg-4 col-md-6 mb-3"
-                    v-for="plugin in pluginsSlice"
-                    :key="`plugin-${slugify(plugin.group ?? plugin.name)}${plugin.subGroup ? '-' + slugify(subGroupName(plugin)) : ''}`"
-                >
-                    <PluginCard 
-                        :plugin="plugin" 
-                        :blueprints-count="getBlueprintCountForPlugin(plugin)" 
-                        :icons="icons"
-                        :metadata-map="metadataMap"
-                    />
-                </div>
-                <div v-if="!pluginsSlice.length" class="alert alert-warning mb-0" role="alert">
+            <div class="row my-2" data-aos="fade-up">
+                <template v-if="pluginsSlice.length">
+                    <div
+                        class="col-lg-4 col-md-6 mb-3"
+                        v-for="plugin in pluginsSlice"
+                        :key="`plugin-${slugify(plugin.group ?? plugin.name)}${plugin.subGroup ? '-' + slugify(subGroupName(plugin)) : ''}`"
+                    >
+                        <PluginCard 
+                            :plugin="plugin" 
+                            :blueprints-count="getBlueprintCountForPlugin(plugin)" 
+                            :icons="icons"
+                            :metadata-map="metadataMap"
+                        />
+                    </div>
+                </template>
+                <div v-else-if="!pluginsSlice.length && props.plugins.length" class="alert alert-warning mb-0" role="alert">
                     No results found for the current search
                 </div>
             </div>
@@ -118,7 +120,7 @@
     };
 
     const sortPlugins = (plugins: Plugin[], ascending: boolean) => {
-        return plugins.sort((a, b) => {
+        return [...plugins].sort((a, b) => {
             if (a.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return -1;
             if (b.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return 1;
             const nameA = a.title.toLowerCase();
@@ -127,30 +129,33 @@
         });
     };
 
+    const activePlugins = computed(() => filterPluginsWithoutDeprecated(props.plugins));
+
+    const searchFilteredPlugins = computed(() => 
+        setSearchPlugins(searchQuery.value, activePlugins.value)
+    );
+
+    const categoryFilteredPlugins = computed(() => {
+        if (activeCategory.value === 'All Categories') {
+            return searchFilteredPlugins.value;
+        }
+        return searchFilteredPlugins.value.filter(item => 
+            item.categories?.includes(activeCategory.value)
+        );
+    });
+
     const totalGroups = computed(() => filteredPluginsData.value.length);
 
     const filteredPluginsData = computed(() => {
-        const filteredPlugins = filterPluginsWithoutDeprecated(props.plugins);
-
-        let searchResults = setSearchPlugins(searchQuery.value, filteredPlugins)
-        if (activeCategory.value !== 'All Categories') {
+        if (activeCategory.value !== 'All Categories' && currentPage.value !== 1) {
             currentPage.value = 1;
-            searchResults = searchResults.filter((item) => {
-                if (item.categories?.includes(activeCategory.value)) {
-                    return item;
-                }
-            })
         }
+        
         /**
          * Sorts the search results with "kestra core plugins" appearing first, 
          * followed by the rest sorted alphabetically (A-Z) or reverse alphabetically (Z-A) as selected.
          */
-        if (sortBy.value === 'A-Z') {
-            searchResults = sortPlugins(searchResults, true);
-        } else {
-            searchResults = sortPlugins(searchResults, false);
-        }
-        return searchResults;
+        return sortPlugins(categoryFilteredPlugins.value, sortBy.value === 'A-Z');
     });
 
     const pluginsSlice = computed(() => {
@@ -171,7 +176,7 @@
         if (currentPage.value > newTotal) currentPage.value = newTotal;
     });
 
-    const { countsByPlugin: pluginBlueprintCounts, countsBySubgroup } = await useBlueprintsCounts();
+    const { countsByPlugin: pluginBlueprintCounts, countsBySubgroup } = useBlueprintsCounts();
 
 const getBlueprintCountForPlugin = (plugin: Plugin) =>
     plugin.subGroup !== undefined
