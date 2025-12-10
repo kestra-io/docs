@@ -12,7 +12,7 @@ To isolate orchestration performance, we use workflows with fast tasks, such as:
 - `io.kestra.plugin.core.log.Log` — logs a single message.
 - `io.kestra.plugin.core.output.OutputValues` — produces a single output (simulating a data-oriented workflow).
 
-## Test Environment
+## Test environment
 
 Benchmarks were run on a Google Cloud **e2-standard-4** VM (4 vCPUs, 16 GB RAM) with two setups:
 
@@ -25,7 +25,7 @@ Benchmark results are for Kestra 1.0.1.
 
 ---
 
-## Benchmark 1 -- Simple flow
+## Benchmark 1 -- simple flow
 
 **Description**
 Triggered by a Webhook. Contains two tasks:
@@ -91,7 +91,7 @@ tasks:
 - Kestra EE (Kafka backend) sustains up to 4000 executions/min (8000 tasks/min).
 - Kestra EE has a slightly higher latency due to low throughput, but supports way higher throughput than Kestra OSS.
 
-## Benchmark 2 -- Complex flow
+## Benchmark 2 -- complex flow
 
 **Description**
 Triggered by a Webhook. Contains 5 `If` tasks with 2 subtasks each (only one executes per run).
@@ -202,7 +202,7 @@ tasks:
 - Kestra EE (Kafka backend) sustains up to 700 executions/min (7000 tasks/min).
 - The Kestra Executor processing capability is independent of the type of tasks to process; the number of tasks per minute sustained in this benchmark is the same as in the first benchmark.
 
-## Benchmark 3 -- Large `ForEach` loop
+## Benchmark 3 -- large `ForEach` loop
 
 **Description**
 Executes 100 iterations of a ForEach loop with unbounded concurrency.
@@ -229,7 +229,7 @@ That is about 25 tasks/s, as the `ForEach` task is executed on each iteration, s
 
 This is lower than the throughput in the previous benchmarks because a single flow with many task runs creates a large execution context, which is costly to orchestrate.
 
-## Benchmark 4 -- Realtime Trigger with JSON Transformation
+## Benchmark 4 -- realtime trigger with JSON transformation
 
 **Description**
 Consumes messages from a Kafka topic in real time, transforms them with JSONata `TransformValue` task, and outputs new data in the `OutputValues` task. This triples the size of the data in the execution context.

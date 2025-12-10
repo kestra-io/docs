@@ -12,7 +12,7 @@ Single Sign-On (SSO) is an authentication process that allows users to access mu
   <iframe src="https://www.youtube.com/embed/avb90NfNdTc?si=G-pzFMy8zxzsgynm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Configuring Single Sign-On with OpenID Connect (OIDC)
+## Configuring single sign-on with OpenID Connect (OIDC)
 
 To implement OIDC SSO, you'll need to configure the Micronaut framework that Kestra uses under the hood. Start by enabling OIDC in your `yaml` configuration file as follows:
 

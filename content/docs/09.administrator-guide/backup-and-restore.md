@@ -99,7 +99,7 @@ docker cp ./backup123.kestra your_container:/app/storage/backups/full/
 docker exec your_container bash -c "./kestra backups restore kestra:///backups/full/backup123.kestra"
 ```
 
-## Full Backup & Restore with Backend Tools
+## Full backup and restore with backend tools
 
 ### Backup & Restore with the JDBC Backend
 

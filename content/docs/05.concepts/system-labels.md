@@ -15,7 +15,7 @@ System Labels and Hidden Labels are reserved for storing metadata used by admini
 
 ---
 
-## Hidden Labels
+## Hidden labels
 
 Hidden Labels are labels excluded from the UI by default. You can configure which prefixes should be hidden via the `kestra.hidden-labels.prefixes` configuration. For example, to hide labels starting with `admin.`, `internal.`, and `system.`, you can use the following configuration in your `application.yaml`:
 
@@ -32,7 +32,7 @@ By default, System Labels (prefixed with `system.`) are hidden. To display them,
 
 ---
 
-## System Labels
+## System labels
 
 System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels.
 

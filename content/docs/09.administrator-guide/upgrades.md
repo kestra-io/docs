@@ -138,7 +138,7 @@ You can get notified about new releases in the following ways:
 ![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
 
 
-## Database Migrations
+## Database migrations
 
 There are two types of database migrations: automatic and manual.
 

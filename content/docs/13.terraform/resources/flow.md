@@ -10,7 +10,7 @@ description: |-
 
 Manages a Kestra Flow.
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_flow" "example" {

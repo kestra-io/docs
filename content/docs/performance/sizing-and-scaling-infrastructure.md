@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 Kestra is designed to scale from lightweight workflows to enterprise-scale orchestration with thousands of task runs per minute. Choosing the right infrastructure depends on your workload patterns, execution volume, and latency requirements. This page provides practical guidance on how to size your Kestra deployment, how many Executors and Workers you need, and how to scale and tune performance over time.
 
 
-## Core Concepts
+## Core concepts
 
 Before diving into numbers, it helps to understand how Kestra executes work:
 1. **Executors** orchestrate workflows: they orchestrate workflow logic via flowable tasks, delegate tasks to the right worker nodes, and manage execution state and concurrency.
@@ -18,11 +18,11 @@ Performance depends on balancing **throughput** (task runs per minute) and **lat
 
 ---
 
-## Baseline Infrastructure Recommendations
+## Baseline infrastructure recommendations
 
 Start with the CPU and memory allocation listed below based on your expected number of task runs per minute. As your workload grows, you can later scale vertically (add more CPU/RAM per node) or horizontally (add more nodes).
 
-### Up to 1,000 Task Runs/Minute
+### Up to 1,000 task runs/minute
 
 The table below provides a baseline for a typical Kestra deployment handling up to 1,000 task runs per minute.
 
@@ -33,7 +33,7 @@ The table below provides a baseline for a typical Kestra deployment handling up 
 | Scheduler  | 1   | 2 GB | Add +1 CPU / +1 GB per additional 1,000 triggers. |
 | Worker     | 2   | 4 GB | Heavily workload-dependent. Use [Worker Calculator](#worker-sizing-methodology). |
 
-### More than 1,000 Task Runs/Minute
+### More than 1,000 task runs/minute
 
 For workloads exceeding 1,000 task runs per minute, increase Executor and Worker resources as follows:
 
@@ -55,7 +55,7 @@ For workloads exceeding 1,000 task runs per minute, increase Executor and Worker
 
 ---
 
-## How Many Executors and Workers Do I Need?
+## How many executors and workers do I need?
 
 ### Workers
 
@@ -77,7 +77,7 @@ Executors scale with [orchestration load](https://kestra.io/docs/performance/ben
 - Execution latency exceeds a few seconds under normal load.
 - You consistently exceed 1,000 task runs/min per 2 vCPUs allocated.
 
-#### Kestra Executor Throughput Factors
+#### Kestra executor throughput factors
 
 Below are key factors affecting Executor throughput, with examples from our [Benchmarks](https://kestra.io/docs/performance/benchmark):
 
@@ -90,7 +90,7 @@ Below are key factors affecting Executor throughput, with examples from our [Ben
 | **Concurrency & scheduling**      | Unbounded concurrency leads to orchestration bottlenecks; limiting concurrency helps control overhead.                                                                                                           | Benchmark 3: unbounded `ForEach` (100 concurrent iterations) slows orchestration to ~20 task runs/s.                                                     |
 | **Backend type**                  | Kafka backend (EE) sustains higher execution rates before latency increases; Postgres (EE & OSS) saturates earlier. However, the differences aren't dramatic — we recommend JDBC Postgres as a baseline backend. | Benchmark 1: OSS sustains ~1500 exec/min (<1s latency), EE sustains ~2000 exec/min (<0.5s latency).                                                      |
 
-#### Improving Executor Throughput
+#### Improving executor throughput
 
 To improve executor throughput:
 - Keep **tasks per execution low** where possible, e.g. a flow with 5 tasks delivers higher throughput than a flow with 10 tasks. Use subflows to break up complex flows.
@@ -100,23 +100,23 @@ To improve executor throughput:
 
 ---
 
-## Backend Considerations
+## Backend considerations
 
 - **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tunin](../performance/performance-tuning.md)g involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
 - **Kafka backend (Enterprise)**: required for higher throughput, real-time triggers, and scaling beyond ~2,000 task runs/min. Ensure enough partitions are allocated (≥ number of Executors/Workers) for full parallelism.
 
 ---
 
-## Scaling and Performance Tuning
+## Scaling and performance tuning
 
-### When to Scale
+### When to scale
 
 - **Executors**: scale when orchestration latency grows with load.
 - **Workers**: scale when task runs start lagging or queue for too long.
 - **Webservers**: scale with API/UI traffic, especially if handling large file inputs and trigger payloads.
 - **Schedulers**: scale with number of triggers and their frequency.
 
-### Tuning Options
+### Tuning options
 
 - **JDBC backend**: adjust `minPollInterval`, `maxPollInterval`, and `pollSize` to trade off latency vs. DB load.
 - **Executor threads**: increase beyond default (0.5 × CPU cores) to raise concurrency.
@@ -127,7 +127,7 @@ More details in our [Performance Tuning guide](../performance/performance-tuning
 
 ---
 
-## Worker Sizing Methodology
+## Worker sizing methodology
 
 Use this formula (applied in the [Worker Calculator](https://v0-worker-calculator.vercel.app/)):
 - `Total Threads Needed = Realtime Triggers + Polling Triggers + Task Execution`
@@ -144,7 +144,7 @@ Where:
 
 ---
 
-## Best Practices for Long-Term Performance
+## Best practices for long-term performance
 
 - **Benchmark early**: Test flows with representative workloads using our [Benchmarks](https://kestra.io/docs/performance/benchmark). Refer to the README in the [Benchmarks repo](https://github.com/kestra-io/benchmarks) for setup instructions.
 - **Monitor resource usage**: Track CPU, memory, and thread utilization. Scale before bottlenecks appear.
@@ -163,7 +163,7 @@ Where:
 
 ---
 
-## 📌 Quick Reference Checklist
+## Quick reference checklist
 
 - Start with baseline sizing based on task runs/minute. Use **1,000 task runs/min** as a key threshold.
 - Use [Worker Calculator](https://v0-worker-calculator.vercel.app/) for estimation of the required number of Workers.

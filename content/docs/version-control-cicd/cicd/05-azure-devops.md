@@ -5,7 +5,7 @@ icon: /docs/icons/dev.svg
 
 How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
-## Setup an Azure DevOps pipeline
+## Set up an Azure DevOps pipeline
 
 Azure DevOps allows you to automate the validation and deployment of your Kestra flows using YAML-based pipelines. Follow the steps below to configure a simple Terraform-based CI/CD setup.
 
@@ -18,23 +18,23 @@ labels:
 ```
 :::
 
-### 1. Connect to your repository
+### Connect to your repository
 
 First, connect your pipeline to a code repository such as **GitHub**, **Azure Repos Git**, or **Bitbucket**.
 
 ![az-devops-image-repo](/docs/developer-guide/ci-cd/az-devops-image-repo.png)
 
-### 2. Select your repository
+### Select your repository
 
 Choose the repository where your Kestra flows are stored.
 
-### 3. Configure your pipeline
+### Configure your pipeline
 
 Start with a minimal pipeline template or an existing configuration.
 
 ![az-devops-image-config](/docs/developer-guide/ci-cd/az-devops-image-config.png)
 
-### 4. Example pipeline
+### Example pipeline
 
 Below is a complete example of a Terraform pipeline that validates and deploys Kestra resources.
 

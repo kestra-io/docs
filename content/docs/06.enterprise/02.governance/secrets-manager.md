@@ -41,7 +41,7 @@ Additionally, you can configure the following properties:
 - **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value. This allows sharing a single secrets backend across multiple Kestra instances.
 - **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace the default AWS endpoint with an AWS-compatible service such as [MinIO](https://min.io/).
 
-## Azure Key Vault Configuration
+## Azure Key Vault configuration
 
 To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure Kestra's user or service principal (`clientId`) has the necessary permissions, including:
 - `"Get"`
@@ -74,7 +74,7 @@ Additionally, you can configure the following properties:
 - **Key Vault URI**: `kestra.secret.azure-key-vault.key-vault-uri` is an optional property allowing you to replace the Azure Key Vault name with a full URL.
 - **Prefix**: `kestra.secret.azure-key-vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value, which is useful when sharing one vault across multiple Kestra instances.
 
-## Elasticsearch Configuration
+## Elasticsearch configuration
 
 Elasticsearch backend stores secrets with an additional layer of security using [AES encryption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). You need to provide a cryptographic key (at least 32 characters-long string) in order to encrypt and decrypt secrets stored in Elasticsearch.
 
@@ -90,7 +90,7 @@ For Kestra instance deployed using the Kafka/Elastic backend, you can use the sa
 
 Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
 
-## Google Secret Manager Configuration
+## Google Secret Manager configuration
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you need to create a **service account** with the [`roles/secretmanager.admin`](https://cloud.google.com/secret-manager/docs/access-control) permission.  For configuring the secret manager in _READ_ONLY_ mode, only `roles/secretmanager.secretAccessor` permission is sufficient. 
 
@@ -122,7 +122,7 @@ When configuring the secret manager using the UI, either under Namespace or Tena
 
 ![GCP Secret Manager Configuration via UI](/docs/enterprise/gcp-secret-configuration.png)
 
-## Vault Configuration
+## Vault configuration
 
 Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative Vault secrets engines, please note the following:
 - The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
@@ -215,7 +215,7 @@ kestra:
 * **username**: Username used to authenticate to CyberArk.
 * **password**: Password used to authenticate to CyberArk.
 
-## Doppler Configuration
+## Doppler configuration
 
 Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. Doppler securely stores your secrets and exposes them through its API, which Kestra workers access at runtime. Secrets are only kept in memory by Kestra and are never persisted internally.
 
@@ -274,7 +274,7 @@ kestra:
 
 Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../configuration/index.md#encryption).
 
-## Default Tags
+## Default tags
 
 For each secret manager, you can configure the default tags that will be added to all newly created or updated secrets.
 
@@ -291,7 +291,7 @@ kestra:
 
 Tags can be used as filters on your secrets in read-only mode. Refer to the [Read-only Secret Manager documentation](read-only-secrets.md#filter-secrets-by-tags) for more details.
 
-## Enable Caching
+## Enable caching
 
 If you use a secret manager provided by a cloud service provider, it may be worth enabling the secret cache to reduce
 the number of calls to the secret manager API.

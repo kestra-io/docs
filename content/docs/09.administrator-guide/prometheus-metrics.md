@@ -99,7 +99,7 @@ For each internal queue:
 * `kestra_queue_receive_duration_seconds` (summary): Queue duration to receive and consume a batch of messages.
 * `kestra_queue_receive_duration_seconds_max` (gauge): Maximum observed queue duration to receive and consume a batch of messages.
 
-## Cache Metrics
+## Cache metrics
 
 Micronaut web server caching overview:
 
@@ -139,7 +139,7 @@ Inbound HTTP requests to Micronaut web server endpoints:
 
 ## JVM
 
-## Java Executor Pool Metrics
+## Java executor pool metrics
 
 Various asynchronous task executors:
 
@@ -201,13 +201,13 @@ Java threading model:
 * `jvm_threads_started_threads_total` (counter): The total number of application threads started in the JVM.
 * `jvm_threads_states_threads` (gauge): The current number of threads.
 
-## Logback Metrics
+## Logback metrics
 
 Logger emitted events by log level:
 
 * `logback_events_total` (counter): Log events enabled by the effective log level.
 
-## Runtime Metrics
+## Runtime metrics
 
 ### Process Metrics
 

@@ -13,7 +13,7 @@ Tests let you verify that your flow behaves as expected, without cluttering your
   <iframe src="https://youtube.com/embed/jMZ9Cs3xxpo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Flow Unit Tests
+## Flow unit tests
 
 Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. Use **fixtures** to mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
 
@@ -143,7 +143,7 @@ Execution details are not stored in the Executions page like normally run flows 
 
 ![Test Execution Details](/docs/enterprise/unit-tests/test-execution.png)
 
-## Unit Test with Namespace File
+## Unit test with namespace file
 
 You can also simulate flows with namespace files that are scripts, test data, or any other sort of file content. Taking the previous example, we can include a namespace file that includes sample data from the production API endpoint, so that we do not need to make any API calls simply to test the flow. This prevents accumulating cost for requests or any sort of limit on calls a service might have.
 
@@ -242,7 +242,7 @@ testCases:
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
 
-## Inline File Fixture
+## Inline file fixture
 
 If you prefer not to use a namespace file for the file fixture in the test, you can also write the file contents inline with the `files` property to achieve the same result:
 
@@ -304,7 +304,7 @@ testCases:
             uri: "{{files['products.json']}}"
 ```
 
-## Available Assertions Operators
+## Available assertions operators
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:
 

@@ -9,7 +9,7 @@ How to configure Kestra Enterprise Edition and Kestra Cloud.
 
 [Kestra Cloud](/cloud) is a fully managed version of Kestra EE, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring.
 
-## Key Differences Between Kestra Enterprise and Kestra Cloud
+## Key differences between Kestra Enterprise and Kestra Cloud
 
 While Kestra Cloud provides a fully managed, hassle-free experience, it differs from Kestra Enterprise (EE) in several important ways, primarily around infrastructure control, customization, and direct access to backend components.
 

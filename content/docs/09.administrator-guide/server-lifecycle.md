@@ -30,7 +30,7 @@ If a server does not send a heartbeat within `kestra.server.liveness.timeout`, i
 
 For configuration details, see the [server configuration](../configuration/index.md#server-liveness--heartbeats).
 
-## Worker Job resubmission
+## Worker job resubmission
 
 The Worker has a special behavior that allows it to resubmit jobs that were not completed due to a server termination or any kind of failures.
 
