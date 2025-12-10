@@ -15,7 +15,7 @@ Use this data source to access information about an existing Kestra binding
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_binding" "example" {

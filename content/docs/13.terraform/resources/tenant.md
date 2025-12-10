@@ -15,7 +15,7 @@ Manages a Kestra Tenant.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_tenant" "example" {
@@ -50,7 +50,7 @@ resource "kestra_tenant" "example" {
 - `id` (String) The ID of this resource.
 
 <a id="nestedblock--secret_isolation"></a>
-### Nested Schema for `secret_isolation`
+### Nested schema for `secret_isolation`
 
 Optional:
 
@@ -59,7 +59,7 @@ Optional:
 
 
 <a id="nestedblock--storage_isolation"></a>
-### Nested Schema for `storage_isolation`
+### Nested schema for `storage_isolation`
 
 Optional:
 
@@ -68,7 +68,7 @@ Optional:
 
 
 <a id="nestedblock--worker_group"></a>
-### Nested Schema for `worker_group`
+### Nested schema for `worker_group`
 
 Required:
 

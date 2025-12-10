@@ -43,7 +43,7 @@ The following properties are common to all triggers:
 
 ---
 
-## Trigger Variables
+## Trigger variables
 
 Triggers expose metadata through expressions. For example:
 
@@ -302,7 +302,7 @@ triggers:
       user: John Smith
 ```
 
-## Trigger Errors
+## Trigger errors
 
 By default, if a trigger fails, no execution is created; this is by design to avoid excessive executions on the instance. To troubleshoot, you must [investigate the trigger logs](#troubleshooting-a-trigger-from-the-ui). If you'd prefer an execution to be created on trigger failure, set the `failOnTriggerError` property to `true` in the trigger configuration. This will cause the flow to fail and produce an execution with its own logs.
 

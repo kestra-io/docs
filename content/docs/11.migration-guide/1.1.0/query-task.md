@@ -5,7 +5,7 @@ release: 1.1.0
 editions: ["OSS", "EE"]
 ---
 
-## Breaking Change
+## Breaking change
 
 The `Query` task in **plugin-jdbc** now supports only a **single SQL statement** per execution. Any workflows that include multiple SQL statements separated by semicolons (`;`) within a single `Query` task will now **fail**.
 

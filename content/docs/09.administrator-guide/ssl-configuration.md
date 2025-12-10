@@ -216,7 +216,7 @@ Below is an example configuration file with the newly added environment variable
             - "8443:8443"
 ```
 
-## Enabling CSRF Protection
+## Enabling CSRF protection
 
 Cross-site request forgery (CSRF) is an attack where a malicious website or email tricks a user's browser into performing unwanted actions on a trusted site while authenticated.
 
@@ -236,7 +236,7 @@ This setting enables CSRF protection on all endpoints that reach `/api/.*`.
 
 For Kubernetes deployments, you can enable HTTPS either by configuring TLS at the Ingress level or by using self-signed certificates at the application level.
 
-### Using Ingress with TLS Termination (Recommended for Production)
+### Using ingress with TLS termination (recommended for production)
 
 Most cloud providers expect TLS termination at the ingress controller. Here's how to configure HTTPS using Let's Encrypt certificates:
 
@@ -290,7 +290,7 @@ Most cloud providers expect TLS termination at the ingress controller. Here's ho
                      number: 80
    ```
 
-### Using Self-Signed Certificates (For Testing)
+### Using self-signed certificates (for testing)
 
 1. **Generate certificates** using the OpenSSL commands from the previous section.
 
@@ -310,7 +310,7 @@ Most cloud providers expect TLS termination at the ingress controller. Here's ho
          secretName: kestra-tls
    ```
 
-### Application-Level SSL Configuration
+### Application-level SSL configuration
 
 For environments where ingress TLS termination isn't available:
 
@@ -356,7 +356,7 @@ For environments where ingress TLS termination isn't available:
 Production deployments on cloud platforms such as Azure AKS typically require valid certificates from trusted CAs for SSO integration. Self-signed certificates may work for testing but aren't suitable for production use.
 :::
 
-### Verifying the Configuration
+### Verifying the configuration
 
 Check certificate validity with:
 

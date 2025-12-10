@@ -23,7 +23,7 @@ kestra:
 As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/0.23.0/tenant-migration-ee.md) to assist with upgrading.
 :::
 
-## Kestra SCIM Setup: Create a New Provisioning Integration
+## Kestra SCIM setup: create a new provisioning integration
 
 1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
@@ -76,7 +76,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ---
 
-## Okta SCIM Setup
+## Okta SCIM setup
 
 1. **Create an App Integration**:
    - Navigate to Okta Admin Console → Applications → Applications.
@@ -126,6 +126,6 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 5. **Enable Provisioning**:
    - Enable the provisioning integration toggle in the Kestra UI to begin automatic synchronization of users and groups from Okta to Kestra.
 
-## Additional Resources
+## Additional resources
 
 - [Okta SCIM Documentation](https://developer.okta.com/docs/reference/scim/)

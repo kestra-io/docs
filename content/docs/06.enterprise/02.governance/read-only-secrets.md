@@ -193,7 +193,7 @@ After saving the flow and executing, we can see that Kestra successfully accesse
 
 ![read-only-secrets-7](/docs/enterprise/read-only-secrets-7.png)
 
-## Filter Secrets by Tags
+## Filter secrets by tags
 
 When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching [tags](./secrets-manager.md#default-tags). This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
 
@@ -234,7 +234,7 @@ kestra:
           application: kestra-production
 ```
 
-## Filter Secrets by Prefix
+## Filter secrets by prefix
 
 For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filter-on-prefix.prefix` to select secrets whose names start with the given prefix and `filter-on-prefix.keep-prefix` to control whether the prefix is kept in the Kestra secret key.
 

@@ -82,7 +82,7 @@ An Action is a specific operation that can be performed on a Permission. Support
 - `UPDATE`
 - `DELETE`
 
-### Currently Supported Roles
+### Currently supported roles
 
 Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
 
@@ -90,7 +90,7 @@ Apart from that, you can create additional Roles with custom permission combinat
 
 ![role-creation](/docs/enterprise/role-creation.png)
 
-## Super Admin and Admin
+## Super Admin and admin
 
 Kestra provides two roles for managing your instance: super admin and admin.
 
@@ -116,7 +116,7 @@ Without any Role or Binding, Super Admin has access to manage tenants, users, ro
 
 :::collapse{title="More information"}
 
-#### Use Cases
+#### Use cases
 
 Super Admin is a powerful type of user. Use the role sparingly and only for use cases that require it, such as creating
 a new tenant, troubleshooting tenant issues, or helping a user with a problem.

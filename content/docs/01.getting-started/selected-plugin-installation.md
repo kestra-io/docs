@@ -14,14 +14,14 @@ Pick and choose Kestra plugins to create lightweight builds and achieve a faster
 
 See also: [Versioned Plugins in Kestra Enterprise](../06.enterprise/05.instance/versioned-plugins.md).
 
-## Plugin Basics in Kestra OSS
+## Plugin basics in Kestra OSS
 
 Kestra plugins are distributed as individual JAR files and loaded at runtime. Plugins are not embedded by default in `-no-plugins` Docker images. You can:
 
 - Download specific [plugin JARs](https://repo.maven.apache.org/maven2/io/kestra/plugin/) manually or via `kestra plugins install`.
 - Mount them into `/app/plugins/` in your [Docker Compose](../02.installation/03.docker-compose.md) setup.
 
-## Install Plugins via `kestra plugins install`
+## Install plugins via `kestra plugins install`
 
 You can install any plugin using:
 
@@ -33,7 +33,7 @@ This will download the [plugin JAR from Maven Central](https://repo.maven.apache
 
 You can run this inside a container (interactively or as part of Dockerfile) to build custom plugin bundles.
 
-## Automate Plugin Selection with Docker Compose
+## Automate plugin selection with Docker Compose
 
 If you're using the `kestra/kestra:*-no-plugins` image and want to add only selected plugins:
 
@@ -82,7 +82,7 @@ alias dl="rm -rf ./jar-plugins/* && docker run -d kestra/kestra:develop server l
 | xargs -I {} sh -c 'docker cp {}:/app/plugins ./jar-plugins && docker rm -f {}'"
 ```
 
-## 4. Plugin Versioning in Enterprise
+## Plugin versioning in Enterprise
 
 In Kestra OSS, plugins must be installed at the latest compatible version. In Kestra Enterprise, you can:
 
@@ -93,7 +93,7 @@ In Kestra OSS, plugins must be installed at the latest compatible version. In Ke
 Learn more about versioned plugins in Enterprise:
 [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md)
 
-## Best Practices
+## Best practices
 
 | Use Case                   | Recommendation                                       |
 | -------------------------- | ---------------------------------------------------- |

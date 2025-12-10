@@ -18,7 +18,7 @@ The **Instance** feature in Kestra Enterprise Edition provides centralized contr
 
 It allows administrators to monitor service health, manage configurations, and communicate announcements (like planned maintenance downtime) to users. Below is a breakdown of its key functionalities.
 
-## Instance Overview
+## Instance overview
 
 The **Overview** tab gives a high-level snapshot of your instance’s operational status. Here, you can:
 - View **active services** (e.g., Scheduler, Executor, Worker).
@@ -27,7 +27,7 @@ The **Overview** tab gives a high-level snapshot of your instance’s operationa
 
 ![Instance Overview Table](/docs/enterprise/instance-table.png)
 
-## Monitoring Services
+## Monitoring services
 
 Kestra tracks the health of critical components, including:
 - **Workers**: Execute tasks.
@@ -43,7 +43,7 @@ Each service displays:
 - **Start Date**
 - **Health Check Date**
 
-### Server Information & Liveness
+### Server information and liveness
 
 Each service instance provides technical details for debugging when clicked on:
 
@@ -74,7 +74,7 @@ Notify users about planned maintenance or updates:
 
 [Announcements](./announcements.md) appear in the UI during the selected period, ensuring users stay informed.
 
-## Maintenance Mode
+## Maintenance mode
 
 :::badge{version=">=0.21" editions="EE"}
 :::
@@ -93,13 +93,13 @@ Create [worker groups](../04.scalability/worker-group.md) to isolate workloads o
 - **Add Worker Groups**: Define groups with specific resource limits or labels.
 - **Assign Tasks**: Route workflows to designated groups via worker group key within a task or trigger.
 
-## Audit Logs
+## Audit logs
 
 View [Audit Logs](../02.governance/06.audit-logs.md) at a glance to monitor actions on all resource types taken by users in the instance.
 
 ![Instance Audit Logs](/docs/enterprise/instance-audit-logs.png)
 
-## Versioned Plugins
+## Versioned plugins
 
 View all installed [versioned plugins](../05.instance/versioned-plugins.md) on the instance and upgrade, install, or uninstall as needed.
 
