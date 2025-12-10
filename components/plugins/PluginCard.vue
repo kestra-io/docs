@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href">
+    <NuxtLink :href="href" @mouseenter="prefetch">
         <div class="plugin">
             <div class="top-row">
                 <div class="icon-content">
@@ -76,6 +76,39 @@
     const description = computed(() => metadata.value?.description ?? props.plugin.description);
 
     const {total: elementTotal} = usePluginElementCounts(props.plugin);
+    const {public:{CollectionNames}} = useRuntimeConfig();
+
+    const prefetch = () => {
+        const nuxtApp = useNuxtApp();
+        const url = `/api/plugins?page=${props.plugin.name}&type=plugin`;
+
+        if (!nuxtApp.payload.data[props.plugin.name]) {
+            useFetch(url, { key: props.plugin.name });
+        }
+
+        if (!nuxtApp.payload.data[`Sidebar-${props.plugin.name}`]) {
+            useFetch(url, { key: `Sidebar-${props.plugin.name}` });
+        }
+
+        let repo = props.plugin.name;
+        if (props.plugin.name.startsWith("plugin-jdbc-") || props.plugin.name === "plugin-jdbc") {
+            repo = "plugin-jdbc";
+        }
+        if (!nuxtApp.payload.data[`GitHubVersions-${repo}`]) {
+            useFetch(`/api/github-releases?repo=${repo}`, { key: `GitHubVersions-${repo}` });
+        }
+
+        if (!nuxtApp.payload.data[`Plugin-Related-Blogs-${props.plugin.name}`]) {
+            useAsyncData(
+                `Plugin-Related-Blogs-${props.plugin.name}`,
+                () => queryCollection(CollectionNames.blogs)
+                    .where('plugins', 'LIKE', `%${props.plugin.name}%`)
+                    .order("date", "DESC")
+                    .limit(4)
+                    .all()
+            );
+        }
+    }
 
 </script>
 
