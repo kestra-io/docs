@@ -301,32 +301,42 @@
 
             switch (type) {
                 case "allPluginsIcons": {
-                    const subGroups = await fetchSubGroups(config);
-                    const pluginNames = [...new Set(subGroups?.map(p => p.name) ?? [])];
-                    
-                    const iconsArrays = await Promise.all(
-                        pluginNames.map(pluginName =>
-                            $fetch<Record<string, {icon: string}>>(
-                                `${config.public.apiUrl}/plugins/${pluginName}/icons/subgroups`
+                    return await cachedEventHandler(async () => {
+                        const subGroups = await fetchSubGroups(config);
+                        const pluginNames = [...new Set(subGroups?.map(p => p.name) ?? [])];
+                        
+                        const iconsArrays = await Promise.all(
+                            pluginNames.map(pluginName =>
+                                $fetch<Record<string, {icon: string}>>(
+                                    `${config.public.apiUrl}/plugins/${pluginName}/icons/subgroups`
+                                )
                             )
-                        )
-                    );
+                        );
 
-                    return Object.fromEntries(
-                        iconsArrays.flatMap(icons =>
-                            Object.entries(icons ?? {}).map(([key, {icon}]) => [
-                                key,
-                                Buffer.from(
-                                    Buffer.from(icon, "base64").toString("utf-8")
-                                ).toString("base64")
-                            ])
-                        )
-                    );
+                        return Object.fromEntries(
+                            iconsArrays.flatMap(icons =>
+                                Object.entries(icons ?? {}).map(([key, {icon}]) => [
+                                    key,
+                                    Buffer.from(
+                                        Buffer.from(icon, "base64").toString("utf-8")
+                                    ).toString("base64")
+                                ])
+                            )
+                        );
+                    }, {
+                        maxAge: 60 * 60,
+                        getKey: () => 'all-plugins-icons'
+                    })(event);
                 }
 
                 case "allPlugins": {
-                    const subGroups = await fetchSubGroups(config);
-                    return subGroups ?? [];
+                    return await cachedEventHandler(async () => {
+                        const subGroups = await fetchSubGroups(config);
+                        return subGroups ?? [];
+                    }, {
+                        maxAge: 60 * 60,
+                        getKey: () => 'allPlugins'
+                    })(event);
                 }
 
                 case "definitions": {
@@ -362,29 +372,44 @@
                 }
 
                 case "navigation": {
-                    return await generateNavigation(config);
+                    return await cachedEventHandler(async () => {
+                        return await generateNavigation(config);
+                    }, {
+                        maxAge: 30 * 60,
+                        getKey: () => 'navigation'
+                    })(event);
                 }
 
                 case "metadata": {
-                    const groupId = requestUrl.searchParams.get("group");
-                    const artifactGroupId = requestUrl.searchParams.get("artifactGroupId");
-                    const artifactId = requestUrl.searchParams.get("artifactId");
+                    return await cachedEventHandler(async () => {
+                        const groupId = requestUrl.searchParams.get("group");
+                        const artifactGroupId = requestUrl.searchParams.get("artifactGroupId");
+                        const artifactId = requestUrl.searchParams.get("artifactId");
 
-                    if (groupId) {
-                        return await $fetch<PluginMetadata>(
-                            `${config.public.apiUrl}/plugins/metadata/group/${encodeURIComponent(groupId)}`
+                        if (groupId) {
+                            return await $fetch<PluginMetadata>(
+                                `${config.public.apiUrl}/plugins/metadata/group/${encodeURIComponent(groupId)}`
+                            );
+                        }
+
+                        if (artifactGroupId && artifactId) {
+                            return await $fetch<PluginMetadata>(
+                                `${config.public.apiUrl}/plugins/metadata/plugin/${encodeURIComponent(artifactGroupId)}/${encodeURIComponent(artifactId)}`
+                            );
+                        }
+
+                        return await $fetch<PluginMetadata[]>(
+                            `${config.public.apiUrl}/plugins/metadata`
                         );
-                    }
-
-                    if (artifactGroupId && artifactId) {
-                        return await $fetch<PluginMetadata>(
-                            `${config.public.apiUrl}/plugins/metadata/plugin/${encodeURIComponent(artifactGroupId)}/${encodeURIComponent(artifactId)}`
-                        );
-                    }
-
-                    return await $fetch<PluginMetadata[]>(
-                        `${config.public.apiUrl}/plugins/metadata`
-                    );
+                    }, {
+                        maxAge: 15 * 60,
+                        getKey: () => {
+                            const groupId = requestUrl.searchParams.get("group");
+                            const artifactGroupId = requestUrl.searchParams.get("artifactGroupId");
+                            const artifactId = requestUrl.searchParams.get("artifactId");
+                            return `metadata-${groupId || 'all'}-${artifactGroupId || ''}-${artifactId || ''}`;
+                        }
+                    })(event);
                 }
 
                 default: {

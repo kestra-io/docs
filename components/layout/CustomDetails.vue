@@ -62,7 +62,7 @@
     @import "../../assets/styles/variable";
 
     .custom-details {
-        background: $black-4 !important;
+        background: $black-4;
         border: none !important;
         border-bottom: 1px solid $black-3 !important;
 

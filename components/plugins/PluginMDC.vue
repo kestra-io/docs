@@ -13,6 +13,7 @@
             :subgroup-blueprint-counts="subgroupBlueprintCounts"
             :metadata-map="metadataMap"
             :schemas="schemas"
+            @navigate="navigateTo($event)"
         >
             <template v-slot:markdown="{ content }">
                 <MDC :value="content">
@@ -46,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-    import { SchemaToHtmlV2, PluginIndex, type PluginMetadata } from "@kestra-io/ui-libs";
+    import {SchemaToHtmlV2, PluginIndex, type PluginMetadata} from "@kestra-io/ui-libs";
 
     defineProps<{
         page: any,
