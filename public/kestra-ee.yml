@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.1.8
+  version: 1.1.9
 tags:
 - name: Flows
   description: Flows api
@@ -16241,9 +16241,17 @@ components:
           format: int64
     Dashboard:
       required:
+      - deleted
+      - id
       - title
       type: object
       properties:
+        tenantId:
+          pattern: "^[a-z0-9][a-z0-9_-]*"
+          type: string
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -16255,6 +16263,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
+        deleted:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
         sourceCode:
           type: string
     DashboardController.PreviewRequest:
