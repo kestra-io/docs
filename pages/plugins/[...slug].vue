@@ -64,7 +64,6 @@
                 :active-id="activeSectionId"
                 :subgroup-blueprint-counts="subgroupBlueprintCounts"
                 :metadata-map="metadataMap"
-                :schemas="pluginElementSchema"
             />
 
             <PluginVideos 
@@ -277,32 +276,7 @@
         });
     });
 
-    /**
-     * Under each element type (Tasks, Triggers ...), titles are only available in the definitions endpoint for each specific plugin element (cls).
-     */
-    const {data: pluginElementSchema} = await useAsyncData(
-        computed(() => `plugin-element-schema-${currentSubgroupPlugin.value?.subGroup ?? rootPlugin.value?.group ?? pluginName.value}`),
-        async () => {
-            
-            if (pluginType.value) return {};
-            if (!currentSubgroupPlugin.value && !rootPlugin.value) return {};
 
-            const elements = Object.values(extractPluginElements(currentSubgroupPlugin.value ?? rootPlugin.value)).flat();
-
-            const entries = await Promise.all(
-                elements.map(async (cls) => {
-                    try {
-                        const d = await $fetch(`/api/plugins?page=${cls}&type=definitions`);
-                        return [cls, {title: d?.body?.jsonSchema?.properties?.title}];
-                    } catch {
-                        return [cls, {}];
-                    }
-                })
-            );
-
-            return Object.fromEntries(entries);
-        }
-    );
 
     /**
      * currentPluginMetadata provides the raw array of metadata,
