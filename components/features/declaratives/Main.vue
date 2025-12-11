@@ -3,13 +3,12 @@
         <Section
             subtitle="Simple Workflow Definition in "
             subtitle-after="YAML"
-            baseline="YAML is a popular data serialization language designed to be easy to read and write by both humans and machines. Using YAML to declaratively define workflows brings a number of benefits."
         >
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Typewriter"
-                        title="Simple Workflow Creation"
+                        title="Declarative Orchestration Logic"
                         description="YAML is easy to learn. The simple syntax allows more people in the organization to collaborate on building workflows together."
                     />
                 </div>

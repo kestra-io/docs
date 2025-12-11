@@ -6,7 +6,7 @@
                     <NuxtLink href="/">
                         <img src="/logo-white.svg" height="60" alt="Kestra's logo">
                     </NuxtLink>
-                    <p class="mt-2">Open Source Declarative Data Orchestration</p>
+                    <p class="mt-2">Open Source Declarative Orchestration</p>
                     <Socials class="mt-4 socials" />
                     <LayoutNewsletter />
                 </div>
