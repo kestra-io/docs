@@ -26,9 +26,9 @@
         ],
         titleTemplate: (titleChunk) => {
             return titleChunk &&
-                titleChunk != "Kestra, Open Source Declarative Data Orchestration"
+                titleChunk != "Kestra, Open Source Declarative Orchestration"
                 ? `${titleChunk}`
-                : "Kestra, Open Source Declarative Data Orchestration";
+                : "Kestra, Open Source Declarative Orchestration";
         },
     });
 </script>

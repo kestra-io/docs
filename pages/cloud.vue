@@ -4,7 +4,7 @@
             <Title>Kestra Cloud Early Adopter Program</Title>
             <Meta
                 name="description"
-                content="Be among the first to experience Kestra Cloud with exclusive access <br>before general availability."
+                content="Be among the first to experience Kestra Cloud with exclusive access <br>before general availability"
             />
         </Head>
 

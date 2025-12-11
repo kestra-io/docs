@@ -3,7 +3,7 @@
         <div class="container">
             <div class="text-block">
                 <h2>Kestra Core Features</h2>
-                <h2 class="highlight">Declarative & Scalable by Design.</h2>
+                <h2 class="highlight">Declarative & Scalable by Design</h2>
             </div>
             <div class="feature-cards">
                 <div v-for="card in featureCardsFirst" :key="card.title" class="card">

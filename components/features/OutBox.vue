@@ -4,7 +4,7 @@
             <div class="content-wrapper">
                 <div class="content">
                     <h1 class="title">Out of the Box Features</h1>
-                    <h1 class="title highlight">Add New Workflows in Minutes.</h1>
+                    <h1 class="title highlight">Add New Workflows in Minutes</h1>
                     <div class="features-grid">
                         <div 
                             v-for="(feature, index) in features" 
