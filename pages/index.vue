@@ -48,7 +48,7 @@
             { property: 'og:description', content: "Use declarative language to build simpler, faster, scalable and flexible workflows" },
             { property: 'og:image', content: `${origin}/og-image.png` },
             { property: 'og:image:type', content: "image/svg+xml" },
-            { property: 'og:image:alt', content: "Kestra, Open Source Declarative  Orchestration" },
+            { property: 'og:image:alt', content: "Kestra, Open Source Declarative Orchestration" },
             { property: 'og:url', content: `${origin}` },
         ]
     })
