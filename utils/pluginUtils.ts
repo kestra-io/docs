@@ -50,6 +50,17 @@
             : formatPluginName(category.toLowerCase());
     };
 
+    export const capitalize = (str: string): string => str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+
+    export const getPluginTitle = (
+        plugin: Plugin,
+        metadataMap: PluginMetadata
+    ): string => {
+        const key = plugin?.subGroup ?? plugin?.group;
+        const title = metadataMap?.[key]?.title ?? plugin?.title ?? "";
+        return capitalize(title.replace(/\s*\(EE\)\s*$/i, ""));
+    };
+
     import type {Plugin} from "@kestra-io/ui-libs";
 
     /**

@@ -6,7 +6,10 @@
                     <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" />
                 </div>
                 <div class="content">
-                    <h6>{{ capitalizedTitle }}</h6>
+                    <div class="title-row">
+                        <h6>{{ capitalizedTitle }}</h6>
+                        <span v-if="plugin.license" class="enterprise-badge">Enterprise</span>
+                    </div>
                     <p v-if="description" class="description">{{ description }}</p>
                 </div>
             </div>
@@ -69,7 +72,7 @@
     });
 
     const capitalizedTitle = computed(() => {
-        const title = metadata.value?.title ?? props.plugin.title;
+        const title = (metadata.value?.title ?? props.plugin.title)?.replace(/\s*\(EE\)\s*$/i, "");
         return title?.charAt(0).toUpperCase() + title?.slice(1);
     });
 
@@ -254,6 +257,25 @@
                 font-size: $rem-1;
                 color: var(--kestra-io-token-text-link-default);
             }
+        }
+    }
+
+    .title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .enterprise-badge {
+            background: #130025;
+            border: 1px solid color-palette.$base-yellow-700;
+            gap: 4px;
+            min-height: 20px;
+            border-radius: 40px;
+            border-width: 1px;
+            font-size: 12px;
+            color: color-palette.$base-yellow-100;
+            cursor: default;
+            padding: 0.15rem 0.5rem;
         }
     }
 </style>

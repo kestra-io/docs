@@ -7,12 +7,12 @@
         />
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
-                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
-                <h1 v-if="page && currentPageName" class="py-0 title">
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNamesHeading" />
+                <h1 v-if="page" class="py-0 title">
                     <div v-if="currentPageIcon" class="pageIcon">
                         <NuxtImg
                             :src="currentPageIcon"
-                            :alt="currentPageName"
+                            :alt="headingTitle"
                             loading="lazy"
                             format="webp"
                             quality="80"
@@ -21,7 +21,7 @@
                         />
                         <NuxtImg
                             :src="currentPageIcon"
-                            :alt="currentPageName"
+                            :alt="headingTitle"
                             width="80"
                             height="80"
                             loading="lazy"
@@ -33,10 +33,10 @@
                     </div>
                     <div class="title-content d-flex flex-column justify-space-between w-100">
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            <span class="text-capitalize" v-html="transformTitle(currentPageName)" />
+                            <span class="text-capitalize">{{ headingTitle }}</span>
                             <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
                         </div>
-                        <MDC v-if="page?.description" :value="page.description">
+                        <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
                             <template #default="mdcProps">
                                 <pre v-if="mdcProps?.error" style="color: white;">{{ mdcProps.error }}</pre>
                                 <ContentRenderer v-else-if="mdcProps?.body" class="desc markdown" :value="mdcProps" />
@@ -110,7 +110,7 @@
     import {useEventListener} from "@vueuse/core";
     import {isEntryAPluginElementPredicate, subGroupName, slugify, filterPluginsWithoutDeprecated, extractPluginElements, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
     import {useBlueprintsCounts} from "~/composables/useBlueprintsCounts";
-    import {transformTitle, formatElementType, getBlueprintsHeading} from "../../utils/pluginUtils";
+    import {formatElementType, formatElementName, getBlueprintsHeading, getPluginTitle} from "../../utils/pluginUtils";
     import {generatePageNames, recursivePages} from "~/utils/navigation";
 
     import NavToc from "../../components/docs/NavToc.vue";
@@ -357,7 +357,24 @@
         return icon ? `data:image/svg+xml;base64,${icon}` : undefined;
     });
 
-    const currentPageName = computed(() => pageNames.value?.[route.path]);
+    const headingTitle = computed(() => {
+        if (pluginType.value) {
+            return formatElementName(pluginType.value);
+        }
+        return getPluginTitle(
+            currentSubgroupPlugin.value ?? rootPlugin.value,
+            metadataMap.value
+        ) ?? pluginName.value;
+    });
+
+    const pageNamesHeading = computed(() => ({
+        ...(pageNames.value ?? {}),
+        [route.path]: headingTitle.value,
+        [`/plugins/${pluginName.value}`]: getPluginTitle(
+            rootPlugin.value,
+            metadataMap.value
+        ) ?? pluginName.value
+    }));
 
     const currentPluginCategories = computed(() => {
         const subgroupCats = currentSubgroupPlugin.value?.categories;
