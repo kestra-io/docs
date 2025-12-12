@@ -56,7 +56,7 @@
                 v-if="pageWithToc"
                 :page="page"
                 :plugin-type="pluginType"
-                :icons="allPluginsIcons"
+                :icons="subGroupsIcons"
                 :plugins-without-deprecated="pluginsWithoutDeprecated"
                 :plugin-name="pluginName"
                 :sub-group="subGroup"
@@ -89,7 +89,7 @@
                 :all-plugins="allPlugins"
                 :current-plugin-name="pluginName"
                 :current-categories="currentPluginCategories"
-                :icons="allPluginsIcons"
+                :icons="subGroupsIcons"
                 :metadata-map="metadataMap"
             />
         </article>
@@ -185,9 +185,20 @@
         key: `Sidebar-${splitRouteSlug[0]}`
     });
 
-    const {data: allPluginsIcons} = await useFetch('/api/plugins?type=allPluginsIcons', {
-        key: 'AllPluginsIcons'
+    const {data: subGroupsIcons} = await useFetch('/api/plugins?type=subGroupsIcons', {
+        key: 'SubGroupsIcons'
     });
+
+    const {data: elementIcons} = await useAsyncData(
+        computed(() => `ElementsIcons-${pluginName.value}-${pluginType.value}`),
+        () => {
+            if (!pluginType.value) return null;
+            return $fetch<Record<string, string>>(`/api/plugins?page=${pluginName.value}&type=elementsIcons`);
+        },
+        {
+            watch: [pluginType]
+        }
+    );
 
     const githubReleaseRepo = computed(() => {
         const name = pluginName.value ?? "";
@@ -351,15 +362,13 @@
     });
 
     const currentPageIcon = computed(() => {
-        const icons = allPluginsIcons.value;
+        const icons = subGroupsIcons.value;
         if (!icons) return undefined;
         
         let icon;
 
         if (pluginType.value) {
-            icon = icons[pluginType.value] ?? Object.entries(icons)
-                    .filter(([key]) => pluginType.value?.includes(key))
-                    .sort(([a], [b]) => b.length - a.length)?.[0]?.[1];
+            icon = elementIcons.value?.[pluginType.value];
         } else if (!subGroup.value && page.value?.body?.group) {
             icon = icons[page.value.body.group];
         } else if (currentSubgroupPlugin.value) {

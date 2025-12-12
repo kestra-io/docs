@@ -91,8 +91,8 @@
         categories: string[],
     }>();
 
-    const {data: icons} = await useFetch('/api/plugins?type=allPluginsIcons', {
-        key: 'AllPluginsIcons'
+    const {data: icons} = await useFetch('/api/plugins?type=subGroupsIcons', {
+        key: 'SubGroupsIcons'
     });
 
     const {data: metadata} = await useFetch<PluginMetadata[]>('/api/plugins?type=metadata', {

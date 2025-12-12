@@ -5,7 +5,7 @@
     import {isEntryAPluginElementPredicate, slugify, subGroupName} from "@kestra-io/ui-libs";
     import type {NavItem} from "../../utils/navigation";
 
-    type PageType = "allPluginsIcons" | "definitions" | "plugin" | "navigation" | "allPlugins" | "metadata";
+    type PageType = "subGroupsIcons" | "elementsIcons" | "definitions" | "plugin" | "navigation" | "allPlugins" | "metadata";
 
     export interface TocLink {
         id: string;
@@ -300,7 +300,7 @@
             const config = useRuntimeConfig();
 
             switch (type) {
-                case "allPluginsIcons": {
+                case "subGroupsIcons": {
                     return await cachedEventHandler(async () => {
                         const subGroups = await fetchSubGroups(config);
                         const pluginNames = [...new Set(subGroups?.map(p => p.name) ?? [])];
@@ -326,6 +326,29 @@
                     }, {
                         maxAge: 60 * 60,
                         getKey: () => 'all-plugins-icons'
+                    })(event);
+                }
+
+                case "elementsIcons": {
+                    return await cachedEventHandler(async () => {
+                        const pluginName = page;
+                        if (!pluginName) return {};
+                        
+                        const icons = await $fetch<Record<string, {icon: string}>>(
+                            `${config.public.apiUrl}/plugins/${pluginName}/icons`
+                        );
+
+                        return Object.fromEntries(
+                            Object.entries(icons ?? {}).map(([key, {icon}]) => [
+                                key,
+                                Buffer.from(
+                                    Buffer.from(icon, "base64").toString("utf-8")
+                                ).toString("base64")
+                            ])
+                        );
+                    }, {
+                        maxAge: 60 * 60,
+                        getKey: () => `elements-icons-${page}`
                     })(event);
                 }
 
