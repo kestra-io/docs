@@ -25,6 +25,7 @@
     import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
     import NavActions from "~/components/common/NavActions.vue";
+    import {useBlueprintsTags} from "~/composables/useBlueprintsTags";
 
     const props = defineProps<{
         pluginName: string;
@@ -32,7 +33,6 @@
         subGroupName?: string;
         pluginType?: string;
         tags?: any[];
-        size?: number;
         customId?: string | null;
     }>();
 
@@ -49,15 +49,17 @@
 
     const pluginParam = computed(() => props.pluginWrapper?.group ?? props.pluginName);
 
-    const { data } = await useFetch('/api/blueprint', {
+    const { data } = await useFetch("/api/blueprints/related-blueprints", {
         key: `similar-blueprints-${pluginParam.value}-${props.subGroupName ?? ""}-${props.pluginType ?? ""}`,
         query: {
             plugin: pluginParam.value,
             subgroup: props.subGroupName,
-            type: props.pluginType,
-            size: props.size ?? 500
-        }
+            type: props.pluginType
+        },
+        server: false
     });
+
+    const { tags } = useBlueprintsTags();
 
     const relatedBlueprints = computed(() => data.value?.results ?? []);
 

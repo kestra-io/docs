@@ -1,31 +1,16 @@
     import { computed } from 'vue';
 
-    /**
-     * Fetches blueprints counts per plugin element (cls), subgroup, and plugin.
-     * Server-side aggregation provides countsByCls, countsBySubgroup, and countsByPlugin.
-     */
-    export function useBlueprintsCounts() {
-        const { data } = useAsyncData<{
-            countsByCls: Record<string, number>;
-            countsBySubgroup: Record<string, number>;
-            countsByPlugin: Record<string, number>;
-            total: number;
+    export async function useBlueprintsCounts() {
+        const { data } = await useAsyncData<{
+            countByPlugins: Record<string, number>;
         }>(
             'BlueprintsCounts', 
-            () => $fetch('/api/blueprints-counts'),
+            () => $fetch('/api/blueprint?counts=true'),
         );
 
-        const counts = computed(() => data.value ?? {
-            countsByCls: {},
-            countsBySubgroup: {},
-            countsByPlugin: {},
-            total: 0
-        });
+        const counts = computed(() => data.value?.countByPlugins ?? {});
 
         return {
-            countsByCls: computed(() => counts.value.countsByCls),
-            countsBySubgroup: computed(() => counts.value.countsBySubgroup),
-            countsByPlugin: computed(() => counts.value.countsByPlugin),
-            isFetched: computed(() => !!data.value)
+            counts,
         } as const;
     }

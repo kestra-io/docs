@@ -91,8 +91,8 @@
         categories: string[],
     }>();
 
-    const {data: icons} = await useFetch('/api/plugins?type=allPluginsIcons', {
-        key: 'AllPluginsIcons'
+    const {data: icons} = await useFetch('/api/plugins?type=subGroupsIcons', {
+        key: 'SubGroupsIcons'
     });
 
     const {data: metadata} = await useFetch<PluginMetadata[]>('/api/plugins?type=metadata', {
@@ -176,12 +176,17 @@
         if (currentPage.value > newTotal) currentPage.value = newTotal;
     });
 
-    const { countsByPlugin: pluginBlueprintCounts, countsBySubgroup } = useBlueprintsCounts();
+    const { counts } = await useBlueprintsCounts();
 
-const getBlueprintCountForPlugin = (plugin: Plugin) =>
-    plugin.subGroup !== undefined
-        ? countsBySubgroup.value?.[`${slugify(plugin.group ?? plugin.name)}-${slugify(subGroupName(plugin))}`] ?? 0
-        : pluginBlueprintCounts.value?.[slugify(plugin.group ?? plugin.name)] ?? 0;
+    const getBlueprintCountForPlugin = (plugin: Plugin) => {
+        const pluginGroup = plugin.group ?? plugin.name;
+        
+        if (plugin.subGroup !== undefined) {
+            return counts.value?.[plugin.subGroup] ?? 0;
+        }
+
+        return counts.value?.[pluginGroup] ?? 0;
+    };
 
     function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
         if (!search) {

@@ -1,18 +1,30 @@
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-import { slugify, buildPluginMappings } from '@kestra-io/ui-libs'
+import { parseMarkdown } from "@nuxtjs/mdc/runtime"
 
 interface BlueprintQuery {
     query?: string
-    plugin?: string
-    subgroup?: string
-    type?: string
-    page?: string
-    size?: string
+    counts?: string
 }
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
-    const { query, plugin, subgroup, type, page, size } = getQuery(event) as BlueprintQuery
+    const { query, counts } = getQuery(event) as BlueprintQuery
+
+    if (counts === 'true') {
+        return await cachedEventHandler(async () => {
+            try {
+                const data = await $fetch<{ countByPlugins: Record<string, number> }>(
+                    `${config.public.apiUrl}/blueprints/countByPlugins`
+                )
+                return data
+            } catch (error) {
+                console.warn('Failed to fetch blueprint counts', error)
+                return { countByPlugins: {} }
+            }
+        }, {
+            maxAge: 60 * 60,
+            getKey: () => 'blueprints-counts'
+        })(event)
+    }
 
     if (query) {
         try {
@@ -47,61 +59,10 @@ export default defineEventHandler(async (event) => {
             }
         } catch {
             setResponseStatus(event, 404)
-            return { message: 'Not Found' }
+            return { message: "Not Found" }
         }
     }
 
-    try {
-        const { clsToSubgroup, clsToPlugin, shortNameToCls } = buildPluginMappings(
-            await $fetch(`${config.public.apiUrl}/plugins/subgroups`).catch(() => [])
-        )
-
-        const { results } = await $fetch(
-            `${config.public.apiUrl}/blueprints/versions/latest?page=${page ?? '1'}&size=${size ?? '50'}`
-        )
-
-        const filtered = results?.filter((blueprint: any) => {
-            const candidates = (blueprint.includedTasks ?? [])
-                .filter(Boolean)
-                .flatMap((task: string) =>
-                    task.includes('.')
-                        ? [task]
-                        : (shortNameToCls[task.toLowerCase()] ?? [task])
-                )
-
-            if (type) {
-                const targetClasses = type.includes('.')
-                    ? [type]
-                    : (shortNameToCls[type.toLowerCase()] ?? [type])
-                return candidates.some((c: string) => targetClasses.includes(c))
-            }
-
-            if (plugin) {
-                const matchPlugin = (cls: string) => {
-                    const mapped = clsToPlugin[cls]
-                    return mapped && [mapped.raw, mapped.slug]
-                        .map((v: string) => v.toLowerCase())
-                        .includes(plugin.toLowerCase())
-                }
-
-                if (subgroup) {
-                    const subgroupSlug = slugify(subgroup)
-                    const matchSubgroup = (cls: string) => {
-                        const mapped = clsToSubgroup[cls]
-                        return mapped && (mapped === subgroupSlug || mapped.toLowerCase() === subgroup.toLowerCase())
-                    }
-                    return candidates.some((c: string) => matchPlugin(c) && matchSubgroup(c))
-                }
-
-                return candidates.some(matchPlugin)
-            }
-
-            return false
-        }) ?? []
-
-        return { results: filtered, total: filtered.length }
-    } catch {
-        setResponseStatus(event, 500)
-        return { message: 'Failed to fetch blueprints' }
-    }
+    setResponseStatus(event, 400)
+    return { message: "Missing required parameter: 'query' or 'counts'" }
 })

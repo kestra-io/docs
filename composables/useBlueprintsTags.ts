@@ -4,7 +4,6 @@ export function useBlueprintsTags() {
     const { data } = useAsyncData(
         "blueprint-tags",
         () => $fetch(`${useRuntimeConfig().public.apiUrl}/blueprints/versions/latest/tags`),
-        { server: false, dedupe: "defer" }
     );
 
     watchEffect(() => {
