@@ -36,7 +36,7 @@
         props.blueprint?.title ? props.blueprint.title.charAt(0).toUpperCase() + props.blueprint.title.slice(1) : ""
     );
 
-    const {getName} = useBlueprintsTags();
+    const { getName } = props.tags?.length ? { getName: () => "" } : useBlueprintsTags();
 
     const tagsList = computed(() => {
         if (props.tags?.length) {

@@ -221,11 +221,23 @@
         }, {} as Record<string, PluginMetadata>) ?? {}
     );
 
-    const {
-        countsBySubgroup: subgroupBlueprintCounts,
-        countsByPlugin: pluginBlueprintCounts,
-        countsByCls
-    } = await useBlueprintsCounts();
+    const { counts } = await useBlueprintsCounts();
+    
+    const subgroupBlueprintCounts = computed(() => {
+        const result: Record<string, number> = {};
+        
+        pluginsWithoutDeprecated.value?.forEach((subgroupWrapper) => {
+            const subgroupKey = subgroupWrapper.subGroup;
+            if (subgroupKey !== undefined) {
+                const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`;
+                result[formattedKey] = counts.value?.[subgroupKey] ?? 0;
+            }
+        });
+        
+        return result;
+    });
+    
+    const pluginBlueprintCounts = computed(() => counts.value);
 
     const { data: relatedBlogs } = await useAsyncData(
         `Plugin-Related-Blogs-${pluginName.value}`,
@@ -438,7 +450,7 @@
             : currentPage.body?.toc ? [] : pluginToc.value;
 
         const hasBlueprints = pluginType.value
-            ? countsByCls.value?.[pluginType.value] > 0
+            ? counts.value?.[pluginType.value] > 0
             : subGroup.value
                 ? subgroupBlueprintCounts.value?.[
                     `${rootPlugin.value.group ?? pluginName.value}-${subGroup.value}`

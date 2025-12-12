@@ -56,9 +56,9 @@
             );
     });
 
-    const { countsByPlugin: pluginBlueprintCounts } = await useBlueprintsCounts();
+    const { counts } = await useBlueprintsCounts();
 
-    const getPluginBlueprintCount = (plugin: Plugin) => pluginBlueprintCounts.value?.[slugify(plugin.group ?? plugin.name)] ?? 0;
+    const getPluginBlueprintCount = (plugin: Plugin) => counts.value?.[plugin.group ?? plugin.name] ?? 0;
 
     const isTwoPerRowScreen = useMediaQuery('(min-width: 992px) and (max-width: 1399px)');
 
