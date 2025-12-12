@@ -13,7 +13,7 @@ All you have to do to offload your task execution to a remote environment is to 
 
 :::alert{type="info"}
 Note that some task runner plugins are available only in the [Enterprise Edition](../06.enterprise/index.md). If you want to try them out, please [reach out](/demo).
-See [OSS vs Enterprise](../oss-vs-paid.md) to compare editions.
+See [Open Source vs Enterprise](../oss-vs-paid.md) to compare editions.
 :::
 
 <div class="video-container">
