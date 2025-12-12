@@ -23,7 +23,7 @@ On the left menu, you will see the following UI pages:
 - The **Plugins** page provides a catalog of plugins you can use inside of your flows.
 - The **Administration** page helps troubleshoot administrative issues, such as worker status and triggers. Depending on your Kestra edition, it also provides features like audit logs and user management.
 
-The [Kestra Enterprise Edition](/enterprise) comes with additional functionalities provided by the Kestra UI:
+The [Kestra Enterprise Edition](../oss-vs-paid.md) comes with additional functionalities provided by the Kestra UI:
 
 - The **Apps** page takes you to your list of Apps and is also where you create new Apps.
 - The **Tests** page takes you to your flow unit tests where you can view, edit, and create test assertions against your flows without creating executions.

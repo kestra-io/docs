@@ -183,7 +183,7 @@ tasks:
     format: "{{ secret('MY_SECRET') }}"
 ```
 
-Secrets are supported in both the open-source version and [Enterprise Edition](/enterprise). For additional details, refer to the [Secrets](../05.concepts/04.secret.md) documentation.
+Secrets are supported in both the open-source version and [Enterprise Edition](../oss-vs-paid.md). For additional details, refer to the [Secrets](../05.concepts/04.secret.md) documentation.
 
 ---
 
