@@ -27,10 +27,9 @@ Kestra explicitly relies on the SCIM 2.0 protocol for directory synchronization.
 2. **Consistency and compliance**: With SCIM, you can ensure consistency of identity information across systems and stay compliant with security and regulatory requirements.
 3. **Governance at scale**: Managing users at scale across many applications can be difficult without a standardized method for identity synchronization. SCIM provides a scalable solution for managing user identities.
 
-## Supported Identity Providers
+## Supported identity providers
 
 For a detailed guide on how to set up SCIM provisioning with a specific IdP, refer to the documentation for the respective provider.
 
 :::ChildCard
 :::
-

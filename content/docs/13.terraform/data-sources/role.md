@@ -15,7 +15,7 @@ Use this data source to access information about an existing Kestra Role.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_role" "example" {
@@ -44,7 +44,7 @@ data "kestra_role" "example" {
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedatt--permissions"></a>
-### Nested Schema for `permissions`
+### Nested schema for `permissions`
 
 Read-Only:
 

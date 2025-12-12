@@ -11,13 +11,13 @@ Manage and distribute logs across your entire infrastructure.
     <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Log Shipper functionality
+## Log shipper functionality
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
 Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. As of Kestra version 0.21, supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
 
-## Log Shipper properties
+## Log shipper properties
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
@@ -87,7 +87,7 @@ flowchart TD
 ```
 
 
-## Log Shipper examples
+## Log shipper examples
 
 The Log Shipper integrates with many popular observability platforms. Below are a couple of example flows using a Kestra core plugin as well as external platform plugins.
 
@@ -473,7 +473,7 @@ tasks:
         authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
 ```
 
-## Audit Log Shipper
+## Audit log shipper
 
 To send [Audit Logs](06.audit-logs.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.
 

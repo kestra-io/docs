@@ -51,7 +51,7 @@ You can configure:
 - `pollSwitchInterval`: Increasing this value helps prevent the queue from entering an idle state too quickly, ensuring that new executions are picked up promptly when they arrive.
 - `pollSize`: Lowering it may reduce latency, but also reduces throughput. Increasing it will do the opposite; it may increase latency, but it will also increase throughput.
 
-## The JDBC Executor
+## The JDBC executor
 
 The performance of the JDBC executor will be tightly coupled with the performance of the JDBC queue.
 

@@ -101,7 +101,7 @@ tasks:
     sql: "{{ read('file:///query.sql') }}"
 ```
 
-### Namespace Files as default FILE-type inputs
+### Namespace files as default FILE-type inputs
 
 One of the benefits of this protocol is that you can reference Namespace Files as default FILE-type inputs in your flows. See the example below, which reads a local file, `hello.txt,` from the `demo` namespace and logs its content.
 

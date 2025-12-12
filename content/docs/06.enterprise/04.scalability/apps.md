@@ -26,7 +26,7 @@ You can build custom applications that resume paused workflows waiting for appro
 
 ---
 
-## App Types
+## App types
 
 Currently, Kestra offers two types of Apps:
 - **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
@@ -34,7 +34,7 @@ Currently, Kestra offers two types of Apps:
 
 ---
 
-## Apps Benefits
+## App benefits
 
 Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. **With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.**
 
@@ -50,7 +50,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 ---
 
-## Creating Apps in Code
+## Creating apps in code
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -103,7 +103,7 @@ Then, add your app configuration to create a form that requests compute resource
 
 ---
 
-## Creating Apps No Code
+## Creating apps no code
 
 Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
 
@@ -111,7 +111,7 @@ Like flows, Apps can also be created using the no-code editor. Every element ava
 
 ---
 
-## App Catalog
+## App catalog
 
 The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.
 
@@ -150,13 +150,13 @@ From the Apps Catalog, you can also access the customization settings directly a
 
 ---
 
-## App Tags
+## App tags
 
 You can add custom tags to organize and filter apps in the App Catalog. For example, you might tag apps with `DevOps`, `data-team`, `project-x`. You can then filter apps by tags to quickly find the apps you are looking for.
 
 ---
 
-## App Thumbnails
+## App thumbnails
 
 Design Apps with thumbnails to clearly display their intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../05.concepts/02.namespace-files.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
 
@@ -198,22 +198,22 @@ You can copy the URL from the Apps catalog page in the Kestra UI.
 
 For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 
-### Public Access
+### Public access
 
 When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
 
 
-### Private Access for using Apps
+### Private access for using apps
 
 When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
 
-### Private Access for building Apps
+### Private access for building apps
 
 The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
 
 ---
 
-## App Executions
+## App executions
 
 Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system.app` and a value of `yourAppId`. For example, to filter all executions created by the `computeResourcesForm` app, you can search for `system.app:computeResourcesForm` in the label filter.
 
@@ -221,7 +221,7 @@ For every execution, you can track the user inputs, see the current state, view 
 
 ---
 
-## App Layout Blocks
+## App layout blocks
 
 Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. on `OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`).
 

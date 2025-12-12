@@ -66,7 +66,7 @@ For full details, see [internal storage configuration](../07.architecture/09.int
 
 ## Additional information
 
-### Flows & execution metadata
+### Flows and execution metadata
 
 - Stored in **PostgreSQL**, **MySQL**, or **H2** (not recommended for distributed components).  
 - Includes:

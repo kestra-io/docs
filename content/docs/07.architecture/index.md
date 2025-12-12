@@ -8,7 +8,7 @@ Kestra's architecture is designed to be scalable, flexible, and fault-tolerant. 
 
 The following diagram shows the main components of Kestra using the JDBC backend.
 
-![Kestra JDBC Architecture](/docs/architecture/jdbc.png "Kestra Architecture")
+![Kestra JDBC Architecture](/docs/architecture/jdbc.gif "Kestra Architecture")
 
 Here are the components and their interactions:
 
@@ -43,7 +43,7 @@ The JDBC Backend can be scaled too, either through clustering or sharding, to ha
 
 The following diagram shows the main components of Kestra using the [Kafka](https://kafka.apache.org/) and [Elasticsearch](https://www.elastic.co/elasticsearch) backend.
 
-![Kestra OSS Architecture](/docs/architecture/kafka.png "Kestra Architecture")
+![Kestra OSS Architecture](/docs/architecture/kafka.gif "Kestra Architecture")
 
 :::alert{type="info"}
 Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
@@ -79,7 +79,7 @@ Elasticsearch contributes to scalability by providing a robust, horizontally sca
 
 ## Comparison between JDBC and Kafka architectures
 
-When comparing both diagrams, the main difference between the **JDBC** and an **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
+When comparing both diagrams, the main difference between the **JDBC** and **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
 
 :::alert{type="info"}
 Note that it's possible to use the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.

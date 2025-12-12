@@ -128,7 +128,7 @@ Kestra provides access to environment variables prefixed with `ENV_` by default,
 
 To use an environment variable, such as `ENV_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `ENV_` prefix and converting the remainder to **lowercase**.
 
-To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment.name}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
+To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, use `{{ kestra.environment }}`. To reference the environment URL, use `{{ kestra.url }}` from your Kestra configuration.
 
 ### Global Variables
 
@@ -325,7 +325,7 @@ Pebble templates use two primary delimiters:
 - `{{ ... }}`: outputs the result of an expression. Expressions can be simple variables or complex calculations.
 - `{% ... %}`: controls the template’s flow, such as with `if` statements or `for` loops.
 
-To escape expressions or control structures, use the `raw` tag. This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
+To escape expressions or control structures, use the [`raw` tag](./index.md#raw). This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
 
 Dot notation (`.`) is used to access nested attributes. For attributes with special characters, use square brackets:
 
@@ -654,6 +654,34 @@ The following expression extracts the `value` of `task1`:
 
 **Arguments**
 - `expression`: The JQ expression to apply.
+
+Example flow using `jq` inside a `ForEach` task to iterate over array items and log each name with a doubled value:
+
+```yaml
+id: jq_with_foreach
+namespace: company.team
+
+tasks:
+  - id: generate
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      [
+        {"name": "alpha", "value": 1},
+        {"name": "bravo", "value": 2}
+      ]
+
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ json(outputs.generate.value) }}"
+    tasks:
+      - id: log_filtered
+        type: io.kestra.plugin.core.log.Log
+        message: |
+          Name: {{ json(taskrun.value).name }}
+          Doubled value: {{ json(taskrun.value) | jq('.value * 2') | first }}
+```
+
+For additional examples that access partial JSON bodies using `jq`, see the [JSON How-to guide](../15.how-to-guides/json.md).
 
 ---
 
@@ -2234,9 +2262,7 @@ The `raw` tag prevents Pebble from parsing its content.
 Example:
 
 ```twig
-{% raw %}
-    {{ user.name }}
-{% endraw %}
+{% raw %}{{ user.name }}{% endraw %}
 ```
 
 Output:
@@ -2452,4 +2478,3 @@ tasks:
 ```
 
 :::
-

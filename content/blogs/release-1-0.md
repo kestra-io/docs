@@ -136,7 +136,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.OpenAI
       modelName: gpt-5-mini
-      apiKey: "{{ kv('OPENAI_API_KEY') }}"
+      apiKey: "{{ secret('OPENAI_API_KEY') }}"
     tools:
       - type: io.kestra.plugin.ai.tool.DockerMcpClient
         image: ghcr.io/kestra-io/mcp-server-python:latest
@@ -145,7 +145,7 @@ tasks:
           KESTRA_TENANT_ID: main
           KESTRA_MCP_DISABLED_TOOLS: ee
           KESTRA_USERNAME: admin@kestra.io
-          KESTRA_PASSWORD: "{{ kv('KESTRA_PASSWORD') }}"
+          KESTRA_PASSWORD: "{{ secret('KESTRA_PASSWORD') }}"
 ```
 :::
 
@@ -554,4 +554,3 @@ This post highlighted the new features and enhancements introduced in Kestra 1.0
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
 For questions or feedback, join [our Slack community](http://kestra.io/slack) or open an issue on GitHub.
-

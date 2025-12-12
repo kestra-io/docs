@@ -15,16 +15,15 @@ Manages a Kestra User.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_user" "example" {
-  username    = "my-username"
+  email       = "john@doe.com"
   namespace   = "company.team"
   description = "Friendly description"
   first_name  = "John"
   last_name   = "Doe"
-  email       = "john@doe.com"
   groups      = ["4by6NvSLcPXFhCj8nwbZOM"]
 }
 ```
@@ -35,7 +34,6 @@ resource "kestra_user" "example" {
 ### Required
 
 - `email` (String) The user email.
-- `username` (String) The user name.
 
 ### Optional
 
@@ -48,6 +46,7 @@ resource "kestra_user" "example" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+- `username` (String) The user name. Always the email.
 
 ## Import
 

@@ -1,5 +1,6 @@
 import * as sass from "sass";
 import { CollectionNames } from "./content.config.names";
+import contentSecurityPolicy from "./content-security-policy.config";
 
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 
@@ -16,7 +17,25 @@ export default defineNuxtConfig({
         '@nuxtjs/robots',
         '@nuxt/content',
         "nitro-cloudflare-dev",
+        "nuxt-security"
     ],
+    security: {
+        enabled: true,
+        strict: false,
+        hidePoweredBy: true,
+        sri: false,
+        rateLimiter: false,
+        headers: {
+            referrerPolicy: 'strict-origin-when-cross-origin',
+            crossOriginEmbedderPolicy: false,
+            permissionsPolicy: {
+                // ✅ allow fullscreen on your own pages and for YouTube iframes
+                fullscreen: ['*'],
+            },
+            // ✅ CSP directives
+            contentSecurityPolicy
+        },
+    },
     image: {
         dir: 'public',
         provider: process.env.CF_PAGES_BRANCH === 'main' ? 'cloudflare' : 'ipx',
@@ -200,6 +219,7 @@ export default defineNuxtConfig({
                     ],
                     "Reference Docs": [
                         "Configuration",
+                        "Releases & LTS Policy",
                         "Expressions",
                         "API Reference",
                         "Terraform Provider",
@@ -399,8 +419,6 @@ export default defineNuxtConfig({
             enabled: true
         }
     },
-
-
 
     compatibilityDate: '2024-07-16'
 })

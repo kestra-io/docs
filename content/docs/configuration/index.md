@@ -673,7 +673,7 @@ You can also set this via the UI **Settings** page.
 Set JVM options with `JAVA_OPTS`:
 
 ```shell
-export JAVA_OPTS="-user.timezone=Europe/Paris"
+export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 ```
 
 Proxy example (see [Java docs](http://download.oracle.com/javase/6/docs/technotes/guides/net/proxies.html)):
@@ -971,9 +971,10 @@ micronaut:
 
 ### Log format
 
-Kestra uses Logback. Customize via a `logback.xml` on the classpath and set:
+Kestra uses [Logback](https://logback.qos.ch/), a logging framework for Java.
+You can customize its configuration by providing a `logback.xml` file as:
 
-```
+```shell
 JAVA_OPTS="-Dlogback.configurationFile=file:/path/to/logback.xml"
 ```
 
@@ -1573,7 +1574,7 @@ kestra:
 
 ### Server liveness & heartbeats
 
-Kestra servers send heartbeats for liveness.
+Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../09.administrator-guide/server-lifecycle.md) documentation for more details.
 
 #### `kestra.server.liveness.enabled` (Boolean, default `true`)
 
@@ -1615,10 +1616,6 @@ kestra:
 Worker liveness in Kafka mode is handled by Kafka’s protocol guarantees.
 :::
 
-#### Prior to 0.16.0
-
-Workers only; Executors marked workers unhealthy by heartbeat thresholds.
-
 ### Heartbeat frequency
 
 Workers send heartbeats every `kestra.heartbeat.frequency` (default `10s`).
@@ -1627,7 +1624,7 @@ Workers send heartbeats every `kestra.heartbeat.frequency` (default `10s`).
 
 Executors consider a worker `DEAD` after `kestra.heartbeat.heartbeat-missed` intervals (default `3`).
 
-### Worker task restart strategy (>= 0.16.0)
+### Worker task restart strategy
 
 `kestra.server.worker-task-restart-strategy`: `NEVER` | `IMMEDIATELY` | `AFTER_TERMINATION_GRACE_PERIOD` (default).
 
@@ -1640,6 +1637,10 @@ kestra:
   server:
     termination-grace-period: 5m
 ```
+
+:::alert{type="warning"}
+Ensure the supervising platform (Kubernetes, Docker Compose, systemd, etc.) uses a termination grace period longer than Kestra’s setting. For example, when Kestra uses `5m`, configure Kubernetes `terminationGracePeriodSeconds` to at least 6 minutes. If the external timeout is shorter, the process manager may send SIGKILL before Kestra finishes its graceful shutdown.
+:::
 
 ## Internal storage
 

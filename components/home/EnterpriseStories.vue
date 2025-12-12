@@ -18,9 +18,9 @@
 
     <div class="dots">
         <ClientOnly>
-           <button 
+           <button
   v-for="(story, index) in stories"
-  :key="story.id" 
+  :key="story.id"
   :class="{ active: index === activeStory }"
   @click="manualScrollTo(index)"
 />
@@ -207,7 +207,7 @@
                     border-radius: 1rem;
                 }
                 q {
-                    color: #1d1d1e;
+                    color: var(--kestra-io-neutral-gray300);
                 }
                 .quote-box{
                     text-align: left;

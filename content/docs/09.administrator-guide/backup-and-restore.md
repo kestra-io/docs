@@ -7,6 +7,10 @@ Back up and restore your Kestra instance.
 
 Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
 
+:::alert{type="info"}
+The commands in the next section assume Kestra runs locally on the host. If you run Kestra in Docker, see the [container example](#example-backup-and-restore-inside-docker) below.
+:::
+
 ## Metadata-only Backup & Restore (Enterprise Edition)
 
 Since 0.19, [Kestra Enterprise Edition](/enterprise) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another—even across different Kestra versions or repository/queue backends.
@@ -24,6 +28,14 @@ kestra backups create FULL
 ```
 
 `FULL` backs up the entire instance. To back up a single tenant (when multi-tenancy is enabled), use `TENANT`. In `TENANT` mode, only the selected tenant’s data is included (global users/tenants are excluded).
+
+Alternatively, you can also create a backup of only specific resources by using the `--resources` flag in the command. For example, to only create a backup of the [KV Store](../05.concepts/05.kv-store.md), use:
+
+```bash
+kestra backups create --resources KV_STORE
+```
+
+Other resources include: `FLOW`, `NAMESPACE_FILE`, `TRIGGER`, `LOG`, `SECRET`, and more.
 
 By default, backups are encrypted with the embedded Kestra encryption key. You can change this behavior with:
 
@@ -69,7 +81,25 @@ Starting the restore process from the command line will display the following lo
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 ```
 
-## Full Backup & Restore with Backend Tools
+### Example: Backup and restore inside Docker
+
+If Kestra runs in Docker, use `docker exec` and `docker cp` to move the backup file in and out of the container:
+
+```bash
+# Create a full backup (with execution data) from inside the container
+docker exec your_container bash -c "./kestra backups create FULL --include-data --no-encryption"
+
+# Copy the backup file from the container to a local directory
+docker cp your_container:/app/storage/backups/full/backup123.kestra .
+
+# After upgrading Kestra, copy the backup back into the container
+docker cp ./backup123.kestra your_container:/app/storage/backups/full/
+
+# Restore the backup from inside the container
+docker exec your_container bash -c "./kestra backups restore kestra:///backups/full/backup123.kestra"
+```
+
+## Full backup and restore with backend tools
 
 ### Backup & Restore with the JDBC Backend
 

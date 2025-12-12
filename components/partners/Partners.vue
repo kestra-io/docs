@@ -127,7 +127,7 @@
                         <div class="card-body">
                             <p class="card-text">Data Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
-                            <a href="https://www.ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
+                            <a href="/partners/ntico" target="_blank">learn more <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
@@ -143,11 +143,11 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/conapi.svg" class="card-img-top" alt="Conapi logo">
+                        <img src="/partners/conapi/logo.svg" class="card-img-top" alt="Conapi logo">
                         <div class="card-body">
-                            <p class="card-text">Data Consulting Partner</p>
+                            <p class="card-text">Integration Consulting Partner</p>
                             <h5 class="card-title">Conapi</h5>
-                            <a href="https://www.conapi.at/" target="_blank">Visit Conapi website <OpenInNew /></a>
+                            <a href="/partners/conapi" target="_blank">learn more <OpenInNew /></a>
                         </div>
                     </div>
                     </div>

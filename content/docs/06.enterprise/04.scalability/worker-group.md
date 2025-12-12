@@ -26,7 +26,7 @@ To create a new Worker Group, navigate to the **Instance** page under the **Admi
 
 ![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 
-## Starting Workers for a Worker Group
+## Starting workers for a Worker Group
 
 Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
 
@@ -83,7 +83,7 @@ tasks:
       key: "{{ inputs.my_worker_group }}"
 ```
 
-## Worker Group Fallback Behavior
+## Worker Group fallback behavior
 
 :::badge{version=">=0.20" editions="EE"}
 :::
@@ -115,13 +115,13 @@ When Fallback behavior is set in multiple places, Kestra resolves which action t
 2. **Namespace-Level**: Uses the behavior set in the the Namespace settings.
 3. **Tenant-Level**: Uses the behavior set in the the Tenant settings.
 
-### Fallback Behavior at the Namespace Level
+### Fallback behavior at the namespace level
 
 Namespaces can be configured to have a default `fallback` behavior. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
 
 ![Configure Worker Group for a Namespace](/docs/enterprise/worker-group-namespace.png)
 
-### Fallback Behavior at the Tenant Level
+### Fallback behavior at the tenant level
 
 Tenants can be configured to have a default `fallback` behavior. It can be configured when creating a tenant on in the tenant's properties.
 
@@ -164,7 +164,7 @@ pluginDefaults:
         key: gpu
 ```
 
-### Distant Workers
+### Distant workers
 
 You can use a Worker Group to designate a worker to execute **any** task on a remote resource. Additionally, you may want to have an **always-on** worker that stays available for execution-intensive workloads.
 
@@ -172,7 +172,7 @@ The Distant Worker use case requires a connection to the Kestra metastore, and i
 
 ![Distant Worker Architecture](/docs/enterprise/distant-worker.png)
 
-### Task Runners
+### Task runners
 
 If you are using scripting tasks, you can set up Worker Group of Task Runners to leverage **on-demand** cloud resources to execute intensive workloads. For example, you can have a Worker Group dedicated to executing on AWS Batch or Kubernetes.
 
@@ -180,7 +180,7 @@ This is particularly useful for script task workloads that have bursts in resour
 
 ![Task Runner Architecture](/docs/enterprise/task-runners.png)
 
-### Data Isolation
+### Data isolation
 
 Worker Groups strongly fits **Data Isolation** use cases. Multi-tenancy requirements may demand that you have strict isolation of remote resources such as key vaults. Worker groups enable you to split out dedicated workers per tenant.
 
@@ -192,7 +192,7 @@ In the below architecture, it is not possible to execute tasks on worker 1 from 
 Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
 :::
 
-## Load Balancing
+## Load balancing
 
 Whether you leverage worker groups or not, Kestra will balance the load across all available workers. The primary difference is that with worker groups, you can target **specific** workers for task execution or polling trigger evaluation.
 
@@ -202,7 +202,7 @@ There's a slight difference between Kafka and JDBC architectures in terms of loa
 - The Kafka architecture relies on Kafka consumer group protocol — each worker group will use a different consumer group protocol, therefore each worker group will balance the load independently.
 - For JDBC, each worker within a group will poll the `queues` database table using the same poll query. All workers within the same worker group will poll for task runs and polling triggers in a FIFO manner.
 
-### Central Queue to distribute task runs and polling triggers
+### Central queue to distribute task runs and polling triggers
 
 In both JDBC and Kafka architectures, we leverage a Central Queue to ensure that tasks and polling triggers are executed only once and in the right order.
 
@@ -211,9 +211,8 @@ Here's how it works:
 - Workers periodically poll the central queue to check for available jobs. When a worker becomes free, it requests the next job from the queue.
 - Kestra backend keeps track of assignment of jobs to workers to ensure reliable execution and prevent duplicate processing.
 
-### What if multiple workers from the same worker group poll for jobs from the central queue?
+### What if multiple workers from the same Worker Group poll for jobs from the central queue?
 
 Whether the jobs (task runs and polling triggers) are evenly distributed among workers depends on several factors:
 1. The order in which workers poll the queue will affect distribution — workers that poll the queue first will get jobs first (FIFO).
 2. Variations in worker compute capabilities (and their processing speeds) can cause uneven job distribution. Faster workers will complete jobs and return to poll the queue more quickly than slower workers.
-

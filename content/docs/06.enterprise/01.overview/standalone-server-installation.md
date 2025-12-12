@@ -89,7 +89,7 @@ Additional Enterprise Edition plugins that are not task related may also be requ
 
 ---
 
-## Secret Plugins
+## Secret plugins
 
 Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
 
@@ -113,7 +113,7 @@ kestra plugins install io.kestra.storage:storage-minio:LATEST
 
 ---
 
-## Enterprise Deployment Configuration
+## Enterprise deployment configuration
 
 For the full list of configuration options, refer to the [Configuration Reference](https://kestra.io/docs/configuration).
 
@@ -141,7 +141,7 @@ Make sure to have a database configured and your Enterprise credentials stored i
 
 ---
 
-## Standalone Server
+## Standalone server
 
 ```shell
 kestra server standalone -c ./application.yaml -p ./plugins --port=8080
@@ -151,7 +151,7 @@ This starts Kestra as a standalone service on port `8080`.
 
 ---
 
-## Distributed Mode
+## Distributed mode
 
 For production usage, Kestra should run in distributed mode for scalability and high availability.
 
