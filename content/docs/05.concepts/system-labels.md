@@ -9,9 +9,13 @@ Special labels for system use only.
 
 ## Overview
 
-System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 4DhfCBCDznBqipTAnd7zfm`.
+System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 6WuLA1vh9lpFsGyrkuVRYb`.
 
 ![correlationId](/docs/concepts/correlationId.png)
+
+The table will then show the execution connected to that ID.
+
+![Correlation ID Filter Result](/docs/concepts/correlationId-filter-result.png)
 
 ---
 
