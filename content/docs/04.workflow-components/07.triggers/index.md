@@ -172,7 +172,7 @@ From **Administration → Triggers** you can bulk manage trigger state:
 
 Deleting a trigger is different from deleting a backfill: removing a backfill only cancels pending catch-up runs, while deleting a trigger resets the trigger entity itself. Use **Delete backfill** to stop scheduled replays and **Delete trigger** to rebuild the trigger state.
 
-![Delete a trigger](/docs/workflow-components/triggers/delete-trigger.png)
+![Delete a trigger](/docs/workflow-components/triggers/delete-triggers.png)
 
 ## Troubleshooting a trigger from the UI
 
