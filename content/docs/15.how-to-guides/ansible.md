@@ -315,6 +315,43 @@ Make sure Ansible is installed and save the YAML as `system_info.yml`, run it ag
 - `ansible-playbook -i localhost, -c local system_info.yml`
 - Optionally inspect the JSON: `jq '.' system_info.json`
 
+The diagnostics report captured looks like the following (macOS):
+
+```json
+"diagnostics": {
+  "disk_usage": [
+    "Filesystem      Size   Used  Avail Capacity iused      ifree %iused  Mounted on",
+    "/dev/disk3s1   466Gi  128Gi  318Gi    29% 1453290 4882459910    0%   /"
+  ],
+  "uptime": "18:42  up 5 days,  7:31, 4 users, load averages: 2.34 2.11 1.98",
+  "top_mem_processes": [
+    "USER         PID  %CPU %MEM      VSZ      RSS   TT  STAT STARTED      TIME COMMAND",
+    "jdoe        4287  23.5  9.8  9876544  823456   ??  R    9:12PM   0:21.43 /Applications/Chrome",
+    "jdoe        1562   7.3  5.4  6453320  455121   ??  S    7:58AM  12:11.01 /usr/bin/python3 myscript.py",
+    "_windowser   991   3.8  3.8  5432100  315789   ??  S    Fri11AM   5:45.22 WindowServer",
+    "root          72   1.2  2.2  4321000  190233   ??  S    Sun09AM   3:12.90 /usr/libexec/trustd",
+    "jdoe        2178   0.9  1.6  3876543  131442   ??  S    Sat08PM   1:03.07 Slack"
+  ]
+}
+```
+
+And the machine information outputs the follwing for local macOS machine:
+
+```json
+TASK [Show basic system summary] *************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": [
+        "Hostname: Mac",
+        "OS: Darwin MacOSX 15.6.1",
+        "Kernel: 24.6.0",
+        "Architecture: arm64",
+        "CPU(s): 10",
+        "Total RAM (MB): 24576",
+        "Primary IP: 10.0.0.42"
+    ]
+}
+```
+
 ### Run it from Kestra
 
 Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli):
