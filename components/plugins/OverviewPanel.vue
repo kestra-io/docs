@@ -87,7 +87,7 @@
                 <a v-if="repoUrl" class="resource-btn github" :href="repoUrl" target="_blank" rel="noopener noreferrer"
                     aria-label="Plugin GitHub repository">
                     <Github class="me-2" />
-                    <span>Github</span>
+                    <span>GitHub</span>
                 </a>
                 <!-- TODO: Not done yet on plugin side
                 <a class="resource-btn file" href="/llm.txt" target="_blank" rel="noopener noreferrer" aria-label="Open llm.txt">
