@@ -297,23 +297,27 @@ This playbook audits a host without assuming the OS, captures diagnostics, and u
 
 ### What this playbook covers
 
-It gathers the usual suspects (OS family, distro, kernel, CPU, RAM, IP), then pulls quick diagnostics like disk usage, uptime, and top memory processes. It checks `python3` and, if it's older than `3.11.0`, upgrades it with the right package manager depending on the OS of the machine (`apt`, `yum`, or Homebrew). 
+It gathers the usual suspects (OS family, distro, kernel, CPU, RAM, IP), then pulls quick diagnostics like disk usage, uptime, and top memory processes. It checks `python3` and, if it's older than `3.11.0`, upgrades it with the right package manager depending on the OS of the machine (`apt`, `yum`, or Homebrew).
+
+The image below shows an example output targeting a local machine where `python3` is installed, but the Python version is `"3.10.4"`. 
 
 ![Ansible Python Check](/docs/how-to-guides/ansible/ansible-python-check.png)
 
+Ansible also reports that `"python3_needs_upgrade": true` and depending on the detected OS of the machine, upgrades accordingly.
+
 ![Ansible Python Needs Upgrade](/docs/how-to-guides/ansible/ansible-python-needs-upgrade.png)
 
-Everything lands in `system_info.json` with mode `0600` so you have a tidy, readable report.
+Everything from this Python upgrade to other machine diagnostics are aggregated in `system_info.json` with mode `0600` so you have a tidy, readable report.
 
 ### Run it locally
 
-Save the YAML as `system_info.yml`, run it against localhost, and peek at the output:
+Make sure Ansible is installed and save the YAML as `system_info.yml`, run it against localhost, and peek at the output:
 - `ansible-playbook -i localhost, -c local system_info.yml`
 - Optionally inspect the JSON: `jq '.' system_info.json`
 
 ### Run it from Kestra
 
-Embed the playbook and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli):
+Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli):
 
 ```yaml
 id: system_report
@@ -410,4 +414,4 @@ Pair the trigger with the S3-uploading flow to build a historical log of machine
 
 ### Wrap up
 
-Ansible handles host-level automation (facts, checks, remediation) while Kestra orchestrates when and where it runs, keeps secrets out of playbooks, ships outputs to S3, and gives you centralized observability. Together they scale the same playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+Ansible handles host-level automation (facts, checks, remediation) while Kestra orchestrates when and where it runs, keeps secrets out of playbooks, ships outputs to S3 or other destinations, and gives you centralized observability of your machine configurations. Together they scale the same playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
