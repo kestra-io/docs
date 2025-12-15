@@ -1,9 +1,11 @@
 ---
 title: Detect Ansible Config Drift with Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/ansiblecli.svg
 ---
 
-Use Ansible to enforce a required environment variable across multiple hosts and have Kestra alert you in Slack when a change occurs. This pattern keeps configs consistent and surfaces drift without manual checks.
+Keeps configs consistent and surfaces drift without manual checks with Ansible.
+
+Use Ansible to enforce a required environment variable across multiple hosts and have Kestra alert you in Slack when a change occurs. 
 
 ## Files to store as Namespace Files
 

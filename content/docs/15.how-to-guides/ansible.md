@@ -1,6 +1,6 @@
 ---
-title: Orchestrate Ansible with Kestra
-icon: /docs/icons/tutorial.svg
+title: Check Machine Resources and Tool Versions with Ansible and Kestra
+icon: /docs/icons/ansiblecli.svg
 ---
 
 Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks.
@@ -297,16 +297,19 @@ This playbook audits a host without assuming the OS, captures diagnostics, and u
 
 ### What this playbook covers
 
-- Prints system facts (OS family, distro, kernel, CPU, RAM, IP).
-- Captures diagnostics: disk usage, uptime, and top memory processes.
-- Detects `python3` and upgrades it via `apt`, `yum`, or Homebrew if it is older than `3.11.0`.
-- Builds a full facts structure and writes it to `system_info.json` with mode `0600`.
+It gathers the usual suspects (OS family, distro, kernel, CPU, RAM, IP), then pulls quick diagnostics like disk usage, uptime, and top memory processes. It checks `python3` and, if it's older than `3.11.0`, upgrades it with the right package manager depending on the OS of the machine (`apt`, `yum`, or Homebrew). 
+
+![Ansible Python Check](/docs/how-to-guides/ansible/ansible-python-check.png)
+
+![Ansible Python Needs Upgrade](/docs/how-to-guides/ansible/ansible-python-needs-upgrade.png)
+
+Everything lands in `system_info.json` with mode `0600` so you have a tidy, readable report.
 
 ### Run it locally
 
-1. Save the YAML as `system_info.yml`.
-2. Run `ansible-playbook -i localhost, -c local system_info.yml`.
-3. Inspect the JSON report with `jq '.' system_info.json` (optional).
+Save the YAML as `system_info.yml`, run it against localhost, and peek at the output:
+- `ansible-playbook -i localhost, -c local system_info.yml`
+- Optionally inspect the JSON: `jq '.' system_info.json`
 
 ### Run it from Kestra
 
@@ -331,7 +334,11 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a Namespace File and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli). Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`):
+Or, keep the playbook as a Namespace File and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli). 
+
+![Namespace Files](/docs/how-to-guides/ansible/flow-namespace-files.png)
+
+Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`):
 
 ```yaml
 id: system_report
@@ -349,11 +356,13 @@ tasks:
       - ansible-playbook -i inventory.ini system_info.yml
 ```
 
-After the run, download `system_info.json` from the task outputs and feed it into downstream checks or dashboards.
+After the run, preview or download `system_info.json` from the task outputs and feed it into downstream checks or dashboards.
+
+![Ansible File Output](/docs/how-to-guides/ansible/ansible-outputs.png)
 
 ### Upload the report to S3
 
-Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload):
+Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) to upload the report file to object storage:
 
 ```yaml
 id: system_report_to_s3
@@ -380,7 +389,7 @@ tasks:
     region: us-east-1
 ```
 
-The `upload_report` task pushes the generated JSON to S3; adjust `bucket`, `key`, and `region` to match your setup.
+The `upload_report` task pushes the generated JSON to S3; adjust `bucket`, `key`, and `region` to match your setup. The key takeaway from this step is the `outputFiles` expression which can be used in any downstream task that fits your use case, not only an S3 task.
 
 ### Trigger it (scheduled or event-driven)
 
