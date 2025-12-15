@@ -6,7 +6,7 @@
                 <InformationOutline class="info-icon" />
             </span>
             <div role="tooltip" id="overview-tooltip">
-                <p>Plugins have Minimal Compatible Version, i.e. a Kestra version for which the corresponding plugin version is compatible. 
+                <p>Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where the corresponding plugin version is compatible. 
                     <a href="https://kestra.io/docs/releases" target="_blank">
                         Learn more
                     </a>
