@@ -19,7 +19,13 @@
                     </span>
                 </button>
 
-                <PluginsOverviewPanel v-if="isPluginPage" :version :releasesUrl :categories :metadata="props.metadata" />
+                <OverviewPanel 
+                    v-show="isPluginPage" 
+                    :version
+                    :releasesUrl
+                    :categories
+                    :metadata="props.metadata" 
+                />
 
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
@@ -63,7 +69,7 @@
     import type {ReleaseInfo} from "~/server/api/github-releases";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-
+    import OverviewPanel from "~/components/plugins/OverviewPanel.vue";
 
     const props = withDefaults(
         defineProps<{
@@ -211,7 +217,6 @@
             min-width: 250px;
             border-left: 1px solid $black-3;
             z-index: 10;
-            background: $black-7;
         }
 
         &::-webkit-scrollbar {
@@ -222,7 +227,6 @@
             @include media-breakpoint-up(lg) {
                 position: sticky;
                 top: 0;
-                max-width: 269px;
                 width: 100%;
                 overflow-y: auto;
             }

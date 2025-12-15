@@ -4,6 +4,7 @@
             :plugin-wrapper="rootPlugin"
             :plugins-without-deprecated="pluginsWithoutDeprecated"
             :plugin-name="pluginName"
+            :title="headingTitle"
         />
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
@@ -33,7 +34,7 @@
                     </div>
                     <div class="title-content d-flex flex-column justify-space-between w-100">
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            <span class="text-capitalize">{{ headingTitle }}</span>
+                            <span>{{ headingTitle }}</span>
                             <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
                         </div>
                         <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
@@ -202,7 +203,12 @@
 
     const githubReleaseRepo = computed(() => {
         const name = pluginName.value ?? "";
-        if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") { // because plugin-jdbc is the parent for many subgroups in same repo.
+        // because core plugin is part of kestra repo
+        if (name === "core") {
+            return "kestra";
+        }
+         // because plugin-jdbc is the parent for many subgroups in same repo.
+        if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
             return "plugin-jdbc";
         }
         return name;
@@ -247,7 +253,7 @@
         
         return result;
     });
-    
+
     const pluginBlueprintCounts = computed(() => counts.value);
 
     const { data: relatedBlogs } = await useAsyncData(
@@ -486,7 +492,7 @@
                 ? [{id: "latest-blog-posts", depth: 3, text: "Latest Blog Posts"}]
                 : []
             ),
-            ...(currentPluginCategories.value?.length
+            ...(allPlugins.value?.some(p => p.name !== pluginName.value && p.categories?.some(cat => currentPluginCategories.value?.includes(cat))) ?? false
                 ? [{
                     id: "more-plugins-in-this-category",
                     depth: 3,
