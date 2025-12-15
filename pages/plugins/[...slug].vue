@@ -75,6 +75,7 @@
             <RelatedBlueprints
                 :plugin-name="pluginName"
                 :plugin-wrapper="rootPlugin"
+                :current-subgroup-plugin="currentSubgroupPlugin"
                 :sub-group-name="currentSubgroupPlugin ? slugify(subGroupName(currentSubgroupPlugin)) : subGroup"
                 :plugin-type="pluginType"
                 :custom-id="blueprintsSectionHeading?.id"
@@ -109,7 +110,7 @@
 
 <script setup lang="ts">
     import {useEventListener} from "@vueuse/core";
-    import {isEntryAPluginElementPredicate, subGroupName, slugify, filterPluginsWithoutDeprecated, extractPluginElements, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
+    import {isEntryAPluginElementPredicate, subGroupName, slugify, filterPluginsWithoutDeprecated, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
     import {useBlueprintsCounts} from "~/composables/useBlueprintsCounts";
     import {formatElementType, formatElementName, getBlueprintsHeading, getPluginTitle} from "../../utils/pluginUtils";
     import {generatePageNames, recursivePages} from "~/utils/navigation";

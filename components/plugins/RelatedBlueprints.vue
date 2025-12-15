@@ -11,7 +11,7 @@
         </div>
         <div class="row g-3">
             <div v-for="blueprint in visibleBlueprints" :key="blueprint.id" class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
-                <LayoutBlueprintCard :blueprint="blueprint" :tags="tags" :href="`/blueprints/${blueprint.id}`" />
+                <LayoutBlueprintCard :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`" />
             </div>
         </div>
     </div>
@@ -21,19 +21,16 @@
     import {computed, ref, watch} from "vue";
     import type {Plugin} from "@kestra-io/ui-libs";
     import {useMediaQuery} from "@vueuse/core";
-    import {formatElementName, formatElementType, formatPluginName, getBlueprintsHeading} from "~/utils/pluginUtils";
-    import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
-    import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
+    import {getBlueprintsHeading} from "~/utils/pluginUtils";
     import NavActions from "~/components/common/NavActions.vue";
-    import {useBlueprintsTags} from "~/composables/useBlueprintsTags";
 
     const props = defineProps<{
         pluginName: string;
         pluginWrapper?: Plugin;
         subGroupName?: string;
         pluginType?: string;
-        tags?: any[];
         customId?: string | null;
+        currentSubgroupPlugin?: Plugin;
     }>();
 
     const createWithBlueprints = computed(() => getBlueprintsHeading(
@@ -47,19 +44,24 @@
     const headerText = computed(() => createWithBlueprints.value.text);
     const headerID = computed(() => createWithBlueprints.value.id);
 
-    const pluginParam = computed(() => props.pluginWrapper?.group ?? props.pluginName);
+    const pluginIdentifier = computed(() => {
+        if (props.pluginType) {
+            return props.pluginType
+        }
+        
+        if (props.currentSubgroupPlugin?.subGroup) {
+            return props.currentSubgroupPlugin.subGroup
+        }
+        
+        return props.pluginWrapper?.group ?? props.pluginName
+    })
 
-    const { data } = await useFetch("/api/blueprints/related-blueprints", {
-        key: `similar-blueprints-${pluginParam.value}-${props.subGroupName ?? ""}-${props.pluginType ?? ""}`,
+    const { data } = await useFetch("/api/blueprint", {
+        key: `similar-blueprints-${pluginIdentifier.value}`,
         query: {
-            plugin: pluginParam.value,
-            subgroup: props.subGroupName,
-            type: props.pluginType
+            plugin: pluginIdentifier.value
         },
-        server: false
     });
-
-    const { tags } = useBlueprintsTags();
 
     const relatedBlueprints = computed(() => data.value?.results ?? []);
 
