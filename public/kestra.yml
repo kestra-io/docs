@@ -8862,6 +8862,8 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+          source:
+            type: string
     IdWithNamespace:
       type: object
       properties:
@@ -9202,6 +9204,8 @@ components:
         pluginsHash:
           type: integer
           format: int64
+        isConcurrencyViewEnabled:
+          type: boolean
     MiscController.Environment:
       type: object
       properties:
@@ -9521,6 +9525,10 @@ components:
           type: string
         deprecated:
           type: boolean
+        title:
+          type: string
+        description:
+          type: string
     PluginController.ApiPluginVersions:
       type: object
       properties:
