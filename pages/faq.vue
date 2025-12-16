@@ -246,8 +246,19 @@ h2 {
 .container {
     color: $white;
 
-    p, ul > li, ol > li, span, a {
+    p, ul > li, ol > li, span {
         color: $white;
+    }
+
+    a {
+        color: $purple-35;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            color: lighten($purple-35, 10%);
+            text-decoration: underline;
+        }
     }
 }
 
