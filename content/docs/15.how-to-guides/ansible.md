@@ -403,7 +403,7 @@ After the run, preview or download `system_info.json` from the task outputs and 
 
 ### Upload the report to S3
 
-Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) to upload the report file to object storage:
+Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) and store credentials in secrets:
 
 ```yaml
 id: system_report_to_s3
@@ -420,21 +420,32 @@ tasks:
     commands:
       - ansible-playbook -i inventory.ini system_info.yml
 
-  - id: upload_report
+  - id: upload_output_to_s3
     type: io.kestra.plugin.aws.s3.Upload
-    from: "{{ outputs.system_info.outputFiles['system_info.json'] }}"
-    bucket: my-report-bucket
-    key: systems/{{ execution.startDate | date('yyyyMMdd_HHmmss') }}/system_info.json
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-    region: us-east-1
+    bucket: "{{ secret('S3_BUCKET_NAME') }}"
+    key: "system_reports/{{ execution.id }}/system_info.json"
+    from: "{{ outputs.system_info.outputFiles['system_info.json'] }}"
 ```
 
-The `upload_report` task pushes the generated JSON to S3; adjust `bucket`, `key`, and `region` to match your setup. The key takeaway from this step is the `outputFiles` expression which can be used in any downstream task that fits your use case, not only an S3 task.
+The `upload_output_to_s3` task pushes the generated JSON to S3 using secrets for credentials and bucket name; reuse `outputFiles` expressions anywhere you need the file.
+
+### Add a Slack notification
+
+To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-notifications/slack/io.kestra.plugin.notifications.slack.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in [plugin-notifications](/plugins/plugin-notifications) or chain multiple notifications if needed:
+
+```yaml
+  - id: slack_notification
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK_URL') }}"
+    messageText: "Machine `{{ flow.id }}` had outdated Python and an upgrade took place during execution `{{ execution.id }}`. Report available at S3: `{{ outputs.upload_output_to_s3.uri }}`"
+```
 
 ### Trigger it (scheduled or event-driven)
 
-Add a trigger so the flow runs automatically—either on a schedule ([Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md)) or from an external event ([Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md)):
+Lastly, add a trigger so the flow runs automatically—either on a schedule ([Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md)) or from an external event ([Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md)):
 
 ```yaml
 triggers:
@@ -447,8 +458,8 @@ triggers:
   #   type: io.kestra.plugin.core.http.Webhook
 ```
 
-Pair the trigger with the S3-uploading flow to build a historical log of machine health without manual runs.
+A trigger allows you to build a historical log of machine health in S3 and Slack without manual runs.
 
 ### Wrap up
 
-Ansible handles host-level automation (facts, checks, remediation) while Kestra orchestrates when and where it runs, keeps secrets out of playbooks, ships outputs to S3 or other destinations, and gives you centralized observability of your machine configurations. Together they scale the same playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+Ansible handles host-level automation—collecting facts, checking Python versions, and remediating with the right package manager. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
