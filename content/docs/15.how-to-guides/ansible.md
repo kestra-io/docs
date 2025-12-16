@@ -430,6 +430,8 @@ tasks:
     from: "{{ outputs.system_info.outputFiles['system_info.json'] }}"
 ```
 
+![S3 Bucket Upload](/docs/how-to-guides/ansible/ansible-s3-upload.png)
+
 The `upload_output_to_s3` task pushes the generated JSON to S3 using secrets for credentials and bucket name; reuse `outputFiles` expressions anywhere you need the file.
 
 ### Add a Slack notification
@@ -440,8 +442,10 @@ To include a separate notification to the relevant channels, add the [Slack Inco
   - id: slack_notification
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
-    messageText: "Machine `{{ flow.id }}` had outdated Python and an upgrade took place during execution `{{ execution.id }}`. Report available at S3: `{{ outputs.upload_output_to_s3.uri }}`"
+    messageText: "Machine `{{ flow.id }}` had outdated Python and an upgrade took place during execution `{{ execution.id }}`. Report available at S3: `{{ outputs.upload_output_to_s3.key }}`"
 ```
+
+![Slack Notification](/docs/how-to-guides/ansible/ansible-slack-notification.png)
 
 ### Trigger it (scheduled or event-driven)
 
