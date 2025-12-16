@@ -3,7 +3,7 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Blueprints</h1>
-                <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
+                <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow</h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ blueprints" v-model="searchQuery">
                     <Magnify class="search-icon" />
