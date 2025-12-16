@@ -251,12 +251,12 @@ h2 {
     }
 
     a {
-        color: $purple-35;
+        color: var(--ks-content-link);
         text-decoration: none;
         transition: all 0.2s ease-in-out;
 
         &:hover {
-            color: lighten($purple-35, 10%);
+            color: var(--ks-link-hover);
             text-decoration: underline;
         }
     }
