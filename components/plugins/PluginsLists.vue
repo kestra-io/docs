@@ -189,16 +189,17 @@
     };
 
     function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
-        if (!search) {
-            return allPlugins;
-        }
-        const searchLowercase = search?.trim().toLowerCase();
+        if (!search) return allPlugins;
+
+        const tokens = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
+
         return allPlugins.filter((item) => {
-            return item?.title.toLowerCase().includes(searchLowercase) ||
-                Object.entries(item)
-                    .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-                    .flatMap(([_, elements]) => elements as PluginElement[])
-                    .some(({cls}: PluginElement) => cls.toLowerCase().includes(searchLowercase));
+            if (tokens.every(t => item?.title.toLowerCase().includes(t))) return true;
+
+            return Object.entries(item)
+                .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+                .flatMap(([_, elements]) => elements as PluginElement[])
+                .some(({cls}: PluginElement) => tokens.every(t => cls.toLowerCase().includes(t)));
         });
     }
 
