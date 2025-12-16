@@ -7,6 +7,7 @@
                 :key="edition"
                 v-if="edition"
                 :href="editionInfo(edition).link"
+                :target="editionInfo(edition).link ? '_blank' : undefined"
                 class="badge d-flex align-items-center text-decoration-none"
                 :class="`bg-${editionInfo(edition).color}`"
             >

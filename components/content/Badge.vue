@@ -3,12 +3,13 @@
         <p class="mb-0">Available on:</p>
         <span v-if="version" class="badge d-flex align-items-center bg-body-tertiary">{{version}}</span>
     <component
-        :is="editionInfo(edition).link ? 'a' : 'span'"
-        v-for="edition in editions.split(',').filter(edition => edition.trim())"
-        :key="edition"
-        :href="editionInfo(edition).link"
-        class="badge d-flex align-items-center text-decoration-none"
-        :class="`bg-${editionInfo(edition).color}`"
+      :is="editionInfo(edition).link ? 'a' : 'span'"
+      v-for="edition in editions.split(',').filter(edition => edition.trim())"
+      :key="edition"
+      :href="editionInfo(edition).link"
+      :target="editionInfo(edition).link ? '_blank' : undefined"
+      class="badge d-flex align-items-center text-decoration-none"
+      :class="`bg-${editionInfo(edition).color}`"
     >
         {{ editionInfo(edition).label }}
     </component>
