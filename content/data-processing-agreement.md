@@ -231,7 +231,7 @@ The applicable list of the Sub Processors at the date of the Agreement is the fo
 | --- | --- | --- |
 | Google Cloud | Hosting / Storage | EU / US |
 | Cloudflare | Networking | Global |
-| Github | Source Code | Global |
+| GitHub | Source Code | Global |
 | Stripe | Payment / Billing | Global |
 | Hubspot | CRM | Global |
 | Zendesk | Support | Global |

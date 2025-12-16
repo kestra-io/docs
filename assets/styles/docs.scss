@@ -266,6 +266,11 @@ $bd-gutter-x: 3rem;
         vertical-align: baseline;
         margin-left: 1px;
     }
+
+    a.badge[target="_blank"]::after {
+        display: none;
+        content: none;
+    }
 }
 
 
