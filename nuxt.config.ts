@@ -383,7 +383,8 @@ export default defineNuxtConfig({
         '/docs/getting-started/docs-contributor-guide': {redirect: '/docs/contribute-to-kestra/docs-contributor-guide'},
         '/docs/getting-started/community-guidelines': {redirect: '/docs/contribute-to-kestra/community-guidelines'},
         '/docs/getting-started/': {redirect: '/docs/quickstart'},
-        '/docs/getting-started/selected-plugin-installation': {redirect: '/docs/how-to-guides/selected-plugin-installation'}
+        '/docs/getting-started/selected-plugin-installation': {redirect: '/docs/how-to-guides/selected-plugin-installation'},
+        '/docs/getting-started/plugins': {redirect: '/plugins'}
     },
 
     build: {
