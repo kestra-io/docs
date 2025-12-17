@@ -242,7 +242,6 @@ h2 {
     font-weight: 300;
 }
 
-/* ✅ Force all text in the page to be white */
 .container {
     color: $white;
 
@@ -256,7 +255,7 @@ h2 {
         transition: all 0.2s ease-in-out;
 
         &:hover {
-            color: var(--ks-link-hover);
+            color: var(--ks-content-link-hover);
             text-decoration: underline;
         }
     }
