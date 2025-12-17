@@ -65,6 +65,7 @@
                 :active-id="activeSectionId"
                 :subgroup-blueprint-counts="subgroupBlueprintCounts"
                 :metadata-map="metadataMap"
+                :schemas="elementTitle"
             />
 
             <PluginVideos 
@@ -238,6 +239,16 @@
             return acc;
         }, {} as Record<string, PluginMetadata>) ?? {}
     );
+
+    const elementTitle = computed(() => Object.fromEntries(
+        (pluginsWithoutDeprecated.value ?? []).flatMap(p => Object.entries(p)
+            .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+            .flatMap(([_, els]) => (els)
+                .filter(el => el?.title)
+                .map(el => [el.cls, {title: el.title}] as [string, {title?: string}])
+            )
+        ).filter(([_, v]) => Boolean(v?.title))
+    ));
 
     const { counts } = await useBlueprintsCounts();
     
