@@ -1,6 +1,6 @@
 ---
-title: "Kestra 1.2 introduces ..."
-description: "Kestra 1.2 delivers ..."
+title: "Kestra 1.2 introduces Assets, Namespace Files Revision History, Concurrent Executions, Enhanced UI and Dozens of New Plugins"
+description: "Kestra 1.2 delivers asset management, namespace file versioning, concurrent execution capabilities, improved UI/UX, new secret managers, and dozens of new community-driven plugins."
 date: 2026-01-06T17:00:00
 category: News & Product Updates
 authors:
@@ -10,21 +10,19 @@ image: /blogs/release-1-2.jpg
 ---
 
 
-We're excited to announce Kestra 1.2, delivering ...
+We're excited to announce Kestra 1.2, delivering asset management, namespace file versioning capabilities, concurrent execution support, improved user interface designs, and dozens of plugins. Following user feedback, we've introduced enterprise-grade asset management, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
 
 The table below highlights the key features of this release.
 
 | Feature | Description | Edition |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| Assets | Maintain a stateful inventory of external resources (table, VMs, etc.) with identity, metadata, and state for unified resource management and workflow reactivity | Enterprise Edition |
+| Templated Custom Blueprints | Create new flows from templates by filling in templated values, allowing business users to generate complete workflows without boilerplate | Enterprise Edition |
+| Revision History for NamespaceFiles | Track and restore previous versions of namespace files with comprehensive revision history | All Editions |
+| Checks Feature | Add validation checks to prevent execution creation when specified conditions aren't met | All Editions |
+| Concurrent Execution for Trigger | Enable multiple concurrent executions to be triggered simultaneously from any trigger type | All Editions |
+| Execution Overview Page New Design | Redesigned execution overview page with improved layout, better spacing, and organized sections | All Editions |
+| Secret Managers | New secret managers including 1Password and Doppler integration | Enterprise Edition |
 |  |  |  |
 
 
@@ -34,72 +32,104 @@ Check the video below for a quick overview of all enhancements.
   <iframe src="" title="Kestra 1.2 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## New Feature 1
+## Assets
 
-...
+Kestra 1.2 introduces Assets, a powerful new Enterprise Edition feature that maintains a stateful inventory of external resources (tables, VMs, databases, inventory, etc.) that workflows interact with. Assets solve common infrastructure orchestration challenges by providing:
 
+- **Unified Resource Inventory** - Track all resources across your organization with identity, metadata, and state
+- **Dynamic UI Inputs** - Populate dropdowns and selections based on existing resources with filtering by ownership, environment, or state
+- **Reactive Workflows** - Trigger flows automatically when resource state changes
+- **Cross-Flow State Sharing** - Share resource information consistently between workflows
+- **Complete Traceability** - Track which flow created, modified, or deleted each resource
 
-
-
-## New Feature 2
-
-...
-
-
-
-## New Feature 3
-
-...
+Assets are implemented as a separate plugin system, keeping Kestra's unopinionated design while providing enterprise-grade resource management capabilities. This first iteration establishes the foundation for resource management, with future releases planned to enhance functionality and add more integrations.
 
 
-## New Feature 4
+## Templated Custom Blueprints
 
-...
+Enterprise Edition users can now create Templated Custom Blueprints that allow business users to generate complete workflows by filling in templated values. Unlike regular blueprints that serve as examples to copy and modify, templated blueprints use custom `<< >>` delimiters (to avoid conflicts with existing Pebble expressions) to define parameters that users fill in through a guided interface.
 
-
-
-
-## New Feature 5
-
-...
+Solutions such as templatized Terraform configurations or using the Python SDK to make DAG factories are still valid ways to address similar templating needs. Templated Custom Blueprints offer a more direct, simpler and integrated approach within the Kestra platform, streamlining the process and enhancing the user experience.
 
 
-## New Feature 6
+TODO: EXAMPLE PRE RENDER, POST RENDER
 
-...
+
+The templating system supports most of input types. Templates are stored durably in the database and can generate new flows with unique IDs and namespaces.
 
 
 
-## New Feature 7
+## Revision History for Namespace Files
 
-...
+Namespace Files in Kestra 1.2 now support comprehensive version control with revision history. You can track changes, restore previous versions, and maintain audit trails for all namespace files. The example below shows how to reference specific versions of namespace files in your workflows:
+
+:::collapse{title="Namespace File Versioning Example"}
+
+```yaml
+id: namespace_file_versioning
+namespace: company.team
+
+tasks:
+  - id: use_specific_version
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read('config.txt', version=3) }}"
+
+  - id: python_with_versioned_file
+    type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      config.txt: nsfile:///config.txt.v2
+    script: |
+      with open('config.txt', 'r') as f:
+        print(f.read())
+```
+
+:::
+
+## No Code for Unit Tests
+
+Kestra 1.2 extends the No-Code capabilities to include unit test creation. You can now build and configure unit tests for your workflows using the visual editor, making it easier to ensure workflow reliability without writing complex test code.
+
+
+## Execution Overview Page New Design
+
+The Execution Overview page has been completely redesigned with improved visual hierarchy and better information density. Key improvements include:
+
+- **Organized Section Divisions** - Clear boxes group related functionality (State, Actions, etc.) for better navigation
+- **Optimized Spacing** - Reduced spacing between keys and values for improved readability on wider screens
+- **Better Visual Flow** - Information is now easier to scan and understand at a glance
 
 
 
+## Secret Managers
 
-## New Feature 8
-
-...
+Enterprise Edition users gain new secret management integrations including 1Password and Doppler. These providers join existing secret managers to offer more flexibility in how sensitive credentials and configuration are stored and accessed across your infrastructure.
 
 
-## New Feature 9
+## Checks Feature
 
-...
+Kestra 1.2 introduces flow-level checks that can block execution creation if specified conditions aren't met. This validation layer ensures workflows only run when prerequisites are satisfied, preventing invalid or inappropriate executions from starting.
 
-## New Feature 10
+## Concurrent Execution for Any Trigger
 
-...
+Any trigger in Kestra 1.2 can now support concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This removes previous limitations where certain trigger types could only run one execution at a time, enabling more flexible and scalable workflow patterns.
+
+## AWS Marketplace
+
 
 ## Additional Improvements
 
-- ...
-- ...
-- ...
-- ...
-- ...
+- https://github.com/kestra-io/kestra-ee/issues/5556#issuecomment-3520643382
+- https://github.com/kestra-io/kestra-ee/issues/5721
+- Add export to CSV on the Executions page - https://github.com/kestra-io/kestra-ee/issues/5307
+- Configurable termination grace periods for tasks and workflows, allowing you to control how long Kestra waits before forcefully shutting down processes—ideal for letting long-running tasks finish cleanup or critical steps.
+- The left menu now offers simpler navigation and better grouping of related features.
+- Modern redesigned Plugin page with improved search, better filtering, categorization, and integrated documentation for easier plugin discovery.
 
-## New Plugins
+## Plugins
 
+- **Apache Beam Plugin** – Introduces a `RunPipeline` task supporting multiple runners (Flink, Dataflow, Spark, Direct) and both Python and Java SDKs for unified big data processing across platforms.
+- **Segment CDP Plugin** – Reverse ETL tasks for syncing customer data from warehouses back to Segment, enabling activation of enriched data across marketing and analytics platforms.
+- Enhanced Ansible task logging and output generation for clearer execution insights and easier troubleshooting.
 - **AWS EMR Serverless** – Serverless big data processing on Amazon EMR without managing clusters. Run Spark and Hive jobs with automatic scaling and pay-per-second billing.
 - **NFS** – Network File System tasks including `CheckMount`, `List`, `Copy`, `Move`, and `Delete` operations for managing files across network-attached storage.
 - **Pipedrive** – CRM integration supporting deal and person management. Create or update deals, and create or retrieve person records programmatically.
@@ -111,6 +141,7 @@ Check the video below for a quick overview of all enhancements.
 - **Grafana Loki** – Log aggregation and querying integration for centralized logging and observability.
 - **Google Calendar** – `EventCreatedTrigger` to automatically trigger workflows when new calendar events are created.
 - **Google Sheets** – `SheetModifiedTrigger` to monitor and react to changes in Google Sheets documents.
+
 
 ## Migration Note for Upgrading to 1.2
 
@@ -136,6 +167,13 @@ For **Kubernetes** deployments, create a one-time pod to run the same migration 
 :::alert{type="info"}
 Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
 :::
+
+## TODO
+
+- Allow External revision for Flows Created from CI/CD
+- Auto-delete expired keys from KV Store
+- Allow deleting given revision/all revision
+- Add AI Copilot Button to the No-Code Editor Panel
 
 ## Next Steps
 
