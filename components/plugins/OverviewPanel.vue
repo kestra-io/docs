@@ -1,21 +1,40 @@
 <template>
     <div>
-        <strong class="d-none d-lg-block text-white fw-bold fs-6 h6">OVERVIEW</strong>
+        <div class="d-none d-lg-flex align-items-center justify-content-between overview-header">
+            <strong class="text-white fw-bold fs-6 h6">OVERVIEW</strong>
+            <span aria-describedby="overview-tooltip" class="info-icon-wrapper">
+                <InformationOutline class="info-icon" />
+            </span>
+            <div role="tooltip" id="overview-tooltip">
+                <p>Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where the corresponding plugin version is compatible. 
+                    <a href="https://kestra.io/docs/releases" target="_blank">
+                        Learn more
+                    </a>
+                </p>
+            </div>
+        </div>
 
         <div class="d-none d-lg-block pt-2 versions">
             <div v-if="releaseVersions.length > 0">
                 <strong class="h6 mb-0 pb-0">Versions</strong>
                 <div class="d-flex flex-column latest-ver">
-                    <div class="d-flex align-items-center justify-content-between pe-3">
+                    <div class="d-flex align-items-center justify-content-between latest-ver-header">
                         <h6>{{ releaseVersions[0]?.version }}</h6>
                         <span class="latest-badge">Latest</span>
                     </div>
                     <small>{{ formatDate(releaseVersions[0]?.publishedAt) }}</small>
-                    <a v-if="releasesUrl" :href="`${releasesUrl}/tag/v${releaseVersions[0]?.version}`" target="_blank"
-                        class="text-decoration-none">
+                    <a 
+                        v-if="releasesUrl"
+                        :href="`${releasesUrl}/tag/v${releaseVersions[0]?.version}`"
+                        target="_blank"
+                        class="text-decoration-none"
+                    >
                         Release Notes
                         <OpenInNew class="ms-1" />
                     </a>
+                    <small v-if="!kestraCore" class="kestra-ver" >
+                        Min. Compatible Kestra Version: <span class="core-ver">{{ releaseVersions[0]?.kestraVersion}}</span>
+                    </small>
                 </div>
                 <details v-if="releaseVersions.length > 1" @toggle="onToggle" class="old-versions">
                     <summary class="older-summary">
@@ -26,10 +45,17 @@
                         <div v-for="v in releaseVersions.slice(1)" :key="v?.version" class="older-version">
                             <strong>{{ v?.version }}</strong>
                             <small>{{ formatDate(v?.publishedAt) }}</small>
-                            <a v-if="releasesUrl" :href="`${releasesUrl}/tag/v${v?.version}`" target="_blank"
-                                class="text-decoration-none">
+                            <a 
+                                v-if="releasesUrl"
+                                :href="`${releasesUrl}/tag/v${v?.version}`"
+                                target="_blank"
+                                class="text-decoration-none"
+                            >
                                 <OpenInNew />
                             </a>
+                            <small v-if="!kestraCore" class="kestra-ver">
+                                Min. Compatible Kestra Version: <span class="core-ver">{{ v?.kestraVersion}}</span>
+                            </small>
                         </div>
                     </div>
                 </details>
@@ -61,7 +87,7 @@
                 <a v-if="repoUrl" class="resource-btn github" :href="repoUrl" target="_blank" rel="noopener noreferrer"
                     aria-label="Plugin GitHub repository">
                     <Github class="me-2" />
-                    <span>Github</span>
+                    <span>GitHub</span>
                 </a>
                 <!-- TODO: Not done yet on plugin side
                 <a class="resource-btn file" href="/llm.txt" target="_blank" rel="noopener noreferrer" aria-label="Open llm.txt">
@@ -84,6 +110,7 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue";
+    import InformationOutline from "vue-material-design-icons/InformationOutline.vue";
 
     const props = withDefaults(defineProps<{
         version?: {versions?: ReleaseInfo[]} | null;
@@ -99,7 +126,7 @@
 
     const showOlderVersions = ref(false);
 
-    const formatDate = (publishedAt: string): string => {
+    const formatDate = (publishedAt?: string | null): string => {
         if (!publishedAt) return "";
         return new Intl.DateTimeFormat("en-US", {
             month: "long",
@@ -132,6 +159,8 @@
 
     const createdBy = computed(() => metadataItem.value?.createdBy ?? "Kestra Core Team");
     const managedBy = computed(() => metadataItem.value?.managedBy ?? "Kestra Core Team");
+
+    const kestraCore = computed(() => props.releasesUrl === "https://github.com/kestra-io/kestra/releases");
 </script>
 
 <style lang="scss" scoped>
@@ -146,6 +175,10 @@
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
+
+            .latest-ver-header {
+                padding-right: 0.25rem;
+            }
 
             h6 {
                 color: $white;
@@ -188,6 +221,17 @@
                     color: var(--ks-content-link-hover);
                 }
             }
+        }
+
+        .kestra-ver {
+            color: color-palette.$base-gray-300 !important;
+            font-size: 10px !important;
+        }
+
+        .core-ver {
+            color: color-palette.$base-white;
+            font-weight: 600;
+            font-size: 10px;
         }
 
         .old-versions {
@@ -319,6 +363,24 @@
         font-size: 14px;
     }
 
+    .overview-header {
+        margin: 0;
+        padding: 0;
+
+        .info-icon {
+            color: var(--ks-content-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin-right: 1.25rem;
+            margin-top: -0.5rem;
+
+            &:hover {
+                color: color-palette.$base-blue-50;
+            }
+        }
+    }
+
     .categories-section,
     .links-section {
         border-bottom: 1px solid $black-3;
@@ -379,6 +441,50 @@
             &:hover {
                 background: $black-9;
                 color: $white;
+            }
+        }
+    }
+
+    [role="tooltip"] {
+        visibility: hidden;
+        position: absolute;
+        top: 2rem;
+        left: 0.5rem;
+        background: var(--ks-tooltip-background);
+        color: var(--ks-content-primary);
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        max-width: 250px !important;
+        border: 1px solid var(--ks-tooltip-border);
+        transition: visibility 0.3s;
+        z-index: 9999;
+    }
+
+    .info-icon-wrapper:hover+[role="tooltip"],
+    .info-icon-wrapper:focus+[role="tooltip"],
+    [role="tooltip"]:hover,
+    [role="tooltip"]:focus {
+        visibility: visible;
+    }
+
+    .info-icon-wrapper {
+        position: relative;
+    }
+
+    #overview-tooltip {
+        p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 22px;
+        }
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+                color: var(--ks-content-link-hover);
             }
         }
     }

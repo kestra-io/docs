@@ -1,68 +1,65 @@
-import { parseMarkdown } from "@nuxtjs/mdc/runtime"
+    import { parseMarkdown } from "@nuxtjs/mdc/runtime"
 
-interface BlueprintQuery {
-    query?: string
-    counts?: string
-}
+    export default defineEventHandler(async (event) => {
+        const config = useRuntimeConfig()
+        const { query, counts, plugin } = getQuery(event)
 
-export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
-    const { query, counts } = getQuery(event) as BlueprintQuery
+        const API_URL = config.public.apiUrl
+        const mode = counts === "true" ? "counts" : plugin ? "plugin-blueprints" : query ? "query" : null
 
-    if (counts === 'true') {
-        return await cachedEventHandler(async () => {
-            try {
-                const data = await $fetch<{ countByPlugins: Record<string, number> }>(
-                    `${config.public.apiUrl}/blueprints/countByPlugins`
-                )
-                return data
-            } catch (error) {
-                console.warn('Failed to fetch blueprint counts', error)
-                return { countByPlugins: {} }
-            }
-        }, {
-            maxAge: 60 * 60,
-            getKey: () => 'blueprints-counts'
-        })(event)
-    }
-
-    if (query) {
         try {
-            const [pageData, graphData] = await Promise.all([
-                $fetch(`${config.public.apiUrl}/blueprints/${query}/versions/latest`),
-                $fetch(`${config.public.apiUrl}/blueprints/${query}/versions/latest/graph`)
-            ])
+            switch (mode) {
+                case "counts": {
+                    const data = await $fetch<{ countByPlugins: Record<string, number> }>(
+                        `${API_URL}/blueprints/countByPlugins`
+                    )
+                    return data
+                }
 
-            const [descriptionAsMd, flowAsMd] = await Promise.all([
-                parseMarkdown(pageData.description),
-                parseMarkdown(`\`\`\`yaml\n${pageData.flow}\n\`\`\``)
-            ])
+                case "plugin-blueprints": {
+                    const data = await $fetch<any[]>(
+                        `${API_URL}/blueprints/plugin/${plugin}/version/latest`
+                    )
+                    return { results: data, total: data.length }
+                }
 
-            let relatedBlueprints = []
-            if (pageData.tags?.length) {
-                try {
-                    const { results } = await $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${pageData.tags}`)
-                    relatedBlueprints = results
-                        .filter((b: any) => b.id !== pageData.id)
-                        .sort(() => Math.random() - 0.5)
-                        .slice(0, 3)
-                } catch {}
+                case "query": {
+                    const [pageData, graphData] = await Promise.all([
+                        $fetch(`${API_URL}/blueprints/${query}/versions/latest`),
+                        $fetch(`${API_URL}/blueprints/${query}/versions/latest/graph`)
+                    ])
+
+                    const [descriptionAsMd, flowAsMd] = await Promise.all([
+                        parseMarkdown(pageData.description),
+                        parseMarkdown(`\`\`\`yaml\n${pageData.flow}\n\`\`\``)
+                    ])
+
+                    let relatedBlueprints = []
+                    if (pageData.tags?.length) {
+                        const { results } = await $fetch(`${API_URL}/blueprints/versions/latest?tags=${pageData.tags}`)
+                        relatedBlueprints = results
+                            .filter((b: any) => b.id !== pageData.id)
+                            .sort(() => Math.random() - 0.5)
+                            .slice(0, 3)
+                    }
+
+                    return {
+                        page: pageData,
+                        graph: graphData,
+                        descriptionAsMd,
+                        flowAsMd,
+                        relatedBlueprints,
+                        metaDescription: pageData.metaDescription
+                    }
+                }
+
+                default:
+                    setResponseStatus(event, 400)
+                    return { message: "Missing required parameter: 'query', 'counts', or 'plugin'" }
             }
-
-            return {
-                page: pageData,
-                graph: graphData,
-                descriptionAsMd,
-                flowAsMd,
-                relatedBlueprints,
-                metaDescription: pageData.metaDescription
-            }
-        } catch {
-            setResponseStatus(event, 404)
-            return { message: "Not Found" }
+        } catch (error) {
+            console.error("Failed to fetch blueprint data", error)
+            setResponseStatus(event, 500)
+            return { message: "Failed to fetch or parse data", error }
         }
-    }
-
-    setResponseStatus(event, 400)
-    return { message: "Missing required parameter: 'query' or 'counts'" }
-})
+    })

@@ -73,18 +73,23 @@
         pluginType?: string,
         customId?: string | null
     ): { text: string, id: string } {
-        const baseName = formatPluginName(pluginWrapper?.group ?? pluginName);
+
+        const formattedPluginName = formatPluginName(pluginWrapper?.group ?? pluginName);
+
         let text: string;
+
         if (pluginType) {
-            text = `Create automations with ${baseName} ${formatPluginName(subGroupName)} ${formatElementName(pluginType)?.charAt(0).toUpperCase() + formatElementName(pluginType)?.slice(1)}`;
+            text = `Create automations with ${formattedPluginName} ${formatPluginName(subGroupName)} ${formatElementName(pluginType)?.charAt(0).toUpperCase() + formatElementName(pluginType)?.slice(1)}`;
         } else if (subGroupName) {
-            text = `Create automations with ${baseName} ${formatPluginName(subGroupName)}`;
+            text = `Create automations with ${formattedPluginName} ${formatPluginName(subGroupName)}`;
         } else {
             text = `Create automations with ${formatPluginName(pluginWrapper?.group ?? pluginName)} Plugins`;
         }
+
         const id = customId || `create-with-${text
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/^-+|-+$/g, "")}`;
+
         return { text, id };
     }

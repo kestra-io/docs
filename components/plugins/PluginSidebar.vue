@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="sidebar-content">
-            <h3 v-if="pluginWrapper" class="plugin-title">{{ pluginWrapper.title }}</h3>
+            <h3 v-if="pluginWrapper" class="plugin-title">{{ title }}</h3>
             <div v-if="subGroupWrappers.length > 0" class="subgroups-list">
                 <details
                     v-for="subGroup in subGroupWrappers"
@@ -78,6 +78,7 @@
         pluginWrapper: Plugin | undefined
         pluginsWithoutDeprecated: Plugin[]
         pluginName: string
+        title: string
     }>();
 
     const route = useRoute();

@@ -13,7 +13,7 @@ The commands in the next section assume Kestra runs locally on the host. If you 
 
 ## Metadata-only Backup & Restore (Enterprise Edition)
 
-Since 0.19, [Kestra Enterprise Edition](/enterprise) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another—even across different Kestra versions or repository/queue backends.
+Since 0.19, [Kestra Enterprise Edition](../oss-vs-paid.md) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another—even across different Kestra versions or repository/queue backends.
 
 We recommend performing metadata backup and restore while Kestra is paused to ensure consistency. As a best practice, enable [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) (available since 0.21) before starting.
 

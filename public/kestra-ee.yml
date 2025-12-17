@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.1.9
+  version: 1.1.10
 tags:
 - name: Flows
   description: Flows api
@@ -17109,6 +17109,8 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+          source:
+            type: string
     GroupIdentifier:
       type: object
       properties:
@@ -18458,6 +18460,8 @@ components:
         pluginsHash:
           type: integer
           format: int64
+        isConcurrencyViewEnabled:
+          type: boolean
     MiscController.EEConfiguration:
       type: object
       allOf:
@@ -19216,6 +19220,10 @@ components:
           type: string
         deprecated:
           type: boolean
+        title:
+          type: string
+        description:
+          type: string
     PluginArtifact:
       type: object
       properties:

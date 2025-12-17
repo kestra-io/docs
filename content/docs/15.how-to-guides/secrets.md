@@ -18,7 +18,7 @@ Secrets are sensitive values that should not be exposed in plain text, such as p
 For a detailed overview, see the [Secrets](../05.concepts/04.secret.md) documentation.
 
 This guide demonstrates how to add secrets to your Kestra server using an environment file (`.env`).  
-If you prefer a simpler, UI-based experience, check out the [Enterprise Edition](/enterprise), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
+If you prefer a simpler, UI-based experience, check out the [Enterprise Edition](../oss-vs-paid.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
 
 ---
 

@@ -47,6 +47,7 @@ The following diagram shows the main components of Kestra using the [Kafka](http
 
 :::alert{type="info"}
 Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
+See [Open Source vs Enterprise](../oss-vs-paid.md) for a comparison of editions.
 :::
 
 This architecture is designed to provide the enhanced scalability, high availability, and fault tolerance required to meet the needs of large-scale enterprise deployments.

@@ -4,6 +4,7 @@
             :plugin-wrapper="rootPlugin"
             :plugins-without-deprecated="pluginsWithoutDeprecated"
             :plugin-name="pluginName"
+            :title="headingTitle"
         />
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
@@ -33,7 +34,7 @@
                     </div>
                     <div class="title-content d-flex flex-column justify-space-between w-100">
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            <span class="text-capitalize">{{ headingTitle }}</span>
+                            <span>{{ headingTitle }}</span>
                             <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
                         </div>
                         <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
@@ -64,6 +65,7 @@
                 :active-id="activeSectionId"
                 :subgroup-blueprint-counts="subgroupBlueprintCounts"
                 :metadata-map="metadataMap"
+                :schemas="elementTitle"
             />
 
             <PluginVideos 
@@ -74,6 +76,7 @@
             <RelatedBlueprints
                 :plugin-name="pluginName"
                 :plugin-wrapper="rootPlugin"
+                :current-subgroup-plugin="currentSubgroupPlugin"
                 :sub-group-name="currentSubgroupPlugin ? slugify(subGroupName(currentSubgroupPlugin)) : subGroup"
                 :plugin-type="pluginType"
                 :custom-id="blueprintsSectionHeading?.id"
@@ -108,7 +111,7 @@
 
 <script setup lang="ts">
     import {useEventListener} from "@vueuse/core";
-    import {isEntryAPluginElementPredicate, subGroupName, slugify, filterPluginsWithoutDeprecated, extractPluginElements, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
+    import {isEntryAPluginElementPredicate, subGroupName, slugify, filterPluginsWithoutDeprecated, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
     import {useBlueprintsCounts} from "~/composables/useBlueprintsCounts";
     import {formatElementType, formatElementName, getBlueprintsHeading, getPluginTitle} from "../../utils/pluginUtils";
     import {generatePageNames, recursivePages} from "~/utils/navigation";
@@ -202,7 +205,12 @@
 
     const githubReleaseRepo = computed(() => {
         const name = pluginName.value ?? "";
-        if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") { // because plugin-jdbc is the parent for many subgroups in same repo.
+        // because core plugin is part of kestra repo
+        if (name === "core") {
+            return "kestra";
+        }
+         // because plugin-jdbc is the parent for many subgroups in same repo.
+        if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
             return "plugin-jdbc";
         }
         return name;
@@ -232,6 +240,16 @@
         }, {} as Record<string, PluginMetadata>) ?? {}
     );
 
+    const elementTitle = computed(() => Object.fromEntries(
+        (pluginsWithoutDeprecated.value ?? []).flatMap(p => Object.entries(p)
+            .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+            .flatMap(([_, els]) => (els)
+                .filter(el => el?.title)
+                .map(el => [el.cls, {title: el.title}] as [string, {title?: string}])
+            )
+        ).filter(([_, v]) => Boolean(v?.title))
+    ));
+
     const { counts } = await useBlueprintsCounts();
     
     const subgroupBlueprintCounts = computed(() => {
@@ -247,7 +265,7 @@
         
         return result;
     });
-    
+
     const pluginBlueprintCounts = computed(() => counts.value);
 
     const { data: relatedBlogs } = await useAsyncData(
@@ -486,7 +504,7 @@
                 ? [{id: "latest-blog-posts", depth: 3, text: "Latest Blog Posts"}]
                 : []
             ),
-            ...(currentPluginCategories.value?.length
+            ...(allPlugins.value?.some(p => p.name !== pluginName.value && p.categories?.some(cat => currentPluginCategories.value?.includes(cat))) ?? false
                 ? [{
                     id: "more-plugins-in-this-category",
                     depth: 3,

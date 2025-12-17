@@ -168,7 +168,7 @@ From **Administration → Triggers** you can bulk manage trigger state:
 - **Unlock** — clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
 - **Delete trigger** — remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
 
-![triggers_administration](/docs/workflow-components/triggers/triggers_administration.png)
+![triggers_administration](/docs/workflow-components/triggers/triggers-administration.png)
 
 Deleting a trigger is different from deleting a backfill: removing a backfill only cancels pending catch-up runs, while deleting a trigger resets the trigger entity itself. Use **Delete backfill** to stop scheduled replays and **Delete trigger** to rebuild the trigger state.
 

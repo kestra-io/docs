@@ -192,4 +192,8 @@
             }
         }
     }
+
+    :deep(.plugin .description) {
+        text-transform: none !important;
+    }
 </style>

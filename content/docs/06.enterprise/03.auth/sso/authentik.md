@@ -79,7 +79,6 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
         SECRET: ["CREATE", "READ", "UPDATE", "DELETE"]
         BLUEPRINT: ["CREATE", "READ", "UPDATE", "DELETE"]
-        INFRASTRUCTURE: ["CREATE", "READ", "UPDATE", "DELETE"]
         KVSTORE: ["CREATE", "READ", "UPDATE", "DELETE"]
   ee:
     tenants:
