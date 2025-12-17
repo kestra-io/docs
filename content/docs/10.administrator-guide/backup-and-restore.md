@@ -15,7 +15,7 @@ The commands in the next section assume Kestra runs locally on the host. If you 
 
 Since 0.19, [Kestra Enterprise Edition](../oss-vs-paid.md) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another—even across different Kestra versions or repository/queue backends.
 
-We recommend performing metadata backup and restore while Kestra is paused to ensure consistency. As a best practice, enable [Maintenance Mode](../06.enterprise/05.instance/maintenance-mode.md) (available since 0.21) before starting.
+We recommend performing metadata backup and restore while Kestra is paused to ensure consistency. As a best practice, enable [Maintenance Mode](../07.enterprise/05.instance/maintenance-mode.md) (available since 0.21) before starting.
 
 A metadata backup includes all data **not** related to executions: blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets-manager backends), security integrations, settings, templates, tenants, triggers, users, and access bindings. To include execution-related data, use the `--include-data` flag.
 
@@ -29,7 +29,7 @@ kestra backups create FULL
 
 `FULL` backs up the entire instance. To back up a single tenant (when multi-tenancy is enabled), use `TENANT`. In `TENANT` mode, only the selected tenant’s data is included (global users/tenants are excluded).
 
-Alternatively, you can also create a backup of only specific resources by using the `--resources` flag in the command. For example, to only create a backup of the [KV Store](../05.concepts/05.kv-store.md), use:
+Alternatively, you can also create a backup of only specific resources by using the `--resources` flag in the command. For example, to only create a backup of the [KV Store](../06.concepts/05.kv-store.md), use:
 
 ```bash
 kestra backups create --resources KV_STORE

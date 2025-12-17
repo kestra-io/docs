@@ -14,7 +14,7 @@ The recommended to keep optimized storage is to use [`io.kestra.plugin.core.exec
 Together, these replace the legacy `io.kestra.plugin.core.storage.Purge` task with a **faster and more reliable process (~10x faster)**.
 
 :::alert{type="info"}
-The [Enterprise Edition](../06.enterprise/index.md) also includes [`PurgeAuditLogs`](../06.enterprise/02.governance/06.audit-logs.md#how-to-purge-audit-logs).
+The [Enterprise Edition](../07.enterprise/index.md) also includes [`PurgeAuditLogs`](../07.enterprise/02.governance/06.audit-logs.md#how-to-purge-audit-logs).
 :::
 
 The flow below purges executions and logs:
@@ -42,7 +42,7 @@ triggers:
     cron: "@daily"
 ```
 
-The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../05.concepts/system-flows.md) namespace.
+The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../06.concepts/system-flows.md) namespace.
 
 ```yaml
 id: purge_kv_store
@@ -68,7 +68,7 @@ Purge tasks perform **hard deletion**, permanently removing records and reclaimi
 This distinction matters for compliance and troubleshooting: purge flows are best for cleaning up space, while UI deletions preserve history for auditability.
 
 :::alert{type="warning"}
-Purge tasks do not affect Kestra’s [internal queues](../07.architecture/01.main-components.md#queue). Queue retention is managed separately via [JDBC Cleaner](../configuration/index.md#jdbc-cleaner) (for database) or [topic retention](../configuration/index.md#topic-retention) (for Kafka).
+Purge tasks do not affect Kestra’s [internal queues](../08.architecture/01.main-components.md#queue). Queue retention is managed separately via [JDBC Cleaner](../configuration/index.md#jdbc-cleaner) (for database) or [topic retention](../configuration/index.md#topic-retention) (for Kafka).
 :::
 
 :::collapse{title="Renamed Purge Tasks in 0.18.0"}

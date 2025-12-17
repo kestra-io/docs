@@ -24,8 +24,8 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 - `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. With `INFO`, all log levels `INFO` and above (`WARNING` and `ERROR`) are batched. If you only want logs that are warnings or errors, then you can set this property to `WARNING` and so on.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
-- `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../04.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
-- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../05.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
+- `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../05.workflow-components/02.namespace.md). If not specified, all instance logs are fetched.
+- `offsetKey` - Specifies the prefix of the [Key Value (KV) store](../../06.concepts/05.kv-store.md) key that contains the last execution's end fetched date. By default this is set as `LogShipper-state`. You can change this key store name to reset the last fetched date if, for example, you want to export previously exported logs.
 - `delete` - By default this property is set to `false`. Boolean property that when set to `true` deletes the batched logs as a part of the task run
 
 ## How log shipper works
@@ -481,7 +481,7 @@ The Audit Log Shipper uses the following properties similar to the execution Log
 - `logExporters` - This property is required, and it specifies the platform where the audit logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
 - `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
 - `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
-- `offsetKey` - Specifies the [key](../../05.concepts/05.kv-store.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
+- `offsetKey` - Specifies the [key](../../06.concepts/05.kv-store.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
 - `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra’s database immediately after successful export, helping optimize storage by removing logs that no longer need to reside in Kestra’s metadata store. By default, this property is set to `false`.
 
 The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.

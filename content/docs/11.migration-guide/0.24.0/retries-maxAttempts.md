@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-For [retries](../../04.workflow-components/12.retries.md), the `maxAttempt` property has been renamed with an alias to `maxAttempts` to promote proper English grammar. This is a non-breaking change, but we recommend to update all your flows to use the correctly named property as a long-term safeguard.
+For [retries](../../05.workflow-components/12.retries.md), the `maxAttempt` property has been renamed with an alias to `maxAttempts` to promote proper English grammar. This is a non-breaking change, but we recommend to update all your flows to use the correctly named property as a long-term safeguard.
 
 ## Before
 

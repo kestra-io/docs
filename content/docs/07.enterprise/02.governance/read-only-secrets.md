@@ -18,7 +18,7 @@ Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-
 
 ## Configure read-only secrets
 
-Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../04.workflow-components/02.namespace.md) level.
+Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](tenants.md) and the [Namespace](../../05.workflow-components/02.namespace.md) level.
 
 To enable for a specific Tenant, toggle the setting on in the **Dedicated secrets manager** configuration.
 

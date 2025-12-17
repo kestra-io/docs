@@ -144,7 +144,7 @@ exporters:
 
 ## Logs
 
-To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../06.enterprise/02.governance/logshipper.md) with the built-in OpenTelemetry log exporter.
+To send logs to an OpenTelemetry-compatible collector, use the [LogShipper](../07.enterprise/02.governance/logshipper.md) with the built-in OpenTelemetry log exporter.
 :::alert{type="warning"}
 LogShipper is only available in the Kestra **Enterprise Edition**.
 :::

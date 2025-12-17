@@ -11,11 +11,11 @@ Install a selection of Kestra plugins in the open-source version.
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
 - Install specific plugins when using the `-no-plugins` Docker image
-- Understand plugin versioning across Open Source and [Enterprise](../06.enterprise/01.overview/01.enterprise-edition.md)
+- Understand plugin versioning across Open Source and [Enterprise](../07.enterprise/01.overview/01.enterprise-edition.md)
 - Automate plugin installation using Docker Compose
 - Link to plugin documentation and versioning support
 
-See also: [Versioned Plugins in Kestra Enterprise](../06.enterprise/05.instance/versioned-plugins.md).
+See also: [Versioned Plugins in Kestra Enterprise](../07.enterprise/05.instance/versioned-plugins.md).
 
 ## Plugin basics in Kestra Open Source
 
@@ -94,7 +94,7 @@ In Kestra Open Source, plugins must be installed at the latest compatible versio
 - Enable version-aware workflows
 
 Learn more about versioned plugins in Enterprise:
-[Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md)
+[Versioned Plugins](../07.enterprise/05.instance/versioned-plugins.md)
 
 ## Best practices
 

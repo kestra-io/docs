@@ -22,17 +22,17 @@ Each tenant functions as a separate entity with its own resources, such as flows
 You can think of multi-tenancy as running multiple virtual instances in a single physical instance of [Kestra Cloud](/cloud) or [Kestra Enterprise Edition](../01.overview/01.enterprise-edition.md).
 :::
 
-All resources (such as [flows](../../04.workflow-components/01.flow.md), [triggers](../../04.workflow-components/07.triggers/index.md), [executions](../../04.workflow-components/03.execution.md), [RBAC](../03.auth/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
+All resources (such as [flows](../../05.workflow-components/01.flow.md), [triggers](../../05.workflow-components/07.triggers/index.md), [executions](../../05.workflow-components/03.execution.md), [RBAC](../03.auth/rbac.md), and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
 Data stored inside the internal storage is also separated by tenants.
 
-End-users can use the tenant selection dropdown menu from the [UI](../08.ui/index.md) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
+End-users can use the tenant selection dropdown menu from the [UI](../../09.ui/index.md) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
 
 ![Tenants selection dropdown](/docs/enterprise/tenants.png)
 
-Most [API](../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
+Most [API](../../api-reference/index.md) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
 
-For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../api-reference/enterprise.md) for more information.
+For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../../api-reference/01.enterprise.md) for more information.
 
 Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.
 
@@ -98,7 +98,7 @@ create a tenant and assign admin roles to an existing admin user
 
 ### Creating a Tenant from the API
 
-Tenants can be managed programmatically via Kestra's [API](../../api-reference/enterprise.md#post-/api/v1/tenants). Here is an example of an API call for creating a tenant:
+Tenants can be managed programmatically via Kestra's [API](../../api-reference/01.enterprise.md#post-/api/v1/tenants). Here is an example of an API call for creating a tenant:
 
 ```bash
 curl -X POST "https://demo.kestra.io/api/v1/tenants" \
@@ -126,7 +126,7 @@ resource "kestra_tenant" "stage" {
 
 ### Deleting a tenant
 
-Deleting a tenant removes all associated resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs are retained in the database, and they can be purged if needed with their corresponding [Purge tasks](../../09.administrator-guide/purge.md).
+Deleting a tenant removes all associated resources including flows, namespaces, apps, dashboards, and roles. Execution data, logs, metrics, and audit logs are retained in the database, and they can be purged if needed with their corresponding [Purge tasks](../../10.administrator-guide/purge.md).
 
 :::alert{type="warning"}
 Deleting a tenant is irreversible. All resources under the tenant will be permanently removed, except for logs and execution history stored in the database.
@@ -157,7 +157,7 @@ Also, make sure to use `camelCase` notation. For example, if you want to use the
 
 ### Isolate Kestra services
 
-When using [Dedicated Storage or Secret backends](./tenants.md#dedicated-storage-and-secrets-backend-per-tenant), you can isolate specific [Kestra services](../../07.architecture/02.server-components.md) to prevent them from accessing the storage or secret backend. For example, you may not want the [Webserver](../../07.architecture/08.webserver.md) to be able to access the dedicated internal storage. This isolation is intended for Kestra instances where multiple teams or organizations share access, but storage or secret data access must be limited to specific segments.
+When using [Dedicated Storage or Secret backends](./tenants.md#dedicated-storage-and-secrets-backend-per-tenant), you can isolate specific [Kestra services](../../08.architecture/02.server-components.md) to prevent them from accessing the storage or secret backend. For example, you may not want the [Webserver](../../08.architecture/02.server-components.md#webserver) to be able to access the dedicated internal storage. This isolation is intended for Kestra instances where multiple teams or organizations share access, but storage or secret data access must be limited to specific segments.
 
 The configuration utilizes the `deniedServices` property with a list of the services to isolate. Take the following as an example using `storage` (this can be replaced with `secret` for a dedicated secret backend), where the Executor and Webserver must be isolated:
 

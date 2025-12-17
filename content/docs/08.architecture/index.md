@@ -15,15 +15,15 @@ Here are the components and their interactions:
 1. **JDBC Backend**: the data storage layer used for orchestration metadata
 
 2. **Server**: the central part of the system, composed of:
-   - [**Webserver**](./08.webserver.md): serves both the [API](../api-reference/index.md) and the [User Interface](../08.ui/index.md)
-   - [**Scheduler**](./06.scheduler.md): schedules [workflows](../04.workflow-components/01.flow.md) and handles all [triggers](../04.workflow-components/07.triggers/index.md) except for the flow triggers (see below)
-   - [**Executor**](./04.executor.md): responsible for the orchestration logic including [flow triggers](../04.workflow-components/07.triggers/02.flow-trigger.md)
-   - [**Worker**](./05.worker.md): one or multiple processes that carry out the heavy computation of [runnable tasks](../04.workflow-components/01.tasks/01.runnable-tasks.md) and [Polling Triggers](../04.workflow-components/07.triggers/04.polling-trigger.md). For privacy reasons, workers are the only components that interact with the user's infrastructure, including the [Internal Storage](./09.internal-storage.md) and external services.
+   - [**Webserver**](./02.server-components.md#webserver): serves both the [API](../api-reference/index.md) and the [User Interface](../09.ui/index.md)
+   - [**Scheduler**](./02.server-components.md#scheduler): schedules [workflows](../05.workflow-components/01.flow.md) and handles all [triggers](../05.workflow-components/07.triggers/index.md) except for the flow triggers (see below)
+   - [**Executor**](./02.server-components.md#executor): responsible for the orchestration logic including [flow triggers](../05.workflow-components/07.triggers/02.flow-trigger.md)
+   - [**Worker**](./02.server-components.md#worker): one or multiple processes that carry out the heavy computation of [runnable tasks](../05.workflow-components/01.tasks/01.runnable-tasks.md) and [Polling Triggers](../05.workflow-components/07.triggers/04.polling-trigger.md). For privacy reasons, workers are the only components that interact with the user's infrastructure, including the [Internal Storage](./data-components.md#internal-storage) and external services.
 
-3. **User**: interacts with the system via [UI](../08.ui/index.md) and [API](../api-reference/index.md)
+3. **User**: interacts with the system via [UI](../09.ui/index.md) and [API](../api-reference/index.md)
 
 4. **User's Infrastructure**: private infrastructure components that are part of the user's environment, which Kestra interacts with:
-   - [**Internal Storage**](./09.internal-storage.md): object storage system within the user's infrastructure (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage)
+   - [**Internal Storage**](./data-components.md#internal-storage): object storage system within the user's infrastructure (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage)
    - **External Services**: third-party APIs or services outside of Kestra which Workers might interact with to process data within a given task
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
@@ -33,7 +33,7 @@ For either database backend, the respective [PostgreSQL JDBC Driver](https://jdb
 
 ### Scalability with JDBC
 
-The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md), and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance.
+The scalable design of the architecture allows you to run multiple instances of the [Webserver](./02.server-components.md#webserver), [Executor](./02.server-components.md#executor), [Worker](./02.server-components.md#worker), and [Scheduler](./02.server-components.md#scheduler) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance.
 
 The JDBC Backend can be scaled too, either through clustering or sharding, to handle larger volumes of data and a higher number of requests from the [Server components](./02.server-components.md). Most cloud providers offer managed database services that can be scaled up and down as needed.
 
@@ -46,7 +46,7 @@ The following diagram shows the main components of Kestra using the [Kafka](http
 ![Kestra OSS Architecture](/docs/architecture/kafka.gif "Kestra Architecture")
 
 :::alert{type="info"}
-Note that this architecture is only available in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
+Note that this architecture is only available in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition.md) of Kestra.
 See [Open Source vs Enterprise](../oss-vs-paid.md) for a comparison of editions.
 :::
 
@@ -55,19 +55,19 @@ This architecture is designed to provide the enhanced scalability, high availabi
 1. **Kafka**: serves as the messaging backend, which communicates between different components of the system and allows for robust scalability and fault tolerance
 
 2. **Microservices**: This layer includes several services:
-   - [**Webserver**](./08.webserver.md): serves the [API](../api-reference/index.md) and the [User Interface](../08.ui/index.md) for interaction with the system
-   - [**Scheduler**](./06.scheduler.md): schedules [workflows](../04.workflow-components/01.flow.md) and processes all [triggers](../04.workflow-components/07.triggers/index.md) except for the flow triggers
-   - [**Executor**](./04.executor.md): handles the orchestration logic, including [flow triggers](../04.workflow-components/07.triggers/02.flow-trigger.md)
-   - [**Indexer**](./07.indexer.md): indexes data from Kafka to Elasticsearch for quick retrieval and search
+   - [**Webserver**](./02.server-components.md#webserver): serves the [API](../api-reference/index.md) and the [User Interface](../09.ui/index.md) for interaction with the system
+   - [**Scheduler**](./02.server-components.md#scheduler): schedules [workflows](../05.workflow-components/01.flow.md) and processes all [triggers](../05.workflow-components/07.triggers/index.md) except for the flow triggers
+   - [**Executor**](./02.server-components.md#executor): handles the orchestration logic, including [flow triggers](../05.workflow-components/07.triggers/02.flow-trigger.md)
+   - [**Indexer**](./02.server-components.md#indexer): indexes data from Kafka to Elasticsearch for quick retrieval and search
    (optional component since [Kestra v0.20](../11.migration-guide/0.20.0/elasticsearch-indexer.md))
-   - [**Worker**](./05.worker.md): runs [runnable tasks](../04.workflow-components/01.tasks/01.runnable-tasks.md) and interacts with the user's infrastructure
+   - [**Worker**](./02.server-components.md#worker): runs [runnable tasks](../05.workflow-components/01.tasks/01.runnable-tasks.md) and interacts with the user's infrastructure
 
-3. **User**: engages with the system through the Webserver's [UI](../08.ui/index.md) and [API](../api-reference/index.md)
+3. **User**: engages with the system through the Webserver's [UI](../09.ui/index.md) and [API](../api-reference/index.md)
 
 4. **Elasticsearch**: acts as a search and UI backend, storing [logs](./data-components.md#logs), execution history, and enabling fast data retrieval
 
 5. **User's Infrastructure**: private infrastructure components that are part of the user's environment, which Kestra interacts with:
-   - [**Internal Storage**](./09.internal-storage.md): object storage system where user's data is stored (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage)
+   - [**Internal Storage**](./data-components.md#internal-storage): object storage system where user's data is stored (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage)
    - **External Services**: APIs or services that Workers might interact with during task processing
 
 ### Scalability with Kafka and Elasticsearch
@@ -83,10 +83,10 @@ Elasticsearch contributes to scalability by providing a robust, horizontally sca
 When comparing both diagrams, the main difference between the **JDBC** and **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
 
 :::alert{type="info"}
-Note that it's possible to use the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.
+Note that it's possible to use the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.
 :::
 
-The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with [**Internal Storage**](./09.internal-storage.md) to persist intermediary results and store the final task run outputs.
+The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with [**Internal Storage**](./data-components.md#internal-storage) to persist intermediary results and store the final task run outputs.
 
 All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communicating with each other through the [**Queue**](./01.main-components.md#queue) (Kafka/JDBC). You can deploy and scale them independently.
 
@@ -97,7 +97,7 @@ The **data layer** is decoupled from the application layer and provides a separa
 - storing execution metadata — (Kafka/JDBC) [**Queue**](./01.main-components.md#queue) is used as the orchestration backend
 - storing logs and user-facing data — the (Elasticsearch/JDBC) [**Repository**](./01.main-components.md#repository) is used to store data needed to serve Kestra UI and API.
 
-The Indexer, available only in the [Enterprise Edition](../06.enterprise/01.overview/01.enterprise-edition.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Thanks to the separation between Queue and Repository in the Kafka Architecture, even if your Elasticsearch instance experiences downtime, your executions will continue to work by relying on the Kafka backend.
+The Indexer, available only in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Thanks to the separation between Queue and Repository in the Kafka Architecture, even if your Elasticsearch instance experiences downtime, your executions will continue to work by relying on the Kafka backend.
 
 ## Components in detail
 

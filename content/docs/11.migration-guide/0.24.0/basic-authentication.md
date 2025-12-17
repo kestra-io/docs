@@ -23,4 +23,4 @@ Now that basic authentication is required, the `enabled` flag is ignored (ideall
 
 For production deployments, we recommend setting a valid email address and a strong password in the configuration file.
 
-If you upgrade to version 0.24, there are three possible scenarios for existing users. For the details, refer to the [Basic Authentication Troubleshooting guide](../../09.administrator-guide/basic-auth-troubleshooting.md).
+If you upgrade to version 0.24, there are three possible scenarios for existing users. For the details, refer to the [Basic Authentication Troubleshooting guide](../../10.administrator-guide/basic-auth-troubleshooting.md).

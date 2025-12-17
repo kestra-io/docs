@@ -73,8 +73,8 @@ Congratulations! You have installed Kestra and executed your first flow.
 
 Next, you can follow the documentation in this order:
 - Check out the [tutorial](../03.tutorial/index.md).
-- Get to know the [building blocks](../04.workflow-components/index.md) of a flow.
-- Learn the core [concepts](../05.concepts/index.md).
+- Get to know the [building blocks](../05.workflow-components/index.md) of a flow.
+- Learn the core [concepts](../06.concepts/index.md).
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.
-- [Deploy](../09.administrator-guide/index.md) Kestra to remote development and production environments.
+- [Deploy](../10.administrator-guide/index.md) Kestra to remote development and production environments.
 - Almost everything is configurable in Kestra. You can find the different configuration options available to Administrators in the [Configuration Guide](../configuration/index.md).

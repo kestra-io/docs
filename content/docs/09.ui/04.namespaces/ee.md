@@ -20,7 +20,7 @@ The Enterprise Edition introduces several additional namespace pages for enhance
 
 ## Edit
 
-The **Edit** page lets you manage namespace-level settings such as descriptions, [worker groups](../../06.enterprise/04.scalability/worker-group.md), and permissions.
+The **Edit** page lets you manage namespace-level settings such as descriptions, [worker groups](../../07.enterprise/04.scalability/worker-group.md), and permissions.
 
 ![Edit](/docs/user-interface-guide/edit.png)
 
@@ -28,7 +28,7 @@ The **Edit** page lets you manage namespace-level settings such as descriptions,
 
 Define variables at the namespace level for use in any flow under that namespace using the syntax `{{ namespace.variable_name }}`.
 
-Read more about [variables](../../06.enterprise/02.governance/07.namespace-management.md#variables).
+Read more about [variables](../../07.enterprise/02.governance/07.namespace-management.md#variables).
 
 ![Variables](/docs/user-interface-guide/variables.png)
 
@@ -38,7 +38,7 @@ Define **plugin defaults** at the namespace level. These defaults automatically 
 
 ![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png)
 
-Read more about [plugin defaults](../../06.enterprise/02.governance/07.namespace-management.md#plugin-defaults).
+Read more about [plugin defaults](../../07.enterprise/02.governance/07.namespace-management.md#plugin-defaults).
 
 ## Secrets
 
@@ -46,7 +46,7 @@ Manage **secrets** directly in the UI. Namespace-level secrets are accessible to
 
 ![Secrets](/docs/user-interface-guide/secrets-namespaces.png)
 
-Read more about [secrets](../../06.enterprise/02.governance/secrets.md).
+Read more about [secrets](../../07.enterprise/02.governance/secrets.md).
 
 ## Audit logs
 
@@ -54,4 +54,4 @@ Read more about [secrets](../../06.enterprise/02.governance/secrets.md).
 
 ![Audit Logs](/docs/user-interface-guide/auditlogs-namespaces.png)
 
-Read more about [audit logs](../../06.enterprise/02.governance/06.audit-logs.md).
+Read more about [audit logs](../../07.enterprise/02.governance/06.audit-logs.md).

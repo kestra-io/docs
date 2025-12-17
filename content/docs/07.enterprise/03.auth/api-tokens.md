@@ -13,7 +13,7 @@ How to manage API tokens in Kestra.
 
 ## What is an API token
 
-API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](../06.enterprise/service-accounts.md).
+API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](./service-accounts.md).
 
 ## Where you can use API tokens
 

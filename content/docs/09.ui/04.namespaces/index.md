@@ -46,7 +46,7 @@ This view is similar to the **Dependencies** page in the Flow Editor but focuses
 ## KV store
 
 The **KV Store** tab lets you manage key-value pairs associated with a namespace.  
-For more information, see the [KV Store concept guide](../../05.concepts/05.kv-store.md).
+For more information, see the [KV Store concept guide](../../06.concepts/05.kv-store.md).
 
 ![KV Store](/docs/user-interface-guide/kvstore-namespaces.png)
 
@@ -56,11 +56,11 @@ For more information, see the [KV Store concept guide](../../05.concepts/05.kv-s
 
 ## Files
 
-The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Keep all your resources organized in one place. Learn more in [Namespace Files](../../05.concepts/02.namespace-files.md).
+The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Keep all your resources organized in one place. Learn more in [Namespace Files](../../06.concepts/02.namespace-files.md).
 
 ![Namespace Files](/docs/user-interface-guide/namespace-files-tab.png)
 
 ## Additional enterprise pages
 
-In the [Enterprise Edition](../../06.enterprise/01.overview/01.enterprise-edition.md), additional namespace pages provide deeper insights and management capabilities.  
-Learn more on the [Enterprise namespace pages](./enterprise-namespace-pages.md) page.
+In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition.md), additional namespace pages provide deeper insights and management capabilities.  
+Learn more on the [Enterprise namespace pages](./ee.md) page.
