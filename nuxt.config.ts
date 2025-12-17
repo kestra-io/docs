@@ -189,7 +189,7 @@ export default defineNuxtConfig({
             docs: {
                 sections: {
                     "Get Started with Kestra": [
-                        "Getting Started",
+                        "Quickstart",
                         "Tutorial",
                         "Architecture",
                         "Installation Guide",
