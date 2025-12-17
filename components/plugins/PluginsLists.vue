@@ -121,8 +121,10 @@
 
     const sortPlugins = (plugins: Plugin[], ascending: boolean) => {
         return [...plugins].sort((a, b) => {
-            if (a.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return -1;
-            if (b.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return 1;
+            // Ensure the core parent plugin (group === io.kestra.plugin.core and no subGroup) appears first
+            if (a.group === "io.kestra.plugin.core" && (a.subGroup === undefined || a.subGroup === null)) return -1;
+            if (b.group === "io.kestra.plugin.core" && (b.subGroup === undefined || b.subGroup === null)) return 1;
+
             const nameA = a.title.toLowerCase();
             const nameB = b.title.toLowerCase();
             return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
