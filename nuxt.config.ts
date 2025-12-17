@@ -193,6 +193,7 @@ export default defineNuxtConfig({
                         "Tutorial",
                         "Architecture",
                         "Installation Guide",
+                        "Contribute to Kestra",
                         "User Interface"
                         // "Video Tutorials"
                     ],
@@ -376,7 +377,13 @@ export default defineNuxtConfig({
         '/docs/ee-server-cli': {redirect: '/docs/server-cli'},
         '/docs/ui/administration/workers': {redirect: '/docs/architecture/server-components#worker'},
         '/docs/ui/administration/users': {redirect: '/docs/enterprise/auth/rbac'},
-        '/docs/how-to-guides/synchonous-executions-api': {redirect: '/docs/how-to-guides/synchronous-executions-api'}
+        '/docs/how-to-guides/synchonous-executions-api': {redirect: '/docs/how-to-guides/synchronous-executions-api'},
+        '/docs/getting-started/quickstart': {redirect: '/docs/quickstart'},
+        '/docs/getting-started/contributing': {redirect: '/docs/contribute-to-kestra/contributing'},
+        '/docs/getting-started/docs-contributor-guide': {redirect: '/docs/contribute-to-kestra/docs-contributor-guide'},
+        '/docs/getting-started/community-guidelines': {redirect: '/docs/contribute-to-kestra/community-guidelines'},
+        '/docs/getting-started/': {redirect: '/docs/quickstart'},
+        '/docs/getting-started/selected-plugin-installation': {redirect: '/docs/how-to-guides/selected-plugin-installation'}
     },
 
     build: {
