@@ -362,7 +362,7 @@ export default defineNuxtConfig({
         '/plugin': {redirect: '/plugins'},
         '/videos': {redirect: '/tutorial-videos/all'},
         '/tutorial-videos': {redirect: '/tutorial-videos/all'},
-        '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
+        '/community-guidelines': {redirect: '/docs/contribute-to-kestra/community-guidelines'},
         '/docs/tutorial/docker': {redirect: '/docs/tutorial/scripts'},
         '/docs/workflow-components/tasks/scripts': {redirect: '/docs/scripts'},
         '/t/**': {proxy: 'https://eu.posthog.com/**'},
