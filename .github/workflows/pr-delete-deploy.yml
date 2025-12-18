@@ -8,8 +8,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete Cloudflare Pages Deployment
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deployment delete --project-name=kestra-io --branch=${{ github.head_ref }}
+        shell: bash
+        run: |
+          ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          PROJECT_NAME="kestra-io"
+          API_TOKEN="${{ secrets.CLOUDFLARE_TOKEN }}"
+          BRANCH_NAME="${{ github.head_ref }}"
+
+          API_URL="https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/$PROJECT_NAME/deployments"
+          HEADER_TOKEN="Authorization: Bearer $API_TOKEN"
+          PER_PAGE=25
+
+          RESPONSE=$(curl -s -H "$HEADER_TOKEN" "$API_URL?page=1&per_page=$PER_PAGE&env=preview")
+          TOTAL_PAGES=$(echo "$RESPONSE" | jq '.result_info.total_pages')
+          echo "➡️ Total pages: $TOTAL_PAGES"
+
+          CURRENT_PAGE=1
+
+          while [ $CURRENT_PAGE -lt $TOTAL_PAGES ]; do
+              echo "➡️ Processing page: $CURRENT_PAGE"
+
+              RESPONSE=$(curl -s -H "$HEADER_TOKEN" "$API_URL?page=$CURRENT_PAGE&per_page=$PER_PAGE&env=preview")
+
+              MATCHS=$(echo $RESPONSE | jq -r ".result[] | select(.deployment_trigger.metadata.branch==\"$BRANCH_NAME\") | .id")
+
+              for DEPLOY_ID in $MATCHS;
+              do
+                  echo "✅ Deleting deployment: $DEPLOY_ID for branch: $BRANCH_NAME"
+                  curl -s -H "$HEADER_TOKEN" -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$PROJECT_NAME/deployments/$DEPLOY_ID"
+                  exit 0
+              done
+
+              CURRENT_PAGE=$((CURRENT_PAGE+1))
+          done
