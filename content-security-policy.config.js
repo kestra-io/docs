@@ -49,7 +49,8 @@ export default {
         "https://*.hsforms.com",
         "https://*.googleapis.com",
         "https://*.ytimg.com",
-        "https://*.googletagmanager.com"
+        "https://*.googletagmanager.com",
+        "https://*.githubusercontent.com/"
     ],
     // iframes
     'frame-src': [
