@@ -15,6 +15,7 @@ jobs:
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkouts
         uses: actions/checkout@v6
@@ -101,3 +102,11 @@ jobs:
         with:
           name: blogs.html
           path: blogs.html
+
+      # Slack on error
+      - name: Slack - Notify on failure
+        id: send-ci-failed
+        if: always() && env.SLACK_WEBHOOK_URL != '' && job.status == 'failure'
+        uses: kestra-io/actions/composite/slack-status@main
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}

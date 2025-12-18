@@ -6,6 +6,8 @@ on:
 jobs:
   delete:
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Delete Cloudflare Pages Deployment
         shell: bash
@@ -41,3 +43,11 @@ jobs:
 
               CURRENT_PAGE=$((CURRENT_PAGE+1))
           done
+
+      # Slack on error
+      - name: Slack - Notify on failure
+        id: send-ci-failed
+        if: always() && env.SLACK_WEBHOOK_URL != '' && job.status == 'failure'
+        uses: kestra-io/actions/composite/slack-status@main
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
