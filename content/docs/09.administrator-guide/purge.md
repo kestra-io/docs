@@ -4,17 +4,20 @@ icon: /docs/icons/admin.svg
 version: ">= 0.18.0"
 ---
 
-Use purge tasks to remove old executions and logs, helping reduce storage usage.
+Use purge tasks to remove old executions, logs, and Key-value pairs, helping reduce storage usage.
 
-The recommended approach is to combine [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) with [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs).
+The recommended to keep optimized storage is to use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
+- `PurgeKV`: deletes expired keys globally for a specific namespace.
 
 Together, these replace the legacy `io.kestra.plugin.core.storage.Purge` task with a **faster and more reliable process (~10x faster)**.
 
 :::alert{type="info"}
 The [Enterprise Edition](../06.enterprise/index.md) also includes [`PurgeAuditLogs`](../06.enterprise/02.governance/06.audit-logs.md#how-to-purge-audit-logs).
 :::
+
+The flow below purges executions and logs:
 
 ```yaml
 id: purge
@@ -37,6 +40,21 @@ triggers:
   - id: daily
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
+```
+
+The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../05.concepts/system-flows.md) namespace.
+
+```yaml
+id: purge_kv_store
+namespace: system
+
+tasks:
+  - id: purge_kv
+    type: io.kestra.plugin.core.kv.PurgeKV
+    expiredOnly: true
+    namespaces:
+      - company
+    includeChildNamespaces: true
 ```
 
 :::alert{type="warning"}
