@@ -35,7 +35,7 @@ jobs:
               for DEPLOY_ID in $MATCHS;
               do
                   echo "✅ Deleting deployment: $DEPLOY_ID for branch: $BRANCH_NAME"
-                  curl -s -H "$HEADER_TOKEN" -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$PROJECT_NAME/deployments/$DEPLOY_ID"
+                  curl -s -H "$HEADER_TOKEN" -X DELETE "$API_URL/$DEPLOY_ID"
                   exit 0
               done
 
