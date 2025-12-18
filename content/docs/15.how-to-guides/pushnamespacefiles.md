@@ -31,7 +31,7 @@ Let's look at a few common patterns of using the `PushNamespaceFiles` task.
 Before you start using the `PushNamespaceFiles` task, make sure you have the following prerequisites in place:
 1. A Git repository where you want to push your files.
 2. A Personal Access Token (PAT) for Git authentication.
-3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../05.concepts/04.secret.md) within the Kestra instance.
+3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../06.concepts/04.secret.md) within the Kestra instance.
 
 ## Using the `dryRun` property
 

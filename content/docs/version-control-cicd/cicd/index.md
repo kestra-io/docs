@@ -11,7 +11,7 @@ Continous integration and deliver (CI/CD) pipelines enable teams to deploy updat
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
 
 :::alert{type="info"}
-When flows are deployed through CI/CD, add the [`system.readOnly`](../../05.concepts/06.system-labels.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
+When flows are deployed through CI/CD, add the [`system.readOnly`](../../06.concepts/system-labels.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
 
 ```yaml
 labels:
@@ -49,7 +49,7 @@ The [Kestra CLI](./04.helpers.md) includes built-in commands for validating and 
 ```
 
 :::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md).  
+The `--api-token` flag is available in the [Enterprise Edition](../../07.enterprise/03.auth/api-tokens.md).  
 In the open-source edition, use basic authentication with the `--user` flag:
 
 ```bash
@@ -204,7 +204,7 @@ jobs:
 ```
 
 :::alert{type="info"}
-You can also authenticate using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of username and password:
+You can also authenticate using an [API token](../../07.enterprise/03.auth/api-tokens.md) instead of username and password:
 
 ```yaml
 with:

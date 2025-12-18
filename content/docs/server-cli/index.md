@@ -10,7 +10,7 @@ This page includes CLI commands and options for both Open Source and Enterprise 
 
 ## Authentication
 
-The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/enterprise.md). You can pass credentials via global/API options (see below) such as `--api-token`, `--user`, or `--server`.
+The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/01.enterprise.md). You can pass credentials via global/API options (see below) such as `--api-token`, `--user`, or `--server`.
 
 ```bash
 kestra --api-token <your-api-token> --help

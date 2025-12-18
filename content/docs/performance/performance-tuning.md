@@ -7,11 +7,11 @@ Not all workloads are the same, so Kestra is configured to balance throughput (t
 
 This page introduces performance tuning options for the Kestra orchestrator. Each comes with trade-offs, so ensure you understand them before applying.
 
-Before you read on, please familiarize yourself with the [Kestra architecture](../07.architecture).
+Before you read on, please familiarize yourself with the [Kestra architecture](../08.architecture).
 
 ## Worker
 
-The [Worker](../07.architecture/05.worker.md) executes your tasks, and tuning it depends on the type of workloads you run.
+The [Worker](../08.architecture/02.server-components.md#worker) executes your tasks, and tuning it depends on the type of workloads you run.
 
 The most useful configuration is the number of Worker threads, which is 8 times the number of available cores by default.
 
