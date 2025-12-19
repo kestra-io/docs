@@ -1,11 +1,11 @@
 ---
-title: Back Up Kestra GitHub Repositories to Google Cloud Storage
+title: Test GitHub Repository Backups with Kestra Playground
 icon: /docs/icons/github.svg
 stage: Intermediate
 topics:
   - Integrations
-  - Object Storage
   - Version Control
+  - Kestra Concepts
 ---
 
 Clone every repository in the `kestra-io` GitHub organization, zip each repo, and upload the archives to Google Cloud Storage (GCS) for safekeeping.
@@ -14,7 +14,9 @@ Clone every repository in the `kestra-io` GitHub organization, zip each repo, an
 
 ## Why run this backup?
 
-Organizations often mirror source control data outside GitHub to satisfy compliance, enable disaster recovery drills, or seed analytics and search workloads. This flow collects every repository, produces portable zip artifacts, and stores them in GCS so you have an off-platform copy you can restore or inspect independently of GitHub.
+Organizations often mirror source control data outside GitHub to satisfy compliance, enable disaster recovery drills, or seed analytics and search workloads. This flow collects every repository, produces portable zip artifacts, and stores them in GCS so you have an off-platform copy you can restore or inspect independently of GitHub. 
+
+This flow has potentially long running operations, so to optimize testing certain tasks, we use the [Playground](../09.ui/10.playground.md) feature to ensure each component works before a production execution.
 
 ---
 
