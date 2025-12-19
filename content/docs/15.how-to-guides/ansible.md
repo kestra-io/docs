@@ -299,7 +299,9 @@ This playbook audits a host without assuming the OS, captures diagnostics, and u
 
 It gathers the usual suspects (OS family, distro, kernel, CPU, RAM, IP), then pulls quick diagnostics like disk usage, uptime, and top memory processes. It checks `python3` and, if it's older than `3.11.0`, upgrades it with the right package manager depending on the OS of the machine (`apt`, `yum`, or Homebrew).
 
-The image below shows an example output targeting a local machine where `python3` is installed, but the Python version is `"3.10.4"`. 
+Each play in the playbook generates a log and output, for example, there is a log for each diagnostic metric check, a log for Python3 detection and version, and a log for building and writing the combined report to name a few.
+
+The image below shows an example output targeting a local machine where `python3` is installed (`python3_installed`), but the Python version is `"3.10.4"`.
 
 ![Ansible Python Check](/docs/how-to-guides/ansible/ansible-python-check.png)
 
@@ -307,7 +309,7 @@ Ansible also reports that `"python3_needs_upgrade": true` and depending on the d
 
 ![Ansible Python Needs Upgrade](/docs/how-to-guides/ansible/ansible-python-needs-upgrade.png)
 
-Everything from this Python upgrade to other machine diagnostics are aggregated in `system_info.json` with mode `0600` so you have a tidy, readable report.
+Everything from this Python upgrade to other machine diagnostics are aggregated in `system_info.json` with mode `0600` so you have a tidy, readable report. This playbook can of course be adapted for other checks and in principle demonstrates the possibilities when you combine Ansible with Kestra.
 
 ### Run it locally
 
@@ -375,11 +377,11 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a Namespace File and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli). 
+Or, keep the playbook as a [Namespace File](../05.concepts/02.namespace-files.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli). 
 
 ![Namespace Files](/docs/how-to-guides/ansible/flow-namespace-files.png)
 
-Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`):
+Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`). For simplicity, this guide checks the local machine, but of course this example can be expanded to utilize Ansible's capability to SSH into multiple servers and perform operations:
 
 ```yaml
 id: system_report
@@ -397,13 +399,13 @@ tasks:
       - ansible-playbook -i inventory.ini system_info.yml
 ```
 
-After the run, preview or download `system_info.json` from the task outputs and feed it into downstream checks or dashboards.
+After the run, the `outputFiles` property allows you to preview or download `system_info.json` from the task outputs and feed it into downstream checks or dashboards.
 
 ![Ansible File Output](/docs/how-to-guides/ansible/ansible-outputs.png)
 
 ### Upload the report to S3
 
-Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) and store credentials in secrets:
+Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../05.concepts/04.secret.md):
 
 ```yaml
 id: system_report_to_s3
@@ -466,4 +468,4 @@ A trigger allows you to build a historical log of machine health in S3 and Slack
 
 ### Wrap up
 
-Ansible handles host-level automation—collecting facts, checking Python versions, and remediating with the right package manager. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+Ansible handles host-level automation—collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.

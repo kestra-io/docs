@@ -3,11 +3,13 @@ title: Detect Ansible Config Drift with Kestra
 icon: /docs/icons/ansiblecli.svg
 ---
 
-Keeps configs consistent and surfaces drift without manual checks with Ansible.
+Keeps configs consistent and surfaces drift without manual checks with Ansible and Kestra.
 
 Use Ansible to enforce a required environment variable across multiple hosts and have Kestra alert you in Slack when a change occurs. 
 
 ## Files to store as Namespace Files
+
+Ansible expects two file types: an `inventory.ini` and a `playbook.yml`. To use with Kestra, they can either be stored as [Namespace Files](../05.concepts/02.namespace-files.md) or written in-line in the flow code. The example continues using Namespace Files.
 
 - `inventory.ini` (replace with your hosts and users; keys shown as placeholders):
 
@@ -87,8 +89,6 @@ triggers:
 
 ## Why this matters
 
-- Enforces a critical env var across a fleet to prevent silent drift.
-- Uses `stdout_callback = kestra_logger` to keep Ansible output structured in Kestra logs.
-- Filters to only changed hosts before notifying Slack, reducing noise.
-- Keeps playbook and inventory in Namespace Files so they can be versioned and reused across flows.
+This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via `stdout_callback = kestra_logger`, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
 
+You can expand this pattern to check multiple config files, package versions, or CIS controls per host, while letting Kestra handle scheduling, secrets, notifications, and downstream tasks (tickets, S3 archiving, SIEM) so Ansible remediation and orchestration stay tightly linked.
