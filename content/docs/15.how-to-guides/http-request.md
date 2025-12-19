@@ -139,7 +139,7 @@ However if we want to view the outputs from tasks without needing to use Log tas
 
 ![http_get_outputs](/docs/how-to-guides/http/http_get_outputs.png)
 
-Here, we are using the [Debug Expression](../04.workflow-components/06.outputs.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
+Here, we are using the [Debug Expression](../05.workflow-components/06.outputs.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
 
 ### POST Request
 

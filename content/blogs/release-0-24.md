@@ -308,7 +308,7 @@ inputs:
 tasks:
   - id: news
     type: io.kestra.plugin.openai.Responses
-    apiKey: "{{ kv('OPENAI_API_KEY') }}"
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
     model: gpt-4.1-mini
     input: "Today is {{ now() }}. {{ inputs.prompt }}"
     toolChoice: REQUIRED
@@ -323,7 +323,7 @@ tasks:
 
   - id: send_via_slack
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ kv('SLACK_WEBHOOK_URL') }}"
+    url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
 ```
 
@@ -643,4 +643,3 @@ Lastly, if you'd like to listen to a podcast episode discussing the new features
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/ZxrLNCgygBE?si=9oltgsOuMaFMRnLp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-

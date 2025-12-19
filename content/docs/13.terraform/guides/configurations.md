@@ -20,7 +20,7 @@ Additionally, if you want to terraform Kestra 1.0.x you need to use Kestra Terra
 
 Various breaking changes were made around from 0.24.x to 1.0.x, especially around IAM.
 
-## Example Usage
+## Example usage
 
 ```hcl
 provider "kestra" {

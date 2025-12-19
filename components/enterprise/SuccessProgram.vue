@@ -1,7 +1,7 @@
 <template>
     <div ref="securityBlock" class="content">
         <div class="container">
-            <h3 class="title">Customer Success Program & Support with SLA to ensure your success at every step.</h3>
+            <h3 class="title">Customer Success Program & Support <br>With SLA</h3>
             <div class="blocks">
                 <div class="block">
                     <RocketLaunchOutline/>

@@ -632,7 +632,7 @@ We've introduced a new GraphQL plugin that enables integration with GraphQL APIs
 
 This plugin is particularly valuable for integrating with modern API-driven services that use GraphQL, allowing you to fetch exactly the data you need without over-fetching or under-fetching. Whether you're connecting to GitHub, Shopify, or any custom GraphQL API, this plugin provides a streamlined way to incorporate that data into your orchestration workflows.
 
-:::collapse{title="Example using GraphQL to query Github API"}
+:::collapse{title="Example using GraphQL to query GitHub API"}
 ```yaml
 id: graphql-query-github
 namespace: blueprints

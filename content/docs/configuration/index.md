@@ -179,7 +179,7 @@ kestra:
 Supported: PostgreSQL, H2, MySQL.
 Use H2 for local **development**. For **production**, use PostgreSQL (or MySQL if PostgreSQL isn’t an option).
 
-See [software requirements](../09.administrator-guide/00.requirements.md) for minimum versions.
+See [software requirements](../10.administrator-guide/00.requirements.md) for minimum versions.
 
 :::alert{type="info"}
 For PostgreSQL performance issues, consider `random_page_cost=1.1` to improve index usage on queue queries. You can also set `kestra.queue.postgres.disable-seq-scan=true` to force index usage on polling.
@@ -357,7 +357,7 @@ kestra:
 
 ## Telemetry
 
-Anonymous usage reporting is enabled by default; see [details](../09.administrator-guide/usage.md).
+Anonymous usage reporting is enabled by default; see [details](../10.administrator-guide/usage.md).
 
 Disable:
 
@@ -505,7 +505,7 @@ kestra:
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
-- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../06.enterprise/05.instance/versioned-plugins.md).
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../07.enterprise/05.instance/versioned-plugins.md).
 - `kestra.ee.license.key`: license key.
 
 Kestra validates the license on startup.
@@ -546,7 +546,7 @@ kestra:
 ## Multi-tenancy
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/0.23.0/tenant-migration-ee.md).
 :::
 
 Enable (pre-0.23):
@@ -561,7 +561,7 @@ kestra:
 ## Default tenant
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/0.23.0/tenant-migration-compatibility.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/0.23.0/tenant-migration-ee.md).
 :::
 
 Disable the default tenant when multi-tenancy is on:
@@ -1173,10 +1173,10 @@ kestra:
 Defaults are evaluated **by the Executor** and propagated to all components. Keep a single, unified `kestra.plugins.defaults` across servers; workers do not render templates themselves.
 :::
 
-For finer control, use flow-level [`pluginDefaults`](../04.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level).
+For finer control, use flow-level [`pluginDefaults`](../05.workflow-components/09.plugin-defaults.md#plugin-defaults-on-a-flow-level).
 
 :::alert{type="info"}
-See [Plugin defaults](../04.workflow-components/09.plugin-defaults.md).
+See [Plugin defaults](../05.workflow-components/09.plugin-defaults.md).
 :::
 
 #### Forced plugin defaults
@@ -1315,7 +1315,7 @@ To set task-level retries globally, use plugin defaults:
 
 ## Secret managers
 
-Configure a [secrets backend](../06.enterprise/02.governance/secrets-manager.md) via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
+Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager.md) via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
 
 ```yaml
 kestra:
@@ -1476,7 +1476,7 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-admin
 
-The [Super-admin](../06.enterprise/03.auth/rbac.md#super-admin) has the highest privileges.
+The [Super-admin](../07.enterprise/03.auth/rbac.md#super-admin) has the highest privileges.
 
 ```yaml
 kestra:
@@ -1506,7 +1506,7 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
 ```
 
-With [multi-tenancy]((../06.enterprise/02.governance/tenants.md)), restrict to one tenant:
+With [multi-tenancy]((../07.enterprise/02.governance/tenants.md)), restrict to one tenant:
 
 ```yaml
 kestra:
@@ -1560,7 +1560,7 @@ kestra:
       password: kestra
 ```
 
-For multi-user auth (SSO, RBAC), see the **Enterprise** [authentication page](../06.enterprise/03.auth/04.authentication.md).
+For multi-user auth (SSO, RBAC), see the **Enterprise** [authentication page](../07.enterprise/03.auth/04.authentication.md).
 
 ### Delete configuration files
 
@@ -1574,7 +1574,7 @@ kestra:
 
 ### Server liveness & heartbeats
 
-Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../09.administrator-guide/server-lifecycle.md) documentation for more details.
+Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../10.administrator-guide/server-lifecycle.md) documentation for more details.
 
 #### `kestra.server.liveness.enabled` (Boolean, default `true`)
 
@@ -2066,7 +2066,7 @@ kestra:
 
 ## Allowed file paths
 
-To use the [universal file access protocol](../05.concepts/file-access.md), bind-mount the host directory and allow it in config:
+To use the [universal file access protocol](../06.concepts/file-access.md), bind-mount the host directory and allow it in config:
 
 ```yaml
   kestra:

@@ -30,7 +30,7 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 - `id` (String) The ID of this resource.
 
 <a id="nestedatt--api_tokens"></a>
-### Nested Schema for `api_tokens`
+### Nested schema for `api_tokens`
 
 Read-Only:
 

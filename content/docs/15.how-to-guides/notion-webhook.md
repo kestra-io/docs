@@ -36,7 +36,7 @@ Before you begin, you need:
 
 ## Set up secrets in Kestra
 
-Store your sensitive credentials as [secrets](../05.concepts/04.secret.md) or [key-value](../05.concepts/05.kv-store.md) pairs:
+Store your sensitive credentials as [secrets](../06.concepts/04.secret.md) or [key-value](../06.concepts/05.kv-store.md) pairs:
 
 1. Navigate to your namespace in the Kestra UI
 2. Go to the **Secrets** tab (Alternatively go to the **KV Store** tab and do the same)
@@ -70,7 +70,7 @@ triggers:
 ```
 
 :::alert{type="warning"}
-Replace `my-notion-product-alert-key` with a secure, randomly generated key. Consider storing this as a [secret](../05.concepts/04.secret.md) or [key-value pair](../05.concepts/05.kv-store.md) for better security.
+Replace `my-notion-product-alert-key` with a secure, randomly generated key. Consider storing this as a [secret](../06.concepts/04.secret.md) or [key-value pair](../06.concepts/05.kv-store.md) for better security.
 :::
 
 ## Configure Notion webhooks
@@ -199,14 +199,14 @@ Keep in mind that the above examples are additional tasks to add to the flow and
 ## Security considerations
 
 - Use strong, randomly generated webhook keys
-- Store all sensitive tokens as [secrets](../05.concepts/04.secret.md) or [key-value pairs](../05.concepts/05.kv-store.md)
+- Store all sensitive tokens as [secrets](../06.concepts/04.secret.md) or [key-value pairs](../06.concepts/05.kv-store.md)
 - Consider implementing request validation in your webhook handler
 - Regularly rotate your API tokens and webhook URLs
 
 ## Related resources
 
-- [Webhook triggers](../04.workflow-components/07.triggers/03.webhook-trigger.md)
+- [Webhook triggers](../05.workflow-components/07.triggers/03.webhook-trigger.md)
 - [Notion plugin documentation](https://kestra.io/plugins/plugin-notion)
 - [Slack notifications](../15.how-to-guides/slack-webhook.md)
-- [Secrets management](../05.concepts/04.secret.md)
-- [Expression language guide](../05.concepts/06.pebble.md)
+- [Secrets management](../06.concepts/04.secret.md)
+- [Expression language guide](../06.concepts/06.pebble.md)

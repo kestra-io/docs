@@ -18,7 +18,7 @@ In this guide, you'll learn how to use Kestra's `Switch` task to control your fl
 Before you begin:
 
 - Deploy [Kestra](../02.installation/index.md) in your preferred development environment.
-- Ensure you have a [basic understanding of how to run Kestra flows.](../01.getting-started/03.tutorial.md)
+- Ensure you have a [basic understanding of how to run Kestra flows.](../03.tutorial/index.md)
 
 ## Example 1: Conditional Branching with Input Strings
 

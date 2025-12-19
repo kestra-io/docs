@@ -6,7 +6,7 @@
                     <NuxtLink href="/">
                         <img src="/logo-white.svg" height="60" alt="Kestra's logo">
                     </NuxtLink>
-                    <p class="mt-2">Open Source Declarative Data Orchestration</p>
+                    <p class="mt-2">Open Source Declarative Orchestration</p>
                     <Socials class="mt-4 socials" />
                     <LayoutNewsletter />
                 </div>
@@ -106,12 +106,11 @@ import Heart from "vue-material-design-icons/Heart.vue";
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
-
 footer {
     position: relative;
     font-size: var(--bs-font-size-sm);
-    background-color: #15171e !important;
-    
+    background-color: $black-9 !important;
+
     h5, a, p{
         color: var(--bs-white);
         font-size: var(--bs-badge-font-size);
@@ -138,6 +137,11 @@ footer {
 
     :deep(.socials) a {
         color: var(--bs-white);
+    }
+
+    &.plugins-page {
+        background-color: #0A0B0D !important;
+        border-top: 1px solid $black-3;
     }
 }
 </style>

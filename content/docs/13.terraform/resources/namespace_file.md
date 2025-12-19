@@ -10,7 +10,7 @@ description: |-
 
 Manages a Kestra Namespace File.
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_namespace_file" "example" {

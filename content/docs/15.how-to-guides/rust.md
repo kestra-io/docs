@@ -67,7 +67,7 @@ You can read more about the Shell Commands type in the [Plugin documentation](/p
 
 ## Handling Outputs
 
-Your Rust code can generate file-based [outputs](../04.workflow-components/06.outputs.md).
+Your Rust code can generate file-based [outputs](../05.workflow-components/06.outputs.md).
 
 In your Rust code, write a file to the local directory. Then, use the `outputFiles` property to point Kestra to the path of those [output files](../16.scripts/06.outputs-metrics.md).
 

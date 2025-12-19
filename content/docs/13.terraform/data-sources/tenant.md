@@ -15,7 +15,7 @@ Use this data source to access information about an existing Kestra Tenant.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_tenant" "example" {
@@ -46,7 +46,7 @@ data "kestra_tenant" "example" {
 - `worker_group` (List of Object) The worker group. (see [below for nested schema](#nestedatt--worker_group))
 
 <a id="nestedatt--secret_isolation"></a>
-### Nested Schema for `secret_isolation`
+### Nested schema for `secret_isolation`
 
 Read-Only:
 
@@ -55,7 +55,7 @@ Read-Only:
 
 
 <a id="nestedatt--storage_isolation"></a>
-### Nested Schema for `storage_isolation`
+### Nested schema for `storage_isolation`
 
 Read-Only:
 
@@ -64,7 +64,7 @@ Read-Only:
 
 
 <a id="nestedatt--worker_group"></a>
-### Nested Schema for `worker_group`
+### Nested schema for `worker_group`
 
 Read-Only:
 

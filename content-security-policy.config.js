@@ -42,13 +42,15 @@ export default {
         'blob:',
         "https://*.google.fr",
         "https://*.google.com",
+        "https://*.linkedin.com",
         "https://*.ads.linkedin.com",
         "https://*.reddit.com",
         "https://*.hubspot.com",
         "https://*.hsforms.com",
         "https://*.googleapis.com",
         "https://*.ytimg.com",
-        "https://*.googletagmanager.com"
+        "https://*.googletagmanager.com",
+        "https://*.githubusercontent.com/"
     ],
     // iframes
     'frame-src': [

@@ -43,4 +43,3 @@ inputs:
     type: INTEGER
     defaults: 1
 ```
-
