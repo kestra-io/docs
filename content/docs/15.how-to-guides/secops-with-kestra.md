@@ -30,7 +30,7 @@ This how-to shows how to operationalize SecOps benchmarks with Kestra. You will 
 1. Decide how to segment namespaces per team or environment. Examples:
    - `company.security.cis.linux.ubuntu.22-04-lts.devops`
    - `company.security.cis.linux.ubuntu.22-04-lts.dataeng`
-2. Create settings ([KV pairs](../05.concepts/05.kv-store.md)) for every control you want to validate. For instance, controls under section **1.6**:
+2. Create settings ([KV pairs](../06.concepts/05.kv-store.md)) for every control you want to validate. For instance, controls under section **1.6**:
 
 ![Configure Command Line Warning Banners](/docs/how-to-guides/secops-with-kestra/command-line-warning-banners.png)
 
@@ -55,7 +55,7 @@ Repeat this process for every control you intend to enforce. The walkthrough bel
 
 ## Step 3: Store Secrets for VM Access
 
-1. Add [secrets](../05.concepts/04.secret.md) for the SSH username (`vmUser`) and private key (`vmKey`) used to connect to the VM.
+1. Add [secrets](../06.concepts/04.secret.md) for the SSH username (`vmUser`) and private key (`vmKey`) used to connect to the VM.
 2. Store any additional secrets (for example, webhook secrets) you will reference in flows and triggers.
 
 ![vmKey Secret](/docs/how-to-guides/secops-with-kestra/vmKey-secret.png)

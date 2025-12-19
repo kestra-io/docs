@@ -112,4 +112,4 @@ Similarly, you can now keep on adding more graphs to your dashboard. Here is one
 
 ![kestra_metrics_dashboard](/docs/how-to-guides/setup-monitoring/kestra_metrics_dashboard.png)
 
-The [​Alerting & ​Monitoring](../09.administrator-guide/03.monitoring.md#grafana-and-kibana) section includes an import-ready Grafana dashboard definition.
+The [​Alerting & ​Monitoring](../10.administrator-guide/03.monitoring.md#grafana-and-kibana) section includes an import-ready Grafana dashboard definition.

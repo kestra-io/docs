@@ -242,12 +242,22 @@ h2 {
     font-weight: 300;
 }
 
-/* ✅ Force all text in the page to be white */
 .container {
     color: $white;
 
-    p, ul > li, ol > li, span, a {
+    p, ul > li, ol > li, span {
         color: $white;
+    }
+
+    a {
+        color: var(--ks-content-link);
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            color: var(--ks-content-link-hover);
+            text-decoration: underline;
+        }
     }
 }
 

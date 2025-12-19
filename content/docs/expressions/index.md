@@ -7,7 +7,7 @@ Expressions & Context Variables
 
 ## Overview
 
-Kestra's expressions combine the [Pebble templating engine](../05.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
+Kestra's expressions combine the [Pebble templating engine](../06.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -183,7 +183,7 @@ tasks:
     format: "{{ secret('MY_SECRET') }}"
 ```
 
-Secrets are supported in both the open-source version and [Enterprise Edition](../oss-vs-paid.md). For additional details, refer to the [Secrets](../05.concepts/04.secret.md) documentation.
+Secrets are supported in both the open-source version and [Enterprise Edition](../oss-vs-paid.md). For additional details, refer to the [Secrets](../06.concepts/04.secret.md) documentation.
 
 ---
 

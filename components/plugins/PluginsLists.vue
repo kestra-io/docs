@@ -121,8 +121,10 @@
 
     const sortPlugins = (plugins: Plugin[], ascending: boolean) => {
         return [...plugins].sort((a, b) => {
-            if (a.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return -1;
-            if (b.manifest?.["X-Kestra-Group"] === "io.kestra.plugin.core") return 1;
+            // Ensure the core parent plugin (group === io.kestra.plugin.core and no subGroup) appears first
+            if (a.group === "io.kestra.plugin.core" && (a.subGroup === undefined || a.subGroup === null)) return -1;
+            if (b.group === "io.kestra.plugin.core" && (b.subGroup === undefined || b.subGroup === null)) return 1;
+
             const nameA = a.title.toLowerCase();
             const nameB = b.title.toLowerCase();
             return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
@@ -189,16 +191,17 @@
     };
 
     function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
-        if (!search) {
-            return allPlugins;
-        }
-        const searchLowercase = search?.trim().toLowerCase();
+        if (!search) return allPlugins;
+
+        const tokens = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
+
         return allPlugins.filter((item) => {
-            return item?.title.toLowerCase().includes(searchLowercase) ||
-                Object.entries(item)
-                    .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-                    .flatMap(([_, elements]) => elements as PluginElement[])
-                    .some(({cls}: PluginElement) => cls.toLowerCase().includes(searchLowercase));
+            if (tokens.every(t => item?.title.toLowerCase().includes(t))) return true;
+
+            return Object.entries(item)
+                .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+                .flatMap(([_, elements]) => elements as PluginElement[])
+                .some(({cls}: PluginElement) => tokens.every(t => cls.toLowerCase().includes(t)));
         });
     }
 

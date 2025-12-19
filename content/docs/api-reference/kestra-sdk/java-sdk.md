@@ -209,7 +209,7 @@ public class ExecutionsExamples {
 ::alert{type="info"}
 **Notes**
 - `wait=true` blocks until the execution finishes (useful for [synchronous flows/test runners](../../15.how-to-guides/synchronous-executions-api.md#synchronous-executions-api)).  
-- Use [`labels`](../../04.workflow-components/08.labels.md) (e.g., `team:platform`) for search, routing, or reporting.  
+- Use [`labels`](../../05.workflow-components/08.labels.md) (e.g., `team:platform`) for search, routing, or reporting.  
 - `scheduleDate` allows delayed start.
 - `breakpoints` pause at specific task IDs to debug step-by-step.
 ::

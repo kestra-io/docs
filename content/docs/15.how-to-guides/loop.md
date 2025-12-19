@@ -15,7 +15,7 @@ In this guide, you will learn how to iterate over a list of values using the `Fo
 Before you begin:
 
 - Deploy [Kestra](../02.installation/index.md) in your preferred development environment.
-- Ensure you have a [basic understanding of how to run Kestra flows.](../01.getting-started/03.tutorial.md)
+- Ensure you have a [basic understanding of how to run Kestra flows.](../03.tutorial/index.md)
   
 ## Loop over nested lists of values
 
@@ -84,4 +84,3 @@ Now that you've seen how to loop over a list of values using `ForEach`, you can 
 - Logging or processing additional data from each iteration.
 
 For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
-
