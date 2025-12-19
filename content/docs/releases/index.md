@@ -39,7 +39,7 @@ Kestra follows a structured release strategy with three release types:
 
 Each LTS release receives support for 1 year. All security fixes, bug fixes, and patches are automatically applied.
 
-Up to 2 LTS versions can be active at the same time. Both receive the same bug and security fixes. The newer LTS also includes features released between the two versions.
+Up to 2 LTS versions can be active at the same time. Both receive the same bug and security fixes. The newer LTS also includes features released between the two versions.`
 
 ## Backports and bug fixes
 
@@ -56,7 +56,16 @@ kestra/kestra:latest-lts                 # Open Source
 registry.kestra.io/docker/kestra-ee:latest-lts  # Enterprise Edition
 ```
 
-Pin these tags to stay on the most recent stable production release without tracking exact version numbers.
+:::alert{type="info"}
+For production environments, we strongly recommend pinning to a specific version number (instead of using `latest` or `latest-lts`) to ensure your deployments remain stable and avoid unplanned upgrades. This practice helps prevent unexpected changes from upstream releases.
+For example:
+
+```bash
+kestra/kestra:1.0.3  # Open Source
+registry.kestra.io/docker/kestra-ee:1.0.3 # Enterprise Edition
+```
+:::
+
 
 
 ## Plugin releases
