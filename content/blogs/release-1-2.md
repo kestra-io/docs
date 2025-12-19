@@ -141,6 +141,7 @@ Any trigger in Kestra 1.2 can now support concurrent executions, allowing multip
 - **Grafana Loki** – Log aggregation and querying integration for centralized logging and observability.
 - **Google Calendar** – `EventCreatedTrigger` to automatically trigger workflows when new calendar events are created.
 - **Google Sheets** – `SheetModifiedTrigger` to monitor and react to changes in Google Sheets documents.
+- **Redis CLI** - 
 
 
 ## Migration Note for Upgrading to 1.2
