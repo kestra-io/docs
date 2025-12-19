@@ -39,7 +39,7 @@ Kestra follows a structured release strategy with three release types:
 
 Each LTS release receives support for 1 year. All security fixes, bug fixes, and patches are automatically applied.
 
-Up to 2 LTS versions can be active simultaneously. Both receive identical bug and security fixes. The later LTS includes additional features from interim releases.
+Up to 2 LTS versions can be active at the same time. Both receive the same bug and security fixes. The newer LTS also includes features released between the two versions.
 
 ## Backports and bug fixes
 
