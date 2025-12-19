@@ -85,7 +85,7 @@ A major release is made only for important breaking changes where users must upd
 
 **Plugins don't have LTS versions.** The Kestra Core Minimal Compatible Version indicates which plugin version is supported for a given Kestra Core LTS.
 
-To find the right plugin version for your Kestra installation, check the plugin's GitHub releases page and match the Kestra Core Minimal Compatible Version with your Kestra version.
+To find the right plugin version for your Kestra installation you can visit each dedicated plugin page where you'll find the Kestra Core Minimal Compatible Version listed. You can also check the plugin's GitHub releases page and match the compatible version with your Kestra version.
 
 
 :::alert{type="info"}
