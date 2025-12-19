@@ -54,7 +54,7 @@ This is not recommended as you might expose your key. We'd recommend using [secr
 
 ## Add Service Account as a Secret
 
-We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it via environment variables which will link to our Docker Compose file. If you want more information regarding how secrets work, check out the [secrets page](../05.concepts/04.secret.md).
+We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it via environment variables which will link to our Docker Compose file. If you want more information regarding how secrets work, check out the [secrets page](../06.concepts/04.secret.md).
 
 Once you have the service account file downloaded, you can rename it to `service-account.json`. Then we'll encode the service account JSON and store it inside of a file named `.env_encoded` which will hold all of our encoded secrets:
 
@@ -139,7 +139,7 @@ pluginDefaults:
 
 ## Configuring Secrets in the Enterprise Edition
 
-In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, check out the [secrets page](../05.concepts/04.secret.md#secrets-in-the-enterprise-edition).
+In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, check out the [secrets page](../06.concepts/04.secret.md#secrets-in-the-enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
@@ -186,9 +186,9 @@ volumes:
 
 services:
   postgres:
-    image: postgres:16.6
+    image: postgres:18
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     environment:
       POSTGRES_DB: kestra
       POSTGRES_USER: kestra
@@ -232,13 +232,6 @@ services:
               base-path: "/app/storage"
           tutorial-flows:
             enabled: false
-          plugins:
-            defaults:
-              - type: io.kestra.plugin.jdbc.postgresql
-                values:
-                  url: jdbc:postgresql://host.docker.internal:5432/ny_taxi
-                  username: root
-                  password: root
           queue:
             type: postgres
           tasks:

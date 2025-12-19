@@ -15,7 +15,7 @@ Manages a Kestra User Basic Auth Password.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_user_password" "example" {

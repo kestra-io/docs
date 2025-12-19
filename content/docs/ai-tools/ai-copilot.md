@@ -1,7 +1,6 @@
 ---
 title: AI Copilot
 icon: /docs/icons/ai.svg
-editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---
 
@@ -10,7 +9,7 @@ Build and modify flows directly from natural language prompts.
 The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
 
 <div class="video-container">
-  <iframe src="https://youtube.com/embed/nNEb5DZB-xo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Overview
@@ -39,8 +38,8 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `logRequests`: Creates logs in Kestra for LLM requests.
 - `logResponses`: Creates logs in Kestra for LLM responses.
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
-- `clientPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
-- `caPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
+- `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
+- `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 
@@ -126,6 +125,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 ## Enterprise Edition Copilot configurations
 
 Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
 
@@ -227,6 +227,11 @@ kestra:
 ::alert{type="info"}
 If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 ::
+
+:::alert{type="info"}
+Some Ollama model names can be confusing. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to SHA `ad815644918f`, which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scenes. This is a thinking model that doesn't support disabling it.
+Please double-check that the chosen model has a non-thinking version or that a toggle is available.
+:::
 
 ### OpenAI
 

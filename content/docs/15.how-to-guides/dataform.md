@@ -25,7 +25,7 @@ There are two ways in which you can create a Dataform project while running with
 
 In this guide, we will see in detail both the above methods for transforming data using Dataform in Kestra for BigQuery.
 
-### Using Github repository
+### Using GitHub repository
 
 Here is how you can pull an existing project from a GitHub repository and run it with DataformCLI task:
 

@@ -3107,11 +3107,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByGetWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     put:
       tags:
       - Executions
@@ -3143,11 +3143,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByPutWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
     post:
       tags:
       - Executions
@@ -3179,11 +3179,11 @@ paths:
           type: string
       responses:
         "200":
-          description: triggerExecutionByPostWebhook 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -3868,6 +3868,8 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
+      x-sdk-customization:
+        x-multipart: "true"
   /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint:
     post:
       tags:
@@ -4668,6 +4670,14 @@ paths:
             When sending a ZIP archive, a list of files that couldn't be imported is returned.
       operationId: importFlows
       parameters:
+      - name: failOnError
+        in: query
+        description: If should fail on invalid flows
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
@@ -5064,11 +5074,11 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlow 200 response
+          description: On success
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/FlowWithSource"
     put:
       tags:
       - Flows
@@ -8032,9 +8042,17 @@ components:
           format: int64
     Dashboard:
       required:
+      - deleted
+      - id
       - title
       type: object
       properties:
+        tenantId:
+          pattern: "^[a-z0-9][a-z0-9_-]*"
+          type: string
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -8046,6 +8064,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
+        deleted:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
         sourceCode:
           type: string
     DashboardController.PreviewRequest:
@@ -8288,6 +8314,35 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
+    ExecutionController.WebhookResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -8343,8 +8398,7 @@ components:
           type: string
         variables:
           type: object
-          additionalProperties:
-            type: object
+          additionalProperties: true
         logFile:
           type: string
           format: uri
@@ -8808,6 +8862,8 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+          source:
+            type: string
     IdWithNamespace:
       type: object
       properties:
@@ -9148,6 +9204,8 @@ components:
         pluginsHash:
           type: integer
           format: int64
+        isConcurrencyViewEnabled:
+          type: boolean
     MiscController.Environment:
       type: object
       properties:
@@ -9467,6 +9525,10 @@ components:
           type: string
         deprecated:
           type: boolean
+        title:
+          type: string
+        description:
+          type: string
     PluginController.ApiPluginVersions:
       type: object
       properties:

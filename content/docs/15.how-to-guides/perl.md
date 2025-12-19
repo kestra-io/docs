@@ -64,7 +64,7 @@ You can read more about the Shell Commands type in the [Plugin documentation](/p
 
 ## Handling Outputs
 
-If you want to get a variable or file from your Perl code, you can use an [output](../04.workflow-components/06.outputs.md).
+If you want to get a variable or file from your Perl code, you can use an [output](../05.workflow-components/06.outputs.md).
 
 ### Variable Output
 

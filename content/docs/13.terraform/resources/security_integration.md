@@ -4,11 +4,16 @@ title: kestra_security_integration
 editLink: false
 description: |-
   Manages a Kestra Security Integration. Note that when imported URI and secret token are not provided.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_security_integration (Resource)
 
 Manages a Kestra Security Integration. Note that when imported URI and secret token are not provided.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 
 

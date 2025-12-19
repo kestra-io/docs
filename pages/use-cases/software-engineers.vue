@@ -17,7 +17,6 @@
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
                 :titleHtml="challengesTitle"
-                description="Kestra tackles the challenges software engineers face by automating development workflows, enhancing microservice orchestration, and ensuring seamless integrations."
                 :cardsData="cardsData"
             />
         </NuxtLazyHydrate>

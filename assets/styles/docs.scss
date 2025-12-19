@@ -266,6 +266,11 @@ $bd-gutter-x: 3rem;
         vertical-align: baseline;
         margin-left: 1px;
     }
+
+    a.badge[target="_blank"]::after {
+        display: none;
+        content: none;
+    }
 }
 
 
@@ -274,7 +279,7 @@ $bd-gutter-x: 3rem;
     p, li {
         color: $white;
         line-height: 1.75rem;
-        font-size: $font-size-md;
+        font-size: $h6-font-size;
 
         a {
             color: $purple-36;
