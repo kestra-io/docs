@@ -102,7 +102,13 @@ Playground mode helps you validate expensive steps incrementally. Start with the
 Playground mode lets you validate one task at a time without running the whole backup loop. Follow [the Playground guide](../08.ui/10.playground.md) and use this flow as follows:
 
 1. Toggle Playground mode in the editor.
-2. Run only `search_kestra_repos` to confirm your GitHub token works and inspect the search output.
+
+![Playground Mode](/docs/how-to-guides/playground-mode.png)
+
+2. Run only `search_kestra_repos` to confirm your GitHub token works and inspect the search output. Below the task fails in the Playground due to a misconfigured secret. You now know before ant attempted executions were made that this must be fixed. Update the secret, run in the Playground again to verify it's correct.
+
+![Check task](/docs/how-to-guides/individual-task-result.png)
+
 3. Temporarily limit the `values` expression (for example, `jq('.items[:1].clone_url')`) so downstream tasks operate on a single repository while you iterate.
 4. Play `zip_repo` and `upload_to_gcs` individually inside Playground; Kestra reuses outputs from previous played tasks, so you avoid recloning every repository.
 5. When satisfied, revert any temporary limits and use **Run all tasks** for a full backup execution.
