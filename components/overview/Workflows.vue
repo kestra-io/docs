@@ -218,7 +218,7 @@ const workflowSections = [
 
             .feature-content {
                 h3 {
-                    font-family: 'Mono Sans', sans-serif;
+                    font-family: 'Mona Sans', sans-serif;
                     font-weight: 600;
                     font-size: 24px;
                     line-height: 36px;

@@ -9,7 +9,7 @@
             allow-authentication="false"
             allow-server-selection="false"
             allow-try="false"
-            regular-font="Mono Sans"
+            regular-font="Mona Sans"
             mono-font="Source Code Pro"
         />
     </ClientOnly>

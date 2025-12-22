@@ -161,7 +161,7 @@ const companyLogos = [
         }
 
         .title {
-          font-family: 'Mono Sans';
+          font-family: 'Mona Sans';
           font-weight: 600;
           font-size: 48px;
           line-height: 1;

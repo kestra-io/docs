@@ -15,9 +15,9 @@ export default defineEventHandler(async (event) => {
                 <div style="width: 298px; height: 38px; position: absolute; top: 108px; left: 210px; transform: translate(-50%, -50%); background-image: url('${baseUrl}/logo-white.svg'); background-size: 100% 100%; color: #ffffff; padding: 20px;"></div>
                 <div style="width: 425px; height: 425px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); background-image: url('${baseUrl}/icons/${plugin?.body?.group || type}.svg'); background-size: 100% 100%; background-position: center; color: #ffffff; padding: 20px;"></div>
                 <div style="position: absolute; top: 187.88px; left: 55.64px;">
-                  <p style="font-family: 'Mono Sans', sans-serif; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0;">PLUGINS</p>
-                  <h1 style="width: 562.89px; font-family:  'Mono Sans', sans-serif; font-size: 75px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${plugin?.body?.title || name}</h1>
-                  <p  style="width: 562.89px; font-family:  'Mono Sans', sans-serif; font-size: 29px; font-weight: 600; line-height: 44px; color: #FFFFFF; margin-top: 38.68px">${plugin?.body?.description || title || ''}</p>
+                  <p style="font-family: 'Mona Sans', sans-serif; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0;">PLUGINS</p>
+                  <h1 style="width: 562.89px; font-family:  'Mona Sans', sans-serif; font-size: 75px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${plugin?.body?.title || name}</h1>
+                  <p  style="width: 562.89px; font-family:  'Mona Sans', sans-serif; font-size: 29px; font-weight: 600; line-height: 44px; color: #FFFFFF; margin-top: 38.68px">${plugin?.body?.description || title || ''}</p>
                 </div>
             </div>
         </foreignObject>
