@@ -7,6 +7,7 @@
                 content="Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine" />
         </Head>
         <InfrastructureHero />
+        <InfrastructureGovern />
     </div>
 </template>
 

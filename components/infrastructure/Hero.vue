@@ -27,11 +27,11 @@
 
 .hero::before {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: calc(100vh + var(--nav-height, 72px));
+    height: 100%;
     background-image: url('/landing/infrastructure/Hero-bk.png');
     background-size: cover;
     background-position: top center;

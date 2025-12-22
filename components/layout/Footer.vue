@@ -110,7 +110,7 @@ footer {
     position: relative;
     z-index: 10;
     font-size: var(--bs-font-size-sm);
-    background-color: $black-9 !important;
+    background-color: $black-9;
 
     &::before {
         content: "";
@@ -153,8 +153,12 @@ footer {
     }
 
     &.plugins-page {
-        background-color: #0A0B0D !important;
+        background-color: #0A0B0D;
         border-top: 1px solid $black-3;
+    }
+
+    &.dark-footer {
+        background-color: #0A0B0D !important;
     }
 }
 </style>
