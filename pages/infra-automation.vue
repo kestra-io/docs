@@ -20,11 +20,3 @@ definePageMeta({
     }
 })
 </script>
-
-<style lang="scss">
-@import "../assets/styles/_variable";
-
-.infra {
-    font-family: "Mona Sans", sans-serif !important;
-}
-</style>

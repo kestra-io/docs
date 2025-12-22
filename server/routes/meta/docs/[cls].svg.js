@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
                 <div style="width: 298px; height: 38px; position: absolute; top: 108px; left: 210px; transform: translate(-50%, -50%); background-image: url('${baseUrl}/logo-white.svg'); background-size: 100% 100%; color: #ffffff; padding: 20px;"></div>
                 <div style="width: 300px; height: 300px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); background-image: url('${icon}'); background-size: 100% 100%; background-position: center; color: #ffffff; padding: 20px;"></div>
                 <div style="position: absolute; top: 187.88px; left: 55.64px;">
-                  <p style="font-family: 'Public Sans', sans-serif; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0; text-transform: capitalize;">Documentation</p>
-                  <h1 style="width: 562.89px; font-family:  'Public Sans', sans-serif; font-size: 60px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${title}</h1>
+                  <p style="font-family: 'Mono Sans', sans-serif; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0; text-transform: capitalize;">Documentation</p>
+                  <h1 style="width: 562.89px; font-family:  'Mono Sans', sans-serif; font-size: 60px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${title}</h1>
                 </div>
             </div>
         </foreignObject>
