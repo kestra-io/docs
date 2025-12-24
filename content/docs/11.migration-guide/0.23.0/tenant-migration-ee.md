@@ -27,7 +27,7 @@ While in OSS we transform URI to a different one including the main `tenantId` d
 
 ### Migration Script
 :::alert{type="warning"}
-Before running the following migration scripts, you must completely shut down the main Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
+Before running the following migration scripts, you must completely shut down all server components of your Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
 :::
 The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration. Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
 
@@ -399,4 +399,4 @@ Most S3-compatible providers (including AWS S3, MinIO, and Cloudflare R2) allow 
    * If your R2/MinIO/Ceph console does not support move/rename in-place, you may need to copy the object to the new location and then delete the original.
 5. **Verify** that all data now resides under the tenant folder.
 
-![s3 migration](/docs/migration-guide/0.23.0/s3_migrate.png)
+![s3 migration](/docs/migration-guide/0-23/s3_migrate.png)

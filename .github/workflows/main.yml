@@ -14,6 +14,8 @@ jobs:
   index-doc:
     name: Index doc
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     timeout-minutes: 60
     steps:
       - name: Extract version to index
@@ -56,3 +58,11 @@ jobs:
             : # Run indexing for SNAPSHOT version
             curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$snapshot_version\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
           fi
+
+      # Slack on error
+      - name: Slack - Notify on failure
+        id: send-ci-failed
+        if: always() && env.SLACK_WEBHOOK_URL != '' && job.status == 'failure'
+        uses: kestra-io/actions/composite/slack-status@main
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
