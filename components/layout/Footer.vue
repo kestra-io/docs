@@ -108,8 +108,21 @@ import Heart from "vue-material-design-icons/Heart.vue";
 
 footer {
     position: relative;
+    z-index: 10;
     font-size: var(--bs-font-size-sm);
-    background-color: $black-9 !important;
+    background-color: $black-9;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -3rem;
+        height: 3rem;
+        background-color: $black-9;
+        z-index: -1;
+        pointer-events: none;
+    }
 
     h5, a, p{
         color: var(--bs-white);
@@ -140,8 +153,12 @@ footer {
     }
 
     &.plugins-page {
-        background-color: #0A0B0D !important;
+        background-color: #0A0B0D;
         border-top: 1px solid $black-3;
+    }
+
+    &.dark-footer {
+        background-color: #0A0B0D !important;
     }
 }
 </style>
