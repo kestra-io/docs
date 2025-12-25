@@ -1,54 +1,52 @@
 <template>
-    <div class="container-fluid">
-        <div class="hero hero-sm container">
-            <div class="mb-5 pb-5 row align-items-center">
+    <div class="container-fluid header-container">
+        <div class="hero hero-sm container position-relative z-1">
+            <div class="row align-items-center mb-5">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
-                    <div>
+                    <div class="hero-content">
                         <img
                             height="56"
                             loading="lazy"
                             :src="logo"
                             :alt="logo"
+                            class="mb-3"
                         />
                         <h1 v-if="title">{{title}}</h1>
-                        <p class="text-white baseline fs-4">{{ metaDescription }}</p>
-                        <div class="cta">
-                            <NuxtLink
-                                href="/demo"
-                                class="btn text-white btn-animated btn-purple-animated mt-2"
-                            >
-                                Talk to us
-                            </NuxtLink>
-                        </div>
+                        <p class="baseline">{{ metaDescription }}</p>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <img
-                        class="hero-image"
-                        :src="heroImage"
-                        :alt="metaDescription"
-                    />
+                    <div class="hero-image-container">
+                        <img
+                            class="hero-image"
+                            :src="heroImage"
+                            :alt="metaDescription"
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <section>
-                <div class="metrics">
-                    <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi1Content" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi2Content" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <ContentRenderer :value="kpi3Content" />
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="metrics d-flex flex-wrap align-items-center justify-content-center">
+                        <div class="counter-box">
+                            <ContentRenderer :value="kpi1Content" />
+                        </div>
+                        
+                        <div class="vertical-separator d-none d-md-block mx-4"></div>
+                        
+                        <div class="counter-box">
+                            <ContentRenderer :value="kpi2Content" />
+                        </div>
+                        
+                        <div class="vertical-separator d-none d-md-block mx-4"></div>
+                        
+                        <div class="counter-box">
+                            <ContentRenderer :value="kpi3Content" />
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </template>
@@ -57,190 +55,131 @@
   import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 
   const props = defineProps({
-    slug: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    metaDescription: {
-      type: String,
-      required: true
-    },
-    heroImage: {
-      type: String,
-      required: true
-    },
-    logo: {
-      type: String,
-      required: true
-    },
-    kpi1: {
-      type: String,
-      required: true
-    },
-    kpi2: {
-      type: String,
-      required: true
-    },
-    kpi3: {
-      type: String,
-      required: true
-    }
+    slug: { type: String, required: true },
+    title: { type: String, required: true },
+    metaDescription: { type: String, required: true },
+    heroImage: { type: String, required: true },
+    logo: { type: String, required: true },
+    kpi1: { type: String, required: true },
+    kpi2: { type: String, required: true },
+    kpi3: { type: String, required: true }
   });
+  
   const kpi1Content = ref('');
   const kpi2Content = ref('');
   const kpi3Content = ref('');
 
-  const pagelist = ['/stories', props.slug];
-
   kpi1Content.value = await parseMarkdown(props.kpi1, {});
   kpi2Content.value = await parseMarkdown(props.kpi2, {});
   kpi3Content.value = await parseMarkdown(props.kpi3, {});
-
 </script>
 
 <style scoped lang="scss">
   @import "../../assets/styles/variable";
 
-  .container-fluid {
-      background: url("/landing/usecases/cicd/bg.svg") no-repeat center;
-      background-size: 100% 100%;
-      padding-top: 80px;
-      margin-top: -80px;
+  .header-container {
+      background-color: #F4F4F4; 
       position: relative;
       overflow: hidden;
-
-      &::after ,
+      
       &::before {
           content: "";
           position: absolute;
-          z-index: -147;
-          filter: blur(100px);
-          background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+          right: -18.767px;
+          top: 110.197px;
+          width: 818.767px;
+          height: 414.991px;
+          
+          background-image: url("/stories/header/dots.svg");
+          background-repeat: no-repeat;
+          background-size: contain; 
+          z-index: 0; 
+          pointer-events: none;
       }
 
-      &::after {
-          height: 34rem;
-          width: 80%;
-          bottom: -28%;
-          left: 9%;
-      }
-
-      &::before {
-          height: 36rem;
-          width: 39rem;
-          bottom: 25%;
-          left: 51%;
-      }
-
-      @include media-breakpoint-down(lg) {
-          &::before {
-              width: 80%;
-              bottom: 45%;
-              left: 10%;
-          }
-      }
-
-      h1, p {
-          color: $white;
-          font-family: $font-family-sans-serif;
-          font-weight: 300;
-          padding-bottom: 0;
+      .container {
+          position: relative;
+          z-index: 2; 
       }
 
       h1 {
+          color: $black-2;
+          font-family: $font-family-sans-serif;
+          font-weight: 500;
           font-size: $font-size-3xl;
           margin-bottom: 16px;
-          font-weight: 500;
+          line-height: 1.2;
+          padding-bottom: 0;
 
           @include media-breakpoint-down(sm) {
               font-size: 1.875rem;
           }
-
-          :deep(span) {
-              background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
-              background-clip: text;
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-          }
       }
 
-      p {
-          font-size: $font-size-xl;
+      p.baseline {
+          color: #000;
+          font-family: "Mona Sans", sans-serif;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 23px;
+          
+          margin-bottom: 2rem;
+          padding-bottom: 0;
+      }
 
-          @include media-breakpoint-down(sm) {
-              font-size: $h6-font-size;
-          }
+      .hero-image-container {
+          border-radius: 13px;
+          border: 1px solid #D4D4D4;
+          background: #F4F4F4;
+          display: flex;
+          padding: 6px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+          width: 100%; 
       }
 
       .hero-image {
           width: 100%;
-          border-radius: calc($spacer * 0.25);
+          height: auto;
+          border-radius: 8px; 
+          object-fit: cover;
       }
 
       :deep(.hero.hero-sm) {
-          border-bottom: 1px solid #FFFFFF1A;
+          border-bottom: none;
+          padding-bottom: 3rem; 
       }
-  }
-
-  .container {
-      position: relative;
-      :deep(section) {
-          padding: 4.156rem 0;
-          border-radius: 8px;
-          background: #111113;
-          position: absolute;
-          width: 100%;
-          top: -5.5rem;
-          .subtitle {
-              font-weight: 400;
-              font-size: $font-size-sm;
-          }
-          .main {
-              background-color: $black-2 !important;
-          }
-      }
+      
       .metrics {
-          padding-left: calc($spacer * 2);
-          padding-right: calc($spacer * 2);
-          margin: 0 auto;
-          display: flex;
-          justify-content: space-around;
-          flex-flow: row wrap;
-
-          @include media-breakpoint-down(lg) {
-              flex-direction: column;
-              gap: 1rem;
-          }
-
-          .line-separator {
-              width: calc($spacer * 0.063);
-              background-color: #242427;
-              @include media-breakpoint-down(lg) {
-                  width: 100%;
-                  height: calc($spacer * 0.063);
-              }
+          margin-top: 1rem;
+          justify-content: center;
+          
+          .vertical-separator {
+              width: 1px;
+              height: 50px; 
+              background-color: #888;
           }
 
           .counter-box {
               text-align: center;
-              font-family: $font-family-sans-serif;
-              font-style: normal;
-              :deep(h5) {
-                  color: $white !important;
-                  font-size: 48.09px !important;
-                  font-weight: 600;
-                  display: block;
-              }
-              :deep(p) {
-                  color: #ABABB2;
-                  text-transform: uppercase;
-                  font-size: 11.61px !important;
-                  font-weight: 500;
+              
+              :deep(h5), :deep(h4), :deep(strong) {
+                  color: $black-2;
+                  font-size: 2.5rem; 
+                  font-weight: 700;
                   margin: 0;
+                  line-height: 1;
+              }
+              
+              :deep(p) {
+                  color: #444; 
+                  font-size: 0.875rem;
+                  text-transform: uppercase;
+                  font-weight: 600;
+                  margin: 0.5rem 0 0 0;
+                  letter-spacing: 0.05em;
               }
           }
       }
