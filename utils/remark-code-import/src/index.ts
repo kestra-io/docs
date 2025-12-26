@@ -31,17 +31,7 @@ function extractLines(
     end = lines.length - 1;
   } else {
     end = lines.length;
-  }
-  return lines.slice(start - 1, end).join('\n');
-}
-
-function codeImport(options: CodeImportOptions = {}) {
-  const rootDir = options.rootDir || process.cwd();
-  return (tree: any, file: VFile) => {
-    const codes: [Code, number | undefined | null | undefined, Parent][] = [];
-
-    if (file) {
-      visit(tree, 'code', (node, index, parent) => {
+sit(tree, 'code', (node, index, parent) => {
         codes.push([node as Code, index, parent as Parent]);
       });
 
@@ -67,7 +57,17 @@ function codeImport(options: CodeImportOptions = {}) {
           ? parseInt(res.groups.from, 10)
           : undefined;
         const hasDash = !!res.groups.dash || fromLine === undefined;
-        const toLine = res.groups.to ? parseInt(res.groups.to, 10) : undefined;
+        const toLine = re  }
+  return lines.slice(start - 1, end).join('\n');
+}
+
+function codeImport(options: CodeImportOptions = {}) {
+  const rootDir = options.rootDir || process.cwd();
+  return (tree: any, file: VFile) => {
+    const codes: [Code, number | undefined | null | undefined, Parent][] = [];
+
+    if (file) {
+      vis.groups.to ? parseInt(res.groups.to, 10) : undefined;
         const normalizedFilePath = filePath
           .replace(/^<rootDir>/, rootDir)
           .replace(/\\ /g, ' ');

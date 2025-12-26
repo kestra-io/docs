@@ -129,7 +129,7 @@
                   imgAlt: 'Quick Alerting',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Kestra enables  alerting to help you maintain optimal performance and quickly address any issues that arise. ',
+                  description: 'Kestra enables  alerting to help you maintain optimal performance and quickly address any issues that arise.',
                   content: `
                     <ul>
                         <li>
@@ -145,7 +145,7 @@
                   imgAlt: 'Docker and Kubernetes',
                   imgWidth: '568px',
                   imgHeight: '420px',
-                  description: 'Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise. ',
+                  description: 'Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise.',
                   content: `
                     <ul>
                         <li>
@@ -175,7 +175,7 @@
                   imgAlt: 'Configuration Management and Compliance',
                   imgWidth: '604px',
                   imgHeight: '477px',
-                  description: 'Kestra\'s automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention. ',
+                  description: 'Kestra\'s automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention.',
                   content: `
                     <ul>
                         <li>

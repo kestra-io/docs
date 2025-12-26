@@ -3,7 +3,7 @@
         <NuxtLoadingIndicator />
         <LayoutSearch />
         <LayoutAnnounce v-show="showAnnounce" :content="content" :scrolled="scrolled" />
-        <div class="wrapper" :class="{'announce': showAnnounce}">
+        <div class="wrapper">
             <LayoutHeader :scrolled :nuxtApp />
             <main>
                 <slot />
