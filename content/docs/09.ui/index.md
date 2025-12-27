@@ -9,7 +9,7 @@ When you first navigate to the Kestra UI, you will see the **Welcome** page.
 
 ![Kestra User Interface Welcome Page](/docs/user-interface-guide/01-Welcome.png)
 
-On this page, click on **Create my first flow** to open the Kestra __Guided Tour__, which will guide you through creating and executing your first flow step by step.
+On this page, click on **Start Product Tour** to open the Kestra __Guided Tour__, which will guide you through creating and executing your first flow step by step.
 
 On the left menu, you will see the following UI pages:
 
