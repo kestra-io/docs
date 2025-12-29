@@ -308,7 +308,25 @@ tasks:
 
 Any trigger in Kestra 1.2 can now support concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This removes previous limitations where certain trigger types could only run one execution at a time, enabling more flexible and scalable workflow patterns.
 
-## AWS Marketplace
+## AWS & Azure Marketplace
+
+Kestra Open Source is now available on both [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg) and [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), making it easier than ever to deploy Kestra in your cloud environment.
+
+### AWS Marketplace
+
+Deploy Kestra on AWS with a single CloudFormation template that automatically provisions:
+- **EC2 instance** running Ubuntu with Docker preconfigured
+- **PostgreSQL RDS database** for metadata and queue storage
+- **S3 bucket** for file storage and artifacts
+- **Security groups and networking** configured for secure communication
+
+The deployment completes in approximately 10 minutes, with Kestra automatically launched and ready to use. Access the web UI via the EC2 instance's public IP address and start building workflows immediately—no manual setup required.
+
+### Azure Marketplace
+
+Kestra is also available on Azure Marketplace, providing the same streamlined deployment experience for Azure users. Deploy Kestra with integrated Azure services for a production-ready orchestration platform.
+
+Both marketplace offerings are free (no software charges), with only standard cloud infrastructure costs applying.
 
 
 ## Additional Improvements
