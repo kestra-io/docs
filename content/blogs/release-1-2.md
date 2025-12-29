@@ -340,26 +340,25 @@ Both marketplace offerings are free (no software charges), with only standard cl
 
 ## Plugins
 
-- **Apache Beam Plugin** – Introduces a `RunPipeline` task supporting multiple runners (Flink, Dataflow, Spark, Direct) and both Python and Java SDKs for unified big data processing across platforms.
 - **Segment CDP Plugin** – Reverse ETL tasks for syncing customer data from warehouses back to Segment, enabling activation of enriched data across marketing and analytics platforms.
-- Enhanced Ansible task logging and output generation for clearer execution insights and easier troubleshooting.
+- **Ansible** – Improved task logging and output generation for clearer execution insights and easier troubleshooting.
 - **AWS EMR Serverless** – Serverless big data processing on Amazon EMR without managing clusters. Run Spark and Hive jobs with automatic scaling and pay-per-second billing.
 - **NFS** – Network File System tasks including `CheckMount`, `List`, `Copy`, `Move`, and `Delete` operations for managing files across network-attached storage.
 - **Pipedrive** – CRM integration supporting deal and person management. Create or update deals, and create or retrieve person records programmatically.
-- **n8n** – Workflow automation platform integration to trigger and manage n8n workflows from Kestra.
-- **Dagster** – Data orchestration platform integration to trigger Dagster jobs and pipelines.
-- **OneShare** – File sharing and collaboration platform integration for enterprise document management.
+- **n8n** – Configure n8n webhook URLs and optional authentication headers in your Kestra tasks to initiate n8n workflows directly from Kestra executions. Pass payloads between platforms to enable seamless cross-orchestration and automate processes across both Kestra and n8n.
+- **Dagster** – Trigger a Dagster job run and optionally wait for completion. Launch a Dagster job execution via the GraphQL API, poll for status updates, and retrieve the final state.
+- **OneShare** – Microsoft 365 plugin for managing OneDrive/SharePoint files with a unified interface. Provides tasks for creating, deleting, downloading, exporting, listing, and uploading files, plus polling triggers to react to file create/update events using Graph credentials.
 - **Serialization Enhancements** – New data format conversions including JSON to JSONL, JSON to Ion, Protobuf to Ion, and improved CSV to Ion handling with better error management for malformed lines.
 - **TCP/UDP** – Send messages over TCP and UDP protocols with real-time trigger capabilities for network-based workflows.
 - **Grafana Loki** – Log aggregation and querying integration for centralized logging and observability.
 - **Google Calendar** – `EventCreatedTrigger` to automatically trigger workflows when new calendar events are created.
 - **Google Sheets** – `SheetModifiedTrigger` to monitor and react to changes in Google Sheets documents.
-- **Redis CLI** - 
+- **Redis CLI** – Run any redis-cli command in a Docker container. Supports authentication, TLS, database selection, and JSON output format (Redis 7+). Commands are executed sequentially and the task fails if any command fails.
 
 
 ## Migration Note for Upgrading to 1.2
 
-Version 1.2 changes how Namespace Files metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored files directly from storage, which was inefficient for large datasets. Additionally, Namespace Files can now be versioned and restored.
+Version 1.2 changes how Namespace Files metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored files directly from storage. Additionally, Namespace Files can now be versioned and restored.
 
 
 ```shell
