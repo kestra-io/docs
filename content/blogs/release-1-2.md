@@ -277,7 +277,32 @@ The Execution Overview page has been completely redesigned with improved visual 
 
 ## Checks Feature
 
-Kestra 1.2 introduces flow-level checks that can block execution creation if specified conditions aren't met. This validation layer ensures workflows only run when prerequisites are satisfied, preventing invalid or inappropriate executions from starting.
+Kestra 1.2 introduces flow-level checks that validate conditions each time inputs are validated. This validation layer ensures workflows only run when prerequisites are satisfied, preventing invalid or inappropriate executions from starting.
+
+Checks support multiple styles (`SUCCESS`, `WARNING`, `INFO`, `ERROR`; default `INFO`) and behaviors:
+- `BLOCK_EXECUTION` – Prevents execution creation when the condition is met
+- `FAIL_EXECUTION` – Allows execution to start but marks it as failed if the condition is met
+- `CREATE_EXECUTION` – Creates the execution regardless (default behavior)
+
+Here is an example checking on the KV Store before running the flow execution:
+
+```yaml
+id: vm_provisionning
+namespace: company.team
+
+checks:
+  - condition: "{{ kv('VMs') | length < 2 }}"
+    message: "You have provisioned too many VMs"
+    style: ERROR
+    behavior: BLOCK_EXECUTION
+
+tasks:
+  - id: VM_numbers
+    type: io.kestra.plugin.core.log.Log
+    message: "Here are the VM provisionned: {{ kv('VMs') }}"
+```
+
+
 
 ## Concurrent Execution for Any Trigger
 
