@@ -381,12 +381,6 @@ For **Kubernetes** deployments, create a one-time pod to run the same migration 
 Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
 :::
 
-## TODO
-
-- Allow External revision for Flows Created from CI/CD
-- Auto-delete expired keys from KV Store
-- Allow deleting given revision/all revision
-- Add AI Copilot Button to the No-Code Editor Panel
 
 ## Next Steps
 
