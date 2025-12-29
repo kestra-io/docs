@@ -466,7 +466,7 @@ id: telegram
 namespace: company.team
 tasks:
   - id: telegram_notification
-    type: io.kestra.plugin.notifications.telegram.TelegramSend
+    type: io.kestra.plugin.telegram.TelegramSend
     channel: "@general"
     token: "{{ secret('TELEGRAM_BOT_TOKEN') }}"
     payload: "Hello from Kestra!"

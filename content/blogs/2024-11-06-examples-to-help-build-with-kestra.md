@@ -136,7 +136,7 @@ tasks:
                 char *token = strtok(line, ",");
                 int i = 0;
                 double total = 0.0;
-                
+
                 while (token) {
                     if (i == 6) {
                         total = atof(token);
@@ -285,7 +285,7 @@ triggers:
 
 On the trend of event driven workflows, we can use [Realtime triggers](../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
 
-In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/google%20cloud/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database. 
+In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/google%20cloud/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database.
 
 ```yaml
 id: pubsub-realtime-trigger
@@ -397,7 +397,7 @@ namespace: company.team
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: >
       {
@@ -418,7 +418,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     url: "{{ secret('DISCORD_WEBHOOK') }}"
     executionId: "{{ trigger.executionId }}"
 

@@ -54,7 +54,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {
@@ -135,7 +135,7 @@ tasks:
       apiToken: "{{ secret('KESTRA_API_TOKEN') }}"
     namespace: tutorial
     testId: test_microservices_and_apis
-  
+
   - id: run_if_tests_pass
     type: io.kestra.plugin.core.flow.If
     condition: "{{ outputs.run_test.result.state }}"

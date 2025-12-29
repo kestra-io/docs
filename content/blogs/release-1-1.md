@@ -157,7 +157,7 @@ tasks:
 
 triggers:
   - id: gmail_inbox_trigger
-    type: io.kestra.plugin.notifications.mail.RealTimeTrigger
+    type: io.kestra.plugin.email.RealTimeTrigger
     protocol: IMAP
     host: imap.gmail.com
     port: 993

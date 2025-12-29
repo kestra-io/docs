@@ -40,26 +40,26 @@ Running tests is a common use case for a automation/orchestrator. The example we
 - Run pytest tests
 - Send a Slack notification
 
-In Jenkins, we will use Groovy to declare our pipeline. In this example, we are using a docker container with a `python` image to run our stages. The first stage clones the repository. 
+In Jenkins, we will use Groovy to declare our pipeline. In this example, we are using a docker container with a `python` image to run our stages. The first stage clones the repository.
 
 After that, we set up a virtual environment as Jenkins doesn't let you install dependencies to the container directly. Despite the container isolating pipelines from each other, you will need to use a virtual environment to install pytest.
 
 In our final stage, we run the pytest tests, but we need to reactivate the virtual environment for the separate stage. The success message here will determine whether the pipeline build will pass or fail.
 
 Afterwards, we use a `post` block to send a Slack notification using variables to dynamically set the message based on the output. The nice thing here is that this will run separately to the pipeline, enabling us to send a message about it.
- 
+
 
 ```groovy
 pipeline {
     agent { docker { image 'python:3.9.0' } }
-    
+
     stages {
         stage('checkout') {
             steps {
                 git(
                     url: 'https://github.com/wrussell1999/kestra-examples.git',
                     branch: 'main'
-                ) 
+                )
             }
         }
         stage('dependencies') {
@@ -111,7 +111,7 @@ tasks:
           - pytest demos/jenkins-vs-kestra/1-tests
 
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
@@ -125,7 +125,7 @@ In Jenkins, you can simply add a Jenkinsfile to your repository and put your Gro
 ```groovy
 pipeline {
     agent { docker { image 'python:3.9.0' } }
-    
+
     stages {
         stage('dependencies') {
             steps {
@@ -195,14 +195,14 @@ triggers:
 ```groovy
 pipeline {
     agent { docker { image 'python:3.9.0' } }
-    
+
     stages {
         stage('checkout') {
             steps {
                 git(
                     url: 'https://github.com/wrussell1999/kestra-examples.git',
                     branch: 'main'
-                ) 
+                )
             }
         }
         stage('dependencies') {
@@ -231,7 +231,7 @@ tasks:
         type: io.kestra.plugin.git.Clone
         url: https://github.com/wrussell1999/kestra-examples
         branch: main
-      
+
       - id: run_code
         type: io.kestra.plugin.scripts.python.Commands
         taskRunner:
@@ -293,7 +293,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"
@@ -323,7 +323,7 @@ In summary, both Kestra and Jenkins have certain features that stand out to each
 | Total | 3 | 2 |
 
 Jenkins stands out for:
-- Using a Jenkinsfile to keep your pipeline and code in one place, and keep it out of Jenkins 
+- Using a Jenkinsfile to keep your pipeline and code in one place, and keep it out of Jenkins
 - Managing Plugins both from the CLI and UI, with options to install without restarting the server
 - Schedule builds at a set time, but automatically spread them out to prevent overloading the server
 
