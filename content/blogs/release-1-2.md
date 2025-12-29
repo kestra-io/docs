@@ -272,11 +272,7 @@ The Execution Overview page has been completely redesigned with improved visual 
 - **Optimized Spacing** - Reduced spacing between keys and values for improved readability on wider screens
 - **Better Visual Flow** - Information is now easier to scan and understand at a glance
 
-
-
-## Secret Managers
-
-Enterprise Edition users gain new secret management integrations including 1Password and Doppler. These providers join existing secret managers to offer more flexibility in how sensitive credentials and configuration are stored and accessed across your infrastructure.
+![Execution Overview Page New Design](/blogs/execution_preview.png)
 
 
 ## Checks Feature
@@ -292,6 +288,7 @@ Any trigger in Kestra 1.2 can now support concurrent executions, allowing multip
 
 ## Additional Improvements
 
+- **Secret Managers** – Enterprise Edition users gain new secret management integrations including 1Password and Doppler. These providers join existing secret managers to offer more flexibility in how sensitive credentials and configuration are stored and accessed across your infrastructure.
 - https://github.com/kestra-io/kestra-ee/issues/5556#issuecomment-3520643382
 - https://github.com/kestra-io/kestra-ee/issues/5721
 - Add export to CSV on the Executions page - https://github.com/kestra-io/kestra-ee/issues/5307
