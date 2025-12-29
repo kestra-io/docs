@@ -70,14 +70,13 @@
                         </div>
                     </div>
 
-                    <!-- OPTIONAL: remove bottom margin here if you want even less gap -->
-                    <div class="col-md-8 mb-4">
+                    <div class="col-md-8 mb-0">
                         <div class="business-container">
                             <div class="business-by-us">
                                 <div class="info-content">
                                     <div class="info-item w-100">
-                                        <h3>{{story.quote}}</h3>
-                                        <p class="mt-3 text-muted">— {{story.quotePerson}}</p>
+                                        <h3><span class="quote-mark">“</span>{{story.quote}}<span class="quote-mark">”</span></h3>
+                                        <p class="author-name">{{story.quotePerson}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +123,11 @@
                             </div>
                         </LayoutSection>
 
-                       
+                        <div class="see-all-container">
+                            <NuxtLink href="/use-cases/stories" class="see-all-link">
+                                See all stories >
+                            </NuxtLink>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -234,13 +237,19 @@
     }
 
     .business-container {
-        margin-bottom: 3rem;
-        padding: 2rem;
-        background-color: #F9F9FB;
+        margin-bottom: 2rem;
+
+        background-color: #FFFFFF; 
+        border: 1px solid #E5E5E5;
         border-radius: 8px;
-        border-left: 4px solid #631BFF;
+        padding: 6px; 
 
         .business-by-us {
+        
+            background-color: #F9F9FB;
+            border-radius: 4px; 
+            padding: 2.5rem; 
+            
             .info-content {
                 display: flex;
                 flex-direction: column;
@@ -248,17 +257,22 @@
                 h3 {
                     font-size: 1.5rem;
                     line-height: 1.4;
-                    font-weight: 500;
-                    font-style: italic;
+                    font-weight: 700;
+                    font-style: normal;
                     color: $black-2;
                     margin: 0;
+                    
+                    .quote-mark {
+                        color: #631BFF;
+                    }
                 }
 
-                p {
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    margin: 0;
+                .author-name {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-top: 1rem;
                     color: #666;
+                    margin-bottom: 0;
                 }
             }
         }
@@ -271,6 +285,11 @@
                 line-height: 1.6;
                 color: $black-2;
                 font-weight: 400;
+            }
+
+            a {
+                color: #631BFF !important;
+                text-decoration: underline !important;
             }
 
             h2 {
@@ -290,7 +309,7 @@
 
             h2 > a, h3 > a {
                 color: $black-2 !important;
-                text-decoration: none;
+                text-decoration: none !important;
             }
 
             strong {
@@ -396,18 +415,12 @@
         }
     }
 
-
-
     .section-content-wrapper {
         background-color: #F4F4F4;
         width: 100vw;
         margin-left: calc(-50vw + 50%);
-
-
-        margin-top: 0.5rem; 
-        padding: 4rem 0;
-
-
+        margin-top: 0; 
+        padding: 2rem 0;
         position: relative;
         overflow: hidden;
     }
@@ -419,7 +432,6 @@
         z-index: 0;
         pointer-events: none;
         background-image: url("/stories/square.svg");
-
         background-repeat: repeat;
     }
 
