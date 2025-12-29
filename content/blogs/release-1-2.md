@@ -234,6 +234,9 @@ This approach democratizes workflow creation by letting platform teams build reu
 
 Namespace Files in Kestra 1.2 now support comprehensive version control with revision history. You can track changes, restore previous versions, and maintain audit trails for all namespace files. The example below shows how to reference specific versions of namespace files in your workflows:
 
+![Namespace File Revision History](/blogs/revision_namespacefiles.png)
+
+
 :::collapse{title="Namespace File Versioning Example"}
 
 ```yaml
