@@ -34,15 +34,82 @@ Check the video below for a quick overview of all enhancements.
 
 ## Assets
 
-Kestra 1.2 introduces Assets, a powerful new Enterprise Edition feature that maintains a stateful inventory of external resources (tables, VMs, databases, inventory, etc.) that workflows interact with. Assets solve common infrastructure orchestration challenges by providing:
+Kestra 1.2 introduces Assets, a powerful new Enterprise Edition feature that maintains a stateful inventory of external resources (tables, VMs, databases, inventory, etc.) that workflows interact with. Assets solve common infrastructure orchestration challenges by providing enterprise-grade resource management capabilities while maintaining Kestra's unopinionated design philosophy.
 
-- **Unified Resource Inventory** - Track all resources across your organization with identity, metadata, and state
-- **Dynamic UI Inputs** - Populate dropdowns and selections based on existing resources with filtering by ownership, environment, or state
-- **Reactive Workflows** - Trigger flows automatically when resource state changes
-- **Cross-Flow State Sharing** - Share resource information consistently between workflows
-- **Complete Traceability** - Track which flow created, modified, or deleted each resource
+### How Assets Work
 
-Assets are implemented as a separate plugin system, keeping Kestra's unopinionated design while providing enterprise-grade resource management capabilities. This first iteration establishes the foundation for resource management, with future releases planned to enhance functionality and add more integrations.
+Assets are declared directly in your workflow tasks, establishing clear relationships between resources and the workflows that manage them. Each asset has a unique identity (ID and namespace), a type (such as `Table`, `External`, `VM`, etc.), and optional metadata for categorization and filtering.
+
+In your workflows, you declare assets as inputs and outputs:
+
+- **Input Assets** - Resources that a task consumes or reads from
+- **Output Assets** - Resources that a task creates, modifies, or writes to
+
+This declaration automatically creates the asset in Kestra's inventory and establishes dependency relationships. The system tracks which workflows and executions interact with each asset, providing complete lineage and traceability.
+
+
+Here's a more complete example showing how assets enable data pipeline orchestration with automatic dependency tracking:
+
+:::collapse{title="Data Pipeline with Assets Example"}
+
+```yaml
+id: data_pipeline_assets
+namespace: kestra.company.data
+
+tasks:
+  - id: create_staging_layer_asset
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      CREATE TABLE IF NOT EXISTS trips AS
+      select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
+    assets:
+      inputs:
+        - id: sample_data.nyc.taxi
+      outputs:
+          - id: trips
+            namespace: "{{flow.namespace}}"
+            type: io.kestra.core.models.assets.Table
+            metadata:
+              model_layer: staging
+
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values:
+      - passenger_count
+      - trip_distance
+    tasks:
+      - id: create_mart_layer_asset
+        type: io.kestra.plugin.jdbc.duckdb.Query
+        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        assets:
+          inputs:
+              - id: trips
+          outputs:
+              - id: avg_{{taskrun.value}}
+                type: io.kestra.core.models.assets.Table
+                namespace: "{{flow.namespace}}"
+                metadata:
+                  model_layer: mart
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.duckdb
+    values:
+      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+      fetchType: STORE
+```
+
+This workflow demonstrates:
+- **External Asset Reference** - `sample_data.nyc.taxi` is referenced as an input, representing an external data source
+- **Staging Layer Creation** - The `trips` table is created and registered as an asset with `model_layer: staging` metadata
+- **Mart Layer Generation** - Multiple mart tables (`avg_passenger_count`, `avg_trip_distance`) are created from the staging layer
+- **Automatic Dependency Graph** - Kestra automatically tracks that mart tables depend on the staging table, which depends on the external source
+
+:::
+
+The Assets UI provides an interactive dependency graph visualizing upstream and downstream relationships, complete execution history tracking for each asset, and a unified inventory searchable by namespace, type, or metadata. You can automatically populate dropdowns in flow inputs as you can reference assets directly in expressions using Pebble templates like `'{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'`.
+
+Assets eliminate manual resource tracking by automatically maintaining an inventory as workflows execute, prevent orphaned resources by clearly mapping ownership, and enable self-service discovery through the UI. The dependency graph helps identify impact before changes, while execution history provides complete traceability for compliance and debugging.
+
+Common use cases include data pipeline orchestration with automatic lineage tracking, infrastructure as code management for cloud resources, multi-environment resource management via metadata tagging, and data governance initiatives that require complete audit trails. Assets are implemented as a separate plugin system, preserving Kestra’s unopinionated approach while delivering enterprise-grade resource management. This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness and auto-emit assets for plugins, along with additional integrations.
 
 
 ## Templated Custom Blueprints
