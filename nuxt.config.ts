@@ -68,7 +68,9 @@ export default defineNuxtConfig({
             }
         },
     },
-
+    robots: {
+        disallow: ['/slack'],
+    },
     app: {
         baseURL: "/",
         // pageTransition: {name: 'page', mode: 'out-in'}

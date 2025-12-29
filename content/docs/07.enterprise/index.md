@@ -29,7 +29,7 @@ While Kestra Cloud provides a fully managed, hassle-free experience, it differs 
 
 This section describes those features in detail and explains how to configure them.
 
-If you're interested to learn more, check our [Open-Source and Paid Editions comparison](../oss-vs-paid.md), explore our [Pricing](/pricing), and [get in touch](/demo) to discuss your requirements.
+If you're interested to learn more, check our [Open-Source and Enterprise Edition comparison](../oss-vs-paid.md), explore our [Pricing](/pricing), and [get in touch](/demo) to discuss your requirements.
 
 :::ChildCard
 :::
