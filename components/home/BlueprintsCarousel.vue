@@ -3,7 +3,7 @@
         <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
         <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
         <div class="blueprints-carousel" ref="wrapper">
-            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`"/>
+            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :tags="tagsList" :href="`/blueprints/${blueprint.id}`"/>
         </div>
     </div>
 </template>
@@ -15,6 +15,13 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
 defineProps<{
     blueprints: {id: string}[]
 }>()
+
+// Fetch tags API
+const config = useRuntimeConfig();
+const { data: tags } = await useAsyncData<Array<{id: string, name: string}>>('blueprints-tags-carousel', () => {
+    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
+});
+const tagsList = computed(() => tags.value ?? []);
 
 const wrapper = ref<HTMLElement | null>(null)
 
