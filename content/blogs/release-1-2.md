@@ -332,12 +332,11 @@ Both marketplace offerings are free (no software charges), with only standard cl
 ## Additional Improvements
 
 - **Secret Managers** – Enterprise Edition users gain new secret management integrations including 1Password and Doppler. These providers join existing secret managers to offer more flexibility in how sensitive credentials and configuration are stored and accessed across your infrastructure.
-- https://github.com/kestra-io/kestra-ee/issues/5556#issuecomment-3520643382
-- https://github.com/kestra-io/kestra-ee/issues/5721
-- Add export to CSV on the Executions page - https://github.com/kestra-io/kestra-ee/issues/5307
-- Configurable termination grace periods for tasks and workflows, allowing you to control how long Kestra waits before forcefully shutting down processes—ideal for letting long-running tasks finish cleanup or critical steps.
-- The left menu now offers simpler navigation and better grouping of related features.
-- Modern redesigned Plugin page with improved search, better filtering, categorization, and integrated documentation for easier plugin discovery.
+- **CSV Export on Executions Page** – Added ability to export execution data to CSV format directly from the Executions page for easier analysis and reporting.
+- **Improved Liveness & Grace Period** – Enhanced liveness mechanism and documentation with timeout-based detection and added explicit configurable termination grace periods. See the [configuration documentation](/docs/configuration) for details.
+- **Pre-load Flows on Startup** – Added `--flow-path` flag to the Kestra startup command to pre-load flows from a directory during server initialization (e.g., `--flow-path /app/myflows/`), enabling flows to be available immediately when the server starts.
+- **Improved Left Menu Navigation** – Simplified navigation with better grouping of related features for easier access to key functionality.
+- **Redesigned Plugin Page** – Modern plugin page with improved search, better filtering, categorization, and integrated documentation for easier plugin discovery.
 
 ## Plugins
 
