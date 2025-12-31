@@ -1,6 +1,6 @@
 ---
 title: "Kestra 1.2 introduces Assets, Namespace Files Revision History, Concurrent Executions, Enhanced UI and Dozens of New Plugins"
-description: "Kestra 1.2 delivers asset management, namespace file versioning, concurrent execution capabilities, improved UI/UX, new secret managers, and dozens of new community-driven plugins."
+description: "Kestra 1.2 delivers asset management, namespace file versioning, enhanced concurrent execution capabilities, improved UI/UX, new secret managers, and new plugins plugins."
 date: 2026-01-06T17:00:00
 category: News & Product Updates
 authors:
@@ -10,7 +10,7 @@ image: /blogs/release-1-2.jpg
 ---
 
 
-We're excited to announce Kestra 1.2, delivering asset management, namespace file versioning capabilities, concurrent execution support, improved user interface designs, and dozens of plugins. Following user feedback, we've introduced enterprise-grade asset management, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
+We're excited to announce Kestra 1.2, delivering asset management, namespace file versioning capabilities, enhanced concurrent execution support, improved user interface designs, and new plugins. Following user feedback, we've introduced enterprise-grade asset management, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
 
 The table below highlights the key features of this release.
 
