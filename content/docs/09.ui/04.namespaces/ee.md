@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 Manage enterprise features at the namespace level.
 
 :::alert{type="info"}
-This feature requires a [commercial license](/pricing).
+This feature requires the [Enterprise Edition](../../07.enterprise/index.md).
 :::
 
 The Enterprise Edition introduces several additional namespace pages for enhanced governance and configuration:
