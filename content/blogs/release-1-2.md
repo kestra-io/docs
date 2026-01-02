@@ -18,10 +18,10 @@ The table below highlights the key features of this release.
 |---|---|---|
 | Assets | Maintain a stateful inventory of external resources (table, VMs, etc.) with identity and metadata for unified resource management and workflow reactivity | Enterprise Edition |
 | Templated Custom Blueprints | Create new flows from templates by filling in templated values, allowing business users to generate complete workflows without boilerplate | Enterprise Edition |
-| Revision History for NamespaceFiles | Track and restore previous versions of namespace files with comprehensive revision history | All Editions |
+| Revision History for Namespace Files | Track and restore previous versions of namespace files with comprehensive revision history | All Editions |
 | Checks Feature | Add validation checks to prevent execution creation when specified conditions aren't met | All Editions |
 | Concurrent Execution for Trigger | Enable multiple concurrent executions to be triggered simultaneously from any trigger type | All Editions |
-| Execution Overview Page New Design | Redesigned execution overview page with improved layout, better spacing, and organized sections | All Editions |
+| New Design for the Execution Overview Page | Redesigned execution overview page with improved layout, better spacing, and organized sections | All Editions |
 |  |  |  |
 
 
@@ -435,7 +435,7 @@ For **Docker Compose** setups, replace the command by the following
 ```yaml
 kestra:
   image: registry.kestra.io/docker/kestra:latest
-  command:  migrate metadata nsfiles
+  command: migrate metadata nsfiles
 ```
 
 After the migration completes, revert to the standard startup command to run the server, e.g., `server standalone --worker-thread=128`.
