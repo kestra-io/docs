@@ -39,7 +39,7 @@ Just like the `tasks` block, define `SlackExecution` under `errors`:
 ```yaml
 errors:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -62,7 +62,7 @@ namespace: system
 
 tasks:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -87,7 +87,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"

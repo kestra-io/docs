@@ -23,9 +23,9 @@ There's 3 different ways you can access values across different flows:
 
 ## Subflows
 
-Using [Subflows](../04.workflow-components/10.subflows.md), you can execute another flow from inside of a flow. As part of that, you can pass inputs from the parent flow to the subflow, and retrieve outputs generated from it. This is good if you want to have multiple Flows execute together, and interact directly with one and another. However, this doesn't work if you want one flow to generate a value, and then another use it later when it executes.
+Using [Subflows](../05.workflow-components/10.subflows.md), you can execute another flow from inside of a flow. As part of that, you can pass inputs from the parent flow to the subflow, and retrieve outputs generated from it. This is good if you want to have multiple Flows execute together, and interact directly with one and another. However, this doesn't work if you want one flow to generate a value, and then another use it later when it executes.
 
-In this example, our parent flow is passing the [variable](../04.workflow-components/04.variables.md) `debug` into the subflow as an [input](../04.workflow-components/05.inputs.md). On top of that, the subflow returns an [output](../04.workflow-components/06.outputs.md) `subflow_output` too.
+In this example, our parent flow is passing the [variable](../05.workflow-components/04.variables.md) `debug` into the subflow as an [input](../05.workflow-components/05.inputs.md). On top of that, the subflow returns an [output](../05.workflow-components/06.outputs.md) `subflow_output` too.
 
 ```yaml
 id: parent_flow
@@ -70,7 +70,7 @@ outputs:
 
 ## KV Store
 
-Using the [KV Store](../05.concepts/05.kv-store.md), you can set and get values across different flows. This is good if you want to be able to store values without flows directly interacting with one another, like they do with Subflows. Flows can use the Get and Set tasks to make themselves stateful, allowing one flow to store the state, and another to access it when it wants. However, this approach isn't ideal if you don't want these values to be modified by the flows directly.
+Using the [KV Store](../06.concepts/05.kv-store.md), you can set and get values across different flows. This is good if you want to be able to store values without flows directly interacting with one another, like they do with Subflows. Flows can use the Get and Set tasks to make themselves stateful, allowing one flow to store the state, and another to access it when it wants. However, this approach isn't ideal if you don't want these values to be modified by the flows directly.
 
 For example, you can use `io.kestra.plugin.core.kv.Set` task as well as use the UI interface to manage the values in the KV Store. To access them, you can use the  `io.kestra.plugin.core.kv.Get` task which will return them as an output.
 
@@ -100,10 +100,10 @@ tasks:
 ## Namespace Variables
 
 :::alert{type="info"}
-This is an [Enterprise Edition](../06.enterprise/index.md) feature.
+This is an [Enterprise Edition](../07.enterprise/index.md) feature.
 :::
 
-Using [Namespace Variables](../06.enterprise/02.governance/07.namespace-management.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../08.ui/04.namespaces/ee.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
+Using [Namespace Variables](../07.enterprise/02.governance/07.namespace-management.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../09.ui/04.namespaces/ee.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
 
 For example, we can define our variables as a key-value pair in our Namespace:
 

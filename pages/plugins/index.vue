@@ -21,11 +21,7 @@
 
     const pluginsList = computed(() => {
         if (status.value !== "success" || !plugins.value) return [];
-
-        return plugins.value.filter((p: Plugin) => {
-            if (p.group === "io.kestra.plugin.core" && p.subGroup !== undefined && p.subGroup !== null) return false;
-            return true;
-        });
+        return plugins.value;
     });
 
     const {data: categories} = await useFetch<string[]>(`${config.public.apiUrl}/plugins/categories`);

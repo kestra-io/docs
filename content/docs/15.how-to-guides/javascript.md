@@ -90,7 +90,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
-If you want to get a variable or file from your JavaScript code, you can use an [output](../04.workflow-components/06.outputs.md).
+If you want to get a variable or file from your JavaScript code, you can use an [output](../05.workflow-components/06.outputs.md).
 
 You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs) in order to pass your variables to Kestra.
 

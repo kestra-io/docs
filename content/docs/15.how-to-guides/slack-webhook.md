@@ -60,7 +60,7 @@ triggers:
 ```
 
 :::alert{type="warning"}
-Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store it securely.
+Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../06.concepts/04.secret.md) to store it securely.
 :::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
@@ -87,7 +87,7 @@ modal token set --token-id ak-zzzzzzzzz --token-secret as-zzzzzzzzz
 ```
 
 
-Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
+Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../06.concepts/04.secret.md) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
 
 
 ```yaml
@@ -244,7 +244,7 @@ tasks:
         prompt: "{{ trigger.body.event.text ?? null }}"
 
       - id: slack
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {"channel":"{{ trigger.body.event.channel }}","text":"{{ outputs.gpt.choices[0].message.content }}"}

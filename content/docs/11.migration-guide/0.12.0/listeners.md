@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.12.0
 ---
 
-Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../../04.workflow-components/07.triggers/02.flow-trigger.md) instead.
+Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger.md) instead.
 
 ## Why listeners are deprecated
 
@@ -64,7 +64,7 @@ tasks:
 listeners:
   - tasks:
       - id: slack
-        type: io.kestra.plugin.notifications.slack.SlackExecution
+        type: io.kestra.plugin.slack.SlackExecution
         url: "{{ secret('SLACK_WEBHOOK') }}"
         channel: "#general"
         executionId: "{{ execution.id }}"
@@ -93,7 +93,7 @@ namespace: prod.monitoring
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -152,7 +152,7 @@ Listeners are usually used to send notifications or handle special end-task beha
 listeners:
   - tasks:
       - id: sendSlackAlert
-        type: io.kestra.plugin.notifications.slack.SlackExecution
+        type: io.kestra.plugin.slack.SlackExecution
         url: https://hooks.slack.com/services/XXX/YYY/ZZZ
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
