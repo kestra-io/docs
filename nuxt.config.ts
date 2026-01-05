@@ -315,6 +315,19 @@ export default defineNuxtConfig({
         '/docs/developer-guide/namespace-files': {redirect: '/docs/concepts/namespace-files'},
         '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
         '/docs/developer-guide/git': {redirect: '/docs/version-control-cicd/git'},
+        '/docs/developer-guide/concurrency': {redirect: '/docs/workflow-components/concurrency'},
+        //typo "errors"
+        '/docs/developer-guide/errors-handling': {redirect: '/docs/workflow-components/errors'},
+        '/docs/developer-guide/ci-cd': {redirect: '/docs/version-control-cicd'},
+        '/docs/developer-guide/cicd/terraform': {redirect: '/docs/version-control-cicd/cicd/terraform'},
+        '/docs/developer-guide/cicd/gitlab': {redirect: '/docs/version-control-cicd/cicd/gitlab'},
+        '/docs/developer-guide/triggers': {redirect: '/docs/workflow-components/triggers'},
+        '/docs/developer-guide/triggers/flow': {redirect: '/docs/workflow-components/triggers/flow-trigger'},
+        '/docs/developer-guide/inputs': {redirect: '/docs/workflow-components/inputs'},
+        '/docs/developer-guide/tasks': {redirect: '/docs/workflow-components/tasks'},
+        '/docs/developer-guide/flow': {redirect: '/docs/workflow-components/flow'},
+        //'/docs/developer-guide/conditions': {redirect: '/docs/???'},
+        '/docs/version-control-cicd/developer-guide/ci-cd': {redirect: '/docs/version-control-cicd'},
         '/docs/concepts/flowable-tasks': {redirect: '/docs/workflow-components/tasks/flowable-tasks'},
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
@@ -389,7 +402,9 @@ export default defineNuxtConfig({
         '/docs/getting-started/plugins': {redirect: '/plugins'},
         '/docs/getting-started/workflow-components': {redirect: '/docs/workflow-components'},
         '/docs/getting-started/migration-guide': {redirect: '/docs/migration-guide'},
-        '/docs/getting-started/installation': {redirect: '/docs/installation'}
+        '/docs/getting-started/installation': {redirect: '/docs/installation'},
+        '/docs/getting-started/ui': {redirect: '/docs/ui'},
+        '/docs/getting-started/tutorial': {redirect: '/docs/tutorial'}
     },
 
     build: {
