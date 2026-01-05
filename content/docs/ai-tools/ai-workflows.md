@@ -58,7 +58,7 @@ tasks:
     condition: "{{ outputs.ask_ai['predictions'] | first | jq('.go_sailing') | first }}"
     then:
       - id: notify_me
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
@@ -178,7 +178,7 @@ tasks:
       openai_prompt: "{{ inputs.image_prompt }}"
 
   - id: send_image
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     content: "Are you happy with the image: {{ outputs.gen_img.outputs.image }}. Approve it here: http://localhost:8082/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}} "
     url: "{{ vars.discord_webhook }}"
 
@@ -209,7 +209,7 @@ tasks:
           openai_prompt: "{{ outputs.wait_for_approval.onResume.feedback }}"
 
       - id: send_new_image
-        type: io.kestra.plugin.notifications.discord.DiscordExecution
+        type: io.kestra.plugin.discord.DiscordExecution
         content: "Here's the new image with your feedback: {{ outputs.retry.outputs.image }}"
         url: "{{ vars.discord_webhook }}"
 ```
@@ -276,7 +276,7 @@ tasks:
       - output.txt
 
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {{
