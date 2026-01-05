@@ -553,7 +553,6 @@ paths:
   /api/v1/{tenant}/concurrency-limit/search:
     get:
       tags:
-      - Executions
       - Flows
       summary: Search for flow concurrency limits
       operationId: searchConcurrencyLimits
@@ -573,7 +572,6 @@ paths:
   /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}:
     put:
       tags:
-      - Executions
       - Flows
       summary: Update a flow concurrency limit
       operationId: updateConcurrencyLimit

@@ -84,7 +84,8 @@ export default {
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
-        "https://*.ipify.org"
+        "https://*.ipify.org",
+        "https://*.github.com"
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],
