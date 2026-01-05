@@ -3,7 +3,7 @@
         <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
         <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
         <div class="blueprints-carousel" ref="wrapper">
-            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`"/>
+            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :tags :href="`/blueprints/${blueprint.id}`"/>
         </div>
     </div>
 </template>
@@ -11,6 +11,8 @@
 <script lang="ts" setup>
 import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
 import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+
+const config = useRuntimeConfig();
 
 defineProps<{
     blueprints: {id: string}[]
@@ -29,6 +31,11 @@ const scrollRight = () => {
         wrapper.value.scrollTo({left:wrapper.value.scrollLeft + 400, behavior: 'smooth'})
     }
 }
+
+const { data: tags } = await useAsyncData<Array<{id: string, name: string}>>('blueprints-tags', () => {
+    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
+});
+
 </script>
 
 <style lang="scss" scoped>
