@@ -57,7 +57,7 @@ Since Kestra 0.23, you can also use the `dependencies` property allowing you to 
 
 ---
 
-With this feature, Python dependencies are cached and reused across executions of different flows. The [uv package manager](python-uv.md) installs the dependencies on the [worker](../07.architecture/05.worker.md) under the hood. These cached dependencies will be available for subsequent executions, leading to performance improvements. This method is recommended for smaller tasks that require only a few dependencies, which you don't want to add each time. For more complex workflows, you can continue to use `beforeCommands`.
+With this feature, Python dependencies are cached and reused across executions of different flows. The [uv package manager](python-uv.md) installs the dependencies on the [worker](../08.architecture/02.server-components.md#worker) under the hood. These cached dependencies will be available for subsequent executions, leading to performance improvements. This method is recommended for smaller tasks that require only a few dependencies, which you don't want to add each time. For more complex workflows, you can continue to use `beforeCommands`.
 
 The added properties are `dependencies`, which lists the dependencies (e.g., pandas), and `dependencyCacheEnabled`, which, when set to true, enables caching of dependencies across tasks. An example flow is as follows: the first execution installs the dependencies, but each subsequent execution of this flow, or any other flow relying on these packages, will show improved performance.
 

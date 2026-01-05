@@ -118,7 +118,7 @@ rule_files:
     - "/alertmanager/alert.rules"
 ```
 
-Create a simple rule to alert on high CPU usage or another metric exposed by Kestra. Refer to our full list at [Kestra Prometheus Metrics](../09.administrator-guide/prometheus-metrics.md):
+Create a simple rule to alert on high CPU usage or another metric exposed by Kestra. Refer to our full list at [Kestra Prometheus Metrics](../10.administrator-guide/prometheus-metrics.md):
 
 ```yaml
 groups:
@@ -185,7 +185,7 @@ Ensure your Alertmanager is restarted and using this configuration.
 
 ## 3. Create a Kestra Webhook Triggered Flow
 
-Now create a Kestra flow that is triggered by a Prometheus alert via [webhook](../04.workflow-components/07.triggers/03.webhook-trigger.md) from the rule definitions specified in the `alert.rules.yml` file.
+Now create a Kestra flow that is triggered by a Prometheus alert via [webhook](../05.workflow-components/07.triggers/03.webhook-trigger.md) from the rule definitions specified in the `alert.rules.yml` file.
 
 ### Example Flow Definition
 
@@ -220,4 +220,4 @@ Once the flow is written, you can verify the trigger is active from the **Flows 
 
 ---
 
-For more on the Webhook trigger, see the [Kestra Webhook Trigger Docs](https://kestra.io/docs/workflow-components/triggers/webhook-trigger). Again, be sure to check out the [full list of metrics Kestra exposes to Prometheus](../09.administrator-guide/prometheus-metrics.md).
+For more on the Webhook trigger, see the [Kestra Webhook Trigger Docs](https://kestra.io/docs/workflow-components/triggers/webhook-trigger). Again, be sure to check out the [full list of metrics Kestra exposes to Prometheus](../10.administrator-guide/prometheus-metrics.md).

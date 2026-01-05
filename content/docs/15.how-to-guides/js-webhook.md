@@ -34,7 +34,7 @@ More information can be found in the [configuration documentation](../configurat
 
 ## Building a Workflow with a Webhook Trigger
 
-Our JavaScript application will need a workflow to trigger. To do this, we will use a [Webhook Trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) to receive our requests and start our executions.
+Our JavaScript application will need a workflow to trigger. To do this, we will use a [Webhook Trigger](../05.workflow-components/07.triggers/03.webhook-trigger.md) to receive our requests and start our executions.
 
 Once we've added it, we can add any tasks to run. In this example, we have a log message that will log the request body field `dataField` from the webhook:
 

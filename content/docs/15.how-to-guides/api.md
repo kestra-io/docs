@@ -18,7 +18,7 @@ Kestra is API-first, so it’s straightforward to connect external systems to yo
 
 ## Using the API Reference
 
-The docs include references for both the [Open Source](../api-reference/open-source.md) and [Cloud & Enterprise](../api-reference/enterprise.md) APIs so you know exactly what endpoints are available. Opening the [Open Source reference](../api-reference/open-source.md) shows a structured layout that’s easy to scan:
+The docs include references for both the [Open Source](../api-reference/02.open-source.md) and [Cloud & Enterprise](../api-reference/01.enterprise.md) APIs so you know exactly what endpoints are available. Opening the [Open Source reference](../api-reference/02.open-source.md) shows a structured layout that’s easy to scan:
 
 ![api_reference](/docs/how-to-guides/api/api_reference.png)
 
@@ -30,7 +30,7 @@ If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentica
 curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world
 ```
 
-Enterprise users can generate [API tokens](../06.enterprise/03.auth/api-tokens.md) and send them as Bearer headers:
+Enterprise users can generate [API tokens](../07.enterprise/03.auth/api-tokens.md) and send them as Bearer headers:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
@@ -159,7 +159,7 @@ The response includes execution metadata and a link to the UI:
 }
 ```
 
-See the [Executions documentation](../04.workflow-components/03.execution.md#execute-a-flow-via-an-api-call) for additional examples.
+See the [Executions documentation](../05.workflow-components/03.execution.md#execute-a-flow-via-an-api-call) for additional examples.
 
 ## Get Information from an Execution
 
@@ -388,7 +388,7 @@ Fetching execution `59uQXHbkMy5YwHEDom72Xv` now shows the output payload:
 
 ## Accessing the KV Store
 
-Kestra’s [KV Store](../05.concepts/05.kv-store.md) keeps flows stateful. You can create, update, and delete entries via the API—either from code running inside a flow or from external systems.
+Kestra’s [KV Store](../06.concepts/05.kv-store.md) keeps flows stateful. You can create, update, and delete entries via the API—either from code running inside a flow or from external systems.
 
 Add a key/value pair with the [PUT endpoint](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespace}/kv/{key}`. The example below writes `"Hello, World"` to `my_key` in the `company.team` namespace:
 
@@ -428,7 +428,7 @@ The response contains the type and value:
 }
 ```
 
-See the [KV Store documentation](../05.concepts/05.kv-store.md#api-how-to-create-read-update-and-delete-kv-pairs-via-rest-api) for more operations.
+See the [KV Store documentation](../06.concepts/05.kv-store.md#api-how-to-create-read-update-and-delete-kv-pairs-via-rest-api) for more operations.
 
 ## Get and Upload Namespaces Files
 

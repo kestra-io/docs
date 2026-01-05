@@ -20,7 +20,7 @@ Modern microservices and API backends often expose health endpoints. With Kestra
 
 ## Prerequisites
 
-- Kestra Enterprise Edition (required for [Unit Tests](../06.enterprise/02.governance/unit-tests.md) and the `RunTest` task)
+- Kestra Enterprise Edition (required for [Unit Tests](../07.enterprise/02.governance/unit-tests.md) and the `RunTest` task)
 - A Slack Incoming Webhook URL (or another channel supported by the Notifications plugin)
 - A Kestra API token stored as `KESTRA_API_TOKEN` (used by the test runner flow)
 
@@ -75,7 +75,7 @@ Breakdown of the components:
 
 - **Inputs**
   - `server_uri`: parameterizes the target so you can reuse the flow for staging, production, or any other health endpoint.
-  - `slack_webhook_uri`: stores the Slack webhook that receives alerts without hardcoding secrets in the flow body. Instead of an input, you can also use the [KV Store](../05.concepts/05.kv-store.md) or a [secret](../05.concepts/04.secret.md) in the `url` property.
+  - `slack_webhook_uri`: stores the Slack webhook that receives alerts without hardcoding secrets in the flow body. Instead of an input, you can also use the [KV Store](../06.concepts/05.kv-store.md) or a [secret](../06.concepts/04.secret.md) in the `url` property.
 - **`http_request` task**: performs the status check and captures the HTTP code; `allowFailed` ensures the flow continues even if the request fails.
 - **`check_status` conditional**: branches on the HTTP response, triggering the Slack alert when the service is down or logging “Everything is fine!” when the endpoint returns 200.
 
