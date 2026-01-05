@@ -18,12 +18,12 @@ You can follow the steps described in the [Keycloak tutorial documentation](http
 
 Once in Keycloak, create a new client:
 
-![alt text](/docs/how-to-guides/keycloak/client1.png)
-![alt text](/docs/how-to-guides/keycloak/client2.png)
+![Create Client](/docs/how-to-guides/keycloak/client1.png)
+![Client Settings](/docs/how-to-guides/keycloak/client2.png)
 
 Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/logout` as the valid post-logout redirect URI.
 
-![alt text](/docs/how-to-guides/keycloak/redirect-uri.png)
+![Redirect URI](/docs/how-to-guides/keycloak/redirect-uri.png)
 
 ## Kestra Configuration
 
@@ -45,9 +45,8 @@ micronaut:
 
 You can retrieve the `clientId` and `clientSecret` via Keycloak user interface
 
-![alt text](/docs/how-to-guides/keycloak/clientId.png)
-![alt text](/docs/how-to-guides/keycloak/clientSecret.png)
-
+![Client ID](/docs/how-to-guides/keycloak/clientId.png)
+![Client Secret](/docs/how-to-guides/keycloak/clientSecret.png)
 
 Don't forget to set a default role in your [Kestra configuration](../../../configuration/index.md) to streamline the process of onboarding new users.
 
