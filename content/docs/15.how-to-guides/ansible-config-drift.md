@@ -87,6 +87,14 @@ triggers:
     disabled: true
 ```
 
+The execution generates logs for every play in the playbook for clear results and monitoring:
+
+![Ansible Config Drift Logs](/docs/how-to-guides/ansible/config-drift-logs.png)
+
+In the execution outputs, you can examine results and debug expressions to use in potential downstream tasks or subflows:
+
+![Ansible Config Drift Outputs](/docs/how-to-guides/ansible/config-drift-outputs.png)
+
 ## Why this matters
 
 This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via `stdout_callback = kestra_logger`, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
