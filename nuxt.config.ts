@@ -386,7 +386,10 @@ export default defineNuxtConfig({
         '/docs/getting-started/community-guidelines': {redirect: '/docs/contribute-to-kestra/community-guidelines'},
         '/docs/getting-started/': {redirect: '/docs/quickstart'},
         '/docs/getting-started/selected-plugin-installation': {redirect: '/docs/how-to-guides/selected-plugin-installation'},
-        '/docs/getting-started/plugins': {redirect: '/plugins'}
+        '/docs/getting-started/plugins': {redirect: '/plugins'},
+        '/docs/getting-started/workflow-components': {redirect: '/docs/workflow-components'},
+        '/docs/getting-started/migration-guide': {redirect: '/docs/migration-guide'},
+        '/docs/getting-started/installation': {redirect: '/docs/installation'}
     },
 
     build: {
