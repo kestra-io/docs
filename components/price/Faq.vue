@@ -91,7 +91,7 @@ const props = defineProps({
 .ans {
     font-weight: 400;
     line-height: 1.625rem;
-    font-size: 18.4px;
+    font-size: 1rem;
     margin-bottom: 0;
 }
 

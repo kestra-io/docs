@@ -209,7 +209,7 @@
                     border-radius: 1rem;
                 }
                 q {
-                    color: #1d1d1e;
+                    color: var(--kestra-io-neutral-gray300);
                 }
                 .quote-box{
                     text-align: left;

@@ -6,7 +6,7 @@
                     <div>
                         <h1 data-aos="fade-right">API-First Design</h1>
                         <p class="baseline" data-aos="fade-left">
-                            Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration.
+                            Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration
                         </p>
                         <div class="cta d-flex gap-3">
                             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">

@@ -8,7 +8,7 @@
             <main>
                 <slot />
             </main>
-            <LayoutFooter />
+            <LayoutFooter :class="{ 'plugins-page': isPluginsPage }" />
             <LayoutFixed />
         </div>
     </div>
@@ -58,6 +58,8 @@
         return innerContent && innerContent.length > 0 && path === '/'
     })
 
+    const isPluginsPage = computed(() => route.path.startsWith('/plugins'))
+
     const nuxtApp = useNuxtApp();
 
     nuxtApp.hook("page:start", () => {
@@ -67,6 +69,12 @@
 
     nuxtApp.hook("page:finish", () => {
         document.documentElement.classList.remove("loading");
+    });
+
+    useHead({
+        link: [
+            { rel: 'canonical', href: 'https://kestra.io' + route.fullPath }
+        ]
     });
 </script>
 

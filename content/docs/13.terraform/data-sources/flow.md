@@ -10,7 +10,7 @@ description: |-
 
 Use this data source to access information about an existing Kestra Flow
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_flow" "example" {

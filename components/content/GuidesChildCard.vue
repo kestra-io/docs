@@ -265,6 +265,10 @@
                     color: $white-3;
                     font-size: $font-size-sm !important;
                 }
+                &:focus {
+                    background-color: $black-2 !important;
+                    color: $white;
+                }
             }
         }
     }

@@ -1,95 +1,96 @@
 <template>
-    <div class="slug">
-        <span :class="{ first: index === 0 }" v-for="(item, index) in breadcrumb" :key="item">
-            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
-                {{ item !== "docs" && pageNames[item] ? pageNames[item] : formatDirectoryName(item) }}
-            </NuxtLink>
-        </span>
-    </div>
+    <nav aria-label="breadcrumb" class="slug">
+        <ol class="breadcrumb">
+            <li
+                v-for="(item, index) in breadcrumb"
+                :key="`${item}-${index}`"
+                class="breadcrumb-item"
+                :class="{ active: index === breadcrumb.length - 1 }"
+            >
+                <NuxtLink
+                    v-if="index !== breadcrumb.length - 1"
+                    :to="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''"
+                    class="link"
+                >
+                    {{ getDisplayName(item, index) }}
+                </NuxtLink>
+
+                <span v-else aria-current="page">{{ getDisplayName(item, index) }}</span>
+            </li>
+        </ol>
+    </nav>
 </template>
 
-<script>
-export default {
-    name: "breadcrumb",
-    props: {
-        slug: {
-            type: String,
-            required: true
-        },
-        pageList: {
-            type: Array,
-        },
-        pageNames: {
-            type: Object,
-        },
-        pageTitle: {
-            type: String,
-        }
-    },
-    methods: {
-        breadcrumbLink(_item, index) {
-            return "/" + this.breadcrumb.slice(0, index + 1).join("/")
-        },
-        breadcrumbLinkExist(item, index) {
-            return this.pageList?.includes(this.breadcrumbLink(item, index))
-        },
-        formatDirectoryName(item) {
-            const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
-            return specialCases[item] || item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-        }
-    },
-    computed: {
-        breadcrumb() {
-            let breadcrumbs = [...new Set(this.slug?.split("/")
-                .filter(r => r !== ""))].slice(0, -1);
-            return (breadcrumbs && breadcrumbs.length > 0) ? breadcrumbs : ['docs']
-        },
-    }
-}
+<script setup lang="ts">
+    import { computed } from "vue";
+
+    const props = defineProps<{
+        slug: string;
+        pageList?: string[];
+        pageNames?: Record<string, string>;
+    }>();
+
+    const breadcrumb = computed(() => {
+        const crumbs = [...new Set(props.slug.split("/").filter(Boolean))];
+        return crumbs.length > 0 ? crumbs : ["docs"];
+    });
+
+    const breadcrumbLink = (index: number) => "/" + breadcrumb.value.slice(0, index + 1).join("/");
+
+    const breadcrumbLinkExist = (index: number) => props.pageList?.includes(breadcrumbLink(index));
+
+    const formatDirectoryName = (item: string) => {
+        const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" };
+        return (
+            specialCases[item] || item.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+        );
+    };
+
+    const getDisplayName = (item: string, index: number) => {
+        const key = breadcrumbLink(index);
+        return item !== "docs" && props.pageNames?.[key] ? props.pageNames[key] : formatDirectoryName(item);
+    };
 </script>
 
+
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.slug {
-    white-space: pre-wrap;
-    width: 100%;
-    font-size: $font-size-sm;
-    font-family: $font-family-sans-serif;
-    font-weight: 400;
-    margin: 0 auto;
+    nav {
+        white-space: pre-wrap;
+        width: 100%;
+        max-width: 45.8rem;
+        font-size: $font-size-sm;
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        margin: 0 auto;
 
-    @include media-breakpoint-down(lg) {
-        a {
-            font-size: 0.813rem
-        }
-    }
-
-
-    @include media-breakpoint-down(sm) {
-        font-size: 0.55rem;
-    }
-
-    @media only screen and (min-width: 1920px) {
-        max-width: 71.25rem;
-    }
-
-    span {
-        &:after {
-            content: '/';
-            margin-right: 0.25rem;
-            margin-left: 0.25rem;
-            color: #CDD5EF !important;
+        @media only screen and (min-width: 1920px) {
+            max-width: 71.25rem;
         }
 
-        a {
-            color: #CDD5EF !important;
+        .breadcrumb {
+            --bs-breadcrumb-divider: ">";
+        }
 
+        .breadcrumb-item {
+            a, &.active, &::before {
+                color: $black-8;
+                cursor: pointer;
+
+                &:hover {
+                    color: var(--ks-content-secondary) !important;
+                }
+            }
+
+            &.active {
+                font-weight: 700;
+                color: var(--ks-content-primary) !important;
+            }
+        }
+
+        .link {
+            text-transform: capitalize;
         }
     }
-
-    .link{
-        text-transform: capitalize;
-    }
-}
 </style>

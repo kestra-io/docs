@@ -7,7 +7,7 @@ Expressions & Context Variables
 
 ## Overview
 
-Kestra's expressions combine the [Pebble templating engine](../05.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
+Kestra's expressions combine the [Pebble templating engine](../06.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -128,7 +128,7 @@ Kestra provides access to environment variables prefixed with `ENV_` by default,
 
 To use an environment variable, such as `ENV_FOO`, reference it as `{{ envs.foo }}`. The variable name is derived by removing the `ENV_` prefix and converting the remainder to **lowercase**.
 
-To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, you can use `{{kestra.environment}}`. Similarly, using `{{kestra.url}}`, you can reference the environment's URL set in your Kestra configuration.
+To reference the [environment name](../configuration/index.md#environment) defined in Kestra configuration, use `{{ kestra.environment }}`. To reference the environment URL, use `{{ kestra.url }}` from your Kestra configuration.
 
 ### Global Variables
 
@@ -183,7 +183,7 @@ tasks:
     format: "{{ secret('MY_SECRET') }}"
 ```
 
-Secrets are supported in both the open-source version and [Enterprise Edition](/enterprise). For additional details, refer to the [Secrets](../05.concepts/04.secret.md) documentation.
+Secrets are supported in both the open-source version and [Enterprise Edition](../oss-vs-paid.md). For additional details, refer to the [Secrets](../06.concepts/04.secret.md) documentation.
 
 ---
 
@@ -325,7 +325,7 @@ Pebble templates use two primary delimiters:
 - `{{ ... }}`: outputs the result of an expression. Expressions can be simple variables or complex calculations.
 - `{% ... %}`: controls the template’s flow, such as with `if` statements or `for` loops.
 
-To escape expressions or control structures, use the `raw` tag. This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
+To escape expressions or control structures, use the [`raw` tag](./index.md#raw). This prevents Pebble from interpreting content within `{{ ... }}` or `{% ... %}`.
 
 Dot notation (`.`) is used to access nested attributes. For attributes with special characters, use square brackets:
 
@@ -2262,9 +2262,7 @@ The `raw` tag prevents Pebble from parsing its content.
 Example:
 
 ```twig
-{% raw %}
-    {{ user.name }}
-{% endraw %}
+{% raw %}{{ user.name }}{% endraw %}
 ```
 
 Output:

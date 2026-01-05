@@ -7,8 +7,8 @@
           <span class="highlight">Let's talk to get access</span>
         </h2>
         <h5 class="mt-3">
-          Be among the first to experience Kestra Cloud with exclusive
-          access before general availability.
+          Be among the first to experience Kestra Cloud <br>with exclusive
+          access before general availability
         </h5>
 
         <div class="row mt-5">

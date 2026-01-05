@@ -3,10 +3,10 @@
         <div class="hero container">
             <div class="text-block">
                 <h1>
-                    Powerful orchestration.<br />
-                    Simplified workflows.
+                    Powerful Orchestration<br />
+                    Simplified Workflows
                 </h1>
-                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, from the UI and with AI.</p>
+                <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, from the UI and with AI</p>
                 <div class="buttons">
                     <NuxtLink
                         href="/docs/getting-started/quickstart#start-kestra"

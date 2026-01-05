@@ -10,7 +10,7 @@ description: |-
 
 Use this data source to access information about an existing Namespace File
 
-## Example Usage
+## Example usage
 
 ```hcl
 data "kestra_namespace_file" "example" {

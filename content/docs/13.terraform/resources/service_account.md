@@ -15,7 +15,7 @@ Manages a Kestra Service Account.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_service_account" "example" {
@@ -42,7 +42,7 @@ resource "kestra_service_account" "example" {
 - `id` (String) The ID of this resource.
 
 <a id="nestedblock--groups"></a>
-### Nested Schema for `groups`
+### Nested schema for `groups`
 
 Required:
 

@@ -3,7 +3,7 @@
         <h2><span>Simplicity Scales,</span> Complexity Fails</h2>
         <p>
             Mix the flexibility of code-based orchestration<br/>
-            with a no-code interface that anyone can learn in minutes.
+            with a no-code interface that anyone can learn in minutes
         </p>
         <div class="cta-buttons">
             <NuxtLink class="btn btn-primary btn-lg" href="/features">See All Features</NuxtLink>

@@ -14,7 +14,7 @@
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
                 title="Data Engineering Challenges"
-                description="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
+          
                 :cardsData="cardsData"
             />
         </NuxtLazyHydrate>

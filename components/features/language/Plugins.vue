@@ -3,15 +3,16 @@
         <div class="container">
             <div class="mb-5">
                 <h2 class="title">Platform <span>Independent</span></h2>
-                <p class="desc">Select from 900+ integrations and swap tools when needed</p>
+                <p class="desc">Select from {{ totalPlugins }} integrations and swap tools when needed</p>
                 <LayoutPlugins />
             </div>
         </div>
     </div>
 </template>
 
-<script lang="ts" scoped>
+<script setup lang="ts">
 import LayoutPlugins from '../../layout/Plugins.vue';
+const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>
