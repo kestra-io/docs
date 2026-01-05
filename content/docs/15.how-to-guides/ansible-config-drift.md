@@ -1,6 +1,7 @@
 ---
 title: Detect Ansible Config Drift with Kestra
 icon: /docs/icons/ansiblecli.svg
+stage: Intermediate
 ---
 
 Keeps configs consistent and surfaces drift without manual checks with Ansible and Kestra.
