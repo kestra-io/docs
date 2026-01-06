@@ -75,7 +75,13 @@ export default defineConfig({
             },
         },
     },
+    optimizeDeps: {
+      include: ['vue3-count-to'],
+    },
     ssr: {
+      noExternal: [
+        'vue3-count-to'
+      ],
       external: [
         'node:fs/promises',
         "node:url",
