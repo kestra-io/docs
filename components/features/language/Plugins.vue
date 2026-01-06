@@ -11,8 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import LayoutPlugins from '../../layout/Plugins.vue';
-const { totalPlugins } = usePluginsCount()
+    import { usePluginsCount } from "~/composables/usePluginsCount";
+    import LayoutPlugins from '../../layout/Plugins.vue';
+    const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>

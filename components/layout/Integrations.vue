@@ -11,71 +11,71 @@
 </template>
 
 <script setup lang="ts">
-import { usePluginsCount } from '~/composables/usePluginsCount';
+    import { usePluginsCount } from '~/composables/usePluginsCount';
 
-const { totalPlugins } = usePluginsCount();
+    const { totalPlugins } = usePluginsCount();
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.container-fluid {
-    color: var(--bs-white);
-    padding: 0;
-
-    .container {
-        padding: 4rem 0;
-        border-bottom: $block-border;
-        border-top: $block-border;
-    }
-
-    .title {
-        margin: 0;
+    .container-fluid {
         color: var(--bs-white);
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        font-size: calc($font-size-base * 3.125);
-        font-style: normal;
-        font-weight: 400;
-        line-height: 4rem;
-        padding: 0 20%;
+        padding: 0;
 
-        @include media-breakpoint-down(sm) {
-            font-size: 1.875rem;
-            line-height: 2.563rem;
+        .container {
+            padding: 4rem 0;
+            border-bottom: $block-border;
+            border-top: $block-border;
         }
 
-        @include media-breakpoint-down(lg) {
-            padding: 0;
-        }
+        .title {
+            margin: 0;
+            color: var(--bs-white);
+            text-align: center;
+            font-family: $font-family-sans-serif;
+            font-size: calc($font-size-base * 3.125);
+            font-style: normal;
+            font-weight: 400;
+            line-height: 4rem;
+            padding: 0 20%;
 
-        span {
-            background: linear-gradient(91deg, #E151F7 43.87%, #5C47F5 55.51%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    }
-
-    .row {
-        div:nth-child(2) {
-            @include media-breakpoint-up(lg) {
-                padding: calc($spacer * 4) calc($spacer * 4) 0;
+            @include media-breakpoint-down(sm) {
+                font-size: 1.875rem;
+                line-height: 2.563rem;
             }
 
-            h2 {
-                margin-bottom: calc($spacer * 2);
-                background: linear-gradient(90.03deg, #E151F7 2.16%, #5C47F5 65.09%);
+            @include media-breakpoint-down(lg) {
+                padding: 0;
+            }
+
+            span {
+                background: linear-gradient(91deg, #E151F7 43.87%, #5C47F5 55.51%);
+                background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                background-clip: text;
-                color: transparent;
             }
+        }
 
-            p {
-                font-size: $font-size-lg;
+        .row {
+            div:nth-child(2) {
+                @include media-breakpoint-up(lg) {
+                    padding: calc($spacer * 4) calc($spacer * 4) 0;
+                }
+
+                h2 {
+                    margin-bottom: calc($spacer * 2);
+                    background: linear-gradient(90.03deg, #E151F7 2.16%, #5C47F5 65.09%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    color: transparent;
+                }
+
+                p {
+                    font-size: $font-size-lg;
+                }
             }
         }
     }
-}
 </style>

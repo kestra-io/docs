@@ -3,7 +3,10 @@
         <div class="container">
             <div class="mb-5">
                 <h2 class="title">Plugin-Powered <span>Flexibility</span></h2>
-                <p class="desc">Choose from over 1000+ plugins that offer direct integration with third-party services, databases, messaging systems, and more.</p>
+                <p class="desc">
+                    Choose from over {{ totalPlugins }} plugins that offer direct integration with
+                    third-party services, databases, messaging systems, and more.
+                </p>
                 <LayoutPlugins />
             </div>
         </div>
@@ -12,6 +15,9 @@
 
 <script setup lang="ts">
     import LayoutPlugins from '../../../components/layout/Plugins.vue';
+    import { usePluginsCount } from '~/composables/usePluginsCount';
+
+    const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>

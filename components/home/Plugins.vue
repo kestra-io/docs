@@ -3,16 +3,18 @@
 </template>
 
 <script setup lang="ts">
-const { totalPlugins } = usePluginsCount();
+    import { usePluginsCount } from "~/composables/usePluginsCount";
 
-const plugins = import.meta.glob('@/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
+    const { totalPlugins } = usePluginsCount();
 
-const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys(plugins).map((key) => {
-    return {
-        name: key?.split('/').pop()?.split('.').shift(),
-        logo: plugins[key]?.default
-    }
-}).sort(() => 0.5 - Math.random()).slice(0, 20) as {name: string, logo: string}[]))
+    const plugins = import.meta.glob('@/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
+
+    const {data: pluginLogos} = await useAsyncData(() => Promise.resolve(Object.keys(plugins).map((key) => {
+        return {
+            name: key?.split('/').pop()?.split('.').shift(),
+            logo: plugins[key]?.default
+        }
+    }).sort(() => 0.5 - Math.random()).slice(0, 20) as {name: string, logo: string}[]))
 </script>
 
 <style lang="scss" scoped>
