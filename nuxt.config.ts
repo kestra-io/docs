@@ -371,7 +371,6 @@ export default defineNuxtConfig({
         '/docs/enterprise/auth-rbac-user-management/api-tokens': {redirect: '/docs/enterprise/auth/api-tokens'},
         '/docs/enterprise/auth-rbac-user-management/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
         '/docs/enterprise/enterprise/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
-        //no longer an enterprise only topic? 
         '/docs/enterprise/concepts/system-flows': {redirect: '/docs/concepts/system-flows'},
         '/docs/enterprise/administrator-guide/purge': {redirect: '/docs/administrator-guide/purge'},
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
