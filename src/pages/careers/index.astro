@@ -5,50 +5,14 @@ import CareersPositionsRenderer from '~/components/careers/PositionsRenderer.vue
 import CareersPerks from '~/components/careers/Perks.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 import { $fetch } from '~/utils/fetch';
+import { type Job, mapJob } from "~/utils/careers.ts";
 
-const countryCodeToEmoji = (countryCode: string) => {
-    let codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + (char as any).charCodeAt());
-    return String.fromCodePoint(...codePoints);
-}
-
-interface Job {
-    id: string;
-    title:  string;
-    locations: Array<{
-        location_type: string;
-        location_option: {
-            country: string;
-            display_name: string;
-        }
-    }>;
-}
-
-const baseResponse = (job: Job):{id: string, title: string, locations: Array<{code: string | null, name: string, emoji: string}> | null, remote: boolean | null, link: string} => {
-    return {
-        id: job.id,
-        title: job.title,
-        locations: job.locations ? job.locations.map(l => {
-            return l.location_option.display_name === "International" ?
-                {
-                    code: null,
-                    name: "World",
-                    emoji: "🌍"
-                } : {
-                code: l.location_option.country,
-                name: l.location_option.display_name,
-                emoji: countryCodeToEmoji(l.location_option.country)
-            }
-        }) : null,
-        remote: job.locations ? job.locations.filter(l => l.location_type === 'REMOTE').length > 0 : null,
-        link: `https://app.dover.com/apply/Kestra%20Technologies/${job.id}`,
-    }
-}
 
 const jobsList = await $fetch<{ results: Job[] }>(`https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`);
 
 const positions = jobsList.results.map((job) => {
-                return baseResponse(job);
-            })
+    return mapJob(job);
+});
 
 const title = "Join Us and Shape the Future of Data Orchestration";
 const description = "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of data orchestration";
