@@ -76,20 +76,11 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Lan from "vue-material-design-icons/Lan.vue"
     import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended.vue"
     import CalculatorVariantOutline from "vue-material-design-icons/CalculatorVariantOutline.vue";
-</script>
-
-<script>
-    import Section from '../../layout/Section.vue';
     import Card from '../../card/Card.vue';
-
-
-    export default {
-        components: {Section, Card}
-    }
 </script>
 
 <style lang="scss" scoped>

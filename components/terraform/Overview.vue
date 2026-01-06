@@ -87,13 +87,11 @@
         </LayoutSection>
     </div>
 </template>
-<script>
-    import Card from '../card/Card.vue';
 
-    export default {
-        components: {Card}
-    }
+<script setup lang="ts">
+    import Card from '../card/Card.vue';
 </script>
+
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .overview {

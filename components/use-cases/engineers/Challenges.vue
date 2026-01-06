@@ -28,14 +28,11 @@
     </div>
 </template>
 
-<script>
-  import Card from '../../card/Card.vue';
+<script setup>
+    import { defineProps } from 'vue'
+    import Card from '../../card/Card.vue'
 
-  export default {
-    components: {
-      Card,
-    },
-    props: {
+    const props = defineProps({
       title: {
         type: String,
         required: false,
@@ -51,14 +48,8 @@
       cardsData: {
         type: Array,
         required: true,
-      }
-    },
-  }
-</script>
-
-<script setup>
-
-
+      },
+    })
 </script>
 
 <style lang="scss" scoped>

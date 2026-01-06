@@ -27,38 +27,23 @@
     </div>
 </template>
 
-<script>
-  import Card from '../../card/Card.vue';
+<script setup lang="ts">
+    import { withDefaults, defineProps } from 'vue';
+    import Card from '../../card/Card.vue';
 
-  export default {
-    components: {
-      Card,
-    },
-    props: {
-      title: {
-        type: String,
-        required: false,
-      },
-      description: {
-        type: String,
-        required: false,
-        default: undefined
-      },
-      titleHtml: {
-        type: String,
-        required: false,
-      },
-      cardsData: {
-        type: Array,
-        required: true,
-      }
-    },
-  }
-</script>
+    type CardItem = {
+        icon?: string;
+        cardInfo?: any;
+    };
 
-<script setup>
-
-
+    const props = withDefaults(defineProps<{
+        title?: string;
+        description?: string | undefined;
+        titleHtml?: string;
+        cardsData: CardItem[];
+    }>(), {
+        description: undefined,
+    });
 </script>
 
 <style lang="scss" scoped>

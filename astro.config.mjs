@@ -65,6 +65,8 @@ export default defineConfig({
         alias: {
             "#mdc-imports": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
             "#mdc-configs": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
+            // FIXME: required for vue js but conflict with astro imports, need to move all to src
+            // '~': path.resolve('./src')
         },
     },
     css: {

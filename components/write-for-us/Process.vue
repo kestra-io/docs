@@ -9,15 +9,11 @@
     </div>
 </template>
 
-<script>
-import CardGroup from "~/components/write-for-us/CardGroup.vue";
+<script setup lang="ts">
+    import { defineProps } from "vue";
+    import CardGroup from "~/components/write-for-us/CardGroup.vue";
 
-export default {
-    name: "Process",
-
-    components: { CardGroup },
-
-    props: {
+    const props = defineProps({
         content: {
             type: Object,
             required: true,
@@ -26,14 +22,13 @@ export default {
                 items: [],
             }),
         },
-    },
-};
+    });
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.base-container {
-    max-width: $width-800;
-}
+    .base-container {
+        max-width: $width-800;
+    }
 </style>

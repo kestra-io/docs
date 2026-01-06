@@ -80,13 +80,9 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
     import Section from '../../components/layout/Section.vue';
     import Card from '../../components/card/Card.vue';
-
-    export default {
-        components: {Section, Card}
-    }
 </script>
 
 <style lang="scss" scoped>

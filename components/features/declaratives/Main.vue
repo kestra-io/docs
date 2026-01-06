@@ -57,22 +57,15 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Typewriter from "vue-material-design-icons/Typewriter.vue";
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
     import Lan from "vue-material-design-icons/Lan.vue";
     import Read from "vue-material-design-icons/Read.vue";
     import Git from "vue-material-design-icons/Git.vue";
     import AlertCircleOutline from "vue-material-design-icons/AlertCircleOutline.vue";
-</script>
-
-<script>
     import Section from '../../layout/Section.vue';
     import Card from '../../card/Card.vue';
-
-    export default {
-        components: {Section, Card}
-    }
 </script>
 
 <style scoped lang="scss">

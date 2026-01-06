@@ -42,6 +42,7 @@
   import TerraformIntegration from "vue-material-design-icons/Terraform.vue";
   import ServerNetwork from "vue-material-design-icons/ServerNetwork.vue";
   import Section from '../../layout/Section.vue';
+  import Card from '../../../components/card/Card.vue';
 </script>
 
 <style scoped lang="scss">

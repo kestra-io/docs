@@ -20,29 +20,23 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+    import { withDefaults, defineProps } from 'vue';
     import Section from '../layout/Section.vue';
     import Card from '../../components/card/Card.vue';
 
-    export default {
-        components: {Section, Card},
-        props: {
-            title: {
-                type: String,
-                required: false,
-            },
-            subtitle: {
-                type: String,
-                required: false,
-            },
-            subtitleAfter: {
-                type: String,
-                required: false,
-            },
-            items: {
-                type: Array,
-                required: false,
-            },
-        }
-    }
+    type FeatureItem = {
+        icon?: string;
+        title?: string;
+        text?: string;
+    };
+
+    const props = withDefaults(defineProps<{
+        title?: string;
+        subtitle?: string;
+        subtitleAfter?: string;
+        items?: FeatureItem[];
+    }>(), {
+        items: [] as FeatureItem[],
+    });
 </script>
