@@ -356,8 +356,7 @@ export const linkSymbolInjectionKey = Symbol("linkComponent")
 
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, inject, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, watch, nextTick, inject } from 'vue';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import GithubButton from "../layout/GithubButton.vue";
@@ -367,13 +366,11 @@ import Segment from "vue-material-design-icons/Segment.vue";
 import { menuSize } from "../../utils/menu-sizes";
 import { menuItems } from '../../utils/menu-items';
 
-const route = useRoute();
-const isStories = computed(() => route.path.includes('/use-cases/stories/'));
-
 const props = defineProps<{
     scrolled?: boolean;
     transparentHeader?: boolean;
     nuxtApp?: any;
+    isStories?: boolean;
 }>();
 
 const isOpen = ref(false);

@@ -1,7 +1,7 @@
 <template>
     <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
         <div>
-            <template v-if="links.length > 0" class="bd-contents-list">
+            <template v-if="links && links.length > 0" class="bd-contents-list">
                 <button
                     class="btn toc-toggle d-lg-none"
                     :class="{ collapsed: !tableOfContentsExpanded }"
@@ -69,6 +69,7 @@
     import SocialsList from "~/components/common/SocialsList.vue";
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue";
     import { useBrowserLocation } from "@vueuse/core";
+    import type { ReleaseInfo } from "../../server/api/github-releases";
 
     interface TocLink {
         id: string;

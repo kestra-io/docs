@@ -10,6 +10,7 @@
                     :plugin-name="pluginName"
                     :sub-group="subGroup"
                     :routePath="routePath"
+                    @navigate="navigateTo($event)"
         >
             <template v-slot:markdown="{ content }">
                 <MDCParserAndRenderer :content />
@@ -19,7 +20,7 @@
             <SchemaToHtml v-if="page.body.jsonSchema" class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType ?? ''"
                     :props-initially-expanded="true">
                 <template #markdown="{ content }">
-                    <MDCParserAndRenderer :content />
+                    <MDCParserAndRenderer v-if="content" :content="content" />
                 </template>
             </SchemaToHtml>
         </Suspense>
@@ -48,11 +49,11 @@ const props = withDefaults(defineProps<{
     subGroup: undefined
 });
 
-
-
 const pluginsWithoutDeprecated = computed(() => getPluginsWithoutDeprecated(props.plugins || []) as any[]);
 
-
+function navigateTo(url: string) {
+    window.location.assign(url);
+}
 </script>
 
 <style lang="scss" scoped>

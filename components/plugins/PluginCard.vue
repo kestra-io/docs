@@ -33,10 +33,10 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from "vue";
     import {slugify, usePluginElementCounts, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs"
     import {formatCategoryName} from "../../utils/pluginUtils";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-import { computed } from "vue";
 
     const props = withDefaults(defineProps<{
         plugin: Plugin;
@@ -80,39 +80,6 @@ import { computed } from "vue";
     const description = computed(() => metadata.value?.description ?? props.plugin.description);
 
     const {total: elementTotal} = usePluginElementCounts(props.plugin);
-    const {public:{CollectionNames}} = useRuntimeConfig();
-
-    const prefetch = () => {
-        const nuxtApp = useNuxtApp();
-        const url = `/api/plugins?page=${props.plugin.name}&type=plugin`;
-
-        if (!nuxtApp.payload.data[props.plugin.name]) {
-            useFetch(url, { key: props.plugin.name });
-        }
-
-        if (!nuxtApp.payload.data[`Sidebar-${props.plugin.name}`]) {
-            useFetch(url, { key: `Sidebar-${props.plugin.name}` });
-        }
-
-        let repo = props.plugin.name;
-        if (props.plugin.name.startsWith("plugin-jdbc-") || props.plugin.name === "plugin-jdbc") {
-            repo = "plugin-jdbc";
-        }
-        if (!nuxtApp.payload.data[`GitHubVersions-${repo}`]) {
-            useFetch(`/api/github-releases?repo=${repo}`, { key: `GitHubVersions-${repo}` });
-        }
-
-        if (!nuxtApp.payload.data[`Plugin-Related-Blogs-${props.plugin.name}`]) {
-            useAsyncData(
-                `Plugin-Related-Blogs-${props.plugin.name}`,
-                () => queryCollection(CollectionNames.blogs)
-                    .where('plugins', 'LIKE', `%${props.plugin.name}%`)
-                    .order("date", "DESC")
-                    .limit(4)
-                    .all()
-            );
-        }
-    }
 
 </script>
 

@@ -2,18 +2,17 @@
     <div class="bd-content">
         <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page" />
 
-        <PluginIndex 
-            v-if="pluginType === undefined" 
-            :icons="icons ?? {}" 
+        <PluginIndex
+            v-if="pluginType === undefined"
+            :icons="icons ?? {}"
             :plugins="pluginsWithoutDeprecated ?? []"
-            :plugin-name="pluginName ?? '<plugin>'" 
-            :sub-group="subGroup" 
-            :route-path="routePath ?? ''" 
+            :plugin-name="pluginName ?? '<plugin>'"
+            :sub-group="subGroup"
+            :route-path="routePath ?? ''"
             :active-id="activeId"
             :subgroup-blueprint-counts="subgroupBlueprintCounts"
             :metadata-map="metadataMap"
             :schemas="schemas"
-            @navigate="navigateTo($event)"
         >
             <template v-slot:markdown="{ content }">
                 <MDC :value="content">

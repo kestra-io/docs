@@ -8,15 +8,16 @@ export async function getIcon(pluginName: string, pluginType?: string, group?:st
     const originalIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons/subgroups`);
     const elementIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons`);
 
-    const originalIconsAsString = Object.fromEntries(Object.entries(originalIcons)
-        .map(([key, value]: [string, {icon: string}]) => [key, colorFixedB64Icon(value.icon)]));
-    const elementIconsAsString = Object.fromEntries(Object.entries(elementIcons)
-        .map(([key, value]: [string, {icon: string}]) => [key, colorFixedB64Icon(value.icon)]));
+    const originalIconsAsString = Object.fromEntries((Object.entries(originalIcons) as Array<[string, {icon: string}]>)
+        .map(([key, value]) => [key, colorFixedB64Icon(value.icon)]));
+    const elementIconsAsString = Object.fromEntries((Object.entries(elementIcons) as Array<[string, {icon: string}]>)
+        .map(([key, value]) => [key, colorFixedB64Icon(value.icon)]));
 
     const icons = {
         ...originalIconsAsString,
         ...elementIconsAsString
     }
+
     let icon;
     if (pluginType !== undefined) {
         icon = icons[pluginType];

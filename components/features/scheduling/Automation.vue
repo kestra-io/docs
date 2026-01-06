@@ -1,5 +1,5 @@
 <template>
-    <section class="container">
+    <Section class="container">
         <div class="heading mx-auto pb-4">
             <h3 class="title">Automation and Scheduling
                 <span class="title-animated"> Features</span>
@@ -104,7 +104,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </Section>
 </template>
 <script setup>
 import Section from '../../layout/Section.vue';

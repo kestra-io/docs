@@ -77,6 +77,11 @@
     </div>
   </LayoutSection>
 </template>
+
+<script lang="ts" setup>
+import LayoutSection from "../../layout/Section.vue";
+</script>
+
 <style scoped lang="scss">
 @import "../../../assets/styles/variable";
 .row{
@@ -188,6 +193,3 @@ p {
   }
 }
 </style>
-<script setup>
-import Section from "../../layout/Section.vue";
-</script>

@@ -12,6 +12,7 @@ import LayoutFixed from "~/components/layout/Fixed.vue";
 interface Props {
     title?: string;
     description?: string;
+    isStories?: boolean;
 }
 
 const props = Astro.props;
@@ -47,7 +48,7 @@ const description = props.description ?? "Documentation for Kestra, the open-sou
     <ClientRouter />
   </head>
   <body>
-    <Header client:load />
+    <Header client:load isStories={Boolean(props.isStories)} />
     <div style="height: 60px;" />
     <slot />
     <LayoutFooter />

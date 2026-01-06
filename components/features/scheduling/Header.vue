@@ -1,34 +1,34 @@
 <template>
-        <div class="hero container mt-5">
-            <div class="row header-content">
-                <div class="col-md-6 align-items-center d-flex">
-                    <div>
-                        <h1 data-aos="fade-right" class="title-1 title">Scheduling </h1>
-                        <h1 data-aos="fade-right" class="title-2 title">and Automation</h1>
-                        <p class="baseline mb-0 pb-3" data-aos="fade-left">Automate scheduled and event-driven workflows with Kestra</p>
-                        <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-aos="zoom-in">
-                                Talk to us
-                            </NuxtLink>
-                            <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
-                                Get started
-                            </NuxtLink>
-                        </div>
+    <div class="hero container mt-5">
+        <div class="row header-content">
+            <div class="col-md-6 align-items-center d-flex">
+                <div>
+                    <h1 data-aos="fade-right" class="title-1 title">Scheduling </h1>
+                    <h1 data-aos="fade-right" class="title-2 title">and Automation</h1>
+                    <p class="baseline mb-0 pb-3" data-aos="fade-left">Automate scheduled and event-driven workflows with Kestra</p>
+                    <div class="cta">
+                        <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-aos="zoom-in">
+                            Talk to us
+                        </NuxtLink>
+                        <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
+                            Get started
+                        </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-6 mb-5" data-aos="zoom-in">
-                    <NuxtImg
-                        loading="lazy"
-                        format="webp"
-                        width="806px"
-                        height="601px"
-                        class="zoom img-fluid"
-                        src="/landing/features/scheduling/header/header.svg"
-                        alt="A screenshot of the Scheduling page"
-                    />
-                </div>
+            </div>
+            <div class="col-md-6 mb-5" data-aos="zoom-in">
+                <NuxtImg
+                    loading="lazy"
+                    format="webp"
+                    width="806px"
+                    height="601px"
+                    class="zoom img-fluid"
+                    src="/landing/features/scheduling/header/header.svg"
+                    alt="A screenshot of the Scheduling page"
+                />
             </div>
         </div>
+    </div>
 </template>
 <style lang="scss" scoped>
     @import "../../../assets/styles/variable";

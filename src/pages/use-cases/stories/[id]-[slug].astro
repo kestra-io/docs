@@ -39,7 +39,7 @@ const generateTagName = (task: string) => {
       return taskName.length > 13 ? taskName.slice(0,13) + "..." : taskName;
     };
 ---
-<Layout title={story.title} description={story.excerpt}>
+<Layout title={story.title} description={story.excerpt} isStories>
     <div class="main">
         <StoriesHeader
             slug={slug ?? ""}

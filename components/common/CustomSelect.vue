@@ -31,13 +31,14 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from "vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 
     const props = defineProps<{
         modelValue: string;
         options: {
             value: string;
-            label: string 
+            label: string
         }[];
         label?: string;
     }>();
@@ -57,17 +58,17 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-    
+
     .select-wrapper {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-    
+
         .label {
             color: $white-3;
             font-size: 0.875rem;
         }
-    
+
         .btn-custom {
             border: 1px solid var(--kestra-io-token-color-border-secondary);
             background-color: var(--ks-background-input);
@@ -89,13 +90,13 @@
                 font-size: 20px;
                 transition: transform 0.2s ease;
             }
-        
+
             &:hover {
                 border-color: $primary;
                 background-color: var(--ks-background-input);
                 color: $white;
             }
-        
+
             &:focus {
                 border-color: $primary;
                 box-shadow: 0 0 0 0.25rem rgba($primary, 0.25);
@@ -111,24 +112,24 @@
         .show :deep(svg) {
             transform: rotate(180deg);
         }
-    
+
         .dropdown-menu {
             background-color: var(--ks-background-input);
             border: 1px solid var(--kestra-io-token-color-border-secondary);
             border-radius: 0.25rem;
             padding: 0;
-        
+
             .dropdown-item {
                 color: $white;
                 font-size: 12px;
                 padding: 0.25rem 0.75rem;
                 transition: background-color 0.2s ease;
-            
+
                 &:hover {
                     background-color: rgba(255, 255, 255, 0.1);
                     color: $white;
                 }
-            
+
                 &.active {
                     background-color: $primary-1;
                     color: $white;

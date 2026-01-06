@@ -2,19 +2,38 @@
 import Layout from "../../components/layout.astro";
 import PluginsLists from "~/components/plugins/PluginsLists.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
-import type { Plugin } from "@kestra-io/ui-libs";
+import type { Plugin, PluginMetadata } from "@kestra-io/ui-libs";
 import { $fetch } from "~/utils/fetch";
 
 const pluginsData = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
 
-const categoriesRes = await fetch(`https://api.kestra.io/v1/plugins/categories`);
-const categoriesData = await categoriesRes.json();
+const categoriesData = await $fetch<string[]>(`https://api.kestra.io/v1/plugins/categories`);
+
+const iconsArrays = await Promise.all(pluginsData.map(async (plugin) => {
+    return $fetch<Record<string, {icon: string}>>(`https://api.kestra.io/v1/plugins/${plugin.name}/icons/subgroups`);
+}))
+
+const metadata = await $fetch<PluginMetadata[]>("https://api.kestra.io/v1/plugins/metadata")
+
+const icons = Object.fromEntries(
+    iconsArrays.flatMap(icons =>
+        Object.entries(icons ?? {}).map(([key, {icon}]) => [
+            key,
+            Buffer.from(
+                Buffer.from(icon, "base64").toString("utf-8")
+            ).toString("base64")
+        ])
+    )
+);
+
 ---
 <Layout>
     <PluginsLists
         plugins={pluginsData}
+        icons={icons}
         categories={categoriesData ?? []}
         fullPath={Astro.request.url}
+        metadata={metadata}
         client:idle
     />
     <LayoutFooterContact

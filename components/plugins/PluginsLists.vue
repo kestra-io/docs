@@ -20,7 +20,7 @@
             </div>
 
             <div class="row my-2" data-aos="fade-up">
-                <template v-if="pluginsSlice.length">
+                <template v-if="pluginsSlice?.length">
                     <div
                         class="col-lg-4 col-md-6 mb-3"
                         v-for="plugin in pluginsSlice"
@@ -34,50 +34,35 @@
                         />
                     </div>
                 </template>
-                <div v-else-if="!pluginsSlice.length && props.plugins.length" class="alert alert-warning mb-0" role="alert">
+                <div v-else-if="!pluginsSlice?.length && plugins.length" class="alert alert-warning mb-0" role="alert">
                     No results found for the current search
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between pagination-container" v-if="totalGroups > itemsPerPage">
-                <div class="items-per-page">
-                    <select
-                        class="form-select bg-dark-2"
-                        aria-label="Default select example"
-                        v-model="itemsPerPage"
-                    >
-                        <option :value="20">20</option>
-                        <option :value="40">40</option>
-                        <option :value="60">60</option>
-                        <option :value="80">80</option>
-                        <option :value="100">100</option>
-                    </select>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <Pagination
-                        v-if="totalPages > 1"
-                        :totalPages="totalPages"
-                        v-model:current-page="currentPage"
-                        @update:current-page="changePage"
-                    />
-                </div>
-            </div>
+            <CommonPaginationContainer
+                :current-url="fullPath"
+                :total-items="pluginsSlice?.length ?? 0"
+                @update="(payload) => {
+                    currentPage = payload.page;
+                    itemsPerPage = payload.size
+                }"
+            />
 
             <PluginsFaq />
-
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
     import {isEntryAPluginElementPredicate, type Plugin, type PluginElement, type PluginMetadata, slugify, subGroupName, filterPluginsWithoutDeprecated} from "@kestra-io/ui-libs";
-    import { useBlueprintsCounts } from '~/composables/useBlueprintsCounts';
 
     import Header from './Header.vue';
     import PluginCard from './PluginCard.vue';
-    import Pagination from "../common/Pagination.vue";
+    import CommonPaginationContainer from '../common/PaginationContainer.vue';
+    import PluginsFaq from './Faq.vue';
     import CustomSelect from "../common/CustomSelect.vue";
-    import { computed, onMounted, ref, watch } from "vue";
+    import { computed, ref, watch } from "vue";
+    import { usePluginsCount } from "~/composables/usePluginsCount";
 
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
@@ -87,34 +72,27 @@
         { value: 'A-Z', label: 'Name A-Z' },
         { value: 'Z-A', label: 'Name Z-A' }
     ];
+
     const props = defineProps<{
         plugins: Plugin[],
         categories: string[],
+        icons: Record<string, string>,
+        metadata?: PluginMetadata[],
+        fullPath: string
     }>();
 
-    const {data: icons} = await useFetch('/api/plugins?type=subGroupsIcons', {
-        key: 'SubGroupsIcons'
-    });
-
-    const {data: metadata} = await useFetch<PluginMetadata[]>('/api/plugins?type=metadata', {
-        key: 'AllPluginMetadata'
-    });
 
     const metadataMap = computed(() => {
-        if (!metadata.value) return {};
-        return metadata.value.reduce((acc, meta) => {
+        if (!props.metadata) return {};
+        return props.metadata.reduce((acc, meta) => {
             acc[meta.group] = meta;
             return acc;
         }, {} as Record<string, PluginMetadata>);
     });
 
     const searchQuery = ref('');
-    const route = useRoute();
-    const router = useRouter();
 
     const { totalPlugins } = usePluginsCount();
-
-    const augmentedCategories = computed(() => ['All Categories', ...props.categories]);
 
     const setActiveCategory = (category: string) => {
         activeCategory.value = category
@@ -179,7 +157,7 @@
         if (currentPage.value > newTotal) currentPage.value = newTotal;
     });
 
-    const { counts } = await useBlueprintsCounts();
+    const counts = ref({} as Record<string, number>);
 
     const getBlueprintCountForPlugin = (plugin: Plugin) => {
         const pluginGroup = plugin.group ?? plugin.name;
@@ -205,50 +183,6 @@
                 .some(({cls}: PluginElement) => tokens.every(t => cls.toLowerCase().includes(t)));
         });
     }
-
-    const changePage = (payload: { page: number, size: number }) => {
-        currentPage.value = payload.page;
-        itemsPerPage.value = payload.size;
-        if(typeof window === 'undefined') return;
-        window.scrollTo(0, 0)
-    };
-
-    function getFilterPluginsQuery(pageVal: number, itemVal: number, categoryVal: string, searchVal: string, sortVal: string) {
-        return {
-            page: pageVal,
-            size: itemVal,
-            category: categoryVal,
-            q: searchVal,
-            sort: sortVal,
-        }
-    };
-
-    onMounted(() => {
-        if (route.query.page) currentPage.value = parseInt(route.query.page as string);
-        if (route.query.size) itemsPerPage.value = parseInt(route.query.size as string);
-        if (route.query.category) {
-            activeCategory.value = augmentedCategories.value.find(c => c === route.query.category) ?? "";
-        }
-        if (typeof route.query.q === 'string') {
-            searchQuery.value = route.query.q.trim();
-        }
-        if (typeof route.query.sort === 'string') {
-            sortBy.value = route.query.sort;
-        }
-    })
-
-    const timer = ref<NodeJS.Timeout>();
-    watch([currentPage, itemsPerPage, activeCategory, searchQuery, sortBy], ([pageVal, itemVal, categoryVal, searchVal, sortVal]) => {
-        if (timer) {
-            clearTimeout(timer.value);
-        }
-        timer.value = setTimeout(async () => {
-            router.push({
-                query: getFilterPluginsQuery(pageVal, itemVal, categoryVal, searchVal, sortVal)
-            })
-
-        }, 500);
-    });
 </script>
 
 <style lang="scss" scoped>

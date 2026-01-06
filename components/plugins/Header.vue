@@ -11,16 +11,16 @@
             <h1 data-aos="fade-up" data-aos-delay="0">Connect anything to everything</h1>
             <h4 data-aos="fade-up" data-aos-delay="50">Extend Kestra with {{ totalPlugins }} plugins and integrations</h4>
             <div class="search-input position-relative">
-                <input 
-                    v-model="searchQuery" 
-                    type="text" 
+                <input
+                    v-model="searchQuery"
+                    type="text"
                     class="form-control form-control-lg"
-                    :placeholder="`Search across ${totalPlugins} plugins`" 
+                    :placeholder="`Search across ${totalPlugins} plugins`"
                 />
                 <Magnify class="search-icon" />
-                <button 
-                    v-if="searchQuery" 
-                    class="clear-icon" 
+                <button
+                    v-if="searchQuery"
+                    class="clear-icon"
                     @click="searchQuery = ''"
                     title="Clear search"
                 >
@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from "vue";
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import {useMediaQuery} from '@vueuse/core'

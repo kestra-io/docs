@@ -5,28 +5,28 @@
                 class="accordion-button"
                 :class="{ 'collapsed': !isOpen }"
                 type="button"
-                data-bs-toggle="collapse"
-                :data-bs-target="`#collapse-${uniqueId}`"
-                :aria-expanded="isOpen.toString()"
-                :aria-controls="`collapse-${uniqueId}`"
+                :aria-expanded="isOpen ? 'true' : 'false'"
+                @click="isOpen = !isOpen"
             >
                 {{ title }}
             </button>
         </h2>
-        <div
-            :id="`collapse-${uniqueId}`"
-            class="accordion-collapse collapse"
-            :class="{ 'show': isOpen }"
-        >
-            <div class="accordion-body">
-                <slot />
+        <transition name="v-expand">
+            <div
+                v-if="isOpen"
+                class="accordion-collapse collapse"
+                :class="{ 'show': isOpen }"
+            >
+                <div class="accordion-body">
+                    <slot />
+                </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted } from 'vue'
+    import { ref, onMounted, useId } from 'vue'
 
     const props = defineProps<{
         title: string,
@@ -34,21 +34,6 @@
     }>()
 
     const isOpen = ref(props.defaultOpen)
-    const uniqueId = computed(() => Math.random().toString(36).substr(2, 9))
-
-    onMounted(() => {
-        if (typeof window !== 'undefined' && window.bootstrap) {
-            const collapseElement = document.getElementById(`collapse-${uniqueId.value}`)
-            if (collapseElement) {
-                const bsCollapse = new window.bootstrap.Collapse(collapseElement, {
-                    toggle: false
-                })
-                if (isOpen.value) {
-                    bsCollapse.show()
-                }
-            }
-        }
-    })
 </script>
 
 <style scoped lang="scss">
@@ -130,4 +115,16 @@
         color: var(--bs-black)
     }
 
+    .v-expand-enter-active, .v-expand-leave-active {
+        transition: all .5s ease;
+        overflow: hidden;
+    }
+    .v-expand-enter-from, .v-expand-leave-to {
+        max-height: 0;
+        overflow: hidden;
+    }
+    .v-expand-enter-to, .v-expand-leave-from {
+        max-height: 1000px;
+        overflow: hidden;
+    }
 </style>
