@@ -37,6 +37,7 @@
 
 <script lang="ts" setup>
     import {ref} from 'vue'
+    import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 
     defineOptions({
         name: "error",
@@ -58,6 +59,7 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+
 
     .container-fluid {
         background: url("/error/background.svg") no-repeat center 100%;

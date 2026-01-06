@@ -12,7 +12,7 @@
                 <p>Organizations facing these challenges are turning to Kestra, which addresses the core pain points through a fundamentally different approach. Here’s why many teams are replacing VMware’s automation stack with <strong>Kestra</strong>:</p>
                 <ul>
                     <li><strong>Open-Source & Cost Savings:</strong> Kestra is Apache 2.0 licensed open source, meaning <strong>no licensing fees</strong> or per-CPU costs. This dramatically lowers TCO compared to VMware’s proprietary platform, which now only comes as an expensive bundle. (Some VMware customers have even been hit with <strong>10×–15× price quotes</strong>) By adopting Kestra, companies avoid these massive price hikes and costly renewals.</li>
-                    
+
                     <li><strong>Declarative YAML Workflows:</strong> Kestra defines workflows in a pure <strong>declarative YAML</strong> format, treating automation as code. This makes it easy to version-control and reuse workflows (GitOps-friendly) and improves readability. VMware Aria, on the other hand, often requires a mix of YAML blueprints <em>plus</em> imperative scripts or manual configurations to accomplish tasks. Kestra’s code-first approach improves pipeline maintenance and is more developer-friendly than VMware’s script-heavy automation.</li>
                     <li><strong>Event-Driven Orchestration:</strong> Kestra is inherently <strong>event-driven</strong> – workflows can trigger on external events, API calls, message queues, or schedules for real-time automation. This enables responsive, asynchronous processing (e.g. reacting to CI/CD events or data streams). VMware Aria Automation’s usage is primarily request- or schedule-based with more limited external event support. Kestra’s native event triggers let you build reactive DevOps processes (such as auto-scaling, incident response, etc.) that VMware’s tools struggle to match out-of-the-box.</li>
                     <li><strong>Broad Integration & Vendor-Neutral:</strong> Kestra has a broad plugin ecosystem and an <strong>API-first</strong>, vendor-neutral design. It integrates with virtually any technology stack – Docker containers, Kubernetes clusters, CI/CD tools, configuration management (Ansible), IaC provisioning (Terraform), ITSM systems (ServiceNow), databases, cloud services, and more. Kestra doesn’t favor any particular cloud or vendor, avoiding lock-in. In contrast, VMware Aria is deeply tied to the VMware ecosystem (vSphere, NSX, vSAN) with relatively limited support for non-VMware tools. Extending VMware’s automation to work across diverse platforms often requires custom scripting or additional products, whereas Kestra connects to everything out-of-the-box.</li>
@@ -95,20 +95,8 @@
 </template>
 
 <script setup>
-    import Typewriter from "vue-material-design-icons/Typewriter.vue";
-    import BugOutline from "vue-material-design-icons/BugOutline.vue";
-    import Lan from "vue-material-design-icons/Lan.vue";
-    import Read from "vue-material-design-icons/Read.vue";
-    import Git from "vue-material-design-icons/Git.vue";
-    import AlertCircleOutline from "vue-material-design-icons/AlertCircleOutline.vue";
-</script>
-
-<script>
     import Section from '../../layout/Section.vue';
-
-    export default {
-        components: {Section}
-    }
+    import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 </script>
 
 <style lang="scss" scoped>
@@ -144,7 +132,7 @@
     }
 
     .content-section {
-        margin-bottom: 1rem; 
+        margin-bottom: 1rem;
 
         p, ul > li {
             margin-bottom: 1rem;
@@ -157,7 +145,7 @@
         h2, h3 {
             color: $white;
             font-weight: 300;
- 
+
 
             span {
                 background: linear-gradient(90deg, #E151F7 18.28%, #5C47F5 35.74%);

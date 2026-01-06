@@ -201,6 +201,7 @@
 <script setup lang="ts">
 import { usePluginsCount } from '~/composables/usePluginsCount';
 import Section from '../../layout/Section.vue';
+import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 
 const { totalPlugins } = usePluginsCount();
 </script>

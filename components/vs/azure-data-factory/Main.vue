@@ -155,20 +155,8 @@
 </template>
 
 <script setup>
-    import Typewriter from "vue-material-design-icons/Typewriter.vue";
-    import BugOutline from "vue-material-design-icons/BugOutline.vue";
-    import Lan from "vue-material-design-icons/Lan.vue";
-    import Read from "vue-material-design-icons/Read.vue";
-    import Git from "vue-material-design-icons/Git.vue";
-    import AlertCircleOutline from "vue-material-design-icons/AlertCircleOutline.vue";
-</script>
-
-<script>
     import Section from '../../layout/Section.vue';
-
-    export default {
-        components: { Section }
-    }
+    import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 </script>
 
 <style lang="scss" scoped>
