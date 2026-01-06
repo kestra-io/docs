@@ -73,6 +73,12 @@ The Copilot again makes a suggestion to add to the flow, but only in the targete
 
 You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
 
+## Fix with AI
+
+With Copilot configured, there is also the added benefit of consulting Copilot to resolve execution errors from the Logs and Gantt views. For failed tasks, you can open the task and click the three dots to "**Fix with AI**". This option reopens the flow editor with the Copilot automatically prompted with the error context to help resolve any issues with the task.
+
+![Fix with AI](/docs/user-interface-guide/fix-with-ai-gantt.png)
+
 ## Starter prompts
 
 To get started with Copilot, here are some example prompts to test, iterate on, and use as a starting point for collaboratively building flows with AI in Kestra:
