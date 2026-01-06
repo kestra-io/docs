@@ -419,7 +419,9 @@ export default defineNuxtConfig({
         '/docs/getting-started/migration-guide': {redirect: '/docs/migration-guide'},
         '/docs/getting-started/installation': {redirect: '/docs/installation'},
         '/docs/getting-started/ui': {redirect: '/docs/ui'},
-        '/docs/getting-started/tutorial': {redirect: '/docs/tutorial'}
+        '/docs/getting-started/tutorial': {redirect: '/docs/tutorial'},
+        '/docs/tutorial/scripts': {redirect: '/docs/scripts'}
+
     },
 
     build: {
