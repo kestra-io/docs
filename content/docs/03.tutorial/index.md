@@ -13,7 +13,7 @@ You can use Kestra to:
 - Interact with any system or language through plugins and tasks.
 - Orchestrate microservices, batch jobs, scripts, SQL queries, data syncs, dbt or Spark jobs, and other processes.
 
-This tutorial starts with a simple flow that makes an API request and then expands to use nearly Kestra's full toolbox: adding inputs, downstream tasks, scripts, outputs, and triggers. Later sections cover conditional flow logic, parallel task execution, and error handling.
+This tutorial starts with a simple flow that makes an API request and then expands to use nearly Kestra's full toolbox: adding Inputs, downstream tasks, scripts, Outputs, and Triggers. Later sections cover conditional flow logic, parallel task execution, and error handling.
 
 :::ChildCard
 :::
