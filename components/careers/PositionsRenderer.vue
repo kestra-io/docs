@@ -6,7 +6,7 @@
             baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
         >
             <ul class="list-unstyled d-flex flex-column gap-3">
-                <li data-aos="fade-left" v-for="doc in positions">
+                <li data-aos="fade-left" v-for="doc in positions" :key="doc.id">
                     <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
                         <div class="d-flex align-items-center gap-3">
                             <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
@@ -14,8 +14,9 @@
                                 {{ doc.title }}
                             </span>
                             <span class="loc">
-                                (Remote / <template v-for="loc in doc.locations" :key="loc">
-                                    {{ loc.emoji }}
+
+                                (Remote /<template v-for="loc in doc.locations" :key="loc.code">
+                                    <span class="ms-1" :title="loc.name">{{ loc.emoji }}</span>
                                 </template>)
                             </span>
                         </div>
@@ -30,12 +31,16 @@
 </template>
 
 <script lang="ts" setup>
+    import LayoutSection from '../layout/Section.vue';
+
     defineProps<{
         positions: Array<{
             id: string;
             title: string;
             locations: Array<{
                 emoji: string;
+                name: string;
+                code: string;
             }> | null;
         }>;
     }>();
