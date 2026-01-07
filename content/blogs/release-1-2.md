@@ -373,6 +373,29 @@ tasks:
 
 Any trigger in Kestra 1.2 can now support concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This removes previous limitations where certain trigger types could only run one execution at a time, enabling more flexible and scalable workflow patterns.
 
+For example, consider a workflow that takes 60 seconds to complete but is triggered every second. By default, with `allowConcurrent: false`, only one execution can run at a time. If a trigger fires while a previous execution is still running, the new execution will be skipped:
+
+```yaml
+id: sleep_concurrent
+namespace: company.team
+
+tasks:
+  - id: sleep
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT60S
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "* * * * * *"
+    withSeconds: true
+    allowConcurrent: false
+```
+
+In this example, even though the Schedule trigger fires every second, only one execution will run at a time. Setting `allowConcurrent: true` would allow multiple executions to run simultaneously.
+
+
+
 ## AWS & Azure Marketplace
 
 Kestra Open Source is now available on both [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg) and [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), making it easier than ever to deploy Kestra in your cloud environment.
