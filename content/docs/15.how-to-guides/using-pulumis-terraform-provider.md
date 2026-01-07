@@ -7,18 +7,21 @@ topics:
   - Integrations
 ---
 
-Utilize Pulumi's Terraform Provider to Integrate Kestra with Kestra's Terraform Provider.
+Utilize Pulumi's Terraform Provider to manage Kestra infrastructure.
 
 ## Introduction
 
 This post outlines the process of leveraging Pulumi's terraform-provider package to seamlessly integrate the Kestra Terraform provider into your Pulumi projects. This approach allows you to manage Kestra resources using the familiar Pulumi infrastructure-as-code workflow, even if the provider isn't officially published in the main Pulumi Registry.
 
-## About the Example Repo
+## About the example repository
 
-The repo we will be using, pulumi-kestra-example repository is a hands-on example showing how to provision and manage Kestra resources with Pulumi using a Python-based provider and SDK generated locally. The repo includes a Pulumi project YAML, a complete example flow, namespace, and app - demonstrating a real-world use case: uploading a file to Google Cloud Storage via a Kestra flow and app.
-Note that the flow.yaml is not performing an actual GCS File Upload, and has that portion commented out. This blogpost is meant to prioritize understanding of Pulumi Terraform-Provider.
+The repository we will be using, the [pulumi-kestra-example](https://github.com/japerry911/pulumi-kestra-example) repository, is a hands-on example that shows how to provision and manage Kestra resources with Pulumi using a Python-based provider and SDK generated locally. The repo includes:
+ - a Pulumi project YAML
+ - a complete example flow and namespace
+ - an app - demonstrating a real-world use case: uploading a file to Google Cloud Storage via a Kestra flow and app
+Note the flow.yaml does not perform an actual GCS File Upload, and that portion is commented out. This blog post is meant to prioritize understanding of the Pulumi Terraform-Provider.
 
-## The Process
+## Step-by-step process
 
 Follow these steps to set up your environment and begin managing Kestra resources with Pulumi:
 
@@ -43,7 +46,7 @@ Follow these steps to set up your environment and begin managing Kestra resource
     - This command downloads the specified provider (kestra-io/kestra) and creates all the necessary wrapper code in a local directory (e.g., ./sdks/), enabling you to immediately manage that provider's resources as part of your Pulumi infrastructure.
 
 5. Install the Local SDK
-- Now that you have a local SDK in your project's sdks folder, you need to install it into your local Python virtual environment. (If you're using a different language project, you'll need to follow the equivalent installation steps for that language.)
+- Now that you have a local SDK in your project's `sdks` folder, you need to install it into your local Python virtual environment. (If you're using a different language project, you'll need to follow the equivalent installation steps for that language.)
     - Add the SDK path to your requirements.txt file: `echo sdks/kestra >> requirements.txt`
     - Install the project dependencies: `pulumi install`
 
@@ -74,10 +77,10 @@ KESTRA_PROVIDER_URL=
     - Execute the following command: `pulumi up`
         - This will initiate the deployment process, and Pulumi will provision your Kestra resources as defined in your project.
 
-## What did we Provision?
+## What did we provision?
 
 <div class="video-container">
-  <iframe src="https://youtu.be/O6YaDo2Nmws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/O6YaDo2Nmws?si=hCxLE5K8L6bEvsas" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Conclusion
