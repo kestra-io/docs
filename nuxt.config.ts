@@ -348,7 +348,7 @@ export default defineNuxtConfig({
         '/docs/enterprise/authentication': {redirect: '/docs/enterprise/auth/authentication'},
         '/enterprise/auth/authentication': {redirect: '/docs/enterprise/auth/authentication'},
         '/enterprise/auth/sso': {redirect: '/enterprise/auth/sso'},
-        '/docs/enterprise/sso': {redirect: '/enterprise/auth/sso'},
+        '/docs/enterprise/sso': {redirect: '/docs/enterprise/auth/sso'},
         '/docs/enterprise/api': {redirect: '/docs/enterprise/auth/api'},
         '/docs/enterprise/api-tokens': {redirect: '/docs/enterprise/auth/api-tokens'},
         '/docs/enterprise/invitations': {redirect: '/docs/enterprise/auth/invitations'},
@@ -419,8 +419,12 @@ export default defineNuxtConfig({
         '/docs/getting-started/installation': {redirect: '/docs/installation'},
         '/docs/getting-started/ui': {redirect: '/docs/ui'},
         '/docs/getting-started/tutorial': {redirect: '/docs/tutorial'},
-        '/docs/tutorial/scripts': {redirect: '/docs/scripts'}
-
+        '/docs/tutorial/scripts': {redirect: '/docs/scripts'},
+        '/docs/ui/ee': {redirect: '/docs/ui'},
+        '/docs/workflow-components/tasks/scripts/input-output-files': {redirect: '/docs/scripts/input-output-files'},
+        '/docs/workflow-components/tasks/scripts/bind-mount': {redirect: '/docs/scripts/bind-mount'},
+        '/docs/workflow-components/tasks/scripts/runners': {redirect: '/docs/scripts/task-runners'},
+        '/docs/administrator-guide/deployment/manual': {redirect: '/docs/administrator-guide/upgrades'},
     },
 
     build: {
