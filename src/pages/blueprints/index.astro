@@ -1,13 +1,15 @@
 ---
+export const prerender = false;
+
 import Layout from "../../components/layout.astro";
 import BlueprintsLists from "~/components/blueprints/Lists.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 import { $fetch } from "~/utils/fetch";
 
-const tagsRes = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`);
+const tagsRes = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`) as BlueprintTag[];
 const tags = tagsRes || [];
 
-const title = "Kestra Blueprints Library";
+const title = "Blueprints";
 const description = "Get started with our library of workflows ready to use";
 ---
 <Layout title={title} description={description}>

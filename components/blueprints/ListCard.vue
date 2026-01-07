@@ -26,7 +26,7 @@ import CommonTaskIcon from "../common/TaskIcon.vue"
 
     const props = withDefaults(defineProps<{
         blueprint: Record<string, any>;
-        tags?: Array<{ id: string; name: string }>;
+        tags?: Array<BlueprintTag>;
         href: string;
     }>(), {
         tags: () => []

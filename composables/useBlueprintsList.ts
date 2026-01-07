@@ -1,39 +1,19 @@
-import { computed, ref, watch, type Ref } from "vue";
-import { $fetch } from "~/utils/fetch";
+import { $fetch } from "~/utils/fetch.ts";
 
-export async function useBlueprintsList(
-    { page, size, tags, q }: { page: Ref<number>; size: Ref<number>; tags: Ref<{id: string}[]>; q: Ref<string | null> }
-) {
-    const apiUrl = computed(() => {
-        let apiUrl = `https://api.kestra.io/v1/blueprints/versions/latest?page=${page.value}&size=${size.value}`;
-        if (tags.value?.length) {
-            apiUrl += `&tags=${tags.value.map(tag => tag.id).join(',')}`;
-        }
-        if (q.value) {
-            apiUrl += `&q=${q.value}`;
-        }
+export async function useBlueprintsList({ page = 1, size = 24, tags = '', q = '' } = {}) {
+    let apiUrl = `https://api.kestra.io/v1/blueprints/versions/latest?page=${page}&size=${size}`;
+    if (tags) {
+        apiUrl += `&tags=${tags}`;
+    }
+    if (q) {
+        apiUrl += `&q=${q}`;
+    }
+    const data = await $fetch(apiUrl);
 
-        return apiUrl;
-    })
+    if (!data.results) {
+        return { results: [], total: 0 };
+    }
 
-    watch(apiUrl, async (newUrl) => {
-        console.log("Fetching blueprints from", newUrl);
-        const data = await $fetch(newUrl);
-        if(!data || !data.results) {
-            console.warn("No data received from API");
-            blueprints.value = [];
-            total.value = 0;
-            return;
-        }
-        blueprints.value = [...data.results].sort(() => Math.random() - 0.5);
-        total.value = data.total;
-    }, { immediate: true });
-
-    const blueprints = ref<any[]>([]);
-    const total = ref(0);
-
-    return {
-        blueprints,
-        total,
-    };
+    const shuffledResults = [...data.results].sort(() => Math.random() - 0.5);
+    return Object.assign({}, data, { results: shuffledResults });
 }

@@ -12,9 +12,9 @@
         </div>
         <div class="mt-5" data-aos="fade-left">
             <button
-                v-for="tag in tagsComplete"
-                :key="tag.id"
-                :class="{ 'active': activeTags.some(item => item.id === tag.id) }"
+                v-for="tag in tags"
+                :key="tag.name"
+                :class="{ 'active': activeTags.some(item => item.name === tag.name) }"
                 @click="setTagBlueprints(tag)"
                 class="m-1 rounded-button"
             >
@@ -22,11 +22,12 @@
             </button>
         </div>
         <div class="row my-5">
-            <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
+            <div v-if="blueprints && blueprints.length > 0" class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id"
+                data-aos="zoom-in">
                 <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)"/>
             </div>
 
-            <div v-if="blueprints.length === 0" class="col-12 d-flex flex-column align-items-center justify-content-center py-5">
+            <div v-else class="col-12 d-flex flex-column align-items-center justify-content-center py-5">
                 <h4 class="text-white mb-4">No blueprints for your selection</h4>
                 <button class="rounded-button active" @click="resetFilters">
                     Reset all tags
@@ -43,11 +44,11 @@
                 </div>
                 <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                     <CommonPagination
-                        v-if="totalPages > 1"
-                        :current-url="props.currentUrl"
+                        :current-url="currentUrl"
                         :totalPages="totalPages"
                         v-model:current-page="currentPage"
                         @update:current-page="changePage"
+                        v-if="totalPages > 1"
                     />
                 </div>
             </div>
@@ -55,24 +56,29 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    import {ref, watch} from 'vue'
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+    import BlueprintsListCard from './ListCard.vue'
+    import CommonPagination from '../common/Pagination.vue'
 
-    const currentPage = ref(1)
-    const itemsPerPage = ref(24)
-    const blueprints = ref([])
-    const activeTags = ref([{ name: 'All tags' }])
-    const tags = ref([])
-    const props = defineProps(["tags"])
-    const totalPages = ref(0)
-    const totalBlueprints = ref(0)
-    const searchQuery = ref('')
-    const route = useRoute()
-    const router = useRouter()
-    const config = useRuntimeConfig()
+    const currentPage = ref<number>(1)
+    const itemsPerPage = ref<number>(24)
+    const blueprints = ref<Blueprint[]>([])
+    const activeTags = ref<BlueprintTag[]>([{ name: 'All tags' }])
+    const tags = ref<BlueprintTag[]>([])
+    const totalPages = ref<number>(0)
+    const totalBlueprints = ref<number>(0)
+    const searchQuery = ref<string>('')
+    const url = new URL(window.location.href);
 
-    if(props.tags) {
+    const props = defineProps<{
+        tags: BlueprintTag[],
+        currentUrl: string
+    }>();
+
+    if (props.tags) {
         const customOrder = ['Getting Started', 'Core', 'Infrastructure', 'Data', 'AI', 'Business', 'Cloud'];
         const sortedTags = [...props.tags].sort((a, b) => {
             let indexA = customOrder.indexOf(a.name);
@@ -84,14 +90,14 @@
         tags.value = [{ name: 'All tags' }, ...sortedTags];
     }
 
-    const getActiveTagIds = () => {
+    const getActiveTagIds = (): string => {
         return activeTags.value
             .filter(tag => tag.name !== 'All tags' && tag.id)
             .map(tag => tag.id)
             .join(',');
     }
 
-    const setTagBlueprints = (tagVal) => {
+    const setTagBlueprints = (tagVal: BlueprintTag) => {
         if (tagVal.name === 'All tags') {
             activeTags.value = [{ name: 'All tags' }];
             return;
@@ -123,53 +129,52 @@
         window.scrollTo(0, 0)
     };
 
-    const generateCardHref = (blueprint) => {
-      return `/blueprints/${blueprint.id}`
+    const generateCardHref = (blueprint: Blueprint) => {
+        return `/blueprints/${blueprint.id}`
     }
 
-    const setBlueprints = (allBlueprints, total) => {
+    const setBlueprints = (allBlueprints: Blueprint[], total: number) => {
         blueprints.value = allBlueprints || []
         totalBlueprints.value = total || 0
         totalPages.value = itemsPerPage.value ? Math.ceil(total / itemsPerPage.value) : 0
     }
 
-    if(route.query.page) currentPage.value = parseInt(route.query.page)
-    if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-    if(route.query.q) searchQuery.value = route.query.q;
-
-    if(route.query.tags) {
-        const tagIds = route.query.tags.split(',');
-        const foundTags = tags.value.filter(item => tagIds.includes(item.id));
+    if(url.searchParams.has('page')) currentPage.value = parseInt(url.searchParams.get('page') as string)
+    if(url.searchParams.has('size')) itemsPerPage.value = parseInt(url.searchParams.get('size') as string)
+    if(url.searchParams.has('q')) searchQuery.value = url.searchParams.get('q') as string;
+    if(url.searchParams.has('tags')) {
+        const tagIds = (url.searchParams.get('tags') as string).split(',');
+        const foundTags = tags.value.filter(item => item.id && tagIds.includes(item.id));
         if (foundTags.length > 0) {
             activeTags.value = foundTags;
         }
     }
 
-    const { data: blueprintsData, error } = await useAsyncData(
-      `blueprints`,
-      () => useBlueprintsList({
-        page: currentPage.value,
-        size: itemsPerPage.value,
-        tags: getActiveTagIds(),
-        q: searchQuery.value
-      })
-    )
+    const loadBlueprint = async () => {
+        const blueprintsData = await useBlueprintsList({
+            page: currentPage.value,
+            size: itemsPerPage.value,
+            tags: getActiveTagIds(),
+            q: searchQuery.value
+        });
 
-    if (error && error.value) {
-        console.error("Blueprint fetch error:", error.value);
+        if (blueprintsData) {
+            setBlueprints(blueprintsData.results, blueprintsData.total)
+        } else {
+            setBlueprints([], 0)
+        }
     }
 
-    if(blueprintsData.value) {
-        setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
-    }
+    await loadBlueprint();
 
-    watch(() => route.query, async () => {
-      if (!route.query.tags && !route.query.page && !route.query.size && !route.query.q) {
-        activeTags.value = [{ name: 'All tags' }]
-      }
-    });
+    //
+    // watch(() => route.query, async () => {
+    //     if (!route.query.tags && !route.query.page && !route.query.size && !route.query.q) {
+    //         activeTags.value = [{ name: 'All tags' }]
+    //     }
+    // });
 
-    let timer;
+    let timer: NodeJS.Timeout;
     watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, searchVal, activeTagsVal], [oldPage, oldItemVal, oldSearch, oldTags]) => {
         if(timer) clearTimeout(timer)
 
@@ -181,121 +186,109 @@
                 currentPage.value = 1;
             }
 
-            const tagIds = getActiveTagIds();
-
-            const url = `${config.public.apiUrl}/blueprints/versions/latest?page=${newPage}&size=${itemVal}${tagIds ? `&tags=${tagIds}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`;
-
-            try {
-                const { data } = await useFetch(url);
-                if (data.value) {
-                    setBlueprints(data.value.results, data.value.total);
-                } else {
-                    setBlueprints([], 0);
-                }
-            } catch (e) {
-                setBlueprints([], 0);
-            }
+            await loadBlueprint();
 
             function getQuery() {
-                let query = {
+                let query: Record<string, any> = {
                     page: newPage,
                     size: itemVal,
                 };
-                if (tagIds) query['tags'] = tagIds;
+                if (getActiveTagIds()) query['tags'] = getActiveTagIds();
                 if(searchVal.length) query['q'] = searchVal;
                 return query
             }
 
-            router.push({ query: getQuery() })
+            url.search = new URLSearchParams(getQuery()).toString();
 
+            history.pushState({}, "", url);
         }, 500)
     }, { deep: true })
-    </script>
+</script>
 
-    <style lang="scss" scoped>
-        @import "../../assets/styles/variable";
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
 
-        .header-container {
-            background: url("/landing/plugins/bg.svg") no-repeat top;
-            .header {
-                padding-bottom: calc($spacer * 4.125);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    .header-container {
+        background: url("/landing/plugins/bg.svg") no-repeat top;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 
-                h1, h4 {
-                    color: $white;
-                    text-align: center;
-                    font-weight: 300;
-                    margin-bottom: 0;
-                }
+            h1, h4 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+            }
 
-                h1 {
-                    font-size: $font-size-4xl;
-                }
+            h1 {
+                font-size: $font-size-4xl;
+            }
 
-                h4 {
-                    font-size: $font-size-xl;
-                }
+            h4 {
+                font-size: $font-size-xl;
+            }
 
-                .search-input {
-                    max-width: 21rem;
+            .search-input {
+                max-width: 21rem;
 
-                    input {
-                        border-radius: 4px;
-                        border: 1px solid #404559;
-                        background-color: #1C1E27;
+                input {
+                    border-radius: 4px;
+                    border: 1px solid #404559;
+                    background-color: #1C1E27;
 
-                        &, &::placeholder {
-                            color: $white;
-                            font-size: $font-size-md;
-                            font-weight: 400;
-                        }
-                    }
-
-                    .search-icon {
-                        position: absolute;
-                        top: calc($spacer * 0.563);;
-                        left: calc($spacer * 1.125);
-                        font-size: calc($spacer * 1.125);
+                    &, &::placeholder {
                         color: $white;
+                        font-size: $font-size-md;
+                        font-weight: 400;
                     }
                 }
-            }
 
-        }
-        .form-control {
-            padding-left: 2.5rem;
-
-            &:focus {
-                border-color: var(--bs-border-color);
-                box-shadow: none;
-            }
-        }
-
-        .rounded-button {
-            border-radius: 0.25rem;
-            color: var(--bs-white);
-            padding: calc($spacer / 2) calc($spacer / 1);
-            margin-right: calc($spacer / 2);
-            background-color: $black-2;
-            border: 0.063rem solid $black-3;
-            font-weight: bold;
-            font-size: $font-size-sm;
-            line-height: 1.375rem;
-
-            &.active {
-                background-color: $primary-1;
-                border-color: $primary-1;
+                .search-icon {
+                    position: absolute;
+                    top: calc($spacer * 0.563);;
+                    left: calc($spacer * 1.125);
+                    font-size: calc($spacer * 1.125);
+                    color: $white;
+                }
             }
         }
 
-        .pagination-container .form-select {
-            border-radius: 4px;
-            border: $block-border;
-            color: $white;
-            text-align: center;
-            font-family: $font-family-sans-serif;
-            font-size: $font-size-sm;
-            font-style: normal;
-            font-weight: 700;
+    }
+    .form-control {
+        padding-left: 2.5rem;
+
+        &:focus {
+            border-color: var(--bs-border-color);
+            box-shadow: none;
         }
-    </style>
+    }
+
+    .rounded-button {
+        border-radius: 0.25rem;
+        color: var(--bs-white);
+        padding: calc($spacer / 2) calc($spacer / 1);
+        margin-right: calc($spacer / 2);
+        background-color: $black-2;
+        border: 0.063rem solid $black-3;
+        font-weight: bold;
+        font-size: $font-size-sm;
+        line-height: 1.375rem;
+
+        &.active {
+            background-color: $primary-1;
+            border-color: $primary-1;
+        }
+    }
+
+    .pagination-container .form-select {
+        border-radius: 4px;
+        border: $block-border;
+        color: $white;
+        text-align: center;
+        font-family: $font-family-sans-serif;
+        font-size: $font-size-sm;
+        font-style: normal;
+        font-weight: 700;
+    }
+</style>
