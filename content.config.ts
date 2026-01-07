@@ -1,9 +1,10 @@
 import { defineContentConfig, defineCollection, z } from '@nuxt/content'
+import { asSitemapCollection } from '@nuxtjs/sitemap/content'
 import { CollectionNames } from './content.config.names'
 
 export default defineContentConfig({
   collections: {
-    [CollectionNames.docs]: defineCollection({
+    [CollectionNames.docs]: defineCollection(asSitemapCollection({
       type: 'page',
       source: 'docs/**/*.md',
       schema: z.object({
@@ -19,9 +20,9 @@ export default defineContentConfig({
             since: z.string(),
             migrationGuide: z.string(),
         }).optional(),
-      })
-    }),
-    [CollectionNames.blogs]: defineCollection({
+      }),
+    })),
+    [CollectionNames.blogs]: defineCollection(asSitemapCollection({
       type: 'page',
       source: 'blogs/**/*.md',
       schema: z.object({
@@ -42,10 +43,10 @@ export default defineContentConfig({
         image: z.string(),
         plugins: z.array(z.string()).optional(),
       })
-    }),
-    [CollectionNames.misc]: defineCollection({
+    })),
+    [CollectionNames.misc]: defineCollection(asSitemapCollection({
         type: 'page',
         source: '*.md',
-    }),
+    })),
   }
 })
