@@ -12,9 +12,9 @@ image: TBC
 
 ## **How Kestra runs on Kestra**
 
-As Kestra’s only analytics engineer, I run our entire data stack myself. That includes product analytics from PostHog, CRM data from HubSpot, support tickets from Pylon, transformations in dbt, storage in BigQuery, and dashboards in Lightdash. It’s a full, production-grade analytics system that supports sales, marketing, product, support, and leadership.
+As Kestra’s only analytics engineer, I run a production-grade ELT stack end-to-end. I rely on PyAirbyte and custom dltHub sources to ingest data from platforms like PostHog, HubSpot, and Pylon into BigQuery, transform it with dbt, and visualize it in Lightdash. This streamlined pipeline enables me to support sales, marketing, product, and leadership teams from a single, cohesive system.
 
-The reason this works is that the orchestration layer stays out of the way. Instead of reshaping scripts to match a framework’s preferences or chasing down scheduler edge cases, I spend my time doing the work analytics engineers actually want to do: understanding the business, answering internal questions, and building things my colleagues actually use.
+This works because the orchestration layer stays out of the way. Instead of reshaping scripts to match a framework’s preferences or chasing down scheduler edge cases, I spend my time doing the work analytics engineers actually want to do: understanding the business, answering internal questions, and building things my colleagues actually use.
 
 ## **Our data stack**
 
