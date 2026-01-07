@@ -10,8 +10,8 @@
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">{{ page.title }}</h1>
                 <h4>
-                    <MapMarkerOutline /> Remote from
-                    <span v-for="loc in page.locations" :key="loc">
+                    <MapMarkerOutline /> Remote from:
+                    <span v-for="loc in page.locations" :key="loc" class="ms-1">
                         {{ loc.emoji }} {{ loc.name }}
                     </span>
                 </h4>

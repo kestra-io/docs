@@ -7573,13 +7573,10 @@ components:
         disabled:
           type: boolean
         labels:
-          type: array
           description: Labels as a list of Label (key/value pairs) or as a map of
             string to string.
           oneOf:
           - $ref: "#/components/schemas/Map_Object.Object_"
-          items:
-            $ref: "#/components/schemas/Label"
         variables:
           type: object
           additionalProperties: false
@@ -8478,13 +8475,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -8588,13 +8582,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           variables:
             type: object
             additionalProperties: false
@@ -8832,13 +8823,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
