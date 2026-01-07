@@ -41,10 +41,10 @@
 
             <CommonPaginationContainer
                 :current-url="fullPath"
-                :total-items="pluginsSlice?.length ?? 0"
-                @update="(payload) => {
-                    currentPage = payload.page;
-                    itemsPerPage = payload.size
+                :total-items="plugins.length ?? 0"
+                @update="({page, size}) => {
+                    currentPage = page;
+                    itemsPerPage = size
                 }"
             />
 
