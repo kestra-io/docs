@@ -67,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from 'vue';
     import {subGroupName, slugify, isEntryAPluginElementPredicate, type PluginElement, type Plugin} from '@kestra-io/ui-libs';
 
     import Magnify from 'vue-material-design-icons/Magnify.vue';
@@ -79,9 +80,8 @@
         pluginsWithoutDeprecated: Plugin[]
         pluginName: string
         title: string
+        routeParts: string[]
     }>();
-
-    const route = useRoute();
 
     const groupPluginElements = (subGroup: Plugin): Record<string, PluginElement[]> =>
         Object.fromEntries(
@@ -96,19 +96,20 @@
         props.pluginWrapper ? groupPluginElements(props.pluginWrapper) : {}
     );
 
-    const routeParts = computed<string[]>(() =>
-        Array.isArray(route.params.slug) ? (route.params.slug as string[]) : [String(route.params.slug)]
-    );
+    const emit = defineEmits<{
+        (e: 'navigate', path: string): void
+    }>();
 
-    const isSubGroupOpen = (subGroup: Plugin) => routeParts.value.length >= 2 && slugify(subGroupName(subGroup)) === routeParts.value[1];
+
+    const isSubGroupOpen = (subGroup: Plugin) => props.routeParts.length >= 2 && slugify(subGroupName(subGroup)) === props.routeParts[1];
 
     const navigateToSubGroup = (subGroup: Plugin) =>
-        navigateTo(`/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`);
+        emit('navigate', `/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`);
 </script>
 
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
-    
+
     .plugin-sidebar {
         @include media-breakpoint-up(lg) {
             padding: 2rem;
@@ -122,17 +123,17 @@
             z-index: 10;
             background: #0A0B0D;
         }
-    
+
         @include media-breakpoint-down(lg) {
             display: none;
         }
-    
+
         .sidebar-content {
             display: flex;
             flex-direction: column;
             gap: $spacer;
         }
-    
+
         .plugin-title {
             margin: 0;
             padding: calc($spacer / 2) $spacer;
@@ -140,28 +141,28 @@
             font-weight: 600;
             color: $white;
             text-transform: uppercase;
-        
+
             @include media-breakpoint-down(lg) {
                 font-size: $font-size-sm;
             }
         }
-    
+
         .subgroups-list {
             display: flex;
             flex-direction: column;
             gap: calc($spacer / 2);
         }
-    
+
         .subgroup-item {
             border: none;
             border-radius: 0;
             overflow: visible;
-        
+
             &[open] .subgroup-title {
                 color: $purple-36;
             }
         }
-    
+
         .subgroup-title {
             background: transparent;
             color: $white-1;
@@ -176,19 +177,19 @@
             border: none;
             padding-left: calc($spacer / 2);
             transition: color 0.2s ease;
-        
+
             .chevron-icon {
                 font-size: $font-size-lg;
                 color: $white;
                 flex-shrink: 0;
                 top: -0.18rem;
             }
-        
+
             &:hover {
                 color: $purple-36;
             }
         }
-    
+
         .search {
             width: 100%;
             height: 32px;
@@ -198,35 +199,35 @@
             border: 1px solid $black-3;
             margin: 0 auto $spacer;
             cursor: pointer;
-        
+
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
             }
-        
+
             &:hover {
                 background-color: $black-4;
                 border: 1px solid $black-6;
             }
-        
+
             :deep(.material-design-icon__svg) {
                 bottom: 0;
                 fill: #8B8B8D;
             }
-        
+
             .input-group {
                 width: 100%;
                 height: 100%;
                 display: flex;
                 gap: calc($spacer * 0.5);
                 align-items: center;
-            
+
                 .input-icon {
                     max-height: 100%;
                     display: flex;
                     gap: calc($spacer * 0.5);
                     align-items: center;
-                
+
                     input {
                         background: transparent;
                         border: none;
@@ -235,13 +236,13 @@
                         font-weight: 400;
                         font-size: $font-size-sm;
                         width: 100%;
-                    
+
                         &::placeholder {
                             color: var(--ks-content-inactive);
                         }
                     }
                 }
-            
+
                 .input-group-text {
                     max-height: 100%;
                     background-color: transparent;
@@ -251,13 +252,13 @@
                 }
             }
         }
-    
+
         .plugin-links {
             display: flex;
             flex-direction: column;
             gap: $spacer;
             margin-top: $spacer;
-        
+
             .link-section {
                 h4 {
                     font-size: 1rem;
@@ -265,20 +266,20 @@
                     color: $white;
                     margin: 0;
                 }
-            
+
                 .link {
                     color: $purple-36;
                     text-decoration: none;
                     font-size: 14px;
                     font-weight: normal;
-                
+
                     &:hover {
                         text-decoration: underline;
                     }
                 }
             }
         }
-    
+
         hr {
             border-color: var(--kestra-io-token-color-border-secondary);
             opacity: 1;

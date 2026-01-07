@@ -1,10 +1,12 @@
 <template>
     <div class="container-fluid bd-gutter bd-layout">
-        <PluginSidebar 
+        <PluginSidebar
             :plugin-wrapper="rootPlugin"
             :plugins-without-deprecated="pluginsWithoutDeprecated"
             :plugin-name="pluginName"
             :title="headingTitle"
+            :route-parts="routeParts"
+            @navigate="navigateTo($event)"
         />
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
@@ -37,7 +39,7 @@
                             <span>{{ headingTitle }}</span>
                             <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
                         </div>
-                        <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
+                        <MDC v-if="pluginType ? page?.title : page?.description" :value="(pluginType ? page.title : page.description) ?? ''">
                             <template #default="mdcProps">
                                 <pre v-if="mdcProps?.error" style="color: white;">{{ mdcProps.error }}</pre>
                                 <ContentRenderer v-else-if="mdcProps?.body" class="desc markdown" :value="mdcProps" />
@@ -68,9 +70,9 @@
                 :schemas="elementTitle"
             />
 
-            <PluginVideos 
-                v-if="pluginType === undefined && currentPluginVideos?.length > 0" 
-                :videos="currentPluginVideos" 
+            <PluginVideos
+                v-if="pluginType === undefined && currentPluginVideos?.length > 0"
+                :videos="currentPluginVideos"
             />
 
             <RelatedBlueprints
@@ -131,11 +133,15 @@
 
     const routeSlug: string = route.params.slug instanceof Array
         ? route.params.slug.join("/")
-        : route.params.slug;
+        : route.params.slug ?? "";
 
     const splitRouteSlug = routeSlug.split("/");
 
-    const pluginName = computed(() => splitRouteSlug?.[0]);
+    const pluginName = computed(() => splitRouteSlug?.[0] ?? "");
+
+    const routeParts = computed<string[]>(() =>
+        Array.isArray(route.params.slug) ? (route.params.slug as string[]) : [String(route.params.slug)]
+    );
 
     const subGroup = computed(() => {
         const maybeSubGroup = splitRouteSlug[1];
@@ -145,7 +151,7 @@
     const pluginType = computed(() => {
         const lastSegment = splitRouteSlug[splitRouteSlug.length - 1];
         if (!lastSegment || !lastSegment.includes(".")) return undefined;
-        
+
         const parts = lastSegment.replace(/.md$/, "").split(".");
         return `${parts.slice(0, -1).join(".")}.${
             pageNames.value?.[slug.value] ?? parts[parts.length - 1]
@@ -154,12 +160,12 @@
 
     const slug = computed(() => `/plugins/${routeSlug}`);
 
-    const {data: navigation} = await useFetch("/api/plugins?type=navigation");
+    const {data: navigation} = await useFetch<NavItem[]>("/api/plugins?type=navigation");
 
-    const pageList = computed(() => recursivePages(navigation.value?.[0]));
-    const pageNames = computed(() => generatePageNames(navigation.value?.[0]));
+    const pageList = computed(() => recursivePages(navigation.value?.[0] ?? {}));
+    const pageNames = computed(() => generatePageNames(navigation.value?.[0] ?? {}));
 
-    const {data: pageData} = await useFetch<{
+    interface PluginFetchResponse {
         body: {
             group: string;
             plugins: Plugin[];
@@ -169,13 +175,30 @@
         description?: string;
         error?: boolean;
         message?: string;
-    }>(
-        computed(() => 
+        image?: string;
+        rightBar?: boolean;
+    }
+
+    const defaultPluginFetchResponse: PluginFetchResponse = {
+        body: {
+            group: "",
+            plugins: [],
+            toc: {links: []}
+        },
+        title: "",
+        description: "",
+        error: false,
+        message: "",
+        image: ""
+    };
+
+    const {data: pageData} = await useFetch<PluginFetchResponse>(
+        computed(() =>
             pluginType.value === undefined
                 ? `/api/plugins?page=${splitRouteSlug[0]}&type=plugin`
                 : `/api/plugins?page=${pluginType.value}&type=definitions`
         ),
-        {key: computed(() => pluginType.value ?? splitRouteSlug[0])}
+        {key: pluginType.value ?? splitRouteSlug[0]}
     );
 
     const {data: sidebarPluginData} = await useFetch<{
@@ -188,13 +211,13 @@
         key: `Sidebar-${splitRouteSlug[0]}`
     });
 
-    const {data: subGroupsIcons} = await useFetch('/api/plugins?type=subGroupsIcons', {
+    const {data: subGroupsIcons} = await useFetch<Record<string, string>>('/api/plugins?type=subGroupsIcons', {
         key: 'SubGroupsIcons'
     });
 
     const {data: elementIcons} = await useAsyncData(
-        computed(() => `ElementsIcons-${pluginName.value}-${pluginType.value}`),
-        () => {
+        `ElementsIcons-${pluginName.value}-${pluginType.value}`,
+        async () => {
             if (!pluginType.value) return null;
             return $fetch<Record<string, string>>(`/api/plugins?page=${pluginName.value}&type=elementsIcons`);
         },
@@ -233,7 +256,7 @@
         {key: "AllPluginMetadata"}
     );
 
-    const metadataMap = computed(() => 
+    const metadataMap = computed(() =>
         allPluginMetadata.value?.reduce((acc, meta) => {
             acc[meta.group] = meta;
             return acc;
@@ -243,7 +266,7 @@
     const elementTitle = computed(() => Object.fromEntries(
         (pluginsWithoutDeprecated.value ?? []).flatMap(p => Object.entries(p)
             .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-            .flatMap(([_, els]) => (els)
+            .flatMap(([_, els]) => (Array.isArray(els) ? els : [])
                 .filter(el => el?.title)
                 .map(el => [el.cls, {title: el.title}] as [string, {title?: string}])
             )
@@ -251,10 +274,10 @@
     ));
 
     const { counts } = await useBlueprintsCounts();
-    
+
     const subgroupBlueprintCounts = computed(() => {
         const result: Record<string, number> = {};
-        
+
         pluginsWithoutDeprecated.value?.forEach((subgroupWrapper) => {
             const subgroupKey = subgroupWrapper.subGroup;
             if (subgroupKey !== undefined) {
@@ -262,7 +285,7 @@
                 result[formattedKey] = counts.value?.[subgroupKey] ?? 0;
             }
         });
-        
+
         return result;
     });
 
@@ -270,7 +293,7 @@
 
     const { data: relatedBlogs } = await useAsyncData(
         `Plugin-Related-Blogs-${pluginName.value}`,
-        () => queryCollection(CollectionNames.blogs)
+        () => queryCollection(CollectionNames.blogs as keyof typeof CollectionNames)
             .where('plugins', 'LIKE', `%${pluginName.value}%`)
             .order("date", "DESC")
             .limit(4)
@@ -278,17 +301,7 @@
     );
 
     const page = computed(() => {
-        return pageData.value ?? {
-            body: {
-                group: "",
-                plugins: [],
-                toc: {links: []}
-            },
-            title: "",
-            description: "",
-            error: false,
-            message: ""
-        };
+        return pageData.value ?? defaultPluginFetchResponse;
     });
 
     const pluginsWithoutDeprecated = computed(() =>
@@ -305,7 +318,7 @@
 
     const currentSubgroupPlugin = computed(() => {
         if (!subGroup.value || pluginType.value) return undefined;
-        
+
         return pluginsWithoutDeprecated.value?.find(p => {
             const subgroupLastSegment = p.subGroup?.split(".").pop();
             const possibleSubgroupMatches = [
@@ -344,7 +357,7 @@
     const currentPageMetadata = computed(() => {
         const meta = currentPluginMetadata.value;
         if (!meta) return null;
-        
+
         if (Array.isArray(meta)) {
             const rootGroup = rootPlugin.value?.group;
             const subgroupGroup = currentSubgroupPlugin.value?.subGroup ?? currentSubgroupPlugin.value?.group;
@@ -382,7 +395,7 @@
     const currentPageIcon = computed(() => {
         const icons = subGroupsIcons.value;
         if (!icons) return undefined;
-        
+
         let icon;
 
         if (pluginType.value) {
@@ -418,7 +431,7 @@
     const currentPluginCategories = computed(() => {
         const subgroupCats = currentSubgroupPlugin.value?.categories;
         const pluginCats = rootPlugin.value?.categories;
-        return subGroup.value === undefined 
+        return subGroup.value === undefined
             ? pluginCats ?? []
             : (subgroupCats?.length ? subgroupCats : pluginCats ?? []);
     });
@@ -449,14 +462,14 @@
 
     const pluginToc = computed(() => {
         if (!rootPlugin.value) return [];
-        
+
         if (subGroup.value && currentSubgroupPlugin.value) {
             return generateTocForPluginElements(currentSubgroupPlugin.value);
         }
-        
+
         if (!subGroup.value && !pluginType.value) {
             const subGroups = pluginsWithoutDeprecated.value?.filter(p => p.subGroup) ?? [];
-            return subGroups.length 
+            return subGroups.length
                 ? subGroups.map(sub => ({
                     id: slugify(subGroupName(sub)),
                     depth: 3,
@@ -464,7 +477,7 @@
                 }))
                 : generateTocForPluginElements(rootPlugin.value);
         }
-        
+
         return [];
     });
 
@@ -472,7 +485,7 @@
         const currentPage = page.value;
         if (!currentPage?.body || !rootPlugin.value) return currentPage;
 
-        const baseTocLinks = pluginType.value 
+        const baseTocLinks = pluginType.value
             ? currentPage.body.toc?.links?.map(l => ({...l, children: undefined})) ?? []
             : currentPage.body?.toc ? [] : pluginToc.value;
 
@@ -556,7 +569,7 @@
             rootPlugin.value?.title.slice(1) +
             (subGroup.value === undefined
                 ? ""
-                : ` - ${subGroupName({title: subGroup.value})}`
+                : ` - ${subGroupName({title: subGroup.value} as any)}`
             );
 
         let combinedDescription = currentPageMetadata.value?.description;
