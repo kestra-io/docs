@@ -2,10 +2,10 @@
     import type {NitroRuntimeConfig} from "nitropack/types";
     import type {RuntimeConfig} from "nuxt/schema";
     import type {JSONProperty, JSONSchema, Plugin, PluginElement, PluginMetadata} from "@kestra-io/ui-libs";
-    import {isEntryAPluginElementPredicate, slugify, subGroupName} from "@kestra-io/ui-libs";
+    import {isEntryAPluginElementPredicate, slugify, subGroupName, extractPluginElements} from "@kestra-io/ui-libs";
     import type {NavItem} from "../../utils/navigation";
 
-    type PageType = "subGroupsIcons" | "elementsIcons" | "definitions" | "plugin" | "navigation" | "allPlugins" | "metadata";
+    type PageType = "subGroupsIcons" | "elementsIcons" | "definitions" | "plugin" | "navigation" | "allPlugins" | "metadata" | "aliasMapping";
 
     export interface TocLink {
         id: string;
@@ -106,7 +106,7 @@
             
             return {
                 name: plugin.name,
-                title: subpackage,
+                title: metadata?.title ?? subpackage,
                 group: plugin.group,
                 subGroup: subpackage,
                 description: metadata?.description ?? `This Sub-Group Of Plugin Contains Tasks For Using ${plugin.name} ${formattedSubpackage}`,
@@ -247,8 +247,10 @@
                         .filter(sg => sg.subGroup !== undefined)
                         .map(sg => {
                             const subGroupUrl = `${rootUrl}/${slugify(subGroupName(sg))}`;
+                            const metadata = allMetadata?.find(m => m.group === sg.subGroup);
+                            const displayTitle = metadata?.title ?? toNavTitle(sg.title);
                             return {
-                                title: toNavTitle(sg.title),
+                                title: displayTitle,
                                 path: subGroupUrl,
                                 children: buildNav(sg, subGroupUrl)
                             };
@@ -258,7 +260,7 @@
                     children = subGroups.map(sg => {
                         const subGroupUrl = `${rootUrl}/${slugify(sg.subGroup!)}`;
                         return {
-                            title: toNavTitle(sg.subGroup!),
+                            title: sg.title,
                             path: subGroupUrl,
                             children: buildNav(sg, subGroupUrl)
                         };
@@ -432,6 +434,32 @@
                             const artifactId = requestUrl.searchParams.get("artifactId");
                             return `metadata-${groupId || 'all'}-${artifactGroupId || ''}-${artifactId || ''}`;
                         }
+                    })(event);
+                }
+
+                case "aliasMapping": {
+                    return await cachedEventHandler(async () => {
+                        const allPlugins = await fetchSubGroups(config);
+                        const aliasMap: Record<string, string> = {};
+
+                        allPlugins?.forEach(plugin => {
+                            if (!plugin.aliases?.length) return;
+
+                            const allElements = Object.values(extractPluginElements(plugin)).flat();
+
+                            for (const alias of plugin.aliases) {
+                                const match = allElements.find(cls =>
+                                    cls?.toLowerCase() === alias.toLowerCase() ||
+                                    cls?.toLowerCase().endsWith('.' + alias.split('.').pop()?.toLowerCase())
+                                );
+                                if (match) aliasMap[alias.toLowerCase()] = match;
+                            }
+                        });
+
+                        return aliasMap;
+                    }, {
+                        maxAge: 60 * 60,
+                        getKey: () => 'alias-mapping'
                     })(event);
                 }
 
