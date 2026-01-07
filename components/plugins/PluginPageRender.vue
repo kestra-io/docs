@@ -37,7 +37,7 @@
                     <div class="title-content d-flex flex-column justify-space-between w-100">
                         <div class="d-flex align-items-center flex-wrap gap-3">
                             <span>{{ headingTitle }}</span>
-                            <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
+                            <NuxtImg src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" height="20" />
                         </div>
                         <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
                             <template #default="mdcProps">
@@ -63,7 +63,7 @@
                 :plugins-without-deprecated="pluginsWithoutDeprecated"
                 :plugin-name="pluginName"
                 :sub-group="subGroup"
-                :route-path="route.path"
+                :route-path="slug"
                 :active-id="activeSectionId"
                 :subgroup-blueprint-counts="subgroupBlueprintCounts"
                 :metadata-map="metadataMap"
@@ -112,18 +112,18 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue";
-    import {useEventListener} from "@vueuse/core";
+    import { computed } from "vue";
+    import {useBrowserLocation} from "@vueuse/core";
     import {subGroupName, slugify, type PluginMetadata, type Plugin} from "@kestra-io/ui-libs";
 
-    import NavToc from "../../components/docs/NavToc.vue";
-    import Breadcrumb from "../../components/layout/Breadcrumb.vue";
-    import PluginMDC from "../../components/plugins/PluginMDC.vue";
-    import RelatedBlogs from "../../components/plugins/RelatedBlogs.vue";
-    import PluginVideos from "../../components/plugins/PluginVideos.vue";
-    import PluginSidebar from "../../components/plugins/PluginSidebar.vue";
-    import SimilarPlugins from "../../components/plugins/SimilarPlugins.vue";
-    import RelatedBlueprints from "../../components/plugins/RelatedBlueprints.vue";
+    import NavToc from "../docs/NavToc.vue";
+    import Breadcrumb from "../layout/Breadcrumb.vue";
+    import PluginMDC from "./PluginMDC.vue";
+    import RelatedBlogs from "./RelatedBlogs.vue";
+    import PluginVideos from "./PluginVideos.vue";
+    import PluginSidebar from "./PluginSidebar.vue";
+    import SimilarPlugins from "./SimilarPlugins.vue";
+    import RelatedBlueprints from "./RelatedBlueprints.vue";
     import type { ReleaseInfo } from "../../server/api/github-releases";
 
     const props = defineProps<{
@@ -139,7 +139,6 @@
         rootPlugin: Plugin;
         allPlugins: Plugin[];
         subGroupsIcons: Record<string, string>;
-        route: any;
         githubVersions?: {
             versions?: ReleaseInfo[] | undefined;
         };
@@ -155,21 +154,18 @@
         currentSubgroupPlugin?: Plugin;
         subgroupBlueprintCounts: Record<string, number>;
         currentPageIcon?: string;
-        blueprintsSectionHeading?: {id: string; title: string};
+        blueprintsSectionHeading?: {id: string; text: string};
     }>();
 
-
-    const activeSectionId = ref("");
-
     function navigateTo(options: {path: string}) {
-        return window.location.href = options.path;
+        if(window) window.location.href = options.path;
     }
 
-    activeSectionId.value = window.location.hash.slice(1);
-    useEventListener(window, "hashchange", () => {
-        activeSectionId.value = window.location.hash.slice(1);
-    });
+    const browserLocation = useBrowserLocation();
 
+    const activeSectionId = computed(() => {
+        return browserLocation.value.hash?.slice(1);
+    });
 </script>
 
 <style lang="scss" scoped>
