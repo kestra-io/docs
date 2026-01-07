@@ -84,7 +84,7 @@ When enterprises scale, the number of pipelines grow and the same operational st
 
 A subflow is a complete workflow that can be invoked by other workflows. This lets us standardize how pipelines run without copying configuration everywhere, so adding or modifying pipelines stays cheap as the stack grows.
 
-In our analytics stack, that shared logic is captured in a utility subflow called `pydata`. Its job is to handle containerized execution and dbt runs. When I need to run dbt after ingesting data from HubSpot, I call the subflow. When I need to run dbt after ingesting from PostHog, I call the same subflow.
+In our analytics stack, that shared logic is captured in a utility subflow called `pydata`. Its job is to handle containerized execution like dbt runs. When I need to run dbt after ingesting data from HubSpot, I call the subflow. When I need to run dbt after ingesting from PostHog, I call the same subflow and can even adjust CPU or memory allocation for each call, since running dbt typically requires fewer resources than ingestion and loading.
 
 ```yaml
 # Simplified example
