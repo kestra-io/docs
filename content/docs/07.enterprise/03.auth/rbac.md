@@ -122,13 +122,13 @@ Super Admin is a powerful type of user. Use the role sparingly and only for use 
 
 Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance. There are multiple methods to create a Superadmin user.
 
-### UI
+### Through the UI
 
 When you launch Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.overview/02.setup.md).
 
 This interface invites you to create your first User which will be automatically assigned the `Superadmin` privilege.
 
-### CLI
+### Through the CLI
 
 To create a User with a Superadmin privilege from the [CLI](../../server-cli/index.md), use the `--superadmin` option:
 
@@ -168,13 +168,13 @@ For more details, check the [Enterprise Edition Configuration](../../configurati
 Note that you need to be a Superadmin yourself.
 :::
 
-### UI
+### Through the UI
 
 You can grant or revoke the Superadmin privilege using the switch in the User Edit page.
 
 ![superadmin switch](/docs/enterprise/superadmin_switch.png)
 
-### CLI
+### Through the CLI
 
 To set an existing User with a Superadmin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
 
@@ -243,10 +243,6 @@ In the above configuration, a user is allotted 10 failed login attempts in a 5-m
 ## Change password
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
-
-:::collapse{title="Change password in the UI"}
-![change_password](/docs/enterprise/change_password.png)
-:::
 
 ### Reset password (by a Super Admin)
 
