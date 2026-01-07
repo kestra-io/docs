@@ -55,6 +55,7 @@ export default defineNuxtConfig({
         domains: ['kestra.io', '*.kestra-io.pages.dev'],
     },
     sitemap: {
+        autoLastmod: true,
         sitemaps: {
             default: {
                 includeAppSources: true,
