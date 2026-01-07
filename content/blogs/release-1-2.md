@@ -448,6 +448,7 @@ Both marketplace offerings are free (no software charges), with only standard cl
 
 Version 1.2 changes how Namespace Files metadata are handled: the backend now indexes this metadata to optimize search and scalability, replacing the previous approach of fetching all stored files directly from storage. Additionally, Namespace Files can now be versioned and restored.
 
+To index existing Namespace Files metadata run the following migration command:
 
 ```shell
 /app/kestra migrate metadata nsfiles
@@ -466,7 +467,7 @@ After the migration completes, revert to the standard startup command to run the
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
-Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
+Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
 :::
 
 
