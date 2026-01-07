@@ -60,6 +60,9 @@ export default defineNuxtConfig({
                 includeAppSources: true,
                 sources: ['/api/sitemap']
             },
+            docs: {
+                sources: ['/api/sitemap']
+            },
             plugins: {
                 sources: ['/api/sitemap']
             },
