@@ -104,7 +104,24 @@ Because namespaces are part of the orchestration model, we can build alerting on
 
 When one of our workflows fails or enters a warning state, the monitoring flow inspects the namespace and routes failures to its respective Slack channel. Data pipeline failures go to #data-alerts, and product-related failures go to #product-alerts.
 
-The routing logic is a small set of conditional tasks defined in a 20-line YAML. As workflows are added or ownership changes, the alerting model remains stable because it’s driven by namespace, not by individual pipelines.
+The routing logic is a small set of conditional tasks defined in ~20 lines of YAML:
+
+```yaml
+- id: route_alert
+  type: io.kestra.plugin.core.flow.Switch
+  value: "{{ trigger.executionId.split('.')[0] }}"
+  cases:
+    company.data:
+      - id: notify_data_team
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        channel: "#data-alerts"
+    company.product:
+      - id: notify_product_team
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        channel: "#product-alerts"
+```
+
+As workflows are added or ownership changes, the alerting model remains stable because it’s driven by namespace, not by individual pipelines.
 
 ### **Orchestration that deploys like infrastructure**
 
