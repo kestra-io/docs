@@ -333,7 +333,7 @@ export default defineNuxtConfig({
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
         '/docs/enterprise/enterprise-edition': {redirect: '/docs/enterprise/overview/enterprise-edition'},
         '/docs/enterprise/setup': {redirect: '/docs/enterprise/overview/setup'},
-        //'/docs/enterprise/releases': {redirect: '/docs/enterprise/overview/releases'}, 404s
+        '/docs/enterprise/releases': {redirect: '/docs/releases'},
         '/docs/enterprise/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
         '/enterprise/governance/audit-logs': {redirect: '/docs/enterprise/governance/audit-logs'},
         '/docs/enterprise/namespace-management': {redirect: '/docs/enterprise/governance/namespace-management'},
@@ -371,7 +371,6 @@ export default defineNuxtConfig({
         '/docs/enterprise/auth-rbac-user-management/api-tokens': {redirect: '/docs/enterprise/auth/api-tokens'},
         '/docs/enterprise/auth-rbac-user-management/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
         '/docs/enterprise/enterprise/service-accounts': {redirect: '/docs/enterprise/auth/service-accounts'},
-        //no longer an enterprise only topic? 
         '/docs/enterprise/concepts/system-flows': {redirect: '/docs/concepts/system-flows'},
         '/docs/enterprise/administrator-guide/purge': {redirect: '/docs/administrator-guide/purge'},
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/ee-faq'},
