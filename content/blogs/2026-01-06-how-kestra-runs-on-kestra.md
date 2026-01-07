@@ -79,7 +79,7 @@ A subflow is a complete workflow that can be invoked by other workflows. This le
 
 In our analytics stack, that shared logic is captured in a utility subflow called pydata. It’s job is to handle containerized execution and dbt runs. When I need to run dbt after ingesting data from HubSpot, I call the subflow. When I need to run dbt after ingesting from PostHog, I call the same subflow.
 
-```jsx
+```yaml
 # Simplified example
 - task: subflow
   flowId: pydata
