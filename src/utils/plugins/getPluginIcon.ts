@@ -33,6 +33,7 @@ export async function getIcon(pluginName: string, pluginType?: string, group?:st
 
     return {
         pageIcon: icon ? `data:image/svg+xml;base64,${colorFixedB64Icon(icon)}` : undefined,
+        elementIcons: elementIconsAsString,
         icons
     };
 }
