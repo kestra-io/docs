@@ -13,64 +13,73 @@ How to manage access and permissions to your instance.
 
 ## Overview
 
-Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to workflows and resources by
-assigning Roles to Users, Groups, and Service Accounts.
+Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to Tenants, Namespaces, Flows and resources.
 
-The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the
-Access page in the UI).
+In Kestra you will find three types of entities:
+
+* Users: Represents a **person**. To add users to your Kestra instance, you can do one of the following:
+  - [Invite users](./invitations.md) to your instance or tenant from the UI
+  - Sync users from an external identity provider using [SCIM](./scim/index.md)
+  - Create users directly using [Terraform](../../13.terraform/index.md)
+
+* Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
+* Service Accounts: Represents an **application**. They are considered Users when binding Role assignments.
+
+All theses entities can be assigned to a Role, which define what resources the User, Group, or Service Account can access. Note that these entities don’t belong to Namespaces, but their permissions can be limited to specific namespaces via Bindings (**IAM** page).
+
+The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings:
 
 ![bindings](/docs/enterprise/rbac.png)
 
 ## Roles and Bindings
 
-A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups.\
-These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`) and an **Action** (
-e.g., `CREATE`).
+A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`, `NAMESPACE`, `SECRET`, etc.) and an **Action** (
+e.g., `CREATE`). The **Role** itself does not grant any permissions. Through the **IAM** page, you are able to assign a Role to a User, Service Account, or Group, which creates a **Binding**.
 
-:::collapse{title="More information"}
+This Binding grants the permissions defined by that Role to the User, Service Account, or Group. Select any IAM entity (User, Group, etc.), and assign the desired Role. There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces; make sure to test their access with the [Impersonate](./rbac.md#impersonate) feature.
 
-The **Role** itself does not grant any permissions to anyone.
+Once a Role has been created, you can assign that Role to Users and Groups. Optionally, when you assign the Role to an entity (User, Group, or Service Account), you can specify the Binding to a specific Namespace(s). A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a User assigned to a Role specifying the `prod` namespace automatically grants access to the `prod.engineering` namespace as well. Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
 
-Through the **Access** UI page, you are able to attach a Role to a User, Service Account, or Group, which creates a **Binding**.
+## Impersonate
 
-This Binding grants the permissions defined by that Role to the User, Service Account, or Group.
+After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view immediately to that User's perspective and can be easily closed back to Superadmin view – a seamless way to test RBAC in one context.
 
-A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a Role attached to the `prod` namespace automatically grants access to the `prod.engineering` namespace as well.
+![Impersonate](/docs/enterprise/rbac/impersonate-user.png)
 
-Note that you can [configure a default role](../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./sso/index.md).
-
-In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts, or Groups across tenants and namespaces.
-:::
+![Stop Impersonating User](/docs/enterprise/rbac/stop-impersonate-user.png)
 
 ### Permissions
 
-A Permission is a resource that can be accessed by a User or Group. Supported Permissions:
+A Permission is a resource that can be accessed by a User or Group. Open the following to view all supported permissions:
+
+:::collapse{title="Permissions"}
 - `FLOW`
 - `EXECUTION`
 - `TEMPLATE`
 - `NAMESPACE`
 - `KVSTORE`
 - `DASHBOARD`
-- `USER`
+- `SECRET`
 - `GROUP`
 - `ROLE`
 - `BINDING`
 - `AUDITLOG`
-- `SECRET`
 - `BLUEPRINT`
 - `IMPERSONATE`
 - `SETTING`
 - `APP`
 - `APPEXECUTION`
-- `ME`
-- `APITOKEN`
+- `TEST`
+- `ASSET`
+- `USER`
 - `SERVICE_ACCOUNT`
 - `INVITATION`
-- `TENANT_ACCESS`
 - `GROUP_MEMBERSHIP`
 
 :::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../11.migration-guide/0.24.0/endpoint-changes.md#rbac-updates)
+:::
+
 :::
 
 ### Actions
@@ -86,15 +95,13 @@ An Action is a specific operation that can be performed on a Permission. Support
 
 Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
 
-Apart from that, you can create additional Roles with custom permission combinations. You can create roles and select the permissions and actions in the **IAM - Roles** tab.
+Apart from **Admin**, Kestra has the managed Roles: Developer, Editor, Launcher, and Viewer. Each Role's permissions can be viewed from **IAM - Roles**. Superadmins can create additional Roles with custom permission combinations in addition to Kestra-managed roles. Users can be assigned multiple Roles.
 
-![role-creation](/docs/enterprise/role-creation.png)
+## Superadmin and Admin
 
-## Super Admin and admin
+Kestra provides two roles for managing your instance: Superadmin and Admin.
 
-Kestra provides two roles for managing your instance: super admin and admin.
-
-- Super Admin is a user type with elevated privileges for global control
+- Superadmin is a user type with elevated privileges for global control
 - Admin is a customizable role that grants full access to all resources (scoped to a tenant if multi-tenancy is enabled).
 
 :::collapse{title="Summary"}
@@ -109,32 +116,21 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 | Set Super Admin privilege           | No                                                 | Yes                                                  |
 :::
 
-### Super Admin
+## Super Admin
 
-Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance.
+Super Admin is a powerful type of user. Use the role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
+Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance. There are multiple methods to create a Superadmin user.
 
-:::collapse{title="More information"}
-
-#### Use cases
-
-Super Admin is a powerful type of user. Use the role sparingly and only for use cases that require it, such as creating
-a new tenant, troubleshooting tenant issues, or helping a user with a problem.
-
-However, you should use Kestra through the role system.
-:::
-
-:::collapse{title="Creating a Super Admin"}
-
-#### Through the UI
+### Through the UI
 
 When you launch Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.overview/02.setup.md).
 
-This interface invites you to create your first User which will be automatically assigned the `Super Admin` privilege.
+This interface invites you to create your first User which will be automatically assigned the `Superadmin` privilege.
 
-#### Through the CLI
+### Through the CLI
 
-To create a User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the `--superadmin` option:
+To create a User with a Superadmin privilege from the [CLI](../../server-cli/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -144,13 +140,13 @@ kestra auths users create <username> <password> \
 --tenant=<tenant-id> --superadmin
 ```
 
-To set or revoke Super Admin privileges, use the following in the CLI:
+To set or revoke Superadmin privileges, use the following in the CLI:
 
 ```bash
 kestra auths users set-superadmin user@email.com true # (use false to revoke)
 ```
 
-#### Through the Configuration
+### Configuration
 
 A Super Admin can also be created from the configuration file using the configuration below:
 
@@ -166,23 +162,21 @@ kestra:
 
 For more details, check the [Enterprise Edition Configuration](../../configuration/index.md#super-admin) page.
 
-:::
-
-:::collapse{title="Grant/Revoke Super Admin permissions"}
+## Grant/Revoke Super Admin permissions
 
 :::alert{type="info"}
-Note that you need to be a super admin yourself.
+Note that you need to be a Superadmin yourself.
 :::
 
-#### Through the UI
+### Through the UI
 
-You can grant or revoke the Super Admin privilege using the switch in the User Edit page.
+You can grant or revoke the Superadmin privilege using the switch in the User Edit page.
 
 ![superadmin switch](/docs/enterprise/superadmin_switch.png)
 
-#### Through the CLI
+### Through the CLI
 
-To set an existing User with a Super Admin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
+To set an existing User with a Superadmin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
 
 ```bash
 # Set a user as Super Admin
@@ -192,11 +186,9 @@ kestra auths users set-superadmin admin@kestra.io true
 kestra auths users set-superadmin admin@kestra.io false
 ```
 
-::
+## Admin
 
-### Admin
-
-In Kestra, the notion of Admin user does not exist; instead we create an **Admin** role with all permissions.
+In Kestra, the notion of Admin user does not exist; instead we create an **Admin** Role with all permissions.
 
 This role can be assigned to any User, Service Account, or Group. This allows you to have different types of admins, to grant admin permissions to a whole group, and to revoke those admin permissions at any time without having to delete any group or user.
 
@@ -206,9 +198,9 @@ When using multi-tenancy, Kestra assigns the Admin Role to the user who created 
 If you see an error when creating a new User or Service Account, it might be caused by a limit on your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
 :::
 
-:::collapse{title="Creating a User with an Admin Role"}
+## Creating a User with an Admin Role
 
-####  Through the UI
+### Through the UI
 
 When launching Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../01.overview/02.setup.md).
 
@@ -216,7 +208,7 @@ This interface invites you to create the first User which will automatically cre
 
 Later, you can create a new User or pick an existing User and assign the Admin role to it from the Access page.
 
-#### Through the CLI
+### Through the CLI
 
 To create a User with an Admin Role from the CLI, use the `--admin` option:
 
@@ -226,36 +218,9 @@ kestra auths users create prod.admin@kestra.io TopSecret42 --admin
 # schema:
 kestra auths users create <username> <password> --admin
 ```
-:::
+## User lockout
 
-## Users, Groups and Service Accounts
-
-In Kestra you will find three types of entities:
-
-* Users: represents a **person**
-* Groups: represents a collection of **Users** and **Service Accounts**
-* Service Accounts: represents an **application**
-
-All theses entities can be assigned to a Role, which define what resources the User, Group, or Service Account can access.
-
-Note that these entities don’t belong to namespaces, but their permissions can be limited to specific namespaces via Bindings (Access page).
-
-:::collapse{title="How to bind a role to a User, a Service Accounts or a Group?"}
-Once you have created your first role. You can attach that role to an entity through the Access page. You can also limit that Role to one or more namespaces.
-
-The following example shows the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
-
-![create a binding](/docs/enterprise/create_binding.png)
-
-**Note:** Service Accounts are considered as Users when binding.
-:::
-
-:::collapse{title="How many Roles can a User, a Service Account or Group have?"}
-There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces.
-:::
-
-:::collapse{title="How to change the lockout behavior after too many failed login attempts."}
-By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
+Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
 kestra:
@@ -274,52 +239,18 @@ The key attributes are:
 - `lock-duration`: Defines how long the account remains locked.
 
 In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
-:::
 
-### Users
-
-A User represents a **person** who can access Kestra, identified by an email address. Each user might have personal
-information attached to it, such as the first name or last name.
-
-They can change their own password and adjust other settings such as theme, editor preferences,
-timezone, and default namespace.
-
-To add users to your Kestra instance, you can do one of the following:
-- [Invite users](./invitations.md) to your instance or tenant from the UI
-- Sync users from an external identity provider using SCIM
-- Create users directly using Terraform
-
-#### Change password
+## Change password
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
 
-:::collapse{title="Change password in the UI"}
-![change_password](/docs/enterprise/change_password.png)
-:::
-
-#### Reset password (by a Super Admin)
+### Reset password (by a Super Admin)
 
 Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **Users**.
 
 ![Reset Password](/docs/enterprise/forgot-password.png)
 
 ![Superadmin Change Password](/docs/enterprise/create-user-password.png)
-
-### Groups
-
-Each `Group` is a collection of `Owners`, `Users`, or `Service Accounts`.
-
-- Each `Owner` can add users to a group without being a Kestra Admin.
-- Each `User` can be assigned to zero, one, or more `Groups`.
-- Each `Service Account` can also be assigned to zero, one, or more `Groups`.
-
-![Group Owner](/docs/enterprise/group-owner.png)
-
-Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group. Users with the `GROUP_MEMBERSHIP` permission can add members to groups and change their membership type.
-
-#### What happens if you delete a Group?
-
-All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
 
 ## RBAC FAQ
 
@@ -343,4 +274,9 @@ groups at once by attaching a single Role to a Group.
 A Binding is an immutable object. If a Binding no longer reflects the desired permissions, you can delete the existing
 Binding and create a new one for the same User, Service Account, or Group but with different Roles and/or namespaces.
 This is a safety feature to prevent accidental changes to existing permissions.
+:::
+
+:::collapse{title="What happens if you delete a Group?"}
+
+All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
 :::
