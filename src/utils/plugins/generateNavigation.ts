@@ -27,7 +27,14 @@ function subGroupWrapperNav(subGroupWrapper: Plugin, parentUrl: string) {
         });
 }
 
-export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]) {
+interface Navigation{
+    title: string;
+    path: string;
+    children?: Navigation[] | undefined;
+    isPage?: boolean;
+}
+
+export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Navigation[] {
     const subGroupsByGroup = pluginsSubGroups.reduce(
         (result, subGroupWrapper) => {
             const filteredElementsByTypeEntries = Object.entries(subGroupWrapper).filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
