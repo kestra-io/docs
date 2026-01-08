@@ -7,13 +7,13 @@ How to configure Kestra Enterprise Edition and Kestra Cloud.
 
 [Enterprise Edition](/enterprise) is a robust, enterprise-grade version of Kestra deployed to your private infrastructure. It offers security and governance features including Multi-tenancy, Authentication, SSO, RBAC, Namespace-level management, distributed Worker Groups, Worker isolation, Secrets Manager integrations, Audit Logs, and more.
 
-[Kestra Cloud](/cloud) is a fully managed version of Kestra Enterprise, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring.
+[Kestra Cloud](/cloud) is a fully managed version of Kestra Enterprise Edition, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring.
 
 ## Key differences between Kestra Enterprise and Kestra Cloud
 
 While Kestra Cloud provides a fully managed, hassle-free experience, it differs from Kestra Enterprise in several important ways, primarily around infrastructure control, customization, and direct access to backend components.
 
-| Feature / Area                  | Kestra Cloud                                                                              | Kestra Enterprise                                                   |
+| Feature / Area                  | Kestra Cloud                                                                              | Kestra Enterprise Edition                                                  |
 | ------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | **Infrastructure Control**      | Fully managed by Kestra for simplicity and reliability                                    | Full control and customization                                      |
 | **Backend Technology**          | PostgreSQL JDBC only                                                                        | Customizable Kafka, PostgreSQL, MySQL, H2 (testing)       |
