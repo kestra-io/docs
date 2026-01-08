@@ -1,11 +1,11 @@
 ---
 title: "How Kestra runs on Kestra"
-description: "A behind-the-scenes look at the data stack that powers Kestra's sales, marketing, product, and leadership - powered by a single analytics engineer."
+description: "A behind-the-scenes look at the data stack that powers Kestra's sales, marketing, product, and leadership—run by a single analytics engineer."
 date: 2026-01-06T13:00:00
 category: Solutions
 author:
   name: Rok Grabnar
-  image: rgrabnar-sm
+  image: rgrabnar
   role: Analytics Engineer
 image: /blogs/2026-01-06-how-kestra-runs-on-kestra/2026-01-06-how-kestra-runs-on-kestra.png
 ---
