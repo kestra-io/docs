@@ -112,7 +112,7 @@
         }
     }
 
-    const {data: pageData} = await useFetch<{
+    interface PluginFetchResponse {
         body: {
             group: string;
             plugins: Plugin[];
@@ -371,7 +371,7 @@
         [route.path]: headingTitle.value,
         [`/plugins/${pluginName.value}`]: getPluginTitle(
             rootPlugin.value,
-            metadataMap.value
+            metadataMap.value,
         ) ?? pluginName.value
     }));
 
