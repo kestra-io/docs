@@ -52,7 +52,8 @@ export const collections = {
         })).optional(),
         // image: image(),
         image: z.string().optional(),
-        rightBar: z.boolean().optional()
+        rightBar: z.boolean().optional(),
+        plugins: z.array(z.string()).optional(),
       })
   }),
   misc: defineCollection({
