@@ -29,14 +29,15 @@ const icons = Object.fromEntries(
 ---
 <Layout>
     <PluginsLists
+        client:idle
         plugins={pluginsData}
         icons={icons}
         categories={categoriesData ?? []}
         fullPath={Astro.request.url}
         metadata={metadata}
-        client:idle
     />
     <LayoutFooterContact
+        client:visible
         title="Didn’t find the plugin you were looking for?"
         darkButtonText="Ask on slack"
         darkButtonHref="https://kestra.io/slack"

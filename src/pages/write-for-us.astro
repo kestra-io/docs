@@ -17,22 +17,22 @@ const description = data.header.description;
 <Layout title={title} description={description}>
     <div class="main">
         <div>
-            <HeaderCard content={data.header} />
-            <Line class="divider-md" />
+            <HeaderCard content={data.header} client:load />
+            <Line class="divider-md" client:visible />
             <Examples content={data.drafts} client:visible />
-            <Line class="mb-0" />
+            <Line class="mb-0" client:visible />
             <Write content={data.write} client:visible />
-            <Line class="mt-0 mb-0" />
+            <Line class="mt-0 mb-0" client:visible />
             <Process content={data.process} client:visible />
             <Faqs content={data.faqs} client:visible />
-            <Line />
+            <Line client:visible />
             <LayoutFooterContact
+                client:visible
                 title={data.footer.title}
                 darkButtonText={data.footer.cta[0].text}
                 darkButtonHref={data.footer.cta[0].href}
                 purpleButtonText={data.footer.cta[1].text}
                 purpleButtonHref={data.footer.cta[1].href}
-                client:visible
             />
         </div>
     </div>

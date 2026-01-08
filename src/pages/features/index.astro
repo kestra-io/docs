@@ -10,17 +10,17 @@ import PluginsBox from '../../components/PluginsBox.astro';
 ---
 <Layout>
     <div class="features">
-        <FeaturesHeader />
-        <LazyFeaturesDeclarative />
-        <LazyFeaturesOutBox />
+        <FeaturesHeader client:load />
+        <LazyFeaturesDeclarative client:visible />
+        <LazyFeaturesOutBox client:visible />
         <section class="features-plugins">
             <div class="container">
                 <PluginsBox />
             </div>
         </section>
-        <LazyFeaturesExperience />
-        <LazyFeaturesFeatureEnterprise />
-        <LazyFeaturesCTA />
+        <LazyFeaturesExperience client:visible />
+        <LazyFeaturesFeatureEnterprise client:visible />
+        <LazyFeaturesCTA client:visible />
     </div>
 </Layout>
 

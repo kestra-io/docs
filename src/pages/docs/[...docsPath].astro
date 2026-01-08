@@ -3,6 +3,7 @@
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import LayoutDocs from "../../components/layout-docs.astro";
 import NavToc from "~/components/docs/NavToc.vue";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 
 export async function getStaticPaths() {
 	const docsPages = await getCollection('docs');
@@ -25,7 +26,7 @@ const { Content, headings } = await render(doc);
   <div class="bd-markdown">
     <Content />
   </div>
-    <NavToc links={headings.map(heading => ({
+    <NavToc client:visible links={headings.map(heading => ({
         id: heading.slug,
         text: heading.text,
         depth: heading.depth,

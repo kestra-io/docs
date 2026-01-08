@@ -13,8 +13,8 @@ const {results: stories} = await $fetch<{results: any[]}>('https://api.kestra.io
 ---
 
 <Layout title={title} description={description}>
-    <SolutionsHeader />
-    <SolutionsPossibilities />
-    <SolutionsUseCases />
-    <HomeEnterprise {stories} client:visible />
+    <SolutionsHeader client:load />
+    <SolutionsPossibilities client:visible />
+    <SolutionsUseCases client:visible />
+    <HomeEnterprise client:visible {stories} />
 </Layout>

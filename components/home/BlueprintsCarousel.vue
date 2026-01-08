@@ -3,35 +3,36 @@
         <button class="navigation navigation-left" @click="scrollLeft"><ArrowLeftIcon/></button>
         <button class="navigation navigation-right" @click="scrollRight"><ArrowRightIcon/></button>
         <div class="blueprints-carousel" ref="wrapper">
-            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :tags :href="`/blueprints/${blueprint.id}`"/>
+            <BlueprintsListCard v-for="blueprint in blueprints" :key="blueprint.id" :blueprint="blueprint" :tags="tags" :href="`/blueprints/${blueprint.id}`"/>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
-import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
-import BlueprintsListCard from "../blueprints/ListCard.vue"
+    import { useTemplateRef } from "vue";
+    import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
+    import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+    import BlueprintsListCard from "../blueprints/ListCard.vue"
+    import { $fetch } from "~/utils/fetch";
 
-defineProps<{
-    blueprints: Blueprint[]
-    tags?: BlueprintTag[]
-}>()
+    const wrapper = useTemplateRef("wrapper");
 
-const wrapper = ref<HTMLElement | null>(null)
-
-const scrollLeft = () => {
-    if(wrapper.value){
-        wrapper.value.scrollTo({left:wrapper.value.scrollLeft - 400, behavior: 'smooth'})
+    const scrollLeft = () => {
+        if(wrapper.value){
+            wrapper.value.scrollTo({left:wrapper.value.scrollLeft - 400, behavior: 'smooth'})
+        }
     }
-}
 
-const scrollRight = () => {
-    if(wrapper.value){
-        wrapper.value.scrollTo({left:wrapper.value.scrollLeft + 400, behavior: 'smooth'})
+    const scrollRight = () => {
+        if(wrapper.value){
+            wrapper.value.scrollTo({left:wrapper.value.scrollLeft + 400, behavior: 'smooth'})
+        }
     }
-}
+
+    const blueprints = (await $fetch('https://api.kestra.io/v1/blueprints/versions/latest')).results as Blueprint[];
+
+    const tags = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`) as BlueprintTag[];
+
 </script>
 
 <style lang="scss" scoped>

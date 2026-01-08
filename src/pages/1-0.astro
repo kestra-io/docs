@@ -13,20 +13,20 @@ const description = "Build workflows faster with AI-assisted code, autonomous ag
 
 <Layout title={title} description={description}>
     <div class="features-1-0">
-        <OnezeroHeader />
-        <OnezeroInfo />
-        <OnezeroAiCopilot />
-        <OnezeroOrchestration />
-        <OnezeroUnified />
-        <OnezeroFaq />
+        <OnezeroHeader client:load />
+        <OnezeroInfo client:visible />
+        <OnezeroAiCopilot client:visible />
+        <OnezeroOrchestration client:visible />
+        <OnezeroUnified client:visible />
+        <OnezeroFaq client:visible />
     </div>
 </Layout>
 
 <style scoped lang="scss">
-.features-1-0 {
-    :global(.btn-lg) {
-        font-size: 1rem !important;
-        border-radius: 0.5rem !important;
+    .features-1-0 {
+        :global(.btn-lg) {
+            font-size: 1rem !important;
+            border-radius: 0.5rem !important;
+        }
     }
-}
 </style>

@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-    import { defineProps } from "vue";
     import CardGroup from "~/components/write-for-us/CardGroup.vue";
 
     const props = defineProps({

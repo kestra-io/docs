@@ -9,9 +9,9 @@ import EnterpriseOrchestraCore from '~/components/enterprise/OrchestraCore.vue';
 <Layout>
     <EnterpriseHeader />
     <div>
-        <EnterpriseSecurity client:visible />
-        <EnterpriseSuccessProgram />
-        <EnterpriseProjectDetails client:visible/>
+        <EnterpriseSecurity client:load />
+        <EnterpriseSuccessProgram client:visible />
+        <EnterpriseProjectDetails client:visible />
     </div>
 
     <EnterpriseOrchestraCore client:visible/>

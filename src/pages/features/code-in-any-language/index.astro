@@ -7,16 +7,18 @@ import FeaturesLanguageIntegrationsInfo from "~/components/features/language/Int
 import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
 import FeaturesLanguageAgnosticOrchestration from "~/components/features/language/AgnosticOrchestration.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 ---
 
 <Layout>
-    <FeaturesLanguageHeader />
-    <FeaturesLanguageFeatures />
-    <FeaturesLanguageGitOptions />
-    <FeaturesLanguageIntegrationsInfo />
-    <FeaturesLanguagePlugins />
-    <FeaturesLanguageAgnosticOrchestration />
+    <FeaturesLanguageHeader client:load />
+    <FeaturesLanguageFeatures client:visible />
+    <FeaturesLanguageGitOptions client:visible />
+    <FeaturesLanguageIntegrationsInfo client:visible />
+    <FeaturesLanguagePlugins client:visible />
+    <FeaturesLanguageAgnosticOrchestration client:visible />
     <LayoutFooterContact
+        client:visible
         title="Getting Started with  Declarative Orchestration"
         darkButtonText="Get started"
         darkButtonHref="/docs/getting-started/quickstart#start-kestra"

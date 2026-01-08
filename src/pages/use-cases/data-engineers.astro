@@ -5,7 +5,6 @@ import UseCasesEngineersChallenges from '~/components/use-cases/engineers/Challe
 import UseCasesEngineersExploreBlueprints from '~/components/use-cases/engineers/ExploreBlueprints.vue';
 import UseCasesEngineersDataOrchestration from '~/components/use-cases/engineers/DataOrchestration.vue';
 import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
-import { $fetch } from '~/utils/fetch';
 
 const title = "Simplify Your Data Engineering Challenges with Kestra";
 const description = "Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data";
@@ -80,27 +79,27 @@ const dataOrchestration = [
     },
 ];
 
-const blueprintsData = await $fetch('https://api.kestra.io/v1/blueprints/versions/latest')
 ---
 
 <Layout title={title} description={description}>
     <UseCasesEngineersHeader
+        client:load
         titleHtml="Kestra for<br><span>Data Engineers</span>"
         description="Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
         imageSrc="/landing/usecases/data-engineers/header-hero.svg"
         imageAlt="Kestra for Data Engineers"
     />
     <UseCasesEngineersChallenges
+        client:visible
         title="Data Engineering Challenges"
         description="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
         cardsData={cardsData}
-        client:visible
     />
-    <UseCasesEngineersExploreBlueprints blueprintsData={blueprintsData} />
+    <UseCasesEngineersExploreBlueprints client:visible />
     <UseCasesEngineersDataOrchestration
+        client:visible
         title="for Data Orchestration"
         dataOrchestration={dataOrchestration}
-        client:visible
     />
     <FeaturesFeatureEnterprise client:visible />
 </Layout>

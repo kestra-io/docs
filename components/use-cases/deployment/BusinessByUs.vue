@@ -56,6 +56,7 @@
 
     .business-container {
         margin-top: 4rem;
+        margin-bottom: 4rem;
         display: flex;
         justify-content: space-around;
         align-items: center;

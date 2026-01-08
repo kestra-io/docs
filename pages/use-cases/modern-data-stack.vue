@@ -102,32 +102,32 @@
                     {
                         title: 'Declarative Language',
                         text: 'Easily define and manage data workflows using YAML, which simplifies the integration process with modern data stack tools.',
-                        icon: shallowRef(FileCodeOutline)
+                        icon: FileCodeOutline
                     },
                     {
                         title: 'Workflow Orchestration',
                         text: 'Execute tasks sequentially, in parallel, or conditionally, providing better control and flexibility while working with various data stack components.',
-                        icon: shallowRef(ArrowDecisionAutoOutline)
+                        icon: ArrowDecisionAutoOutline
                     },
                     {
                         title: 'Extensibility',
                         text: 'Use built-in plugins or create custom plugins to seamlessly integrate with popular data stack tools and services.',
-                        icon: shallowRef(ToyBrickOutline)
+                        icon: ToyBrickOutline
                     },
                     {
                         title: 'Connectivity',
                         text: 'Connect to popular data sources and cloud services such as AWS, GCP, Azure, Snowflake, and more.',
-                        icon: shallowRef(Connection)
+                        icon: Connection
                     },
                     {
                         title: 'Rich & real-time UI',
                         text: 'Create, execute, and manage data workflows using an intuitive user interface, making it easier to work with modern data stack tools.',
-                        icon: shallowRef(OpenInApp)
+                        icon: OpenInApp
                     },
                     {
                         title: 'Cloud-Native',
                         text: 'Kestra\'s cloud-native architecture ensures seamless scaling and compatibility with modern data stack tools.',
-                        icon: shallowRef(CloudCheckOutline)
+                        icon: CloudCheckOutline
                     },
                 ]
             }

@@ -7,6 +7,7 @@ import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue";
 import { $fetch } from "~/utils/fetch";
 import CareersHeader from "~/components/careers/Header.vue";
 import { type Job, mapJob } from "~/utils/careers.ts";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 
 async function fetchJobApplication(slug?: string){
     if (!slug) {
@@ -41,10 +42,10 @@ if (!page) {
     title="Join Us and Shape the Future of Orchestration Software"
     description="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
 >
-    <CareersHeader fullPath="/careers">
+    <CareersHeader fullPath="/careers" client:load>
         <h1 data-aos="fade-left">{ page.title }</h1>
         <h4>
-            <MapMarkerOutline /> Remote from:
+            <MapMarkerOutline client:load /> Remote from:
             {page.locations?.map((loc: any) => <span class="ms-1">
                     { loc.emoji } { loc.name }
                 </span>)}
@@ -56,10 +57,11 @@ if (!page) {
 
     <div class="container bd-gutter mt-3 my-md-4 bd-layout">
         <article class="bd-main order-1">
-            <MDCParserAndRenderer content={page.description} class="item-content bd-markdown"/>
+            <MDCParserAndRenderer client:load content={page.description} class="item-content bd-markdown"/>
         </article>
     </div>
     <LayoutFooterContact
+        client:visible
         title="Join our team"
         subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
         purpleButtonText="Apply for this job"

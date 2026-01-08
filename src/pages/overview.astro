@@ -13,11 +13,11 @@ const description = "Orchestrate your business-critical applications. Take full 
 
 <Layout title={title} description={description}>
     <div class="main">
-        <OverviewHero />
+        <OverviewHero client:load />
         <OverviewAgnostic client:load />
-        <OverviewWorkflows />
-        <OverviewMessage />
-        <OverviewEnterpriseHeaderBox />
-        <OverviewCTA />
+        <OverviewWorkflows client:visible />
+        <OverviewMessage client:visible />
+        <OverviewEnterpriseHeaderBox client:visible />
+        <OverviewCTA client:visible />
     </div>
 </Layout>

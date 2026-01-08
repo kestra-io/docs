@@ -13,12 +13,12 @@ const description = "Discover the team and values behind our mission to empower 
 
 <Layout title={title} description={description}>
     <div class="about-us">
-        <CompanyOrchestrate />
-        <CompanyMission />
-        <CompanyTeam />
-        <CompanyInvestors />
-        <CompanyNewsGrid />
-        <CompanyLife />
+        <CompanyOrchestrate client:load />
+        <CompanyMission client:visible />
+        <CompanyTeam client:visible />
+        <CompanyInvestors client:visible />
+        <CompanyNewsGrid client:visible />
+        <CompanyLife client:visible />
     </div>
 </Layout>
 

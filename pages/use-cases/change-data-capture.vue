@@ -103,32 +103,32 @@
                     {
                         title: 'Efficient Data Capture',
                         text: 'CDC allows you to track and capture data changes promptly, ensuring that your data pipelines remain current and provide you with accurate, actionable insights.',
-                        icon: shallowRef(LightbulbOutline)
+                        icon: LightbulbOutline
                     },
                     {
                         title: 'Integration with Data Sources',
                         text: 'Integrates with various data sources, databases, and platforms, allowing you to track changes across your entire data ecosystem.',
-                        icon: shallowRef(FolderTextOutline)
+                        icon: FolderTextOutline
                     },
                     {
                         title: 'Scalable Processing',
                         text: 'Kestra is designed to handle high data volumes and can scale to meet your growing data needs.',
-                        icon: shallowRef(DeveloperBoard)
+                        icon: DeveloperBoard
                     },
                     {
                         title: 'Reduced Data Latency',
                         text: 'Reduce data latency, ensuring that your data pipelines and analytics are always based on the latest information.',
-                        icon: shallowRef(LightningBolt)
+                        icon: LightningBolt
                     },
                     {
                         title: 'Data Versioning',
                         text: 'Allow you to track and manage historical versions of your data for auditing, analysis, and compliance purposes.',
-                        icon: shallowRef(TimerOutline)
+                        icon: TimerOutline
                     },
                     {
                         title: 'Delayed Data Capture',
                         text: 'Configure time delays for capturing data changes for handling time-sensitive data or for mitigating the impact of temporary data inconsistencies.',
-                        icon: shallowRef(ImageMultiple)
+                        icon: ImageMultiple
                     },
                 ]
             }

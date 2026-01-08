@@ -1,10 +1,10 @@
 ---
-import Layout from '../../components/layout.astro';
-import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
-import UseCasesDeploymentChallenges from '~/components/use-cases/deployment/Challenges.vue';
-import UseCasesDeploymentBusinessByUs from '~/components/use-cases/deployment/BusinessByUs.vue';
-import UseCasesDeploymentUnlockPotential from '~/components/use-cases/deployment/UnlockPotential.vue';
-import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
+import Layout from "../../components/layout.astro";
+import UseCasesEngineersHeader from "~/components/use-cases/engineers/Header.vue";
+import UseCasesDeploymentChallenges from "~/components/use-cases/deployment/Challenges.vue";
+import UseCasesDeploymentBusinessByUs from "~/components/use-cases/deployment/BusinessByUs.vue";
+import UseCasesDeploymentUnlockPotential from "~/components/use-cases/deployment/UnlockPotential.vue";
+import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue";
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue";
 import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue";
 import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue";
@@ -13,96 +13,113 @@ import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterF
 
 const challengesTitle = `<span>Key Benefits</span> of Using Kestra for<br/> Healthcare Workflows`;
 const cardsData = [
-                {
-                  icon: RefreshAuto,
-                  cardInfo: {
-                    title: 'Healthcare  Data Management',
-                    description: 'Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate.'
-                  },
-                },
-                {
-                  icon: CommentQuoteOutline,
-                  cardInfo: {
-                    title: 'Genomic Data Processing',
-                    description: 'Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors,'
-                  },
-                },
-                {
-                  icon: ChartBellCurve,
-                  cardInfo: {
-                    title: 'Regulatory Compliance',
-                    description: 'Automate the generation of compliance reports, access logs, and data usage reports. Ensure  compliance with regulatory standards reducing the risk of breaches and improving data governance.'
-                  },
-                },
-                {
-                  icon: FileChartOutline,
-                  cardInfo: {
-                    title: 'Predictive Analytics',
-                    description: ' Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics.'
-                  },
-                },
-                {
-                  icon: ImageFilterCenterFocus,
-                  cardInfo: {
-                    title: 'Streamlined Data Management',
-                    description: 'Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.'
-                  },
-                },
-              ];
+    {
+        icon: RefreshAuto,
+        cardInfo: {
+            title: "Healthcare  Data Management",
+            description: "Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate."
+        }
+    },
+    {
+        icon: CommentQuoteOutline,
+        cardInfo: {
+            title: "Genomic Data Processing",
+            description: "Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors,"
+        }
+    },
+    {
+        icon: ChartBellCurve,
+        cardInfo: {
+            title: "Regulatory Compliance",
+            description: "Automate the generation of compliance reports, access logs, and data usage reports. Ensure  compliance with regulatory standards reducing the risk of breaches and improving data governance."
+        }
+    },
+    {
+        icon: FileChartOutline,
+        cardInfo: {
+            title: "Predictive Analytics",
+            description: " Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics."
+        }
+    },
+    {
+        icon: ImageFilterCenterFocus,
+        cardInfo: {
+            title: "Streamlined Data Management",
+            description: "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency."
+        }
+    }
+];
 
 const companyInfo = {
-                personName: 'Yohann Nédélec',
-                personRole: 'Tech Lead',
-                logo: '/landing/companies/sophia-genetics.svg',
-                logoAlt: 'Sophia Genetics',
-              };
+    personName: "Yohann Nédélec",
+    personRole: "Tech Lead",
+    logo: "/landing/companies/sophia-genetics.svg",
+    logoAlt: "Sophia Genetics"
+};
 
 const unlockContent = {
-                leftContent: [
-                  { title: 'Accelerate Data Processing', description: 'Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams.' },
-                  { title: 'Improve Data Accuracy and Reliability', description: 'Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations.' },
-                ],
-                rightContent: [
-                  { title: 'Enhance Collaboration', description: 'Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately.' },
-                  { title: 'Secure and Compliant Data Handling', description: 'Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately.' },
-                ]
-              };
+    leftContent: [
+        {
+            title: "Accelerate Data Processing",
+            description: "Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams."
+        },
+        {
+            title: "Improve Data Accuracy and Reliability",
+            description: "Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations."
+        }
+    ],
+    rightContent: [
+        {
+            title: "Enhance Collaboration",
+            description: "Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately."
+        },
+        {
+            title: "Secure and Compliant Data Handling",
+            description: "Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately."
+        }
+    ]
+};
 ---
 <Layout
     title="Kestra for Healthcare"
     description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
 >
-<UseCasesEngineersHeader
-    titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
-    description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
-    imageSrc="/landing/usecases/healthcare/header-hero.svg"
-    imageAlt="Healthcare Workflows"
-/>
-
-<UseCasesDeploymentChallenges
-    titleHtml={challengesTitle}
-    cardsData={cardsData}
-/>
-
-<UseCasesDeploymentBusinessByUs
-    percent="200"
-    percentText="Increased productivity"
-    mainInfoHtml=" “Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”"
-    companyInfo={companyInfo}
-/>
-
-<UseCasesDeploymentUnlockPotential
-    title="Automotive Ecosystem"
-    description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
-    logoPath="/landing/usecases/healthcare/heart-pulse.svg"
-    logoAlt="heart pulse"
-    strokeColor="#3991FF"
-    unlockContent={unlockContent}
-/>
-
-<div class="enterprise-edition">
-    <FeaturesFeatureEnterprise
-        logoPath="/landing/usecases/healthcare/enterprise-edition.svg"
+    <UseCasesEngineersHeader
+        client:load
+        titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
+        description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
+        imageSrc="/landing/usecases/healthcare/header-hero.svg"
+        imageAlt="Healthcare Workflows"
     />
-</div>
+
+    <UseCasesDeploymentChallenges
+        client:visible
+        titleHtml={challengesTitle}
+        cardsData={cardsData}
+    />
+
+    <UseCasesDeploymentBusinessByUs
+        client:visible
+        percent="200"
+        percentText="Increased productivity"
+        mainInfoHtml=" “Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”"
+        companyInfo={companyInfo}
+    />
+
+    <UseCasesDeploymentUnlockPotential
+        client:visible
+        title="Automotive Ecosystem"
+        description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
+        logoPath="/landing/usecases/healthcare/heart-pulse.svg"
+        logoAlt="heart pulse"
+        strokeColor="#3991FF"
+        unlockContent={unlockContent}
+    />
+
+    <div class="enterprise-edition">
+        <FeaturesFeatureEnterprise
+            client:visible
+            logoPath="/landing/usecases/healthcare/enterprise-edition.svg"
+        />
+    </div>
 </Layout>

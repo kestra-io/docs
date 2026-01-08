@@ -54,6 +54,7 @@ const mainContent = [
 <Layout title={title} description={description}>
     <div>
         <SolutionsDetailHeader
+            client:load
             title="for your Kestra Workflows"
             titleBefore="CI/CD"
             subtitle="Embrace software engineering practices for versioning, deploying, and maintaining data workflows"
@@ -61,30 +62,30 @@ const mainContent = [
             imageWidth="785px"
         />
         <SolutionsDetailContent
+            client:visible
             title="What is CI/CD?"
             subtitle="CI/CD stands for Continuous Integration and Continuous Deployment, software engineering practices that involve regularly merging code changes (Continuous Integration) and automated deployment to production (Continuous Deployment). CI/CD practices make the development process more efficient, less error-prone, and better aligned with business needs."
-            client:visible
         />
         <LayoutDetailMainContent
+            client:visible
             subtitle="Build your Workflows"
             subtitleAfter="as Code"
             baseline="Kestra allows building workflows as code. This approach facilitates seamless integration with existing CI/CD processes, Infrastructure as Code tools like Terraform, and version control systems like Git."
             items={mainContent}
-            client:visible
         />
         <SolutionsDetailEmpower
+            client:visible
             title="Apply DevOps best practices in your data engineering lifecycle"
             subtitle="Kestra provides a comprehensive solution to streamline the data engineering lifecycle by offering collaborative development and infrastructure as code capabilities. Through its user-friendly interface and integration with tools like Terraform, Kestra enables organizations to develop and deploy data workflows efficiently while maintaining the stability and security of production environments."
-            client:visible
         />
         <CiCdFeatures client:visible />
         <LayoutFooterContact
+            client:visible
             title="Ready to take your data platform to the next level?"
             darkButtonText="Talk to us"
             darkButtonHref="/demo"
             purpleButtonText="Get Started"
             purpleButtonHref="/docs/getting-started/quickstart"
-            client:visible
         />
     </div>
 </Layout>

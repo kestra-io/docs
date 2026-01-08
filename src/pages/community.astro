@@ -13,17 +13,17 @@ const description = "Connect with a vibrant community of data enthusiasts to lea
 
 <Layout title={title} description={description}>
     <div>
-        <CommunityHeader />
+        <CommunityHeader client:load />
         <CommunitySlack client:visible />
         <CommunityVue client:visible />
         <CommunityGuidelines client:visible />
         <CommunityContributors client:visible />
         <LayoutFooterContact
+            client:visible
             title="Getting started"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
             darkButtonText="Read the docs"
             purpleButtonText="Get started!"
-            client:visible
         />
     </div>
 </Layout>

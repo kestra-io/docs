@@ -8,12 +8,13 @@ import PluginsBox from '../../components/PluginsBox.astro';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 ---
 <Layout>
-    <Header />
-    <Main />
-    <Features />
-    <Empower />
+    <Header client:load />
+    <Main client:visible />
+    <Features client:visible />
+    <Empower client:visible />
     <PluginsBox />
     <LayoutFooterContact
+        client:visible
         title="Getting Started with Declarative Orchestration"
         darkButtonText="Read the docs"
         purpleButtonText="Get started"

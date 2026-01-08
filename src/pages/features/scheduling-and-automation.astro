@@ -8,12 +8,12 @@ import Feature from '~/components/features/scheduling/Feature.vue';
 import Plugin from '~/components/features/scheduling/Plugin.vue';
 ---
 <Layout>
-    <Header/>
-    <Feature/>
-    <Workflows/>
-    <Plugin/>
-    <Automation/>
-    <Footer/>
+    <Header client:load />
+    <Feature client:visible />
+    <Workflows client:visible />
+    <Plugin client:visible />
+    <Automation client:visible />
+    <Footer client:visible />
 </Layout>
 
 <style lang="scss">

@@ -10,8 +10,8 @@ const description = "Connect with one of our Product Specialist to get the best 
 
 <Layout title={title} description={description}>
     <div>
-        <DemoHeaders routePath="/demo" />
-        <DemoCompanies class="mt-5" />
-        <DemoBusinessByUs />
+        <DemoHeaders client:load routePath="/demo" />
+        <DemoCompanies client:load class="mt-5" />
+        <DemoBusinessByUs client:load />
     </div>
 </Layout>

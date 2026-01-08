@@ -52,35 +52,17 @@
     </div>
 </template>
 
-<script>
-  export default {
-    props: {
-      title: {
-        type: String,
-        required: false,
-      },
-      description: {
-        type: String,
-        required: true,
-      },
-      logoPath: {
-        type: String,
-        required: true,
-      },
-      logoAlt: {
-        type: String,
-        required: true,
-      },
-      strokeColor: {
-        type: String,
-        required: true,
-      },
-      unlockContent: {
-        type: Object,
-        required: true,
-      },
-    },
-  }
+<script setup lang="ts">
+    import UseCasesDeploymentConnectionLine from './ConnectionLine.vue';
+
+    const props = defineProps<{
+        title?: string;
+        description: string;
+        logoPath: string;
+        logoAlt: string;
+        strokeColor: string;
+        unlockContent: any;
+    }>()
 </script>
 
 <style lang="scss" scoped>

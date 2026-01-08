@@ -1,3 +1,4 @@
+// @FIXME: remove ? Astro supports it natively
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = ({ redirect, originPathname }) => {

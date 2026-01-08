@@ -12,8 +12,8 @@ import BlueprintsRender from "~/components/home/BlueprintsRender.vue";
 import Enterprise from "~/components/home/Enterprise.vue";
 import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue";
 import CTA from "~/components/home/CTA.vue";
-import * as githubApi from "./api/github";
 import PluginsBox from "../components/PluginsBox.astro";
+import { getValues } from "./api/github";
 
 const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
@@ -25,7 +25,7 @@ const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePat
             })
 })).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()));
 
-const githubData = await githubApi.retrieveRepoStatistics("kestra");
+const githubData = await getValues();
 const quotes = await import('../../data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 
 const blueprints  = await $fetch<{results: Blueprint[]}>("https://api.kestra.io/v1/blueprints/versions/latest?page=1&size=20")
@@ -35,12 +35,12 @@ const enterpriseQuotes = await import('../../data/enterprise-quotes.json').then(
 ---
 
 <Layout>
-    <Header client:load/>
-    <LogosTable logos={logos} />
-    <OpenSource {...githubData} />
-    <OpenSourceQuotes quotes={quotes} client:idle/>
-    <Features client:visible/>
-    <EveryDev/>
+    <Header client:load />
+    <LogosTable logos={logos} client:load />
+    <OpenSource {...githubData} client:load />
+    <OpenSourceQuotes quotes={quotes} client:idle />
+    <Features client:visible />
+    <EveryDev client:visible/>
     <Experience client:visible />
     <PluginsBox />
     <BlueprintsRender blueprints={blueprints.results} tags={allTags} client:visible />

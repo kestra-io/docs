@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-    import { withDefaults, defineProps } from 'vue';
     import Section from '../layout/Section.vue';
     import Card from '../../components/card/Card.vue';
 

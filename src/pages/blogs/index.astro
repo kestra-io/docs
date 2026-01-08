@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BlogsList from "~/components/blogs/BlogsList.vue";
 import LayoutBlogs from "../../components/layout-blogs.astro";
 import { $fetch } from "~/utils/fetch";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 
 const blogs = await getCollection('blogs');
 
@@ -27,6 +28,7 @@ const externalNews = externalNewsData.results.map((data: any) => {
 
 <LayoutBlogs activeStem={`/blogs`}>
     <BlogsList
+        client:load
         currentUrl={Astro.request.url}
         blogs={sortedBlogs.map(blog => ({
             ...blog.data,
@@ -34,6 +36,5 @@ const externalNews = externalNewsData.results.map((data: any) => {
             path: `/blogs/${blog.id}`
         }))}
         externalNews={externalNews}
-        client:visible
     />
 </LayoutBlogs>

@@ -14,12 +14,12 @@
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersChallenges
                 title="Data Engineering Challenges"
-          
+
                 :cardsData="cardsData"
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesEngineersExploreBlueprints :blueprintsData="blueprintsData" />
+            <UseCasesEngineersExploreBlueprints />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersDataOrchestration

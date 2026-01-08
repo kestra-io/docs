@@ -58,35 +58,35 @@
               challengesTitle: `Use Cases in  <span>Healthcare</span>`,
               cardsData: [
                 {
-                  icon: shallowRef(RefreshAuto),
+                  icon: RefreshAuto,
                   cardInfo: {
                     title: 'Healthcare  Data Management',
                     description: 'Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate.'
                   },
                 },
                 {
-                  icon: shallowRef(CommentQuoteOutline),
+                  icon: CommentQuoteOutline,
                   cardInfo: {
                     title: 'Genomic Data Processing',
                     description: 'Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors,'
                   },
                 },
                 {
-                  icon: shallowRef(ChartBellCurve) ,
+                  icon: ChartBellCurve,
                   cardInfo: {
                     title: 'Regulatory Compliance',
                     description: 'Automate the generation of compliance reports, access logs, and data usage reports. Ensure  compliance with regulatory standards reducing the risk of breaches and improving data governance.'
                   },
                 },
                 {
-                  icon: shallowRef(FileChartOutline),
+                  icon: FileChartOutline,
                   cardInfo: {
                     title: 'Predictive Analytics',
                     description: ' Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics.'
                   },
                 },
                 {
-                  icon: shallowRef(ImageFilterCenterFocus),
+                  icon: ImageFilterCenterFocus,
                   cardInfo: {
                     title: 'Streamlined Data Management',
                     description: 'Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.'

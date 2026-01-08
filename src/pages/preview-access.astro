@@ -3,6 +3,7 @@ import Layout from '../components/layout.astro';
 import PreviewAccessHeader from '~/components/preview-access/Header.vue';
 import PreviewAccessFeatures from '~/components/preview-access/Features.vue';
 import PreviewAccessDiscoverCloud from '~/components/preview-access/DiscoverCloud.vue';
+import OverviewWorkflows from "~/components/overview/Workflows.vue";
 
 const title = "Kestra Preview Mode";
 const description = "Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required.";
@@ -10,9 +11,9 @@ const description = "Instantly access a read-only version of Kestra to explore i
 
 <Layout title={title} description={description}>
     <div class="livedemo">
-        <PreviewAccessHeader />
-        <PreviewAccessFeatures routePath={new URL(Astro.request.url).pathname} />
-        <PreviewAccessDiscoverCloud />
+        <PreviewAccessHeader client:load />
+        <PreviewAccessFeatures client:visible routePath={new URL(Astro.request.url).pathname} />
+        <PreviewAccessDiscoverCloud client:visible />
     </div>
 </Layout>
 
@@ -28,7 +29,7 @@ const description = "Instantly access a read-only version of Kestra to explore i
     right: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../components/preview-access/images/Bg.svg");
+    background-image: url("../../components/preview-access/images/Bg.svg");
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -3;
@@ -40,7 +41,7 @@ const description = "Instantly access a read-only version of Kestra to explore i
     right: 0;
     width: 40%;
     height: 100%;
-    background-image: url("../components/preview-access/images/gradients_right.png");
+    background-image: url("../../components/preview-access/images/gradients_right.png");
     background-size: contain;
     background-repeat: no-repeat;
   }

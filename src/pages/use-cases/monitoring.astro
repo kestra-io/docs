@@ -158,32 +158,36 @@ const mainContent = [
 
 <Layout title={title} description={description}>
     <UseCasesEngineersHeader
+        client:load
         titleHtml="Infrastructure <br> Monitoring"
         description="Automate infrastructure monitoring, implement  alerting, and ensure optimal performance and reliability."
         imageSrc="/landing/usecases/monitoring/header-hero.svg"
         imageAlt="Infrastructure Monitoring"
     />
     <UseCasesEngineersMain
+        client:visible
         subtitle="Infrastructure Monitoring"
         subtitleBefore="Simplify"
         baseline="Kestra's  monitoring capabilities and integrations empower platform engineers to maintain and optimize infrastructure performance efficiently."
         mainContent={mainContent}
     />
-    <UseCasesEngineersEnterpriseEdition />
+    <UseCasesEngineersEnterpriseEdition client:visible />
     <UseCasesDeploymentChallenges
+        client:visible
         titleHtml={challengesTitle}
         cardsData={cardsData}
     />
     <UseCasesEngineersDataOrchestration
+        client:visible
         title="for Platform Orchestration"
         dataOrchestration={dataOrchestration}
     />
     <LayoutFooterContact
+        client:visible
         title="Ready to take your Infrastructure to the next level ?"
         purpleButtonText="Get Started"
         purpleButtonHref="/docs/getting-started/quickstart"
         darkButtonText="Talk to us"
         darkButtonHref="/demo"
-        client:visible
     />
 </Layout>

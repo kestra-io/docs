@@ -4,7 +4,9 @@
             <h2><span>250+ Blueprints,</span> Ready to Build.</h2>
             <p>Jump start your workflows with a growing library of workflow templates</p>
         </div>
-        <HomeBlueprintsCarousel :blueprints="blueprints" />
+        <Suspense>
+            <HomeBlueprintsCarousel :blueprints="blueprints" />
+        </Suspense>
         <div class="button-container">
             <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
         </div>
@@ -12,12 +14,10 @@
 </template>
 
 <script lang="ts" setup>
-import HomeBlueprintsCarousel from './BlueprintsCarousel.vue'
-
-defineProps<{
-    blueprints: Blueprint[],
-    tags?: BlueprintTag[]
-}>()
+    import HomeBlueprintsCarousel from './BlueprintsCarousel.vue'
+    defineProps<{
+        blueprints: Array<Blueprint>
+    }>()
 </script>
 
 <style lang="scss" scoped>

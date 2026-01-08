@@ -6,6 +6,7 @@ import CareersPerks from '~/components/careers/Perks.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 import { $fetch } from '~/utils/fetch';
 import { type Job, mapJob } from "~/utils/careers.ts";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 
 
 const jobsList = await $fetch<{ results: Job[] }>(`https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`);
@@ -19,10 +20,11 @@ const description = "Discover exciting career opportunities at Kestra. Join our 
 ---
 
 <Layout title={title} description={description}>
-    <CareersHeader fullPath="/careers" />
-    <CareersPositionsRenderer positions={positions} />
-    <CareersPerks />
+    <CareersHeader client:load fullPath="/careers" />
+    <CareersPositionsRenderer client:visible positions={positions} />
+    <CareersPerks client:visible />
     <LayoutFooterContact
+        client:visible
         title="Join our community"
         darkButtonText="Join our Slack"
         darkButtonHref="https://kestra.io/slack"

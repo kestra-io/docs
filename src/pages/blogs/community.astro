@@ -1,4 +1,5 @@
 ---
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 export const prerender = false
 import BlogsList from "~/components/blogs/BlogsList.vue";
 import LayoutBlogs from "../../components/layout-blogs.astro";
@@ -21,6 +22,7 @@ const externalNews = externalNewsData.results.map((data: any) => {
 
 <LayoutBlogs activeStem={`/blogs`}>
     <BlogsList
+        client:load
         slug="/blogs/community"
         blogs={[]}
         currentUrl={Astro.request.url}

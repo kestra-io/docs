@@ -42,6 +42,7 @@ const generateTagName = (task: string) => {
 <Layout title={story.title} description={story.excerpt} isStories>
     <div class="main">
         <StoriesHeader
+            client:load
             slug={slug ?? ""}
             title={story.title}
             metaDescription={story.description}
@@ -50,7 +51,6 @@ const generateTagName = (task: string) => {
             kpi1={story.kpi1}
             kpi2={story.kpi2}
             kpi3={story.kpi3}
-            client:idle
         />
         <div class="container">
             <div class="business-container">
@@ -69,7 +69,7 @@ const generateTagName = (task: string) => {
             <div class="row">
                 <div class="col-md-8 mb-4">
                     <div class="story-container">
-                        <MDCParserAndRenderer content={story.content} class="item-content bd-markdown"/>
+                        <MDCParserAndRenderer client:visible content={story.content} class="item-content bd-markdown"/>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -115,7 +115,7 @@ const generateTagName = (task: string) => {
                                 {story.tasks.map(task => {
                                     return (<div class="card task-card">
                                         <div class="card-body">
-                                            <CommonTaskIcon cls={task} />
+                                            <CommonTaskIcon client:visible cls={task} />
                                             <p class="card-title">{generateTagName(task)}</p>
                                         </div>
                                     </div>)
@@ -137,11 +137,11 @@ const generateTagName = (task: string) => {
                 </div>
             </div>
             <div class="section-content">
-                <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
+                <LayoutSection client:visible subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
                     <div class="row">
                         {related.results.map(s => {
                             return (<div class="col-12 col-md-6 col-lg-4">
-                                <StoriesCard story={s} />
+                                <StoriesCard client:visible story={s} />
                             </div>)
                         })}
                     </div>

@@ -17,15 +17,15 @@ const description = header.description;
 
 <Layout title={title} description={description}>
     <div class="main">
-        <RetailCard content={header} />
-        <Line />
+        <RetailCard content={header} client:load />
+        <Line client:visible />
         <UseCasesExamples content={solutions} client:visible />
-        <Line />
+        <Line client:visible />
         <LeroyMerlin content={leroy} client:visible />
-        <Line />
+        <Line client:visible />
         <RetailOps content={ops} client:visible />
         <Plugins content={plugins} client:visible />
-        <Line />
+        <Line client:visible />
         <Footer content={footer} client:visible />
     </div>
 </Layout>

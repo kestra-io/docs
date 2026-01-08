@@ -160,27 +160,32 @@ const mainContent = [
 
 <Layout title={title} description={description}>
     <UseCasesEngineersHeader
+        client:load
         titleHtml="Provisioning <br> and Deployment"
         description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
         imageSrc="/landing/usecases/provisioning-and-deployment/header-hero.svg"
         imageAlt="Infrastructure Provisioning and Deployment"
     />
     <UseCasesEngineersMain
+        client:visible
         subtitle="Provisioning and Deployment"
         subtitleBefore="Simplify"
         baseline="Kestra's automation capabilities and extensive integrations empower platform engineers to manage infrastructure provisioning and deployment more efficiently."
         mainContent={mainContent}
     />
-    <UseCasesEngineersEnterpriseEdition />
+    <UseCasesEngineersEnterpriseEdition client:visible />
     <UseCasesDeploymentChallenges
+        client:visible
         titleHtml={challengesTitle}
         cardsData={cardsData}
     />
     <UseCasesEngineersDataOrchestration
+        client:visible
         title="for Platform Orchestration"
         dataOrchestration={dataOrchestration}
     />
     <LayoutFooterContact
+        client:visible
         title="Ready to take your Infrastructure to the next level ?"
         purpleButtonText="Get Started"
         purpleButtonHref="/docs/getting-started/quickstart"

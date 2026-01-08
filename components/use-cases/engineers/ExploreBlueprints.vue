@@ -5,19 +5,16 @@
                 <p>Explore Blueprints</p>
             </div>
             <div class="mt-3">
-                <HomeBlueprintsCarousel :blueprints="blueprintsData?.results ?? []" />
+                <Suspense>
+                    <HomeBlueprintsCarousel />
+                </Suspense>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import HomeBlueprintsCarousel from '../../home/BlueprintsCarousel.vue';
-defineProps<{
-    blueprintsData: {
-        results: {id: string}[]
-    } | null
-}>()
+    import HomeBlueprintsCarousel from '../../home/BlueprintsCarousel.vue';
 </script>
 
 <style lang="scss" scoped>

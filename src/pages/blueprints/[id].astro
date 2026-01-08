@@ -1,4 +1,5 @@
 ---
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 export const prerender = false;
 import { $fetch } from "~/utils/fetch";
 import Layout from "../../components/layout.astro";
@@ -46,13 +47,14 @@ const description = pageData.metaDescription;
 <Layout title={title} description={description}>
     <div>
         <BlueprintsHeader
+            client:only
             page={pageData}
             graph={graph}
             slug={id}
-            client:only
         />
         <div class="container">
             <BlueprintsDetail
+                client:visible
                 page={pageData}
                 description={pageData.description}
                 flow={flowMd}
@@ -61,17 +63,17 @@ const description = pageData.metaDescription;
             />
             {relatedBlueprints.length > 0 && (
                 <BlueprintsRelated
+                    client:visible
                     relatedBlueprints={relatedBlueprints}
                     tags={tags}
-                    client:visible
                 />
             )}
             <LayoutFooterContact
+                client:visible
                 title="New to Kestra?"
                 subtitle="Use blueprints to kickstart your first workflows."
                 purpleButtonText="Get started with Kestra"
                 purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
-                client:visible
             />
         </div>
     </div>

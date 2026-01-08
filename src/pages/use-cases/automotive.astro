@@ -32,6 +32,7 @@ const unlockContent = {
 <Layout title={title} description={description}>
     <div>
         <UseCasesEngineersHeader
+            client:load
             titleHtml="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
             imageSrc="/landing/usecases/automotive/header-hero.svg"
@@ -39,6 +40,7 @@ const unlockContent = {
         />
         <AutomotiveChallenges client:visible />
         <UseCasesDeploymentCompanyInfo
+            client:visible
             titleHtml="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
             description="Quadis, the largest car retailer in Spain, relies on Kestra to streamline its daily operations, from financial reporting to car delivery alerting. Kestra will support their new data lake architecture, enhancing data analytics, internal web scraping, and resource optimization using AWS services."
             imageSrc="/landing/usecases/automotive/visual.svg"
@@ -46,28 +48,27 @@ const unlockContent = {
             logoAlt="Quadis"
             logoWidth="208px"
             storeLink="/blogs/2024-06-13-quadis"
-            client:visible
         />
         <UseCasesDeploymentBusinessByUs
+            client:visible
             percent="500"
             percentText="In workflow delivery "
             mainInfoHtml="“Kestra adapts to any tool thanks to it’s plugin and <br> it’s easy for anyone to understand”"
             companyInfo={companyInfo}
-            client:visible
         />
         <UseCasesDeploymentUnlockPotential
+            client:visible
             title="Automotive Ecosystem"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
             logoPath="/landing/usecases/automotive/car-hatchback.svg"
             logoAlt="car hatchback"
             strokeColor="#E3262F"
             unlockContent={unlockContent}
-            client:visible
         />
         <div class="enterprise-edition">
             <FeaturesFeatureEnterprise
-                logoPath="/landing/usecases/automotive/enterprise-edition.svg"
                 client:visible
+                logoPath="/landing/usecases/automotive/enterprise-edition.svg"
             />
         </div>
     </div>

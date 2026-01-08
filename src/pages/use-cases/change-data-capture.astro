@@ -50,6 +50,7 @@ const mainContent = [
 <Layout title={title} description={description}>
     <div>
         <SolutionsDetailHeader
+            client:load
             title="Efficient"
             titleAfter="Change Data Capture"
             subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
@@ -57,30 +58,30 @@ const mainContent = [
             imageWidth="707px"
         />
         <SolutionsDetailContent
+            client:visible
             title="What is Change Data Capture ?"
             subtitle="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
-            client:visible
         />
         <LayoutDetailMainContent
+            client:visible
             subtitle="Data Analysis for Financial Institutions"
             subtitleBefore="Streamlined"
             baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
             items={mainContent}
-            client:visible
         />
         <SolutionsDetailEmpower
+            client:visible
             title="Kestra - Empowering Data-Driven Success"
             subtitle="Kestra's Change Data Capture capabilities enhance data management by enabling efficient data synchronization and processing. With Kestra's event-driven triggers, visual pipeline editor, and extensive integrations, businesses can maintain up-to-date data across their systems, leading to timely insights and better decision-making. Experience the benefits of Kestra's CDC solution and transform your data management processes today."
-            client:visible
         />
         <ChangeDataCaptureFeatures client:visible />
         <LayoutFooterContact
+            client:visible
             title="Ready to take your data platform to the next level?"
             darkButtonText="Talk to us"
             darkButtonHref="/demo"
             purpleButtonText="Get Started"
             purpleButtonHref="/docs/getting-started/quickstart"
-            client:visible
         />
     </div>
 </Layout>

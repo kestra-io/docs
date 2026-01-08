@@ -15,16 +15,16 @@ const description = "Get started with our library of workflows ready to use";
 <Layout title={title} description={description}>
     <div class="container">
         <BlueprintsLists
+            client:load
             tags={tags}
             currentUrl={Astro.request.url}
-            client:load
         />
         <LayoutFooterContact
+            client:visible
             title="New to Kestra?"
             subtitle="Use blueprints to kickstart your first workflows."
             purpleButtonText="Get started with Kestra"
             purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
-            client:visible
         />
     </div>
 </Layout>

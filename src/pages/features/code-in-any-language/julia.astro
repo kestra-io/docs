@@ -8,32 +8,39 @@ import FeaturesLanguageSubPagesOrchestrator from "~/components/features/language
 import FeaturesLanguagePlugins from "~/components/features/language/Plugins.vue";
 import { juliaFeatures, juliaPowerDesc, juliaScripts, juliaOrchestratorDesc } from "~/data/languages/julia";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+import Workflows from "~/components/features/scheduling/Workflows.vue";
 ---
 
 <Layout>
     <FeaturesLanguageSubPagesHeader
-            title="Julia Scripts"
-            description="Build declaratively your workflows and seamlessly run all your Python Scripts"
-            source="/landing/features/language/julia/header.svg"
+        client:load
+        title="Julia Scripts"
+        description="Build declaratively your workflows and seamlessly run all your Python Scripts"
+        source="/landing/features/language/julia/header.svg"
     />
     <FeaturesLanguageSubPagesFeatures
+        client:visible
         features={juliaFeatures}
     />
     <FeaturesLanguageSubPagesPower
+        client:visible
         title="with Julia"
         description={juliaPowerDesc}
         source="/landing/features/language/julia/power.svg"
     />
     <FeaturesLanguageSubPagesScripts
+        client:visible
         title="Julia"
         scripts={juliaScripts}
     />
     <FeaturesLanguageSubPagesOrchestrator
+        client:visible
         description={juliaOrchestratorDesc}
         source="/landing/features/language/julia/scripts/julia-puzzle.svg"
     />
-    <FeaturesLanguagePlugins />
+    <FeaturesLanguagePlugins client:visible />
     <LayoutFooterContact
+        client:visible
         title="Getting Started with  Declarative Orchestration"
         darkButtonText="Get started"
         darkButtonHref="/docs/getting-started/quickstart#start-kestra"

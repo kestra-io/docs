@@ -87,6 +87,7 @@ const features = [
 
 <Layout title={title} description={description}>
     <SolutionsDetailHeader
+        client:load
         title="Integrate Kestra in the"
         titleAfter="Modern Data Stack"
         subtitle="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools"
@@ -94,25 +95,30 @@ const features = [
         imageWidth="556px"
     />
     <SolutionsDetailContent
+        client:visible
         title="What is the Modern Data Stack?"
         subtitle="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
     />
     <LayoutDetailMainContent
+        client:visible
         subtitle="Leverage"
         subtitleAfter="Modern Data Stack"
         baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."
         items={mainContent}
     />
     <SolutionsDetailEmpower
+        client:visible
         title="Orchestrate the Modern Data Stack with Kestra"
         subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as dbt, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
     />
     <SolutionsDetailFeatures
+        client:visible
         subtitle="Key"
         subtitleAfter="Features"
         items={features}
     />
     <LayoutFooterContact
+        client:visible
         title="Ready to take your data platform to the next level?"
         darkButtonText="Talk to us"
         darkButtonHref="/demo"

@@ -27,16 +27,16 @@ const ogImage = `${Astro.url.origin}/og-image.png`;
     </Fragment>
 
     <div class="main bg-dark-4">
-        <TerraformHeader />
+        <TerraformHeader client:load />
         <TerraformOverview client:visible />
         <TerraformUseCases client:visible />
         <LayoutFooterContact
+            client:visible
             subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
             darkButtonText="YouTube playlist"
             darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
             purpleButtonText="Documentation"
             purpleButtonHref="/docs/terraform"
-            client:visible
         />
     </div>
 </Layout>

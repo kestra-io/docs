@@ -26,7 +26,8 @@ export default defineConfig({
 
     integrations: [
         vue({
-            appEntrypoint: "./src/_main.ts"
+            appEntrypoint: "./src/vue-setup.ts",
+            devtools: { launchEditor: "idea" }
         }),
         expressiveCode({
             defaultProps: {
