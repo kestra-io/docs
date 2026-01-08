@@ -38,18 +38,16 @@
 <script setup lang="ts">
     import {subGroupName, slugify, type PluginElement, type Plugin} from "@kestra-io/ui-libs";
     import {formatElementName } from "../../utils/pluginUtils";
+    import { computed, ref } from "vue";
 
-    const { groupedElements, pluginName, subGroup, wrapperClass, showLine } = defineProps<{
+    const { groupedElements, pluginName, subGroup, wrapperClass, showLine, routeParts } = defineProps<{
         groupedElements: Record<string, PluginElement[]>
         pluginName: string
         subGroup?: Plugin
         wrapperClass?: string
         showLine?: boolean
+        routeParts: string[]
     }>();
-
-    const route = useRoute();
-
-    const routeParts = computed(() => (route.params.slug instanceof Array ? route.params.slug : [route.params.slug]));
 
     const getElementHref = (element: PluginElement) => {
         const base = `/plugins/${pluginName}`;
@@ -57,7 +55,7 @@
     };
 
     const isElementActive = (element: PluginElement) => {
-        const parts = routeParts.value;
+        const parts = routeParts ?? [];
         return subGroup
             ? parts.length >= 3 && slugify(subGroupName(subGroup)) === parts[1] && slugify(element.cls) === parts[2]
             : parts.length >= 2 && slugify(element.cls) === parts[1];

@@ -26,6 +26,7 @@
                         :plugin-name="pluginName"
                         :sub-group="subGroup"
                         :show-line="true"
+                        :routeParts="routeParts"
                     />
                 </details>
             </div>
@@ -34,6 +35,7 @@
                 :grouped-elements="groupedDirectElements"
                 :plugin-name="pluginName"
                 :show-line="true"
+                :routeParts="routeParts"
             />
         </div>
 

@@ -2,7 +2,7 @@
     <div v-if="relatedBlueprints?.length > 0" class="more">
         <div class="header">
             <h4 :id="headerID">{{headerText}}</h4>
-            <NavActions 
+            <NavActions
                 @item-changed="visibleBlueprints = $event"
                 :items="relatedBlueprints"
                 :page-size="currentPageSize"
@@ -23,6 +23,7 @@
     import {useMediaQuery} from "@vueuse/core";
     import {getBlueprintsHeading} from "~/utils/pluginUtils";
     import NavActions from "~/components/common/NavActions.vue";
+    import LayoutBlueprintCard from "~/components/layout/BlueprintCard.vue";
 
     const props = defineProps<{
         pluginName: string;
@@ -31,6 +32,7 @@
         pluginType?: string;
         customId?: string | null;
         currentSubgroupPlugin?: Plugin;
+        relatedBlueprints: Blueprint[];
     }>();
 
     const createWithBlueprints = computed(() => getBlueprintsHeading(
@@ -44,36 +46,13 @@
     const headerText = computed(() => createWithBlueprints.value.text);
     const headerID = computed(() => createWithBlueprints.value.id);
 
-    const pluginIdentifier = computed(() => {
-        if (props.pluginType) {
-            return props.pluginType
-        }
-        
-        if (props.currentSubgroupPlugin?.subGroup) {
-            return props.currentSubgroupPlugin.subGroup
-        }
-        
-        return props.pluginWrapper?.group ?? props.pluginName
-    })
-
-    const { data } = await useFetch("/api/blueprint", {
-        key: `similar-blueprints-${pluginIdentifier.value}`,
-        query: {
-            plugin: pluginIdentifier.value
-        },
-    });
-
-    const relatedBlueprints = computed(() => data.value?.results ?? []);
-
     const isTwoPerRowScreen = useMediaQuery('(min-width: 992px) and (max-width: 1399px)');
 
     const currentPageSize = computed(() => isTwoPerRowScreen.value ? 4 : 3);
 
-    const visibleBlueprints = ref<any[]>([]);
-
-    watch(relatedBlueprints, (newBlueprints) => {
-        visibleBlueprints.value = newBlueprints.slice(0, currentPageSize.value);
-    }, {immediate: true});
+    const visibleBlueprints = computed<Array<Blueprint>>(() => {
+        return props.relatedBlueprints.slice(0, currentPageSize.value);
+    });
 
 </script>
 

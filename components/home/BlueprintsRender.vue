@@ -13,17 +13,10 @@
 
 <script lang="ts" setup>
 import HomeBlueprintsCarousel from './BlueprintsCarousel.vue'
+
 defineProps<{
-    blueprints: Array<{
-        id: string
-        namespace: string
-        name: string
-        description: string
-        tasks: Array<{id: string, type: string}>
-        tags: Array<string>
-        createdAt: string
-        updatedAt: string
-    }>
+    blueprints: Blueprint[],
+    tags?: BlueprintTag[]
 }>()
 </script>
 

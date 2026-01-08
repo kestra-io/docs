@@ -22,13 +22,14 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from "vue";
     import TaskIcon from "../common/TaskIcon.vue";
 
     const props = withDefaults(defineProps<{
-        blueprint: Record<string, any>;
+        blueprint: Blueprint;
         tags?: Array<any>;
         href: string;
-    }>(), { 
+    }>(), {
         tags: () => []
     });
 
@@ -47,7 +48,7 @@
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../assets/styles/variable";
-    
+
     .blueprint {
         height: 188px;
         border-radius: 12px;
@@ -60,13 +61,13 @@
         gap: 0;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         transition: 0.4s ease-out;
-    
+
         &:hover {
             border-color: var(--kestra-io-token-color-border-active);
             box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
             transform: scale(1.025);
         }
-    
+
         .task-icons {
             display: flex;
             gap: 0.5rem;
@@ -74,7 +75,7 @@
             flex-wrap: nowrap;
             overflow: hidden;
             margin-bottom: 1rem;
-        
+
             .icon {
                 border-radius: 4px;
                 border: 1px solid var(--ks-border-primary);
@@ -85,14 +86,14 @@
                 justify-content: center;
                 flex-shrink: 0;
                 background-color: $white;
-            
+
                 :deep(.icon-wrapper) {
                     width: 24px;
                     height: 24px;
                 }
             }
         }
-    
+
         .title {
             color: $white;
             font-size: $font-size-md;
@@ -104,18 +105,18 @@
             line-clamp: 2;
             overflow: hidden;
         }
-    
+
         hr {
             border: 1px solid $black-3;
             margin: 0;
         }
-    
+
         .footer {
             margin-top: auto;
             display: flex;
             flex-direction: column;
         }
-    
+
         .bottom-row {
             display: flex;
             align-items: center;
@@ -123,7 +124,7 @@
             color: $gray-100;
             height: 45px;
         }
-    
+
         .tag-list {
             display: flex;
             gap: 0.25rem;
@@ -132,7 +133,7 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-    
+
         .category-tag {
             display: inline-block;
             background: color-palette.$base-purple-800;

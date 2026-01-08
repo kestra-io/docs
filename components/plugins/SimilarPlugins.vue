@@ -1,8 +1,8 @@
 <template>
-    <div v-if="similarPlugins.length > 0" class="more">
+    <div v-if="similarPlugins && similarPlugins.length > 0" class="more">
             <div class="header">
                 <h4 id="more-plugins-in-this-category">More Plugins in this Category</h4>
-                <NavActions 
+                <NavActions
                     @item-changed="visiblePlugins = $event"
                     :items="similarPlugins"
                     :page-size="pageSize"
@@ -16,9 +16,9 @@
                     v-for="plugin in visiblePlugins"
                     :key="`plugin-${slugify(plugin.group ?? plugin.name)}${plugin.subGroup ? '-' + slugify(subGroupName(plugin)) : ''}`"
                 >
-                    <PluginCard 
-                        :plugin="plugin" 
-                        :icons="icons" 
+                    <PluginCard
+                        :plugin="plugin"
+                        :icons="icons"
                         :blueprints-count="getPluginBlueprintCount(plugin)"
                         :metadata-map="metadataMap"
                     />
@@ -40,6 +40,7 @@
         currentCategories: string[];
         icons?: Record<string, any>;
         metadataMap?: Record<string, PluginMetadata>;
+        blueprintCounts: Record<string, number>;
     }>(), {
         allPlugins: () => [],
         metadataMap: undefined
@@ -56,9 +57,7 @@
             );
     });
 
-    const { counts } = await useBlueprintsCounts();
-
-    const getPluginBlueprintCount = (plugin: Plugin) => counts.value?.[plugin.group ?? plugin.name] ?? 0;
+    const getPluginBlueprintCount = (plugin: Plugin) => props.blueprintCounts?.[plugin.group ?? plugin.name] ?? 0;
 
     const isTwoPerRowScreen = useMediaQuery('(min-width: 992px) and (max-width: 1399px)');
 
