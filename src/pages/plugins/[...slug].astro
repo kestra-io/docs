@@ -60,6 +60,9 @@ interface PluginPageWithToc extends PluginPage {
 
 const pluginName = splitRouteSlug[0];
 
+const maybeSubGroup = splitRouteSlug[1];
+const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
+
 const githubReleaseRepo = (() => {
     const name = pluginName ?? "";
     // because core plugin is part of kestra repo
@@ -100,7 +103,7 @@ const subgroups = await $fetch<Plugin[]>(`${API_URL}/plugins/${pluginName}/subgr
 const sidebarPluginData = generateSidebarPluginData(subgroups, allPluginMetadata);
 
 async function makePagePluginDefinition() {
-    const pageData = await $fetch<{markdown: string; schema: JSONSchema}>(`${API_URL}/plugins/definitions/${pluginName}`)
+    const pageData = await $fetch<{markdown: string; schema: JSONSchema}>(`${API_URL}/plugins/definitions/${pluginType}`)
     const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1];
     const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1];
 
@@ -111,7 +114,7 @@ async function makePagePluginDefinition() {
     };
 }
 
-const page: PluginPage = pluginType ? sidebarPluginData : await makePagePluginDefinition();
+const page: PluginPage = pluginType === undefined ? sidebarPluginData : await makePagePluginDefinition();
 const pluginsWithoutDeprecated =
         filterPluginsWithoutDeprecated(
             pluginType
@@ -144,8 +147,7 @@ const relatedBlogs = blogs
 
 const rootPlugin = pluginsWithoutDeprecated?.find((p: Plugin) => p.subGroup === undefined)
 
-const maybeSubGroup = splitRouteSlug[1];
-const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup;
+
 const currentSubgroupPlugin = (!subGroup || pluginType) ? undefined : pluginsWithoutDeprecated?.find(p => {
             const subgroupLastSegment = p.subGroup?.split(".").pop();
             const possibleSubgroupMatches = [
