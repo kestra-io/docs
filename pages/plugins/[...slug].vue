@@ -5,6 +5,7 @@
             :plugins-without-deprecated="pluginsWithoutDeprecated"
             :plugin-name="pluginName"
             :title="headingTitle"
+            :route-parts="routeParts"
         />
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
@@ -134,6 +135,10 @@
         : route.params.slug;
 
     const splitRouteSlug = routeSlug.split("/");
+
+    const routeParts = computed<string[]>(() =>
+        Array.isArray(route.params.slug) ? (route.params.slug as string[]) : [String(route.params.slug)]
+    );
 
     const pluginName = computed(() => splitRouteSlug?.[0]);
 
