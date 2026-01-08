@@ -32,6 +32,9 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 - Namespace - separates projects, teams, and environments to logically group things and provide structure. Working with languages like Java, you may have encountered the concept of namespaces implemented as packages.
 
+## O
+- Orchestration - a process or a tool that automates, manages, and coordinates various workflows and tasks across different services, systems, or applications. It functions like a conductor of an orchestra, ensuring all components perform in harmony, following a predefined sequence or set of rules.
+
 ## P
 
 - Pebble Templating Engine - inspired by the Java templating engine, use `.` notation to access nested properties.
