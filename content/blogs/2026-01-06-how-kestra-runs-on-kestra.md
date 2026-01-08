@@ -5,7 +5,7 @@ date: 2026-01-06T13:00:00
 category: Solutions
 author:
   name: Rok Grabnar
-  image: rgrabnar-round
+  image: "rgrabnar-round"
   role: Analytics Engineer
 image: /blogs/2026-01-06-how-kestra-runs-on-kestra/2026-01-06-how-kestra-runs-on-kestra.png
 ---
