@@ -1,11 +1,11 @@
 ---
 title: "How Kestra runs on Kestra"
-description: "An inside look at Kestra’s internal analytics architecture, showing how declarative orchestration enables scalable, multi-language data pipelines."
+description: "A behind-the-scenes look at the data stack that powers Kestra's sales, marketing, product, and leadership - powered by a single analytics engineer."
 date: 2026-01-06T13:00:00
 category: Solutions
 author:
   name: Rok Grabnar
-  image: "rgrabnar-round"
+  image: rgrabnar-sm
   role: Analytics Engineer
 image: /blogs/2026-01-06-how-kestra-runs-on-kestra/2026-01-06-how-kestra-runs-on-kestra.png
 ---
@@ -39,7 +39,7 @@ Here's what Kestra's data infrastructure actually looks like:
 
 **Warehouse:**
 
-- [BigQuery](https://kestra.io/plugins/plugin-gcp/bigquery)BigQuery
+- [BigQuery](https://kestra.io/plugins/plugin-gcp/bigquery)
 
 **Transformation:**
 
@@ -72,7 +72,7 @@ In Kestra, a single [flow](https://kestra.io/docs/workflow-components/flow) can:
 - Call a Go binary
 - Hit an API endpoint
 
-All of this happens without rewriting existing code or translating it into a single framework. Each component runs in the form it was designed to run, using the language and tooling that make sense for that task.
+All of these happen without rewriting existing code or translating it into a single framework. Each component runs in the form it was designed to run, using the language and tooling that make sense for that task.
 
 This lets us evolve the stack incrementally. We can introduce a new service, keep a legacy script, or change how a particular step is implemented without turning orchestration into a refactoring project that adds unnecessary work. SQL stays SQL. Python stays Python. Language-specific services remain first-class citizens.
 
@@ -114,7 +114,7 @@ This is the kind of reuse analytics engineering actually needs: a way to central
 
 ### **Smart alerting by namespace**
 
-In Kestra, every workflow belongs to a [**namespaces**](https://kestra.io/docs/workflow-components/namespace), and that namespace is visible to the orchestrator at runtime.
+In Kestra, every workflow belongs to a [**namespace**](https://kestra.io/docs/workflow-components/namespace), and that namespace is visible to the orchestrator at runtime.
 
 We use namespaces to reflect ownership and purpose in the analytics stack. Data pipelines live in one namespace, product and internal workflows live in other namespaces.
 
@@ -173,7 +173,7 @@ For enterprises requiring stronger isolation, Kestra Enterprise provides [**tena
 
 For example, our secrets flow from [**GCP Secret Manager**](https://kestra.io/plugins/plugin-gcp) into Terraform and then into Kestra. There’s no secondary configuration layer or ambiguity about what’s deployed where. Orchestration is treated like infrastructure, using the same patterns we rely on everywhere else.
 
-For a small analytics team (n=1), because it removes operational risk. One person can make changes confidently without accidentally breaking production.
+For a small analytics team (n=1), this matters because it removes operational risk. One person can make changes confidently without accidentally breaking production.
 
 ## **What this enables at Kestra**
 
