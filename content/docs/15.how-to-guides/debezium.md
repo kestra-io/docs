@@ -290,7 +290,7 @@ While using the `pgoutput` plug-in, it is recommended that you configure `filter
 For more detailed instructions about setting up and testing logical decoding plug-ins, see [Logical Decoding Output Plug-in Installation for PostgreSQL](https://debezium.io/documentation/reference/3.0/postgres-plugins.html).
 :::
 
-As of PostgreSQL 9.4, the only way to read changes to the write-ahead-log is to install a logical decoding output plug-in. Plug-ins are written in C, compiled, and installed on the machine that runs the PostgreSQL server. Plug-ins use a number of PostgreSQL specific APIs, as described by the [PostgreSQL documentation](https://www.postgresql.org/docs/current/static/logicaldecoding-output-plugin.html).
+Starting with PostgreSQL 9.4, the only way to read changes to the write-ahead-log is to install a logical decoding output plug-in. Plug-ins are written in C, compiled, and installed on the machine that runs the PostgreSQL server. Plug-ins use a number of PostgreSQL specific APIs, as described by the [PostgreSQL documentation](https://www.postgresql.org/docs/current/static/logicaldecoding-output-plugin.html).
 
 The PostgreSQL connector works with one of Debezium’s supported logical decoding plug-ins to receive change events from the database in either the [Protobuf format](https://github.com/google/protobuf) or the [pgoutput](https://github.com/postgres/postgres/blob/master/src/backend/replication/pgoutput/pgoutput.c) format. The `pgoutput` plugin comes out-of-the-box with the PostgreSQL database. For more details on using Protobuf via the `decoderbufs` plug-in, see the plug-in [documentation](https://github.com/debezium/postgres-decoderbufs/blob/main/README.md) which discusses its requirements, limitations, and how to compile it.
 
