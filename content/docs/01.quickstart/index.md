@@ -26,7 +26,6 @@ Once Docker is running, start Kestra with a single command. (*If you are using W
 docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp kestra/kestra:latest server local
 ```
 
-
 :::collapse{title="macOS troubleshooting"}
 If you're on macOS, you may need to add `-e JAVA_OPTS="-XX:UseSVE=0"`
 
@@ -35,7 +34,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.so
 ```
 :::
 
-Open `http://localhost:8080` in your browser to launch the UI and begin building your first flow.
+Open `http://localhost:8080` in your browser to launch the UI, create your user, and take the product tour to begin building your first flow.
 
 :::alert{type="info"}
 The above command starts Kestra with an embedded H2 database that will not persist data. If you want to use a persistent database backend with PostgreSQL and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose.md).
@@ -43,38 +42,16 @@ The above command starts Kestra with an embedded H2 database that will not persi
 
 ---
 
-## Create your user
-
-Once you open Kestra in your browser, Kestra will prompt you to create your user. Once created, you will be able to build your first flow.
-
-![login](/docs/getting-started/login.png)
-
----
-
-## Create your first flow
-
-Navigate to **Flows** in the left menu, then click the **Create** button and paste the following configuration into the editor to create your first flow:
-
-```yaml
-id: getting_started
-namespace: company.team
-
-tasks:
-  - id: hello_world
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World!
-```
-
-This flow uses the [Kestra Log plugin](/plugins/core/tasks/log/io.kestra.plugin.core.log.log) to log a message to the console. Click **Save**, then click **Execute** to start your first execution.
-
 ## Next steps
 
 Congratulations! You have installed Kestra and executed your first flow.
 
 Next, you can follow the documentation in this order:
-- Check out the [tutorial](../03.tutorial/index.md).
-- Get to know the [building blocks](../05.workflow-components/index.md) of a flow.
-- Learn the core [concepts](../06.concepts/index.md).
+- Check out the [tutorial](../03.tutorial/index.md) to get introduced to concepts and workflow components.
+- Follow the full [installation guide](../02.installation/index.md) for persistent local or distributed setups.
+- Get to know the [building blocks](../05.workflow-components/index.md) of a flow in more detail.
+- Learn the core [concepts](../06.concepts/index.md) and their use cases.
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.
 - [Deploy](../10.administrator-guide/index.md) Kestra to remote development and production environments.
 - Almost everything is configurable in Kestra. You can find the different configuration options available to Administrators in the [Configuration Guide](../configuration/index.md).
+- [Contribute to Kestra](../04.contribute-to-kestra/index.md) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved! 

@@ -72,12 +72,47 @@
 
     const slug = computed(() => `/plugins/${routeSlug}`);
 
-    const {data: navigation} = await useFetch<NavItem[]>("/api/plugins?type=navigation");
+    const {data: navigation} = await useFetch("/api/plugins?type=navigation");
+    const {data: aliasMapping} = await useFetch<Record<string, string>>(
+        "/api/plugins?type=aliasMapping",
+        {key: "AliasMapping"}
+    );
 
     const pageList = computed(() => recursivePages(navigation.value?.[0] ?? {}));
     const pageNames = computed(() => generatePageNames(navigation.value?.[0] ?? {}));
 
-    interface PluginFetchResponse {
+    /**
+     * Handle alias redirects before fetching page data to avoid broken layout.
+     * This ensures instant redirects for old URLs that use plugin aliases.
+     *
+     * @example
+     * Old URL: /plugins/plugin-notifications/tasks/twilio/io.kestra.plugin.notifications.twilio.twilioalert
+     * Redirects to: /plugins/plugin-twilio/notify/io.kestra.plugin.twilio.notify.twilioalert
+     */
+    if (pluginType.value && aliasMapping.value && !pageList.value?.includes(slug.value)) {
+        let redirectPath = pageList.value?.find(page => page?.endsWith("/" + pluginType.value));
+
+        if (!redirectPath) {
+            const actualClass = aliasMapping.value[pluginType.value.toLowerCase()];
+            if (actualClass) {
+                redirectPath = pageList.value?.find(page =>
+                    page?.toLowerCase().endsWith("/" + actualClass.toLowerCase())
+                );
+            }
+        }
+
+        if (redirectPath) {
+            await navigateTo(redirectPath, { replace: true });
+        } else {
+            throw createError({
+                statusCode: 404,
+                message: `Plugin page not found: ${slug.value}`,
+                fatal: true
+            });
+        }
+    }
+
+    const {data: pageData} = await useFetch<{
         body: {
             group: string;
             plugins: Plugin[];
@@ -453,15 +488,6 @@
     const activeSectionId = ref("");
 
     onMounted(async () => {
-        if (pluginType.value !== undefined && !pageList.value?.includes(slug.value)) {
-            const redirectPath = pageList.value?.find(
-                page => page?.endsWith("/" + pluginType.value)
-            );
-            if (redirectPath !== undefined) {
-                await navigateTo({path: redirectPath});
-            }
-        }
-
         activeSectionId.value = window.location.hash.slice(1);
         useEventListener(window, "hashchange", () => {
             activeSectionId.value = window.location.hash.slice(1);

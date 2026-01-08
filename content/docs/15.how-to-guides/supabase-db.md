@@ -13,7 +13,7 @@ Connect your Supabase Database to your workflows using the PostgreSQL plugin.
 </div>
 
 :::alert{type="info"}
-As of Kestra 1.0, there is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
+There is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
 :::
 
 ## Overview
