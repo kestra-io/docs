@@ -242,7 +242,18 @@ In the above configuration, a user is allotted 10 failed login attempts in a 5-m
 
 ## Change password
 
-If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI.
+If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI. "Forgot Password" settings can be configured in your Kestra configuration under `basic-auth.password-reset`. Settings to consider are the cooldown time between reset requests and how many requests can be made in a given time window.
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-reset:
+        cooldown: PT5M         # Minimum time required between two password reset emails for the same user
+        rate-limit:
+          max-requests: 10     # Maximum number of password reset requests allowed per client within the time window
+          window: PT1H         # Time window during which password reset requests are counted for rate limiting
+```
 
 ### Reset password (by a Super Admin)
 
