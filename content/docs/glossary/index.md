@@ -22,11 +22,16 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 ## E
 
+- Execution context - a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
 - Expressions - accessing and using variables in flows, combining the Pebble templating engine with the execution context to dynamically render flow properties. Expressions allow you to dynamically set values within your workflows. Expression syntax uses curly braces, e.g., `{{ your_expression }}`.
 
 ## F
 
 - Flows - Flows act as a backend, processing data and executing tasks. Flows are versioned by default. Flows and workflows are often used interchangeable. 
+
+## K
+
+- KV Store - also known as Key Value Store, allows you to store any data in a key-value format. These values can be shared acrss executions and different workflows to provide persistent data.
 
 ## N 
 
@@ -37,7 +42,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 ## P
 
-- Pebble Templating Engine - inspired by the Java templating engine, use `.` notation to access nested properties.
+- Pebble Templating Engine - inspired by the Java templating engine, use `.` notation to access nested properties. It is used to dynamically render variables, inputs, and outputs withint the execution context.
 - Plugin - the building blocks of tasks in Kestra that offer integerations to different systems and functionality.
 
 ## R
@@ -55,6 +60,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 - Tasks - atomic actions in a flow. Tasks are a required element in a flow.
     - Flowable Tasks - Flowable tasks control orchestration logic — running tasks or subflows in parallel, creating loops, and handling conditional branching. They do not run heavy operations.
     - Runnable Tasks - Runnable tasks handle data processing, such as file system operations, API calls, and database queries. They can be compute-intensive and are executed by workers. Most tasks are runnable.
+- Time To Live (TTL) - the expiration or duration something like a token, secret, or key-value pair is available.
 - Triggers - a mechanism that automatically starts the execution of a flow. There are five core trigger types: schedule, flow, webhook, polling, realtime. Triggers are scheduled or event-based.
 
 ## W
