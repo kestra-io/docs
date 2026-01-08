@@ -19,6 +19,14 @@
                     frees you from being tied to a specific client implementation, allowing for greater flexibility and
                     easier integration with various tools and services.</p>
             </CustomDetails>
+            <CustomDetails title="What is an orchestrator?">
+                <p>An orchestrator is a system that coordinates multiple interconnected steps and dependencies into a single,
+                    automated workflow. Effective orchestration handles triggers, manages dependencies, maintains state, 
+                    and provides visibility—all without requiring teams to rebuild processes from scratch every time.</p>
+
+                <p>Some orchestrators are general, while others, like data orchestrators, are more purpose built. Kestra
+                    can handle a variety of orchestration use cases. You can read more about orchestration on our <a target="_blank" href="/blog/orchestration-differences">blog.</a></p>
+            </CustomDetails>
             <CustomDetails title="What is a declarative orchestrator?">
                 <p>A declarative orchestrator is a system that allows you to define and manage complex workflows using a
                     high-level, descriptive language. Instead of specifying the exact steps and sequences to achieve a
@@ -44,6 +52,11 @@
                         workflows as requirements change, without the need for extensive refactoring.
                     </li>
                 </ol>
+            </CustomDetails>
+            <CustomDetails title="When should you consider an orchestrator?">
+                <p>You should consider an orchestrator when you have a growing complexity in automating tasks, managing
+                    dependencies, or coordinating multiple systems across different teams. Put more basically, you should
+                    consider an orchestrator when you are looking to scale.</p>
             </CustomDetails>
             <CustomDetails title="Who can benefit from using Kestra?">
                 <p>Kestra is perfect for data engineers, developers, data scientists, and anyone who needs to process,
