@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
+    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end" :class="props.class">
         <div>
             <template v-if="links && links.length > 0" class="bd-contents-list">
                 <button
@@ -92,6 +92,7 @@
             categories?: string[];
             metadata?: PluginMetadata[];
             isPluginPage?: boolean;
+            "class"?: string;
         }>(),
         {
             version: null,
