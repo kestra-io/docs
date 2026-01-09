@@ -164,6 +164,39 @@ const metadataMap = allPluginMetadata?.reduce<Record<string, PluginMetadata>>((a
             return acc;
         }, {})
 
+/**
+ * currentPluginMetadata provides the raw array of metadata,
+ * while currentPageMetadata filters it down to the exact metadata for the page being viewed.
+ */
+const currentPluginMetadata = (() => {
+    const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group;
+    const rootGroupId = rootPlugin?.group ?? pluginName;
+
+    if (subgroupId) {
+        const found = allPluginMetadata?.find(m => m.group === subgroupId);
+        return found ? [found] : [];
+    }
+
+    if (rootGroupId) {
+        return allPluginMetadata?.filter(m => m.group && (m.group === rootGroupId || m.group.startsWith(rootGroupId + "."))) ?? [];
+    }
+
+    return [];
+})();
+
+const currentPageMetadata = (() => {
+    const meta = currentPluginMetadata;
+    if (!meta) return null;
+
+    if (Array.isArray(meta)) {
+        const rootGroup = rootPlugin?.group;
+        const subgroupGroup = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group;
+        return meta.find(m => m.group === rootGroup || m.group === subgroupGroup) ?? null;
+    }
+
+    return meta;
+})();
+
 const headingTitle = pluginType
     ? formatElementName(pluginType)
     : (rootPlugin
@@ -173,6 +206,21 @@ const headingTitle = pluginType
         )
         : undefined
     ) ?? pluginName;
+
+const combinedTitle = rootPlugin?.title.charAt(0).toUpperCase() ?? "" +
+            rootPlugin?.title.slice(1) +
+            (subGroup === undefined
+                ? ""
+                : ` - ${subGroupName({title: subGroup} as Plugin)}`
+            );
+
+let combinedDescription = currentPageMetadata?.description;
+        const body = (currentPageMetadata as any)?.body;
+        if (body && body !== combinedDescription) {
+            combinedDescription += (combinedDescription ? "\n\n" : "") + body;
+        }
+
+const headingDescription = pluginType ? combinedTitle : combinedDescription
 
 const pageNamesHeading = {
         ...(pageNames ?? {}),
@@ -195,25 +243,7 @@ const generateTocForPluginElements = (wrapper: Plugin) =>
                 };
             });
 
- /**
-  * currentPluginMetadata provides the raw array of metadata,
-  * while currentPageMetadata filters it down to the exact metadata for the page being viewed.
-  */
-const currentPluginMetadata = (() => {
-    const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group;
-    const rootGroupId = rootPlugin?.group ?? pluginName;
 
-    if (subgroupId) {
-        const found = allPluginMetadata?.find(m => m.group === subgroupId);
-        return found ? [found] : [];
-    }
-
-    if (rootGroupId) {
-        return allPluginMetadata?.filter(m => m.group && (m.group === rootGroupId || m.group.startsWith(rootGroupId + "."))) ?? [];
-    }
-
-    return [];
-})();
 
 const currentPluginVideos = (() => {
         const meta = currentPluginMetadata;
@@ -370,8 +400,6 @@ const elementTitle = (() => Object.fromEntries(
             )
         ).filter(([_, v]) => typeof v === "object" && Boolean(v?.title))
     ))()
-
-const description = pluginType ? page.title : page.description
 ---
 
 <Layout>
@@ -398,7 +426,7 @@ const description = pluginType ? page.title : page.description
               {rootPlugin}
               {currentPageIcon}
             >
-                {description ? <MDCParserAndRenderer content={description} /> : null}
+                {headingDescription ?<MDCParserAndRenderer content={headingDescription} /> : null}
             </OneHeader>
           )
         }
@@ -465,16 +493,16 @@ const description = pluginType ? page.title : page.description
       }
     </article>
     <NavToc
-      rate-helpful={true}
-      links={page.body.toc?.links}
-      editLink={page.editLink};
-      extension={page.extension};
-      stem={page.stem}
+      links={pageWithToc.body.toc?.links}
+      editLink={pageWithToc.editLink};
+      extension={pageWithToc.extension};
+      stem={pageWithToc.stem}
       version={githubVersions}
       releasesUrl={githubReleasesUrl}
       categories={currentPluginCategories}
       metadata={currentPluginMetadata}
       capitalize
+      rate-helpful
       class="right-sidebar"
     />
   </div>

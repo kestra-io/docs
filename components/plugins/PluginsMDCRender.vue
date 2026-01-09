@@ -1,36 +1,37 @@
 <template>
-    <FeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
-                            :page="page"/>
-    <PluginIndex
-        v-if="pluginType === undefined"
-        class="plugin-index"
-        :icons
-        :plugins="pluginsWithoutDeprecated"
-        :plugin-name
-        :sub-group
-        :route-path
-        :subgroup-blueprint-counts
-        :metadata-map
-        :schemas
-        @navigate="navigateTo($event)"
-    >
-        <template v-slot:markdown="{ content }">
-            <MDCParserAndRenderer :content />
-        </template>
-    </PluginIndex>
-    <Suspense v-else>
-        <SchemaToHtml v-if="page.body.jsonSchema" class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType ?? ''"
-                :props-initially-expanded="true">
-            <template #markdown="{ content }">
-                <MDCParserAndRenderer v-if="content" :content="content" />
+    <div class="bd-content">
+        <FeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
+                                :page="page"/>
+        <PluginIndex
+            v-if="pluginType === undefined"
+            :icons
+            :plugins="pluginsWithoutDeprecated"
+            :plugin-name
+            :sub-group
+            :route-path
+            :subgroup-blueprint-counts
+            :metadata-map
+            :schemas
+            @navigate="navigateTo($event)"
+        >
+            <template v-slot:markdown="{ content }">
+                <MDCParserAndRenderer :content />
             </template>
-        </SchemaToHtml>
-    </Suspense>
+        </PluginIndex>
+        <Suspense v-else>
+            <SchemaToHtmlV2 v-if="page.body.jsonSchema" class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType ?? ''"
+                    :props-initially-expanded="true">
+                <template #markdown="{ content }">
+                    <MDCParserAndRenderer v-if="content" :content="content" />
+                </template>
+            </SchemaToHtmlV2>
+        </Suspense>
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { PluginIndex, SchemaToHtml, type PluginMetadata } from '@kestra-io/ui-libs';
+import { PluginIndex, SchemaToHtmlV2, type PluginMetadata } from '@kestra-io/ui-libs';
 import { getPluginsWithoutDeprecated } from '../../src/utils/plugins/getListOfPlugins';
 import FeatureScopeMarker from '../docs/FeatureScopeMarker.vue';
 import MDCParserAndRenderer from './MDCParserAndRenderer.vue';
@@ -61,54 +62,23 @@ function navigateTo(url: string) {
 </script>
 
 <style lang="scss" scoped>
+    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../assets/styles/variable";
 
-    .plugin-index {
-        :deep(div):has(> .row-link) {
-            gap: var(--spacer);
-        }
+    .bd-content {
+        margin: 0 auto;
+        padding: 2rem 0;
 
-        :deep(.elements-section) {
-            gap: calc(2 * var(--spacer));
-        }
-
-        :deep(.row-link) {
-            padding: calc(.5 * var(--spacer)) calc(2 * var(--spacer));
-            background: var(--kestra-io-token-color-background-secondary);
-            color: var(--kestra-io-token-color-white);
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
-
-            &:hover, &:focus {
-                outline: none;
-                background: var(--kestra-io-neutral-gray300);
-                border: 1px solid var(--tokens-border-border-active);
-
-                .material-design-icon {
-                    color: var(--kestra-io-neutral-white);
-                }
-            }
-
-            img {
-                width: 3.375rem;
-                height: 3.375rem;
-            }
-
-            .material-design-icon {
-                color: var(--kestra-io-neutral-gray700);
-
-                &, & * {
-                    width: 1.5rem;
-                    height: 1.5rem;
-                    bottom: 0;
-                }
-            }
+        @include media-breakpoint-up(lg) {
+            max-width: 100%;
         }
     }
 
-        .plugin-schema {
+    .plugin-schema {
         :deep(hr) {
-            opacity: 1;
-            border-top: calc(2 * var(--bs-border-width)) solid var(--kestra-io-token-color-border-secondary);
+            opacity: 0.5;
+            border-top: calc(2 * var(--bs-border-width)) solid $black-3;
+            margin: 0 !important;
         }
 
         :deep(article) {
@@ -128,13 +98,13 @@ function navigateTo(url: string) {
 
         :deep(#copied-tooltip) {
             background: $gray-500;
-            color: #fff;
+            color: $white;
         }
 
         :deep(.markdown) {
             display: flex;
             flex-direction: column;
-            gap: var(--spacer);
+            min-width: 100%
         }
 
         :deep(.plugin-section) {
@@ -150,8 +120,9 @@ function navigateTo(url: string) {
                 }
             }
 
-            .border, .property:not(:first-child) {
-                border-color: var(--kestra-io-token-color-border-secondary) !important;
+            .border,
+            .property:not(:first-child) {
+                border: none !important;
             }
 
             .collapse-button {
@@ -161,14 +132,9 @@ function navigateTo(url: string) {
             }
 
             > .collapse-button {
-                line-height: 2.375rem;
-
                 &:not(.collapsed) {
                     color: var(--kestra-io-token-text-link-default);
-
-                    & .material-design-icon {
-                        background-color: var(--kestra-io-neutral-gray400);
-                    }
+                    margin-bottom: 1rem;
                 }
             }
 
@@ -191,13 +157,14 @@ function navigateTo(url: string) {
 
             .property-detail {
                 color: var(--kestra-io-token-color-white);
+                background: $black-4;
 
                 .property-description p {
-                    color: var(--kestra-io-neutral-gray700);
+                    color: $white-3;
                 }
 
                 > *:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--kestra-io-token-color-border-secondary);
+                    border-top: var(--bs-border-width) var(--bs-border-style) $black-6;
                 }
 
                 .border:not(.type-box) {
@@ -221,5 +188,9 @@ function navigateTo(url: string) {
                 }
             }
         }
+    }
+
+    :deep(.plugin .description) {
+        text-transform: none !important;
     }
 </style>
