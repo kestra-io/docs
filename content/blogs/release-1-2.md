@@ -1,6 +1,6 @@
 ---
-title: "Kestra 1.2 introduces Assets, Namespace Files Revision History, Concurrent Executions, Enhanced UI and Dozens of New Plugins"
-description: "Kestra 1.2 delivers asset management, namespace file versioning, enhanced concurrent execution capabilities, improved UI/UX, new secret managers, and new plugins plugins."
+title: "Kestra 1.2 introduces Assets, Templated Custom Blueprints, Namespace Files Revision History, Concurrent Executions, and Dozens of New Plugins"
+description: "Kestra 1.2 delivers asset management, templated custom blueprints, namespace file versioning, enhanced concurrent execution capabilities, improved UI/UX, new secret managers, and new plugins."
 date: 2026-01-06T17:00:00
 category: News & Product Updates
 authors:
@@ -10,7 +10,7 @@ image: /blogs/release-1-2.jpg
 ---
 
 
-We're excited to announce Kestra 1.2, delivering asset management, namespace file versioning capabilities, enhanced concurrent execution support, improved user interface designs, and new plugins. Following user feedback, we've introduced enterprise-grade asset management, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
+Following user feedback, we've introduced enterprise-grade asset management, templated custom blueprints, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
 
 The table below highlights the key features of this release.
 
@@ -321,23 +321,7 @@ tasks:
       with open('config.txt', 'r') as f:
         print(f.read())
 ```
-
 :::
-
-## No Code for Unit Tests
-
-Kestra 1.2 extends the No-Code capabilities to include unit test creation. You can now build and configure unit tests for your workflows using the visual editor, making it easier to ensure workflow reliability without writing complex test code.
-
-
-## Execution Overview Page New Design
-
-The Execution Overview page has been completely redesigned with improved visual hierarchy and better information density. Key improvements include:
-
-- **Organized Section Divisions** - Clear boxes group related functionality (State, Actions, etc.) for better navigation
-- **Optimized Spacing** - Reduced spacing between keys and values for improved readability on wider screens
-- **Better Visual Flow** - Information is now easier to scan and understand at a glance
-
-![Execution Overview Page New Design](/blogs/execution_preview.png)
 
 
 ## Checks Feature
@@ -368,7 +352,6 @@ tasks:
 ```
 
 
-
 ## Concurrent Execution for Any Trigger
 
 Any trigger in Kestra 1.2 can now support concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This removes previous limitations where certain trigger types could only run one execution at a time, enabling more flexible and scalable workflow patterns.
@@ -396,6 +379,18 @@ In this example, even though the Schedule trigger fires every second, only one e
 
 
 
+## Execution Overview Page New Design
+
+The Execution Overview page has been completely redesigned with improved visual hierarchy and better information density. Key improvements include:
+
+- **Organized Section Divisions** - Clear boxes group related functionality (State, Actions, etc.) for better navigation
+- **Optimized Spacing** - Reduced spacing between keys and values for improved readability on wider screens
+- **Better Visual Flow** - Information is now easier to scan and understand at a glance
+
+![Execution Overview Page New Design](/blogs/execution_preview.png)
+
+
+
 ## AWS & Azure Marketplace
 
 Kestra Open Source is now available on both [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg) and [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), making it easier than ever to deploy Kestra in your cloud environment.
@@ -419,12 +414,13 @@ Both marketplace offerings are free (no software charges), with only standard cl
 
 ## Additional Improvements
 
-- **Secret Managers** – Enterprise Edition users gain new secret management integrations including 1Password and Doppler. These providers join existing secret managers to offer more flexibility in how sensitive credentials and configuration are stored and accessed across your infrastructure.
-- **CSV Export on Executions Page** – Added ability to export execution data to CSV format directly from the Executions page for easier analysis and reporting.
-- **Improved Liveness & Grace Period** – Enhanced liveness mechanism and documentation with timeout-based detection and added explicit configurable termination grace periods. See the [configuration documentation](/docs/configuration) for details.
-- **Pre-load Flows on Startup** – Added `--flow-path` flag to the Kestra startup command to pre-load flows from a directory during server initialization (e.g., `--flow-path /app/myflows/`), enabling flows to be available immediately when the server starts.
-- **Improved Left Menu Navigation** – Simplified navigation with better grouping of related features for easier access to key functionality.
-- **Redesigned Plugin Page** – Modern plugin page with improved search, better filtering, categorization, and integrated documentation for easier plugin discovery.
+- **Secret Managers** – Enterprise Edition users now benefit from new secret management integrations including 1Password and Doppler. These enhancements expand upon Kestra’s existing secret managers, allowing organizations greater flexibility and security in storing and accessing sensitive credentials and configuration across all environments.
+- **CSV Export on Executions Page** – You can now export execution data to CSV directly from the Executions page, making analysis and reporting easier and more efficient.
+- **Improved Liveness & Grace Period** – The liveness mechanism has been upgraded with timeout-based detection and enhanced documentation. There is now explicit, configurable support for termination grace periods. Refer to the [configuration documentation](/docs/configuration) for more information.
+- **Pre-load Flows on Startup** – Introduced the `--flow-path` flag to the Kestra startup command, allowing flows to be pre-loaded from a directory at server initialization (e.g., `--flow-path /app/myflows/`). This means workflows are available immediately upon startup.
+- **Improved Left Menu Navigation** – The left-hand menu has been redesigned, grouping related features more logically and making it easier to find and access key functionality.
+- **Redesigned Plugin Page** – The Plugin page now features a modernized look, better search and filtering, improved categorization, and integrated documentation—making plugin exploration and discovery more intuitive.
+- **No Code for Unit Tests** – Kestra 1.2 extends No-Code capabilities to include creation and configuration of unit tests directly from the visual editor, helping teams ensure workflow reliability without having to write test code.
 
 ## Plugins
 
