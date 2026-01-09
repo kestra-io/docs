@@ -62,11 +62,11 @@ tasks:
       inputs:
         - id: sample_data.nyc.taxi
       outputs:
-          - id: trips
-            namespace: "{{flow.namespace}}"
-            type: io.kestra.core.models.assets.Table
-            metadata:
-              model_layer: staging
+        - id: trips
+          namespace: "{{flow.namespace}}"
+          type: io.kestra.plugin.ee.assets.Table
+          metadata:
+            model_layer: staging
 
   - id: for_each
     type: io.kestra.plugin.core.flow.ForEach
@@ -79,13 +79,13 @@ tasks:
         sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
         assets:
           inputs:
-              - id: trips
+            - id: trips
           outputs:
-              - id: avg_{{taskrun.value}}
-                type: io.kestra.core.models.assets.Table
-                namespace: "{{flow.namespace}}"
-                metadata:
-                  model_layer: mart
+            - id: avg_{{taskrun.value}}
+              type: io.kestra.plugin.ee.assets.Table
+              namespace: "{{flow.namespace}}"
+              metadata:
+                model_layer: mart
 pluginDefaults:
   - type: io.kestra.plugin.jdbc.duckdb
     values:
