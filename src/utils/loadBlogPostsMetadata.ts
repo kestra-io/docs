@@ -1,4 +1,4 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 import yaml from 'js-yaml';
 import type { BlogPost } from '~/components/common/BlogList.vue';
 import generateId from '~/utils/generateId';
