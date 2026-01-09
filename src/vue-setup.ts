@@ -28,6 +28,7 @@ export default (app: App) => {
     app.component("NuxtImg", defineComponent(() => () => h("img")));
     app.component("ClientOnly", defineComponent({
         setup: (_, { slots }) => () => slots.default?.(),
+        inheritAttrs: false,
         props: ["fallback"]
     }));
 };

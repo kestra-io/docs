@@ -36,7 +36,9 @@ async function addToCache(data: any, keys: string[], ttl: number) {
 }
 
 export async function retrieveRepoReleases(repo: string) {
-    const cached = await getFromCache([]);
+    const cached = await getFromCache([repo]);
+
+    if (cached) return cached;
 
     const headers: Record<string, string> = { 'User-Agent': 'request' }
 
@@ -49,34 +51,39 @@ export async function retrieveRepoReleases(repo: string) {
             return result
         }
         console.error(`GitHub API error for ${repo}: ${response.status} ${response.statusText}`)
-        throw new Error(`GitHub API returned ${response.status}`)
+        return { versions: [] }
     }
 
     const releases = await response.json() as GitHubRelease[]
 
-    const versions: ReleaseInfo[] = await Promise.all(
-        releases
-            .filter(release => !release.draft)
-            .map(async (release) => {
-                const version = release.tag_name.replace(/^v/, '');
-                let kestraVersion: string | null = null;
-                const response = await fetch(`https://raw.githubusercontent.com/kestra-io/${repo}/${release.tag_name}/gradle.properties`, { headers });
-                if (response.ok) {
-                    const content = await response.text();
-                    kestraVersion = content.match(/kestraVersion\s*=\s*(.+)/)?.[1]?.trim() ?? null;
-                }
-                return {
-                    version,
-                    publishedAt: release.published_at,
-                    kestraVersion
-                };
-            })
-    )
+    try{
+        const versions: ReleaseInfo[] = await Promise.all(
+            releases
+                .filter(release => !release.draft)
+                .map(async (release) => {
+                    const version = release.tag_name.replace(/^v/, '');
+                    let kestraVersion: string | null = null;
+                    const response = await fetch(`https://raw.githubusercontent.com/kestra-io/${repo}/${release.tag_name}/gradle.properties`, { headers });
+                    if (response.ok) {
+                        const content = await response.text();
+                        kestraVersion = content.match(/kestraVersion\s*=\s*(.+)/)?.[1]?.trim() ?? null;
+                    }
+                    return {
+                        version,
+                        publishedAt: release.published_at,
+                        kestraVersion
+                    };
+                })
+        )
 
-    const result = { versions }
-    await addToCache(result, [], 3600)
+        const result = { versions }
+        await addToCache(result, [repo], 3600)
 
-    return result
+        return result
+    } catch (error) {
+        console.error(`Error processing releases for ${repo}:`, error);
+        return { versions: [] };
+    }
 }
 
 export const GET: APIRoute = async ({ params }) => {
