@@ -2,10 +2,10 @@
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
         :class="{open: isOpen, scrolled: props.scrolled, dark: isStories }">
         <div class="container-xl">
-            <component :is="LinkComponent" class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
+            <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
                 <img :src="isOpen || isStories ? '/logo-black.svg' : '/logo-white.svg'"
                     alt="Kestra, Open source declarative data orchestration" />
-            </component>
+            </NuxtLink>
 
             <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
                 <div class="download-logos" @click.stop>
@@ -47,13 +47,13 @@
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.product.items" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                             <strong v-if="item.tag" class="tag">{{ item.tag }}</strong>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                         </div>
@@ -72,45 +72,45 @@
                             <ul class="dropdown-column">
                                 <p class="column-caption">Capabilities</p>
                                 <li v-for="item in menuItems.solutions.capabilities" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Roles</p>
                                 <li v-for="item in menuItems.solutions.roles" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Industries</p>
                                 <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">Resources</p>
                                 <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                         </div>
@@ -128,36 +128,36 @@
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.resources.additionalItems" :key="item.link">
-                                    <component :is="LinkComponent" class="dropdown-item" :href="item.link" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" :href="item.link" @click="globalClick(true)">
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
                                         </div>
-                                    </component>
+                                    </NuxtLink>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <component :is="LinkComponent" class="nav-link" href="/plugins" role="button" @click="globalClick(true)">
+                        <NuxtLink class="nav-link" href="/plugins" role="button" @click="globalClick(true)">
                             <span>Plugins</span>
-                        </component>
+                        </NuxtLink>
                     </li>
                     <li class="nav-item">
-                        <component :is="LinkComponent" class="nav-link dropdown-toggle" href="/pricing" role="button"
+                        <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button"
                             @click="globalClick(true)">
                             <span>Pricing</span>
-                        </component>
+                        </NuxtLink>
                     </li>
                 </ul>
 
@@ -165,27 +165,27 @@
                     <li class="nav-item">
                         <GithubButton :small="true"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm" />
-                        <component :is="LinkComponent" @click="globalClick(true)"
+                        <NuxtLink @click="globalClick(true)"
                             class="d-none mb-1 mn-sm-0 btn btn-sm btn-secondary btn-sm me-0 me-sm-2 d-lg-inline-block"
                             href="/demo">
                             <span>
                                 Talk to us
                             </span>
-                        </component>
-                        <component :is="LinkComponent" @click="globalClick(true)"
+                        </NuxtLink>
+                        <NuxtLink @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm get-started"
                             href="/docs/getting-started/quickstart#start-kestra">
                             <span>
                                 Get Started!
                             </span>
-                        </component>
-                        <component :is="LinkComponent" @click="globalClick(true)"
+                        </NuxtLink>
+                        <NuxtLink @click="globalClick(true)"
                             class="d-lg-none d-sm-inline-block d-xs-block mb-1 mn-sm-0 btn btn-secondary btn-md"
                             href="/demo">
                             <span>
                                 Talk to Us
                             </span>
-                        </component>
+                        </NuxtLink>
                         <button @click="globalClick(true)" href="#" id="header-search-button"
                             class="btn btn-sm d-none d-lg-inline-block icon-button" data-bs-toggle="modal"
                             data-bs-target="#search-modal" title="Search">
@@ -212,7 +212,7 @@
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100 gap-2 py-lg-0">
                                         <li v-for="item in menuItems.product.items" :key="item.link">
-                                            <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                            <NuxtLink class="dropdown-item" :href="item.link"
                                                 @click="globalClick(true)">
                                                 <div>
                                                     <div class="same-row">
@@ -222,7 +222,7 @@
                                                     </div>
                                                     <p>{{ item.description }}</p>
                                                 </div>
-                                            </component>
+                                            </NuxtLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -237,7 +237,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.capabilities" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -246,7 +246,7 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                     </div>
@@ -256,7 +256,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.roles" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -264,7 +264,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                         <div class="menu-title">
@@ -272,7 +272,7 @@
                                         </div>
                                         <ul>
                                             <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -280,7 +280,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                     </div>
@@ -290,7 +290,7 @@
                                         </div>
                                         <ul class="d-flex flex-column w-100 list-unstyled">
                                             <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -298,7 +298,7 @@
                                                             <span>{{ item.title }}</span>
                                                         </div>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                     </div>
@@ -311,7 +311,7 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -320,14 +320,14 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-lg-6">
                                         <ul>
                                             <li v-for="item in menuItems.resources.additionalItems" :key="item.link">
-                                                <component :is="LinkComponent" class="dropdown-item" :href="item.link"
+                                                <NuxtLink class="dropdown-item" :href="item.link"
                                                     @click="globalClick(true)">
                                                     <div>
                                                         <div class="same-row">
@@ -336,7 +336,7 @@
                                                         </div>
                                                         <p>{{ item.description }}</p>
                                                     </div>
-                                                </component>
+                                                </NuxtLink>
                                             </li>
                                         </ul>
                                     </div>
