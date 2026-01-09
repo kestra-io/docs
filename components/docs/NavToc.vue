@@ -1,7 +1,7 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end" :class="props.class">
+    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
         <div>
-            <template v-if="links && links.length > 0" class="bd-contents-list">
+            <template v-if="links?.length" class="bd-contents-list">
                 <button
                     class="btn toc-toggle d-lg-none"
                     :class="{ collapsed: !tableOfContentsExpanded }"
@@ -31,7 +31,7 @@
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
+                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in links">
                             <li v-if="(tableOfContent.depth ?? 0) > 1 && (tableOfContent.depth ?? 0) < 6 && tableOfContent.text"
                                 @click="closeToc" class="table-content">
                                 <a @click.prevent="menuNavigate" :href="`#${tableOfContent.id}`"
@@ -53,7 +53,7 @@
                 </div>
             </template>
 
-            <div class="d-none d-lg-block pt-4 bd-social-list">
+            <div class="d-none d-lg-block pt-2 bd-social-list">
                 <SocialsList :editLink :stem :extension/>
             </div>
         </div>
@@ -62,23 +62,15 @@
 
 <script setup lang="ts">
     import {ref, computed, watch} from "vue";
+    import {useRoute} from "vue-router";
     import type {PluginMetadata} from "@kestra-io/ui-libs";
     import {useEventListener, useScroll} from "@vueuse/core";
+    import type {TocLink} from "~/server/api/plugins";
+    import type {ReleaseInfo} from "~/server/api/github-releases";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import SocialsList from "~/components/common/SocialsList.vue";
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue";
-    import { useBrowserLocation } from "@vueuse/core";
-    import type { ReleaseInfo } from "../../server/api/github-releases";
-
-    interface TocLink {
-        id: string;
-        text: string;
-        depth: number;
-        children?: TocLink[];
-    }
-
-    const location = useBrowserLocation();
 
     const props = withDefaults(
         defineProps<{
@@ -95,6 +87,7 @@
             "class"?: string;
         }>(),
         {
+            links: () => [],
             version: null,
             releasesUrl: null,
             categories: () => [],
@@ -104,9 +97,7 @@
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined);
 
-    const isPluginPage = computed(() => props.isPluginPage === true);
     const tableOfContentsExpanded = ref(false);
-    const generated = computed<TocLink[]>(() => props.links ?? []);
 
     const removeActiveClasses = (): void => {
         document.querySelectorAll(".depth-2, .depth-3").forEach((item) => {
@@ -158,7 +149,9 @@
             history.pushState(null, "", `#${id}`);
             window.dispatchEvent(new Event("hashchange"));
         } catch {
-            window.location.hash = id;
+            if(window?.location){
+                window.location.hash = id;
+            }
         }
 
         updateActiveLink(id);
@@ -193,8 +186,8 @@
             return;
         }
 
-        generated.value.forEach((link, i) => {
-            activateMenuItem(link, i, generated.value);
+        props.links?.forEach((link, i) => {
+            activateMenuItem(link, i, props.links);
             link.children?.forEach((child, idx) => {
                 activateMenuItem(child, idx, link.children || []);
             });
@@ -202,10 +195,6 @@
     };
 
     useEventListener("scroll", handleScroll);
-
-    watch(() => location.value.hash, (hash) => {
-        if (hash) scrollToElement(hash.substring(1));
-    }, { immediate: true });
 </script>
 
 <style lang="scss" scoped>
