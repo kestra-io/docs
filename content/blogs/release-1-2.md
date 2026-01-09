@@ -212,12 +212,12 @@ tasks:
           <% if arg.target == 'Oracle' %>
           type: io.kestra.plugin.jdbc.oracle.Batch
           from: "{{ << domain | slugify >>-download.uri }}"
-          table: public.< domain | slugify >>
+          table: public.<< domain | slugify >>
           <% elseif arg.target == 'Postgres' %>
           type: io.kestra.plugin.jdbc.postgresql.CopyIn
           from: "{{ outputs.<< domain | slugify >>-download.uri }}"
           url: jdbc:postgres://sample_<< arg.target | lower>>:5432/<<arg.env>>
-          table: public.< domain | slugify >>
+          table: public.<< domain | slugify >>
           <% endif %>
 <% endfor %>
 
@@ -250,7 +250,6 @@ tasks:
   - id: parallel_dev
     type: io.kestra.plugin.core.flow.Parallel
     tasks:
-
       - id: sequential_hr
         type: io.kestra.plugin.core.flow.Sequential
         tasks:
@@ -260,7 +259,7 @@ tasks:
         - id: hr-ingest
           type: io.kestra.plugin.jdbc.oracle.Batch
           from: "{{ hr-download.uri }}"
-          table: public.< domain | slugify >>
+          table: public.<< domain | slugify >>
 
       - id: sequential_manufacture
         type: io.kestra.plugin.core.flow.Sequential
@@ -271,7 +270,7 @@ tasks:
         - id: manufacture-ingest
           type: io.kestra.plugin.jdbc.oracle.Batch
           from: "{{ manufacture-download.uri }}"
-          table: public.< domain | slugify >>
+          table: public.<< domain | slugify >>
 
 pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql
@@ -336,7 +335,7 @@ Checks support multiple styles (`SUCCESS`, `WARNING`, `INFO`, `ERROR`; default `
 Here is an example checking on the KV Store before running the flow execution:
 
 ```yaml
-id: vm_provisionning
+id: vm_provisioning
 namespace: company.team
 
 checks:
@@ -348,7 +347,7 @@ checks:
 tasks:
   - id: VM_numbers
     type: io.kestra.plugin.core.log.Log
-    message: "Here are the VM provisionned: {{ kv('VMs') }}"
+    message: "Here are the provisioned VMs: {{ kv('VMs') }}"
 ```
 
 
