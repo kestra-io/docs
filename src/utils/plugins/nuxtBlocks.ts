@@ -15,9 +15,9 @@ export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
 
 export function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     return {
+        title: subGroupsWrappers?.[0]?.title,
+        description: subGroupsWrappers?.[0]?.description,
         body: {
-            title: subGroupsWrappers?.[0]?.title,
-            description: subGroupsWrappers?.[0]?.description,
             plugins: subGroupsWrappers,
             group: subGroupsWrappers?.[0]?.group,
         }
