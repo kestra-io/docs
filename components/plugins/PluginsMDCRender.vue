@@ -1,35 +1,36 @@
 <template>
-    <div class="bd-content" v-if="page">
-        <FeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
-                                :page="page"/>
-        <PluginIndex
-                    v-if="pluginType === undefined"
-                    class="plugin-index"
-                    :icons="icons"
-                    :plugins="pluginsWithoutDeprecated"
-                    :plugin-name="pluginName"
-                    :sub-group="subGroup"
-                    :routePath="routePath"
-                    @navigate="navigateTo($event)"
-        >
-            <template v-slot:markdown="{ content }">
-                <MDCParserAndRenderer :content />
+    <FeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release"
+                            :page="page"/>
+    <PluginIndex
+        v-if="pluginType === undefined"
+        class="plugin-index"
+        :icons
+        :plugins="pluginsWithoutDeprecated"
+        :plugin-name
+        :sub-group
+        :route-path
+        :subgroup-blueprint-counts
+        :metadata-map
+        :schemas
+        @navigate="navigateTo($event)"
+    >
+        <template v-slot:markdown="{ content }">
+            <MDCParserAndRenderer :content />
+        </template>
+    </PluginIndex>
+    <Suspense v-else>
+        <SchemaToHtml v-if="page.body.jsonSchema" class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType ?? ''"
+                :props-initially-expanded="true">
+            <template #markdown="{ content }">
+                <MDCParserAndRenderer v-if="content" :content="content" />
             </template>
-        </PluginIndex>
-        <Suspense v-else>
-            <SchemaToHtml v-if="page.body.jsonSchema" class="plugin-schema" :schema="page.body.jsonSchema" :plugin-type="pluginType ?? ''"
-                    :props-initially-expanded="true">
-                <template #markdown="{ content }">
-                    <MDCParserAndRenderer v-if="content" :content="content" />
-                </template>
-            </SchemaToHtml>
-        </Suspense>
-    </div>
+        </SchemaToHtml>
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { PluginIndex, SchemaToHtml } from '@kestra-io/ui-libs';
+import { PluginIndex, SchemaToHtml, type PluginMetadata } from '@kestra-io/ui-libs';
 import { getPluginsWithoutDeprecated } from '../../src/utils/plugins/getListOfPlugins';
 import FeatureScopeMarker from '../docs/FeatureScopeMarker.vue';
 import MDCParserAndRenderer from './MDCParserAndRenderer.vue';
@@ -40,8 +41,11 @@ const props = withDefaults(defineProps<{
     pluginType?: string,
     icons?: Record<string, string>,
     plugins?: any[],
-    pluginName?: string,
-    subGroup?: string
+    pluginName: string,
+    subGroup?: string,
+    subgroupBlueprintCounts?: Record<string, number>
+    metadataMap?: Record<string, PluginMetadata>,
+    schemas?: Record<string, {title?: string}>
 }>(), {
     icons: () => ({}),
     plugins: () => [],

@@ -16,67 +16,69 @@ export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
 export function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     return {
         body: {
+            title: subGroupsWrappers?.[0]?.title,
+            description: subGroupsWrappers?.[0]?.description,
             plugins: subGroupsWrappers,
             group: subGroupsWrappers?.[0]?.group,
         }
     };
 }
 
-const jsonSchemaPropertiesChildrenToc = (hrefPrefix = "", properties: Record<string, JSONProperty>, usePropertyTitle = false) => {
-    const children = [];
-
-    const sortedProperties = Object.entries(properties).sort(([_, valueA], [__, valueB]) => {
-        return Boolean(valueB.$required) === Boolean(valueA.$required) ? 0 : Boolean(valueA.$required) ? 1 : -1;
-    });
-
-    for (const [key, property] of sortedProperties) {
-        children.push({
-            id: hrefPrefix + key,
-            depth: 3,
-            text: (usePropertyTitle ? property.title : undefined) ?? key.split("_")[0],
-        });
-    }
-
-    return children;
+interface TocLink {
+    id: string;
+    depth: number;
+    text: string;
+    children?: TocLink[];
 }
 
 const tocFromJsonSchema = (schema: JSONSchema) => {
-    const links = [];
+    const buildPropertiesToc = (prefix: string, properties: Record<string, JSONProperty>): TocLink[] => {
+            return Object.entries(properties)
+                .sort(([_, a], [__, b]) => {
+                    return Boolean(b.$required) === Boolean(a.$required)
+                        ? 0
+                        : Boolean(a.$required)
+                            ? 1
+                            : -1;
+                })
+                .map(([key, prop]) => ({id: prefix + key, depth: 3, text: key.split("_")[0]}));
+        };
 
-    if (schema.properties?.["$examples"]) {
-        links.push({
-            id: 'examples',
-            depth: 2,
-            text: 'Examples'
-        });
-    }
+        const links: TocLink[] = [];
 
-    if (schema.properties?.properties) {
-        links.push({
-            id: 'properties',
-            depth: 2,
-            text: 'Properties',
-            children: jsonSchemaPropertiesChildrenToc("properties_", schema.properties.properties)
-        });
-    }
+        if (schema.properties?.["$examples"]) {
+            links.push({
+                id: "examples",
+                depth: 2,
+                text: "Examples"
+            });
+        }
 
-    if (schema.outputs?.properties) {
-        links.push({
-            id: 'outputs',
-            depth: 2,
-            text: 'Outputs',
-            children: jsonSchemaPropertiesChildrenToc("outputs_", schema.outputs.properties)
-        });
-    }
+        if (schema.properties?.properties) {
+            links.push({
+                id: "properties",
+                depth: 2,
+                text: "Properties",
+                children: buildPropertiesToc("properties_", schema.properties.properties)
+            });
+        }
 
-    if (schema.definitions) {
-        links.push({
-            id: 'definitions',
-            depth: 2,
-            text: 'Definitions',
-            children: jsonSchemaPropertiesChildrenToc(undefined, schema.definitions, true)
-        });
-    }
+        if (schema.outputs?.properties) {
+            links.push({
+                id: "outputs",
+                depth: 2,
+                text: "Outputs",
+                children: buildPropertiesToc("outputs_", schema.outputs.properties)
+            });
+        }
 
-    return links;
+        if (schema.properties?.["$metrics"]) {
+            links.push({
+                id: "metrics",
+                depth: 2,
+                text: "Metrics"
+            });
+        }
+
+        return links;
 };

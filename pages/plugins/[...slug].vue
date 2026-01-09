@@ -10,48 +10,20 @@
         <article class="bd-main order-1" :class="{full: page?.rightBar === false}">
             <div class="bd-title">
                 <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNamesHeading" />
-                <h1 v-if="page" class="py-0 title">
-                    <div v-if="currentPageIcon" class="pageIcon">
-                        <NuxtImg
-                            :src="currentPageIcon"
-                            :alt="headingTitle"
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            class="blurred-bg"
-                        />
-                        <NuxtImg
-                            :src="currentPageIcon"
-                            :alt="headingTitle"
-                            width="80"
-                            height="80"
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            class="page-icon"
-                        />
-                    </div>
-                    <div class="title-content d-flex flex-column justify-space-between w-100">
-                        <div class="d-flex align-items-center flex-wrap gap-3">
-                            <span>{{ headingTitle }}</span>
-                            <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
-                        </div>
-                        <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
+                <OneHeader
+                    :page="page"
+                    :heading-title="headingTitle"
+                    :plugin-type="pluginType"
+                    :root-plugin="rootPlugin"
+                    :current-page-icon="currentPageIcon"
+                >
+                    <MDC v-if="pluginType ? page?.title : page?.description" :value="pluginType ? page.title : page.description">
                             <template #default="mdcProps">
                                 <pre v-if="mdcProps?.error" style="color: white;">{{ mdcProps.error }}</pre>
                                 <ContentRenderer v-else-if="mdcProps?.body" class="desc markdown" :value="mdcProps" />
                             </template>
-                        </MDC>
-                    </div>
-                    <div v-if="rootPlugin?.license" class="title-actions d-flex flex-column gap-2 ps-4">
-                        <span class="btn enterprise-badge">Enterprise Edition</span>
-                        <NuxtLink href="/demo" class="btn btn-primary" target="_blank">
-                            Talk to us
-                        </NuxtLink>
-                    </div>
-                </h1>
+                    </MDC>
+                </OneHeader>
             </div>
 
             <PluginMDC
