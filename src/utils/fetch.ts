@@ -18,7 +18,6 @@ export async function $fetch<T = any>(url: string, init: RequestInit = {}): Prom
 
     const data = await response.json();
 
-    console.log(`Fetched data from ${url}`);
     cacheObject[url] = data;
     return data;
 }
