@@ -143,16 +143,14 @@ const blogs: {
     data: Omit<BlogPost, "date"> & {date: Date}
 }[] = await loadBlogPostsMetadata();
 
+
 const relatedBlogs = blogs
     .filter(b => b.data.plugins?.includes(pluginName))
     .sort((a, b) => {
         return a.data.date > b.data.date ? 1 : -1;
     });
 
-
-
 const rootPlugin = pluginsWithoutDeprecated?.find((p: Plugin) => p.subGroup === undefined)
-
 
 const currentSubgroupPlugin = (!subGroup || pluginType) ? undefined : pluginsWithoutDeprecated?.find(p => {
             const subgroupLastSegment = p.subGroup?.split(".").pop();
@@ -479,7 +477,7 @@ const elementTitle = (() => Object.fromEntries(
           relatedBlogs &&
           relatedBlogs.length > 0 && <RelatedBlogs posts={relatedBlogs.map(p => ({
             ...p.data,
-            path: p.id,
+            path: `/blogs/${p.id}`,
             date: p.data.date.toISOString()
         }))} />
       }
