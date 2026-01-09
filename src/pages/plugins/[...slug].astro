@@ -1,6 +1,5 @@
 ---
 export const prerender = false
-import { getCollection } from "astro:content";
 import Layout from "../../components/layout.astro";
 import PluginSidebar from "~/components/plugins/PluginSidebar.vue";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -21,6 +20,7 @@ import { getIcon } from "~/utils/plugins/getPluginIcon";
 import { retrieveRepoReleases } from "../api/github-releases";
 import OneHeader from "~/components/plugins/OneHeader.vue";
 import MDCParserAndRenderer from "../../components/MDCParserAndRenderer.astro";
+import type { BlogPost } from "~/components/common/BlogList.vue";
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? [];
 const pathname = new URL(Astro.request.url).pathname;
@@ -137,7 +137,11 @@ const {countByPlugins: blueprintCounts} = await $fetch<{ countByPlugins: Record<
                     )
 
 
-const blogs = await getCollection('blogs');
+// const blogs = await getCollection('blogs');
+const blogs: {
+    id: string,
+    data:Omit<BlogPost, "date"> & {date: Date}
+}[] = []
 const relatedBlogs = blogs
     .filter(b => b.data.plugins?.includes(pluginName))
     .sort((a, b) => {

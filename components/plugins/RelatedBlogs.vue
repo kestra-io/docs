@@ -1,6 +1,6 @@
 <template>
     <div v-if="posts && posts.length > 0" class="related-blogs">
-        <BlogList 
+        <BlogList
             :posts="posts"
             title="Latest Blog Posts"
             heading-id="latest-blog-posts"
@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from 'vue';
     import BlogList, { type BlogPost } from '../common/BlogList.vue';
 
     const props = withDefaults(defineProps<{
@@ -18,7 +19,7 @@
     })
 
     const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
-        dateStyle: "long" 
+        dateStyle: "long"
     })
 
     const posts = computed(() => props.posts ?? [])

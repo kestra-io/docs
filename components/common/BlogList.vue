@@ -26,6 +26,7 @@
         title: string;
         date: string;
         category?: string;
+        plugins?: string[];
     }
 
     const props = defineProps<{
