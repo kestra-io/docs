@@ -22,7 +22,7 @@ When the [orchestration layer](https://kestra.io/blogs/2023-09-13-choreography#o
 
 Here's what Kestra's data infrastructure actually looks like:
 
-![Kestra's internal analytics architecture](blogs/2026-01-06-how-kestra-runs-on-kestra/kestra-internal-analytics-architecture.png)
+![Kestra's internal analytics architecture](/blogs/2026-01-06-how-kestra-runs-on-kestra/kestra-internal-analytics-architecture.png)
 
 **Sources:**
 
