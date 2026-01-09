@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import LoadingIndicator from "astro-loading-indicator/component"
 import "@kestra-io/ui-libs/style.css";
 import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
@@ -63,6 +64,7 @@ const description = props.description ?? "Use declarative language to build simp
     <slot name="head" />
 
     <ClientRouter />
+    <LoadingIndicator color="#8405FF" threshold={0} />
 </head>
 <body>
     <Header client:load isStories={Boolean(props.isStories)} />
