@@ -8,10 +8,10 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev ./dist",
     "astro": "astro",
-    "pages:dev": "NITRO_PRESET=cloudflare-pages wrangler pages dev -- npm run dev",
-    "pages:build": "NITRO_PRESET=cloudflare-pages npm run build",
+    "pages:dev": "wrangler pages dev -- npm run dev",
+    "pages:build": "npm run build",
     "pages:deploy": "wrangler pages deploy --project-name docs ./dist",
     "pages:build-deploy": "npm run pages:build && npm run pages:deploy"
   },

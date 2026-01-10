@@ -67,11 +67,14 @@ const description = props.description ?? "Use declarative language to build simp
     <LoadingIndicator color="#8405FF" threshold={0} />
 </head>
 <body>
-    <Header client:load isStories={Boolean(props.isStories)} />
+    <Header client:load isStories={Boolean(props.isStories)} transition:persist />
     <div style="height: 60px;" />
-    <slot />
-    <LayoutFooter />
-    <LayoutFixed />
+    <div>
+        <slot />
+    </div>
+
+    <LayoutFooter transition:persist />
+    <LayoutFixed transition:persist />
     <script>
         import AOS from "aos";
 

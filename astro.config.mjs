@@ -88,6 +88,7 @@ export default defineConfig({
             ],
             external: [
                 "node:fs/promises",
+                "node:fs",
                 "node:url",
                 "node:path",
                 "node:crypto"

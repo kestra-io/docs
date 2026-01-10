@@ -7,7 +7,8 @@
     "name": "kestra-io",
     "compatibility_date": "2025-02-04",
     "compatibility_flags": [
-        "nodejs_compat"
+        "nodejs_compat",
+        "global_fetch_strictly_public"
     ],
     "pages_build_output_dir": "./dist",
     "observability": {
@@ -55,7 +56,6 @@
                 }
             ],
             "vars": {
-                "NITRO_PRESET": "cloudflare-pages",
                 "NUXT_SITE_ENV": "staging"
             }
         }
@@ -65,7 +65,7 @@
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
      */
-    "vars": { "NITRO_PRESET": "cloudflare-pages" }
+    // "vars": { },
     /**
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
