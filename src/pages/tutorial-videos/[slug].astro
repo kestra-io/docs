@@ -29,9 +29,12 @@ const currentCategoryFilter = slug === 'all' ? '' : currentCategory;
 const API_URL = `https://api.kestra.io/v1/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`;
 
 const tutorialVideo = await $fetch(API_URL);
+
+const title = `Video Tutorials: ${currentCategory}`
+const description = `Get started with our Video Tutorials: ${currentCategory}`;
 ---
 
-<Layout>
+<Layout title={title} description={description}>
     <VideosTutorialsList client:visible {...{tutorialVideo, page, itemsPerPage, currentCategory}} client:idle>
         <CommonPagination
             client:load

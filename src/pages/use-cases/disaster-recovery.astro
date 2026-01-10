@@ -12,6 +12,9 @@ import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue";
 import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue";
 import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue";
 
+const title = "Disaster Recovery with Kestra";
+const description = "Automate disaster recovery processes, secure your data, and ensure business continuity with Kestra.";
+
 const mainContent = [
     {
         title: "Automated Backup",
@@ -148,7 +151,7 @@ const dataOrchestration = [
     }
 ];
 ---
-<Layout title="Disaster Recovery with Kestra" description="Automate disaster recovery processes, secure your data, and ensure business continuity with Kestra.">
+<Layout title={title} description={description}>
     <UseCasesEngineersHeader
         client:load
         titleHtml="Disaster Recovery"

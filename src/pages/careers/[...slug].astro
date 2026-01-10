@@ -37,11 +37,9 @@ if (!page) {
     });
 }
 
+const title = page.title;
 ---
-<Layout
-    title="Join Us and Shape the Future of Orchestration Software"
-    description="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
->
+<Layout title={title}>
     <CareersHeader fullPath="/careers" client:load>
         <h1 data-aos="fade-left">{ page.title }</h1>
         <h4>

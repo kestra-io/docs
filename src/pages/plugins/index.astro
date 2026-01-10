@@ -26,8 +26,12 @@ const icons = Object.fromEntries(
     )
 );
 
+
+const title = "Hundreds of Plugins For All Your Orchestrations Needs";
+const description = "Connect Kestra with tools you already know and love";
+
 ---
-<Layout>
+<Layout title={title} description={description}>
     <PluginsLists
         client:idle
         plugins={pluginsData}

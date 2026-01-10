@@ -11,6 +11,10 @@ import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue";
 import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue";
 import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue";
 
+const title = "Kestra for Healthcare";
+const description = "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions";
+
+
 const challengesTitle = `<span>Key Benefits</span> of Using Kestra for<br/> Healthcare Workflows`;
 const cardsData = [
     {
@@ -80,14 +84,11 @@ const unlockContent = {
     ]
 };
 ---
-<Layout
-    title="Kestra for Healthcare"
-    description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
->
+<Layout title={title} description={description}>
     <UseCasesEngineersHeader
         client:load
         titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
-        description="Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
+        description={description}
         imageSrc="/landing/usecases/healthcare/header-hero.svg"
         imageAlt="Healthcare Workflows"
     />

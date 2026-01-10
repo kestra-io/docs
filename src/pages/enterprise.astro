@@ -5,8 +5,11 @@ import EnterpriseSecurity from '~/components/enterprise/Security.vue';
 import EnterpriseSuccessProgram from '~/components/enterprise/SuccessProgram.vue';
 import EnterpriseProjectDetails from '~/components/enterprise/ProjectDetails.vue';
 import EnterpriseOrchestraCore from '~/components/enterprise/OrchestraCore.vue';
+
+const title = "Get More Out of Your Data With the Enterprise Edition";
+const description = "Get full access of all the Open source features and unlock the full potential with Enterprise only features";
 ---
-<Layout>
+<Layout title={title} description={description}>
     <EnterpriseHeader />
     <div>
         <EnterpriseSecurity client:load />

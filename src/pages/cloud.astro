@@ -2,9 +2,11 @@
 import Layout from '../components/layout.astro';
 import CloudHeader from '~/components/cloud/Header.vue';
 import CloudFeatures from '~/components/cloud/Features.vue';
----
 
-<Layout>
+const title = "Kestra Cloud Early Adopter Program"
+const description = "Be among the first to experience Kestra Cloud with exclusive access before general availability"
+---
+<Layout title={title} description={description}>
      <div class="cloud">
          <CloudHeader client:load />
          <CloudFeatures client:load/>
