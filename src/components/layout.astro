@@ -12,14 +12,17 @@ import LayoutFixed from "~/components/layout/Fixed.vue";
 interface Props {
     title?: string;
     description?: string;
+    image?: string;
     isStories?: boolean;
 }
 
 const props = Astro.props;
 const currentOrigin = Astro.url.origin ?? "https://kestra.io";
+const slug = Astro.routePattern;
 
 const title = props.title ? props.title + " | Kestra" : "Kestra, Open Source Declarative Data Orchestration";
 const description = props.description ?? "Use declarative language to build simpler, faster, scalable and flexible workflows";
+const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
 ---
 <html lang="en" class="dark">
 <head>
@@ -51,20 +54,24 @@ const description = props.description ?? "Use declarative language to build simp
     <meta name="twitter:site" content="@kestra_io">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={`${currentOrigin}/og-image.png`}>
-    <meta name="twitter:image:alt" content="Kestra">
+    <meta name="twitter:image" content={image}>
+    <meta name="twitter:image:alt" content={title}>
 
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
-    <meta property="og:image:type" content="image/svg+xml">
+    {!props.image ? <meta property="og:image:type" content="image/svg+xml"> : ''}
     <meta property="og:image:alt" content={title}>
     <meta property="og:url" content={`${currentOrigin}`}>
-    <meta property="og:image" content={`${currentOrigin}/og-image.png`} />
+    <meta property="og:image" content={image} />
 
     <slot name="head" />
 
     <ClientRouter />
     <LoadingIndicator color="#8405FF" threshold={0} />
+
+    <script src="../scripts/zoom.js"></script>
+    <script src="../scripts/cookieconsent.ts"></script>
+    <script src="../scripts/bootstrap.js"></script>
 </head>
 <body>
     <Header client:load isStories={Boolean(props.isStories)} transition:persist />
@@ -75,6 +82,9 @@ const description = props.description ?? "Use declarative language to build simp
 
     <LayoutFooter transition:persist />
     <LayoutFixed transition:persist />
+    <script define:vars={{ slug }}>
+        window.astroClientConfig = { slug: slug }
+    </script>
     <script>
         import AOS from "aos";
 

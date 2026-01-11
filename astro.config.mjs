@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import * as path from "path";
 import cloudflare from "@astrojs/cloudflare";
@@ -14,6 +14,7 @@ import remarkCustomElements from "./utils/remark-custom-elements/index.mjs";
 import remarkClassname from "./utils/remark-classname/index.mjs";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import generateId from "./utils/generateId";
+import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 
@@ -59,8 +60,15 @@ export default defineConfig({
             }]
         ],
         rehypePlugins: [
-            rehypeHeadingIds
+            rehypeHeadingIds,
+            rehypeImgPlugin
         ]
+    },
+    env: {
+        schema: {
+            API_URL: envField.string({ context: "client", access: "public", optional: false, default: "https://api.kestra.io/v1" }),
+            GTM_ID: envField.string({ context: "client", access: "public", optional: false, default: "GTM-T4F85WRF" }),
+        }
     },
     vite: {
         resolve: {

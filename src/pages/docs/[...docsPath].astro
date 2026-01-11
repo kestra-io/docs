@@ -3,48 +3,55 @@
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import LayoutDocs from "../../components/layout-docs.astro";
 import NavToc from "~/components/docs/NavToc.vue";
-import Workflows from "~/components/features/scheduling/Workflows.vue";
+import HelpfulVote from "~/components/docs/HelpfulVote.vue";
+// @FIXME: prev next component is not working properly with astro
+// import PrevNext from "~/components/layout/PrevNext.vue";
 
 export async function getStaticPaths() {
-	const docsPages = await getCollection('docs');
-	return docsPages.map((doc) => ({
-		params: { docsPath: doc.id },
-		props: doc,
-	}));
+    const docsPages = await getCollection("docs");
+    return docsPages.map((doc) => ({
+        params: { docsPath: doc.id },
+        props: doc
+    }));
 }
-type Props = CollectionEntry<'docs'>;
+type Props = CollectionEntry<"docs">;
 
 const doc = Astro.props;
 const { Content, headings } = await render(doc);
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`}>
-  <h1 class="title">
-    {doc.data?.icon ? <img width="40" height="40" src={doc.data.icon} alt={`${doc.data.title} icon`} /> : null}
-    {doc.data?.title}
-  </h1>
-  <div class="bd-markdown">
-    <Content />
-  </div>
-    <NavToc client:visible links={headings.map(heading => ({
+    <h1 class="title">
+        {doc.data?.icon ? <img width="40" height="40" src={doc.data.icon} alt={`${doc.data.title} icon`} /> : null}
+        {doc.data?.title}
+    </h1>
+    <div class="bd-markdown">
+        <Content />
+
+        <HelpfulVote client:visible />
+        <!--<PrevNext :navigation="navigation" client:visible />-->
+    </div>
+    <NavToc
+        client:visible links={headings.map(heading => ({
         id: heading.slug,
         text: heading.text,
-        depth: heading.depth,
-    }))} slot="headings" />
+        depth: heading.depth
+    }))} slot="headings"
+    />
 </LayoutDocs>
 
 <style lang="scss">
-  @import "../../../assets/styles/variable";
+    @import "../../../assets/styles/variable";
 
-  .title {
-    font-size: $h2-font-size;
-    font-weight: 400;
-    line-height: 3.25rem;
-    margin: 0 auto;
-    margin-bottom: 2rem;
-  }
+    .title {
+        font-size: $h2-font-size;
+        font-weight: 400;
+        line-height: 3.25rem;
+        margin: 0 auto;
+        margin-bottom: 2rem;
+    }
 
-  .bd-markdown {
+    .bd-markdown {
         :global(table thead th) {
             font-size: $font-size-md;
             font-weight: 600;
@@ -74,7 +81,8 @@ const { Content, headings } = await render(doc);
             margin-bottom: 1rem;
             border: 1px solid #252526;
             border-radius: var(--bs-border-radius);
-            figure{
+
+            figure {
                 #{--code-background}: $black-2;
             }
         }

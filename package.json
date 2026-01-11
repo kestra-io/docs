@@ -58,8 +58,8 @@
   "devDependencies": {
     "@types/aos": "^3.0.7",
     "@types/bootstrap": "^5.2.10",
-    "@types/node": "^24.10.1",
     "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.10.1",
     "astro": "^5.16.4",
     "nitro-cloudflare-dev": "^0.2.2",
     "remark-code-import": "file:./utils/remark-code-import",

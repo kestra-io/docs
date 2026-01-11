@@ -39,7 +39,8 @@
 </template>
 
 <script setup lang="ts">
-    import {useWindowScroll, useWindowSize, useEventListener, } from "@vueuse/core";
+    import { computed, onMounted, reactive, ref } from "vue";
+    import { useWindowScroll, useEventListener } from "@vueuse/core";
 
     const props = defineProps<{
         story: {
@@ -50,7 +51,6 @@
         };
     }>();
 
-    const { $bootstrap } = useNuxtApp();
     const root = ref<HTMLElement | null>(null);
     const colRef = ref<HTMLElement | null>(null);
     const infoRef = ref<HTMLElement | null>(null);
@@ -125,7 +125,7 @@
     useEventListener(window, "resize", apply, { passive: true });
 
     onMounted(() => {
-        if (process.client && root.value) new $bootstrap.Tooltip(root.value);
+        if (root.value) new window.$bootstrap.Tooltip(root.value);
         apply();
     });
 

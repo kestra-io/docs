@@ -34,9 +34,7 @@
 
 <script setup>
     import {parseMarkdown} from '@nuxtjs/mdc/runtime'
-    import {slugify} from "@kestra-io/ui-libs";
 
-    const {$bootstrap} = useNuxtApp()
     const route = useRoute()
     const config = useRuntimeConfig();
     const slug = (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug);

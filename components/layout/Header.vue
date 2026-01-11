@@ -401,9 +401,8 @@ const LinkComponent = inject(linkSymbolInjectionKey, "a");
 onMounted(() => {
     // Wait for bootstrap to be available
     nextTick(() => {
-        const bootstrap = props.nuxtApp?.$bootstrap as any;
-        collapse = bootstrap?.Collapse
-            ? new bootstrap.Collapse('#main-header', { toggle: false })
+        collapse = window.$bootstrap.Collapse
+            ? new window.$bootstrap.Collapse('#main-header', { toggle: false })
             : undefined;
     });
 

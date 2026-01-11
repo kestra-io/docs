@@ -1,5 +1,5 @@
 import posthog from "posthog-js";
-import identify from "./identify";
+import identify from "../src/utils/identify";
 // FIXME: implement useGtm
 const gtm = null// useGtm();
 

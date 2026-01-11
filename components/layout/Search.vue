@@ -107,9 +107,8 @@
 
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue";
-    import MagnifyExpand from "vue-material-design-icons/MagnifyExpand";
+    import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue";
     import AiChatDialog from "../ai/AiChatDialog.vue";
-    import I from ""
 </script>
 
 <script>
@@ -347,8 +346,8 @@
                 }
             },
             close() {
-                if (process.client && this.$refs.modal) {
-                    const modal = this.$bootstrap.Modal.getInstance(this.$refs.modal);
+                if (this.$refs.modal) {
+                    const modal = window.$bootstrap.Modal.getInstance(this.$refs.modal);
                     if (modal) {
                         modal.hide();
                     }
@@ -364,8 +363,8 @@
             backToSearch() {
                 this.showAiDialog = false;
 
-                if (process.client && this.$refs.modal) {
-                    const searchModal = new this.$bootstrap.Modal(this.$refs.modal);
+                if (this.$refs.modal) {
+                    const searchModal = new window.$bootstrap.Modal(this.$refs.modal);
                     searchModal.show();
                 }
             }

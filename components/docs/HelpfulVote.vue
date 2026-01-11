@@ -74,13 +74,12 @@
     const isSubmitted = ref(false);
     const showThankYou = ref(false);
     const currentRating = ref(null);
-    
+
     let bootstrapModal = null;
-    const { $bootstrap } = useNuxtApp();
 
     onMounted(() => {
-        if (modalRef.value && $bootstrap?.Modal) {
-            bootstrapModal = new $bootstrap.Modal(modalRef.value);
+        if (modalRef.value && window.$bootstrap?.Modal) {
+            bootstrapModal = new window.$bootstrap.Modal(modalRef.value);
             modalRef.value.addEventListener('hidden.bs.modal', () => {
                 comment.value = '';
                 currentRating.value = null;
@@ -91,8 +90,8 @@
 
     const openModal = (isHelpful) => {
         currentRating.value = isHelpful;
-        feedbackText.value = isHelpful 
-            ? "Great! We're glad this was helpful." 
+        feedbackText.value = isHelpful
+            ? "Great! We're glad this was helpful."
             : "Sorry to hear that. How can we improve?";
         comment.value = '';
         isSubmitted.value = false;
@@ -111,11 +110,11 @@
 
     const submitFeedback = () => {
         if (currentRating.value === null) return;
-        
+
         if (comment.value.trim()) {
             posthog.capture('helpful', { positive: currentRating.value, comment: comment.value.trim() });
         }
-        
+
         isSubmitted.value = true;
     };
 </script>
