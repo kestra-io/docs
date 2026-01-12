@@ -1,7 +1,7 @@
 ---
 title: "Kestra 1.2 introduces Assets, Templated Custom Blueprints, Namespace Files Revision History, Concurrent Executions, and Dozens of New Plugins"
 description: "Kestra 1.2 delivers asset management, templated custom blueprints, namespace file versioning, enhanced concurrent execution capabilities, improved UI/UX, new secret managers, and new plugins."
-date: 2026-01-06T17:00:00
+date: 2026-01-13T17:00:00
 category: News & Product Updates
 authors:
   - name: "Benoit Pimpaud"
@@ -101,7 +101,26 @@ This workflow demonstrates:
 
 
 
-The Assets UI provides an interactive dependency graph visualizing upstream and downstream relationships, complete execution history tracking for each asset, and a unified inventory searchable by namespace, type, or metadata. You can automatically populate dropdowns in flow inputs as you can reference assets directly in expressions using Pebble templates like `'{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'`.
+The Assets UI provides an interactive dependency graph visualizing upstream and downstream relationships, complete execution history tracking for each asset, and a unified inventory searchable by namespace, type, or metadata. You can automatically populate dropdowns in flow inputs by referencing assets directly in expressions using Pebble templates:
+
+```yaml
+id: select_assets
+namespace: company.team
+
+inputs:
+  - id: assets
+    type: MULTISELECT
+    expression: '{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'
+
+tasks:
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{inputs.assets}}"
+    tasks:
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "{{taskrun.value}}"
+```
 
 Assets eliminate manual resource tracking by automatically maintaining an inventory as workflows execute, prevent orphaned resources by clearly mapping ownership, and enable self-service discovery through the UI. The dependency graph helps identify impact before changes, while execution history provides complete traceability for compliance and debugging.
 
@@ -311,14 +330,6 @@ tasks:
   - id: use_specific_version
     type: io.kestra.plugin.core.log.Log
     message: "{{ read('config.txt', version=3) }}"
-
-  - id: python_with_versioned_file
-    type: io.kestra.plugin.scripts.python.Script
-    inputFiles:
-      config.txt: nsfile:///config.txt.v2
-    script: |
-      with open('config.txt', 'r') as f:
-        print(f.read())
 ```
 :::
 
