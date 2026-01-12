@@ -109,6 +109,7 @@
     import Socials from "./Socials.vue";
     import Certifications from "./Certifications.vue";
     import Heart from "vue-material-design-icons/Heart.vue";
+    import LayoutNewsletter from "./Newsletter.vue";
 
     const PRODUCT_LINKS = [
         {text: "Platform Overview", href: "/overview"},
