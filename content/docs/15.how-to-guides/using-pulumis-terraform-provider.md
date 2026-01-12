@@ -9,7 +9,7 @@ topics:
 
 Utilize Pulumi's Terraform Provider to manage Kestra infrastructure.
 
-## Introduction
+# Using Pulumi's Terraform Provider to Integrate Kestra
 
 This post outlines the process of leveraging Pulumi's terraform-provider package to seamlessly integrate the Kestra Terraform provider into your Pulumi projects. This approach allows you to manage Kestra resources using the familiar Pulumi infrastructure-as-code workflow, even if the provider isn't officially published in the main Pulumi Registry.
 

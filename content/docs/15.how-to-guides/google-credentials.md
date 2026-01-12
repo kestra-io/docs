@@ -9,6 +9,8 @@ topics:
 
 Setup a Google Service Account inside of Kestra.
 
+# Configure Google Service Account
+
 When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
 
 ## Create Service Account inside of Google Cloud

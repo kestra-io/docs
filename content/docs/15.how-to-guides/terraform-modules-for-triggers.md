@@ -9,7 +9,7 @@ topics:
 
 Scale your codebase using Terraform to template and make scheduling a breeze
 
-## Introduction
+# Modularize your triggers and schedules with Terraform
 
 As seen in this [terraform templating](./terraform-templating.md) guide, you can leverage Terraform to template and define flows.
 

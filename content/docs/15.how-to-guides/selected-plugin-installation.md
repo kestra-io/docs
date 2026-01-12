@@ -8,6 +8,8 @@ topics:
 
 Install a selection of Kestra plugins in the open-source version. 
 
+# Install only selected Plugins in Kestra Open Source
+
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
 - Install specific plugins when using the `-no-plugins` Docker image

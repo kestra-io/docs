@@ -9,7 +9,7 @@ version: ">= 0.18.0"
 
 Run transformations on BigQuery using Dataform in Kestra
 
-## Intorduction to Dataform
+# Using Dataform in Kestra
 
 Dataform is modern data pipeline tool based on Extract-Load-Transform (ELT). It has been acquired by Google Cloud and has been integrated within the BigQuery.
 

@@ -8,7 +8,7 @@ topics:
 
 Connect your Neon serverless database to your workflows using the PostgreSQL plugin.
 
-## Overview
+# Connect Neon Database to Kestra
 
 Neon is an open-source database company whose mission is to take everything that developers love about Postgres — reliability, performance, extensibility — and deliver it as a serverless product.
 

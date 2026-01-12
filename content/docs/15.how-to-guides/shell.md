@@ -8,6 +8,8 @@ topics:
 
 Run Shell scripts directly inside of your Flows and generate outputs.
 
+# Run Shell scripts inside of your Flows
+
 You can execute bash script inside of a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell script too.
 
 ## Scripts

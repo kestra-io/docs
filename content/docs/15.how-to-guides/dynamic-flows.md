@@ -8,9 +8,7 @@ topics:
 
 Implement dynamic flows in Kestra.
 
-In this guide, we will look at ways to implement dynamic flows in Kestra.
-
-## Dynamic Flow using Inputs
+# Dynamic Flows using Inputs
 
 In this method, we will create a flow as a template, and the dynamic values in the template can then be filled using Kestra inputs to generate the desired flow. Let us see this with the help of an example.
 

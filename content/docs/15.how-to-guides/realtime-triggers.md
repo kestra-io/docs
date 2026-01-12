@@ -9,6 +9,8 @@ version: ">= 0.17.0"
 
 How to React to events as they happen with millisecond latency.
 
+# Realtime Triggers
+
 As soon as you add a Realtime Trigger to your workflow, Kestra starts an always-on thread that listens to the external system for new events. When a new event occurs, Kestra starts a workflow execution to process the event.
 
 Let us understand how we can implement Realtime Trigger for some of the messaging systems.

@@ -8,11 +8,11 @@ topics:
 
 How to enable databases to leverage Debezium tasks and triggers.
 
+# Debezium Tasks and Triggers
+
 In order to ensure the change data capture works seamlessly and to get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. Below are instructions on how to set this up.
 
-## Debezium with MySQL
-
-### Creating a user
+## Creating a user
 
 A Debezium MySQL connector requires a MySQL user account. This MySQL user must have appropriate permissions on all databases for which the Debezium MySQL connector captures changes.
 
@@ -47,7 +47,7 @@ If using a hosted option such as Amazon RDS or Amazon Aurora that does not allow
 mysql> FLUSH PRIVILEGES;
 ```
 
-### Enabling the binlog
+## Enabling the binlog
 
 You must enable binary logging for MySQL replication. The binary logs record transaction updates in a way that enables replicas to propagate those changes.
 
@@ -92,7 +92,7 @@ FROM performance_schema.global_variables WHERE variable_name='log_bin';
 
 1. If you run MySQL on Amazon RDS, you must enable automated backups for your database instance for binary logging to occur. If the database instance is not configured to perform automated backups, the binlog is disabled, even if you apply the settings described in the previous steps.
 
-### Enabling GTIDs
+## Enabling GTIDs
 
 Global transaction identifiers (GTIDs) uniquely identify transactions that occur on a server within a cluster. Though not required for a Debezium MySQL connector, using GTIDs simplifies replication and enables you to more easily confirm if primary and replica servers are consistent.
 
@@ -133,7 +133,7 @@ mysql> show global variables like '%GTID%';
 | gtid_mode                | ON    |
 +--------------------------+-------+
 
-### Configuring session timeouts
+## Configuring session timeouts
 
 When an initial consistent snapshot is made for large databases, your established connection could timeout while the tables are being read. You can prevent this behavior by configuring `interactive_timeout` and `wait_timeout` in your MySQL configuration file.
 
@@ -157,7 +157,7 @@ mysql> interactive_timeout=<duration-in-seconds>
 mysql> wait_timeout=<duration-in-seconds>
 ```
 
-### Enabling query log events
+## Enabling query log events
 
 You might want to see the original SQL statement for each binlog event. Enabling the `binlog_rows_query_log_events` option in the MySQL configuration file allows you to do this.
 
@@ -182,7 +182,7 @@ mysql> binlog_rows_query_log_events=ON
 - `ON` = enabled
 - `OFF` = disabled
 
-### Validating binlog row value options
+## Validating binlog row value options
 
 Verify the setting of the `binlog_row_value_options` variable in the database. To enable the connector to consume **UPDATE** events, this variable must be set to a value other than `PARTIAL_JSON`.
 
@@ -213,7 +213,7 @@ If the value of the variable is set to `PARTIAL_JSON`, run the following command
 mysql> set @@global.binlog_row_value_options="" ;
 ```
 
-### Running Debezium tasks on MySQL
+## Running Debezium tasks on MySQL
 
 You are now all set to run the Debezium MySQL based tasks and triggers. Here is an example flow using Debezium MySQL Realtime Trigger:
 

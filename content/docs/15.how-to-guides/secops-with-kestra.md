@@ -5,9 +5,10 @@ stage: Intermediate
 topics:
   - Integrations
 ---
+
 Operationalize SecOps benchmarks with Kestra.
 
-## Overview
+# SecOps with Kestra
 
 This how-to shows how to operationalize SecOps benchmarks with Kestra. You will download a CIS benchmark, store control recommendations as settings, and orchestrate compliance scans and automated remediation across multiple controls and teams.
 

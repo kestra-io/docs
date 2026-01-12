@@ -11,6 +11,8 @@ editions: ["EE", "Cloud"]
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
 
+# Use Azure Managed Workload on Kestra
+
 :::alert{type="info"}
 Note that this page is only relevant for the Enterprise Edition of Kestra. Should you require features such as integrations with Cloud-based secret managers, please contact us on sales@kestra.io or chat with us in our Slack community.
 :::

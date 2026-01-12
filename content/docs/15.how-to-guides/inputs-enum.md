@@ -8,7 +8,7 @@ topics:
 
 Input validation with the Enum data type
 
-## What are Inputs
+# Validate Inputs with Enum Data Type
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../05.workflow-components/05.inputs.md) documentation page.
 
@@ -64,4 +64,3 @@ By using the `defaults` attribute, you can specify a default input value that wi
 :::alert{type="info"}
 Note that it's not possible to launch a workflow execution without selecting a value from the dropdown menu. The requirement for selecting a value guarantees that the flow is only executed with valid input `values` defined by the `ENUM` type.
 :::
-

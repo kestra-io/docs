@@ -8,6 +8,8 @@ topics:
 
 Migrate from Shipyard to Kestra.
 
+# Migrate from Shipyard
+
 This is a guide for users who are considering migration of their workflows from [Shipyard](https://www.shipyardapp.com/) to [Kestra](https://kestra.io/).
 
 [Kestra](https://kestra.io/) is a language-agnostic orchestration platform allowing users to build workflows as code and from the UI. Similarly to Shipyard, Kestra leverages YAML for the definition of workflow logic and the extensive plugin ecosystem in Kestra makes the migration straightforward.
