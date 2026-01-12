@@ -1,6 +1,6 @@
 <template>
     <li v-if="item.isSection" class="section">
-        {{ item.title }}
+        {{ displayTitle }}
     </li>
     <li v-else :class="{['depth-' + depthLevel]: true}" >
         <a
@@ -10,7 +10,7 @@
             @click="handleNavClick($event, item.path)"
         >
             {{ item.emoji }}
-            {{ item.title }}
+            {{ displayTitle }}
         </a>
         <a
             v-else-if="!item.hideSidebar"
@@ -19,7 +19,7 @@
             @click="toggleWithChildrenHandling(item.path)"
         >
             {{ item.emoji }}
-            {{ item.title }}
+            {{ displayTitle }}
         </a>
         <template v-if="filteredChildren.length > 0 && !item.hideSubMenus">
             <ChevronDown
@@ -68,6 +68,7 @@ export interface NavigationItem {
     isPage?: boolean;
     path: string;
     title: string;
+    sidebarTitle?: string;
     hideSubMenus?: boolean;
     hideSidebar?: boolean;
     emoji?: string;
@@ -85,6 +86,7 @@ const props = defineProps<{
 const activeSlug = inject(activeSlugInjectionKey, ref(''))
 const isActive = computed(() => normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)))
 const toggled = ref<boolean>(isActive.value)
+const displayTitle = computed(() => props.item.sidebarTitle || props.item.title)
 
 onMounted(() => {
     const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()

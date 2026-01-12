@@ -56,7 +56,7 @@
         const {data: fetched, error} = await useAsyncData(
             `NavSideBar-docs`,
             async () => {
-                const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus']);
+                const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus', 'sidebarTitle']);
 
                 if (data && !data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
                     data[0].children.splice(data[0].children.length - 3, 0, {

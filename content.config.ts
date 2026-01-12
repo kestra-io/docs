@@ -10,6 +10,7 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string(),
         icon: z.string(),
+        sidebarTitle: z.string().optional(),
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE"])).optional(),

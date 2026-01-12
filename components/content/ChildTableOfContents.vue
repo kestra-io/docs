@@ -32,7 +32,7 @@
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => queryCollectionNavigation(CollectionNames.docs).andWhere(query =>
+                () => queryCollectionNavigation(CollectionNames.docs, ['sidebarTitle']).andWhere(query =>
                     query
                         .where('path', 'LIKE', `${currentPage}/%`)
                         .where('path', '<>', currentPage)
@@ -58,7 +58,7 @@
         render(ctx) {
             const {dir, max} = ctx;
 
-            const renderLink = (link) => h(NuxtLink, {to: link.path}, () => link.title);
+            const renderLink = (link) => h(NuxtLink, {to: link.path}, () => link.sidebarTitle || link.title);
 
             const renderLinks = (data, level) => {
                 return h(
