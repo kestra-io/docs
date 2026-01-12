@@ -8,7 +8,7 @@
             <main>
                 <slot />
             </main>
-            <LayoutFooter :class="{ 'plugins-page': isPluginsPage }" />
+            <LayoutFooter />
             <LayoutFixed />
         </div>
     </div>
@@ -55,8 +55,6 @@
         const path = route.path;
         return innerContent && innerContent.length > 0 && path === '/'
     })
-
-    const isPluginsPage = computed(() => route.path.startsWith('/plugins'))
 
     const nuxtApp = useNuxtApp();
 
