@@ -156,52 +156,50 @@ const generateTagName = (task: string) => {
     </div>
 </Layout>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../../../assets/styles/variable";
 
     p {
         color: $white;
     }
 
-    .story-container {
-        :global(.bd-markdown) {
-            :global(p) {
-                font-size: $h6-font-size;
-                line-height: calc($spacer * 1.6);
-            }
+    :deep(.bd-markdown) {
+        p {
+            font-size: $h6-font-size;
+            line-height: calc($spacer * 1.6);
+        }
 
-            :global(h2) {
-                color: $white;
-                margin-top: auto;
-                padding-top: 3rem;
-                margin-bottom: 1rem;
-                font-size: calc($font-size-base * 1.8) !important;
-                font-weight: 400 !important;
-                line-height: calc($spacer * 2.7);
-                border-left: none;
-                padding-left: 0 !important;
+        h2 {
+            color: $white;
+            margin-top: auto;
+            padding-top: 3rem;
+            margin-bottom: 1rem;
+            font-size: calc($font-size-base * 1.8) !important;
+            font-weight: 400 !important;
+            line-height: calc($spacer * 2.7);
+            border-left: none;
+            padding-left: 0 !important;
 
-                &:before {
-                    display: none;
-                }
+            &:before {
+                display: none;
             }
+        }
 
-            :global(h3) {
-                margin-top: calc($spacer * 4.12);
-                margin-bottom: 3rem;
-                padding-left: calc($spacer * 0.6) !important;
-                font-size: calc($font-size-base * 2.25);
-                line-height: calc($spacer * 2.3);
-            }
+        h3 {
+            margin-top: calc($spacer * 4.12);
+            margin-bottom: 3rem;
+            padding-left: calc($spacer * 0.6) !important;
+            font-size: calc($font-size-base * 2.25);
+            line-height: calc($spacer * 2.3);
+        }
 
-            :global(ul > li::marker) {
-                color: #736BCD ;
-            }
+        ul > li::marker {
+            color: #736BCD ;
+        }
 
-            :global(blockquote) {
-                border-left: 4px solid var(--bs-gray-500);
-                padding-left: $spacer;
-            }
+        blockquote {
+            border-left: 4px solid var(--bs-gray-500);
+            padding-left: $spacer;
         }
     }
 

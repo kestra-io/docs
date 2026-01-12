@@ -5,13 +5,7 @@ import identify from "../utils/identify";
 import { API_URL } from "astro:env/client";
 import { GTM_ID } from "astro:env/client";
 
-declare global {
-    interface Window {
-        dataLayer: Array<any>;
-        astroClientConfig: {slug: string};
-        $bootstrap: {Modal: any, Collapse: any, Tooltip: any};
-    }
-}
+
 
 const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
 const cookieConsent = CookieConsent;

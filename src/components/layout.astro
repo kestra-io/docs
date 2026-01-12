@@ -6,6 +6,7 @@ import "../../assets/styles/vendor.scss";
 import "../../assets/styles/app.scss";
 import "../../assets/styles/theme.scss";
 import Header from "~/components/layout/Header.vue";
+import Search from "~/components/layout/Search.vue";
 import LayoutFooter from "~/components/layout/Footer.vue";
 import LayoutFixed from "~/components/layout/Fixed.vue";
 
@@ -75,6 +76,7 @@ const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
 </head>
 <body>
     <Header client:load isStories={Boolean(props.isStories)} transition:persist />
+    <Search client:load />
     <div style="height: 60px;" />
     <div>
         <slot />

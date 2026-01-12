@@ -97,7 +97,9 @@
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
                 <div class="modal-body row bg-dark-4">
-                    <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
+                    <Suspense>
+                        <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
+                    </Suspense>
                 </div>
             </div>
         </div>
@@ -119,6 +121,7 @@
     import PowerPlugOutline from "vue-material-design-icons/PowerPlugOutline.vue";
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import posthog from "posthog-js";
+    import { API_URL } from "astro:env/client";
 
     export default {
         data() {
@@ -134,16 +137,12 @@
                 showAiDialog: false,
             }
         },
-        created() {
-            if (process.client) {
-                window.addEventListener('keydown', this.handleKeyboard);
-            }
+        mounted() {
+            window.addEventListener('keydown', this.handleKeyboard);
         },
         unmounted() {
-            if (process.client) {
-                window.removeEventListener('keydown', this.handleKeyboard);
-                document.documentElement.style.removeProperty("--top-bar-height");
-            }
+            window.removeEventListener('keydown', this.handleKeyboard);
+            document.documentElement.style.removeProperty("--top-bar-height");
         },
         computed: {
             allSum() {
@@ -156,7 +155,7 @@
             focusSearch() {
                 document.querySelector('#search-input').value = '';
                 document.querySelector('#search-input').focus();
-                if (this.$route.path.startsWith('/plugins')) {
+                if (window.location.pathname.startsWith('/plugins')) {
                     this.selectedFacet = 'PLUGINS';
                 } else {
                     this.selectedFacet = undefined;
@@ -181,7 +180,7 @@
                 this.loading = true;
 
                 this.searchValue = value;
-                return axios.get(`${this.$config.public.apiUrl}/search`, {
+                return axios.get(`${API_URL}/search`, {
                     params: {
                         q: value,
                         type: this.selectedFacet,

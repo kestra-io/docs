@@ -11,16 +11,14 @@
                 </div>
             </div>
 
-            <div v-if="messages.length === 0" class="examples">
+            <div v-if="messages.length === 0 && randomQuestion" class="examples">
                 <h6>EXAMPLE QUESTIONS</h6>
                 <div class="cards">
-                    <ClientOnly>
-                        <template v-for="(question, index) in randomQuestion.sort(() => .5 - Math.random()).slice(0, 3)" :key="index">
-                            <div class="card" @click="askQuestion(question)">
-                                {{ question }}
-                            </div>
-                        </template>
-                    </ClientOnly>
+                    <template v-for="(question, index) in randomQuestion.sort(() => .5 - Math.random()).slice(0, 3)" :key="index">
+                        <div class="card" @click="askQuestion(question)">
+                            {{ question }}
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -38,11 +36,7 @@
                         <div class="bubble">
                             <template v-if="message.role === 'assistant'">
                                 <div v-if="message.markdown" @click="handleContentClick">
-                                    <ContentRenderer
-                                        class="markdown prose prose-sm"
-                                        :value="message.markdown"
-                                        :components="proseComponents"
-                                    />
+                                    <MDCParserAndRenderer class="bd-markdown" :content="message.markdown" />
                                 </div>
 
                                 <div v-if="isLoading && messageIndex === messages.length - 1 && !message.content" class="loading">
@@ -107,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-    // @ts-ignore - EventSourceParserStream might not have proper types
+    import { onMounted, ref } from "vue";
     import posthog from "posthog-js";
     import {EventSourceParserStream} from 'eventsource-parser/stream'
     import AiChatHeader from "./AiChatHeader.vue"
@@ -115,7 +109,8 @@
     import TrashCan from "vue-material-design-icons/TrashCan.vue"
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
-    import {extractSourcesFromMarkdown, isInternalLink} from '../../utils/sources'
+    import {extractSourcesFromMarkdown, isInternalLink} from "~/utils/sources.ts"
+    import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
 
     interface Message {
         content: string
@@ -147,40 +142,28 @@
         message?: string
     }
 
-    const {parseMarkdown} = await import("@nuxtjs/mdc/runtime")
-
-    const randomQuestion = [
-        "How to add secrets?",
-        "How to configure my internal storage?",
-        "What are main differences between Open Source and Enterprise?",
-        "How to sync my flows with Git?",
-        "How to set up CI/CD for kestra flows?",
-        "What is a task runner?",
-        "How to handle errors & retry on flow?",
-        "How to run Python script?",
-        "How to schedule flow?",
-        "How to write expression for previous tasks outputs?",
-        "How to deploy Kestra inside Kubernetes?",
-        "How to prevent concurrent execution of the same flow?",
-        "How to trigger a flow after another one?",
-        "How to run a Ansible playbook?",
-        "How to run dbt?",
-        "How to receive an alert on flow failure?",
-    ]
-
-    // make MDCRenderer use the prose components of this content
-    const proseComponentsImports: { [key: string]: { default: Component } } = import.meta.glob("~/components/content/Prose*.vue", {eager: true})
-    const proseComponents: Record<string, Component> = {}
-    for (const path in proseComponentsImports) {
-        // extract the component name from the file path
-        // example: `file/path/ProsePre.vue` => `pre`
-        let compName = path.split("/").pop()!.slice(5, -4);
-        // components like ProseCodeInline should resolve to just "code" for Nuxt to take it
-        compName = compName.charAt(0).toLowerCase() + compName.slice(1).replace(/[A-Z].*/g, "");
-        if (compName) {
-            proseComponents[compName] = proseComponentsImports[path].default
-        }
-    }
+    // random client must be client only
+    const randomQuestion = ref<Array<string>>();
+    onMounted(() => {
+        randomQuestion.value = [
+            "How to add secrets?",
+            "How to configure my internal storage?",
+            "What are main differences between Open Source and Enterprise?",
+            "How to sync my flows with Git?",
+            "How to set up CI/CD for kestra flows?",
+            "What is a task runner?",
+            "How to handle errors & retry on flow?",
+            "How to run Python script?",
+            "How to schedule flow?",
+            "How to write expression for previous tasks outputs?",
+            "How to deploy Kestra inside Kubernetes?",
+            "How to prevent concurrent execution of the same flow?",
+            "How to trigger a flow after another one?",
+            "How to run a Ansible playbook?",
+            "How to run dbt?",
+            "How to receive an alert on flow failure?",
+        ]
+    })
 
     const emit = defineEmits<{
         close: []
@@ -282,7 +265,8 @@
             if ((codeBlockCount % 2 !== 0) || (inlineCodeCount % 2 !== 0)) {
                 return;
             }
-            messages.value[index].markdown = await parseMarkdown(rawMd);
+
+            messages.value[index].markdown = rawMd;
         } catch (e) {
             // Silent fail for markdown parsing
         }
