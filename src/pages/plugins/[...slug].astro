@@ -433,7 +433,9 @@ const elementTitle = (() => Object.fromEntries(
               {rootPlugin}
               {currentPageIcon}
             >
-                {headingDescription ? <MDCParserAndRenderer content={headingDescription} /> : null}
+                {headingDescription ? <div class="desc markdown" >
+                    <MDCParserAndRenderer content={headingDescription} />
+                </div> : null}
             </OneHeader>
           )
         }
@@ -607,20 +609,21 @@ const elementTitle = (() => Object.fromEntries(
             @include media-breakpoint-down(sm) {
                 gap: 0 calc($spacer * 7);
             }
+
+            :global(.bd-toc strong) {
+                margin-left: 1.5rem;
+                color: var(--ks-content-tertiary);
+                font-weight: normal;
+                padding-bottom: 0;
+            }
+
+            :global(.bd-toc nav) {
+                border: 0;
+                padding: 0;
+            }
         }
 
 
-        :global(.bd-toc strong) {
-            margin-left: 1.5rem;
-            color: var(--ks-content-tertiary);
-            font-weight: normal;
-            padding-bottom: 0;
-        }
-
-        :global(.bd-toc nav) {
-            border: 0;
-            padding: 0;
-        }
 
         .desc {
             font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
@@ -659,55 +662,57 @@ const elementTitle = (() => Object.fromEntries(
         }
     }
 
-    :global(p) {
-        line-height: 1.75rem;
-        font-size: 1rem;
-    }
-
-    :global(.bd-markdown > h2) {
-        margin-top: calc($spacer * 4.12);
-        border-top: 1px solid $black-6;
-        padding-top: calc($spacer * 3.125);
-        margin-bottom: 2rem;
-
-        a {
-            border-left: 5px solid $purple-36;
-            padding-left: calc($spacer * 0.6);
-            font-size: calc($font-size-base * 1.87);
+    .bd-main{
+        :global(p) {
+            line-height: 1.75rem;
+            font-size: 1rem;
         }
-    }
+
+        :global(.bd-markdown > h2) {
+            margin-top: calc($spacer * 4.12);
+            border-top: 1px solid $black-6;
+            padding-top: calc($spacer * 3.125);
+            margin-bottom: 2rem;
+
+            a {
+                border-left: 5px solid $purple-36;
+                padding-left: calc($spacer * 0.6);
+                font-size: calc($font-size-base * 1.87);
+            }
+        }
 
 
-    :global(p > a) {
-        text-decoration: underline;
-    }
+        :global(p > a) {
+            text-decoration: underline;
+        }
 
-    :global(h2 > a) {
-        font-weight: 600;
-        line-height: 2.375rem;
-        margin: 0;
-    }
+        :global(h2 > a) {
+            font-weight: 600;
+            line-height: 2.375rem;
+            margin: 0;
+        }
 
-    :global(h3 > a) {
-        color: $gray-200 !important;
-        font-size: 18.4px;
-        font-weight: 600;
-        line-height: 2.375rem;
-    }
+        :global(h3 > a) {
+            color: $gray-200 !important;
+            font-size: 18.4px;
+            font-weight: 600;
+            line-height: 2.375rem;
+        }
 
-    :global(h4 > a) {
-        color: $white !important;
-        font-weight: 600;
-        font-size: 1rem;
-    }
+        :global(h4 > a) {
+            color: $white !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
 
-    :global(h5) {
-        color: $white !important;
-        font-weight: 600;
-    }
+        :global(h5) {
+            color: $white !important;
+            font-weight: 600;
+        }
 
-    :global(.bd-main h3), :global(.bd-main h4) {
-        padding-top: 0;
+        :global(.bd-main h3), :global(.bd-main h4) {
+            padding-top: 0;
+        }
     }
 
     .bd-main :global(p > a),

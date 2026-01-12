@@ -8,8 +8,8 @@ export interface NavItem {
 }
 
 export function prevNext(navigation: NavItem[], path: string): { prev: NavItem | null | undefined; next: NavItem | null | undefined } {
-    let prev: NavItem | null = null;
-    let next: NavItem | null = null;
+    let prev: NavItem | undefined;
+    let next: NavItem | undefined;
     let found = false;
 
     const recursiveFetch = (current: NavItem) => {
@@ -42,7 +42,7 @@ export function prevNext(navigation: NavItem[], path: string): { prev: NavItem |
         // we're at a section's root
         prev = undefined;
         next = navigation[0].children?.[1];
-    } else if (prev === null) {
+    } else if (prev === undefined) {
         prev = navigation[0];
     }
     return { prev, next };
