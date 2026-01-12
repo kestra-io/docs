@@ -27,8 +27,8 @@ export default (app: App) => {
     }));
     app.component("NuxtImg", defineComponent({
         setup: (props, { slots }) => () => h("img", {
-            width: parseInt(props.width),
-            height: parseInt(props.height),
+            width: props.width,
+            height: props.height,
             src: props.src,
             alt: props.alt
         }),

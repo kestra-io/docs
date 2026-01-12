@@ -65,6 +65,22 @@ const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
     <meta property="og:url" content={`${currentOrigin}`}>
     <meta property="og:image" content={image} />
 
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://api.kestra.io" />
+    <link rel="dns-prefetch" href="https://eu.i.posthog.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google.com" />
+    <link rel="dns-prefetch" href="https://region1.analytics.google.com/" />
+    <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
+    <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
+    <link rel="dns-prefetch" href="https://js-eu1.hs-analytics.net/" />
+    <link rel="dns-prefetch" href="https://api-eu1.hubapi.com" />
+    <link rel="dns-prefetch" href="https://track-eu1.hubspot.com" />
+    <link rel="dns-prefetch" href="https://perf-eu1.hsforms.com" />
+    <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
+    <link rel="dns-prefetch" href="https://api.cr-relay.com" />
+
     <slot name="head" />
 
     <ClientRouter />
