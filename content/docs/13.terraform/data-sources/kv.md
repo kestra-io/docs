@@ -6,7 +6,7 @@ description: |-
   Use this data source to access value for an existing Key-Value pair.
 ---
 
-# kestra_kv (Data Source)
+# Terraform Data Source: kestra_kv
 
 Use this data source to access value for an existing Key-Value pair.
 

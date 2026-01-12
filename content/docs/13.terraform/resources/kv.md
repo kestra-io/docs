@@ -6,7 +6,7 @@ description: |-
   Manages a Kestra Key-value pair.
 ---
 
-# kestra_kv (Resource)
+# Terraform Resource: kestra_kv
 
 Manages a Kestra Key-value pair.
 

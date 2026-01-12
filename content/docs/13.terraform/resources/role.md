@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_role (Resource)
+# Terraform Resource: kestra_role
 
 Manages a Kestra Role.
 

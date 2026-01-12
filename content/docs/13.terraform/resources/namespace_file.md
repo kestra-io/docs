@@ -6,7 +6,7 @@ description: |-
   Manages a Kestra Namespace File.
 ---
 
-# kestra_namespace_file (Resource)
+# Terraform Resource: kestra_namespace_file
 
 Manages a Kestra Namespace File.
 

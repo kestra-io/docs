@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_service_account_api_tokens (Data Source)
+# Terraform Data Source: kestra_service_account_api_tokens
 
 Use this data source to access information about the API tokens of a Kestra Service Account.
 

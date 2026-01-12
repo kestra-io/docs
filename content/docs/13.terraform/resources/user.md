@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_user (Resource)
+# Terraform Resource: kestra_user
 
 Manages a Kestra User.
 

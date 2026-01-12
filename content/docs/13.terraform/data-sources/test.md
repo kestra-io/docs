@@ -6,7 +6,7 @@ description: |-
   Test data source
 ---
 
-# kestra_test (Data Source)
+# Terraform Data Source: kestra_test
 
 Test data source
 

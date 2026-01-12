@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_namespace_secret (Resource)
+# Terraform Resource: kestra_namespace_secret
 
 Manages a Kestra Namespace Secret.
 

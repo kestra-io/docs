@@ -6,7 +6,7 @@ description: |-
   Use this data source to access information about an existing Namespace File
 ---
 
-# kestra_namespace_file (Data Source)
+# Terraform Data Source: kestra_namespace_file
 
 Use this data source to access information about an existing Namespace File
 

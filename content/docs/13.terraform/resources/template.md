@@ -6,7 +6,7 @@ description: |-
   Manages a Kestra Template.
 ---
 
-# kestra_template (Resource)
+# Terraform Resource: kestra_template
 
 Manages a Kestra Template.
 

@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_tenant (Resource)
+# Terraform Resource: kestra_tenant
 
 Manages a Kestra Tenant.
 

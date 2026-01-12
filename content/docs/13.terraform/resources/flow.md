@@ -6,7 +6,7 @@ description: |-
   Manages a Kestra Flow.
 ---
 
-# kestra_flow (Resource)
+# Terraform Resource: kestra_flow
 
 Manages a Kestra Flow.
 

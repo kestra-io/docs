@@ -6,7 +6,7 @@ description: |-
   Manages a Dashboard resource.
 ---
 
-# kestra_dashboard (Resource)
+# Terraform Resource: kestra_dashboard
 
 Manages a Dashboard resource.
 

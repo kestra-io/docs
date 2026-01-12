@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_user_password (Resource)
+# Terraform Resource: kestra_user_password
 
 Manages a Kestra User Basic Auth Password.
 

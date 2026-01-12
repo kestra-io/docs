@@ -6,7 +6,7 @@ description: |-
   Use this data source to access information about an existing Kestra Flow
 ---
 
-# kestra_flow (Data Source)
+# Terraform Data Source: kestra_flow
 
 Use this data source to access information about an existing Kestra Flow
 

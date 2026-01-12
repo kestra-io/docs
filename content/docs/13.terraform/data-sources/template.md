@@ -6,7 +6,7 @@ description: |-
   Use this data source to access information about an existing Kestra Template
 ---
 
-# kestra_template (Data Source)
+# Terraform Data Source: kestra_template
 
 Use this data source to access information about an existing Kestra Template
 

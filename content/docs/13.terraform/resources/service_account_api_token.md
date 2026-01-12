@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_service_account_api_token (Resource)
+# Terraform Resource: kestra_service_account_api_token
 
 Manages a Kestra Service Account Api Token.
 

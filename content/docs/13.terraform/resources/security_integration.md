@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_security_integration (Resource)
+# Terraform Resource: kestra_security_integration
 
 Manages a Kestra Security Integration. Note that when imported URI and secret token are not provided.
 

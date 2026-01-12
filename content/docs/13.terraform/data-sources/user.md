@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_user (Data Source)
+# Terraform Data Source: kestra_user
 
 Use this data source to access information about an existing Kestra User.
 

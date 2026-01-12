@@ -7,7 +7,7 @@ description: |-
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
-# kestra_service_account (Data Source)
+# Terraform Data Source: kestra_service_account
 
 Use this data source to access information about an existing Kestra Service Account.
 

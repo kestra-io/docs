@@ -6,7 +6,7 @@ description: |-
   Test resource
 ---
 
-# kestra_test (Resource)
+# Terraform Resource: kestra_test
 
 Test resource
 
