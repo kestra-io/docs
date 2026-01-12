@@ -124,7 +124,7 @@ const pluginsWithoutDeprecated =
                 : page.body?.plugins ?? []
         )
 const subGroupWrapper = pluginsWithoutDeprecated.find(p => slugify(subGroupName(p)) === subGroup);
-const {pageIcon: currentPageIcon, icons: subGroupsIcons} = await getIcon(
+const { currentPageIcon, subGroupsIcons } = await getIcon(
     pluginName,
     pluginType,
     page.body.group,
