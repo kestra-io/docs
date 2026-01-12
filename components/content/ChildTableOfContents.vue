@@ -32,7 +32,7 @@
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => queryCollectionNavigation(CollectionNames.docs, ['sidebarTitle']).andWhere(query =>
+                () => queryCollectionNavigation(CollectionNames.docs, ["sidebarTitle"]).andWhere(query =>
                     query
                         .where('path', 'LIKE', `${currentPage}/%`)
                         .where('path', '<>', currentPage)

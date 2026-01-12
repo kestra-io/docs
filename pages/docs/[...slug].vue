@@ -4,7 +4,7 @@
         <article v-if="page" class="bd-main order-1 docs"
                  :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
-                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.sidebarTitle ?? page.title"/>
                 <h1 v-if="page?.title" class="py-0 title">
                     <NuxtImg
                         v-if="page.icon"
@@ -105,7 +105,7 @@
     const transformTitle = (text) => {
         return text
             .replace(/([A-Z])/g, '&#x200B;$1')
-            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2015-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
     if (slug.value.endsWith(".md")) {
