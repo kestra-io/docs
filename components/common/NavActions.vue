@@ -34,8 +34,17 @@
     const isFirstPage = computed(() => currentPage.value <= 1);
     const isLastPage = computed(() => currentPage.value >= totalPages.value);
 
-    function prev() { if (!isFirstPage.value) currentPage.value -= 1; }
-    function next() { if (!isLastPage.value) currentPage.value += 1; }
+    function prev() {
+        if (!isFirstPage.value) {
+            currentPage.value -= 1;
+        }
+    }
+
+    function next() {
+        if (!isLastPage.value) {
+            currentPage.value += 1;
+        }
+    }
 
     const visibleItems = computed(() => {
         const size = props.pageSize;

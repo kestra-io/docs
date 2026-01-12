@@ -15,57 +15,65 @@
                         <div class="col-6 col-lg-2 offset-lg-1 mb-3">
                             <h5>Product</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/overview">Platform Overview</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/features">Open Source</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/enterprise">Enterprise Edition</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/cloud">Kestra Cloud</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/pricing">Pricing</NuxtLink></li>
+                                <li
+                                    v-for="link in PRODUCT_LINKS"
+                                    :key="link.href"
+                                    class="mb-2"
+                                >
+                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/use-cases">Use Cases</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/features/declarative-data-orchestration">Declarative Orchestration</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/features/scheduling-and-automation">Automation Platform</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/features/api-first">API First</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/features/code-in-any-language">Code in Any Language</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/use-cases/terraform-provider">Terraform Provider</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/vs/prefect">Prefect vs Kestra</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/vs/dagster">Dagster vs Kestra</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/vs/aws-step-functions"> AWS Step Functions vs Kestra</NuxtLink></li>
+                                <li
+                                    v-for="link in SOLUTIONS_LINKS"
+                                    :key="link.href"
+                                    class="mb-2"
+                                >
+                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Community</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/community">Community Overview</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/blogs">Blog</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/write-for-us">Write for Us</NuxtLink></li>
-                                <li class="mb-2"><a href="https://kestra.io/slack" target="_blank">Slack</a></li>
-                                <li class="mb-2"><a href="https://github.com/kestra-io" target="_blank">GitHub</a></li>
+                                <li
+                                    v-for="link in COMMUNITY_LINKS"
+                                    :key="link.href"
+                                    class="mb-2"
+                                >
+                                    <NuxtLink v-if="!link.external" :href="link.href">{{ link.text }}</NuxtLink>
+                                    <a v-else :href="link.href" target="_blank">{{ link.text }}</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Docs</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/docs">Documentation</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/plugins">Plugins</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/blueprints">Blueprints</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/docs/getting-started/quickstart#start-kestra">Getting Started</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator Guide</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/faq">FAQ</NuxtLink></li>
+                                <li
+                                    v-for="link in DOCS_LINKS"
+                                    :key="link.href"
+                                    class="mb-2"
+                                >
+                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Company</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/about-us">About Us</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/careers">Careers <span class="badge text-bg-danger">Hiring!</span></NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/contact-us">Contact Us</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/use-cases/stories">Customer Stories</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/partners">Partners Ecosystem</NuxtLink></li>
+                                <li
+                                    v-for="link in COMPANY_LINKS"
+                                    :key="link.href"
+                                    class="mb-2"
+                                >
+                                    <NuxtLink :href="link.href">
+                                        {{ link.text }}
+                                        <span v-if="link.badge" class="badge text-bg-danger">{{ link.badge }}</span>
+                                    </NuxtLink>
+                                </li>
                             </ul>
 
                             <div>
@@ -97,51 +105,100 @@
     </footer>
 </template>
 
-<script setup>
-import Socials from "./Socials.vue";
-import Certifications from "./Certifications.vue";
-import Heart from "vue-material-design-icons/Heart.vue";
+<script setup lang="ts">
+    import Socials from "./Socials.vue";
+    import Certifications from "./Certifications.vue";
+    import Heart from "vue-material-design-icons/Heart.vue";
+
+    const PRODUCT_LINKS = [
+        {text: "Platform Overview", href: "/overview"},
+        {text: "Open Source", href: "/features"},
+        {text: "Enterprise Edition", href: "/enterprise"},
+        {text: "Kestra Cloud", href: "/cloud"},
+        {text: "Pricing", href: "/pricing"}
+    ]
+
+    const SOLUTIONS_LINKS = [
+        {text: "Use Cases", href: "/use-cases"},
+        {text: "Declarative Orchestration", href: "/features/declarative-data-orchestration"},
+        {text: "Automation Platform", href: "/features/scheduling-and-automation"},
+        {text: "API First", href: "/features/api-first"},
+        {text: "Code in Any Language", href: "/features/code-in-any-language"},
+        {text: "Terraform Provider", href: "/use-cases/terraform-provider"},
+        {text: "Airflow vs Kestra", href: "/vs/airflow"},
+        {text: "Prefect vs Kestra", href: "/vs/prefect"},
+        {text: "Dagster vs Kestra", href: "/vs/dagster"},
+        {text: "AWS Step Functions vs Kestra", href: "/vs/aws-step-functions"}
+    ]
+
+    const COMMUNITY_LINKS = [
+        {text: "Community Overview", href: "/community"},
+        {text: "Blog", href: "/blogs"},
+        {text: "Write for Us", href: "/write-for-us"},
+        {text: "Slack", href: "https://kestra.io/slack", external: true},
+        {text: "GitHub", href: "https://github.com/kestra-io", external: true}
+    ]
+
+    const DOCS_LINKS = [
+        {text: "Documentation", href: "/docs"},
+        {text: "Plugins", href: "/plugins"},
+        {text: "Blueprints", href: "/blueprints"},
+        {text: "Getting Started", href: "/docs/getting-started/quickstart#start-kestra"},
+        {text: "Administrator Guide", href: "/docs/administrator-guide"},
+        {text: "FAQ", href: "/faq"}
+    ]
+
+    const COMPANY_LINKS = [
+        {text: "About Us", href: "/about-us"},
+        {text: "Careers", href: "/careers", badge: "Hiring!"},
+        {text: "Contact Us", href: "/contact-us"},
+        {text: "Customer Stories", href: "/use-cases/stories"},
+        {text: "Partners Ecosystem", href: "/partners"}
+    ]
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-footer {
-    position: relative;
-    font-size: var(--bs-font-size-sm);
-    background-color: $black-9 !important;
-
-    h5, a, p{
-        color: var(--bs-white);
-        font-size: var(--bs-badge-font-size);
-    }
-
-    h5 {
-        text-transform: uppercase;
-        font-weight: bold;
-        font-family: var(--bs-font-monospace);
-    }
-
-    .container {
+    footer {
         position: relative;
-        z-index: 2;
-    }
+        z-index: 20;
+        font-size: var(--bs-font-size-sm);
+        background-color: #0A0B0D;
+        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
 
-    .bottom {
-        border-top: 1px solid rgba(#FFF, 0.1);
-    }
+        h5, a, p {
+            color: var(--bs-white);
+            font-size: var(--bs-badge-font-size);
+        }
 
-    .socials {
-        font-size: calc($font-size-base * 1.4);
-    }
+        h5 {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: var(--bs-font-monospace);
+        }
 
-    :deep(.socials) a {
-        color: var(--bs-white);
-    }
+        .container {
+            position: relative;
+            z-index: 2;
+        }
 
-    &.plugins-page {
-        background-color: #0A0B0D !important;
-        border-top: 1px solid $black-3;
+        .bottom {
+            border-top: 1px solid rgba(#FFF, 0.1);
+        }
+
+        .socials {
+            font-size: calc($font-size-base * 1.4);
+        }
+
+        :deep(.socials) a {
+            color: var(--bs-white);
+        }
+
+        li:hover {
+            a {
+                color: var(--ks-content-link-hover);
+            }
+        }
     }
-}
 </style>
