@@ -40,7 +40,7 @@ defineProps<{
         }
         .quote-author {
             font-size: 1rem;
-            white-space: nowrap;
+            white-space: normal;
             span {
                 color: #646465;
             }

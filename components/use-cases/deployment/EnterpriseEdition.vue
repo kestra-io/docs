@@ -12,7 +12,7 @@
               </h2>
             </div>
             <div class="text-center rounded">
-              <NuxtLink class="btn btn-animated btn-purple-animated mx-2 mt-2" href="/docs/getting-started/quickstart#start-kestra">
+              <NuxtLink class="btn btn-animated btn-purple-animated mx-2 mt-2" href="/docs/quickstart#start-kestra">
                     Get started
               </NuxtLink>
             </div>

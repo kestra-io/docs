@@ -8,7 +8,7 @@ export const tableHeadData = [
         period: "Free",
         button: {
             text: "Get Started",
-            href: "/docs/getting-started/quickstart#start-kestra",
+            href: "/docs/quickstart#start-kestra",
         },
     },
     {

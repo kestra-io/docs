@@ -6,7 +6,7 @@
                 <h2>Jump in</h2>
                 <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5
                     minutes.</p>
-                <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-md btn-secondary">Get
+                <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary">Get
                     Started</NuxtLink>
             </HomeCard>
             <HomeCard class="side-box side-box-purple">

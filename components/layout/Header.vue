@@ -174,7 +174,7 @@
                         </NuxtLink>
                         <NuxtLink @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm get-started"
-                            href="/docs/getting-started/quickstart#start-kestra">
+                            href="/docs/quickstart#start-kestra">
                             <span>
                                 Get Started!
                             </span>

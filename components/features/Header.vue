@@ -15,7 +15,7 @@
           <NuxtLink href="/demo" class="btn btn-lg btn-secondary me-3" target="_blank">
             Talk to us
           </NuxtLink>
-          <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-lg btn-primary">
+          <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-lg btn-primary">
             Get Started!
           </NuxtLink>
         </div>
@@ -56,7 +56,7 @@ const isScrolled = computed(() => y.value > 50)
       inset: 0;
       width: 100%;
       height: 100%;
-      background: 
+      background:
         url("/landing/features/sm-gradient.png") right/cover no-repeat,
         url("/landing/features/cpt.png") center/contain no-repeat;
       z-index: -1;
@@ -133,24 +133,24 @@ const isScrolled = computed(() => y.value > 50)
     }
     border: 1px solid;
     border-image-source: radial-gradient(
-      46.16% 31.1% at 73.05% 39.82%, 
-      #2B313E 0%, 
-      #6B66D5 44.15%, 
+      46.16% 31.1% at 73.05% 39.82%,
+      #2B313E 0%,
+      #6B66D5 44.15%,
       #2D344E 100%
     );
 
     .sm-app-border {
       border: 0.39px solid;
       border-image-source: radial-gradient(
-        46.16% 31.1% at 73.05% 39.82%, 
-        #2B313E 0%, 
-        #6B66D5 44.15%, 
+        46.16% 31.1% at 73.05% 39.82%,
+        #2B313E 0%,
+        #6B66D5 44.15%,
         #2D344E 100%
       );
       padding-left: 24px;
       @media screen and (min-width: 301px) {
         padding-left: 24px;
-        
+
       }
       @media screen and (max-width: 576px) {
         margin-top: 1.25rem;
