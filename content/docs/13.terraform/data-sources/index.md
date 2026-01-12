@@ -1,6 +1,7 @@
 ---
-title: Data Sources
+title: Kestra Terraform Provider – Read Index
 icon: /docs/icons/terraform.svg
+description: The kestra_index data source allows you to read index in Kestra using Terraform.
 ---
 
 :::ChildCard
