@@ -22,7 +22,6 @@ The table below highlights the key features of this release.
 | Checks Feature | Add validation checks to prevent execution creation when specified conditions aren't met | All Editions |
 | Concurrent Execution for Trigger | Enable multiple concurrent executions to be triggered simultaneously from any trigger type | All Editions |
 | New Design for the Execution Overview Page | Redesigned execution overview page with improved layout, better spacing, and organized sections | All Editions |
-|  |  |  |
 
 
 Check the video below for a quick overview of all enhancements.
