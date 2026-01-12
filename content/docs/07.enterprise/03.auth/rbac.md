@@ -257,7 +257,7 @@ kestra:
 
 ### Reset password (by a Super Admin)
 
-Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **Users**.
+Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **IAM - Users**.
 
 ![Reset Password](/docs/enterprise/forgot-password.png)
 

@@ -25,7 +25,7 @@ As of Kestra version 0.23, Tenants are enabled by default. Please refer to the [
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
+1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.
