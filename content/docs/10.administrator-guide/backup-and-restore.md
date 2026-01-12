@@ -6,6 +6,8 @@ icon: /docs/icons/admin.svg
 
 Back up and restore your Kestra instance.
 
+# Back up and restore your Kestra instance
+
 Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
 
 :::alert{type="info"}

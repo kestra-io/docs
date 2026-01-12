@@ -6,6 +6,8 @@ icon: /docs/icons/admin.svg
 
 Track Kestra's long‑term support (LTS) releases alongside the fast cadence of feature releases.
 
+# Understand Kestra release cadence and LTS policy
+
 ## Current releases
 
 Kestra maintains two tracks:

@@ -7,6 +7,8 @@ icon: /docs/icons/admin.svg
 Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.
 Flows can range from lightweight tasks running in milliseconds to complex scripts in containers that run for tens of minutes.
 
+# See Kestra orchestration benchmark results
+
 This benchmark focuses on **orchestration performance**, including dispatching to the Kestra Worker, rather than workload execution, which varies by use case.
 To isolate orchestration performance, we use workflows with fast tasks, such as:
 

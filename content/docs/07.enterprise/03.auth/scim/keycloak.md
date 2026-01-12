@@ -7,6 +7,8 @@ version: ">= 0.18.0"
 
 Sync users and groups from Keycloak to Kestra using SCIM.
 
+# Keycloak SCIM Provisioning
+
 ## Prerequisites
 
 - **Keycloak Account**: An account with administrative privileges is required to configure SCIM provisioning.

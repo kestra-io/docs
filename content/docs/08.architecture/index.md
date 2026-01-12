@@ -5,6 +5,8 @@ sidebarTitle: Architecture
 
 Kestra's architecture is designed to be scalable, flexible, and fault-tolerant. Depending on your needs, you can choose between two different architectures: **JDBC** and **Kafka**.
 
+# Choose the right Kestra architecture
+
 ## Architecture with JDBC backend
 
 The following diagram shows the main components of Kestra using the JDBC backend.

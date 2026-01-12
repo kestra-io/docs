@@ -6,6 +6,8 @@ editions: ["EE", "Cloud"]
 
 ## Using Microsoft as an OIDC SSO provider
 
+# Microsoft as an OIDC SSO provider
+
 To configure Microsoft authentication, follow these steps:
 
 ```yaml

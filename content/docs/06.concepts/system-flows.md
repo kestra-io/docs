@@ -14,7 +14,7 @@ Automate maintenance workflows with System Flows.
 
 ---
 
-## Overview
+# System Flows in Kestra – Automate Platform Maintenance
 
 System Flows periodically execute background operations that keep your platform running but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 

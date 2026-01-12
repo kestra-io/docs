@@ -6,6 +6,8 @@ icon: /docs/icons/admin.svg
 
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.
 
+# Tune Kestra for throughput and latency
+
 This page introduces performance tuning options for the Kestra orchestrator. Each comes with trade-offs, so ensure you understand them before applying.
 
 Before you read on, please familiarize yourself with the [Kestra architecture](../08.architecture).

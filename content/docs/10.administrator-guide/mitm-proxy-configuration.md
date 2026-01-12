@@ -6,6 +6,8 @@ icon: /docs/icons/padlock.svg
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.
 
+# Route Kestra traffic through an MITM proxy
+
 This guide walks through the steps to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
 
 ## Why use an MITM proxy

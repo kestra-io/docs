@@ -10,5 +10,7 @@ You can deploy Kestra from a laptop or on-prem server to a distributed cluster i
 
 The easiest way to install Kestra locally is to use [Docker](./02.docker.md).
 
+# Choose how to install Kestra for your environment
+
 :::ChildCard
 :::

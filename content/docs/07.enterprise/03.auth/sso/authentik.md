@@ -3,12 +3,11 @@ title: Configure authentik SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
-
 Set up authentik SSO to manage authentication for users.
 
-In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
+# Configure authentik SSO for Kestra
 
-## authentik SSO Setup
+In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
 
 ### Install authentik
 

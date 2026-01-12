@@ -4,7 +4,7 @@ icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 
-# Setting Up OpenID Connect (OIDC) with Google Identity Platform and Integrating with Kestra
+# Set up Google OIDC SSO for Kestra
 
 This guide provides step-by-step instructions to configure **OpenID Connect (OIDC) authentication using Google Identity Platform** and link it to [**Kestra Enterprise**](../../01.overview/index.md) for [Single Sign-On (SSO)](./index.md).
 

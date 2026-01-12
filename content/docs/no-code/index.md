@@ -6,5 +6,7 @@ icon: /docs/icons/flow.svg
 
 Build in Kestra without touching YAML.
 
+# Build flows and dashboards without YAML
+
 ::ChildCard
 ::

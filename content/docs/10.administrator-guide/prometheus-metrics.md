@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.
 
-## Overview
+# Monitor Kestra with Prometheus metrics
 
 Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](./open-telemetry.md), which must be explicitly enabled in the configuration file.
 

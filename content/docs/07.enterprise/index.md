@@ -6,6 +6,8 @@ editions: ["EE", "Cloud"]
 
 How to configure Kestra Enterprise Edition and Kestra Cloud.
 
+# Kestra Cloud & Enterprise – features and setup
+
 [Enterprise Edition](/enterprise) is a robust, enterprise-grade version of Kestra deployed to your private infrastructure. It offers security and governance features including Multi-tenancy, Authentication, SSO, RBAC, Namespace-level management, distributed Worker Groups, Worker isolation, Secrets Manager integrations, Audit Logs, and more.
 
 [Kestra Cloud](/cloud) is a fully managed version of Kestra Enterprise Edition, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring.

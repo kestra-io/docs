@@ -7,6 +7,8 @@ version: ">= 0.18.0"
 
 Sync Users and Groups from authentik to Kestra using SCIM.
 
+# authentik SCIM Provisioning
+
 ## Prerequisites
 
 - **authentik Account**: An account with administrative privileges to configure SCIM provisioning.

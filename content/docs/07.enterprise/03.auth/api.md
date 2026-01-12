@@ -7,6 +7,8 @@ editions: ["EE", "Cloud"]
 
 How to interact with the Kestra Enterprise Edition using the API.
 
+# Kestra Enterprise API – endpoints and authentication
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=Fd1MAK8bQIz0wr44" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

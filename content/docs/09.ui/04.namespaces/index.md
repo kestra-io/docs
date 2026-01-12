@@ -6,6 +6,8 @@ icon: /docs/icons/ui.svg
 
 Manage all resources associated with a namespace in one place.
 
+# Manage namespace resources from the UI
+
 Starting in **v0.18.0**, Kestra introduces the **Namespaces** tab in the UI for Open Source users. This view displays all namespaces associated with different flows in your Kestra instance.
 
 <div class="video-container">

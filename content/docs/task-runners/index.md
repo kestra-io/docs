@@ -8,6 +8,8 @@ editions: ["OSS", "EE"]
 
 Task Runners is an extensible, pluggable system capable of executing your tasks in arbitrary remote environments.
 
+# Offload and isolate compute with task runners
+
 Many data processing tasks are **computationally intensive** and require a lot of resources (_such as CPU, GPU, and memory_). Instead of provisioning always-on servers, Task Runners can execute your code on **dynamically provisioned compute instances** in the cloud, such as AWS ECS Fargate, Azure Batch, Google Batch, auto-scaled Kubernetes clusters, and more.
 
 All you have to do to offload your task execution to a remote environment is to specify the `taskRunner` type in your task configuration. Each `type` of a task runner is a **plugin** with its own schema. The built-in code editor provides documentation, autocompletion, and syntax validation for all task runner plugin properties to ensure correctness, standardization, and consistency.

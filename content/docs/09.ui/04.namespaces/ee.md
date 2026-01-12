@@ -7,6 +7,8 @@ editions: ["EE", "Cloud"]
 
 Manage enterprise features at the namespace level.
 
+# Use enterprise namespace governance
+
 :::alert{type="info"}
 This feature requires the [Enterprise Edition](../../07.enterprise/index.md).
 :::

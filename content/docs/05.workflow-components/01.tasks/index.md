@@ -1,9 +1,11 @@
 ---
-title: Tasks
+title: Tasks in Kestra – Define Steps in a Flow
 icon: /docs/icons/flow.svg
 ---
 
 Tasks are the steps within a flow.
+
+# Understand tasks in a Kestra flow
 
 They represent discrete actions, capable of processing inputs and variables and producing outputs for downstream consumption by end users and other tasks.
 

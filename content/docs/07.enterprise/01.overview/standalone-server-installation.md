@@ -7,11 +7,11 @@ editions: ["EE"]
 
 Install Kestra on a standalone server with a simple executable file.
 
-# Standalone Server Installation Guide (Enterprise Edition)
+# Run Kestra Enterprise from a standalone JAR
 
 To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.
 
-# Instructions
+## Instructions
 
 The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
 

@@ -7,6 +7,8 @@ editions: ["EE", "Cloud"]
 
 Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
 
+# Kestra Cloud & Enterprise FAQ – common questions
+
 ## My session expires too quickly. Is there a way to change the session expiration time?
 
 Yes, there is! Add the following Micronaut setting to your [Kestra configuration](../../configuration/index.md) to change the session expiration time to 10 hours:

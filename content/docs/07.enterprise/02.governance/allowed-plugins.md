@@ -8,7 +8,7 @@ version: ">= 0.19.0"
 
 How to configure Kestra to allow or restrict specific plugins.
 
-## Allowed plugins
+# Allowed & Restricted Plugins
 
 Kestra comes with the full library of official plugins by default. However, in some cases you may want to restrict which plugins are available to specific teams or users. For example, you might allow a team to use only BigQuery tasks while blocking script execution. Kestra enables this by letting you define allowlists (`includes`) and blocklists (`excludes`) using plugin names or regular expressions.
 

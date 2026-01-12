@@ -6,6 +6,8 @@ icon: /docs/icons/padlock.svg
 
 Configure secure access to the Kestra UI via HTTPS.
 
+# Secure the Kestra UI with TLS
+
 This guide walks through the steps to configure secure access via https to the Kestra UI.
 
 ## Why use SSL/TLS encryption

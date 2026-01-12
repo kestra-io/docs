@@ -13,7 +13,7 @@ The Instance dashboard provides an overview of your instance’s health, includi
     <iframe src="https://www.youtube.com/embed/pcC3OAJPQao?si=x9LWlBHG-WMuHTdW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Overview
+# Instance Dashboard in Kestra Enterprise – Monitor Components
 
 The **Instance** feature in Kestra Enterprise Edition provides centralized control over your platform’s infrastructure. Using this dashboard, you can centrally monitor your instance’s health and quickly identify any issues that need attention without having to rely on any additional observability tools.
 
