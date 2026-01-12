@@ -1,5 +1,6 @@
 ---
-title: Okta as an OIDC SSO Provider
+title: Set Up Okta OIDC SSO for Kestra
+sidebarTitle: Okta OIDC SSO
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---

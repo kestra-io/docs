@@ -1,5 +1,6 @@
 ---
-title: Configure Keycloak SSO
+title: Set Up Keycloak SSO for Kestra
+sidebarTitle: Keycloak SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---

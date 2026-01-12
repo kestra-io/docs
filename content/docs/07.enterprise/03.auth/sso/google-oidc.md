@@ -1,5 +1,6 @@
 ---
-title: Google as an OIDC SSO Provider
+title: Set Up Google OIDC SSO for Kestra
+sidebarTitle: Google OIDC SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
