@@ -1,5 +1,5 @@
 <template>
-    <div class="built">
+    <section class="built">
         <div class="container">
             <h3
                 data-aos="fade-up"
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup lang="ts">
@@ -117,7 +117,7 @@
     @import "../../assets/styles/_variable";
 
     .built {
-        background-color: #F9F9F9;
+        background-color: $white;
         width: 100%;
         padding: 2rem 0.5rem;
 
