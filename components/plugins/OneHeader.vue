@@ -2,7 +2,6 @@
 import type { Plugin } from '@kestra-io/ui-libs';
 
 defineProps<{
-    page: any;
     headingTitle: string;
     pluginType?: string;
     rootPlugin?: Plugin;
@@ -11,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
- <h1 v-if="page" class="py-0 title">
+ <h1 class="py-0 title">
     <div v-if="currentPageIcon" class="pageIcon">
         <NuxtImg
             :src="currentPageIcon"

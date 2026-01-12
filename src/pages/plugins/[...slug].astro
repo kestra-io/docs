@@ -423,13 +423,12 @@ const elementTitle = (() => Object.fromEntries(
         {
           page && (
             <OneHeader
-              {page}
               {headingTitle}
               {pluginType}
               {rootPlugin}
               {currentPageIcon}
             >
-                {headingDescription ?<MDCParserAndRenderer content={headingDescription} /> : null}
+                {headingDescription ? <MDCParserAndRenderer content={headingDescription} /> : null}
             </OneHeader>
           )
         }
