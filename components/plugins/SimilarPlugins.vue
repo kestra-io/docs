@@ -3,41 +3,39 @@
             <div class="header">
                 <h4 id="more-plugins-in-this-category">More Plugins in this Category</h4>
                 <NavActions
-                    @item-changed="visiblePlugins = $event"
                     :items="similarPlugins"
                     :page-size="pageSize"
                     :show="similarPlugins.length > pageSize"
+                    @page-changed="startIndex = $event"
                 />
             </div>
 
         <div class="row g-3">
-                <div
-                    class="col-md-4 col-lg-6 col-xl-6 col-xxl-4"
-                    v-for="plugin in visiblePlugins"
-                    :key="`plugin-${slugify(plugin.group ?? plugin.name)}${plugin.subGroup ? '-' + slugify(subGroupName(plugin)) : ''}`"
-                >
-                    <PluginCard
-                        :plugin="plugin"
-                        :icons="icons"
-                        :blueprints-count="getPluginBlueprintCount(plugin)"
-                        :metadata-map="metadataMap"
-                    />
-                </div>
+            <div
+                class="col-md-4 col-lg-6 col-xl-6 col-xxl-4"
+                v-for="plugin in visiblePlugins"
+                :key="`plugin-${slugify(plugin.group ?? plugin.name)}${plugin.subGroup ? '-' + slugify(subGroupName(plugin)) : ''}`"
+            >
+                <PluginCard
+                    :plugin="plugin"
+                    :icons="icons"
+                    :blueprints-count="getPluginBlueprintCount(plugin)"
+                    :metadata-map="metadataMap"
+                />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import {computed, ref, watch} from "vue";
+    import {computed, ref} from "vue";
     import {useMediaQuery} from "@vueuse/core";
-    import {slugify, filterPluginsWithoutDeprecated, subGroupName, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs";
+    import {slugify, subGroupName, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs";
     import PluginCard from "./PluginCard.vue";
     import NavActions from "~/components/common/NavActions.vue";
 
     const props = withDefaults(defineProps<{
-        allPlugins?: Plugin[];
-        currentPluginName: string;
-        currentCategories: string[];
+        similarPlugins?: Plugin[];
         icons?: Record<string, any>;
         metadataMap?: Record<string, PluginMetadata>;
         blueprintCounts: Record<string, number>;
@@ -46,29 +44,20 @@
         metadataMap: undefined
     });
 
-    const similarPlugins = computed(() => {
-        if (!props.currentCategories?.length) return [];
-
-        const filtered = filterPluginsWithoutDeprecated(props.allPlugins ?? []);
-        return filtered.filter((plugin: Plugin) =>
-                plugin.subGroup === undefined &&
-                plugin.name !== props.currentPluginName &&
-                plugin.categories?.some((cat: string) => props.currentCategories.includes(cat))
-            );
-    });
-
     const getPluginBlueprintCount = (plugin: Plugin) => props.blueprintCounts?.[plugin.group ?? plugin.name] ?? 0;
 
     const isTwoPerRowScreen = useMediaQuery('(min-width: 992px) and (max-width: 1399px)');
 
     const pageSize = computed(() => isTwoPerRowScreen.value ? 4 : 3);
 
-    const visiblePlugins = ref<Plugin[]>([]);
+    const startIndex = ref(0);
 
-    watch(similarPlugins, (newPlugins) => {
-        visiblePlugins.value = newPlugins.slice(0, pageSize.value);
-    }, {immediate: true});
-
+    const visiblePlugins = computed(() => {
+        if (!props.similarPlugins) {
+            return [];
+        }
+        return props.similarPlugins.slice(startIndex.value, startIndex.value + pageSize.value);
+    });
 </script>
 
 <style scoped lang="scss">

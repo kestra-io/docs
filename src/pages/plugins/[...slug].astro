@@ -4,9 +4,9 @@ import Layout from "../../components/layout.astro";
 import PluginSidebar from "~/components/plugins/PluginSidebar.vue";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
 import NavToc from "~/components/docs/NavToc.vue";
-import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.vue";
+import RelatedBlueprints from "../../components/plugins/RelatedBlueprints.astro";
 import RelatedBlogs from "~/components/plugins/RelatedBlogs.vue";
-import SimilarPlugins from "~/components/plugins/SimilarPlugins.vue";
+import SimilarPlugins from "../../components/plugins/SimilarPlugins.astro";
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue";
 import PluginVideos from "~/components/plugins/PluginVideos.vue";
 import { $fetch } from "~/utils/fetch";
@@ -468,7 +468,6 @@ const elementTitle = (() => Object.fromEntries(
           : subGroup}
         pluginType={pluginType}
         customId={blueprintsSectionHeading?.id}
-        relatedBlueprints={[]}
       />
 
       {
@@ -485,10 +484,9 @@ const elementTitle = (() => Object.fromEntries(
       {
         currentPluginCategories?.length > 0 && (
           <SimilarPlugins
+            pluginName={pluginName}
+            currentPluginCategories={currentPluginCategories}
             allPlugins={allPlugins}
-            currentPluginName={pluginName}
-            currentCategories={currentPluginCategories}
-            icons={subGroupsIcons}
             metadataMap={metadataMap}
             blueprintCounts={blueprintCounts}
           />

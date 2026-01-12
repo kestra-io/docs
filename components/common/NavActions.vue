@@ -24,13 +24,13 @@
     })
 
     const emit = defineEmits<{
-        'item-changed': [items: any[]]
+        'page-changed': [startIndex: number]
     }>()
 
     const currentPage = ref(1);
 
     const totalPages = computed(() => Math.max(1, Math.ceil((props.items?.length ?? 0) / props.pageSize)));
-    
+
     const isFirstPage = computed(() => currentPage.value <= 1);
     const isLastPage = computed(() => currentPage.value >= totalPages.value);
 
@@ -46,20 +46,15 @@
         }
     }
 
-    const visibleItems = computed(() => {
-        const size = props.pageSize;
-        const start = (currentPage.value - 1) * size;
-        return props.items?.slice(start, start + size) ?? [];
-    });
+    watch([currentPage, () => props.pageSize], () => {
+        const startIndex = (currentPage.value - 1) * props.pageSize;
+        emit('page-changed', startIndex);
+    }, { immediate: true });
 
     watch(
         [() => props.items?.length, () => props.pageSize],
         () => currentPage.value = 1
     );
-
-    watch(visibleItems, (newVal) => {
-        emit('item-changed', newVal);
-    }, { immediate: true });
 </script>
 
 <style scoped lang="scss">

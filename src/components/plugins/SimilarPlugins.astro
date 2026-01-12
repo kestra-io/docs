@@ -1,0 +1,49 @@
+---
+import {filterPluginsWithoutDeprecated, type Plugin } from "@kestra-io/ui-libs";
+import { $fetch } from "~/utils/fetch";
+import { getPluginIconsAsString } from "~/utils/plugins/getPluginIcon";
+import SimilarPluginsVue from "~/components/plugins/SimilarPlugins.vue";
+
+interface Props{
+    allPlugins: Plugin[];
+    pluginName: string;
+    currentPluginCategories: string[];
+    blueprintCounts: Record<string, number>;
+    metadataMap: Record<string, any>;
+}
+
+const props = Astro.props;
+const { allPlugins, pluginName, currentPluginCategories } = props;
+const similarPlugins = (() => {
+        if (!currentPluginCategories?.length) return [];
+
+        const filtered = filterPluginsWithoutDeprecated(allPlugins ?? []);
+        return filtered.filter((plugin: Plugin) =>
+                plugin.subGroup === undefined &&
+                plugin.name !== pluginName &&
+                plugin.categories?.some((cat: string) => currentPluginCategories.includes(cat))
+            );
+    })()
+
+const iconsForSimilarPluginsByPlugin = await Promise.all(
+        similarPlugins.map(async (plugin) => {
+            const icons = await $fetch(`https://api.kestra.io/v1/plugins/${plugin.name}/icons/subgroups`);
+            return getPluginIconsAsString(icons)
+        })
+    );
+
+const iconsForSimilarPlugins = iconsForSimilarPluginsByPlugin.reduce<Record<string, string>>((acc, plugin) => {
+        return {
+            ...acc,
+            ...plugin,
+        }
+    }, {});
+---
+
+<SimilarPluginsVue
+    similarPlugins={similarPlugins}
+    icons={iconsForSimilarPlugins}
+    metadataMap={props.metadataMap}
+    blueprintCounts={props.blueprintCounts}
+    client:visible
+/>

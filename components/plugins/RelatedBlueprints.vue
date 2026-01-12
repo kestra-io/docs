@@ -3,10 +3,10 @@
         <div class="header">
             <h4 :id="headerID">{{headerText}}</h4>
             <NavActions
-                @item-changed="visibleBlueprints = $event"
                 :items="relatedBlueprints"
                 :page-size="currentPageSize"
                 :show="relatedBlueprints.length > currentPageSize"
+                @page-changed="startIndex = $event"
             />
         </div>
         <div class="row g-3">
@@ -50,8 +50,10 @@
 
     const currentPageSize = computed(() => isTwoPerRowScreen.value ? 4 : 3);
 
+    const startIndex = ref(0);
+
     const visibleBlueprints = computed<Array<Blueprint>>(() => {
-        return props.relatedBlueprints.slice(0, currentPageSize.value);
+        return props.relatedBlueprints.slice(startIndex.value, startIndex.value + currentPageSize.value);
     });
 
 </script>
