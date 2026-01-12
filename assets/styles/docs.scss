@@ -195,7 +195,8 @@ $bd-gutter-x: 3rem;
     display: none !important;
 }
 
-.bd-content {
+
+.layout-docs-wrapper .bd-content {
     #{--bs-heading-color}: white;
     grid-area: content;
     min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
@@ -206,14 +207,14 @@ $bd-gutter-x: 3rem;
         }
     }
 
-    .layout-docs-wrapper & {
+
         h1, h2, h3, h4, h5, h6 {
             margin-bottom: 0.5rem;
             a {
                 color: $white;
             }
         }
-    }
+
 
     .video-container {
         position: relative;

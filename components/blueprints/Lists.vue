@@ -12,7 +12,7 @@
         </div>
         <div class="mt-5" data-aos="fade-left">
             <button
-                v-for="tag in tags"
+                v-for="tag in orderedTags"
                 :key="tag.name"
                 :class="{ 'active': activeTags.some(item => item.name === tag.name) }"
                 @click="setTagBlueprints(tag)"
@@ -22,7 +22,7 @@
             </button>
         </div>
         <div class="row my-5">
-            <div v-if="blueprints && blueprints.length > 0" class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id"
+            <div v-if="blueprintsPaginated && blueprintsPaginated.length > 0" class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprintsPaginated" :key="blueprint.id"
                 data-aos="zoom-in">
                 <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)"/>
             </div>
@@ -34,34 +34,24 @@
                 </button>
             </div>
 
-            <div class="d-flex justify-content-between pagination-container">
-                <div class="items-per-page">
-                    <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
-                        <option :value="12">12</option>
-                        <option :value="24">24</option>
-                        <option :value="48">48</option>
-                    </select>
-                </div>
-                <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
-                    <CommonPagination
-                        :current-url="currentUrl"
-                        :totalPages="totalPages"
-                        v-model:current-page="currentPage"
-                        @update:current-page="changePage"
-                        v-if="totalPages > 1"
-                    />
-                </div>
-            </div>
+            <CommonPaginationContainer
+                :current-url="currentUrl"
+                :total-items="filteredBlueprints?.length"
+                @update="(payload) => {
+                    currentPage = payload.page;
+                    itemsPerPage = payload.size
+                    changePage()
+                }"
+            />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import {ref, watch} from 'vue'
+    import {computed, nextTick, onMounted, ref, watch} from 'vue'
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import { useBlueprintsList } from '~/composables/useBlueprintsList'
     import BlueprintsListCard from './ListCard.vue'
-    import CommonPagination from '../common/Pagination.vue'
+    import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
 
     const currentPage = ref<number>(1)
     const itemsPerPage = ref<number>(24)
@@ -71,31 +61,59 @@
     const totalPages = ref<number>(0)
     const totalBlueprints = ref<number>(0)
     const searchQuery = ref<string>('')
-    const url = new URL(window.location.href);
 
     const props = defineProps<{
         tags: BlueprintTag[],
-        currentUrl: string
+        currentUrl: string,
+        allBlueprints: Blueprint[]
     }>();
 
-    if (props.tags) {
-        const customOrder = ['Getting Started', 'Core', 'Infrastructure', 'Data', 'AI', 'Business', 'Cloud'];
+    const CUSTOM_ORDER = ['Getting Started', 'Core', 'Infrastructure', 'Data', 'AI', 'Business', 'Cloud'];
+    const orderedTags = computed(() => {
         const sortedTags = [...props.tags].sort((a, b) => {
-            let indexA = customOrder.indexOf(a.name);
-            let indexB = customOrder.indexOf(b.name);
+            let indexA = CUSTOM_ORDER.indexOf(a.name);
+            let indexB = CUSTOM_ORDER.indexOf(b.name);
             if (indexA === -1) indexA = 999;
             if (indexB === -1) indexB = 999;
             return indexA - indexB;
         });
-        tags.value = [{ name: 'All tags' }, ...sortedTags];
-    }
+        return [{ name: 'All tags' }, ...sortedTags];
+    })
 
-    const getActiveTagIds = (): string => {
+    const activeTagIds = computed(() => {
         return activeTags.value
             .filter(tag => tag.name !== 'All tags' && tag.id)
             .map(tag => tag.id)
             .join(',');
-    }
+    })
+
+    const filteredBlueprints = computed(() => {
+        let filtered = props.allBlueprints;
+
+        if (activeTags.value.length && !(activeTags.value.length === 1 && activeTags.value[0].name === 'All tags')) {
+            filtered = filtered.filter(blueprint =>
+                activeTags.value.every(tag => {
+                    return blueprint.tags?.some(blueprintTag => blueprintTag === tag.id)
+                })
+            );
+        }
+
+        if (searchQuery.value.length) {
+            const q = searchQuery.value.toLowerCase();
+            filtered = filtered.filter(blueprint =>
+                blueprint.title?.toLowerCase().includes(q) ||
+                blueprint.description?.toLowerCase().includes(q)
+            );
+        }
+
+        return filtered;
+    })
+
+    const blueprintsPaginated = computed(() => {
+        const start = (currentPage.value - 1) * itemsPerPage.value;
+        const end = currentPage.value * itemsPerPage.value;
+        return filteredBlueprints.value.slice(start, end) ?? [];
+    })
 
     const setTagBlueprints = (tagVal: BlueprintTag) => {
         if (tagVal.name === 'All tags') {
@@ -126,7 +144,7 @@
     }
 
     const changePage = () => {
-        window.scrollTo(0, 0)
+        typeof window !== 'undefined' && window.scrollTo(0, 0)
     };
 
     const generateCardHref = (blueprint: Blueprint) => {
@@ -139,40 +157,19 @@
         totalPages.value = itemsPerPage.value ? Math.ceil(total / itemsPerPage.value) : 0
     }
 
-    if(url.searchParams.has('page')) currentPage.value = parseInt(url.searchParams.get('page') as string)
-    if(url.searchParams.has('size')) itemsPerPage.value = parseInt(url.searchParams.get('size') as string)
-    if(url.searchParams.has('q')) searchQuery.value = url.searchParams.get('q') as string;
-    if(url.searchParams.has('tags')) {
-        const tagIds = (url.searchParams.get('tags') as string).split(',');
-        const foundTags = tags.value.filter(item => item.id && tagIds.includes(item.id));
-        if (foundTags.length > 0) {
-            activeTags.value = foundTags;
+    onMounted(() => {
+        const url = new URL(props.currentUrl);
+        if(url.searchParams.has('page')) currentPage.value = parseInt(url.searchParams.get('page') as string)
+        if(url.searchParams.has('size')) itemsPerPage.value = parseInt(url.searchParams.get('size') as string)
+        setTimeout(() => {if(url.searchParams.has('q')) searchQuery.value = url.searchParams.get('q') as string}, 200);
+        if(url.searchParams.has('tags')) {
+            const tagIds = (url.searchParams.get('tags') as string).split(',');
+            const foundTags = tags.value.filter(item => item.id && tagIds.includes(item.id));
+            if (foundTags.length > 0) {
+                activeTags.value = foundTags;
+            }
         }
-    }
-
-    const loadBlueprint = async () => {
-        const blueprintsData = await useBlueprintsList({
-            page: currentPage.value,
-            size: itemsPerPage.value,
-            tags: getActiveTagIds(),
-            q: searchQuery.value
-        });
-
-        if (blueprintsData) {
-            setBlueprints(blueprintsData.results, blueprintsData.total)
-        } else {
-            setBlueprints([], 0)
-        }
-    }
-
-    await loadBlueprint();
-
-    //
-    // watch(() => route.query, async () => {
-    //     if (!route.query.tags && !route.query.page && !route.query.size && !route.query.q) {
-    //         activeTags.value = [{ name: 'All tags' }]
-    //     }
-    // });
+    })
 
     let timer: NodeJS.Timeout;
     watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, searchVal, activeTagsVal], [oldPage, oldItemVal, oldSearch, oldTags]) => {
@@ -186,18 +183,17 @@
                 currentPage.value = 1;
             }
 
-            await loadBlueprint();
-
             function getQuery() {
                 let query: Record<string, any> = {
                     page: newPage,
                     size: itemVal,
                 };
-                if (getActiveTagIds()) query['tags'] = getActiveTagIds();
-                if(searchVal.length) query['q'] = searchVal;
+                if (activeTagIds.value) query['tags'] = activeTagIds.value;
+                if(searchVal?.length) query['q'] = searchVal;
                 return query
             }
 
+            const url = new URL(props.currentUrl);
             url.search = new URLSearchParams(getQuery()).toString();
 
             history.pushState({}, "", url);

@@ -7,7 +7,7 @@ interface Blueprint {
     id: number;
     title: string;
     includedTasks: string[];
-    tags?: BlueprintTag[];
+    tags?: string[];
     namespace: string
     name: string
     description: string
