@@ -49,7 +49,12 @@
         .box-right{
             width: 100%;
             height: auto;
+            @include media-breakpoint-up(lg){
+                width: 50%;
+                max-width: 432px;
+            }
             @include media-breakpoint-up(xl){
+                width: 50%;
                 max-width: 558px;
             }
         }
@@ -114,7 +119,7 @@
             font-size: 14px;
             position: relative;
             transition: color 0.3s ease;
-            
+
             .arrow-right-icon {
                 transition: transform 0.3s ease;
                 position: absolute;
@@ -124,7 +129,7 @@
                 }
                 margin-left: 4px;
             }
-            
+
             &:hover {
                 color: #7C2EEA;
                 .arrow-right-icon {

@@ -25,7 +25,15 @@ export default (app: App) => {
         setup: (props, { slots }) => () => h("a", { href: props.to ?? props.href }, slots.default?.()),
         props: ["to", "href"]
     }));
-    app.component("NuxtImg", defineComponent(() => () => h("img")));
+    app.component("NuxtImg", defineComponent({
+        setup: (props, { slots }) => () => h("img", {
+            width: parseInt(props.width),
+            height: parseInt(props.height),
+            src: props.src,
+            alt: props.alt
+        }),
+        props: ["width", "height", "src", "alt"]
+    }))
     app.component("ClientOnly", defineComponent({
         setup: (_, { slots }) => () => slots.default?.(),
         inheritAttrs: false,
