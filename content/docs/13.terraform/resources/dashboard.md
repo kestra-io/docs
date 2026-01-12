@@ -19,6 +19,6 @@ Manages a Dashboard resource.
 
 - `source_code` (String) The source code text.
 
-### Read-Only
+### Read-only
 
 - `id` (String) The unique identifier.

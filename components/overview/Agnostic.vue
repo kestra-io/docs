@@ -37,7 +37,7 @@
 
             <footer class="footer">
                 <p>With native triggers, declarative flows, and built-in monitoring, Kestra gives you a clear path from
-                    workflow creation to reliable execution across your stack.</p>
+                    workflow creation to reliable execution across your stack</p>
                 <div class="buttons">
                     <NuxtLink href="/demo" class="btn btn-secondary mb-2" target="_blank">
                         Talk to us

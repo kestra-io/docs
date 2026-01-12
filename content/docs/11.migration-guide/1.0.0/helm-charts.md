@@ -155,4 +155,3 @@ There is no more need to take care of `configurationPath:`; it's automatically m
 We upgraded the way that `dind` is managed. It's now under the `dind` entry in the `values.yaml`. We added `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode.
 
 For a full list of values, refer to the [Values](https://github.com/kestra-io/helm-charts/tree/master/charts/kestra/README.md#values) in the chart's source code.
-

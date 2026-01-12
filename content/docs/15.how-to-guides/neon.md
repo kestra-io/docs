@@ -41,9 +41,9 @@ Next, click on the '+' icon to add a table, name it, and create it. You can leav
 
 With the setup in Neon done, we can go Kestra to set up our connection. While there's no official Neon plugin, we can connect using the [PostgreSQL plugin](/plugins/plugin-jdbc-postgres), which supports a number of tasks such as `Query`, `CopyIn`, and `CopyOut`.
 
-To connect, we can copy the URL provided from before. To prevent exposing the password in our flow, take the password saved earlier and store it as a [secret](../05.concepts/04.secret.md). Then, in the URL, switch out the password for the secret expression: `{{ secret('NEON_PASSWORD') }}`.
+To connect, we can copy the URL provided from before. To prevent exposing the password in our flow, take the password saved earlier and store it as a [secret](../06.concepts/04.secret.md). Then, in the URL, switch out the password for the secret expression: `{{ secret('NEON_PASSWORD') }}`.
 
-By using [Plugin Defaults](../04.workflow-components/09.plugin-defaults.md), we can configure our connection to Neon once for all tasks inside of our flow rather than individually for each task.
+By using [Plugin Defaults](../05.workflow-components/09.plugin-defaults.md), we can configure our connection to Neon once for all tasks inside of our flow rather than individually for each task.
 
 Once configured, our connection in Kestra will look like the example below:
 

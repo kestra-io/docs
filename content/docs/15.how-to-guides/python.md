@@ -132,7 +132,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ---
 
-If you want to get a variable or file from your Python code, you can use an [output](../04.workflow-components/06.outputs.md).
+If you want to get a variable or file from your Python code, you can use an [output](../05.workflow-components/06.outputs.md).
 
 You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be easily converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
 
@@ -326,7 +326,7 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 
 ## Execute Flows in Python
 
-Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, we recommend using [Subflows](../04.workflow-components/10.subflows.md) to execute flows from other flows for a more integrated experience.
+Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, we recommend using [Subflows](../05.workflow-components/10.subflows.md) to execute flows from other flows for a more integrated experience.
 
 You can trigger a flow execution by calling the `execute()` method. Here is an example for the same `python_scripts` flow in the namespace `example` as above:
 
@@ -339,7 +339,7 @@ flow = Flow()
 flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 ```
 
-Read more about it on the [execution page](../04.workflow-components/03.execution.md).
+Read more about it on the [execution page](../05.workflow-components/03.execution.md).
 
 ## Automate Python with Triggers
 
@@ -354,7 +354,7 @@ You can combine your Python code with a trigger to automatically execute your co
 
 ### Run on a schedule
 
-You can use the [Schedule Trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md) to run your flow on a routine. You can pass the date that the trigger executed to your code through an expression. This is useful when using backfills as it allows you to pass the date of when the execution was suppose to run from the schedule directly to your code, rather than the current time, for example useful when fetching a daily report from a specific date in the past:
+You can use the [Schedule Trigger](../05.workflow-components/07.triggers/01.schedule-trigger.md) to run your flow on a routine. You can pass the date that the trigger executed to your code through an expression. This is useful when using backfills as it allows you to pass the date of when the execution was suppose to run from the schedule directly to your code, rather than the current time, for example useful when fetching a daily report from a specific date in the past:
 
 ```yaml
 id: schedule_code
@@ -379,7 +379,7 @@ triggers:
 ```
 ### Run when a webhook is called
 
-You can use the [Webhook Trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) to run your flow when a webhook is called. You can also call the webhook with a body, which can be passed to your code through an expression or environment variable:
+You can use the [Webhook Trigger](../05.workflow-components/07.triggers/03.webhook-trigger.md) to run your flow when a webhook is called. You can also call the webhook with a body, which can be passed to your code through an expression or environment variable:
 
 ```yaml
 id: python_webhook
@@ -401,7 +401,7 @@ triggers:
 
 ### Run when a file is available in a data lake or storage bucket
 
-You can use a [Polling Trigger](../04.workflow-components/07.triggers/04.polling-trigger.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+You can use a [Polling Trigger](../05.workflow-components/07.triggers/04.polling-trigger.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
 
 ```yaml
 id: s3_trigger

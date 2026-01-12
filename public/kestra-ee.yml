@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.1.7
+  version: 1.1.13
 tags:
 - name: Flows
   description: Flows api
@@ -4423,7 +4423,6 @@ paths:
   /api/v1/{tenant}/concurrency-limit/search:
     get:
       tags:
-      - Executions
       - Flows
       summary: Search for flow concurrency limits
       operationId: searchConcurrencyLimits
@@ -4443,7 +4442,6 @@ paths:
   /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}:
     put:
       tags:
-      - Executions
       - Flows
       summary: Update a flow concurrency limit
       operationId: updateConcurrencyLimit
@@ -15043,13 +15041,10 @@ components:
         disabled:
           type: boolean
         labels:
-          type: array
           description: Labels as a list of Label (key/value pairs) or as a map of
             string to string.
           oneOf:
           - $ref: "#/components/schemas/Map_Object.Object_"
-          items:
-            $ref: "#/components/schemas/Label"
         variables:
           type: object
           additionalProperties: false
@@ -16241,9 +16236,17 @@ components:
           format: int64
     Dashboard:
       required:
+      - deleted
+      - id
       - title
       type: object
       properties:
+        tenantId:
+          pattern: "^[a-z0-9][a-z0-9_-]*"
+          type: string
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -16255,6 +16258,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
+        deleted:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
         sourceCode:
           type: string
     DashboardController.PreviewRequest:
@@ -16711,13 +16722,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -16821,13 +16829,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           variables:
             type: object
             additionalProperties: false
@@ -17065,13 +17070,10 @@ components:
           disabled:
             type: boolean
           labels:
-            type: array
             description: Labels as a list of Label (key/value pairs) or as a map of
               string to string.
             oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
-            items:
-              $ref: "#/components/schemas/Label"
           workerGroup:
             $ref: "#/components/schemas/WorkerGroup"
           deleted:
@@ -17093,6 +17095,8 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+          source:
+            type: string
     GroupIdentifier:
       type: object
       properties:
@@ -18442,6 +18446,8 @@ components:
         pluginsHash:
           type: integer
           format: int64
+        isConcurrencyViewEnabled:
+          type: boolean
     MiscController.EEConfiguration:
       type: object
       allOf:
@@ -19200,6 +19206,10 @@ components:
           type: string
         deprecated:
           type: boolean
+        title:
+          type: string
+        description:
+          type: string
     PluginArtifact:
       type: object
       properties:

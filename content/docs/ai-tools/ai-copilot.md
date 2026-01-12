@@ -1,7 +1,6 @@
 ---
 title: AI Copilot
 icon: /docs/icons/ai.svg
-editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---
 
@@ -10,7 +9,7 @@ Build and modify flows directly from natural language prompts.
 The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
 
 <div class="video-container">
-  <iframe src="https://youtube.com/embed/nNEb5DZB-xo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Overview
@@ -74,6 +73,12 @@ The Copilot again makes a suggestion to add to the flow, but only in the targete
 
 You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
 
+## Fix with AI
+
+With Copilot configured, there is also the added benefit of consulting Copilot to resolve execution errors from the Logs and Gantt views. For failed tasks, you can open the task and click the three dots to "**Fix with AI**". This option reopens the flow editor with the Copilot automatically prompted with the error context to help resolve any issues with the task.
+
+![Fix with AI](/docs/user-interface-guide/fix-with-ai-gantt.png)
+
 ## Starter prompts
 
 To get started with Copilot, here are some example prompts to test, iterate on, and use as a starting point for collaboratively building flows with AI in Kestra:
@@ -126,6 +131,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 ## Enterprise Edition Copilot configurations
 
 Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
 
@@ -227,6 +233,11 @@ kestra:
 ::alert{type="info"}
 If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 ::
+
+:::alert{type="info"}
+Some Ollama model names can be confusing. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to SHA `ad815644918f`, which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scenes. This is a thinking model that doesn't support disabling it.
+Please double-check that the chosen model has a non-thinking version or that a toggle is available.
+:::
 
 ### OpenAI
 

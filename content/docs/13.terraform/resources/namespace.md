@@ -66,7 +66,7 @@ EOT
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedblock--allowed_namespaces"></a>
-### Nested Schema for `allowed_namespaces`
+### Nested schema for `allowed_namespaces`
 
 Required:
 

@@ -15,8 +15,8 @@
                             </span>
                             <span class="loc">
 
-                                (Remote / <template v-for="loc in doc.locations" :key="loc">
-                                    {{ loc.emoji }}
+                                (Remote /<template v-for="loc in doc.locations" :key="loc">
+                                    <span class="ms-1">{{ loc.emoji }}</span>
                                 </template>)
                             </span>
                         </div>

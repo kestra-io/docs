@@ -42,13 +42,15 @@ export default {
         'blob:',
         "https://*.google.fr",
         "https://*.google.com",
+        "https://*.linkedin.com",
         "https://*.ads.linkedin.com",
         "https://*.reddit.com",
         "https://*.hubspot.com",
         "https://*.hsforms.com",
         "https://*.googleapis.com",
         "https://*.ytimg.com",
-        "https://*.googletagmanager.com"
+        "https://*.googletagmanager.com",
+        "https://*.githubusercontent.com/"
     ],
     // iframes
     'frame-src': [
@@ -82,7 +84,8 @@ export default {
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
-        "https://*.ipify.org"
+        "https://*.ipify.org",
+        "https://*.github.com"
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],
