@@ -78,7 +78,7 @@
 
                     // Add the matching items from the data array
                     titles.forEach(title => {
-                        const matchedItem = data[0].children.find(item => item?.title === title);
+                        const matchedItem = data[0].children.find(item => (item?.sidebarTitle ?? item?.title) === title);
                         if (matchedItem) {
                             newData.push(matchedItem);
                         }
