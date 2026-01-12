@@ -223,7 +223,12 @@ let combinedDescription = currentPageMetadata?.description;
             combinedDescription += (combinedDescription ? "\n\n" : "") + body;
         }
 
-const headingDescription = pluginType ? combinedTitle : combinedDescription
+const headingDescription = pluginType ? page.title :
+    (combinedDescription ??
+        (subGroup === undefined
+            ? rootPlugin?.longDescription ?? combinedDescription
+            : currentSubgroupPlugin?.longDescription ?? combinedDescription)
+    );
 
 const pageNamesHeading = {
         ...(pageNames ?? {}),
