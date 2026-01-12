@@ -1,5 +1,6 @@
 ---
-title: User Interface
+title: Kestra User Interface – Navigate Dashboards, Flows, Logs
+sidebarTitle: User Interface
 icon: /docs/icons/ui.svg
 ---
 

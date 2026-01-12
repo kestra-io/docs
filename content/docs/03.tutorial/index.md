@@ -1,5 +1,6 @@
 ---
-title: Tutorial
+title: Kestra Tutorial – Build Flows Step by Step
+sidebarTitle: Tutorial
 ---
 
 Use this tutorial to learn Kestra’s core concepts and build flows step by step.

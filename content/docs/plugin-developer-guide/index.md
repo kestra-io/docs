@@ -1,5 +1,6 @@
 ---
-title: Plugin Developer Guide
+title: Kestra Plugin Developer Guide – Build and Publish Plugins
+sidebarTitle: Plugin Developer Guide
 icon: /docs/icons/dev.svg
 ---
 

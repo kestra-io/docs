@@ -1,5 +1,6 @@
 ---
-title: Performance
+title: Kestra Performance – Benchmarks and Tuning
+sidebarTitle: Performance
 icon: /docs/icons/admin.svg
 ---
 

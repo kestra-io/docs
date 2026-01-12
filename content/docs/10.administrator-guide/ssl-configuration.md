@@ -1,5 +1,6 @@
 ---
-title: Configure SSL for Kestra
+title: Configure SSL/TLS for Kestra – Secure the UI
+sidebarTitle: Configure SSL for Kestra
 icon: /docs/icons/padlock.svg
 ---
 

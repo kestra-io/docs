@@ -1,5 +1,6 @@
 ---
-title: Allowed & Restricted Plugins
+title: Allowed & Restricted Plugins in Kestra Enterprise
+sidebarTitle: Allowed & Restricted Plugins
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.19.0"

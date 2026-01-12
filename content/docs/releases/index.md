@@ -1,5 +1,6 @@
 ---
-title: Releases & LTS Policy
+title: Kestra Releases & LTS Policy – Cadence and Support
+sidebarTitle: Releases & LTS Policy
 icon: /docs/icons/admin.svg
 ---
 

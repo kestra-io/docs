@@ -1,5 +1,6 @@
 ---
-title: Data Storage in Kestra
+title: Kestra Architecture – Data Storage Components
+sidebarTitle: Data Storage in Kestra
 icon: /docs/icons/architecture.svg
 ---
 

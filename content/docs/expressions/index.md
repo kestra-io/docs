@@ -1,5 +1,6 @@
 ---
-title: Expressions
+title: Kestra Expressions Guide – Pebble and Context Variables
+sidebarTitle: Expressions
 icon: /docs/icons/expression.svg
 ---
 

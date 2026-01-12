@@ -1,5 +1,6 @@
 ---
-title: MITM Proxy for DinD
+title: Configure DinD Behind MITM Proxy for Kestra
+sidebarTitle: MITM Proxy for DinD
 icon: /docs/icons/padlock.svg
 ---
 Configure Docker-in-Docker (DinD) to run behind a Proxy in a Kubernetes-based Kestra deployment.

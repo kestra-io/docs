@@ -1,5 +1,6 @@
 ---
-title: Enterprise Namespace Pages
+title: Enterprise Namespace Pages – Governance in the UI
+sidebarTitle: Enterprise Namespace Pages
 icon: /docs/icons/ui.svg
 editions: ["EE", "Cloud"]
 ---

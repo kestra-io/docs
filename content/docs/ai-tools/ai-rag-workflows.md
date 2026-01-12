@@ -1,5 +1,6 @@
 ---
-title: RAG Workflows
+title: RAG Workflows in Kestra – Retrieval-Augmented Generation
+sidebarTitle: RAG Workflows
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---

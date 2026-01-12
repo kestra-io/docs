@@ -1,5 +1,6 @@
 ---
-title: No-Code
+title: No-Code in Kestra – Build Flows and Dashboards Visually
+sidebarTitle: No-Code
 icon: /docs/icons/flow.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Server Components Liveness
+title: Server Component Liveness in Kestra – Heartbeats and Recovery
+sidebarTitle: Server Components Liveness
 icon: /docs/icons/admin.svg
 ---
 

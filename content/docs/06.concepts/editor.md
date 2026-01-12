@@ -1,5 +1,6 @@
 ---
-title: Editor
+title: Flow Editor in Kestra – Write and Test Flows
+sidebarTitle: Editor
 icon: /docs/icons/concepts.svg
 docId: flowEditor
 ---

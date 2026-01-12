@@ -1,5 +1,6 @@
 ---
-title: File Access in Kestra
+title: File Access in Kestra – Use Local and Namespace Files
+sidebarTitle: File Access in Kestra
 icon: /docs/icons/concepts.svg
 version: ">= 0.24.0"
 ---

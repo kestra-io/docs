@@ -1,5 +1,6 @@
 ---
-title: Installation Guide
+title: Install Kestra – Local, VM, and Kubernetes Options
+sidebarTitle: Installation Guide
 icon: /docs/icons/installation.svg
 ---
 

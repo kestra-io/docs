@@ -1,5 +1,6 @@
 ---
-title: Cloud & Enterprise Edition
+title: Kestra Cloud & Enterprise – Features and Setup
+sidebarTitle: Cloud & Enterprise Edition
 editions: ["EE", "Cloud"]
 ---
 

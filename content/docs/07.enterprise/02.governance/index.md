@@ -1,5 +1,6 @@
 ---
-title: Governance
+title: Governance in Kestra Enterprise – Security and Control
+sidebarTitle: Governance
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: governance

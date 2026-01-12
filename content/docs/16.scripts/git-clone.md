@@ -1,5 +1,6 @@
 ---
-title: Git Clone task
+title: Git Clone Task – Fetch Repos for Script Workflows
+sidebarTitle: Git Clone task
 icon: /docs/icons/dev.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: AI Agents
+title: AI Agents in Kestra – Autonomous Orchestration
+sidebarTitle: AI Agents
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---

@@ -1,5 +1,6 @@
 ---
-title: Azure DevOps
+title: Azure DevOps for Kestra – YAML Pipelines Example
+sidebarTitle: Azure DevOps
 icon: /docs/icons/dev.svg
 ---
 

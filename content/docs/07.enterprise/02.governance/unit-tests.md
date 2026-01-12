@@ -1,5 +1,6 @@
 ---
-title: Unit Tests
+title: Unit Tests in Kestra Enterprise – Validate Flows Safely
+sidebarTitle: Unit Tests
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.23.0"

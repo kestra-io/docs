@@ -1,5 +1,6 @@
 ---
-title: Log Shipper
+title: Log Shipper for Kestra Enterprise – Centralize Logs
+sidebarTitle: Log Shipper
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.21.0"

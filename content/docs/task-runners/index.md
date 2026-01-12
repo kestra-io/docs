@@ -1,5 +1,6 @@
 ---
-title: Task Runners
+title: Kestra Task Runners – Offload and Isolate Compute
+sidebarTitle: Task Runners
 icon: /docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]

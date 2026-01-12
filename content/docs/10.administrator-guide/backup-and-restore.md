@@ -1,5 +1,6 @@
 ---
-title: Backup & Restore
+title: Backup and Restore Kestra – Metadata and Data
+sidebarTitle: Backup & Restore
 icon: /docs/icons/admin.svg
 ---
 

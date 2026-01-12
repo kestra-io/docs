@@ -1,5 +1,6 @@
 ---
-title: Multi-Language Script Tasks
+title: Kestra Scripts Guide – Multi-Language Tasks and Runners
+sidebarTitle: Multi-Language Script Tasks
 icon: /docs/icons/dev.svg
 ---
 

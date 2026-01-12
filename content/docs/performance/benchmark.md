@@ -1,5 +1,6 @@
 ---
-title: Benchmarks
+title: Kestra Benchmarks – Orchestration Throughput and Latency
+sidebarTitle: Benchmarks
 icon: /docs/icons/admin.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Workflow Components
+title: Workflow Components in Kestra – Reference Guide
+sidebarTitle: Workflow Components
 ---
 
 Get to know the main orchestration components of a Kestra workflow.

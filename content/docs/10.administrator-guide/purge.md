@@ -1,5 +1,6 @@
 ---
-title: Purge
+title: Purge Old Data in Kestra – Executions, Logs, KV
+sidebarTitle: Purge
 icon: /docs/icons/admin.svg
 version: ">= 0.18.0"
 ---

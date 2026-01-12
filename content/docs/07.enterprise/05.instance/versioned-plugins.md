@@ -1,5 +1,6 @@
 ---
-title: Versioned Plugins
+title: Versioned Plugins in Kestra Enterprise – Manage Plugin Upgrades
+sidebarTitle: Versioned Plugins
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
@@ -201,4 +202,3 @@ When there are multiple versions of a plugin available, Kestra resolves the vers
 :::alert{type="info"}
 The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.
 :::
-

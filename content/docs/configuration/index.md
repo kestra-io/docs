@@ -1,5 +1,6 @@
 ---
-title: Configuration
+title: Configure Kestra – Settings, Environments, and Defaults
+sidebarTitle: Configuration
 icon: /docs/icons/admin.svg
 ---
 

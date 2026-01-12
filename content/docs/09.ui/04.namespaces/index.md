@@ -1,5 +1,6 @@
 ---
-title: Namespaces
+title: Namespaces in the Kestra UI – Manage Namespace Resources
+sidebarTitle: Namespaces
 icon: /docs/icons/ui.svg
 ---
 

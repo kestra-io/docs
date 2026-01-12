@@ -1,5 +1,6 @@
 ---
-title: Instance Dashboard
+title: Instance Dashboard in Kestra Enterprise – Monitor Components
+sidebarTitle: Instance Dashboard
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.16.0"

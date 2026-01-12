@@ -1,5 +1,6 @@
 ---
-title: Kestra EE API
+title: Kestra Enterprise API – Endpoints and Authentication
+sidebarTitle: Kestra EE API
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---

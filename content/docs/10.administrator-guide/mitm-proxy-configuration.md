@@ -1,5 +1,6 @@
 ---
-title: MITM Proxy for Kestra
+title: Configure Kestra with MITM Proxy – Outbound HTTPS
+sidebarTitle: MITM Proxy for Kestra
 icon: /docs/icons/padlock.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Standalone Server Installation Guide (Enterprise Edition)
+title: Install Kestra Enterprise from Standalone JAR
+sidebarTitle: Standalone Server Installation Guide
 icon: /docs/icons/installation.svg
 editions: ["EE"]
 ---

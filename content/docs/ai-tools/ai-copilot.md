@@ -1,5 +1,6 @@
 ---
-title: AI Copilot
+title: AI Copilot in Kestra – Generate and Edit Flows
+sidebarTitle: AI Copilot
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---

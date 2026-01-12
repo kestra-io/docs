@@ -1,5 +1,6 @@
 ---
-title: Administrator Guide
+title: Kestra Administrator Guide – Operate and Secure Your Cluster
+sidebarTitle: Administrator Guide
 icon: /docs/icons/admin.svg
 ---
 

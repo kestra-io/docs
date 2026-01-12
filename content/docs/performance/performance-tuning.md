@@ -1,5 +1,6 @@
 ---
-title: Performance Tuning
+title: Performance Tuning Kestra – Tune Workers, JDBC, Kafka
+sidebarTitle: Performance Tuning
 icon: /docs/icons/admin.svg
 ---
 

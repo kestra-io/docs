@@ -1,5 +1,6 @@
 ---
-title: Working Directory
+title: Working Directory Task – Share Files Across Scripts
+sidebarTitle: Working Directory
 icon: /docs/icons/dev.svg
 ---
 

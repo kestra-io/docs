@@ -1,5 +1,6 @@
 ---
-title: CI/CD Pipeline
+title: Kestra CI/CD Pipelines – Validate and Deploy Flows
+sidebarTitle: CI/CD Pipeline
 icon: /docs/icons/dev.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Read-only Secret Manager
+title: Read-Only Secret Manager in Kestra Enterprise
+sidebarTitle: Read-only Secret Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"

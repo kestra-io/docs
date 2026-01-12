@@ -1,5 +1,6 @@
 ---
-title: Sizing and Scaling Infrastructure
+title: Size and Scale Kestra Infrastructure – Executors, Workers, Schedulers
+sidebarTitle: Sizing and Scaling Infrastructure
 icon: /docs/icons/admin.svg
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Contribute to Kestra
+title: Contribute to Kestra – Code, Docs, and Community
+sidebarTitle: Contribute to Kestra
 icon: /docs/icons/contributing.svg
 ---
 

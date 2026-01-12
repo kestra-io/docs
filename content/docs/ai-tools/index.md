@@ -1,5 +1,6 @@
 ---
-title: AI Tools
+title: Kestra AI Tools – Copilot, Agents, and RAG Workflows
+sidebarTitle: AI Tools
 icon: /docs/icons/ai.svg
 ---
 

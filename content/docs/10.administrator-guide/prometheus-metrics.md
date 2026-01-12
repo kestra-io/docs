@@ -1,5 +1,6 @@
 ---
-title: Prometheus Metrics
+title: Prometheus Metrics in Kestra – Endpoint and Signals
+sidebarTitle: Prometheus Metrics
 icon: /docs/icons/admin.svg
 ---
 

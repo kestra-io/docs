@@ -1,5 +1,6 @@
 ---
-title: Custom Blueprints
+title: Custom Blueprints in Kestra Enterprise – Private Templates
+sidebarTitle: Custom Blueprints
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: custom

@@ -1,5 +1,6 @@
 ---
-title: Announcements
+title: Announcements in Kestra Enterprise – In-App Banners
+sidebarTitle: Announcements
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
@@ -30,4 +31,3 @@ As a user with an Admin role, you can configure the following within each announ
 ![setup announcement](/docs/enterprise/announcement/setup_announcement.png)
 
 ![display announcement](/docs/enterprise/announcement/display_announcement.png)
-

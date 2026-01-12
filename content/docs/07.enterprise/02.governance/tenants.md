@@ -1,5 +1,6 @@
 ---
-title: Tenants
+title: Multi-Tenancy in Kestra – Configure and Manage Tenants
+sidebarTitle: Tenants
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.13.0"

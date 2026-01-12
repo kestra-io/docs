@@ -1,5 +1,6 @@
 ---
-title: Managing Upgrades
+title: Manage Kestra Upgrades – Rolling and Rollback
+sidebarTitle: Managing Upgrades
 icon: /docs/icons/admin.svg
 ---
 

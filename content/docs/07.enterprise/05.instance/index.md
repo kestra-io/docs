@@ -1,5 +1,6 @@
 ---
-title: Instance Management
+title: Instance Management in Kestra Enterprise – Services and Maintenance
+sidebarTitle: Instance Management
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---

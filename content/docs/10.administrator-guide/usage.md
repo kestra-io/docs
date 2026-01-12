@@ -1,5 +1,6 @@
 ---
-title: Usage
+title: Usage Reporting in Kestra – Configure Anonymous Metrics
+sidebarTitle: Usage
 icon: /docs/icons/admin.svg
 ---
 

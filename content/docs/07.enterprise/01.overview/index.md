@@ -1,5 +1,6 @@
 ---
-title: Overview
+title: Kestra Enterprise Overview – Architecture and Setup
+sidebarTitle: Overview
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---

@@ -1,5 +1,6 @@
 ---
-title: Task Cache
+title: Task Cache in Kestra – Reuse Expensive Results
+sidebarTitle: Task Cache
 icon: /docs/icons/flow.svg
 version: "0.24.0"
 ---

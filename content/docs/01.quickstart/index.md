@@ -1,5 +1,6 @@
 ---
-title: Quickstart
+title: Kestra Quickstart Guide – Run Your First Workflow
+sidebarTitle: Quickstart
 icon: /docs/icons/quickstart.svg
 ---
 

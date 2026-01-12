@@ -1,5 +1,6 @@
 ---
-title: Bind Mount
+title: Bind Mount Scripts into Kestra – Run Local Code
+sidebarTitle: Bind Mount
 icon: /docs/icons/dev.svg
 ---
 

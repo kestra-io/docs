@@ -1,5 +1,6 @@
 ---
-title: Scalability & Productivity
+title: Scale Kestra Enterprise – Worker Groups, Task Runners, Apps
+sidebarTitle: Scalability & Productivity
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---

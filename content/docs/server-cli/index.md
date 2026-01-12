@@ -1,5 +1,6 @@
 ---
-title: Kestra CLI
+title: Kestra Server CLI – Commands and Options
+sidebarTitle: Kestra CLI
 icon: /docs/icons/admin.svg
 editions: ["OSS","EE"]
 ---

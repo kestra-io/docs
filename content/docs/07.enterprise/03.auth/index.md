@@ -1,5 +1,6 @@
 ---
-title: Authentication & Users
+title: Authentication and Users in Kestra Enterprise – RBAC and Access
+sidebarTitle: Authentication & Users
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
