@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href" class="blueprint">
+    <NuxtLink :href="href" class="blueprint" :class="{ light: scheme === 'light' }">
         <h6 class="title">
             {{ capitalizedTitle }}
         </h6>
@@ -29,8 +29,16 @@
         blueprint: Blueprint;
         tags?: Array<any>;
         href: string;
-    }>(), {
-        tags: () => []
+        /** 
+         * The color scheme for the blueprint card.
+         * @description
+         * - "dark" (default): Dark background with white text, purple category tags.
+         * - "light": White background with black text, light purple category tags.
+         */
+        scheme?: string;
+    }>(), { 
+        tags: () => [],
+        scheme: 'dark'
     });
 
     const capitalizedTitle = computed(() =>
@@ -146,6 +154,32 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+    }
+
+    .blueprint.light {
+        background-color: $white;
+        border-color: #E1E3E5;
+        box-shadow: none;
+
+        hr {
+            border-color: #E1E3E5;
+        }
+
+        .title {
+            color: $black-1;
+            font-weight: 600;
+        }
+
+        .icon {
+            border-color: #E1E3E5;
+        }
+
+        .category-tag {
+            background: var(--base-color-palette-purple-purple-50, #E0E0FF);
+            border: 1px solid #BBBBFF;
+            color: #8C4BFF;
+            padding: 0 0.5rem;
         }
     }
 </style>

@@ -1,19 +1,29 @@
+  
 import { $fetch } from "~/utils/fetch.ts";
 
-export async function useBlueprintsList({ page = 1, size = 24, tags = '', q = '' } = {}) {
-    let apiUrl = `https://api.kestra.io/v1/blueprints/versions/latest?page=${page}&size=${size}`;
+interface BlueprintsOptions {
+    page?: number;
+    size?: number;
+    tags?: string;
+    q?: string;
+}
+
+export async function useBlueprintsList(options: BlueprintsOptions = {}): Promise<any> {
+    const {page = 1, size = 24, tags = "", q = ""} = options;
+    const PARAMS = new URLSearchParams({
+        page: page.toString(),
+        size: size.toString()
+    });
     if (tags) {
-        apiUrl += `&tags=${tags}`;
+        PARAMS.append("tags", tags);
     }
     if (q) {
-        apiUrl += `&q=${q}`;
+        PARAMS.append("q", q);
     }
-    const data = await $fetch(apiUrl);
-
-    if (!data.results) {
-        return { results: [], total: 0 };
-    }
-
-    const shuffledResults = [...data.results].sort(() => Math.random() - 0.5);
-    return Object.assign({}, data, { results: shuffledResults });
+    return await $fetch(`${useRuntimeConfig().public.apiUrl}/blueprints/versions/latest?${PARAMS}`).then(
+        DATA => ({
+            ...DATA,
+            results: [...DATA.results].sort(() => Math.random() - 0.5)
+        })
+    );
 }

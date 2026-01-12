@@ -59,7 +59,7 @@
 <script setup lang="ts">
     import {ref, watch} from 'vue'
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+    import { useBlueprintsList } from '~/composables/useBlueprintsList'
     import BlueprintsListCard from './ListCard.vue'
     import CommonPagination from '../common/Pagination.vue'
 
