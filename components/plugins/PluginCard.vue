@@ -49,16 +49,15 @@
         metadataMap: undefined
     });
 
+    const key = computed(() => props.plugin.subGroup ?? props.plugin.group);
+
     const metadata = computed(() => {
-        const key = props.plugin.subGroup ?? props.plugin.group;
-        return props.metadataMap?.[key];
+        return props.metadataMap?.[key.value];
     });
 
     const iconSrc = computed(() => {
-        const key = props.plugin.subGroup || props.plugin.group;
-
-        if (props.icons?.[key]) {
-            return `data:image/svg+xml;base64,${props.icons[key]}`;
+        if (props.icons?.[key.value]) {
+            return `data:image/svg+xml;base64,${props.icons[key.value]}`;
         }
 
         return "/icon.svg";
