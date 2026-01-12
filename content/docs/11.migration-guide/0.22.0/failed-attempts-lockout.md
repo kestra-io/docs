@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["EE"]
 ---
 
-Too many failed login attempts now lock user's account
 
-## Overview
+# Failed Attempts Lockout
+
+Too many failed login attempts now lock user's account
 
 To improve the security of your Enterprise Edition instance, we now automatically lock user accounts after a `threshold` number of failed login attempts made within `monitoring-window`. The number of failed attempts, the monitoring window to track the failed attempts and the duration of how long the user remains locked are configurable.
 

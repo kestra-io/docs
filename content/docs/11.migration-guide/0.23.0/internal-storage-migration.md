@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["OSS","EE"]
 ---
 
-## Internal storage migration guide for S3 and GCS users to fix double slash
+
+# Internal Storage Migration Guide for S3 and GCS Users
 
 For users of S3 or GCS as internal storage, Kestra now removes the leading root slash in all storage paths. Storage keys now have a single slash separator, not a double slash. This helps display internal storage objects [in various cloud storage interfaces](https://github.com/kestra-io/kestra/issues/3933).
 
@@ -20,7 +21,7 @@ Make sure to run the following script for your provider. Otherwise, Kestra wonâ€
 Before taking any action to fix the double slash issue, Open-source users **MUST** follow the steps in the [OSS Tenant Migration Guide](tenant-migration-oss.md) and Enterprise users **MUST** follow the steps in the [EE Tenant Migration Guide](tenant-migration-ee.md).
 :::
 
-### GCS storage root slash migration script
+## GCS storage root slash migration script
 
 ```bash
 gcloud storage cp -r "gs://mybucket//*" gs://mybucket/
@@ -30,7 +31,7 @@ After running the script, the old files can be removed using:
 ```bash
 gsutil rm -r "gs://mybucket//**
 ```
-### S3 root slash migration script
+## S3 root slash migration script
 
 ```bash
 #!/bin/bash
@@ -54,7 +55,7 @@ echo "Migration finished!"
 ```
 
 
-### Migrating Files Using Graphical User Interfaces (GUI)
+## Migrating Files Using Graphical User Interfaces (GUI)
 
 For users who prefer not to use command-line scripts, migration can be accomplished with graphical tools.
 

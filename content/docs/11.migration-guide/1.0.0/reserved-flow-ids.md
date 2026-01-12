@@ -5,7 +5,8 @@ release: 1.0.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+# Reserved keywords cannot be used as Flow IDs
 
 Starting with Kestra 1.0, certain keywords are reserved and **cannot be used as Flow IDs**. These identifiers collide with internal API endpoints and are therefore restricted.
 
@@ -69,4 +70,3 @@ Once you have validated the new flow, delete the old flow with the reserved keyw
 ## Recommendation
 
 Perform this migration **before upgrading to Kestra 1.0**, as otherwise you will not be able to edit affected flows after the upgrade.
-

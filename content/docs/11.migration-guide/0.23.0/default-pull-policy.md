@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+# The default pullPolicy for Docker-based tasks changed
 
 Due to the new [Docker Hub pull usage and limits](https://docs.docker.com/docker-hub/usage/pulls/), all the Docker-based Kestra tasks have their default `pullPolicy` updated from `ALWAYS` to `IF_NOT_PRESENT` to avoid any pull limit issue. Read more about the change in the [GitHub issue](https://github.com/kestra-io/plugin-scripts/issues/230).
 

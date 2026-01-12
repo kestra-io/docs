@@ -5,8 +5,9 @@ release: 0.21.0
 editions: ["OSS"]
 ---
 
-Changed handling of non-existing secrets.
 
-## Overview
+# Retrieving non-existing secrets
+
+Changed handling of non-existing secrets.
 
 Fetching a non-existing secret using the `secret()` function now throws an exception instead of returning `null` in the open-source version, aligning the open-source behavior with the behavior in the Enterprise Edition.

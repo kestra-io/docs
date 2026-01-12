@@ -4,6 +4,9 @@ icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
+
+# JSON Object Serialization
+
 How to adapt flows to the `NON_NULL` JSON serialization strategy.
 
 Kestra 0.17 migrates away from the previously used `NON_DEFAULT` JSON serialization strategy to fix various limitations and make the flow behavior more user-friendly. This change makes empty lists or maps serialized instead of being undefined. Adapting [Pebble expressions](../../expressions/index.md) relying on the previously existing behavior is necessary to keep the functionality untouched.
@@ -14,9 +17,7 @@ There are three main cases where Pebble expressions might be affected:
 2) [Null-Coalescing Operator](../../expressions/index.md#null-coalescing-operator)
 3) [Conditions in Pebble](../../06.concepts/06.pebble.md#using-conditions-in-pebble)
 
-## Examples
-
-### 0.16
+## 0.16
 
 ```yaml
 id: inputsV16
@@ -50,7 +51,7 @@ tasks:
         message: "not found" # not found
 ```
 
-### 0.17
+## 0.17
 
 ```yaml
 id: inputsV17

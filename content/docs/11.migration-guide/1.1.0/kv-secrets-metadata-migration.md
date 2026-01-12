@@ -5,7 +5,8 @@ release: 1.1.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+# Key-value Store and Secrets Metadata Migration
 
 In version **1.1.0**, we improved the backend logic that powers **Key-Value Pairs** and **Secrets** (Enterprise Edition) search in the Kestra UI.  
 Previously, the UI fetched *all* stored pairs, which could become resource-intensive and inefficient in environments with a large number of entries.  

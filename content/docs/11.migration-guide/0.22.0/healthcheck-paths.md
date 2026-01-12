@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["OSS", "EE"]
 ---
 
-Change in the health check paths for Kestra's Helm Chart
 
-## Overview
+# Helm Chart Health Check Paths
+
+Change in the health check paths for Kestra's Helm Chart
 
 Before [this Helm Charts PR](https://github.com/kestra-io/helm-charts/pull/62/files), both probes pointed to `/health`. This caused Kubernetes to restart the pod when an external component was unavailable.
 

@@ -5,9 +5,10 @@ release: 0.14.0
 editions: ["EE"]
 ---
 
-This change affects the way you manage groups via the API.
 
-## Overview
+# Change in managing Groups via the API
+
+This change affects the way you manage groups via the API.
 
 In the [v0.14.0 release](/blogs/2024-01-22-release-0-14.md), we've changed the structure of the Groups API to prevent duplicate groups from being created.
 

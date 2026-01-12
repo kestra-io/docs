@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["EE"]
 ---
 
-## Overview
+
+# Enterprise Migration Guide from defaultTenant to Multitenancy
 
 Kestra now requires a tenant context across both the OSS and EE versions. For Enterprise users, this affects default tenants and their associated configuration properties.
 

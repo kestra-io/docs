@@ -4,9 +4,10 @@ icon: /docs/icons/migration-guide.svg
 release: 0.18.0
 ---
 
-How to migrate from `runner` to `taskRunner`.
 
-## Why the change?
+# Deprecation of runner property in favor of taskRunner
+
+How to migrate from `runner` to `taskRunner`.
 
 Task Runners is a pluggable system that allows you to offload the execution of your tasks to different environments.
 
@@ -120,4 +121,3 @@ tasks:
 ```
 
 Note how the `containerImage` is now a top-level property of each script task. This makes the configuration more flexible, as the image changes more often than the standard runner configuration.
-

@@ -5,7 +5,8 @@ release: 1.1.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+# New prefill Property for Inputs
 
 A new `prefill` property has been added to input definitions to let users start with an initial value that can be cleared or set to `null` when the input is not required.
 

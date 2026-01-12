@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["EE"]
 ---
 
-Default tenant is deprecated and multi-tenancy is enabled by default.
 
-## Overview
+# Default Tenant & Multi-Tenancy
+
+Default tenant is deprecated and multi-tenancy is enabled by default.
 
 [Multi-tenancy](../../07.enterprise/02.governance/tenants.md) was introduced in Kestra 0.13. For backward compatibility with older versions (≤0.12), you could use the concept of a [default tenant](../../07.enterprise/02.governance/tenants.md#default-tenant), which imitated the multitenancy feature with the so-called `null`-tenant or `default` tenant.
 

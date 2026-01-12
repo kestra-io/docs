@@ -5,9 +5,10 @@ release: 0.20.0
 editions: ["EE"]
 ---
 
-Migrating usage of worker group keys
 
-## Overview
+# Fallback on unhealthy workers
+
+Migrating usage of worker group keys
 
 By default, a task configured to run on a worker group where no workers are available will wait for the worker to be available. The previous behavior was to fail.
 

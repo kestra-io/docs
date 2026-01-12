@@ -4,9 +4,10 @@ icon: /docs/icons/migration-guide.svg
 release: 0.15.0
 ---
 
-Kestra 0.15.0 has been migrated to Micronaut 4.3 for improved security. This page explains how to make your custom plugins compatible with this new version.
 
-## Micronaut 4 and Project Reactor
+# Migration to Micronaut 4.3
+
+Kestra 0.15.0 has been migrated to Micronaut 4.3 for improved security. This page explains how to make your custom plugins compatible with this new version.
 
 Custom plugins need to be migrated to Micronaut 4.3 in order to be compatible with Kestra 0.15.0 and later.
 

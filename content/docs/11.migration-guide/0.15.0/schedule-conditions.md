@@ -4,6 +4,9 @@ icon: /docs/icons/migration-guide.svg
 release: 0.15.0
 ---
 
+
+# Schedule Conditions: `scheduleConditions` deprecated for `conditions`
+
 The `scheduleConditions` property of `Schedule` trigger is deprecated. Instead, use `conditions` to define custom scheduling conditions.
 
 This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully migrate to 0.15.0. However, we recommend using the `conditions` property at least for new flows. The `scheduleConditions` property will be removed in the future.
@@ -11,8 +14,6 @@ This change is implemented in a non-breaking way, so you don't need to immediate
 :::alert{type="info"}
 All you need to do is to rename `scheduleConditions` to `conditions` in your flow configuration — no other changes are required.
 :::
-
-## Behavior before Kestra 0.15.0
 
 To make the change clear, here is how scheduling conditions were defined before Kestra 0.15.0:
 

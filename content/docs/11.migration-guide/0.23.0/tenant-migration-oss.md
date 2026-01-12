@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["OSS"]
 ---
 
-## Overview
+
+# Open-Source Migration Guide to introduce defaultTenant
 
 Kestra now requires a tenant context in the OSS version.
 

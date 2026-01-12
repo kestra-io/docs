@@ -5,9 +5,10 @@ release: 0.21.0
 editions: ["OSS", "EE"]
 ---
 
-STDERR Logged at ERROR Level in Script Tasks
 
-## Overview
+# Log level for stderr output
+
+STDERR Logged at ERROR Level in Script Tasks
 
 Script tasks now log output sent to `stderr` at the ERROR level instead of WARNING ([PR #6383](https://github.com/kestra-io/kestra/pull/6383); [Issue #190](https://github.com/kestra-io/plugin-scripts/issues/190)).
 

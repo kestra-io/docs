@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["EE"]
 ---
 
-Azure Log Exporter plugin is now split into two plugins.
 
-## Overview
+# Azure Log Exporter
+
+Azure Log Exporter plugin is now split into two plugins.
 
 The log exporter plugin for Azure `io.kestra.plugin.ee.azure.LogExporter`, introduced in Kestra 0.21, got split into two plugins:
 1. `io.kestra.plugin.ee.azure.monitor.LogExporter` for exporting logs to Azure Monitor.

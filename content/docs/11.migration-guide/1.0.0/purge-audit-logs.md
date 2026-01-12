@@ -5,7 +5,8 @@ release: 1.0.0
 editions: ["EE"]
 ---
 
-## Overview
+
+# Audit Log's permissions are renamed to resources
 
 The `permissions` property used by the [PurgeAuditLogs](/plugins/core/log-ee/io.kestra.plugin.ee.core.log.purgeauditlogs) task is now called `resources`, aligning with the [AuditLogShipper](/plugins/core/log-ee/io.kestra.plugin.ee.core.log.auditlogshipper) task. The functionality remains the same, but you will need to change the property name in any flows using the task.
 

@@ -4,9 +4,10 @@ icon: /docs/icons/migration-guide.svg
 release: 0.19.0
 ---
 
-How to migrate from State Store to KV Store.
 
-## Overview
+# Deprecation of State Store in favor of KV Store
+
+How to migrate from State Store to KV Store.
 
 The State Store is a mechanism used under the hood by kestra to store the state of a task execution as a file in internal storage.
 
@@ -48,4 +49,3 @@ If you were using one of those plugins, make sure to run this command after upgr
 ```
 
 Additionally, if you were using the [State Store tasks](/plugins/core#state) directly in your flows, make sure to update your flows to use the equivalent [KV Store tasks](/plugins/core#kv).
-

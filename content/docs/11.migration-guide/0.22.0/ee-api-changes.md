@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["EE"]
 ---
 
-Service Account name uniqueness is no longer enforced.
 
-## Overview
+# Enterprise Edition API changes
+
+Service Account name uniqueness is no longer enforced.
 
 Before Kestra 0.22, the Service Account name had to be globally unique within the instance. As a result, attempting to create a Service Account `cicd` in a `dev` tenant would raise an error `"Username already exists"` if your `prod` tenant also has a Service Account with the name `cicd`.
 
