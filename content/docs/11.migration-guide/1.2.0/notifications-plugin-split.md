@@ -1,5 +1,6 @@
 ---
-title: Split notifications plugins (Non-BC)
+title: Split notifications plugins – Kestra 1.2.0
+sidebarTitle: Notifications plugin split
 icon: /docs/icons/migration-guide.svg
 release: 1.2.0
 ---

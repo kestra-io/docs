@@ -1,5 +1,6 @@
 ---
-title: 1.2.0
+title: Kestra 1.2.0 Migration Guide – Changes and Actions
+sidebarTitle: 1.2.0
 icon: /docs/icons/migration-guide.svg
 release: 1.2.0
 ---
