@@ -16,7 +16,7 @@ const logger = defineMiddleware(async (context, next) => {
         return next();
     }
 
-    const startAt = Date.now()
+    const startAt = Date.now();
 
     const response = await next();
 
@@ -79,7 +79,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     // all urls should be lowercase
     const match = context.url.pathname.match(/[A-Z]/);
     if (match) {
-        return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()))
+        return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
     }
 
     // Check if the request is coming from the kestra-io.pages.dev to redirect to main
