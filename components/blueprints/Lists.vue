@@ -50,7 +50,7 @@
 <script setup lang="ts">
     import {computed, onMounted, ref, watch} from 'vue'
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import BlueprintsListCard from '~/components/blogs/ListCard.vue'
+    import BlueprintsListCard from '~/components/blueprints/ListCard.vue'
     import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
 
     const currentPage = ref<number>(1)
