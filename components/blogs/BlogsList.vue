@@ -308,13 +308,13 @@ h2 {
         font-size: $font-size-4xl;
         font-weight: 400;
         color: $white;
-        margin-bottom: 2rem;
+        margin-bottom: 2rem !important;
     }
     h4 {
         color: $white-1;
         font-size: $font-size-xl;
         font-weight: 400;
-        margin-bottom: 2rem;
+        margin-bottom: 2rem !important;
     }
 
     &::after {

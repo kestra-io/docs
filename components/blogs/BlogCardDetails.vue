@@ -34,7 +34,9 @@
 
     p {
         color: $black-8;
-        font-size: $font-size-sm;
+        font-size: 1.125rem;
         font-weight: 400;
+        line-height: 2rem;
+        margin-bottom: 2rem;
     }
 </style>
