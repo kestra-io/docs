@@ -173,7 +173,7 @@ executeFlow().catch(console.error);
 ::alert{type="info"}
 **Notes**
 - `wait=true` blocks until the execution finishes (handy for tests/CLI).  
-- You can also pass labels, schedule dates, breakpoints, variables, and inputs—see the method signature for optional parameters.  
+- You can also pass labels, schedule dates, breakpoints, variables, and inputs — see the method signature for optional parameters.  
 - For multi-tenant setups, set the correct `tenant` value.
 ::
 
@@ -240,7 +240,7 @@ followExecution().catch(console.error);
 
 ::alert{type="info"}
 **Tips**
-- The first SSE payload is an empty keepalive—skip it before processing updates.  
+- The first SSE payload is an empty keepalive — skip it before processing updates.  
 - If you only need the final result, poll the execution by ID instead of streaming.  
 - Add retry/backoff when streaming over unstable networks.
 ::

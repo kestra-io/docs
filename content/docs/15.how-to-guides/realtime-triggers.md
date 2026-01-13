@@ -184,7 +184,7 @@ For this, we will create an Event Hub and a container for checkpoint storage. Fo
 10. On the particular Event Hub namespace page, you can now see the newly created Event Hub.
 11. On the namespace page, click on "Shared access policies" from the left menu bar.
 12. Click on the "RootManageSharedAccessKey".
-13. In the popup page that appears, you can copy the "Connection string–primary key" to be used later in the Kestra flow. With this, the Event Hub is created.
+13. In the popup page that appears, you can copy the "Connection string – primary key" to be used later in the Kestra flow. With this, the Event Hub is created.
 
 ![event_hubs_create_namespace_1](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_1.png)
 

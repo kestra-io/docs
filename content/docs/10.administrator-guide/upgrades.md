@@ -144,7 +144,7 @@ There are two types of database migrations: automatic and manual.
 
 ### Automatic database migration
 
-Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations—no manual intervention needed.
+Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations — no manual intervention needed.
 
 ### Manual database migration
 

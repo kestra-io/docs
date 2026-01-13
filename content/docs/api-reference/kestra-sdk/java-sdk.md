@@ -252,7 +252,7 @@ public class ExecutionStreaming {
 ::alert{type="info"}
 **Tips**
 - Use `followExecution` in interactive tools or long-running services to surface progress in real time.  
-- The first event is an empty keepalive payload—skip it before processing subsequent updates.  
+- The first event is an empty keepalive payload — skip it before processing subsequent updates.  
 - If you only need the final result, poll the execution by ID instead of streaming.  
 - Consider backoff/retry logic when streaming over unstable networks.
 ::
