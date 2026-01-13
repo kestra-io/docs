@@ -6,7 +6,7 @@
                 <InformationOutline class="info-icon" />
             </span>
             <div role="tooltip" id="overview-tooltip">
-                <p>Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where the corresponding plugin version is compatible. 
+                <p>Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where the corresponding plugin version is compatible.
                     <a href="https://kestra.io/docs/releases" target="_blank">
                         Learn more
                     </a>
@@ -23,7 +23,7 @@
                         <span class="latest-badge">Latest</span>
                     </div>
                     <small>{{ formatDate(releaseVersions[0]?.publishedAt) }}</small>
-                    <a 
+                    <a
                         v-if="releasesUrl"
                         :href="`${releasesUrl}/tag/v${releaseVersions[0]?.version}`"
                         target="_blank"
@@ -45,7 +45,7 @@
                         <div v-for="v in releaseVersions.slice(1)" :key="v?.version" class="older-version">
                             <strong>{{ v?.version }}</strong>
                             <small>{{ formatDate(v?.publishedAt) }}</small>
-                            <a 
+                            <a
                                 v-if="releasesUrl"
                                 :href="`${releasesUrl}/tag/v${v?.version}`"
                                 target="_blank"
@@ -361,6 +361,8 @@
 
     strong.h6 {
         font-size: 14px;
+        margin-left: 1.5rem;
+        color: var(--ks-content-tertiary);
     }
 
     .overview-header {
