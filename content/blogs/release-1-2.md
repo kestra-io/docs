@@ -463,7 +463,7 @@ To index existing Namespace Files metadata run the following migration command:
 /app/kestra migrate metadata nsfiles
 ```
 
-For **Docker Compose** setups, replace the command by the following
+For **Docker Compose** setups, replace the command with the following:
 
 ```yaml
 kestra:
