@@ -1,12 +1,10 @@
 <template>
     <div class="mb-3">
-        <p class="fw-bold d-flex gap-2 flex-wrap" v-if="page?.editions?.length || page?.version">
-            Available on:
+        <p class="fw-bold d-flex gap-2 flex-wrap" v-if="filteredEditions.length || hasVersion">Available on:
             <component
                 :is="editionInfo(edition).link ? 'a' : 'span'"
-                v-for="edition in page?.editions"
+                v-for="edition in filteredEditions"
                 :key="edition"
-                v-if="edition"
                 :href="editionInfo(edition).link"
                 :target="editionInfo(edition).link ? '_blank' : undefined"
                 class="badge d-flex align-items-center text-decoration-none"
@@ -14,82 +12,68 @@
             >
                 {{ editionInfo(edition).label }}
             </component>
-            <span v-if="page?.version" class="badge d-flex align-items-center bg-body-tertiary">{{
-                page.version
-            }}</span>
+            <span v-if="hasVersion" class="badge d-flex align-items-center bg-body-tertiary">{{ page.version }}</span>
         </p>
     </div>
     <div class="mb-3" v-if="page?.deprecated">
-        <p class="fw-bold d-flex gap-2 flex-wrap">
-            Deprecated since:
-            <span
-                v-if="page?.deprecated.since"
-                class="badge d-flex align-items-center bg-body-tertiary"
-                >{{ page?.deprecated.since }}</span
-            >
-            <a
-                v-if="page?.deprecated.migrationGuide"
-                class="badge d-flex align-items-center bg-secondary text-white"
-                :href="page?.deprecated.migrationGuide"
-            >
+        <p class="fw-bold d-flex gap-2 flex-wrap">Deprecated since:
+            <span v-if="page?.deprecated.since" class="badge d-flex align-items-center bg-body-tertiary">{{ page?.deprecated.since }}</span>
+            <NuxtLink v-if="page?.deprecated.migrationGuide" class="badge d-flex align-items-center bg-secondary text-white" :href="page?.deprecated.migrationGuide">
                 Migration Guide
-            </a>
+            </NuxtLink>
         </p>
     </div>
     <div class="mb-3" v-if="page?.release">
-        <p class="fw-bold d-flex gap-2 flex-wrap">
-            Release:
-            <span class="badge d-flex align-items-center bg-body-tertiary">{{
-                page?.release
-            }}</span>
+        <p class="fw-bold d-flex gap-2 flex-wrap">Release:
+            <span class="badge d-flex align-items-center bg-body-tertiary">{{ page?.release }}</span>
         </p>
     </div>
 </template>
 
 <script>
-    import Section from "~/components/layout/Section.vue"
+    import Section from '../layout/Section.vue';
 
     export default {
-        components: { Section },
+        components: {Section},
         data() {
             return {
                 editionLabelAndColorByPrefix: {
-                    OSS: {
-                        label: "Open Source Edition",
-                        color: "primary",
-                        link: "https://kestra.io/features",
-                    },
-                    EE: {
-                        label: "Enterprise Edition",
-                        color: "secondary",
-                        link: "https://kestra.io/enterprise",
-                    },
-                    Cloud: {
-                        label: "Cloud",
-                        color: "dark-3",
-                        link: "https://kestra.io/cloud",
-                    },
-                    CLOUD_TEAM: { label: "Cloud Team plan", color: "success" },
-                    CLOUD_PRO: { label: "Cloud Pro plan", color: "info" },
-                },
+                    OSS: {label: "Open Source Edition", color: "primary", link: "https://kestra.io/features"},
+                    EE: {label: "Enterprise Edition", color: "secondary", link: "https://kestra.io/enterprise"},
+                    Cloud: {label: "Cloud", color: "dark-3", link: "https://kestra.io/cloud"},
+                    CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
+                    CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
+                }
             }
         },
         props: {
             page: {
-                type: Object,
-                default: undefined,
+              type: Object,
+              default: undefined
             },
+        },
+        computed: {
+            hasEdition() {
+                return Array.isArray(this.page?.editions) && this.page.editions.length > 0;
+            },
+            hasVersion() {
+                const v = this.page?.version;
+                return typeof v === 'string' ? v.trim().length > 0 : !!v;
+            },
+            filteredEditions() {
+                return Array.isArray(this.page?.editions)
+                    ? this.page.editions.filter(Boolean)
+                    : [];
+            }
         },
         methods: {
             editionInfo(edition) {
-                return (
-                    this.editionLabelAndColorByPrefix?.[edition] ?? {
-                        label: edition,
-                        color: "dark-3",
-                        link: undefined,
-                    }
-                )
-            },
-        },
+                return this.editionLabelAndColorByPrefix?.[edition] ?? {
+                    label: edition,
+                    color: "dark-3",
+                    link: undefined
+                }
+            }
+        }
     }
 </script>
