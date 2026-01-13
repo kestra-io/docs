@@ -34,7 +34,7 @@ export default {
     computed: {
         date() {
             dayjs.extend(customParseFormat)
-            return dayjs(this.blog.date).format("MMMM D YYYY");
+            return dayjs(this.blog.data.date).format("MMMM D YYYY");
         },
         authorsList() {
             const { getAuthors } = useBlogAuthors(this.blog);
