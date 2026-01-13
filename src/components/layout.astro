@@ -9,6 +9,7 @@ import Header from "~/components/layout/Header.vue";
 import Search from "~/components/layout/Search.vue";
 import LayoutFooter from "~/components/layout/Footer.vue";
 import LayoutFixed from "~/components/layout/Fixed.vue";
+import { $fetchApi } from "~/utils/fetch";
 
 interface Props {
     title?: string;
@@ -24,6 +25,7 @@ const slug = Astro.routePattern;
 const title = props.title ? props.title + " | Kestra" : "Kestra, Open Source Declarative Data Orchestration";
 const description = props.description ?? "Use declarative language to build simpler, faster, scalable and flexible workflows";
 const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
+const {total} = await $fetchApi<{total:number}>('/communities/slack')
 ---
 <html lang="en" class="dark">
 <head>
@@ -100,7 +102,7 @@ const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
     </div>
 
     <LayoutFooter transition:persist />
-    <LayoutFixed transition:persist />
+    <LayoutFixed transition:persist online={total} />
     <script define:vars={{ slug }}>
         window.astroClientConfig = { slug: slug }
     </script>

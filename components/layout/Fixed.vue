@@ -6,7 +6,7 @@
                     <ChevronUp />
                 </a>
             </Transition>
-            <Slack v-if="displaySlack" :widget="true"/>
+            <Slack v-if="displaySlack" widget :online="online"/>
         </div>
     </div>
 </template>
@@ -21,6 +21,10 @@ export default {
         displaySlack: {
             type: Boolean,
             default: true
+        },
+        online: {
+            type: Number,
+            default: 0
         }
     },
     data() {

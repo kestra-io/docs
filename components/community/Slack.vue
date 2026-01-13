@@ -2,7 +2,9 @@
     <div v-if="widget" class="widget-chat">
         <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-sm btn-primary rounded">
             <Slack title=""/>
-            Slack <ClientOnly><span v-if="online" class="online">{{ onlineText }} members</span></ClientOnly>
+            Slack <ClientOnly>
+                <span v-if="online" class="online">{{ onlineText }} members</span>
+            </ClientOnly>
         </NuxtLink>
     </div>
     <div v-else class="container">
