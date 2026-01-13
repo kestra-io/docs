@@ -129,7 +129,7 @@ tasks:
 
 Common use cases include data pipeline orchestration with automatic lineage tracking, infrastructure as code management, multi-environment resource management via metadata tagging, and data governance initiatives that require complete audit trails.
 
-This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness or auto-emit assets for plugins, along with additional integrations.
+This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness or auto-emit assets for plugins, along with additional integrations. For more documentation and examples, see the [Assets documentation](https://kestra.io/docs/enterprise/governance/assets).
 
 
 ## Templated Custom Blueprints
