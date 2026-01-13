@@ -302,6 +302,7 @@
 
                 li {
                     font-size: .875rem;
+                    line-height: var(--bs-body-line-height) !important;
                 }
 
                 li a {
