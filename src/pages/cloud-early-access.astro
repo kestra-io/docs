@@ -8,6 +8,6 @@ const description = "Fill the form to get access to Kestra cloud early access.";
 
 <Layout title={title} description={description}>
     <div class="cloud">
-        <CloudEarlyAccessForm client:load routePath={new URL(Astro.request.url).pathname} />
+        <CloudEarlyAccessForm routePath={new URL(Astro.request.url).pathname} client:idle />
     </div>
 </Layout>

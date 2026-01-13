@@ -121,11 +121,11 @@
           </strong>
         </p>
         <div class="testimonial-logo">
-          <img src="./images/foundation.svg" alt="Foundation Direct logo" />
+          <img src="./images/foundation.svg?url" alt="Foundation Direct logo" />
         </div>
       </div>
       <div class="flow-image" data-aos="fade-left">
-        <img src="./images/flow-edit.png" alt="Kestra Flow" />
+        <img src="./images/flow-edit.png?url" alt="Kestra Flow" />
       </div>
     </div>
   </div>
