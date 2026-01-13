@@ -32,7 +32,7 @@ Third, there's language lock-in. Airflow is Python, and only Python. That was a 
 Finally, there's operational burden. Airflow's architecture means your platform team becomes an Airflow operations team. Workers, schedulers, metadata databases, and executors all need care and feeding. At scale, this becomes a meaningful line item in your engineering budget.
 
 
-## Top Enterprise Airflow Alternatives Compared
+## Top enterprise Airflow alternatives compared
 
 ### Python-focused alternatives
 
