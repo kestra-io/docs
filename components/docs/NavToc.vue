@@ -38,11 +38,11 @@
                                     :class="`depth-${tableOfContent.depth}`">{{
                                         tableOfContent.text }}</a>
                             </li>
-                                <ul class="ps-0 pt-2 pt-lg-0"
+                            <ul class="ps-0 pt-2 pt-lg-0"
                                 v-if="tableOfContent?.children?.length">
                                 <template v-for="item in tableOfContent?.children">
                                     <li v-if="(item.depth ?? 0) > 1 && (item.depth ?? 0) < 6" @click="closeToc"
-                                        :class="{ 'mt-3': item.depth === 2 }">
+                                        :class="{ 'mt-3': item.depth === 2 }">                                        
                                         <a @click.prevent="menuNavigate" :href="`#${item.id}`" :class="`depth-${item.depth}`">{{
                                             item.text }}</a>
                                     </li>
@@ -298,6 +298,10 @@
                         font-weight: 500;
                         border-left: 1px solid $purple !important;
                     }
+                }
+
+                li {
+                    font-size: .875rem;
                 }
 
                 li a {
