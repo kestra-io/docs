@@ -27,7 +27,7 @@ First, there's the governance problem. When you have 200 data engineers writing 
 
 Second, there's deployment flexibility. "Cloud-native" is a fine marketing term until your security team mandates on-premises deployment for certain workloads, or your company operates in a jurisdiction with data residency requirements. Companies want to have the ability to run the same orchestration platform in GCP, on-prem, and air-gapped environments. 
 
-Third, there's language lock-in. Airflow is Python, and only Python. That was a reasonable choice in 2014 when Python dominated data work, but modern orchestration needs span [multiple languages](https://kestra.io/features/code-in-any-language). Your data team writes Python, your backend engineers write Go, your ML team uses a mix of everything, and increasingly you're coordinating across all of them. An orchestrator that forces everything through Python becomes a bottleneck—either you rewrite everything, or you build brittle workarounds.
+Third, there's language lock-in. Airflow is Python, and only Python. That was a reasonable choice in 2014 when Python dominated data work, but modern orchestration needs span [multiple languages](https://kestra.io/features/code-in-any-language). Your data team writes Python, your backend engineers write Go, your ML team uses a mix of everything, and increasingly you're coordinating across all of them. An orchestrator that forces everything through Python becomes a bottleneck: either you rewrite everything, or you build brittle workarounds.
 
 Finally, there's operational burden. Airflow's architecture means your platform team becomes an Airflow operations team. Workers, schedulers, metadata databases, and executors all need care and feeding. At scale, this becomes a meaningful line item in your engineering budget.
 
@@ -46,9 +46,9 @@ If your team is committed to Python and you want to stay in that ecosystem, thes
 
 ### Cloud-native and legacy options
 
-**Control-M** represents the enterprise legacy option. BMC's orchestration platform has been around for decades and is deeply embedded in traditional enterprise IT. If you're in financial services or another heavily regulated industry, Control-M might already be running your batch jobs. It handles compliance requirements well and integrates with mainframe systems. The downside is that it feels like enterprise software from another era—complex, expensive, and not built for the cloud-native workflows modern data teams expect.
+**Control-M** represents the enterprise legacy option. BMC's orchestration platform has been around for decades and is deeply embedded in traditional enterprise IT. If you're in financial services or another heavily regulated industry, Control-M might already be running your batch jobs. It handles compliance requirements well and integrates with mainframe systems. The downside is that it feels like enterprise software from another era: complex, expensive, and not built for the cloud-native workflows modern data teams expect.
 
-**AWS Step Functions** is Amazon's answer to workflow orchestration. If you're already deep in AWS, Step Functions integrates tightly with Lambda, ECS, and the rest of the ecosystem. The visual workflow builder is genuinely useful, and you get AWS's reliability guarantees. The catch is vendor lock-in—your workflows become AWS-specific, and pricing can surprise you at scale since you pay per state transition.
+**AWS Step Functions** is Amazon's answer to workflow orchestration. If you're already deep in AWS, Step Functions integrates tightly with Lambda, ECS, and the rest of the ecosystem. The visual workflow builder is genuinely useful, and you get AWS's reliability guarantees. The catch is vendor lock-in. Your workflows become AWS-specific, and pricing can surprise you at scale since you pay per state transition.
 
 **Azure Data Factory** serves a similar role in Microsoft's ecosystem. It's particularly strong for hybrid scenarios where you're moving data between on-prem SQL Server and Azure services. If your enterprise runs on Microsoft, Data Factory fits naturally. The limitation is the same: you're building on a proprietary platform that doesn't translate to other clouds.
 
@@ -62,16 +62,16 @@ What does that actually mean in practice?
 
 * **Accessibility:** A data analyst can read and modify a workflow without understanding Python packaging or virtual environments.
 * **Language-agnostic:** The same orchestration layer coordinates [Python scripts](https://kestra.io/docs/how-to-guides/python), SQL queries, [shell commands](https://kestra.io/docs/how-to-guides/shell), and API calls without caring what language runs underneath.
-* **Easy migrations:** You can bring existing workloads as-is without refactoring them first. Moving off legacy tooling doesn't require rewriting everything in a new paradigm—just wrap what you have and orchestrate it.
+* **Easy migrations:** You can bring existing workloads as-is without refactoring them first. Moving off legacy tooling doesn't require rewriting everything in a new paradigm. Just wrap what you have and orchestrate it.
 * **Visual editing:** Teams that prefer clicking to coding get a [real UI](https://kestra.io/docs/no-code/no-code-flow-building), not a bolted-on afterthought, without maintaining two separate workflow definitions.
 
 For enterprise deployment, Kestra runs anywhere: any cloud, on-premises, or air-gapped. [Kestra Cloud](https://kestra.io/cloud) offers a fully managed option for teams that don't want to handle infrastructure, while the [self-hosted version](https://kestra.io/docs/installation) gives you complete control. The event-driven architecture handles [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers) natively rather than bolting them onto a batch-oriented scheduler. [Governance features](https://kestra.io/docs/enterprise/governance) like namespace isolation, RBAC, and audit logging are built into the core rather than reserved for a cloud tier.
 
-The tradeoff is that YAML-based workflows require a different mental model if you've been writing Python DAGs. Complex conditional logic is possible but more verbose than native code. You're exchanging code-level flexibility for broader accessibility—a trade that makes sense for platform teams supporting diverse users, but requires adjustment for teams of experienced Python developers who expect orchestration to feel like a library.
+The tradeoff is that YAML-based workflows require a different mental model if you've been writing Python DAGs. Complex conditional logic is possible but more verbose than native code. You're exchanging code-level flexibility for broader accessibility, a trade that makes sense for platform teams supporting diverse users but requires adjustment for teams of experienced Python developers who expect orchestration to feel like a library.
 
 ## Choosing the right Airflow alternative
 
-It comes down to who's writing workflows, what constraints you're operating under, and—critically—where you're headed.
+It comes down to who's writing workflows, what constraints you're operating under, and (critically) where you're headed.
 
 If your team is Python-native and you want minimal disruption, Astronomer or Prefect keep you in familiar territory. If you're ready to invest in a new paradigm altogether, Dagster might be worth the learning curve.
 
@@ -79,7 +79,7 @@ But here's the question most comparisons don't ask: what happens when your orche
 
 The reality of 2026 is that workloads are converging. [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) don't respect the boundaries between data engineering, ML ops, and application development. The same platform that orchestrates your [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines) might need to coordinate model training, API calls, and business process automation. If you choose a Python-only orchestrator today, you're betting that Python will remain the center of gravity for every workflow your organization needs to run. That's a big bet.
 
-This is where Kestra's language-agnostic approach pays off. You can start with [data pipelines](https://kestra.io/docs/use-cases/data-pipelines)—migrate off Airflow without rewriting everything—and then expand to orchestrate workloads across teams and languages as your needs evolve. No silos, no second orchestrator for non-Python work, no rearchitecting when requirements change.
+This is where Kestra's language-agnostic approach pays off. You can start with [data pipelines](https://kestra.io/docs/use-cases/data-pipelines), migrate off Airflow without rewriting everything, and then expand to orchestrate workloads across teams and languages as your needs evolve. No silos, no second orchestrator for non-Python work, no rearchitecting when requirements change.
 
 We're obviously biased, but we'd make this case: the right orchestration platform isn't just about solving today's problems. It's about having room to grow. Tools that are cutting-edge today may feel limiting in a few years as the landscape shifts. A platform that doesn't lock you into a single language or paradigm gives you options.
 
