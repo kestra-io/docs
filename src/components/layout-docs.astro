@@ -51,7 +51,7 @@ const props = Astro.props;
         max-width: 100%;
         width: 100%;
         box-sizing: border-box;
-        overflow: clip;
+        overflow: clip !important;
 
         @include media-breakpoint-down(md) {
             gap: calc($spacer * 2);
@@ -76,6 +76,7 @@ const props = Astro.props;
 
                 @include media-breakpoint-down(md) {
                     font-size: $h3-font-size;
+                    max-width: 100%;
                 }
 
                 @media only screen and (min-width: 1920px) {
@@ -116,10 +117,33 @@ const props = Astro.props;
             @include media-breakpoint-down(md) {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
+                max-width: 100%;
             }
 
             @media only screen and (min-width: 1920px) {
                 max-width: 71.25rem;
+            }
+
+            table {
+                width: 100%;
+                overflow-x: auto;
+                display: block;
+                margin-bottom: 1rem;
+                border-collapse: collapse;
+            }
+
+            :deep(.astro-code) {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                box-sizing: border-box;
+            }
+
+            :deep(pre) {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                box-sizing: border-box;
             }
         }
 
