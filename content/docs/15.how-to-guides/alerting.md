@@ -32,14 +32,14 @@ For this walkthrough we’ll use the `SlackExecution` task to send a detailed ex
 
 ## `errors` property
 
-If we add the task directly to a workflow, it runs every time—which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
+If we add the task directly to a workflow, it runs every time — which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
 
 Just like the `tasks` block, define `SlackExecution` under `errors`:
 
 ```yaml
 errors:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -62,7 +62,7 @@ namespace: system
 
 tasks:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -87,7 +87,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"

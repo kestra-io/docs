@@ -331,16 +331,17 @@ If your internal storage is a local directory (or a network drive), you can manu
 1. **Open File Explorer** and navigate to your storage root directory as configured in `kestra.storage.local.base-path`.
 2. **Identify all folders and files** at the root level that are *not* already under the `main` folder.
 
-   * Example:
+For example:
 
-     ```
-     base-path/
-       main/
-       foo/
-       bar/
-     ```
+```
+base-path/
+  main/
+  foo/
+  bar/
+```
 
-     You need to move `foo/` and `bar/` into `main/`.
+You need to move `foo/` and `bar/` into `main/`.
+
 3. **Select** all such folders/files, right-click and **Cut** (or **Copy**).
 4. **Paste** into the `main` folder, e.g., `base-path/main/`.
 5. **Delete** the originals from the root after confirming successful migration.

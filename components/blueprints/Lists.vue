@@ -56,7 +56,7 @@
     
     <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+    import { useBlueprintsList } from '~/composables/useBlueprintsList'
     
     const currentPage = ref(1)
     const itemsPerPage = ref(24)

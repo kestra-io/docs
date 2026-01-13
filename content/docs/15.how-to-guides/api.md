@@ -388,7 +388,7 @@ Fetching execution `59uQXHbkMy5YwHEDom72Xv` now shows the output payload:
 
 ## Accessing the KV Store
 
-Kestra’s [KV Store](../06.concepts/05.kv-store.md) keeps flows stateful. You can create, update, and delete entries via the API—either from code running inside a flow or from external systems.
+Kestra’s [KV Store](../06.concepts/05.kv-store.md) keeps flows stateful. You can create, update, and delete entries via the API — either from code running inside a flow or from external systems.
 
 Add a key/value pair with the [PUT endpoint](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/main/namespaces/{namespace}/kv/{key}`. The example below writes `"Hello, World"` to `my_key` in the `company.team` namespace:
 

@@ -1016,6 +1016,37 @@ kestra:
     prefix: kestra
 ```
 
+````markdown name=docs/label-based-metrics.md
+
+### Label-based metrics
+
+Kestra can include selected execution/trigger label keys as metric tags. This is opt-in and intended for low-cardinality labels (e.g. `country`, `environment`, `region`).
+
+Add the label keys you want to expose under `kestra.metrics.labels` (Micronaut YAML config):
+
+```yaml
+kestra:
+  metrics:
+    # List of execution/trigger label keys to expose as metric tags.
+    labels:
+      - country
+      - environment
+```
+
+Behavior:
+- For each configured key, metrics gain a tag named `label_<key>` (for `country` -> `label_country`).
+- If an execution/trigger does not have a configured label key, the tag value is set to the sentinel `__none__`. This keeps the set of tag keys stable and avoids metric series fragmentation.
+
+### Example result (Prometheus-style exposition)
+
+Configured keys: `country`, `environment`
+
+If an execution has label `country=Germany` but no `environment` label, a resulting metric sample may look like:
+
+```
+kestra_executions_total{flow_id="my-flow", namespace_id="default", state="SUCCESS", label_country="Germany", label_environment="__none__"} 1
+```
+
 ## Micronaut
 
 Kestra runs on Micronaut. See the [Micronaut guide](https://docs.micronaut.io/latest/guide/index.html) for all options. Highlights:
@@ -1269,7 +1300,8 @@ kestra:
 
 ### Plugin management
 
-(>= 0.22.0)
+:::badge{version=">=0.22" editions="EE"}
+:::
 
 ```yaml
 kestra:

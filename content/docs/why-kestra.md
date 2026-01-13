@@ -14,7 +14,7 @@ On the other side, drag-and-drop automation tools like Zapier are easier to star
 
 This creates a trade-off, forcing organizations to choose between flexible but complex developer tools or simple but inflexible drag-and-drop automation platforms. If you pick a code-first approach, you have to invest significant engineering resources to maintain the codebase, infrastructure, and deployment processes. If you pick a no-code tool, you outgrow it fast and start building shadow IT with workarounds. Mixing both can create chaos and confusion — each team builds their own silos, and soon nobody knows which workflows run where.
 
-Kestra bridges this market gap. It combines the flexibility of code-based orchestration with a no-code interface that anyone can learn in minutes. This means your teams can start simple and scale up to complex distributed pipelines—all within a single, unified platform.
+Kestra bridges this market gap. It combines the flexibility of code-based orchestration with a no-code interface that anyone can learn in minutes. This means your teams can start simple and scale up to complex distributed pipelines — all within a single, unified platform.
 
 ## Meet Kestra: A Simple Orchestration Platform for Everyone
 
@@ -37,11 +37,11 @@ Kestra follows a “start simple and grow as needed” philosophy. You can sched
 
 ### 1. Focus on Business Logic, Not Plumbing
 
-With Kestra, flows are written in simple YAML. You can use one of over 500 built-in plugins or create tasks in any language—Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
+With Kestra, flows are written in simple YAML. You can use one of over 500 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
 
 ### 2. Simple by Default, Complex When Needed
 
-Kestra comes with many built-in plugins. You can automate many tasks without writing code. But if you need to orchestrate something custom—like an ingestion script packaged in Docker or a heavy data transformation in Spark—you can add it to your flow with minimal effort. There’s no ceiling that blocks advanced use cases.
+Kestra comes with many built-in plugins. You can automate many tasks without writing code. But if you need to orchestrate something custom — like an ingestion script packaged in Docker or a heavy data transformation in Spark — you can add it to your flow with minimal effort. There’s no ceiling that blocks advanced use cases.
 
 ### 3. One-Stop Shop for Automation
 
@@ -70,7 +70,7 @@ Kestra isn’t just for engineers — business stakeholders can schedule flows, 
 
 ### API-First Design
 
-Everything in Kestra is driven by an API. Flows, tasks, logs, permissions—anything you do in the UI can also be done with an HTTP call. This opens up all sorts of automation possibilities. You can:
+Everything in Kestra is driven by an API. Flows, tasks, logs, permissions — anything you do in the UI can also be done with an HTTP call. This opens up all sorts of automation possibilities. You can:
 
 - Integrate Kestra with your internal applications or CI/CD pipelines
 - Manage all Kestra resources via Terraform
@@ -157,7 +157,7 @@ Since Kestra is open-source and self-hosted, you retain full control over your e
 
 ## Our Vision: Orchestrate Everything, Everywhere
 
-We believe in a future where a single orchestration platform covers all use cases from small scripts to complex enterprise processes—without forcing you into a single language or framework. Kestra is designed to be:
+We believe in a future where a single orchestration platform covers all use cases from small scripts to complex enterprise processes — without forcing you into a single language or framework. Kestra is designed to be:
 
 - **The simplest orchestration app for both developers and non-developers**.
 - **Equally at home orchestrating data pipelines, business processes, or microservices**.
@@ -167,6 +167,6 @@ We believe in a future where a single orchestration platform covers all use case
 
 Kestra’s goal is to remove the barriers that keep orchestration locked away in dev-centric tools or limited no-code apps. Thanks to a language-agnostic, API-first design, Kestra creates a place where everyone can automate and scale mission-critical workflows without wrestling with complex frameworks or feeling boxed in by rigid no-code solutions.
 
-If you’re tired of the old trade-offs—heavy code frameworks vs. limited no-code apps—Kestra stands ready to help. Get started by installing our forever-free open-source edition. You get to keep your favorite languages, empower non-technical teams, and orchestrate everything from small daily tasks to multi-stage, event-driven pipelines.
+If you’re tired of the old trade-offs — heavy code frameworks vs. limited no-code apps — Kestra stands ready to help. Get started by installing our forever-free open-source edition. You get to keep your favorite languages, empower non-technical teams, and orchestrate everything from small daily tasks to multi-stage, event-driven pipelines.
 
 If you have questions or want to see how Kestra fits into your environment, [Talk to us](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.

@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end">
+    <div id="nav-toc-global" class="bd-toc d-lg-flex justify-content-end" :class="{ 'plugin': isPluginPage }">
         <div>
             <template v-if="generated.length > 0" class="bd-contents-list">
                 <button
@@ -215,8 +215,18 @@
             overflow-y: auto;
             overflow-x: hidden;
             min-width: 250px;
-            border-left: 1px solid $black-3;
             z-index: 10;
+
+            &:not(.plugin) {
+                border: 0;
+                border-left-width: 1px;
+                border-style: solid;
+                border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+            }
+
+            &.plugin {
+                border-left: 1px solid $black-3;
+            }
         }
 
         &::-webkit-scrollbar {
