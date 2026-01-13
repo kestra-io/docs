@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Task Runs UI Page Removed
+## Task Runs UI Page Removed
 
 The **Task Runs** page has been removed from the Enterprise Edition UI.
 

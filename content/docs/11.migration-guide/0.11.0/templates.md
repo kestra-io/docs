@@ -5,7 +5,7 @@ release: 0.11.0
 ---
 
 
-# Deprecation of Templates
+## Deprecation of Templates
 
 Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 

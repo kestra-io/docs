@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# The autocommit property removed from JDBC Query and Queries tasks
+## The autocommit property removed from JDBC Query and Queries tasks
 
 The `autocommit` property [has been removed](https://github.com/kestra-io/plugin-jdbc/issues/550) from both the Query and Queries tasks in the [JDBC plugin](https://github.com/kestra-io/plugin-jdbc).
 

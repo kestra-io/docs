@@ -5,7 +5,7 @@ release: 0.17.0
 ---
 
 
-# Plugin Discovery Mechanism
+## Plugin Discovery Mechanism
 
 Kestra 0.17.0 uses a new mechanism to discover and load plugins. If you use custom plugins, follow this guide to make the necessary adjustments.
 

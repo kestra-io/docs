@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_security_integration resource allows you to manage security integrations in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_security_integration
+## Terraform Resource: kestra_security_integration
 
 Manages a Kestra Security Integration. Note that when imported URI and secret token are not provided.
 

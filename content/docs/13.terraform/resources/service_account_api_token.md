@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_service_account_api_token resource allows you to manage service account API tokens in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_service_account_api_token
+## Terraform Resource: kestra_service_account_api_token
 
 Manages a Kestra Service Account Api Token.
 

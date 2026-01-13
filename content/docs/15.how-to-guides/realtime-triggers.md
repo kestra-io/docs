@@ -9,7 +9,7 @@ version: ">= 0.17.0"
 
 How to React to events as they happen with millisecond latency.
 
-# Realtime Triggers
+## Realtime Triggers
 
 As soon as you add a Realtime Trigger to your workflow, Kestra starts an always-on thread that listens to the external system for new events. When a new event occurs, Kestra starts a workflow execution to process the event.
 
@@ -20,10 +20,10 @@ Let us understand how we can implement Realtime Trigger for some of the messagin
 To setup Apache Kafka locally, follow the instructions mentioned in the [official documentation](https://kafka.apache.org/quickstart). Once Apache Kafka is installed, you can create the `logs` topic, and start producing data into the topic using the following commands:
 
 ```
-# Create topic
+## Create topic
 $ bin/kafka-topics.sh --create --topic logs --bootstrap-server localhost:9092
 
-# Produce data into Kafka topic
+## Produce data into Kafka topic
 $ bin/kafka-console-producer.sh --topic logs --bootstrap-server localhost:9092
 > Hello World
 ```

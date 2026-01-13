@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_user_api_token resource allows you to manage user API tokens in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_user_api_token
+## Terraform Resource: kestra_user_api_token
 
 Manages a Kestra User Api Token.
 

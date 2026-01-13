@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Retrieving KV pairs from other namespaces
+## Retrieving KV pairs from other namespaces
 
 Migrating usage of KV functions
 

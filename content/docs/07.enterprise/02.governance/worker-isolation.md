@@ -7,7 +7,7 @@ editions: ["EE"]
 
 How to configure worker isolation in Kestra.
 
-# Worker isolation in Kestra Enterprise – enforce separation
+## Worker isolation – enforce separation
 
 When dealing with multiple teams, you can add extra security measures to your Kestra instance to isolate access so that there is no shared file system, only certain plugins can create worker threads, and script tasks are isolated.
 

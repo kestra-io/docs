@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_tenant resource allows you to manage tenants in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_tenant
+## Terraform Resource: kestra_tenant
 
 Manages a Kestra Tenant.
 

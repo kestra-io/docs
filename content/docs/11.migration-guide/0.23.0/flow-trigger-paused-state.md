@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Flow trigger now also reacts to PAUSED state by default
+## Flow trigger now also reacts to PAUSED state by default
 
 Next to the terminated states, the Flow trigger now also reacts to the `PAUSED` state to make it easier to respond to a paused workflow, for example, to send alerts to the right stakeholders to manually approve and resume paused workflow executions.
 

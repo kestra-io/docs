@@ -5,7 +5,7 @@ release: 0.15.0
 ---
 
 
-# Schedule Conditions: `scheduleConditions` deprecated for `conditions`
+## Schedule Conditions: `scheduleConditions` deprecated for `conditions`
 
 The `scheduleConditions` property of `Schedule` trigger is deprecated. Instead, use `conditions` to define custom scheduling conditions.
 

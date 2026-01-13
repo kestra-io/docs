@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Failed Attempts Lockout
+## Failed Attempts Lockout
 
 Too many failed login attempts now lock user's account
 

@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Fallback on unhealthy workers
+## Fallback on unhealthy workers
 
 Migrating usage of worker group keys
 

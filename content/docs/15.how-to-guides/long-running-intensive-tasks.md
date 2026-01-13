@@ -9,7 +9,7 @@ topics:
 
 Schedule long running and intensive processes with Kestra on Kubernetes.
 
-# Long running and intensive processes on Kubernetes
+## Long running and intensive processes on Kubernetes
 
 Long running tasks hold strong importance in the world of automation.
 They can range from data processing, machine learning, and data analytics to batch processing, ETL, and more.

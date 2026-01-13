@@ -7,7 +7,7 @@ version: ">= 0.18.0"
 
 Sync Users and Groups from authentik to Kestra using SCIM.
 
-# authentik SCIM Provisioning
+## authentik SCIM provisioning
 
 ## Prerequisites
 

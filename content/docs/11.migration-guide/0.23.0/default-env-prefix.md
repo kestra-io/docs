@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Default environment variable prefix changed from KESTRA_ to ENV_ for security
+## Default environment variable prefix changed from KESTRA_ to ENV_ for security
 
 Kestra [previously defaulted](https://github.com/kestra-io/kestra-ee/issues/3131) to autoloading environment variables with the prefix `KESTRA_` into flows. This posed a security risk, as Micronaut allows overriding configuration using environment variables and translates non-alphanumeric characters (such as `:` in `kestra:storage:type`) into underscores, producing env vars like `KESTRA_STORAGE_TYPE`. If a sensitive value (e.g., a storage password) was provided via an environment variable starting with `KESTRA_`, it would be available in all flows, increasing the risk of secret exposure.
 

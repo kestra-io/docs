@@ -5,7 +5,7 @@ release: 0.20.0
 ---
 
 
-# Conditions renamed
+## Conditions renamed
 
 Migrating Flow trigger conditions
 

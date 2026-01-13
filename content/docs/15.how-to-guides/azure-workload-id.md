@@ -11,7 +11,7 @@ editions: ["EE", "Cloud"]
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
 
-# Use Azure Managed Workload on Kestra
+## Use Azure Managed Workload on Kestra
 
 :::alert{type="info"}
 Note that this page is only relevant for the Enterprise Edition of Kestra. Should you require features such as integrations with Cloud-based secret managers, please contact us on sales@kestra.io or chat with us in our Slack community.
@@ -37,21 +37,21 @@ This guide is based on the official Azure documentation on Workload Identity —
 Define the following variables and update them to match your environment.
 
 ```shell
-# Managed User Identity Name
+## Managed User Identity Name
 ID_NAME="kestra-managed-user"
-# Azure Resource Group
+## Azure Resource Group
 RESOURCE_GROUP="demo"
-# Physical location you wish to provision resources
+## Physical location you wish to provision resources
 LOCATION="eastus"
-# The name of your Azure Kubernetes Cluster
+## The name of your Azure Kubernetes Cluster
 AKS_NAME="demo-cluster"
-# The name of your Azure Key Vault
+## The name of your Azure Key Vault
 KEYVAULT_NAME="my-demo-vault"
-# The name you wish to provide to the Kubernetes Service Account linked to the managed identity
+## The name you wish to provide to the Kubernetes Service Account linked to the managed identity
 SERVICE_ACCOUNT_NAME="kestra-sa"
-# The namespace to deploy the service account. Use the same location as your Kestra deployment
+## The namespace to deploy the service account. Use the same location as your Kestra deployment
 SERVICE_ACCOUNT_NAMESPACE="default"
-# The Federated ID credential for linking the OIDC issuer to the service account
+## The Federated ID credential for linking the OIDC issuer to the service account
 FEDERATED_IDENTITY_CREDENTIAL_NAME="kestra-fed-cred"
 ```
 

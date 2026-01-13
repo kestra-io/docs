@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_app resource allows you to manage apps in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_app
+## Terraform Resource: kestra_app
 
 Manages an App resource.
 

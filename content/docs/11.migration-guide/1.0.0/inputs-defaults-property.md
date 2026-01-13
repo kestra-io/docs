@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Input defaults are now dynamic
+## Input defaults are now dynamic
 
 The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../expressions/index.md) as a default value. Consider this use case:
 

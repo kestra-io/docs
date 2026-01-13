@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 
 Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
 
-# Kestra Cloud & Enterprise FAQ – common questions
+## Kestra Cloud & Enterprise FAQ – common questions
 
 ## My session expires too quickly. Is there a way to change the session expiration time?
 

@@ -6,7 +6,7 @@ editions: ["EE", "Cloud"]
 ---
 
 
-# Removal of tenant from Superadmin API routes
+## Removal of tenant from Superadmin API routes
 
 The `{tenant}` parameter has been removed from several API routes related to tenant management in Enterprise Edition. This change affects only EE users who interact with these endpoints programmatically (i.e., via direct API calls).
 

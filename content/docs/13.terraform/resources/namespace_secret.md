@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_namespace_secret resource allows you to manage namespace secrets in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_namespace_secret
+## Terraform Resource: kestra_namespace_secret
 
 Manages a Kestra Namespace Secret.
 

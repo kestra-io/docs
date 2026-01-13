@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_namespace_file resource allows you to manage namespace files in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_namespace_file
+## Terraform Resource: kestra_namespace_file
 
 Manages a Kestra Namespace File.
 

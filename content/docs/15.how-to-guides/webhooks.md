@@ -8,7 +8,7 @@ topics:
 
 Execute flows using the Webhooks Trigger.
 
-# Setup Webhooks to trigger Flows
+## Setup Webhooks to trigger Flows
 
 Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow inside of Kestra.
 

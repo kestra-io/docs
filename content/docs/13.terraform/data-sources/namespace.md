@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_namespace data source allows you to read namespaces in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_namespace
+## Terraform Data Source: kestra_namespace
 
 Use this data source to access information about an existing Kestra Namespace.
 

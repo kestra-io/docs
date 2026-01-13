@@ -5,7 +5,7 @@ release: 0.20.0
 ---
 
 
-# 0.20.0
+## 0.20.0
 
 Deprecated features and migration guides for 0.20.0 and onwards.
 

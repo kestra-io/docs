@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_binding data source allows you to read bindings in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_binding
+## Terraform Data Source: kestra_binding
 
 Use this data source to access information about an existing Kestra binding
 

@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Helm Chart Health Check Paths
+## Helm Chart Health Check Paths
 
 Change in the health check paths for Kestra's Helm Chart
 

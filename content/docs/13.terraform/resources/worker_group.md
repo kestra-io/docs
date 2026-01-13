@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_worker_group resource allows you to manage worker groups in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_worker_group
+## Terraform Resource: kestra_worker_group
 
 Manages a Kestra Worker Group.
 

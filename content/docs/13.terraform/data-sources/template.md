@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_template data source allows you to read templates in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_template
+## Terraform Data Source: kestra_template
 
 Use this data source to access information about an existing Kestra Template
 

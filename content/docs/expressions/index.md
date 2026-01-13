@@ -6,7 +6,7 @@ icon: /docs/icons/expression.svg
 
 Expressions & Context Variables
 
-# Use expressions to reference execution context
+## Use expressions to reference execution context
 
 Kestra's expressions combine the [Pebble templating engine](../06.concepts/06.pebble.md) with the execution context to dynamically render flow properties. This page lists available expressions and explains how to use them in your flows.
 
@@ -353,7 +353,7 @@ Filters transform values and are applied using the pipe (`|`) symbol. Filters ca
 
 ```twig
 {{ "Lemons to lemonade." | upper | abbreviate(10) }}
-# Output: LEMONS TO ...
+## Output: LEMONS TO ...
 ```
 
 ---
@@ -364,7 +364,7 @@ Functions generate new values. They are called with a name followed by parenthes
 
 ```twig
 {{ max(user.score, highscore) }}
-# Outputs the maximum of 'user.score' and 'highscore'
+## Outputs the maximum of 'user.score' and 'highscore'
 ```
 
 ---
@@ -411,7 +411,7 @@ Usage:
 
 ```twig
 {{ input("text", "example") }}
-# Output: example is of type text
+## Output: example is of type text
 ```
 
 Macros only access their local arguments.
@@ -434,7 +434,7 @@ Named arguments can define defaults in macros:
 {% endmacro %}
 
 {{ input(name="country") }}
-# Output: type: "text", name: "country", value: ""
+## Output: type: "text", name: "country", value: ""
 ```
 
 ---
@@ -623,10 +623,10 @@ Examples:
 
 ```twig
 {{ [1, 2, 3] | jq('.') }}
-# Outputs: '[1, 2, 3]'
+## Outputs: '[1, 2, 3]'
 
 {{ [1, 2, 3] | jq('.[0]') | first }}
-# Outputs: '1'
+## Outputs: '1'
 ```
 
 Given the context:
@@ -650,7 +650,7 @@ The following expression extracts the `value` of `task1`:
 
 ```twig
 {{ outputs | jq('.task1.value') | first }}
-# Outputs: '1'
+## Outputs: '1'
 ```
 
 **Arguments**
@@ -753,7 +753,7 @@ The `abs` filter returns the absolute value of a number.
 
 ```twig
 {{ -7 | abs }}
-# output: 7
+## output: 7
 ```
 
 ### number
@@ -762,10 +762,10 @@ The `number` filter parses a string into a number. If no type is specified, the 
 
 ```twig
 {{ "12.3" | number | className }}
-# output: java.lang.Float
+## output: java.lang.Float
 
 {{ "9223372036854775807" | number('BIGDECIMAL') | className }}
-# output: java.math.BigDecimal
+## output: java.math.BigDecimal
 ```
 
 - type:
@@ -782,7 +782,7 @@ The `numberFormat` filter formats a number using `java.text.DecimalFormat`.
 
 ```twig
 {{ 3.141592653 | numberFormat("#.##") }}
-# output: 3.14
+## output: 3.14
 ```
 
 
@@ -796,7 +796,7 @@ The `chunk` filter partitions a list into chunks of the specified size.
 
 ```twig
 {{ [1, 2, 3, 4, 5] | chunk(2) }}
-# results in: [[1, 2], [3, 4], [5]]
+## results in: [[1, 2], [3, 4], [5]]
 ```
 
 ### className
@@ -805,7 +805,7 @@ The `className` filter returns the class name of an object.
 
 ```twig
 {{ "12.3" | number | className }}
-# output: java.lang.Float
+## output: java.lang.Float
 ```
 
 ### distinct
@@ -814,7 +814,7 @@ The `distinct` filter deduplicates a list and returns only the unique values.
 
 ```twig
 "{{ ['1', '1', '2', '3'] | distinct }}"
-# results in ["1","2","3"]
+## results in ["1","2","3"]
 ```
 
 ### first
@@ -823,10 +823,10 @@ The `first` filter retrieves the first item of a collection or the first charact
 
 ```twig
 {{ ['apple', 'banana'] | first }}
-# output: apple
+## output: apple
 
 {{ 'Mitch' | first }}
-# output: M
+## output: M
 ```
 
 ### join
@@ -835,7 +835,7 @@ The `join` filter concatenates the items in a collection into a single string, s
 
 ```twig
 {{ ['apple', 'banana'] | join(', ') }}
-# output: apple, banana
+## output: apple, banana
 ```
 
 ### keys
@@ -844,7 +844,7 @@ The `keys` filter retrieves the keys from a map or the indices of an array.
 
 ```twig
 {{ {'foo': 'bar', 'baz': 'qux'} | keys }}
-# output: ['foo', 'baz']
+## output: ['foo', 'baz']
 ```
 
 ### values
@@ -853,7 +853,7 @@ The `values` filter retrieves the values from a map.
 
 ```twig
 {{ {'foo': 'bar', 'baz': 'qux'} | values }}
-# output: ['bar', 'qux']
+## output: ['bar', 'qux']
 ```
 
 ### last
@@ -862,10 +862,10 @@ The `last` filter retrieves the last item of a collection or the last character 
 
 ```twig
 {{ ['apple', 'banana'] | last }}
-# output: banana
+## output: banana
 
 {{ 'Mitch' | last }}
-# output: h
+## output: h
 ```
 
 ### length
@@ -874,7 +874,7 @@ The `length` filter returns the size of a collection or the length of a string.
 
 ```twig
 {{ 'Mitch' | length }}
-# output: 5
+## output: 5
 ```
 
 ### merge
@@ -883,7 +883,7 @@ The `merge` filter combines two collections (lists or maps).
 
 ```twig
 {{ [1, 2] | merge([3, 4]) }}
-# output: [1, 2, 3, 4]
+## output: [1, 2, 3, 4]
 ```
 
 ### reverse
@@ -892,7 +892,7 @@ The `reverse` filter reverses the order of items in a collection.
 
 ```twig
 {{ ['apple', 'banana'] | reverse }}
-# output: ['banana', 'apple']
+## output: ['banana', 'apple']
 ```
 
 ### rsort
@@ -901,7 +901,7 @@ The `rsort` filter sorts a list in reverse order.
 
 ```twig
 {{ [3, 1, 2] | rsort }}
-# output: [3, 2, 1]
+## output: [3, 2, 1]
 ```
 
 ### slice
@@ -910,10 +910,10 @@ The `slice` filter extracts a portion of a collection or string.
 
 ```twig
 {{ ['apple', 'banana', 'cherry'] | slice(1, 2) }}
-# output: ['banana']
+## output: ['banana']
 
 {{ 'Mitch' | slice(1, 3) }}
-# output: it
+## output: it
 ```
 
 **Arguments**:
@@ -926,7 +926,7 @@ The `sort` filter sorts a collection in ascending order.
 
 ```twig
 {{ [3, 1, 2] | sort }}
-# output: [1, 2, 3]
+## output: [1, 2, 3]
 ```
 
 ### split
@@ -935,7 +935,7 @@ The `split` filter divides a string into a list based on a delimiter.
 
 ```twig
 {{ 'apple,banana,cherry' | split(',') }}
-# output: ['apple', 'banana', 'cherry']
+## output: ['apple', 'banana', 'cherry']
 ```
 
 **Arguments**:
@@ -947,7 +947,7 @@ The `split` filter divides a string into a list based on a delimiter.
 
 ```twig
 {{ 'apple,banana,cherry,grape' | split(',', 2) }}
-# output: ['apple', 'banana,cherry,grape']
+## output: ['apple', 'banana,cherry,grape']
 ```
 
 
@@ -963,7 +963,7 @@ The `abbreviate` filter shortens a string using an ellipsis. The `length` includ
 
 ```twig
 {{ "this is a long sentence." | abbreviate(7) }}
-# output: this...
+## output: this...
 ```
 
 **Arguments**:
@@ -977,7 +977,7 @@ The `base64decode` filter decodes a base64-encoded string into UTF-8.
 
 ```twig
 {{ "dGVzdA==" | base64decode }}
-# output: test
+## output: test
 ```
 
 Throws an exception for invalid base64 strings.
@@ -990,7 +990,7 @@ The `base64encode` filter encodes a string to base64.
 
 ```twig
 {{ "test" | base64encode }}
-# output: dGVzdA==
+## output: dGVzdA==
 ```
 
 ---
@@ -1001,7 +1001,7 @@ The `capitalize` filter capitalizes the first letter of a string.
 
 ```twig
 {{ "article title" | capitalize }}
-# output: Article title
+## output: Article title
 ```
 
 ---
@@ -1012,7 +1012,7 @@ The `title` filter capitalizes the first letter of each word.
 
 ```twig
 {{ "article title" | title }}
-# output: Article Title
+## output: Article Title
 ```
 
 ---
@@ -1023,7 +1023,7 @@ The `default` filter provides a fallback value for empty variables.
 
 ```twig
 {{ user.phoneNumber | default("No phone number") }}
-# output: No phone number (if user.phoneNumber is empty)
+## output: No phone number (if user.phoneNumber is empty)
 ```
 
 Suppresses exceptions if the attribute is missing.
@@ -1036,7 +1036,7 @@ The `escapeChar` filter escapes special characters in a string.
 
 ```twig
 {{ "Can't be here" | escapeChar('single') }}
-# output: Can\'t be here
+## output: Can\'t be here
 ```
 
 **Arguments**:
@@ -1050,7 +1050,7 @@ The `lower` filter converts a string to lowercase.
 
 ```twig
 {{ "LOUD TEXT" | lower }}
-# output: loud text
+## output: loud text
 ```
 
 ---
@@ -1061,7 +1061,7 @@ The `replace` filter replaces substrings in a string with specified values.
 
 ```twig
 {{ "I like %this% and %that%." | replace({'%this%': foo, '%that%': "bar"}) }}
-# output: I like foo and bar
+## output: I like foo and bar
 ```
 
 **Arguments**:
@@ -1076,7 +1076,7 @@ The `sha256` filter generates a SHA-256 hash of a string.
 
 ```twig
 {{ "test" | sha256 }}
-# output: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+## output: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
 ```
 
 ---
@@ -1087,7 +1087,7 @@ The `startsWith` filter checks if a string starts with a given prefix.
 
 ```twig
 {{ "hello world" | startsWith("hello") }}
-# output: true
+## output: true
 ```
 
 ---
@@ -1098,7 +1098,7 @@ The `slugify` filter converts a string to a URL-friendly format.
 
 ```twig
 {{ "Hello World!" | slugify }}
-# output: hello-world
+## output: hello-world
 ```
 
 ---
@@ -1109,7 +1109,7 @@ The `substringAfter` filter extracts the substring after the first occurrence of
 
 ```twig
 {{ "a.b.c" | substringAfter(".") }}
-# output: b.c
+## output: b.c
 ```
 
 ---
@@ -1120,7 +1120,7 @@ The `substringAfterLast` filter extracts the substring after the last occurrence
 
 ```twig
 {{ "a.b.c" | substringAfterLast(".") }}
-# output: c
+## output: c
 ```
 
 ---
@@ -1131,7 +1131,7 @@ The `substringBefore` filter extracts the substring before the first occurrence 
 
 ```twig
 {{ "a.b.c" | substringBefore(".") }}
-# output: a
+## output: a
 ```
 
 ---
@@ -1142,7 +1142,7 @@ The `substringBeforeLast` filter extracts the substring before the last occurren
 
 ```twig
 {{ "a.b.c" | substringBeforeLast(".") }}
-# output: a.b
+## output: a.b
 ```
 
 ---
@@ -1153,7 +1153,7 @@ The `trim` filter removes whitespace from the start and end of a string.
 
 ```twig
 {{ "   padded text   " | trim }}
-# output: padded text
+## output: padded text
 ```
 
 ---
@@ -1164,7 +1164,7 @@ The `upper` filter converts a string to uppercase.
 
 ```twig
 {{ "quiet sentence" | upper }}
-# output: QUIET SENTENCE
+## output: QUIET SENTENCE
 ```
 
 ---
@@ -1175,7 +1175,7 @@ The `urldecode` filter decodes a URL-encoded string.
 
 ```twig
 {{ "The+string+%C3%BC%40foo-bar" | urldecode }}
-# output: The string ü@foo-bar
+## output: The string ü@foo-bar
 ```
 
 ---
@@ -1186,7 +1186,7 @@ The `urlencode` filter encodes a string for URLs.
 
 ```twig
 {{ "The string ü@foo-bar" | urlencode }}
-# output: The+string+%C3%BC%40foo-bar
+## output: The+string+%C3%BC%40foo-bar
 ```
 
 ---
@@ -1197,7 +1197,7 @@ The `string` filter casts an object to string.
 
 ```twig
 {{ 123 | string }}
-# output: "123"
+## output: "123"
 ```
 
 ---
@@ -1212,14 +1212,14 @@ The `date` filter formats a date object or string into a specified format. It su
 
 ```twig
 {{ user.birthday | date("yyyy-MM-dd") }}
-# output: 2001-07-24
+## output: 2001-07-24
 ```
 
 To format a string-based date, provide the desired output format and the existing format of the string:
 
 ```twig
 {{ "July 24, 2001" | date("yyyy-MM-dd", existingFormat="MMMM dd, yyyy") }}
-# output: 2001-07-24
+## output: 2001-07-24
 ```
 
 #### Time Zones
@@ -1249,7 +1249,7 @@ The `dateAdd` filter adds or subtracts a specified amount of time to/from a date
 
 ```twig
 {{ now() | dateAdd(-1, 'DAYS') }}
-# output: 2024-07-08T06:17:01.174686Z
+## output: 2024-07-08T06:17:01.174686Z
 ```
 
 **Arguments**:
@@ -1265,7 +1265,7 @@ The `timestamp` filter converts a date to a Unix timestamp in seconds.
 
 ```twig
 {{ now() | timestamp(timeZone="Europe/Paris") }}
-# output: 1720505821
+## output: 1720505821
 ```
 
 **Arguments**:
@@ -1284,7 +1284,7 @@ The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 
 ```twig
 {{ now() | timestampMicro(timeZone="Asia/Kolkata") }}
-# output: 1720505821182413
+## output: 1720505821182413
 ```
 
 **Arguments**:
@@ -1298,7 +1298,7 @@ The `timestampMilli` filter converts a date to a Unix timestamp in milliseconds.
 
 ```twig
 {{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
-# output: 1720505821135
+## output: 1720505821135
 ```
 
 **Arguments**:
@@ -1312,7 +1312,7 @@ The `timestampNano` filter converts a date to a Unix timestamp in nanoseconds.
 
 ```twig
 {{ now() | timestampNano(timeZone="Asia/Kolkata") }}
-# output: 1720505821182413000
+## output: 1720505821182413000
 ```
 
 **Arguments**:
@@ -1401,7 +1401,7 @@ Example:
 
 ```twig
 {{ "key: value" | indent(2) }}
-# output:
+## output:
   key: value
 ```
 
@@ -1419,7 +1419,7 @@ Example:
 
 ```twig
 {{ "key: value" | nindent(2) }}
-# output:
+## output:
   key: value
 ```
 
@@ -1541,10 +1541,10 @@ Examples:
 
 ```twig
 {{ fromJson('[1, 2, 3]')[0] }}
-# output: 1
+## output: 1
 
 {{ fromJson('{"foo": [666, 1, 2]}').foo[0] }}
-# output: 666
+## output: 666
 ```
 
 ---
@@ -1569,7 +1569,7 @@ Example:
 
 ```twig
 {{ yaml('foo: [666, 1, 2]').foo[0] }}
-# output: 666
+## output: 666
 ```
 
 ---
@@ -1582,7 +1582,7 @@ Example:
 
 ```twig
 {{ max(20, 80, user.age) }}
-# output: the largest value
+## output: the largest value
 ```
 
 ---
@@ -1595,7 +1595,7 @@ Example:
 
 ```twig
 {{ min(20, 80, user.age) }}
-# output: the smallest value
+## output: the smallest value
 ```
 
 ---
@@ -1655,12 +1655,12 @@ Examples:
 {% for i in range(0, 3) %}
     {{ i }},
 {% endfor %}
-# output: 0, 1, 2, 3
+## output: 0, 1, 2, 3
 
 {% for i in range(0, 6, 2) %}
     {{ i }},
 {% endfor %}
-# output: 0, 2, 4, 6
+## output: 0, 2, 4, 6
 ```
 
 ---
@@ -1938,7 +1938,7 @@ Example:
 
 ```twig
 {{ "apple" ~ "pear" ~ "banana" }}
-# results in: 'applepearbanana'
+## results in: 'applepearbanana'
 ```
 
 ---
@@ -2067,10 +2067,10 @@ Examples:
 ```twig
 {% set baz = "baz" %}
 {{ foo ?? bar ?? baz }}
-# results in: 'baz'
+## results in: 'baz'
 
 {{ foo ?? bar ?? raise }}
-# raises an exception if all variables are undefined
+## raises an exception if all variables are undefined
 ```
 
 For details, see the [Handling null and undefined values](../15.how-to-guides/null-values.md) guide.

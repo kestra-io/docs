@@ -5,7 +5,7 @@ release: 0.18.0
 ---
 
 
-# Deprecation of runner property in favor of taskRunner
+## Deprecation of runner property in favor of taskRunner
 
 How to migrate from `runner` to `taskRunner`.
 

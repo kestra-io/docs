@@ -5,7 +5,7 @@ release: 0.17.0
 ---
 
 
-# Renamed Plugins
+## Renamed Plugins
 
 Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now `pluginDefaults`. While these are non-breaking changes, we recommend updating your flows to use the new names.
 

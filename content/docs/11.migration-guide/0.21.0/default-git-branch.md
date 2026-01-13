@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Default Git Branch
+## Default Git Branch
 
 Changed default Git branch name from `kestra` to `main`.
 

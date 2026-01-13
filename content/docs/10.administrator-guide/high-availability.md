@@ -7,7 +7,7 @@ editions: ["EE"]
 
 Kestra is designed for high availability and fault tolerance. This page explains how to configure your deployment to ensure continuous operation.
 
-# Configure Kestra for high availability
+## Configure Kestra for high availability
 
 First, let's define what we mean by high availability.
 

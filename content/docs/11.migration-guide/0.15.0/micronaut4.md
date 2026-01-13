@@ -5,7 +5,7 @@ release: 0.15.0
 ---
 
 
-# Migration to Micronaut 4.3
+## Migration to Micronaut 4.3
 
 Kestra 0.15.0 has been migrated to Micronaut 4.3 for improved security. This page explains how to make your custom plugins compatible with this new version.
 

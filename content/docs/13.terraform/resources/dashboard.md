@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_dashboard resource allows you to manage dashboards in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_dashboard
+## Terraform Resource: kestra_dashboard
 
 Manages a Dashboard resource.
 

@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_binding resource allows you to manage bindings in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_binding
+## Terraform Resource: kestra_binding
 
 Manages a Kestra Binding.
 

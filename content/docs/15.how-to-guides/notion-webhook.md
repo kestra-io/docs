@@ -9,7 +9,7 @@ topics:
 
 Use Notion webhooks to trigger Kestra flows when pages or databases are updated in your Notion workspace.
 
-# Notion Webhook Integration
+## Notion Webhook Integration
 
 This guide shows you how to create a workflow that responds to Notion database changes, retrieves page details, and sends notifications to Slack when new tasks are assigned.
 
@@ -144,16 +144,16 @@ The flow performs these steps:
 Modify the Slack message to use different Notion properties. Common property types include:
 
 ```yaml
-# For title properties
+## For title properties
 title: "{{ outputs.get_notion_page_details | jq('.properties.Title.title[0].text.content') | first }}"
 
-# For select properties
+## For select properties
 status: "{{ outputs.get_notion_page_details | jq('.properties.Status.select.name') | first }}"
 
-# For date properties
+## For date properties
 due_date: "{{ outputs.get_notion_page_details | jq('.properties.DueDate.date.start') | first }}"
 
-# For people properties
+## For people properties
 assignee: "{{ outputs.get_notion_page_details | jq('.properties.Assignee.people[0].name') | first }}"
 ```
 

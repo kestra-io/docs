@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Usernames replaced by email addresses
+## Usernames replaced by email addresses
 
 Replace usernames by email addresses
 

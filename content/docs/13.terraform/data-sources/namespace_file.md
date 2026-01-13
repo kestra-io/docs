@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_namespace_file data source allows you to read namespace files in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_namespace_file
+## Terraform Data Source: kestra_namespace_file
 
 Use this data source to access information about an existing Namespace File
 

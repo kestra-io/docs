@@ -6,7 +6,7 @@ icon: /docs/icons/dev.svg
 
 Version Control & CI/CD Pipelines
 
-# Control versions and automate deployments with CI/CD
+## Control versions and automate deployments with CI/CD
 
 :::ChildCard
 :::

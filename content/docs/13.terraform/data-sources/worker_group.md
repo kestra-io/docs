@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_worker_group data source allows you to read worker groups in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_worker_group
+## Terraform Data Source: kestra_worker_group
 
 Use this data source to access information about an existing Kestra Worker Group.
 

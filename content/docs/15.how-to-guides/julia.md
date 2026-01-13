@@ -8,7 +8,7 @@ topics:
 
 Run Julia code directly inside of your Flows and generate outputs.
 
-# Run Julia inside of your Flows
+## Run Julia inside of your Flows
 
 Julia is renowned for high-performance numerical analysis and computational science. Leverage Kestra to orchestrate your Julia scripts, enhancing their capabilities in large-scale analytics and machine learning applications. From data ingestion to complex numerical simulations, Kestra streamlines your Julia workflows, accelerating development and deployment.
 

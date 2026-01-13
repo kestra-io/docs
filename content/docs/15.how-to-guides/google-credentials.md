@@ -9,7 +9,7 @@ topics:
 
 Setup a Google Service Account inside of Kestra.
 
-# Configure Google Service Account
+## Configure Google Service Account
 
 When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
 
@@ -75,7 +75,7 @@ while IFS='=' read -r key value; do
   echo "SECRET_$key=$(echo -n "$value" | base64)";
 done < .env > $ENV_FILENAME
 
-# Encodes the service account file without line wrapping to make sure the whole JSON value is intact.
+## Encodes the service account file without line wrapping to make sure the whole JSON value is intact.
 echo "SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0)" >> $ENV_FILENAME
 ```
 

@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Internal Package Structure Changes (Custom Plugins Only)
+## Internal Package Structure Changes (Custom Plugins Only)
 
 This change affects only users building custom plugins or using the Java library in tests.
 

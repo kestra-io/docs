@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Log level for stderr output
+## Log level for stderr output
 
 STDERR Logged at ERROR Level in Script Tasks
 

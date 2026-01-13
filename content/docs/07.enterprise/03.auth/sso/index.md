@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 
 How to enable and set up SSO in your Kestra Enterprise instance.
 
-# Configure single sign-on for Kestra
+## Configure single sign-on
 
 Single Sign-On (SSO) is an authentication process that allows users to access multiple applications with a single set of login credentials (e.g., "Sign in with Google"). Kestra supports SSO using the OpenID Connect (OIDC) protocol, which is a simple identity layer built on top of the OAuth 2.0 protocol.
 

@@ -8,7 +8,7 @@ version: ">= 0.18.0"
 
 Task Runner capabilities and supported plugins.
 
-# Task Runners in Kestra Enterprise – Offload and Isolate Compute
+## Task runners – offload and isolate compute
 
 [Task Runners](../../task-runners/index.md) offer a powerful way to offload compute-intensive tasks to remote environments.
 

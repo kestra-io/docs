@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 
 
-# Migrate from LangChain4j Plugin to Plugin AI
+## Migrate from LangChain4j Plugin to Plugin AI
 
 The LangChain4j plugin has been renamed and is now available as Plugin AI, with a new repository and package namespace. Starting in Kestra 0.24, you must update all flows using `langchain4j` to reference the new `plugin-ai` package. No functional changes were made; this is a rename for clarity and future extensibility.
 

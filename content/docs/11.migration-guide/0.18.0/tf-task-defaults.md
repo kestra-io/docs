@@ -5,7 +5,7 @@ release: 0.18.0
 ---
 
 
-# Deprecation of Terraform task_defaults in favor of plugin_defaults
+## Deprecation of Terraform task_defaults in favor of plugin_defaults
 
 How to migrate `task_defaults` to `plugin_defaults` for the Kestra Terraform Provider.
 

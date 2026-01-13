@@ -5,7 +5,7 @@ icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-# Set up Microsoft OIDC SSO for Kestra
+## Set up Microsoft OIDC SSO
 
 To configure Microsoft authentication, follow these steps:
 

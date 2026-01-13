@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# ME and APITOKEN user permissions
+## ME and APITOKEN user permissions
 
 `ME` and `APITOKEN` permissions added to RBAC.
 

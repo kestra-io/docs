@@ -7,7 +7,7 @@ docId: flowEditor
 
 Kestra provides a built-in code editor to write and test your flows.
 
-# Flow Editor in Kestra – Write and Test Flows
+## Flow Editor in Kestra – write and test Flows
 
 The **Flow Editor** is a simple text editor that provides syntax highlighting and auto-completion for YAML flow definitions.
 

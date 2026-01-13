@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_group resource allows you to manage groups in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_group
+## Terraform Resource: kestra_group
 
 Manages a Kestra Group.
 

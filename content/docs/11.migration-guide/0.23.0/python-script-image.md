@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Python script tasks now use official python:3-13-slim image
+## Python script tasks now use official python:3-13-slim image
 
 To make it easier to get started, we used a custom `ghcr.io/kestra-io/kestrapy:latest` image to contain `kestra` and `amazon-ion` pip packages. The tasks now use the official `python:3-13-slim` image by default. 
 

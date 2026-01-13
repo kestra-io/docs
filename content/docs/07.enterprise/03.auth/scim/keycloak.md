@@ -7,7 +7,7 @@ version: ">= 0.18.0"
 
 Sync users and groups from Keycloak to Kestra using SCIM.
 
-# Keycloak SCIM Provisioning
+## Keycloak SCIM provisioning
 
 ## Prerequisites
 

@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 
 Configure the URL of your Kestra webserver.
 
-# Configure the Kestra webserver URL and proxies
+## Configure the Kestra webserver URL and proxies
 
 Some notification services require a URL configuration to add links from alert messages. Use a full URI with a trailing `/` (excluding `ui` or `api`).
 

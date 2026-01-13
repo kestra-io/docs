@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 
 Kestra is separated into several components that can be deployed independently or inside a single process (a standalone deployment).
 
-# Monitor Kestra server liveness and recovery
+## Monitor Kestra server liveness and recovery
 
 We refer to these components as **server components** or just **servers**.
 

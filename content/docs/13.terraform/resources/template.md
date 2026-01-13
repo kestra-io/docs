@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_template resource allows you to manage templates in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_template
+## Terraform Resource: kestra_template
 
 Manages a Kestra Template.
 

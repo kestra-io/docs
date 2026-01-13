@@ -6,7 +6,7 @@ icon: /docs/icons/contributing.svg
 
 Contribute to our open-source community.
 
-# How to contribute to Kestra
+## How to contribute to Kestra
 
 :::ChildCard
 :::

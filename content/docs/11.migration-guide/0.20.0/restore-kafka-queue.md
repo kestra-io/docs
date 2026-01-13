@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Restore Kafka queue
+## Restore Kafka queue
 
 Migration guide for Kafka backend users
 

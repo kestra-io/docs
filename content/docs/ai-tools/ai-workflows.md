@@ -7,7 +7,7 @@ version: "1.0.0"
 
 Build AI workflows with your preferred LLM.
 
-# Orchestrate AI workflows with your preferred LLM
+## Orchestrate AI workflows with your preferred LLM
 
 Kestra provides plugins for multiple LLM providers and continues to add more with each release. You can design flows that use your chosen model and seamlessly integrate AI into orchestration workflows.
 

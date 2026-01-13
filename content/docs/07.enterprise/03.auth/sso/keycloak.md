@@ -6,7 +6,7 @@ editions: ["EE", "Cloud"]
 ---
 Set up Keycloak SSO to manage authentication for users.
 
-# Configure Keycloak SSO for Kestra
+## Configure Keycloak SSO
 
 In conjunction with SSO, check out the [Keycloak SCIM provisioning guide](../scim/keycloak.md).
 

@@ -6,7 +6,7 @@ icon: /docs/icons/padlock.svg
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.
 
-# Route Kestra traffic through an MITM proxy
+## Route Kestra traffic through an MITM proxy
 
 This guide walks through the steps to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
 
@@ -59,7 +59,7 @@ You must update the [Kestra configuration](../configuration/index.md) and ensure
 Add proxy settings and truststore configuration to your [Kestra configuration](../configuration/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
-# values.yaml (or application.yml configuration)
+## values.yaml (or application.yml configuration)
 configuration:
   micronaut:
     http:

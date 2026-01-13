@@ -7,7 +7,7 @@ version: ">= 0.24.0"
 
 Access local and namespace files in Kestra with universal file protocol.
 
-# File Access in Kestra – Use Local and Namespace Files
+## File access – use local and Namespace Files
 
 Kestra supports a universal file protocol that simplifies how to reference files in your flows. This protocol provides more consistent and flexible handling of local and [namespace files](02.namespace-files.md) in your flows.
 

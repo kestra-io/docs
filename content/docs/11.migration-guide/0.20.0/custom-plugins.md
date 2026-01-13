@@ -5,7 +5,7 @@ release: 0.20.0
 ---
 
 
-# Custom plugins
+## Custom plugins
 
 Migrating custom plugins
 

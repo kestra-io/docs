@@ -7,9 +7,7 @@ version: "0.24.0"
 
 Cache the status and outputs of computationally expensive operations.
 
-# Task cache in Kestra – reuse expensive results
-
-## Overview
+## Task cache – reuse expensive results
 
 The `taskCache` property stores a task’s status and outputs in Kestra’s database. When the same execution runs again with identical inputs, Kestra skips the task and reuses the cached outputs. You can enable caching on any task, but it is most effective for heavy operations such as large data extractions or long-running scripts.
 

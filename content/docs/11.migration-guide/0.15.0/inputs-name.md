@@ -5,7 +5,7 @@ release: 0.15.0
 ---
 
 
-# Inputs `name` changed to `id`
+## Inputs `name` changed to `id`
 
 The `name` property of `inputs` are deprecated in favor of `id` for consistency with the rest of the flow configuration.
 

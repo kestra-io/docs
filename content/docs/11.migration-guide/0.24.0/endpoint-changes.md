@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# IAM and API Endpoint Changes
+## IAM and API Endpoint Changes
 
 To streamline API usage, reduce ambiguity, and improve security and manageability for large organizations, the IAM and related API endpoints have been significantly revised in 0.24. These changes consolidate user, group, and role management around explicit, well-defined routes and permissions, and remove redundant or confusing API paths.
 

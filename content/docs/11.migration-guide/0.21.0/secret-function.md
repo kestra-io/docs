@@ -6,7 +6,7 @@ editions: ["OSS"]
 ---
 
 
-# Retrieving non-existing secrets
+## Retrieving non-existing secrets
 
 Changed handling of non-existing secrets.
 

@@ -8,7 +8,7 @@ topics:
 
 Manage your Python Dependecies inside of Kestra using `uv`.
 
-# Manage Python Dependencies with uv
+## Manage Python Dependencies with uv
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tyEbyhg6jmY?si=v_vQVfBUvKJD7-rn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

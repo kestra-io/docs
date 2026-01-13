@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Default Tenant & Multi-Tenancy
+## Default Tenant & Multi-Tenancy
 
 Default tenant is deprecated and multi-tenancy is enabled by default.
 

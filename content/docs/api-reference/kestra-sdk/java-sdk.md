@@ -6,7 +6,7 @@ release: 1.0.0
 ---
 Interact with Kestra's API via Java SDK.
 
-# Use the Kestra Java SDK
+## Use the Kestra Java SDK
 
 ## Installation
 

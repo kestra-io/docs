@@ -8,7 +8,7 @@ topics:
 
 Run Rust code directly inside of your Flows and generate outputs.
 
-# Run Rust inside of your Flows
+## Run Rust inside of your Flows
 
 Rust has jumped in popularity over the past few years, mainly due to its performance and reliability in production settings. Compared to Python, Rust is a great choice for performance-critical workloads so might be a good choice to use in your flows.
 

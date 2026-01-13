@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_test resource allows you to manage tests in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_test
+## Terraform Resource: kestra_test
 
 Test resource
 

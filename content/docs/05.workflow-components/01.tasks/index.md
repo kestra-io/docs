@@ -6,7 +6,7 @@ sidebarTitle: Tasks
 
 Tasks are the steps within a flow.
 
-# Understand tasks in a Kestra flow
+## Understand tasks
 
 They represent discrete actions, capable of processing inputs and variables and producing outputs for downstream consumption by end users and other tasks.
 

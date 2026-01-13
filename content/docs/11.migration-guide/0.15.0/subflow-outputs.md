@@ -5,7 +5,7 @@ release: 0.15.0
 ---
 
 
-# Subflow outputs behavior
+## Subflow outputs behavior
 
 The `outputs` property of a parent flow's `Subflow` task is deprecated. Instead, use flow `outputs` to pass data between flows.
 

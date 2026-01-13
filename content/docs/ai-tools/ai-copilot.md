@@ -7,7 +7,7 @@ version: "1.0.0"
 
 Build and modify flows directly from natural language prompts.
 
-# Create and edit flows with AI Copilot
+## Create and edit flows with AI Copilot
 
 The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
 

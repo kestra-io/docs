@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_group data source allows you to read groups in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_group
+## Terraform Data Source: kestra_group
 
 Use this data source to access information about an existing Kestra Group.
 

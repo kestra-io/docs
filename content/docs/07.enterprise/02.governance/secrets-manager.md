@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 
 How to configure a secrets manager.
 
-# Configure external secrets manager in Kestra Enterprise
+## Configure external secrets manager
 
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 

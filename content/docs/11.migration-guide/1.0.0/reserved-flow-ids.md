@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Reserved keywords cannot be used as Flow IDs
+## Reserved keywords cannot be used as Flow IDs
 
 Starting with Kestra 1.0, certain keywords are reserved and **cannot be used as Flow IDs**. These identifiers collide with internal API endpoints and are therefore restricted.
 

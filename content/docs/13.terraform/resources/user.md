@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_user resource allows you to manage users in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_user
+## Terraform Resource: kestra_user
 
 Manages a Kestra User.
 

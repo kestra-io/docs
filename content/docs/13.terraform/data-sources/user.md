@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_user data source allows you to read users in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_user
+## Terraform Data Source: kestra_user
 
 Use this data source to access information about an existing Kestra User.
 

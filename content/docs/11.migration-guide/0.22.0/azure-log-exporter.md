@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Azure Log Exporter
+## Azure Log Exporter
 
 Azure Log Exporter plugin is now split into two plugins.
 

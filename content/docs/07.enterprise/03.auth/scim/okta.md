@@ -7,7 +7,7 @@ version: ">= 0.18.0"
 
 Sync users and groups from Okta to Kestra using SCIM.
 
-# Okta SCIM Provisioning
+## Okta SCIM provisioning
 
 ## Prerequisites
 

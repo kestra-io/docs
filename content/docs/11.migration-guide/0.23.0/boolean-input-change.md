@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# The BOOLEAN-type input is deprecated in favor of BOOL
+## The BOOLEAN-type input is deprecated in favor of BOOL
 
 The Java-style `BOOLEAN` input, which used three options (true, false, or not defined) caused too much confusion and bugs, so it's now deprecated in favor of the `BOOL` input which is a toggle (can only be true or false). Read more in the GitHub issue: [#8225](https://github.com/kestra-io/kestra/issues/8225).
 

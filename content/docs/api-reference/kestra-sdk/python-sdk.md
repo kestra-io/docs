@@ -6,7 +6,7 @@ release: 1.0.0
 ---
 Interact with Kestra's API via Python SDK.
 
-# Use the Kestra Python SDK programmatically
+## Use the Kestra Python SDK programmatically
 
 ## Install the Python SDK
 

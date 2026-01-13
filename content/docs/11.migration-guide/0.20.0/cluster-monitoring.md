@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Different permissions for accessing Cluster Monitoring
+## Different permissions for accessing Cluster Monitoring
 
 Migrating permissions for accessing Cluster Monitoring
 

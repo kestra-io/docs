@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# KV function errors on missing key
+## KV function errors on missing key
 
 New default behavior of the KV function
 

@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Change in managing Groups via the API
+## Change in managing Groups via the API
 
 This change affects the way you manage groups via the API.
 

@@ -9,7 +9,7 @@ topics:
 
 Integrate Kestra into your JavaScript App using Webhooks.
 
-# Connect Web Apps to Kestra
+## Connect Web Apps to Kestra
 
 With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server.
 

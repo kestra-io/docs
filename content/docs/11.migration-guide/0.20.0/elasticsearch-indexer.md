@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Elasticsearch indexer
+## Elasticsearch indexer
 
 Migration guide for the Elasticsearch indexer
 

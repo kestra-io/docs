@@ -9,7 +9,7 @@ editions: ["EE"]
 
 Setup KeyCloak SSO to manage authentication for users.
 
-# Configure KeyCloak SSO in Kestra
+## Configure KeyCloak SSO in Kestra
 
 If you don't have a KeyCloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).
 

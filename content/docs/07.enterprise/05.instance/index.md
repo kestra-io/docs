@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 
 Manage releases and migrations in your Kestra instance to reduce downtime and keep up to date with the latest new features.
 
-# Instance management in Kestra Enterprise – services and maintenance
+## Instance management – services and maintenance
 
 :::ChildCard
 :::

@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
 
-# Plan safe Kestra upgrades and rollbacks
+## Plan safe Kestra upgrades and rollbacks
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

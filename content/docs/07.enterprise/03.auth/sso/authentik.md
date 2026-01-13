@@ -6,7 +6,7 @@ editions: ["EE", "Cloud"]
 ---
 Set up authentik SSO to manage authentication for users.
 
-# Configure authentik SSO for Kestra
+## Configure authentik SSO
 
 In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
 

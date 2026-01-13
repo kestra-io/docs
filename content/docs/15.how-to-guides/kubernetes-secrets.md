@@ -10,7 +10,7 @@ editions: ["OSS"]
 
 How to add Kestra Secrets to your Helm Chart deployment.
 
-# Set Up Secrets from a Helm Chart
+## Set Up Secrets from a Helm Chart
 
 :::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../07.enterprise/02.governance/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../07.enterprise/02.governance/secrets-manager.md) of your choice.
@@ -47,7 +47,7 @@ Now, install or upgrade your Helm Chart:
 ```shell
 helm repo add kestra https://helm.kestra.io/
 helm install kestra kestra/kestra -f values.yaml
-# or if you already have Kestra installed:
+## or if you already have Kestra installed:
 helm upgrade kestra kestra/kestra -f values.yaml
 
 export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=kestra,app.kubernetes.io/instance=kestra,app.kubernetes.io/component=standalone" -o jsonpath="{.items[0].metadata.name}")

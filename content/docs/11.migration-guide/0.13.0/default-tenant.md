@@ -6,7 +6,7 @@ editions: ["EE", "Cloud"]
 ---
 
 
-# Sync Users Access to a Default Tenant
+## Sync Users Access to a Default Tenant
 
 Adjusting users' access to the default tenant.
 

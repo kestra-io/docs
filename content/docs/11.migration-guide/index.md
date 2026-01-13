@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 ---
 
 
-# Migration Guide
+## Migration Guide
 
 Migrate Kestra smoothly with in-depth guides.
 

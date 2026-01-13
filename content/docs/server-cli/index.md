@@ -7,7 +7,7 @@ editions: ["OSS","EE"]
 
 How to interact with Kestra using the CLI.
 
-# Use the Kestra server CLI effectively
+## Use the Kestra server CLI effectively
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 

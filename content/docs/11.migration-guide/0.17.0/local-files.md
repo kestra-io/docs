@@ -6,7 +6,7 @@ release: 0.17.0
 
 
 
-# Deprecation of LocalFiles and outputDir
+## Deprecation of LocalFiles and outputDir
 
 Migrate from `LocalFiles` and `outputDir` to `inputFiles` and `outputFiles`.
 

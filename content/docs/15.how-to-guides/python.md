@@ -8,7 +8,7 @@ topics:
 
 Run Python code directly inside of your Flows and generate outputs.
 
-# Run Python inside of your Flows
+## Run Python inside of your Flows
 
 You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 

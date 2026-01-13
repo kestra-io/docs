@@ -12,7 +12,7 @@ How to manage API tokens in Kestra.
   <iframe src="https://www.youtube.com/embed/g-740VZLRdA?si=lHUE7qeI6ehOyfsf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-# API Tokens in Kestra Enterprise – Manage Programmatic Access
+## API tokens – manage programmatic access
 
 API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](./service-accounts.md).
 

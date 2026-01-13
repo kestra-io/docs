@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_namespace resource allows you to manage namespaces in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_namespace
+## Terraform Resource: kestra_namespace
 
 Manages a Kestra Namespace.
 

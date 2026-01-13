@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_tenant data source allows you to read tenants in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_tenant
+## Terraform Data Source: kestra_tenant
 
 Use this data source to access information about an existing Kestra Tenant.
 

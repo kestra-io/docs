@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Version property renamed
+## Version property renamed
 
 Renamed version property in many plugins
 

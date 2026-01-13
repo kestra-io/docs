@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_kv resource allows you to manage KV entries in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_kv
+## Terraform Resource: kestra_kv
 
 Manages a Kestra Key-value pair.
 

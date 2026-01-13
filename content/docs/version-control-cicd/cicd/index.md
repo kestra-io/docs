@@ -6,7 +6,7 @@ icon: /docs/icons/dev.svg
 
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 
-# Automate validation and deployment with CI/CD
+## Automate validation and deployment with CI/CD
 
 Continous integration and deliver (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.  
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
@@ -42,10 +42,10 @@ The [Kestra CLI](./04.helpers.md) includes built-in commands for validating and 
 #### Validate and deploy a single flow
 
 ```bash
-# Validate a single flow
+## Validate a single flow
 ./kestra flow validate flow_directory/myflow.yml --server http://localhost:8080 --api-token <your-api-token>
 
-# Deploy a single flow to a namespace (without deleting existing flows)
+## Deploy a single flow to a namespace (without deleting existing flows)
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --api-token <your-api-token>
 ```
 

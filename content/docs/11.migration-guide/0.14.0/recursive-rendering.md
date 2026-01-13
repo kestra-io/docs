@@ -5,7 +5,7 @@ release: 0.14.0
 ---
 
 
-# Recursive rendering of Pebble expressions
+## Recursive rendering of Pebble expressions
 
 Since 0.14.0, kestra's templating engine has changed the default rendering behavior to **not recursive**.
 

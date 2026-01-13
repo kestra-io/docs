@@ -6,7 +6,7 @@ editions: ["OSS", "EE"]
 ---
 
 
-# Singer Tap Plugin Removal
+## Singer Tap Plugin Removal
 
 Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugin/plugin-airbyte), [dlt](https://kestra.io/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugin/plugin-cloudquery).
 

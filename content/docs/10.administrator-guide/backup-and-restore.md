@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 
 Back up and restore your Kestra instance.
 
-# Back up and restore your Kestra instance
+## Back up and restore your Kestra instance
 
 Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
 
@@ -89,16 +89,16 @@ Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 If Kestra runs in Docker, use `docker exec` and `docker cp` to move the backup file in and out of the container:
 
 ```bash
-# Create a full backup (with execution data) from inside the container
+## Create a full backup (with execution data) from inside the container
 docker exec your_container bash -c "./kestra backups create FULL --include-data --no-encryption"
 
-# Copy the backup file from the container to a local directory
+## Copy the backup file from the container to a local directory
 docker cp your_container:/app/storage/backups/full/backup123.kestra .
 
-# After upgrading Kestra, copy the backup back into the container
+## After upgrading Kestra, copy the backup back into the container
 docker cp ./backup123.kestra your_container:/app/storage/backups/full/
 
-# Restore the backup from inside the container
+## Restore the backup from inside the container
 docker exec your_container bash -c "./kestra backups restore kestra:///backups/full/backup123.kestra"
 ```
 
@@ -157,7 +157,7 @@ This guide assumes you have already configured a snapshot repository in Elastics
 First, create an Elasticsearch snapshot named `kestra`:
 
 ```bash
-# Kibana Dev Tools (Console) or curl (adjust host/auth as needed)
+## Kibana Dev Tools (Console) or curl (adjust host/auth as needed)
 PUT _snapshot/my_snapshot_repository/kestra?wait_for_completion=true
 ```
 

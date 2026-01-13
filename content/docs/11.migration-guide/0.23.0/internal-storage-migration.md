@@ -6,7 +6,7 @@ editions: ["OSS","EE"]
 ---
 
 
-# Internal Storage Migration Guide for S3 and GCS Users
+## Internal Storage Migration Guide for S3 and GCS Users
 
 For users of S3 or GCS as internal storage, Kestra now removes the leading root slash in all storage paths. Storage keys now have a single slash separator, not a double slash. This helps display internal storage objects [in various cloud storage interfaces](https://github.com/kestra-io/kestra/issues/3933).
 

@@ -5,7 +5,7 @@ release: 0.17.0
 ---
 
 
-# JSON Object Serialization
+## JSON Object Serialization
 
 How to adapt flows to the `NON_NULL` JSON serialization strategy.
 

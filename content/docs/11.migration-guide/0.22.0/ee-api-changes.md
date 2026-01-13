@@ -6,7 +6,7 @@ editions: ["EE"]
 ---
 
 
-# Enterprise Edition API changes
+## Enterprise Edition API changes
 
 Service Account name uniqueness is no longer enforced.
 

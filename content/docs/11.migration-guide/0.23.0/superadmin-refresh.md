@@ -6,7 +6,7 @@ editions: ["EE", "Cloud"]
 ---
 
 
-# Manual user refresh to migrate Superadmin property
+## Manual user refresh to migrate Superadmin property
 
 The handling of `Superadmin` users in Kestra Cloud and Enterprise Edition has changed. Previously, the `Superadmin` status was determined by the user type (`SUPER_ADMIN`). In version 0.23, this is now managed through a dedicated property (`isSuperAdmin`). This change enables new use cases such as assigning a `Superadmin` permission to a Service Account as well as sending an invite with `Superadmin` permissions, but it also impacts user role detection for existing users.
 

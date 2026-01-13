@@ -9,7 +9,7 @@ topics:
 
 Configure alerts that fire whenever a workflow fails.
 
-# Configure Alerts in Kestra
+## Configure Alerts in Kestra
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

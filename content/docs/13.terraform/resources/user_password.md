@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_user_password resource allows you to manage user passwords in Kestra using Terraform.
 ---
 
-# Terraform Resource: kestra_user_password
+## Terraform Resource: kestra_user_password
 
 Manages a Kestra User Basic Auth Password.
 

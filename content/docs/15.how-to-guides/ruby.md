@@ -8,7 +8,7 @@ topics:
 
 Run Ruby code directly inside of your Flows and generate outputs.
 
-# Run Ruby inside of your Flow
+## Run Ruby inside of your Flow
 
 Ruby is well known for web development but has many other powerful use cases too, such as automation, web scraping, data processing and command-line tools. With Kestra, you can effortlessly automate data ingestion, as well as manage complex automations. Kestra's robust orchestration capabilities ensure that your Ruby scripts run smoothly and efficiently, streamlining your data-driven projects.
 

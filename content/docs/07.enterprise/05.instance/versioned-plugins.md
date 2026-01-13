@@ -8,7 +8,7 @@ version: "0.22.0"
 
 Use multiple versions of a plugin depending on your instance requirements and upgrade path.
 
-# Versioned Plugins in Kestra Enterprise – Manage Plugin Upgrades
+## Versioned plugins – manage plugin upgrades
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

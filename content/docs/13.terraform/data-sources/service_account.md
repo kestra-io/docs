@@ -5,7 +5,7 @@ editLink: false
 description: The kestra_service_account data source allows you to read service accounts in Kestra using Terraform.
 ---
 
-# Terraform Data Source: kestra_service_account
+## Terraform Data Source: kestra_service_account
 
 Use this data source to access information about an existing Kestra Service Account.
 

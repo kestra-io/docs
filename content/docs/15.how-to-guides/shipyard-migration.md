@@ -8,7 +8,7 @@ topics:
 
 Migrate from Shipyard to Kestra.
 
-# Migrate from Shipyard
+## Migrate from Shipyard
 
 This is a guide for users who are considering migration of their workflows from [Shipyard](https://www.shipyardapp.com/) to [Kestra](https://kestra.io/).
 

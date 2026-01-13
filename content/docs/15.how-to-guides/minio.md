@@ -9,7 +9,7 @@ topics:
 
 Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra using the `mc` CLI and Docker.
 
-# Configure Local MinIO Storage for Kestra
+## Configure Local MinIO Storage for Kestra
 
 ---
 

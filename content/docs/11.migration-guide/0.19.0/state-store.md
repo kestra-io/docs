@@ -5,7 +5,7 @@ release: 0.19.0
 ---
 
 
-# Deprecation of State Store in favor of KV Store
+## Deprecation of State Store in favor of KV Store
 
 How to migrate from State Store to KV Store.
 

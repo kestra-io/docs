@@ -6,7 +6,7 @@ icon: /docs/icons/dev.svg
 
 Clone a Git repository and use the files in your tasks.
 
-# Clone Git repositories into working directories
+## Clone Git repositories into working directories
 
 This task clones a Git repository into a working directory, and then enables you to use the files from that repository in downstream tasks.
 

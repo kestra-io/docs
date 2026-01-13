@@ -6,7 +6,7 @@ icon: /docs/icons/dev.svg
 
 Run multiple tasks in the same working directory sequentially.
 
-# Share files with the WorkingDirectory task
+## Share files with the WorkingDirectory task
 
 This task runs multiple tasks sequentially in the same working directory. It is useful when you want to share files from Namespace Files or from a Git repository across multiple tasks.
 

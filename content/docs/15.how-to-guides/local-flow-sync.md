@@ -9,7 +9,7 @@ topics:
 
 Sync Flows from a local directory.
 
-# Local Flow Synchronization
+## Local Flow Synchronization
 
 How to synchronize flows from a local directory on a local development instance.
 
