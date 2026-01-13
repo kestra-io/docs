@@ -454,7 +454,7 @@ To include a separate notification to the relevant channels, add the [Slack Inco
 
 ### Trigger it (scheduled or event-driven)
 
-Lastly, add a trigger so the flow runs automatically—either on a schedule ([Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md)) or from an external event ([Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md)):
+Lastly, add a trigger so the flow runs automatically — either on a schedule ([Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md)) or from an external event ([Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md)):
 
 ```yaml
 triggers:
@@ -471,4 +471,4 @@ A trigger allows you to build a historical log of machine health in S3 and Slack
 
 ### Wrap up
 
-Ansible handles host-level automation—collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+Ansible handles host-level automation — collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.

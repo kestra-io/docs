@@ -194,4 +194,4 @@ The webhook will be triggered:
 
 ## Conclusion
 
-By fronting Kestra with a ServiceNow catalog item, you let users stay inside their familiar ITSM portal while still benefiting from Kestra's orchestration capabilities. The same pattern works for any flow that exposes a webhook trigger—swap in different inputs, reuse the Action, and tailor the downstream automation without changing the ServiceNow experience.
+By fronting Kestra with a ServiceNow catalog item, you let users stay inside their familiar ITSM portal while still benefiting from Kestra's orchestration capabilities. The same pattern works for any flow that exposes a webhook trigger — swap in different inputs, reuse the Action, and tailor the downstream automation without changing the ServiceNow experience.

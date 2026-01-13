@@ -6,7 +6,7 @@ version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 ---
 
-**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data—such as traces, metrics, and logs—to gain insights into system behavior.
+**Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior.
 
 **OpenTelemetry** is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data.
 It helps implement observability in software applications.

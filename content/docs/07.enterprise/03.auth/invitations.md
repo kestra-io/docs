@@ -24,7 +24,7 @@ By default, if the [email server is configured in Kestra EE](../../configuration
 1. Navigate to the **IAM** page in the **Tenant** section
 2. Click on the **Users** tab
 3. Click on the **+ Add** button
-4. Fill in the user's email address, and select the desired group or attach the role directly—optionally restricting the permission to one or more namespaces
+4. Fill in the user's email address, and select the desired group or attach the role directly — optionally restricting the permission to one or more namespaces
 5. Click the **Add** button — this will send an email to the user with an invitation link, or display the link you can share with the user manually.
 
 ![Add User Interface](/docs/enterprise/invitations/invite1.png)
