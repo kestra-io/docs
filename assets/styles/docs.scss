@@ -46,6 +46,10 @@ $bd-gutter-x: 3rem;
 
     p {
         color: $white;
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 2rem;
+        margin-bottom: 2rem;
 
         a {
             color: $purple-35;
@@ -280,7 +284,7 @@ $bd-gutter-x: 3rem;
 .bd-markdown h2 {
     margin-top: 7rem;
     margin-bottom: 2rem;
-    border-left: 5px solid #9CA1DE;
+    border-left: 5px solid #9CA1DE !important;
     padding-left: 0.6rem;
     font-size: 1.87rem;
     display: block;
@@ -299,7 +303,7 @@ $bd-gutter-x: 3rem;
     }
 }
 
-.bd-markdown {
+.bd-markdown, .bd-content {
     p, li {
         color: $white;
         line-height: 1.75rem;
@@ -321,9 +325,10 @@ $bd-gutter-x: 3rem;
     }
 
     code {
+        background: #161617 !important;
         border: 1px solid #252526;
         border-radius: var(--bs-border-radius);
-        color: #b9b9ba;
+        color: #b9b9ba !important;
         padding: 0 .25rem;
     }
 

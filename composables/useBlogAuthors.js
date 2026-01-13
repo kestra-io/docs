@@ -1,10 +1,10 @@
 export const useBlogAuthors = (blog) => {
     const getAuthors = () => {
-        if (blog.authors && blog.authors.length > 0) {
-            return blog.authors;
+        if (blog.data.authors && blog.data.authors.length > 0) {
+            return blog.data.authors;
         }
-        if (blog.author) {
-            return [blog.author];
+        if (blog.data.author) {
+            return [blog.data.author];
         }
         return [];
     };
