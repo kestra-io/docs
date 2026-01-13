@@ -476,7 +476,7 @@ After the migration completes, revert to the standard startup command to run the
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
-Check the [migration guide](/docs/11.migration-guide/1.2.0/index.md) for complete upgrade instructions.
+Check the [migration guide](/docs/11.migration-guide/1.2.0) for complete upgrade instructions.
 :::
 
 
