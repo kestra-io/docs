@@ -1,15 +1,27 @@
 import posthog from "posthog-js";
 import identify from "../src/utils/identify";
-// FIXME: implement useGtm
-const gtm = null// useGtm();
 
-export function hubspotFormCreate(eventType, data) {
+declare global{
+    interface Window {
+        hbspt: {
+            forms: {
+                create: (data: Record<string, any>) => void;
+            }
+        };
+        __hsUserToken: string;
+    }
+}
+
+// FIXME: implement useGtm
+const gtm: any = null// useGtm();
+
+export function hubspotFormCreate(eventType: string, data: Record<string, any>) {
     scriptLoad(() => {
         const formData = {
             ...data, ...{
                 region: "eu1",
                 portalId: "27220195",
-                onFormSubmit: function ($form) {
+                onFormSubmit: function ($form: HTMLFormElement) {
                     gtm?.trackEvent({
                         event: eventType,
                         noninteraction: false,
@@ -17,7 +29,7 @@ export function hubspotFormCreate(eventType, data) {
 
                     posthog.capture(eventType);
 
-                    const email = $form.querySelector('[name="email"]')
+                    const email = $form.querySelector('[name="email"]') as HTMLInputElement;
 
                     if (email?.value) {
                         identify(email?.value);
@@ -30,8 +42,8 @@ export function hubspotFormCreate(eventType, data) {
     });
 }
 
-function scriptLoad(callback) {
-    if (process.client) {
+function scriptLoad(callback: () => void) {
+    if (typeof window !== "undefined") {
         if (window.hbspt) {
             callback();
         } else {

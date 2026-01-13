@@ -26,19 +26,16 @@
 </template>
 
 
-<script>
+<script lang="ts" setup>
+    import { onMounted } from "vue";
     import {hubspotFormCreate} from "~/utils/hubspot.js";
 
-    export default {
-        mounted() {
-            if (process.client) {
-                hubspotFormCreate("partner_form", {
-                    formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922",
-                    target: "#hubspotForm",
-                })
-            }
-        },
-    }
+    onMounted(() => {
+        hubspotFormCreate("partner_form", {
+            formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922",
+            target: "#hubspotForm",
+        })
+    })
 </script>
 
 <style lang="scss" scoped>
