@@ -82,7 +82,7 @@
                     ></button>
                 </div>
                 <div class="modal-body">
-                    <div class="video-responsive">
+                    <div class="video-container ">
                         <iframe
                             v-if="videoVisible"
                             width="560"

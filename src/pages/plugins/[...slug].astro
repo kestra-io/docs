@@ -519,7 +519,7 @@ const elementTitle = (() => Object.fromEntries(
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../../assets/styles/variable";
 
-    :global(.plugin-title) {
+    :deep(.plugin-title) {
         font-size: 1.5em;
     }
 
@@ -610,7 +610,7 @@ const elementTitle = (() => Object.fromEntries(
                 gap: 0 calc($spacer * 7);
             }
 
-            :global(.bd-toc nav) {
+            :deep(.bd-toc nav) {
                 border: 0;
                 padding: 0;
             }
@@ -656,12 +656,12 @@ const elementTitle = (() => Object.fromEntries(
     }
 
     .bd-main{
-        :global(p) {
+        :deep(p) {
             line-height: 1.75rem;
             font-size: 1rem;
         }
 
-        :global(.bd-markdown > h2) {
+        :deep(.bd-markdown > h2) {
             margin-top: calc($spacer * 4.12);
             border-top: 1px solid $black-6;
             padding-top: calc($spacer * 3.125);
@@ -675,80 +675,80 @@ const elementTitle = (() => Object.fromEntries(
         }
 
 
-        :global(p > a) {
+        :deep(p > a) {
             text-decoration: underline;
         }
 
-        :global(h2 > a) {
+        :deep(h2 > a) {
             font-weight: 600;
             line-height: 2.375rem;
             margin: 0;
         }
 
-        :global(h3 > a) {
+        :deep(h3 > a) {
             color: $gray-200 !important;
             font-size: 18.4px;
             font-weight: 600;
             line-height: 2.375rem;
         }
 
-        :global(h4 > a) {
+        :deep(h4 > a) {
             color: $white !important;
             font-weight: 600;
             font-size: 1rem;
         }
 
-        :global(h5) {
+        :deep(h5) {
             color: $white !important;
             font-weight: 600;
         }
 
-        :global(.bd-main h3), :global(.bd-main h4) {
+        :deep(.bd-main h3), :deep(.bd-main h4) {
             padding-top: 0;
         }
     }
 
-    .bd-main :global(p > a),
-    .bd-main :global(ul a) {
+    .bd-main :deep(p > a),
+    .bd-main :deep(ul a) {
         color: $purple-36;
     }
 
     .container,
-    :global(h2 > a) {
+    :deep(h2 > a) {
         color: $white !important;
     }
 
-    :global(p > code),
-    :global(li > code),
-    :global(a > code),
-    :global(table code) {
+    :deep(p > code),
+    :deep(li > code),
+    :deep(a > code),
+    :deep(table code) {
         color: $white-3;
         text-decoration: none !important;
         border-radius: 0.25rem;
         padding: 0 calc($spacer / 4);
     }
 
-    :global(.code-block),
-    :global(p > code),
-    :global(li > code),
-    :global(a > code),
-    :global(table code) {
+    :deep(.code-block),
+    :deep(p > code),
+    :deep(li > code),
+    :deep(a > code),
+    :deep(table code) {
         border: $block-border;
         background-color: $black-2 !important;
     }
 
-    :global(p > strong > code) {
+    :deep(p > strong > code) {
         color: $white-3;
         text-decoration: none !important;
         border-radius: 0.25rem;
         padding: 0 calc($spacer / 4);
     }
 
-    :global(li > mark) {
+    :deep(li > mark) {
         background-color: $link-color;
     }
 
-    :global(.docs-prev-next a) {
+    :deep(.docs-prev-next a) {
         span {
             color: $link-color;
         }
@@ -758,13 +758,13 @@ const elementTitle = (() => Object.fromEntries(
         }
     }
 
-    :global(.btn) {
+    :deep(.btn) {
         span {
             color: $white-1;
         }
     }
 
-    :global(table) {
+    :deep(table) {
         td, th {
             background-color: $black-2;
             border: $block-border;
@@ -777,12 +777,12 @@ const elementTitle = (() => Object.fromEntries(
     }
 
 
-    :global(.bd-markdown > h2 > a > span) {
+    :deep(.bd-markdown > h2 > a > span) {
         display: inline !important;
     }
 
     // Base layout for alerts (all types)
-    :global(.alert) {
+    :deep(.alert) {
         display: flex;
         gap: 12px;
         padding: 16px;
@@ -803,7 +803,7 @@ const elementTitle = (() => Object.fromEntries(
     );
 
     @mixin alert-variants($type, $vars) {
-        :global(.alert-#{$type}) {
+        :deep(.alert-#{$type}) {
             border-color: var(map-get($vars, border)) !important;
             color: var(map-get($vars, content)) !important;
             background-color: var(map-get($vars, background)) !important;
@@ -813,12 +813,12 @@ const elementTitle = (() => Object.fromEntries(
             }
         }
 
-        :global(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon),
-        :global(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon *) {
+        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon),
+        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon *) {
             color: var(map-get($vars, content)) !important;
         }
 
-        :global(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon > .material-design-icon__svg) {
+        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon > .material-design-icon__svg) {
             fill: var(map-get($vars, content)) !important;
             stroke: var(map-get($vars, content)) !important;
         }

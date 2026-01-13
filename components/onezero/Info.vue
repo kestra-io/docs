@@ -5,15 +5,15 @@
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="text-block">
                         <p class="description" data-aos="fade-up" data-aos-delay="50">
-                            Orchestration has been a patchwork: fragile schedulers, 
-                            vendor lock-in, hand-rolled scripts, and black-box 
+                            Orchestration has been a patchwork: fragile schedulers,
+                            vendor lock-in, hand-rolled scripts, and black-box
                             platforms that slow delivery and break governance.
                         </p>
                         <p class="highlight" data-aos="fade-up" data-aos-delay="100">
                             <strong>Kestra 1.0 (LTS)</strong>
-                            unifies data, AI, infrastructure, and business operations 
-                            under one declarative control plane. Tell the system what 
-                            you want; Kestra figures out the how, with full auditability 
+                            unifies data, AI, infrastructure, and business operations
+                            under one declarative control plane. Tell the system what
+                            you want; Kestra figures out the how, with full auditability
                             and human-in-the-loop approvals.
                         </p>
                         <div data-aos="fade-up">
@@ -24,12 +24,12 @@
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="50">
-                    <div class="video-responsive">
-                            <iframe 
-                            src="https://www.youtube.com/embed/b5TkMRlrUxw" 
-                            title="Kestra 1.0: Introducing Declarative Agentic Orchestration" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    <div class="video-container ">
+                            <iframe
+                            src="https://www.youtube.com/embed/b5TkMRlrUxw"
+                            title="Kestra 1.0: Introducing Declarative Agentic Orchestration"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
                             />
                     </div>
@@ -89,7 +89,7 @@
 
 
 
-    .video-responsive {
+    .video-container  {
     padding-bottom: 56.5%;
     @include media-breakpoint-down(sm) {
         padding-bottom: 61%;

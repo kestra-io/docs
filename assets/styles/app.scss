@@ -565,14 +565,14 @@ small.agree {
     z-index: $zindex-modal+2;
 }
 
-.video-responsive {
+.video-container  {
     overflow:hidden;
     padding-bottom:52.25%;
     position:relative;
     height:0;
 }
 
-.video-responsive iframe {
+.video-container  iframe {
     left:0;
     top:0;
     height:100%;

@@ -8,18 +8,19 @@ if (!doc) {
     throw new Error('Index document not found');
 }
 
-
 const { Content, headings } = await render(doc);
 ---
 
 <LayoutDocs activeStem="/docs" isHomePage>
-    <h1>{doc.data?.title}</h1>
-    <div class="bd-markdown">
-        <Content />
-    </div>
+    <h1 slot="title" class="py-0 title">{doc.data?.title}</h1>
+
     <NavToc client:visible links={headings.map(heading => ({
         id: heading.slug,
         text: heading.text,
         depth: heading.depth,
-    }))} slot="headings" />
+    }))} slot="headings" class="right-menu" />
+
+    <div class="bd-markdown">
+        <Content />
+    </div>
 </LayoutDocs>
