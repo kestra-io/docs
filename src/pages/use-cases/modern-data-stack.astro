@@ -4,14 +4,8 @@ import SolutionsDetailHeader from '~/components/solutions/DetailHeader.vue';
 import SolutionsDetailContent from '~/components/solutions/DetailContent.vue';
 import LayoutDetailMainContent from '~/components/layout/DetailMainContent.vue';
 import SolutionsDetailEmpower from '~/components/solutions/DetailEmpower.vue';
-import SolutionsDetailFeatures from '~/components/solutions/DetailFeatures.vue';
+import Features from '~/components/use-cases/modern-data-stack/Features.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
-import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue";
-import ArrowDecisionAutoOutline from "vue-material-design-icons/ArrowDecisionAutoOutline.vue";
-import ToyBrickOutline from "vue-material-design-icons/ToyBrickOutline.vue";
-import Connection from "vue-material-design-icons/Connection.vue";
-import OpenInApp from "vue-material-design-icons/OpenInApp.vue";
-import CloudCheckOutline from "vue-material-design-icons/CloudCheckOutline.vue";
 
 const title = "Integrate Kestra in the Modern Data Stack";
 const description = "Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools";
@@ -51,38 +45,7 @@ const mainContent = [
     },
 ];
 
-const features = [
-    {
-        title: 'Declarative Language',
-        text: 'Easily define and manage data workflows using YAML, which simplifies the integration process with modern data stack tools.',
-        icon: FileCodeOutline
-    },
-    {
-        title: 'Workflow Orchestration',
-        text: 'Execute tasks sequentially, in parallel, or conditionally, providing better control and flexibility while working with various data stack components.',
-        icon: ArrowDecisionAutoOutline
-    },
-    {
-        title: 'Extensibility',
-        text: 'Use built-in plugins or create custom plugins to seamlessly integrate with popular data stack tools and services.',
-        icon: ToyBrickOutline
-    },
-    {
-        title: 'Connectivity',
-        text: 'Connect to popular data sources and cloud services such as AWS, GCP, Azure, Snowflake, and more.',
-        icon: Connection
-    },
-    {
-        title: 'Rich & real-time UI',
-        text: 'Create, execute, and manage data workflows using an intuitive user interface, making it easier to work with modern data stack tools.',
-        icon: OpenInApp
-    },
-    {
-        title: 'Cloud-Native',
-        text: 'Kestra\'s cloud-native architecture ensures seamless scaling and compatibility with modern data stack tools.',
-        icon: CloudCheckOutline
-    },
-];
+
 ---
 
 <Layout title={title} description={description}>
@@ -111,11 +74,10 @@ const features = [
         title="Orchestrate the Modern Data Stack with Kestra"
         subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as dbt, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
     />
-    <SolutionsDetailFeatures
+    <Features
         client:visible
         subtitle="Key"
         subtitleAfter="Features"
-        items={features}
     />
     <LayoutFooterContact
         client:visible

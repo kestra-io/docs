@@ -1,10 +1,10 @@
 ---
 import FeaturesHeader from '~/components/features/Header.vue';
-import LazyFeaturesDeclarative from '~/components/features/Declarative.vue';
-import LazyFeaturesOutBox from '~/components/features/OutBox.vue';
-import LazyFeaturesExperience from '~/components/features/Experience.vue';
-import LazyFeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
-import LazyFeaturesCTA from '~/components/features/CTA.vue';
+import FeaturesDeclarative from '~/components/features/Declarative.vue';
+import FeaturesOutBox from '~/components/features/OutBox.vue';
+import FeaturesExperience from '~/components/features/Experience.vue';
+import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
+import FeaturesCTA from '~/components/features/CTA.vue';
 import Layout from '~/components/layout.astro';
 import PluginsBox from '~/components/PluginsBox.astro';
 
@@ -13,17 +13,17 @@ const description = "Create and Deploy all kinds Data Pipelines with Ease and Sp
 ---
 <Layout title={title} description={description}>
     <div class="features">
-        <FeaturesHeader />
-        <LazyFeaturesDeclarative  />
-        <LazyFeaturesOutBox />
+        <FeaturesHeader client:load />
+        <FeaturesDeclarative client:visible />
+        <FeaturesOutBox client:visible />
         <section class="features-plugins">
             <div class="container">
                 <PluginsBox />
             </div>
         </section>
-        <LazyFeaturesExperience />
-        <LazyFeaturesFeatureEnterprise />
-        <LazyFeaturesCTA />
+        <FeaturesExperience client:visible />
+        <FeaturesFeatureEnterprise client:visible />
+        <FeaturesCTA client:visible />
     </div>
 </Layout>
 

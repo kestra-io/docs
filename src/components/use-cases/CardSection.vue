@@ -7,8 +7,8 @@
                     <span>{{title}}</span>
                 </p>
                 <p class="title" v-else v-html="titleHtml" />
-                <p class="description">
-                    {{description}}
+                <p class="description" v-if="description">
+                    {{ description }}
                 </p>
             </div>
             <div class="row d-flex justify-content-center mt-5 cards-container">
@@ -18,9 +18,11 @@
                     v-for="cardItem in cardsData"
                 >
                     <Card
+                        :icon="cardItem.icon"
+                        :cardInfo="cardItem.cardInfo"
+                        :number="cardItem.number"
                         :title="cardItem.title"
                         :description="cardItem.description"
-                        :number="cardItem.number"
                     />
                 </div>
             </div>
@@ -28,27 +30,31 @@
     </div>
 </template>
 
-<script setup>
-    import Card from '~/components//card/Card.vue'
+<script setup lang="ts">
+    import Card from '~/components/card/Card.vue';
 
-    const props = defineProps({
-      title: {
-        type: String,
-        required: false,
-      },
-      description: {
-        type: String,
-        required: true,
-      },
-      titleHtml: {
-        type: String,
-        required: false,
-      },
-      cardsData: {
-        type: Array,
-        required: true,
-      },
-    })
+
+    type CardDetail = {
+        title?: string;
+        description?: string;
+    };
+
+    type CardItem = {
+        icon?: string;
+        cardInfo?: CardDetail;
+        title?: string;
+        description?: string;
+        number?: string;
+    };
+
+    const props = withDefaults(defineProps<{
+        title?: string;
+        description?: string | undefined;
+        titleHtml?: string;
+        cardsData: Array<CardItem>
+    }>(), {
+        description: undefined,
+    });
 </script>
 
 <style lang="scss" scoped>
@@ -63,11 +69,14 @@
         .container {
             padding-top: calc($spacer * 5.625);
             padding-bottom: calc($spacer * 5.625);
+            background: #111113 url('/retail/header-mask.svg') 100% 100%;
 
             .title-block {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                position: relative;
+                z-index: 3;
 
                 .title {
                     font-size: 3.125rem;
@@ -120,18 +129,48 @@
                     background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 }
 
-                :deep(.card-body) {
-                    gap: 0.5rem;
-                    .title-block {
-                        flex-direction: column;
-                        align-items: flex-start;
-                    }
-
-                    .card-text {
-                        text-align: start;
-                    }
+                :deep(.card-title) {
+                    text-align: left;
                 }
             }
         }
+    }
+
+    .container-fluid.red {
+        .title-block {
+            .title {
+                :deep(span) {
+                    background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%) !important;
+                    background-clip: text !important;
+                    -webkit-background-clip: text !important;
+                    -webkit-text-fill-color: transparent !important;
+                }
+            }
+        }
+
+        .cards-container {
+            &::after {
+                background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%) !important;
+                bottom: 35% !important;
+                width: 15rem !important;
+                height: 15rem !important;
+                left: 40% !important;
+            }
+        }
+
+        :deep(.card-icon) {
+            &::before {
+                background: linear-gradient(134.95deg, #E3262F 18.11%, #FCD8DF 27.65%, #DB2727 36.31%, rgba(219, 39, 39, 0) 58.84%, rgba(252, 108, 108, 0.84) 80.5%) !important;
+            }
+
+            .material-design-icon {
+                filter: drop-shadow(2px 4px 4px rgba(171, 29, 28, 0.25));
+
+                svg path {
+                    fill: url(#featureiconsgradientRed) !important;
+                }
+            }
+        }
+
     }
 </style>

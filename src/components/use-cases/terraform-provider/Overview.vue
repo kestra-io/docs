@@ -1,6 +1,6 @@
 <template>
     <div class="overview">
-        <LayoutSection title="Overview">
+        <Section title="Overview">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
@@ -84,96 +84,98 @@
                     </div>
                 </div>
             </div>
-        </LayoutSection>
+        </Section>
     </div>
 </template>
 
 <script setup lang="ts">
     import Card from '~/components/card/Card.vue';
+    import Section from '~/components/layout/Section.vue';
 </script>
 
 <style scoped lang="scss">
-@import "~/assets/styles/variable";
-.overview {
-    background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
+    @import "~/assets/styles/variable";
 
-    :deep(section) {
-        border-bottom: $block-border;
-        h2 {
-            font-size: 3.125rem;
-            font-weight: 300;
-        }
-    }
-}
+    .overview {
+        background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
 
-.hero {
-    padding-bottom: 0;
+        :deep(section) {
+            border-bottom: $block-border;
 
-    p {
-        line-height: 1.5rem;
-        color: $white;
-        font-size: $font-size-md;
-
-        a {
-            color: $purple;
+            h2 {
+                font-size: 3.125rem;
+                font-weight: 300;
+            }
         }
     }
 
-    h3 {
-        font-size: $h2-font-size;
-        font-weight: 400;
-    }
+    .hero {
+        padding-bottom: 0;
 
-    .configurations-img {
-        position: relative;
+        p {
+            line-height: 1.5rem;
+            color: $white;
+            font-size: $font-size-md;
 
-        > img {
+            a {
+                color: $purple;
+            }
+        }
+
+        h3 {
+            font-size: $h2-font-size;
+            font-weight: 400;
+        }
+
+        .configurations-img {
             position: relative;
-            z-index: 10;
+
+            > img {
+                position: relative;
+                z-index: 10;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                height: 291px;
+                width: 292px;
+                background: url('/terraform/configurations-right-bg-light.svg') no-repeat;
+                right: -7.5rem;
+                top: -8.25rem;
+                z-index: 1;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                height: 552px;
+                width: 1044px;
+                background: url('/terraform/configurations-left-bg-light.svg') no-repeat;
+                left: -15rem;
+                top: -6.25rem;
+                z-index: 1;
+            }
         }
 
-        &::before {
-            content: "";
-            position: absolute;
-            height: 291px;
-            width: 292px;
-            background: url('/terraform/configurations-right-bg-light.svg') no-repeat;
-            right: -7.5rem;
-            top: -8.25rem;
-            z-index: 1;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            height: 552px;
-            width: 1044px;
-            background: url('/terraform/configurations-left-bg-light.svg') no-repeat;
-            left: -15rem;
-            top: -6.25rem;
-            z-index: 1;
-        }
-    }
-
-    .resource-management-image {
-        position: relative;
-
-        > img {
+        .resource-management-image {
             position: relative;
-            z-index: 10;
-        }
 
-        &::before {
-            content: "";
-            position: absolute;
-            height: 551px;
-            width: 974px;
-            background: url('/terraform/resource-management-bg-light.svg') no-repeat;
-            left: -18rem;
-            top: -6.25rem;
-            z-index: 1;
+            > img {
+                position: relative;
+                z-index: 10;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                height: 551px;
+                width: 974px;
+                background: url('/terraform/resource-management-bg-light.svg') no-repeat;
+                left: -18rem;
+                top: -6.25rem;
+                z-index: 1;
+            }
         }
     }
-}
-
 </style>

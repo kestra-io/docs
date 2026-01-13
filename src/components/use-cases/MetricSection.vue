@@ -166,4 +166,21 @@
             }
         }
     }
+
+    .red
+    .business-container {
+        &::after, &::before {
+            background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%);
+        }
+
+        .subtitle {
+            color: #FD9297 !important;
+        }
+
+        .icon-block {
+            img {
+                filter: brightness(0) saturate(100%) invert(75%) sepia(55%) saturate(5609%) hue-rotate(315deg) brightness(107%) contrast(101%);
+            }
+        }
+    }
 </style>

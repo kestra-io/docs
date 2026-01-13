@@ -34,7 +34,7 @@
                     class="col-12 d-none d-lg-block col-lg-2 mb-4 z-2"
                     data-aos="zoom-in"
                 >
-                    <UseCasesDeploymentConnectionLine :strokeColor="strokeColor" />
+                    <UnlockSectionLine :strokeColor="strokeColor" />
                 </div>
                 <div
                     class="col-12 col-lg-5 mb-4 z-2"
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-    import UseCasesDeploymentConnectionLine from '~/components/use-cases/deployment/ConnectionLine.vue';
+    import UnlockSectionLine from '~/components/use-cases/UnlockSectionLine.vue';
 
     const props = defineProps<{
         title?: string;
@@ -91,7 +91,7 @@
                     font-weight: 500;
                     line-height: 3.438rem;
 
-                    :deep(span), span {
+                    span {
                         background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                         background-clip: text;
                         -webkit-background-clip: text;
@@ -159,6 +159,19 @@
                         line-height: 1rem;
                         max-width: unset;
                     }
+                }
+            }
+        }
+    }
+
+    .container-fluid.red {
+        .title-block {
+            .title {
+                :deep(span) {
+                    background: linear-gradient(90.03deg, #e3262f 57.94%, #ab0009 87.71%) !important;
+                    background-clip: text !important;
+                    -webkit-background-clip: text !important;
+                    -webkit-text-fill-color: transparent !important;
                 }
             }
         }

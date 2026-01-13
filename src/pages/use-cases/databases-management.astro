@@ -1,16 +1,12 @@
 ---
 import Layout from '~/components/layout.astro';
-import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
-import UseCasesEngineersMain from '~/components/use-cases/engineers/Main.vue';
-import UseCasesEngineersEnterpriseEdition from '~/components/use-cases/engineers/EnterpriseEdition.vue';
-import UseCasesDeploymentChallenges from '~/components/use-cases/deployment/Challenges.vue';
-import UseCasesEngineersDataOrchestration from '~/components/use-cases/engineers/DataOrchestration.vue';
+import HeaderSection from '~/components/use-cases/HeaderSection.vue';
+import MainSection from '~/components/use-cases/MainSection.vue';
+import EnterpriseEditionSection from '~/components/use-cases/EnterpriseEditionSection.vue';
+import CardSection from '~/components/use-cases/databases-management/CardSection.vue';
+import CapabilitiesSection from '~/components/use-cases/CapabilitiesSection.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
-import Cogs from "vue-material-design-icons/Cogs.vue";
-import ArchiveSync from "vue-material-design-icons/ArchiveSync.vue";
-import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue";
-import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue";
-import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue";
+
 
 const title = "Optimize your Databases Management";
 const description = "Kestra empower software engineers to automate database migrations, ensure reliable backups, and facilitate quick restorations.";
@@ -102,94 +98,45 @@ const mainContent = [
     }
 ];
 
-const challengesTitle = "Overcome Common <br> Databases Management Challenges";
 
-const cardsData = [
-    {
-        icon: Cogs,
-        cardInfo: {
-            title: "Operational Reliability",
-            description: "Ensure reliable database operations with automated backups and restoration workflows."
-        }
-    },
-    {
-        icon: ArchiveSync,
-        cardInfo: {
-            title: "Data Archiving",
-            description: "Automate the archiving of historical data to ensure secure storage and easy retrieval when needed."
-        }
-    },
-    {
-        icon: TimerCogOutline,
-        cardInfo: {
-            title: "Increase Efficiency",
-            description: "Automate repetitive tasks, allowing your team to concentrate on strategic initiatives."
-        }
-    },
-    {
-        icon: ChartAreaspline,
-        cardInfo: {
-            title: "Scalability",
-            description: "Easily scale database management processes as your infrastructure grows without compromising performance."
-        }
-    },
-    {
-        icon: CloudRefreshVariant,
-        cardInfo: {
-            title: "Data Consitency",
-            description: "Maintain integrity across all database environments through automated migrations and backups."
-        }
-    }
-];
 
-const dataOrchestration = [
-    {
-        id: 1,
-        title: "Microservice Management",
-        description: "Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
-        imageSource: "/landing/usecases/databases/microservice-management.svg",
-        imageAlt: "Microservice Management",
-        pageHref: "/use-cases/microservices-orchestration"
-    },
-    {
-        id: 2,
-        title: "API Orchestration",
-        description: "Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.",
-        imageSource: "/landing/usecases/microservices-orchestration/api-orchestration.svg",
-        imageAlt: "Provisioning",
-        pageHref: "/use-cases/provisioning-and-deployment"
-    }
+
+
+const capabilities = [
+    "Microservice Management",
+    "API Orchestration",
 ];
 ---
 
 <Layout title={title} description={description}>
-    <UseCasesEngineersHeader
+    <HeaderSection
+        client:load
         titleHtml="Databases <br> Management"
         description="Automate  your database management tasks within the development pipeline using Kestra."
         imageSrc="/landing/usecases/databases/header-hero.svg"
         imageAlt="Databases"
     />
 
-    <UseCasesEngineersMain
+    <MainSection
+        client:visible
         subtitle="your Databases Management"
         subtitleBefore="Optimize"
         baseline="Kestra empower software engineers to automate database migrations, ensure reliable backups, and facilitate quick restorations."
         mainContent={mainContent}
     />
 
-    <UseCasesEngineersEnterpriseEdition/>
+    <EnterpriseEditionSection client:visible/>
 
-    <UseCasesDeploymentChallenges
-        titleHtml={challengesTitle}
-        cardsData={cardsData}
-    />
+    <CardSection client:visible />
 
-    <UseCasesEngineersDataOrchestration
+    <CapabilitiesSection
+        client:visible
         title="for Databases Management"
-        dataOrchestration={dataOrchestration}
+        sections={capabilities}
     />
 
     <LayoutFooterContact
+        client:visible
         title="Ready to take your Infrastructure to the next level?"
         purpleButtonText="Get Started"
         purpleButtonHref="/docs/getting-started/quickstart#start-kestra"

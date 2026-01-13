@@ -4,7 +4,8 @@
             <div class="row" data-aos="fade-right">
                 <div class="col-12 col-md-8 col-lg-6 order-1 order-md-0">
                     <h1>Deploy All Your Workflows With our Terraform Provider</h1>
-                    <p class="description mt-3">Manage and deploy Kestra workflows directly<br>within your existing Terraform environment</p>
+                    <p class="description mt-3">Manage and deploy Kestra workflows directly<br>within your existing
+                        Terraform environment</p>
                     <div class="d-flex flex-wrap gap-2">
                         <NuxtLink href="/docs/terraform">
                             <button class="btn btn-animated btn-dark-animated"> Read the docs</button>
@@ -32,52 +33,55 @@
 </template>
 
 <style scoped lang="scss">
-@import "~/assets/styles/variable";
+    @import "~/assets/styles/variable";
 
-.container-fluid {
-    background: url('/terraform/header/bg.svg') no-repeat center !important;
-    background-size: 100% 100% !important;
-    border-bottom: $block-border;
+    .container-fluid {
+        background: url('/terraform/header/bg.svg') no-repeat center !important;
+        background-size: 100% 100% !important;
+        border-bottom: $block-border;
 
-    @include media-breakpoint-down(md) {
-        background-image: none !important;
-    }
-
-    h1, .subtitle {
-        margin: 0;
-        padding: 0;
-    }
-
-    h1 {
-        font-size: $h1-font-size;
-        font-weight: 400;
-    }
-    @include media-breakpoint-down(sm) {
-        h1 {
-            font-size: 1.625rem !important;
-        }
-    }
-    .subtitle {
-        font-size: 1.875rem;
-        font-weight: 100;
-    }
-
-    .description {
-        font-size: $font-size-xl;
-        font-weight: 300;
-    }
-    .img-container {
-        position: relative;
-        transform: scale(1.3);
-        margin-bottom: 50px;
-        left: 20px;
-        transform-origin: 40% 30%;
-    }
-
-    .hero{
         @include media-breakpoint-down(md) {
-            padding-top: 0;
+            background-image: none !important;
+        }
+
+        h1, .subtitle {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: $h1-font-size;
+            font-weight: 400;
+        }
+
+        @include media-breakpoint-down(sm) {
+            h1 {
+                font-size: 1.625rem !important;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.875rem;
+            font-weight: 100;
+        }
+
+        .description {
+            font-size: $font-size-xl;
+            font-weight: 300;
+        }
+
+        .img-container {
+            position: relative;
+            transform: scale(1.3);
+            margin-bottom: 50px;
+            left: 20px;
+            transform-origin: 40% 30%;
+        }
+
+        .hero {
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
         }
     }
-}
 </style>

@@ -149,4 +149,10 @@
             width: 100%;
         }
     }
+
+    .red.container-fluid {
+        &::after {
+            background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%);
+        }
+    }
 </style>

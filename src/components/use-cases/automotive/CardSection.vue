@@ -1,12 +1,12 @@
 <template>
-    <UseCasesDeploymentChallenges
+    <CardSection
         :titleHtml="challengesTitle"
         :cardsData="cardsData"
     />
 </template>
 
 <script setup>
-    import UseCasesDeploymentChallenges from '~/components/use-cases/deployment/Challenges.vue';
+    import CardSection from '~/components/use-cases/CardSection.vue';
     import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue";
     import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue";
     import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue";

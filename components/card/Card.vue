@@ -53,14 +53,14 @@
 </template>
 <script lang="ts" setup>
     withDefaults(defineProps<{
-            icon: any,
+            icon?: any,
             img?: string,
             imgAlt?: string,
             title?: string,
             titleHtml?: string,
             description?: string,
             descriptionHtml?: string,
-            number?: number,
+            number?: string,
             bottomMenuBar?: Array<{
                 text: string,
                 active: boolean,

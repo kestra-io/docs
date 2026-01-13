@@ -1,58 +1,13 @@
 ---
 import Layout from '~/components/layout.astro';
-import UseCasesEngineersHeader from "~/components/use-cases/engineers/Header.vue";
-import UseCasesDeploymentChallenges from "~/components/use-cases/deployment/Challenges.vue";
-import UseCasesDeploymentBusinessByUs from "~/components/use-cases/deployment/BusinessByUs.vue";
-import UseCasesDeploymentUnlockPotential from "~/components/use-cases/deployment/UnlockPotential.vue";
+import HeaderSection from "~/components/use-cases/HeaderSection.vue";
+import CardSection from '~/components/use-cases/healthcare/CardSection.vue';
+import MetricSection from "~/components/use-cases/MetricSection.vue";
+import UnlockSection from "~/components/use-cases/UnlockSection.vue";
 import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue";
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue";
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue";
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue";
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue";
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue";
 
 const title = "Kestra for Healthcare";
 const description = "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions";
-
-
-const challengesTitle = `<span>Key Benefits</span> of Using Kestra for<br/> Healthcare Workflows`;
-const cardsData = [
-    {
-        icon: RefreshAuto,
-        cardInfo: {
-            title: "Healthcare  Data Management",
-            description: "Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate."
-        }
-    },
-    {
-        icon: CommentQuoteOutline,
-        cardInfo: {
-            title: "Genomic Data Processing",
-            description: "Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors,"
-        }
-    },
-    {
-        icon: ChartBellCurve,
-        cardInfo: {
-            title: "Regulatory Compliance",
-            description: "Automate the generation of compliance reports, access logs, and data usage reports. Ensure  compliance with regulatory standards reducing the risk of breaches and improving data governance."
-        }
-    },
-    {
-        icon: FileChartOutline,
-        cardInfo: {
-            title: "Predictive Analytics",
-            description: " Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics."
-        }
-    },
-    {
-        icon: ImageFilterCenterFocus,
-        cardInfo: {
-            title: "Streamlined Data Management",
-            description: "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency."
-        }
-    }
-];
 
 const companyInfo = {
     personName: "Yohann Nédélec",
@@ -85,7 +40,7 @@ const unlockContent = {
 };
 ---
 <Layout title={title} description={description}>
-    <UseCasesEngineersHeader
+    <HeaderSection
         client:load
         titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
         description={description}
@@ -93,13 +48,9 @@ const unlockContent = {
         imageAlt="Healthcare Workflows"
     />
 
-    <UseCasesDeploymentChallenges
-        client:visible
-        titleHtml={challengesTitle}
-        cardsData={cardsData}
-    />
+    <CardSection client:visible />
 
-    <UseCasesDeploymentBusinessByUs
+    <MetricSection
         client:visible
         percent="200"
         percentText="Increased productivity"
@@ -107,7 +58,7 @@ const unlockContent = {
         companyInfo={companyInfo}
     />
 
-    <UseCasesDeploymentUnlockPotential
+    <UnlockSection
         client:visible
         title="Automotive Ecosystem"
         description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."

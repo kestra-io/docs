@@ -1,10 +1,10 @@
 ---
 import Layout from '~/components/layout.astro';
-import AutomotiveChallenges from '~/components/use-cases/automotive/Challenges.vue';
-import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
-import UseCasesDeploymentCompanyInfo from '~/components/use-cases/deployment/CompanyInfo.vue';
-import UseCasesDeploymentBusinessByUs from '~/components/use-cases/deployment/BusinessByUs.vue';
-import UseCasesDeploymentUnlockPotential from '~/components/use-cases/deployment/UnlockPotential.vue';
+import CardSection from '~/components/use-cases/automotive/CardSection.vue';
+import HeaderSection from '~/components/use-cases/HeaderSection.vue';
+import CompanyInfo from '~/components/use-cases/automotive/CompanyInfo.vue';
+import MetricSection from '~/components/use-cases/MetricSection.vue';
+import UnlockSection from '~/components/use-cases/UnlockSection.vue';
 import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
 
 const title = "Kestra for Automotive";
@@ -30,34 +30,39 @@ const unlockContent = {
 ---
 
 <Layout title={title} description={description}>
-    <div>
-        <UseCasesEngineersHeader
+    <div class="automotive-use-case">
+        <HeaderSection
+            class="red"
             client:load
             titleHtml="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
             imageSrc="/landing/usecases/automotive/header-hero.svg"
             imageAlt="Kestra Automotive"
         />
-        <AutomotiveChallenges client:visible />
-        <UseCasesDeploymentCompanyInfo
+        <CardSection client:visible class="red" />
+        <CompanyInfo
             client:visible
+            class="red"
             titleHtml="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
             description="Quadis, the largest car retailer in Spain, relies on Kestra to streamline its daily operations, from financial reporting to car delivery alerting. Kestra will support their new data lake architecture, enhancing data analytics, internal web scraping, and resource optimization using AWS services."
             imageSrc="/landing/usecases/automotive/visual.svg"
             logoPath="/landing/companies/quadis.svg"
             logoAlt="Quadis"
+            imageAlt="Quadis"
             logoWidth="208px"
             storeLink="/blogs/2024-06-13-quadis"
         />
-        <UseCasesDeploymentBusinessByUs
+        <MetricSection
             client:visible
+            class="red"
             percent="500"
             percentText="In workflow delivery "
-            mainInfoHtml="“Kestra adapts to any tool thanks to it’s plugin and <br> it’s easy for anyone to understand”"
+            mainInfoHtml="“Kestra plugin and <br> it’s easy for anyone to understand”"
             companyInfo={companyInfo}
         />
-        <UseCasesDeploymentUnlockPotential
+        <UnlockSection
             client:visible
+            class="red"
             title="Automotive Ecosystem"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
             logoPath="/landing/usecases/automotive/car-hatchback.svg"
@@ -77,119 +82,28 @@ const unlockContent = {
 <style scoped lang="scss">
     @import "~/assets/styles/variable";
 
-    :global(.container-fluid) {
-        &::after {
-            background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%)!important;
-        }
-
-        h1 {
-            span {
-                background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-        }
-    }
-
-    :global(.title-block) {
-        .title {
-            span {
-                background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%) !important;
-                background-clip: text !important;
-                -webkit-background-clip: text !important;
-                -webkit-text-fill-color: transparent !important;
-            }
-        }
-    }
-
-    :global(.cards-container) {
-        &::after {
-            background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%) !important;
-            bottom: 35% !important;
-            width: 15rem !important;
-            height: 15rem !important;
-            left: 40% !important;
-        }
-    }
-
-    :global(.card-icon) {
-        &::before {
-            background: linear-gradient(134.95deg, #E3262F 18.11%, #FCD8DF 27.65%, #DB2727 36.31%, rgba(219, 39, 39, 0) 58.84%, rgba(252, 108, 108, 0.84) 80.5%) !important;
-        }
-
-        .material-design-icon {
-            filter: drop-shadow(2px 4px 4px rgba(171, 29, 28, 0.25));
-
-            svg path {
-                fill: url(#featureiconsgradientRed) !important;
-            }
-        }
-    }
-
-    :global(.business-container) {
-        &::after, &::before {
-            background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%);
-        }
-
-        .subtitle {
-            color: #FD9297 !important;
-        }
-
-        .icon-block {
-            img {
-                filter: brightness(0) saturate(100%) invert(75%) sepia(55%) saturate(5609%) hue-rotate(315deg) brightness(107%) contrast(101%);
-            }
-        }
-    }
-
-    :global(.title-animate) {
-        background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%) !important;
-        background-clip: text !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-    }
-
-    .enterprise-edition {
-        :global(.container) {
-            &::after {
-                width: 365px !important;
-                background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%) !important;
-            }
+    /*.automotive-use-case {*/
 
 
-        }
-    }
 
-    :global(.btn-purple-animated) {
-        &::before {
-            background: conic-gradient(#fb1010, #ff97af 10%, #db2727, transparent 50%, #ec1010) !important;
-        }
 
-        &::after {
-            background: #AB0009;
-        }
+    /*    :global(.title-animate) {*/
+    /*        background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%) !important;*/
+    /*        background-clip: text !important;*/
+    /*        -webkit-background-clip: text !important;*/
+    /*        -webkit-text-fill-color: transparent !important;*/
+    /*    }*/
 
-        &:hover {
-            box-shadow: 1px 2px 4px 0px rgba(146, 32, 32, 0.29), 3px 6px 7px 0px rgba(146, 18, 16, 0.26), 7px 14px 10px 0px rgba(216, 39, 25, 0.15), 13px 25px 11px 0px rgba(216, 31, 55, 0.04), 20px 40px 12px 0px rgba(101, 24, 216, 0.01);
+    /*    :global(.enterprise-edition) {*/
+    /*        .container {*/
+    /*            &::after {*/
+    /*                width: 365px !important;*/
+    /*                background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #E3262F 72.98%) !important;*/
+    /*            }*/
+    /*        }*/
+    /*    }*/
 
-            &::after {
-                background: #AB0009;
-            }
-        }
-    }
 
-    :global(.btn-dark-animated) {
-        &::before {
-            background: conic-gradient(#fb1010, #ff97af 10%, #db2727, transparent 50%, #ec1010) !important;
-        }
 
-        &:hover {
-            box-shadow: 1px 2px 2px 0px rgba(146, 32, 32, 0.29), 3px 6px 7px 0px rgba(146, 18, 16, 0.26), 7px 14px 10px 0px rgba(216, 39, 25, 0.15), 13px 25px 11px 0px rgba(149, 20, 20, 0.13), 20px 40px 12px 0px rgba(101, 24, 216, 0.01);
-
-            &::after {
-                background: #771212;
-            }
-        }
-    }
+    /*}*/
 </style>

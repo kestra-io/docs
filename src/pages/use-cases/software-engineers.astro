@@ -1,11 +1,10 @@
 ---
 import Layout from '~/components/layout.astro';
-import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
-import UseCasesEngineersChallenges from '~/components/use-cases/engineers/Challenges.vue';
-import UseCasesEngineersExploreBlueprints from '~/components/use-cases/engineers/ExploreBlueprints.vue';
-import UseCasesEngineersDataOrchestration from '~/components/use-cases/engineers/DataOrchestration.vue';
+import HeaderSection from '~/components/use-cases/HeaderSection.vue';
+import BlueprintsSection from '~/components/use-cases/BlueprintsSection.vue';
+import CapabilitiesSection from '~/components/use-cases/CapabilitiesSection.vue';
 import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
-import { $fetch } from '~/utils/fetch';
+import CardSection from '~/components/use-cases/databases-management/CardSection.vue';
 
 const title = "Orchestrate Your Software Development with Kestra";
 const description = "Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment Slug: kestra.io/use-cases/software-engineers";
@@ -60,55 +59,34 @@ const cardsData = [
     },
 ];
 
-const dataOrchestration = [
-    {
-        id: 1,
-        title: "Microservice Management",
-        description: "Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
-        imageSource: "/landing/usecases/databases/microservice-management.svg",
-        imageAlt: "Microservice Management",
-        pageHref: "/use-cases/microservices-orchestration"
-    },
-    {
-        id: 2,
-        title: 'Database Management',
-        description: 'Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.',
-        imageSource: '/landing/usecases/microservices-orchestration/database-management.svg',
-        imageAlt: 'Database Management',
-        pageHref: '/use-cases/databases-managament'
-    },
-    {
-        id: 3,
-        title: 'API Orchestration',
-        description: 'Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.',
-        imageSource: '/landing/usecases/microservices-orchestration/api-orchestration.svg',
-        imageAlt: 'Provisioning',
-        pageHref: '/use-cases/provisioning-and-deployment'
-    },
+const capabilities = [
+    "Microservice Management",
+    'Database Management',
+    'API Orchestration'
 ];
 
 ---
 
 <Layout title={title} description={description}>
-    <UseCasesEngineersHeader
+    <HeaderSection
         client:visible
         titleHtml="Kestra for<br><span>Software Engineers</span>"
         description="Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
         imageSrc="/landing/usecases/software-engineers/header-hero.svg"
         imageAlt="Kestra Microservice"
     />
-    <UseCasesEngineersChallenges
+    <CardSection
         client:visible
         :titleHtml={challengesTitle}
         description="Kestra tackles the challenges software engineers face by automating development workflows, enhancing microservice orchestration, and ensuring seamless integrations."
         cardsData={cardsData}
 
     />
-    <UseCasesEngineersExploreBlueprints client:visible />
-    <UseCasesEngineersDataOrchestration
+    <BlueprintsSection client:visible />
+    <CapabilitiesSection
         client:visible
         title="for Software Engineering"
-        dataOrchestration={dataOrchestration}
+        sections={capabilities}
     />
     <FeaturesFeatureEnterprise client:visible />
 </Layout>

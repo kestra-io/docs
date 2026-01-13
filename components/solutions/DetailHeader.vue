@@ -27,35 +27,33 @@
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            title: {
-                type: String,
-                required: true,
-            },
-            titleBefore: {
-                type: String,
-                required: true,
-            },
-            titleAfter: {
-                type: String,
-                required: true,
-            },
-            subtitle: {
-                type: String,
-                required: true,
-            },
-            image: {
-                type: String,
-                required: true,
-            },
-            imageWidth: {
-              type: String,
-              required: true,
-            }
+<script setup lang="ts">
+    defineProps({
+        title: {
+            type: String,
+            required: true,
+        },
+        titleBefore: {
+            type: String,
+            required: false,
+        },
+        titleAfter: {
+            type: String,
+            required: true,
+        },
+        subtitle: {
+            type: String,
+            required: true,
+        },
+        image: {
+            type: String,
+            required: true,
+        },
+        imageWidth: {
+            type: String,
+            required: true,
         }
-    }
+    });
 </script>
 
 <style lang="scss" scoped>

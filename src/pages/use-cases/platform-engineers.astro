@@ -1,10 +1,10 @@
 ---
 import Layout from '~/components/layout.astro';
-import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
-import UseCasesEngineersChallenges from '~/components/use-cases/engineers/Challenges.vue';
-import UseCasesEngineersExploreBlueprints from '~/components/use-cases/engineers/ExploreBlueprints.vue';
-import UseCasesEngineersDataOrchestration from '~/components/use-cases/engineers/DataOrchestration.vue';
+import HeaderSection from '~/components/use-cases/HeaderSection.vue';
+import BlueprintsSection from '~/components/use-cases/BlueprintsSection.vue';
+import CapabilitiesSection from '~/components/use-cases/CapabilitiesSection.vue';
 import FeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
+import CardSection from '~/components/use-cases/databases-management/CardSection.vue';
 
 const title = "Orchestrate your Infrastructure with Kestra";
 const description = "Automate, Scale, Provision and Optimize Your Infrastructure with Kestra Slug: kestra.io/use-cases/platform-engineers";
@@ -54,62 +54,34 @@ const cardsData = [
     },
 ];
 
-const dataOrchestration = [
-    {
-        id: 1,
-        title: 'Continuous Integration/Continuous Deployment (CI/CD)',
-        description: 'Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.',
-        imageSource: '/landing/usecases/platform-engineers/continuous-integration.svg',
-        imageAlt: 'Integration/Continuous',
-        pageHref: '/use-cases/ci-cd'
-    },
-    {
-        id: 2,
-        title: 'Provisioning and Deployment',
-        description: 'Automate the setup and deployment of infrastructure components, reducing manual effort and errors.',
-        imageSource: '/landing/usecases/monitoring/provisioning-deployment.svg',
-        imageAlt: 'Provisioning',
-        pageHref: '/use-cases/provisioning-and-deployment'
-    },
-    {
-        id: 3,
-        title: 'Disaster Recovery',
-        description: 'Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.',
-        imageSource: '/landing/usecases/monitoring/disaster-recovery.svg',
-        imageAlt: 'Compliance Audits',
-        pageHref: '/use-cases/disaster-recovery'
-    },
-    {
-        id: 4,
-        title: 'Infrastructure Monitoring',
-        description: 'Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.',
-        imageSource: '/landing/usecases/provisioning-and-deployment/infrastructure-monitoring.svg',
-        imageAlt: 'Monitoring',
-        pageHref: '/use-cases/monitoring'
-    },
+const capabilities = [
+    'Continuous Integration/Continuous Deployment (CI/CD)',
+    'Provisioning and Deployment',
+    'Disaster Recovery',
+    'Infrastructure Monitoring',
 ];
 
 ---
 
 <Layout title={title} description={description}>
-    <UseCasesEngineersHeader
+    <HeaderSection
         client:visible
         titleHtml="Kestra for<br><span>Platform Engineers</span>"
         description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
         imageSrc="/landing/usecases/platform-engineers/header-hero.svg"
         imageAlt="Kestra Infrastructure Workflows"
     />
-    <UseCasesEngineersChallenges
+    <CardSection
         client:load
         titleHtml={challengesTitle}
         description="Kestra tackles the challenges platform engineers face by automating infrastructure orchestration, enhancing scalability, and ensuring seamless integrations."
         cardsData={cardsData}
     />
-    <UseCasesEngineersExploreBlueprints client:load />
-    <UseCasesEngineersDataOrchestration
+    <BlueprintsSection client:load />
+    <CapabilitiesSection
         client:load
         title="for Platform Orchestration"
-        dataOrchestration={dataOrchestration}
+        sections={capabilities}
     />
     <FeaturesFeatureEnterprise client:load />
 </Layout>

@@ -4,32 +4,24 @@
             <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <h1 data-aos="fade-right">
-                            Provisioning <br>
-                            <span>and Deployment</span>
-                        </h1>
+                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
                         <p data-aos="fade-left" class="baseline">
-                            Automate, Scale, Provision and Optimize Your Infrastructure with Kestra
+                            {{description}}
                         </p>
-                        <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
-                                Talk to us
+                        <div class="cta d-flex gap-3 flex-wrap">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                                Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <NuxtImg
-                        width="603px"
-                        loading="lazy"
-                        format="webp"
-                        class="mt-md-0"
-                        data-aos="zoom-in"
-                        src="/landing/usecases/provisioning-and-deployment/header-hero.svg"
-                        alt="Data Engineers"
+                    <img
+                        :src="imageSrc"
+                        :alt="imageAlt"
                     />
                 </div>
             </div>
@@ -40,7 +32,7 @@
 <script>
   export default {
     props: {
-      title: {
+      titleHtml: {
         type: String,
         required: true,
       },
@@ -49,6 +41,10 @@
         required: true,
       },
       imageSrc: {
+        type: String,
+        required: true,
+      },
+      imageAlt: {
         type: String,
         required: true,
       },
@@ -74,7 +70,7 @@
             width: 40%;
             bottom: 2%;
             left: 30%;
-            z-index: -147;
+            z-index: 0;
             filter: blur(100px);
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
         }
@@ -95,7 +91,7 @@
                 font-size: 1.875rem;
             }
 
-            span {
+            :deep(span) {
                 background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                 background-clip: text;
                 -webkit-background-clip: text;
@@ -117,6 +113,55 @@
 
         :deep(.hero.hero-sm) {
             border-bottom: 1px solid #FFFFFF1A;
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    .red.container-fluid {
+        &::after {
+            background: linear-gradient(180deg, #fd727800 11.24%, #e3262f 72.98%) !important;
+        }
+
+        h1 {
+            :deep(span) {
+                background: linear-gradient(90.03deg, #E3262F 57.94%, #AB0009 87.71%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        .btn-purple-animated {
+            &::before {
+                background: conic-gradient(#fb1010, #ff97af 10%, #db2727, transparent 50%, #ec1010) !important;
+            }
+
+            &::after {
+                background: #AB0009;
+            }
+
+            &:hover {
+                box-shadow: 1px 2px 4px 0px rgba(146, 32, 32, 0.29), 3px 6px 7px 0px rgba(146, 18, 16, 0.26), 7px 14px 10px 0px rgba(216, 39, 25, 0.15), 13px 25px 11px 0px rgba(216, 31, 55, 0.04), 20px 40px 12px 0px rgba(101, 24, 216, 0.01);
+
+                &::after {
+                    background: #AB0009;
+                }
+            }
+        }
+
+        .btn-dark-animated {
+            &::before {
+                background: conic-gradient(#fb1010, #ff97af 10%, #db2727, transparent 50%, #ec1010) !important;
+            }
+
+            &:hover {
+                box-shadow: 1px 2px 2px 0px rgba(146, 32, 32, 0.29), 3px 6px 7px 0px rgba(146, 18, 16, 0.26), 7px 14px 10px 0px rgba(216, 39, 25, 0.15), 13px 25px 11px 0px rgba(149, 20, 20, 0.13), 20px 40px 12px 0px rgba(101, 24, 216, 0.01);
+
+                &::after {
+                    background: #771212;
+                }
+            }
         }
     }
 </style>
