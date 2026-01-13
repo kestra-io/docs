@@ -29,7 +29,9 @@ const description = props.description ?? "Explore the Kestra Blog for the latest
     <div class="layout-docs-wrapper">
         <main class="bd-content px-0">
             <div class="container-fluid">
-                <slot/>
+                <div class="container">
+                    <slot/>
+                </div>
             </div>
             <div class="bottom">
                 <Updateletter />
