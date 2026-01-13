@@ -24,7 +24,7 @@ export default defineConfig({
     adapter: cloudflare({
         imageService: "cloudflare"
     }),
-    trailingSlash: "never",
+    trailingSlash: "ignore",
     integrations: [
         vue({
             appEntrypoint: "./src/vue-setup.ts",
