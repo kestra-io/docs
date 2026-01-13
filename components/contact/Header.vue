@@ -16,25 +16,16 @@
     </div>
 </template>
 
-<script>
-    import {hubspotFormCreate} from "~/utils/hubspot.js";
+<script lang="ts" setup>
+    import { onMounted } from "vue";
+    import {hubspotFormCreate} from "~/utils/hubspot";
 
-    export default {
-        data() {
-            return {
-                valid: undefined,
-                message: undefined,
-            };
-        },
-        mounted() {
-            if (process.client) {
-                hubspotFormCreate("contact_form", {
-                    formId: "77f32ae3-0f49-404a-a28d-6dfe92c8bc78",
-                    target: "#hubspotForm",
-                })
-            }
-        },
-    }
+    onMounted(() => {
+        hubspotFormCreate("contact_form", {
+            formId: "77f32ae3-0f49-404a-a28d-6dfe92c8bc78",
+            target: "#hubspotForm",
+        })
+    })
 </script>
 
 <style lang="scss" scoped>

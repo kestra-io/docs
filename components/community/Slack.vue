@@ -45,58 +45,38 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+    import { computed, onMounted, ref } from "vue";
     import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
     import HandWave from "vue-material-design-icons/HandWave.vue";
     import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
-</script>
+    import Section from '~/components/layout/Section.vue';
+    import Card from '~/components/card/Card.vue';
+    import Slack from "vue-material-design-icons/Slack.vue";
+    import {useApi} from "~/composables/useApi";
 
-<script>
-import Section from '~/components/layout/Section.vue';
-import Card from '~/components/card/Card.vue';
-import Slack from "vue-material-design-icons/Slack.vue";
-import {useApi} from "~/composables/useApi";
+    defineProps<{widget?: boolean}>()
 
-export default {
-    components: {Slack, Section, Card},
-    setup() {
-        return {useApi}
-    },
-    props: {
-        widget: {
-            type: Boolean,
-            default: false
-        }
-    },
-    data() {
-        return {
-            online: 0,
-        }
-    },
-    async mounted() {
-        if (process.client) {
-            try {
-                const memberCount = window.sessionStorage.getItem("slack_member_count")
+    const online = ref<number>();
+    onMounted(async () => {
+        try {
+            const memberCount = window.sessionStorage.getItem("slack_member_count")
 
-                if (!memberCount) {
-                    const {data: {total}} = await useApi().get('/communities/slack')
-                    window.sessionStorage.setItem("slack_member_count", total)
-                    this.online = total
-                } else {
-                    this.online = memberCount
-                }
-
-            } catch (e) {
+            if (!memberCount) {
+                const {data: {total}} = await useApi().get('/communities/slack')
+                window.sessionStorage.setItem("slack_member_count", total)
+                online.value = total
+            } else {
+                online.value = Number(memberCount)
             }
-        }
-    },
 
-    computed: {
-        onlineText() {
-            return this.online === undefined ? "" : Intl.NumberFormat('en-US').format(this.online);
+        } catch (e) {
         }
-    }
-}
+    })
+
+    const onlineText = computed(() => {
+        return online.value === undefined ? "" : Intl.NumberFormat('en-US').format(online.value);
+    })
 </script>
 
 <style lang="scss" scoped>

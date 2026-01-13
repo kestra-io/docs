@@ -51,49 +51,30 @@
         </div>
     </div>
 </template>
-<script>
-    export default {
-        name: "Card",
-        props: {
-            icon: {
-                default: undefined,
+<script lang="ts" setup>
+    withDefaults(defineProps<{
+            icon: any,
+            img?: string,
+            imgAlt?: string,
+            title?: string,
+            titleHtml?: string,
+            description?: string,
+            descriptionHtml?: string,
+            number?: number,
+            bottomMenuBar?: Array<{
+                text: string,
+                active: boolean,
+            }>,
+            style?: string,
+            cardInfo?: {
+                title?: string,
+                description?: string,
+                descriptionHtml?: string,
             },
-            img: {
-                default: undefined,
-            },
-            imgAlt: {
-                default: undefined,
-            },
-            title: {
-                default: undefined,
-            },
-            titleHtml: {
-              default: undefined,
-            },
-            description: {
-                default: undefined,
-            },
-            descriptionHtml: {
-                default: undefined,
-            },
-            number: {
-                default: null,
-            },
-            bottomMenuBar: {
-              default: null,
-            },
-            style: {
-              default: null,
-            },
-            cardInfo: {
-              default: null,
-            },
-            isClickable: {
-              default: true,
-              required: false
-            },
-        },
-    };
+            isClickable?: boolean,
+    }>(), {
+        isClickable: true,
+    })
 </script>
 <style lang="scss" scoped>
 @import "~/assets/styles/variable";
