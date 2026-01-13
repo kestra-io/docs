@@ -52,12 +52,25 @@ const navMenu = [{
 </Layout>
 
 <script>
-    // Find all buttons with the `alert` class on the page.
     const select = document.querySelectorAll("select.form-select")[0];
 
-    // Handle clicks on each button.
     select.addEventListener("change", (event) => {
         const version = (event.target as any)?.value as string;
         window.location.href = `/docs/changelog/${version}`;
     });
 </script>
+
+
+<style lang="scss" scoped>
+    .form-select {
+        color: var(--ks-content-primary);
+
+        option {
+        color: var(--ks-content-primary);
+        }
+
+        option:checked {
+        color: var(--ks-content-primary);
+        }
+    }
+</style>

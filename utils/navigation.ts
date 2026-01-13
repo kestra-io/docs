@@ -45,6 +45,11 @@ export function prevNext(navigation: NavItem[], path: string): { prev: NavItem |
     } else if (prev === undefined) {
         prev = navigation[0];
     }
+
+    if (prev && !prev.path && prev === navigation[0]) {
+        prev = { ...prev, path: "/docs", title: prev.title ?? "Docs" };
+    }
+
     return { prev, next };
 }
 

@@ -2,6 +2,7 @@ import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
 
 const navigationTree = {
     "Get Started with Kestra": [
+        "Quickstart",
         "Getting Started",
         "Tutorial",
         "Architecture",

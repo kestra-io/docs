@@ -46,7 +46,10 @@ const navDirFromPath = () => []
         components: {ArrowLeft, ArrowRight},
         async setup(props) {
             const {prev, next} = prevNext(props.navigation, props.currentPath);
-            return {prev, next};
+            return {
+                prev: prev?.path ? prev : null,
+                next: next?.path ? next : null
+            };
         },
         props: {
             navigation: {type: Object, required: true},
@@ -54,11 +57,14 @@ const navDirFromPath = () => []
         },
         methods: {
             directory(link) {
-                const [nav] = navDirFromPath(link.path, this.navigation || [])
+                if (!link) return ''
+
+                const [nav] = navDirFromPath(link, this.navigation ?? [])
                 if (nav) return nav.path
 
                 const dirs = link.split('/')
                 const directory = dirs[Math.max(1, dirs.length - 2)]
+                if (!directory) return ''
 
                 const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
                 return specialCases[directory] || directory.split('-').map(upperFirst).join(' ')

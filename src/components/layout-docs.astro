@@ -1,28 +1,13 @@
 ---
 import "~/assets/styles/docs.scss";
 import "../style/custom-elements.scss";
-import { getCollection } from "astro:content";
 import NavSideBar from "~/components/docs/NavSideBar.vue";
-import PrevNext from "~/components/layout/PrevNext.vue";
 import Layout from "./layout.astro";
-import { getNavigationTree } from "~/utils/getNavigationTree";
+import { buildDocsNavigation } from "../utils/buildDocsNavigation";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
 import { generatePageNames, recursivePages } from "~/utils/navigation";
 
-const docsPages = await getCollection('docs')
-
-docsPages.sort((a, b) => {
-    if(a.filePath && b.filePath) {
-        return a.filePath.localeCompare(b.filePath);
-    }
-    return a.id.localeCompare(b.id);
-});
-
-// create a nested structure
-const navigation = [{
-    title: 'Documentation',
-    children: getNavigationTree(docsPages)
-}]
+const navigation = await buildDocsNavigation();
 
 const pageList = recursivePages(navigation[0]);
 const pageNames = generatePageNames(navigation[0]);
@@ -50,9 +35,6 @@ const props = Astro.props;
 
             <div class="bd-content">
                 <slot/>
-                {!props.isHomePage && (
-                <PrevNext navigation={navigation} currentPath={props.activeStem} client:idle />
-            )}
             </div>
         </article>
     </div>
@@ -111,7 +93,7 @@ const props = Astro.props;
         }
 
         :global(.bd-main) {
-            gap: 2rem 4rem;
+            gap: 1rem 4rem;
             max-width: 100%;
             overflow-x: hidden;
 
@@ -121,11 +103,6 @@ const props = Astro.props;
 
             @include media-breakpoint-down(sm) {
                 gap: 1rem;
-            }
-
-            h1, .title {
-                margin-bottom: 0;
-                padding-bottom: 0;
             }
         }
 
@@ -169,11 +146,14 @@ const props = Astro.props;
         font-size: $h6-font-size;
     }
 
-    :deep(.bd-markdown > h2) {
+    :global(.bd-markdown > h2) {
         margin-top: calc($spacer * 4.12);
-        border-top: 1px solid $black-6;
-        padding-top: calc($spacer * 3.125);
+        padding-top: 0;
         margin-bottom: 2rem;
+
+        &::before {
+            background-color: transparent;
+        }
 
         a {
             border-left: 5px solid $purple-36;
