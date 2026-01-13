@@ -1,7 +1,6 @@
 ---
 title: RAG Workflows
 icon: /docs/icons/ai.svg
-editions: ["OSS", "EE", "Cloud"]
 version: "1.0.0"
 ---
 
@@ -25,7 +24,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       modelName: gemini-embedding-exp-03-07
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
     embeddings:
       type: io.kestra.plugin.ai.embeddings.KestraKVStore
     drop: true
@@ -58,7 +57,7 @@ tasks:
 pluginDefaults:
   - type: io.kestra.plugin.ai.provider.GoogleGemini
     values:
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
       modelName: gemini-2.5-flash
 ```
 
@@ -66,7 +65,7 @@ pluginDefaults:
 
 This flow first ingests external documents into the Kestra KV Store by generating embeddings with a chosen LLM provider. Those embeddings act as a searchable index. When you ask a question, Kestra can either pass the raw prompt directly to the LLM (without RAG) or augment the prompt with the most relevant information retrieved from the embeddings (with RAG). By supporting the model’s response in actual data, Kestra reduces the likelihood of hallucinations and ensures answers remain accurate and contextual to your source material.
 
-### Without RAG vs. With RAG
+### Without RAG vs. with RAG
 
 Without RAG, the model answers based only on its pretraining and may produce plausible but inaccurate results if the requested details are not part of its training knowledge. With RAG, the model supplements its reasoning by retrieving embeddings stored in the KV Store and using them as context, producing responses directly tied to the ingested documents.
 
@@ -86,10 +85,10 @@ tasks:
     chatProvider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       modelName: gemini-2.5-flash
-      apiKey: "{{ kv('GEMINI_API_KEY') }}"
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
     contentRetrievers:
       - type: io.kestra.plugin.ai.retriever.TavilyWebSearch
-        apiKey: "{{ kv('TAVILY_API_KEY') }}"
+        apiKey: "{{ secret('TAVILY_API_KEY') }}"
     systemMessage: You are a helpful assistant that can answer questions about Kestra.
     prompt: What is the latest release of Kestra?
 ```

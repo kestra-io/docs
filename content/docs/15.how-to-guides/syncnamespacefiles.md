@@ -25,7 +25,7 @@ The process is simple: you can sync your files from a Git repository on a schedu
 Before you start using the `SyncNamespaceFiles` task, make sure you have the following prerequisites in place:
 1. A Git repository where you want to sync your files. If you haven't pushed any files yet, check out this [guide using the PushNamespaceFiles task](pushnamespacefiles.md).
 2. A Personal Access Token (PAT) for Git authentication.
-3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../05.concepts/04.secret.md) within the Kestra instance.
+3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../06.concepts/04.secret.md) within the Kestra instance.
 
 ## Using the `dryRun` property
 
@@ -78,7 +78,7 @@ We can also see a full list inside of the Outputs tab too:
 
 ## Set up a schedule
 
-A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md). This example has a cron expression to execute once every hour:
+A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../05.workflow-components/07.triggers/01.schedule-trigger.md). This example has a cron expression to execute once every hour:
 
 ```yaml
 id: sync_files_from_git
@@ -102,7 +102,7 @@ triggers:
 
 ## Automatically sync when a change is pushed to Git
 
-We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
+We can also automate the syncing process by adding a [Webhook trigger](../05.workflow-components/07.triggers/03.webhook-trigger.md) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
 
 ```yaml
 id: sync_files_from_git

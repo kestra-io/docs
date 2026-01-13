@@ -10,6 +10,15 @@ Automate the validation and deployment of your Kestra flows using CI/CD pipeline
 Continous integration and deliver (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.  
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
 
+:::alert{type="info"}
+When flows are deployed through CI/CD, add the [`system.readOnly`](../../06.concepts/system-labels.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
+
+```yaml
+labels:
+  system.readOnly: true
+```
+:::
+
 ---
 
 ## Why use a CI/CD pipeline?
@@ -19,7 +28,7 @@ It removes manual steps, reduces human error, and accelerates delivery from deve
 
 ---
 
-## CI/CD for Kestra Flows
+## CI/CD for Kestra flows
 
 Kestra supports several approaches for automating flow validation and deployment. Choose the one that best fits your environment and tooling preferences.
 
@@ -40,7 +49,7 @@ The [Kestra CLI](./04.helpers.md) includes built-in commands for validating and 
 ```
 
 :::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md).  
+The `--api-token` flag is available in the [Enterprise Edition](../../07.enterprise/03.auth/api-tokens.md).  
 In the open-source edition, use basic authentication with the `--user` flag:
 
 ```bash
@@ -68,7 +77,7 @@ To process all flows in a directory:
 
 Use `--no-delete` to preserve existing flows. Omit it if your Git repository or local directory should serve as the **single source of truth** — Kestra will then delete any previously stored flows not present in the directory.
 
-#### CLI Options
+#### CLI options
 
 The CLI provides options to tailor the validation and deployment process:
 
@@ -84,7 +93,7 @@ For a full list of available options, use:
 
 ---
 
-### Automate Deployments within Kestra
+### Automate deployments within Kestra
 
 You can run CLI commands directly from a Kestra flow to manage your CI/CD pipeline within Kestra itself.
 
@@ -126,7 +135,7 @@ triggers:
 
 You can trigger this CI/CD flow manually via the UI or API — or automatically using a Git webhook.
 
-#### Configuring a GitHub Webhook
+#### Configuring a GitHub webhook
 
 To trigger your Kestra CI/CD flow on each Git push:
 
@@ -144,14 +153,14 @@ https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook
 
 ---
 
-### Deploy Flows with GitHub Actions
+### Deploy flows with GitHub Actions
 
 Kestra provides [official GitHub Actions](./01.github-action.md) to validate and deploy flows.
 
 1. **Validate** flows and templates — [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)  
 2. **Deploy** flows and templates — [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action)
 
-#### Example GitHub Actions Workflow
+#### Example GitHub Actions workflow
 
 ```yaml
 name: Kestra CI/CD
@@ -195,7 +204,7 @@ jobs:
 ```
 
 :::alert{type="info"}
-You can also authenticate using an [API token](../../06.enterprise/03.auth-rbac-user-management/api-tokens.md) instead of username and password:
+You can also authenticate using an [API token](../../07.enterprise/03.auth/api-tokens.md) instead of username and password:
 
 ```yaml
 with:
@@ -206,14 +215,14 @@ with:
 
 ---
 
-### Deploy Flows with GitLab CI/CD
+### Deploy flows with GitLab CI/CD
 
 GitLab CI/CD uses a similar approach to GitHub Actions.  
 See the [GitLab guide](./02.gitlab.md) for examples and configuration details.
 
 ---
 
-### Deploy Flows with Terraform
+### Deploy flows with Terraform
 
 Terraform provides the most flexible, **Infrastructure-as-Code** approach to managing Kestra deployments.  
 It allows you to define, validate, and deploy flows alongside the rest of your cloud infrastructure.
@@ -254,6 +263,6 @@ terraform apply -auto-approve   # Deploy your flows automatically
 
 ---
 
-## Next Steps
+## Next steps
 
 Explore detailed documentation for each CI/CD option below to choose the best fit for your workflow and deployment process.

@@ -56,14 +56,14 @@ initContainers:
 You can remove it after successful run (it has to be only executed once).
 :::
 
-## Internal Storage Migration Guide from `defaultTenant` to a tenant
+## Internal storage migration guide from `defaultTenant` to a tenant
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
 ### **Who needs to perform this migration?**
 - All OSS users need to run the migration script to ensure that the tenant ID is included in the internal storage paths.
 
-## Local Storage
+## Local storage
 
 The following script ensures that the `main` tenand ID is added to the internal storage path for your configuration. For OSS, this ID is immutable, so there is no need to adjust the name or path.
 
@@ -331,16 +331,17 @@ If your internal storage is a local directory (or a network drive), you can manu
 1. **Open File Explorer** and navigate to your storage root directory as configured in `kestra.storage.local.base-path`.
 2. **Identify all folders and files** at the root level that are *not* already under the `main` folder.
 
-   * Example:
+For example:
 
-     ```
-     base-path/
-       main/
-       foo/
-       bar/
-     ```
+```
+base-path/
+  main/
+  foo/
+  bar/
+```
 
-     You need to move `foo/` and `bar/` into `main/`.
+You need to move `foo/` and `bar/` into `main/`.
+
 3. **Select** all such folders/files, right-click and **Cut** (or **Copy**).
 4. **Paste** into the `main` folder, e.g., `base-path/main/`.
 5. **Delete** the originals from the root after confirming successful migration.
@@ -368,4 +369,3 @@ Most S3-compatible providers (AWS S3, MinIO, Cloudflare R2) allow file operation
    * Use the **Move** or **Rename** function to move it to the `main/` prefix (e.g., move `foo/file.txt` → `main/foo/file.txt`).
    * If your console only allows copy, use **Copy** then delete the original.
 4. **Verify** that all files are now organized under the `main/` folder.
-

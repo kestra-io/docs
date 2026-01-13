@@ -234,7 +234,7 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: Flare,
-                title: "Quickstart installation guide.",
+                title: "Quickstart installation guide",
                 description: "Trust kestra as your unified orchestration tool",
                 link: "/docs/installation"
             }

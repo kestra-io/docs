@@ -5,7 +5,7 @@ release: 0.23.0
 editions: ["OSS","EE"]
 ---
 
-## Internal Storage Migration Guide for S3 and GCS users to fix double slash
+## Internal storage migration guide for S3 and GCS users to fix double slash
 
 For users of S3 or GCS as internal storage, Kestra now removes the leading root slash in all storage paths. Storage keys now have a single slash separator, not a double slash. This helps display internal storage objects [in various cloud storage interfaces](https://github.com/kestra-io/kestra/issues/3933).
 
@@ -66,4 +66,3 @@ Most S3-compatible providers (including AWS S3 and Cloudflare R2) allow you to m
 4. Use the **copy or move action** to duplicate the object to the correct key (without the leading slash), then **delete the original** if needed.
 
 *Note: Some consoles may hide leading slashes or display objects as folders. Double-check object keys if you're unsure.*
-

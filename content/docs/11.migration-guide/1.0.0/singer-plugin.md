@@ -22,7 +22,7 @@ To ensure Kestra users have reliable, well-maintained data ingestion options, we
 - dlt: Flexible **Python-based** ingestion framework, great for custom pipelines and lightweight ingestion.
 - CloudQuery: Purpose-built for cloud asset discovery and syncing metadata to databases or warehouses.
 
-## Migration Checklist
+## Migration checklist
 
 1. Identify your Singer taps/targets and their data sources/destinations.
 

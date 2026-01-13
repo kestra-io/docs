@@ -10,7 +10,7 @@ How to migrate from State Store to KV Store.
 
 The State Store is a mechanism used under the hood by kestra to store the state of a task execution as a file in internal storage.
 
-With the general availability of the [KV Store](../../05.concepts/05.kv-store.md) in Kestra 0.18.0, the State Store is deprecated starting with Kestra 0.19.0.
+With the general availability of the [KV Store](../../06.concepts/05.kv-store.md) in Kestra 0.18.0, the State Store is deprecated starting with Kestra 0.19.0.
 
 ## Why the change?
 

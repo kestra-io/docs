@@ -10,12 +10,24 @@ const baseResponse = (job) => {
         id: job.id,
         title: job.title,
         locations: job.locations ? job.locations.map(l => {
-            return l.location_option.display_name === "International" ?
-                {
+            if (l.location_option.display_name === "International") {
+                return {
                     code: null,
                     name: "World",
                     emoji: "🌍"
-                } : {
+                };
+            }
+
+            if (l.location_option.display_name === "Europe") {
+                return {
+                    code: null,
+                    name: "Europe",
+                    emoji: "🇪🇺"
+                };
+            }
+
+
+            return {
                 code: l.location_option.country,
                 name: l.location_option.display_name,
                 emoji: countryCodeToEmoji(l.location_option.country)

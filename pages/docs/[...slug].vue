@@ -141,6 +141,7 @@
     .container-fluid {
         gap: calc($spacer * 4);
         overflow-x: unset;
+        padding-right: 0 !important;
 
         .bd-title {
             h1 {

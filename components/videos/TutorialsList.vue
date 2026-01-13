@@ -75,8 +75,6 @@
                                                 :video="video"
                                                 :getYMD="getYMD"
                                                 @click="openVideoModal(video)"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#youtube-video"
                                             />
                                         </div>
                                     </div>
@@ -111,18 +109,8 @@
                 </div>
             </div>
         </div>
-        <div
-            v-on="{
-                'show.bs.modal': () => (videoVisible = true),
-                'hidden.bs.modal': () => (videoVisible = false),
-            }"
-            class="modal fade"
-            tabindex="-1"
-            role="dialog"
-            id="youtube-video"
-            ref="youtubeVideoModal"
-            aria-labelledby="youtube-video"
-            aria-hidden="true"
+        <Modal
+            v-model:show="videoVisible"
         >
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -146,11 +134,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </Modal>
     </div>
 </template>
 
 <script setup lang="ts">
+import Modal from '../common/Modal.vue'
+
 interface Category {
   name: string
 }
@@ -171,7 +161,6 @@ interface TutorialVideoResponse {
   total: number
 }
 
-const { $bootstrap } = useNuxtApp()
 const config = useRuntimeConfig()
 const route = useRoute()
 const router = useRouter()
@@ -260,13 +249,12 @@ function changePage(pageNo: number): void {
 }
 
 function closeModal(): void {
-  if (process.client && youtubeVideoModal.value) {
-    const modal = $bootstrap.Modal.getInstance(youtubeVideoModal.value)
-    modal?.hide()
-  }
+    videoVisible.value = false
+    visibleVideoData.value = {} as VideoData
 }
 
 function openVideoModal(video: VideoData): void {
+  videoVisible.value = true
   visibleVideoData.value = video
 }
 
@@ -323,6 +311,7 @@ watch(tutorialVideo, (newVal) => {
     .modal-header {
         background-color: $black-2;
         border-bottom-color: $black-2;
+        padding: 1rem;
         padding-bottom: 0;
         padding-top: 5px;
         display: flex;
@@ -331,11 +320,13 @@ watch(tutorialVideo, (newVal) => {
             background: transparent;
             border: none;
             color: $white;
+            outline: $black-5 dotted 1px;
         }
     }
 
     .modal-body {
         background-color: $black-2;
+        padding: 1rem;
     }
 
     .right-side-bar {

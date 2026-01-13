@@ -166,7 +166,7 @@ export default {
                 icon: "/retail/plugins/cloud.svg",
             },
             {
-                name: "Github",
+                name: "GitHub",
                 icon: "/retail/plugins/github.svg",
             },
         ],

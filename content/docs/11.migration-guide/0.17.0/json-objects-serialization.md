@@ -12,7 +12,7 @@ There are three main cases where Pebble expressions might be affected:
 
 1) [Ternary operator](../../expressions/index.md#conditional-ternary-operator)
 2) [Null-Coalescing Operator](../../expressions/index.md#null-coalescing-operator)
-3) [Conditions in Pebble](../../05.concepts/06.pebble.md#using-conditions-in-pebble)
+3) [Conditions in Pebble](../../06.concepts/06.pebble.md#using-conditions-in-pebble)
 
 ## Examples
 

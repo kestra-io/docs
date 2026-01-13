@@ -15,11 +15,10 @@ Manages a Kestra Role.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_role" "example" {
-  namespace   = "company.team"
   name        = "Friendly name"
   description = "Friendly description"
 
@@ -29,7 +28,7 @@ resource "kestra_role" "example" {
   }
 
   permissions {
-    type        = "TEMPLATE"
+    type        = "EXECUTION"
     permissions = ["READ", "UPDATE"]
   }
 }
@@ -55,7 +54,7 @@ resource "kestra_role" "example" {
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedblock--permissions"></a>
-### Nested Schema for `permissions`
+### Nested schema for `permissions`
 
 Required:
 

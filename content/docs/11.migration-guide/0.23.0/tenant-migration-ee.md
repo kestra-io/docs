@@ -9,7 +9,7 @@ editions: ["EE"]
 
 Kestra now requires a tenant context across both the OSS and EE versions. For Enterprise users, this affects default tenants and their associated configuration properties.
 
-## Enterprise Edition (EE) Changes
+## Enterprise Edition (EE) changes
 
 ### Tenant System Now Always Enabled
 
@@ -27,7 +27,7 @@ While in OSS we transform URI to a different one including the main `tenantId` d
 
 ### Migration Script
 :::alert{type="warning"}
-Before running the following migration scripts, you must completely shut down the main Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
+Before running the following migration scripts, you must completely shut down all server components of your Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
 :::
 The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration. Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
 
@@ -66,7 +66,7 @@ You can remove it after successful run (it has to be only executed once).
 
 If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
 
-## Internal Storage Migration Guide from `defaultTenant` to a tenant
+## Internal storage migration guide from `defaultTenant` to a tenant
 
 This section explains how to migrate internal storage data to ensure the tenant ID is included and properly queried by the application. Migration can be done via the provided scripts or directly through the management console of your cloud storage provider.
 
@@ -77,7 +77,7 @@ This section explains how to migrate internal storage data to ensure the tenant 
 The provided commands use a list of existing tenant names (`main`, `tenant1`, `tenant2`). Update these in the scripts to match your actual tenant names.
 :::
 
-## Local Storage
+## Local storage
 
 If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, and replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID.
 
@@ -266,7 +266,7 @@ echo "Tenant migration finished!"
 
 ---
 
-## GCS Storage
+## GCS storage
 
 ```bash
 #!/bin/bash
@@ -339,7 +339,7 @@ echo "Tenant migration finished!"
 
 - `BUCKET` is configured under `kestra.storage.gcs.bucket`.
 
-### Migrating Files Using Graphical User Interfaces (GUI)
+### Migrating files using graphical user interfaces (GUI)
 
 For users who prefer not to use command-line scripts or are limited by their environment (e.g., Windows Server without shell access), migration can be accomplished with graphical tools. Below are guidelines for each storage type.
 
@@ -351,33 +351,38 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 1. **Open File Explorer** and go to your base storage path (as configured in `kestra.storage.local.base-path`).
 2. **Identify all folders and files** at the root level that are *not* already under a tenant folder (e.g., “main”, “tenant1”, “tenant2”).
-   Example: If your structure is
 
-   ```
-   base-path/
-     main/
-     tenant1/
-     foo/
-     bar/
-   ```
+Example: If your structure is
 
-   You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+```
+base-path/
+  main/
+  tenant1/
+  foo/
+  bar/
+```
+
+You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+
+
 3. **Select** the folders and files to migrate, right-click, and choose **Cut** (or **Copy** if you want to keep the original temporarily).
 4. **Paste** them into the appropriate tenant folder (e.g., `main/`).
-   The result should be:
 
-   ```
-   base-path/
-     main/
-       foo/
-       bar/
-     tenant1/
-   ```
+The result should be:
+
+```
+base-path/
+  main/
+    foo/
+    bar/
+  tenant1/
+```
+
 5. **Delete** the original folders/files from the root after confirming the migration.
 
 ---
 
-#### Local Storage on MacOS
+#### Local storage on macOS
 
 1. **Open Finder** and navigate to your base storage directory.
 2. **Locate folders and files** at the root level not already under your tenant folders.
@@ -387,7 +392,7 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 ---
 
-#### S3/MinIO/Cloudflare R2: Using Management Console for S3-compatible Storage
+#### S3/MinIO/Cloudflare R2: Using management console for S3-compatible storage
 
 Most S3-compatible providers (including AWS S3, MinIO, and Cloudflare R2) allow you to move or copy files directly in their web interfaces:
 
@@ -399,4 +404,4 @@ Most S3-compatible providers (including AWS S3, MinIO, and Cloudflare R2) allow 
    * If your R2/MinIO/Ceph console does not support move/rename in-place, you may need to copy the object to the new location and then delete the original.
 5. **Verify** that all data now resides under the tenant folder.
 
-![s3 migration](/docs/migration-guide/0.23.0/s3_migrate.png)
+![s3 migration](/docs/migration-guide/0-23/s3_migrate.png)
