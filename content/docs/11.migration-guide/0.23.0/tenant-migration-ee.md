@@ -364,6 +364,7 @@ base-path/
 
 You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
 
+
 3. **Select** the folders and files to migrate, right-click, and choose **Cut** (or **Copy** if you want to keep the original temporarily).
 4. **Paste** them into the appropriate tenant folder (e.g., `main/`).
 
@@ -372,8 +373,8 @@ The result should be:
 ```
 base-path/
   main/
-  foo/
-  bar/
+    foo/
+    bar/
   tenant1/
 ```
 
