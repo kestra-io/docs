@@ -21,6 +21,7 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/vue": "^5.1.4",
+    "@gtm-support/vue-gtm": "^3.1.0",
     "@kestra-io/ui-libs": "^0.0.266",
     "@popperjs/core": "^2.11.8",
     "@rive-app/canvas": "^2.32.2",

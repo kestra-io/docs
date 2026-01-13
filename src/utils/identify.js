@@ -1,8 +1,8 @@
 import posthog from 'posthog-js'
-// FIXME: implement useGtm
-const gtm = null// useGtm()
+import { useGtm } from '@gtm-support/vue-gtm'
 
 export default function(email) {
+    const gtm = useGtm()
     gtm?.trackEvent({
         event: 'identify',
         category: 'sys',

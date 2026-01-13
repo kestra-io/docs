@@ -191,8 +191,9 @@ import posthog from "posthog-js";
 import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting.js";
 import { ref, useTemplateRef } from "vue";
 import identify from "~/utils/identify";
+import { useGtm } from '@gtm-support/vue-gtm';
 
-// const gtm = useGtm();
+const gtm = useGtm();
 const formRef = useTemplateRef("cloud-form");
 
 const valid = ref(false);
@@ -250,7 +251,7 @@ const onSubmit = async (e: Event) => {
 
   posthog.capture("cloud_form");
   hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
-//   gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
+  gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
   identify((form as any)["email"].value);
 
   try {

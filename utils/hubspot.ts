@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import identify from "../src/utils/identify";
+import { useGtm } from "@gtm-support/vue-gtm";
 
 declare global{
     interface Window {
@@ -12,10 +13,8 @@ declare global{
     }
 }
 
-// FIXME: implement useGtm
-const gtm: any = null// useGtm();
-
 export function hubspotFormCreate(eventType: string, data: Record<string, any>) {
+    const gtm = useGtm();
     scriptLoad(() => {
         const formData = {
             ...data, ...{

@@ -112,14 +112,15 @@
     </div>
   </template>
 
-  <script setup lang="ts">
+<script setup lang="ts">
   import axios from "axios";
   import { getHubspotTracking } from "~/utils/hubspot.js";
   import posthog from "posthog-js";
 import { ref, useTemplateRef } from "vue";
 import identify from "~/utils/identify";
+import { useGtm } from '@gtm-support/vue-gtm';
 
-//   const gtm = useGtm();
+  const gtm = useGtm();
   const props = defineProps<{
     routePath: string;
   }>();
@@ -167,7 +168,7 @@ import identify from "~/utils/identify";
       };
       posthog.capture("cloud_form");
       hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }]);
-    //   gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
+      gtm?.trackEvent({ event: "cloud_form", noninteraction: false });
       identify(form["email"].value);
       axios
         .post(hubSpotUrl, formData, {})

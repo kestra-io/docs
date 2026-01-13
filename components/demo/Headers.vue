@@ -111,12 +111,13 @@ import { getMeetingUrl } from "~/composables/useMeeting.js";
 import { useMediaQuery } from "@vueuse/core";
 import { ref, watch, useTemplateRef, onMounted, onUnmounted } from "vue";
 import identify from "~/utils/identify";
+import { useGtm } from '@gtm-support/vue-gtm';
 
-// const route = useRoute();
-// const gtm = useGtm();
+
+const gtm = useGtm();
 const formRef = useTemplateRef("demo-form");
 
-defineProps<{
+const props = defineProps<{
   routePath: string;
 }>();
 
@@ -164,7 +165,7 @@ function withContactParams(base: string, { firstname, lastname, email }: { first
   }
 }
 
-if (process.client && getHubspotTracking() === null) {
+if (getHubspotTracking() === null) {
   const base = getMeetingUrl();
   const current = new URLSearchParams(window.location.search);
   meetingUrl.value = withContactParams(base, {
@@ -246,7 +247,7 @@ const onSubmit = async (e: Event) => {
 
     posthog.capture("bookdemo_form");
     hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }]);
-    // gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
+    gtm?.trackEvent({ event: "bookdemo_form", noninteraction: false });
     // Guarded in case identify() isn't globally defined
     // eslint-disable-next-line no-undef
     if (typeof identify === "function") identify(em);
