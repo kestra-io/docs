@@ -99,6 +99,18 @@ const jsonLinkedData = {
     .bd-main {
         margin-bottom: 4.5rem;
         margin-top: 4.5rem;
+
+         &::after {
+            content: "";
+            position: absolute;
+            height: 12.5rem;
+            width: 20%;
+            top: 2%;
+            left: 20%;
+            z-index: -147;
+            filter: blur(110px);
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+        }
     }
 
     .breadcrumb {
