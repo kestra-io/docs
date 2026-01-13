@@ -69,7 +69,7 @@
 
     const { y } = useWindowScroll()
     const { width } = useWindowSize()
-    
+
     const scale = computed(() => {
         if (width.value < 768) return 1
         const ratio = Math.min(y.value / 500, 1)
@@ -80,7 +80,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .main-header {
         position: relative;
@@ -194,7 +194,7 @@
                 margin-bottom: 1rem;
                 @include media-breakpoint-down(md) {
                     margin-bottom: 0;
-                }            
+                }
             }
 
             .gradient-border {
@@ -202,7 +202,7 @@
                 width: 100%;
                 overflow: hidden;
                 border-radius: 8px;
-                
+
                 background: linear-gradient(
                     135deg,
                     rgba($white, 0.1) 0%,
@@ -212,7 +212,7 @@
                 border-radius: 12.57px;
                 padding: 0.10rem;
                 backdrop-filter: blur(10px);
-                
+
                 &::before {
                     content: "";
                     position: absolute;

@@ -80,11 +80,11 @@
     import Lan from "vue-material-design-icons/Lan.vue"
     import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended.vue"
     import CalculatorVariantOutline from "vue-material-design-icons/CalculatorVariantOutline.vue";
-    import Card from '../../card/Card.vue';
+    import Card from '~/components/card/Card.vue';
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         position: relative;

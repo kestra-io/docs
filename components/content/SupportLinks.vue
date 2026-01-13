@@ -39,7 +39,7 @@ const buttons = [{
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 
 h2.support-title{
     border: none;

@@ -165,7 +165,7 @@
 
 </script>
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container {
         max-width: 1120px;

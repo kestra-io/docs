@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import HomeEnterpriseHeaderBox from "./EnterpriseHeaderBox.vue"
-import HomeEnterpriseStories, { type Story } from "./EnterpriseStories.vue"
+import HomeEnterpriseHeaderBox from "~/components/home/EnterpriseHeaderBox.vue"
+import HomeEnterpriseStories, { type Story } from "~/components/home/EnterpriseStories.vue"
 
 defineProps<{
     stories: Story[]
@@ -15,7 +15,7 @@ defineProps<{
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .home-enterprise {
         background-color: white;
         padding: 2rem 1rem;

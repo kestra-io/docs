@@ -13,7 +13,7 @@
 
 <script>
 import ChevronUp from 'vue-material-design-icons/ChevronUp.vue'
-import Slack from '../community/Slack.vue'
+import Slack from '~/components/community/Slack.vue'
 
 export default {
     components: {Slack, ChevronUp},
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     #fixed-container {
         position: fixed;

@@ -16,7 +16,7 @@
     </div>
 </template>
 <style scoped lang="scss">
- @import "../../../assets/styles/variable";
+ @import "~/assets/styles/variable";
 .btn-dark{
     --bs-btn-bg: $black-4 ;
     --bs-btn-hover-bg : $black-4;

@@ -59,7 +59,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .more {
         border-top: 1px solid var(--kestra-io-token-color-border-secondary);

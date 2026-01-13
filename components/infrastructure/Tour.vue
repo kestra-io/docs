@@ -35,7 +35,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .tour-section {
         padding: 3rem 1rem 3rem;

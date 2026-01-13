@@ -1,6 +1,6 @@
 ---
 import { fetchLastReleaseTag } from "~/utils/fetchChangelogVersions";
-import Layout from "../../components/layout.astro";
+import Layout from '~/components/layout.astro';
 // redirect to latest version
 const tag = await fetchLastReleaseTag()
 const minorVersion = tag.split('.').slice(0, -1).join('.').slice(1);

@@ -42,7 +42,7 @@
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import CommonTaskIcon from '~/components/common/TaskIcon.vue';
-import MDCParserAndRenderer from "../plugins/MDCParserAndRenderer.vue";
+import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
 
 export default {
     components: {
@@ -93,7 +93,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .code {
         overflow: hidden;
         position: relative;

@@ -30,7 +30,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(svg) {
         color: $black-1;

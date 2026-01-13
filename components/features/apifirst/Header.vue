@@ -35,7 +35,7 @@
 </template>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         background: url("/landing/features/language/header-bg.svg") no-repeat;

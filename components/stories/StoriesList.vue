@@ -35,8 +35,8 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import StoriesRowCard from './RowCard.vue'
-import CommonPagination from '../common/Pagination.vue'
+import StoriesRowCard from '~/components/stories/RowCard.vue'
+import CommonPagination from '~/components/common/Pagination.vue'
 
 const props = withDefaults(defineProps<{
     fullPath: string,
@@ -63,7 +63,7 @@ const fetchPageData = () => {
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .list-container {
         background: url("/landing/usecases/stories/content-bg.svg") no-repeat top;
 

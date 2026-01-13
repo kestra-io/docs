@@ -1,5 +1,5 @@
 ---
-import Layout from '../../components/layout.astro';
+import Layout from '~/components/layout.astro';
 import Heading from "~/components/price/Heading.vue";
 import Table from "~/components/price/Table.vue";
 // @ts-expect-error: FaqVue is a Vue component
@@ -55,7 +55,7 @@ const description = "Choose the right plan for your needs. Start with the Open S
 </script>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .cont {
         overflow: clip;

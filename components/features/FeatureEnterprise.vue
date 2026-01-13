@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import HomeEnterpriseHeaderBox from '../home/EnterpriseHeaderBox.vue'
+import HomeEnterpriseHeaderBox from '~/components/home/EnterpriseHeaderBox.vue'
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .home-enterprise {
         background-color: white;
         padding: 2rem 1rem;

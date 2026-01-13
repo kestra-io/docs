@@ -69,7 +69,7 @@
 
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .row .col-12 {
       @include media-breakpoint-down(md) {

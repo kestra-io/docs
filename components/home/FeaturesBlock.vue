@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import HomeCard from './Card.vue';
+import HomeCard from '~/components/home/Card.vue';
 const features = [
     {
         name: "Deploy Anywhere",
@@ -72,7 +72,7 @@ const features = [
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .card-block {
         position: relative;
         z-index: 1;

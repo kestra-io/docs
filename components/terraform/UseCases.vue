@@ -47,7 +47,7 @@
 </template>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 .container {
     :deep(section h2), h3 {
         font-size: 3.125rem;

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import BlogCardDetails from "./BlogCardDetails.vue";
+    import BlogCardDetails from "~/components/blogs/BlogCardDetails.vue";
 
     export default {
         name: "HighlightBlogCard",
@@ -30,7 +30,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../assets/styles/_variable.scss';
+    @import "~/assets/styles/variable";
 
     .blog-image {
         border: $block-border;

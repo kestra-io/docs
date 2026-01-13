@@ -39,9 +39,9 @@
     </div>
 
     <div class="mission-visual">
-      <NuxtImg 
-        src="/landing/company/teams/executions.png" 
-        alt="Kestra Dashboard" 
+      <NuxtImg
+        src="/landing/company/teams/executions.png"
+        alt="Kestra Dashboard"
         class="dashboard-image"
         data-aos="fade-left"
         data-aos-delay="400"
@@ -81,7 +81,7 @@ const values = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .mission {
   display: grid;

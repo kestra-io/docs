@@ -1,10 +1,10 @@
 ---
-import Layout from "../components/layout.astro";
+import Layout from '~/components/layout.astro';
 import Header from "~/components/home/Header.vue";
 import LogosTable from "~/components/home/LogosTable.vue";
 import OpenSource from "~/components/home/OpenSource.vue";
 import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue";
-import { $fetch } from "../utils/fetch";
+import { $fetch } from "~/utils/fetch";
 import Features from "~/components/home/Features.vue";
 import EveryDev from "~/components/home/EveryDev.vue";
 import Experience from "~/components/home/Experience.vue";
@@ -12,7 +12,7 @@ import BlueprintsRender from "~/components/home/BlueprintsRender.vue";
 import Enterprise from "~/components/home/Enterprise.vue";
 import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue";
 import CTA from "~/components/home/CTA.vue";
-import PluginsBox from "../components/PluginsBox.astro";
+import PluginsBox from "~/components/PluginsBox.astro";
 import { getValues } from "./api/github";
 
 const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
@@ -26,11 +26,11 @@ const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePat
 })).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()));
 
 const githubData = await getValues();
-const quotes = await import('../../data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
+const quotes = await import('~/data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 
 const blueprints  = await $fetch<{results: Blueprint[]}>("https://api.kestra.io/v1/blueprints/versions/latest?page=1&size=20")
 const stories = await $fetch<{results: any[]}>("https://api.kestra.io/v1/customer-stories-v2?featured=true")
-const enterpriseQuotes = await import('../../data/enterprise-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
+const enterpriseQuotes = await import('~/data/enterprise-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 ---
 
 <Layout>

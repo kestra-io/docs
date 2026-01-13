@@ -59,7 +59,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 
 .feature-bg {
     background-color: #ffffff;

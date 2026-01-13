@@ -64,12 +64,12 @@
     import Read from "vue-material-design-icons/Read.vue";
     import Git from "vue-material-design-icons/Git.vue";
     import AlertCircleOutline from "vue-material-design-icons/AlertCircleOutline.vue";
-    import Section from '../../layout/Section.vue';
-    import Card from '../../card/Card.vue';
+    import Section from '~/components/layout/Section.vue';
+    import Card from '~/components/card/Card.vue';
 </script>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     :deep(section) {
         .baseline {
             color: $white;

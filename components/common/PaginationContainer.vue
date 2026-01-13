@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import CommonPagination from './Pagination.vue'
+import { computed, ref, watch } from 'vue';
+import CommonPagination from '~/components/common/Pagination.vue'
 
 const props = withDefaults(defineProps<{
     totalItems: number,
@@ -99,7 +99,7 @@ watch(() => props.currentUrl, (newUrl) => {
 </template>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .pagination-container {
         margin-top: 39px;
 

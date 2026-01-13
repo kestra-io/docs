@@ -58,7 +58,7 @@
   import Magnify from "vue-material-design-icons/Magnify.vue"
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
-  import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "./RecursiveNavSidebar.vue";
+  import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
   import KSAIImg from "./icons/ks-ai.svg"
 
   const props = defineProps({
@@ -88,7 +88,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .bd-sidebar {
         &::-webkit-scrollbar-thumb {

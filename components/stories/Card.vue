@@ -27,7 +27,7 @@
 
 <script setup>
     import {slugify} from "@kestra-io/ui-libs";
-    import CommonTaskIcon from '../common/TaskIcon.vue'
+    import CommonTaskIcon from '~/components/common/TaskIcon.vue'
 
     defineProps({
         story: {
@@ -38,7 +38,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .card {
         height: 100%;

@@ -1,7 +1,7 @@
 import * as CookieConsent from "vanilla-cookieconsent";
 import posthog from 'posthog-js'
 import axios from "axios";
-import identify from "../utils/identify";
+import identify from "~/utils/identify";
 import { API_URL } from "astro:env/client";
 import { GTM_ID } from "astro:env/client";
 

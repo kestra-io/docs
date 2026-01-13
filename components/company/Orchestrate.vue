@@ -79,7 +79,7 @@ const companyLogos = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .orchestrate {
   width: 100%;

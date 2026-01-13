@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-    import Link from "../common/Link.vue";
+    import Link from "~/components/common/Link.vue";
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .lifecycle {
         width: 100%;

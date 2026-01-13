@@ -45,7 +45,7 @@
   }
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         background-color: $black-1;

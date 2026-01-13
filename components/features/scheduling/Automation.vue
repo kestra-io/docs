@@ -107,10 +107,10 @@
     </Section>
 </template>
 <script setup>
-import Section from '../../layout/Section.vue';
+import Section from '~/components/layout/Section.vue';
 </script>
 <style scoped lang="scss">
-@import "../../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .container {
     padding: calc($spacer * 4) 0;

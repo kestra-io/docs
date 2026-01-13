@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
     import { computed } from 'vue';
-    import BlogList, { type BlogPost } from '../common/BlogList.vue';
+    import BlogList, { type BlogPost } from '~/components/common/BlogList.vue';
 
     const props = withDefaults(defineProps<{
         posts?: BlogPost[]
@@ -26,7 +26,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .related-blogs {
         padding: 2rem 0;

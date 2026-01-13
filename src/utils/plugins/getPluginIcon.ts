@@ -1,4 +1,4 @@
-import { $fetch } from "../fetch";
+import { $fetch } from "~/utils/fetch";
 
 function colorFixedB64Icon(b64Icon: string) {
     return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replace(/currentColor/g, "#CAC5DA")).toString('base64');

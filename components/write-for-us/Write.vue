@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .title-sm {
     font-size: $h2-font-size;

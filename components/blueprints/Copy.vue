@@ -18,7 +18,7 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     button {
         background-color: transparent;

@@ -1,12 +1,12 @@
 ---
 export const prerender = false;
 import { $fetch } from "~/utils/fetch"
-import Layout from "../../../components/layout.astro"
+import Layout from "~/components/layout.astro"
 import StoriesHeader from "~/components/stories/Header.vue"
 import LayoutSection from "~/components/layout/Section.vue"
 import StoriesCard from "~/components/stories/Card.vue"
 import CommonTaskIcon from "~/components/common/TaskIcon.vue"
-import MDCParserAndRenderer from "../../../components/MDCParserAndRenderer.astro";
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro";
 
 const { slug, id } = Astro.params;
 interface Story {
@@ -157,7 +157,7 @@ const generateTagName = (task: string) => {
 </Layout>
 
 <style lang="scss" scoped>
-    @import "../../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     p {
         color: $white;

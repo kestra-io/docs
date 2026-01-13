@@ -66,7 +66,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         background: url("/landing/usecases/cicd/bg.svg") no-repeat center;

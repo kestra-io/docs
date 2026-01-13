@@ -35,7 +35,7 @@
 <script setup lang="ts">
     import { computed } from "vue";
     import {slugify, usePluginElementCounts, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs"
-    import {formatCategoryName} from "../../utils/pluginUtils";
+    import {formatCategoryName} from "~/utils/pluginUtils";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 
     const props = withDefaults(defineProps<{
@@ -84,7 +84,7 @@
 
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .plugin {
         height: 188px;

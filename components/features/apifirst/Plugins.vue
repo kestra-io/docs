@@ -14,14 +14,14 @@
 </template>
 
 <script setup lang="ts">
-    import LayoutPlugins from '../../../components/layout/Plugins.vue';
+    import LayoutPlugins from '~/components/layout/Plugins.vue';
     import { usePluginsCount } from '~/composables/usePluginsCount';
 
     const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         color: var(--bs-white);

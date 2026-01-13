@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import type { PropType } from "vue";
-import CustomDetails from "../layout/CustomDetails.vue";
+import CustomDetails from "~/components/layout/CustomDetails.vue";
 
 const props = defineProps({
     title: {
@@ -46,7 +46,7 @@ const props = defineProps({
 
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .container {
     display: flex;

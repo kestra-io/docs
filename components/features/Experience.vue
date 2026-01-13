@@ -10,12 +10,12 @@
                         </template>
                     </h2>
                 </div>
-                
+
                 <div v-for="(subsection, subsectionIndex) in section.subsections" :key="`subsection-${sectionIndex}-${subsectionIndex}`" :data-subsection-index="subsectionIndex">
                     <div class="section-subtitle" v-if="subsection.title">
                         <h3>{{ subsection.title }}</h3>
                     </div>
-                    
+
                     <div class="features-grid">
                         <div v-for="(card, cardIndex) in subsection.cards" :key="`card-${sectionIndex}-${subsectionIndex}-${cardIndex}`" class="card">
                             <h3>
@@ -91,19 +91,19 @@ function splitHighlight(text: string): TextPart[] {
     const parts: TextPart[] = [];
     let lastIndex = 0;
     let match;
-    
+
     while ((match = regex.exec(text)) !== null) {
         if (match.index > lastIndex)
             parts.push({ text: text.substring(lastIndex, match.index), highlight: false });
-        
+
         parts.push({ text: match[1], highlight: true });
-        
+
         lastIndex = match.index + match[0].length;
     }
-    
+
     if (lastIndex < text.length)
         parts.push({ text: text.substring(lastIndex), highlight: false });
-    
+
     return parts;
 }
 
@@ -346,7 +346,7 @@ const sections: Section[] = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .experience {
     max-height: 4283px;
@@ -376,7 +376,7 @@ const sections: Section[] = [
         position: relative;
         z-index: 2;
     }
-    
+
     @media (max-width: 767px) {
         padding: 2rem 1rem;
     }
@@ -409,7 +409,7 @@ h2 {
     @media (min-width: 1200px) {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     @media (min-width: 768px) and (max-width: 1199px) {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -426,36 +426,36 @@ h2 {
     flex-direction: column;
     border: 1px solid #E3E3E3;
     border-radius: 0;
-    
+
     @media (min-width: 1200px) {
         &:not(:first-child):not(:nth-child(3n+1)) {
             border-left: none;
         }
-        
+
         &:nth-child(n+4) {
             border-top: none;
         }
     }
-    
+
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 100%;
-        
+
         &:nth-child(odd) {
             border-right: none;
         }
-        
+
         &:nth-child(n+3) {
             border-right: 1px solid #E3E3E3;
 
         }
     }
-    
-    @media (max-width: 767px) {        
+
+    @media (max-width: 767px) {
         &:not(:first-child) {
             border-top: none;
         }
     }
-    
+
     h3 {
         font-size: 18.4px;
         line-height: 28px;
@@ -466,19 +466,19 @@ h2 {
         align-items: center;
         gap: 16px;
     }
-    
+
     .material-design-icon {
         font-size: 24px;
         margin-top: -0.40rem;
     }
-    
+
     p {
         font-size: 1rem;
         color: $gray-700;
         margin-bottom: auto;
         line-height: 1.5;
     }
-    
+
     .cta {
         position: relative;
         display: flex;
@@ -511,7 +511,7 @@ h2 {
 
 .section-subtitle {
     text-align: left;
-    
+
     h3 {
         font-size: 2rem;
         font-weight: 600;

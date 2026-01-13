@@ -56,11 +56,11 @@
 <script setup lang="ts">
     import {isEntryAPluginElementPredicate, type Plugin, type PluginElement, type PluginMetadata, slugify, subGroupName, filterPluginsWithoutDeprecated} from "@kestra-io/ui-libs";
 
-    import Header from './Header.vue';
-    import PluginCard from './PluginCard.vue';
-    import CommonPaginationContainer from '../common/PaginationContainer.vue';
-    import PluginsFaq from './Faq.vue';
-    import CustomSelect from "../common/CustomSelect.vue";
+    import Header from '~/components/plugins/Header.vue';
+    import PluginCard from '~/components/plugins/PluginCard.vue';
+    import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
+    import PluginsFaq from '~/components/plugins/Faq.vue';
+    import CustomSelect from "~/components/common/CustomSelect.vue";
     import { computed, ref, watch } from "vue";
     import { usePluginsCount } from "~/composables/usePluginsCount";
 
@@ -185,7 +185,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .total-pages {
         font-size: $font-size-sm;

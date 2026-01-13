@@ -37,7 +37,7 @@ const isScrolled = computed(() => y.value > 50)
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable";
+@import "~/assets/styles/variable";
 
 .main-header {
   position: relative;

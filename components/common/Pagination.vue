@@ -102,7 +102,7 @@ const pages = computed<(number | "...")[]>(() => paginate(props.currentPage, pro
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 .pagination {
     li {
         margin-right: 0.5rem;

@@ -359,12 +359,12 @@ export const linkSymbolInjectionKey = Symbol("linkComponent")
 import { ref, onMounted, watch, nextTick, inject } from 'vue';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
-import GithubButton from "../layout/GithubButton.vue";
+import GithubButton from "~/components/layout/GithubButton.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import Close from "vue-material-design-icons/Close.vue";
 import Segment from "vue-material-design-icons/Segment.vue";
-import { menuSize } from "../../utils/menu-sizes";
-import { menuItems } from '../../utils/menu-items';
+import { menuSize } from "~/utils/menu-sizes";
+import { menuItems } from '~/utils/menu-items';
 
 const props = defineProps<{
     scrolled?: boolean;

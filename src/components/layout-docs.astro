@@ -1,11 +1,11 @@
 ---
-import "../../assets/styles/docs.scss";
+import "~/assets/styles/docs.scss";
 import "../style/custom-elements.scss";
 import { getCollection } from "astro:content";
 import NavSideBar from "~/components/docs/NavSideBar.vue";
 import PrevNext from "~/components/layout/PrevNext.vue";
 import Layout from "./layout.astro";
-import { getNavigationTree } from "../utils/getNavigationTree";
+import { getNavigationTree } from "~/utils/getNavigationTree";
 import Breadcrumb from "~/components/layout/Breadcrumb.vue";
 import { generatePageNames, recursivePages } from "~/utils/navigation";
 
@@ -59,7 +59,7 @@ const props = Astro.props;
 </Layout>
 
 <style lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         gap: calc($spacer * 4);

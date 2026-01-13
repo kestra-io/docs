@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-    import Button from "../common/Button.vue";
+    import Button from "~/components/common/Button.vue";
     const props = defineProps({
         buttons: {
             type: Array,

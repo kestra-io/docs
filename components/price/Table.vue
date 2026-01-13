@@ -110,9 +110,9 @@
   import Close from 'vue-material-design-icons/Close.vue'
   import CheckBold from 'vue-material-design-icons/CheckBold.vue'
   import Information from 'vue-material-design-icons/Information.vue'
-  import CollapsedFeatures from "../../components/layout/CollapsedFeatures.vue";
-  import { tableHeadData, getTableSortedData } from "../../data/compare-features"
-import { usePluginsCount } from "~/composables/usePluginsCount";
+  import CollapsedFeatures from "~/components/layout/CollapsedFeatures.vue";
+  import { tableHeadData, getTableSortedData } from "~/data/compare-features.ts"
+  import { usePluginsCount } from "~/composables/usePluginsCount";
 
   const { totalPlugins } = usePluginsCount();
 
@@ -163,7 +163,7 @@ import { usePluginsCount } from "~/composables/usePluginsCount";
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
     .shadow {
         box-shadow: 0px 2px 0px 0px #EFEFEF !important;
         td {

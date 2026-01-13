@@ -1,5 +1,5 @@
 ---
-import Layout from '../components/layout.astro';
+import Layout from '~/components/layout.astro';
 import community from "~/data/community.js";
 import Examples from "~/components/use-cases/Examples.vue";
 import Line from "~/components/use-cases/Line.vue";
@@ -39,7 +39,7 @@ const description = data.header.description;
 </Layout>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .main {
     background-color: $black-4;

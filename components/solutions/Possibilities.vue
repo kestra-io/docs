@@ -81,12 +81,12 @@
 </template>
 
 <script setup lang="ts">
-    import Section from '../../components/layout/Section.vue';
-    import Card from '../../components/card/Card.vue';
+    import Section from '~/components/layout/Section.vue';
+    import Card from '~/components/card/Card.vue';
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     section.about {
         padding: 2rem 0;
 

@@ -1,40 +1,35 @@
 <template>
     <div class="container-fluid bg-dark-4">
-        <div class="container">
-            <div class="row align-items-center">
+        <div class="hero hero-sm container">
+            <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
-                    <div class="company-info">
-                        <NuxtImg
-                            :width="logoWidth"
-                            loading="lazy"
-                            format="webp"
-                            class="mt-md-0"
-                            data-aos="zoom-in"
-                            :src="logoPath"
-                            :alt="logoAlt"
-                        />
-                        <p>Customer Success</p>
-                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
+                    <div>
+                        <h1 data-aos="fade-right">
+                            Provisioning <br>
+                            <span>and Deployment</span>
+                        </h1>
                         <p data-aos="fade-left" class="baseline">
-                            {{description}}
+                            Automate, Scale, Provision and Optimize Your Infrastructure with Kestra
                         </p>
                         <div class="cta">
-                            <NuxtLink :href="storeLink" class="btn btn-dark me-3" data-aos="zoom-in">
-                                Read the Story
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
+                                Talk to us
+                            </NuxtLink>
+                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                                Get started
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
                     <NuxtImg
-                        width="626px"
+                        width="603px"
                         loading="lazy"
                         format="webp"
-                        class="mt-md-0 position-relative z-2 company-image mb-3"
+                        class="mt-md-0"
                         data-aos="zoom-in"
-                        :src="imageSrc"
-                        :href="storeLink"
-                        :alt="imageAlt"
+                        src="/landing/usecases/provisioning-and-deployment/header-hero.svg"
+                        alt="Data Engineers"
                     />
                 </div>
             </div>
@@ -45,7 +40,7 @@
 <script>
   export default {
     props: {
-      titleHtml: {
+      title: {
         type: String,
         required: true,
       },
@@ -53,27 +48,7 @@
         type: String,
         required: true,
       },
-      logoPath: {
-        type: String,
-        required: true,
-      },
-      logoAlt: {
-        type: String,
-        required: true,
-      },
       imageSrc: {
-        type: String,
-        required: true,
-      },
-      imageAlt: {
-        type: String,
-        required: true,
-      },
-      logoWidth: {
-        type: String,
-        required: true,
-      },
-      storeLink: {
         type: String,
         required: true,
       },
@@ -82,10 +57,13 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
+        background: url("/landing/usecases/cicd/bg.svg") no-repeat center;
         background-size: 100% 100%;
+        padding-top: 80px;
+        margin-top: -80px;
         position: relative;
         overflow: hidden;
 
@@ -96,32 +74,28 @@
             width: 40%;
             bottom: 2%;
             left: 30%;
-            z-index: 1;
+            z-index: -147;
             filter: blur(100px);
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
-        }
-
-        .container {
-            padding: 6rem 0;
-            border-top: $block-border;
         }
 
         h1, p {
             color: $white;
             font-family: $font-family-sans-serif;
-            font-weight: 500;
+            font-weight: 300;
             padding-bottom: 0;
-            margin: 0;
         }
 
         h1 {
-            font-size: $h2-font-size;
+            font-size: $font-size-4xl;
+            margin-bottom: 16px;
+            font-weight: 500;
 
             @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;
             }
 
-            :deep(span) {
+            span {
                 background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                 background-clip: text;
                 -webkit-background-clip: text;
@@ -130,23 +104,19 @@
         }
 
         p {
-            font-size: $h5-font-size;
+            font-size: $font-size-xl;
+
             @include media-breakpoint-down(sm) {
                 font-size: $h6-font-size;
             }
         }
 
-        .company-info {
-            display: flex;
-            flex-direction: column;
-            gap: $spacer;
-            position: relative;
-            z-index: 2;
-
+        img {
+            width: 100%;
         }
 
-        .company-image {
-            width: 100%;
+        :deep(.hero.hero-sm) {
+            border-bottom: 1px solid #FFFFFF1A;
         }
     }
 </style>

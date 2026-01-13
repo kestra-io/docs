@@ -30,7 +30,7 @@
 
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     p {
         color: $black-8;

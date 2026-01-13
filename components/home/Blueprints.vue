@@ -12,7 +12,7 @@ const blueprints = computed(() => blueprintsData.value?.results ?? [])
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .container {
         text-align: center;
         padding: 1rem;

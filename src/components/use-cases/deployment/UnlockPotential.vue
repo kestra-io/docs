@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-    import UseCasesDeploymentConnectionLine from './ConnectionLine.vue';
+    import UseCasesDeploymentConnectionLine from '~/components/use-cases/ConnectionLine.vue';
 
     const props = defineProps<{
         title?: string;
@@ -66,7 +66,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         text-align: center;

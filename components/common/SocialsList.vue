@@ -25,8 +25,8 @@
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "../icons/TwitterXIcon.vue";
-    import BlueSky from "../icons/BlueSkyIcon.vue";
+    import Twitter from "~/components/icons/TwitterXIcon.vue";
+    import BlueSky from "~/components/icons/BlueSkyIcon.vue";
 
     const props = defineProps({
         editLink: {
@@ -62,7 +62,7 @@
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     strong {
         margin-left: calc($spacer * 2);

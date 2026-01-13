@@ -73,7 +73,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .govern {
         background: $white;

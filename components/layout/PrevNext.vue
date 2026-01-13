@@ -69,7 +69,7 @@ const navDirFromPath = () => []
 
 
 <style lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .docs-prev-next {
         display: flex;

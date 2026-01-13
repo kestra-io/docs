@@ -55,7 +55,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     section {
         padding: calc($spacer * 4) 0;

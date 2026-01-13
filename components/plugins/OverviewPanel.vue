@@ -102,8 +102,8 @@
 <script setup lang="ts">
     import { ref, computed } from "vue";
     import type {PluginMetadata} from "@kestra-io/ui-libs";
-    import {formatCategoryName} from "../../utils/pluginUtils";
-    import type {ReleaseInfo} from "../../server/api/github-releases";
+    import {formatCategoryName} from "~/utils/pluginUtils";
+    import type {ReleaseInfo} from "~/server/api/github-releases";
 
     import Github from "vue-material-design-icons/Github.vue";
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue";
@@ -165,7 +165,7 @@
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .versions {
         border-bottom: 1px solid $black-3;

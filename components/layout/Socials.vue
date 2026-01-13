@@ -38,8 +38,8 @@
     import Slack from "vue-material-design-icons/Slack.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
-    import Twitter from "../icons/TwitterXIcon.vue";
-    import BlueSky from "../icons/BlueSkyIcon.vue";
+    import Twitter from "~/components/icons/TwitterXIcon.vue";
+    import BlueSky from "~/components/icons/BlueSkyIcon.vue";
 </script>
 
 <style lang="scss" scoped>

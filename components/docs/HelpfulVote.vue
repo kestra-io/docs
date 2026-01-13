@@ -120,7 +120,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable";
+@import "~/assets/styles/variable";
 
 .helpful {
     padding: calc($spacer / 2) $spacer;

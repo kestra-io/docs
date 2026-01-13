@@ -61,7 +61,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import {useMediaQuery} from '@vueuse/core'
-    import {formatCategoryName} from "../../utils/pluginUtils";
+    import {formatCategoryName} from "~/utils/pluginUtils";
 
     const isMobile = useMediaQuery('(max-width: 991px)')
 
@@ -85,7 +85,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .header-container {
         background: url('/landing/plugins/hero-plugin.webp') no-repeat center center / cover;

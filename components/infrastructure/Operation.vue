@@ -80,7 +80,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .operation {
         padding: 3rem 1rem 5.625rem;
@@ -116,7 +116,7 @@
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
-                
+
                 @include media-breakpoint-up(xxl) {
                     position: sticky;
                     top: 4.1875rem;

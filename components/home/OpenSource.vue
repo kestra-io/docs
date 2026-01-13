@@ -67,7 +67,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
     .oss-bg{
         background-color: white;
         @include media-breakpoint-up(md) {

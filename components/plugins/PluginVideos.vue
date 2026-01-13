@@ -39,7 +39,7 @@
 
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .videos {
         .videos__title {

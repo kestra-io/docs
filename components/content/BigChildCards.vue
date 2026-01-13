@@ -6,7 +6,7 @@
 <script setup lang="ts">
     import {computed} from "vue";
     import {hash} from "ohash";
-    import BigChildCardsRender from "./BigChildCardsRender.vue";
+    import BigChildCardsRender from "~/components/content/BigChildCardsRender.vue";
     const {public:{CollectionNames}} = useRuntimeConfig()
 
     const props = defineProps<{

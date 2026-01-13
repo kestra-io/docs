@@ -42,7 +42,7 @@
                             <li><ArrowRightThick />Automatic Revision History & Rollback</li>
                         </div>
                         </div>
-                        
+
                     </ul>
                 </div>
                 <NuxtImg src="/landing/features/yellowish.png" class="coil-border-3" width="123px" height="39px"></NuxtImg>
@@ -107,7 +107,7 @@ const featureCardsSecond: FeatureCard[] = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .main {
     background: #15171E;

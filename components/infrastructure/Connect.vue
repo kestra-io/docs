@@ -31,8 +31,8 @@
 <script setup lang="ts">
     import lottie from "lottie-web"
     import { ref, onMounted, computed } from "vue"
-    import animationData from "../../assets/lottie/plugins-lottie.json"
-    import Link from "../common/Link.vue";
+    import animationData from "~/assets/lottie/plugins-lottie.json"
+    import Link from "~/components/common/Link.vue";
 
     const props = defineProps<{
         plugins?: {
@@ -61,7 +61,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .connect {
         background: #151128;

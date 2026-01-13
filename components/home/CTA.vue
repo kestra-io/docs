@@ -20,11 +20,11 @@
     </section>
 </template>
 <script setup lang="ts">
-import HomeCard from "./Card.vue";
+import HomeCard from "~/components/home/Card.vue";
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .wrapper {
     background: linear-gradient(360deg, #15171E -3.16%, #1A1D26 93.17%);

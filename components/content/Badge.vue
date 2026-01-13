@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { editionLabelAndColorByPrefix } from '../../utils/badgeMaps.mjs';
+import { editionLabelAndColorByPrefix } from '~/utils/badgeMaps.mjs';
 
 defineProps({ version: { type: String, default: '' }, editions: { type: String, default: '' } })
 

@@ -47,7 +47,7 @@ const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 h2{
     font-size: $font-size-xl;
     margin-top: 3rem;

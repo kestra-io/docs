@@ -1,5 +1,5 @@
 ---
-import Layout from '../../components/layout.astro';
+import Layout from '~/components/layout.astro';
 import TerraformHeader from '~/components/terraform/Header.vue';
 import TerraformOverview from '~/components/terraform/Overview.vue';
 import TerraformUseCases from '~/components/terraform/UseCases.vue';
@@ -26,7 +26,7 @@ const description = "Manage and deploy Kestra workflows directly within your exi
 </Layout>
 
 <style lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .main {
         color: $white;

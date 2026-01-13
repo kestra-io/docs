@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Companies from "../layout/Companies.vue";
+    import Companies from "~/components/layout/Companies.vue";
 
     export default {
         components: {Companies},
@@ -13,5 +13,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 </style>

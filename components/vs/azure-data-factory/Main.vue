@@ -155,13 +155,13 @@
 </template>
 
 <script setup>
-    import Section from '../../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 </script>
 
 <style lang="scss" scoped>
 
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     table {
         margin-top: 5.625rem;

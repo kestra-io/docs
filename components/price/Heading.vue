@@ -194,13 +194,13 @@
 </template>
 
 <script setup>
-import Section from '../layout/Section.vue';
+import Section from '~/components/layout/Section.vue';
 import CheckBold from 'vue-material-design-icons/CheckBold.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .container {
     background-image: url(/public/landing/pricing/visual-bg_pricing.png);

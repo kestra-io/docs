@@ -1,10 +1,10 @@
 ---
-import Layout from '../../components/layout.astro';
+import Layout from '~/components/layout.astro';
 import SolutionsDetailHeader from '~/components/solutions/DetailHeader.vue';
 import SolutionsDetailContent from '~/components/solutions/DetailContent.vue';
 import LayoutDetailMainContent from '~/components/layout/DetailMainContent.vue';
 import SolutionsDetailEmpower from '~/components/solutions/DetailEmpower.vue';
-import ChangeDataCaptureFeatures from '../../components/use-cases/change-data-capture/Features.vue';
+import ChangeDataCaptureFeatures from '~/components/use-cases/change-data-capture/Features.vue';
 import LayoutFooterContact from '~/components/layout/FooterContact.vue';
 
 const title = "Enhanced Data Insights with Change Data Capture";
@@ -87,7 +87,7 @@ const mainContent = [
 </Layout>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :global(section) {
         .subtitle {

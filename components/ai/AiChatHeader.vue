@@ -33,7 +33,7 @@ function openSearch(): void {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .header {
     padding: 1rem 1.5rem;

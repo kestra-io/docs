@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-    import Faq from '../price/Faq.vue';
+    import Faq from '~/components/price/Faq.vue';
 
     const faqItems = [
         {
@@ -22,7 +22,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(.container) {
         display: flex;

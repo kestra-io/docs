@@ -18,7 +18,7 @@
 </template>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .plugins {
         display: flex;

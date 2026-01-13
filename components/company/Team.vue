@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import Section from '../layout/Section.vue';
+import Section from '~/components/layout/Section.vue';
 
 const teamMembers = [
   { name: "Emmanuel Darras", title: "CEO", image: "/landing/company/teams/edarras-round.png" },
@@ -69,12 +69,12 @@ const teamMembers = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 :deep(section) {
   padding: 0 !important;
   @include media-breakpoint-up(md) { padding: 2rem !important; }
-    
+
   .subtitle p, p.baseline {
     margin-bottom: 0;
     color: $black-2 !important;
@@ -128,7 +128,7 @@ const teamMembers = [
 
   .team-info {
     text-align: center;
-    
+
     .team-name {
       color: $black;
       font-size: $font-size-md;

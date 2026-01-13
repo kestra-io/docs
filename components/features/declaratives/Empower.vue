@@ -66,14 +66,14 @@
 </template>
 
 <script>
-    import Section from '../../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     export default {
         components: {Section}
     }
 </script>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .declarative {
         position: relative;
 

@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import BlogCardDetails from './BlogCardDetails.vue';
+import BlogCardDetails from '~/components/blogs/BlogCardDetails.vue';
 defineProps<{
     blog: {
         path: string;
@@ -45,7 +45,7 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     h6 {
         color: $white;

@@ -115,7 +115,7 @@
 </template>
 
 <script>
-  import Section from '../layout/Section.vue';
+  import Section from '~/components/layout/Section.vue';
   import {Carousel, Slide, Navigation} from 'vue3-carousel';
   import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
   import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
@@ -189,7 +189,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .content {
         background-color: #121217;

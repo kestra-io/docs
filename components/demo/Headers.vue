@@ -279,7 +279,7 @@ const onSubmit = async (e: Event) => {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/_variable";
+@import "~/assets/styles/variable";
 
 .container-fluid {
   color: var(--bs-white);

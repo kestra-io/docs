@@ -14,7 +14,7 @@
         <div class="section" data-aos="fade-right" data-aos-delay="100">
           <h4 class="without">Without Kestra 😵‍💫</h4>
           <p>
-            Job schedulers, complex workflow frameworks, custom scripts, 
+            Job schedulers, complex workflow frameworks, custom scripts,
             and manual glue code spread across multiple systems.
           </p>
         </div>
@@ -22,8 +22,8 @@
         <div class="section" data-aos="fade-left" data-aos-delay="150">
           <h4 class="with">With Kestra 😎</h4>
           <p>
-            One platform to define, run, and observe workflows, react 
-            to event triggers, manage human-in-the-loop approvals, 
+            One platform to define, run, and observe workflows, react
+            to event triggers, manage human-in-the-loop approvals,
             secrets, audit trails, and SLAs.
           </p>
         </div>
@@ -87,7 +87,7 @@ const benefits = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .unified {
   padding: 4rem 0.5rem 6.5rem;

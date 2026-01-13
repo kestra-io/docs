@@ -116,8 +116,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useYoutube } from '~/utils/useYoutube'
-import Modal from '../common/Modal.vue'
-import VideosTutorialVideo from './TutorialVideo.vue'
+import Modal from '~/components/common/Modal.vue'
+import VideosTutorialVideo from '~/components/videos/TutorialVideo.vue'
 
 interface VideoData {
   title: string
@@ -235,7 +235,7 @@ watch(() => props.tutorialVideo, (newVal) => {
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .modal-header {
         background-color: $black-2;

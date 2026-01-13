@@ -349,7 +349,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable";
+@import "~/assets/styles/variable";
 
 $step-colors: (
     design: #7751F4,

@@ -20,7 +20,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 .big-card-grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);

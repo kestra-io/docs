@@ -1,8 +1,7 @@
 ---
-import NavToc from "../../../components/docs/NavToc.vue";
-import LayoutDocs from "../../components/layout-docs.astro";
+import NavToc from "~/components/docs/NavToc.vue";
+import LayoutDocs from "~/components/layout-docs.astro";
 import { getEntry, render } from "astro:content";
-import Workflows from "~/components/features/scheduling/Workflows.vue";
 const doc = await getEntry('docs', '<index>');
 if (!doc) {
     throw new Error('Index document not found');

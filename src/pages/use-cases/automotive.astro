@@ -1,6 +1,6 @@
 ---
-import Layout from '../../components/layout.astro';
-import AutomotiveChallenges from '../../components/use-cases/automotive/Challenges.vue';
+import Layout from '~/components/layout.astro';
+import AutomotiveChallenges from '~/components/use-cases/automotive/Challenges.vue';
 import UseCasesEngineersHeader from '~/components/use-cases/engineers/Header.vue';
 import UseCasesDeploymentCompanyInfo from '~/components/use-cases/deployment/CompanyInfo.vue';
 import UseCasesDeploymentBusinessByUs from '~/components/use-cases/deployment/BusinessByUs.vue';
@@ -75,7 +75,7 @@ const unlockContent = {
 </Layout>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :global(.container-fluid) {
         &::after {

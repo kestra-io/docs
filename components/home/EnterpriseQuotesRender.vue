@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import HomeQuotes from "./Quotes.vue"
+import HomeQuotes from "~/components/home/Quotes.vue"
 defineProps<{
     quotes: Array<{
         text: string,
@@ -25,7 +25,7 @@ defineProps<{
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .quote {
         width: 350px;
         min-width: 350px;

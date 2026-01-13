@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Quotes from "./Quotes.vue";
+import Quotes from "~/components/home/Quotes.vue";
 
     defineProps<{
         quotes: Array<{

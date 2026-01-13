@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import {useApi} from "~/composables/useApi.ts";
 
     export default {
@@ -117,7 +117,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(section) {
         padding-bottom: 0;

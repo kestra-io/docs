@@ -38,7 +38,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         background: url("/landing/community/header-bg.svg") no-repeat center;

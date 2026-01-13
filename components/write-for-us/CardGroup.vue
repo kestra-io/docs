@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .process-card {
     background: $black-3;

@@ -10,7 +10,10 @@
   "compilerOptions": {
     "jsx": "preserve",
     "paths": {
-      "assets/*": ["./src/assets/*"],
+      "~/assets/*": [
+        "./assets/*",
+        "./src/assets/*"
+      ],
       "~/composables/*": [
         "./composables/*",
         "./src/composables/*"
@@ -21,6 +24,7 @@
       ],
       "~/components/*": [
         "./components/*",
+        "./src/components/*"
       ],
       "~/data/*": [
         "./data/*",

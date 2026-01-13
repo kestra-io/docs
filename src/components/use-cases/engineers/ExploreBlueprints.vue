@@ -14,11 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-    import HomeBlueprintsCarousel from '../../home/BlueprintsCarousel.vue';
+    import HomeBlueprintsCarousel from '~/components//home/BlueprintsCarousel.vue';
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .container {
         border-top: $block-border;
         padding: 3rem 0;

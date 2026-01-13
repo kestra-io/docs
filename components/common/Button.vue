@@ -25,7 +25,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .btn {
         border-radius: 0.25rem;

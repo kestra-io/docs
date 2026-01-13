@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .features-plugins {
     background: linear-gradient(180deg, #E8EAF2 74.52%, #FFFFFF 74.52%);

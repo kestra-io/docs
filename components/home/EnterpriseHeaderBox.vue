@@ -24,7 +24,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .enterprise-header-box {
         position: relative;
         z-index: 1;

@@ -35,7 +35,7 @@
      * @param href - The URL the link points to
      * @param text - The text content of the link
     */
-    
+
     defineProps<{
         href: string;
         text: string;
@@ -43,8 +43,8 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/_variable";
-    
+    @import "~/assets/styles/variable";
+
     $button-transition-timing: 100ms;
 
     .link {

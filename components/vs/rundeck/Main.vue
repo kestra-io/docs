@@ -200,14 +200,14 @@
 
 <script setup lang="ts">
 import { usePluginsCount } from '~/composables/usePluginsCount';
-import Section from '../../layout/Section.vue';
+import Section from '~/components/layout/Section.vue';
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 
 const { totalPlugins } = usePluginsCount();
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     table {
         margin-top: 5.625rem;

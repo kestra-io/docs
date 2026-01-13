@@ -1,8 +1,8 @@
 ---
 import { render, getCollection, type CollectionEntry } from "astro:content";
-import LayoutBlogs from "../../components/layout-blogs.astro";
-import BlogDetails from "../../../components/blogs/BlogDetails.vue";
-import NavToc from "../../../components/docs/NavToc.vue";
+import LayoutBlogs from "~/components/layout-blogs.astro";
+import BlogDetails from "~/components/blogs/BlogDetails.vue";
+import NavToc from "~/components/docs/NavToc.vue";
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs");

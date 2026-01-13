@@ -101,7 +101,7 @@ import Star from 'vue-material-design-icons/Star.vue'
 import DirectionsFork from 'vue-material-design-icons/DirectionsFork.vue'
 import BugOutline from 'vue-material-design-icons/BugOutline.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
-import { useApi } from '../../composables/useApi'
+import { useApi } from '~/composables/useApi'
 import { onMounted, ref } from 'vue'
 import { $fetch } from '~/utils/fetch'
 
@@ -149,7 +149,7 @@ onMounted(fetchData)
 
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         color: var(--bs-white);

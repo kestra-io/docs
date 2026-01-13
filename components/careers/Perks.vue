@@ -64,12 +64,12 @@
     import MedicalBag from "vue-material-design-icons/MedicalBag.vue";
     import ChairRolling from "vue-material-design-icons/ChairRolling.vue";
     import Laptop from "vue-material-design-icons/Laptop.vue";
-    import Section from '../../components/layout/Section.vue';
-    import Card from '../card/Card.vue';
+    import Section from '~/components/layout/Section.vue';
+    import Card from '~/components//card/Card.vue';
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(section) {
         .baseline {

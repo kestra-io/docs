@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-    import Section from '../layout/Section.vue';
-    import Card from '../../components/card/Card.vue';
+    import Section from '~/components/layout/Section.vue';
+    import Card from '~/components/card/Card.vue';
 
     type FeatureItem = {
         icon?: string;

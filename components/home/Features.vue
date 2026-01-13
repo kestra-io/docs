@@ -57,13 +57,13 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import HomeFeaturesBlock from "./FeaturesBlock.vue"
-import HomeFeaturesValue from "./FeaturesValue.vue"
+import HomeFeaturesBlock from "~/components/home/FeaturesBlock.vue"
+import HomeFeaturesValue from "~/components/home/FeaturesValue.vue"
 const videoVisible = ref(false)
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .container {
         text-align: center;
         color: white;

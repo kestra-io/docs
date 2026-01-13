@@ -61,7 +61,7 @@ const normalizePath = (path: string) => `${path}${path.endsWith('/') ? '' : '/'}
 import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref, computed } from "vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
-import { useSidebarScroll } from "../../composables/useSidebarScroll"
+import { useSidebarScroll } from "~/composables/useSidebarScroll"
 
 export interface NavigationItem {
     isSection?: boolean;
@@ -170,7 +170,7 @@ const classes = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .ks-collapse {
         transition: height 0.2s ease-in-out;

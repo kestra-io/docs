@@ -266,7 +266,7 @@ const onSubmit = async (e: Event) => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/_variable.scss';
+@import "~/assets/styles/variable";
 
 .column-container {
   display: grid;

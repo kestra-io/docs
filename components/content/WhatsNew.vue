@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
     const { public: { CollectionNames } } = useRuntimeConfig()
-    import BlogList from '../common/BlogList.vue';
+    import BlogList from '~/components/common/BlogList.vue';
 
     defineProps({
         title: {
@@ -26,7 +26,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     :deep(h2) {
         font-size: $font-size-xl;

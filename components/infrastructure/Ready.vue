@@ -22,7 +22,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .ready {
         background: url('/landing/infrastructure/bg-foot.png') no-repeat center center;

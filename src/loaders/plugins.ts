@@ -1,5 +1,5 @@
 import type { Loader } from "astro/loaders";
-import { $fetch } from "../utils/fetch";
+import { $fetch } from "~/utils/fetch";
 import type { Plugin } from "@kestra-io/ui-libs";
 import { z } from "astro:content";
 

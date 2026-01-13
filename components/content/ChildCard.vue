@@ -60,7 +60,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .card-title {
         font-size: $font-size-xl !important;

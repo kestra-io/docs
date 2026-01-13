@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 
     import { ref } from "vue";
-    import newsletterSubmit from "../../utils/newsletterSubmit.js";
+    import newsletterSubmit from "~/utils/newsletterSubmit.js";
 
     const valid = ref(false);
     const message = ref(null);
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container {
 

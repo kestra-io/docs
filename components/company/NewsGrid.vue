@@ -87,7 +87,7 @@ const newsItems = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 $white-color: #F0F0F0;
 
 .container {
@@ -112,7 +112,7 @@ $white-color: #F0F0F0;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  
+
   @include media-breakpoint-up(md) { grid-template-columns: repeat(2, 1fr); }
   @include media-breakpoint-up(xl) { grid-template-columns: repeat(3, minmax(380px, 1fr)); }
 }
@@ -120,37 +120,37 @@ $white-color: #F0F0F0;
 .news-card {
   padding: 32px;
   height: 277px;
-  
+
   @media (max-width: 767px) {
     &:not(:first-child) {
       border-top: 1px solid $white-color;
     }
   }
-  
+
   @media (min-width: 768px) and (max-width: 1199px) {
     &:nth-child(odd) {
       border-right: 1px solid $white-color;
     }
-    
+
     &:not(:first-child):not(:nth-child(2)) {
       border-top: 1px solid $white-color;
     }
   }
-  
+
   @media (min-width: 1200px) {
     &:nth-child(1),
     &:nth-child(2),
     &:nth-child(3) {
       border-bottom: 1px solid $white-color;
     }
-    
+
     &:nth-child(2),
     &:nth-child(5) {
       border-left: 1px solid $white-color;
       border-right: 1px solid $white-color;
     }
   }
-  
+
   @include media-breakpoint-down(md) {
     height: auto;
     max-height: 277px;
@@ -173,12 +173,12 @@ $white-color: #F0F0F0;
     font-weight: 600;
     margin-bottom: 0.5rem;
     text-align: center;
-    
+
     @include media-breakpoint-up(md) {
       text-align: left;
     }
   }
-  
+
   .subtitle {
     font-size: $font-size-md;
     line-height: 1.4;

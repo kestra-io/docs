@@ -94,7 +94,7 @@
 </template>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable.scss";
+    @import "~/assets/styles/variable";
 
     .code-block {
         background-color: $black-2;

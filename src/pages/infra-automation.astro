@@ -1,17 +1,17 @@
 ---
     import {API_URL} from "astro:env/client";
-    import Layout from "../components/layout.astro";
-    import Hero from "../../components/infrastructure/Hero.vue";
-    import Deserver from "../../components/infrastructure/Deserver.vue";
-    import Fortune from "../../components/infrastructure/Fortune.vue";
-    import Govern from "../../components/infrastructure/Govern.vue";
-    import Tour from "../../components/infrastructure/Tour.vue";
-    import Operation from "../../components/infrastructure/Operation.vue";
-    import Automations from "../../components/infrastructure/Automations.vue";
-    import Lifecycle from "../../components/infrastructure/Lifecycle.vue";
-    import Connect from "../../components/infrastructure/Connect.vue";
-    import Built from "../../components/infrastructure/Built.vue";
-    import Ready from "../../components/infrastructure/Ready.vue";
+    import Layout from "~/components/layout.astro";
+    import Hero from "~/components/infrastructure/Hero.vue";
+    import Deserver from "~/components/infrastructure/Deserver.vue";
+    import Fortune from "~/components/infrastructure/Fortune.vue";
+    import Govern from "~/components/infrastructure/Govern.vue";
+    import Tour from "~/components/infrastructure/Tour.vue";
+    import Operation from "~/components/infrastructure/Operation.vue";
+    import Automations from "~/components/infrastructure/Automations.vue";
+    import Lifecycle from "~/components/infrastructure/Lifecycle.vue";
+    import Connect from "~/components/infrastructure/Connect.vue";
+    import Built from "~/components/infrastructure/Built.vue";
+    import Ready from "~/components/infrastructure/Ready.vue";
 
     const title = "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane";
     const description = "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine";
@@ -44,7 +44,7 @@
 </Layout>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/_variable";
     .infra {
         // TODO: Only page level. Plan is to use "Mona Sans" throughout the website gradually.
         font-family: "Mona Sans", sans-serif !important;

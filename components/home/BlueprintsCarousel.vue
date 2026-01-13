@@ -12,7 +12,7 @@
     import { useTemplateRef } from "vue";
     import ArrowLeftIcon from "vue-material-design-icons/ArrowLeft.vue"
     import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
-    import BlueprintsListCard from "../blueprints/ListCard.vue"
+    import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
     import { $fetch } from "~/utils/fetch";
 
     const wrapper = useTemplateRef("wrapper");

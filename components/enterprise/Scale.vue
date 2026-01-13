@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
 
     export default {
         components: {Section},
@@ -29,7 +29,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container {
         > div {

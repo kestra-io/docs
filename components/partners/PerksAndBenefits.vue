@@ -59,8 +59,8 @@
 </template>
 
 <script setup>
-    import Section from '../layout/Section.vue'
-    import Card from '../card/Card.vue';
+    import Section from '~/components/layout/Section.vue'
+    import Card from '~/components/card/Card.vue';
     import MedalOutline from 'vue-material-design-icons/MedalOutline.vue'
     import PlaylistStar from 'vue-material-design-icons/PlaylistStar.vue'
     import Looks from 'vue-material-design-icons/Looks.vue'
@@ -71,7 +71,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container {
         border-bottom: $block-border;

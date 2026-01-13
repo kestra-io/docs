@@ -74,11 +74,10 @@
 <script setup lang="ts">
     import {ref, computed} from 'vue'
     import {useWindowSize} from '@vueuse/core'
-    import type { Blueprint, BlueprintTag } from '../../src/type.d.ts'
     import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-    import BlueprintCard from "../layout/BlueprintCard.vue";
-    import Link from "../common/Link.vue";
+    import BlueprintCard from "~/components/layout/BlueprintCard.vue";
+    import Link from "~/components/common/Link.vue";
 
     const props = defineProps<{
         blueprints: Blueprint[],
@@ -106,7 +105,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .arc {
         width: 100%;

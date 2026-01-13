@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .quote {
         width: 350px;
         min-width: 350px;

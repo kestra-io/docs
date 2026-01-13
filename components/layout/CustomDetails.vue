@@ -38,7 +38,7 @@
 
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .custom-details {
         background: $black-4;

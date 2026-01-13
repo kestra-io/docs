@@ -42,7 +42,7 @@
 <script setup lang="ts"></script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .orchestration {
     padding: 4rem 0;

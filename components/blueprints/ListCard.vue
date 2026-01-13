@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
     import { computed } from "vue";
-import CommonTaskIcon from "../common/TaskIcon.vue"
+    import CommonTaskIcon from "~/components/common/TaskIcon.vue"
 
     const props = withDefaults(defineProps<{
         blueprint: Record<string, any>;
@@ -41,7 +41,7 @@ import CommonTaskIcon from "../common/TaskIcon.vue"
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .card {
         border-radius: 8px;

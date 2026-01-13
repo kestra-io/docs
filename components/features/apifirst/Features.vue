@@ -41,12 +41,12 @@
   import Extensibility from "vue-material-design-icons/Connection.vue";
   import TerraformIntegration from "vue-material-design-icons/Terraform.vue";
   import ServerNetwork from "vue-material-design-icons/ServerNetwork.vue";
-  import Section from '../../layout/Section.vue';
-  import Card from '../../../components/card/Card.vue';
+  import Section from '~/components/layout/Section.vue';
+  import Card from '~/components/card/Card.vue';
 </script>
 
 <style scoped lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
 
     .container {

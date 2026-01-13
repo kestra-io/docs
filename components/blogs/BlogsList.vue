@@ -95,8 +95,8 @@
 </template>
 <script setup>
 import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
-import BlogCard from './BlogCard.vue';
-import HighlightBlogCard from './HighlightBlogCard.vue';
+import BlogCard from '~/components/blogs/BlogCard.vue';
+import HighlightBlogCard from '~/components/blogs/HighlightBlogCard.vue';
 </script>
 <script>
 
@@ -225,7 +225,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 
 ::deep(main) {

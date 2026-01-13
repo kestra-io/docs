@@ -14,14 +14,14 @@
 </template>
 
 <script lang="ts" setup>
-    import HomeBlueprintsCarousel from './BlueprintsCarousel.vue'
+    import HomeBlueprintsCarousel from '~/components/home/BlueprintsCarousel.vue'
     defineProps<{
         blueprints: Array<Blueprint>
     }>()
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .container {
         text-align: center;
         padding: 1rem;

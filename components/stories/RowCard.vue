@@ -45,7 +45,7 @@
 
 <script setup>
     import {slugify} from "@kestra-io/ui-libs";
-    import MDCParserAndRenderer from "../plugins/MDCParserAndRenderer.vue";
+    import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
 
     const props = defineProps({
         story: {
@@ -56,7 +56,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .card {
         height: 100%;

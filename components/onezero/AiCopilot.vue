@@ -131,7 +131,7 @@ const velocityFeatures = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .wrapper {
     background-color: #1A1C25;

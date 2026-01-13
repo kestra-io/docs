@@ -4,32 +4,24 @@
             <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <h1 data-aos="fade-right">
-                            Provisioning <br>
-                            <span>and Deployment</span>
-                        </h1>
+                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
                         <p data-aos="fade-left" class="baseline">
-                            Automate, Scale, Provision and Optimize Your Infrastructure with Kestra
+                            {{description}}
                         </p>
-                        <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
-                                Talk to us
+                        <div class="cta d-flex gap-3 flex-wrap">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                                Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <NuxtImg
-                        width="603px"
-                        loading="lazy"
-                        format="webp"
-                        class="mt-md-0"
-                        data-aos="zoom-in"
-                        src="/landing/usecases/provisioning-and-deployment/header-hero.svg"
-                        alt="Data Engineers"
+                    <img
+                        :src="imageSrc"
+                        :alt="imageAlt"
                     />
                 </div>
             </div>
@@ -40,7 +32,7 @@
 <script>
   export default {
     props: {
-      title: {
+      titleHtml: {
         type: String,
         required: true,
       },
@@ -52,12 +44,16 @@
         type: String,
         required: true,
       },
+      imageAlt: {
+        type: String,
+        required: true,
+      },
     },
   }
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         background: url("/landing/usecases/cicd/bg.svg") no-repeat center;
@@ -95,7 +91,7 @@
                 font-size: 1.875rem;
             }
 
-            span {
+            :deep(span) {
                 background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                 background-clip: text;
                 -webkit-background-clip: text;

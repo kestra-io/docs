@@ -7,8 +7,8 @@
                     <span>{{title}}</span>
                 </p>
                 <p class="title" v-else v-html="titleHtml" />
-                <p class="description" v-if="description">
-                    {{ description }}
+                <p class="description">
+                    {{description}}
                 </p>
             </div>
             <div class="row d-flex justify-content-center mt-5 cards-container">
@@ -18,8 +18,9 @@
                     v-for="cardItem in cardsData"
                 >
                     <Card
-                        :icon="cardItem.icon"
-                        :cardInfo="cardItem.cardInfo"
+                        :title="cardItem.title"
+                        :description="cardItem.description"
+                        :number="cardItem.number"
                     />
                 </div>
             </div>
@@ -27,32 +28,31 @@
     </div>
 </template>
 
-<script setup lang="ts">
-    import Card from '../../card/Card.vue';
+<script setup>
+    import Card from '~/components//card/Card.vue'
 
-
-    type CardDetail = {
-        title?: string;
-        description?: string;
-    };
-
-    type CardItem = {
-        icon?: string;
-        cardInfo?: CardDetail;
-    };
-
-    const props = withDefaults(defineProps<{
-        title?: string;
-        description?: string | undefined;
-        titleHtml?: string;
-        cardsData: Array<CardItem>
-    }>(), {
-        description: undefined,
-    });
+    const props = defineProps({
+      title: {
+        type: String,
+        required: false,
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+      titleHtml: {
+        type: String,
+        required: false,
+      },
+      cardsData: {
+        type: Array,
+        required: true,
+      },
+    })
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         text-align: center;
@@ -63,14 +63,11 @@
         .container {
             padding-top: calc($spacer * 5.625);
             padding-bottom: calc($spacer * 5.625);
-            background: #111113 url('/retail/header-mask.svg') 100% 100%;
 
             .title-block {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                position: relative;
-                z-index: 3;
 
                 .title {
                     font-size: 3.125rem;
@@ -123,8 +120,16 @@
                     background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 }
 
-                :deep(.card-title) {
-                    text-align: left;
+                :deep(.card-body) {
+                    gap: 0.5rem;
+                    .title-block {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .card-text {
+                        text-align: start;
+                    }
                 }
             }
         }

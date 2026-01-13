@@ -12,12 +12,12 @@
 
 <script setup lang="ts">
     import { usePluginsCount } from "~/composables/usePluginsCount";
-    import LayoutPlugins from '../../layout/Plugins.vue';
+    import LayoutPlugins from '~/components/layout/Plugins.vue';
     const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .container-fluid {
         color: var(--bs-white);

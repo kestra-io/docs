@@ -106,10 +106,10 @@
 </template>
 
 <script setup lang="ts">
-    import Socials from "./Socials.vue";
-    import Certifications from "./Certifications.vue";
+    import Socials from "~/components/layout/Socials.vue";
+    import Certifications from "~/components/layout/Certifications.vue";
     import Heart from "vue-material-design-icons/Heart.vue";
-    import LayoutNewsletter from "./Newsletter.vue";
+    import LayoutNewsletter from "~/components/layout/Newsletter.vue";
 
     const PRODUCT_LINKS = [
         {text: "Platform Overview", href: "/overview"},
@@ -159,7 +159,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     footer {
         position: relative;

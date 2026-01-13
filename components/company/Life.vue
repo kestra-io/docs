@@ -3,7 +3,7 @@
     <header class="header" data-aos="fade-up">
       <h2 class="title">Life at <span class="gradient">Kestra</span></h2>
     </header>
-    
+
     <div class="grid" data-aos="fade-up">
       <article
         v-for="(card, index) in lifeCards"
@@ -39,7 +39,7 @@
         <h3 class="title">Brand Assets</h3>
         <p class="text">
           For Media Inquiries and Exclusive Insights,<br>
-          Reach Out to Our Press Team at 
+          Reach Out to Our Press Team at
           <NuxtLink href="mailto:press@kestra.io" class="link" external>press@kestra.io</NuxtLink>
         </p>
         <NuxtLink
@@ -53,9 +53,9 @@
         </NuxtLink>
       </div>
       <div class="media d-none d-md-flex">
-        <NuxtImg 
-          src="/landing/company/teams/assets-download.svg" 
-          alt="Brand Assets" 
+        <NuxtImg
+          src="/landing/company/teams/assets-download.svg"
+          alt="Brand Assets"
           class="img"
         />
       </div>
@@ -113,7 +113,7 @@ const lifeCards = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 
 .container {
   position: relative;

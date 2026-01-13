@@ -31,7 +31,7 @@
     import {computed, ref} from "vue";
     import {useMediaQuery} from "@vueuse/core";
     import {slugify, subGroupName, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs";
-    import PluginCard from "./PluginCard.vue";
+    import PluginCard from "~/components/plugins/PluginCard.vue";
     import NavActions from "~/components/common/NavActions.vue";
 
     const props = withDefaults(defineProps<{
@@ -61,7 +61,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .more {
         border-top: 1px solid var(--kestra-io-token-color-border-secondary);

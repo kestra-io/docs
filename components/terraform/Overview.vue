@@ -89,11 +89,11 @@
 </template>
 
 <script setup lang="ts">
-    import Card from '../card/Card.vue';
+    import Card from '~/components/card/Card.vue';
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 .overview {
     background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
 

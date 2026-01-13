@@ -110,7 +110,7 @@
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue";
-    import AiChatDialog from "../ai/AiChatDialog.vue";
+    import AiChatDialog from "~/components/ai/AiChatDialog.vue";
 </script>
 
 <script>
@@ -373,7 +373,7 @@
 
 
 <style lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     #search-modal {
         .not-found-content {

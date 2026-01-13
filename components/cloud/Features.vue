@@ -274,7 +274,7 @@ const onSubmit = async (e: Event) => {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 
 .meeting-container {

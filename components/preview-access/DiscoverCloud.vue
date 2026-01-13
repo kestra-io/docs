@@ -18,35 +18,35 @@
       </div>
     </div>
   </template>
-  
+
   <script setup lang="ts">
   </script>
-  
+
   <style lang="scss">
-  @import "../../assets/styles/variable";
-  
+  @import "~/assets/styles/variable";
+
   .discover-cloud {
     border: 1px solid #282d43;
     border-radius: 1rem;
     background-color: #0F1115;
     margin-top: 10rem !important;
     padding: 2rem;
-  
+
     & > div,
     .center {
       display: flex;
       justify-content: center;
       align-items: center;
     }
-  
+
     & h2 {
       font-size: $font-size-3xl;
     }
-  
+
     & p {
       font-size: $font-size-lg !important;
     }
-  
+
     .highlight {
       background: linear-gradient(90deg, #51cff7 57.35%, #4782f5 95.94%) !important;
       background-clip: text !important;
@@ -54,7 +54,7 @@
       -webkit-text-fill-color: transparent !important;
       color: transparent !important;
     }
-  
+
     .cta-btn {
       display: inline-block;
       padding: 12px 24px;
@@ -64,12 +64,11 @@
       z-index: 2;
       pointer-events: auto;
     }
-  
+
     img {
-      width: 350px; 
+      width: 350px;
       max-width: 80%;
       height: auto;
     }
   }
   </style>
-  

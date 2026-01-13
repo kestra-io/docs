@@ -32,9 +32,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { PluginIndex, SchemaToHtmlV2, type PluginMetadata } from '@kestra-io/ui-libs';
-import { getPluginsWithoutDeprecated } from '../../src/utils/plugins/getListOfPlugins';
-import FeatureScopeMarker from '../docs/FeatureScopeMarker.vue';
-import MDCParserAndRenderer from './MDCParserAndRenderer.vue';
+import { getPluginsWithoutDeprecated } from '~/utils/plugins/getListOfPlugins';
+import FeatureScopeMarker from '~/components/docs/FeatureScopeMarker.vue';
+import MDCParserAndRenderer from '~/components/plugins/MDCParserAndRenderer.vue';
 
 const props = withDefaults(defineProps<{
     page: any,
@@ -63,7 +63,7 @@ function navigateTo(url: string) {
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .bd-content {
         margin: 0 auto;

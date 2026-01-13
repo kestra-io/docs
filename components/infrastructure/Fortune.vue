@@ -42,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-    import Deserver from "./Deserver.vue";
-
     const METRICS = [
       {
         value: "-90%",
@@ -61,7 +59,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/_variable";
+    @import "~/assets/styles/variable";
 
     .fortune {
         background: #0C0821;

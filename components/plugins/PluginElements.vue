@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
     import {subGroupName, slugify, type PluginElement, type Plugin} from "@kestra-io/ui-libs";
-    import {formatElementName } from "../../utils/pluginUtils";
+    import {formatElementName } from "~/utils/pluginUtils";
     import { computed, ref } from "vue";
 
     const { groupedElements, pluginName, subGroup, wrapperClass, showLine, routeParts } = defineProps<{
@@ -67,7 +67,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .subgroup-content {
         position: relative;

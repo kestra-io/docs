@@ -1,7 +1,7 @@
 ---
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content";
-import LayoutDocs from "../../components/layout-docs.astro";
+import LayoutDocs from "~/components/layout-docs.astro";
 import NavToc from "~/components/docs/NavToc.vue";
 import HelpfulVote from "~/components/docs/HelpfulVote.vue";
 // @FIXME: prev next component is not working properly with astro
@@ -41,7 +41,7 @@ const { Content, headings } = await render(doc);
 </LayoutDocs>
 
 <style lang="scss">
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .title {
         font-size: $h2-font-size;

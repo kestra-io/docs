@@ -149,7 +149,7 @@ const workflowSections = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .workflows {
     background: #F7F7F8;

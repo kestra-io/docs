@@ -48,9 +48,9 @@
 </template>
 
 <script setup lang="ts">
-    import {computed, nextTick, onMounted, ref, watch} from 'vue'
+    import {computed, onMounted, ref, watch} from 'vue'
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import BlueprintsListCard from './ListCard.vue'
+    import BlueprintsListCard from '~/components/blogs/ListCard.vue'
     import CommonPaginationContainer from '~/components/common/PaginationContainer.vue';
 
     const currentPage = ref<number>(1)
@@ -202,7 +202,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .header-container {
         background: url("/landing/plugins/bg.svg") no-repeat top;

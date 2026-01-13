@@ -104,7 +104,7 @@
     import { onMounted, ref } from "vue";
     import posthog from "posthog-js";
     import {EventSourceParserStream} from 'eventsource-parser/stream'
-    import AiChatHeader from "./AiChatHeader.vue"
+    import AiChatHeader from "~/components/ai/AiChatHeader.vue"
     import Send from "vue-material-design-icons/Send.vue"
     import TrashCan from "vue-material-design-icons/TrashCan.vue"
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"

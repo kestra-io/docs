@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import PositionsRenderer from './PositionsRenderer.vue';
+import PositionsRenderer from '~/components/careers/PositionsRenderer.vue';
 
     const {data: pageData} = await useAsyncData(
         `Career-Positions`,

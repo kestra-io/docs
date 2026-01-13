@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 .header {
     background: url("/retail/header-mask.svg") no-repeat center;
     p {

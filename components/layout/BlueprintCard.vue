@@ -23,20 +23,20 @@
 
 <script setup lang="ts">
     import { computed } from "vue";
-    import TaskIcon from "../common/TaskIcon.vue";
+    import TaskIcon from "~/components/common/TaskIcon.vue";
 
     const props = withDefaults(defineProps<{
         blueprint: Blueprint;
         tags?: Array<any>;
         href: string;
-        /** 
+        /**
          * The color scheme for the blueprint card.
          * @description
          * - "dark" (default): Dark background with white text, purple category tags.
          * - "light": White background with black text, light purple category tags.
          */
         scheme?: string;
-    }>(), { 
+    }>(), {
         tags: () => [],
         scheme: 'dark'
     });
@@ -55,7 +55,7 @@
 
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .blueprint {
         height: 188px;

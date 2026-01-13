@@ -1,5 +1,5 @@
 ---
-import Layout from '../../components/layout.astro';
+import Layout from '~/components/layout.astro';
 import Workflows from '~/components/features/scheduling/Workflows.vue';
 import Header from '~/components/features/scheduling/Header.vue';
 import Automation from '~/components/features/scheduling/Automation.vue';
@@ -20,7 +20,7 @@ const description = "Automate scheduled and event-driven workflows with Kestra."
 </Layout>
 
 <style lang="scss">
-@import "../../../assets/styles/_variable.scss";
+@import "~/assets/styles/_variable.scss";
 :global(body){
     background-color: $black-4;
     color: $white;

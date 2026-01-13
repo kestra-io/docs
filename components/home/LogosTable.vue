@@ -27,7 +27,7 @@ defineProps<{
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/_variable.scss";
+@import "~/assets/styles/variable";
 .logos-bg {
     background-color: #FCFCFD;
     @include media-breakpoint-up(md) {

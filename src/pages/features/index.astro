@@ -5,8 +5,8 @@ import LazyFeaturesOutBox from '~/components/features/OutBox.vue';
 import LazyFeaturesExperience from '~/components/features/Experience.vue';
 import LazyFeaturesFeatureEnterprise from '~/components/features/FeatureEnterprise.vue';
 import LazyFeaturesCTA from '~/components/features/CTA.vue';
-import Layout from '../../components/layout.astro';
-import PluginsBox from '../../components/PluginsBox.astro';
+import Layout from '~/components/layout.astro';
+import PluginsBox from '~/components/PluginsBox.astro';
 
 const title = "Powerful Features for Reliable Data Workflows";
 const description = "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra | Your All-in-One Solution for Orchestrating Workflows";
@@ -28,7 +28,7 @@ const description = "Create and Deploy all kinds Data Pipelines with Ease and Sp
 </Layout>
 
 <style lang="scss" scoped>
-    @import "../../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .features-plugins {
         background: linear-gradient(180deg, #E8EAF2 74.52%, #FFFFFF 74.52%);
         padding: 2rem 1rem;

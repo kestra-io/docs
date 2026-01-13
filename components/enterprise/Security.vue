@@ -175,7 +175,7 @@
   }
 </script>
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .content {
         padding: 160px 0;

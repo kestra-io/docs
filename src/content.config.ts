@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import generateId from '../utils/generateId';
+import generateId from '~/utils/generateId';
 
 export const collections = {
   docs: defineCollection({

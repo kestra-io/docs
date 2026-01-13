@@ -52,10 +52,10 @@
 </script>
 
 <script>
-import Section from '../../components/layout/Section.vue';
-import Card from '../card/Card.vue';
+import Section from '~/components/layout/Section.vue';
+import Card from '~/components/card/Card.vue';
 import Slack from "vue-material-design-icons/Slack.vue";
-import {useApi} from "../../composables/useApi";
+import {useApi} from "~/composables/useApi";
 
 export default {
     components: {Slack, Section, Card},
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(section) {
         .baseline {

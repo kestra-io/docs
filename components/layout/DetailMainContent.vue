@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-    import Section from './Section.vue';
+    import Section from '~/components/layout/Section.vue';
 
     export interface DetailMainContentItem {
         title: string;
@@ -73,7 +73,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     :deep(section) {
         .baseline {
             color: $white;

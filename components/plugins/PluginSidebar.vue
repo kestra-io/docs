@@ -77,7 +77,7 @@
     import Magnify from 'vue-material-design-icons/Magnify.vue';
     import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
     import ChevronRight from 'vue-material-design-icons/ChevronRight.vue';
-    import PluginElements from './PluginElements.vue';
+    import PluginElements from '~/components/plugins/PluginElements.vue';
 
     const props = defineProps<{
         pluginWrapper: Plugin | undefined
@@ -106,7 +106,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .plugin-sidebar {
         @include media-breakpoint-up(lg) {

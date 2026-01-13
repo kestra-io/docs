@@ -72,7 +72,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     @keyframes auto-scroll {
         from {
             transform: translateX(0);

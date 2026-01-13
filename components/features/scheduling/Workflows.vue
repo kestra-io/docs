@@ -79,11 +79,11 @@
 </template>
 
 <script lang="ts" setup>
-import LayoutSection from "../../layout/Section.vue";
+import LayoutSection from "~/components/layout/Section.vue";
 </script>
 
 <style scoped lang="scss">
-@import "../../../assets/styles/variable";
+@import "~/assets/styles/variable";
 .row{
   --bs-gutter-x:0rem !important;
 }

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-  import MDCParserAndRenderer from '../plugins/MDCParserAndRenderer.vue';
+  import MDCParserAndRenderer from '~/components/plugins/MDCParserAndRenderer.vue';
 
   const props = defineProps<{
     slug: string;
@@ -55,7 +55,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .background {
         position: fixed;

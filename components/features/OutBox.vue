@@ -6,9 +6,9 @@
                     <h1 class="title">Out of the Box Features</h1>
                     <h1 class="title highlight">Add New Workflows in Minutes</h1>
                     <div class="features-grid">
-                        <div 
-                            v-for="(feature, index) in features" 
-                            :key="index" 
+                        <div
+                            v-for="(feature, index) in features"
+                            :key="index"
                             class="feature-item"
                         >
                             <h5>{{ feature.title }}</h5>
@@ -22,9 +22,9 @@
         </div>
         <div class="images-container">
             <div class="fivetran-image">
-                <NuxtImg 
-                    src="/landing/features/fivetran.png" 
-                    alt="Fivetran" 
+                <NuxtImg
+                    src="/landing/features/fivetran.png"
+                    alt="Fivetran"
                     width="600"
                     height="231"
                     loading="lazy"
@@ -33,9 +33,9 @@
                 />
             </div>
             <div class="code-image">
-                <NuxtImg 
-                    src="/landing/features/code.png" 
-                    alt="Code" 
+                <NuxtImg
+                    src="/landing/features/code.png"
+                    alt="Code"
                     width="550"
                     height="490"
                     loading="lazy"
@@ -45,9 +45,9 @@
             </div>
         </div>
         <div class="ellipse-container">
-            <NuxtImg 
-                src="/landing/features/ellipse_box.png" 
-                alt="Ellipse Box" 
+            <NuxtImg
+                src="/landing/features/ellipse_box.png"
+                alt="Ellipse Box"
                 loading="lazy"
                 format="webp"
             />
@@ -82,7 +82,7 @@ const features: Feature[] = [
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .main {
     background-color: #15171e;
@@ -93,7 +93,7 @@ const features: Feature[] = [
     flex-direction: column;
     align-items: start;
     margin-top: -1.5rem;
-    
+
 
     @include media-breakpoint-up(xl) {
         height: 681px;
@@ -178,12 +178,12 @@ const features: Feature[] = [
         flex-direction: column;
         align-items: center;
         padding: 4rem 0 2rem 2rem;
-        
+
         @include media-breakpoint-up(md) {
             align-items: end;
             padding: 5rem 0 0 2rem;
         }
-        
+
         @include media-breakpoint-up(xl) {
             position: absolute;
             right: 0;
@@ -199,7 +199,7 @@ const features: Feature[] = [
         .code-image {
             position: relative;
             z-index: 2;
-            
+
             @include media-breakpoint-up(xl) {
                 position: absolute;
                 right: 0;
@@ -211,7 +211,7 @@ const features: Feature[] = [
                 height: auto;
                 width: auto;
                 object-fit: contain;
-                
+
                 @include media-breakpoint-up(xl) {
                     max-width: 600px;
                 }
@@ -221,7 +221,7 @@ const features: Feature[] = [
         .fivetran-image {
             @include media-breakpoint-up(xl) {
                 top: 120px;
-                
+
                 img {
                     max-height: 230.54px;
                     height: auto;
@@ -235,11 +235,11 @@ const features: Feature[] = [
             }
             @media screen and (min-width: 769px) and (max-width: 1200px) {
                 margin-top: -7rem;
-                
+
             }
             @include media-breakpoint-up(xl) {
                 top: 320px;
-                
+
                 img {
                     max-height: 490px;
                     max-width: 550px;

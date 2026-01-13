@@ -46,8 +46,8 @@
 </script>
 
 <script>
-  import Section from '../../components/layout/Section.vue';
-  import Card from '../card/Card.vue';
+  import Section from '~/components/layout/Section.vue';
+  import Card from '~/components/card/Card.vue';
 
   export default {
     components: {Section, Card},
@@ -76,7 +76,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .container-fluid {
         background: url("/landing/community/guidelines-bg.svg") no-repeat bottom center;
         :deep(.card-body) {

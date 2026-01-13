@@ -60,7 +60,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+@import "~/assets/styles/variable";
 
 .fade-bottom {
     white-space: pre-wrap;

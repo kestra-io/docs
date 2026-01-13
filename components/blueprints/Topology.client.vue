@@ -11,7 +11,7 @@
 
 <script setup>
     import { getCurrentInstance } from "vue";
-    import TaskIcon from "../common/TaskIcon.vue";
+    import TaskIcon from "~/components/common/TaskIcon.vue";
     // Mock i18n for topology
     const currentInstance = getCurrentInstance()
     if (currentInstance) {
@@ -43,7 +43,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     .topology-root {
         width: 100%;

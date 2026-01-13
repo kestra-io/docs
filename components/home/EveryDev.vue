@@ -44,12 +44,12 @@
 
 <script setup>
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
-import HomeCard from './Card.vue';
+import HomeCard from '~/components/home/Card.vue';
 </script>
 
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
     .wrapper-every-dev {
         padding: 1rem;
         margin-top: -4rem;

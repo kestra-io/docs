@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-    import LayoutSection from '../layout/Section.vue';
+    import LayoutSection from '~/components/layout/Section.vue';
 
     defineProps<{
         positions: Array<{
@@ -47,7 +47,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+    @import "~/assets/styles/variable";
 
     :deep(section) {
         .baseline {
