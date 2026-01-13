@@ -6,6 +6,7 @@ interface Props {
     activeStem: string,
     title?: string,
     description?: string
+    image?: string
 }
 
 const props = Astro.props;
@@ -14,7 +15,7 @@ const title = props.title ?? "Insights & News on Data Orchestration"
 const description = props.description ?? "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} image={props.image}>
     <Fragment slot="head">
         <slot name="head">
             <meta name="title" content={title} />
