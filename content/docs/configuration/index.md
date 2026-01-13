@@ -1300,7 +1300,8 @@ kestra:
 
 ### Plugin management
 
-(>= 0.22.0)
+:::badge{version=">=0.22" editions="EE"}
+:::
 
 ```yaml
 kestra:

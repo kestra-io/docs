@@ -196,6 +196,14 @@ On earlier versions of the Kestra helm chart (<=0.19), it was not possible to de
 azure.workload.identity/use: "true"
 ```
 
+This configuration can also be provided in the values.yaml override by specifying the following `podLabels`:
+
+```yaml
+common:
+  podLabels:
+    azure.workload.identity/use: "true"
+```
+
 Should you be unable to upgrade at this time, here is a workaround:
 - Download the `latest` Kestra helm chart from https://helm.kestra.io
 - Navigate to file `templates/_helpers.tpl`
