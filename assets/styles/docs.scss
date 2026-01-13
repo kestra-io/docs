@@ -313,11 +313,22 @@ $bd-gutter-x: 3rem;
             color: $purple-36;
         }
     }
+
+    h2 {
+        border-top: none !important;
+        margin-top: 3.12rem !important;
+        margin-bottom: 2rem !important;
+        padding-top: 0 !important;
+    }
+
     h2, h2 a {
         color: $white;
-        font-size: 1.875rem;
         line-height: 2.735rem;
         font-weight: 600;
+        border-left: 5px solid #9ca1de;
+        display: block;
+        font-size: 2.25rem;
+        padding-left: .6rem;
     }
 
     h3 a {

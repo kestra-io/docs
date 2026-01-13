@@ -214,7 +214,7 @@
             max-height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            min-width: 250px;
+            min-width: 281px;
             z-index: 10;
 
             &:not(.plugin) {
@@ -302,6 +302,7 @@
 
                 li {
                     font-size: .875rem;
+                    line-height: var(--bs-body-line-height) !important;
                 }
 
                 li a {
