@@ -132,7 +132,7 @@ access:
 
 ### Customize the Apps Catalog
 
-You can customize your Apps Catalog to align with organization branding by navigating to the **Administration** tab and then **Tenants->Apps Catalog**.
+You can customize your Apps Catalog to align with organization branding by navigating to the **Tenant** tab and then **Apps Catalog**.
 
 ![Apps Catalog Customization](/docs/enterprise/apps/apps-catalog-customization.png)
 
