@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-    import UseCasesDeploymentConnectionLine from '~/components/use-cases/ConnectionLine.vue';
+    import UseCasesDeploymentConnectionLine from '~/components/use-cases/deployment/ConnectionLine.vue';
 
     const props = defineProps<{
         title?: string;
