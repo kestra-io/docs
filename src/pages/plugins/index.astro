@@ -1,9 +1,9 @@
 ---
 import Layout from "../../components/layout.astro";
 import PluginsLists from "~/components/plugins/PluginsLists.vue";
-import LayoutFooterContact from "~/components/layout/FooterContact.vue";
 import type { Plugin, PluginMetadata } from "@kestra-io/ui-libs";
 import { $fetch } from "~/utils/fetch";
+import { API_URL } from "astro:env/client";
 
 const pluginsData = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
 
@@ -26,6 +26,8 @@ const icons = Object.fromEntries(
     )
 );
 
+const {countByPlugins: blueprintCounts} = await $fetch<{ countByPlugins: number }>(`${API_URL}/blueprints/countByPlugins`);
+
 
 const title = "Hundreds of Plugins For All Your Orchestrations Needs";
 const description = "Connect Kestra with tools you already know and love";
@@ -35,17 +37,10 @@ const description = "Connect Kestra with tools you already know and love";
     <PluginsLists
         client:idle
         plugins={pluginsData}
-        icons={icons}
+        {icons}
         categories={categoriesData ?? []}
         fullPath={Astro.request.url}
-        metadata={metadata}
-    />
-    <LayoutFooterContact
-        client:visible
-        title="Didn’t find the plugin you were looking for?"
-        darkButtonText="Ask on slack"
-        darkButtonHref="https://kestra.io/slack"
-        purpleButtonText="Create one"
-        purpleButtonHref="/docs/plugin-developer-guide"
+        {metadata}
+        {blueprintCounts}
     />
 </Layout>

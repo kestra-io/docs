@@ -73,13 +73,16 @@
         { value: 'Z-A', label: 'Name Z-A' }
     ];
 
-    const props = defineProps<{
+    const props = withDefaults(defineProps<{
         plugins: Plugin[],
         categories: string[],
         icons: Record<string, string>,
         metadata?: PluginMetadata[],
-        fullPath: string
-    }>();
+        fullPath: string,
+        blueprintCounts?: number
+    }>(), {
+        blueprintCounts: 0
+    });
 
 
     const metadataMap = computed(() => {
@@ -157,16 +160,12 @@
         if (currentPage.value > newTotal) currentPage.value = newTotal;
     });
 
-    const counts = ref({} as Record<string, number>);
-
     const getBlueprintCountForPlugin = (plugin: Plugin) => {
-        const pluginGroup = plugin.group ?? plugin.name;
-
         if (plugin.subGroup !== undefined) {
-            return counts.value?.[plugin.subGroup] ?? 0;
+            return props.blueprintCounts?.[plugin.subGroup] ?? 0;
         }
 
-        return counts.value?.[pluginGroup] ?? 0;
+        return props.blueprintCounts?.[plugin.group ?? plugin.name] ?? 0;
     };
 
     function setSearchPlugins<T extends Plugin>(search: string | undefined, allPlugins: T[]) {
