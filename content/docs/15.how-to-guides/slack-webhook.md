@@ -246,7 +246,7 @@ tasks:
         prompt: "{{ trigger.body.event.text ?? null }}"
 
       - id: slack
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {"channel":"{{ trigger.body.event.channel }}","text":"{{ outputs.gpt.choices[0].message.content }}"}

@@ -61,7 +61,7 @@ tasks:
     pageId: "{{ trigger.body.entity.id }}"
 
   - id: send_slack_alert
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "New task titled {{ outputs.get_notion_page_details | jq('.properties.Button.title[0].text.content') | first }} assigned to {{ outputs.get_notion_page_details | jq('.properties.Assignee.multi_select[0].name') | first }} on the Product team Notion board! Link: {{ outputs.get_notion_page_details.url }}"
 
@@ -168,7 +168,7 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Status.select.name') | first == 'In Progress' }}"
     then:
       - id: send_slack_alert
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         messageText: "Task moved to In Progress: {{ outputs.get_notion_page_details | jq('.properties.Title.title[0].text.content') | first }}"
 ```
@@ -184,12 +184,12 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Project.select.name') | first == 'Product' }}"
     then:
       - id: product_team_notification
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('PRODUCT_SLACK_WEBHOOK_URL') }}"
         messageText: "New product task assigned!"
     else:
       - id: general_notification
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('GENERAL_SLACK_WEBHOOK_URL') }}"
         messageText: "New task assigned!"
 ```

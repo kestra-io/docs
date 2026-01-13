@@ -41,6 +41,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 - `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
 - `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
+- `customHeaders`: Specify custom HTTP headers for authentication and routing through internal AI gateways. Custom headers should be passed as a map inside the property.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 

@@ -352,28 +352,33 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 1. **Open File Explorer** and go to your base storage path (as configured in `kestra.storage.local.base-path`).
 2. **Identify all folders and files** at the root level that are *not* already under a tenant folder (e.g., “main”, “tenant1”, “tenant2”).
-   Example: If your structure is
 
-   ```
-   base-path/
-     main/
-     tenant1/
-     foo/
-     bar/
-   ```
+Example: If your structure is
 
-   You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+```
+base-path/
+  main/
+  tenant1/
+  foo/
+  bar/
+```
+
+You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+
+
 3. **Select** the folders and files to migrate, right-click, and choose **Cut** (or **Copy** if you want to keep the original temporarily).
 4. **Paste** them into the appropriate tenant folder (e.g., `main/`).
-   The result should be:
 
-   ```
-   base-path/
-     main/
-       foo/
-       bar/
-     tenant1/
-   ```
+The result should be:
+
+```
+base-path/
+  main/
+    foo/
+    bar/
+  tenant1/
+```
+
 5. **Delete** the original folders/files from the root after confirming the migration.
 
 ---

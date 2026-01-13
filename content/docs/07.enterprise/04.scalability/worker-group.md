@@ -25,7 +25,7 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 :::badge{version=">=0.19" editions="EE"}
 :::
 
-To create a new Worker Group, navigate to the **Instance** page under the **Administration** section in the UI, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
+To create a new Worker Group, navigate to the **Instance** page, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
 
 ![Create Worker Group UI](/docs/enterprise/create-worker-group.png)
 

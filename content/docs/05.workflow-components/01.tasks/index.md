@@ -34,7 +34,7 @@ Unlike Flowable tasks, Runnable tasks perform the actual work — such as file s
 Example runnable tasks include:
 - `io.kestra.plugin.scripts.python.Commands`
 - `io.kestra.plugin.core.http.Request`
-- `io.kestra.plugin.notifications.slack.SlackExecution`
+- `io.kestra.plugin.slack.SlackExecution`
 
 ## Core task properties
 

@@ -51,7 +51,7 @@ Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terr
 
 ### Creating a Tenant from the UI
 
-Tenants can be created and managed directly through Kestra's user interface. Go to **Administration -> Tenants**. Then, click on the **Create** button:
+Tenants can be created and managed directly through Kestra's user interface. Go to **Instance -> Tenants**. Then, click on the **Create** button:
 ![create tenant from the UI](/docs/enterprise/tenant-create.png)
 
 Fill in the form and click **Save**:

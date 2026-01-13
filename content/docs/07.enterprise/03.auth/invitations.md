@@ -7,7 +7,7 @@ version: ">= 0.20.0"
 docId: users
 ---
 
-Add new users to your tenant or instance by using the invitation process.
+Add new users to your Tenant or Instance by using the invitation process.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/RC1RxfxBPPI?si=vy1D3W9ysK8LS2Uo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -21,11 +21,11 @@ By default, if the [email server is configured in Kestra EE](../../configuration
 
 ## How to Invite Users
 
-1. Navigate to the **IAM** page in the Administration section
+1. Navigate to the **IAM** page in the **Tenant** section
 2. Click on the **Users** tab
 3. Click on the **+ Add** button
 4. Fill in the user's email address, and select the desired group or attach the role directly—optionally restricting the permission to one or more namespaces
-5. Click the **Add** button—this will send an email to the user with an invitation link, or display the link you can share with the user manually.
+5. Click the **Add** button — this will send an email to the user with an invitation link, or display the link you can share with the user manually.
 
 ![Add User Interface](/docs/enterprise/invitations/invite1.png)
 

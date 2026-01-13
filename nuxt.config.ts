@@ -527,7 +527,7 @@ export default defineNuxtConfig({
         '/docs/task-runners/google-batch-task-runner': {redirect: '/docs/task-runners/types/google-batch-task-runner'},
         '/docs/.architecture': {redirect: '/docs/architecture'},
         '/docs/webserver': {redirect: '/docs/architecture/server-components#webserver'},
-
+        '/docs/enterprise/instance/dashboard': {redirect: '/docs/enterprise/instance'}
 
     },
 
