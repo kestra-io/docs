@@ -25,3 +25,18 @@ export async function $fetch<T = any>(url: string, init: RequestInit = {}): Prom
 export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
     return $fetch<T>(`https://api.kestra.io/v1${url}`, init)
 }
+
+export async function $fetchApiCached<T = any>(url: string, duration = 60000, init: RequestInit = {}, ): Promise<T> {
+    if (cacheObject[url]) {
+        if(Date.now() - cacheObject[url].timestamp < duration) {
+            return cacheObject[url].data;
+        }
+    }
+
+    const data = await $fetchApi<T>(url, init);
+    cacheObject[url] = {
+        data,
+        timestamp: Date.now()
+    }
+    return data;
+}
