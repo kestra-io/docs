@@ -22,7 +22,7 @@ In contrast to regular users, Service Accounts don't have a password and they do
 
 ## Creating a Service Account
 
-To create a new service account, go to **Service Accounts** tab on the **IAM** page under the **Administration** section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
+To create a new service account, go to **Service Accounts** tab on the **IAM** page under the **Tenant** section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
