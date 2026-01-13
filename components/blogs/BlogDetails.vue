@@ -2,7 +2,7 @@
     <div class="blog-details">
         <div class="meta mb-4">
             <span class="date">{{ date }}</span>
-            <span class="category ms-3">{{ blog.category }}</span>
+            <span class="category ms-3">{{ blog.data.category }}</span>
         </div>
         <div class="authors">
             <div v-for="author in authorsList" :key="author.name"
