@@ -5,6 +5,7 @@
 <script setup lang="ts">
     import Faq from '../price/Faq.vue';
 
+    // update to be more plugin focused? Are these references anywhere else? 
     const faqItems = [
         {
             question: "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
