@@ -36,8 +36,8 @@ const enterpriseQuotes = await import('../../data/enterprise-quotes.json').then(
 
 <Layout>
     <Header client:load />
-    <LogosTable logos={logos} client:load />
-    <OpenSource {...githubData} client:load />
+    <LogosTable logos={logos} client:idle />
+    <OpenSource {...githubData} client:idle />
     <OpenSourceQuotes quotes={quotes} client:idle />
     <Features client:visible />
     <EveryDev client:visible/>
