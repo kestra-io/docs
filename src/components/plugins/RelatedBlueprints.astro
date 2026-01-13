@@ -1,6 +1,6 @@
 ---
 import RelatedBlueprintsVue from "~/components/plugins/RelatedBlueprints.vue";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 
 const props = Astro.props;
 const { pluginType, pluginName, rootPlugin, currentSubgroupPlugin, subGroupName, blueprintsSectionHeading } = props;
@@ -17,7 +17,7 @@ const pluginIdentifier = (() => {
     return props.pluginWrapper?.group ?? props.pluginName
 })()
 
-const relatedBlueprints = await $fetch(`https://api.kestra.io/v1/blueprints/plugin/${pluginIdentifier}/version/latest`);
+const relatedBlueprints = await $fetchApi(`/blueprints/plugin/${pluginIdentifier}/version/latest`);
 ---
 
 <RelatedBlueprintsVue

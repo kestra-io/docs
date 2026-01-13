@@ -3,7 +3,7 @@ export const prerender = false;
 import Layout from '~/components/layout.astro';
 import VideosTutorialsList from '~/components/videos/TutorialsList.vue'
 import CommonPagination from '~/components/common/Pagination.vue'
-import { $fetch } from '~/utils/fetch';
+import { $fetchApi } from '~/utils/fetch';
 
 const tags = new Map([
   ['all', 'All videos'],
@@ -26,9 +26,9 @@ const page = pageStr ? parseInt(pageStr) : 1;
 
 const currentCategoryFilter = slug === 'all' ? '' : currentCategory;
 
-const API_URL = `https://api.kestra.io/v1/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`;
+const API_URL = `/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`;
 
-const tutorialVideo = await $fetch(API_URL);
+const tutorialVideo = await $fetchApi(API_URL);
 
 const title = `Video Tutorials: ${currentCategory}`
 const description = `Get started with our Video Tutorials: ${currentCategory}`;

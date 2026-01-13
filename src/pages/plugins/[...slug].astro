@@ -9,7 +9,7 @@ import RelatedBlogs from "~/components/plugins/RelatedBlogs.vue";
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro";
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue";
 import PluginVideos from "~/components/plugins/PluginVideos.vue";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 import { generatePageNames, recursivePages, type NavItem } from "~/utils/navigation";
 import { filterPluginsWithoutDeprecated, isEntryAPluginElementPredicate, slugify, subGroupName, type JSONSchema, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs";
 import { formatElementName, formatElementType, getBlueprintsHeading, getPluginTitle } from "~/utils/pluginUtils";
@@ -82,9 +82,7 @@ const githubVersions = await retrieveRepoReleases(githubReleaseRepo);
 
 const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 
-const API_URL = 'https://api.kestra.io/v1';
-
-const pluginsData = await $fetch<Plugin[]>(`${API_URL}/plugins/subgroups`)
+const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
 const navigation = generateNavigationFromSubgroups(pluginsData);
 
 const pageList = recursivePages(navigation[0]);
@@ -99,13 +97,13 @@ const pluginType = (() => {
         pageNames?.[pathname] ?? parts[parts.length - 1]
     }`})();
 
-const allPluginMetadata = await $fetch<PluginMetadata[]>(`${API_URL}/plugins/metadata`);
+const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`);
 
-const subgroups = await $fetch<Plugin[]>(`${API_URL}/plugins/${pluginName}/subgroups`);
+const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`);
 const sidebarPluginData = generateSidebarPluginData(subgroups, allPluginMetadata);
 
 async function makePagePluginDefinition() {
-    const pageData = await $fetch<{markdown: string; schema: JSONSchema}>(`${API_URL}/plugins/definitions/${pluginType}`)
+    const pageData = await $fetchApi<{markdown: string; schema: JSONSchema}>(`/plugins/definitions/${pluginType}`)
     const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1];
     const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1];
 
@@ -131,10 +129,10 @@ const { currentPageIcon, subGroupsIcons } = await getIcon(
     subGroupWrapper?.subGroup
 );
 
-const allPlugins = await $fetch<Plugin[]>(`${API_URL}/plugins/subgroups`);
+const allPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`);
 
-const {countByPlugins: blueprintCounts} = await $fetch<{ countByPlugins: Record<string, number> }>(
-                        `${API_URL}/blueprints/countByPlugins`
+const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: Record<string, number> }>(
+                        `/blueprints/countByPlugins`
                     )
 
 

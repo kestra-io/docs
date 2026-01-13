@@ -1,5 +1,5 @@
 // import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
-// import { $fetch } from "~/utils/fetch";
+// import { $fetchApi } from "~/utils/fetch";
 // import { getListOfPlugins } from "~/utils/plugins/getListOfPlugins";
 
 // do not prerender icons there are too many of them
@@ -40,7 +40,7 @@ export async function GET({ params }: { params: { cls: string } }) {
 // }
 
 // export async function getStaticPaths() {
-//   const plugins = await $fetch(`https://api.kestra.io/v1/plugins/subgroups`);
+//   const plugins = await $fetchApi(`/plugins/subgroups`);
 
 //   const allPluginsCls = new Set(getListOfPlugins(plugins).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
 //   resolveSubPlugins(plugins, allPluginsCls);

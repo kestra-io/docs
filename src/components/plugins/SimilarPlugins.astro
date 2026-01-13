@@ -1,6 +1,6 @@
 ---
 import {filterPluginsWithoutDeprecated, type Plugin } from "@kestra-io/ui-libs";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 import { getPluginIconsAsString } from "~/utils/plugins/getPluginIcon";
 import SimilarPluginsVue from "~/components/plugins/SimilarPlugins.vue";
 
@@ -27,7 +27,7 @@ const similarPlugins = (() => {
 
 const iconsForSimilarPluginsByPlugin = await Promise.all(
         similarPlugins.map(async (plugin) => {
-            const icons = await $fetch(`https://api.kestra.io/v1/plugins/${plugin.name}/icons/subgroups`);
+            const icons = await $fetchApi(`/plugins/${plugin.name}/icons/subgroups`);
             return getPluginIconsAsString(icons)
         })
     );

@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import { $fetch } from "~/utils/fetch"
+import { $fetchApi } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import StoriesHeader from "~/components/stories/Header.vue"
 import LayoutSection from "~/components/layout/Section.vue"
@@ -26,11 +26,11 @@ interface Story {
     tasks: Array<string>
     content: string
 }
-const story = await $fetch<Story>(`https://api.kestra.io/v1/customer-stories-v2/${id}`)
+const story = await $fetchApi<Story>(`/customer-stories-v2/${id}`)
 
-const related = await $fetch<{
+const related = await $fetchApi<{
     results: Array<Story>
-}>(`https://api.kestra.io/v1/customer-stories-v2?size=3`)
+}>(`/customer-stories-v2?size=3`)
 
 const generateTagName = (task: string) => {
       const splittedTask = task.split(".");

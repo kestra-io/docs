@@ -1,4 +1,4 @@
-import { $fetch } from "~/utils/fetch";
+import {  $fetchApi } from "~/utils/fetch";
 
 function colorFixedB64Icon(b64Icon: string) {
     return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replace(/currentColor/g, "#CAC5DA")).toString('base64');
@@ -10,8 +10,8 @@ export function getPluginIconsAsString(icons: Record<string, {icon: string}>) {
 }
 
 export async function getIcon(pluginName: string, pluginType?: string, group?:string, subGroup?: string) {
-    const originalIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons/subgroups`);
-    const elementIcons = await $fetch(`https://api.kestra.io/v1/plugins/${pluginName}/icons`);
+    const originalIcons = await $fetchApi(`/plugins/${pluginName}/icons/subgroups`);
+    const elementIcons = await $fetchApi(`/plugins/${pluginName}/icons`);
 
     const originalIconsAsString = getPluginIconsAsString(originalIcons);
     const elementIconsAsString = getPluginIconsAsString(elementIcons);

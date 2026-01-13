@@ -4,12 +4,12 @@ import SolutionsHeader from '~/components/solutions/Header.vue';
 import SolutionsPossibilities from '~/components/solutions/Possibilities.vue';
 import SolutionsUseCases from '~/components/solutions/UseCases.vue';
 import HomeEnterprise from '~/components/home/Enterprise.vue';
-import { $fetch } from '~/utils/fetch';
+import { $fetchApi } from '~/utils/fetch';
 
 const title = "Use cases for Modern Data Orchestration";
 const description = "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform";
 
-const {results: stories} = await $fetch<{results: any[]}>('https://api.kestra.io/v1/customer-stories-v2?featured=true')
+const {results: stories} = await $fetchApi<{results: any[]}>('/customer-stories-v2?featured=true')
 ---
 
 <Layout title={title} description={description}>

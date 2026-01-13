@@ -1,12 +1,12 @@
 import type { Loader } from "astro/loaders";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 import type { Plugin } from "@kestra-io/ui-libs";
 import { z } from "astro:content";
 
 export default {
     name: "plugins",
     async load({ store }){
-        const plugins = await $fetch<Plugin[]>("https://api.kestra.io/v1/plugins/subgroups")
+        const plugins = await $fetchApi<Plugin[]>("/plugins/subgroups")
         store.clear()
         for(const plugin of plugins) {
             const id = plugin.subGroup ?? plugin.group

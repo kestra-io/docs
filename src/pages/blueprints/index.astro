@@ -4,12 +4,11 @@ export const prerender = false;
 import Layout from '~/components/layout.astro';
 import BlueprintsLists from "~/components/blueprints/Lists.vue";
 import LayoutFooterContact from "~/components/layout/FooterContact.vue";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 
-const tags = await $fetch<BlueprintTag[]>(`https://api.kestra.io/v1/blueprints/versions/latest/tags`);
+const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`);
 // fetch all the blueprints so we can filter client side
-const {results: allBlueprints} = await $fetch<{results: Blueprint[]}>(`https://api.kestra.io/v1/blueprints/versions/latest?size=10000`);
-
+const {results: allBlueprints} = await $fetchApi<{results: Blueprint[]}>(`/blueprints/versions/latest?size=10000`);
 const title = "Blueprints";
 const description = "Get started with our library of workflows ready to use";
 ---

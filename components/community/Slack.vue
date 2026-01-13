@@ -46,36 +46,18 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, onMounted, ref } from "vue";
+    import { computed } from "vue";
     import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
     import HandWave from "vue-material-design-icons/HandWave.vue";
     import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
     import Section from '~/components/layout/Section.vue';
     import Card from '~/components/card/Card.vue';
     import Slack from "vue-material-design-icons/Slack.vue";
-    import {useApi} from "~/composables/useApi";
 
-    defineProps<{widget?: boolean}>()
-
-    const online = ref<number>();
-    onMounted(async () => {
-        try {
-            const memberCount = window.sessionStorage.getItem("slack_member_count")
-
-            if (!memberCount) {
-                const {data: {total}} = await useApi().get('/communities/slack')
-                window.sessionStorage.setItem("slack_member_count", total)
-                online.value = total
-            } else {
-                online.value = Number(memberCount)
-            }
-
-        } catch (e) {
-        }
-    })
+    const props = defineProps<{widget?: boolean, online?: number}>()
 
     const onlineText = computed(() => {
-        return online.value === undefined ? "" : Intl.NumberFormat('en-US').format(online.value);
+        return props.online === undefined ? "" : Intl.NumberFormat('en-US').format(props.online);
     })
 </script>
 

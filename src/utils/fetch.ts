@@ -21,3 +21,7 @@ export async function $fetch<T = any>(url: string, init: RequestInit = {}): Prom
     cacheObject[url] = data;
     return data;
 }
+
+export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
+    return $fetch<T>(`https://api.kestra.io/v1${url}`, init)
+}

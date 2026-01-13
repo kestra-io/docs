@@ -3,9 +3,9 @@ import Workflows from "~/components/features/scheduling/Workflows.vue";
 export const prerender = false
 import BlogsList from "~/components/blogs/BlogsList.vue";
 import LayoutBlogs from "~/components/layout-blogs.astro";
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 
-const externalNewsData = await $fetch(`https://api.kestra.io/v1/external-blogs`);
+const externalNewsData = await $fetchApi(`/external-blogs`);
 
 const externalNews = externalNewsData.results.map((data: any) => {
     return {

@@ -1,7 +1,6 @@
 ---
-import Workflows from "~/components/features/scheduling/Workflows.vue";
 export const prerender = false;
-import { $fetch } from "~/utils/fetch";
+import { $fetchApi } from "~/utils/fetch";
 import Layout from '~/components/layout.astro';
 import BlueprintsHeader from "~/components/blueprints/Header.vue";
 import BlueprintsDetail from "~/components/blueprints/Detail.vue";
@@ -17,17 +16,19 @@ let pageData;
 let relatedBlueprints = [];
 
 try {
-    pageData = await $fetch(`https://api.kestra.io/v1/blueprints/${id}/versions/latest`);
+    pageData = await $fetchApi(`/blueprints/${id}/versions/latest`);
 } catch (e) {
     return Astro.redirect('/404');
 }
 
 // Fetch related blueprints
 if (pageData.tags && pageData.tags.length > 0) {
-    const data = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest?tags=${pageData.tags}`);
+    const data = await $fetchApi<{results: Blueprint[]}>(`/blueprints/versions/latest?tags=${pageData.tags}`);
     if (data) {
-        const shuffleBlueprints = arr => arr.sort(() => Math.random() - 0.5);
-        relatedBlueprints = shuffleBlueprints(data.results.filter(b => b.id !== pageData.id)).slice(0, 3);
+        relatedBlueprints = data.results
+            .filter(b => b.id !== pageData.id) // Exclude current blueprint
+            .sort(() => Math.random() - 0.5) // Shuffle the results
+            .slice(0, 3); // Limit to 3 related blueprints
     }
 }
 
@@ -35,10 +36,10 @@ if (pageData.tags && pageData.tags.length > 0) {
 const flowMd = '```yaml\n' + pageData.flow + '\n```';
 
 // Fetch graph data
-const graph = await $fetch(`https://api.kestra.io/v1/blueprints/${id}/versions/latest/graph`);
+const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`);
 
 // Fetch tags
-const tags = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`);
+const tags = await $fetchApi(`/blueprints/versions/latest/tags`);
 
 const title = pageData.title;
 const description = pageData.metaDescription;
