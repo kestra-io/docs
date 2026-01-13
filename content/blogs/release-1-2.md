@@ -100,7 +100,12 @@ This workflow demonstrates:
 
 
 
-The Assets UI provides an interactive dependency graph visualizing upstream and downstream relationships, complete execution history tracking for each asset, and a unified inventory searchable by namespace, type, or metadata. You can automatically populate dropdowns in flow inputs by referencing assets directly in expressions using Pebble templates:
+The Assets UI provides an interactive dependency graph visualizing upstream and downstream relationships, complete execution history tracking for each asset, and a unified inventory searchable by namespace, type, or metadata. 
+
+![Asset Lineage](/blogs/asset-lineage.png)
+
+
+You can also automatically populate dropdowns in flow inputs by referencing assets directly in expressions using Pebble templates:
 
 ```yaml
 id: select_assets
@@ -121,9 +126,8 @@ tasks:
         message: "{{taskrun.value}}"
 ```
 
-Assets eliminate manual resource tracking by automatically maintaining an inventory as workflows execute, prevent orphaned resources by clearly mapping ownership, and enable self-service discovery through the UI. The dependency graph helps identify impact before changes, while execution history provides complete traceability for compliance and debugging.
 
-Common use cases include data pipeline orchestration with automatic lineage tracking, infrastructure as code management for cloud resources, multi-environment resource management via metadata tagging, and data governance initiatives that require complete audit trails.
+Common use cases include data pipeline orchestration with automatic lineage tracking, infrastructure as code management, multi-environment resource management via metadata tagging, and data governance initiatives that require complete audit trails.
 
 This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness or auto-emit assets for plugins, along with additional integrations.
 
