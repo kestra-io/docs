@@ -45,7 +45,7 @@
                         data-aos-delay="0"
                         data-aos-easing="ease-out"
                     >
-                        <LayoutBlueprintCard
+                        <BlueprintCard
                             :blueprint="blueprint"
                             :tags
                             :href="`/blueprints/${blueprint.id}`"
@@ -62,7 +62,7 @@
                 data-aos-delay="0"
                 data-aos-easing="ease-out"
             >
-                <CommonLink
+                <Link
                     href="/blueprints?tags=infrastructure"
                     text="View more Infrastructure blueprints"
                 />
@@ -72,12 +72,19 @@
 </template>
 
 <script setup lang="ts">
+    import {ref, computed} from 'vue'
     import {useWindowSize} from '@vueuse/core'
-    import {useBlueprintsList, type BlueprintsOptions} from '~/composables/useBlueprintsList'
+    import type { Blueprint, BlueprintTag } from '../../src/type.d.ts'
     import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+    import BlueprintCard from "../layout/BlueprintCard.vue";
+    import Link from "../common/Link.vue";
 
-    const config = useRuntimeConfig()
+    const props = defineProps<{
+        blueprints: Blueprint[],
+        tags: BlueprintTag[]
+    }>()
+
     const wrapper = ref<HTMLElement | null>(null)
 
     const scrollLeft = () => {
@@ -95,22 +102,7 @@
     const { width } = useWindowSize()
     const size = computed(() => width.value >= 768 ? 6 : 20)
 
-    const options: BlueprintsOptions = {
-        page: 1,
-        size: 20,
-        tags: 'infrastructure'
-    }
-
-    const { data: blueprintsData } = await useAsyncData(
-        'automations-blueprints',
-        () => useBlueprintsList(options)
-    )
-    
-    const blueprints = computed(() => (blueprintsData.value?.results ?? []).slice(0, size.value))
-
-    const { data: tags } = await useAsyncData<any[]>('tags', () =>
-        $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
-    )
+    const blueprints = computed(() => props.blueprints?.slice(0, size.value) ?? [])
 </script>
 
 <style lang="scss" scoped>
@@ -232,7 +224,7 @@
                         gap: 1rem;
                         margin: 0;
                         scrollbar-width: none;
-                        
+
                         &::-webkit-scrollbar {
                             display: none;
                         }

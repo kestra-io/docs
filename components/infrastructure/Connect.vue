@@ -12,7 +12,7 @@
 
                 <div class="icon-scroll">
                     <div class="carousel">
-                        <template v-for="plugin in carouselPlugins" :key="plugin.name">
+                        <template v-for="plugin in pluginCarousel" :key="plugin.name">
                             <div>
                                 <img :src="plugin.logo" :alt="plugin.name" />
                             </div>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="align-self-lg-start">
-                    <CommonLink href="/plugins" text="See all plugins" class="text-white" />
+                    <Link href="/plugins" text="See all plugins" class="text-white" />
                 </div>
             </div>
         </div>
@@ -31,22 +31,21 @@
 <script setup lang="ts">
     import lottie from "lottie-web"
     import { ref, onMounted, computed } from "vue"
-    import animationData from "~/assets/lottie/plugins-lottie.json"
+    import animationData from "../../assets/lottie/plugins-lottie.json"
+    import Link from "../common/Link.vue";
+
+    const props = defineProps<{
+        plugins?: {
+            name: string,
+            logo: string
+        }[]
+    }>();
 
     const lottieContainer = ref<HTMLElement | null>(null)
 
-    const plugins = import.meta.glob("@/public/docs/icons/plugins/*.svg",
-        { eager: true }
-    )
+    const pluginLogos = computed(() => props.plugins ?? [])
 
-    const pluginLogos = computed(() =>
-        Object.keys(plugins).map(key => ({
-            name: key.split('/').pop()?.split('.').shift(),
-            logo: (plugins[key] as any).default
-        }))
-    )
-
-    const carouselPlugins = computed(() => [...pluginLogos.value, ...pluginLogos.value])
+    const pluginCarousel = computed(() => [...pluginLogos.value, ...pluginLogos.value])
 
     onMounted(() => {
         if (lottieContainer.value) {

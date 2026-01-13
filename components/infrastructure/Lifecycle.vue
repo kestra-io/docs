@@ -22,7 +22,7 @@
                     <p>
                         Wrap your playbooks in a production-grade layer. Gain structured inputs, secret injection, parallel execution, and granular logging without changing a single line of code.
                     </p>
-                    <CommonLink href="/docs/how-to-guides/ansible" text="Automate your Playbooks with Kestra" />
+                    <Link href="/docs/how-to-guides/ansible" text="Automate your Playbooks with Kestra" />
                 </div>
 
                 <div class="card-item purple-bg" data-aos="slide-left" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out">
@@ -30,7 +30,7 @@
                     <p>
                         Enable true self-service infrastructure. Kestra turns catalog requests into provisioned resources, automatically updates the CMDB, and closes the ticket with audit proof, delivering assets in minutes, not days.
                     </p>
-                    <CommonLink href="/docs/how-to-guides/servicenow-trigger" text="Manage your full ticket lifecycle" />
+                    <Link href="/docs/how-to-guides/servicenow-trigger" text="Manage your full ticket lifecycle" />
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-    //  NOOP
+    import Link from "../common/Link.vue";
 </script>
 
 <style lang="scss" scoped>

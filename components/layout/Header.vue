@@ -26,7 +26,7 @@
                     <Magnify />
                 </a>
                 <button class="navbar-toggler d-flex d-lg-none align-items-center gap-2" @click="globalClick(isOpen)"
-                    type="button" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
+                    type="button" data-bs-toggle="collapse" data-bs-target="#main-header" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="menu-text">Menu</span>
                     <Segment v-if="!isOpen" />
                     <Close v-if="isOpen" />
@@ -409,6 +409,13 @@ onMounted(() => {
     isMobile.value = window.innerWidth <= 991;
     window.addEventListener('resize', () => {
         isMobile.value = window.innerWidth <= 991;
+    });
+
+    window.addEventListener('scroll', () => {
+        const header = navbar.value;
+        if (header) {
+            header.classList.toggle('scrolled', window.scrollY > 0);
+        }
     });
 
     document.documentElement.style.setProperty("--top-bar-height", navbar.value?.offsetHeight + "px");

@@ -40,8 +40,9 @@
                 <div class="companies-logos">
                     <template v-for="(company, index) in companiesCarousel" :key="index">
                         <ClientOnly :fallback="company.name">
-                            <img :src="`/landing/infrastructure/companies/${company.name}.svg`" :width="company.width"
+                            <NuxtImg :src="`/landing/infrastructure/companies/${company.name}.svg`" :width="company.width"
                                 :height="company.height" loading="lazy" format="webp"
+                                :alt="company.name" />
                         </ClientOnly>
                     </template>
                 </div>
@@ -53,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+    import { ref, computed } from 'vue'
     import { useWindowScroll, useWindowSize } from '@vueuse/core'
 
     const companies = ref([

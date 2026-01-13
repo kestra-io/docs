@@ -335,9 +335,6 @@ nav {
     transform: translateY(0);
     max-height: 100%;
     width: 100vw;
-    background-color: $menu-bg;
-    transition: background-color 250ms ease-in-out;
-
     @keyframes chevron-in {
         0% {
             transform: translateY(2px);
@@ -365,7 +362,16 @@ nav {
     &.open {
         @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
             & {
-                background-color: $white;
+                background-color: $menu-bg;
+                transition: background-color 250ms ease-in-out;
+            }
+        }
+
+        &.open {
+            @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                & {
+                    background-color: $white;
+                }
             }
         }
     }
