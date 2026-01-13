@@ -1,5 +1,5 @@
 ---
-title: "Kestra 1.2 introduces Assets, Templated Custom Blueprints, Namespace Files Revision History, Concurrent Executions, and Dozens of New Plugins"
+title: "Kestra 1.2 introduces Assets, Templated Custom Blueprints, Namespace Files Revision History, Concurrent Executions, and New Plugins"
 description: "Kestra 1.2 delivers asset management, templated custom blueprints, namespace file versioning, enhanced concurrent execution capabilities, improved UI/UX, new secret managers, and new plugins."
 date: 2026-01-13T17:00:00
 category: News & Product Updates
