@@ -31,7 +31,9 @@ You can edit Blueprints at any time, for example, to add new tasks or expand the
 
 ## Templated Blueprints
 
-Templated Blueprints allow you to create reusable, configurable workflows that users can instantiate without editing YAML. Instead of copying and modifying Blueprints, users fill in guided inputs and Kestra generates the complete flow automatically.
+Templated Blueprints allow you to create reusable, configurable workflows that users can instantiate without editing YAML. Instead of copying and modifying Blueprints, users fill in guided inputs and Kestra generates the complete flow automatically. 
+
+This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface. 
 
 **How It Works:** Templated Blueprints use [Pebble templating](../05.concepts/06.pebble.md), with custom delimiters to avoid conflicts with Kestra expressions.
 
@@ -210,5 +212,3 @@ pluginDefaults:
 ```
 
 :::
-
-This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface. The templating system supports all standard input types including text fields, dropdowns, multi-select options, and more. This eliminates the repetitive boilerplate work of creating similar workflows while maintaining consistency and best practices across your organization.
