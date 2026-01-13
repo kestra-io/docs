@@ -1,6 +1,7 @@
 ---
 title: Tasks in Kestra – Define Steps in a Flow
 icon: /docs/icons/flow.svg
+sidebarTitle: Tasks
 ---
 
 Tasks are the steps within a flow.
