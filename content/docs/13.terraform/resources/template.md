@@ -10,7 +10,7 @@ description: |-
 
 Manages a Kestra Template.
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_template" "example" {

@@ -303,7 +303,7 @@
         border: 1px solid transparent;
         border-radius: 0.5rem;
         padding: 1rem;
-        height: 56px;
+        min-height: 56px;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -314,11 +314,15 @@
         }
 
         .send-icon {
+            height: 28px;
             font-size: 24px;
             color: #B9B9BA;
             cursor: pointer;
             transition: color 0.2s ease-in-out;
-
+            align-self: flex-end !important;
+            :deep(.material-design-icon__svg) {
+                top: 2.002px;
+            }
             &:hover {
                 color: $purple;
             }
@@ -332,8 +336,8 @@
             font-size: 1rem;
             resize: none;
             outline: none;
-            overflow: hidden;
-            white-space: nowrap;
+            overflow-y: hidden;
+            max-height: 150px;
 
             &::placeholder {
                 color: $white-1;
@@ -454,11 +458,10 @@
 
         .input .container {
             padding: 12px;
-            height: 56px;
+            min-height: 56px;
 
             textarea {
                 font-size: 0.875rem;
-                height: 24px;
             }
         }
     }

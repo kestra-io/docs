@@ -1,9 +1,9 @@
 <template>
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
-        :class="{open: isOpen, scrolled: props.scrolled }">
+        :class="{open: isOpen, scrolled: props.scrolled, dark: isStories }">
         <div class="container-xl">
             <component :is="LinkComponent" class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
-                <img :src="isOpen ? '/logo-black.svg' : '/logo-white.svg'"
+                <img :src="isOpen || isStories ? '/logo-black.svg' : '/logo-white.svg'"
                     alt="Kestra, Open source declarative data orchestration" />
             </component>
 
@@ -356,7 +356,8 @@ export const linkSymbolInjectionKey = Symbol("linkComponent")
 
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, inject } from 'vue';
+import { ref, onMounted, watch, nextTick, inject, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import GithubButton from "../layout/GithubButton.vue";
@@ -365,6 +366,9 @@ import Close from "vue-material-design-icons/Close.vue";
 import Segment from "vue-material-design-icons/Segment.vue";
 import { menuSize } from "../../utils/menu-sizes";
 import { menuItems } from '../../utils/menu-items';
+
+const route = useRoute();
+const isStories = computed(() => route.path.includes('/use-cases/stories/'));
 
 const props = defineProps<{
     scrolled?: boolean;

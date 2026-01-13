@@ -156,6 +156,11 @@
             focusSearch() {
                 document.querySelector('#search-input').value = '';
                 document.querySelector('#search-input').focus();
+                if (this.$route.path.startsWith('/plugins')) {
+                    this.selectedFacet = 'PLUGINS';
+                } else {
+                    this.selectedFacet = undefined;
+                }
                 this.search();
             },
             onHiddenSearch() {

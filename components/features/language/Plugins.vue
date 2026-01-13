@@ -3,22 +3,15 @@
         <div class="container">
             <div class="mb-5">
                 <h2 class="title">Platform <span>Independent</span></h2>
-                <p class="desc">Select from 900+ integrations and swap tools when needed</p>
+                <p class="desc">Select from {{ totalPlugins }} integrations and swap tools when needed</p>
                 <LayoutPlugins />
             </div>
         </div>
     </div>
 </template>
 
-<script>
-
-  export default {
-    data() {
-      return {
-        active: 1,
-      };
-    },
-  }
+<script setup lang="ts">
+const { totalPlugins } = usePluginsCount()
 </script>
 
 <style lang="scss" scoped>

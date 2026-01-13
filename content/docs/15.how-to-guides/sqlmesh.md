@@ -29,7 +29,7 @@ Our Flow will do the following steps:
 
 SQLMesh supports integration with a variety of tools like Airflow, dbt, dlt, etc. One of the common use-cases of SQLMesh is to run dbt projects.
 
-You can choose to pull your dbt project from a Git repository as mentioned in the [How-to guide on dbt](./dbt.md) or create [namespace files](../05.concepts/02.namespace-files.md) for the project. Here, we will create the complete project using namespace files which we will create as we go. You can later choose to push all the namespace files to a GitHub repository using [PushNamespaceFiles](./pushnamespacefiles.md).
+You can choose to pull your dbt project from a Git repository as mentioned in the [How-to guide on dbt](./dbt.md) or create [namespace files](../06.concepts/02.namespace-files.md) for the project. Here, we will create the complete project using namespace files which we will create as we go. You can later choose to push all the namespace files to a GitHub repository using [PushNamespaceFiles](./pushnamespacefiles.md).
 
 ### Creating our Flow with SQLMeshCLI Task
 

@@ -66,6 +66,12 @@
     nuxtApp.hook("page:finish", () => {
         document.documentElement.classList.remove("loading");
     });
+
+    useHead({
+        link: [
+            { rel: 'canonical', href: 'https://kestra.io' + route.fullPath }
+        ]
+    });
 </script>
 
 <style lang="scss">

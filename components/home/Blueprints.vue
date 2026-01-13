@@ -2,7 +2,7 @@
     <section>
         <div class="container">
             <h2><span>250+ Blueprints,</span> Ready to Build.</h2>
-            <p>Jump start your workflows with a growing library of workflow templates</p>
+            <p>Jump start your journey with a growing library of workflow templates</p>
         </div>
         <HomeBlueprintsCarousel :blueprints="blueprints" />
         <div class="button-container">
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useBlueprintsList } from '~/composables/useBlueprintsList.js'
+import { useBlueprintsList } from '~/composables/useBlueprintsList'
 const { data: blueprintsData } = await useAsyncData(
   `blueprints`,
   () => useBlueprintsList({ page: 1, size: 20 })

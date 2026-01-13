@@ -31,6 +31,8 @@ resource "kestra_flow" "example" {
   namespace = "company.team"
   flow_id = "my-flow"
   content = <<EOT
+id: my-flow
+namespace: company.team  
 inputs:
   - name: my-value
     type: STRING
@@ -50,6 +52,8 @@ EOT
 Better will be to use a [file function](https://www.terraform.io/docs/language/functions/file.html). Just create a file `.yml` near your terraform `.tf` and include the whole file in your resource:
 
 ```yaml
+id: my-flow
+namespace: company.team
 inputs:
   - name: my-value
     type: STRING

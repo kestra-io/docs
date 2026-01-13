@@ -1,7 +1,18 @@
 <template>
     <div class="mb-3">
         <p class="fw-bold d-flex gap-2 flex-wrap" v-if="page?.editions?.length || page?.version">Available on:
-            <span v-bind:v-if="edition" v-for="edition in page?.editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
+            <component
+                :is="editionInfo(edition).link ? 'a' : 'span'"
+                v-for="edition in page?.editions"
+                :key="edition"
+                v-if="edition"
+                :href="editionInfo(edition).link"
+                :target="editionInfo(edition).link ? '_blank' : undefined"
+                class="badge d-flex align-items-center text-decoration-none"
+                :class="`bg-${editionInfo(edition).color}`"
+            >
+                {{ editionInfo(edition).label }}
+            </component>
             <span v-if="page?.version" class="badge d-flex align-items-center bg-body-tertiary">{{ page.version }}</span>
         </p>
     </div>
@@ -28,8 +39,9 @@
         data() {
             return {
                 editionLabelAndColorByPrefix: {
-                    OSS: {label: "Open Source Edition", color: "primary"},
-                    EE: {label: "Enterprise Edition", color: "secondary"},
+                    OSS: {label: "Open Source Edition", color: "primary", link: "https://kestra.io/features"},
+                    EE: {label: "Enterprise Edition", color: "secondary", link: "https://kestra.io/enterprise"},
+                    Cloud: {label: "Cloud", color: "dark-3", link: "https://kestra.io/cloud"},
                     CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
                     CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
                 }
@@ -45,7 +57,8 @@
             editionInfo(edition) {
                 return this.editionLabelAndColorByPrefix?.[edition] ?? {
                     label: edition,
-                    color: "dark-3"
+                    color: "dark-3",
+                    link: undefined
                 }
             }
         }

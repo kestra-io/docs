@@ -357,7 +357,7 @@ import static org.hamcrest.Matchers.is;
 
 /**
  * This test will only test the main task, this allow you to send any input
- * parameters to your task and test the returning behaviour easily.
+ * parameters to your task and test the returning behavior easily.
  */
 @MicronautTest
 class FetchTest {

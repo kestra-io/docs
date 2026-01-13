@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 
 ## Overview
 
-In version **1.1.0**, we improved the backend logic that powers **Key-Value Pairs** and **Secrets** search in the Kestra UI.  
+In version **1.1.0**, we improved the backend logic that powers **Key-Value Pairs** and **Secrets** (Enterprise Edition) search in the Kestra UI.  
 Previously, the UI fetched *all* stored pairs, which could become resource-intensive and inefficient in environments with a large number of entries.  
 
 To enhance performance and scalability, this release introduces **metadata indexing** that allows the backend to query these resources more efficiently.
@@ -17,7 +17,7 @@ To enhance performance and scalability, this release introduces **metadata index
 ## Impact
 
 Because of this change, you must run a metadata migration when upgrading to version **1.1.0** (or later).  
-This ensures existing Key-Value and Secrets data are correctly indexed for the new query structure.
+This ensures existing Key-Value and Secrets (EE) data are correctly indexed for the new query structure.
 
 When upgrading, include the migration command `- /app/kestra migrate metadata` in your startup configuration.
 For example, if you’re using **Docker Compose**, start your container with the newest version image and add the migration script in `command` as follows:
@@ -34,8 +34,12 @@ and then do the same with
 ```yaml
 kestra:
   image: registry.kestra.io/docker/kestra:latest
-  command:  migrate metadata secret
+  command:  migrate metadata secrets
 ```
+
+:::alert{type="info"}
+Secrets metadata migration is only necessary for Enterprise users. Open-source users will see an exception error: `❌ Secrets Metadata migration failed: Secret migration is not needed in the OSS version`.
+:::
 
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
 

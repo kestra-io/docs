@@ -1,26 +1,32 @@
 <template>
-    <div class="custom-details" :class="{ 'is-open': isOpen }">
-        <div class="summary" @click="toggleDetails" role="button" tabindex="0" @keydown.enter="toggleDetails" @keydown.space="toggleDetails">
-            <h3>{{ title }}</h3>
-            <span class="icon">
-                <ChevronDown />
-                <ChevronUp />
-            </span>
-        </div>
-        <Transition name="details-content" @enter="onEnter" @leave="onLeave">
-            <div v-show="isOpen" class="content">
-                <div class="content-inner">
-                    <slot />
-                </div>
+    <div class="accordion-item custom-details">
+        <h2 class="accordion-header">
+            <button
+                class="accordion-button"
+                :class="{ 'collapsed': !isOpen }"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="`#collapse-${uniqueId}`"
+                :aria-expanded="isOpen.toString()"
+                :aria-controls="`collapse-${uniqueId}`"
+            >
+                {{ title }}
+            </button>
+        </h2>
+        <div
+            :id="`collapse-${uniqueId}`"
+            class="accordion-collapse collapse"
+            :class="{ 'show': isOpen }"
+        >
+            <div class="accordion-body">
+                <slot />
             </div>
-        </Transition>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+    import { ref, computed, onMounted } from 'vue'
 
     const props = defineProps({
         title: {
@@ -34,122 +40,83 @@
     })
 
     const isOpen = ref(props.defaultOpen)
+    const uniqueId = computed(() => Math.random().toString(36).substr(2, 9))
 
-    function toggleDetails() {
-        isOpen.value = !isOpen.value
-    }
-
-    function onEnter(el: Element) {
-        const element = el as HTMLElement
-        element.style.height = '0'
-        element.offsetHeight
-        element.style.height = element.scrollHeight + 'px'
-    }
-
-    function onLeave(el: Element) {
-        const element = el as HTMLElement
-        element.style.height = element.scrollHeight + 'px'
-        element.offsetHeight
-        element.style.height = '0'
-    }
+    onMounted(() => {
+        if (typeof window !== 'undefined' && window.bootstrap) {
+            const collapseElement = document.getElementById(`collapse-${uniqueId.value}`)
+            if (collapseElement) {
+                const bsCollapse = new window.bootstrap.Collapse(collapseElement, {
+                    toggle: false
+                })
+                if (isOpen.value) {
+                    bsCollapse.show()
+                }
+            }
+        }
+    })
 </script>
 
 <style scoped lang="scss">
-
+    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "../../assets/styles/variable";
 
     .custom-details {
-        background: #121217 !important;
-        padding: 1rem;
+        background: $black-4;
         border: none !important;
-        border-bottom: 1px solid #252526 !important;
-        margin-bottom: 1rem;
+        border-bottom: 1px solid $black-3 !important;
 
-        .summary {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s ease;
+        .accordion-button {
+            color: var(--ks-content-primary) !important;
+            border: none !important;
+            padding: 1.5rem 1rem;
+            font-weight: 400;
+            box-shadow: none !important;
+            font-size: 18.4px;
 
             &:hover {
                 opacity: 0.8;
             }
 
-            > span:first-child {
-                color: var(--bs-purple);
-                font-size: $h3-font-size;
-                margin-right: 1rem;
+            &:focus {
+                box-shadow: none !important;
+                border: none !important;
             }
 
-            :deep(.material-design-icon > .material-design-icon__svg) {
-                bottom: 0;
-                transition: transform 0.3s ease;
+            &:not(.collapsed) {
+                color: var(--ks-content-primary) !important;
             }
 
-            h3 {
-                font-size: 18.4px;
-                margin-bottom: 0;
-                flex-grow: 1;
+            &::after {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+                transform: rotate(-180deg);
+                width: 1.25rem;
+                height: 1.25rem;
+                background-size: 1.25rem;
+            }
+
+            &.collapsed::after {
+                transform: rotate(0deg);
+            }
+
+            @include media-breakpoint-down(lg) {
+                font-size: 18px !important;
                 font-weight: 400;
-
-                @include media-breakpoint-down(lg) {
-                    font-size: 18px !important;
-                    font-weight: 400;
-                }
-            }
-
-            .icon {
-                transition: transform 0.3s ease;
-
-                .chevron-up-icon, .chevron-down-icon {
-                    font-size: 24px;
-                }
-                
-                .chevron-up-icon {
-                    display: none;
-                }
             }
         }
 
-        .content {
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            .content-inner {
-                margin-top: 1rem;
-                padding-left: 1rem;
-                border-left: 1px solid #9470ff;
-            }
+        .accordion-body {
+            color: var(--ks-content-primary) !important;
+            padding: 1rem;
+            border-left: 1px solid color-palette.$base-purple-300;
+            margin-left: 1rem;
+            margin-bottom: 1rem;
         }
-
-        &.is-open {
-            .summary .icon {
-                .chevron-down-icon {
-                    display: none;
-                }
-
-                .chevron-up-icon {
-                    display: block;
-                }
-            }
-        }
-    }
-
-    .details-content-enter-active,
-    .details-content-leave-active {
-        transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-    }
-
-    .details-content-enter-from,
-    .details-content-leave-to {
-        height: 0 !important;
     }
 
     h6 {
         font-weight: 700;
         color: var(--bs-black)
     }
-
 
 </style>
