@@ -1,13 +1,12 @@
 ---
-title: Split notifications plugins – Kestra 1.2.0
-sidebarTitle: Notifications plugin split
+title: Split notifications plugins (Non-Breaking Change)
 icon: /docs/icons/migration-guide.svg
 release: 1.2.0
 ---
 
 Kestra is splitting the monolithic notifications plugin into provider-specific plugins. 
 
-With this change, you can include only what you need and, in Enterprise, pin versions per provider.
+With this change, you can include only what you need and, in Enterprise, pin versions per provider. It is not necessary to update Flows – aliases are in place – and executions will process as usual. The update is something to keep in mind when using or searching for Notifications Plugins moving forward.
 
 # Migrate to the split notification plugins
 
