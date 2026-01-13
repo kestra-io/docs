@@ -61,8 +61,7 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, computed, watch} from "vue";
-    import {useRoute} from "vue-router";
+    import {ref} from "vue";
     import type {PluginMetadata} from "@kestra-io/ui-libs";
     import {useEventListener, useScroll} from "@vueuse/core";
     import type {TocLink} from "~/server/api/plugins";

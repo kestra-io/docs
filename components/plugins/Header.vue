@@ -35,7 +35,7 @@
                             data-bs-toggle="modal"
                             data-bs-target="#search-ai-modal"
                         >
-                            <img src="/docs/icons/ks-ai.svg" alt="Kestra AI" width="28" height="28"/>
+                            <img src="../docs/icons/ks-ai.svg" alt="Kestra AI" width="28" height="28"/>
                             Ask AI
                         </button>
                     </div>
