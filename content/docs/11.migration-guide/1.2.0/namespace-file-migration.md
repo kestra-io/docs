@@ -3,6 +3,7 @@ title: Namespace Files Metadata Migration
 icon: /docs/icons/migration-guide.svg
 release: 1.2.0
 ---
+The backend now indexes Namespace Files metadata to optimize search and scalability
 
 ## Overview
 

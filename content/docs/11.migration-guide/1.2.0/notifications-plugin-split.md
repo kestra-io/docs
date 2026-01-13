@@ -1,10 +1,12 @@
 ---
 title: Split notifications plugins (Non-BC)
 icon: /docs/icons/migration-guide.svg
-editions: ["OSS", "EE"]
+release: 1.2.0
 ---
 
-Kestra is splitting the monolithic notifications plugin into provider-specific plugins so you can include only what you need and, in Enterprise, pin versions per provider.
+Kestra is splitting the monolithic notifications plugin into provider-specific plugins. 
+
+With this change, you can include only what you need and, in Enterprise, pin versions per provider.
 
 # Migrate to the split notification plugins
 
