@@ -32,7 +32,7 @@ For this walkthrough we’ll use the `SlackExecution` task to send a detailed ex
 
 ## `errors` property
 
-If we add the task directly to a workflow, it runs every time—which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
+If we add the task directly to a workflow, it runs every time — which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
 
 Just like the `tasks` block, define `SlackExecution` under `errors`:
 

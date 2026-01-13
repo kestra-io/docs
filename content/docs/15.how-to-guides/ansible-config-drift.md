@@ -46,7 +46,7 @@ server3.example.test ansible_user=admin ansible_ssh_private_key_file=~/.ssh/id_r
 
 ## Flow: run Ansible and alert on drift
 
-This flow runs the playbook with the [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli), inspects each host result in a [`ForEach`](/plugins/core/flow/io.kestra.plugin.core.flow.foreach), and posts a Slack alert only when a host was changed using the [Slack Incoming Webhook task](/plugins/plugin-notifications/slack/io.kestra.plugin.notifications.slack.slackincomingwebhook). The schedule trigger is disabled by default—enable it to run nightly.
+This flow runs the playbook with the [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli), inspects each host result in a [`ForEach`](/plugins/core/flow/io.kestra.plugin.core.flow.foreach), and posts a Slack alert only when a host was changed using the [Slack Incoming Webhook task](/plugins/plugin-notifications/slack/io.kestra.plugin.notifications.slack.slackincomingwebhook). The schedule trigger is disabled by default — enable it to run nightly.
 
 ```yaml
 id: ansible_config_drift

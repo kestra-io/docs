@@ -119,7 +119,7 @@ The App Catalog is where users can find available apps. You can filter apps by n
 
 Kestra provides a direct access URL to the Apps Catalog via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`. This URL can be accessed by any Kestra user who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
 
-The catalog page requires authentication, so the Apps Catalog is never publicly accessible. It displays all Apps by default—if you want to exclude some from being shown in the catalog, add `access.catalog: true` to your App configuration. The users only see the Apps they are allowed to see based on their RBAC permissions—for example, you can limit some apps only to specific groups of users by defining the `group` property in your App as follows:
+The catalog page requires authentication, so the Apps Catalog is never publicly accessible. It displays all Apps by default — if you want to exclude some from being shown in the catalog, add `access.catalog: true` to your App configuration. The users only see the Apps they are allowed to see based on their RBAC permissions — for example, you can limit some apps only to specific groups of users by defining the `group` property in your App as follows:
 
 
 ```yaml
