@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {
-    const disabled = import.meta.env.DEV || context.url.hostname.indexOf("kestra.io") !== -1;
+    const disabled = import.meta.env.DEV || context.url.hostname === "kestra.io";
 
     const result = `# indexing ${disabled ? 'disabled' : 'enabled'}
 
