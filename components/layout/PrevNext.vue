@@ -45,14 +45,12 @@ const navDirFromPath = () => []
     export default defineComponent({
         components: {ArrowLeft, ArrowRight},
         async setup(props) {
-            const route = useRoute();
-
-            const {prev, next} = prevNext(props.navigation, route.path);
-
+            const {prev, next} = prevNext(props.navigation, props.currentPath);
             return {prev, next};
         },
         props: {
-            navigation: {type: Object, required: true}
+            navigation: {type: Object, required: true},
+            currentPath: {type: String, required: false}
         },
         methods: {
             directory(link) {
