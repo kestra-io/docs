@@ -17,9 +17,11 @@
                     class="subgroup-item"
                     :open="isSubGroupOpen(subGroup)"
                 >
-                    <summary class="subgroup-title" @click.prevent="navigateToSubGroup(subGroup)">
-                        <component :is="isSubGroupOpen(subGroup) ? ChevronDown : ChevronRight" class="chevron-icon" />
-                        {{ subGroupName(subGroup) }}
+                    <summary class="subgroup-title">
+                        <NuxtLink :to="navigateToSubgroup(subGroup)" class="subgroup-link">
+                            <component :is="isSubGroupOpen(subGroup) ? ChevronDown : ChevronRight" class="chevron-icon" />
+                            {{ subGroupName(subGroup) }}
+                        </NuxtLink>
                     </summary>
                     <PluginElements
                         :grouped-elements="groupPluginElements(subGroup)"
@@ -98,15 +100,9 @@
         props.pluginWrapper ? groupPluginElements(props.pluginWrapper) : {}
     );
 
-    const emit = defineEmits<{
-        (e: 'navigate', path: string): void
-    }>();
-
-
     const isSubGroupOpen = (subGroup: Plugin) => props.routeParts.length >= 2 && slugify(subGroupName(subGroup)) === props.routeParts[1];
 
-    const navigateToSubGroup = (subGroup: Plugin) =>
-        emit('navigate', `/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`);
+    const navigateToSubgroup = (subGroup: Plugin) => `/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`;
 </script>
 
 <style scoped lang="scss">
@@ -162,6 +158,10 @@
 
             &[open] .subgroup-title {
                 color: $purple-36;
+
+                .subgroup-link {
+                    color: $purple-36;
+                }
             }
         }
 
@@ -177,18 +177,27 @@
             gap: calc($spacer / 4);
             margin: 0;
             border: none;
-            padding-left: calc($spacer / 2);
             transition: color 0.2s ease;
+
+            .subgroup-link {
+                display: flex;
+                align-items: center;
+                gap: calc($spacer / 4);
+                padding-left: calc($spacer / 2);
+                text-decoration: none;
+                color: $white-1;
+                width: 100%;
+
+                &:hover {
+                    color: $purple-36;
+                }
+            }
 
             .chevron-icon {
                 font-size: $font-size-lg;
                 color: $white;
                 flex-shrink: 0;
                 top: -0.18rem;
-            }
-
-            &:hover {
-                color: $purple-36;
             }
         }
 
