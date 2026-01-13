@@ -10,7 +10,7 @@ image: /blogs/release-1-2.jpg
 ---
 
 
-Following user feedback, we've introduced enterprise-grade asset management, templated custom blueprints, comprehensive revision history for namespace files, and the ability to run concurrent executions from any trigger. Enterprise Edition users gain new secret managers and templated custom blueprints for streamlined workflow creation.
+Following user feedback, we've introduced enterprise-grade Asset management, Templated Custom Blueprints, comprehensive Revision History for Namespace Files, and the ability to run Concurrent Executions from any trigger.
 
 The table below highlights the key features of this release.
 
