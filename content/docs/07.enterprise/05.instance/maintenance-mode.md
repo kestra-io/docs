@@ -26,6 +26,6 @@ Maintenance Mode addresses a common challenge faced by organizations running num
 
 Maintenance Mode is accessible via the **Instance** menu section of the Kestra UI. You can switch to maintenance mode in the **Services** tab by clicking the **enter maintenance mode** button. This triggers a confirmation prompt and displays information regarding the transition into maintenance mode.
 
-![Enter Maintenance Mode](/docs/enterprise/maintenance-mode.png)
+![Enter Maintenance Mode](/docs/enterprise/instance/maintenance-mode.png)
 
 After completing all maintenance operations, you can exit maintenance mode with the same button and confirm that you want to switch back to a live state of your Kestra instance.

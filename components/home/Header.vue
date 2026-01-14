@@ -9,7 +9,7 @@
                 <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, from the UI and with AI</p>
                 <div class="buttons">
                     <NuxtLink
-                        href="/docs/getting-started/quickstart#start-kestra"
+                        href="/docs/quickstart#start-kestra"
                         class="btn btn-lg btn-primary me-3 mb-2"
                     >
                         Get Started!

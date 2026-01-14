@@ -216,7 +216,7 @@ export const menuItems: MenuItems = {
                 icon: VideoCheckOutline,
                 title: "Video Tutorials",
                 description: "your favourite tutorials in video",
-                link: "/tutorial-videos"
+                link: "/tutorial-videos/all"
             }
         ],
         additionalItems: [

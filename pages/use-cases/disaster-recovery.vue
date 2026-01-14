@@ -38,7 +38,7 @@
             <LayoutFooterContact
                 title="Ready to take your Infrastructure to the next level ?"
                 purpleButtonText="Get Started"
-                purpleButtonHref="/docs/getting-started/quickstart"
+                purpleButtonHref="/docs/quickstart"
                 darkButtonText="Talk to us"
                 darkButtonHref="/demo"
             />

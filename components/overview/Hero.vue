@@ -14,7 +14,7 @@
                     <NuxtLink href="/demo" class="btn btn-secondary mb-2" target="_blank">
                         Talk to us
                     </NuxtLink>
-                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra"
+                    <NuxtLink href="/docs/quickstart#start-kestra"
                         class="btn btn-primary ms-3 mb-2">
                         Get Started!
                     </NuxtLink>

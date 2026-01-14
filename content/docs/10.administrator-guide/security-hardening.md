@@ -25,7 +25,7 @@ Running workflows in isolated environments reduces the impact of potential malic
 
 To prevent the execution of malicious code, you can implement several strategies:
 
-- **Plugin configuration** — use Kestra’s plugin architecture, including [Plugin Versioning](../07.enterprise/05.instance/versioned-plugins.md), to control which plugins are allowed and [which should be prohibited](../07.enterprise/02.governance/worker-isolation.md).
+- **Plugin configuration** — use Kestra’s plugin architecture, including [Plugin Versioning](../07.enterprise/05.instance/versioned-plugins.md), to control which plugins are allowed and [which should be prohibited](/docs/enterprise/governance/worker-isolation).
 - **CI/CD validation** — implement a custom [Flow Validation step in your CI/CD pipeline](../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
 - **Java Security (EE-only)** — Enterprise Edition users can define security policies to restrict access to untrusted files, plugins, or network resources.
 

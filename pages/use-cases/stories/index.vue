@@ -11,7 +11,7 @@
                 title="Getting started with Kestra"
                 subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
                 darkButtonText="Get started"
-                darkButtonHref="/docs/getting-started/quickstart#start-kestra"
+                darkButtonHref="/docs/quickstart#start-kestra"
                 purpleButtonText="Read the docs"
                 purpleButtonHref="/docs"
             />

@@ -116,7 +116,7 @@ The power of this architecture lies in combining serverless infrastructure with 
 
 The best part about Kestra is that everything works out of the box. Thanks to the built-in plugins, you don’t have to fight with Python dependencies to install dbt or Modal — plugins are pre-installed and ready to use. The powerful UI lets you interactively adjust workflow inputs, skip steps if needed, and easily track all output artifacts without jumping through hoops. Adding Modal and BigQuery to the mix provides serverless compute on-demand and a scalable data warehouse to future-proof your data platform.
 
-If you want to give this setup a try, you can find the entire code for this project in the [kestra-io/serverless](https://github.com/kestra-io/serverless) repository. [Launch Kestra](https://kestra.io/docs/getting-started/quickstart#start-kestra) in Docker, add the flow from that GitHub repository, and run it. That's all you need to get started with serverless, interactive workflows.
+If you want to give this setup a try, you can find the entire code for this project in the [kestra-io/serverless](https://github.com/kestra-io/serverless) repository. [Launch Kestra](https://kestra.io/docs/quickstart#start-kestra) in Docker, add the flow from that GitHub repository, and run it. That's all you need to get started with serverless, interactive workflows.
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
 

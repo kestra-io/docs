@@ -56,7 +56,7 @@ There are two notable approaches here:
 
 Choosing one or the other depends on the situation and the developer's expertise. Both provide straightforward ways to create custom modular components in your workflows.
 
-Alternatively, you could build custom Python scripts (especially using the [embedded Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
+Alternatively, you could build custom Python scripts (especially using the [embedded Code Editor](https://kestra.io/docs/concepts/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
 
 ![flow subflow](/blogs/2023-12-11-custom-plugin/flow_subflow.jpg)
 

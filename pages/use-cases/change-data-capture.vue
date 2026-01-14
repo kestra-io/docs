@@ -45,7 +45,7 @@
                 darkButtonText="Talk to us"
                 darkButtonHref="/demo"
                 purpleButtonText="Get Started"
-                purpleButtonHref="/docs/getting-started/quickstart"
+                purpleButtonHref="/docs/quickstart"
             />
         </NuxtLazyHydrate>
     </div>
