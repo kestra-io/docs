@@ -1,5 +1,5 @@
 import posthog from "posthog-js";
-import identify from "../src/utils/identify";
+import identify from "~/utils/identify";
 import { useGtm } from "@gtm-support/vue-gtm";
 
 declare global{

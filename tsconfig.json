@@ -11,23 +11,16 @@
     "jsx": "preserve",
     "paths": {
       "~/assets/*": [
-        "./assets/*",
         "./src/assets/*"
       ],
       "~/composables/*": [
-        "./composables/*",
         "./src/composables/*"
       ],
       "~/utils/*": [
-        "./utils/*",
         "./src/utils/*"
       ],
       "~/components/*": [
-        "./components/*",
         "./src/components/*"
-      ],
-      "~/server/*": [
-        "./server/*"
       ],
     }
   }

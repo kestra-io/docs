@@ -1,5 +1,5 @@
 import posthog from 'posthog-js'
-import identify from "../src/utils/identify.js";
+import identify from "~/utils/identify.js";
 import axios from "axios";
 import { useGtm } from '@gtm-support/vue-gtm';
 

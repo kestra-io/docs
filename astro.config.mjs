@@ -10,10 +10,10 @@ import expressiveCode from "astro-expressive-code";
 import remarkDirective from "remark-directive";
 // @ts-expect-error no types provided by package
 import remarkLinkRewrite from "remark-link-rewrite";
-import remarkCustomElements from "./utils/remark-custom-elements/index.mjs";
-import remarkClassname from "./utils/remark-classname/index.mjs";
+import remarkCustomElements from "./src/utils/remark-custom-elements/index.mjs";
+import remarkClassname from "./src/utils/remark-classname/index.mjs";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
-import generateId from "./utils/generateId";
+import generateId from "./src/utils/generateId";
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
@@ -74,9 +74,8 @@ export default defineConfig({
         resolve: {
             alias: {
                 "#mdc-imports": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
-                "#mdc-configs": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js")
-                // FIXME: required for vue js but conflict with astro imports, need to move all to src
-                // '~': path.resolve('./src')
+                "#mdc-configs": path.resolve(__dirname, "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js"),
+                '~': path.resolve('./src')
             }
         },
         css: {
