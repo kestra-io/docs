@@ -26,24 +26,23 @@ const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePat
 })).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()));
 
 const githubData = await getValues();
-const quotes = await import('~/data/oss-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
 
 const blueprints  = await $fetchApi<{results: Blueprint[]}>("/blueprints/versions/latest?page=1&size=20")
 const stories = await $fetchApi<{results: any[]}>("/customer-stories-v2?featured=true")
-const enterpriseQuotes = await import('~/data/enterprise-quotes.json').then((qs) => qs.default.sort(() => Math.random() - 0.5))
+
 ---
 
 <Layout>
     <Header client:load />
     <LogosTable logos={logos} />
     <OpenSource {...githubData} />
-    <OpenSourceQuotes quotes={quotes} client:idle />
+    <OpenSourceQuotes client:visible />
     <Features />
     <EveryDev />
     <Experience client:visible />
     <PluginsBox />
     <BlueprintsRender blueprints={blueprints.results} client:visible />
     <Enterprise stories={stories.results} client:visible />
-    <EnterpriseQuotesRender quotes={enterpriseQuotes} client:visible />
+    <EnterpriseQuotesRender client:visible />
     <CTA client:visible />
 </Layout>

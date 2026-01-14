@@ -26,10 +26,6 @@
         "./components/*",
         "./src/components/*"
       ],
-      "~/data/*": [
-        "./data/*",
-        "./src/data/*"
-      ],
       "~/server/*": [
         "./server/*"
       ],
