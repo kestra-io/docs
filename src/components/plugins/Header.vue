@@ -35,7 +35,7 @@
                             data-bs-toggle="modal"
                             data-bs-target="#search-ai-modal"
                         >
-                            <img src="../docs/icons/ks-ai.svg" alt="Kestra AI" width="28" height="28"/>
+                            <img :src="KSAIImg.src" alt="Kestra AI" width="28" height="28"/>
                             Ask AI
                         </button>
                     </div>
@@ -62,6 +62,7 @@
     import Close from "vue-material-design-icons/Close.vue"
     import {useMediaQuery} from '@vueuse/core'
     import {formatCategoryName} from "~/utils/pluginUtils";
+    import KSAIImg from "../docs/icons/ks-ai.svg"
 
     const isMobile = useMediaQuery('(max-width: 991px)')
 

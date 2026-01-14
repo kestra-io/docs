@@ -16,7 +16,7 @@
                                         data-bs-toggle="modal"
                                         data-bs-target="#search-ai-modal"
                                     >
-                                        <img src="../docs/icons/ks-ai.svg" alt="Kestra AI" width="30" height="30" />
+                                        <img :src="KSAIImg.src" alt="Kestra AI" width="30" height="30" />
                                         <span class="title d-none d-md-inline">Ask Kestra AI</span>
                                         <span class="title d-md-none">Ask AI</span>
                                     </button>
@@ -111,6 +111,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue";
     import AiChatDialog from "~/components/ai/AiChatDialog.vue";
+    import KSAIImg from "../docs/icons/ks-ai.svg"
 </script>
 
 <script>
