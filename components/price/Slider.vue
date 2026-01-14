@@ -87,12 +87,16 @@
   import Section from '~/components/layout/Section.vue';
   import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
   import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
+  import { Carousel, Slide, Navigation} from "vue3-carousel";
   import 'vue3-carousel/dist/carousel.css'
   export default {
     components: {
       Section,
       ArrowLeft,
       ArrowRight,
+      Carousel,
+      Slide,
+      Navigation
     },
     data() {
       return {
