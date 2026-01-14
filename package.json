@@ -27,7 +27,7 @@
     "@vue-flow/core": "^1.48.0",
     "@vueuse/core": "^14.1.0",
     "axios": "^1.13.2",
-    "better-sqlite3": "^12.5.0",
+    "better-sqlite3": "^12.6.0",
     "bootstrap": "^5.3.8",
     "dayjs": "^1.11.19",
     "eventsource-parser": "^3.0.6",
