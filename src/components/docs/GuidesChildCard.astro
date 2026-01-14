@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue";
+
+const currentPage = Astro.url.pathname.endsWith("/")
+  ? Astro.url.pathname.slice(0, -1)
+  : Astro.url.pathname;
+
+const contentPath = currentPage.replace('/docs/', '');
+
+const guides = await getCollection('docs').then((docs: CollectionEntry<'docs'>[]) => {
+  return docs
+    .filter((doc: CollectionEntry<'docs'>) => {
+      return doc.id.startsWith(`${contentPath}/`) &&
+             !doc.id.slice(contentPath.length + 1).includes('/');
+    })
+    .map((doc: CollectionEntry<'docs'>) => ({
+      title: doc.data.title,
+      description: doc.data.description,
+      path: `/docs/${doc.id}`,
+      icon: doc.data.icon,
+      stage: doc.data.stage,
+      topics: doc.data.topics,
+    }));
+});
+
+---
+
+<GuidesChildCardRender navigation={guides} />

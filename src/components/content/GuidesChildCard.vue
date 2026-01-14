@@ -1,7 +1,7 @@
 <template>
     <div class="p-0 row filters">
         <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
-            <SelectMultiSelect
+            <MultiSelect
                 name="topic"
                 :selectedValue="topic"
                 :options="topicOptions"
@@ -12,7 +12,7 @@
             />
         </div>
         <div class="col-xl-auto col-sm-6 col-12 pb-3 pb-xl-0">
-            <SelectMultiSelect
+            <MultiSelect
                 name="stage"
                 :selectedValue="stage"
                 :options="stageOptions"
@@ -51,9 +51,10 @@
 </template>
 
 <script setup>
+    import { ref, watch, onMounted, onUnmounted } from 'vue';
     import Magnify from "vue-material-design-icons/Magnify.vue";
-    import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
-    const {public:{CollectionNames}} = useRuntimeConfig()
+    import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue";
+    import MultiSelect from "~/components/select/MultiSelect.vue";
 
 
     const props = defineProps({
@@ -61,9 +62,11 @@
             type: String,
             default: undefined
         },
+        navigation: {
+            type: Array,
+            default: undefined
+        }
     });
-
-    const route = useRoute();
 
     const stage = ref([]);
     const topic = ref([]);
@@ -115,42 +118,33 @@
       search.value = '';
     };
 
-    let currentPage = null;
+    const useInitialNav = Array.isArray(props.navigation) && props.navigation.length > 0;
 
-    if (props.pageUrl) {
-        currentPage = props.pageUrl;
-    } else {
-        currentPage = route.path;
-    }
-
-    currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-
-    function fetchChildDocs(){
-        let query = queryCollection(CollectionNames.docs)
-            .where('path', 'LIKE', `${currentPage}/%`)
-            // only take direct children
-            .where('path', 'NOT LIKE', `${currentPage}/%/%`)
+    function filterLocalNavigation() {
+        let results = props.navigation ?? [];
 
         if (Array.isArray(stage.value) && stage.value?.length > 0) {
-            query = query.where('stage', 'IN', stage.value);
+            results = results.filter(item => stage.value.includes(item.stage));
         }
 
         if (Array.isArray(topic.value) && topic.value?.length > 0) {
-            for (const soloTopic of topic.value) {
-                query = query.where('topics', 'LIKE', `%${soloTopic}%`);
-            }
+            results = results.filter(item => {
+                for (const t of topic.value) {
+                    if (!item.topics?.includes(t)) return false;
+                }
+                return true;
+            });
         }
 
         if (search.value) {
-            query = query.where('title', 'LIKE', `%${search.value}%`);
+            const q = search.value.toLowerCase();
+            results = results.filter(item => (item.title || '').toLowerCase().includes(q) || (item.description || '').toLowerCase().includes(q));
         }
 
-        return query.all();
+        return results;
     }
 
-    const navigation = ref([])
-    navigation.value = await fetchChildDocs()
-
+    const navigation = ref(props.navigation ?? [])
 
     function debounce(func, delay) {
       let timeout;
@@ -164,12 +158,12 @@
       };
     }
 
-    const debouncedFilterPlugins = debounce(async () => {
-        navigation.value = await fetchChildDocs()
-    }, 1000);
+    const debouncedFilter = debounce(() => {
+        navigation.value = filterLocalNavigation();
+    }, 300);
 
-    watch([currentPage, search, () => stage.value, () => topic.value], () => {
-      debouncedFilterPlugins();
+    watch([search, () => stage.value, () => topic.value], () => {
+      debouncedFilter();
     });
 
 </script>
@@ -185,6 +179,7 @@
 
     .card {
         padding: 1rem;
+        background: $black-4;
     }
 
     .card-title {
