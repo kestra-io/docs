@@ -5,11 +5,11 @@
         <div class="col-12 col-lg-6 d-flex">
           <div class="schedule-demo">
             <h1>
-              Lets Talk About <br>
+              Let's Talk About <br>
               <span>Orchestration</span>
             </h1>
             <p class="description">
-              Connect with our product specialists and evaluate Kestra Enterprise
+              Connect with our product specialists to explore Kestra Enterprise
             </p>
             <div class="cards d-none d-md-block">
               <div v-for="card in cards" :key="card.title" class="card-item">
@@ -53,9 +53,9 @@
 
               <div class="col-12">
                 <label for="demo-email" class="form-label mb-0">
-                  Company Email
+                  Company email
                 </label>
-                <input id="demo-email" name="email" type="email" class="form-control" placeholder="Company Email"
+                <input id="demo-email" name="email" type="email" class="form-control" placeholder="Company email"
                   required>
               </div>
 
@@ -132,21 +132,21 @@ const isMobile = useMediaQuery("(max-width: 767px)");
 const cards = ref([
   {
     img: scaleImg.src,
-    alt: "Work",
+    alt: "Workflow scaling",
     title: "Scale Your Work",
-    description: "Accelerate workflow creation and deployment with Kestra Enterprise's automation and seamless integration."
+    description: "Accelerate workflow creation and deployment with a platform designed for scale."
   },
   {
     img: securityImg.src,
-    alt: "Security",
+    alt: "Security and compliance",
     title: "Ensure Security and Compliance",
-    description: "Guarantee the safety and integrity of your data with high-security standards, precise access control, and centralized secret management."
+    description: "Protect your data with strong access controls and centralized secret management."
   },
   {
     img: handshakeImg.src,
-    alt: "Handshake",
+    alt: "Team collaboration",
     title: "Empower Your Team",
-    description: "Enable better collaboration and efficient workflow management, ensuring your team can operate smoothly and effectively across all business critical projects."
+    description: "Make it easier for teams to collaborate and manage workflows across business-critical projects."
   }
 ]);
 
@@ -214,7 +214,7 @@ const onSubmit = async (e: Event) => {
 
     if (!form?.checkValidity()) {
       valid.value = false;
-      message.value = "Invalid form, please review the fields.";
+      message.value = "Please check the form fields and try again.";
       return;
     }
 
