@@ -1,5 +1,5 @@
 <template>
-    <article class="video-container">
+    <article class="video-responsive">
         <div class="thumbnail">
             <NuxtImg
                 class="thumbnail-img"
@@ -75,7 +75,7 @@ const handleImageError = () => hasImageFailed.value = true
 <style lang="scss" scoped>
 @import "~/assets/styles/variable";
 
-.video-container {
+.video-responsive {
     display: flex;
     flex-direction: column;
     gap: calc($spacer * 0.25);

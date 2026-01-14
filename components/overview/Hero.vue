@@ -5,7 +5,7 @@
                 <p class="highlight">Platform Capabilities</p>
                 <h1>Overview</h1>
 
-                <div class="video-container ">
+                <div class="video-responsive">
                     <iframe src="https://www.youtube.com/embed/xnGYiWFM2uk?si=Me1gxTBmI-YouP3H"
                         title="Getting Started with Kestra in 5 minutes" frameborder="0" allowfullscreen />
                 </div>
@@ -153,7 +153,7 @@
         }
     }
 
-    .video-container  {
+    .video-responsive {
         position: relative;
         width: 100%;
         max-width: 774px;

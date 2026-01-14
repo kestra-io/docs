@@ -90,12 +90,12 @@
 
 
     .video-container  {
-    padding-bottom: 56.5%;
-    @include media-breakpoint-down(sm) {
-        padding-bottom: 61%;
+        padding-bottom: 56.5%;
+        @include media-breakpoint-down(sm) {
+            padding-bottom: 61%;
+        }
+        border-radius: 15px;
     }
-    border-radius: 15px;
-}
 
     @media (max-width: 768px) {
         [data-aos] {
