@@ -513,7 +513,7 @@ const elementTitle = (() => Object.fromEntries(
   </div>
 </Layout>
 
-<style lang="scss">
+<style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "~/assets/styles/variable";
 
@@ -654,10 +654,6 @@ const elementTitle = (() => Object.fromEntries(
     }
 
     .bd-main{
-        :deep(p) {
-            line-height: 1.75rem;
-            font-size: 1rem;
-        }
 
         :deep(.bd-markdown > h2) {
             margin-top: calc($spacer * 4.12);
@@ -773,7 +769,6 @@ const elementTitle = (() => Object.fromEntries(
             }
         }
     }
-
 
     :deep(.bd-markdown > h2 > a > span) {
         display: inline !important;
