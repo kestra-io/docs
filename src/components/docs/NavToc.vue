@@ -214,7 +214,7 @@
             max-height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            min-width: 281px;
+            min-width: 250px;
             z-index: 10;
 
             &:not(.plugin) {
@@ -250,7 +250,7 @@
 
             @include media-breakpoint-up(lg) {
                 overflow-y: auto;
-                max-height: 400px;
+                max-height: 600px;
                 overflow-x: hidden;
             }
 

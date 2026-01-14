@@ -58,7 +58,7 @@ const jsonLinkedData = {
         <meta property="twitter:image" content={image} />
         <script type="application/ld+json" set:html={JSON.stringify(jsonLinkedData)} />
     </Fragment>
-    <div class="container">
+    <div class="container px-0">
         {post && (
             <article
                 class="bd-main order-1"
@@ -110,6 +110,16 @@ const jsonLinkedData = {
             z-index: -147;
             filter: blur(110px);
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+        }
+    }
+
+    .bd-content {
+        max-width: 100%;
+    }
+
+    @media(min-width: 1400px) {
+        .bd-content {
+            padding-right:2.75rem
         }
     }
 
