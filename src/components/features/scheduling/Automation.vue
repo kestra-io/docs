@@ -21,7 +21,8 @@
                             />
                             <h6 class="card-heading">Backfill Support</h6>
                         </div>
-                        <p class="card-para">Kestra's Backfills can automatically catch up on missed workflows after an outage. You can trigger backfills from the UI without having to redeploy your code.</p>
+                        <p class="card-para">Kestra's Backfills can automatically catch up on missed workflows after an
+                            outage. You can trigger backfills from the UI without having to redeploy your code.</p>
                     </div>
                 </div>
             </div>
@@ -59,7 +60,8 @@
                             />
                             <h6 class="card-heading">Event-Driven Triggers</h6>
                         </div>
-                        <p class="card-para">Initiate workflows based on real-time events, and schedule them to listen for
+                        <p class="card-para">Initiate workflows based on real-time events, and schedule them to listen
+                            for
                             specific events at designated times.</p>
                     </div>
                 </div>
@@ -79,7 +81,8 @@
                             />
                             <h6 class="card-heading">API-Based Triggers</h6>
                         </div>
-                        <p class="card-para"> Leverage API-based triggers for smooth integration with your existing systems,
+                        <p class="card-para"> Leverage API-based triggers for smooth integration with your existing
+                            systems,
                             allowing automated workflows to adapt to external conditions.</p>
                     </div>
                 </div>
@@ -99,82 +102,91 @@
                             />
                             <h6 class="card-heading">Modularity with Subflows</h6>
                         </div>
-                        <p class="card-para">Build modular and reusable reusable components. Write your logic once and call it from any other workflow when needed. Pass data between flows for seamless orchestration.</p>
+                        <p class="card-para">
+                            Build modular and reusable reusable components. Write your logic once and
+                            call it from any other workflow when needed. Pass data between flows for seamless
+                            orchestration.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </Section>
 </template>
+
 <script setup>
-import Section from '~/components/layout/Section.vue';
+    import Section from "~/components/layout/Section.vue";
 </script>
+
 <style scoped lang="scss">
-@import "~/assets/styles/variable";
+    @import "~/assets/styles/variable";
 
-.container {
-    padding: calc($spacer * 4) 0;
-    background-image: url('/landing/features/scheduling/masking.svg');
-    z-index: 99;
-    .heading{
-        max-width: 500px;
-    }
-    .title {
-        font-weight: 300;
-        font-size: $font-size-3xl;
+    .container {
+        padding: calc($spacer * 4) 0;
+        background-image: url('/landing/features/scheduling/masking.svg');
+        z-index: 99;
+        color: $white;
 
-        &-animated {
-            background: linear-gradient(90deg, #E151F7 57.52%, #5C47F5 92.48%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .heading {
+            max-width: 500px;
+        }
 
+        .title {
+            font-weight: 300;
+            font-size: $font-size-3xl;
+
+            &-animated {
+                background: linear-gradient(90deg, #E151F7 57.52%, #5C47F5 92.48%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
         }
     }
-}
 
-h3 {
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.card {
-    background-color: $black-2;
-    color: $white;
-    z-index: 99;
-    box-shadow: none !important;
-
-    &-body {
-        padding: 4rem 2rem 2rem 2rem;
+    h3 {
+        text-align: center;
+        margin-bottom: 0;
     }
 
-    &-heading {
-        font-size: $font-size-xl;
-        font-weight: 400;
-        line-height: 2rem;
+    .card {
+        background-color: $black-2;
+        color: $white;
+        z-index: 99;
+        box-shadow: none !important;
+
+        &-body {
+            padding: 4rem 2rem 2rem 2rem;
+        }
+
+        &-heading {
+            font-size: $font-size-xl;
+            font-weight: 400;
+            line-height: 2rem;
+        }
+
+        &-para {
+            font-size: $font-size-sm;
+            font-weight: 400;
+            line-height: 1.375;
+            color: $white-1;
+        }
     }
 
-    &-para {
-        font-size: $font-size-sm;
-        font-weight: 400;
-        line-height: 1.375;
-        color: $white-1;
+    .mask {
+        position: relative;
+        z-index: 99;
+
+        &::after {
+            content: "";
+            position: absolute;
+            height: 266.493px;
+            width: 170.248px;
+            right: -94.184px;
+            bottom: -232.493px;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0.00), #6117FF 100%);
+            filter: blur(100px);
+        }
     }
-}
-.mask{
-    position: relative;
-    z-index: 99;
-    &::after{
-        content: "";
-        position: absolute;
-        height: 266.493px;
-        width: 170.248px;
-        background: url("/landing/features/scheduling/light-mask.svg") no-repeat;
-        right: -94.184px;
-        bottom: -232.493px;
-        z-index: 10;
-        background: linear-gradient(180deg, rgba(98, 24, 255, 0.00), #6117FF 100%);
-        filter: blur(100px);
-    }
-}
 </style>

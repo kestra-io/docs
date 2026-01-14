@@ -22,7 +22,7 @@
                     format="webp"
                     width="806px"
                     height="601px"
-                    class="zoom img-fluid"
+                    class="img-fluid"
                     src="/landing/features/scheduling/header/header.svg"
                     alt="A screenshot of the Scheduling page"
                 />
@@ -30,6 +30,7 @@
         </div>
     </div>
 </template>
+
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
