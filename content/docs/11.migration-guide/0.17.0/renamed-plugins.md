@@ -4,9 +4,11 @@ icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
+
+## Renamed Plugins
+
 Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now `pluginDefaults`. While these are non-breaking changes, we recommend updating your flows to use the new names.
 
-## Why the Change?
 Multiple plugin types have been moved to a new package structure under `io.kestra.plugin.core` to make the plugin system more consistent and intuitive.
 
 :::alert{type="warning"}
@@ -160,5 +162,3 @@ The Redis plugin has been updated to make it easier to extend and maintain. The 
 | `io.kestra.plugin.redis.Get`         | `io.kestra.plugin.redis.string.Get`           |
 | `io.kestra.plugin.redis.Set`         | `io.kestra.plugin.redis.string.Set`           |
 | `io.kestra.plugin.redis.Delete`      | `io.kestra.plugin.redis.string.Delete`        |
-
-

@@ -7,6 +7,8 @@ version: ">= 0.18.0"
 
 Sync Users and Groups from authentik to Kestra using SCIM.
 
+## authentik SCIM provisioning
+
 ## Prerequisites
 
 - **authentik Account**: An account with administrative privileges to configure SCIM provisioning.
@@ -25,7 +27,7 @@ Tenants are enabled by default. Please refer to the [Migration Guide](../../../1
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
+1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.

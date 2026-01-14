@@ -5,9 +5,10 @@ release: 0.21.0
 editions: ["OSS", "EE"]
 ---
 
-Restarting Parent Flow with Failed Subflow
 
-## Overview
+## Restarting parent flow
+
+Restarting Parent Flow with Failed Subflow
 
 When restarting an execution, `Subflow` or `ForEachItem` tasks now restart the existing failed subflow execution rather than creating a new one. This behavior is configurable via the new `restartBehavior` enum property; setting it to `NEW_EXECUTION` retains the previous behavior ([PR #6799](https://github.com/kestra-io/kestra/pull/6799); [Issue #6722](https://github.com/kestra-io/kestra/issues/6722)). A `system.restarted: true` label is added during restart for tracking, and the underlying subflow execution storage table is retained to avoid migration issues (scheduled for removal in v0.22).
 

@@ -1,18 +1,19 @@
 ---
-title: AI Workflows
+title: AI Workflows in Kestra – Orchestrate with Your Preferred LLM
+sidebarTitle: AI Workflows
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---
 
 Build AI workflows with your preferred LLM.
 
+## Orchestrate AI workflows with your preferred LLM
+
 Kestra provides plugins for multiple LLM providers and continues to add more with each release. You can design flows that use your chosen model and seamlessly integrate AI into orchestration workflows.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/videoseries?si=uFFbyDPJ8-zGDVOI&amp;list=PLEK3H8YwZn1qe8T2PSE8qfYJF4IEhtUEH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-## AI workflows
 
 The following examples demonstrate Kestra AI plugins for a variety of workflows. You can adapt each example to your chosen provider. Three key properties are important to understand:
 
@@ -58,7 +59,7 @@ tasks:
     condition: "{{ outputs.ask_ai['predictions'] | first | jq('.go_sailing') | first }}"
     then:
       - id: notify_me
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
@@ -178,7 +179,7 @@ tasks:
       openai_prompt: "{{ inputs.image_prompt }}"
 
   - id: send_image
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     content: "Are you happy with the image: {{ outputs.gen_img.outputs.image }}. Approve it here: http://localhost:8082/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}} "
     url: "{{ vars.discord_webhook }}"
 
@@ -209,7 +210,7 @@ tasks:
           openai_prompt: "{{ outputs.wait_for_approval.onResume.feedback }}"
 
       - id: send_new_image
-        type: io.kestra.plugin.notifications.discord.DiscordExecution
+        type: io.kestra.plugin.discord.DiscordExecution
         content: "Here's the new image with your feedback: {{ outputs.retry.outputs.image }}"
         url: "{{ vars.discord_webhook }}"
 ```
@@ -276,7 +277,7 @@ tasks:
       - output.txt
 
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {{

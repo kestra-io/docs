@@ -1,10 +1,11 @@
 ---
-title: Microsoft as an OIDC SSO Provider
+title: Set Up Microsoft OIDC SSO for Kestra
+sidebarTitle: Microsoft OIDC SSO
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-## Using Microsoft as an OIDC SSO provider
+## Set up Microsoft OIDC SSO
 
 To configure Microsoft authentication, follow these steps:
 

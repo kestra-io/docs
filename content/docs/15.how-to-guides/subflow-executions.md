@@ -8,6 +8,8 @@ topics:
 
 How to configure your flows so that failed subflow executions resume correctly without rerunning successful tasks.
 
+## Managing retries, restarts and replays with subflow executions
+
 ---
 
 When working with subflows, it’s important to understand the difference between retries at the **Subflow task level** and retries at the **flow level** within the subflow. This guide explains how to manage retries, restarts, and replays in subflow executions to avoid unnecessary re-execution of completed tasks.
@@ -108,4 +110,3 @@ When `my_subflow` is configured with `behavior: RETRY_FAILED_TASK`, it automatic
 * Use **`behavior: RETRY_FAILED_TASK`** to continue from the failed task.
 * Avoid configuring conflicting retry behaviors between parent and subflow.
 * Use subflow task retries only if you want to **create an entirely new subflow execution** in each retry attempt - when `retry` is defined on the `Subflow`-task level, it will **always** create an entirely new execution from start rather than restarting the existing child execution from failed task, regardless of the `behavior` configured on the flow-level in the subflow.
-

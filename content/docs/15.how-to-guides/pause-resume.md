@@ -8,7 +8,7 @@ topics:
 
 How to Pause and Resume your flows.
 
-## The use cases for pausing and resuming workflows
+## Pause and Resume Flows in Kestra
 
 Here are common scenarios where the Pause and Resume feature is particularly useful:
 1. **Output Validation**: you can pause a workflow to check the logs and view the generated outputs before processing downstream tasks.
@@ -78,7 +78,7 @@ inputs:
 
 tasks:
   - id: sendApprovalRequest
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ inputs.slack_webhook_uri }}"
     payload: |
       {

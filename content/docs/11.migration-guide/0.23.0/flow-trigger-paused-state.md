@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+## Flow trigger now also reacts to PAUSED state by default
 
 Next to the terminated states, the Flow trigger now also reacts to the `PAUSED` state to make it easier to respond to a paused workflow, for example, to send alerts to the right stakeholders to manually approve and resume paused workflow executions.
 
@@ -33,4 +34,3 @@ This flow would be triggered for each terminated execution in the `company` name
 ## After
 
 From 0.23 on, this flow will be triggered for each **terminated** and `PAUSED` execution in the `company` namespace.
-

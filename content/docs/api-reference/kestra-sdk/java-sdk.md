@@ -1,15 +1,16 @@
 ---
-title: Kestra Java SDK
+title: Kestra Java SDK – Client Setup and Examples
+sidebarTitle: Java SDK
 icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 Interact with Kestra's API via Java SDK.
 
+## Use the Kestra Java SDK
+
 ## Installation
 
 Choose the installation method that matches your environment.
-
-
 
 ### For Maven users
 
@@ -252,7 +253,7 @@ public class ExecutionStreaming {
 ::alert{type="info"}
 **Tips**
 - Use `followExecution` in interactive tools or long-running services to surface progress in real time.  
-- The first event is an empty keepalive payload—skip it before processing subsequent updates.  
+- The first event is an empty keepalive payload — skip it before processing subsequent updates.  
 - If you only need the final result, poll the execution by ID instead of streaming.  
 - Consider backoff/retry logic when streaming over unstable networks.
 ::

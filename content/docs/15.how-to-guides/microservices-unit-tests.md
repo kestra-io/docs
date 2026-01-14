@@ -10,7 +10,7 @@ editions: ["EE"]
 
 Build an automated guardrail that pings a microservice endpoint, alerts Slack when it fails, and runs only when its unit tests pass.
 
-## Overview
+## Safeguard Microservices With Unit Tests
 
 Modern microservices and API backends often expose health endpoints. With Kestra you can monitor those endpoints, write unit tests to validate the monitoring flow, and gate downstream automations on the test results. This guide walks through:
 
@@ -54,7 +54,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {

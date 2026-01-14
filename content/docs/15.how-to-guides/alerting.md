@@ -9,6 +9,8 @@ topics:
 
 Configure alerts that fire whenever a workflow fails.
 
+## Configure Alerts in Kestra
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -16,8 +18,6 @@ Configure alerts that fire whenever a workflow fails.
 ---
 
 Alerting is essential to keeping production systems reliable. Kestra makes it easy with multiple ways to attach alerts to workflows so you always know what’s happening.
-
-## Setting up Alerts in Kestra
 
 Kestra’s Notifications plugin group ships tasks for popular platforms such as Slack, Teams, and PagerDuty, making it straightforward to configure alerts directly inside workflows.
 
@@ -32,14 +32,14 @@ For this walkthrough we’ll use the `SlackExecution` task to send a detailed ex
 
 ## `errors` property
 
-If we add the task directly to a workflow, it runs every time—which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
+If we add the task directly to a workflow, it runs every time — which isn’t useful. Instead, place it in the `errors` block so it only fires when the execution fails.
 
 Just like the `tasks` block, define `SlackExecution` under `errors`:
 
 ```yaml
 errors:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -62,7 +62,7 @@ namespace: system
 
 tasks:
   - id: alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
@@ -87,7 +87,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"

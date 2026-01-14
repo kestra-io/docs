@@ -1,11 +1,14 @@
 ---
-title: Configuration
+title: Configure Kestra – Settings, Environments, and Defaults
+sidebarTitle: Configuration
 icon: /docs/icons/admin.svg
 ---
 
 Configuration reference for Kestra.
 
 Almost everything in Kestra is configurable. This page covers key options such as data sources, logging, security, and AI.
+
+## Configure Kestra for your environment
 
 Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](../02.installation/02.docker.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
 
@@ -1014,6 +1017,37 @@ Set a global prefix:
 kestra:
   metrics:
     prefix: kestra
+```
+
+````markdown name=docs/label-based-metrics.md
+
+### Label-based metrics
+
+Kestra can include selected execution/trigger label keys as metric tags. This is opt-in and intended for low-cardinality labels (e.g. `country`, `environment`, `region`).
+
+Add the label keys you want to expose under `kestra.metrics.labels` (Micronaut YAML config):
+
+```yaml
+kestra:
+  metrics:
+    # List of execution/trigger label keys to expose as metric tags.
+    labels:
+      - country
+      - environment
+```
+
+Behavior:
+- For each configured key, metrics gain a tag named `label_<key>` (for `country` -> `label_country`).
+- If an execution/trigger does not have a configured label key, the tag value is set to the sentinel `__none__`. This keeps the set of tag keys stable and avoids metric series fragmentation.
+
+### Example result (Prometheus-style exposition)
+
+Configured keys: `country`, `environment`
+
+If an execution has label `country=Germany` but no `environment` label, a resulting metric sample may look like:
+
+```
+kestra_executions_total{flow_id="my-flow", namespace_id="default", state="SUCCESS", label_country="Germany", label_environment="__none__"} 1
 ```
 
 ## Micronaut

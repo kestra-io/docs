@@ -1,10 +1,13 @@
 ---
-title: Secrets Manager
+title: Configure External Secrets Manager in Kestra Enterprise
+sidebarTitle: Secrets Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
 How to configure a secrets manager.
+
+## Configure external secrets manager
 
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 

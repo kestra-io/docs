@@ -1,11 +1,14 @@
 ---
-title: Unit Tests
+title: Unit Tests in Kestra Enterprise – Validate Flows Safely
+sidebarTitle: Unit Tests
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
 ---
 
 Build Tests to ensure proper Flow behavior.
+
+## Unit tests – validate Flows safely
 
 Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than the executing the entire flow.
 
@@ -58,7 +61,7 @@ namespace: company.team
 
 tasks:
   - id: send_slack_message_started
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "https://kestra.io/api/mock" # To use this example, replace the url with your own Slack webhook
     payload: |
       {
@@ -175,7 +178,7 @@ tasks:
 we can add a namespace file in the `company.team` namespace that mimics the format of the API request's return.
 
 ```json
-# my-namespace-file-with-products.json to add to company.team namespace
+## my-namespace-file-with-products.json to add to company.team namespace
 {
   "Account": {
     "Account Name": "Firefly",

@@ -1,9 +1,12 @@
 ---
-title: Managing Upgrades
+title: Manage Kestra Upgrades – Rolling and Rollback
+sidebarTitle: Managing Upgrades
 icon: /docs/icons/admin.svg
 ---
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
+
+## Plan safe Kestra upgrades and rollbacks
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -144,7 +147,7 @@ There are two types of database migrations: automatic and manual.
 
 ### Automatic database migration
 
-Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations—no manual intervention needed.
+Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when the server starts. Flyway version-controls schema changes and stores the current version in the `flyway_schema_history` table. On startup, it compares the current version with the target and runs any required migrations — no manual intervention needed.
 
 ### Manual database migration
 

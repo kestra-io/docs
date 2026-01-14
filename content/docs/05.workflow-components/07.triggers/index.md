@@ -1,10 +1,13 @@
 ---
-title: Triggers
+title: Triggers in Kestra – Workflow Component Reference	
 icon: /docs/icons/flow.svg
 docId: triggers
+sidebarTitle: Triggers
 ---
 
 A trigger is a mechanism that automatically starts the execution of a flow.
+
+## Triggers – workflow component reference
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -33,13 +36,16 @@ Many other triggers are available from the plugins, such as triggers based on fi
 
 The following properties are common to all triggers:
 
-| Field | Description                                                         |
-| ----- |---------------------------------------------------------------------|
-|`id`| The flow identifier, must be unique inside a flow.                  |
-|`type`| The Java FQDN of the trigger.                                       |
-|`description`| The description of the trigger.                                     |
-|`disabled`| Set it to `true` to disable execution of the trigger.               |
-|`workerGroup.key`| To execute this trigger on a specific Worker Group (EE) |
+| Field             | Description                                                                              |
+| ----------------- | ---------------------------------------------------------------------------------------- |
+| `id`              | The flow identifier, must be unique inside a flow.                                       |
+| `type`            | The Java FQDN of the trigger.                                                            |
+| `description`     | The description of the trigger.                                                          |
+| `disabled`        | Set it to `true` to disable execution of the trigger.                                    |
+| `allowConcurrent` | Set it to `true` to allow multiple executions from this trigger to run at the same time. |
+| `workerGroup.key` | To execute this trigger on a specific Worker Group (EE).                                 |
+
+
 
 ---
 
@@ -66,6 +72,7 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
+    allowConcurrent: false
 
 ```
 
@@ -247,7 +254,7 @@ namespace: company.team
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "The price is now: {{ json(trigger.body).price }}"
 

@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["OSS", "EE"]
 ---
 
-New default behavior of the KV function
 
-## Overview
+## KV function errors on missing key
+
+New default behavior of the KV function
 
 Before Kestra 0.22, the `kv()` function had the property `errorOnMissing` set to `false` by default. We changed it to `true` to align the behavior with the rest of the system e.g. the `secret()` function by default throws an error when the secret is missing.
 

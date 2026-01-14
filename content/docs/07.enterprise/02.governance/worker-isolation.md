@@ -1,10 +1,13 @@
 ---
-title: Worker Isolation
+title: Worker Isolation in Kestra Enterprise – Enforce Separation
+sidebarTitle: Worker Isolation
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---
 
 How to configure worker isolation in Kestra.
+
+## Worker isolation – enforce separation
 
 When dealing with multiple teams, you can add extra security measures to your Kestra instance to isolate access so that there is no shared file system, only certain plugins can create worker threads, and script tasks are isolated.
 
@@ -83,7 +86,7 @@ kestra:
 
 Forced plugin defaults:
 - Ensure a property is set globally for a task, and no task can override it.
-- Are critical for security and governance—for example, to enforce Shell tasks to run as Docker containers.
+- Are critical for security and governance — for example, to enforce Shell tasks to run as Docker containers.
 
 :::alert{type="warning"}
 You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.

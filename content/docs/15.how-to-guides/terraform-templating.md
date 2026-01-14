@@ -9,7 +9,7 @@ topics:
 
 Scale your codebase using Terraform to template and define flows
 
-## Introduction
+## Leverage Terraform for flow modularity
 
 This article will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
 
@@ -58,7 +58,7 @@ Inside a module, you can define a `main.tf` file that will define the resources 
 
 Let's create a module that will define a Kestra flow that will sync data from Airbyte.
 
-# tree structure of a terraform module :
+## tree structure of a terraform module :
 
 ```
 .
@@ -172,8 +172,8 @@ variable "late_maximum_delay" {
 
 ```yaml
 tasks:
-# Here we leverage the Terraform templating capabilities to generate the tasks
-# Using jinja-like syntax, we can loop over the list of connections and generate tasks for each of them
+## Here we leverage the Terraform templating capabilities to generate the tasks
+## Using jinja-like syntax, we can loop over the list of connections and generate tasks for each of them
 %{ for connection in airbyte-connections ~}
 
   - id: "trigger_${connection.name}"
@@ -276,8 +276,8 @@ tasks:
       \n
     {% endfor %}"
 
-# To make it easier to use the results in another flow
-# we expose the query result by using `outputs`
+## To make it easier to use the results in another flow
+## we expose the query result by using `outputs`
 outputs:
 - id: query_result
   value: "{{ outputs.query_data.rows }}"

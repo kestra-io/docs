@@ -11,6 +11,7 @@ export const collections = {
     }),
     schema: ({ image }) => z.object({
         title: z.string(),
+        sidebarTitle: z.string().optional(),
         description: z.string().optional(),
         // icon: image().optional(),
         icon: z.string().optional(),

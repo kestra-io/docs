@@ -4,11 +4,12 @@ icon: /docs/icons/migration-guide.svg
 release: 0.11.0
 ---
 
+
+## Deprecation of Templates
+
 Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
 If you still rely on templates, you can re-enable them in your [configuration](../../configuration/index.md#enabling-templates).
-
-## Why templates are deprecated
 
 1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance, `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.

@@ -1,10 +1,13 @@
 ---
-title: Kestra CLI
+title: Kestra Server CLI – Commands and Options
+sidebarTitle: Kestra CLI
 icon: /docs/icons/admin.svg
 editions: ["OSS","EE"]
 ---
 
 How to interact with Kestra using the CLI.
+
+## Use the Kestra server CLI effectively
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 
@@ -76,7 +79,18 @@ Commands:
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
+  server     start Kestra servers (see `--flow-path` below for preloading flows)
 ```
+
+### Preload flows at startup
+
+Use the `--flow-path` (or `-f`) flag to load all flows from a directory when starting Kestra so they’re available immediately:
+
+```bash
+kestra server standalone --flow-path /path/to/flows
+```
+
+Point this to a folder of YAML flow definitions; Kestra will load them at startup into the namespaces declared in each file.
 
 ---
 

@@ -1,11 +1,12 @@
 ---
-title: Plugin Developer Guide
+title: Kestra Plugin Developer Guide – Build and Publish Plugins
+sidebarTitle: Plugin Developer Guide
 icon: /docs/icons/dev.svg
 ---
 
 Browse [Kestra's integrations](/plugins) and learn how to create your own plugins.
 
-## The purpose of plugins
+## Build, test, and publish Kestra plugins
 
 Plugins are the building blocks of Kestra's tasks and triggers. They encompass components interacting with external systems and performing the actual work in your flows.
 

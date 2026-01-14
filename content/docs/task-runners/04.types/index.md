@@ -1,5 +1,6 @@
 ---
-title: Task Runner Types
+title: Task Runner Types – Choose the Right Execution Backend
+sidebarTitle: Task Runner Types
 icon: /docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
@@ -20,4 +21,3 @@ All other plugins such as the [AWS Batch](./04.aws-batch-task-runner.md), [Googl
 
 :::ChildCard
 :::
-

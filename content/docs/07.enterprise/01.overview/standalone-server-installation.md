@@ -1,16 +1,17 @@
 ---
-title: Standalone Server Installation Guide (Enterprise Edition)
+title: Install Kestra Enterprise from Standalone JAR
+sidebarTitle: Standalone Server Installation Guide
 icon: /docs/icons/installation.svg
 editions: ["EE"]
 ---
 
 Install Kestra on a standalone server with a simple executable file.
 
-# Standalone Server Installation Guide (Enterprise Edition)
+## Run Kestra Enterprise from a standalone JAR
 
 To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.
 
-# Instructions
+## Instructions
 
 The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
 
@@ -79,7 +80,7 @@ In standalone JAR deployments, all plugins must be downloaded separately.
 Kestra EE provides a command to install all available plugins:
 
 ```shell
-# Install all available plugins
+## Install all available plugins
 kestra plugins install --all
 ```
 
@@ -107,7 +108,7 @@ Secret plugins must be downloaded from the Kestra registry using the same creden
 To enable MinIO storage, install the storage plugin:
 
 ```shell
-# Install MinIO internal storage plugin
+## Install MinIO internal storage plugin
 kestra plugins install io.kestra.storage:storage-minio:LATEST
 ```
 
@@ -133,7 +134,7 @@ To enable Kestra Enterprise features, configure the following parameters:
 
 ---
 
-# Starting Kestra
+## Starting Kestra
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 

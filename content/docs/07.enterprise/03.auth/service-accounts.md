@@ -1,5 +1,6 @@
 ---
-title: Service Accounts
+title: Service Accounts in Kestra Enterprise – Non-Human Access
+sidebarTitle: Service Accounts
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
@@ -7,6 +8,7 @@ version: ">= 0.15.0"
 
 How to create and manage Service Accounts.
 
+## Service accounts – non-human access
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5_rVseynye4?si=LdgbY4LOwYLgIat2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -22,7 +24,7 @@ In contrast to regular users, Service Accounts don't have a password and they do
 
 ## Creating a Service Account
 
-To create a new service account, go to **Service Accounts** tab on the **IAM** page under the **Administration** section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
+To create a new service account, go to **Service Accounts** tab on the **IAM** page under the **Tenant** section and click the **Create** button. Fill in the form with the required information, including the name and description and click **Save**:
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 

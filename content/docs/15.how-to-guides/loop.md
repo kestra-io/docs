@@ -8,6 +8,8 @@ topics:
 
 How to iterate over a list of values in your flow.
 
+## Loop Over a List of Values
+
 In this guide, you will learn how to iterate over a list of values using the `ForEach` task. This task enables you to loop through a list of values and execute specific tasks for each value in the list. This approach is useful for scenarios where multiple similar tasks need to be run for different inputs.
 
 ## Prerequisites

@@ -7,6 +7,8 @@ version: ">= 0.18.0"
 
 Sync users and groups from Microsoft Entra ID to Kestra using SCIM.
 
+## Microsoft Entra ID SCIM provisioning
+
 ## Prerequisites
 
 - **Microsoft Entra ID Account**: An account with administrative privileges is required to configure SCIM provisioning.
@@ -21,7 +23,7 @@ kestra:
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Administration` → `IAM` → `Provisioning` page.
+1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
 2. Click on the `Create` button in the top right corner of the page.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.

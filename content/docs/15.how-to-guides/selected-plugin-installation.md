@@ -8,6 +8,8 @@ topics:
 
 Install a selection of Kestra plugins in the open-source version. 
 
+## Install only selected Plugins in Kestra Open Source
+
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
 - Install specific plugins when using the `-no-plugins` Docker image
@@ -32,7 +34,7 @@ You can install any plugin using:
 kestra plugins install io.kestra.plugin:plugin-dbt:LATEST
 ```
 
-This will download the [plugin JAR from Maven Central](https://repo.maven.apache.org/maven2/io/kestra/plugin/) into `/app/plugins`. Just replace `plugin-dbt` with whichever plugin you'd like to download (e.g., `plugin-script-python`, `plugin-aws`, `plugin-notifications`, etc.)
+This will download the [plugin JAR from Maven Central](https://repo.maven.apache.org/maven2/io/kestra/plugin/) into `/app/plugins`. Just replace `plugin-dbt` with whichever plugin you'd like to download (e.g., `plugin-script-python`, `plugin-aws`, etc.)
 
 You can run this inside a container (interactively or as part of Dockerfile) to build custom plugin bundles.
 

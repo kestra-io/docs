@@ -1,13 +1,14 @@
 ---
-title: Bind Mount
+title: Bind Mount Scripts into Kestra – Run Local Code
+sidebarTitle: Bind Mount
 icon: /docs/icons/dev.svg
 ---
 
 Use bind-mount to execute locally stored scripts.
 
-To run a script stored locally, you can bind-mount it to your Kestra container.
+## Bind-mount local scripts into Kestra
 
-## Bind-mounting local scripts
+To run a script stored locally, you can bind-mount it to your Kestra container.
 
 Bind-mounting local scripts to the Kestra server can also make the local scripts available to the Docker containers running the script tasks. This is useful when you want to test a script and you don't want to use Namespace Files.
 

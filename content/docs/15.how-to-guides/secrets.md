@@ -8,11 +8,11 @@ topics:
 
 Learn how to securely configure and use secrets in Kestra.
 
+## Configure Secrets
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-## What are secrets
 
 Secrets are sensitive values that should not be exposed in plain text, such as passwords, API tokens, access keys, or other confidential information.  
 For a detailed overview, see the [Secrets](../06.concepts/04.secret.md) documentation.

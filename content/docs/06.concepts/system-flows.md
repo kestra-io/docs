@@ -1,5 +1,6 @@
 ---
-title: System Flows
+title: System Flows in Kestra – Automate Platform Maintenance
+sidebarTitle: System Flows
 icon: /docs/icons/admin.svg
 editions: ["OSS", "EE"]
 version: ">= 0.19.0"
@@ -13,7 +14,7 @@ Automate maintenance workflows with System Flows.
 
 ---
 
-## Overview
+## System Flows – automate platform maintenance
 
 System Flows periodically execute background operations that keep your platform running but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 
@@ -48,4 +49,3 @@ System Flows are intentionally hidden from the main UI, appearing only in the `s
 ![system_filter](/docs/concepts/system-flows/system-filter.png)
 
 In terms of permissions, `system` namespace is open by default, but using the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
-

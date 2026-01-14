@@ -6,7 +6,8 @@ editions: ["OSS", "EE"]
 ---
 
 
-## Overview
+
+## LoopUntil task changed default values for checkFrequency
 
 The default behavior of the `LoopUntil` core task [has changed](https://github.com/kestra-io/kestra/issues/9152#issuecomment-2929847060) as follows:
 

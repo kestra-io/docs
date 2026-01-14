@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["EE"]
 ---
 
-## Overview
+
+## Enterprise Migration Guide from defaultTenant to Multitenancy
 
 Kestra now requires a tenant context across both the OSS and EE versions. For Enterprise users, this affects default tenants and their associated configuration properties.
 
@@ -133,20 +134,20 @@ done
 ```bash
 #!/bin/bash
 
-# Set your Azure Storage account and bucket (container) name
+## Set your Azure Storage account and bucket (container) name
 ACCOUNT_NAME="myaccount"
 BUCKET_NAME="mybucket"
 
-# Configurable destination tenant (default: 'main')
+## Configurable destination tenant (default: 'main')
 DEST_TENANT="${1:-main}"
 
-# List of tenant folders to skip (don't move)
+## List of tenant folders to skip (don't move)
 TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
 
-# Get all blob names
+## Get all blob names
 blob_names=$(az storage blob list --account-name "$ACCOUNT_NAME" --container-name "$BUCKET_NAME" --query "[].name" --output tsv)
 
-# Separate top-level files and folders
+## Separate top-level files and folders
 top_files=()
 top_folders=()
 
@@ -159,10 +160,10 @@ for name in $blob_names; do
     fi
 done
 
-# Deduplicate folder list
+## Deduplicate folder list
 unique_folders=($(printf "%s\n" "${top_folders[@]}" | sort | uniq))
 
-# Remove from top_files any that match folder names
+## Remove from top_files any that match folder names
 clean_files=()
 for file in "${top_files[@]}"; do
     skip=false
@@ -177,7 +178,7 @@ for file in "${top_files[@]}"; do
     fi
 done
 
-# Process top-level files
+## Process top-level files
 for file in "${clean_files[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -197,7 +198,7 @@ for file in "${clean_files[@]}"; do
     fi
 done
 
-# Process top-level folders (batch copy)
+## Process top-level folders (batch copy)
 for folder in "${unique_folders[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -236,7 +237,7 @@ TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use 
 
 echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
 
-# List all keys, no leading slash
+## List all keys, no leading slash
 aws s3 ls s3://$BUCKET --recursive | awk '{print $4}' | sed 's|^/||' | grep -v '^$' | while read -r key; do
     # Check top-level folder or file
     top_level=$(echo "$key" | cut -d'/' -f1)
@@ -276,10 +277,10 @@ TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders. If you use
 
 echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
 
-# Get all object keys (strip bucket prefix)
+## Get all object keys (strip bucket prefix)
 all_keys=$(gsutil ls "$BUCKET/**" | sed "s|$BUCKET/||")
 
-# Collect top-level folders and files
+## Collect top-level folders and files
 declare -A top_folders
 declare -a top_files
 
@@ -299,7 +300,7 @@ for key in $all_keys; do
     fi
 done
 
-# Process top-level files
+## Process top-level files
 for file in "${top_files[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -317,7 +318,7 @@ for file in "${top_files[@]}"; do
     fi
 done
 
-# Process top-level folders
+## Process top-level folders
 for folder in "${!top_folders[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -351,28 +352,33 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 1. **Open File Explorer** and go to your base storage path (as configured in `kestra.storage.local.base-path`).
 2. **Identify all folders and files** at the root level that are *not* already under a tenant folder (e.g., “main”, “tenant1”, “tenant2”).
-   Example: If your structure is
 
-   ```
-   base-path/
-     main/
-     tenant1/
-     foo/
-     bar/
-   ```
+Example: If your structure is
 
-   You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+```
+base-path/
+  main/
+  tenant1/
+  foo/
+  bar/
+```
+
+You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
+
+
 3. **Select** the folders and files to migrate, right-click, and choose **Cut** (or **Copy** if you want to keep the original temporarily).
 4. **Paste** them into the appropriate tenant folder (e.g., `main/`).
-   The result should be:
 
-   ```
-   base-path/
-     main/
-       foo/
-       bar/
-     tenant1/
-   ```
+The result should be:
+
+```
+base-path/
+  main/
+    foo/
+    bar/
+  tenant1/
+```
+
 5. **Delete** the original folders/files from the root after confirming the migration.
 
 ---

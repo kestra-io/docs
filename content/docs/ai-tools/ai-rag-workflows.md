@@ -1,14 +1,15 @@
 ---
-title: RAG Workflows
+title: RAG Workflows in Kestra – Retrieval-Augmented Generation
+sidebarTitle: RAG Workflows
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---
 
 Ask questions, get data-backed answers with RAG.
 
-Retrieval Augmented Generation (RAG) enhances LLM responses by grounding them in your own data instead of relying solely on the model’s internal knowledge. It works by retrieving relevant document embeddings and combining them with the user’s prompt to produce accurate, context-aware outputs. Chat with your data using RAG in Kestra.
+## Build retrieval-augmented generation workflows
 
-## Chat with your data using RAG
+Retrieval Augmented Generation (RAG) enhances LLM responses by grounding them in your own data instead of relying solely on the model’s internal knowledge. It works by retrieving relevant document embeddings and combining them with the user’s prompt to produce accurate, context-aware outputs. Chat with your data using RAG in Kestra.
 
 This example shows how to use **Retrieval Augmented Generation (RAG)** in Kestra to ground Large Language Model (LLM) responses in your own data. The flow ingests documents, stores embeddings in the KV Store, and contrasts responses from a plain LLM prompt with RAG-enabled responses, demonstrating how RAG reduces hallucinations and improves accuracy.
 

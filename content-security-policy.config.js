@@ -31,6 +31,8 @@ export default {
         "https://*.hs-scripts.com",
         "https://*.hsforms.net",
         "https://*.hsappstatic.net",
+        "https://www.google.com/recaptcha/",
+        "https://www.gstatic.com/recaptcha/"
     ],
     // styles & fonts
     'style-src': ["'self'", 'https:', "'unsafe-inline'"],
@@ -52,6 +54,11 @@ export default {
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/"
     ],
+    // forms
+    'form-action': [
+        "'self'",
+        "https://*.hsforms.com"
+    ],
     // iframes
     'frame-src': [
         "'self'",
@@ -60,7 +67,9 @@ export default {
         "https://*.youtube.com",
         "https://*.googletagmanager.com",
         "https://*.kestra.io/",
-        "https://*.arcade.software"
+        "https://*.arcade.software",
+        "https://*.hubspot.com",
+        "https://*.hsforms.com",
     ],
     'connect-src': [
         "'self'",
@@ -85,7 +94,7 @@ export default {
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
         "https://*.ipify.org",
-        "https://*.github.com"
+        "https://*.github.com",
     ],
     // workers
     'worker-src': ["'self'", 'blob:'],

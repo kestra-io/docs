@@ -1,18 +1,19 @@
 ---
-title: AI Copilot
+title: AI Copilot in Kestra – Generate and Edit Flows
+sidebarTitle: AI Copilot
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---
 
 Build and modify flows directly from natural language prompts.
 
+## Create and edit flows with AI Copilot
+
 The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-## Overview
 
 The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
 
@@ -40,6 +41,7 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `baseURL`: Specifies the endpoint address where the LLM API is hosted.
 - `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
 - `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
+- `customHeaders`: Specify custom HTTP headers for authentication and routing through internal AI gateways. Custom headers should be passed as a map inside the property.
 
 ![AI Copilot](/docs/ai-tools/ai-copilot.png)
 

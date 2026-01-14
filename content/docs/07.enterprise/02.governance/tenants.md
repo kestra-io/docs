@@ -1,5 +1,6 @@
 ---
-title: Tenants
+title: Multi-Tenancy in Kestra – Configure and Manage Tenants
+sidebarTitle: Tenants
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.13.0"
@@ -12,7 +13,7 @@ How to enable multi-tenancy in your Kestra instance.
   <iframe src="https://www.youtube.com/embed/z4uzAyjKeoc?si=vy-CPQKNYXYZMwoo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What is Multi-Tenancy
+## Multi-tenancy – configure and manage tenants
 
 A tenant represents an **isolated environment within a single Kestra instance**.
 
@@ -50,7 +51,7 @@ Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terr
 
 ### Creating a Tenant from the UI
 
-Tenants can be created and managed directly through Kestra's user interface. Go to **Administration -> Tenants**. Then, click on the **Create** button:
+Tenants can be created and managed directly through Kestra's user interface. Go to **Instance -> Tenants**. Then, click on the **Create** button:
 ![create tenant from the UI](/docs/enterprise/tenant-create.png)
 
 Fill in the form and click **Save**:

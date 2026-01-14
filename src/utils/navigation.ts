@@ -1,6 +1,7 @@
 export interface NavItem {
     path?: string;
     title?: string;
+    sidebarTitle?: string;
     children?: NavItem[];
     isSection?: boolean;
     isPage?: boolean;
@@ -71,7 +72,7 @@ export const generatePageNames = (item: NavItem): Record<string, string> => {
     const result: Record<string, string> = {};
     function traverse(item: NavItem) {
         if (item?.path && item?.title) {
-            result[item.path] = item.title;
+            result[item.path] = item.sidebarTitle ?? item.title;
         }
         if (item?.children) {
             item.children.forEach(child => traverse(child));

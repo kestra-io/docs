@@ -1,9 +1,12 @@
 ---
-title: Configure SSL for Kestra
+title: Configure SSL/TLS for Kestra – Secure the UI
+sidebarTitle: Configure SSL for Kestra
 icon: /docs/icons/padlock.svg
 ---
 
 Configure secure access to the Kestra UI via HTTPS.
+
+## Secure the Kestra UI with TLS
 
 This guide walks through the steps to configure secure access via https to the Kestra UI.
 
@@ -26,50 +29,50 @@ While self-signed certificates encrypt traffic, they are considered unsuitable f
 :::
 
 ```bash
-# Create a folder which will be later mounted to the kestra container
+## Create a folder which will be later mounted to the kestra container
 mkdir -p /app/ssl
 cd /app/ssl
 ```
 
 ```bash
-# Create CA in PEM format along with private key
+## Create CA in PEM format along with private key
 openssl req -x509 -sha256 -days 365 -newkey rsa:4096 \
   -keyout cacert.key -out cacert.pem \
   -subj '/CN=example.kestra.com/C=IE/O=kestra' \
   -passout pass:changeit
 
-# Create certificate signing request
+## Create certificate signing request
 openssl req -newkey rsa:4096 \
   -keyout server.key -out server.csr \
   -subj '/CN=example.kestra.com/C=IE/O=kestra' \
  -passout pass:changeit
 
-# Create the server configuration which will be used to sign the certificate
+## Create the server configuration which will be used to sign the certificate
 cat <<< 'authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 subjectAltName = @alt_names
 [alt_names]
 DNS.1 = localhost' > server.conf
 
-# sign certificate
+## sign certificate
 openssl x509 -req -CA cacert.pem -CAkey cacert.key \
         -in server.csr -out server.pem -days 365 \
         -CAcreateserial -extfile server.conf \
         -passin pass:changeit
 
-# Create server.p12
+## Create server.p12
 openssl pkcs12 -export -out server.p12 -name "localhost" \
         -inkey server.key -in server.pem \
         -passin pass:changeit \
         -passout pass:changeit
 
-# Create keystore.p12 with JDK keytool
+## Create keystore.p12 with JDK keytool
 keytool -importkeystore -srckeystore server.p12 \
         -srcstoretype pkcs12 -destkeystore keystore.p12 \
         -deststoretype pkcs12 \
         -deststorepass changeit -srcstorepass changeit
 
-# Create truststore.jks
+## Create truststore.jks
 keytool -import -trustcacerts -noprompt -alias ca \
         -ext san=dns:localhost,ip:127.0.0.1 \
         -file cacert.pem -keystore truststore.jks \

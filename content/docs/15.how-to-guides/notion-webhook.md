@@ -9,6 +9,8 @@ topics:
 
 Use Notion webhooks to trigger Kestra flows when pages or databases are updated in your Notion workspace.
 
+## Notion Webhook Integration
+
 This guide shows you how to create a workflow that responds to Notion database changes, retrieves page details, and sends notifications to Slack when new tasks are assigned.
 
 ## Prerequisites
@@ -59,7 +61,7 @@ tasks:
     pageId: "{{ trigger.body.entity.id }}"
 
   - id: send_slack_alert
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "New task titled {{ outputs.get_notion_page_details | jq('.properties.Button.title[0].text.content') | first }} assigned to {{ outputs.get_notion_page_details | jq('.properties.Assignee.multi_select[0].name') | first }} on the Product team Notion board! Link: {{ outputs.get_notion_page_details.url }}"
 
@@ -142,16 +144,16 @@ The flow performs these steps:
 Modify the Slack message to use different Notion properties. Common property types include:
 
 ```yaml
-# For title properties
+## For title properties
 title: "{{ outputs.get_notion_page_details | jq('.properties.Title.title[0].text.content') | first }}"
 
-# For select properties
+## For select properties
 status: "{{ outputs.get_notion_page_details | jq('.properties.Status.select.name') | first }}"
 
-# For date properties
+## For date properties
 due_date: "{{ outputs.get_notion_page_details | jq('.properties.DueDate.date.start') | first }}"
 
-# For people properties
+## For people properties
 assignee: "{{ outputs.get_notion_page_details | jq('.properties.Assignee.people[0].name') | first }}"
 ```
 
@@ -166,7 +168,7 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Status.select.name') | first == 'In Progress' }}"
     then:
       - id: send_slack_alert
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         messageText: "Task moved to In Progress: {{ outputs.get_notion_page_details | jq('.properties.Title.title[0].text.content') | first }}"
 ```
@@ -182,12 +184,12 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Project.select.name') | first == 'Product' }}"
     then:
       - id: product_team_notification
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('PRODUCT_SLACK_WEBHOOK_URL') }}"
         messageText: "New product task assigned!"
     else:
       - id: general_notification
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ secret('GENERAL_SLACK_WEBHOOK_URL') }}"
         messageText: "New task assigned!"
 ```

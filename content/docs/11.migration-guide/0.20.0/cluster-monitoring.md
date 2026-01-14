@@ -5,9 +5,10 @@ release: 0.20.0
 editions: ["EE"]
 ---
 
-Migrating permissions for accessing Cluster Monitoring
 
-## Overview
+## Different permissions for accessing Cluster Monitoring
+
+Migrating permissions for accessing Cluster Monitoring
 
 Before the 0.20.0 release, the permission `INFRASTRUCTURE` was required to access the Cluster Monitoring page.
 

@@ -1,11 +1,12 @@
 ---
-title: AI Tools
+title: Kestra AI Tools – Copilot, Agents, and RAG Workflows
+sidebarTitle: AI Tools
 icon: /docs/icons/ai.svg
 ---
 
 Create, refine, and orchestrate workflows using natural language or autonomous decision-making.
 
-# AI Copilot & AI Agents
+## Learn how Kestra AI tools accelerate orchestration
 
 Kestra provides two AI-powered features — **AI Copilot** and **AI Agents** — that extend how workflows can be created and executed.
 

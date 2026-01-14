@@ -5,7 +5,8 @@ release: 0.24.0
 editions: ["OSS", "EE"]
 ---
 
-## Breaking Change
+
+## Capture filename on input type FILE
 
 To upload a file for an input of type `FILE`, you should now use the part **name** for the input and the part **filename** attribute for the file name.
 
