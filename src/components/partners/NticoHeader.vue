@@ -34,9 +34,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <Section
-                subtitle="Join the community"
-            >
+            <Section>
                 <div class="metrics">
                     <div class="counter-box">
                         <img src="/partners/ntico/logo.svg" alt="">
@@ -62,7 +60,7 @@
 </template>
 
 <script setup>
-
+    import Section from "~/components/layout/Section.vue";
 </script>
 
 <style scoped lang="scss">
@@ -147,6 +145,11 @@
         :deep(.hero.hero-sm) {
             border-bottom: 1px solid #FFFFFF1A;
         }
+
+    }
+
+    :deep(section div.main) {
+        padding-top: 0;
     }
 
     .container {
