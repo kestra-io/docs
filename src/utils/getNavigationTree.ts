@@ -3,10 +3,10 @@ import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
 const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
-        "Getting Started",
         "Tutorial",
         "Architecture",
         "Installation Guide",
+        "Contribute to Kestra",
         "User Interface"
         // "Video Tutorials"
     ],
@@ -15,6 +15,7 @@ const navigationTree = {
         "Workflow Components",
         "Multi-Language Script Tasks",
         "AI Tools",
+        "No-Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
         "How-to Guides"
@@ -36,9 +37,8 @@ const navigationTree = {
         "Expressions",
         "API Reference",
         "Terraform Provider",
-        "Server CLI",
-        "Kestra EE CLI"
-    ],
+        "Kestra CLI"
+    ]
 }
 
 
