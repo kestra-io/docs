@@ -81,7 +81,7 @@
         <div v-if="!valid" class="meeting-form">
           <img
             class="background"
-            src="../demo/header-background.png?url"
+            src="../demo/assets/header-background.png?url"
             alt=""
             data-aos="fade-right"
           />
