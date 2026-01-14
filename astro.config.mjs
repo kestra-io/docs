@@ -93,6 +93,13 @@ export default defineConfig({
             noExternal: [
                 "vue3-count-to"
             ],
+            external: [
+                "node:fs/promises",
+                "node:fs",
+                "node:url",
+                "node:path",
+                "node:crypto"
+            ]
         }
     }
 });

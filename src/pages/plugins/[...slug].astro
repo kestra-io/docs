@@ -136,16 +136,12 @@ const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: Reco
                     )
 
 
-const blogs: {
-    id: string,
-    data: Omit<BlogPost, "date"> & {date: Date}
-}[] = await loadBlogPostsMetadata();
-
+const blogs = await loadBlogPostsMetadata();
 
 const relatedBlogs = blogs
     .filter(b => b.data.plugins?.includes(pluginName))
     .sort((a, b) => {
-        return a.data.date > b.data.date ? 1 : -1;
+        return new Date(a.data.date) > new Date(b.data.date) ? 1 : -1;
     });
 
 const rootPlugin = pluginsWithoutDeprecated?.find((p: Plugin) => p.subGroup === undefined)
@@ -481,7 +477,7 @@ const elementTitle = (() => Object.fromEntries(
           relatedBlogs.length > 0 && <RelatedBlogs posts={relatedBlogs.map(p => ({
             ...p.data,
             path: `/blogs/${p.id}`,
-            date: p.data.date.toISOString()
+            date: p.data.date
         }))} />
       }
 
