@@ -1,10 +1,11 @@
 import axios from 'axios'
+import { API_URL } from "astro:env/client";
 
 export const useApi = () => {
     // @ts-ignore
     if (typeof useRuntimeConfig === 'undefined') {
         return axios.create({
-            baseURL: "https://api.kestra.io/v1"
+            baseURL: API_URL
         })
     }
     // @ts-ignore

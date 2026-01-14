@@ -14,6 +14,7 @@
     import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
     import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
     import { $fetch } from "~/utils/fetch";
+    import { API_URL } from "astro:env/client";
 
     const wrapper = useTemplateRef("wrapper");
 
@@ -29,9 +30,9 @@
         }
     }
 
-    const blueprints = (await $fetch('https://api.kestra.io/v1/blueprints/versions/latest')).results as Blueprint[];
+    const blueprints = (await $fetch(`${API_URL}/blueprints/versions/latest`)).results as Blueprint[];
 
-    const tags = await $fetch(`https://api.kestra.io/v1/blueprints/versions/latest/tags`) as BlueprintTag[];
+    const tags = await $fetch(`${API_URL}/blueprints/versions/latest/tags`) as BlueprintTag[];
 
 </script>
 

@@ -1,13 +1,13 @@
-// import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs";
-// import { $fetchApi } from "~/utils/fetch";
-// import { getListOfPlugins } from "~/utils/plugins/getListOfPlugins";
 
-// do not prerender icons there are too many of them
+// do not prerender icons there are too many of them and are updated frequently
 export const prerender = false
+
+import { API_URL } from "astro:env/client";
 
 export async function GET({ params }: { params: { cls: string } }) {
   const cls = params.cls;
-  const response = await fetch(`https://api.kestra.io/v1/plugins/icons/${cls}`);
+  console.log(cls)
+  const response = await fetch(`${API_URL}/plugins/icons/${cls}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch icon');
@@ -23,26 +23,3 @@ export async function GET({ params }: { params: { cls: string } }) {
     },
   });
 }
-
-// function resolveSubPlugins(plugins: any[], allPluginsCls: Set<string>) {
-//     for (const plugin of plugins || []) {
-//         const entries = Object.entries(plugin).filter(([key, value]) => isEntryAPluginElementPredicate(key, value)) as [string, any][];
-//         for (const [key, sectionEntries] of entries) {
-//             if (sectionEntries) {
-//                 for (const {cls} of sectionEntries.filter(({deprecated}: {deprecated: boolean}) => !deprecated)) {
-//                     if(cls){
-//                         allPluginsCls.add(cls);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// export async function getStaticPaths() {
-//   const plugins = await $fetchApi(`/plugins/subgroups`);
-
-//   const allPluginsCls = new Set(getListOfPlugins(plugins).map(p => p.subGroup ?? p.group).filter((cls?: string) => cls !== undefined) as string[]);
-//   resolveSubPlugins(plugins, allPluginsCls);
-//   return Array.from(allPluginsCls).map(cls => ({ params: { cls } }));
-// }

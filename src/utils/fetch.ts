@@ -1,3 +1,5 @@
+import { API_URL } from "astro:env/client";
+
 const cacheObject: Record<string, any> = {};
 
 export async function $fetch<T = any>(url: string, init: RequestInit = {}): Promise<T> {
@@ -23,7 +25,7 @@ export async function $fetch<T = any>(url: string, init: RequestInit = {}): Prom
 }
 
 export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
-    return $fetch<T>(`https://api.kestra.io/v1${url}`, init)
+    return $fetch<T>(`${API_URL}${url}`, init)
 }
 
 export async function $fetchApiCached<T = any>(url: string, duration = 60000, init: RequestInit = {}, ): Promise<T> {

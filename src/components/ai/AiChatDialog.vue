@@ -111,6 +111,7 @@
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import {extractSourcesFromMarkdown, isInternalLink} from "~/utils/sources.ts"
     import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
+    import { API_URL } from "astro:env/client";
 
     interface Message {
         content: string
@@ -321,7 +322,7 @@
 
             const signal = abortController.value.signal;
 
-            const response = await fetch(`https://api.kestra.io/v1/search-ai/${conversationId.value}`, {
+            const response = await fetch(`${API_URL}/search-ai/${conversationId.value}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
