@@ -40,7 +40,7 @@ const props = Astro.props;
     </div>
 </Layout>
 
-<style lang="scss">
+<style scoped lang="scss">
     @import "~/assets/styles/variable";
 
     .container-fluid {
@@ -66,21 +66,13 @@ const props = Astro.props;
         }
 
         .bd-title {
-            max-width: 100%;
-            overflow-x: hidden;
-
             h1 {
-                max-width: 50.6rem;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
 
                 @include media-breakpoint-down(md) {
                     font-size: $h3-font-size;
                     max-width: 100%;
-                }
-
-                @media only screen and (min-width: 1920px) {
-                    max-width: 71.25rem;
                 }
             }
 
@@ -109,19 +101,13 @@ const props = Astro.props;
 
         .bd-content {
             margin: 0 auto 2em auto;
-            max-width: 50.6rem;
-            width: 100%;
             box-sizing: border-box;
             overflow-x: hidden;
 
-            @include media-breakpoint-down(md) {
+            @include media-breakpoint-down(xl) {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
                 max-width: 100%;
-            }
-
-            @media only screen and (min-width: 1920px) {
-                max-width: 71.25rem;
             }
 
             table {
@@ -176,7 +162,7 @@ const props = Astro.props;
         margin-bottom: 2rem;
 
         &::before {
-            background-color: transparent;
+            background-color: transparent !important;
         }
 
         a {
@@ -188,8 +174,8 @@ const props = Astro.props;
     }
 
     :global(.medium-zoom-image) {
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
     }
 
     :deep(p > a) {
@@ -280,19 +266,19 @@ const props = Astro.props;
     }
 
     .homepage {
-        .bd-title {
-            @media only screen and (min-width: 1920px) {
-                width: 50.6rem;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
         .bd-content {
             background: radial-gradient(ellipse closest-side, rgba($primary, .1) 0%, #DDC4FF00 100%) no-repeat, url('/docs/ui/homepage-bg.webp') no-repeat;
             background-size: 500px 250px, 1261px 984px;
             background-position: top 110px right -30px, top -200px right -350px;
-            max-width: 50.6rem;
+        }
+
+        :global(.bd-markdown h2) {
+            border-left: none !important;
+            padding: 0;
+        }
+
+        :global(.bd-main h1) {
+            font-size: 40px;
         }
     }
 

@@ -10,10 +10,10 @@
                     </a>
                 </li>
                 <li v-for="link in socialLinks" :key="link.href">
-                    <a class="text-white" :href="link.href" target="_blank">
+                    <NuxtLink class="text-white" :to="link.href" target="_blank">
                         <component :is="link.icon" />
                         {{ link.text }}
-                    </a>
+                    </NuxtLink>
                 </li>
             </ul>
         </nav>
@@ -87,6 +87,10 @@
                         font-weight: 500;
                         border-left: 1px solid $purple-35;
                     }
+
+                    &::after {
+                        display: none !important;
+                    }
                 }
             }
         }
@@ -103,6 +107,8 @@
     .social ul li a {
         line-height: 1.5rem;
         font-size: $font-size-sm;
+
+
     }
 
     a {

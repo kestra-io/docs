@@ -34,14 +34,13 @@ $bd-gutter-x: 3rem;
     grid-area: sidebar;
 }
 
-.bd-content, .bd-main > div.bd-title > h1 {
+.bd-content, .bd-main > div.bd-title > h1, .bd-main > div.bd-title .slug {
     margin: 0 auto;
     max-width: 45.8rem;
     width: 100%;
 }
 
 .bd-main {
-
     grid-area: main;
 
     p {
@@ -138,39 +137,38 @@ $bd-gutter-x: 3rem;
     @include media-breakpoint-up(md) {
         display: grid;
         grid-template-areas:
-      "intro"
-      "toc"
-      "content";
+            "intro"
+            "toc"
+            "content";
         grid-template-rows: auto auto 1fr;
         gap: inherit;
     }
 
     @include media-breakpoint-up(lg) {
         grid-template-areas:
-      "intro   toc"
-      "content toc";
+            "intro   toc"
+            "content toc";
         grid-template-rows: auto 1fr;
         grid-template-columns: 4fr 1fr;
     }
 
     &.full {
-        grid-template-columns: auto;
         max-width: none;
         .bd-toc {
             display: none;
         }
 
         .bd-content {
-            max-width: none;
-            width: 100%;
+            min-width: 100%;
+        }
+
+        @include media-breakpoint-up(md) {
+            margin-top: 4rem;
+            display: block;
         }
 
         h1 {
             margin: 0;
-
-            @include media-breakpoint-up(xxl) {
-                margin-left: 3.5rem;
-            }
         }
     }
 
@@ -308,27 +306,17 @@ $bd-gutter-x: 3rem;
         color: $white;
         line-height: 1.75rem;
         font-size: $h6-font-size;
+        word-wrap: break-word;
 
         a {
             color: $purple-36;
         }
     }
-
-    h2 {
-        border-top: none !important;
-        margin-top: 3.12rem !important;
-        margin-bottom: 2rem !important;
-        padding-top: 0 !important;
-    }
-
     h2, h2 a {
         color: $white;
+        font-size: 1.875rem;
         line-height: 2.735rem;
         font-weight: 600;
-        border-left: 5px solid #9ca1de;
-        display: block;
-        font-size: 2.25rem;
-        padding-left: .6rem;
     }
 
     h3 a {
