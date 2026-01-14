@@ -7,8 +7,6 @@ Kestra's architecture is designed to be scalable, flexible, and fault-tolerant. 
 
 ## Choose the right Kestra architecture
 
-## Architecture with JDBC backend
-
 The following diagram shows the main components of Kestra using the JDBC backend.
 
 ![Kestra JDBC Architecture](/docs/architecture/jdbc.gif "Kestra Architecture")
