@@ -1019,8 +1019,6 @@ kestra:
     prefix: kestra
 ```
 
-````markdown name=docs/label-based-metrics.md
-
 ### Label-based metrics
 
 Kestra can include selected execution/trigger label keys as metric tags. This is opt-in and intended for low-cardinality labels (e.g. `country`, `environment`, `region`).
