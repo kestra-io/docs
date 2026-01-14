@@ -42,7 +42,7 @@
                                 v-if="tableOfContent?.children?.length">
                                 <template v-for="item in tableOfContent?.children">
                                     <li v-if="(item.depth ?? 0) > 1 && (item.depth ?? 0) < 6" @click="closeToc"
-                                        :class="{ 'mt-3': item.depth === 2 }">                                        
+                                        :class="{ 'mt-3': item.depth === 2 }">
                                         <a @click.prevent="menuNavigate" :href="`#${item.id}`" :class="`depth-${item.depth}`">{{
                                             item.text }}</a>
                                     </li>
@@ -99,7 +99,7 @@
     const tableOfContentsExpanded = ref(false);
 
     const removeActiveClasses = (): void => {
-        document.querySelectorAll(".depth-2, .depth-3").forEach((item) => {
+        document.querySelectorAll("#nav-toc a").forEach((item) => {
             item.classList.remove("active");
         });
     };
