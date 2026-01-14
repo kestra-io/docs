@@ -519,7 +519,7 @@ const elementTitle = (() => Object.fromEntries(
 
     .container-fluid {
         gap: 0;
-        overflow-x: hidden;
+        overflow: clip;
         border-top: 1px solid $black-3;
         padding: 0;
         display: flex;
@@ -537,6 +537,9 @@ const elementTitle = (() => Object.fromEntries(
         >.plugin-sidebar {
             @include media-breakpoint-up(lg) {
                 grid-area: sidebar;
+                position: sticky;
+                top: 4rem;
+                height: fit-content;
 
             }
         }
@@ -551,6 +554,9 @@ const elementTitle = (() => Object.fromEntries(
             @include media-breakpoint-up(lg) {
                 grid-area: toc;
                 background-color: #0A0B0D;
+                position: sticky;
+                top: 0;
+                height: 100%;
             }
 
             @include media-breakpoint-down(lg) {

@@ -68,8 +68,8 @@
         padding: 2rem 0;
 
         @include media-breakpoint-up(lg) {
-            margin-left: -3rem;
-            margin-right: -3rem;
+            margin-left: -2rem;
+            margin-right: -2rem;
             padding-left: 3rem;
             padding-right: 3rem;
         }

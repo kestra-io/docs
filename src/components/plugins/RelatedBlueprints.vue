@@ -66,7 +66,7 @@
         padding: 2rem 0;
 
         @include media-breakpoint-up(lg) {
-            margin: 0 -3rem;
+            margin: 0 -2rem;
             padding: 2rem 3rem;
         }
 
