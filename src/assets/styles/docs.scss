@@ -458,4 +458,47 @@ $bd-gutter-x: 3rem;
             margin-bottom: 0 !important;
         }
     }
+
+
+    .doc-collapse {
+        summary {
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--bs-white);
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2.25rem;
+
+            &::-webkit-details-marker, &::marker {
+                display: none;
+            }
+
+            &::before {
+                content: "▶";
+                position: absolute;
+                left: 0.25rem;
+                top: 50%;
+                transform: translateY(-50%) rotate(0deg);
+                transition: transform 0.18s ease, color 0.18s ease;
+                color: $white;
+                font-size: 24px;
+            }
+
+            &:hover {
+                color: $purple-36;
+                background-color: #252526;
+                border-radius: 4px;
+
+                &::before {
+                    color: $purple-36;
+                }
+            }
+        }
+
+        &[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+    }
 }
