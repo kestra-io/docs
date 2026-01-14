@@ -29,7 +29,7 @@
 
         <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
           <div v-if="valid === false" class="meeting-form">
-            <img class="background d-none d-md-block" src="/demo/header-background.png" alt="" data-aos="fade-right">
+            <img class="background d-none d-md-block" src="./assets/header-background.png?url" alt="" data-aos="fade-right">
             <form class="row needs-validation" ref="demo-form" novalidate data-aos="fade-left" @submit="onSubmit">
               <div v-if="message" class="alert alert-danger mt-3 mb-0">
                 {{ message }}
@@ -112,6 +112,9 @@ import { useMediaQuery } from "@vueuse/core";
 import { ref, watch, useTemplateRef, onMounted, onUnmounted } from "vue";
 import identify from "~/utils/identify";
 import { useGtm } from '@gtm-support/vue-gtm';
+import scaleImg from "./assets/chart-areaspline.svg";
+import securityImg from "./assets/security.svg";
+import handshakeImg from "./assets/handshake.svg";
 
 
 const gtm = useGtm();
@@ -128,20 +131,20 @@ const isMobile = useMediaQuery("(max-width: 767px)");
 
 const cards = ref([
   {
-    img: "/demo/chart-areaspline.svg",
+    img: scaleImg.src,
     alt: "Work",
     title: "Scale Your Work",
     description: "Accelerate workflow creation and deployment with Kestra Enterprise's automation and seamless integration."
   },
   {
-    img: "/demo/security.svg",
-    alt: "Work",
+    img: securityImg.src,
+    alt: "Security",
     title: "Ensure Security and Compliance",
     description: "Guarantee the safety and integrity of your data with high-security standards, precise access control, and centralized secret management."
   },
   {
-    img: "/demo/handshake.svg",
-    alt: "Work",
+    img: handshakeImg.src,
+    alt: "Handshake",
     title: "Empower Your Team",
     description: "Enable better collaboration and efficient workflow management, ensuring your team can operate smoothly and effectively across all business critical projects."
   }

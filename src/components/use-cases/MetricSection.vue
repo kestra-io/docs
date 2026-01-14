@@ -6,7 +6,7 @@
                     <div class="info-content">
                         <div class="info-item">
                             <div class="icon-block">
-                                <img src="/demo/arrow-up-thin.svg" alt="Work">
+                                <img src="../demo/assets/arrow-up-thin.svg?url" alt="Work">
                                 <p>{{percent}}%</p>
                             </div>
                             <p>{{percentText}}</p>
