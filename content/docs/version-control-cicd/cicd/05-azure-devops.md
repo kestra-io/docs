@@ -1,11 +1,12 @@
 ---
-title: Azure DevOps
+title: Azure DevOps for Kestra – YAML Pipelines Example
+sidebarTitle: Azure DevOps
 icon: /docs/icons/dev.svg
 ---
 
 How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
-## Set up an Azure DevOps pipeline
+## Automate Kestra deployments with Azure DevOps
 
 Azure DevOps allows you to automate the validation and deployment of your Kestra flows using YAML-based pipelines. Follow the steps below to configure a simple Terraform-based CI/CD setup.
 

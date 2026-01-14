@@ -5,9 +5,10 @@ release: 0.20.0
 editions: ["EE"]
 ---
 
-Migration guide for the Elasticsearch indexer
 
-## Overview
+## Elasticsearch indexer
+
+Migration guide for the Elasticsearch indexer
 
 Starting with 0.20, if you are using the Kafka backend, there is no need to start an external indexer, even for the Kafka backend, as the webserver will start an embedded indexer automatically.
 

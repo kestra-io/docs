@@ -5,9 +5,10 @@ release: 0.22.0
 editions: ["OSS", "EE"]
 ---
 
-Renamed version property in many plugins
 
-## Overview
+## Version property renamed
+
+Renamed version property in many plugins
 
 With the introduction of plugin versioning, we reserve the `version` keyword for internal use, allowing to specify the Kestra plugin version. As a result, we’ve renamed the `version` property for a few plugins that already used it, incl. the following:
 

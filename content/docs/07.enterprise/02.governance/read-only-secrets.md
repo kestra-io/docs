@@ -1,5 +1,6 @@
 ---
-title: Read-only Secret Manager
+title: Read-Only Secret Manager in Kestra Enterprise
+sidebarTitle: Read-only Secret Manager
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
@@ -11,7 +12,7 @@ Integrate external secrets managers in a read-only mode.
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Read-only secrets
+## Read-only secret manager
 
 When integrating an external [secrets manager](secrets-manager.md) with Kestra, you may want to ensure that those secrets cannot be modified within Kestra, maintaining immutability.
 Currently, read-only secrets can be configured for [AWS Secret Manager](secrets-manager.md#aws-secret-manager-configuration), [Azure Key Vault](secrets-manager.md#azure-key-vault-configuration), [Google Secret Manager](secrets-manager.md#google-secret-manager-configuration), and [Vault](secrets-manager.md#vault-configuration).

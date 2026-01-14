@@ -5,9 +5,10 @@ release: 0.21.0
 editions: ["EE"]
 ---
 
-`ME` and `APITOKEN` permissions added to RBAC.
 
-## Overview
+## ME and APITOKEN user permissions
+
+`ME` and `APITOKEN` permissions added to RBAC.
 
 Additional permissions were introduced for creating Users and Groups, allowing better control over personal data management and API Token creation for programmatic access.
 

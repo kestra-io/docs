@@ -4,13 +4,14 @@ icon: /docs/icons/migration-guide.svg
 release: 0.15.0
 ---
 
-The `outputs` property of a parent flow's `Subflow` task is deprecated. Instead, use flow `outputs` to pass data between flows.
 
-## Subflow outputs behavior before Kestra 0.15.0
+## Subflow outputs behavior
+
+The `outputs` property of a parent flow's `Subflow` task is deprecated. Instead, use flow `outputs` to pass data between flows.
 
 If you are on Kestra 0.14.4 or earlier, passing data between subflows required using the `outputs` property within the parent flow's `Subflow` task.
 
-### Example
+## Example
 
 Let's say you have a following subflow (aka child flow) with a task `mytask` generating an output called `value`:
 
@@ -46,7 +47,7 @@ tasks:
 
 You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the name of the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. Also, it's not clear to the consumer what type of data is being passed. This is why this property is deprecated in Kestra 0.15.0.
 
-### How to keep the old subflow outputs behavior
+## How to keep the old subflow outputs behavior
 
 Before looking at how the same is achieved in Kestra 0.15.0, let's look at how you can keep this behavior **if you are not ready to migrate** to the new subflow outputs behavior.
 
@@ -132,4 +133,3 @@ Note how the `outputs` are set twice within the `"{{outputs.subflow.outputs.fina
 Here is what you will see in the Outputs tab of the **Executions** page in the parent flow:
 
 ![subflow_output_parent](/docs/workflow-components/subflow_output_parent.png)
-

@@ -1,11 +1,14 @@
 ---
-title: Custom & Template Blueprints
+title: Custom & Template Blueprints in Kestra Enterprise – Private Templates
+sidebarTitle: Custom Blueprints
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: custom
 ---
 
 How to create and manage Custom and Template Blueprints.
+
+## Custom blueprints – private templates
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qbGfK-FJi6s?si=UX6cOyT7nvlyd6zb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

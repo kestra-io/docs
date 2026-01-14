@@ -5,7 +5,8 @@ release: 1.0.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+## Internal Package Structure Changes (Custom Plugins Only)
 
 This change affects only users building custom plugins or using the Java library in tests.
 

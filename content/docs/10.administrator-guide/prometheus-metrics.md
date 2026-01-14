@@ -1,11 +1,12 @@
 ---
-title: Prometheus Metrics
+title: Prometheus Metrics in Kestra – Endpoint and Signals
+sidebarTitle: Prometheus Metrics
 icon: /docs/icons/admin.svg
 ---
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.
 
-## Overview
+## Monitor Kestra with Prometheus metrics
 
 Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](./open-telemetry.md), which must be explicitly enabled in the configuration file.
 
@@ -16,8 +17,8 @@ Each Prometheus metric is described with its purpose and the type of data it rep
 Example output from the Prometheus endpoint:
 
 ```text
-# HELP executor_active_threads The approximate number of threads that are actively executing tasks
-# TYPE executor_active_threads gauge
+## HELP executor_active_threads The approximate number of threads that are actively executing tasks
+## TYPE executor_active_threads gauge
 executor_active_threads 4
 ```
 

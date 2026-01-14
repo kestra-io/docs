@@ -1,5 +1,6 @@
 ---
-title: Role-Based Access Control (RBAC)
+title: RBAC in Kestra Enterprise – Manage Roles and Permissions
+sidebarTitle: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: iam
@@ -11,7 +12,7 @@ How to manage access and permissions to your instance.
   <iframe src="https://www.youtube.com/embed/9I87QZJPl1Y?si=n0Izt0lK6BQ20Wfy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Overview
+## RBAC – manage roles and permissions
 
 Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to Tenants, Namespaces, Flows and resources.
 
@@ -135,7 +136,7 @@ To create a User with a Superadmin privilege from the [CLI](../../server-cli/ind
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
 
-# schema:
+## schema:
 kestra auths users create <username> <password> \
 --tenant=<tenant-id> --superadmin
 ```
@@ -179,10 +180,10 @@ You can grant or revoke the Superadmin privilege using the switch in the User Ed
 To set an existing User with a Superadmin privilege from the [CLI](../../server-cli/index.md), use the dedicated command:
 
 ```bash
-# Set a user as Super Admin
+## Set a user as Super Admin
 kestra auths users set-superadmin admin@kestra.io true
 
-# Revoke Super Admin privilege
+## Revoke Super Admin privilege
 kestra auths users set-superadmin admin@kestra.io false
 ```
 
@@ -215,7 +216,7 @@ To create a User with an Admin Role from the CLI, use the `--admin` option:
 ```bash
 kestra auths users create prod.admin@kestra.io TopSecret42 --admin
 
-# schema:
+## schema:
 kestra auths users create <username> <password> --admin
 ```
 ## User lockout

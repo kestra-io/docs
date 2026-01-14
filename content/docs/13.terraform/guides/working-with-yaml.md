@@ -3,7 +3,7 @@ title: Working with Yaml
 ---
 
 
-# Working with Yaml
+## Working with Yaml
 
 Most of Kestra resource need to be described as Yaml like [kestra_flow](../resources/flow.md) & [kestra_template](../resources/template.md).
 

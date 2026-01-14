@@ -9,7 +9,7 @@ version: ">= 0.18.0"
 
 Edit dbt code from Kestra's Code Editor
 
-## Overview
+## Manage dbt projects with Kestra's Code Editor
 
 Kestra's built-in Code Editor allows you to easily manage dbt projects by cloning the Git repository with the dbt code, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
 

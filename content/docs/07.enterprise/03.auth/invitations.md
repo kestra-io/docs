@@ -1,5 +1,6 @@
 ---
-title: Invitations
+title: Invitations in Kestra Enterprise – Onboard Users
+sidebarTitle: Invitations
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
@@ -12,7 +13,7 @@ Add new users to your Tenant or Instance by using the invitation process.
   <iframe src="https://www.youtube.com/embed/RC1RxfxBPPI?si=vy1D3W9ysK8LS2Uo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Overview
+## Invitations – onboard users
 
 Administrators can invite users with pre-configured RBAC permissions. Invitations can be emailed directly, and users can set up their accounts upon acceptance.
 

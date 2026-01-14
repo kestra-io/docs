@@ -5,9 +5,10 @@ release: 0.17.0
 ---
 
 
-Migrate from `LocalFiles` and `outputDir` to `inputFiles` and `outputFiles`.
 
-## Overview
+## Deprecation of LocalFiles and outputDir
+
+Migrate from `LocalFiles` and `outputDir` to `inputFiles` and `outputFiles`.
 
 The `LocalFiles` and `outputDir` are deprecated due to overlapping functionality that already exists using `inputFiles` and `outputFiles` on the `WorkingDirectory` and [script](../../16.scripts/index.md) tasks.
 1. **outputDir**: the `{{ outputDir }}` expression has been deprecated due to overlapping functionality available through the `outputFiles` property which is more flexible.

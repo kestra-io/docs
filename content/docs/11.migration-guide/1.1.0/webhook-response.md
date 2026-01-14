@@ -5,7 +5,8 @@ release: 1.1.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+## Webhook Execution API Return Type Changed
 
 The return type of the Webhook Execution API endpoint has been updated from a **typed response** to a **generic response** to support broader use cases and improve extensibility.
 

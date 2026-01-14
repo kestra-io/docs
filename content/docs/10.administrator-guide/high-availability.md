@@ -1,12 +1,13 @@
 ---
-title: High Availability
+title: High Availability for Kestra – Design and Configuration
+sidebarTitle: High Availability
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---
 
 Kestra is designed for high availability and fault tolerance. This page explains how to configure your deployment to ensure continuous operation.
 
-## Overview
+## Configure Kestra for high availability
 
 First, let's define what we mean by high availability.
 

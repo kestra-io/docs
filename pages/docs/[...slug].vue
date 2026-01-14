@@ -4,7 +4,7 @@
         <article v-if="page" class="bd-main order-1 docs"
                  :class="{'full': page?.rightBar === false , 'homepage': page?.meta?.isHomepage}">
             <div class="bd-title">
-                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.sidebarTitle ?? page.title"/>
                 <h1 v-if="page?.title" class="py-0 title">
                     <NuxtImg
                         v-if="page.icon"
@@ -56,7 +56,7 @@
         const {data: fetched, error} = await useAsyncData(
             `NavSideBar-docs`,
             async () => {
-                const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus']);
+                const data = await queryCollectionNavigation(CollectionNames.docs, ['hideSubMenus', 'sidebarTitle']);
 
                 if (data && !data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
                     data[0].children.splice(data[0].children.length - 3, 0, {
@@ -78,7 +78,7 @@
 
                     // Add the matching items from the data array
                     titles.forEach(title => {
-                        const matchedItem = data[0].children.find(item => item?.title === title);
+                        const matchedItem = data[0].children.find(item => (item?.sidebarTitle ?? item?.title) === title);
                         if (matchedItem) {
                             newData.push(matchedItem);
                         }
@@ -105,7 +105,7 @@
     const transformTitle = (text) => {
         return text
             .replace(/([A-Z])/g, '&#x200B;$1')
-            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2015-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 
     if (slug.value.endsWith(".md")) {

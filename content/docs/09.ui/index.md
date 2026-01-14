@@ -1,9 +1,12 @@
 ---
-title: User Interface
+title: Kestra User Interface – Navigate Dashboards, Flows, Logs
+sidebarTitle: User Interface
 icon: /docs/icons/ui.svg
 ---
 
 Kestra comes with a rich web user interface located by default on port 8080.
+
+## Explore the Kestra user interface
 
 When you first navigate to the Kestra UI, you will see the **Welcome** page.
 

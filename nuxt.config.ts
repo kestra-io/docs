@@ -105,6 +105,9 @@ export default defineNuxtConfig({
     ],
 
     content: {
+        navigation: {
+            fields: ['hideSubMenus', 'sidebarTitle'],
+        },
         build: {
             markdown: {
                 remarkPlugins: {

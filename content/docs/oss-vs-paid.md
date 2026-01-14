@@ -4,7 +4,7 @@ title: Open-Source vs. Enterprise Edition
 
 Understand the differences between Kestra's Open-Source and Enterprise Editions, and learn how the commercial offering supports teams running mission-critical workflows at scale.
 
-## Overview
+## Choose the right Kestra edition
 
 Kestra's Open-Source Edition provides a foundation for workflow automation — it's best suited for solo-developers or small teams exploring workflow orchestration.
 

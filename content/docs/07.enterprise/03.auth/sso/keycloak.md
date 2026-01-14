@@ -1,10 +1,12 @@
 ---
-title: Configure Keycloak SSO
+title: Set Up Keycloak SSO for Kestra
+sidebarTitle: Keycloak SSO
 icon: /docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
-
 Set up Keycloak SSO to manage authentication for users.
+
+## Configure Keycloak SSO
 
 In conjunction with SSO, check out the [Keycloak SCIM provisioning guide](../scim/keycloak.md).
 

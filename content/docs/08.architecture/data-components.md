@@ -1,11 +1,12 @@
 ---
-title: Data Storage in Kestra
+title: Kestra Architecture – Data Storage Components
+sidebarTitle: Data Storage in Kestra
 icon: /docs/icons/architecture.svg
 ---
 
 Understand where different data components ([inputs](../05.workflow-components/05.inputs.md), [outputs](../05.workflow-components/06.outputs.md), logs, and more) are stored in Kestra’s architecture.
 
-## Overview
+## See where Kestra stores data components
 
 Kestra processes and stores a variety of data, including [flow definitions](../05.workflow-components/01.flow.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding how these components are stored helps optimize performance, configure persistence, and integrate with external storage systems.
 

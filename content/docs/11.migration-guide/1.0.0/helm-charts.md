@@ -5,7 +5,8 @@ release: 1.0.0
 editions: ["OSS", "EE"]
 ---
 
-## Overview
+
+## Helm Chart Updates
 
 We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with preinstalled dependencies, such as PostgreSQL and MinIO, which were helpful to get started, but which were typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator, specifically for reading Resource Definitions to conduct various actions in Kestra.
 
@@ -41,7 +42,7 @@ affinity: {}
 extraVolumeMounts: []
 extraVolumes: []
 extraEnv: []
-# more...
+## more...
 ```
 
 ### After
@@ -80,24 +81,24 @@ We changed the way to provide custom configuration files to Kestra. It's now all
 ```yaml
 ### This creates a config map of the Kestra configuration
 configuration: {}
-# Example: Setting the plugin defaults for the Docker runner
-#   kestra:
-#     plugins:
-#       configurations:
-#         - type:  io.kestra.plugin.scripts.runner.docker.Docker
-#           values:
-#             volume-enabled: true
+## Example: Setting the plugin defaults for the Docker runner
+##   kestra:
+##     plugins:
+##       configurations:
+##         - type:  io.kestra.plugin.scripts.runner.docker.Docker
+##           values:
+##             volume-enabled: true
 ### This will create a Kubernetes Secret for the values provided
 ## This will be appended to kestra-secret with the key application-secrets.yml
 secrets: {}
-# Example: Store your postgres backend credentials in a secret
-#   secrets:
-#     kestra:
-#       datasources:
-#         postgres:
-#           username: pguser
-#           password: mypass123
-#           url: jdbc:postgresql://pghost:5432/db
+## Example: Store your postgres backend credentials in a secret
+##   secrets:
+##     kestra:
+##       datasources:
+##         postgres:
+##           username: pguser
+##           password: mypass123
+##           url: jdbc:postgresql://pghost:5432/db
 ### Load Kestra configuration from existing secret
 ## Here this assumes the secret is already deployed and the following apply:
 ## 1. The secret type is "Opaque"
@@ -109,7 +110,7 @@ externalSecret: {}
 ### configuration files
 ## This option allows you to reference existing local files to configure Kestra, e.g.
 configurationPath:
-# configurationPath: /app/application.yml,/app/application-secrets.yml
+## configurationPath: /app/application.yml,/app/application-secrets.yml
 extraConfigMapEnvFrom:
   # - name: my-existing-configmap-no-prefix
   # - name: my-existing-configmap-with-prefix

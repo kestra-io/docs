@@ -8,6 +8,8 @@ topics:
 
 Trigger Kestra flows based on Slack events.
 
+## Slack Events API
+
 The Slack Events API allows you to build apps that respond to events from Slack. For example, you can trigger a custom action anytime a user joins a channel or when someone reacts to a message with a specific emoji.
 
 ## Create a Slack App
