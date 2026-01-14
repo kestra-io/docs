@@ -31,7 +31,7 @@ export default (app: App) => {
         props: ["to", "href"]
     }));
     app.component("NuxtImg", defineComponent({
-        setup: (props, { slots }) => () => h("img", {
+        setup: (props) => () => h("img", {
             width: props.width,
             height: props.height,
             src: props.src,
