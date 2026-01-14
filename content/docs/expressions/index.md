@@ -1885,6 +1885,31 @@ afterExecution:
 
 The value on the left (`execution.state`) is in the list on the right (`CANCELLED`).
 
+### appLink
+
+:::badge{editions="EE"}
+:::
+
+Builds a link to a Kestra [App](../07.enterprise/04.scalability/apps.md). Without arguments, it returns the App link for the current flow; provide an `appId` to target a specific App.
+
+**Arguments**:
+- `appId` (String, optional): Returns the link for the specified App. If omitted, resolves the link for the flow-level App.
+- `baseUrl` (Boolean, optional, default: `false`): When `true`, returns the base App URL without an execution ID; when `false`, includes the current execution ID if available.
+
+Examples (Pebble):
+
+```twig
+{{ appLink(appId='com.example.my-app') }}
+```
+
+```twig
+{{ appLink(baseUrl=true) }}
+```
+
+```twig
+{{ appLink(appId='com.example.my-app', baseUrl=true) }}
+```
+
 ---
 
 ### Example with Functions
