@@ -17,13 +17,14 @@ interface Props {
     description?: string,
     activeStem: string,
     pageTitle?: string,
-    isHomePage?: boolean
+    isHomePage?: boolean,
+    image?: string
 }
 
 const props = Astro.props;
 ---
 
-<Layout title={props.title} description={props.description}>
+<Layout title={props.title} description={props.description}, image={props.image}>
     <div class={`container-fluid bd-gutter bd-layout type-docs ${props.isHomePage ? 'homepage' : ''}`}>
         <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
         <article class={`bd-main order-1 docs ${props.isHomePage ? 'homepage' : ''}`}>

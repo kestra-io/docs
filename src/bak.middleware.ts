@@ -80,7 +80,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     // all urls should be lowercase
     console.log(originalUrl)
     const match = context.url.pathname.match(/[A-Z]/);
-    if (match && !context.url.pathname.startsWith("/icons/")) {
+    if (match && !context.url.pathname.startsWith("/icons/") && !context.url.pathname.startsWith("/meta/")) {
         return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
     }
 

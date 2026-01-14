@@ -18,10 +18,13 @@ type Props = CollectionEntry<"docs">;
 
 const doc = Astro.props;
 const { Content, headings } = await render(doc);
+
+const image = new URL(`/meta/docs/${doc.id}.svg`, Astro.url);
+
 const navigation = await buildDocsNavigation();
 ---
 
-<LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title}>
+<LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
     <h1 class="title">
         {doc.data?.icon ? <img width="40" height="40" src={doc.data.icon} alt={`${doc.data.title} icon`} /> : null}
         {doc.data?.title}</h1>

@@ -24,7 +24,7 @@ const slug = Astro.routePattern;
 
 const title = props.title ? props.title + " | Kestra" : "Kestra, Open Source Declarative Data Orchestration";
 const description = props.description ?? "Use declarative language to build simpler, faster, scalable and flexible workflows";
-const image = `${currentOrigin}${props.image ? props.image : "/og-image.png"}`;
+const image = `${props.image && props.image.startsWith("http") ? '' : currentOrigin}${props.image ? props.image : "/og-image.png"}`;
 const slackMembers = await fetchSlackMembers();
 
 ---

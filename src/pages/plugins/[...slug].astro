@@ -20,7 +20,6 @@ import { getIcon } from "~/utils/plugins/getPluginIcon";
 import { retrieveRepoReleases } from "../api/github-releases";
 import OneHeader from "~/components/plugins/OneHeader.vue";
 import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro";
-import type { BlogPost } from "~/components/common/BlogList.vue";
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata";
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? [];
@@ -402,9 +401,20 @@ const elementTitle = (() => Object.fromEntries(
             )
         ).filter(([_, v]) => typeof v === "object" && Boolean(v?.title))
     ))()
----
 
-<Layout>
+
+let ogImage: string | null = null;
+
+if (!pluginType && !subGroup) {
+    ogImage = `/meta/plugins/${pluginName}.svg`
+} else if (subGroup) {
+    const filterElement = subgroups.filter(r => slugify(r.title) === subGroup)[0];
+    ogImage = `/meta/plugins/group-${filterElement.subGroup}.svg`
+} else {
+    ogImage = `/meta/plugins/${pluginType}.svg`
+}
+---
+<Layout title={headingTitle} description={headingDescription} image={ogImage}>
     <div class="container-fluid bd-gutter bd-layout">
     <PluginSidebar
       pluginWrapper={rootPlugin}

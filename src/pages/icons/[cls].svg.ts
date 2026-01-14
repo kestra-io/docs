@@ -6,7 +6,6 @@ import { API_URL } from "astro:env/client";
 
 export async function GET({ params }: { params: { cls: string } }) {
   const cls = params.cls;
-  console.log(cls)
   const response = await fetch(`${API_URL}/plugins/icons/${cls}`);
 
   if (!response.ok) {
