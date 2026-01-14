@@ -477,7 +477,7 @@ const elementTitle = (() => Object.fromEntries(
           relatedBlogs.length > 0 && <RelatedBlogs posts={relatedBlogs.map(p => ({
             ...p.data,
             path: `/blogs/${p.id}`,
-            date: p.data.date
+            date: p.data.date.toISOString(),
         }))} />
       }
 
