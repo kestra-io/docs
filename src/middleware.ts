@@ -90,7 +90,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 const securityHeaders = defineMiddleware(async (context, next) => {
     const response = await next();
 
-    const localhost: string[] = []
+    const localhost: string[] = [];
     if (import.meta.env.DEV) {
         localhost.push(context.url.protocol + "//" + context.url.host);
     }
