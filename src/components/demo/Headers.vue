@@ -165,17 +165,6 @@ function withContactParams(base: string, { firstname, lastname, email }: { first
   }
 }
 
-if (getHubspotTracking() === null) {
-  const base = getMeetingUrl();
-  const current = new URLSearchParams(window.location.search);
-  meetingUrl.value = withContactParams(base, {
-    firstname:  current.get("firstname"),
-    lastname:  current.get("lastname"),
-    email:     current.get("email")
-  });
-  valid.value = true;
-}
-
 watch(isMobile, (newValue) => {
   if (newValue) {
     document.body.classList.add('headers-body-bg');
@@ -187,6 +176,17 @@ watch(isMobile, (newValue) => {
 onMounted(() => {
   if (isMobile.value) {
     document.body.classList.add('headers-body-bg');
+  }
+
+  if (getHubspotTracking() === null) {
+    const base = getMeetingUrl();
+    const current = new URLSearchParams(window.location.search);
+    meetingUrl.value = withContactParams(base, {
+        firstname:  current.get("firstname"),
+        lastname:  current.get("lastname"),
+        email:     current.get("email")
+    });
+    valid.value = true;
   }
 });
 
