@@ -12,6 +12,15 @@ const iconsArrays = await Promise.all(pluginsData.map(async (plugin) => {
     return $fetchApi<Record<string, {icon: string}>>(`/plugins/${plugin.name}/icons/subgroups`);
 }))
 
+const plugins: Plugin[] = pluginsData.map(p => ({
+    name: p.name,
+    title: p.title,
+    description: p.description,
+    group: p.group,
+    version: p.version,
+    tasks: p.tasks
+})) as any;
+
 const metadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
 
 const icons = Object.fromEntries(
@@ -25,7 +34,9 @@ const icons = Object.fromEntries(
     )
 );
 
-const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: number }>(`/blueprints/countByPlugins`);
+const {countByPlugins: maybeBlueprintCounts} = await $fetchApi<{ countByPlugins: number }>(`/blueprints/countByPlugins`);
+
+const blueprintCounts = isNaN(maybeBlueprintCounts) ? 0 : maybeBlueprintCounts;
 
 
 const title = "Hundreds of Plugins For All Your Orchestrations Needs";
@@ -35,7 +46,7 @@ const description = "Connect Kestra with tools you already know and love";
 <Layout title={title} description={description}>
     <PluginsLists
         client:idle
-        plugins={pluginsData}
+        {plugins}
         {icons}
         categories={categoriesData ?? []}
         fullPath={Astro.request.url}

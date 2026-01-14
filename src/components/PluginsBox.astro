@@ -2,7 +2,7 @@
 import { calculateTotalPlugins } from '~/composables/usePluginsCount';
 import PluginsRender from '~/components/home/PluginsRender.vue'
 import { $fetchApi } from '~/utils/fetch';
-const pluginLogos = await import.meta.glob('/public/landing/home/plugins/*.svg', {eager: true}) as Record<string, any>
+const pluginLogos = await import.meta.glob('~/assets/plugins/*.svg', {eager: true}) as Record<string, any>
 const pluginsSorted = Object.entries(pluginLogos).map(([name, logo]) => ({ name: name.split('/').pop()?.split('.').shift() ?? "", logo: logo.default.src as string })).sort(() => 0.5 - Math.random()).slice(0, 20);
 
 const plugins = await $fetchApi("/plugins/subgroups")
