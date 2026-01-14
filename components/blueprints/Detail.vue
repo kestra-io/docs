@@ -57,7 +57,7 @@ export default {
             required: true
         },
         description: {
-            type: Object,
+            type: [Object, String],
             required: true
         },
         flow: {
