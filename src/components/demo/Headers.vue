@@ -29,7 +29,7 @@
 
         <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
           <div v-if="valid === false" class="meeting-form">
-            <img class="background d-none d-md-block" src="./assets/header-background.png?url" alt="" data-aos="fade-right">
+            <img class="background d-none d-md-block" :src="headerBackground.src" aria-hidden="true" data-aos="fade-right">
             <form class="row needs-validation" ref="demo-form" novalidate data-aos="fade-left" @submit="onSubmit">
               <div v-if="message" class="alert alert-danger mt-3 mb-0">
                 {{ message }}
@@ -115,6 +115,7 @@ import { useGtm } from '@gtm-support/vue-gtm';
 import scaleImg from "./assets/chart-areaspline.svg";
 import securityImg from "./assets/security.svg";
 import handshakeImg from "./assets/handshake.svg";
+import headerBackground from "../demo/assets/header-background.png"
 
 
 const gtm = useGtm();

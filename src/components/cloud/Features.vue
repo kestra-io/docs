@@ -81,8 +81,8 @@
         <div v-if="!valid" class="meeting-form">
           <img
             class="background"
-            src="../demo/assets/header-background.png?url"
-            alt=""
+            :src="headerBackground.src"
+            aria-hidden="true"
             data-aos="fade-right"
           />
           <form
@@ -192,6 +192,7 @@ import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeet
 import { ref, useTemplateRef } from "vue";
 import identify from "~/utils/identify";
 import { useGtm } from '@gtm-support/vue-gtm';
+import headerBackground from "../demo/assets/header-background.png"
 
 const gtm = useGtm();
 const formRef = useTemplateRef("cloud-form");
