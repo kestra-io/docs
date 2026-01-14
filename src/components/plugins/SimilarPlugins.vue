@@ -70,8 +70,8 @@
         @include media-breakpoint-up(lg) {
             margin-left: -2rem;
             margin-right: -2rem;
-            padding-left: 3rem;
-            padding-right: 3rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
         .header {
