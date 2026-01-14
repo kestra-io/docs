@@ -47,14 +47,14 @@ export function getNavigationTree(docsPages: { id: string, data: { title: string
     // then build the navigation tree
     const navigationTreeResult: NavigationItem[] = [];
     for (const [section, titles] of Object.entries(navigationTree)) {
-        const sectionPage = docsPages.find(page => section === page.data.title ?? section === page.data.sidebarTitle);
+        const sectionPage = docsPages.find(page => section === page.data.title || section === page.data.sidebarTitle);
         const sectionNode: NavigationItem = {
             title: section,
             isSection: true,
             path: sectionPage ? `/docs/${sectionPage.id}` : '#',
             sidebarTitle: sectionPage?.data?.sidebarTitle,
             children: titles.map(title => {
-                const page = docsPages.find(page => title === page.data.sidebarTitle ?? title === page.data.title);
+                const page = docsPages.find(page => title === page.data.sidebarTitle || title === page.data.title);
                 return page ? {
                     title: page.data.title,
                     sidebarTitle: page.data.sidebarTitle,
