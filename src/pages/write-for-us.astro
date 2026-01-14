@@ -188,25 +188,23 @@ const description = header.description;
 
 <Layout title={title} description={description}>
     <div class="main">
-        <div>
-            <HeaderCard content={header} client:load />
-            <Line class="divider-md" client:visible />
-            <Examples content={drafts} client:visible />
-            <Line class="mb-0" client:visible />
-            <Write content={write} client:visible />
-            <Line class="mt-0 mb-0" client:visible />
-            <Process content={process} client:visible />
-            <Faqs content={faqs} client:visible />
-            <Line client:visible />
-            <LayoutFooterContact
-                client:visible
-                title={footer.title}
-                darkButtonText={footer.cta[0].text}
-                darkButtonHref={footer.cta[0].href}
-                purpleButtonText={footer.cta[1].text}
-                purpleButtonHref={footer.cta[1].href}
-            />
-        </div>
+        <HeaderCard content={header} client:load />
+        <Line class="divider-md" client:visible />
+        <Examples content={drafts} client:visible />
+        <Line class="mb-0" client:visible />
+        <Write content={write} client:visible />
+        <Line class="mt-0 mb-0" client:visible />
+        <Process content={process} client:visible />
+        <Faqs content={faqs} client:visible />
+        <Line client:visible />
+        <LayoutFooterContact
+            client:visible
+            title={footer.title}
+            darkButtonText={footer.cta[0].text}
+            darkButtonHref={footer.cta[0].href}
+            purpleButtonText={footer.cta[1].text}
+            purpleButtonHref={footer.cta[1].href}
+        />
     </div>
 </Layout>
 
@@ -217,5 +215,6 @@ const description = header.description;
     background-color: $black-4;
     color: $white;
     font-weight: 300;
+    padding-bottom: 3rem;
 }
 </style>

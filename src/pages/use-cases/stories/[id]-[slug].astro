@@ -163,45 +163,48 @@ const generateTagName = (task: string) => {
         color: $white;
     }
 
-    :deep(.bd-markdown) {
-        p {
-            font-size: $h6-font-size;
-            line-height: calc($spacer * 1.6);
-        }
+    .main {
+        :global(.bd-markdown) {
+            p {
+                font-size: $h6-font-size;
+                line-height: calc($spacer * 1.6);
+            }
 
-        h2 {
-            color: $white;
-            margin-top: auto;
-            padding-top: 3rem;
-            margin-bottom: 1rem;
-            font-size: calc($font-size-base * 1.8) !important;
-            font-weight: 400 !important;
-            line-height: calc($spacer * 2.7);
-            border-left: none;
-            padding-left: 0 !important;
+            h2 {
+                color: $white;
+                margin-top: auto;
+                padding-top: 3rem;
+                margin-bottom: 1rem;
+                font-size: calc($font-size-base * 1.8) !important;
+                font-weight: 400 !important;
+                line-height: calc($spacer * 2.7);
+                border-left: none;
+                padding-left: 0 !important;
 
-            &:before {
-                display: none;
+                &:before {
+                    display: none;
+                }
+            }
+
+            h3 {
+                margin-top: calc($spacer * 4.12);
+                margin-bottom: 3rem;
+                padding-left: calc($spacer * 0.6) !important;
+                font-size: calc($font-size-base * 2.25);
+                line-height: calc($spacer * 2.3);
+            }
+
+            ul > li::marker {
+                color: #736BCD ;
+            }
+
+            blockquote {
+                border-left: 4px solid var(--bs-gray-500);
+                padding-left: $spacer;
             }
         }
-
-        h3 {
-            margin-top: calc($spacer * 4.12);
-            margin-bottom: 3rem;
-            padding-left: calc($spacer * 0.6) !important;
-            font-size: calc($font-size-base * 2.25);
-            line-height: calc($spacer * 2.3);
-        }
-
-        ul > li::marker {
-            color: #736BCD ;
-        }
-
-        blockquote {
-            border-left: 4px solid var(--bs-gray-500);
-            padding-left: $spacer;
-        }
     }
+
 
     .story-info {
         padding: calc($spacer * 2);
@@ -249,7 +252,7 @@ const generateTagName = (task: string) => {
     .section-content {
         border-top: 1px solid rgba(255, 255, 255, 0.10);
         padding: 2.875rem 0;
-        :deep(.subtitle > p) {
+        :global(.subtitle > p) {
             background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
             background-clip: text;
             -webkit-background-clip: text;
@@ -294,7 +297,7 @@ const generateTagName = (task: string) => {
     .task-card {
         background-color: $black-3;
         min-width: 9rem;
-        :deep(.icon-wrapper) {
+        :global(.icon-wrapper) {
             width: 42px;
             height: 42px;
         }
