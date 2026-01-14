@@ -84,7 +84,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     }
 
     // Check if the request is coming from the kestra-io.pages.dev to redirect to main
-    if (context.url.host === 'kestra-io.pages.dev') {
+    if (!import.meta.env.DEV && context.url.host === 'kestra-io.pages.dev') {
         const replace = new URL(context.url);
         replace.host = "kestra.io";
         replace.protocol = "https:";
