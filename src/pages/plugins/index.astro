@@ -25,8 +25,7 @@ const icons = Object.fromEntries(
     )
 );
 
-const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: number }>(`/blueprints/countByPlugins`);
-
+const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: Record<string, number> }>(`/blueprints/countByPlugins`);
 
 const title = "Hundreds of Plugins For All Your Orchestrations Needs";
 const description = "Connect Kestra with tools you already know and love";

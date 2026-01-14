@@ -79,9 +79,9 @@
         icons: Record<string, string>,
         metadata?: PluginMetadata[],
         fullPath: string,
-        blueprintCounts?: number
+        blueprintCounts?: Record<string, number>
     }>(), {
-        blueprintCounts: 0
+        blueprintCounts: () => ({})
     });
 
 
