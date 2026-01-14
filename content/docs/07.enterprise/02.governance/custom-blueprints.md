@@ -34,9 +34,9 @@ You can edit Blueprints at any time, for example, to add new tasks or expand the
 
 ## Templated Blueprints
 
-Templated Blueprints allow you to create reusable, configurable workflows that users can instantiate without editing YAML. Instead of copying and modifying Blueprints, users fill in guided inputs and Kestra generates the complete flow automatically. 
+Templated Blueprints allow you to create reusable, configurable workflows that users can instantiate without editing YAML. Instead of copying and modifying Blueprints, users fill in guided inputs and Kestra generates the complete flow automatically.
 
-This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface. 
+This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tAcw0IDy9AA?si=yz7vyP0OUYaw8GTa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -121,7 +121,7 @@ extend:
       values:
         - Postgres
         - Oracle
-    
+
     - id: env
       type: SELECT
       values:

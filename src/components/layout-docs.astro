@@ -16,6 +16,7 @@ interface Props {
     title?: string,
     description?: string,
     activeStem: string,
+    pageTitle?: string,
     isHomePage?: boolean
 }
 
@@ -27,7 +28,7 @@ const props = Astro.props;
         <NavSideBar type="docs" navigation={navigation} slug={props.activeStem} client:idle transition:persist/>
         <article class={`bd-main order-1 docs ${props.isHomePage ? 'homepage' : ''}`}>
             <div class="bd-title">
-                <Breadcrumb slug={props.activeStem} pageList={pageList} pageNames={pageNames} />
+                <Breadcrumb slug={props.activeStem} pageList={pageList} pageNames={pageNames} pageTitle={props.pageTitle} />
                 <slot name="title" />
             </div>
 

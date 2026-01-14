@@ -28,6 +28,7 @@
         slug: string;
         pageList?: string[];
         pageNames?: Record<string, string>;
+        pageTitle?: string;
     }>();
 
     const breadcrumb = computed(() => {
@@ -48,6 +49,9 @@
 
     const getDisplayName = (item: string, index: number) => {
         const key = breadcrumbLink(index);
+        if (index === breadcrumb.value.length - 1 && props.pageTitle) {
+            return props.pageTitle;
+        }
         return item !== "docs" && props.pageNames?.[key] ? props.pageNames[key] : formatDirectoryName(item);
     };
 </script>

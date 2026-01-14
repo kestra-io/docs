@@ -15,6 +15,7 @@ export const collections = {
         description: z.string().optional(),
         // icon: image().optional(),
         icon: z.string().optional(),
+        sidebarTitle: z.string().optional(),
         release: z.string().optional(),
         version: z.string().optional(),
         editions: z.array(z.enum(["OSS", "EE", "Cloud"])).optional(),

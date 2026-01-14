@@ -42,7 +42,7 @@ const navigationTree = {
 }
 
 
-export function getNavigationTree(docsPages: { id: string, data: { title: string } }[]) {
+export function getNavigationTree(docsPages: { id: string, data: { title: string, sidebarTitle?: string } }[]) {
     // build the initial tree structure by finding each title in the navigationTree
     // then build the navigation tree
     const navigationTreeResult: NavigationItem[] = [];
@@ -52,10 +52,12 @@ export function getNavigationTree(docsPages: { id: string, data: { title: string
             title: section,
             isSection: true,
             path: sectionPage ? `/docs/${sectionPage.id}` : '#',
+            sidebarTitle: sectionPage?.data?.sidebarTitle,
             children: titles.map(title => {
                 const page = docsPages.find(page => title === page.data.title);
                 return page ? {
                     title: page.data.title,
+                    sidebarTitle: page.data.sidebarTitle,
                     path: `/docs/${page.id}`,
                     children: recursivelyBuildChildren(page.id, docsPages)
                 } : undefined;
@@ -67,7 +69,7 @@ export function getNavigationTree(docsPages: { id: string, data: { title: string
     return navigationTreeResult;
 }
 
-function recursivelyBuildChildren(parentId: string, docsPages: { id: string, data: { title: string } }[]): NavigationItem[] | undefined {
+function recursivelyBuildChildren(parentId: string, docsPages: { id: string, data: { title: string, sidebarTitle?: string } }[]): NavigationItem[] | undefined {
     const children = docsPages.filter(page => {
         const parentPath = parentId.endsWith('/') ? parentId : parentId + '/';
         return page.id.startsWith(parentPath) && page.id !== parentId && !page.id.slice(parentPath.length).includes('/');
@@ -79,6 +81,7 @@ function recursivelyBuildChildren(parentId: string, docsPages: { id: string, dat
 
     return children.map(child => ({
         title: child.data.title,
+        sidebarTitle: child.data.sidebarTitle,
         path: `/docs/${child.id}`,
         children: recursivelyBuildChildren(child.id, docsPages)
     }));
