@@ -18,8 +18,8 @@
                     :open="isSubGroupOpen(subGroup)"
                 >
                     <summary class="subgroup-title">
+                        <ChevronRight class="chevron-icon" />
                         <NuxtLink :to="navigateToSubgroup(subGroup)" class="subgroup-link">
-                            <component :is="isSubGroupOpen(subGroup) ? ChevronDown : ChevronRight" class="chevron-icon" />
                             {{ subGroupName(subGroup) }}
                         </NuxtLink>
                     </summary>
@@ -75,7 +75,6 @@
     import {subGroupName, slugify, isEntryAPluginElementPredicate, type PluginElement, type Plugin} from '@kestra-io/ui-libs';
 
     import Magnify from 'vue-material-design-icons/Magnify.vue';
-    import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
     import ChevronRight from 'vue-material-design-icons/ChevronRight.vue';
     import PluginElements from '~/components/plugins/PluginElements.vue';
 
@@ -156,11 +155,22 @@
             border-radius: 0;
             overflow: visible;
 
+            .chevron-icon{
+                margin-left: .5rem;
+                transition: transform 0.1s ease;
+            }
+
             &[open] .subgroup-title {
                 color: $purple-36;
 
+                .chevron-icon {
+                    transform-origin: 53% 60%;
+                    transform: rotate(90deg);
+                }
+
                 .subgroup-link {
                     color: $purple-36;
+
                 }
             }
         }
@@ -183,7 +193,6 @@
                 display: flex;
                 align-items: center;
                 gap: calc($spacer / 4);
-                padding-left: calc($spacer / 2);
                 text-decoration: none;
                 color: $white-1;
                 width: 100%;
