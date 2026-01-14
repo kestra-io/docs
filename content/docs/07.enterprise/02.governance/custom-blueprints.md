@@ -35,6 +35,12 @@ Templated Blueprints allow you to create reusable, configurable workflows that u
 
 This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface. 
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/tAcw0IDy9AA?si=yz7vyP0OUYaw8GTa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 **How It Works:** Templated Blueprints use [Pebble templating](../05.concepts/06.pebble.md), with custom delimiters to avoid conflicts with Kestra expressions.
 
 ### Define Template Arguments
