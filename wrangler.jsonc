@@ -29,43 +29,14 @@
      */
     "kv_namespaces": [
         {
-            "binding": "CLOUDFLARE_KVSTORAGE",
-            "id": "e1cec38e2fe84984ac38f33d46b0147c"
-        },
-        {
             "binding": "ISR_CACHE",
             "id": "c7003b3ecfc2485bb2efb713d75da274"
-        }
-    ],
-    "d1_databases": [
-        {
-            "binding": "DB",
-            "database_name": "nuxt-content",
-            "database_id": "7cdb11eb-f50a-4e0f-9985-bf6d58883ae9"
         }
     ],
     "env": {
         "preview": {
             "kv_namespaces": [
-                {
-                    "binding": "CLOUDFLARE_KVSTORAGE",
-                    "id": "30b103dc37d74a40b5976b67bb0d3b0c"
-                },
-                {
-                    "binding": "ISR_CACHE",
-                    "id": "c7003b3ecfc2485bb2efb713d75da274"
-                }
-            ],
-            "d1_databases": [
-                {
-                    "binding": "DB",
-                    "database_name": "nuxt-content-preview",
-                    "database_id": "d65b1553-56e9-444e-9f3b-811e87a22f32"
-                }
-            ],
-            "vars": {
-                "NUXT_SITE_ENV": "staging"
-            }
+            ]
         }
     }
 
