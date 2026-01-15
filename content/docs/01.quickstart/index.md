@@ -27,19 +27,21 @@ Once Docker is running, start Kestra with a single command. (*If you are using W
 
 ```bash
 docker run --pull=always -it -p 8080:8080 --user=root \
-  --name kestra \
+  --name kestra --restart=always \
   -v kestra_data:/app/storage \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
   kestra/kestra:latest server local
 ```
 
+If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.
+
 :::collapse{title="macOS troubleshooting"}
 If you're on macOS, you may need to add `-e JAVA_OPTS="-XX:UseSVE=0"`
 
 ```bash
 docker run --pull=always -it -p 8080:8080 --user=root \
-  --name kestra \
+  --name kestra --restart=always \
   -v kestra_data:/app/storage \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
