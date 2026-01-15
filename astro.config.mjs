@@ -82,7 +82,7 @@ export default defineConfig({
             preprocessorOptions: {
                 scss: {
                     // silence invasive bootstrap warnings
-                    silenceDeprecations: ["color-functions", "global-builtin", "import"]
+                    silenceDeprecations: ["color-functions", "global-builtin", "import", "if-function"]
                 }
             }
         },
