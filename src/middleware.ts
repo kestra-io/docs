@@ -71,7 +71,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     // we don't want trailing slashes (but allow the root path '/')
     if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
         console.log("Redirecting to remove trailing slash:", originalUrl);
-        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+        // return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // we don't want .html extensions (historical reason)
