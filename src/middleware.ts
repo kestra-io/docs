@@ -4,17 +4,16 @@ import { API_URL } from "astro:env/client";
 import contentSecurityPolicyConfig from "../content-security-policy.config";
 
 const sendRedirect = (redirectUrl: string) => {
-    console.trace("sendRedirect", redirectUrl);
-    // return new Response("", {
-    //     status: 301,
-    //     headers: {
-    //         Location: redirectUrl
-    //     }
-    // });
+    return new Response("", {
+        status: 301,
+        headers: {
+            Location: redirectUrl
+        }
+    });
 }
 
 const logger = defineMiddleware(async (context, next) => {
-    if (context.url.pathname === "/api/healthcheck" || import.meta.env.DEV) {
+    if (context.url.pathname === "/api/healthcheck" || import.meta.env.DEV || context.isPrerendered) {
         return next();
     }
 
@@ -34,7 +33,7 @@ const logger = defineMiddleware(async (context, next) => {
         "referer": response.headers.get("referer"),
     };
 
-    if (!context.isPrerendered && !logParts["ip"]) {
+    if (!logParts["ip"]) {
         logParts["ip"] = context.clientAddress;
     }
 
@@ -70,18 +69,18 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     // we don't want trailing slashes (but allow the root path '/')
     if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-        sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
-        sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
     }
 
     // all urls should be lowercase
     const match = context.url.pathname.match(/[A-Z]/);
     if (match && !context.url.pathname.startsWith("/icons/") && !context.url.pathname.startsWith("/meta/")) {
-        sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
+        return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
     }
 
     return next();
@@ -160,7 +159,7 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 export const onRequest = sequence(
     logger,
     noIndex,
-    incomingRedirect,
-    securityHeaders,
+    // incomingRedirect,
+    // securityHeaders,
     notFoundRedirect
 );
