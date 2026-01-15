@@ -26,21 +26,32 @@ Start Kestra in a Docker container, and create your first flow.
 Once Docker is running, start Kestra with a single command. (*If you are using Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/).*):
 
 ```bash
-docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp kestra/kestra:latest server local
+docker run --pull=always -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  kestra/kestra:latest server local
 ```
 
 :::collapse{title="macOS troubleshooting"}
 If you're on macOS, you may need to add `-e JAVA_OPTS="-XX:UseSVE=0"`
 
 ```bash
-docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp -e JAVA_OPTS="-XX:UseSVE=0" kestra/kestra:latest server local
+docker run --pull=always -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  -e JAVA_OPTS="-XX:UseSVE=0" \
+  kestra/kestra:latest server local
 ```
 :::
 
 Open `http://localhost:8080` in your browser to launch the UI, create your user, and take the product tour to begin building your first flow.
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database that will not persist data. If you want to use a persistent database backend with PostgreSQL and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose.md).
+The above command starts Kestra with an embedded H2 database stored on the `kestra_data` Docker volume. For production-ready persistence with PostgreSQL and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose.md).
 :::
 
 ---
