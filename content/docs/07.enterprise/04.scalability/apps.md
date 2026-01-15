@@ -193,6 +193,10 @@ The base URL of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `h
 
 You can copy the URL from the Apps catalog page in the Kestra UI.
 
+### App expressions
+
+From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Expressions guide](../../expressions/index.md#applink) for parameters and examples.
+
 ---
 
 ## App access and RBAC permissions
