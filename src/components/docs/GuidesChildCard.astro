@@ -9,6 +9,10 @@ const currentPage = Astro.url.pathname.endsWith("/")
 
 const contentPath = currentPage.replace('/docs/', '');
 
+function getFirstContentLine(content?: string): string | undefined {
+  return content?.split('\n').find(line => line.trim().length > 0 && !line.startsWith('#'));
+}
+
 const guides = await getCollection('docs').then((docs: CollectionEntry<'docs'>[]) => {
   return docs
     .filter((doc: CollectionEntry<'docs'>) => {
@@ -17,7 +21,7 @@ const guides = await getCollection('docs').then((docs: CollectionEntry<'docs'>[]
     })
     .map((doc: CollectionEntry<'docs'>) => ({
       title: doc.data.title,
-      description: doc.data.description,
+      description: getFirstContentLine(doc.body),
       path: `/docs/${doc.id}`,
       icon: doc.data.icon,
       stage: doc.data.stage,
@@ -27,4 +31,4 @@ const guides = await getCollection('docs').then((docs: CollectionEntry<'docs'>[]
 
 ---
 
-<GuidesChildCardRender navigation={guides} />
+<GuidesChildCardRender navigation={guides} client:load />
