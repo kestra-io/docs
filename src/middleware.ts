@@ -74,7 +74,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         console.log("Redirecting to remove trailing slash:", originalUrl);
         const urlWithoutTrailingSlash = originalUrl.substring(0, originalUrl.length - 1)
         console.log("Redirect URL:", urlWithoutTrailingSlash);
-        // return sendRedirect(urlWithoutTrailingSlash);
+        return sendRedirect(urlWithoutTrailingSlash);
     }
 
     // we don't want .html extensions (historical reason)
