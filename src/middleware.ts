@@ -159,7 +159,7 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 export const onRequest = sequence(
     logger,
     noIndex,
-    // incomingRedirect,
+    incomingRedirect,
     securityHeaders,
     notFoundRedirect
 );
