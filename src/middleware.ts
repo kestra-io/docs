@@ -4,12 +4,13 @@ import { API_URL } from "astro:env/client";
 import contentSecurityPolicyConfig from "../content-security-policy.config";
 
 const sendRedirect = (redirectUrl: string) => {
-    return new Response("", {
-        status: 301,
-        headers: {
-            Location: redirectUrl
-        }
-    });
+    console.trace("sendRedirect", redirectUrl);
+    // return new Response("", {
+    //     status: 301,
+    //     headers: {
+    //         Location: redirectUrl
+    //     }
+    // });
 }
 
 const logger = defineMiddleware(async (context, next) => {
@@ -69,19 +70,18 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     // we don't want trailing slashes (but allow the root path '/')
     if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+        sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
-        return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
+        sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
     }
 
     // all urls should be lowercase
-    console.log(originalUrl)
     const match = context.url.pathname.match(/[A-Z]/);
     if (match && !context.url.pathname.startsWith("/icons/") && !context.url.pathname.startsWith("/meta/")) {
-        return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
+        sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
     }
 
     return next();
@@ -148,7 +148,7 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         }).toString()}`)).json();
 
         if (result && result.to && result.to !== originalUrl) {
-            return sendRedirect(result.to);
+            sendRedirect(result.to);
         }
     } catch (e) {
         console.error("Error fetching redirect:", e);
