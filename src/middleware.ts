@@ -71,20 +71,20 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     // we don't want trailing slashes (but allow the root path '/')
     if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
         console.log("Redirecting to remove trailing slash:", originalUrl);
-        // return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
         console.log("Redirecting to remove .html extension:", originalUrl);
-        // return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
     }
 
     // all urls should be lowercase
     const match = context.url.pathname.match(/[A-Z]/);
     if (match && !context.url.pathname.startsWith("/icons/") && !context.url.pathname.startsWith("/meta/")) {
         console.log("Redirecting to lowercase URL:", originalUrl);
-        // return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
+        return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
     }
 
     return next();
