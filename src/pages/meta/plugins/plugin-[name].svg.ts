@@ -1,4 +1,4 @@
-import {generate} from "~/composables/useOgImage.ts";
+import {generate} from "~/utils/ogImage.ts";
 import {$fetch, $fetchApi} from "~/utils/fetch.ts";
 import type {Plugin, PluginMetadata} from "@kestra-io/ui-libs";
 import {API_URL} from "astro:env/client";

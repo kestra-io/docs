@@ -1,5 +1,5 @@
 import {getEntry} from "astro:content";
-import {generate} from "~/composables/useOgImage.ts";
+import {generate} from "~/utils/ogImage.ts";
 
 export const prerender = false
 
