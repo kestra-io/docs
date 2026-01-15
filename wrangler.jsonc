@@ -59,7 +59,7 @@
                 "NUXT_SITE_ENV": "staging"
             }
         }
-    },
+    }
 
     /**
      * Environment Variables
