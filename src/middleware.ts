@@ -160,6 +160,6 @@ export const onRequest = sequence(
     logger,
     noIndex,
     // incomingRedirect,
-    // securityHeaders,
+    securityHeaders,
     notFoundRedirect
 );
