@@ -67,11 +67,14 @@ const noIndex = defineMiddleware(async (context, next) => {
 
 const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString();
+    console.log("incoming redirect", context.url)
 
     // we don't want trailing slashes (but allow the root path '/')
     if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
         console.log("Redirecting to remove trailing slash:", originalUrl);
-        // return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+        const urlWithoutTrailingSlash = originalUrl.substring(0, originalUrl.length - 1)
+        console.log("Redirect URL:", urlWithoutTrailingSlash);
+        // return sendRedirect(urlWithoutTrailingSlash);
     }
 
     // we don't want .html extensions (historical reason)
