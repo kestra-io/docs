@@ -9,7 +9,7 @@ import { $fetchApi } from '~/utils/fetch';
 const title = "Use cases for Modern Data Orchestration";
 const description = "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform";
 
-const {results: stories} = await $fetchApi<{results: any[]}>('/customer-stories-v2?featured=true')
+const {results: stories} = await $fetchApi<{results: Story[]}>('/customer-stories-v2?featured=true')
 ---
 
 <Layout title={title} description={description}>

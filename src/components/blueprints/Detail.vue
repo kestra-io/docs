@@ -42,7 +42,7 @@
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import CommonTaskIcon from '~/components/common/TaskIcon.vue';
-import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue";
 
 export default {
     components: {

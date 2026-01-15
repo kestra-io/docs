@@ -1,86 +1,124 @@
 <template>
-    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
-        <div class="card" data-aos="fade-right">
-            <div class="card-body p-0 d-flex flex-column justify-content-between ">
-                <div>
-                    <img
-                        loading="lazy"
-                        :src="story.featuredImage"
-                        :alt="`${story.title} image`"
-                        class="card-img-top"
-                    />
-                    <p class="card-title mt-3 mb-2">{{ story.title }}</p>
-                    <p class="card-meta-description">{{ story.description }}</p>
-                    <div class="d-flex flex-wrap gap-3 my-3 story-tasks">
-                        <div class="icon bg-dark-4" v-for="task in story.tasks" :key="task">
-                            <CommonTaskIcon :cls="task" />
-                        </div>
-                    </div>
-                </div>
-                <span class="author">
-                      Read the story <img src="/stories/icons/arrow_right_alt.svg" alt="right icons" />
-                  </span>
+    <div
+        class="story-card d-flex flex-column"
+    >
+        <div class="card-inner">
+            <NuxtImg
+                :src="story.heroImage"
+                :alt="story.title"
+                class="card-image img-fluid"
+            />
+        </div>
+        <p class="card-text">
+            <strong v-if="story.companyName">{{ story.companyName }}: </strong>{{ story.title }}
+        </p>
+        <div class="card-footer">
+            <div
+                class="icon-box"
+                v-for="task in story.tasks.slice(0, 4)"
+                :key="task"
+            >
+                <TaskIcon :cls="task" />
             </div>
         </div>
-    </NuxtLink>
+        <hr class="card-hr">
+        <div class="bottom">
+            <Link :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`" text="Read the story" />
+        </div>
+    </div>
 </template>
 
-<script setup>
-    import {slugify} from "@kestra-io/ui-libs";
-    import CommonTaskIcon from '~/components/common/TaskIcon.vue'
+<script setup lang="ts">
+    import { slugify } from '@kestra-io/ui-libs';
+    import TaskIcon from '~/components/common/TaskIcon.vue';
+    import Link from '~/components/common/Link.vue';
 
-    defineProps({
-        story: {
-            type: Object,
-            required: true,
-        }
-    });
+    const props = defineProps<{
+        story: Story;
+    }>();
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
     @import "~/assets/styles/variable";
 
-    .card {
-        height: 100%;
-        border-radius: 8px;
-        background-color: transparent;
-        .card-body {
+    .story-card {
+        height: 434px;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        box-shadow: rgba(99, 99, 99, 0.2) 0rem 0.125rem 0.5rem 0rem;
+        background-color: $white;
+        color: $black-1;
 
-            .card-img-top {
-                border-radius: 4px;
-                border: 1px solid #404559;
-            }
+        .card-inner {
+            width: 100%;
+            height: 232px;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
 
-            .author {
-                font-size: $font-size-sm;
-                color: $purple-36;
-                margin-bottom: 0;
-                font-weight: 400;
-            }
-
-            .icon {
-                border-radius: 4px;
-                border: 1px solid $black-6;
-                padding: 0.313rem 0.625rem;
-                width: 44px;
+            .card-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 0.5rem;
             }
         }
 
-        &-title {
-            color: #CDD5EF;
-            font-family: $font-family-monospace;
-            font-size: $font-size-md;
-            font-weight: 400;
-            line-height: calc($spacer * 1.75);
-            text-transform: uppercase;
+        .card-text {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            line-height: 1.25rem;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
-        &-meta-description {
-            color: $white;
-            font-family: $font-family-sans-serif;
-            font-size: $h6-font-size;
-            font-weight: 400;
-            line-height: calc($spacer * 1.625);
+        .card-footer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8125rem;
+
+            .icon-box {
+                width: 2.75rem;
+                height: 2.75rem;
+                border-radius: 0.25rem;
+                border: 1px solid #E5E5E5;
+                padding: 0.375rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                :deep(img),
+                :deep(svg),
+                :deep(.icon) {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
         }
+
+        .card-hr {
+            border: 1px solid #E1E3E5;
+        }
+    }
+
+    .bottom {
+        width: 100%;
+        gap: 0.3125rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: $black-1;
+        font-weight: 700;
+        font-size: 1rem;
+
+        .arrow-icon {
+            transition: transform 0.3s ease;
+        }
+    }
+
+    .story-card:hover .arrow-icon {
+        transform: translateX(0.125rem);
     }
 </style>

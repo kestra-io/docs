@@ -40,7 +40,7 @@ import CommonPagination from '~/components/common/Pagination.vue'
 
 const props = withDefaults(defineProps<{
     fullPath: string,
-    stories: Array<any>,
+    stories: Array<Story>,
     totalStories?: number,
 }>(), {
     totalStories: 1

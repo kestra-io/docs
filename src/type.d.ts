@@ -24,3 +24,27 @@ interface Window {
     __hsUserToken: string;
     _hsq: Array<any>;
 }
+
+interface Story {
+    id: string;
+    title: string;
+    excerpt?: string;
+    description: string;
+    heroImage: string;
+    logo?: string;
+    logoDark?: string;
+    kpi1: string;
+    kpi2: string;
+    kpi3: string;
+    quote: string;
+    quotePerson: string;
+    quotePersonTitle: string;
+    industry: string;
+    headquarter: string;
+    solution: string;
+    tasks: string[];
+    content: string;
+    companyName: string;
+    featuredImage: string;
+    whatNext?: string; //TODO: in API
+}
