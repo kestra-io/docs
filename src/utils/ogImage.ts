@@ -5,27 +5,14 @@ const baseUrl = (request: Request): string => {
     return `${protocol}//${host}`;
 }
 
-
-
 export const generate = (
     request: Request,
     category: string,
     title: string,
     image?: string | null,
     description?: string | null,
-) => {
-    const base = baseUrl(request);
-    return generateForPrerender(base, category, title, image, description)
-}
-
-export const generateForPrerender = (
-    base: string,
-    category: string,
-    title: string,
-    image?: string | null,
-    description?: string | null,
 ) : string => {
-
+    const base = baseUrl(request);
 
     return `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
             <rect  width="1200" height="625" fill="#0e0e0e" />
