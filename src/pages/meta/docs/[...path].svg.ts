@@ -1,5 +1,4 @@
 import yaml from 'js-yaml';
-import { type CollectionEntry } from 'astro:content';
 import generateId from '~/utils/generateId';
 import {generate} from "~/utils/ogImage.ts";
 const files: Record<string, string> = import.meta.glob("../../../../content/docs/**/*.md", { eager: true, query: '?raw', import: 'default' });
@@ -12,7 +11,7 @@ async function loadDocsMetadata() {
       const metadataRaw = match[1];
       // finally extract the metadata key-value pairs
       // from the YAML-like frontmatter
-      const metadata = yaml.load(metadataRaw) as unknown as CollectionEntry<"docs">["data"];
+      const metadata = yaml.load(metadataRaw) as unknown as Record<string, any>;
       return {
         data: metadata,
         id: generateId({entry: filePath.slice(24)}),
