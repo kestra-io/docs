@@ -22,7 +22,7 @@ export const generate = (
                     <div v-if="image" style="width: 425px; height: 425px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); background-image: url('${image?.startsWith("/") ? base + image : "data:image/svg+xml;base64," + image}'); background-size: 100% 100%; background-position: center; color: #ffffff; padding: 20px;"></div>
                     <div style="position: absolute; top: 187.88px; left: 55.64px;">
                         <p style="font-family: 'Public Sans', sans-serif; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0;">${category?.toUpperCase()}</p>
-                        <h1 style="width: 562.89px; font-family: 'Public Sans', sans-serif; font-size: 75px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${title}</h1>
+                        <h1 style="width: 562.89px; font-family:  'Public Sans', sans-serif; font-size: 60px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${title}</h1>
                         <p v-if="description" style="width: 562.89px; font-family: 'Public Sans', sans-serif; font-size: 29px; font-weight: 600; line-height: 44px; color: #FFFFFF; margin-top: 38.68px">${description || ''}</p>
                     </div>
                 </div>
