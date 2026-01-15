@@ -1,13 +1,13 @@
 ---
 title: "Flaky Tests: a journey to beat them all"
 description: "How Kestra engineers enter into a journey to solve flaky tests."
-date: 2026-01-13T13:00:00
+date: 2026-01-15T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/TODO.jpg
+image: /blogs/flaky-test.jpg
 ---
 
 > “Sleep is not a synchronization primitive.”
