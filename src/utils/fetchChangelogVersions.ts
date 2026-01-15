@@ -20,38 +20,29 @@ function modifyCommitLink(body: string, repo = 'kestra-io/kestra') {
     return transformedBefore + transformedAfter;
 }
 
-export function fetchLastReleaseTag() {
-    return fetch('https://api.github.com/repos/kestra-io/kestra/releases/latest')
-        .then(res => {
-            if (!res.ok) return null;
-            return res.json();
-        })
-        .then(data => data ? data.tag_name : null);
-}
-
-export async function fetchLast3ReleaseGroups() {
-    const res = await fetch('https://api.github.com/repos/kestra-io/kestra/releases?per_page=150');
+export async function fetchMajorReleases(limit = 20) {
+    const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases?per_page=100`);
     if (!res.ok) return [];
 
     let data = await res.json();
-    data = data.filter((r: any) => !r.draft && !r.prerelease);
+    const majorReleases = data.filter((r: any) =>
+        !r.draft &&
+        !r.prerelease
+    );
 
-    const groups: Record<string, any[]> = {};
-    for (const release of data) {
-        const match = release.tag_name.match(/(\d+\.\d+)/);
-        if (match) {
-            const key: string = match[1];
-            if (!groups[key]) groups[key] = [];
-            release.body = modifyCommitLink(release.body);
-            groups[key].push(release);
-        }
-    }
-
-    const sortedKeys = Object.keys(groups)
-        .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-
-    return sortedKeys.slice(0, 4).map(key => ({
-        version: key,
-        releases: groups[key]
+    return majorReleases.slice(0, limit).map((release: any) => ({
+        ...release,
+        body: modifyCommitLink(release.body)
     }));
+}
+
+export async function fetchReleaseByTag(tag: string) {
+    const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`);
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return {
+        ...data,
+        body: modifyCommitLink(data.body)
+    };
 }

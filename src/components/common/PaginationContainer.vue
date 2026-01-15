@@ -7,9 +7,11 @@ const props = withDefaults(defineProps<{
     currentUrl: string,
     sizeOptions?: number[]
     defaultSize?: number
+    showTotal?: boolean
 }>(), {
     sizeOptions: () => [12, 24, 48],
-    defaultSize: 24
+    defaultSize: 24,
+    showTotal: true
 })
 
 const localCurrentUrl = ref(props.currentUrl);
@@ -91,7 +93,7 @@ watch(() => props.currentUrl, (newUrl) => {
                 :totalPages="totalPages"
                 v-model:current-page="currentPage"
             />
-            <div class="d-flex align-items-baseline">
+            <div v-if="showTotal" class="d-flex align-items-baseline">
                 <span class="total-pages">Total: {{ totalItems }}</span>
             </div>
         </div>
