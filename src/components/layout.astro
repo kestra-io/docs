@@ -103,7 +103,7 @@ const slackMembers = await fetchSlackMembers();
     </div>
 
     <LayoutFooter transition:persist />
-    <LayoutFixed transition:persist online={slackMembers} />
+    <LayoutFixed client:load transition:persist online={slackMembers} />
     <script define:vars={{ slug }}>
         window.astroClientConfig = { slug: slug }
     </script>

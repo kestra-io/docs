@@ -1,61 +1,51 @@
 <template>
-    <div class="container-fluid header">
+    <section class="header">
         <div class="background"></div>
-        <div class="hero hero-sm container position-relative z-1">
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
-                    <div class="hero-content">
-                        <img height="56" loading="lazy" :src="logo" :alt="logo" class="mb-3" />
-                        <h1 v-if="title">{{ title }}</h1>
-                        <p class="baseline">{{ metaDescription }}</p>
-                    </div>
+        <div class="container">
+            <div class="top">
+                <div class="left">
+                    <img height="56" loading="lazy" :src="logo" :alt="logo" />
+                    <h1 v-if="title">{{ title }}</h1>
+                    <p class="baseline">{{ metaDescription }}</p>
                 </div>
-                <div class="col-lg-6 order-0 order-lg-1">
-                    <div class="image-container">
-                        <img class="image" :src="heroImage" :alt="metaDescription" />
-                    </div>
+                <div class="right">
+                    <img v-if="heroImage" class="image img-fluid" :src="heroImage" :alt="metaDescription" />
+                </div>
+            </div>
+
+            <div class="bottom">
+                <div v-for="(kpi, index) in kpis" :key="index" class="kpi-section">
+                    <MDCParserAndRenderer :content="kpi" />
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <section>
-                <div class="metrics">
-                    <div class="counter-box text-center">
-                        <MDCParserAndRenderer :content="kpi1" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <MDCParserAndRenderer :content="kpi2" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <MDCParserAndRenderer :content="kpi3" />
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
+    </section>
 </template>
 
-<script lang="ts" setup>
-  import MDCParserAndRenderer from '~/components/plugins/MDCParserAndRenderer.vue';
+<script setup lang="ts">
+    import { ref } from 'vue';
+    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue";
 
-  const props = defineProps<{
-    slug: string;
-    title: string;
-    metaDescription: string;
-    heroImage: string;
-    logo: string;
-    kpi1: string;
-    kpi2: string;
-    kpi3: string;
-  }>();
+    const props = defineProps<{
+        slug: string;
+        title: string;
+        metaDescription: string;
+        heroImage?: string;
+        logo?: string;
+        kpi1?: string;
+        kpi2?: string;
+        kpi3?: string;
+    }>();
+
+    const kpis = ref([
+        props.kpi1,
+        props.kpi2,
+        props.kpi3,
+    ]);
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+    @import "../../assets/styles/variable";
 
     .background {
         position: fixed;
@@ -63,24 +53,23 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: $white;
+        background-color: #F4F4F4;
         z-index: -1;
     }
 
     .header {
         position: relative;
+        background: #F4F4F4;
+        border-bottom: 1px solid #D4D4D4;
 
         &::before {
             content: "";
             position: absolute;
             right: -100.767px;
-            top: 52.197px;
-            width: 818.767px;
-            height: 414.991px;
-
-            background-image: url("/stories/header/dots.svg");
-            background-repeat: no-repeat;
-            background-size: contain;
+            top: 3.262rem;
+            width: 818px;
+            height: 415px;
+            background: url("/stories/header/dots.svg") no-repeat center;
             z-index: 0;
             pointer-events: none;
         }
@@ -88,88 +77,134 @@
         .container {
             position: relative;
             z-index: 2;
-        }
-
-        h1 {
-            color: $black-2;
-            font-family: $font-family-sans-serif;
-            font-weight: 700;
-            font-size: $font-size-3xl;
-            margin-bottom: 16px;
-            line-height: 1.2;
-            padding-bottom: 0;
-
-            @include media-breakpoint-down(sm) {
-                font-size: 1.875rem;
-            }
-        }
-
-        .baseline {
-            color: #000;
-            font-family: "Mona Sans", sans-serif;
-            font-size: $font-size-base;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 23px;
-
-            margin-bottom: 2rem;
-            padding-bottom: 0;
-        }
-
-        .image-container {
-            border-radius: 13px;
-            border: 1px solid #D4D4D4;
-            background: #F4F4F4;
-            display: flex;
-            padding: 6px;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        :deep(.hero.hero-sm) {
-            border-bottom: none;
-            padding-bottom: 3rem;
-        }
-
-        .metrics {
-            gap: 1rem;
-            justify-content: center;
-
-            .separator {
-                width: 1px;
-                height: 50px;
-                background-color: $white-3;
+            padding: 3rem 1rem 2rem 1rem;
+            @include media-breakpoint-up(lg) {
+                padding-top: 5rem;
             }
 
-            .counter-box {
-                text-align: center;
+            .top {
+                width: 100%;
+                gap: 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 2rem 0;
 
-                :deep(h5),
-                :deep(h4),
-                :deep(strong) {
-                    color: $black-2;
-                    font-size: 2.5rem;
-                    font-weight: 700;
-                    margin: 0;
-                    line-height: 1;
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column;
+                    gap: 1rem;
+                    align-items: center;
+                    margin-bottom: 1rem;
                 }
 
-                :deep(p) {
-                    color: $white-5;
-                    font-size: $font-size-sm;
-                    text-transform: uppercase;
-                    font-weight: 600;
-                    margin: 0.5rem 0 0 0;
-                    letter-spacing: 0.05em;
+                .left {
+                    width: 554px;
+                    height: 330px;
+                    gap: 0.75rem;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                    @include media-breakpoint-down(lg) {
+                        width: 100%;
+                        height: auto;
+                        text-align: left;
+                    }
+
+                    img {
+                        min-height: 3.875rem;
+                    }
+
+                    h1 {
+                        font-weight: 700;
+                        @include media-breakpoint-up(xl) {
+                            font-size: 2.5rem;
+                        }
+                        margin: 0;
+                    }
+
+                    .baseline {
+                        font-weight: 500;
+                        font-size: 1rem;
+                        margin: 0;
+                    }
+                }
+
+                .right {
+                    width: 554px;
+                    height: 345px;
+                    border-radius: 0.8125rem;
+                    border-width: 1px;
+                    padding: 0.375rem;
+                    border: 1px solid #D4D4D4;
+                    background: #F4F4F4;
+
+                    @include media-breakpoint-down(lg) {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .image {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 0.5625rem;
+                        object-fit: cover;
+
+                        @include media-breakpoint-down(lg) {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+
+            .bottom {
+                width: 1033px;
+                display: flex;
+                gap: 6rem;
+
+                @include media-breakpoint-down(lg) {
+                    width: 100%;
+                    flex-direction: column;
+                    gap: 0.75rem;
+                    height: auto;
+                }
+
+                .kpi-section {
+                    text-align: center;
+                    @include media-breakpoint-up(lg) {
+                        text-align: left;
+                    }
+                    position: relative;
+
+                    @include media-breakpoint-up(lg) {
+                        &:not(:last-child)::after {
+                            content: "";
+                            position: absolute;
+                            right: -3rem;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            width: 1px;
+                            height: 100%;
+                            background-color: #E0E0E0;
+                        }
+                    }
+
+                    :deep(h5) {
+                        font-weight: 600;
+                        font-size: 2rem !important;
+                        @include media-breakpoint-up(lg) {
+                            font-size: 3rem !important;
+                        }
+                        margin: 0;
+                        white-space: nowrap;
+                    }
+
+                    :deep(p) {
+                        font-weight: 400;
+                        font-size: 0.875rem;
+                        margin: 0;
+                    }
                 }
             }
         }

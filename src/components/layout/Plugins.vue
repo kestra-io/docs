@@ -1,16 +1,16 @@
 <template>
     <div ref="plugins" class="plugins">
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/fivetran.svg" alt="Fivetran" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/snowflake.svg" alt="Snowflake" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/aws-white.svg" alt="AWS" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/databricks.svg" alt="Databricks" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/azure.svg" alt="Azure" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/dbt.svg" alt="DBT" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/airbyte.svg" alt="Airbyte" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/docker.svg" alt="Docker" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/terraform.svg" alt="Terraform" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/gcp.svg" alt="Google Cloud" />
-        <NuxtImg loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="~/assets/plugins/github.svg" alt="GitHub" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.fivetran.svg" alt="Fivetran" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.jdbc.snowflake.svg" alt="Snowflake" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.aws.svg" alt="AWS" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.databricks.svg" alt="Databricks" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.azure.svg" alt="Azure" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.dbt.svg" alt="DBT" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.airbyte.svg" alt="Airbyte" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.docker.svg" alt="Docker" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.terraform.svg" alt="Terraform" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.gcp.svg" alt="Google Cloud" />
+        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.github.svg" alt="GitHub" />
     </div>
     <div class="d-flex justify-content-center" data-aos="zoom-in">
         <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
@@ -31,8 +31,8 @@
         max-width: 650px;
 
         img {
-            min-height: 2.4rem;
-            height: auto;
+            width: 40px;
+            height: 40px;
         }
 
         @include media-breakpoint-down(md) {
@@ -50,10 +50,6 @@
             img {
                 max-height: calc($spacer * 3.125);
             }
-
         }
-
     }
-
-
 </style>
