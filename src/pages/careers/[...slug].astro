@@ -7,7 +7,6 @@ import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue";
 import { $fetch } from "~/utils/fetch";
 import CareersHeader from "~/components/careers/Header.vue";
 import { type Job, mapJob } from "~/utils/careers.ts";
-import Workflows from "~/components/features/scheduling/Workflows.vue";
 
 async function fetchJobApplication(slug?: string){
     if (!slug) {
@@ -55,7 +54,7 @@ const title = page.title;
 
     <div class="container bd-gutter mt-3 my-md-4 bd-layout">
         <article class="bd-main order-1">
-            <MDCParserAndRenderer client:load content={page.description} class="item-content bd-markdown"/>
+            <MDCParserAndRenderer content={page.description} class="item-content bd-markdown"/>
         </article>
     </div>
     <LayoutFooterContact
