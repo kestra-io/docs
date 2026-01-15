@@ -196,9 +196,9 @@ export default defineNuxtConfig({
                 sections: {
                     "Get Started with Kestra": [
                         "Quickstart",
+                        "Installation Guide",
                         "Tutorial",
                         "Architecture",
-                        "Installation Guide",
                         "Contribute to Kestra",
                         "User Interface"
                         // "Video Tutorials"
