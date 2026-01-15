@@ -34,7 +34,7 @@ import { computed } from 'vue';
 import { PluginIndex, SchemaToHtmlV2, type PluginMetadata } from '@kestra-io/ui-libs';
 import { getPluginsWithoutDeprecated } from '~/utils/plugins/getListOfPlugins';
 import FeatureScopeMarker from '~/components/docs/FeatureScopeMarker.vue';
-import MDCParserAndRenderer from '~/components/plugins/MDCParserAndRenderer.vue';
+import MDCParserAndRenderer from '~/components/MDCParserAndRenderer.vue';
 
 const props = withDefaults(defineProps<{
     page: any,

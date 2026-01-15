@@ -138,6 +138,9 @@
             font-weight: 600;
             color: $white;
             text-transform: uppercase;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             @include media-breakpoint-down(lg) {
                 font-size: $font-size-sm;

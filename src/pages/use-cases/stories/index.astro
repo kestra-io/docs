@@ -12,7 +12,7 @@ const currentPage = Astro.url.searchParams.get('page') ?? 1;
 const itemsPerPage = Astro.url.searchParams.get('page') ?? 25;
 
 const data = await $fetchApi<{
-    results: Array<any>,
+    results: Array<Story>,
     total: number
 }>(`/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
 const stories = data.results;

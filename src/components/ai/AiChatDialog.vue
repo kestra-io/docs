@@ -110,7 +110,7 @@
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import {extractSourcesFromMarkdown, isInternalLink} from "~/utils/sources.ts"
-    import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
+    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue";
     import { API_URL } from "astro:env/client";
 
     interface Message {

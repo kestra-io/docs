@@ -43,16 +43,13 @@
     </NuxtLink>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import {slugify} from "@kestra-io/ui-libs";
-    import MDCParserAndRenderer from "~/components/plugins/MDCParserAndRenderer.vue";
+    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue";
 
-    const props = defineProps({
-        story: {
-            type: Object,
-            required: true,
-        }
-    });
+    const props = defineProps<{
+        story: Story
+    }>();
 </script>
 
 <style lang="scss" scoped>
