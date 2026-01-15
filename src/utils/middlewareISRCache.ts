@@ -1,3 +1,5 @@
+/** heavy inspired by https://www.launchfa.st/blog/astro-incremental-static-regeneration-cloudflare-kv */
+
 import { defineMiddleware } from 'astro:middleware'
 import { createISRCache } from './isr-cache'
 
@@ -17,7 +19,7 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
     }
 
     // Skip ISR if KV is not available (local development)
-    if (!locals.runtime?.env?.ISR_CREATE) {
+    if (!locals.runtime?.env?.ISR_CACHE) {
         console.log('[ISR] KV not available, skipping cache')
         return next()
     }

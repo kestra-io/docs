@@ -1,3 +1,5 @@
+/** heavy inspired by https://www.launchfa.st/blog/astro-incremental-static-regeneration-cloudflare-kv */
+
 export interface ISRCacheOptions {
   /**
    * Time in seconds before cache is considered stale
