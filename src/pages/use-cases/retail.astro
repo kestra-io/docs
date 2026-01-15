@@ -134,59 +134,6 @@ const ops = {
     ]
 };
 
-const plugins = {
-    title: "Connect your Entire Stack With Dedicated Plugins",
-    items: [
-        {
-            name: "Fivetran",
-            icon: "/retail/plugins/fivetran.svg"
-        },
-        {
-            name: "Snowflake",
-            icon: "/retail/plugins/snowflake.svg"
-        },
-        {
-            name: "AWS",
-            icon: "/retail/plugins/aws.svg"
-        },
-        {
-            name: "databricks",
-            icon: "/retail/plugins/databricks.svg"
-        },
-        {
-            name: "Azure",
-            icon: "/retail/plugins/azure.svg"
-        },
-        {
-            name: "dbt",
-            icon: "/retail/plugins/dbt.svg"
-        },
-        {
-            name: "Airbyte",
-            icon: "/retail/plugins/airbyte.svg"
-        },
-        {
-            name: "Docker",
-            icon: "/retail/plugins/docker.svg"
-        },
-        {
-            name: "Terraform",
-            icon: "/retail/plugins/terraform.svg"
-        },
-        {
-            name: "Google Cloud",
-            icon: "/retail/plugins/cloud.svg"
-        },
-        {
-            name: "GitHub",
-            icon: "/retail/plugins/github.svg"
-        }
-    ],
-    cta: {
-        text: "See all plugins",
-        href: "/plugins"
-    }
-};
 const footer = {
     title: "Getting Started",
     cta: [
@@ -216,7 +163,7 @@ const description = header.description;
         <LeroyMerlin content={leroy} client:visible />
         <Line client:visible />
         <RetailOps content={ops} client:visible />
-        <Plugins content={plugins} client:visible />
+        <Plugins client:visible />
         <Line client:visible />
         <Footer content={footer} client:visible />
     </div>

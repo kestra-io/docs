@@ -7,9 +7,9 @@
             <NuxtLink href="/plugins" class="btn btn-md btn-primary">See All Plugins</NuxtLink>
         </div>
         <div class="plugin-logos-grid">
-            <div v-for="plugin in pluginLogos" :key="plugin.name">
-                <img :src="plugin.logo" :alt="plugin.name" />
-            </div>
+            <a v-for="plugin in plugins" :key="plugin.link" :href="plugin.link" >
+                <img :src="plugin.icon" :alt="plugin.title" />
+            </a>
         </div>
     </HomeCard>
 </template>
@@ -18,7 +18,7 @@
 import HomeCard from "~/components/home/Card.vue"
 defineProps<{
     totalPlugins: string | number
-    pluginLogos: { name: string, logo: string }[]
+    plugins: { title: string, name: string, artifactId: string, link: string, icon: string }[]
 }>()
 </script>
 
@@ -50,7 +50,7 @@ defineProps<{
         @include media-breakpoint-up(xl){
             margin: 0;
         }
-        > div{
+        > a {
             aspect-ratio: 1;
             padding: .6rem;
             display: flex;
