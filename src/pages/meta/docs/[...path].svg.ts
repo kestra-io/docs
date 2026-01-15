@@ -42,7 +42,7 @@ export async function GET({ request, params }: { request: any, params: { path: s
 
     const svgString = generate(
         request,
-        "DOCS",
+        "Documentation",
         entry.data.title,
         entry.data.icon
     );
