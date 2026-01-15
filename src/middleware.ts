@@ -2,6 +2,7 @@ import { defineMiddleware } from "astro:middleware";
 import { sequence } from "astro/middleware";
 import { API_URL } from "astro:env/client";
 import contentSecurityPolicyConfig from "../content-security-policy.config";
+import {middlewareISRCache} from "./utils/middlewareISRCache";
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -161,5 +162,6 @@ export const onRequest = sequence(
     noIndex,
     incomingRedirect,
     securityHeaders,
-    notFoundRedirect
+    notFoundRedirect,
+    middlewareISRCache,
 );

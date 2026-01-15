@@ -48,3 +48,16 @@ interface Story {
     featuredImage: string;
     whatNext?: string; //TODO: in API
 }
+
+type KVNamespace = import('@cloudflare/workers-types').KVNamespace
+type ENV = {
+  ISR_CACHE: KVNamespace
+}
+
+type Runtime = import('@astrojs/cloudflare').Runtime<ENV>
+
+declare namespace App {
+  interface Locals extends Runtime {
+    // Add custom locals here
+  }
+}
