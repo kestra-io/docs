@@ -1,11 +1,10 @@
-import {useOgImage} from "~/composables/useOgImage.ts";
+import {generate} from "~/composables/useOgImage.ts";
 import {$fetch} from "~/utils/fetch.ts";
 import type {JSONSchema, Plugin, PluginMetadata} from "@kestra-io/ui-libs";
 import {API_URL} from "astro:env/client";
 import {formatElementName} from "~/utils/pluginUtils.ts";
 
 export const prerender = false
-const {generate} = useOgImage();
 
 export async function GET({ request, params }: { request: any, params: { slug: string } }) {
     const cls = params.slug;
