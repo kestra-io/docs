@@ -8,7 +8,7 @@ const {generate} = useOgImage();
 
 export async function GET({ request, params }: { request: any, params: { name: string } }) {
     const name = params.name;
-    const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+    const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`);
     const metadata = await $fetch(`${API_URL}/plugins/plugin-${name}`);
     const plugin = pluginsData.filter(p => p.name === "plugin-" + name)[0];
 
