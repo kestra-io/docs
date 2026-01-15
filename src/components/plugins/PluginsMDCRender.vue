@@ -72,6 +72,10 @@ function navigateTo(url: string) {
         @include media-breakpoint-up(lg) {
             max-width: 100%;
         }
+
+        :deep(code) {
+            border: none !important;
+        }
     }
 
     .plugin-schema {
