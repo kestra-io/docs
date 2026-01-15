@@ -58,6 +58,7 @@
     "vue3-count-to": "^1.1.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260115.0",
     "@types/aos": "^3.0.7",
     "@types/bootstrap": "^5.2.10",
     "@types/js-yaml": "^4.0.9",

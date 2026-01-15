@@ -31,6 +31,10 @@
         {
             "binding": "CLOUDFLARE_KVSTORAGE",
             "id": "e1cec38e2fe84984ac38f33d46b0147c"
+        },
+        {
+            "binding": "ISR_CACHE",
+            "id": "c7003b3ecfc2485bb2efb713d75da274"
         }
     ],
     "d1_databases": [
@@ -46,6 +50,10 @@
                 {
                     "binding": "CLOUDFLARE_KVSTORAGE",
                     "id": "30b103dc37d74a40b5976b67bb0d3b0c"
+                },
+                {
+                    "binding": "ISR_CACHE",
+                    "id": "c7003b3ecfc2485bb2efb713d75da274"
                 }
             ],
             "d1_databases": [
