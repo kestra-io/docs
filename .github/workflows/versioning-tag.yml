@@ -1,0 +1,119 @@
+name: "Tag previous version for versioning"
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: "New Kestra version"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  CI_COMMIT_AUTHOR: tag-versioning-wf
+  CI_COMMIT_EMAIL: actions@github.com
+
+  # Inputs
+  INPUTS_NEW_VERSION: ${{ inputs.new_version }}
+
+jobs:
+  tag-previous-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve incoming version
+        id: resolve-version
+        run: |
+          set -euo pipefail
+
+          NEW_KESTRA_VER="${INPUTS_NEW_VERSION}"
+
+          if [ -z "${NEW_KESTRA_VER}" ]; then
+            echo "No new version provided — failing workflow."
+            exit 1
+          fi
+
+          echo "NEW_KESTRA_VER=${NEW_KESTRA_VER}" >> $GITHUB_ENV
+          echo "Incoming version: ${NEW_KESTRA_VER}"
+
+      - name: Validate Kestra version format
+        id: validate-format
+        run: |
+          set -euo pipefail
+
+          if [[ ! "${NEW_KESTRA_VER}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Kestra version '${NEW_KESTRA_VER}' is invalid. Must be in format vX.Y.Z (e.g., v1.2.3)."
+            exit 1
+          fi
+
+          echo "Kestra version format valid: ${NEW_KESTRA_VER}"
+
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Read versions and create missing tag
+        id: read-latest
+        run: |
+          set -euo pipefail
+
+          # Remove leading 'v' and split into parts
+          VER="${NEW_KESTRA_VER#v}"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${VER}"
+
+          # Basic numeric validation
+          if ! [[ "${MAJOR}" =~ ^[0-9]+$ ]] || ! [[ "${MINOR}" =~ ^[0-9]+$ ]]; then
+            echo "Error: Failed to parse numeric version parts from ${NEW_KESTRA_VER}"
+            exit 1
+          fi
+
+          # If minor is 0, derive next minor from latest existing vMAJOR.Y.x tags
+          if [ "${MINOR}" -eq 0 ]; then
+            echo "Minor version is 0 — fetching latest v${MAJOR}.Y.x tags to compute next minor."
+
+            # Ensure we have tags locally
+            git fetch --tags --prune
+
+            # List all tags matching the strict vN.M.x format, semver-sort and take the latest regardless of MAJOR
+            LATEST_TAG=$(git tag -l "v*.*.x" | grep -E "^v[0-9]+\.[0-9]+\.x$" | sort -V | tail -n1 || true)
+
+            if [ -z "${LATEST_TAG}" ]; then
+              echo "No previous v*.*.x tags found, couldn't compute the tag to create"
+              exit 1
+            else
+              # Extract numeric major and minor from the latest tag in one pass
+              read -r LATEST_MAJOR LATEST_MINOR <<< "$(printf '%s' "${LATEST_TAG}" | sed -E 's/^v([0-9]+)\.([0-9]+)\.x$/\1 \2/')"
+
+              NEXT_MINOR=$((LATEST_MINOR + 1))
+              TARGET_TAG="v${LATEST_MAJOR}.${NEXT_MINOR}.x"
+            fi
+          else
+            PREVIOUS_MINOR=$((MINOR - 1))
+            TARGET_TAG="v${MAJOR}.${PREVIOUS_MINOR}.x"
+          fi
+
+          echo "Computed target tag: ${TARGET_TAG}"
+          echo "TARGET_TAG=${TARGET_TAG}" >> $GITHUB_ENV
+
+          # Ensure we have tags locally
+          git fetch --tags --prune
+
+          # Configure git author for tagging
+          git config user.email "${CI_COMMIT_EMAIL}"
+          git config user.name "${CI_COMMIT_AUTHOR}"
+
+          # Check remote
+          if git ls-remote --tags origin "${TARGET_TAG}" | grep -q "${TARGET_TAG}"; then
+            echo "Tag ${TARGET_TAG} already exists on remote. Nothing to do."
+            exit 0
+          fi
+
+          # Create annotated tag at current HEAD and push it
+          git tag -a "${TARGET_TAG}" -m "Automated tag for previous minor series: ${TARGET_TAG}"
+          git push origin "${TARGET_TAG}"
+
+          echo "Tag ${TARGET_TAG} created and pushed."
+
