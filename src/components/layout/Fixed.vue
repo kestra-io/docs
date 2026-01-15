@@ -11,49 +11,43 @@
     </div>
 </template>
 
-<script>
-import ChevronUp from 'vue-material-design-icons/ChevronUp.vue'
-import Slack from '~/components/community/Slack.vue'
+<script setup lang="ts">
+    import { ref, onMounted, onUnmounted } from 'vue';
+    import ChevronUp from 'vue-material-design-icons/ChevronUp.vue';
+    import Slack from '~/components/community/Slack.vue';
 
-export default {
-    components: {Slack, ChevronUp},
-    props:{
-        displaySlack: {
-            type: Boolean,
-            default: true
-        },
-        online: {
-            type: Number,
-            default: 0
+    const props = withDefaults(defineProps<{
+        displaySlack?: boolean;
+        online?: number;
+    }>(), {
+        displaySlack: true,
+        online: 0
+    });
+
+    const yScroll = ref(0);
+
+    const handleScroll = () => {
+        yScroll.value = window.scrollY;
+    };
+
+    const backToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
+
+    onMounted(() => {
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll);
         }
-    },
-    data() {
-        return {
-            yScroll: 0
-        };
-    },
-    methods: {
-        handleScroll() {
-            this.yScroll = window.scrollY;
-        },
-        backToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+    });
+
+    onUnmounted(() => {
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('scroll', handleScroll);
         }
-    },
-    created() {
-        if (process.client) {
-            window.addEventListener('scroll', this.handleScroll);
-        }
-    },
-    unmounted() {
-        if (process.client) {
-            window.removeEventListener('scroll', this.handleScroll);
-        }
-    }
-}
+    });
 </script>
 
 <style lang="scss" scoped>
