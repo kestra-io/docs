@@ -523,7 +523,7 @@ if (!pluginType && !subGroup) {
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "~/assets/styles/variable";
 
-    :deep(.plugin-title) {
+    .plugin-title {
         font-size: 1.5em;
     }
 
@@ -620,7 +620,7 @@ if (!pluginType && !subGroup) {
                 gap: 0 calc($spacer * 7);
             }
 
-            :deep(.bd-toc nav) {
+            .bd-toc nav {
                 border: 0;
                 padding: 0;
             }
@@ -667,7 +667,7 @@ if (!pluginType && !subGroup) {
 
     .bd-main{
 
-        :deep(.bd-markdown > h2) {
+        .bd-markdown > h2 {
             margin-top: calc($spacer * 4.12);
             border-top: 1px solid $black-6;
             padding-top: calc($spacer * 3.125);
@@ -681,80 +681,80 @@ if (!pluginType && !subGroup) {
         }
 
 
-        :deep(p > a) {
+        p > a {
             text-decoration: underline;
         }
 
-        :deep(h2 > a) {
+        h2 > a {
             font-weight: 600;
             line-height: 2.375rem;
             margin: 0;
         }
 
-        :deep(h3 > a) {
+        h3 > a {
             color: $gray-200 !important;
             font-size: 18.4px;
             font-weight: 600;
             line-height: 2.375rem;
         }
 
-        :deep(h4 > a) {
+        h4 > a {
             color: $white !important;
             font-weight: 600;
             font-size: 1rem;
         }
 
-        :deep(h5) {
+        h5 {
             color: $white !important;
             font-weight: 600;
         }
 
-        :deep(.bd-main h3), :deep(.bd-main h4) {
+        .bd-main h3, .bd-main h4 {
             padding-top: 0;
         }
     }
 
-    .bd-main :deep(p > a),
-    .bd-main :deep(ul a) {
+    .bd-main p > a,
+    .bd-main ul a {
         color: $purple-36;
     }
 
     .container,
-    :deep(h2 > a) {
+    h2 > a {
         color: $white !important;
     }
 
-    :deep(p > code),
-    :deep(li > code),
-    :deep(a > code),
-    :deep(table code) {
+    p > code,
+    li > code,
+    a > code,
+    table code {
         color: $white-3;
         text-decoration: none !important;
         border-radius: 0.25rem;
         padding: 0 calc($spacer / 4);
     }
 
-    :deep(.code-block),
-    :deep(p > code),
-    :deep(li > code),
-    :deep(a > code),
-    :deep(table code) {
+    .code-block,
+    p > code,
+    li > code,
+    a > code,
+    table code {
         border: $block-border;
         background-color: $black-2 !important;
     }
 
-    :deep(p > strong > code) {
+    p > strong > code {
         color: $white-3;
         text-decoration: none !important;
         border-radius: 0.25rem;
         padding: 0 calc($spacer / 4);
     }
 
-    :deep(li > mark) {
+    li > mark {
         background-color: $link-color;
     }
 
-    :deep(.docs-prev-next a) {
+    .docs-prev-next a {
         span {
             color: $link-color;
         }
@@ -764,13 +764,13 @@ if (!pluginType && !subGroup) {
         }
     }
 
-    :deep(.btn) {
+    .btn {
         span {
             color: $white-1;
         }
     }
 
-    :deep(table) {
+    table {
         td, th {
             background-color: $black-2;
             border: $block-border;
@@ -782,12 +782,12 @@ if (!pluginType && !subGroup) {
         }
     }
 
-    :deep(.bd-markdown > h2 > a > span) {
+    .bd-markdown > h2 > a > span {
         display: inline !important;
     }
 
     // Base layout for alerts (all types)
-    :deep(.alert) {
+    .alert {
         display: flex;
         gap: 12px;
         padding: 16px;
@@ -808,7 +808,7 @@ if (!pluginType && !subGroup) {
     );
 
     @mixin alert-variants($type, $vars) {
-        :deep(.alert-#{$type}) {
+        .alert-#{$type} {
             border-color: var(map-get($vars, border)) !important;
             color: var(map-get($vars, content)) !important;
             background-color: var(map-get($vars, background)) !important;
@@ -818,12 +818,12 @@ if (!pluginType && !subGroup) {
             }
         }
 
-        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon),
-        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon *) {
+        .plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon,
+        .plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon * {
             color: var(map-get($vars, content)) !important;
         }
 
-        :deep(.plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon > .material-design-icon__svg) {
+        .plugin-section .alert.alert-#{$type}[role="alert"] .material-design-icon > .material-design-icon__svg {
             fill: var(map-get($vars, content)) !important;
             stroke: var(map-get($vars, content)) !important;
         }
