@@ -1,5 +1,5 @@
+import type { CollectionEntry } from 'astro:content';
 import yaml from 'js-yaml';
-import type { BlogPost } from '~/components/common/BlogList.vue';
 import generateId from '~/utils/generateId';
 
 export default async function loadBlogPostsMetadata() {
@@ -11,7 +11,7 @@ export default async function loadBlogPostsMetadata() {
       const metadataRaw = match[1];
       // finally extract the metadata key-value pairs
       // from the YAML-like frontmatter
-      const metadata = yaml.load(metadataRaw) as unknown as Omit<BlogPost, 'date'> & { date: Date };
+      const metadata = yaml.load(metadataRaw) as unknown as unknown as CollectionEntry<"blogs">["data"];
       return {
         data: metadata,
         id: generateId({entry: filePath}),
