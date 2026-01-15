@@ -8,6 +8,9 @@ on:
         required: false
         type: string
 
+permissions:
+  contents: write
+
 env:
   CI_COMMIT_AUTHOR: tag-versioning-wf
   CI_COMMIT_EMAIL: actions@github.com
