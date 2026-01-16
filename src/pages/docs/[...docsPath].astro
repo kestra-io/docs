@@ -22,6 +22,8 @@ const { Content, headings } = await render(doc);
 const image = new URL(`/meta/docs/${doc.id}.svg`, Astro.url);
 
 const navigation = await buildDocsNavigation();
+
+const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, 'content/')}` : undefined;
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
@@ -40,6 +42,7 @@ const navigation = await buildDocsNavigation();
         text: heading.text,
         depth: heading.depth
     }))} slot="headings"
+        {editUrl}
     />
 </LayoutDocs>
 

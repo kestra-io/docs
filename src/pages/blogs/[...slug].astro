@@ -23,6 +23,8 @@ const links = headings.map(h => ({
     depth: h.depth
 }));
 
+const editUrl = `https://github.com/kestra-io/docs/edit/main/content/blogs/${post.id}.md`;
+
 const { title, description, image, date, authors } = page;
 
 const jsonLinkedData = {
@@ -74,7 +76,7 @@ const jsonLinkedData = {
                         </h2>
                         <BlogDetails client:visible blog={post} class="mt-3" />
                         <div class="d-lg-none d-block" data-aos="fade-zoom">
-                            <NavToc links={links} />
+                            <NavToc links={links} {editUrl} />
                         </div>
                     </div>
                     <img
@@ -89,7 +91,7 @@ const jsonLinkedData = {
                     </div>
                     <Content />
                 </div>
-                <NavToc client:visible links={links} />
+                <NavToc client:visible links={links} {editUrl} />
             </article>
         )}
     </div>

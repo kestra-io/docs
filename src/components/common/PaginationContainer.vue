@@ -41,6 +41,7 @@ const emit = defineEmits<{
 
 watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     // Update URL without navigation
+    if (typeof window === 'undefined') return;
     const newUrl = new URL(window.location.href);
     const params = newUrl.searchParams
     if( newSize === props.defaultSize ){
@@ -56,9 +57,7 @@ watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     localCurrentUrl.value = newUrl.toString();
 
     emit('update', { size: newSize, page: newPage });
-    if( typeof window !== 'undefined' ){
-        window.history.pushState({}, '', newUrl.toString());
-    }
+    window.history.pushState({}, '', newUrl.toString());
 }, { immediate: true })
 
 watch(() => props.currentUrl, (newUrl) => {

@@ -19,6 +19,7 @@
         </nav>
     </div>
 </template>
+
 <script lang="ts" setup>
     import { computed } from "vue";
     import Slack from "vue-material-design-icons/Slack.vue";
@@ -33,12 +34,16 @@
             type: Boolean,
             default: "",
         },
+        editUrl: {
+            type: String,
+            default: "",
+        },
         stem: {
             type: String,
             default: undefined
         },
-        extension:{
-            type:String,
+        extension: {
+            type: String,
             default: undefined
         }
     });
@@ -53,7 +58,9 @@
     ];
 
     const editLink = computed(() => {
-        if (!props.stem || !props.extension) {
+        if (props.editUrl) {
+            return props.editUrl;
+        } if (!props.stem || !props.extension) {
             return false;
         }
         return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.stem}.${props.extension}`;

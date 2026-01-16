@@ -54,7 +54,7 @@
             </template>
 
             <div class="d-none d-lg-block pt-2 bd-social-list">
-                <SocialsList :editLink :stem :extension/>
+                <SocialsList :editUrl :stem :extension/>
             </div>
         </div>
     </div>
@@ -77,6 +77,7 @@
             editLink?: boolean;
             extension?: string;
             stem?: string;
+            editUrl?: string;
             capitalize?: boolean;
             version?: {versions?: ReleaseInfo[]} | null;
             releasesUrl?: string | null;
