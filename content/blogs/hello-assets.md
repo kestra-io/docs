@@ -47,25 +47,55 @@ We elevate your workflows from just running tasks to also **managing knowledge a
 
 In summary, Assets bring much-needed **governance** to orchestration. Instead of treating outputs as ephemeral, they are **persisted as durable records**. This aligns closely with data cataloging and DevOps best practices, but without requiring a separate tool, t**he context lives right inside your Kestra orchestration platform.**
 
+Check the video below for a quick overview of the feature
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=SqweJSXueK7uAmST" title="Kestra 1.2 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Working with Assets in Kestra
 
 Kestra’s UI and features make it easy to leverage the Assets system:
 
 - **Asset Catalog:** A new **Assets** section in the Kestra UI lists all assets across your tenant (with RBAC enforcement). You can search by ID or filter by type, namespace, or metadata tags.
-- Screenshot 1
+
+![assets catalogs](/blogs/hello-assets/catalogs.png)
+
+
 - **Dependency Graph Visualization:** On any asset’s detail page, Kestra displays an interactive **lineage graph** showing that asset’s **upstream and downstream** links. This graph updates automatically as flows run. It’s invaluable for quickly understanding the context of an asset. This visual map helps both developers and stakeholders grasp data flows without reading code.
-- Screenshot2
+
+![assets dependencies](/blogs/hello-assets/dependencies.png)
+
 - **Execution History & Details:** Each asset page also lists attributes (ID, type, full namespace, timestamps) and a log of **which flow executions touched it**. You can click through to the exact flow run for more details. This effectively provides an **audit log per asset**. If something looks off in a dataset, you can see if maybe an unusual flow run that affected it. For external assets that Kestra references (like an imported dataset), you’ll at least see which Kestra flows have been reading it recently.
-- Screenshot3
+
+![assets executions](/blogs/hello-assets/executions.png)
+
 - **Dynamic Asset Queries:** Kestra provides a built-in function `assets()` for your workflow scripts, so you can query the asset inventory dynamically. For instance, you can populate a dropdown input with all asset IDs of a certain type. This makes your workflows extremely flexible and **self-driving based on the current catalog**.
-- Screenshot4
+
+```yaml
+id: list_aws_bucket
+namespace: kestra.company
+inputs:
+  - id: assets
+    type: MULTISELECT
+    expression: "{{ assets(type='AWS_BUCKET') | jq('.[].id') }}"
+tasks:
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values: '{{inputs.assets}}'
+    tasks:
+      - id: list_buckets
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ taskrun.value }}"
+```
+
 - **Metadata and Tagging:** Because assets support custom metadata, you can enforce conventions. For example, tag assets with `environment: prod` vs `dev`, or `owner: team_name`, or any classification your organization needs. These tags make search and filtering powerful. More importantly, they provide context to each asset, anyone looking at it knows what it represents. In future releases, we plan to allow **programmatic updates to asset metadata** via dedicated tasks, which will further integrate assets into automated governance workflows (e.g., auto-tag new tables with a retention policy or sensitivity level).
 
-Screenshot 5
+![assets details](/blogs/hello-assets/executions.png)
 
 ## **Extensible & Future-Proof**
 
-Kestra’s vision is to make this even more global. We’re working on plugin enhancements to enable certain plugins to automatically **emit asset information**. For example, a database connector plugin might automatically register a Table asset when a query creates a table, without you specifying it. We’re also exploring triggers and alerts based on assets (imagine a trigger that fires when a particular asset hasn’t been updated in X days, indicating stale data). The Asset system is designed to be a game changer for **data quality, monitoring, and even external catalog integrations** (indeed, we have an `AssetShipper` that can export asset metadata to formats like OpenLineage or other catalogs). I
+Kestra’s vision is to make this even more global. We’re working on plugin enhancements to enable certain plugins to automatically **emit asset information**. For example, a database connector plugin might automatically register a Table asset when a query creates a table, without you specifying it. We’re also exploring triggers and alerts based on assets (imagine a trigger that fires when a particular asset hasn’t been updated in X days, indicating stale data). The Asset system is designed to be a game changer for **data quality, monitoring, and even external catalog integrations** (indeed, we have an `AssetShipper` that can export asset metadata to formats like OpenLineage or other catalogs). 
 
 ## Conclusion
 
