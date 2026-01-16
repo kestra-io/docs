@@ -19,7 +19,9 @@ const children = docs
     )
     .map(doc => {
         const firstLine = doc.body?.split('\n').find(line =>
-            line.trim().length > 0 && !line.startsWith('#')
+            line.trim().length > 0 &&
+            !line.startsWith('#') &&
+            !line.trim().startsWith('import ')
         );
         const basePath = doc.id.replace(/\/[^/]+$/, '');
         const description = firstLine
