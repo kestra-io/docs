@@ -83,14 +83,14 @@
             class="background"
             :src="headerBackground.src"
             aria-hidden="true"
-            data-aos="fade-right"
+            data-usal="fade-r"
           />
           <form
             class="row needs-validation"
             ref="cloud-form"
             @submit="onSubmit"
             novalidate
-            data-aos="fade-left"
+            data-usal="fade-l"
           >
             <div v-if="message" class="alert alert-danger mt-3 mb-0">
               {{ message }}

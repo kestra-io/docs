@@ -3,7 +3,7 @@
     <div class="hero container">
       <div class="text-block">
         <h6 class="highlight">Core Features</h6>
-        <h1 data-aos="zoom-in">
+        <h1 data-usal="zoomin">
           <span class="d-none d-lg-inline">Fast, Scalable, Declarative Orchestrator</span>
           <span class="d-lg-none">
             Fast, Scalable,<br>

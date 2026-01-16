@@ -6,11 +6,11 @@
             </div>
             <div class="row mb-5 align-items-center justify-content-between">
                 <div class="col-md-5 order-1 order-md-1"
-                     data-aos="fade-left">
+                     data-usal="fade-l">
                     <h3>Zero Modifications, Full Integration</h3>
                     <p v-for="desc in description">{{desc}}</p>
                 </div>
-                <div class="col-md-6 order-0 order-md-0 mask mb-3" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

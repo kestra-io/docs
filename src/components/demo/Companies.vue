@@ -6,13 +6,12 @@
                 <template v-for="(img, index) in shuffledCompanies" :key="index">
                     <ClientOnly :fallback="companies[index].name">
                         <NuxtImg
-                            data-aos="fade-up"
+                            :data-usal="`fade-u delay-${index * 50}`"
                             :class="{'inverted': inverted}"
-                            :data-aos-delay="index*50"
                             :src="'/landing/companies/' + img.name  + '.svg'"
                             :alt="img.name"
                             :width="img.width"
-                            :heigth="img.heigth"
+                            :height="img.height"
                         />
                     </ClientOnly>
                 </template>

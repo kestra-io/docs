@@ -1,5 +1,5 @@
 <template>
-    <div class="container hero header" data-aos="fade-right">
+    <div class="container hero header" data-usal="fade-r">
         <div class="row header-content">
             <div class="col-md-6">
                 <h1 class="title " v-html="content.tag"></h1>
@@ -22,7 +22,7 @@
             <div
                 class="col-lg-6 image"
                 :class="content.image.style"
-                data-aos="zoom-in"
+                data-usal="zoomin"
             >
                 <NuxtImg
                     :width="content.image.width"

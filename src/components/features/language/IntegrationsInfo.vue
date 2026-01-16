@@ -2,7 +2,7 @@
     <div class="container mt-3">
         <div class="row mb-5 align-items-center">
             <div class="col-md-6 order-1 order-md-1"
-                 data-aos="fade-left">
+                 data-usal="fade-l">
                 <h3>Manage your Scripts with the Embedded Code Editor</h3>
                 <p>
                     The built-in code editor allows you to develop your orchestration and business logic directly from
@@ -21,7 +21,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-md-6 order-0 order-md-0 mask mb-3" data-aos="fade-left">
+            <div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
                 <NuxtImg
                     loading="lazy"
                     format="webp"
@@ -35,7 +35,7 @@
         </div>
         <div class="row mb-5 align-items-center">
             <div class="col-md-6 order-1 order-md-0"
-                 data-aos="fade-right">
+                 data-usal="fade-r">
                 <h3>Docker Integration for Script Execution</h3>
                 <p>
                     Run your scripts in isolated environments with Docker. Kestra's Docker support allows for consistent
@@ -43,7 +43,7 @@
                     Docker parameters directly within your workflow configurations for maximum flexibility.
                 </p>
             </div>
-            <div class="col-md-6 order-0 order-md-1 mask-1" data-aos="fade-left">
+            <div class="col-md-6 order-0 order-md-1 mask-1" data-usal="fade-l">
                 <NuxtImg
                     loading="lazy"
                     format="webp"

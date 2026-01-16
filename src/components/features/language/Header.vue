@@ -4,21 +4,21 @@
             <div class="justify-content-between row">
                 <div class="col-md-4 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <h1 data-aos="fade-right">Beyond <span> Language</span> Boundaries</h1>
-                        <p class="baseline" data-aos="fade-left">
+                        <h1 data-usal="fade-r">Beyond <span> Language</span> Boundaries</h1>
+                        <p class="baseline" data-usal="fade-l">
                             Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools
                         </p>
                         <div class="cta d-flex gap-3">
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Get Started
                             </NuxtLink>
-                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Talk to us
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1" data-usal="zoomin">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

@@ -14,28 +14,28 @@
                     <div class="card text-white col-lg-9 col-xl-8  max-w-328">
                         <div class="card-body">
                             <div class="pb-rem-2">
-                                <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
-                                <p class="pricing" data-aos="fade-left">Best for Development</p>
-                                <p class="pricing-type" data-aos="fade-left">Free</p>
-                                <div class="pricing-desc" data-aos="fade-left">
+                                <h4 class="card-title" data-usal="fade-r">Open-Source Edition</h4>
+                                <p class="pricing" data-usal="fade-l">Best for Development</p>
+                                <p class="pricing-type" data-usal="fade-l">Free</p>
+                                <div class="pricing-desc" data-usal="fade-l">
                                     The core features of Kestra, maintained by the Kestra team and community.
                                 </div>
                             </div>
                             <NuxtLink
                                 href="https://github.com/kestra-io/kestra"
                                 class="get-started"
-                                data-aos="zoom-in"
+                                data-usal="zoomin"
                             >
                                 Get started
                             </NuxtLink>
                             <ul>
-                                <li data-aos="fade-right" data-aos-delay="100">
+                                <li data-usal="fade-r delay-100">
                                     <div class="check-icon">
                                         <CheckBold />
                                     </div>
                                     <span>Core Features</span>
                                 </li>
-                                <li data-aos="fade-right" data-aos-delay="150">
+                                <li data-usal="fade-r delay-150">
                                     <div class="check-icon">
                                         <CheckBold />
                                     </div>
@@ -55,56 +55,56 @@
                             </div>
                             <div class="card-body">
                                 <div class="pb-rem-2">
-                                    <h4 class="card-title" data-aos="fade-right">Enterprise Edition</h4>
-                                    <p class="pricing" data-aos="fade-left">Built For Production</p>
-                                    <p class="pricing-type" data-aos="fade-left">On-Demand</p>
-                                    <div class="pricing-desc" data-aos="fade-left"> Predictable instance based model with: no limits on users, workflows, or tasks.</div>
+                                    <h4 class="card-title" data-usal="fade-r">Enterprise Edition</h4>
+                                    <p class="pricing" data-usal="fade-l">Built For Production</p>
+                                    <p class="pricing-type" data-usal="fade-l">On-Demand</p>
+                                    <div class="pricing-desc" data-usal="fade-l"> Predictable instance based model with: no limits on users, workflows, or tasks.</div>
                                 </div>
                                 <NuxtLink
                                     href="/demo"
                                     class="demo-btn"
-                                    data-aos="zoom-in"
+                                    data-usal="zoomin"
                                 >
                                     Talk to us
                                 </NuxtLink>
                                 <ul>
-                                    <li data-aos="fade-right" data-aos-delay="100">
+                                    <li data-usal="fade-r delay-100">
                                         <div class="check-icon">
                                             <CheckBold />
                                         </div>
                                         <span>Everything in Open-source</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
                                         <span>Governance</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
                                         <span>Security</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
                                         <span>Productivity</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
                                         <span>Scalability</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
                                         <span>Customer Success Program</span>
                                     </li>
-                                    <li data-aos="fade-right" data-aos-delay="150">
+                                    <li data-usal="fade-r delay-150">
                                         <div class="check-icon">
                                             <Plus />
                                         </div>
@@ -128,7 +128,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/LM.svg"
                                 alt="FILA"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                         <div>
@@ -139,7 +139,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/GORGIAS.svg"
                                 alt="Gorgias"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                         <div>
@@ -150,7 +150,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/ACXIOM.svg"
                                 alt="Acxiom"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                         <div>
@@ -161,7 +161,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/T-SYSTEM.svg"
                                 alt="L'Oréal"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                         <div>
@@ -172,7 +172,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/BATTELLE.svg"
                                 alt="Battelle"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                         <div>
@@ -183,7 +183,7 @@
                                 class="img-fluid"
                                 src="/landing/pricing/teams/DATAPORT.svg"
                                 alt="Battelle"
-                                data-aos="fade-left"
+                                data-usal="fade-l"
                             />
                         </div>
                     </div>

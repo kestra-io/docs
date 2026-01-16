@@ -1,6 +1,6 @@
 <template>
     <div class="content" ref="orchestraCoreDOMElement">
-        <div class="container" data-aos="fade-left">
+        <div class="container" data-usal="fade-l">
             <div class="top-block">
                 <div class="header">
                     <p>Unified Enterprise-Grade Orchestration Platform</p>
@@ -33,7 +33,7 @@
                 </NuxtLink>
             </div>
             <div class="slider">
-                <div data-aos="fade-left">
+                <div data-usal="fade-l">
                     <Carousel v-bind="settings" :breakpoints="breakpoints">
                         <Slide v-for="(slide, slideIndex) in testimonialData" :key="slide">
                             <div class="carousel--item">

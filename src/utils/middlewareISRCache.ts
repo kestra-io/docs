@@ -6,6 +6,10 @@ import { createISRCache } from './isr-cache'
 const revalidate = 2
 
 export const middlewareISRCache = defineMiddleware(async (context, next) => {
+    if(import.meta.env.DEV) {
+        return next()
+    }
+
     const { request, locals, url } = context
 
     // Only apply ISR to GET requests for HTML pages

@@ -2,7 +2,7 @@
     <div class="container">
         <Section title="Benefits of the Integration">
             <div class="row justify-content-center align-items-center">
-                <div class="col-12 col-md-5" data-aos="fade-left">
+                <div class="col-12 col-md-5" data-usal="fade-l">
                     <NuxtImg
                         loading="lazy"
                         format="webp"
@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-12 col-md-5">
                     <div class="row justify-content-center">
-                        <div class="col-12 col-md-9 px-5 px-md-0" data-aos="fade-right">
+                        <div class="col-12 col-md-9 px-5 px-md-0" data-usal="fade-r">
                             <h4 class="mb-3">Reliable Deployments with Infrastructure as Code</h4>
                             <p>
                                 Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows. <br/>
@@ -25,13 +25,13 @@
                 </div>
                 <div class="col-12 col-md-5">
                     <div class="row justify-content-center">
-                        <div class="col-12 col-md-9 px-5 px-md-0" data-aos="fade-left">
+                        <div class="col-12 col-md-9 px-5 px-md-0" data-usal="fade-l">
                             <h4 class="mb-3">Version Control and Rollback</h4>
                             <p>Incorporating version control systems such as Git is a recommended standard. It enables rollbacks and comprehensive auditing. Terraform additionally helps you version control not only your code but also your infrastructure configuration.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5" data-aos="fade-right">
+                <div class="col-12 col-md-5" data-usal="fade-r">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

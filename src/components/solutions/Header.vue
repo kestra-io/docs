@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="align-items-center col-md-12 d-flex justify-content-center order-1 order-md-0">
                     <div class="text-center d-flex flex-column gap-3">
-                        <p data-aos="fade-left" class="title">Use Cases</p>
-                        <p data-aos="fade-left" class="baseline">Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform</p>
+                        <p data-usal="fade-l" class="title">Use Cases</p>
+                        <p data-usal="fade-l" class="baseline">Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform</p>
                     </div>
                 </div>
             </div>

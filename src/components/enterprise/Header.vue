@@ -4,9 +4,9 @@
             <div class="justify-content-center row">
                 <div class="row justify-content-center align-items-center flex-column w-100 header-content">
                     <p class="text-center header-desc">Built For Critical Use Cases</p>
-                    <h1 data-aos="fade-right">Scale With Kestra <br> Enterprise Edition</h1>
+                    <h1 data-usal="fade-r">Scale With Kestra <br> Enterprise Edition</h1>
                     <div class="d-flex flex-wrap gap-2 button-group">
-                        <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                        <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                             Talk to sales
                         </NuxtLink>
                     </div>
@@ -21,7 +21,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/LM.svg"
                                     alt="FILA"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -32,7 +32,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/ACXIOM.svg"
                                     alt="Acxiom"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -43,7 +43,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/ITZ.svg"
                                     alt="itzbund"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -54,7 +54,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/T-SYSTEM.svg"
                                     alt="L'Oréal"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -65,7 +65,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/COE.svg"
                                     alt="European Council"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -76,7 +76,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/BATTELLE.svg"
                                     alt="Battelle"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                             <div>
@@ -87,7 +87,7 @@
                                     class="img-fluid"
                                     src="/landing/enterprise/teams/DATAPORT.svg"
                                     alt="Battelle"
-                                    data-aos="fade-left"
+                                    data-usal="fade-l"
                                 />
                             </div>
                         </div>

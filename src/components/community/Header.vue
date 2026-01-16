@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <h1 data-aos="fade-right">Connect and Collaborate</h1>
-                        <p class="baseline" data-aos="fade-left">Connect with experts in the field, get support from the community, exchange ideas and contribute your code and feedback.</p>
-                        <NuxtLink href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-aos="zoom-in" target="_blank">
+                        <h1 data-usal="fade-r">Connect and Collaborate</h1>
+                        <p class="baseline" data-usal="fade-l">Connect with experts in the field, get support from the community, exchange ideas and contribute your code and feedback.</p>
+                        <NuxtLink href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-usal="zoomin" target="_blank">
                             Join us on Slack
                         </NuxtLink>
                     </div>
@@ -20,7 +20,7 @@
                         src="/landing/community/header.svg"
                         class="img-fluid"
                         alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                     />
                 </div>
             </div>

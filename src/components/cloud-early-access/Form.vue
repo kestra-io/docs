@@ -10,7 +10,7 @@
           tell us more about your use case and request your invite.
         </p>
         <div v-if="valid" v-html="validMessage" class="success" />
-        <form v-else @submit="onSubmit" ref="cloud-form" novalidate data-aos="fade-left">
+        <form v-else @submit="onSubmit" ref="cloud-form" novalidate data-usal="fade-l">
           <div v-if="message" class="alert alert-danger mt-3 mb-0">
             {{ message }}
           </div>
@@ -124,7 +124,7 @@
           <img src="./images/foundation.svg?url" alt="Foundation Direct logo" />
         </div>
       </div>
-      <div class="flow-image" data-aos="fade-left">
+      <div class="flow-image" data-usal="fade-l">
         <img src="./images/flow-edit.png?url" alt="Kestra Flow" />
       </div>
     </div>

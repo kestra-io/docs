@@ -11,10 +11,10 @@
                     src="/landing/usecases/cicd/monograme.svg"
                     alt="Monograme"
                 />
-                <h2 data-aos="fade-left">{{ title }}</h2>
-                <p class="text-center" data-aos="fade-right">{{ subtitle }}</p>
+                <h2 data-usal="fade-l">{{ title }}</h2>
+                <p class="text-center" data-usal="fade-r">{{ subtitle }}</p>
                 <div class="text-center cta">
-                    <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                    <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                         Get started
                     </NuxtLink>
                 </div>

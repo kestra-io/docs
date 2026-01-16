@@ -3,8 +3,8 @@
         <div class="container pt-5 pb-5">
             <div class="row">
                 <div class="col-md-6 d-flex flex-column justify-content-center">
-                    <h2 data-aos="fade-left">Simple Yet <span>Powerful</span></h2>
-                    <p data-aos="fade-right">
+                    <h2 data-usal="fade-l">Simple Yet <span>Powerful</span></h2>
+                    <p data-usal="fade-r">
                         The declarative syntax in a YAML format significantly reduces the barrier to entry.
                         You can onboard new team members quickly, and maintain your workflows with minimal effort.
                         <br><br>
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to us</a>
+                        <a href="/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-usal="zoomin">Talk to us</a>
                     </div>
                 </div>
             </div>

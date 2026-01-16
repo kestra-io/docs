@@ -3,10 +3,7 @@
         <div class="container">
             <div
                 class="arc-embed"
-                data-aos="zoom-in"
-                data-aos-duration="400"
-                data-aos-delay="0"
-                data-aos-easing="ease-out"
+                data-usal="zoomin delay-0 duration-400 ease-out"
             >
                 <iframe
                     class="arc-iframe"
@@ -24,10 +21,7 @@
     <section class="automations">
         <div class="container">
             <h3
-                data-aos="fade-up"
-                data-aos-duration="400"
-                data-aos-delay="0"
-                data-aos-easing="ease-out"
+                data-usal="fade-u delay-0 duration-400 ease-out"
             >
                 Ready-to-Use <span class="highlight">Automation</span> Patterns
             </h3>
@@ -40,10 +34,7 @@
                         v-for="(blueprint) in blueprints"
                         :key="blueprint.id"
                         class="col-lg-4 col-md-6 mb-3 card-wrapper"
-                        data-aos="zoom-in-up"
-                        data-aos-duration="400"
-                        data-aos-delay="0"
-                        data-aos-easing="ease-out"
+                        data-usal="zoomin-u delay-0 duration-400 ease-out"
                     >
                         <BlueprintCard
                             :blueprint="blueprint"
@@ -57,10 +48,7 @@
 
             <div
                 class="align-self-end"
-                data-aos="fade-in"
-                data-aos-duration="400"
-                data-aos-delay="0"
-                data-aos-easing="ease-out"
+                data-usal="fade-in delay-0 duration-400 ease-out"
             >
                 <Link
                     href="/blueprints?tags=infrastructure"

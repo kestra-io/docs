@@ -1,7 +1,7 @@
 <template>
     <section class="govern">
         <div class="container">
-            <h1 data-aos="fade-up" data-aos-duration="400" data-aos-delay="0" data-aos-easing="ease-out">
+            <h1 data-usal="fade-u delay-0 duration-400 ease-out">
                 <span class="highlight">Orchestrate</span> And <br class="d-none d-xl-block">
                 <span class="indent"><span class="highlight">Govern</span> The Entire Infrastructure Lifecycle</span>
             </h1>
@@ -11,18 +11,12 @@
                     v-for="(card, index) in CARDS"
                     :key="card.title"
                     class="cards"
-                    data-aos="fade-in"
-                    :data-aos-duration="400"
-                    :data-aos-delay="`${50 + index * 50}`"
-                    data-aos-easing="ease-out"
+                    :data-usal="`fade duration-400 delay-${50 + index * 50} ease-out`"
                 >
                     <div class="inner-card" :class="{ 'reverse': card.reverse }">
                         <div
                             class="content-card"
-                            data-aos="fade-up"
-                            :data-aos-duration="350"
-                            :data-aos-delay="`${100 + index * 50}`"
-                            data-aos-easing="ease-out"
+                            :data-usal="`fade-u duration-350 delay-${100 + index * 50} ease-out`"
                         >
                             <h2>
                                 {{ card.title }}
@@ -37,10 +31,7 @@
                                 :src="card.image"
                                 :alt="card.title"
                                 class="img-fluid"
-                                data-aos="zoom-in"
-                                :data-aos-duration="400"
-                                :data-aos-delay="`${150 + index * 50}`"
-                                data-aos-easing="ease-out"
+                                :data-usal="`zoomin delay-${400 + index * 50} duration-400 ease-out`"
                             >
                         </div>
                     </div>

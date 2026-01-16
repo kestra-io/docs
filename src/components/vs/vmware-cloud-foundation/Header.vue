@@ -4,16 +4,16 @@
             <div class="row">
                 <div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
                     <div>
-                        <h1 data-aos="fade-right">Migrate from Aria Operations & Cloud Foundation to Kestra</h1>
-                        <p class="baseline" data-aos="fade-left">Pick the right choice for your company</p>
+                        <h1 data-usal="fade-r">Migrate from Aria Operations & Cloud Foundation to Kestra</h1>
+                        <p class="baseline" data-usal="fade-l">Pick the right choice for your company</p>
                         <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
                                 Talk to us
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-usal="zoomin">
                     <img class="zoom img-fluid" src="/landing/vs/kestra-vs-vmware.svg" alt="header Kestra vs Aria Automation"/>
                 </div>
             </div>

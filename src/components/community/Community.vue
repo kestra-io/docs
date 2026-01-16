@@ -3,17 +3,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <NuxtImg width="286px" height="81px" loading="lazy" format="webp" data-aos="fade-left"
+                    <NuxtImg width="286px" height="81px" loading="lazy" format="webp" data-usal="fade-l"
                         src="/landing/community/contributors.png" class="mb-4 img-fluid" />
-                    <h2 class="mb-4" data-aos="fade-left">Kestra is built in the open</h2>
-                    <p data-aos="fade-right">
+                    <h2 class="mb-4" data-usal="fade-l">Kestra is built in the open</h2>
+                    <p data-usal="fade-r">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us improve
                         our open-source product.
                     </p>
                 </div>
                 <div class="col-md-6">
                     <div class="row community">
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <Star title="" />
                             <p>
                                 Stars <br>
@@ -22,7 +22,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <DirectionsFork title="" />
                             <p>
                                 Forks <br>
@@ -31,7 +31,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <BugOutline title="" />
                             <p>
                                 Issues <br>
@@ -40,7 +40,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <BugOutline title="" />
                             <p>
                                 Pull requests <br>
@@ -49,7 +49,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <SourceCommitLocal title="" />
                             <p>
                                 Commits <br>
@@ -58,7 +58,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4" data-aos="fade-right">
+                        <div class="col-6 col-md-4" data-usal="fade-r">
                             <AccountGroupOutline title="" />
                             <p>
                                 Contributors <br>
@@ -72,11 +72,11 @@
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <NuxtLink href="https://github.com/kestra-io/kestra" data-aos="zoom-in"
+                <NuxtLink href="https://github.com/kestra-io/kestra" data-usal="zoomin"
                     class="btn btn-animated btn-dark-animated mt-2 mx-2">
                     Follow on GitHub
                 </NuxtLink>
-                <NuxtLink href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-animated btn-purple-animated
+                <NuxtLink href="https://github.com/kestra-io/kestra/issues" data-usal="zoomin" class="btn btn-animated btn-purple-animated
                      mt-2">
                     Find Open Issues
                 </NuxtLink>

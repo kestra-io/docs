@@ -8,8 +8,8 @@
                 alt="ks-plugin-logo"
                 class="d-block img-fluid"
             >
-            <h1 data-aos="fade-up" data-aos-delay="0">Connect anything to everything</h1>
-            <h4 data-aos="fade-up" data-aos-delay="50">Extend Kestra with {{ totalPlugins }} plugins and integrations</h4>
+            <h1 data-usal="fade-u delay-0">Connect anything to everything</h1>
+            <h4 data-usal="fade-u delay-50">Extend Kestra with {{ totalPlugins }} plugins and integrations</h4>
             <div class="search-input position-relative">
                 <input
                     v-model="searchQuery"
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="my-4 categories" data-aos="fade-up" data-aos-delay="200">
+            <div class="my-4 categories" data-usal="fade-u delay-200">
                 <button
                     v-for="category in augmentedCategories"
                     :key="category"

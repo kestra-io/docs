@@ -1,8 +1,8 @@
 <template>
     <section class="main-header">
         <div class="hero container">
-            <div class="top-section" data-aos="slide-down" data-aos-duration="700" data-aos-delay="0" data-aos-easing="ease-out">
-                <div class="left-section" data-aos="slide-down" data-aos-duration="700" data-aos-delay="50" data-aos-easing="ease-out">
+            <div class="top-section" data-usal="slide-d delay-0 duration-700 ease-out">
+                <div class="left-section" data-usal="slide-d delay-50 duration-700 ease-out">
                     <h2>Modernize Infrastructure Automation <br class="d-none d-lg-block"> With One Unified Control Plane</h2>
                     <p>
                         Standardize provisioning and Day 2 operations with less risk and operational overhead.
@@ -11,7 +11,7 @@
                     </p>
                 </div>
 
-                <div class="right-section" data-aos="slide-down" data-aos-duration="700" data-aos-delay="100" data-aos-easing="ease-out">
+                <div class="right-section" data-usal="slide-d delay-100 duration-700 ease-out">
                     <p>Still relying on scripts and legacy tools <br class="d-none d-xl-block" /> to run mission-critical infrastructure?</p>
                     <NuxtLink
                         to="/demo"

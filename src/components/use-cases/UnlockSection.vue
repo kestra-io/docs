@@ -7,7 +7,7 @@
                     loading="lazy"
                     format="webp"
                     class="mt-md-0"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                     :src="logoPath"
                     :alt="logoAlt"
                 />
@@ -21,7 +21,7 @@
             <div class="row d-flex justify-content-center mt-5">
                 <div
                     class="col-12 col-lg-5 mb-4 z-2"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     <div class="unlock-content text-end">
                         <template v-for="info in unlockContent.leftContent">
@@ -32,13 +32,13 @@
                 </div>
                 <div
                     class="col-12 d-none d-lg-block col-lg-2 mb-4 z-2"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     <UnlockSectionLine :strokeColor="strokeColor" />
                 </div>
                 <div
                     class="col-12 col-lg-5 mb-4 z-2"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     <div class="unlock-content text-start">
                         <template v-for="info in unlockContent.rightContent">

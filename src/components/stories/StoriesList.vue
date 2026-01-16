@@ -1,8 +1,8 @@
 <template>
     <div class="header-container mt-5">
         <div class="header container d-flex flex-column align-items-center gap-3">
-            <h1 data-aos="fade-left"> Customers Stories</h1>
-            <h4 data-aos="fade-left">Learn how we helped companies manage their critical operations.</h4>
+            <h1 data-usal="fade-l"> Customers Stories</h1>
+            <h4 data-usal="fade-l">Learn how we helped companies manage their critical operations.</h4>
         </div>
     </div>
     <div class="list-container container px-md-0 pt-5">

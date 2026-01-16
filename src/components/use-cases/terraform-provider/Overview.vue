@@ -38,7 +38,7 @@
                 </div>
                 <div class="hero row justify-content-center align-items-center">
                     <div class="col-12 col-md-6">
-                        <div class="configurations-img" data-aos="fade-left">
+                        <div class="configurations-img" data-usal="fade-l">
                             <NuxtImg
                                 loading="lazy"
                                 format="webp"
@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-7 px-5 px-md-0" data-aos="fade-right">
+                            <div class="col-12 col-md-7 px-5 px-md-0" data-usal="fade-r">
                                 <h3 class="mb-3">Declarative Configuration</h3>
                                 <p>Terraform uses its HashiCorp Configuration Language (HCL), while Kestra flows are defined in YAML. This alignment in declarative interfaces ensures not only a smooth transition but also makes it easy to use both technologies together.</p>
                             </div>
@@ -60,14 +60,14 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-7 px-5 px-md-0" data-aos="fade-left">
+                            <div class="col-12 col-md-7 px-5 px-md-0" data-usal="fade-l">
                                 <h3 class="mb-3">Modularity in the Infrastructure Management</h3>
                                 <p>Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <NuxtLink href="/docs/terraform" class="text-decoration-underline link-offset-2">documentation.</NuxtLink></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <div class="resource-management-image" data-aos="fade-right">
+                        <div class="resource-management-image" data-usal="fade-r">
                             <NuxtImg
                                 loading="lazy"
                                 format="webp"
@@ -79,7 +79,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 px-5 px-md-0" data-aos="zoom-in">
+                    <div class="col-12 col-md-6 px-5 px-md-0" data-usal="zoomin">
                         <p class="mt-5 text-white text-center">The inherent modularity in both, Terraform and Kestra, allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to maintainable operations.</p>
                     </div>
                 </div>

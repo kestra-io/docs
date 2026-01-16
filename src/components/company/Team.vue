@@ -3,15 +3,14 @@
     <Section
       subtitle="An International Team"
       baseline="Kestra is led by experienced founders and industry veterans dedicated to innovation, quality, and customer success."
-      data-aos="fade-up"
+      data-usal="fade-u"
     >
-      <div class="team-grid" data-aos="fade-up" data-aos-delay="200">
+      <div class="team-grid" data-usal="fade-u delay-200">
         <div
           v-for="(member, index) in teamMembers"
           :key="member.name"
           class="team-card"
-          data-aos="zoom-in"
-          :data-aos-delay="(index * 50)"
+          :data-usal="`zoomin delay-${index * 50}`"
         >
           <NuxtImg :src="member.image" :alt="member.name" width="110px" height="110px" />
           <div class="team-info">

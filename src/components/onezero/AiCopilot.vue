@@ -2,7 +2,7 @@
     <section class="wrapper">
         <div class="ai-copilot container">
             <div class="first-line">
-                <div data-aos="fade-right" class="content">
+                <div data-usal="fade-r" class="content">
                     <div class="what-is-new">What is new in <strong>1.0</strong></div>
                     <h2>AI Copilot</h2>
                     <p>
@@ -11,7 +11,7 @@
                         version, and deploy.
                     </p>
                 </div>
-                <div class="copilot-overview-illustration" data-aos="fade-left">
+                <div class="copilot-overview-illustration" data-usal="fade-l">
                     <img class="illu-code" src="/landing/onezero/copilot.svg" alt="AI Copilot" width="900" height="auto" />
                     <div class="d-none d-xl-block illu-code-background"></div>
                 </div>
@@ -21,21 +21,21 @@
                 <h3>{{ block.title }}</h3>
                 <p>{{ block.description }}</p>
                 <NuxtImg class="illu" :src="block.imgSrc" :alt="block.alt" :width="block.width" :height="block.height"
-                    data-aos="zoom-in" format="webp" loading="lazy" />
+                    data-usal="zoomin" format="webp" loading="lazy" />
             </div>
 
             <div class="second-line">
                 <h3>AI-Powered Docs Search</h3>
                 <p>Get answers to your questions instantly.</p>
                 <NuxtImg class="illu" src="/landing/onezero/AIDocsSearch.png" alt="AI Prompt reading Ask Kestra AI"
-                    width="2280" height="722" data-aos="fade-up" format="webp" loading="lazy" />
+                    width="2280" height="722" data-usal="fade-u" format="webp" loading="lazy" />
             </div>
 
             <div v-for="block in aiBlockstwo" :key="block.title" class="ai-block">
                 <h3>{{ block.title }}</h3>
                 <p>{{ block.description }}</p>
                 <NuxtImg class="illu" :src="block.imgSrc" :alt="block.alt" :width="block.width" :height="block.height"
-                    data-aos="zoom-in" format="webp" loading="lazy" />
+                    data-usal="zoomin" format="webp" loading="lazy" />
             </div>
         </div>
 
@@ -437,7 +437,7 @@ const velocityFeatures = [
 }
 
 @media (max-width: 768px) {
-    [data-aos] {
+    [data-usal] {
         transform: none !important;
         transition: none !important;
         opacity: 1 !important;

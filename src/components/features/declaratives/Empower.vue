@@ -3,7 +3,7 @@
         <div class="pt-5 pb-5 mt-5 declarative">
             <div class="container pt-3">
                 <div class="row mb-0 mb-sm-5">
-                    <div class="col-md-6" data-aos="fade-right">
+                    <div class="col-md-6" data-usal="fade-r">
                         <NuxtImg
                             loading="lazy"
                             format="webp"
@@ -14,7 +14,7 @@
                             alt="A YAML sample of code for declarative language and construction of Kestra's flows"
                         />
                     </div>
-                    <div class="col-md-6 py-3 py-sm-5 px-2 px-sm-5" data-aos="fade-right">
+                    <div class="col-md-6 py-3 py-sm-5 px-2 px-sm-5" data-usal="fade-r">
                         <h3>YAML for Declarative Orchestration</h3>
                         <ul>
                             <li>
@@ -35,7 +35,7 @@
     <div class="pt-5 pb-5 declarative-orchestration">
         <div class="container pt-1">
             <div class="row">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
+                <div class="col-md-6 order-1 order-md-0" data-usal="fade-l">
                     <h3>Empower Your Team with Declarative Orchestration</h3>
                     <ul>
                         <li>
@@ -49,7 +49,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1" data-usal="fade-l">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

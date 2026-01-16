@@ -1,14 +1,12 @@
 <template>
     <section class="deserver">
         <div class="container">
-            <h2 class="deserver-heading" data-aos="fade-up" data-aos-duration="500" data-aos-delay="0"
-                data-aos-easing="ease-out">
+            <h2 class="deserver-heading" data-usal="fade-u delay-0 duration-500 ease-out">
                 Infrastructure Teams Deserve a Better Way to Operate
             </h2>
 
             <div class="deserver-row">
-                <div class="deserver-inner" data-aos="slide-right" data-aos-duration="500" data-aos-delay="25"
-                    data-aos-easing="ease-out">
+                <div class="deserver-inner" data-usal="slide-r delay-25 duration-500 ease-out">
                     <h3>Why Infrastructure Automation Fails Today</h3>
                     <ul class="list-unstyled">
                         <li v-for="(item, index) in WHY_FAILS" :key="index">
@@ -20,8 +18,7 @@
                     </ul>
                 </div>
 
-                <div class="deserver-ellipse" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="50"
-                    data-aos-easing="ease-out">
+                <div class="deserver-ellipse" data-usal="zoomin delay-50 duration-600 ease-out">
                     <NuxtImg src="/landing/infrastructure/extrude-sm.png" alt="extrude" format="webp" densities="x1 x2" class="deserver-sm-img" />
                 </div>
 
@@ -29,8 +26,7 @@
 
                 <img src="/landing/infrastructure/extrude.svg" alt="logo" width="280" height="285" class="deserver-img" />
 
-                <div class="deserver-inner second" data-aos="slide-left" data-aos-duration="500" data-aos-delay="50"
-                    data-aos-easing="ease-out">
+                <div class="deserver-inner second" data-usal="slide-l delay-50 duration-500 ease-out">
                     <h3>The Kestra Unified Control Plane</h3>
                     <ul class="list-unstyled">
                         <li v-for="(item, index) in KESTRA_BENEFITS" :key="index">
@@ -43,8 +39,7 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column deserver-content" data-aos="fade-up" data-aos-duration="500"
-                data-aos-delay="100" data-aos-easing="ease-out">
+            <div class="d-flex flex-column deserver-content" data-usal="fade-u delay-100 duration-500 ease-out">
                 <h6 class="deserver-subheading">
                     Ready to replace vRA, Rundeck, Jenkins, Control-M, and fragmented scripts?
                 </h6>

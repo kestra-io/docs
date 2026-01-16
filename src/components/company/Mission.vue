@@ -1,7 +1,7 @@
 <template>
   <section class="mission">
     <div class="mission-content">
-      <header data-aos="fade-right">
+      <header data-usal="fade-r">
         <h1>
           Staying <span>True</span> to our Mission
         </h1>
@@ -14,8 +14,8 @@
         </p>
       </header>
 
-      <div class="values" data-aos="fade-up" data-aos-delay="200">
-        <article v-for="(value, index) in values" :key="value.title" class="value" :data-aos="'fade-up'" :data-aos-delay="300 + (index * 100)">
+      <div class="values" data-usal="fade-u delay-200">
+        <article v-for="(value, index) in values" :key="value.title" class="value" :data-usal="`fade-u delay-${300 + (index * 100)}`">
           <div class="value-header">
             <component :is="value.icon" />
             <h3>{{ value.title }}</h3>
@@ -24,7 +24,7 @@
         </article>
       </div>
 
-      <blockquote class="testimonial" data-aos="fade-right" data-aos-delay="700">
+      <blockquote class="testimonial" data-usal="fade-r delay-700">
         <p>
           "Kestra is like the Wizard of Oz Wizard, doing its magic behind the
           curtain"
@@ -43,8 +43,7 @@
         src="/landing/company/teams/executions.png"
         alt="Kestra Dashboard"
         class="dashboard-image"
-        data-aos="fade-left"
-        data-aos-delay="400"
+        data-usal="fade-l delay-400"
       />
     </div>
   </section>

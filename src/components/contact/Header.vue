@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <div class="container img-container">
             <div class="get-in-touch">
-                <h1 data-aos="fade-right">Contact <span>Us</span></h1>
-                <p class="baseline" data-aos="fade-left">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
+                <h1 data-usal="fade-r">Contact <span>Us</span></h1>
+                <p class="baseline" data-usal="fade-l">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6 form-container bg-dark-2" >
                     <ClientOnly>
-                        <div id="hubspotForm" data-aos="fade-left" />
+                        <div id="hubspotForm" data-usal="fade-l" />
                     </ClientOnly>
                 </div>
             </div>

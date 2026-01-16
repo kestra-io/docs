@@ -2,9 +2,9 @@
     <div class="header-container">
         <div class="header container d-flex flex-column align-items-center gap-3">
             <slot>
-                <h1 data-aos="fade-left">Join our <span>Team</span></h1>
-                <h4 data-aos="fade-right">Drive innovation in a globally distributed, collaborative environment</h4>
-                <a :href="(fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                <h1 data-usal="fade-l">Join our <span>Team</span></h1>
+                <h4 data-usal="fade-r">Drive innovation in a globally distributed, collaborative environment</h4>
+                <a :href="(fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                     Open positions
                 </a>
             </slot>

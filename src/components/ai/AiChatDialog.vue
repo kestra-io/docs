@@ -14,7 +14,7 @@
             <div v-if="messages.length === 0 && randomQuestion" class="examples">
                 <h6>EXAMPLE QUESTIONS</h6>
                 <div class="cards">
-                    <template v-for="(question, index) in randomQuestion.sort(() => .5 - Math.random()).slice(0, 3)" :key="index">
+                    <template v-for="(question, index) in randomQuestion" :key="index">
                         <div class="card" @click="askQuestion(question)">
                             {{ question }}
                         </div>
@@ -146,7 +146,7 @@
     // random client must be client only
     const randomQuestion = ref<Array<string>>();
     onMounted(() => {
-        randomQuestion.value = [
+        const questions = [
             "How to add secrets?",
             "How to configure my internal storage?",
             "What are main differences between Open Source and Enterprise?",
@@ -163,7 +163,10 @@
             "How to run a Ansible playbook?",
             "How to run dbt?",
             "How to receive an alert on flow failure?",
-        ]
+        ];
+
+        // Shuffle and pick 3 questions once on mount
+        randomQuestion.value = [...questions].sort(() => Math.random() - 0.5).slice(0, 3);
     })
 
     const emit = defineEmits<{

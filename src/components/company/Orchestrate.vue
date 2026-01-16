@@ -33,23 +33,23 @@
         <NuxtImg src="/landing/company/teams/black-ellipse.svg" alt="Section Divider" width="228" height="135" />
       </div>
 
-      <div class="container" data-aos="fade-up">
+      <div class="container" data-usal="fade-u">
         <div class="content">
-          <h2 class="title" data-aos="fade-up" data-aos-delay="200">
+          <h2 class="title" data-usal="fade-u delay-200">
             Trusted by <span class="gradient">Enterprises</span> Worldwide
           </h2>
 
-          <p class="text-white" data-aos="fade-up" data-aos-delay="300">
+          <p class="text-white" data-usal="fade-u delay-300">
             <strong>We are excited</strong> to see how <strong>Kestra</strong> transform the way<br>
             organizations approach orchestration.
           </p>
-          <p class="text-white" data-aos="fade-up" data-aos-delay="400">
+          <p class="text-white" data-usal="fade-u delay-400">
             We believe that <strong>Kestra's potential is limitless</strong>, and we<br>
             are eager to explore new <strong>opportunities</strong> and<br>
             <strong>partnerships</strong> as we move forward.
           </p>
 
-          <div class="logos" data-aos="fade-up" data-aos-delay="400">
+          <div class="logos" data-usal="fade-u delay-400">
             <div class="grid">
               <NuxtImg
                 v-for="(logo, index) in companyLogos"
@@ -58,7 +58,6 @@
                 :alt="logo.name"
                 :width="logo.width"
                 :height="logo.height"
-                :data-aos-delay="500 + (index * 100)"
               />
             </div>
           </div>

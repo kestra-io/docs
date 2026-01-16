@@ -7,7 +7,7 @@
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><Key /></span>
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><ShieldAccount /></span>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><FormTextboxPassword /></span>
@@ -45,7 +45,7 @@
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><ViewDashboardVariantOutline /></span>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><Cog /></span>
@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><Security /></span>

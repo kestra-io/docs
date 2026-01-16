@@ -14,7 +14,7 @@
             <div class="row d-flex justify-content-center mt-5 cards-container">
                 <div
                     class="col-12 col-md-6 col-lg-4 mb-4 z-2"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                     v-for="cardItem in cardsData"
                 >
                     <Card

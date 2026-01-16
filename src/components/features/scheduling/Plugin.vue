@@ -1,7 +1,7 @@
 <template>
     <div class="container plugin py-5">
         <div class="row">
-            <div class="col-lg-6" data-aos="zoom-in">
+            <div class="col-lg-6" data-usal="zoomin">
                 <NuxtImg
                     loading="lazy"
                     format="webp"
@@ -13,19 +13,19 @@
                 />
             </div>
             <div class="col-lg-6 mt-5">
-                <div data-aos="fade-left" class="heading">
+                <div data-usal="fade-l" class="heading">
                     <h3 class="title heading ">
                         Connect Your
                         <span class="title-animated"> Entire Tech Stack</span>
                         with Dedicated Plugins
                     </h3>
-                    <p class="para mt-3" data-aos="fade-right ">
+                    <p class="para mt-3" data-usal="fade-right ">
                         Integrate with your existing technology landscape using Kestra's
                         robust plugin architecture. From databases and cloud services to
                         custom applications, plugins enable you to connect, schedule, and
                         automate your entire tech stack.
                     </p>
-                    <NuxtLink href="/plugins" class="btn btn-dark mt-2" data-aos="zoom-in">
+                    <NuxtLink href="/plugins" class="btn btn-dark mt-2" data-usal="zoomin">
                         See all Plugins
                     </NuxtLink>
                 </div>

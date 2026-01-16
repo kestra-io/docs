@@ -1,14 +1,14 @@
 <template>
     <section>
-        <div class="subtitle" :data-aos="animationType('fade-right')" v-if="subtitle">
+        <div class="subtitle" :data-usal="animationType('fade-r')" v-if="subtitle">
             <p>
                 <span v-if="subtitleBefore">{{subtitleBefore}}</span>
                 {{ subtitle }}
                 <span v-if="subtitleAfter">{{subtitleAfter}}</span>
             </p>
         </div>
-        <h2 :data-aos="animationType('fade-left')">{{ title }}</h2>
-        <p v-if="baseline" class="baseline" :data-aos="animationType('fade-right')">
+        <h2 :data-usal="animationType('fade-l')">{{ title }}</h2>
+        <p v-if="baseline" class="baseline" :data-usal="animationType('fade-r')">
             {{ baseline }}
         </p>
         <div class="main">

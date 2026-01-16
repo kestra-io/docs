@@ -1,5 +1,5 @@
 <template>
-    <div class="cta card" data-aos="fade-right">
+    <div class="cta card" data-usal="fade-r">
         <div class="row align-items-center">
             <div class="col-lg-9 col-md-12">
                 <h5>{{ cta.title }}</h5>

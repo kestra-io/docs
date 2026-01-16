@@ -5,21 +5,21 @@
             <p>From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains.</p>
 
             <div class="row">
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Data Pipelines"
                         description="Say goodbye to delays in your pipeline as Kestra initiates workflows based on specific times or events, such as data arrivals or file uploads."
                         number="01"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Machine Learning Model Deployment"
                         description="Efficiently manage and deploy your machine learning models at scale with Kestra's microservice orchestration capabilities."
                         number="02"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="ETL Processes"
                         description="Seamlessly move data between systems, prepare and clean it, and aggregate it into a consolidated data mart."
@@ -29,21 +29,21 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Event-Driven Automation at Scale"
                         description="React to events happening in your business and automate your critical microservices and operations."
                         number="04"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Real-Time Data Processing with Change Data Capture"
                         description="Automatically detect changes in data sources and trigger workflows to process those changes."
                         number="05"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Automated Reporting"
                         description="Configure Kestra to distribute reports via email or Slack, keeping your team informed."
@@ -53,21 +53,21 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Data Ingestion and Integration"
                         description="Easily collect data from various sources and integrate them into your workflows."
                         number="07"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="Infrastructure Orchestration"
                         description="Automate tasks such as provisioning, deployment, and monitoring of infrastructure resources."
                         number="08"
                     />
                 </div>
-                <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4" data-usal="zoomin">
                     <Card
                         title="End-to-End Data Orchestration"
                         description="Kestra empowers you to manage the entire data lifecycle from ingestion to reporting and automation."

@@ -106,13 +106,6 @@ const slackMembers = await fetchSlackMembers();
     <script define:vars={{ slug }}>
         window.astroClientConfig = { slug: slug }
     </script>
-    <script>
-        import AOS from "aos";
-
-        setTimeout(() => {
-            AOS.init();
-        }, 1000);
-    </script>
 </body>
 </html>
 

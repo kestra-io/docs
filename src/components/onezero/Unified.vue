@@ -1,7 +1,7 @@
 <template>
   <section class="unified">
     <div class="container">
-      <div data-aos="fade-up">
+      <div data-usal="fade-u">
         <p class="title">
           Replace Fragmented Tools<br>
           <span class="gradient">
@@ -10,8 +10,8 @@
         </p>
       </div>
 
-      <div class="compare" data-aos="fade-up" data-aos-delay="50">
-        <div class="section" data-aos="fade-right" data-aos-delay="100">
+      <div class="compare" data-usal="fade-u delay-50">
+        <div class="section" data-usal="fade-r delay-100">
           <h4 class="without">Without Kestra 😵‍💫</h4>
           <p>
             Job schedulers, complex workflow frameworks, custom scripts,
@@ -19,7 +19,7 @@
           </p>
         </div>
 
-        <div class="section" data-aos="fade-left" data-aos-delay="150">
+        <div class="section" data-usal="fade-l delay-150">
           <h4 class="with">With Kestra 😎</h4>
           <p>
             One platform to define, run, and observe workflows, react
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="benefits" data-aos="fade-up" data-aos-delay="200">
+      <div class="benefits" data-usal="fade-u delay-200">
         <div
           v-for="benefit in benefits"
           :key="benefit.id"
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div data-aos="fade-up">
+      <div data-usal="fade-u">
         <NuxtLink href="/demo" class="btn btn-lg btn-primary">
           Calculate Your Savings With Kestra
         </NuxtLink>
@@ -212,7 +212,7 @@ const benefits = [
     }
 
     @media (max-width: 768px) {
-      [data-aos] {
+      [data-usal] {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;

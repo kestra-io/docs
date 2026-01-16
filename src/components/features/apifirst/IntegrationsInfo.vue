@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mb-5 align-items-center">
                 <div class="col-md-6 order-1 order-md-1"
-                     data-aos="fade-left">
+                     data-usal="fade-l">
                     <h3>CI/CD and Code<br/> Management</h3>
                     <p>
                         Being API-first means Kestra integrates seemlessly with CI/CD pipelines, offering a streamlined path
@@ -11,7 +11,7 @@
                         integration ensures that your workflows remain in sync with your codebase.
                     </p>
                 </div>
-                <div class="col-md-6 order-0 order-md-0 mask mb-3" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
                     <NuxtImg
                         loading="lazy"
                         format="webp"
@@ -25,7 +25,7 @@
             </div>
             <div class="row mb-5 align-items-center">
                 <div class="col-md-6 order-1 order-md-0"
-                     data-aos="fade-right">
+                     data-usal="fade-r">
                     <h3>Development Flexibility</h3>
                     <p>
                         Choose your development environment with confidence, knowing that whether you prefer to code
@@ -34,7 +34,7 @@
                         straightforward, maintaining a single source of truth for your projects.
                     </p>
                 </div>
-                <div class="col-md-6 order-0 order-md-1 mask-1" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1 mask-1" data-usal="fade-l">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

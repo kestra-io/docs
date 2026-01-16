@@ -2,21 +2,21 @@
     <div class="container rounded-3 mb-5">
         <Section :animation="animation">
             <div class="text-center cta px-5">
-                <p class="title" v-if="title" :data-aos="animationType('fade-left')">
+                <p class="title" v-if="title" :data-usal="animationType('fade-left')">
                     {{title}}
                 </p>
-                <p class="subtitle" v-if="subtitle" :data-aos="animationType('fade-left')">
+                <p class="subtitle" v-if="subtitle" :data-usal="animationType('fade-left')">
                     {{subtitle}}
                 </p>
                 <a
                     v-if="darkButtonText"
                     :href="darkButtonHref"
                     class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
-                    :data-aos="animationType('zoom-in')"
+                    :data-usal="animationType('zoom-in')"
                 >
                     {{darkButtonText}}
                 </a>
-                <a v-if="purpleButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
+                <a v-if="purpleButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-usal="animationType('zoom-in')">
                     {{purpleButtonText}}
                 </a>
             </div>

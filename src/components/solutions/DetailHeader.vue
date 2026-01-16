@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <h1 data-aos="fade-right"><span v-if="titleBefore">{{ titleBefore }}</span> {{ title }} <span v-if="titleAfter">{{ titleAfter }}</span></h1>
-                        <p data-aos="fade-left" class="baseline">{{ subtitle }}</p>
-                        <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                        <h1 data-usal="fade-r"><span v-if="titleBefore">{{ titleBefore }}</span> {{ title }} <span v-if="titleAfter">{{ titleAfter }}</span></h1>
+                        <p data-usal="fade-l" class="baseline">{{ subtitle }}</p>
+                        <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                             Get started
                         </NuxtLink>
                     </div>
@@ -17,7 +17,7 @@
                         loading="lazy"
                         format="webp"
                         class="mt-md-0"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                         :src="image"
                         :alt="title"
                     />

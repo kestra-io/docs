@@ -2,7 +2,7 @@
     <div ref="container" class="container-fluid bg-dark-4">
         <div class="container">
             <div class="mb-5">
-                <h1 data-aos="fade-left" class="title text-center card-title fw-light">
+                <h1 data-usal="fade-l" class="title text-center card-title fw-light">
                     Connect Your <span>Entire Stack</span> <br />
                     with Dedicated Plugins
                 </h1>

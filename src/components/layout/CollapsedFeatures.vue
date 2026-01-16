@@ -1,5 +1,5 @@
 <template>
-    <details data-aos="zoom-in">
+    <details data-usal="zoomin">
         <summary>
             <h3>{{ title }}</h3>
             <span class="icon">

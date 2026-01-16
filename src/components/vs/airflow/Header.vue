@@ -4,16 +4,16 @@
             <div class="row">
                 <div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
                     <div>
-                        <h1 data-aos="fade-right">The differences between Kestra and Airflow</h1>
-                        <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform</p>
+                        <h1 data-usal="fade-r">The differences between Kestra and Airflow</h1>
+                        <p class="baseline" data-usal="fade-l">How to Choose the Right Orchestration Platform</p>
                         <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
                                 Talk to us
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-usal="zoomin">
                     <img class="zoom img-fluid" src="/landing/vs/airflow/header.svg" alt="A screenshot of the user interface of Kestra's application"/>
                 </div>
             </div>

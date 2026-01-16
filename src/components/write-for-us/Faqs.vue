@@ -1,7 +1,7 @@
 <template>
     <div class="container base-container mt-5">
         <h3
-            data-aos="fade-left"
+            data-usal="fade-l"
             class="title fw-light pb-2"
             v-html="content.title"
         ></h3>
