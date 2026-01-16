@@ -201,7 +201,7 @@
 
         .hero {
             padding-bottom: 2rem;
-            padding-top: 5rem;
+            padding-top: 0.5rem;
             position: relative;
         }
 
