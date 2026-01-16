@@ -42,7 +42,7 @@
                 <img class="card-icon" :src="item.icon" :alt="item.title" width="50px" height="50px"/>
                 <h4 class="card-title">{{ item.title }}</h4>
             </div>
-            <p class="card-text">{{item.description}}</p>
+            <MDCParserAndRenderer :content="item.description" class="bd-markdown" />
             <div class="topics">
                 <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{topic}}</span>
             </div>
@@ -55,6 +55,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue";
     import MultiSelect from "~/components/select/MultiSelect.vue";
+    import MDCParserAndRenderer from '~/components/MDCParserAndRenderer.vue';
 
 
     const props = defineProps({
@@ -186,7 +187,7 @@
         font-weight: 600;
     }
 
-    .card-text {
+    :deep(.bd-markdown) p {
         font-size: $font-size-sm !important;
         line-height: 1rem !important;
         color: $white-3;
