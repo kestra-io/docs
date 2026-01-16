@@ -26,7 +26,13 @@ export default (app: App) => {
         }),
     );
 
-    app.use(USALPlugin);
+    app.use(USALPlugin, {
+        defaults: {
+            duration: 400,
+            threshold: 0.1,
+        },
+        once: true,
+    });
 
     // Register global NuxtLink as the standard <a href> tag
     app.component("NuxtLink", defineComponent({
