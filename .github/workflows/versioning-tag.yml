@@ -1,0 +1,21 @@
+name: "Tag previous version for versioning"
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: "New Kestra version"
+        required: false
+        type: string
+
+jobs:
+  tag-previous-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Tag previous version
+        uses: kestra-io/actions/composite/after-release/tag-previous-version@main
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          new_version: ${{ inputs.new_version }}

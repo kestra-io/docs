@@ -6,6 +6,8 @@ hideSubMenus: true
 
 Learn Kestra with our hands-on guides.
 
+## How-to Guides
+
 Adjust the filters based on your needs or search directly.
 
 :::GuidesChildCard

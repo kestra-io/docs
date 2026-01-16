@@ -8,7 +8,7 @@ topics:
 
 Connect Prometheus alerts to Kestra to trigger flows.
 
-# Monitoring with Prometheus and Triggering Flows in Kestra
+## Monitoring with Prometheus and Triggering Flows in Kestra
 
 This guide explains how to connect Prometheus to Kestra and configure a workflow that is triggered by Prometheus alerts. This guide covers the basics and is intended as a starting off point for any production workflows. You will:
 
@@ -106,14 +106,14 @@ scrape_configs:
     static_configs:
       - targets: ["<kestra-host-ip-address>:8081"]
 
-# Alertmanager configuration
+## Alertmanager configuration
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
       - 'localhost: 9093' # Replace with your host name (i.e., host.docker.internal)
 
-# Load rules once and periodically evaluate them according to global 'evaluation_interval'.
+## Load rules once and periodically evaluate them according to global 'evaluation_interval'.
 rule_files:
     - "/alertmanager/alert.rules"
 ```

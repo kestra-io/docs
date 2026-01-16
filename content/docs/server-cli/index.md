@@ -1,10 +1,13 @@
 ---
-title: Kestra CLI
+title: Kestra Server CLI – Commands and Options
+sidebarTitle: Kestra CLI
 icon: /docs/icons/admin.svg
 editions: ["OSS","EE"]
 ---
 
 How to interact with Kestra using the CLI.
+
+## Use the Kestra server CLI effectively
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 

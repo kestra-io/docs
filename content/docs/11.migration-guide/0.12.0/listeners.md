@@ -4,9 +4,10 @@ icon: /docs/icons/migration-guide.svg
 release: 0.12.0
 ---
 
-Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger.md) instead.
 
-## Why listeners are deprecated
+## Deprecation of Listeners
+
+Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger.md) instead.
 
 1. The listener is a **redundant** concept. Flow triggers allow you to do all that listeners can accomplish and more. The only difference between listeners and triggers is that listeners are defined inline within the same flow code and are, therefore, more tightly coupled with the flow. In contrast, a Flow trigger is defined in a separate independent flow that can simultaneously listen to the condition of multiple flows that satisfy specific `conditions`. This gives you more flexibility.
 2. It is an extra concept that you, as a user, would need to learn even though you may not have to if you already know Flow triggers.

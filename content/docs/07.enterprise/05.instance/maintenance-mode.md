@@ -1,5 +1,6 @@
 ---
-title: Maintenance Mode
+title: Maintenance Mode in Kestra Enterprise – Pause for Upgrades
+sidebarTitle: Maintenance Mode
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.21.0"
@@ -13,7 +14,7 @@ Maintenance Mode is an enterprise feature designed to transition your Kestra ins
   <iframe src="https://www.youtube.com/embed/CyGBCgEEcB0?si=LMS7gbv9uq_5Eb7p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Maintenance mode
+## Maintenance mode – pause for upgrades
 
 Maintenance Mode addresses a common challenge faced by organizations running numerous workflows: finding the right moment to perform platform updates without disrupting ongoing operations. When activated, Maintenance Mode introduces a controlled state where:
 

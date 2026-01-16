@@ -1,5 +1,6 @@
 ---
-title: Secrets
+title: Secrets in Kestra Enterprise – Manage Sensitive Data
+sidebarTitle: Secrets
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: secrets
@@ -7,7 +8,7 @@ docId: secrets
 
 How to create and manage Secrets in the Enterprise Edition.
 
-## What are Secrets
+## Secrets – manage sensitive data
 
 Secrets are used to store confidential information such as passwords, API keys, and other sensitive data that must not be exposed as plain text. Secrets managed in Kestra are encrypted at rest and in transit to guarantee that your sensitive information is secure.
 

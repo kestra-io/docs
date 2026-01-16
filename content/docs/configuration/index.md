@@ -1,11 +1,14 @@
 ---
-title: Configuration
+title: Configure Kestra – Settings, Environments, and Defaults
+sidebarTitle: Configuration
 icon: /docs/icons/admin.svg
 ---
 
 Configuration reference for Kestra.
 
 Almost everything in Kestra is configurable. This page covers key options such as data sources, logging, security, and AI.
+
+## Configure Kestra for your environment
 
 Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](../02.installation/02.docker.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
 
@@ -1015,8 +1018,6 @@ kestra:
   metrics:
     prefix: kestra
 ```
-
-````markdown name=docs/label-based-metrics.md
 
 ### Label-based metrics
 

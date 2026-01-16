@@ -1,11 +1,14 @@
 ---
-title: Worker Group
+title: Worker Groups in Kestra Enterprise – Configure Targeted Workers
+sidebarTitle: Worker Group
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.10.0"
 ---
 
 How to configure Worker Groups in Kestra Enterprise Edition.
+
+## Worker groups – configure targeted workers
 
 A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
 

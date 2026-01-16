@@ -1,18 +1,19 @@
 ---
-title: AI Workflows
+title: AI Workflows in Kestra – Orchestrate with Your Preferred LLM
+sidebarTitle: AI Workflows
 icon: /docs/icons/ai.svg
 version: "1.0.0"
 ---
 
 Build AI workflows with your preferred LLM.
 
+## Orchestrate AI workflows with your preferred LLM
+
 Kestra provides plugins for multiple LLM providers and continues to add more with each release. You can design flows that use your chosen model and seamlessly integrate AI into orchestration workflows.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/videoseries?si=uFFbyDPJ8-zGDVOI&amp;list=PLEK3H8YwZn1qe8T2PSE8qfYJF4IEhtUEH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-## AI workflows
 
 The following examples demonstrate Kestra AI plugins for a variety of workflows. You can adapt each example to your chosen provider. Three key properties are important to understand:
 

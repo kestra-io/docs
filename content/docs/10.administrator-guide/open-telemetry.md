@@ -1,5 +1,6 @@
 ---
-title: OpenTelemetry
+title: OpenTelemetry in Kestra – Traces, Metrics, Logs
+sidebarTitle: OpenTelemetry
 icon: /docs/icons/admin.svg
 version: ">= 0.21.0"
 editions: ["OSS", "EE"]
@@ -9,6 +10,8 @@ editions: ["OSS", "EE"]
 
 **OpenTelemetry** is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data.
 It helps implement observability in software applications.
+
+## Implement OpenTelemetry observability in Kestra
 
 OpenTelemetry defines three different kinds of telemetry data:
 - **Traces** provide a high-level view of what happens when a request is made to an application. A trace can contain multiple [spans](https://opentelemetry.io/docs/concepts/signals/traces/#spans).

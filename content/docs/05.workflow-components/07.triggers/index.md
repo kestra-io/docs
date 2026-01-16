@@ -1,10 +1,13 @@
 ---
-title: Triggers
+title: Triggers in Kestra – Workflow Component Reference	
 icon: /docs/icons/flow.svg
 docId: triggers
+sidebarTitle: Triggers
 ---
 
 A trigger is a mechanism that automatically starts the execution of a flow.
+
+## Triggers – workflow component reference
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -5,7 +5,8 @@ release: 0.23.0
 editions: ["OSS"]
 ---
 
-## Overview
+
+## Open-Source Migration Guide to introduce defaultTenant
 
 Kestra now requires a tenant context in the OSS version.
 
@@ -105,20 +106,20 @@ done
 ```bash
 #!/bin/bash
 
-# Set your Azure Storage account and bucket (container) name
+## Set your Azure Storage account and bucket (container) name
 ACCOUNT_NAME="myaccount"
 BUCKET_NAME="mybucket"
 
-# Configurable destination tenant (default: 'main')
+## Configurable destination tenant (default: 'main')
 DEST_TENANT="main"
 
-# List of tenant folders to skip (don't move)
+## List of tenant folders to skip (don't move)
 TENANTS=("main")
 
-# Get all blob names
+## Get all blob names
 blob_names=$(az storage blob list --account-name "$ACCOUNT_NAME" --container-name "$BUCKET_NAME" --query "[].name" --output tsv)
 
-# Separate top-level files and folders
+## Separate top-level files and folders
 top_files=()
 top_folders=()
 
@@ -131,10 +132,10 @@ for name in $blob_names; do
     fi
 done
 
-# Deduplicate folder list
+## Deduplicate folder list
 unique_folders=($(printf "%s\n" "${top_folders[@]}" | sort | uniq))
 
-# Remove from top_files any that match folder names
+## Remove from top_files any that match folder names
 clean_files=()
 for file in "${top_files[@]}"; do
     skip=false
@@ -149,7 +150,7 @@ for file in "${top_files[@]}"; do
     fi
 done
 
-# Process top-level files
+## Process top-level files
 for file in "${clean_files[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -169,7 +170,7 @@ for file in "${clean_files[@]}"; do
     fi
 done
 
-# Process top-level folders (batch copy)
+## Process top-level folders (batch copy)
 for folder in "${unique_folders[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -209,7 +210,7 @@ TENANTS=("main")
 
 echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
 
-# List all keys, no leading slash
+## List all keys, no leading slash
 aws s3 ls s3://$BUCKET --recursive | awk '{print $4}' | sed 's|^/||' | grep -v '^$' | while read -r key; do
     # Check top-level folder or file
     top_level=$(echo "$key" | cut -d'/' -f1)
@@ -252,10 +253,10 @@ TENANTS=("main")
 
 echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
 
-# Get all object keys (strip bucket prefix)
+## Get all object keys (strip bucket prefix)
 all_keys=$(gsutil ls "$BUCKET/**" | sed "s|$BUCKET/||")
 
-# Collect top-level folders and files
+## Collect top-level folders and files
 declare -A top_folders
 declare -a top_files
 
@@ -275,7 +276,7 @@ for key in $all_keys; do
     fi
 done
 
-# Process top-level files
+## Process top-level files
 for file in "${top_files[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do
@@ -293,7 +294,7 @@ for file in "${top_files[@]}"; do
     fi
 done
 
-# Process top-level folders
+## Process top-level folders
 for folder in "${!top_folders[@]}"; do
     skip=false
     for tenant in "${TENANTS[@]}"; do

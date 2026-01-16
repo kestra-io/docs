@@ -1,9 +1,12 @@
 ---
-title: Multi-Language Script Tasks
+title: Kestra Scripts Guide – Multi-Language Tasks and Runners
+sidebarTitle: Multi-Language Script Tasks
 icon: /docs/icons/dev.svg
 ---
 
 Kestra is language agnostic. Write your business logic in any language.
+
+## Run scripts in any language with Kestra
 
 You can orchestrate custom business logic written in any language, and you can also build custom plugins in Java.
 

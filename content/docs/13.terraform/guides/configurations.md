@@ -6,7 +6,7 @@ description: |-
   
 ---
 
-# Provider configurations
+## Provider configurations
 
 ## Kestra 1.0.x compatibility
 

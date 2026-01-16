@@ -5,9 +5,10 @@ stage: Intermediate
 topics:
   - Integrations
 ---
+
 Operationalize SecOps benchmarks with Kestra.
 
-## Overview
+## SecOps with Kestra
 
 This how-to shows how to operationalize SecOps benchmarks with Kestra. You will download a CIS benchmark, store control recommendations as settings, and orchestrate compliance scans and automated remediation across multiple controls and teams.
 
@@ -143,7 +144,7 @@ tasks:
             type: io.kestra.plugin.core.debug.Return
             format: "{{ vars.NOT_COMPLIANT }}"
 
-# Return output for the parent flow
+## Return output for the parent flow
 outputs:
   - id: complianceStatus-1_6_5
     type: STRING
@@ -214,7 +215,7 @@ tasks:
             type: io.kestra.plugin.core.log.Log
             message: "{{ outputs['control-1-1_6-1_6_5'].outputs['complianceStatus-1_6_5'] }}"
 
-# These triggers will be demonstrated in the VM creation and ServiceNow tutorial
+## These triggers will be demonstrated in the VM creation and ServiceNow tutorial
 triggers:
   - id: vmCreateFromServiceNow
     type: io.kestra.plugin.core.trigger.Webhook

@@ -1,5 +1,6 @@
 ---
-title: Apps
+title: Apps in Kestra Enterprise – Build Frontends for Flows
+sidebarTitle: Apps
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
@@ -12,7 +13,7 @@ Build custom UIs to interact with Kestra from the outside world.
   <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Overview
+## Apps – build frontends for Flows
 
 Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks.
 
@@ -191,6 +192,10 @@ Each app has a unique URL that you can share with others. When someone opens the
 The base URL of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
 
 You can copy the URL from the Apps catalog page in the Kestra UI.
+
+### App expressions
+
+From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Expressions guide](../../expressions/index.md#applink) for parameters and examples.
 
 ---
 

@@ -4,11 +4,12 @@ icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
+
+## Plugin Discovery Mechanism
+
 Kestra 0.17.0 uses a new mechanism to discover and load plugins. If you use custom plugins, follow this guide to make the necessary adjustments.
 
 Plugins are now discovered and loaded using the standard *Java Service Loader*.
-
-## Why the Change?
 
 So far, Kestra heavily relied on the _Bean Introspection_ mechanism provided by the Micronaut Framework for loading plugins (_Micronaut is the JVM-based API framework used by Kestra_).
 

@@ -1,5 +1,6 @@
 ---
-title: Instance Management
+title: Instance Management in Kestra Enterprise – Services and Maintenance
+sidebarTitle: Instance Management
 icon: /docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
@@ -91,6 +92,8 @@ View [Audit Logs](../02.governance/06.audit-logs.md) at a glance to monitor acti
 View all installed [Versioned Plugins](../05.instance/versioned-plugins.md) on the instance and upgrade, install, or uninstall as needed.
 
 ![Instance Versioned Plugins](/docs/enterprise/instance-versioned-plugins.png)
+
+## Instance management – services and maintenance
 
 :::ChildCard
 :::

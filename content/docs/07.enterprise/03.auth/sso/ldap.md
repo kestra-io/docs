@@ -1,11 +1,14 @@
 ---
-title: LDAP
+title: Configure LDAP Authentication for Kestra
+sidebarTitle: LDAP
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 version: "0.22.0"
 ---
 
 Enable LDAP authentication in Kestra to streamline access using existing LDAP credentials.
+
+## Configure LDAP authentication
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

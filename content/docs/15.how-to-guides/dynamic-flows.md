@@ -8,9 +8,7 @@ topics:
 
 Implement dynamic flows in Kestra.
 
-In this guide, we will look at ways to implement dynamic flows in Kestra.
-
-## Dynamic Flow using Inputs
+## Dynamic Flows using Inputs
 
 In this method, we will create a flow as a template, and the dynamic values in the template can then be filled using Kestra inputs to generate the desired flow. Let us see this with the help of an example.
 
@@ -119,7 +117,7 @@ In order to generate this flow dynamically for any number of items, we will use 
 import os
 from ruamel.yaml import YAML
 
-# Get the items from the environment variable and split it by comma(,)
+## Get the items from the environment variable and split it by comma(,)
 items = os.getenv('EXTRACT_ITEMS', "products,orders").split(",")
 
 def http_download_task(idx, item):
@@ -159,7 +157,7 @@ def create_sequential_task(idx, task_list):
 
 tasks_per_item = []
 
-# Iterate over the items and generate Sequential task for each item, and append it to `tasks_per_item`
+## Iterate over the items and generate Sequential task for each item, and append it to `tasks_per_item`
 for idx, item in enumerate(items):
   sequential_tasks = []
   sequential_tasks.append(http_download_task(idx, item))
@@ -167,7 +165,7 @@ for idx, item in enumerate(items):
   sequential_task = create_sequential_task(idx, sequential_tasks)
   tasks_per_item.append(sequential_task)
 
-# Generate the dynamic flow
+## Generate the dynamic flow
 kestra_flow = {
     "id": os.getenv('FLOW_ID', "postgres_upload_flow"),
     "namespace": os.getenv('FLOW_NAMESPACE', "company.team"),
@@ -184,7 +182,7 @@ yaml = YAML()
 yaml.indent(mapping=2, sequence=4, offset=2)
 yaml.preserve_quotes = True
 
-# Write the generated dynamic flow in yaml format in `kestra_flow.yaml` file
+## Write the generated dynamic flow in yaml format in `kestra_flow.yaml` file
 output_path = "kestra_flow.yaml"
 with open(output_path, "w") as f:
     yaml.dump(kestra_flow, f)

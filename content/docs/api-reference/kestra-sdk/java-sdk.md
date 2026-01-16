@@ -1,15 +1,16 @@
 ---
-title: Kestra Java SDK
+title: Kestra Java SDK – Client Setup and Examples
+sidebarTitle: Java SDK
 icon: /docs/icons/api.svg
 release: 1.0.0
 ---
 Interact with Kestra's API via Java SDK.
 
+## Use the Kestra Java SDK
+
 ## Installation
 
 Choose the installation method that matches your environment.
-
-
 
 ### For Maven users
 

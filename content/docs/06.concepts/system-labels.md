@@ -1,5 +1,6 @@
 ---
-title: System Labels & Hidden Labels
+title: System and Hidden Labels in Kestra – Admin Metadata
+sidebarTitle: System Labels & Hidden Labels
 icon: /docs/icons/admin.svg
 editions: ["OSS", "EE"]
 version: ">= 0.20.0"
@@ -7,7 +8,7 @@ version: ">= 0.20.0"
 
 Special labels for system use only.
 
-## Overview
+## System and hidden Labels in Kestra – Admin metadata
 
 System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 6WuLA1vh9lpFsGyrkuVRYb`.
 

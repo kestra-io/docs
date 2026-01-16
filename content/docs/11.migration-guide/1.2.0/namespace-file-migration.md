@@ -1,5 +1,6 @@
 ---
-title: Namespace Files Metadata Migration
+title: Namespace Files Metadata Migration – Kestra 1.2.0
+sidebarTitle: Namespace Files Migration
 icon: /docs/icons/migration-guide.svg
 release: 1.2.0
 ---

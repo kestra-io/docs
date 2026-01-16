@@ -1,10 +1,13 @@
 ---
-title: Cloud & Enterprise Edition FAQ
+title: Kestra Cloud & Enterprise FAQ – Common Questions
+sidebarTitle: Cloud & Enterprise Edition FAQ
 icon: /docs/icons/faq.svg
 editions: ["EE", "Cloud"]
 ---
 
 Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
+
+## Kestra Cloud & Enterprise FAQ – common questions
 
 ## My session expires too quickly. Is there a way to change the session expiration time?
 

@@ -1,9 +1,12 @@
 ---
-title: Usage
+title: Usage Reporting in Kestra – Configure Anonymous Metrics
+sidebarTitle: Usage
 icon: /docs/icons/admin.svg
 ---
 
 Configuration options for the usage report.
+
+## Configure Kestra anonymous usage reporting
 
 Understanding how you use Kestra is important to us, as it helps improve the solution in many ways.
 For this reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: you must decide whether to share anonymous data so we can learn from your experience and use cases.

@@ -4,9 +4,10 @@ icon: /docs/icons/migration-guide.svg
 release: 0.20.0
 ---
 
-Migrating Flow trigger conditions
 
-## Overview
+## Conditions renamed
+
+Migrating Flow trigger conditions
 
 All conditions [have been renamed](https://github.com/kestra-io/kestra/pull/6032) without the `Condition` at the end. Aliases are in place, so all flows will still work, but you will see an information note recommending you to upgrade to the new name. Already deprecated conditions haven't changed to avoid extra overhead on your end.
 

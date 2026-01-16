@@ -7,6 +7,8 @@ version: ">= 0.18.0"
 
 Sync users and groups from Microsoft Entra ID to Kestra using SCIM.
 
+## Microsoft Entra ID SCIM provisioning
+
 ## Prerequisites
 
 - **Microsoft Entra ID Account**: An account with administrative privileges is required to configure SCIM provisioning.
