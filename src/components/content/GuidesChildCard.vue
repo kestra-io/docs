@@ -142,7 +142,7 @@
         return results;
     }
 
-    const navigation = ref(props.navigation ?? [])
+    const navigation = ref(props.navigation ?? []);
 
     function debounce(func, delay) {
       let timeout;
