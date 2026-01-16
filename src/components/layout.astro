@@ -86,6 +86,7 @@ const slackMembers = await fetchSlackMembers();
 
     <slot name="head" />
 
+    {/* https://docs.astro.build/en/guides/client-side-scripts/#unprocessed-scripts */}
     <script is:inline>
         if (typeof document !== "undefined" && document.startViewTransition) {
             document.startViewTransition = (cb) => {
