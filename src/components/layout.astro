@@ -86,16 +86,26 @@ const slackMembers = await fetchSlackMembers();
 
     <slot name="head" />
 
+    <script is:inline>
+        if (typeof document !== "undefined" && document.startViewTransition) {
+            document.startViewTransition = (cb) => {
+            const p = (async () => await cb())();
+            return { ready: Promise.resolve(), updateCallbackDone: p, finished: p.then(() => undefined), skipTransition: () => {} };
+            };
+        }
+    </script>
+
     <ClientRouter />
     <LoadingIndicator color="#8405FF" threshold={0} />
 
     <script src="../scripts/analytics.js"></script>
+
     <script src="../scripts/bootstrap.js"></script>
     <script src="../scripts/cookieconsent.ts"></script>
     <script src="../scripts/zoom.js"></script>
 </head>
 <body>
-    <Header client:load isStories={Boolean(props.isStories)} transition:persist />
+    <Header client:load isStories={Boolean(props.isStories)} transition:animate="slide" />
     <Search client:load />
     <main>
         <slot />
