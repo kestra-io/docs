@@ -42,6 +42,7 @@
     "mermaid": "^11.12.2",
     "posthog-js": "^1.301.0",
     "rapidoc": "^9.3.8",
+    "rehype-external-links": "^3.0.0",
     "remark-link-rewrite": "^1.0.7",
     "shiki": "^3.19.0",
     "slugify": "^1.6.6",

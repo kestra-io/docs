@@ -203,6 +203,13 @@ $bd-gutter-x: 3rem;
     grid-area: content;
     min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
 
+    a {
+        color: var(--ks-content-link);
+        &:hover {
+            color: var(--ks-content-link-hover);
+        }
+    }
+
     .bd-markdown {
         h1 {
             display: none;
@@ -212,9 +219,6 @@ $bd-gutter-x: 3rem;
 
         h1, h2, h3, h4, h5, h6 {
             margin-bottom: 0.5rem;
-            a {
-                color: $white;
-            }
         }
 
         h2 {
@@ -311,19 +315,15 @@ $bd-gutter-x: 3rem;
         line-height: 1.75rem;
         font-size: $h6-font-size;
         word-wrap: break-word;
-
-        a {
-            color: $purple-36;
-        }
     }
-    h2, h2 a {
+    h2 {
         color: $white;
         font-size: 1.875rem;
         line-height: 2.735rem;
         font-weight: 600;
     }
 
-    h3 a {
+    h3 {
         color: $white;
     }
 
