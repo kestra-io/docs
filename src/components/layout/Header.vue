@@ -350,13 +350,9 @@
     </nav>
 </template>
 
-<script lang="ts">
-export const linkSymbolInjectionKey = Symbol("linkComponent")
-</script>
-
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, inject } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 import GithubButton from "~/components/layout/GithubButton.vue";
@@ -395,8 +391,6 @@ interface Collapse {
 }
 
 let collapse: Collapse | undefined = undefined;
-
-const LinkComponent = inject(linkSymbolInjectionKey, "a");
 
 onMounted(() => {
     // Wait for bootstrap to be available
