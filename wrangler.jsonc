@@ -9,8 +9,12 @@
     "main": "./dist/_worker.js/index.js",
     "assets": {
         "binding": "ASSETS",
-        "directory": "./dist"
+        "directory": "./dist",
+        "html_handling": "none"
     },
+    "keep_vars": true,
+    "preview_urls": true,
+    "minify": true,
     "compatibility_flags": [
         "nodejs_compat",
         "global_fetch_strictly_public"
@@ -18,7 +22,7 @@
     "observability": {
         "enabled": true,
         "traces": {
-            "enabled": true,
+            "enabled": true
         },
         "logs": {
             "invocation_logs": true,
