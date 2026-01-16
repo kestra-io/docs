@@ -14,24 +14,24 @@ In [Kestra 1.1](https://kestra.io/blogs/performance-improvements-1-1), TODO...
 
 ## Paralll loading for namespace files
 
-In this release, [FourFriend](https://github.com/FourFriends) contributed a significant optimization to how Kestra downloads namespace files when using them inside script tasks.
+In this release, [FourFriend](https://github.com/FourFriends) contributed a significant optimization to how Kestra downloads namespace files when used in script tasks.
 
 Previously, Kestra would download each namespace file sequentially before running the task.
 
-Now, Kestra uses a parallel download strategy to download all namespace files in parallel using 4 times the number of available cores with a minimum of 32.
-To avoid overloading the network, this limit is for the whole instance, and a single task can only use half that limit. This balances single task performance with overall global instance performance.
+Now, Kestra uses a parallel download strategy to download all namespace files in parallel using 4 times the number of available cores, with a minimum of 32.
+To avoid overloading the network, this limit applies to the entire instance, and a single task can use only half that limit. This balances single-task performance with overall global instance performance.
 
-Preliminary tests showed a 8x to 32x performance improvement depending on the number of available cores.
+Preliminary tests showed an 8x to 32x performance improvement depending on the number of available cores.
 
 Check out [PR #13375](https://github.com/kestra-io/kestra/pull/13375) for more details.
 
 ## ForEach with concurrency performance improvements
 
 Our JDBC backend handles execution messages concurrently to optimize throughput.
-This optimization is important, but when there are multiple execution messages for the same executions, this can create contention on the database as each execution message will lock the execution row on the database to avoid race conditions.
-This only impacts executions with parallel branches like when using the `Parallel` or `ForEach` task with a `concurrencyLimit` greater than 1.
+This optimization is important, but when multiple execution messages target the same execution, it can create contention on the database, as each execution message locks the execution row to avoid race conditions.
+This only affects executions with parallel branches, such as when using the `Parallel` or `ForEach` task with a `concurrencyLimit` greater than 1.
 
-In Kestra 1.2, we mitigate this contention by grouping execution messages by execution id and executing the groups concurrently instead of the individual messages.
+In Kestra 1.2, we mitigate this contention by grouping execution messages by execution ID and executing the groups concurrently instead of the individual messages.
 
 Preliminary tests showed a 2x performance improvement in an execution with 100 `ForEach` iterations with unlimited concurrency.
 
