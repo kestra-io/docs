@@ -1,86 +1,44 @@
-<script>
-    import {defineComponent, h, toRefs, computed} from 'vue';
-    import {hash} from "ohash";
-    import {useAsyncData} from "#imports";
-    import {NuxtLink} from "#components";
+<script setup lang="ts">
+import { h } from 'vue';
+import type { NavigationItem } from '~/utils/getNavigationTree';
 
-    export default defineComponent({
-        props: {
-            pageUrl: {
-                type: String,
-                default: undefined
-            },
-            max: {
-                type: Number,
-                default: undefined
-            },
-        },
-        async setup(props) {
-            const {pageUrl, max} = toRefs(props);
-            const route = useRoute()
+const props = defineProps<{
+    max?: number | undefined;
+    navigation?: NavigationItem[] | null;
+}>();
 
-            const {public:{CollectionNames}} = useRuntimeConfig()
+type RecursiveProps = {
+    items: NavigationItem[];
+    level?: number;
+    max?: number | undefined;
+};
 
-            let currentPage = null;
+const RecursiveLinks = (p: RecursiveProps): import('vue').VNodeChild =>
+    h(
+        'ul',
+        p.level ? { 'data-level': p.level } : null,
+        (p.items ?? []).map((link) => {
+            const level = p.level ?? 0;
+            const hasChildren =
+                link.children &&
+                (p.max === undefined || level < p.max) &&
+                (link.children.length > 1 || (link.children.length === 1 && link.children[0].path !== link.path));
 
-            if (pageUrl.value) {
-                currentPage = pageUrl.value;
-            } else {
-                currentPage = route.path;
+            if (hasChildren) {
+                return h('li', null, [
+                    h('a', { href: link.path }, link.sidebarTitle || link.title),
+                    RecursiveLinks({ items: link.children!, level: level + 1, max: p.max })
+                ]);
             }
 
-            currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
-
-            const {data: navigation} = await useAsyncData(
-                `ChildTableOfContents-${hash(currentPage)}`,
-                () => queryCollectionNavigation(CollectionNames.docs, ["sidebarTitle"]).andWhere(query =>
-                    query
-                        .where('path', 'LIKE', `${currentPage}/%`)
-                        .where('path', '<>', currentPage)
-                )
-            );
-
-            const dir = computed(() => {
-                const extractLeafChildrenPages = (children) => {
-                    return children.map((child) => {
-                        if (child.children?.length) {
-                            return extractLeafChildrenPages(child.children);
-                        }
-                        return child;
-                    }).flat();
-                };
-
-                return extractLeafChildrenPages(navigation.value)
-            });
-
-            return {dir, max};
-        },
-
-        render(ctx) {
-            const {dir, max} = ctx;
-
-            const renderLink = (link) => h(NuxtLink, {to: link.path}, () => link.sidebarTitle || link.title);
-
-            const renderLinks = (data, level) => {
-                return h(
-                    "ul",
-                    level ? {"data-level": level} : null,
-                    (data || []).map((link) => {
-                        if (link.children &&
-                            (max === undefined || max <= level) &&
-                            (link.children.length > 1 || (link.children.length === 1 && link.children[0].path !== link.path))
-                        ) {
-                            return h("li", null, [renderLink(link), renderLinks(link.children, level + 1)]);
-                        }
-
-                        return h("li", null, renderLink(link));
-                    })
-                );
-            };
-
-            const defaultNode = (data) => renderLinks(data, 0);
-
-            return this.$slots?.default ? this.$slots.default({dir, ...this.$attrs}) : defaultNode(dir);
-        }
-    });
+            return h('li', null, h('a', { href: link.path }, link.sidebarTitle || link.title));
+        })
+    );
 </script>
+
+<template>
+    <slot v-if="$slots.default" :navigation="props.navigation" :max="props.max" />
+    <template v-else>
+        <RecursiveLinks :items="props.navigation ?? []" :level="0" :max="props.max" />
+    </template>
+</template>
