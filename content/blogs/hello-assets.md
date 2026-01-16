@@ -1,7 +1,7 @@
 ---
 title: "Hello, Assets: Unifies Orchestration, Catalogs, and Lineage"
 description: "Kestra Assets bring data and infrastructure governance into your workflows. Track tables, files, and cloud resources as first-class assets with built-in lineage, audit logs, dependency graphs, and team-wide discoverability."
-date: 2026-01-20T17:00:00
+date: 2026-01-20T13:00:00
 category: Solutions
 authors:
   - name: "Martin-Pierre Roset"
