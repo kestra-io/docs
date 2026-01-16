@@ -41,7 +41,7 @@ const emit = defineEmits<{
 
 watch([itemsPerPage, currentPage], ([newSize, newPage]) => {
     // Update URL without navigation
-    const newUrl = new URL(localCurrentUrl.value);
+    const newUrl = new URL(window.location.href);
     const params = newUrl.searchParams
     if( newSize === props.defaultSize ){
         params.delete('size')

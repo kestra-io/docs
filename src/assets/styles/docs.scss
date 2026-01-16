@@ -217,6 +217,10 @@ $bd-gutter-x: 3rem;
             }
         }
 
+        h2 {
+            margin-top: 3rem;
+        }
+
 
     .video-container  {
         position: relative;
@@ -463,12 +467,12 @@ $bd-gutter-x: 3rem;
     .doc-collapse {
         summary {
             cursor: pointer;
-            font-size: 24px;
+            font-size: 20px;
             color: var(--bs-white);
             display: inline-block;
             padding: 0.25rem 0.5rem;
-            margin-bottom: 1rem;
             position: relative;
+            margin-bottom: 0.5rem;
             padding-left: 2.25rem;
 
             &::-webkit-details-marker, &::marker {
@@ -483,7 +487,7 @@ $bd-gutter-x: 3rem;
                 transform: translateY(-50%) rotate(0deg);
                 transition: transform 0.18s ease, color 0.18s ease;
                 color: $white;
-                font-size: 24px;
+                font-size: 20px;
             }
 
             &:hover {

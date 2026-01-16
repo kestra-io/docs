@@ -193,7 +193,7 @@
                 return query
             }
 
-            const url = new URL(props.currentUrl);
+            const url = new URL(window.location.href);
             url.search = new URLSearchParams(getQuery()).toString();
 
             history.pushState({}, "", url);
