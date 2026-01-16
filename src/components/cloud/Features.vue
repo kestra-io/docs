@@ -14,7 +14,7 @@
         <div class="row mt-5">
           <div class="col-6">
             <h6>
-              <img src="./images/calendar_month.png" />
+              <img :src="calendarMonthImage.src" />
               Get Exclusive 30-Day Access
             </h6>
             <p>
@@ -25,7 +25,7 @@
 
           <div class="col-6">
             <h6>
-              <img src="./images/small_cloud.png" />
+              <img :src="smallCloudImage.src" />
               Fully Managed Infrastructure
             </h6>
             <p>
@@ -37,7 +37,7 @@
 
           <div class="col-6 mt-3">
             <h6>
-              <img src="./images/support_agent.png" />
+              <img :src="supportAgentImage.src" />
               Dedicated Experts Exchange
             </h6>
             <p>
@@ -48,7 +48,7 @@
 
           <div class="col-6 mt-3">
             <h6>
-              <img src="./images/check_circle.png" />
+              <img :src="checkCircleImage.src" />
               Enterprise Feature Set
             </h6>
             <p>
@@ -70,7 +70,7 @@
                 Adopter
               </strong>
             </p>
-            <img src="./images/foundation.png" />
+            <img :src="foundationImage.src" />
           </div>
         </div>
       </div>
@@ -193,6 +193,11 @@ import { ref, useTemplateRef } from "vue";
 import identify from "~/utils/identify";
 import { useGtm } from '@gtm-support/vue-gtm';
 import headerBackground from "../demo/assets/header-background.png"
+import calendarMonthImage from "./images/calendar_month.png"
+import smallCloudImage from "./images/small_cloud.png"
+import supportAgentImage from "./images/support_agent.png"
+import checkCircleImage from "./images/check_circle.png"
+import foundationImage from "./images/foundation.png"
 
 const gtm = useGtm();
 const formRef = useTemplateRef("cloud-form");
