@@ -2,7 +2,7 @@
     <div class="helpful text-center mt-5">
         <p class="mb-0">Was this page helpful?</p>
         <div class="mt-2">
-            <div class="d-flex justify-content-center align-items-center gap-3">
+            <div class="d-flex justify-content-center align-items-center gap-3 thumb">
                 <button class="btn btn-dark me-3" @click="openModal(true)">
                     <ThumbUpOutline />
                     Yes
@@ -127,6 +127,14 @@
 
     p {
         font-weight: bold;
+    }
+
+    .thumb {
+        :deep(svg) {
+            color: $purple-3;
+            position: absolute;
+            bottom: -0.15rem;
+        }
     }
 }
 
