@@ -1,16 +1,16 @@
 <template>
     <section class="ready">
         <div class="container">
-            <div class="logo-bg" data-aos="fade-up">
+            <div class="logo-bg" data-usal="fade-u">
                 <NuxtImg src="/landing/infrastructure/tilt-logo.png" width="182" />
             </div>
-            <h3 data-aos="fade-up" data-aos-delay="100">
+            <h3 data-usal="fade-u delay-100">
                 Ready to modernize provisioning and Day-2 operations?
             </h3>
-            <p data-aos="fade-up" data-aos-delay="200">Teams replace vRO, AutoSys, Cron, Jenkins, and manual scripts
+            <p data-usal="fade-u delay-200">Teams replace vRO, AutoSys, Cron, Jenkins, and manual scripts
                 with Kestra, without changing their tools.
             </p>
-            <div class="d-flex" data-aos="fade-up" data-aos-delay="300">
+            <div class="d-flex" data-usal="fade-u delay-300">
                 <NuxtLink href="/demo" class="btn btn-primary btn-gradient">Book a demo</NuxtLink>
             </div>
         </div>

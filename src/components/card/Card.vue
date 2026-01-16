@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-aos="zoom-in">
+    <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-usal="zoomin">
         <div class="card-body">
             <div class="d-flex gap-3 title-block">
                 <span v-if="icon" class="card-icon">

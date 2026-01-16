@@ -68,20 +68,20 @@ const jsonLinkedData = {
             >
                 <div class="bd-content">
                     <div class="bd-title">
-                        <p class="d-flex breadcrumb" data-aos="fade-right">
+                        <p class="d-flex breadcrumb" data-usal="fade-r">
                             <a href="/">Home</a>/<a href="/blogs">Blog</a>
                         </p>
-                        <h2 data-aos="fade-left" class="pt-0">
+                        <h2 data-usal="fade-l" class="pt-0">
                             {page.title}
                         </h2>
                         <BlogDetails client:visible blog={post} class="mt-3" />
-                        <div class="d-lg-none d-block" data-aos="fade-zoom">
+                        <div class="d-lg-none d-block" data-usal="fade-zoom">
                             <NavToc links={links} {editUrl} />
                         </div>
                     </div>
                     <img
                         loading="lazy"
-                        data-aos="fade-right"
+                        data-usal="fade-r"
                         class="mb-2 rounded-3 img"
                         alt={page.title}
                         src={page.image}

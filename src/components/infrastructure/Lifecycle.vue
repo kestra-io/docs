@@ -1,7 +1,7 @@
 <template>
     <section class="lifecycle">
         <div class="container">
-            <div class="row align-items-center" data-aos="fade-up" data-aos-duration="500" data-aos-delay="0" data-aos-easing="ease-out">
+            <div class="row align-items-center" data-usal="fade-u delay-0 duration-500 ease-out">
                 <div class="col-12 col-xl-6">
                     <h1>
                         <span class="highlight">Governed</span> Configuration<br class="d-none d-xl-block" />
@@ -17,7 +17,7 @@
             </div>
 
             <div class="new-section d-flex flex-column flex-xl-row">
-                <div class="card-item dark-bg" data-aos="slide-right" data-aos-duration="600" data-aos-delay="50" data-aos-easing="ease-out">
+                <div class="card-item dark-bg" data-usal="slide-r delay-50 duration-600 ease-out">
                     <h2>Ansible Playbooks, Automated the Right Way</h2>
                     <p>
                         Wrap your playbooks in a production-grade layer. Gain structured inputs, secret injection, parallel execution, and granular logging without changing a single line of code.
@@ -25,7 +25,7 @@
                     <Link href="/docs/how-to-guides/ansible" text="Automate your Playbooks with Kestra" />
                 </div>
 
-                <div class="card-item purple-bg" data-aos="slide-left" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out">
+                <div class="card-item purple-bg" data-usal="slide-l delay-100 duration-600 ease-out">
                     <h2>Automated Infrastructure Ticketing Lifecycle</h2>
                     <p>
                         Enable true self-service infrastructure. Kestra turns catalog requests into provisioned resources, automatically updates the CMDB, and closes the ticket with audit proof, delivering assets in minutes, not days.

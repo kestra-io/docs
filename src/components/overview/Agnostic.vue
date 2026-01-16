@@ -11,7 +11,7 @@
                 <div class="workflow-track">
                     <div v-if="!isMobile" class="workflow-step">
                         <div class="gradient-border" :class="`${workflowSteps[currentStep]?.id}-border`"></div>
-                        <div class="step-content" :key="`content-${currentStep}`" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+                        <div class="step-content" :key="`content-${currentStep}`" data-usal="fade-u duration-600 ease-out-cubic">
                             <span class="step-label" :class="`${workflowSteps[currentStep]?.id}-label`">{{ workflowSteps[currentStep]?.label }}</span>
                             <h4>{{ workflowSteps[currentStep]?.title }}</h4>
                             <p>{{ workflowSteps[currentStep]?.description }}</p>

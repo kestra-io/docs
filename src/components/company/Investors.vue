@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="title-section" data-aos="fade-up">
+    <div class="title-section" data-usal="fade-u">
       <h2 class="title">Our investors</h2>
       <p class="subtitle">
         Kestra is proudly backed by two strategic funding rounds: a <strong>$3M Pre-seed</strong>
@@ -11,18 +11,16 @@
       </p>
     </div>
 
-    <div class="logos" data-aos="fade-up" data-aos-delay="200">
-      <div v-for="(logo, index) in investorsLogos" :key="logo.name" class="logo" data-aos="zoom-in"
-        :data-aos-delay="300 + (index * 100)">
+    <div class="logos" data-usal="fade-u delay-200">
+      <div v-for="(logo, index) in investorsLogos" :key="logo.name" class="logo" :data-usal="`zoomin delay-${300 + (index * 100)}`">
         <a :href="logo.link" target="_blank" rel="noopener noreferrer" class="logo-link">
           <NuxtImg :src="logo.src" :alt="logo.name" class="logo-image" />
         </a>
       </div>
     </div>
 
-    <div class="profiles" data-aos="fade-up" data-aos-delay="600">
-      <div v-for="(profile, index) in investorsProfiles" :key="profile.name" class="profile" data-aos="fade-up"
-        :data-aos-delay="300 + (index * 50)">
+    <div class="profiles" data-usal="fade-u delay-600">
+      <div v-for="(profile, index) in investorsProfiles" :key="profile.name" class="profile" :data-usal="`fade-u delay-${300 + (index * 50)}`">
         <NuxtImg :src="profile.image" :alt="profile.name" class="profile-img" />
         <div class="profile-text">
           <h6 class="profile-name">{{ profile.name }}</h6>

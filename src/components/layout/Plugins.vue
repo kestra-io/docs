@@ -1,18 +1,18 @@
 <template>
     <div ref="plugins" class="plugins">
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.fivetran.svg" alt="Fivetran" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.jdbc.snowflake.svg" alt="Snowflake" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.aws.svg" alt="AWS" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.databricks.svg" alt="Databricks" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.azure.svg" alt="Azure" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.dbt.svg" alt="DBT" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.airbyte.svg" alt="Airbyte" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.docker.svg" alt="Docker" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.terraform.svg" alt="Terraform" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.gcp.svg" alt="Google Cloud" />
-        <img loading="lazy" data-aos="fade-up" data-aos-delay="100" src="/icons/io.kestra.plugin.github.svg" alt="GitHub" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.fivetran.svg" alt="Fivetran" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.jdbc.snowflake.svg" alt="Snowflake" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.aws.svg" alt="AWS" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.databricks.svg" alt="Databricks" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.azure.svg" alt="Azure" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.dbt.svg" alt="DBT" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.airbyte.svg" alt="Airbyte" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.docker.svg" alt="Docker" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.terraform.svg" alt="Terraform" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.gcp.svg" alt="Google Cloud" />
+        <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.github.svg" alt="GitHub" />
     </div>
-    <div class="d-flex justify-content-center" data-aos="zoom-in">
+    <div class="d-flex justify-content-center" data-usal="zoomin">
         <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
     </div>
 </template>

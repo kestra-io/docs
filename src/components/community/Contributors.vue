@@ -10,7 +10,7 @@
                         <template #fallback>
                             <a :href="'https://github.com/' + contributors[index].name" />
                         </template>
-                        <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-aos="zoom-in" >
+                        <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin" >
                             <img
                                 width="90px"
                                 height="90px"
@@ -30,7 +30,7 @@
                     type="button"
                     class="btn btn-animated btn-dark-animated"
                     @click="isExpanded = true"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     {{ moreCount }} more contributors
                 </button>
@@ -39,7 +39,7 @@
                     type="button"
                     class="btn btn-animated btn-purple-animated"
                     @click="collapse"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     Show less
                 </button>

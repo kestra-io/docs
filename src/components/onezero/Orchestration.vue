@@ -1,7 +1,7 @@
 <template>
     <section class="feature-bg">
         <div class="container">
-            <p class="title-block" data-aos="fade-up">
+            <p class="title-block" data-usal="fade-u">
                 Why Use
                 <span class="gradient">
                     Declarative Orchestration
@@ -9,24 +9,24 @@
                 For AI Agents
             </p>
 
-            <div class="features" data-aos="fade-up" data-aos-delay="50">
+            <div class="features" data-usal="fade-u delay-50">
                 <div v-for="(feature, index) in features" :key="feature.title" class="feature"
-                    data-aos="zoom-in" :data-aos-delay="100 + (index * 50)">
+                    :data-usal="`zoomin delay-${100 + (index * 50)}`">
                     <NuxtImg :src="feature.image" :alt="feature.title" class="feature-image"/>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
                 </div>
             </div>
 
-            <div class="achievement" data-aos="fade-up" data-aos-delay="250">
-                <img src="/landing/onezero/quote.svg" alt="Pioneered" data-aos="zoom-in" data-aos-delay="300">
-                <h3 data-aos="fade-up" data-aos-delay="350">
+            <div class="achievement" data-usal="fade-u delay-250">
+                <img src="/landing/onezero/quote.svg" alt="Pioneered" data-usal="zoomin delay-300">
+                <h3 data-usal="fade-u delay-350">
                     We pioneered declarative orchestration.
                     With 1.0, AI elevates that paradigm; teams
                     express intent in natural language while
                     maintaining full governance.
                 </h3>
-                <div class="profile" data-aos="fade-up" data-aos-delay="400">
+                <div class="profile" data-usal="fade-u delay-400">
                     <NuxtImg src="/landing/company/teams/edarras-sm.png" alt="Edarras" class="profile-img" />
                     <div class="profile-text">
                         <h6 class="profile-name">Emmanuel Darras</h6>
@@ -190,7 +190,7 @@
         }
 
         @media (max-width: 768px) {
-            [data-aos] {
+            [data-usal] {
                 transform: none !important;
                 transition: none !important;
                 opacity: 1 !important;

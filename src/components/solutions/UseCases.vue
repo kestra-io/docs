@@ -8,7 +8,7 @@
                 <div
                     v-for="_case in cases"
                     class="col-md-4"
-                    data-aos="fade-right"
+                    data-usal="fade-r"
                 >
                     <NuxtLink :href="_case.link" class="d-flex flex-column gap-2">
                         <div class="img-block bg-dark-2">

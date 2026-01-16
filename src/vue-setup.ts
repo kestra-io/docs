@@ -1,6 +1,7 @@
 import type { App } from "vue";
 import { defineComponent, h } from "vue";
 import { createGtm } from '@gtm-support/vue-gtm';
+import { USALPlugin } from '@usal/vue';
 
 export default (app: App) => {
     app.use(
@@ -25,11 +26,14 @@ export default (app: App) => {
         }),
     );
 
+    app.use(USALPlugin);
+
     // Register global NuxtLink as the standard <a href> tag
     app.component("NuxtLink", defineComponent({
         setup: (props, { slots }) => () => h("a", { href: props.to ?? props.href }, slots.default?.()),
         props: ["to", "href"]
     }));
+
     app.component("NuxtImg", defineComponent({
         setup: (props) => () => h("img", {
             width: props.width,
@@ -38,7 +42,8 @@ export default (app: App) => {
             alt: props.alt
         }),
         props: ["width", "height", "src", "alt"]
-    }))
+    }));
+
     app.component("ClientOnly", defineComponent({
         setup: (_, { slots }) => () => slots.default?.(),
         inheritAttrs: false,

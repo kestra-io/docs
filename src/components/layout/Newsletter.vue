@@ -1,7 +1,7 @@
 <template>
     <form ref="newsletter" class="submit-form wrapper" id="newsletter" @submit="checkForm" novalidate>
         <h3>Get Kestra updates</h3>
-        <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
+        <p class="mt-3" data-usal="zoomin">Stay up to date with the latest features and changes to Kestra</p>
         <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
         <div v-if="valid === false && message" class="alert alert-danger">{{ message }}</div>
         <div class="fields">

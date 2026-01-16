@@ -28,7 +28,7 @@
                     </div>
                     <div class="text-center">
                         <a href="https://kestra.io/docs/api-reference" target="_blank"
-                           class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Learn more</a>
+                           class="btn btn-animated btn-purple-animated" data-usal="zoomin">Learn more</a>
                     </div>
                 </div>
             </div>

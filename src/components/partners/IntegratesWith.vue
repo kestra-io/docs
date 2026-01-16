@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row px-3 px-md-0">
-          <div class="col-12 text-center pt-5 bg-dark-2" data-aos="zoom-in">
+          <div class="col-12 text-center pt-5 bg-dark-2" data-usal="zoomin">
             <div>
               <img
                   src="/partners/integrate-with-logos/background.svg"

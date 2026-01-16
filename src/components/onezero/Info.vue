@@ -2,28 +2,28 @@
     <section class="orchestration">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6" data-aos="fade-right">
+                <div class="col-lg-6" data-usal="fade-r">
                     <div class="text-block">
-                        <p class="description" data-aos="fade-up" data-aos-delay="50">
+                        <p class="description" data-usal="fade-u delay-50">
                             Orchestration has been a patchwork: fragile schedulers,
                             vendor lock-in, hand-rolled scripts, and black-box
                             platforms that slow delivery and break governance.
                         </p>
-                        <p class="highlight" data-aos="fade-up" data-aos-delay="100">
+                        <p class="highlight" data-usal="fade-u delay-100">
                             <strong>Kestra 1.0 (LTS)</strong>
                             unifies data, AI, infrastructure, and business operations
                             under one declarative control plane. Tell the system what
                             you want; Kestra figures out the how, with full auditability
                             and human-in-the-loop approvals.
                         </p>
-                        <div data-aos="fade-up">
+                        <div data-usal="fade-u">
                             <NuxtLink href="/demo" class="btn btn-lg btn-primary">
                                 Book a Strategy Session
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="50">
+                <div class="col-lg-6" data-usal="fade-l delay-50">
                     <div class="video-container ">
                             <iframe
                             src="https://www.youtube.com/embed/b5TkMRlrUxw"
@@ -98,7 +98,7 @@
     }
 
     @media (max-width: 768px) {
-        [data-aos] {
+        [data-usal] {
             transform: none !important;
             transition: none !important;
             opacity: 1 !important;

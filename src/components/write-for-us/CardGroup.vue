@@ -1,5 +1,5 @@
 <template>
-    <div v-for="(item, index) in content.items" data-aos="fade-right">
+    <div v-for="(item, index) in content.items" data-usal="fade-r">
         <div class="card process-card">
             <div class="row p-3">
                 <div>

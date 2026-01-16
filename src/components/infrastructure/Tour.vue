@@ -1,21 +1,18 @@
 <template>
     <section class="tour-section">
         <div class="container">
-            <div class="left-div" data-aos="slide-right" data-aos-duration="600" data-aos-delay="0"
-                data-aos-easing="ease-out">
-                <h2 data-aos="fade-up" data-aos-duration="500" data-aos-delay="50" data-aos-easing="ease-out">
+            <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
+                <h2 data-usal="fade-u delay-50 duration-500 ease-out">
                     Want to Take a Tour?
                 </h2>
-                <p data-aos="fade-up" data-aos-duration="500" data-aos-delay="100" data-aos-easing="ease-out">
+                <p data-usal="fade-u delay-100 duration-500 ease-out">
                     Explore how Kestra gives you full control over complex infrastructure workflows.
                 </p>
-                <NuxtLink to="/docs/quickstart" class="btn btn-primary btn-gradient tour-btn" data-aos="zoom-in"
-                    data-aos-duration="500" data-aos-delay="150" data-aos-easing="ease-out">
+                <NuxtLink to="/docs/quickstart" class="btn btn-primary btn-gradient tour-btn" data-usal="zoomin duration-500 delay-150 ease-out">
                     Take the tour
                 </NuxtLink>
             </div>
-            <div class="right-div" data-aos="slide-left" data-aos-duration="700" data-aos-delay="25"
-                data-aos-easing="ease-out">
+            <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
                 <NuxtImg
                     src="/landing/infrastructure/infra-ui.png"
                     alt="Infrastructure UI"

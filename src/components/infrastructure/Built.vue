@@ -2,10 +2,7 @@
     <section class="built">
         <div class="container">
             <h3
-                data-aos="fade-up"
-                data-aos-duration="400"
-                data-aos-delay="0"
-                data-aos-easing="ease-out"
+                data-usal="fade-u delay-0 duration-400 ease-out"
             >
                 Built for the Way <span class="highlight">Infrastructure</span> Teams Work
             </h3>
@@ -16,10 +13,7 @@
                     :key="item.title"
                     class="card"
                     :class="{ 'even-bg': item.evenBg }"
-                    :data-aos="index % 2 === 0 ? 'fade-in' : 'zoom-in'"
-                    data-aos-duration="400"
-                    data-aos-delay="0"
-                    data-aos-easing="ease-out"
+                    :data-usal="`${index % 2 === 0 ? 'fade' : 'zoomin'} delay-0 duration-400 ease-out`"
                 >
                     <component
                         v-if="item.icon"

@@ -29,8 +29,8 @@
 
         <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
           <div v-if="valid === false" class="meeting-form">
-            <img class="background d-none d-md-block" :src="headerBackground.src" aria-hidden="true" data-aos="fade-right">
-            <form class="row needs-validation" ref="demo-form" novalidate data-aos="fade-left" @submit="onSubmit">
+            <img class="background d-none d-md-block" :src="headerBackground.src" aria-hidden="true" data-usal="fade-r">
+            <form class="row needs-validation" ref="demo-form" novalidate data-usal="fade-l" @submit="onSubmit">
               <div v-if="message" class="alert alert-danger mt-3 mb-0">
                 {{ message }}
               </div>

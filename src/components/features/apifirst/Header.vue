@@ -4,21 +4,21 @@
             <div class="row">
                 <div class="col-md-5 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <h1 data-aos="fade-right">API-First Design</h1>
-                        <p class="baseline" data-aos="fade-left">
+                        <h1 data-usal="fade-r">API-First Design</h1>
+                        <p class="baseline" data-usal="fade-l">
                             Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration
                         </p>
                         <div class="cta d-flex gap-3">
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Get Started
                             </NuxtLink>
-                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Talk to us
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1" data-usal="zoomin">
                     <NuxtImg
                         loading="lazy"
                         format="webp"

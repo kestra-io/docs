@@ -4,7 +4,7 @@
         <div class="hero hero-sm container">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-10 col-lg-7 text-center">
-                    <h3 data-aos="fade-left">Become a <span>Partner</span></h3>
+                    <h3 data-usal="fade-l">Become a <span>Partner</span></h3>
                     <p>If you are interested in becoming a Kestra partner, please  contact us with any questions.</p>
                 </div>
             </div>
@@ -14,7 +14,7 @@
                         <div class="card-body">
                             <div class="card-text">
                                 <ClientOnly>
-                                    <div id="hubspotForm" data-aos="fade-left" />
+                                    <div id="hubspotForm" data-usal="fade-l" />
                                 </ClientOnly>
                             </div>
                         </div>

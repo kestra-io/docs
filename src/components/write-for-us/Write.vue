@@ -2,7 +2,7 @@
     <div class="content position-relative">
         <div class="container base-container">
             <h1
-                data-aos="fade-left"
+                data-usal="fade-l"
                 class="title-sm title fw-light"
                 v-html="content.tag"
             ></h1>

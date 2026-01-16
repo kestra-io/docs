@@ -4,12 +4,12 @@
             <div class="row justify-content-between">
                 <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div class="text-white">
-                        <h1 data-aos="fade-right" class="heading">
+                        <h1 data-usal="fade-r" class="heading">
                             Orchestrate <br>
                             your
                             <span>{{title}}</span>
                         </h1>
-                        <p class="baseline" data-aos="fade-left">
+                        <p class="baseline" data-usal="fade-l">
                             {{description}}
                         </p>
 
@@ -17,7 +17,7 @@
                             <NuxtLink
                                 href="/docs/quickstart#start-kestra"
                                 class="btn btn-animated btn-purple-animated mt-2"
-                                data-aos="zoom-in"
+                                data-usal="zoomin"
                             >
                                 Get started
                             </NuxtLink>
@@ -26,7 +26,7 @@
                 </div>
                 <div
                     class="col-md-5 order-0 order-md-1 mt-3 img-container"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                 >
                     <NuxtImg
                         width="925px"

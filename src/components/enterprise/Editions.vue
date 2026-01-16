@@ -9,23 +9,23 @@
                 <div class="col-12 col-md-6 d-md-flex justify-content-md-end">
                     <div class="card bg-dark-2 col-lg-9 col-xl-7">
                         <div class="card-body p-3 p-sm-5">
-                            <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
-                            <p class="type" data-aos="fade-left">Free</p>
-                            <NuxtLink href="/pricing" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
+                            <h4 class="card-title" data-usal="fade-r">Open-Source Edition</h4>
+                            <p class="type" data-usal="fade-l">Free</p>
+                            <NuxtLink href="/pricing" class="btn btn-animated btn-dark-animated w-100" data-usal="zoomin">
                                 Get started
                             </NuxtLink>
                             <ul>
-                                <li data-aos="fade-right">Apache 2.0 license</li>
-                                <li data-aos="fade-right" data-aos-delay="100">Powerful orchestration engine</li>
-                                <li data-aos="fade-right" data-aos-delay="150">Declarative workflows as code and from the UI</li>
-                                <li data-aos="fade-right" data-aos-delay="200">Event-driven automations</li>
-                                <li data-aos="fade-right" data-aos-delay="250">Embedded code editor</li>
-                                <li data-aos="fade-right" data-aos-delay="300">Embedded documentation</li>
-                                <li data-aos="fade-right" data-aos-delay="350">Live-updating topology view</li>
-                                <li data-aos="fade-right" data-aos-delay="400">Access to {{ totalPlugins }} plugins</li>
-                                <li data-aos="fade-right" data-aos-delay="450">Git & CI/CD integrations</li>
-                                <li data-aos="fade-right" data-aos-delay="500">Basic authentication</li>
-                                <li data-aos="fade-right" data-aos-delay="550">Community support</li>
+                                <li data-usal="fade-r">Apache 2.0 license</li>
+                                <li data-usal="fade-r delay-100">Powerful orchestration engine</li>
+                                <li data-usal="fade-r delay-150">Declarative workflows as code and from the UI</li>
+                                <li data-usal="fade-r delay-200">Event-driven automations</li>
+                                <li data-usal="fade-r delay-250">Embedded code editor</li>
+                                <li data-usal="fade-r delay-300">Embedded documentation</li>
+                                <li data-usal="fade-r delay-350">Live-updating topology view</li>
+                                <li data-usal="fade-r delay-400">Access to {{ totalPlugins }} plugins</li>
+                                <li data-usal="fade-r delay-450">Git & CI/CD integrations</li>
+                                <li data-usal="fade-r delay-500">Basic authentication</li>
+                                <li data-usal="fade-r delay-550">Community support</li>
                             </ul>
                         </div>
                     </div>
@@ -33,27 +33,27 @@
                 <div class="col-12 col-md-6">
                     <div class="card bg-dark-2 col-lg-9 col-xl-7 mt-3 mt-md-0">
                         <div class="card-body p-3 p-sm-5">
-                            <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
-                            <p class="type" data-aos="fade-left">Custom</p>
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated w-100" data-aos="zoom-in">
+                            <h3 class="card-title" data-usal="fade-r">Enterprise Edition</h3>
+                            <p class="type" data-usal="fade-l">Custom</p>
+                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated w-100" data-usal="zoomin">
                                 Talk to us
                             </NuxtLink>
                             <ul>
-                                <li data-aos="fade-left">All features from the Open-Source Edition and more</li>
-                                <li data-aos="fade-left" data-aos-delay="100">Scalable architecture with High-Availability</li>
-                                <li data-aos="fade-left" data-aos-delay="150">Multi-tenancy</li>
-                                <li data-aos="fade-left" data-aos-delay="200">Worker groups supporting distributed workers</li>
-                                <li data-aos="fade-left" data-aos-delay="250">Custom secrets backend (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</li>
-                                <li data-aos="fade-left" data-aos-delay="300">Audit logs</li>
-                                <li data-aos="fade-left" data-aos-delay="350">Single Sign-On (SSO)</li>
-                                <li data-aos="fade-left" data-aos-delay="400">Role-Based Access Control (RBAC)</li>
-                                <li data-aos="fade-left" data-aos-delay="450">Custom blueprints</li>
-                                <li data-aos="fade-left" data-aos-delay="500">Namespace-level management</li>
-                                <li data-aos="fade-left" data-aos-delay="550">Secure credential store</li>
-                                <li data-aos="fade-left" data-aos-delay="600">Built-in variable store</li>
-                                <li data-aos="fade-left" data-aos-delay="650">Centralized governance over task configuration</li>
-                                <li data-aos="fade-left" data-aos-delay="700">Enterprise support with guaranteed SLAs</li>
-                                <li data-aos="fade-left" data-aos-delay="750">Onboarding & training</li>
+                                <li data-usal="fade-l">All features from the Open-Source Edition and more</li>
+                                <li data-usal="fade-l delay-100">Scalable architecture with High-Availability</li>
+                                <li data-usal="fade-l delay-150">Multi-tenancy</li>
+                                <li data-usal="fade-l delay-200">Worker groups supporting distributed workers</li>
+                                <li data-usal="fade-l delay-250">Custom secrets backend (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</li>
+                                <li data-usal="fade-l delay-300">Audit logs</li>
+                                <li data-usal="fade-l delay-350">Single Sign-On (SSO)</li>
+                                <li data-usal="fade-l delay-400">Role-Based Access Control (RBAC)</li>
+                                <li data-usal="fade-l delay-450">Custom blueprints</li>
+                                <li data-usal="fade-l delay-500">Namespace-level management</li>
+                                <li data-usal="fade-l delay-550">Secure credential store</li>
+                                <li data-usal="fade-l delay-600">Built-in variable store</li>
+                                <li data-usal="fade-l delay-650">Centralized governance over task configuration</li>
+                                <li data-usal="fade-l delay-700">Enterprise support with guaranteed SLAs</li>
+                                <li data-usal="fade-l delay-750">Onboarding & training</li>
                             </ul>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
             </div>
             <div class="row card-group mb-4">
                 <div class="text-center mt-5">
-                    <button class="btn btn-dark bg-dark-4 button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-aos="zoom-in">
+                    <button class="btn btn-dark bg-dark-4 button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-usal="zoomin">
                         Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
                     </button>
                     <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">

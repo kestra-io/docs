@@ -2,25 +2,23 @@
 
   <section class="fortune">
     <div class="container d-flex flex-column align-items-stretch gap-3 flex-lg-row align-items-lg-center">
-      <div class="left-div d-flex justify-content-center d-lg-block" data-aos="slide-right" data-aos-duration="500"
-        data-aos-delay="0" data-aos-easing="ease-out">
+      <div class="left-div d-flex justify-content-center d-lg-block" data-usal="slide-r delay-0 duration-500 ease-out">
         <NuxtImg src="/landing/infrastructure/fortune_500.png" width="347" height="150" alt="Fortune 500" format="webp"
           densities="x1 x2" />
       </div>
 
       <div class="right-div d-flex flex-column gap-5">
-        <div data-aos="fade-up" data-aos-duration="500" data-aos-delay="25" data-aos-easing="ease-out">
+        <div data-usal="fade-u delay-25 duration-500 ease-out">
           <h2>
             “We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra”
           </h2>
           <small>Principal Hosting Lead</small>
         </div>
 
-        <div class="metrics-grid" role="list" data-aos="fade-up" data-aos-duration="500" data-aos-delay="50"
-          data-aos-easing="ease-out">
+        <div class="metrics-grid" role="list" data-usal="fade-u delay-50 duration-500 ease-out">
           <div v-for="(metric, index) in METRICS" :key="metric.label"
-            class="metric d-flex flex-column align-items-start" data-aos="zoom-in" data-aos-duration="400"
-            :data-aos-delay="75 + index * 25" data-aos-easing="ease-out">
+            class="metric d-flex flex-column align-items-start"
+            :data-usal="`zoomin delay-${75 + index * 25} duration-400 ease-out`">
             <div class="val">{{ metric.value }}</div>
             <div class="label">{{ metric.label }}</div>
           </div>
@@ -28,7 +26,7 @@
 
         <div
           class="d-flex flex-column align-items-start gap-3 flex-lg-row align-items-lg-center justify-content-lg-between"
-          data-aos="fade-up" data-aos-duration="500" data-aos-delay="100" data-aos-easing="ease-out">
+          data-usal="fade-u delay-100 duration-500 ease-out">
           <h6>
             How much risk and cost are you still accepting today?
           </h6>

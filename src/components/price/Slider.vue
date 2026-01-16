@@ -1,8 +1,8 @@
 <template>
     <div class="main-box" ref="orchestraCoreDOMElement">
-        <div class="container" data-aos="fade-left">
+        <div class="container" data-usal="fade-l">
             <div class="slider">
-                <div data-aos="fade-left">
+                <div data-usal="fade-l">
                     <Carousel v-bind="settings" :breakpoints="breakpoints">
                         <Slide v-for="(slide, slideIndex) in testimonialData" :key="slide">
                             <div class="carousel--item">

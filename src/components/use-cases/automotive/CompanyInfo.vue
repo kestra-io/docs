@@ -9,17 +9,17 @@
                             loading="lazy"
                             format="webp"
                             class="mt-md-0"
-                            data-aos="zoom-in"
+                            data-usal="zoomin"
                             :src="logoPath"
                             :alt="logoAlt"
                         />
                         <p>Customer Success</p>
-                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
-                        <p data-aos="fade-left" class="baseline">
+                        <h1 data-usal="fade-r" v-if="titleHtml" v-html="titleHtml" />
+                        <p data-usal="fade-l" class="baseline">
                             {{description}}
                         </p>
                         <div class="cta">
-                            <NuxtLink :href="storeLink" class="btn btn-dark me-3" data-aos="zoom-in">
+                            <NuxtLink :href="storeLink" class="btn btn-dark me-3" data-usal="zoomin">
                                 Read the Story
                             </NuxtLink>
                         </div>
@@ -31,7 +31,7 @@
                         loading="lazy"
                         format="webp"
                         class="mt-md-0 position-relative z-2 company-image mb-3"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                         :src="imageSrc"
                         :href="storeLink"
                         :alt="imageAlt"

@@ -2,7 +2,7 @@
     <div class="container justify-content-center">
         <div class="text-center rounded content">
             <div>
-                <h1 class="title fw-light" data-aos="fade-right">
+                <h1 class="title fw-light" data-usal="fade-r">
                     {{ content.title }}
                 </h1>
                 <div

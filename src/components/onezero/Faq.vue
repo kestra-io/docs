@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row row-gap-4">
                 <div v-for="(feature, index) in topFeatures" :key="feature.title" class="col-lg-4 col-md-6"
-                    data-aos="fade-up" :data-aos-delay="index * 50">
+                    :data-usal="`fade-u delay-${index * 50}`">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <component :is="feature.icon" />
@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <div class="session-card" data-aos="zoom-in">
+            <div class="session-card" data-usal="zoomin">
                 <h1>Book a Strategy Session</h1>
                 <p>What could Declarative Agentic Orchestration can do for you?</p>
                 <NuxtLink href="/demo" class="btn btn-lg btn-primary">
@@ -228,7 +228,7 @@ const faqItems = [
     }
 
     @media (max-width: 768px) {
-        [data-aos] {
+        [data-usal] {
             transform: none !important;
             transition: none !important;
             opacity: 1 !important;

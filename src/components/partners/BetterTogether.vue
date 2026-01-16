@@ -7,19 +7,19 @@
                 <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[0]"
-                        data-aos="fade-left"
+                        data-usal="fade-l"
                     />
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[1]"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                     />
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[2]"
-                        data-aos="fade-right"
+                        data-usal="fade-r"
                     />
                 </div>
             </div>

@@ -18,17 +18,11 @@
                     v-for="(op, index) in OPERATIONS"
                     :key="index"
                     class="right"
-                    data-aos="fade-in"
-                    data-aos-duration="400"
-                    :data-aos-delay="`${50 + index * 50}`"
-                    data-aos-easing="ease-out"
+                    :data-usal="`fade duration-400 delay-${50 + index * 50} ease-out`"
                 >
                     <div
                         class="inner-card"
-                        data-aos="fade-up"
-                        data-aos-duration="350"
-                        :data-aos-delay="`${100 + index * 50}`"
-                        data-aos-easing="ease-out"
+                        :data-usal="`fade-u duration-350 delay-${100 + index * 50} ease-out`"
                     >
                         <div class="left-section">
                             <h2 v-if="op.title">{{ op.title }}</h2>
@@ -38,10 +32,7 @@
                             <img
                                 :src="op.svg"
                                 alt="Icon"
-                                data-aos="zoom-in"
-                                data-aos-duration="400"
-                                :data-aos-delay="`${150 + index * 50}`"
-                                data-aos-easing="ease-out"
+                                :data-usal="`zoomin duration-400 delay-${150 + index * 50} ease-out`"
                             />
                         </div>
                     </div>

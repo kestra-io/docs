@@ -40,14 +40,14 @@ const title = page.title;
 ---
 <Layout title={title}>
     <CareersHeader fullPath="/careers" client:load>
-        <h1 data-aos="fade-left">{ page.title }</h1>
+        <h1 data-usal="fade-l">{ page.title }</h1>
         <h4>
             <MapMarkerOutline client:load /> Remote from:
             {page.locations?.map((loc: any) => <span class="ms-1">
                     { loc.emoji } { loc.name }
                 </span>)}
         </h4>
-        <a href={page.link} class="btn btn-animated btn-purple-animated mt-4" data-aos="zoom-in">
+        <a href={page.link} class="btn btn-animated btn-purple-animated mt-4" data-usal="zoomin">
             Apply for this job
         </a>
     </CareersHeader>

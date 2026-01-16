@@ -1,21 +1,21 @@
 <template>
     <div class="mt-5 mb-2" ref='blogs'>
         <div v-if="slug === '/blogs/community'">
-            <h2 data-aos="fade-left">Community News</h2>
+            <h2 data-usal="fade-l">Community News</h2>
             <div class="row mt-5">
                 <div
                     v-for="news in externalNews"
                     :key="news.id"
                     class="col-lg-4 col-md-6 col-12"
                 >
-                    <BlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-usal="zoomin" />
                 </div>
             </div>
         </div>
         <div class="row content justify-content-around" v-else>
             <div class="col-12 col-md-8">
-                <h1 data-aos="fade-left title">All things Kestra</h1>
-                <h4 data-aos="fade-right" class="fw-normal">
+                <h1 data-usal="fade-left title">All things Kestra</h1>
+                <h4 data-usal="fade-r" class="fw-normal">
                     Company news, product updates, and engineering deep dives.
                 </h4>
                 <ul
@@ -69,14 +69,14 @@
                         :ref="`blog-${index}`"
                         class="col-lg-6 col-md-6"
                     >
-                        <BlogCard :blog="blog" data-aos="zoom-in" />
+                        <BlogCard :blog="blog" data-usal="zoomin" />
                     </div>
                 </div>
             </div>
             <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
                 <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
-                    <BlogCard :blog="news" data-aos="zoom-in" />
+                    <BlogCard :blog="news" data-usal="zoomin" />
                 </div>
                 <NuxtLink href="/blogs/community">
                     <button class="btn btn-dark w-100">More news</button>

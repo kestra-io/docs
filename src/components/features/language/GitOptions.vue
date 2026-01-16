@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-1 my-5">
         <div class="container">
-            <div class="git-options" data-aos="zoom-in">
+            <div class="git-options" data-usal="zoomin">
                 <div class="options-item">
                     <div class="title-bar">
                         <h2 class="title">GitOps with Kestra</h2>
@@ -49,7 +49,7 @@
                         Whether you're developing directly in the Kestra UI or prefer coding in your favorite IDE, our
                         Git integration ensures your workflows are version-controlled, reviewable, and easy to deploy.
                     </p>
-                    <NuxtLink class="btn btn-animated btn-purple-animated " href="https://kestra.io/docs/developer-guide/git" data-aos="zoom-in">
+                    <NuxtLink class="btn btn-animated btn-purple-animated " href="https://kestra.io/docs/developer-guide/git" data-usal="zoomin">
                         Learn more
                     </NuxtLink>
                 </div>

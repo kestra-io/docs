@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 data-aos="fade-right" class="title text-center mb-3">
+        <h1 data-usal="fade-r" class="title text-center mb-3">
             End-To-End Solution for Managing <br />
             <span>Complex</span> Retail Operations
         </h1>

@@ -1,5 +1,5 @@
 <template>
-    <div class="container" data-aos="fade-left">
+    <div class="container" data-usal="fade-l">
         <LayoutTabContent :navLinks="businessDetails.navLinks" />
     </div>
 </template>

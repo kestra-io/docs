@@ -6,7 +6,7 @@
         >
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/terraform.svg" class="card-img-top" alt="terraform's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/snowflake.svg" class="card-img-top" alt="snowflake's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/databricks.svg" class="card-img-top" alt="databricks's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/motherduck.svg" class="card-img-top" alt="Mother Duck's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -46,7 +46,7 @@
                     </div>>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/dremio.svg" class="card-img-top" alt="Dremio's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/airbyte.svg" class="card-img-top" alt="Airbyte's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/dlthub.svg" class="card-img-top" alt="dlthub's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card text-center" data-aos="zoom-in">
+                    <div class="card text-center" data-usal="zoomin">
                         <img src="/partners/partners-logos/badge-partner.svg" class="card-img-top" alt="Technology Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
@@ -92,7 +92,7 @@
         >
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/converteo.svg" class="card-img-top" alt="Converteo's logo">
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/hanalytics.svg" class="card-img-top" alt="Converteo's logo">
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/davidson.svg" class="card-img-top" alt="Davidson's logo">
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/ntico.svg" class="card-img-top" alt="Ntico's logo">
                         <div class="card-body">
                             <p class="card-text">Data Consulting Partner</p>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/partners-logos/pandata.svg" class="card-img-top" alt="Pandata Group's logo">
                         <div class="card-body">
                             <p class="card-text">Data Consulting Partner</p>
@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" data-usal="zoomin">
                         <img src="/partners/conapi/logo.svg" class="card-img-top" alt="Conapi logo">
                         <div class="card-body">
                             <p class="card-text">Integration Consulting Partner</p>
@@ -152,7 +152,7 @@
                     </div>
                     </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card text-center" data-aos="zoom-in">
+                    <div class="card text-center" data-usal="zoomin">
                         <img src="/partners/partners-logos/badge-partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>

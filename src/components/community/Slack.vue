@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated me-2" target="_blank"  data-aos="zoom-in">
+                <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated me-2" target="_blank"  data-usal="zoomin">
                     Join our Slack
                 </a>
             </div>

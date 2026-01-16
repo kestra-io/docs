@@ -4,15 +4,15 @@
             <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
-                        <p data-aos="fade-left" class="baseline">
+                        <h1 data-usal="fade-r" v-if="titleHtml" v-html="titleHtml" />
+                        <p data-usal="fade-l" class="baseline">
                             {{description}}
                         </p>
                         <div class="cta d-flex gap-3 flex-wrap">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Get started
                             </NuxtLink>
                         </div>

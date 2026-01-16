@@ -54,14 +54,14 @@
         </div>
         <div class="container">
             <div class="row mb-5-rem security-item">
-                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-usal="fade-l">
                     <img
                         class="img-fluid"
                         src="/landing/enterprise/security-1-1.svg"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
-                <div class="item-info" data-aos="fade-right">
+                <div class="item-info" data-usal="fade-r">
                     <div>
                         <h3>More Security</h3>
                         <p class="mt-3">
@@ -76,14 +76,14 @@
                 </div>
             </div>
             <div class="security-item mb-5-rem">
-                <div class="col-md-6 order-0 order-md-1 rounded-2" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
                     <img
                         class="img-fluid"
                         src="/landing/enterprise/security-2-2.svg"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
-                <div class="item-info" data-aos="fade-right">
+                <div class="item-info" data-usal="fade-r">
                     <div>
                         <h3>Better Governance</h3>
                         <p class="mt-3">
@@ -97,14 +97,14 @@
                 </div>
             </div>
             <div class="security-item mb-5-rem">
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1" data-usal="fade-l">
                     <img
                         class="img-fluid"
                         src="/landing/enterprise/security-3-3.svg"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
-                <div class="item-info" data-aos="fade-right">
+                <div class="item-info" data-usal="fade-r">
                     <div>
                         <h3>Scale with no limits</h3>
                         <p class="mt-3">

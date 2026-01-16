@@ -1,17 +1,15 @@
 <template>
   <div class="container">
-    <header class="header" data-aos="fade-up">
+    <header class="header" data-usal="fade-u">
       <h2 class="title">Life at <span class="gradient">Kestra</span></h2>
     </header>
 
-    <div class="grid" data-aos="fade-up">
+    <div class="grid" data-usal="fade-u">
       <article
         v-for="(card, index) in lifeCards"
         :key="card.id"
         :class="['card', card.type, card.variant]"
-        data-aos="zoom-in"
-        :data-aos-delay="(index * 100)"
-        data-aos-easing="ease-in-out"
+        :data-usal="`zoomin delay-${index * 100} ease-in-out`"
       >
         <NuxtImg
           v-if="card.type === 'image-card'"
@@ -33,7 +31,7 @@
       </article>
     </div>
 
-    <section class="brand-card" data-aos="fade-up" data-aos-delay="100" data-aos-easing="ease-in-out">
+    <section class="brand-card" data-usal="fade-u delay-100 ease-in-out">
       <div class="info">
         <span class="label">MEDIA</span>
         <h3 class="title">Brand Assets</h3>

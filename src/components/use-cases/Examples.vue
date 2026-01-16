@@ -1,7 +1,7 @@
 <template>
     <div class="container example">
         <h1
-            data-aos="fade-left"
+            data-usal="fade-l"
             class="title text-center mb-5 fw-light"
             v-html="content.tag"
         ></h1>
@@ -14,7 +14,7 @@
                     <div
                         class="card"
                         :class="index === 1 && 'mask'"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                     >
                         <div class="card-body">
                             <NuxtImg

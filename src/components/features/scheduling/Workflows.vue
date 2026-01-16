@@ -1,7 +1,7 @@
 <template>
     <LayoutSection class="mb-5">
         <div class="row justify-content-center align-items-center">
-            <div class="col-12 col-md-5 workflow-image mask text-center" data-aos="fade-left">
+            <div class="col-12 col-md-5 workflow-image mask text-center" data-usal="fade-l">
                 <NuxtImg
                     loading="lazy"
                     format="webp"
@@ -15,7 +15,7 @@
 
             <div class="col-12 col-md-5">
                 <div class="row justify-content-center px-2 px-md-3">
-                    <div class="col-12 col-md-9" data-aos="fade-right">
+                    <div class="col-12 col-md-9" data-usal="fade-r">
                         <h3 class="title my-4">Centralized Control</h3>
                         <p class="para">
                             Kestra serves as a unified platform that allows you to automate
@@ -29,7 +29,7 @@
             </div>
             <div class="col-12 col-md-5">
                 <div class="row justify-content-center px-2 px-md-3">
-                    <div class="col-12 col-md-9" data-aos="fade-left">
+                    <div class="col-12 col-md-9" data-usal="fade-l">
                         <h3 class="title">Event-Driven Workflows Without Spaghetti Code</h3>
                         <p class="para">
                             Whether you're looking to trigger flows based on the results of
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-5 workflow-image text-center" data-aos="fade-right">
+            <div class="col-12 col-md-5 workflow-image text-center" data-usal="fade-r">
                 <NuxtImg
                     loading="lazy"
                     format="webp"
@@ -52,7 +52,7 @@
                     class="mw-100"
                 />
             </div>
-            <div class="col-12 col-md-5 workflow-image mask-1 text-center" data-aos="fade-left">
+            <div class="col-12 col-md-5 workflow-image mask-1 text-center" data-usal="fade-l">
                 <NuxtImg
                     loading="lazy"
                     format="webp"
@@ -65,7 +65,7 @@
             </div>
             <div class="col-12 col-md-5">
                 <div class="row justify-content-center px-2 px-md-3">
-                    <div class="col-12 col-md-9" data-aos="fade-right">
+                    <div class="col-12 col-md-9" data-usal="fade-r">
                         <h3 class="title">Everything as Code</h3>
                         <p class="para">
                             Manage your resources programmatically, ensuring reproducibility,

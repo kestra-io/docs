@@ -1,6 +1,6 @@
 <template>
     <div class="base-container">
-        <div class="container header" data-aos="fade-right">
+        <div class="container header" data-usal="fade-r">
             <div class="row">
                 <div class="col-md-6">
                     <div>

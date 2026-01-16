@@ -2,8 +2,7 @@
     <section class="workflows">
         <div class="container">
             <div v-for="section in workflowSections" :key="section.id" class="section-block">
-                <header class="section-header" :data-aos="!isMobile ? 'fade-up' : undefined"
-                    :data-aos-duration="!isMobile ? '400' : undefined" :data-aos-delay="!isMobile ? '50' : undefined">
+                <header class="section-header" :data-usal="!isMobile ? `fade-up duration-400 delay-50` : undefined">
                     <h2>{{ section.title }}</h2>
                     <p>{{ section.description }}</p>
                 </header>
@@ -12,9 +11,7 @@
                     <div class="main-feature">
                         <div class="feature-image">
                             <NuxtImg :src="section.mainFeature.image" :alt="section.mainFeature.title" width="1076"
-                                height="608" :data-aos="!isMobile ? 'fade-up' : undefined"
-                                :data-aos-duration="!isMobile ? '500' : undefined"
-                                :data-aos-delay="!isMobile ? '70' : undefined" />
+                                height="608" :data-usal="!isMobile ? 'fade-up duration-500 delay-70' : undefined" />
                         </div>
                         <div class="feature-content">
                             <h3>{{ section.mainFeature.title }}</h3>
@@ -26,9 +23,7 @@
                         <div v-for="subFeature in section.subFeatures" :key="subFeature.id" class="sub-feature-card">
                             <div class="feature-image">
                                 <NuxtImg :src="subFeature.image" :alt="subFeature.title" width="490" height="277"
-                                    :data-aos="!isMobile ? 'fade-up' : undefined"
-                                    :data-aos-duration="!isMobile ? '500' : undefined"
-                                    :data-aos-delay="!isMobile ? (70 + (subFeature.id === section.subFeatures[0].id ? 0 : 100)).toString() : undefined" />
+                                    :data-usal="!isMobile ? `fade-up duration-500 delay-${70 + (subFeature.id === section.subFeatures[0].id ? 0 : 100)}` : undefined" />
                             </div>
                             <div class="feature-content">
                                 <h3>{{ subFeature.title }}</h3>

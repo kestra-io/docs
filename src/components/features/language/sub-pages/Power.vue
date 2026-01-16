@@ -9,8 +9,7 @@
                                 class="w-100"
                                 loading="lazy"
                                 format="webp"
-                                data-aos="fade-up"
-                                data-aos-delay="100"
+                                data-usal="fade-u delay-100"
                                 :src="source"
                                 alt="Power Your Projects"
                             />

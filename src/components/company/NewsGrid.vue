@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="news-grid">
-      <div class="news-card title-card" data-aos="fade-up">
+      <div class="news-card title-card" data-usal="fade-u">
         <div class="title-content">
             <h2 class="title">News</h2>
             <p class="subtitle">Recent mentions in media.</p>
@@ -11,8 +11,7 @@
         v-for="(news, index) in newsItems"
         :key="news.id"
         class="news-card"
-        data-aos="fade-up"
-        :data-aos-delay="200 + (index * 100)"
+        :data-usal="`fade-u delay-${200 + (index * 100)}`"
       >
         <NuxtLink :to="news.url" :external="news.external">
           <div class="card-content">

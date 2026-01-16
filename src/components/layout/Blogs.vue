@@ -4,7 +4,7 @@
             <div class="row">
                 <template v-for="blog in blogs">
                     <div class="col-md-4 mb-4">
-                        <div class="card bg-dark-4" data-aos="fade-right">
+                        <div class="card bg-dark-4" data-usal="fade-r">
                             <NuxtLink class="text-dark" :href="blog.path">
                                 <NuxtImg loading="lazy" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
                                 <div class="card-body">
@@ -21,7 +21,7 @@
                 </template>
             </div>
             <div class="text-center">
-                <NuxtLink class="btn btn-animated btn-purple-animated" href="/blogs" data-aos="zoom-in">See all news</NuxtLink>
+                <NuxtLink class="btn btn-animated btn-purple-animated" href="/blogs" data-usal="zoomin">See all news</NuxtLink>
             </div>
         </Section>
     </div>

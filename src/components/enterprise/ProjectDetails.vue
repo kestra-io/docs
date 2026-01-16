@@ -1,12 +1,12 @@
 <template>
     <div class="content">
-        <div class="container" data-aos="fade-left">
+        <div class="container" data-usal="fade-l">
             <div class="anything-scale">
                 <div class="info">
                     <p>Run Anything at Scale</p>
                     <span>Kestra offers language-agnostic orchestration, eliminating the need for glue code and allowing you to execute tasks in any language. With built-in high-availability options and full observability, Kestra ensures resilient operations and clear insights, no matter how complex your workflows.</span>
                 </div>
-                <div class="col-md-6 order-0 order-md-1 rounded-2" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
                     <img
                         class="image-fluid"
                         src="/landing/enterprise/anything-scale.svg"
@@ -20,7 +20,7 @@
                         <p>Declarative</p>
                         <span>Kestra’s declarative syntax in YAML offers a simple learning curve while enabling powerful orchestration. With both UI-based configuration and the ability to scale to complex use cases, Kestra ensures ease of use without sacrificing flexibility or control.</span>
                     </div>
-                    <div class="w-100 order-md-1 rounded-2" data-aos="fade-left">
+                    <div class="w-100 order-md-1 rounded-2" data-usal="fade-l">
                         <img
                             class="declarative-img"
                             src="/landing/enterprise/declarative.svg"
@@ -33,7 +33,7 @@
                         <p>Real Time & Event Driven</p>
                         <span>Handle scheduled, real-time event-driven, and API-based workflows effortlessly. Support business-critical operations with real-time automation, ensuring your workflows adapt and scale to your needs.</span>
                     </div>
-                    <div class="real-time w-100 order-md-1 rounded-2" data-aos="fade-left">
+                    <div class="real-time w-100 order-md-1 rounded-2" data-usal="fade-l">
                         <img src="/landing/enterprise/real-time.svg" alt="right icons"/>
                     </div>
                 </div>

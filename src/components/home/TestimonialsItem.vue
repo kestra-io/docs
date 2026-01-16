@@ -7,7 +7,7 @@
                     <NuxtImg
                         v-if="item.imgName"
                         class="company-icon"
-                        data-aos="fade-up"
+                        data-usal="fade-u"
                         :src="(item.directory ?? '/landing/companies/') + item.imgName  + '.svg'"
                         :alt="item.imgName"
                     />

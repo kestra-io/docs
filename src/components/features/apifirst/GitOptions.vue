@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-1 my-5">
         <div class="container">
-            <div class="workflow-options row" data-aos="fade-left">
+            <div class="workflow-options row" data-usal="fade-l">
                 <div class="options-item col-12 col-md-12 col-lg-6">
                     <div class="img-bar">
                         <NuxtImg
@@ -34,7 +34,7 @@
                             The <span>HTTP Trigger</span> opens your workflows for integration with any external events.
                         </p>
                     </div>
-                    <NuxtLink class="btn btn-animated btn-purple-animated" href="https://kestra.io/plugins/triggers/http/io.kestra.plugin.fs.http.trigger" data-aos="zoom-in">
+                    <NuxtLink class="btn btn-animated btn-purple-animated" href="https://kestra.io/plugins/triggers/http/io.kestra.plugin.fs.http.trigger" data-usal="zoomin">
                         Learn more
                     </NuxtLink>
                 </div>

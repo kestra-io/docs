@@ -2,15 +2,15 @@
     <div class="mt-5">
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
-                <h1 data-aos="fade-left">Blueprints</h1>
-                <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow </h4>
+                <h1 data-usal="fade-l">Blueprints</h1>
+                <h4 data-usal="fade-r">The first step is always the hardest. Explore blueprints to kick-start your next flow </h4>
                 <div class="col-12 search-input position-relative">
                     <input type="text" class="form-control form-control-lg" placeholder="Search across 250+ blueprints" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
         </div>
-        <div class="mt-5" data-aos="fade-left">
+        <div class="mt-5" data-usal="fade-l">
             <button
                 v-for="tag in orderedTags"
                 :key="tag.name"
@@ -23,7 +23,7 @@
         </div>
         <div class="row my-5">
             <div v-if="blueprintsPaginated && blueprintsPaginated.length > 0" class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprintsPaginated" :key="blueprint.id"
-                data-aos="zoom-in">
+                data-usal="zoomin">
                 <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)"/>
             </div>
 

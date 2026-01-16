@@ -8,11 +8,11 @@
                     format="webp"
                     loading="lazy"
                     class="img-fluid"
-                    data-aos="zoom-in"
+                    data-usal="zoomin"
                     width="619px"
                     height="326px"
                 />
-                <div class="text-block" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-block" data-usal="fade-u delay-200">
                     <h1>Introducing Kestra 1.0</h1>
                     <h3>The Declarative Agentic Orchestration Platform</h3>
                     <p>Build and scale workflows faster with AI-assisted code,
@@ -21,27 +21,25 @@
                         full governance and no vendor lock-in.
                     </p>
                 </div>
-                <div data-aos="fade-up" data-aos-delay="400">
+                <div data-usal="fade-u delay-400">
                     <NuxtLink href="/demo" target="_blank" class="btn btn-primary my-4 mb-2">
                         Book a Strategy Session
                     </NuxtLink>
                 </div>
-                <div class="highlights" data-aos="fade-up" data-aos-delay="300">
+                <div class="highlights" data-usal="fade-u delay-300">
                     <div
                         v-for="({ title }, index) of releaseHighlights"
                         :key="title" class="highlight"
-                        data-aos="zoom-in"
-                        :data-aos-delay="500 + (index * 100)"
+                        :data-usal="`zoomin delay-${500 + (index * 100)}`"
                     >
                         <p>{{ title }}</p>
                     </div>
                 </div>
-                <div class="trusted-by" data-aos="fade-up" data-aos-delay="100">
+                <div class="trusted-by" data-usal="fade-u delay-100">
                     <p>Trusted by global Enterprises to run mission-critical workflows</p>
                     <div class="logos">
                         <img v-for="(logo, index) in companyLogos" :key="logo.name" :src="logo.src" :alt="logo.name"
-                            :width="logo.width" :height="logo.height" loading="lazy" data-aos="fade-up"
-                            :data-aos-delay="500 + (index * 50)" />
+                            :width="logo.width" :height="logo.height" loading="lazy" :data-usal="`fade-u delay-${500 + (index * 50)}`" />
                     </div>
                 </div>
             </div>
@@ -244,7 +242,7 @@ const companyLogos = [
         }
 
         @media (max-width: 768px) {
-            [data-aos] {
+            [data-usal] {
                 transform: none !important;
                 transition: none !important;
                 opacity: 1 !important;

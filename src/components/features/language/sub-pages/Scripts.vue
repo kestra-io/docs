@@ -7,7 +7,7 @@
             <div class="row mb-5 align-items-center justify-content-between" v-for="(scriptItem, index) in scripts">
                 <div
                     :class="`col-md-5 order-1 ${(index + 2) % 2 === 0 ? 'order-md-0' : 'order-md-1'}`"
-                    :data-aos="`${(index + 2) % 2 === 0 ? 'fade-right' : 'fade-left'}`"
+                    :data-usal="`${(index + 2) % 2 === 0 ? 'fade-r' : 'fade-l'}`"
                 >
                     <h3>{{scriptItem.title}}</h3>
                     <p>{{scriptItem.description}}</p>
@@ -18,7 +18,7 @@
                         ${(index + 2) % 2 === 0 ? 'order-md-1' : 'order-md-0'}
                         ${scriptItem.mask ? scriptItem.mask : 'mask'}
                     `"
-                    :data-aos="`${(index + 2) % 2 !== 0 ? 'fade-right' : 'fade-left'}`"
+                    :data-usal="`${(index + 2) % 2 !== 0 ? 'fade-r' : 'fade-l'}`"
                 >
                     <NuxtImg
                         loading="lazy"

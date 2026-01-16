@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid container">
         <div class="hero hero-sm mx-2 sm-mx-0">
-            <div class="row" data-aos="fade-right">
+            <div class="row" data-usal="fade-r">
                 <div class="col-12 col-md-8 col-lg-6 order-1 order-md-0">
                     <h1>Deploy All Your Workflows With our Terraform Provider</h1>
                     <p class="description mt-3">Manage and deploy Kestra workflows directly<br>within your existing
@@ -24,7 +24,7 @@
                         class="img-container img-fluid"
                         src='/terraform/header/background.svg'
                         alt="terraform logo with a dark background"
-                        data-aos="zoom-in"
+                        data-usal="zoomin"
                     />
                 </div>
             </div>
