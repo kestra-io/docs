@@ -97,10 +97,9 @@ const slackMembers = await fetchSlackMembers();
 <body>
     <Header client:load isStories={Boolean(props.isStories)} transition:persist />
     <Search client:load />
-    <div style="height: 60px;" />
-    <div>
+    <main>
         <slot />
-    </div>
+    </main>
 
     <LayoutFooter transition:persist />
     <LayoutFixed client:load transition:persist online={slackMembers} />

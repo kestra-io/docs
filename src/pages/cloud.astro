@@ -8,8 +8,8 @@ const description = "Be among the first to experience Kestra Cloud with exclusiv
 ---
 <Layout title={title} description={description}>
      <div class="cloud">
-         <CloudHeader client:load />
-         <CloudFeatures client:load/>
+         <CloudHeader />
+         <CloudFeatures client:idle/>
      </div>
 </Layout>
 
@@ -17,7 +17,6 @@ const description = "Be among the first to experience Kestra Cloud with exclusiv
 @import "~/assets/styles/variable";
 
 .cloud {
-    padding-top: 4rem;
     &::after {
         content: "";
         position: absolute;
