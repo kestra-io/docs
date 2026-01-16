@@ -178,9 +178,9 @@ export class ISRCache {
  * Helper function to create an ISR cache instance
  */
 export function createISRCache(locals: App.Locals, options?: ISRCacheOptions): ISRCache {
-  const kv = locals.runtime.env.ISR_CREATE as KVNamespace
+  const kv = locals.runtime.env.ISR_CACHE as KVNamespace
   if (!kv) {
-    throw new Error('ISR_CREATE KV namespace not found. Make sure it is configured in wrangler.toml')
+    throw new Error('ISR_CACHE KV namespace not found. Make sure it is configured in wrangler.toml')
   }
   return new ISRCache(kv, options)
 }
