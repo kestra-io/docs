@@ -50,11 +50,11 @@ The above command starts Kestra with an embedded H2 database that will not persi
 Congratulations! You have installed Kestra and executed your first flow.
 
 Next, you can follow the documentation in this order:
-- Check out the [tutorial](../03.tutorial/index.md) to get introduced to concepts and workflow components.
-- Follow the full [installation guide](../02.installation/index.md) for persistent local or distributed setups.
-- Get to know the [building blocks](../05.workflow-components/index.md) of a flow in more detail.
-- Learn the core [concepts](../06.concepts/index.md) and their use cases.
+- Check out the [tutorial](./03.tutorial/index.md) to get introduced to concepts and workflow components.
+- Follow the full [installation guide](./02.installation/index.md) for persistent local or distributed setups.
+- Get to know the [building blocks](./05.workflow-components/index.md) of a flow in more detail.
+- Learn the core [concepts](./06.concepts/index.md) and their use cases.
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.
-- [Deploy](../10.administrator-guide/index.md) Kestra to remote development and production environments.
+- [Deploy](./10.administrator-guide/index.md) Kestra to remote development and production environments.
 - Almost everything is configurable in Kestra. You can find the different configuration options available to Administrators in the [Configuration Guide](../configuration/index.md).
-- [Contribute to Kestra](../04.contribute-to-kestra/index.md) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved! 
+- [Contribute to Kestra](./04.contribute-to-kestra/index.md) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved!

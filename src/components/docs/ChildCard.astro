@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import ChildCardRender from "~/components/content/ChildCard.vue";
+import generateId from "~/utils/generateId";
+
+const currentPage = Astro.url.pathname.endsWith("/")
+    ? Astro.url.pathname.slice(0, -1)
+    : Astro.url.pathname;
+
+const contentPath = currentPage.replace('/docs/', '');
+
+const docs = await getCollection('docs');
+const currentDoc = docs.find(doc => doc.id === contentPath);
+
+const children = docs
+    .filter(doc =>
+        doc.id.startsWith(`${contentPath}/`) &&
+        !doc.id.slice(contentPath.length + 1).includes('/')
+    )
+    .map(doc => {
+        const firstLine = doc.body?.split('\n').find(line =>
+            line.trim().length > 0 && !line.startsWith('#')
+        );
+        const basePath = doc.id.replace(/\/[^/]+$/, '');
+        const description = firstLine
+            ? firstLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+                if (url.startsWith('.')) {
+                    const resolvedPath = basePath ? `${basePath}/${url}` : url;
+                    const newUrl = `/docs/${generateId({ entry: resolvedPath })}`;
+                    return `[${text}](${newUrl})`;
+                }
+                return match;
+            })
+            : '';
+        return {
+            title: doc.data.title,
+            description,
+            path: `/docs/${doc.id}`,
+            icon: doc.data.icon,
+            release: doc.data.release
+        };
+    });
+---
+
+<ChildCardRender navigation={children} currentPage={currentDoc?.data} client:load />

@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-    import { ref, watch, onMounted, onUnmounted } from 'vue';
+    import { ref, watch } from 'vue';
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue";
     import MultiSelect from "~/components/select/MultiSelect.vue";
@@ -117,8 +117,6 @@
       topic.value = [];
       search.value = '';
     };
-
-    const useInitialNav = Array.isArray(props.navigation) && props.navigation.length > 0;
 
     function filterLocalNavigation() {
         let results = props.navigation ?? [];
