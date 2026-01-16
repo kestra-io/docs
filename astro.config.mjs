@@ -28,6 +28,11 @@ export default defineConfig({
     trailingSlash: "ignore",
     integrations: [
         vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => tag === "rapi-doc"
+                }
+            },
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" }
         }),
