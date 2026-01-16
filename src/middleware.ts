@@ -107,7 +107,7 @@ const securityHeaders = defineMiddleware(async (context, next) => {
         })
         .join("; ");
 
-    response.headers.set("x-frame-options", "DENY");
+    response.headers.set("x-frame-options", import.meta.env.DEV ? "SAMEORIGIN" : "DENY");
     response.headers.set("x-content-type-options", "nosniff");
     response.headers.set("x-download-options", "nosniff");
     response.headers.set("access-control-allow-origin", context.url.protocol + "//" + context.url.host);
