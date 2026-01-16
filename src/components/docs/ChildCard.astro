@@ -17,9 +17,17 @@ const children = docs
         doc.id.startsWith(`${contentPath}/`) &&
         !doc.id.slice(contentPath.length + 1).includes('/')
     )
+    .sort((a, b) => {
+        if (a.filePath && b.filePath) {
+            return a.filePath.localeCompare(b.filePath);
+        }
+        return a.id.localeCompare(b.id);
+    })
     .map(doc => {
         const firstLine = doc.body?.split('\n').find(line =>
-            line.trim().length > 0 && !line.startsWith('#')
+            line.trim().length > 0 &&
+            !line.startsWith('#') &&
+            !line.trim().startsWith('import ')
         );
         const basePath = doc.id.replace(/\/[^/]+$/, '');
         const description = firstLine

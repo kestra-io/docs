@@ -10,7 +10,7 @@ Almost everything in Kestra is configurable. This page covers key options such a
 
 ## Configure Kestra for your environment
 
-Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](../02.installation/02.docker.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
+Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](./02.installation/02.docker.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
 
 ```yaml
 datasources:
@@ -80,7 +80,7 @@ DATASOURCES_POSTGRES_USERNAME=kestra
 
 ### Example: Camel Case and Hyphenated Keys
 
-Regardless of whether your YAML uses camelCase or kebab-case (`-`),  
+Regardless of whether your YAML uses camelCase or kebab-case (`-`),
 convert all separators and case transitions into underscores.
 
 **YAML configuration:**

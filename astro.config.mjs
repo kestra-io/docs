@@ -15,6 +15,7 @@ import remarkClassname from "./src/utils/remark-classname/index.mjs";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import generateId from "./src/utils/generateId";
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts";
+import rehypeExternalLinks from "rehype-external-links";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 
@@ -27,6 +28,11 @@ export default defineConfig({
     trailingSlash: "ignore",
     integrations: [
         vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => tag === "rapi-doc"
+                }
+            },
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" }
         }),
@@ -61,7 +67,11 @@ export default defineConfig({
         ],
         rehypePlugins: [
             rehypeHeadingIds,
-            rehypeImgPlugin
+            rehypeImgPlugin,
+            [rehypeExternalLinks, {
+                target: '_blank',
+                rel: ['noopener', 'noreferrer']
+            }]
         ]
     },
     env: {

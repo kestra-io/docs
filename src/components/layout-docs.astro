@@ -35,8 +35,10 @@ const props = Astro.props;
 
             <slot name="headings" />
 
-            <div class="bd-content">
-                <slot/>
+            <div class="layout-docs-wrapper">
+                <div class="bd-content">
+                    <slot/>
+                </div>
             </div>
         </article>
     </div>
