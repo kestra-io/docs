@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="row my-2" data-usal="fade-u">
+            <div class="row my-2" data-usal="fade-u-2 threshold-0">
                 <template v-if="pluginsSlice?.length">
                     <div
                         class="col-lg-4 col-md-6 mb-3"
