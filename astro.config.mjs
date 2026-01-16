@@ -78,6 +78,8 @@ export default defineConfig({
         schema: {
             API_URL: envField.string({ context: "client", access: "public", optional: false, default: "https://api.kestra.io/v1" }),
             GTM_ID: envField.string({ context: "client", access: "public", optional: false, default: "GTM-T4F85WRF" }),
+            CLOUDFLARE_TEAM_DOMAIN: envField.string({ context: "server", access: "secret", optional: true }),
+            CLOUDFLARE_POLICY_AUD: envField.string({ context: "server", access: "secret", optional: true }),
         }
     },
     vite: {
