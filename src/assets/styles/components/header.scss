@@ -553,7 +553,7 @@ nav {
                         }
                     }
 
-                    .dropdown-chevron {
+                    &:hover .dropdown-chevron {
                         animation: chevron-in 0.3s ease forwards;
                     }
 
