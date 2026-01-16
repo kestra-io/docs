@@ -56,5 +56,5 @@ Next, you can follow the documentation in this order:
 - Learn the core [concepts](./06.concepts/index.md) and their use cases.
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.
 - [Deploy](./10.administrator-guide/index.md) Kestra to remote development and production environments.
-- Almost everything is configurable in Kestra. You can find the different configuration options available to Administrators in the [Configuration Guide](../configuration/index.md).
+- Almost everything is configurable in Kestra. You can find the different configuration options available to Administrators in the [Configuration Guide](./configuration/index.md).
 - [Contribute to Kestra](./04.contribute-to-kestra/index.md) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved!
