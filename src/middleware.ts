@@ -53,14 +53,11 @@ const logger = defineMiddleware(async (context, next) => {
 const noIndex = defineMiddleware(async (context, next) => {
     // Check if the request is coming from the .workers.dev domain or others
     if (context.url.host !== 'kestra.io') {
-        const response = await next();
+        const response = (await next()).clone();
 
         response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
-        return new Response(await response.text(), {
-            status: response.status,
-            headers: response.headers
-        });
+        return response
     }
 
     return next();
@@ -100,12 +97,12 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 });
 
 const securityHeaders = defineMiddleware(async (context, next) => {
-    const response = await next();
-
     const localhost: string[] = [];
     if (import.meta.env.DEV) {
         localhost.push(context.url.protocol + "//" + context.url.host);
     }
+
+    const response = (await next()).clone();
 
     const contentSecurityPolicy: string = Object.entries(contentSecurityPolicyConfig as Record<string, Array<string> | boolean>)
         .filter(([key]) => import.meta.env.DEV && key !== "upgrade-insecure-requests")
@@ -139,10 +136,7 @@ const securityHeaders = defineMiddleware(async (context, next) => {
         response.headers.set("strict-transport-security", "max-age=15552000");
     }
 
-    return new Response(await response.text(), {
-        status: response.status,
-        headers: response.headers
-    });
+    return response
 });
 
 const notFoundRedirect = defineMiddleware(async (context, next) => {
