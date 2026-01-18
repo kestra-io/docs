@@ -3,6 +3,7 @@ import { sequence } from "astro/middleware";
 import { API_URL } from "astro:env/client";
 import contentSecurityPolicyConfig from "../content-security-policy.config";
 import {middlewareISRCache} from "./utils/middlewareISRCache";
+import cloudflareJwt from "./middlewares/cloudflareJwt.ts";
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -50,7 +51,7 @@ const logger = defineMiddleware(async (context, next) => {
 });
 
 const noIndex = defineMiddleware(async (context, next) => {
-    // Check if the request is coming from the .pages.dev domain or others
+    // Check if the request is coming from the .workers.dev domain or others
     if (context.url.host !== 'kestra.io') {
         const response = await next();
 
@@ -68,6 +69,12 @@ const noIndex = defineMiddleware(async (context, next) => {
 const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString();
 
+    // we don't want trailing slashes (but allow the root path '/')
+    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare manage with "html_handling": "drop-trailing-slash"
+    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+    // }
+
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
         return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase());
@@ -77,6 +84,16 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     const match = context.url.pathname.match(/[A-Z]/);
     if (match && !context.url.pathname.startsWith("/icons/") && !context.url.pathname.startsWith("/meta/")) {
         return sendRedirect(originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()));
+    }
+
+    // Check if the request is coming from the kestra-io.pages.dev to redirect to main
+    if (context.url.host === 'docs.kestra-io.workers.dev') {
+        const replace = new URL(context.url);
+        replace.host = "kestra.io";
+        replace.protocol = "https:";
+        replace.port = "443";
+
+        return sendRedirect(replace.toString());
     }
 
     return next();
@@ -154,6 +171,7 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
+    cloudflareJwt,
     noIndex,
     incomingRedirect,
     securityHeaders,
