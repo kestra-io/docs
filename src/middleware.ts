@@ -69,7 +69,8 @@ const noIndex = defineMiddleware(async (context, next) => {
 const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString();
 
-    // // we don't want trailing slashes (but allow the root path '/')
+    // we don't want trailing slashes (but allow the root path '/')
+    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare manage with "html_handling": "drop-trailing-slash"
     // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
     //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     // }
