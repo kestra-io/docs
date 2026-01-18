@@ -170,10 +170,10 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
-    cloudflareJwt,
-    noIndex,
-    incomingRedirect,
-    securityHeaders,
-    notFoundRedirect,
-    middlewareISRCache,
+    // cloudflareJwt,
+    // noIndex,
+    // incomingRedirect,
+    // securityHeaders,
+    // notFoundRedirect,
+    // middlewareISRCache,
 );
