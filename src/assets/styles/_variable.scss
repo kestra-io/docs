@@ -126,8 +126,8 @@ $theme-colors: (
     "teal": $teal,
 );
 
-$font-family-sans-serif: "Public Sans", sans-serif;
-$font-family-monospace: "Source Code Pro", monospace;
+$font-family-sans-serif: var(--font-family-public-sans);
+$font-family-monospace: var(--font-family-source-code-pro);
 
 $font-size-base: 1rem;
 $font-size-xs: $font-size-base * .75;

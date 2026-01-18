@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 
 import * as path from "path";
 import cloudflare from "@astrojs/cloudflare";
@@ -72,6 +72,29 @@ export default defineConfig({
                 target: '_blank',
                 rel: ['noopener', 'noreferrer']
             }]
+        ]
+    },
+    experimental: {
+        fonts: [
+            {
+                provider: fontProviders.google(),
+                name: "Public Sans",
+                weights: [100, 400, 600, 700, 800],
+                cssVariable: "--font-family-public-sans",
+
+            },
+            {
+                provider: fontProviders.google(),
+                name: "Source Code Pro",
+                weights: [400, 700],
+                cssVariable: "--font-family-source-code-pro"
+            },
+            {
+                provider: fontProviders.google(),
+                name: "Mona Sans",
+                weights: [400, 700],
+                cssVariable: "--font-family-mona-sans"
+            }
         ]
     },
     env: {

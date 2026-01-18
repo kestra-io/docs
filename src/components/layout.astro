@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import LoadingIndicator from "astro-loading-indicator/component"
+import { Font } from 'astro:assets';
 import "@kestra-io/ui-libs/style.css";
 import "~/assets/styles/vendor.scss";
 import "~/assets/styles/app.scss";
@@ -35,6 +36,10 @@ const slackMembers = await fetchSlackMembers();
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
+
+    <Font cssVariable='--font-family-public-sans' preload />
+    <Font cssVariable='--font-family-source-code-pro' preload />
+    <Font cssVariable='--font-family-mona-sans' />
 
     <meta name="msapplication-TileColor" content="#2c0059">
     <meta name="theme-color" content="#2c0059">
