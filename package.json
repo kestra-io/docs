@@ -11,11 +11,12 @@
     "astro": "astro",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
-    "pages:dev": "wrangler dev -- npm run dev",
-    "pages:build": "npm run build",
-    "pages:deploy": "wrangler deploy",
-    "pages:deploy-dryrun": "wrangler deploy --dry-run",
-    "pages:build-deploy": "npm run pages:build && npm run pages:deploy",
+    "workers:dev": "wrangler dev -- npm run dev",
+    "workers:dev-build": "npm run build && wrangler dev",
+    "workers:build": "npm run build",
+    "workers:deploy": "wrangler deploy",
+    "workers:deploy-dryrun": "wrangler deploy --dry-run",
+    "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {

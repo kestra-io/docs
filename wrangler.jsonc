@@ -10,7 +10,7 @@
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
-        "html_handling": "none"
+        "html_handling": "drop-trailing-slash"
     },
     "keep_vars": true,
     "preview_urls": true,
