@@ -69,10 +69,10 @@ const noIndex = defineMiddleware(async (context, next) => {
 const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString();
 
-    // we don't want trailing slashes (but allow the root path '/')
-    if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
-    }
+    // // we don't want trailing slashes (but allow the root path '/')
+    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+    // }
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
@@ -170,10 +170,10 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
-    // cloudflareJwt,
-    // noIndex,
-    // incomingRedirect,
-    // securityHeaders,
-    // notFoundRedirect,
-    // middlewareISRCache,
+    cloudflareJwt,
+    noIndex,
+    incomingRedirect,
+    securityHeaders,
+    notFoundRedirect,
+    middlewareISRCache,
 );
