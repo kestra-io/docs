@@ -16,16 +16,6 @@ const description = props.description ?? "Explore the Kestra Blog for the latest
 ---
 
 <Layout title={title} description={description} image={props.image}>
-    <Fragment slot="head">
-        <slot name="head">
-            <meta name="title" content={title} />
-            <meta name="description" content={description} />
-            <meta property="og:title" content={title} />
-            <meta property="og:description" content={description} />
-            <meta property="twitter:title" content={title} />
-            <meta property="twitter:description" content={description} />
-        </slot>
-    </Fragment>
     <div class="layout-docs-wrapper">
         <main class="bd-content px-0">
             <div class="container-fluid">

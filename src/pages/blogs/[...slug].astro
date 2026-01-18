@@ -1,5 +1,6 @@
 ---
 import { render, getCollection, type CollectionEntry } from "astro:content";
+import {getImage, Image} from "astro:assets";
 import LayoutBlogs from "~/components/layout-blogs.astro";
 import BlogDetails from "~/components/blogs/BlogDetails.vue";
 import NavToc from "~/components/docs/NavToc.vue";
@@ -27,6 +28,8 @@ const editUrl = `https://github.com/kestra-io/docs/edit/main/content/blogs/${pos
 
 const { title, description, image, date, authors } = page;
 
+const staticImage = await getImage({src: image, format: 'webp'});
+
 const jsonLinkedData = {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -35,7 +38,7 @@ const jsonLinkedData = {
         "@id": `/blogs/${post.id}`
     },
     "headline": title,
-    "image": [image],
+    "image": [staticImage.src],
     "datePublished": date,
     "author": (authors ?? []).map(author => ({ "@type": "Person", "name": author.name })),
     "publisher": {
@@ -45,19 +48,12 @@ const jsonLinkedData = {
     },
     "description": description
 };
+
 ---
-<LayoutBlogs activeStem={`/blogs/${post.id}`} title={title} description={description} image={image}>
+<LayoutBlogs activeStem={`/blogs/${post.id}`} title={title} description={description} image={staticImage.src}>
     <Fragment slot="head">
-        <meta name="title" content={title} />
-        <meta name="description" content={description} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={image} />
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={new Date(date).toISOString()} />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={image} />
         <script type="application/ld+json" set:html={JSON.stringify(jsonLinkedData)} />
     </Fragment>
     <div class="container px-0">
@@ -79,12 +75,11 @@ const jsonLinkedData = {
                             <NavToc links={links} {editUrl} />
                         </div>
                     </div>
-                    <img
-                        loading="lazy"
-                        data-usal="fade-r"
+                    <Image
                         class="mb-2 rounded-3 img"
-                        alt={page.title}
+                        data-usal="fade-r"
                         src={page.image}
+                        alt={page.title}
                     />
                     <div class="subtitle">
                         <p>{page.description}</p>

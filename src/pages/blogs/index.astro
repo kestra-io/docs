@@ -3,12 +3,25 @@ import { getCollection } from "astro:content";
 import BlogsList from "~/components/blogs/BlogsList.vue";
 import LayoutBlogs from "~/components/layout-blogs.astro";
 import { $fetchApi } from "~/utils/fetch";
+import {getImage} from "astro:assets";
 
 const blogs = await getCollection('blogs');
 
-const sortedBlogs = blogs.sort((a, b) => {
-    return a.data.date > b.data.date ? 1 : -1;
-});
+const sortedBlogs = await Promise.all(blogs
+    .sort((a, b) => {
+        return a.data.date > b.data.date ? 1 : -1;
+    })
+    .map(async (blog) => {
+        const image = await getImage({src: blog.data.image, format: 'webp', width: 800});
+        return {
+            ...blog,
+            data: {
+                ...blog.data,
+                image: image.src
+            }
+        }
+    })
+)
 
 const externalNewsData = await $fetchApi<{results: {
     id: string;

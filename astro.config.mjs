@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from "astro/config";
+import {defineConfig, envField, fontProviders} from "astro/config";
 
 import * as path from "path";
 import cloudflare from "@astrojs/cloudflare";
@@ -73,6 +73,9 @@ export default defineConfig({
                 rel: ['noopener', 'noreferrer']
             }]
         ]
+    },
+    image: {
+        layout: "constrained"
     },
     experimental: {
         fonts: [

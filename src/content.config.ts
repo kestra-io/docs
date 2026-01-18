@@ -30,7 +30,7 @@ export const collections = {
   blogs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./content/blogs",
+        base: "./src/contents/blogs",
         generateId,
     }),
     schema: ({ image }) =>
@@ -52,7 +52,7 @@ export const collections = {
             role: z.string().nullable().optional(),
         })).optional(),
         // image: image(),
-        image: z.string().optional(),
+        image: image().optional(),
         rightBar: z.boolean().optional(),
         plugins: z.array(z.string()).optional(),
       })
