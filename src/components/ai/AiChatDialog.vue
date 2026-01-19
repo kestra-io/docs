@@ -4,7 +4,7 @@
         <div class="content scroller" id="contentContainer" ref="contentContainer">
             <div v-if="messages.length === 0" class="message welcome">
                 <div class="avatar">
-                    <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" />
+                    <NuxtImg :src="ksLogo.src" alt="Kestra AI" />
                 </div>
                 <div class="bubble">
                     <p>Hi! I'm your Kestra AI assistant.<br>Ask me anything about workflows.</p>
@@ -30,7 +30,7 @@
                                 <AccountCircle />
                             </div>
                             <div v-else class="ai">
-                                <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px" />
+                                <NuxtImg :src="ksLogo.src" alt="Kestra AI" width="28px" height="44px" />
                             </div>
                         </div>
                         <div class="bubble">
@@ -112,6 +112,7 @@
     import {extractSourcesFromMarkdown, isInternalLink} from "~/utils/sources.ts"
     import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue";
     import { API_URL } from "astro:env/client";
+    import ksLogo from '../../assets/icons/ks-logo.png';
 
     interface Message {
         content: string
