@@ -10,12 +10,13 @@ authors:
 image: /blogs/hello-assets.jpg
 ---
 
-**Assets is** a powerful new capability inside Kestra (Enterprise Edition) that brings stateful resources into the orchestration layer. With Assets, you can declare **analytics datasets, tables, files, cloud resources,** and more as first-class objects in your workflows. This transforms traditional pipelines into **fully governed workflows,** complete with automatic **data lineage, dependency graphs, and asset catalogs** visible across teams.
+If you’ve ever tried to understand which workflow updated a table in production, why a downstream job suddenly broke, or what depends on a critical dataset, you’ve seen the limits of orchestration without context. Workflows run, but the knowledge of what they touch and produce is scattered across logs, code, and people’s heads.
 
-> This approach is **technology-agnostic**. Whether your workflow is running a **SQL query**, a **Python script**, a **dbt transformation**, an **API call**, or a **CLI command**, you can attach asset declarations to any task. **Unlike solutions that only work via code** (for instance, Python decorators in some frameworks), Kestra’s assets are **declarative** and universal. No matter what tool or language the task uses under the hood, you can capture its inputs/outputs as named assets. In short, *if your workflow touches it, you can track it!*
-> 
+**Kestra Assets** solves this by making governance a **byproduct of execution**.
 
-This means no more guessing which workflow updated a table, or hunting through logs to see where a file came from. With Kestra Assets, every data or infrastructure artifact becomes a **first-class citizen**: **discoverable**, **traceable**, and **reusable** across teams. The result is safer, more transparent pipelines and easier collaboration between data engineers, platform teams, and business stakeholders.
+This approach is **technology-agnostic by design**. Whether a workflow runs a **SQL query**, a **Python script**, a **dbt transformation**, an **API call**, a **CLI command**, or provisions infrastructure, you can attach asset declarations to any task. **Unlike language- or code-centric solutions** (such as Python decorators), Kestra Assets are **declarative and universal**. No matter the tool or language used under the hood, inputs and outputs can be captured as named assets. In short: *if your workflow touches it, you can track it.*
+
+The result is a catalog you can trust and lineage that reflects reality without manual documentation or guesswork. Data and infrastructure artifacts become **discoverable, traceable, and reusable**, enabling safer pipelines and better collaboration across data, platform, and engineering teams.
 
 In this post, we’ll explore what Kestra Assets are, how they work (in a **language-agnostic** way that goes beyond just Python code), and why they matter for building modern, governed platforms.
 
@@ -36,19 +37,152 @@ At its core, a **Kestra Asset** represents a **resource** that your workflow int
 
 For example, if a task creates a new database table, you’d list that table as an output asset. If another task reads from an existing table, you’d list that table as an input asset. Kestra then automatically **registers** those assets in a global inventory and links them to the task (and flow) that used them.
 
+## Data Assets: Governed analytics with end-to-end lineage
+
+In an analytics platform, data rarely lives in a single place or a single workflow. Raw datasets are ingested, transformed, aggregated, and reused across teams. Without governance, understanding how analytics tables are built, and what depends on them, quickly becomes difficult.
+
+With Kestra Assets, analytics datasets are modeled explicitly as part of the orchestration layer.
+
+A typical pattern looks like this:
+
+id: data-pipeline-assets
+namespace: kestra.company
+```yaml
+tasks:
+  - id: create_staging_layer_asset
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      CREATE TABLE IF NOT EXISTS trips AS
+      select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
+    assets:
+      inputs:
+        - id: sample_data.nyc.taxi
+      outputs:
+        - id: trips
+          namespace: "{{flow.namespace}}"
+          type: io.kestra.plugin.ee.assets.Table
+          metadata:
+            model_layer: staging
+
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values:
+      - passenger_count
+      - trip_distance
+    tasks:
+      - id: create_mart_layer_asset
+        type: io.kestra.plugin.jdbc.duckdb.Query
+        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        assets:
+          inputs:
+            - id: trips
+          outputs:
+            - id: avg_{{taskrun.value}}
+              type: io.kestra.plugin.ee.assets.Table
+              namespace: "{{flow.namespace}}"
+              metadata:
+                model_layer: mart
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.duckdb
+    values:
+      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+      fetchType: STORE
+```
+
+- An **external dataset** (for example, a source table stored outside Kestra) is declared as an **input asset**.
+- A **staging table** is created in the analytics engine and registered as a `Table` asset, enriched with metadata such as `model_layer: staging`.
+- One or more **mart tables** are derived from the staging layer and registered as `Table` assets with `model_layer: mart`.
+- Each transformation explicitly declares its upstream and downstream assets.
+
+Because assets are declared directly in workflow tasks, Kestra automatically builds a **complete lineage graph** from source to staging to marts. This lineage is always up to date, because it is generated from execution, not documentation.
+
+The impact is immediate:
+
+- Data teams can visualize exactly how analytics tables are produced.
+- Downstream dependencies are visible before changes are deployed.
+- Staging and mart layers follow clear, enforceable modeling conventions.
+- Analytics assets become discoverable and reusable across teams.
+
+This approach works regardless of the underlying engine or language. Whether transformations are written in SQL, dbt, Python, or executed via CLI, the asset model remains consistent.
+
+## Infrastructure Assets: Provisioned resources as first-class citizens
+
+Infrastructure workflows often create and manage long-lived resources such as buckets, VMs, or databases. Traditionally, these resources are provisioned by automation but remain invisible once created, making ownership, reuse, and governance difficult.
+
+Kestra Assets bring the same level of visibility and lineage to **infrastructure automation**.
+
+For example:
+
+```yaml
+id: infra_assets
+namespace: kestra.company
+
+inputs:
+  - id: teams
+    type: MULTISELECT
+    values:
+      - Business
+      - Data
+      - Finance
+      - Product
+
+tasks:
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ inputs.teams }}"
+    tasks:
+      - id: create_bucket
+        type: io.kestra.plugin.aws.cli.AwsCLI
+        commands:
+          - aws s3 mb s3://kestra-{{ taskrun.value | slugify }}-bucket
+        assets:
+          outputs:
+            - id: kestra-{{ taskrun.value | slugify }}-bucket
+              type: AWS_BUCKET
+              metadata:
+                provider: s3
+                address: s3://kestra-{{ taskrun.value | slugify }}-bucket
+
+pluginDefaults:
+  - type: io.kestra.plugin.aws
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_REGION') }}"
+      allowFailure: true
+
+```
+- A platform workflow provisions cloud resources dynamically (such as one storage bucket per team).
+- Each resource is registered immediately as an **infrastructure asset** (e.g. an `AWS_BUCKET`), with metadata describing ownership, provider, and environment.
+- Downstream workflows reference these resources explicitly as **input assets** when they upload files, process data, or run jobs.
+
+This creates a clear contract between teams:
+
+- Platform teams provision infrastructure and expose it as governed assets.
+- Application and data teams consume those assets safely and transparently.
+- Every workflow execution that touches an infrastructure resource is tracked.
+
+With this model:
+
+- Infrastructure dependencies are visible in the same catalog as data assets.
+- Teams can see which workflows rely on which resources.
+- “Ghost resources” are avoided because provisioned infrastructure is always registered and traceable.
+- Infrastructure-as-code is combined with **infrastructure-as-assets**, enabling governance without extra tooling.
+
+Just like data assets, infrastructure assets are **technology-agnostic**. Whether a resource is created via a cloud API, a CLI command, or a custom script, it can be tracked the same way.
+
 ## Lineage, Governance, and Reuse
 
-We elevate your workflows from just running tasks to also **managing knowledge about data and infrastructure**. Here are some key benefits:
+Kestra Assets elevates workflows from simply running tasks to **managing shared knowledge about data and infrastructure**.
 
-- **Complete Data Lineage & Impact Analysis:** Kestra automatically builds a **dependency graph** of all assets. You can visualize upstream and downstream relationships at a glance. For example, if an external dataset feeds a staging table which feeds several aggregate tables, you’ll see the entire chain in the UI. If an upstream dataset changes or a schema updates, you immediately know which downstream assets and workflows are affected. It’s like having a built-in data catalog that’s always up to date.
-- **Audit Trails & Governance:** Every time an asset is created or modified, Kestra records which **workflow** (and even which specific task run) touched it, along with timestamps. Each asset’s detail page shows a history of all executions that produced or used it. This provides an automatic audit log for data and infrastructure changes. Need to know *who last updated this table and when*? Or *which flow created this S3 bucket*? Just click the asset view, no more tribal knowledge or digging through code.
-- **Discoverability & Reuse:** Assets are indexed in Kestra’s **Asset Catalog**, where you can search and filter by name, type, namespace, or metadata. Teams can easily discover what data or resources already exist. For instance, an analyst can find that a curated `customer_orders` table is available as a `Table` asset instead of reinventing it. Downstream workflows can **reference assets by ID** to ensure they’re using the correct, governed data.
-- **Enforcing Best Practices:** Assets encourage modeling techniques like **staging and mart layers** in analytics engineering, or clear ownership of infrastructure by team. By tagging assets with metadata (e.g., `model_layer: staging` vs `mart`, or an `owner: finance` on a bucket), you can enforce standards and **organize your data landscape**. It’s easy to filter the catalog to just staging tables or just finance-owned resources, etc. This layered approach increases clarity and maintainability of your data platform.
-- **Collaboration Between Roles:** Kestra Assets provide a common language for different teams. Data engineers see how pipelines produce datasets, while DevOps/cloud engineers see how infrastructure is being used by workflows. A platform team can provision resources and hand them off as assets for others to use (with proper lineage linking them). This creates clear **contracts and ownership** between those who **produce** assets and those who **consume** them. In other words, assets break down silos by making dependencies explicit and visible to all stakeholders.
+As workflows execute, Kestra automatically captures what they read and produce, building a live catalog with lineage and dependencies. You can instantly see how datasets, files, and resources are connected, what depends on what, and what will be impacted by a change.
 
-In summary, Assets bring much-needed **governance** to orchestration. Instead of treating outputs as ephemeral, they are **persisted as durable records**. This aligns closely with data cataloging and DevOps best practices, but without requiring a separate tool, t**he context lives right inside your Kestra orchestration platform.**
+Every asset keeps a full execution history, making ownership and accountability clear without digging through logs. Assets are searchable and reusable across teams, while metadata enforces best practices like modeling layers, ownership, and environments.
 
-Check the video below for a quick overview of the feature
+The result is governance built directly into orchestration.
+
+Check the video below for a quick overview of the feature.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=SqweJSXueK7uAmST" title="Kestra 1.2 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -102,4 +236,4 @@ Kestra’s vision is to make this even more global. We’re working on plugin en
 
 Kestra Assets represent a significant leap forward in orchestrating with confidence. By treating datasets, files, and infrastructure as first-class citizens, you gain **unprecedented visibility** into your workflows’ footprint. **No other orchestration solution ties the pieces together quite like this,** connecting the dots from raw inputs to final outputs across all your pipelines, **all in one place**. Whether you’re a data engineer ensuring proper analytics data lineage or a platform engineer governing cloud resources, Assets provide the transparency and control needed to operate at an enterprise scale with trust.
 
-**Hello, Assets, and welcome to a new era of governed orchestration!** If you’re as excited as we are about this feature, let’s talk about making it a part of your stack. **This is an Enterprise Edition feature, so [talk to us](https://kestra.io/demo) to implement it in your Kestra platform.**
+Assets is available now in [Kestra Enterprise Edition](https://kestra.io/enterprise). If you're serious about bringing transparency, governance, and control to your data platform, we should talk.[Schedule a personalized demo](https://kestra.io/demo) to see Assets in action with your own use cases and to discuss implementing this in your Kestra platform.The question isn't whether you need governance in your orchestration; it's whether you can afford to keep operating without it.
