@@ -1,5 +1,5 @@
 ---
-// use astro content collection to fetch markdown files from /content/docs
+// use astro content collection to fetch markdown files from /src/contents/docs
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import { buildDocsNavigation } from "../../utils/buildDocsNavigation";
 import LayoutDocs from "../../components/layout-docs.astro";
@@ -23,7 +23,7 @@ const image = new URL(`/meta/docs/${doc.id}.svg`, Astro.url);
 
 const navigation = await buildDocsNavigation();
 
-const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, 'content/')}` : undefined;
+const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/src\/contents\/docs\//, 'src/contents/docs/')}` : undefined;
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>

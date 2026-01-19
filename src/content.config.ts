@@ -6,7 +6,7 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./content/docs",
+        base: "./src/contents/docs",
         generateId,
     }),
     schema: ({ image }) => z.object({
