@@ -7,7 +7,8 @@ const revalidate = 2
 
 // FIXME: adjust the catch to be reliable depending on the content type
 export const middlewareISRCache = defineMiddleware(async (context, next) => {
-    if(import.meta.env.DEV) {
+    // if dev or pregenerate, skip ISR
+    if(import.meta.env.DEV || context.isPrerendered) {
         return next()
     }
 

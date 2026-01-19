@@ -111,7 +111,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue";
     import AiChatDialog from "~/components/ai/AiChatDialog.vue";
-    import KSAIImg from "../docs/icons/ks-ai.svg"
+    import KSAIImg from "../docs/assets/ks-ai.svg"
 </script>
 
 <script>
