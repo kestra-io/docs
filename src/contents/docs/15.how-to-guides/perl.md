@@ -1,6 +1,6 @@
 ---
 title: Run Perl inside of your Flows
-icon: /docs/icons/perl.svg
+icon: /src/assets/icons/perl.svg
 stage: Getting Started
 topics:
   - Scripting

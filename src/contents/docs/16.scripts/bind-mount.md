@@ -1,7 +1,7 @@
 ---
 title: Bind Mount Scripts into Kestra – Run Local Code
 sidebarTitle: Bind Mount
-icon: /docs/icons/dev.svg
+icon: /src/assets/icons/dev.svg
 ---
 
 Use bind-mount to execute locally stored scripts.

@@ -1,7 +1,7 @@
 ---
 title: Working Directory Task – Share Files Across Scripts
 sidebarTitle: Working Directory
-icon: /docs/icons/dev.svg
+icon: /src/assets/icons/dev.svg
 ---
 
 Run multiple tasks in the same working directory sequentially.

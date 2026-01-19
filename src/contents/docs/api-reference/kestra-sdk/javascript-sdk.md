@@ -1,6 +1,6 @@
 ---
 title: Kestra JavaScript SDK
-icon: /docs/icons/api.svg
+icon: /src/assets/icons/api.svg
 release: 1.2.0
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Basic Authentication Troubleshooting in Kestra
 sidebarTitle: Troubleshooting Basic Authentication
-icon: /docs/icons/faq.svg
+icon: /src/assets/icons/faq.svg
 ---
 
 Troubleshoot issues with Basic Authentication.

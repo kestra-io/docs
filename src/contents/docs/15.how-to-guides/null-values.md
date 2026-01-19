@@ -1,6 +1,6 @@
 ---
 title: Handling null and undefined values
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Getting Started 
 topics:
   - Best Practices

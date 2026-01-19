@@ -1,6 +1,6 @@
 ---
 title: Connect Neon Database to Kestra
-icon: /docs/icons/neon.svg
+icon: /src/assets/icons/neon.svg
 stage: Intermediate
 topics:
   - Integrations

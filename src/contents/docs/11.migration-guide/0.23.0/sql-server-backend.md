@@ -1,6 +1,6 @@
 ---
 title: SQL Server backend is no longer supported
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE"]
 ---

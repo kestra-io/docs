@@ -1,6 +1,6 @@
 ---
 title: Configure Monitoring with Grafana & Prometheus
-icon: /docs/icons/grafana.svg
+icon: /src/assets/icons/grafana.svg
 stage: Intermediate
 topics:
   - DevOps

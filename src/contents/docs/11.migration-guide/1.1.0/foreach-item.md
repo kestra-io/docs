@@ -1,6 +1,6 @@
 ---
 title: ForEachItem now starts iteration at 0 instead of 1
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
 ---

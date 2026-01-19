@@ -1,7 +1,7 @@
 ---
 title: Set Up Keycloak SSO for Kestra
 sidebarTitle: Keycloak SSO
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 Set up Keycloak SSO to manage authentication for users.

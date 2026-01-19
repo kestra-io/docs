@@ -1,6 +1,6 @@
 ---
 title: Validate Inputs with Enum Data Type
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components

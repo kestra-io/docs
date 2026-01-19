@@ -1,7 +1,7 @@
 ---
 title: Kestra Quickstart Guide – Run Your First Workflow
 sidebarTitle: Quickstart
-icon: /docs/icons/quickstart.svg
+icon: /src/assets/icons/quickstart.svg
 ---
 
 Start Kestra in a Docker container, and create your first flow.

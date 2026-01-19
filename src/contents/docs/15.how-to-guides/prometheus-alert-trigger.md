@@ -1,6 +1,6 @@
 ---
 title: Trigger a Flow on a Prometheus Alert
-icon: /docs/icons/prometheus.svg
+icon: /src/assets/icons/prometheus.svg
 stage: Intermediate
 topics:
   - DevOps

@@ -1,7 +1,7 @@
 ---
 title: Configure LDAP Authentication for Kestra
 sidebarTitle: LDAP
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE"]
 version: "0.22.0"
 ---

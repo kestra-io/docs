@@ -1,6 +1,6 @@
 ---
 title: Long running and intensive processes on Kubernetes
-icon: /docs/icons/kubernetes.svg
+icon: /src/assets/icons/kubernetes.svg
 stage: Advanced
 topics:
   - DevOps

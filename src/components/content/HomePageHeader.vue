@@ -1,12 +1,14 @@
 <template>
     <div class="home-page-header">
         <h2>{{ title }}</h2>
-        <img src="/docs/ui/kestra-logo-big.png" alt="Kestra Logo" class="kestra-logo" />
+        <img :src="kestraLogoBig.src" alt="Kestra Logo" class="kestra-logo" />
         <slot/>
     </div>
 </template>
 
 <script setup>
+    import kestraLogoBig from '../../assets/ui/kestra-logo-big.png';
+
     const props = defineProps({
         title: {
             type: String,

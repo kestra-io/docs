@@ -1,6 +1,6 @@
 ---
 title: Split notifications plugins (Non-Breaking Change)
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 1.2.0
 ---
 

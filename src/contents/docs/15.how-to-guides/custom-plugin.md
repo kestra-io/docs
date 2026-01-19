@@ -1,6 +1,6 @@
 ---
 title: Build a Custom Plugin for Kestra
-icon: /docs/icons/plugins.svg
+icon: /src/assets/icons/plugins.svg
 stage: Advanced
 topics:
   - Kestra Concepts

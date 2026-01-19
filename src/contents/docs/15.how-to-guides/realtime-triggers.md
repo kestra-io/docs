@@ -1,6 +1,6 @@
 ---
 title: Realtime Triggers
-icon: /docs/icons/plugins.svg
+icon: /src/assets/icons/plugins.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components

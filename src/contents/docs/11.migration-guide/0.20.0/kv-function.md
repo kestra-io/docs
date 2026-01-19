@@ -1,6 +1,6 @@
 ---
 title: Retrieving KV pairs from other namespaces
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.20.0
 editions: ["EE"]
 ---

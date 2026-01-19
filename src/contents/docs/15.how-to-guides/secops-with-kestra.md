@@ -1,6 +1,6 @@
 ---
 title: SecOps with Kestra
-icon: /docs/icons/servicenow.svg
+icon: /src/assets/icons/servicenow.svg
 stage: Intermediate
 topics:
   - Integrations

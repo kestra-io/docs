@@ -1,6 +1,6 @@
 ---
 title: Slack Events API
-icon: /docs/icons/slack.svg
+icon: /src/assets/icons/slack.svg
 stage: Getting Started
 topics:
   - Integrations

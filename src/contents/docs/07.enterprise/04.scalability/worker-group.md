@@ -1,7 +1,7 @@
 ---
 title: Worker Groups in Kestra Enterprise – Configure Targeted Workers
 sidebarTitle: Worker Group
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE"]
 version: ">= 0.10.0"
 ---

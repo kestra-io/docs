@@ -1,6 +1,6 @@
 ---
 title: Retrieving non-existing secrets
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS"]
 ---

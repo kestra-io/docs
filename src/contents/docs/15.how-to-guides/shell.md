@@ -1,6 +1,6 @@
 ---
 title: Run Shell scripts inside of your Flows
-icon: /docs/icons/bash.svg
+icon: /src/assets/icons/bash.svg
 stage: Getting Started
 topics:
   - Scripting

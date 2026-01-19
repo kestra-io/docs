@@ -1,6 +1,6 @@
 ---
 title: Interacting with JSONs in Kestra 
-icon: /docs/icons/api.svg
+icon: /src/assets/icons/api.svg
 stage: Getting Started
 topics:
   - Integrations

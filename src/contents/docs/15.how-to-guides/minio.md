@@ -1,6 +1,6 @@
 ---
 title: Configure Local MinIO Storage for Kestra
-icon: /docs/icons/minio.svg
+icon: /src/assets/icons/minio.svg
 stage: Intermediate
 topics:
 - DevOps

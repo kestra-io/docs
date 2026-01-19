@@ -1,6 +1,6 @@
 ---
 title: Internal Package Structure Changes (Custom Plugins Only)
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
 ---

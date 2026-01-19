@@ -1,7 +1,7 @@
 ---
 title: Single Sign-On for Kestra – Providers and Setup
 sidebarTitle: SSO
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 

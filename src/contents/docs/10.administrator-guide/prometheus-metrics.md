@@ -1,7 +1,7 @@
 ---
 title: Prometheus Metrics in Kestra – Endpoint and Signals
 sidebarTitle: Prometheus Metrics
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.

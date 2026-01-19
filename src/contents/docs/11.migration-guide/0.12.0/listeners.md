@@ -1,6 +1,6 @@
 ---
 title: Deprecation of Listeners
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.12.0
 ---
 

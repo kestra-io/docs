@@ -1,7 +1,7 @@
 ---
 title: Set Up authentik SSO for Kestra
 sidebarTitle: authentik SSO
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 Set up authentik SSO to manage authentication for users.

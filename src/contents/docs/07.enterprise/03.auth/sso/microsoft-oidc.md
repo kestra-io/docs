@@ -1,7 +1,7 @@
 ---
 title: Set Up Microsoft OIDC SSO for Kestra
 sidebarTitle: Microsoft OIDC SSO
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 

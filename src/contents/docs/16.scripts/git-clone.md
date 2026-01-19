@@ -1,7 +1,7 @@
 ---
 title: Git Clone Task – Fetch Repos for Script Workflows
 sidebarTitle: Git Clone task
-icon: /docs/icons/dev.svg
+icon: /src/assets/icons/dev.svg
 ---
 
 Clone a Git repository and use the files in your tasks.

@@ -1,7 +1,7 @@
 ---
 title: System Flows in Kestra – Automate Platform Maintenance
 sidebarTitle: System Flows
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["OSS", "EE"]
 version: ">= 0.19.0"
 ---

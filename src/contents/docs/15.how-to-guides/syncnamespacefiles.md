@@ -1,6 +1,6 @@
 ---
 title: Sync Namespace Files from a Git Repository
-icon: /docs/icons/git.svg
+icon: /src/assets/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control

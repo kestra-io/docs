@@ -1,6 +1,6 @@
 ---
 title: Make HTTP Requests inside of your flows
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations

@@ -1,7 +1,7 @@
 ---
 title: Kestra CI/CD Pipelines – Validate and Deploy Flows
 sidebarTitle: CI/CD Pipeline
-icon: /docs/icons/dev.svg
+icon: /src/assets/icons/dev.svg
 ---
 
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.

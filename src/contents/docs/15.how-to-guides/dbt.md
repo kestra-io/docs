@@ -1,6 +1,6 @@
 ---
 title: Manage dbt projects with Kestra's Code Editor
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations

@@ -1,6 +1,6 @@
 ---
 title: Deprecation of State Store in favor of KV Store
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.19.0
 ---
 

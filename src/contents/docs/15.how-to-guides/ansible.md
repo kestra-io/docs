@@ -1,6 +1,6 @@
 ---
 title: Check Machine Resources and Tool Versions with Ansible and Kestra
-icon: /docs/icons/ansiblecli.svg
+icon: /src/assets/icons/ansiblecli.svg
 stage: Intermediate
 ---
 

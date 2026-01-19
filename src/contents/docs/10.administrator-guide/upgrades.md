@@ -1,7 +1,7 @@
 ---
 title: Manage Kestra Upgrades – Rolling and Rollback
 sidebarTitle: Managing Upgrades
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Kestra evolves quickly. This page explains how to upgrade your installation.

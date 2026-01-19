@@ -1,7 +1,7 @@
 ---
 title: RBAC in Kestra Enterprise – Manage Roles and Permissions
 sidebarTitle: Role-Based Access Control (RBAC)
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: iam
 ---
