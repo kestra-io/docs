@@ -54,7 +54,14 @@
             "binding": "ISR_CACHE",
             "id": "c7003b3ecfc2485bb2efb713d75da274"
         }
-    ]
+    ],
+    "env": {
+        "preview": {
+            "vars": {
+                "NO_IMAGE_OPTIM": "true"
+            }
+        }
+    }
     /**
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables

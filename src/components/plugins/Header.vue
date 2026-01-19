@@ -62,7 +62,7 @@
     import Close from "vue-material-design-icons/Close.vue"
     import {useMediaQuery} from '@vueuse/core'
     import {formatCategoryName} from "~/utils/pluginUtils";
-    import KSAIImg from "../docs/icons/ks-ai.svg"
+    import KSAIImg from "../docs/assets/ks-ai.svg"
 
     const isMobile = useMediaQuery('(max-width: 991px)')
 

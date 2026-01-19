@@ -59,7 +59,7 @@
   import Keyboard from "vue-material-design-icons/Keyboard.vue"
   import Menu from "vue-material-design-icons/Menu.vue"
   import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
-  import KSAIImg from "./icons/ks-ai.svg"
+  import KSAIImg from "./assets/ks-ai.svg"
 
   const props = defineProps({
         type: {

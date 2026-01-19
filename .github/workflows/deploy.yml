@@ -44,6 +44,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
       - name: Generate slug variables
         uses: rlespinasse/github-slug-action@v4
