@@ -1,5 +1,7 @@
 import type { R2Bucket, RequestInitCfPropertiesImage, ExecutionContext } from "@cloudflare/workers-types";
 
+export const prerender = false;
+
 interface ImageResizeOptions {
   cf: {
     image: RequestInitCfPropertiesImage;
