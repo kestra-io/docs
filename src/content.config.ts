@@ -51,7 +51,6 @@ export const collections = {
             twitter: z.string().optional(),
             role: z.string().nullable().optional(),
         })).optional(),
-        // image: image(),
         image: image().optional(),
         rightBar: z.boolean().optional(),
         plugins: z.array(z.string()).optional(),
