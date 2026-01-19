@@ -1,7 +1,7 @@
 ---
 title: "Performance Upgrades for Enterprise in Kestra 1.2"
 description: "TODO"
-date: 2026-01-20T13:00:00
+date: 2026-01-19T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
