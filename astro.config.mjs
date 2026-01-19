@@ -23,7 +23,8 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A
 export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
-        imageService: "cloudflare"
+        // only use cloudflare images in production
+        imageService: process.env.NODE_ENV === "production" ? "cloudflare" : "passthrough"
     }),
     trailingSlash: "ignore",
     integrations: [
