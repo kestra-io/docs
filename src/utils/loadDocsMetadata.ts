@@ -1,7 +1,7 @@
 import type { CollectionEntry } from 'astro:content';
 import yaml from 'js-yaml';
 import generateId from '~/utils/generateId';
-const files = import.meta.glob("../../content/docs/**/*.md", { query: '?raw', import: 'default' });
+const files = import.meta.glob("../../src/contents/docs/**/*.md", { query: '?raw', import: 'default' });
 
 export default async function loadDocsMetadata() {
   // first retrieve all blog posts file paths
@@ -15,7 +15,7 @@ export default async function loadDocsMetadata() {
       const metadata = yaml.load(metadataRaw) as unknown as unknown as CollectionEntry<"docs">["data"];
       return {
         data: metadata,
-        id: generateId({entry: filePath.slice(24)}), // remove ../../content/docs/ from the path
+        id: generateId({entry: filePath.slice(29)}), // remove ../../src/contents/docs/ from the path
       };
     }
     return null;
