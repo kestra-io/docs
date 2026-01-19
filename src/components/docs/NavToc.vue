@@ -64,12 +64,18 @@
     import {ref} from "vue";
     import type {PluginMetadata} from "@kestra-io/ui-libs";
     import {useEventListener, useScroll} from "@vueuse/core";
-    import type {TocLink} from "~/server/api/plugins";
-    import type {ReleaseInfo} from "~/server/api/github-releases";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import SocialsList from "~/components/common/SocialsList.vue";
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue";
+    import type { ReleaseInfo } from "../../pages/api/github-releases";
+
+    export interface TocLink {
+        id: string;
+        depth: number;
+        text: string;
+        children?: TocLink[];
+    }
 
     const props = withDefaults(
         defineProps<{
@@ -128,13 +134,24 @@
         window.scrollTo({ top, behavior: "smooth" });
     };
 
+    let timeOut: ReturnType<typeof setTimeout> | undefined;
+
     const updateActiveLink = (id: string): void => {
-        setTimeout(() => {
-            removeActiveClasses();
-            const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement;
-            link?.classList.add("active");
-        }, 600);
+        removeActiveClasses();
+        const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement;
+        link?.classList.add("active");
+        link?.scrollIntoView({ block: "nearest" });
     };
+
+    function updateActiveLinkDelayed(id: string, delay: number): void {
+        if(timeOut) {
+            clearTimeout(timeOut);
+            timeOut = undefined;
+        }
+        timeOut = setTimeout(() => {
+            updateActiveLink(id);
+        }, delay);
+    }
 
     const menuNavigate = (e: Event): void => {
         const anchor = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null;
@@ -154,7 +171,8 @@
             }
         }
 
-        updateActiveLink(id);
+        // wait until scroll is finished
+        updateActiveLinkDelayed(id, 600);
     };
 
     const closeToc = (): void => {
@@ -173,9 +191,7 @@
         if (typeof currEl?.top === "number" && currEl.top <= 160) {
             const prevTop = prevEl?.top ?? -1;
             if (prevTop === -1 || prevTop <= 0) {
-                removeActiveClasses();
-                const link = document.querySelector(`#nav-toc a[href="#${item.id}"]`) as HTMLElement;
-                link?.classList.add("active");
+                updateActiveLink(item.id);
             }
         }
     };
@@ -232,7 +248,7 @@
             display: none;
         }
 
-        >div {
+        > div {
             height: fit-content;
             @include media-breakpoint-up(lg) {
                 position: sticky;
@@ -311,6 +327,7 @@
                     color: var(--ks-content-secondary);
                     font-weight: 500;
                     cursor: pointer;
+                    scroll-margin: 3rem;
 
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
