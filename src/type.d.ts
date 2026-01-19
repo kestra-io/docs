@@ -49,6 +49,18 @@ interface Story {
     whatNext?: string; //TODO: in API
 }
 
+interface PluginInformation {
+    name?: string;
+    className?: string;
+    elementCounts: number;
+    blueprints?: number;
+    title: string;
+    description?: string;
+    categories?: string[];
+    icon?: string;
+    subGroup?: string;
+}
+
 type KVNamespace = import('@cloudflare/workers-types').KVNamespace
 type ENV = {
   ISR_CACHE: KVNamespace

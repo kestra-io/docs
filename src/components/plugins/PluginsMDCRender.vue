@@ -15,7 +15,7 @@
             @navigate="navigateTo($event)"
         >
             <template v-slot:markdown="{ content }">
-                <MDCParserAndRenderer :content />
+                <MDCParserAndRenderer :content class="long" />
             </template>
         </PluginIndex>
         <Suspense v-else>
@@ -75,6 +75,30 @@ function navigateTo(url: string) {
 
         :deep(code) {
             border: none !important;
+        }
+
+        :deep(.long) {
+            a {
+                color: var(--ks-content-link);
+
+                &:hover {
+                    color: var(--ks-content-link-hover);
+                }
+            }
+
+            h3 {
+                font-size: 18.4px;
+                font-weight: 600;
+            }
+
+            p, h4, li {
+                font-size: 16px;
+                line-height: 1.5rem;
+            }
+
+            h4 {
+                font-weight: 600;
+            }
         }
     }
 

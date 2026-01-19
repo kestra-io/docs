@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href">
+    <a :href="href">
         <div class="plugin">
             <div class="top-row">
                 <div class="icon-content">
@@ -7,14 +7,14 @@
                 </div>
                 <div class="content">
                     <div class="title-row">
-                        <h6>{{ capitalizedTitle }}</h6>
-                        <span v-if="plugin.license" class="enterprise-badge">Enterprise</span>
+                        <h6>{{ props.plugin.title?.replace(/\s*\(EE\)\s*$/i, "") }}</h6>
+                        <span v-if="props.plugin.className?.includes('.ee.')" class="enterprise-badge">Enterprise</span>
                     </div>
-                    <p v-if="description" class="description">{{ description }}</p>
+                    <p v-if="props.plugin.description" class="description">{{ props.plugin.description }}</p>
                 </div>
             </div>
-            <div v-if="plugin.categories?.length" class="categories">
-                <span v-for="category in plugin.categories" :key="category" class="category-tag">
+            <div v-if="props.plugin.categories?.length" class="categories">
+                <span v-for="category in props.plugin.categories" :key="category" class="category-tag">
                     {{ formatCategoryName(category) }}
                 </span>
             </div>
@@ -22,42 +22,29 @@
                 <hr>
                 <div class="bottom-row">
                     <div class="left">
-                        <p v-if="elementTotal">{{ elementTotal }} <span>Tasks</span></p>
-                        <p v-if="blueprintsCount">{{ blueprintsCount }} <span>Blueprints</span></p>
+                        <p v-if="props.plugin.elementCounts">{{ props.plugin.elementCounts }} <span>Tasks</span></p>
+                        <p v-if="props.plugin.blueprints">{{ props.plugin.blueprints }} <span>Blueprints</span></p>
                     </div>
                     <ChevronRight />
                 </div>
             </div>
         </div>
-    </NuxtLink>
+    </a>
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue";
-    import {slugify, usePluginElementCounts, type Plugin, type PluginMetadata} from "@kestra-io/ui-libs"
+    import {computed} from "vue";
     import {formatCategoryName} from "~/utils/pluginUtils";
+    import {slugify} from "@kestra-io/ui-libs";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 
-    const props = withDefaults(defineProps<{
-        plugin: Plugin;
-        icons?: Record<string, any>;
-        blueprintsCount?: number;
-        metadataMap?: Record<string, PluginMetadata>;
-    }>(), {
-        icons: undefined,
-        blueprintsCount: 0,
-        metadataMap: undefined
-    });
-
-    const key = computed(() => props.plugin.subGroup ?? props.plugin.group);
-
-    const metadata = computed(() => {
-        return props.metadataMap?.[key.value];
-    });
+    const props = defineProps<{
+        plugin: PluginInformation;
+    }>();
 
     const iconSrc = computed(() => {
-        if (props.icons?.[key.value]) {
-            return `data:image/svg+xml;base64,${props.icons[key.value]}`;
+        if (props.plugin.icon) {
+            return `data:image/svg+xml;base64,${props.plugin.icon}`;
         }
 
         return "/icon.svg";
@@ -70,16 +57,6 @@
         }
         return `${base}/${slugify(props.plugin.title)}`;
     });
-
-    const capitalizedTitle = computed(() => {
-        const title = (metadata.value?.title ?? props.plugin.title)?.replace(/\s*\(EE\)\s*$/i, "");
-        return title?.charAt(0).toUpperCase() + title?.slice(1);
-    });
-
-    const description = computed(() => metadata.value?.description ?? props.plugin.description);
-
-    const {total: elementTotal} = usePluginElementCounts(props.plugin);
-
 </script>
 
 <style scoped lang="scss">

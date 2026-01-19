@@ -1,7 +1,7 @@
 import {  $fetchApi } from "~/utils/fetch";
 
 function colorFixedB64Icon(b64Icon: string) {
-    return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replace(/currentColor/g, "#CAC5DA")).toString('base64');
+    return Buffer.from(Buffer.from(b64Icon, 'base64').toString('utf-8').replace(/currentColor/g, "#000000")).toString('base64');
 }
 
 export function getPluginIconsAsString(icons: Record<string, {icon: string}>) {
