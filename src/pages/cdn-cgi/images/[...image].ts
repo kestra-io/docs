@@ -79,13 +79,27 @@ async function getFromR2(r2: R2Bucket | undefined, key: string): Promise<Respons
 }
 
 /**
+ * Make a unique code to store/retrieve image from R2
+ * @param input
+ * @returns
+ */
+async function makeHash(input: string){
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(input)).then(hashBuffer => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    });
+}
+
+/**
  * Cloudflare Worker handler for image resizing
  * @see https://developers.cloudflare.com/images/transform-images/transform-via-workers/
  */
 export async function GET({ request, params, locals }: { request: Request; params: { image: string }; locals: Locals }) {
     const r2 = locals.runtime?.env?.IMAGE_CACHE;
 
-    const r2Response = await getFromR2(r2, params.image);
+    const imageKey = await makeHash(params.image);
+
+    const r2Response = await getFromR2(r2, imageKey);
     if (r2Response) {
         return r2Response;
     }
@@ -127,10 +141,10 @@ export async function GET({ request, params, locals }: { request: Request; param
     // deal with caching the files in cloudflare R2
     // Use waitUntil to save to R2 in the background without blocking the response
     if (locals.runtime?.ctx) {
-        locals.runtime.ctx.waitUntil(saveToR2(r2, params.image, imageResponse.clone()));
+        locals.runtime.ctx.waitUntil(saveToR2(r2, imageKey, imageResponse.clone()));
     } else {
         // Fallback for environments without waitUntil
-        saveToR2(r2, params.image, imageResponse.clone());
+        saveToR2(r2, imageKey, imageResponse.clone());
     }
 
     return imageResponse;
