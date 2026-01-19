@@ -6,7 +6,7 @@ category: Solutions
 authors:
   - name: "Martin-Pierre Roset"
     image: mproset
-image: /todo
+image: /blogs/hello-assets.jpg
 ---
 
 **Assets is** a powerful new capability inside Kestra (Enterprise Edition) that brings stateful resources into the orchestration layer. With Assets, you can declare **analytics datasets, tables, files, cloud resources,** and more as first-class objects in your workflows. This transforms traditional pipelines into **fully governed workflows,** complete with automatic **data lineage, dependency graphs, and asset catalogs** visible across teams.
