@@ -72,8 +72,16 @@
                         <BlogCard :blog="blog" data-usal="zoomin" />
                     </div>
                 </div>
+                <CommonPaginationContainer
+                    :current-url="fullPath"
+                    :total-items="blogsList.length"
+                    @update="(payload) => {
+                        pageNo = payload.page;
+                        itemsPerPage = payload.size
+                    }"
+                />
             </div>
-            <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
+            <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3 mb-4">
                 <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
                     <BlogCard :blog="news" data-usal="zoomin" />
@@ -82,14 +90,7 @@
                     <button class="btn btn-dark w-100">More news</button>
                 </NuxtLink>
             </div>
-            <CommonPaginationContainer
-                :current-url="fullPath"
-                :total-items="blogsList.length"
-                @update="(payload) => {
-                    pageNo = payload.page;
-                    itemsPerPage = payload.size
-                }"
-            />
+
         </div>
     </div>
 </template>
@@ -236,6 +237,8 @@ export default {
     border: $block-border;
     height: fit-content;
     padding: 2.25rem 2rem;
+    position: sticky;
+    top: 80px;
 
     .heading {
         color: $white;

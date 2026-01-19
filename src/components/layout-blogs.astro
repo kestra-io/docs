@@ -16,8 +16,8 @@ const description = props.description ?? "Explore the Kestra Blog for the latest
 ---
 
 <Layout title={title} description={description} image={props.image}>
-    <div class="layout-docs-wrapper">
-        <main class="bd-content px-0">
+    <div class="layout-blogs-wrapper">
+        <div class="bd-content px-0">
             <div class="container-fluid">
                 <div class="container">
                     <slot/>
@@ -26,29 +26,22 @@ const description = props.description ?? "Explore the Kestra Blog for the latest
             <div class="bottom">
                 <Updateletter />
             </div>
-        </main>
+        </div>
     </div>
 </Layout>
 
 <style lang="scss">
     @import "~/assets/styles/variable";
-    .layout-docs-wrapper {
+    .layout-blogs-wrapper {
         display: flex;
         flex-direction: row;
         margin: 0;
         padding: 0;
+        overflow: visible;
     }
-    main {
+    .bd-content {
         flex: 1;
         padding: 1rem;
         max-width: 100%;
-    }
-    .bd-sidebar{
-        min-width: 250px;
-        white-space: normal;
-        .ai-button-wrapper, .search {
-            height: 32px;
-            width: 209px;
-        }
     }
 </style>

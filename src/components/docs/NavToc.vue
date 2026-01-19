@@ -213,8 +213,6 @@
         @include media-breakpoint-up(lg) {
             padding: 2rem 0;
             max-height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
             min-width: 250px;
             z-index: 10;
 
@@ -235,10 +233,12 @@
         }
 
         >div {
+            height: fit-content;
             @include media-breakpoint-up(lg) {
                 position: sticky;
-                top: 0;
+                top: 80px;
                 width: 100%;
+                overflow-x: hidden;
                 overflow-y: auto;
             }
         }
