@@ -7,39 +7,42 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: TODO
+image: /blogs/perf-1-2.jpg
 ---
 
-In [Kestra 1.1](https://kestra.io/blogs/performance-improvements-1-1), TODO...
+In [Kestra 1.1](https://kestra.io/blogs/performance-improvements-1-1), we continued our ongoing effort to make Kestra faster and more scalable under large workloads. This release focuses on reducing execution overhead in common scenarios, especially when working with large namespaces and highly parallel workflows.
 
-## Paralll loading for namespace files
+## Parallel loading for namespace files
 
-In this release, [FourFriend](https://github.com/FourFriends) contributed a significant optimization to how Kestra downloads namespace files when used in script tasks.
+In Kestra 1.1, [FourFriend](https://github.com/FourFriends) contributed a significant optimization to how Kestra downloads namespace files when they are used in script tasks.
 
-Previously, Kestra would download each namespace file sequentially before running the task.
+Previously, Kestra downloaded each namespace file sequentially before starting the task execution. For workflows with many files, this could introduce noticeable startup latency.
 
-Now, Kestra uses a parallel download strategy to download all namespace files in parallel using 4 times the number of available cores, with a minimum of 32.
-To avoid overloading the network, this limit applies to the entire instance, and a single task can use only half that limit. This balances single-task performance with overall global instance performance.
+Kestra now uses a **parallel download strategy**, downloading all namespace files concurrently using **4× the number of available CPU cores**, with a minimum of **32 parallel downloads**. To avoid saturating the network, this limit is enforced at the **instance level**, and a single task can use at most **half of the global limit**. This approach balances fast task startup with predictable, stable performance across the entire instance.
 
-Preliminary tests showed an 8x to 32x performance improvement depending on the number of available cores.
+Preliminary benchmarks show **8× to 32× faster startup times**, depending on the number of available cores and files.
 
-Check out [PR #13375](https://github.com/kestra-io/kestra/pull/13375) for more details.
+For implementation details, see [PR #13375](https://github.com/kestra-io/kestra/pull/13375).
 
-## ForEach with concurrency performance improvements
+## ForEach concurrency performance improvements
 
-Our JDBC backend handles execution messages concurrently to optimize throughput.
-This optimization is important, but when multiple execution messages target the same execution, it can create contention on the database, as each execution message locks the execution row to avoid race conditions.
-This only affects executions with parallel branches, such as when using the `Parallel` or `ForEach` task with a `concurrencyLimit` greater than 1.
+Kestra’s JDBC backend processes execution messages concurrently to maximize throughput. While this is essential for performance, it can lead to contention when many execution messages target the **same execution**, as each message must lock the execution row to prevent race conditions.
 
-In Kestra 1.2, we mitigate this contention by grouping execution messages by execution ID and executing the groups concurrently instead of the individual messages.
+This behavior primarily affects workflows with parallel branches, such as `Parallel` or `ForEach` tasks using a `concurrencyLimit` greater than 1.
 
-Preliminary tests showed a 2x performance improvement in an execution with 100 `ForEach` iterations with unlimited concurrency.
+In Kestra 1.2, we significantly reduce this contention by **grouping execution messages by execution ID** and executing those groups concurrently, rather than processing each message independently. This minimizes database locking while preserving correctness.
 
-Check out [PR #13215](https://github.com/kestra-io/kestra/pull/13215) for more details.
+Preliminary tests demonstrate a **2× performance improvement** on workflows with 100 `ForEach` iterations running with unlimited concurrency.
+
+More details are available in [PR #13215](https://github.com/kestra-io/kestra/pull/13215).
 
 ## Conclusion
 
-TODO
+These improvements may seem low-level, but they directly impact day-to-day user experience: faster task startup, better scalability under concurrency, and more predictable performance as workloads grow.
+
+By continuing to optimize critical execution paths—from file loading to database coordination—Kestra scales more efficiently without requiring workflow changes. Whether you’re running a handful of scripts or orchestrating thousands of parallel tasks, each release brings tangible performance gains where they matter most.
+
+And we’re not done yet—performance remains a core focus as we push Kestra further toward large-scale orchestration.
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
