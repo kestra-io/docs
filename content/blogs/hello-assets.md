@@ -264,8 +264,7 @@ No more tribal knowledge. No more archaeological digs through logs and code. No 
 
 Assets is available now in [Kestra Enterprise Edition](https://kestra.io/enterprise). If you’re serious about bringing transparency, governance, and control to your data platform, we should talk. Schedule a personalized demo to see Assets in action with your own use cases and to discuss implementing this in your Kestra platform.
 
-**The question isn’t whether you need governance in your orchestration — it’s whether you can afford to keep operating without it.**
-
-→ [Schedule a Demo](https://kestra.io/demo)
-→ [Explore Enterprise Edition](https://kestra.io/enterprise)
-→ [Read the Documentation](https://kestra.io/docs/enterprise/governance/assets)
+**The question isn’t whether you need governance in your orchestration — it’s whether you can afford to keep operating without it.**<br>
+→ [Schedule a Demo](https://kestra.io/demo) <br>
+→ [Explore Enterprise Edition](https://kestra.io/enterprise)<br>
+→ [Read the Documentation](https://kestra.io/docs/enterprise/governance/assets)<br>
