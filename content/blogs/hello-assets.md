@@ -4,8 +4,9 @@ description: "Kestra Assets bring data and infrastructure governance into your w
 date: 2026-01-20T13:00:00
 category: Solutions
 authors:
-  - name: "Martin-Pierre Roset"
-    image: mproset
+  - name: "Emmanuel Darras"
+    image: edarras
+    role: CEO & Co-Founder
 image: /blogs/hello-assets.jpg
 ---
 
