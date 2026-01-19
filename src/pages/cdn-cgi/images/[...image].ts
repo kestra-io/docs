@@ -1,4 +1,4 @@
-import type { RequestInitCfPropertiesImage } from "@cloudflare/workers-types";
+import type { R2Bucket, RequestInitCfPropertiesImage, ExecutionContext } from "@cloudflare/workers-types";
 
 interface ImageResizeOptions {
   cf: {
@@ -6,27 +6,111 @@ interface ImageResizeOptions {
   };
 }
 
+interface RuntimeEnv {
+  IMAGE_CACHE?: R2Bucket;
+}
+
+interface Locals {
+  runtime?: {
+    env: RuntimeEnv;
+    ctx: ExecutionContext;
+  };
+}
+
+/**
+ * Save generated image file to R2 for caching by key
+ * @param r2 - R2 bucket instance
+ * @param key - Cache key for the image
+ * @param response - Response object containing the image data
+ */
+async function saveToR2(r2: R2Bucket | undefined, key: string, response: Response): Promise<void> {
+    if (!r2) {
+        console.warn('R2 bucket not configured, skipping cache save');
+        return;
+    }
+
+    try {
+        const contentType = response.headers.get('content-type') || 'image/webp';
+        const body = await response.arrayBuffer();
+
+        await r2.put(key, body, {
+            httpMetadata: {
+                contentType,
+                cacheControl: 'public, max-age=31536000, immutable',
+            },
+        });
+    } catch (error) {
+        console.error('Failed to save image to R2:', error);
+    }
+}
+
+/**
+ * Get cached image from R2 by key
+ * @param r2 - R2 bucket instance
+ * @param key - Cache key for the image
+ * @returns Response with cached image or null if not found
+ */
+async function getFromR2(r2: R2Bucket | undefined, key: string): Promise<Response | null> {
+    if (!r2) {
+        return null;
+    }
+
+    try {
+        const object = await r2.get(key);
+
+        if (!object) {
+            return null;
+        }
+
+        const headers = new Headers();
+        headers.set('content-type', object.httpMetadata?.contentType || 'image/webp');
+        headers.set('cache-control', object.httpMetadata?.cacheControl || 'public, max-age=31536000, immutable');
+        headers.set('etag', object.httpEtag);
+
+        return new Response(object.body as unknown as BodyInit, {
+            headers,
+        });
+    } catch (error) {
+        console.error('Failed to get image from R2:', error);
+        return null;
+    }
+}
+
 /**
  * Cloudflare Worker handler for image resizing
  * @see https://developers.cloudflare.com/images/transform-images/transform-via-workers/
  */
-export async function GET({ request }: { request: Request }) {
-    // Parse request URL to get access to query string
-    const url = new URL(request.url);
+export async function GET({ request, params, locals }: { request: Request; params: { image: string }; locals: Locals }) {
+    const r2 = locals.runtime?.env?.IMAGE_CACHE;
 
-    // Cloudflare-specific options are in the cf object.
-    const options: ImageResizeOptions = { cf: { image: {} } };
+    const r2Response = await getFromR2(r2, params.image);
+    if (r2Response) {
+        return r2Response;
+    }
+
+    const [imageOptions, imageURL] = params.image.split('/') ?? [];
+
+    const rawOptions = (new URL(`http://example.com?${imageOptions}`)).searchParams
+
+    const imageRequest = new Request(imageURL, {
+      headers: request.headers,
+    });
+
+    const options: ImageResizeOptions = { cf: { image: {} } } ;
 
     // Copy parameters from query string to request options.
     // You can implement various different parameters here.
-    if (url.searchParams.has("fit"))
-      options.cf.image.fit = url.searchParams.get("fit") as RequestInitCfPropertiesImage["fit"];
-    if (url.searchParams.has("width"))
-      options.cf.image.width = Number(url.searchParams.get("width"));
-    if (url.searchParams.has("height"))
-      options.cf.image.height = Number(url.searchParams.get("height"));
-    if (url.searchParams.has("quality"))
-      options.cf.image.quality = Number(url.searchParams.get("quality"));
+    if (rawOptions.has("fit"))
+      options.cf.image.fit = rawOptions.get("fit") as any
+    if (rawOptions.has("width"))
+      options.cf.image.width = rawOptions.get("width") as any
+    if (rawOptions.has("height"))
+      options.cf.image.height = rawOptions.get("height") as any
+    if (rawOptions.has("quality"))
+      options.cf.image.quality = rawOptions.get("quality") as any
+
+    if (rawOptions.has("format"))
+        options.cf.image.format = rawOptions.get("format") as any
 
     // Your Worker is responsible for automatic format negotiation. Check the Accept header.
     const accept = request.headers.get("Accept") ?? "";
@@ -36,39 +120,16 @@ export async function GET({ request }: { request: Request }) {
       options.cf.image.format = "webp";
     }
 
-    // Get URL of the original (full size) image to resize.
-    // You could adjust the URL here, e.g., prefix it with a fixed address of your server,
-    // so that user-visible URLs are shorter and cleaner.
-    const imageURL = url.searchParams.get("image");
-    if (!imageURL) {
-      return new Response('Missing "image" value', { status: 400 });
+    const imageResponse = await fetch(imageRequest, options as RequestInit);
+
+    // deal with caching the files in cloudflare R2
+    // Use waitUntil to save to R2 in the background without blocking the response
+    if (locals.runtime?.ctx) {
+        locals.runtime.ctx.waitUntil(saveToR2(r2, params.image, imageResponse.clone()));
+    } else {
+        // Fallback for environments without waitUntil
+        saveToR2(r2, params.image, imageResponse.clone());
     }
 
-    try {
-      // TODO: Customize validation logic
-      const { hostname, pathname } = new URL(imageURL);
-
-      // Optionally, only allow URLs with JPEG, PNG, GIF, or WebP file extensions
-      // @see https://developers.cloudflare.com/images/url-format#supported-formats-and-limitations
-      if (!/\.(jpe?g|png|gif|webp)$/i.test(pathname)) {
-        return new Response("Disallowed file extension", { status: 400 });
-      }
-
-      // Demo: Only accept "example.com" images
-      if (hostname !== "example.com") {
-        return new Response('Must use "example.com" source images', {
-          status: 403,
-        });
-      }
-    } catch {
-      return new Response('Invalid "image" value', { status: 400 });
-    }
-
-    // Build a request that passes through request headers
-    const imageRequest = new Request(imageURL, {
-      headers: request.headers,
-    });
-
-    // Returning fetch() with resizing options will pass through response with the resized image.
-    return fetch(imageRequest, options as RequestInit);
+    return imageResponse;
 };

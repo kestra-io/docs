@@ -54,6 +54,12 @@
             "binding": "ISR_CACHE",
             "id": "c7003b3ecfc2485bb2efb713d75da274"
         }
+    ],
+    "r2_buckets": [
+        {
+            "binding": "IMAGE_CACHE",
+            "bucket_name": "astro-workers-images"
+        }
     ]
     /**
      * Environment Variables
