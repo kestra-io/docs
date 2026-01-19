@@ -7,7 +7,7 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-dark-version.png"
+                :src="logoDarkVersion.src"
             />
             <p class="title">Dark version</p>
             <p class="description">Use this version when working on a dark background to ensure our name remains readable.</p>
@@ -20,7 +20,7 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-light-version.png"
+                :src="logoLightVersion.src"
             />
             <p class="title">Light version</p>
             <p class="description">This is the preferred option when working with a light background.</p>
@@ -33,13 +33,19 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-monogram-version.png"
+                :src="logoMonogramVersion.src"
             />
             <p class="title">Monogram</p>
             <p class="description">The wordmark colors adapt based on the background, while the icon remains without a background when placed on a dark background.</p>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+    import logoDarkVersion from '../../assets/logos/logo-dark-version.png';
+    import logoLightVersion from '../../assets/logos/logo-light-version.png';
+    import logoMonogramVersion from '../../assets/logos/logo-monogram-version.png';
+</script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
