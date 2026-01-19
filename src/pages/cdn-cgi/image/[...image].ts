@@ -104,7 +104,9 @@ export async function GET({ request, params, locals }: { request: Request; param
         return r2Response;
     }
 
-    const [imageOptions, imageURL] = params.image.split('/') ?? [];
+    const [imageOptions, ...imageURLParts] = params.image.split('/') ?? [];
+
+    const imageURL = imageURLParts.join('/');
 
     const rawOptions = (new URL(`http://example.com?${imageOptions}`)).searchParams
 
