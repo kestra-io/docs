@@ -1,7 +1,7 @@
 ---
 title: AI Workflows in Kestra – Orchestrate with Your Preferred LLM
 sidebarTitle: AI Workflows
-icon: /docs/icons/ai.svg
+icon: /src/assets/icons/ai.svg
 version: "1.0.0"
 ---
 

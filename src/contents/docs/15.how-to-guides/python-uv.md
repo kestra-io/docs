@@ -1,6 +1,6 @@
 ---
 title: Manage Python Dependencies with uv
-icon: /docs/icons/python.svg
+icon: /src/assets/icons/python.svg
 stage: Intermediate
 topics:
   - Scripting

@@ -1,6 +1,6 @@
 ---
 title: Local Flow Synchronization
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 stage: Getting Started
 topics:
   - Integrations

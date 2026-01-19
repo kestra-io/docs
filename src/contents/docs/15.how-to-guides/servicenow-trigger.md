@@ -1,6 +1,6 @@
 ---
 title: Use ServiceNow to Trigger a Kestra Flow
-icon: /docs/icons/servicenow.svg
+icon: /src/assets/icons/servicenow.svg
 stage: Intermediate
 topics:
   - Integrations

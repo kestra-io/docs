@@ -1,6 +1,6 @@
 ---
 title: Debezium Tasks and Triggers
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Integrations

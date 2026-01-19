@@ -1,6 +1,6 @@
 ---
 title: Extend Kestra with the API
-icon: /docs/icons/api.svg
+icon: /src/assets/icons/api.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components

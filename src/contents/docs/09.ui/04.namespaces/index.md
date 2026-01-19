@@ -1,7 +1,7 @@
 ---
 title: Namespaces in the Kestra UI – Manage Namespace Resources
 sidebarTitle: Namespaces
-icon: /docs/icons/ui.svg
+icon: /src/assets/icons/ui.svg
 ---
 
 Manage all resources associated with a namespace in one place.

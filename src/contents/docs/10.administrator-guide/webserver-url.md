@@ -1,7 +1,7 @@
 ---
 title: Configure Kestra Webserver URL – Links and Proxies
 sidebarTitle: Webserver URL
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Configure the URL of your Kestra webserver.

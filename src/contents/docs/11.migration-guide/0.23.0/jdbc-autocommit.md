@@ -1,6 +1,6 @@
 ---
 title: The autocommit property removed from JDBC Query and Queries tasks
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
 ---

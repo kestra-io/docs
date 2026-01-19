@@ -1,7 +1,7 @@
 ---
 title: Usage Reporting in Kestra – Configure Anonymous Metrics
 sidebarTitle: Usage
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Configuration options for the usage report.

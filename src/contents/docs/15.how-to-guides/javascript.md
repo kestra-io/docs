@@ -1,6 +1,6 @@
 ---
 title: Run JavaScript inside of your Flows
-icon: /docs/icons/nodejs.svg
+icon: /src/assets/icons/nodejs.svg
 stage: Getting Started
 topics:
   - Scripting

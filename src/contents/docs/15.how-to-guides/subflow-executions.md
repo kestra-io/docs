@@ -1,6 +1,6 @@
 ---
 title: Managing retries, restarts and replays with subflow executions
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts

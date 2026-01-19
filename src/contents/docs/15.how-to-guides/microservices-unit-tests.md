@@ -1,6 +1,6 @@
 ---
 title: Safeguard Microservices With Unit Tests
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components

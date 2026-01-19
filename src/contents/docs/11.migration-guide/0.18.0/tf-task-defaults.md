@@ -1,6 +1,6 @@
 ---
 title: Deprecation of Terraform task_defaults in favor of plugin_defaults
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.18.0
 ---
 

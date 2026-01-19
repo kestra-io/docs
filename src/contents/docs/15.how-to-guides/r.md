@@ -1,6 +1,6 @@
 ---
 title: Run R inside of your Flows
-icon: /docs/icons/r.svg
+icon: /src/assets/icons/r.svg
 stage: Getting Started
 topics:
   - Scripting

@@ -1,7 +1,7 @@
 ---
 title: Configure External Secrets Manager in Kestra Enterprise
 sidebarTitle: Secrets Manager
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 

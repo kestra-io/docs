@@ -1,6 +1,6 @@
 ---
 title: The Query Task Now Supports Only One SQL Statement
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
 ---

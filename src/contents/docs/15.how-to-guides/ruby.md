@@ -1,6 +1,6 @@
 ---
 title: Run Ruby inside of your Flow
-icon: /docs/icons/ruby.svg
+icon: /src/assets/icons/ruby.svg
 stage: Getting Started
 topics:
   - Scripting

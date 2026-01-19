@@ -1,7 +1,7 @@
 ---
 title: Kestra Java SDK – Client Setup and Examples
 sidebarTitle: Java SDK
-icon: /docs/icons/api.svg
+icon: /src/assets/icons/api.svg
 release: 1.0.0
 ---
 Interact with Kestra's API via Java SDK.

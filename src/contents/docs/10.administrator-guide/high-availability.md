@@ -1,7 +1,7 @@
 ---
 title: High Availability for Kestra – Design and Configuration
 sidebarTitle: High Availability
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE"]
 ---
 

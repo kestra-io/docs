@@ -1,7 +1,7 @@
 ---
 title: Security Hardening for Kestra – Isolation and Network Controls
 sidebarTitle: Security Hardening
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Security hardening options for Kestra.

@@ -1,7 +1,7 @@
 ---
 title: OpenTelemetry in Kestra – Traces, Metrics, Logs
 sidebarTitle: OpenTelemetry
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 ---

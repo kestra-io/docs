@@ -1,7 +1,7 @@
 ---
 title: Configure Kestra – Settings, Environments, and Defaults
 sidebarTitle: Configuration
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Configuration reference for Kestra.

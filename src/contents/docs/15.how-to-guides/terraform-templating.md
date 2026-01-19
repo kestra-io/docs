@@ -1,6 +1,6 @@
 ---
 title: Leverage Terraform for flow modularity
-icon: /docs/icons/terraform.svg
+icon: /src/assets/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps

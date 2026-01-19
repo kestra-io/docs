@@ -1,6 +1,6 @@
 ---
 title: Test GitHub Repository Backups with Kestra Playground
-icon: /docs/icons/github.svg
+icon: /src/assets/icons/github.svg
 stage: Intermediate
 topics:
   - Integrations

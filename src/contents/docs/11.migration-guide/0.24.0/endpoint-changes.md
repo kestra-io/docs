@@ -1,6 +1,6 @@
 ---
 title: IAM and API Endpoint Changes
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 0.24.0
 editions: ["EE"]
 ---

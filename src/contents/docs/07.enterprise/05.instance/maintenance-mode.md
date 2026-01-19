@@ -1,7 +1,7 @@
 ---
 title: Maintenance Mode in Kestra Enterprise – Pause for Upgrades
 sidebarTitle: Maintenance Mode
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.21.0"
 ---

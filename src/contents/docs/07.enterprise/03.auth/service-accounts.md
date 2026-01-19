@@ -1,7 +1,7 @@
 ---
 title: Service Accounts in Kestra Enterprise – Non-Human Access
 sidebarTitle: Service Accounts
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
 ---

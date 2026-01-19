@@ -1,6 +1,6 @@
 ---
 title: Push Flows to a Git Repository
-icon: /docs/icons/git.svg
+icon: /src/assets/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control

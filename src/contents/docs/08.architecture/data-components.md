@@ -1,7 +1,7 @@
 ---
 title: Kestra Architecture – Data Storage Components
 sidebarTitle: Data Storage in Kestra
-icon: /docs/icons/architecture.svg
+icon: /src/assets/icons/architecture.svg
 ---
 
 Understand where different data components ([inputs](../05.workflow-components/05.inputs.md), [outputs](../05.workflow-components/06.outputs.md), logs, and more) are stored in Kestra’s architecture.

@@ -1,6 +1,6 @@
 ---
 title: Run Go inside of your Flows
-icon: /docs/icons/golang.svg
+icon: /src/assets/icons/golang.svg
 stage: Getting Started
 topics:
   - Scripting

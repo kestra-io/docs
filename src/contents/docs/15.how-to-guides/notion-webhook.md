@@ -1,6 +1,6 @@
 ---
 title: Notion Webhook Integration
-icon: /docs/icons/notion.svg
+icon: /src/assets/icons/notion.svg
 stage: Getting Started
 topics:
   - Integrations

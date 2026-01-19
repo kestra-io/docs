@@ -1,7 +1,7 @@
 ---
 title: Backup and Restore Kestra – Metadata and Data
 sidebarTitle: Backup & Restore
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 ---
 
 Back up and restore your Kestra instance.

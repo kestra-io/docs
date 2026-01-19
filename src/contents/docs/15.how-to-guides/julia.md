@@ -1,6 +1,6 @@
 ---
 title: Run Julia inside of your Flows
-icon: /docs/icons/julia.svg
+icon: /src/assets/icons/julia.svg
 stage: Getting Started
 topics:
   - Scripting

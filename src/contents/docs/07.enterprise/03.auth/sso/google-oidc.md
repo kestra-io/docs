@@ -1,7 +1,7 @@
 ---
 title: Set Up Google OIDC SSO for Kestra
 sidebarTitle: Google OIDC SSO
-icon: /docs/icons/tutorial.svg
+icon: /src/assets/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
 

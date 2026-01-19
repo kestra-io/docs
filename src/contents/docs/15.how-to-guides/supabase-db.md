@@ -1,6 +1,6 @@
 ---
 title: Connect Supabase Database to Kestra
-icon: /docs/icons/supabase.svg
+icon: /src/assets/icons/supabase.svg
 stage: Intermediate
 topics:
   - Integrations

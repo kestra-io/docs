@@ -1,7 +1,7 @@
 ---
 title: Kestra Cloud & Enterprise FAQ – Common Questions
 sidebarTitle: Cloud & Enterprise Edition FAQ
-icon: /docs/icons/faq.svg
+icon: /src/assets/icons/faq.svg
 editions: ["EE", "Cloud"]
 ---
 

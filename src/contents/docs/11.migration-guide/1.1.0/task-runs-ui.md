@@ -1,6 +1,6 @@
 ---
 title: Task Runs UI Page Removed
-icon: /docs/icons/migration-guide.svg
+icon: /src/assets/icons/migration-guide.svg
 release: 1.1.0
 editions: ["EE"]
 ---

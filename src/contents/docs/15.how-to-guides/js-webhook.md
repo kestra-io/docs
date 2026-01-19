@@ -1,6 +1,6 @@
 ---
 title: Connect Web Apps to Kestra
-icon: /docs/icons/nodejs.svg
+icon: /src/assets/icons/nodejs.svg
 stage: Getting Started
 topics:
   - Scripting

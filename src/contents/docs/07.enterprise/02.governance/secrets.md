@@ -1,7 +1,7 @@
 ---
 title: Secrets in Kestra Enterprise – Manage Sensitive Data
 sidebarTitle: Secrets
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: secrets
 ---

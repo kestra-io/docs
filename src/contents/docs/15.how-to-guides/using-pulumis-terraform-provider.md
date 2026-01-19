@@ -1,6 +1,6 @@
 ---
 title: Using Pulumi's Terraform Provider to Integrate Kestra
-icon: /docs/icons/pulumi.svg
+icon: /src/assets/icons/pulumi.svg
 stage: Advanced
 topics:
   - DevOps

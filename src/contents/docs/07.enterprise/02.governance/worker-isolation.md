@@ -1,7 +1,7 @@
 ---
 title: Worker Isolation in Kestra Enterprise – Enforce Separation
 sidebarTitle: Worker Isolation
-icon: /docs/icons/admin.svg
+icon: /src/assets/icons/admin.svg
 editions: ["EE"]
 ---
 
