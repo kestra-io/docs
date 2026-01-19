@@ -192,20 +192,23 @@ Check the video below for a quick overview of the feature.
 
 Kestra’s UI and features make it easy to leverage the Assets system:
 
-- **Asset Catalog:** A new **Assets** section in the Kestra UI lists all assets across your tenant (with RBAC enforcement). You can search by ID or filter by type, namespace, or metadata tags.
+**Asset Catalog:** 
+A new **Assets** section in the Kestra UI lists all assets across your tenant (with RBAC enforcement). You can search by ID or filter by type, namespace, or metadata tags.
 
 ![assets catalogs](/blogs/hello-assets/catalogs.png)
 
-
-- **Dependency Graph Visualization:** On any asset’s detail page, Kestra displays an interactive **lineage graph** showing that asset’s **upstream and downstream** links. This graph updates automatically as flows run. It’s invaluable for quickly understanding the context of an asset. This visual map helps both developers and stakeholders grasp data flows without reading code.
+**Dependency Graph Visualization:** 
+On any asset’s detail page, Kestra displays an interactive **lineage graph** showing that asset’s **upstream and downstream** links. This graph updates automatically as flows run. It’s invaluable for quickly understanding the context of an asset. This visual map helps both developers and stakeholders grasp data flows without reading code.
 
 ![assets dependencies](/blogs/hello-assets/dependencies.png)
 
-- **Execution History & Details:** Each asset page also lists attributes (ID, type, full namespace, timestamps) and a log of **which flow executions touched it**. You can click through to the exact flow run for more details. This effectively provides an **audit log per asset**. If something looks off in a dataset, you can see if maybe an unusual flow run that affected it. For external assets that Kestra references (like an imported dataset), you’ll at least see which Kestra flows have been reading it recently.
+**Execution History & Details:** 
+Each asset page also lists attributes (ID, type, full namespace, timestamps) and a log of **which flow executions touched it**. You can click through to the exact flow run for more details. This effectively provides an **audit log per asset**. If something looks off in a dataset, you can see if maybe an unusual flow run that affected it. For external assets that Kestra references (like an imported dataset), you’ll at least see which Kestra flows have been reading it recently.
 
 ![assets executions](/blogs/hello-assets/executions.png)
 
-- **Dynamic Asset Queries:** Kestra provides a built-in function `assets()` for your workflow scripts, so you can query the asset inventory dynamically. For instance, you can populate a dropdown input with all asset IDs of a certain type. This makes your workflows extremely flexible and **self-driving based on the current catalog**.
+**Dynamic Asset Queries:** 
+Kestra provides a built-in function `assets()` for your workflow scripts, so you can query the asset inventory dynamically. For instance, you can populate a dropdown input with all asset IDs of a certain type. This makes your workflows extremely flexible and **self-driving based on the current catalog**.
 
 ```yaml
 id: list_aws_bucket
@@ -224,7 +227,8 @@ tasks:
         message: "{{ taskrun.value }}"
 ```
 
-- **Metadata and Tagging:** Because assets support custom metadata, you can enforce conventions. For example, tag assets with `environment: prod` vs `dev`, or `owner: team_name`, or any classification your organization needs. These tags make search and filtering powerful. More importantly, they provide context to each asset, anyone looking at it knows what it represents. In future releases, we plan to allow **programmatic updates to asset metadata** via dedicated tasks, which will further integrate assets into automated governance workflows (e.g., auto-tag new tables with a retention policy or sensitivity level).
+**Metadata and Tagging:** 
+Because assets support custom metadata, you can enforce conventions. For example, tag assets with `environment: prod` vs `dev`, or `owner: team_name`, or any classification your organization needs. These tags make search and filtering powerful. More importantly, they provide context to each asset, anyone looking at it knows what it represents. In future releases, we plan to allow **programmatic updates to asset metadata** via dedicated tasks, which will further integrate assets into automated governance workflows (e.g., auto-tag new tables with a retention policy or sensitivity level).
 
 ![assets details](/blogs/hello-assets/executions.png)
 
@@ -263,7 +267,5 @@ Assets is available now in [Kestra Enterprise Edition](https://kestra.io/enterpr
 **The question isn’t whether you need governance in your orchestration — it’s whether you can afford to keep operating without it.**
 
 → [Schedule a Demo](https://kestra.io/demo)
-
 → [Explore Enterprise Edition](https://kestra.io/enterprise)
-
 → [Read the Documentation](https://kestra.io/docs/enterprise/governance/assets)
