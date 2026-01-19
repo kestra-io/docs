@@ -7,6 +7,12 @@
     "name": "docs",
     "compatibility_date": "2025-02-04",
     "main": "./dist/_worker.js/index.js",
+    "routes": [
+        {
+            "pattern": "docs.cf.kestra.io",
+            "custom_domain": true
+        }
+    ],
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
