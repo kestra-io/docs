@@ -12,7 +12,7 @@
             type: String,
             default: ''
         }
-    })
+    });
 </script>
 
 <style lang="scss" scoped>
@@ -28,6 +28,10 @@
             @include media-breakpoint-up(md) {
                 margin-top: 0;
                 margin-bottom: 0;
+            }
+
+            &::before {
+                display: none
             }
         }
 
