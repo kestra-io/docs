@@ -1,5 +1,4 @@
 import type { R2Bucket, ExecutionContext, ImagesBinding, ImageTransform, ImageOutputOptions } from "@cloudflare/workers-types";
-import { Response } from '@cloudflare/workers-types';
 
 export const prerender = false;
 
@@ -31,15 +30,12 @@ async function saveToR2(r2: R2Bucket | undefined, key: string, response: Respons
         const contentType = response.headers.get('content-type') || 'image/webp';
         const body = await response.arrayBuffer();
 
-        console.log("Saving to R2 with key:", key);
-
         await r2.put(key, body, {
             httpMetadata: {
                 contentType,
                 cacheControl: 'public, max-age=31536000, immutable',
             },
         });
-        console.log("in function - Saved to R2 with key:", key);
     } catch (error) {
         console.error('Failed to save image to R2:', error);
     }
@@ -58,22 +54,17 @@ async function getFromR2(r2: R2Bucket | undefined, key: string): Promise<Respons
 
     try {
         const object = await r2.get(key);
-        console.log("R2 object:", object);
 
         if (!object) {
             return null;
         }
-
-        console.log("R2 object found for key:", key);
 
         const headers = new Headers();
         headers.set('content-type', object.httpMetadata?.contentType || 'image/webp');
         headers.set('cache-control', object.httpMetadata?.cacheControl || 'public, max-age=31536000, immutable');
         headers.set('etag', object.httpEtag);
 
-        console.log("R2 object headers:", headers);
-
-        return new Response(object.body, {
+        return new Response(object.body as any, {
             headers,
         });
     } catch (error) {
@@ -115,6 +106,12 @@ export async function GET({ request, params, locals }: { request: Request; param
     originUrl.pathname = '/' + imageURLParts.join('/');
     const originalImageStream = await fetch(originUrl.href);
 
+    if (!originalImageStream.ok || !originalImageStream.body) {
+        console.error('Failed to fetch original image:', originalImageStream.status, originalImageStream.statusText);
+        console.log('Origin URL:', originUrl.href);
+        return new Response('Failed to fetch original image', { status: 502 });
+    }
+
     if(!images || !r2) {
         return originalImageStream
     }
@@ -144,10 +141,6 @@ export async function GET({ request, params, locals }: { request: Request; param
       formatOptions.format = "image/webp";
     }
 
-    if (!originalImageStream.ok || !originalImageStream.body) {
-        console.error('Failed to fetch original image:', originalImageStream.status, originalImageStream.statusText);
-        return new Response('Failed to fetch original image', { status: 502 });
-    }
 
     const imageResponse = (
         await images.input(originalImageStream.body as any)
@@ -155,18 +148,14 @@ export async function GET({ request, params, locals }: { request: Request; param
             .output(formatOptions)
     ).response()
 
-    console.log('Fetched image from origin with status:', imageResponse.status);
-
     // deal with caching the files in cloudflare R2
     // Use waitUntil to save to R2 in the background without blocking the response
     if (locals.runtime?.ctx) {
-        locals.runtime.ctx.waitUntil(saveToR2(r2, imageKey, imageResponse.clone()));
+        locals.runtime.ctx.waitUntil(saveToR2(r2, imageKey, imageResponse.clone() as any));
     } else {
         // Fallback for environments without waitUntil
-        saveToR2(r2, imageKey, imageResponse.clone());
+        saveToR2(r2, imageKey, imageResponse.clone() as any);
     }
-
-    console.log("Image saved in R2 with key:", imageKey)
 
     return imageResponse;
 };
