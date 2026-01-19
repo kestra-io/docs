@@ -55,14 +55,12 @@
             "id": "c7003b3ecfc2485bb2efb713d75da274"
         }
     ],
-    "r2_buckets": [
-        {
-            "binding": "IMAGE_CACHE",
-            "bucket_name": "astro-workers-images"
+    "env": {
+        "preview": {
+            "vars": {
+                "NO_IMAGE_OPTIM": "true"
+            }
         }
-    ],
-    "images": {
-        "binding": "IMAGES" // i.e. available in your Worker on env.IMAGES
     }
     /**
      * Environment Variables

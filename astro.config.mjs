@@ -24,7 +24,7 @@ export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
         // only use cloudflare images in production
-        imageService: process.env.NODE_ENV === "production" ? "cloudflare" : "passthrough"
+        imageService: process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
     }),
     trailingSlash: "ignore",
     integrations: [
