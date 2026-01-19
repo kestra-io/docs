@@ -1,15 +1,11 @@
-import type { R2Bucket, RequestInitCfPropertiesImage, ExecutionContext } from "@cloudflare/workers-types";
+import type { R2Bucket, ExecutionContext, ImagesBinding, ImageTransform, ImageOutputOptions } from "@cloudflare/workers-types";
+import { Response } from '@cloudflare/workers-types';
 
 export const prerender = false;
 
-interface ImageResizeOptions {
-  cf: {
-    image: RequestInitCfPropertiesImage;
-  };
-}
-
 interface RuntimeEnv {
   IMAGE_CACHE?: R2Bucket;
+  IMAGES: ImagesBinding;
 }
 
 interface Locals {
@@ -35,12 +31,15 @@ async function saveToR2(r2: R2Bucket | undefined, key: string, response: Respons
         const contentType = response.headers.get('content-type') || 'image/webp';
         const body = await response.arrayBuffer();
 
+        console.log("Saving to R2 with key:", key);
+
         await r2.put(key, body, {
             httpMetadata: {
                 contentType,
                 cacheControl: 'public, max-age=31536000, immutable',
             },
         });
+        console.log("in function - Saved to R2 with key:", key);
     } catch (error) {
         console.error('Failed to save image to R2:', error);
     }
@@ -59,17 +58,22 @@ async function getFromR2(r2: R2Bucket | undefined, key: string): Promise<Respons
 
     try {
         const object = await r2.get(key);
+        console.log("R2 object:", object);
 
         if (!object) {
             return null;
         }
+
+        console.log("R2 object found for key:", key);
 
         const headers = new Headers();
         headers.set('content-type', object.httpMetadata?.contentType || 'image/webp');
         headers.set('cache-control', object.httpMetadata?.cacheControl || 'public, max-age=31536000, immutable');
         headers.set('etag', object.httpEtag);
 
-        return new Response(object.body as unknown as BodyInit, {
+        console.log("R2 object headers:", headers);
+
+        return new Response(object.body, {
             headers,
         });
     } catch (error) {
@@ -98,47 +102,60 @@ export async function GET({ request, params, locals }: { request: Request; param
     const r2 = locals.runtime?.env?.IMAGE_CACHE;
 
     const imageKey = await makeHash(params.image);
-
     const r2Response = await getFromR2(r2, imageKey);
     if (r2Response) {
         return r2Response;
     }
 
+    const images = locals.runtime?.env?.IMAGES;
+
     const [imageOptions, ...imageURLParts] = params.image.split('/') ?? [];
 
-    const imageURL = imageURLParts.join('/');
+    const originUrl = new URL(request.url);
+    originUrl.pathname = '/' + imageURLParts.join('/');
+    const originalImageStream = await fetch(originUrl.href);
+
+    if(!images || !r2) {
+        return originalImageStream
+    }
 
     const rawOptions = (new URL(`http://example.com?${imageOptions}`)).searchParams
 
-    const imageRequest = new Request(imageURL, {
-      headers: request.headers,
-    });
-
-    const options: ImageResizeOptions = { cf: { image: {} } } ;
+    const transformOptions: ImageTransform = { } ;
+    const formatOptions: ImageOutputOptions = { format: 'image/webp' };
 
     // Copy parameters from query string to request options.
     // You can implement various different parameters here.
-    if (rawOptions.has("fit"))
-      options.cf.image.fit = rawOptions.get("fit") as any
     if (rawOptions.has("width"))
-      options.cf.image.width = rawOptions.get("width") as any
+      transformOptions.width = rawOptions.get("width") as any
     if (rawOptions.has("height"))
-      options.cf.image.height = rawOptions.get("height") as any
+      transformOptions.height = rawOptions.get("height") as any
     if (rawOptions.has("quality"))
-      options.cf.image.quality = rawOptions.get("quality") as any
+      formatOptions.quality = rawOptions.get("quality") as any
 
     if (rawOptions.has("format"))
-        options.cf.image.format = rawOptions.get("format") as any
+        formatOptions.format = `image/${rawOptions.get("format")}` as any
 
     // Your Worker is responsible for automatic format negotiation. Check the Accept header.
     const accept = request.headers.get("Accept") ?? "";
     if (/image\/avif/.test(accept)) {
-      options.cf.image.format = "avif";
+      formatOptions.format = "image/avif";
     } else if (/image\/webp/.test(accept)) {
-      options.cf.image.format = "webp";
+      formatOptions.format = "image/webp";
     }
 
-    const imageResponse = await fetch(imageRequest, options as RequestInit);
+    if (!originalImageStream.ok || !originalImageStream.body) {
+        console.error('Failed to fetch original image:', originalImageStream.status, originalImageStream.statusText);
+        return new Response('Failed to fetch original image', { status: 502 });
+    }
+
+    const imageResponse = (
+        await images.input(originalImageStream.body as any)
+            .transform(transformOptions)
+            .output(formatOptions)
+    ).response()
+
+    console.log('Fetched image from origin with status:', imageResponse.status);
 
     // deal with caching the files in cloudflare R2
     // Use waitUntil to save to R2 in the background without blocking the response
@@ -148,6 +165,8 @@ export async function GET({ request, params, locals }: { request: Request; param
         // Fallback for environments without waitUntil
         saveToR2(r2, imageKey, imageResponse.clone());
     }
+
+    console.log("Image saved in R2 with key:", imageKey)
 
     return imageResponse;
 };

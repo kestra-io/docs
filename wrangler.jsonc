@@ -60,7 +60,10 @@
             "binding": "IMAGE_CACHE",
             "bucket_name": "astro-workers-images"
         }
-    ]
+    ],
+    "images": {
+        "binding": "IMAGES" // i.e. available in your Worker on env.IMAGES
+    }
     /**
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
