@@ -19,7 +19,6 @@ import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks";
 import { getIcon } from "~/utils/plugins/getPluginIcon";
 import { retrieveRepoReleases } from "../api/github-releases";
 import OneHeader from "~/components/plugins/OneHeader.vue";
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro";
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata";
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? [];
@@ -97,6 +96,7 @@ const pluginType = (() => {
     }`})();
 
 const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`);
+const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`);
 
 const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`);
 const sidebarPluginData = generateSidebarPluginData(subgroups, allPluginMetadata);
@@ -355,7 +355,7 @@ function makeTOC(){
                 ? [{id: "latest-blog-posts", depth: 3, text: "Latest Blog Posts"}]
                 : []
             ),
-            ...(allPlugins?.some(p => p.name !== pluginName && p.categories?.some(cat => currentPluginCategories?.includes(cat))) ?? false
+            ...(currentPluginCategories?.length > 0
                 ? [{
                     id: "more-plugins-in-this-category",
                     depth: 3,
@@ -436,11 +436,9 @@ if (!pluginType && !subGroup) {
               {pluginType}
               {rootPlugin}
               {currentPageIcon}
-            >
-                {headingDescription ? <div class="desc markdown" >
-                    <MDCParserAndRenderer content={headingDescription} />
-                </div> : null}
-            </OneHeader>
+              {headingDescription}
+              client:load
+            />
           )
         }
       </div>
@@ -494,11 +492,8 @@ if (!pluginType && !subGroup) {
       {
         currentPluginCategories?.length > 0 && (
           <SimilarPlugins
-            pluginName={pluginName}
-            currentPluginCategories={currentPluginCategories}
-            allPlugins={allPlugins}
-            metadataMap={metadataMap}
-            blueprintCounts={blueprintCounts}
+            {allPlugins}
+            pluginsData={pluginsInformation.byPlugin}
           />
         )
       }
@@ -529,7 +524,6 @@ if (!pluginType && !subGroup) {
 
     .container-fluid {
         gap: 0;
-        overflow: clip;
         border-top: 1px solid $black-3;
         padding: 0;
         display: flex;
@@ -549,7 +543,7 @@ if (!pluginType && !subGroup) {
                 grid-area: sidebar;
                 position: sticky;
                 top: 4rem;
-                height: fit-content;
+                height: 100%;
 
             }
         }
@@ -826,17 +820,5 @@ if (!pluginType && !subGroup) {
 
     @each $type, $vars in $alert-types {
         @include alert-variants($type, $vars);
-    }
-
-    .enterprise-badge {
-        background: #130025;
-        border: 1px solid color-palette.$base-yellow-700;
-        gap: 4px;
-        min-height: 20px;
-        border-radius: 40px;
-        border-width: 1px;
-        font-size: 12px;
-        color: color-palette.$base-yellow-100;
-        cursor: default;
     }
 </style>

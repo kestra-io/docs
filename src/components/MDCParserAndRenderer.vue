@@ -60,6 +60,10 @@
                 white-space: pre-wrap;
             }
         }
+
+        :deep(p) {
+            font-size: 1rem;
+        }
     }
 
     @keyframes pulse {

@@ -227,10 +227,6 @@
 
             &.plugin {
                 border-left: 1px solid $black-3;
-                position: sticky;
-                top: 4rem;
-                height: fit-content;
-                max-height: none;
             }
         }
 

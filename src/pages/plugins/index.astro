@@ -1,31 +1,11 @@
 ---
 import Layout from '~/components/layout.astro';
 import PluginsLists from "~/components/plugins/PluginsLists.vue";
-import type { Plugin, PluginMetadata } from "@kestra-io/ui-libs";
 import { $fetchApi } from "~/utils/fetch";
+import type { Plugin } from "@kestra-io/ui-libs";
 
-const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-
-const categoriesData = await $fetchApi<string[]>(`/plugins/categories`);
-
-const iconsArrays = await Promise.all(pluginsData.map(async (plugin) => {
-    return $fetchApi<Record<string, {icon: string}>>(`/plugins/${plugin.name}/icons/subgroups`);
-}))
-
-const metadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
-
-const icons = Object.fromEntries(
-    iconsArrays.flatMap(icons =>
-        Object.entries(icons ?? {}).map(([key, {icon}]) => [
-            key,
-            Buffer.from(
-                Buffer.from(icon, "base64").toString("utf-8")
-            ).toString("base64")
-        ])
-    )
-);
-
-const {countByPlugins: blueprintCounts} = await $fetchApi<{ countByPlugins: Record<string, number> }>(`/blueprints/countByPlugins`);
+const plugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const pluginsData = await $fetchApi(`/plugins/pluginsInformation`);
 
 const title = "Hundreds of Plugins For All Your Orchestrations Needs";
 const description = "Connect Kestra with tools you already know and love";
@@ -34,11 +14,8 @@ const description = "Connect Kestra with tools you already know and love";
 <Layout title={title} description={description}>
     <PluginsLists
         client:load
-        plugins={pluginsData}
-        {icons}
-        categories={categoriesData ?? []}
+        pluginsData={pluginsData.byPlugin}
+        {plugins}
         fullPath={Astro.request.url}
-        {metadata}
-        {blueprintCounts}
     />
 </Layout>
