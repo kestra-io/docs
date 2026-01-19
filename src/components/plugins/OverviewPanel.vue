@@ -109,7 +109,6 @@
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-    import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue";
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue";
 
     const props = withDefaults(defineProps<{
