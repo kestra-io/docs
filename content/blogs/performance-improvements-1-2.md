@@ -1,6 +1,6 @@
 ---
 title: "Performance Upgrades for Enterprise in Kestra 1.2"
-description: "TODO"
+description: "Kestra 1.2 reduce execution latency and database contention with parallel file loading and smarter concurrency handling"
 date: 2026-01-19T13:00:00
 category: Solutions
 author:
