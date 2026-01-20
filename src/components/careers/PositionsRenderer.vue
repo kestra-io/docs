@@ -9,7 +9,7 @@
                 <li data-usal="fade-l" v-for="doc in positions" :key="doc.id">
                     <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/careers/emoji_people.svg" alt="emoji_people" />
+                            <img v-bind="emojiPeople" alt="emoji_people" />
                             <span>
                                 {{ doc.title }}
                             </span>
@@ -21,7 +21,7 @@
                             </span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/careers/arrow_right.svg" alt="arrow_right" />
+                            <img v-bind="arrowRight" alt="arrow_right" />
                         </div>
                     </NuxtLink>
                 </li>
@@ -32,6 +32,8 @@
 
 <script lang="ts" setup>
     import LayoutSection from '~/components/layout/Section.vue';
+    import arrowRight from './assets/arrow_right.svg';
+    import emojiPeople from './assets/emoji_people.svg';
 
     defineProps<{
         positions: Array<{

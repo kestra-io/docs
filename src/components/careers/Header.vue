@@ -17,7 +17,7 @@
 
     .header-container {
         margin-top: $rem-6;
-        background: url("/landing/careers/bg.svg") no-repeat top;
+        background: url("~/assets/dotted-bg.svg") no-repeat top;
         .header {
             padding-bottom: calc($spacer * 4.125);
             border-bottom: 1px solid rgba(255, 255, 255, 0.10);
@@ -55,6 +55,7 @@
 
     }
 </style>
+
 <script setup lang="ts">
     defineProps<{
         fullPath: string;
