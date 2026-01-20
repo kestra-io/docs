@@ -7,12 +7,12 @@
                     <p class="description mt-3">Manage and deploy Kestra workflows directly<br>within your existing
                         Terraform environment</p>
                     <div class="d-flex flex-wrap gap-2">
-                        <NuxtLink href="/docs/terraform">
+                        <a href="/docs/terraform">
                             <button class="btn btn-animated btn-dark-animated"> Read the docs</button>
-                        </NuxtLink>
-                        <NuxtLink href="https://github.com/kestra-io/kestra">
+                        </a>
+                        <a href="/docs/terraform">
                             <button class="btn btn-animated btn-purple-animated">Get Started</button>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
                 <div class="order-0 order-md-1 d-flex d-md-none">
