@@ -98,7 +98,7 @@ const features = [
     }
 
     .block-center-image{
-        background: url(/landing/home/features-bg.svg) no-repeat center;
+        background: url(./assets/features-bg.svg) no-repeat center;
         grid-row: 1 / 2;
         @include media-breakpoint-up(lg){
             grid-column: 2 / 3;

@@ -343,7 +343,7 @@
                 width: 2000px;
                 margin-top: -700px;
                 margin-bottom: -200px;
-                background-image: url("/landing/home/homepage.png");
+                background-image: url("./assets/homepage.png");
                 background-position: 237px 596px;
                 background-size: 1600px;
                 background-repeat: no-repeat;
