@@ -45,7 +45,7 @@
                     <div class="sticky-features-box">
                         <img
                             class="u-img-cover"
-                            :src="imageUrls[getCurrentImageIndex()]"
+                            v-bind="imageUrls[getCurrentImageIndex()]"
                             alt="A dashboard with success or fail task events"
                         />
                     </div>
@@ -57,7 +57,7 @@
                 <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-usal="fade-l">
                     <img
                         class="img-fluid"
-                        src="/landing/enterprise/security-1-1.svg"
+                        v-bind="imageUrls[0]"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
@@ -79,7 +79,7 @@
                 <div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
                     <img
                         class="img-fluid"
-                        src="/landing/enterprise/security-2-2.svg"
+                        v-bind="imageUrls[1]"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
@@ -100,7 +100,7 @@
                 <div class="col-md-6 order-0 order-md-1" data-usal="fade-l">
                     <img
                         class="img-fluid"
-                        src="/landing/enterprise/security-3-3.svg"
+                        v-bind="imageUrls[2]"
                         alt="A dashboard with success or fail task events"
                     />
                 </div>
@@ -121,17 +121,21 @@
         </div>
     </div>
 </template>
+
 <script>
+import security11 from './assets/security-1-1.svg';
+import security22 from './assets/security-2-2.svg';
+import security33 from './assets/security-3-3.svg';
   export default {
     data() {
       return {
         itemPositions: [],
         prevImageIndex: 0,
-        imageUrls: {
-          0: '/landing/enterprise/security-1-1.svg',
-          1: '/landing/enterprise/security-2-2.svg',
-          2: '/landing/enterprise/security-3-3.svg',
-        },
+        imageUrls: [
+          security11,
+          security22,
+          security33,
+        ],
       }
     },
     mounted() {
@@ -174,6 +178,7 @@
     },
   }
 </script>
+
 <style scoped lang="scss">
     @import "~/assets/styles/variable";
 

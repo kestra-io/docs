@@ -35,15 +35,15 @@
             <div class="slider">
                 <div data-usal="fade-l">
                     <Carousel v-bind="settings" :breakpoints="breakpoints">
-                        <Slide v-for="(slide, slideIndex) in testimonialData" :key="slide">
+                        <Slide v-for="(slide, slideIndex) in testimonialData" :key="slide.message">
                             <div class="carousel--item">
                                 <div class="content">
-                                    <img class="slide-svg" src="/landing/enterprise/slider-icon.svg"
+                                    <img class="slide-svg" src="./assets/slider-icon.svg"
                                          alt="Carousel img"/>
                                     <span>{{slide.message}}</span>
                                     <div class="person">
                                         <div class="company-logo">
-                                            <img :src="slide.logo" :alt="`${slide.name} company logo`"/>
+                                            <img v-bind="slide.logo" :alt="`${slide.name} company logo`"/>
                                         </div>
                                         <div class="person-info">
                                             <p>{{slide.name}}</p>
@@ -58,14 +58,14 @@
                                                     <template #prev>
                                                         <div
                                                             class="mobile-btn-prev carousel-control carousel-control-prev">
-                                                            <img src="/landing/enterprise/slider-left-arrow.svg"
+                                                            <img v-bind="leftArrow"
                                                                  alt="prev"/>
                                                         </div>
                                                     </template>
                                                     <template #next>
                                                         <div
                                                             class="mobile-btn-next carousel-control carousel-control-next">
-                                                            <img src="/landing/enterprise/slider-right-arrow.svg"
+                                                            <img v-bind="rightArrow"
                                                                  alt="next"/>
                                                         </div>
                                                     </template>
@@ -85,12 +85,12 @@
                             <Navigation>
                                 <template #next>
                                     <div class="carousel-btn carousel-control carousel-control-next">
-                                        <img src="/landing/enterprise/slider-right-arrow.svg" alt="next"/>
+                                        <img v-bind="rightArrow" alt="next"/>
                                     </div>
                                 </template>
                                 <template #prev>
                                     <div class="carousel-btn carousel-control carousel-control-prev ">
-                                        <img src="/landing/enterprise/slider-left-arrow.svg" alt="prev"/>
+                                        <img v-bind="leftArrow" alt="prev"/>
                                     </div>
                                 </template>
                             </Navigation>
@@ -114,78 +114,74 @@
     </div>
 </template>
 
-<script>
-  import Section from '~/components/layout/Section.vue';
+<script lang="ts" setup>
+  import { ref } from 'vue';
   import {Carousel, Slide, Navigation} from 'vue3-carousel';
-  import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
-  import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
   import 'vue3-carousel/dist/carousel.css'
+  import rightArrow from './assets/slider-right-arrow.svg';
+  import leftArrow from './assets/slider-left-arrow.svg';
 
-  export default {
-    components: {
-      Section,
-      ArrowLeft,
-      ArrowRight,
-      Carousel,
-      Slide,
-      Navigation,
-    },
-    data() {
-      return {
-        settings: {
-          itemsToShow: 1,
-          snapAlign: 'center',
-        },
-        breakpoints: {
-          768: {
+  import FilaLogo from './assets/fila.svg';
+  import AcxiomLogo from '~/assets/quotes-companies/acxiom.svg';
+  import JPLogo from './assets/jp.svg';
+  import VyomaSpaceLogo from './assets/Vyoma-Space.svg';
+  import CleverConnectLogo from './assets/CleverConnect.svg';
+
+
+
+    const settings = ref({
+        itemsToShow: 1,
+        snapAlign: 'center',
+    });
+
+    const breakpoints = ref({
+        768: {
             itemsToShow: 1,
             snapAlign: 'start',
-          },
-          1024: {
+        },
+        1024: {
             itemsToShow: 1,
             snapAlign: 'start',
-          },
         },
-        testimonialData: [
+    } as const);
+
+        const testimonialData = [
           {
             message: "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
             name: "John Kim",
             designation: "IT Lead",
             alt: "IT Lead",
-            logo: "/landing/enterprise/fila.svg",
+            logo: FilaLogo,
           },
           {
             message: "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop.",
             name: "Kyle Hanson",
             designation: "Lead Software Engineer",
             alt: "Lead Software Engineer",
-            logo: "/landing/companies/acxiom.svg",
+            logo: AcxiomLogo,
           },
           {
             message: "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
             name: "Amy King",
             designation: "Cybersecurity & Technology Controls",
             alt: "Cybersecurity & Technology Controls",
-            logo: "/landing/enterprise/jp.svg",
+            logo: JPLogo,
           },
           {
             message: "Kestra’s UI and speed of development is brilliant. Very quick to prototype a new pipeline, continuously iterate, and test things out. Love the replay feature. It has very clear separation of pipeline and processing code.",
             name: "Ollie Steiner",
             designation: "Senior Data Engineer",
             alt: "Senior Data Engineer",
-            logo: "/landing/enterprise/Vyoma-Space.svg",
+            logo: VyomaSpaceLogo,
           },
           {
             message: "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
             name: "Patrick Ferreira",
             designation: "Product Manager",
             alt: "Product Manager",
-            logo: "/landing/enterprise/CleverConnect.svg",
+            logo: CleverConnectLogo,
           },
-        ],
-      };
-    },
-  }
+        ];
 </script>
 
 <style lang="scss" scoped>
@@ -360,7 +356,7 @@
                 flex-direction: column;
                 padding-top: 180px;
                 width: 100%;
-                background-image: url(/landing/enterprise/visual-bg.png);
+                background-image: url(./assets/visual-bg.png);
                 background-size: 100% auto;
                 background-repeat: no-repeat;
                 gap: 42px;

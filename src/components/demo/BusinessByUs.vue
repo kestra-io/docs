@@ -18,13 +18,17 @@
                     <div class="info-item align-items-start">
                         <h3>Julien Henrion</h3>
                         <p class="subtitle">Head of Data Engineering</p>
-                        <img src="/landing/enterprise/leroymerlin.svg" alt="Leroy Merlin">
+                        <img v-bind="LM" alt="Leroy Merlin">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script lang="ts" setup>
+import LM from '../enterprise/assets/leroymerlin.svg';
+</script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";

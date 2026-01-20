@@ -2,7 +2,7 @@
     <div class="container">
         <div class="rounded-3">
             <div class="scale-img" data-usal="zoomin">
-                <img class="img-fluid" src="/landing/enterprise/ee-logo.svg" alt="EE logo" />
+                <img class="img-fluid" v-bind="eeLogo" alt="EE logo" />
             </div>
             <Section
                 title="Scale with High Availability and Fault Tolerance"
@@ -15,17 +15,9 @@
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
     import Section from '~/components/layout/Section.vue';
-
-    export default {
-        components: {Section},
-        data() {
-            return {
-                active: 1,
-            };
-        },
-    }
+    import eeLogo from './assets/ee-logo.svg';
 </script>
 
 <style lang="scss" scoped>

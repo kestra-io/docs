@@ -97,10 +97,10 @@
                 <div class="info-block">
                     <span>Run on Any Cloud or On-Premise</span>
                     <div class="info-images">
-                        <img src="/landing/enterprise/AWS-white.svg" alt="aws"/>
-                        <img src="/landing/enterprise/Vector.svg" alt="vector"/>
-                        <img src="/landing/enterprise/google.svg" alt="google drive"/>
-                        <img src="/landing/enterprise/home-roof.svg" alt="home"/>
+                        <img v-bind="AWSWhite" alt="aws"/>
+                        <img v-bind="Vector" alt="vector"/>
+                        <img v-bind="GoogleDrive" alt="google drive"/>
+                        <img v-bind="HomeRoof" alt="home"/>
                     </div>
                 </div>
                 <div class="info-block">
@@ -109,7 +109,7 @@
             </div>
         </div>
         <div class="plus-icon">
-            <img src="/landing/enterprise/plus.svg" alt="plus"/>
+            <img src="./assets/plus.svg" alt="plus"/>
         </div>
         <div class="bottom-block">
             <span>Kestra CORE</span>
@@ -139,7 +139,7 @@
         </div>
     </div>
 </template>
-<script setup>
+<script lang="ts" setup>
   import CloudKeyOutline from "vue-material-design-icons/CloudKeyOutline.vue";
   import History from "vue-material-design-icons/History.vue";
   import DatabaseRefreshOutline from "vue-material-design-icons/DatabaseRefreshOutline.vue";
@@ -162,6 +162,11 @@
   import WebBox from "vue-material-design-icons/WebBox.vue";
   import ChartTree from "vue-material-design-icons/ChartTree.vue";
   import CalendarMultiselect from "vue-material-design-icons/CalendarMultiselect.vue";
+
+  import AWSWhite from './assets/AWS-white.svg';
+  import Vector from './assets/Vector.svg';
+  import GoogleDrive from './assets/google.svg';
+  import HomeRoof from './assets/home-roof.svg';
 
 </script>
 <style lang="scss" scoped>

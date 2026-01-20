@@ -13,80 +13,14 @@
                     <div class="teams-content">
                         <p>Trusted by Teams From:</p>
                         <div class="teams-logos">
-                            <div>
+                            <div v-for="img in logos" :key="img.alt">
                                 <NuxtImg
                                     width="100%"
                                     loading="lazy"
                                     format="webp"
                                     class="img-fluid"
-                                    src="/landing/enterprise/teams/LM.svg"
-                                    alt="FILA"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/ACXIOM.svg"
-                                    alt="Acxiom"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/ITZ.svg"
-                                    alt="itzbund"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/T-SYSTEM.svg"
-                                    alt="L'Oréal"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/COE.svg"
-                                    alt="European Council"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/BATTELLE.svg"
-                                    alt="Battelle"
-                                    data-usal="fade-l"
-                                />
-                            </div>
-                            <div>
-                                <NuxtImg
-                                    width="100%"
-                                    loading="lazy"
-                                    format="webp"
-                                    class="img-fluid"
-                                    src="/landing/enterprise/teams/DATAPORT.svg"
-                                    alt="Battelle"
+                                    v-bind="img.img"
+                                    :alt="img.alt"
                                     data-usal="fade-l"
                                 />
                             </div>
@@ -101,6 +35,36 @@
 
 <script setup lang="ts">
 import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue";
+const imageTeam = import.meta.glob<{src: string}>('./assets/teams/*.svg', { eager: true, import: 'default' });
+
+const logos: { img: {src: string}; alt: string }[] = [{
+    img: imageTeam['./assets/teams/LM.svg'],
+    alt: 'Leroy Merlin',
+},
+{
+    img: imageTeam['./assets/teams/ACXIOM.svg'],
+    alt: 'Acxiom',
+},
+{
+    img: imageTeam['./assets/teams/ITZ.svg'],
+    alt: 'itzbund',
+},
+{
+    img: imageTeam['./assets/teams/T-SYSTEM.svg'],
+    alt: "L'Oréal",
+},
+{
+    img: imageTeam['./assets/teams/COE.svg'],
+    alt: 'European Council',
+},
+{
+    img: imageTeam['./assets/teams/BATTELLE.svg'],
+    alt: 'Battelle',
+},
+{
+    img: imageTeam['./assets/teams/DATAPORT.svg'],
+    alt: 'Dataport',
+}];
 </script>
 
 <style lang="scss" scoped>
@@ -118,7 +82,7 @@ import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue";
 
         &::after {
             content: "";
-            background-image: url(/landing/enterprise/bg-left.png);
+            background-image: url(./assets/bg-left.png);
             background-repeat: no-repeat;
             background-size: 100% 100%;
             position: absolute;
@@ -143,7 +107,7 @@ import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue";
 
         &::before {
             content: "";
-            background-image: url(/landing/enterprise/bg-right.png);
+            background-image: url(./assets/bg-right.png);
             background-repeat: no-repeat;
             background-size: 100% 100%;
             position: absolute;
@@ -165,7 +129,7 @@ import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue";
 
 
             @include media-breakpoint-down(sm) {
-                background-image: url(/landing/enterprise/bg-right-mobile.png);
+                background-image: url(./assets/bg-right-mobile.png);
                 width: 240px;
                 height: 380px;
                 top: -25px;

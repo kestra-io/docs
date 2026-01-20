@@ -9,7 +9,7 @@
                 <div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
                     <img
                         class="image-fluid"
-                        src="/landing/enterprise/anything-scale.svg"
+                        v-bind="anythingScale"
                         alt="Run Anything at Scale"
                     />
                 </div>
@@ -23,7 +23,7 @@
                     <div class="w-100 order-md-1 rounded-2" data-usal="fade-l">
                         <img
                             class="declarative-img"
-                            src="/landing/enterprise/declarative.svg"
+                            v-bind="declarative"
                             alt="right icons"
                         />
                     </div>
@@ -34,7 +34,10 @@
                         <span>Handle scheduled, real-time event-driven, and API-based workflows effortlessly. Support business-critical operations with real-time automation, ensuring your workflows adapt and scale to your needs.</span>
                     </div>
                     <div class="real-time w-100 order-md-1 rounded-2" data-usal="fade-l">
-                        <img src="/landing/enterprise/real-time.svg" alt="right icons"/>
+                        <img
+                            v-bind="realTime"
+                            alt="right icons"
+                        />
                     </div>
                 </div>
             </div>
@@ -46,7 +49,7 @@
 
                 <div class="all-plugins">
                     <div class="block" :class="index % 2 && 'filled'" v-for="(item, index) in plugins">
-                        <img :key="index" :src="item.path" alt="plugin"/>
+                        <img :key="index" v-bind="item" alt="plugin"/>
                     </div>
                 </div>
             </div>
@@ -60,32 +63,37 @@
 
 <script setup lang="ts">
 import { usePluginsCount } from '~/composables/usePluginsCount';
+import pluginLogo from './assets/plugin.svg';
+import anythingScale from './assets/anything-scale.svg';
+import declarative from './assets/declarative.svg';
+import realTime from './assets/real-time.svg';
+const pluginsLogos = import.meta.glob<{src: string}>('./assets/plugin-*.svg', { eager: true, import: 'default' });
 
 const { totalPlugins } = usePluginsCount();
 
 const plugins = [
-    { path: '/landing/enterprise/plugin.svg' },
-    { path: '/landing/enterprise/plugin-1.svg' },
-    { path: '/landing/enterprise/plugin-2.svg' },
-    { path: '/landing/enterprise/plugin-3.svg' },
-    { path: '/landing/enterprise/plugin-4.svg' },
-    { path: '/landing/enterprise/plugin-5.svg' },
-    { path: '/landing/enterprise/plugin-6.svg' },
-    { path: '/landing/enterprise/plugin-7.svg' },
-    { path: '/landing/enterprise/plugin-8.svg' },
-    { path: '/landing/enterprise/plugin-9.svg' },
-    { path: '/landing/enterprise/plugin-10.svg' },
-    { path: '/landing/enterprise/plugin-11.svg' },
-    { path: '/landing/enterprise/plugin-12.svg' },
-    { path: '/landing/enterprise/plugin-13.svg' },
-    { path: '/landing/enterprise/plugin-14.svg' },
-    { path: '/landing/enterprise/plugin-15.svg' },
-    { path: '/landing/enterprise/plugin-16.svg' },
-    { path: '/landing/enterprise/plugin-17.svg' },
-    { path: '/landing/enterprise/plugin-18.svg' },
-    { path: '/landing/enterprise/plugin-19.svg' },
-    { path: '/landing/enterprise/plugin-20.svg' },
-    { path: '/landing/enterprise/plugin-21.svg' },
+    pluginLogo,
+    pluginsLogos['./assets/plugin-1.svg'],
+    pluginsLogos['./assets/plugin-2.svg'],
+    pluginsLogos['./assets/plugin-3.svg'],
+    pluginsLogos['./assets/plugin-4.svg'],
+    pluginsLogos['./assets/plugin-5.svg'],
+    pluginsLogos['./assets/plugin-6.svg'],
+    pluginsLogos['./assets/plugin-7.svg'],
+    pluginsLogos['./assets/plugin-8.svg'],
+    pluginsLogos['./assets/plugin-9.svg'],
+    pluginsLogos['./assets/plugin-10.svg'],
+    pluginsLogos['./assets/plugin-11.svg'],
+    pluginsLogos['./assets/plugin-12.svg'],
+    pluginsLogos['./assets/plugin-13.svg'],
+    pluginsLogos['./assets/plugin-14.svg'],
+    pluginsLogos['./assets/plugin-15.svg'],
+    pluginsLogos['./assets/plugin-16.svg'],
+    pluginsLogos['./assets/plugin-17.svg'],
+    pluginsLogos['./assets/plugin-18.svg'],
+    pluginsLogos['./assets/plugin-19.svg'],
+    pluginsLogos['./assets/plugin-20.svg'],
+    pluginsLogos['./assets/plugin-21.svg'],
 ];
 </script>
 
@@ -250,7 +258,7 @@ const plugins = [
             }
 
             .bg-image {
-                background-image: url(/landing/enterprise/plugins-bg.png);
+                background-image: url(./assets/plugins-bg.png);
                 @media only screen and (max-width: 1200px) {
                     background-image: unset;
                     background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);

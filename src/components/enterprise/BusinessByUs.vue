@@ -12,19 +12,19 @@
                     <div class="info-item">
                         <h3>5 Million</h3>
                         <p>Tasks executed each month</p>
-                        <img src="/landing/enterprise/leroymerlin.svg" alt="Leroy Merlin">
+                        <img v-bind="LM" alt="Leroy Merlin">
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item">
                         <h3>+300,000</h3>
                         <p>executions per day</p>
-                        <img src="/landing/enterprise/Mattilda.svg" alt="Mattilda">
+                        <img v-bind="MT"" alt="Mattilda">
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item">
                         <h3>X10</h3>
                         <p>Tasks executed each month</p>
-                        <img src="/landing/enterprise/CleverConnect.svg" alt="Clever Connect">
+                        <img v-bind="CC" alt="Clever Connect">
                     </div>
                 </div>
             </div>
@@ -32,10 +32,10 @@
     </div>
 </template>
 
-<script>
-  export default {
-
-  }
+<script lang="ts" setup>
+import LM from './assets/leroymerlin.svg';
+import MT from './assets/Mattilda.svg';
+import CC from './assets/CleverConnect.svg';
 </script>
 
 <style lang="scss" scoped>
@@ -49,7 +49,7 @@
         background-color: $black-2;
         border-radius: calc($spacer * 0.5);
         border: 1px solid #404559;
-        background: url("/landing/enterprise/business-us-bg.svg") no-repeat 213% 34%;
+        background: url("./assets/business-us-bg.svg") no-repeat 213% 34%;
         background-size: 104% 226%;
 
         .business-by-us {
