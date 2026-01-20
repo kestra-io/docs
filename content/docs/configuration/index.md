@@ -1808,7 +1808,7 @@ If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://mi
 
 [SeaweedFS](https://github.com/seaweedfs/seaweedfs) is a fast, distributed storage system for blobs, objects, files. It provides a lightweight alternative to MinIO or S3-compatible backends for self-hosted deployments.
 
-First, install the SeaweedFs storage plugin:
+First, install the SeaweedFS storage plugin:
 
 ```
 ./kestra plugins install io.kestra.storage:storage-seaweedfs:LATEST
