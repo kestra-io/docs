@@ -199,7 +199,7 @@ This flow would run a PowerShell script on the VM to create a new user account (
 
 ### 3. Install Software (Nginx)
 
-Finally, the **`install_software`** flow installs an ingress software (e.g. Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
+Finally, the **`install_software`** flow installs an ingress software (e.g., Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
 
 ```yaml
 id:install_software
@@ -348,7 +348,7 @@ This live inventory is queryable via Kestra's API or UI. For instance, you can f
 
 ![metadata](/blogs/assets-for-infra/metadata.png)
 
-ou can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
+You can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
 
 ## Key Benefits
 
