@@ -19,7 +19,7 @@
                     </NuxtLink>
                 </div>
                 <div class="col-md-6 p-5">
-                    <img class="img-fluid" src="/error/error.png" alt="error" />
+                    <img v-bind="errorImage" class="img-fluid" alt="error" />
                 </div>
             </div>
         </div>
@@ -38,6 +38,7 @@
 <script lang="ts" setup>
     import {ref} from 'vue'
     import LayoutFooterContact from "~/components/layout/FooterContact.vue";
+    import errorImage from "./assets/error.png";
 
     defineOptions({
         name: "error",
@@ -62,7 +63,7 @@
 
 
     .container-fluid {
-        background: url("/error/background.svg") no-repeat center 100%;
+        background: url("./assets/background.svg") no-repeat center 100%;
 
         .container {
             padding-top: 5rem;
