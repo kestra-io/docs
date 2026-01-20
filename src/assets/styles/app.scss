@@ -265,7 +265,7 @@ blockquote.blockquote {
         width: calc(100% - 2px);
         height: calc(100% - 2px);
         background: #0A0113;
-        border-radius: $border-radius;
+        border-radius: $border-radius-lg;
         transition: background-color 0.2s ease;
     }
 }
