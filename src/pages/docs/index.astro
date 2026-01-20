@@ -8,6 +8,8 @@ if (!doc) {
 }
 
 const { Content, headings } = await render(doc);
+
+const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, 'content/')}` : undefined;
 ---
 
 <LayoutDocs activeStem="/docs" isHomePage>
@@ -17,7 +19,7 @@ const { Content, headings } = await render(doc);
         id: heading.slug,
         text: heading.text,
         depth: heading.depth,
-    }))} slot="headings" class="right-menu" />
+    }))} slot="headings" class="right-menu" {editUrl} />
 
     <div class="bd-markdown">
         <Content />
