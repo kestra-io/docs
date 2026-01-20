@@ -3,9 +3,9 @@ import { getCollection, render } from 'astro:content';
 import Layout from '~/components/layout.astro';
 
 export async function getStaticPaths() {
-    const miscEntries = await getCollection('misc');
-    return miscEntries.map((entry) => ({
-        params: { misc: entry.id },
+    const legalEntries = await getCollection('legal');
+    return legalEntries.map((entry) => ({
+        params: { legal: entry.id },
         props: { entry },
     }));
 }

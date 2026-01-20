@@ -55,10 +55,10 @@ export const collections = {
         plugins: z.array(z.string()).optional(),
       })
   }),
-  misc: defineCollection({
+  legal: defineCollection({
     loader: glob({
         pattern: "./*.md{,x}",
-        base: "./content",
+        base: "./src/contents/legal",
         generateId,
     }),
     schema: z.object({
