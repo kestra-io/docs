@@ -32,7 +32,7 @@ Davidson’s expertise supercharges Kestra’s platform. In less than 60 days, w
 ![certified](./certified.png)
 
 ### A Synergistic Partnership
-Our Engineering teams collaborated for weeks on readily available solutions for advanced automation needs. Meanwhile, our Sales teams aligned on a comprehensive delivery approach covering everything from single technical assistance to structured Proof of Concepts. This combined effort, already battletested with a couple of customers, empowers companies to implement robust, collaborative orchestration solutions efficiently.
+Our Engineering teams collaborated for weeks on readily available solutions for advanced automation needs. Meanwhile, our Sales teams aligned on a comprehensive delivery approach covering everything from single technical assistance to structured Proof of Concepts. This combined effort, already battletested with a couple of customers, empowers companies to implement robust, collaborative orchestration solutions efficiently.
 
 ![synergic partnership](./goals.png)
 

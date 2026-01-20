@@ -23,7 +23,7 @@ The functional and technical characteristics of the Solution are further describ
 
 You have expressed an interest in using the “**Enterprise Edition**” of the Solution for Your business operations and deploying it directly on Your IT infrastructure in a "Self-Hosted" license type.
 
-To this end, You have placed an order based on KESTRA order form (the “**Order Form**”) shared with You  which details the quantities and term of Your non revocable with  KESTRA
+To this end, You have placed an order based on KESTRA order form (the “**Order Form**”) shared with You  which details the quantities and term of Your non revocable with  KESTRA
 
 You further acknowledge that You have received from KESTRA, prior to the signing of the Order Form, all advice, instructions and details necessary for You to assess Your needs and therefore to enter into this Agreement in full knowledge of the technical and functional specifications of the Solution.
 
@@ -200,7 +200,7 @@ THIS SECTION 10.2 SETS FORTH THE ENTIRE OBLIGATION OF KESTRA AND YOUR EXCLUSIVE 
 
 You hereby agree that the Solution embeds Statistic Report that monitor and track Your usage such as further detailed under Appendix 1.
 
-Based on the filled Statistic Report(s) to be provided by You every quarter KESTRA can vet and evaluate  Your usage of the solution in order to ensure that You are in full compliance with the declared usage of the licences granted by KESTRA. It is your responsibility to proactively provide such Statistic Report(s) every quarter. Any non communication of a Statistic Report will be construed as a non compliance.
+Based on the filled Statistic Report(s) to be provided by You every quarter KESTRA can vet and evaluate  Your usage of the solution in order to ensure that You are in full compliance with the declared usage of the licences granted by KESTRA. It is your responsibility to proactively provide such Statistic Report(s) every quarter. Any non communication of a Statistic Report will be construed as a non compliance.
 
 In case a Statistic Report reveals any non-compliance of Your usage, You agree to pay within 30 days of written notification any underpaid Subscription fees at the then applicable fees. If You do not pay, KESTRA may terminate for breach the technical support, licenses and this Agreement.
 
@@ -243,13 +243,13 @@ The processing may result in the exercise by each Party’s contact person of th
 
 ## **15 - Commercial references**
 
-**15.1 Name**: KESTRA may use Your name to identify You as a KESTRA customer of the Service and Solution, including on KESTRA's public website and marketing material. KESTRA agrees that any such use shall be subject to KESTRA complying with any  written guidelines that You may deliver to KESTRA regarding the use of its name and shall not be deemed Your endorsement of the Services or the Solution.
+**15.1 Name**: KESTRA may use Your name to identify You as a KESTRA customer of the Service and Solution, including on KESTRA's public website and marketing material. KESTRA agrees that any such use shall be subject to KESTRA complying with any  written guidelines that You may deliver to KESTRA regarding the use of its name and shall not be deemed Your endorsement of the Services or the Solution.
 
-**15.2 Logo:** KESTRA  may use Your logo to identify You as a KESTRA customer of the Service and the Solution, including on KESTRA’'s public website and marketing material. KESTRA agrees that any such use shall be subject to KESTRA complying with any written guidelines that You may deliver to KESTRA regarding the use of its name and shall not be deemed Your endorsement of the Service of the Solution.
+**15.2 Logo:** KESTRA  may use Your logo to identify You as a KESTRA customer of the Service and the Solution, including on KESTRA’'s public website and marketing material. KESTRA agrees that any such use shall be subject to KESTRA complying with any written guidelines that You may deliver to KESTRA regarding the use of its name and shall not be deemed Your endorsement of the Service of the Solution.
 
-**15.3 Reference**: On exceptional basis, You may agree to serve as reference customer for prospective customers, investors, media or analysts of KESTRA and  make appropriate representatives available via telephone for such purposes.
+**15.3 Reference**: On exceptional basis, You may agree to serve as reference customer for prospective customers, investors, media or analysts of KESTRA and  make appropriate representatives available via telephone for such purposes.
 
-**15.4 Case Study:** You  may agree to make appropriate representative available for a mutually agreed upon written customer case study and  video testimonial that may be published and used as KESTRA marketing collateral.
+**15.4 Case Study:** You  may agree to make appropriate representative available for a mutually agreed upon written customer case study and  video testimonial that may be published and used as KESTRA marketing collateral.
 
 **15.5 Press Release**: Upon request, You may agree to participate in a joint and mutually agreed upon press release.
 
@@ -259,13 +259,13 @@ Neither Party shall be liable for failure to meet the contractual obligations un
 
 ## **17 - Termination for breach**
 
-In the event of a material breach by either Party  of any of its obligations under the Agreement, the other Party may terminate the Agreement -(which, for the avoidance of doubt, will result in the termination of the applicable Order) after having given formal notice in writing with acknowledgement of receipt to the defaulting Party thirty (30) days in advance.
+In the event of a material breach by either Party  of any of its obligations under the Agreement, the other Party may terminate the Agreement -(which, for the avoidance of doubt, will result in the termination of the applicable Order) after having given formal notice in writing with acknowledgement of receipt to the defaulting Party thirty (30) days in advance.
 
 Termination of the Agreement by either Party shall be without prejudice to any other rights or remedies which either Party may have by virtue of any breach of the terms of this Agreement.
 
 ## **18 - Effects of the end of the Agreement**
 
-The termination or expiration  of the Agreement, for any reason whatsoever , will result in:
+The termination or expiration  of the Agreement, for any reason whatsoever , will result in:
 
 - the ending of the relationship of the Parties and termination of any rights or licences granted under or pursuant to this Agreement,
 - the survival of the sections 14 “*Limitation of Liability*” 15 "*Confidentiality*" and the present article
@@ -356,7 +356,7 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **Scope**
 
-Provided that You have paid the applicable licence Fees as set forth in the Order Form, KESTRA will provide You the support and maintenance services described in this Appendix during the Period indicated in the Order Form.. The details of the  Support, as described under the “Support” and “Included matters” articles, can be found below.
+Provided that You have paid the applicable licence Fees as set forth in the Order Form, KESTRA will provide You the support and maintenance services described in this Appendix during the Period indicated in the Order Form.. The details of the  Support, as described under the “Support” and “Included matters” articles, can be found below.
 
 **Support**
 
@@ -399,7 +399,7 @@ And more generally:
 
 **Onboarding**
 
-The Onboarding Service aims  to setup the support services and deliver multiple checkpoints (Quarterly Business Review) to follow-up on your situation. It does not include any of the responsibilities detailed in the excluded matter on this Appendix.
+The Onboarding Service aims  to setup the support services and deliver multiple checkpoints (Quarterly Business Review) to follow-up on your situation. It does not include any of the responsibilities detailed in the excluded matter on this Appendix.
 
 **Training**
 

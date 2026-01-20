@@ -29,7 +29,7 @@ Kestra’s **Plugin Versioning** feature provides a safe, flexible way to manage
 **How does it work?** Instead of replacing an old plugin when a new version arrives, Kestra can keep the old one and add the new one in tandem. You can **pin specific plugin versions** for certain flows (e.g., keep using v1.0.0 in an older workflow) while directing other flows to use the latest release.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -66,7 +66,7 @@ One of the most convenient aspects of Kestra’s plugin versioning is its integr
 
 The **Versioned Plugins** page in Kestra’s UI allows you to install new or additional versions of existing plugins via a point-and-click interface.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 To access this feature, navigate in the Kestra UI to **Administration > Instance > Versioned Plugins**. On this page, you’ll see a list of plugins and their installed versions. Clicking the **+ Install** button opens a dialog with the full library of available plugins (as shown above). You can search for the integration you need – an **AWS** or **Snowflake** plugin – then select which version to install. Kestra’s plugin repository contains all release versions, so you might see a dropdown of versions (e.g., 0.16.1, 0.17.0, 0.18.0, ... up to the latest) for the chosen plugin.

@@ -31,7 +31,7 @@
                         />
                     </div>
                     <div class="d-flex flex-wrap justify-content-center">
-                        <p>If you have any questions, don't hestitate to ask us on <a target="_blank" href="https://kestra.io/slack">Slack</a></p>
+                        <p>If you have any questions, don't hestitate to ask us on <a target="_blank" href="https://kestra.io/slack">Slack</a></p>
                     </div>
                 </div>
             </Section>
@@ -58,7 +58,7 @@
 
           title: "Make it easy to help you",
           descriptionHtml: "<ul>\n" +
-            "                   <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>\n" +
+            "                   <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>\n" +
             "                   <li>Please share how you have deployed Kestra:\n" +
             "                   <ol type='a'>\n" +
             "                       <li>Deployment choices (Standalone, Docker, Kubernetes, etc.).</li>\n" +
@@ -69,7 +69,7 @@
             "               </ul>"
         },
         relevantChannel: { title: "Use relevant channels", description: "Refrain from asking questions multiple times across different channels." },
-        dontSpam: { title: "Don’t spam", descriptionHtml: "While we’ll do our best to help you, there is no guaranteed timeline to answer your question. <br /><br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>" },
+        dontSpam: { title: "Don’t spam", descriptionHtml: "While we’ll do our best to help you, there is no guaranteed timeline to answer your question. <br /><br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>" },
       };
     }
   }

@@ -4,7 +4,7 @@
         <div class="content scroller" id="contentContainer" ref="contentContainer">
             <div v-if="messages.length === 0" class="message welcome">
                 <div class="avatar">
-                    <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" />
+                    <img src="/icon-simple.svg" alt="Kestra AI" />
                 </div>
                 <div class="bubble">
                     <p>Hi! I'm your Kestra AI assistant.<br>Ask me anything about workflows.</p>
@@ -30,7 +30,7 @@
                                 <AccountCircle />
                             </div>
                             <div v-else class="ai">
-                                <NuxtImg src="/docs/icons/ks-logo.png" alt="Kestra AI" width="28px" height="44px" />
+                                <img src="/icon-simple.svg" alt="Kestra AI" width="28px" height="44px" />
                             </div>
                         </div>
                         <div class="bubble">

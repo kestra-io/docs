@@ -83,7 +83,7 @@ SQLMesh introduces key improvements for managing SQL queries:
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
 
 <div>
-  <iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 Here is a general feature comparison between dbt and SQLMesh:
@@ -93,34 +93,34 @@ Here is a general feature comparison between dbt and SQLMesh:
 | Feature | dbt | SQLMesh |
 | --- | --- | --- |
 | **Modeling** | | |
-| SQL models | Yes | Yes |
+| SQL models | Yes | Yes |
 | Python models | Yes | Yes |
 | Jinja support | Yes | Yes |
 | Jinja macros | Yes | Yes |
 | Python macros | No | Yes |
 | **Validation** | | |
-| SQL semantic validation | No | Yes |
+| SQL semantic validation | No | Yes |
 | Unit tests | No | Yes |
 | Table diff | No | Yes |
 | Data audits | Yes | Yes |
 | Schema contracts | Yes | Yes |
 | Data contracts | No | Yes |
-| **Deployment** | | | 
-| Virtual Data Environments | No | Yes |
+| **Deployment** | | |
+| Virtual Data Environments | No | Yes |
 | Open-source CI/CD bot | No | Yes |
 | Data consistency enforcement | No | Yes |
 | Native Airflow integration | No | Yes |
-| **Interfaces** | | |
-| CLI | Yes | Yes |
-| UI | Yes (Cloud) | Yes (OSS) |
+| **Interfaces** | | |
+| CLI | Yes | Yes |
+| UI | Yes (Cloud) | Yes (OSS) |
 | Native Notebook Support | No | Yes |
 | Visualization | No | Yes |
-| Documentation generation | Yes | Yes |
+| Documentation generation | Yes | Yes |
 | Column-level lineage | Yes (Cloud) | Yes (OSS) |
-| **Miscellaneous** | | | 
-| Package manager | Yes | No |
-| Multi-repository support | No | Yes |
-| SQL transpilation | No | Yes |
+| **Miscellaneous** | | |
+| Package manager | Yes | No |
+| Multi-repository support | No | Yes |
+| SQL transpilation | No | Yes |
 
 > **Note:** This table is for informational purposes only and may not reflect the latest features or capabilities of each tool. Please consult the official documentation for the most up-to-date information.
 

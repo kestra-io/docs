@@ -12,7 +12,7 @@ image: ./main.jpg
 There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=7BHcOIvSgxELwh33" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=7BHcOIvSgxELwh33" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -66,7 +66,7 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.md) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
+And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.mdx) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
 
 Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` .
 

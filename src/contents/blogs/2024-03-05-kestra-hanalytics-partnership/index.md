@@ -33,9 +33,9 @@ Our shared agile mindset drives the success of this partnership. Both teams valu
 
 Their Kestra-certified team has already successfully implemented Kestra in multiple companies like: [Bouygues Immobilier (Valorissimo)](https://kestra.io/blogs/2024-01-23-bouygues-immobilier-valorissimo), [Copines de Voyages](https://kestra.io/use-cases/stories/10-copines-de-voyage), [Tui](https://www.data-hanalytics.io/blog/tui-customer-data-platform). By making Kestra their go-to solution for orchestration, Hanalytics has delivered significant value to its clients, including:
 
-- **Increased marketing agility and sales efficiency:** Hanalytics' data stack helped Valorissimo personalize their marketing automation campaigns and double their conversion rates. This demonstrates the value that Hanalytics can bring to customers by improving their marketing and sales effectiveness.
+- **Increased marketing agility and sales efficiency:** Hanalytics' data stack helped Valorissimo personalize their marketing automation campaigns and double their conversion rates. This demonstrates the value that Hanalytics can bring to customers by improving their marketing and sales effectiveness.
 
-- **Reduced complexities, improved performances:** Hanalytics' expertise helped Copines de Voyage transition from a legacy system to a modern data stack. This modernized infrastructure allows for better data organization, access, and utilization for valuable insights.
+- **Reduced complexities, improved performances:** Hanalytics' expertise helped Copines de Voyage transition from a legacy system to a modern data stack. This modernized infrastructure allows for better data organization, access, and utilization for valuable insights.
 
 ![kestraxHanalytics](/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg)
 

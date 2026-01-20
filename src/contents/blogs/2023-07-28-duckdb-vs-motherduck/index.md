@@ -1,6 +1,6 @@
 ---
-title: "DuckDB vs. MotherDuck — should you switch to the cloud version?"
-description: "Why and when to use MotherDuck over local DuckDB"
+title: "DuckDB vs. MotherDuck — should you switch to the cloud version?"
+description: "Why and when to use MotherDuck over local DuckDB"
 date: 2023-07-28T14:00:00
 category: Solutions
 author:
@@ -30,7 +30,7 @@ The [DuckDB Foundation](https://duckdb.org/foundation/) is a non-profit organiza
 
 ---
 
-## What can you do with MotherDuck that you can’t do with a locally running DuckDB
+## What can you do with MotherDuck that you can’t do with a locally running DuckDB
 
 MotherDuck adds several features, including the following:
 
@@ -58,7 +58,7 @@ In short, MotherDuck adds collaboration, scale, (meta)data management, and conve
 
 ---
 
-## Getting started with DuckDB
+## Getting started with DuckDB
 
 You can install DuckDB using Homebrew (check the [install guide](https://duckdb.org/docs/installation/) for your operating system):
 
@@ -157,7 +157,7 @@ First, sign up (or sign in) to [app.motherduck.com](https://app.motherduck.com/)
 export MOTHERDUCK_TOKEN=your_token
 ```
 
-Within your `duckdb` terminal session, run the command `.open md:my_db?motherduck_token=xxx`, where:
+Within your `duckdb` terminal session, run the command `.open md:my_db?motherduck_token=xxx`, where:
 
 - `md` stands for MotherDuck
 - `xxx` is a placeholder for your MotherDuck service token.
@@ -184,7 +184,7 @@ D show databases; -- orders DB is not displayed as it's not in MotherDuck yet
 └───────────────┘
 ```
 
-### 2) Ingest local database to the cloud
+### 2) Ingest local database to the cloud
 
 The SQL statement `CREATE DATABASE dbname FROM 'orders.db’;` will upload the entire local `orders.db` to the cloud, including all tables we’ve created so far:
 
@@ -206,9 +206,9 @@ The local `orders` database is now in the cloud, and you can run queries from a 
 ![blueprintKestra2](./md.png)
 
 
-Our local orders database is now in the cloud — image by the author
+Our local orders database is now in the cloud — image by the author
 
-### 3) Create a share URL
+### 3) Create a share URL
 
 Here is the SQL statement to create a share URL:
 

@@ -24,7 +24,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of the new features.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/C8sBlcAHi-k?si=QDhbv7TUa7hDR5DO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/C8sBlcAHi-k?si=QDhbv7TUa7hDR5DO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -35,12 +35,12 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-The new [Log Shipper feature](../docs/06.enterprise/02.governance/logshipper.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
+The new [Log Shipper feature](../docs/06.enterprise/02.governance/logshipper/index.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
 Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 The examples below show how to configure Log Shipper with Datadog and AWS CloudWatch.
@@ -108,7 +108,7 @@ Kestra's interface has always bridged the gap between code and no-code. In this 
 Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to [create custom dashboards](../docs/08.ui/00.dashboard.md), so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 As with everything in Kestra, you can manage dashboards as code (and you can create them via Terraform or API). Clicking **+ Create new dashboard** opens a code editor where you can define the dashboard layout and data sources.

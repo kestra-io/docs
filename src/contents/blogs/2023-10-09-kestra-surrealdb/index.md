@@ -1,6 +1,6 @@
 ---
-title: "Kestra and SurrealDB: How to Orchestrate your Applications and Microservices built with SurrealDB using Kestra"
-description: "Learn how to include a multi-model database in your data flows with Kestra."
+title: "Kestra and SurrealDB: How to Orchestrate your Applications and Microservices built with SurrealDB using Kestra"
+description: "Learn how to include a multi-model database in your data flows with Kestra."
 date: 2023-10-09T08:00:00
 category: Solutions
 author:
@@ -20,7 +20,7 @@ Let's dig in!
 
 ---
 
-## What is SurrealDB and How to Get Started
+## What is SurrealDB and How to Get Started
 *This portion of the article goes over the basics of SurrealDB - from installation to fundamental queries. Feel free to skip it if you're familiar with the topic.*
 
 Think of [SurrealDB](https://surrealdb.com/) as an innovative NewSQL database solution that's suitable for serverless apps, jamstack apps, single-page apps, and can be deployed on cloud, on-premise, embedded, and edge-computing devices.
@@ -28,7 +28,7 @@ The database packs a wide array of disruptive features, such as an SQL-style que
 
 **Some find it to be the next generation of a serverless database.**
 
-Further, SurrealDB is a multi-model database, which means you can store your data in tables, documents, and graphs. You don't have to choose the method in advance. It allows you to add inter-document record links which results in completely avoiding traditional SQL JOINs. 
+Further, SurrealDB is a multi-model database, which means you can store your data in tables, documents, and graphs. You don't have to choose the method in advance. It allows you to add inter-document record links which results in completely avoiding traditional SQL JOINs.
 
 This database also has machine learning and real-time functionalities built in, but that's out of the scope of today's article.
 
@@ -103,12 +103,12 @@ Once you enter the connection parameters, hit the "Save details" button. You'll 
 As soon as you see the pink "Send query" button, and not the gray "Connect" button, it means the database connection was established, and you're ready to proceed to the following section.
 
 
-## SurrealDB Basics: How to Create and Query Records
+## SurrealDB Basics: How to Create and Query Records
 *If you're already familiar with SurrealDB, feel free to skip this section - it will only cover the basics.*
 
 SurrealDB uses SurrealQL - a powerful query language similar to traditional SQL, but with some differences and improvements. We'll keep things light today, which means you don't have to go and watch a SurrealQL crash course to follow. If you understand basic SQL, you're good to continue.
 
-### How to Insert New Records
+### How to Insert New Records
 Let's start by adding a couple of records to our database. You don't have to create a table schema beforehand. You are able to add records to the database directly.
 
 The following code snippet shows you how to use the `CREATE` command to create a new record of type `employee` with a couple of fields:
@@ -139,7 +139,7 @@ Anyway, run the `CREATE` statements individually, and here's what you will see:
 
 The records should now be inserted into the database, but how can we know for sure? Let's query it next.
 
-### How to Query Records
+### How to Query Records
 If you have at least 3 minutes of traditional SQL experience, you'll know what the `SELECT` statement does. It works exactly the same in SurrealDB:
 
 ```sql
@@ -153,7 +153,7 @@ You can see both records listed in JSON format:
 You now know the bare minimum of SurrealDB, but just enough to explore how it works with Kestra. We'll go over two simple data flows next, and only then will we go over a more advanced example.
 
 
-## SurrealDB and Kestra: How to Get Started
+## SurrealDB and Kestra: How to Get Started
 We assume you already have [Kestra installed](https://medium.com/geekculture/introducing-kestra-finally-a-viable-airflow-alternative-fa664fdc7a0d) and are familiar with the user interface. The rest of the article won't dive into advanced Kestra features, so you should still be comfortable following it even if you're new.
 
 ### Flow #1: Retrieve Data from SurrealDB
@@ -274,7 +274,7 @@ We'll modify the flow in a way that it uses three tasks of type `io.kestra.plugi
 
 **Task 1 - createEmployee**
 - Creates a new type of record called `employee` and insert a new record with the ID of `dario` (my first name)
-- Uses the dot notation in attribute names to leverage a nested JSON structure (e.g., `name.first` will equal to `"name": {"first": "value"}` 
+- Uses the dot notation in attribute names to leverage a nested JSON structure (e.g., `name.first` will equal to `"name": {"first": "value"}`
 - Creates a derived attribute of full name by combining the existing attributes for first and last name. This is done with the built-in `string::join()` function
 - Creates a derived attribute for email that concatenates the lowercased values of first and last names, alongside the dot in between and a domain name after (more SurrealDB string functions)
 - Creates a field named `year_of_birth` which is derived from an existing attribute age

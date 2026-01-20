@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), our team delivered major performance boosts, from optimizing MySQL queries to scaling up worker thread counts and fine-tuning Kafka Streams. Those changes yielded up to 99% faster queries and better throughput in production workloads. Version 1.1 continues that momentum with targeted enhancements aimed at enterprise-scale deployments. We focused on two key areas that matter as your Kestra usage grows: smarter MySQL query planning (so dashboards and APIs stay responsive under heavy data) and a faster purge pipeline (so routine maintenance and cleanup won’t slow you down).
+In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), our team delivered major performance boosts, from optimizing MySQL queries to scaling up worker thread counts and fine-tuning Kafka Streams. Those changes yielded up to 99% faster queries and better throughput in production workloads. Version 1.1 continues that momentum with targeted enhancements aimed at enterprise-scale deployments. We focused on two key areas that matter as your Kestra usage grows: smarter MySQL query planning (so dashboards and APIs stay responsive under heavy data) and a faster purge pipeline (so routine maintenance and cleanup won’t slow you down).
 
 ## MySQL query improvements with the help of Xiaomi
 
@@ -47,7 +47,7 @@ The **PurgeExecutions** task is Kestra’s built-in way to clean up old executio
 
 This one-by-one approach meant if you had, say, 10,000 executions to purge, the task would execute tens of thousands of individual delete operations (and transactions) in the database, plus file deletions a **huge overhead**. The database and Kestra engine spent a lot of time in round-trip calls and committing small transactions. In practice, large purges could run for a very long time and consume significant CPU/IO, during which your system might experience slowdowns. The approach simply didn’t scale well.
 
-**New (faster) purge process:** In Kestra 1.1, we redesigned PurgeExecutions to use *bulk deletions* and parallelism for I/O:
+**New (faster) purge process:** In Kestra 1.1, we redesigned PurgeExecutions to use *bulk deletions* and parallelism for I/O:
 
 - The task now operates on **batches of executions** at once (configurable via a new `bulkSize` parameter, default is 100). It retrieves, for example, 100 old execution IDs in one go.
 - It then issues a **single SQL `DELETE` per related table** to remove all logs and all metrics for those 100 executions in bulk. For instance, one command like `DELETE FROM logs WHERE execution_id IN (....100 IDs....);` removes all those logs at once similarly for metrics). These set-based deletes are *far* more efficient than 100 separate deletes.
@@ -60,9 +60,9 @@ For a deeper dive into the implementation (and the SQL snippets used), Check out
 
 ## Conclusion
 
-Kestra 1.1’s performance improvements reinforce our commitment to **scalability and reliability** for even the largest deployments. By tackling specific pain points: query planning on massive tables and high-volume purge operations, we ensure that Kestra remains **fast and responsive** as usage grows. These optimizations mean Kestra can orchestrate millions of workflows without breaking a sweat, and housekeeping tasks can keep up with minimal overhead.
+Kestra 1.1’s performance improvements reinforce our commitment to **scalability and reliability** for even the largest deployments. By tackling specific pain points: query planning on massive tables and high-volume purge operations, we ensure that Kestra remains **fast and responsive** as usage grows. These optimizations mean Kestra can orchestrate millions of workflows without breaking a sweat, and housekeeping tasks can keep up with minimal overhead.
 
-We’d like to thank the community (shout-out to Xiaomi 🎉) for their contributions and feedback that helped drive these enhancements. As always, performance tuning is an ongoing effort. We have more in store for future releases, and we encourage you to **keep the feedback coming**. If you haven’t upgraded yet, we highly recommend moving to **Kestra 1.1** to take advantage of these gains. Your workflows, and your databases, will thank you!
+We’d like to thank the community (shout-out to Xiaomi 🎉) for their contributions and feedback that helped drive these enhancements. As always, performance tuning is an ongoing effort. We have more in store for future releases, and we encourage you to **keep the feedback coming**. If you haven’t upgraded yet, we highly recommend moving to **Kestra 1.1** to take advantage of these gains. Your workflows, and your databases, will thank you!
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).

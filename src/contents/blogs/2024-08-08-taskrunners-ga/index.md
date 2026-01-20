@@ -17,7 +17,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 ## What are Task Runners
 
-[Task Runners](../docs/task-runners/index.md) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
+[Task Runners](../docs/task-runners/index.mdx) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
 
 You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered in Kestra Enterprise or Kestra Cloud, such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
 
@@ -57,7 +57,7 @@ Whether you are developing locally in Docker or running production workloads in 
 Check the video below summarizing the key benefits of Task Runners.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 :::
 
@@ -65,30 +65,30 @@ Check the video below summarizing the key benefits of Task Runners.
 
 Embrace the scalability of dynamically-provisioned resources with Task Runners, now fully equipped to handle your most demanding data processing workflows.
 
-To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
+To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.mdx), [Blueprints](/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/N-Bq-TWqxiw?si=2u4_xmm2vLivKLPO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/N-Bq-TWqxiw?si=2u4_xmm2vLivKLPO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/U2TzypTbpI8?si=64eTuk-QhnGVU_3s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/U2TzypTbpI8?si=64eTuk-QhnGVU_3s" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/nHzgPFbXIxY?si=TPh03i4XmRHNeW-b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nHzgPFbXIxY?si=TPh03i4XmRHNeW-b" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/kk084vVyZDM?si=TF7SqVaDUrwSX4uy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/kk084vVyZDM?si=TF7SqVaDUrwSX4uy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/pxN8sCreUAA?si=u5nEZG2TrklFef8a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/pxN8sCreUAA?si=u5nEZG2TrklFef8a" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!

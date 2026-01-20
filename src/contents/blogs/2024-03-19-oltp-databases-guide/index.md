@@ -9,7 +9,7 @@ author:
 image: ./main.jpg
 ---
 
-**Context is everything. Decisions need context;  effective choices rely on considering all relevant factors.  For example, a doctor wouldn't prescribe medication solely based on symptoms; they'd need the patient's medical history as context.**
+**Context is everything. Decisions need context;  effective choices rely on considering all relevant factors.  For example, a doctor wouldn't prescribe medication solely based on symptoms; they'd need the patient's medical history as context.**
 
 **Let’s make sure we know and understand the context before we decide on an OLTP microservices database.**
 
@@ -202,7 +202,7 @@ For many OLTP microservices, a Data Access Layer (DAL) emerges as the preferred 
 
 For other microservices, the Facade Pattern may be the preferred choice for several reasons. It can simplify microservice interactions (reducing complexity), promote consistency, and enhances security:
 
-- **Simplification and Abstraction** –  The Facade Pattern provides a single interface that hides the intricate business logic residing in subsystems. In an OLTP microservice, this abstraction simplifies interactions by exposing straightforward APIs. Developers can focus on high-level functionality without dealing with low-level complexities.
+- **Simplification and Abstraction** –  The Facade Pattern provides a single interface that hides the intricate business logic residing in subsystems. In an OLTP microservice, this abstraction simplifies interactions by exposing straightforward APIs. Developers can focus on high-level functionality without dealing with low-level complexities.
 
 - **Unified Entry Point** – Microservices often involve multiple subsystems, databases, and external services, and the facade acts as a front-facing entry point, shielding clients from the underlying complexity. It consolidates various service calls into a cohesive interface, making it easier for clients to interact with the microservice.
 
@@ -416,7 +416,7 @@ Oracle Database's transaction management is supported by its own and external li
 
 ## In Conclusion
 
-I don’t envy you the task of choosing the *right* database for your OLTP  microservice. The best advice I can offer is to involve your team, however many pizzas it takes to come up with an agreement on requirements.
+I don’t envy you the task of choosing the *right* database for your OLTP  microservice. The best advice I can offer is to involve your team, however many pizzas it takes to come up with an agreement on requirements.
 
 Please do give some serious thought to an automation solution for all the database related coding, scripting and SQLing. It’s saved my sanity more times than I can count and the QA team loves it! Using a workflow orchestration platform like Kestra makes this kind of automation ridiculously easy.
 

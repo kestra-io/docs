@@ -30,7 +30,7 @@ Let's dive in!
 We're introducing a brand-new, lightning-fast [Code Editor](https://github.com/kestra-io/kestra/pull/3568) which significantly improves the development experience as compared to our previous VS Code-based solution. The new editor is now the default editor for both Namespace Files and Flows, offering a unified development experience.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/o-d-GaXUiKQ?si=uOWKqdj51-GCA0jS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/o-d-GaXUiKQ?si=uOWKqdj51-GCA0jS" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -65,7 +65,7 @@ Along with the new Code Editor, we've added [Autocompletion](https://github.com/
 When you use the Subflow task, you'll [now](https://github.com/kestra-io/kestra/pull/3581) also get [autocompletion for subflows](https://github.com/kestra-io/kestra/issues/2473). Just add the subflow task, and start typing to see the suggestions for the namespace, flow ID and flow inputs.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/VOF4L8QE6vg?si=zm5m29qqeawjx6fe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/VOF4L8QE6vg?si=zm5m29qqeawjx6fe" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ### Print Context for Debugging
@@ -93,7 +93,7 @@ With the release of Kestra 0.17.0, we are also [introducing](https://github.com/
 The `PushFlows` task allows you to easily commit and push your saved flows to a Git repository. Check the [following documentation](https://kestra.io/docs/how-to-guides/pushflows) and the video demonstration below to learn more about how you can use this task to automate your Git workflow.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -104,7 +104,7 @@ The `SyncFlows` task automatically checks for changes in your Git branch and dep
 It eliminates the need for CI/CD pipelines — you can use it to sync flows from Git to Kestra on a regular cadence (e.g. an hourly or daily `Schedule` trigger) or whenever changes are merged into a specified Git branch (e.g. a `Webhook` trigger).
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/YbIuqYWLrpA?si=OChhyF1Lz6j8ybGX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/YbIuqYWLrpA?si=OChhyF1Lz6j8ybGX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 **Example: Scheduled Sync**
@@ -138,11 +138,11 @@ triggers:
 The `PushNamespaceFiles` and `SyncNamespaceFiles` tasks work analogically to the `PushFlows` and `SyncFlows` tasks, but applied to [namespace files](../docs/08.developer-guide/03.namespace-files.md). Watch the videos below to see how you can use these tasks to manage your namespace files with Git.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/-bEnwR5t7VI?si=wNG-fvtuavvVkSmF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/-bEnwR5t7VI?si=wNG-fvtuavvVkSmF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/AbxaDtINcr8?si=68--VkN_sIcuwm5K" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/AbxaDtINcr8?si=68--VkN_sIcuwm5K" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 These new tasks will supercharge your Git workflows, making it easier to version control your flows and namespace files.
@@ -175,7 +175,7 @@ Realtime triggers listen to events in real time and start a workflow execution a
 With this new feature, you can orchestrate business-critical processes and microservices in real time. Visit the [Realtime Trigger documentation](https://kestra.io/docs/workflow-components/triggers/realtime-triggers) to learn more and check the video below to see it in action:
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -189,7 +189,7 @@ The Pause task now supports `onResume` [inputs](https://github.com/kestra-io/kes
 An increasingly common use case for the manual approval processes is in AI applications where human intervention is required to validate the AI's output. The video below demonstrates how you can automatically pause a workflow execution until the user resumes it with custom input values.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/ohEA2eYaQrc?si=QKDHq6swDLJiFibL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/ohEA2eYaQrc?si=QKDHq6swDLJiFibL" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 :::alert{type="info"}
@@ -269,7 +269,7 @@ We've revamped the [Guided Tour](https://github.com/kestra-io/kestra/pull/3804) 
 Check out the new Getting Started experience in the following video demo:
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/mYtJF8Brxu4?si=2eKzAIDda552c1j6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/mYtJF8Brxu4?si=2eKzAIDda552c1j6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ### Improved Settings page
@@ -494,7 +494,7 @@ When you navigate to any Namespace and go to the `Edit` tab, you can explicitly 
 However, you can restrict that access if you want only specific namespaces (or no namespace at all) to trigger its corresponding resources.
 
 :::alert{type="info"}
-Check the [Allowed Namespaces](../docs/06.enterprise/02.governance/07.namespace-management.md#allowed-namespaces) documentation for more details.
+Check the [Allowed Namespaces](../docs/06.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) documentation for more details.
 :::
 
 ## Improved Execution page

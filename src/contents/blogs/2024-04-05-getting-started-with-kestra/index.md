@@ -10,7 +10,7 @@ image: ./main.png
 ---
 
 <div class="video-container">
-<iframe width="100%" height="100%" src="https://www.youtube.com/embed/a2BZ7vOihjg?si=4vEZy7hekHoP4PD8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/a2BZ7vOihjg?si=4vEZy7hekHoP4PD8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 Kestra is an event driven data orchestration platform that’s highly flexible and easy to use. This guide is going to go through the basics and get you started building your own pipeline!

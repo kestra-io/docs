@@ -29,7 +29,7 @@ The table below summarizes the highlights of this release.
 If you'd like to see a 2-minute overview of the release highlights, check out the video below:
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/C1_fh7PTv9o?si=qH1zy38aDzSh8rtC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/C1_fh7PTv9o?si=qH1zy38aDzSh8rtC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -52,7 +52,7 @@ Since the `KV Store` has been built on top of Kestra's internal storage (which c
 2. You keep **full control and privacy** over any data stored in Kestra's KV Store as it's persisted within your private Cloud storage bucket.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=nJYa-AR6Fa_ylTGR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=nJYa-AR6Fa_ylTGR" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Note that KV Store is a Namespace-level feature — to start adding new KV pairs, navigate to any given `Namespace` and then click on the `KV Store` tab.
@@ -94,7 +94,7 @@ And here is how the same Namespace page looks like in the Enterprise Edition:
 Check the following video demo for a deep dive into the new `Namespaces` UI:
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=RiEZ_NKQym3Kh1tt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=RiEZ_NKQym3Kh1tt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -238,7 +238,7 @@ Task Runners is a pluggable system capable of executing your tasks in remote env
 Check the video below for a Task Runners feature showcase:
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -263,7 +263,7 @@ Task Runners in Kestra 0.18.0 offer more resilient file handling and more stabil
 Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../docs/06.enterprise/index.md) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
 :::
 
-Read more about Task Runners in our [Documentation](../docs/task-runners/index.md).
+Read more about Task Runners in our [Documentation](../docs/task-runners/index.mdx).
 
 ---
 
@@ -430,7 +430,7 @@ Here is what you need to adjust in your Docker image tags:
 - If you use the `develop-full` or `latest-full` image with all plugins, cut the `-full` suffix from your Docker image tag.
 - If you use the `develop` or `latest` image without plugins, add `-no-plugins` suffix to the image tag.
 
-For more details on that change, check the [Docker Image Tags documentation](../docs/02.installation/02.docker.md#docker-image-tags) and the Breaking Changes section of the [GitHub Release Notes](https://github.com/kestra-io/kestra/releases/tag/v0.18.0).
+For more details on that change, check the [Docker Image Tags documentation](../docs/02.installation/02.docker/index.md#docker-image-tags) and the Breaking Changes section of the [GitHub Release Notes](https://github.com/kestra-io/kestra/releases/tag/v0.18.0).
 
 ### The `kestra-ee` binary has been renamed to `kestra`
 

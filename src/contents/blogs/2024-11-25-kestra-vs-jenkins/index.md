@@ -12,7 +12,7 @@ image: ./main.jpg
 Jenkins is a well known open source automation server, commonly used for CI/CD.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/TKdfkGiRzxM?si=-xBNjKS0yoflSSfL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/TKdfkGiRzxM?si=-xBNjKS0yoflSSfL" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---

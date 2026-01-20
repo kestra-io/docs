@@ -41,7 +41,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of the new features.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/3dJYHrAlcXc?si=TcVQCa8q1m003cF4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/3dJYHrAlcXc?si=TcVQCa8q1m003cF4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Let’s dive into these highlights and other enhancements in more detail.
@@ -54,7 +54,7 @@ Let’s dive into these highlights and other enhancements in more detail.
 You can think of Apps as **custom UIs for flows**, allowing your end users to interact with Kestra from anywhere without any technical knowledge. They can resume paused workflows waiting for approval or trigger new workflow executions.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Team-Level Isolation for Storage and Secrets

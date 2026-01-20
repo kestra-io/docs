@@ -112,7 +112,7 @@ Whether you're provisioning cloud resources, handling complex approval processes
 So next time you’re building a workflow that requires flexibility and adaptability, think about how you can use dynamic inputs to make the process seamless. Give your workflows the intelligence they need to handle complexity in the simplest way possible.
 
 <div class="video-container">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XTP6t4QcUUY?si=Du7A7x7mEe5GV1Yh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XTP6t4QcUUY?si=Du7A7x7mEe5GV1Yh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 :::alert{type="info"}

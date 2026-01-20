@@ -31,7 +31,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/FywYZmo2vqo?si=mlh2CG85gX8FN4qs" title="Kestra 1.1 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/FywYZmo2vqo?si=mlh2CG85gX8FN4qs" title="Kestra 1.1 Overview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## New Filters
@@ -47,7 +47,7 @@ The new filter design is cleaner, more intuitive, and significantly more powerfu
 
 The redesigned interface makes it effortless to find exactly what you're looking for—whether you're tracking specific executions, monitoring workflow states, or analyzing historical runs.
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/rOfsRLbWk4B20tF0MUtS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions Filters | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/rOfsRLbWk4B20tF0MUtS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions Filters | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 
@@ -57,7 +57,7 @@ Kestra 1.1 extends the No-Code Multi-Panel Editor to **Custom Dashboards**, brin
 
 Create data sources, visualizations, and charts using form-based tabs. Switch between **Dashboard Code** and **No-Code** panels to see generated YAML in real time. Just like with the multi-panel Flow Editor, you can open, reorder, and close any combination of panels (No-Code, Dashboard Code, Documentation, and Preview) to build your ideal workspace. Design monitoring dashboards, business intelligence views, or executive reports without having to start from raw YAML.
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No-Code Dashboard | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 ## Custom App Branding
@@ -67,7 +67,7 @@ Make Kestra truly yours with custom branding for your Apps catalog. Enterprise E
 Superadmins can configure all branding settings under `Administration > Tenants > Single Tenant > App Catalog`.
 
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/qxWXGwyRdd3D5eqC4O8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Apps Catalog &amp; Thumbnail | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/qxWXGwyRdd3D5eqC4O8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Apps Catalog &amp; Thumbnail | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Multi-Agent AI Systems
 
@@ -120,7 +120,7 @@ pluginDefaults:
 
 When task runs fail, Kestra 1.1 can now provide AI-powered suggestions to help you quickly diagnose and resolve issues. The new "Fix with AI" feature analyzes failed task runs and offers intelligent recommendations for fixing the problem, helping you troubleshoot workflow issues faster and get your executions back on track.
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/FK3jLC4EmG70aJdVMgOU?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Fix with AI | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/FK3jLC4EmG70aJdVMgOU?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Fix with AI | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 
 ## New `MailReceivedTrigger` and `RealTimeTrigger` for Email-Driven Workflows

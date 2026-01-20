@@ -17,18 +17,18 @@
                 <h2>Overview of Rundeck and Kestra</h2>
                 <p><strong>Rundeck</strong>: is an open-source automation tool (now part of PagerDuty) use (mostly) for
                     runbook and infrastructure automation. Rundeck provides self-service access to operations tasks with
-                    fine-grained ACLs and a GUI to execute jobs on remote nodes via SSH​. It’s commonly used to run
+                    fine-grained ACLs and a GUI to execute jobs on remote nodes via SSH. It’s commonly used to run
                     Ansible playbooks, deploy scripts, and handle routine server tasks. Rundeck’s flexibility is a
                     strength, but it also has limitations – it offers around 120+ plugins and its API is not fully
-                    RESTful, lacking features like versioned job definitions​. For example, Rundeck cannot natively
-                    preserve historical versions of a job; any API call will run the latest job configuration​.</p>
+                    RESTful, lacking features like versioned job definitions. For example, Rundeck cannot natively
+                    preserve historical versions of a job; any API call will run the latest job configuration.</p>
                 <p><strong>Kestra</strong>: is also an open-source, but it's an orchestration platform designed to bring
                     Infrastructure-as-Code practices to automation and any workflow. Kestra takes an API-first approach
-                    and lets you define workflows as YAML pipelines, treating automation configuration as code​. It
+                    and lets you define workflows as YAML pipelines, treating automation configuration as code. It
                     features an event-driven architecture and a highly extensible plugin ecosystem. Kestra was built
                     with scalability in mind – under the hood it uses Apache Kafka and Elasticsearch to handle massive
-                    workloads with an “infinitely scalable” design​. With a user-friendly UI (including a code editor
-                    and live workflow topology view) and {{ totalPlugins }} plugins for integrations​, Kestra is aimed at modern cloud
+                    workloads with an “infinitely scalable” design. With a user-friendly UI (including a code editor
+                    and live workflow topology view) and {{ totalPlugins }} plugins for integrations, Kestra is aimed at modern cloud
                     and data-centric automation needs.</p>
 
             </div>
@@ -63,11 +63,11 @@
             <div class="content-section">
                 <h2>Ansible Workflow Orchestration: Kestra vs Rundeck</h2>
                 <p><strong>Rundeck with Ansible</strong>: Rundeck offers an integration plugin for Ansible that lets you
-                    execute Ansible playbooks or modules from a Rundeck job​. Essentially, Rundeck acts as a UI and
+                    execute Ansible playbooks or modules from a Rundeck job. Essentially, Rundeck acts as a UI and
                     scheduler on top of Ansible’s CLI. This is great for giving teams self-service access to run
                     playbooks – e.g. an operations team can click a button in Rundeck to run a standardized Ansible
                     playbook across certain hosts, without directly using the ansible command. Rundeck can also import
-                    Ansible inventory and facts, aligning with how Ansible organizes hosts​.
+                    Ansible inventory and facts, aligning with how Ansible organizes hosts.
                     However, Rundeck does not deeply orchestrate multiple Ansible runs in a single flow; each job run
                     might correspond to one playbook. If you need to run a sequence of playbooks (with conditional logic
                     or data passing between them), you would have to chain Rundeck jobs or script that logic. In
@@ -186,7 +186,7 @@
                     choice for infrastructure orchestration. By adopting Kestra, organizations can accelerate their
                     automation initiatives – orchestrating everything from simple playbook runs to complex,
                     cross-platform workflows – all on a unified, resilient platform built for the demands of IT and
-                    DevOps environments.​</p>
+                    DevOps environments.</p>
             </div>
         </Section>
     </div>

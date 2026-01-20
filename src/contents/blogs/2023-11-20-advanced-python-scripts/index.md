@@ -21,9 +21,9 @@ Today, we'll explore both methods in detail. But first, let's develop a large Py
 
 ---
 
-## Writing a Long Python Script for Web Scraping
+## Writing a Long Python Script for Web Scraping
 
-So, what will our "complex" Python script do? 
+So, what will our "complex" Python script do?
 
 In a nutshell, it will scrape a website and organize the results in a Pandas DataFrame. We'll leverage a website that was designed for beginners to learn web scraping - [Books to Scrape](http://books.toscrape.com/).
 
@@ -226,7 +226,7 @@ You can further inspect the contents of the `Logs` tab. It will show you the sam
 
 The biggest benefit of running Python script this way is that you or anyone else from your team can **modify the Python code** on the fly, without the need to do any modification on Kestra's end. Let's see that in action next.
 
-### What Happens If You Change the Python Code?
+### What Happens If You Change the Python Code?
 To demonstrate, we've decided to add a couple more book categories to the Python file. Nothing fancy or groundbreaking, but you should end up with a couple of more scraped books:
 
 ![Image 9 - Modified Python code](./9.png)
@@ -312,7 +312,7 @@ And that's two ways to run complex and lengthy Python scripts in your Kestra flo
 
 ---
 
-## Summing up Complex Python Scripts in Kestra
+## Summing up Complex Python Scripts in Kestra
 
 
 You have two excellent way to manage your scripts with Kestra: **GitHub** and the new **built-in editor**.

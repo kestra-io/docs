@@ -25,7 +25,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/pLVpimXVJ8Y?si=Rx2Zx0UyZ9Vd5I-K" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/pLVpimXVJ8Y?si=Rx2Zx0UyZ9Vd5I-K" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -44,7 +44,7 @@ You can access that feature from the new dedicated UI page under Administration 
 To enable that capability, Kestra now stores plugins in internal storage and automatically synchronizes them across all workers, ensuring consistency throughout your environment. For organizations relying on custom plugins, we've added support for custom artifact registries.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -64,7 +64,7 @@ The read-only mode for secrets managers allows you to reference secrets entirely
 The UI clearly distinguishes externally managed secrets with a lock icon, providing visual confirmation of their read-only status. These secrets cannot be edited, created, or deleted through Kestra, ensuring your security policies remain enforced at the source.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -120,7 +120,7 @@ The `afterExecution` differs from the `finally` property because:
 You might use `afterExecution` to send custom notifications after a flow completes, regardless of whether it succeeded or failed. Unlike `finally`, which runs while the execution is still in progress, `afterExecution` ensures these tasks only begin after the entire execution finishes.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -193,7 +193,7 @@ Key features include:
 Once LDAP integration is set up, users logging into Kestra for the first time will have their credentials verified against the LDAP directory. Users belonging to groups defined in the directory will see those groups created in Kestra, or if a given group already exists in Kestra, LDAP users will be automatically added to it after login.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---

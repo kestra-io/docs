@@ -49,7 +49,7 @@ Kestra’s architecture is built on a distributed system, where various componen
 - **Indexer:** An optional but valuable component, the Indexer enhances data retrieval by indexing workflow metadata into a database.
 - **Webserver:** The front-facing component of Kestra, providing user interface and API access to manage and monitor their workflows.
 
-note that the **Worker** is the only component that access to external systems needed to execute a flow (remote database, web service, cloud service, …) as well as Kestra’s internal data storage.
+note that the **Worker** is the only component that access to external systems needed to execute a flow (remote database, web service, cloud service, …) as well as Kestra’s internal data storage.
 
 ### Deployment Modes and Runners:
 
@@ -82,7 +82,7 @@ Our exploration of multi-tenancy models revealed three viable options:
 2. **Tenant per Base Namespace**: A variation of the above, where the base namespace serves as the tenant, allowing for multiple sub-namespaces under a single tenant umbrella.
 3. **Tenant via `tenantId` Property**: Introducing a dedicated **`tenantId`** across Kestra's components to distinctly identify tenant data.
 
-As one of Kestra’s runners uses Kafka and Elasticsearch, which do not support the notion of schema, only a declination of the *Tenant model within tables/messages* was possible. The three solutions therefore propose adding the tenant to a new property or using an existing property (namespace) to limit the changes required.
+As one of Kestra’s runners uses Kafka and Elasticsearch, which do not support the notion of schema, only a declination of the *Tenant model within tables/messages* was possible. The three solutions therefore propose adding the tenant to a new property or using an existing property (namespace) to limit the changes required.
 
 ### Our Decision: The `tenantId` Approach
 

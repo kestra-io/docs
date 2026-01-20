@@ -6,7 +6,7 @@
                     <div>
                         <h1 data-usal="fade-r">Beyond <span> Language</span> Boundaries</h1>
                         <p class="baseline" data-usal="fade-l">
-                            Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools
+                            Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools
                         </p>
                         <div class="cta d-flex gap-3">
                             <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">

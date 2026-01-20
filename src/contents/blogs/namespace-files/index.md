@@ -48,7 +48,7 @@ Here’s how it works:
 
 ## Namespace Files in Kestra
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/o0JhnzDc0tRNlNu5AIUR?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/o0JhnzDc0tRNlNu5AIUR?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 One standout Kestra feature is **Namespace Files**. These are custom scripts, code snippets, or configuration files stored within namespaces, ready to be reused across multiple workflows. This dramatically simplifies collaboration and speeds up workflow development.
 

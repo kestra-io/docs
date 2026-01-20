@@ -39,7 +39,7 @@ Moving data pipelines from development to production comes with its own set of c
 Bring Kestra into your CI/CD pipelines using Terraform Cloud or GitHub Actions. By doing so, you can automate your infrastructure provisioning and maintenance. With a GitHub Actions workflow, you can also validate and deploy flows directly into specific namespaces, ensuring that your mission-critical workflows are as agile and adaptable as your infrastructure.
 <br>
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/videoseries?si=jXSj49xwStR5Wqk8&amp;list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/videoseries?si=jXSj49xwStR5Wqk8&amp;list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 <br>
 

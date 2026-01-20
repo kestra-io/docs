@@ -6,6 +6,7 @@ import LayoutDocs from "../../components/layout-docs.astro";
 import NavToc from "~/components/docs/NavToc.vue";
 import PrevNext from "~/components/layout/PrevNext.vue";
 import HelpfulVote from "~/components/docs/HelpfulVote.vue";
+import Image from "astro/components/Image.astro";
 
 export async function getStaticPaths() {
     const docsPages = await getCollection("docs");
@@ -24,11 +25,14 @@ const image = new URL(`/meta/docs/${doc.id}.svg`, Astro.url);
 const navigation = await buildDocsNavigation();
 
 const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, 'content/')}` : undefined;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/contents/docs/icons/*.svg');
+const icon = doc.data?.icon ? await images[doc.data.icon]() : null;
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
     <h1 class="title">
-        {doc.data?.icon ? <img width="40" height="40" src={doc.data.icon} alt={`${doc.data.title} icon`} /> : null}
+        {icon ? <Image width="40" height="40" src={icon?.default} alt={`${doc.data.title} icon`} /> : null}
         {doc.data?.title}</h1>
     <div class="bd-markdown">
         <Content />

@@ -15,7 +15,7 @@ We introduced a **new liveness and heartbeat mechanism** for Kestra services wit
 
 ## What is Reliability?
 
-Before delving into the details, let's take a moment to touch upon the concept of reliability which is  a complex and fascinating engineering subject.  According to Wikipedia, *[Reliability](https://en.wikipedia.org/wiki/Reliability_engineering) refers to the ability of a system or component to function under stated conditions for a specified period of time.* In the context of Kestra and orchestration platforms in general,  we can define it as the reliability and constancy of the system to run and complete all the tasks for a Flow without failure. To achieve this objective, Kestra implements different fault-tolerance strategies and mechanisms to mitigate various failure scenarios, minimize downtime, and provide the ability to recover gracefully from routine outages.  One of those strategies is the capability to deploy redundant instances of Kestra’s services.
+Before delving into the details, let's take a moment to touch upon the concept of reliability which is  a complex and fascinating engineering subject.  According to Wikipedia, *[Reliability](https://en.wikipedia.org/wiki/Reliability_engineering) refers to the ability of a system or component to function under stated conditions for a specified period of time.* In the context of Kestra and orchestration platforms in general,  we can define it as the reliability and constancy of the system to run and complete all the tasks for a Flow without failure. To achieve this objective, Kestra implements different fault-tolerance strategies and mechanisms to mitigate various failure scenarios, minimize downtime, and provide the ability to recover gracefully from routine outages.  One of those strategies is the capability to deploy redundant instances of Kestra’s services.
 
 As a quick reminder, Kestra operates as a distributed platform with multiple services, each having specific responsibilities (comparable to a microservices architecture). Among these services, the two most important are the **Workers** and **Executors**. Executors oversee flow executions, deciding which tasks to run, while Workers handle the actual execution of these tasks.
 
@@ -31,15 +31,15 @@ Having a bunch of distributed workers, each executing thousands of tasks in para
 
 For example, a worker may be killed, restarted after a failure, disconnected from the cluster due to a transient network failure, or even unresponsive due to a JVM full garbage collection (GC), etc.
 
-For any of these scenarios, we need to be able to provide fail-safe mechanisms to ensure the reliability of task execution and to be able to re-execute uncompleted tasks in the event of a worker failure. To handle these scenarios, we’ve introduced a failure detection mechanism to support our  JDBC deployment mode. [Kestra's Enterprise Edition (EE](https://kestra.io/enterprise)) was not directly affected by these changes, as [Apache Kafka](https://kafka.apache.org/), natively provides durability and reliability of task executions.
+For any of these scenarios, we need to be able to provide fail-safe mechanisms to ensure the reliability of task execution and to be able to re-execute uncompleted tasks in the event of a worker failure. To handle these scenarios, we’ve introduced a failure detection mechanism to support our  JDBC deployment mode. [Kestra's Enterprise Edition (EE](https://kestra.io/enterprise)) was not directly affected by these changes, as [Apache Kafka](https://kafka.apache.org/), natively provides durability and reliability of task executions.
 
 ## What is Heartbeat?
 
 In distributed systems, a relatively standard pattern to periodically check the availability of services is the use of [Heartbeat](https://martinfowler.com/articles/patterns-of-distributed-systems/heartbeat.html) messages. In Kestra, we used that mechanism to report the liveness of Workers to Executors, timely detect unresponsive workers, and automatically re-emit any uncompleted tasks, ensuring seamless continuity in workflow executions.
 
-In our initial approach, Kestra’s Workers could be considered either as `UP` or `DEAD` at any point in time.  At regular intervals, workers send a message to the Kestra’s backend to signal their health status (i.e., `kestra.heartbeat.frequency:`).
+In our initial approach, Kestra’s Workers could be considered either as `UP` or `DEAD` at any point in time.  At regular intervals, workers send a message to the Kestra’s backend to signal their health status (i.e., `kestra.heartbeat.frequency:`).
 
-Then, the Executors are responsible for detecting missing heartbeats, acknowledging workers as dead as soon as a limit is reached, and immediately rescheduling tasks for unhealthy workers (i.e., `kestra.heartbeat.heartbeat-missed`). Finally, the worker is removed from the  cluster metadata.
+Then, the Executors are responsible for detecting missing heartbeats, acknowledging workers as dead as soon as a limit is reached, and immediately rescheduling tasks for unhealthy workers (i.e., `kestra.heartbeat.heartbeat-missed`). Finally, the worker is removed from the  cluster metadata.
 
 ![Schema](./schema.png)
 
@@ -53,17 +53,17 @@ This approach was successful in most deployment scenarios. However, in more comp
 
 One of the first disadvantages was that the heartbeat configuration had to be the same for all workers. This configuration was managed globally by the Executor service, which was responsible for detecting unhealthy workers by applying the same rule to all. However, all workers don't necessarily have the same load, the same type of processing or being deployed in the same network. As a result, some workers may be more prone to resource saturation, leading to thread starvation or even network disconnection due to reduced bandwidth.
 
-As an example, Kestra Edition Enterprise provides the [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md) feature, which allows you to create logical groups of Workers. Those groups can then be targeted for specific task executions.  Worker groups come in handy when you need a task to be executed on a worker having specific hardware configurations (GPUs with preconfigured CUDA drivers), in a specific network availability zone, or when you want to isolate long-running and resource-intensive workloads. In such a context, you can relax the heartbeat mechanism and tolerate more missing heartbeats to avoid considering a worker dead when it is not.
+As an example, Kestra Edition Enterprise provides the [Worker Group](../docs/06.enterprise/04.scalability/worker-group/index.md) feature, which allows you to create logical groups of Workers. Those groups can then be targeted for specific task executions.  Worker groups come in handy when you need a task to be executed on a worker having specific hardware configurations (GPUs with preconfigured CUDA drivers), in a specific network availability zone, or when you want to isolate long-running and resource-intensive workloads. In such a context, you can relax the heartbeat mechanism and tolerate more missing heartbeats to avoid considering a worker dead when it is not.
 
 ### Zombies may lead to duplicates
 
-Another problem was the risk of duplicate executions when a worker was considered dead due to temporary unavailability. In this scenario, an executor could resubmit the execution of the tasks for this worker, with no guarantee that the worker would actually be stopped. This is a very hard problem, because from the executor's point of view, it's impossible to know whether the worker is dead. Therefore, a reasonable option is to assume that the worker is dead after a certain period of inactivity. How long should this period be? Well, “it depends!”.  This brings us back to our first limitation, and the necessity to manage each worker independently.
+Another problem was the risk of duplicate executions when a worker was considered dead due to temporary unavailability. In this scenario, an executor could resubmit the execution of the tasks for this worker, with no guarantee that the worker would actually be stopped. This is a very hard problem, because from the executor's point of view, it's impossible to know whether the worker is dead. Therefore, a reasonable option is to assume that the worker is dead after a certain period of inactivity. How long should this period be? Well, “it depends!”.  This brings us back to our first limitation, and the necessity to manage each worker independently.
 
 ### Cascading failure
 
-Finally, in very rare situations, certain tasks can operate as veritable time bombs. Let's imagine that a user of your platform writes a simple Flow to download, decompress, and query a very large Parquet file. If the file turns out to be too large your worker can run out of disk space and crash.  Unfortunately, the task will be rescheduled to another worker, which will eventually fail itself, creating a cascading failure. To avoid this, it might be useful to be able to isolate unstable tasks in a worker group for which tasks are not re-emit in case of failure.
+Finally, in very rare situations, certain tasks can operate as veritable time bombs. Let's imagine that a user of your platform writes a simple Flow to download, decompress, and query a very large Parquet file. If the file turns out to be too large your worker can run out of disk space and crash.  Unfortunately, the task will be rescheduled to another worker, which will eventually fail itself, creating a cascading failure. To avoid this, it might be useful to be able to isolate unstable tasks in a worker group for which tasks are not re-emit in case of failure.
 
-To resolve these limitations and offer additional functionalities,  we came up with a new mechanism that would offer our users greater flexibility..
+To resolve these limitations and offer additional functionalities,  we came up with a new mechanism that would offer our users greater flexibility..
 
 
 ## The Kestra Service’s Lifecycle
@@ -88,13 +88,13 @@ Next, Executors are responsible for detecting unhealthy or unresponsive services
 
 The data model of the heartbeat signal was designed to hold not only the state of the service but also its liveness configuration so that the liveness coordinator can monitor each service.
 
-By default, Executors will not immediately re-emit tasks for a DISCONNECTED worker. Instead, an Executor will wait until a grace period is exhausted.  That grace period corresponds to the expected time a service will complete all of its tasks before completing a graceful shutdown. We use this mechanism to allow a worker that has been disconnected but has not failed to perform a graceful shutdown. If a  worker fails to complete within that grace period, it shuts down immediately and switches to the `TERMINATED_FORCED` state. In that situation, an executor will manage the remaining uncompleted tasks.
+By default, Executors will not immediately re-emit tasks for a DISCONNECTED worker. Instead, an Executor will wait until a grace period is exhausted.  That grace period corresponds to the expected time a service will complete all of its tasks before completing a graceful shutdown. We use this mechanism to allow a worker that has been disconnected but has not failed to perform a graceful shutdown. If a  worker fails to complete within that grace period, it shuts down immediately and switches to the `TERMINATED_FORCED` state. In that situation, an executor will manage the remaining uncompleted tasks.
 
 Now that we have a better understanding of the lifecycle of services and how the liveness mechanism works, let's explore the available configuration properties that you can use to tune Kestra for your operational context.
 
 ### Configuring liveness and heartbeat
 
-Starting from Kestra 0.16.0, the liveness and heartbeat mechanism can be configured individually for each service through the properties under `kestra.server.liveness`. This means you can now adapt your configuration depending on the service type, the service load, or even your [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md).
+Starting from Kestra 0.16.0, the liveness and heartbeat mechanism can be configured individually for each service through the properties under `kestra.server.liveness`. This means you can now adapt your configuration depending on the service type, the service load, or even your [Worker Group](../docs/06.enterprise/04.scalability/worker-group/index.md).
 
 Without going into too much detail, here is the default and recommended configuration for a Kestra JDBC deployment.
 
@@ -163,7 +163,7 @@ If you have already worked with NoSQL databases, you may be familiar with the [C
 
 Because any distributed system must be fault-tolerant to network partitioning, a system can be either available but not consistent or consistent but not available under network partitions. It is therefore common to see certain databases to [be called CP or AP](https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html).
 
-Although the CAP theorem is sometimes controversial or misunderstood,  it remains an excellent tool for explaining the compromises that can be made when designing or configuring a distributed system.
+Although the CAP theorem is sometimes controversial or misunderstood,  it remains an excellent tool for explaining the compromises that can be made when designing or configuring a distributed system.
 
 As Kestra is a distributed platform, the same principles (or notions) can be applied to it. However, in our context, we're going to adapt and transpose them to the execution of workers' tasks (in other words, we're not using the strict definitions of the CAP theorem).
 

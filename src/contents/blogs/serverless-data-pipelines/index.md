@@ -38,7 +38,7 @@ Here's a more detailed breakdown of the workflow:
 You can see the entire workflow in action in the video below:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -64,7 +64,7 @@ Now that we covered what the project does and how it's structured, let's highlig
 
 Serverless is often associated with a tangled mess of functions and services that are hard to manage and debug. But it doesn't have to be that way. With Kestra, you can create structured, modular workflows that are easy to understand, maintain, and scale.
 
-Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger), [tenants](../docs/06.enterprise/02.governance/tenants.md) and [namespaces](https://kestra.io/docs/workflow-components/namespace) you can bring order, structure and governance to serverless workflows.
+Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger), [tenants](../docs/06.enterprise/02.governance/tenants/index.md) and [namespaces](https://kestra.io/docs/workflow-components/namespace) you can bring order, structure and governance to serverless workflows.
 - Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can easily monitor your serverless data pipelines.
 - **Subflows** let you encapsulate common tasks and reuse them across multiple flows.
 - **Event triggers** allow you to start a workflow as soon as a new file arrives in a cloud storage bucket or a new message is received in your Pub/Sub topic.

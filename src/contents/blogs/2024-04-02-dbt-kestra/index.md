@@ -30,7 +30,7 @@ They offer two versions of their tools. dbt Core, the open-source command line t
 
 ## Kestra Plugin for dbt
 
-You can leverage the [dbt plugin](/plugins/plugin-dbt) to orchestrate dbt Cloud and dbt Core jobs. After each scheduled or ad-hoc workflow execution, the Outputs tab in the Kestra UI allows you to download and preview all dbt build artifacts. The Gantt and Topology view additionally render the metadata to visualize dependencies and runtimes of your dbt models and tests. The dbt Cloud task provides convenient links to easily navigate Kestra and dbt Cloud UI.
+You can leverage the [dbt plugin](/plugins/plugin-dbt) to orchestrate dbt Cloud and dbt Core jobs. After each scheduled or ad-hoc workflow execution, the Outputs tab in the Kestra UI allows you to download and preview all dbt build artifacts. The Gantt and Topology view additionally render the metadata to visualize dependencies and runtimes of your dbt models and tests. The dbt Cloud task provides convenient links to easily navigate Kestra and dbt Cloud UI.
 
 ### Execute dbt CLI commands from Kestra
 
@@ -38,7 +38,7 @@ The **`io.kestra.plugin.dbt.cli.DbtCLI`** can be used to orchestrate any dbt com
 
 The plugin offers various customizable properties to fine-tune dbt tasks. These include specifying dbt CLI commands (**`dbt deps`**, **`dbt build`**), choosing the execution environment (Docker for isolation or process-based execution), and setting up the environment before running dbt commands. This configuration ensures that dbt tasks are executed with all dependencies correctly prepared.
 
-For example, you can Launch a `dbt build` command on a  dbt project hosted on GitHub:
+For example, you can Launch a `dbt build` command on a  dbt project hosted on GitHub:
 
 ```yaml
 
@@ -70,7 +70,7 @@ tasks:
 
 ```
 
-You can also install a custom dbt version and run `dbt deps` and `dbt build` commands:
+You can also install a custom dbt version and run `dbt deps` and `dbt build` commands:
 
 ```yaml
 id: dbt_custom_dependencies
@@ -118,7 +118,7 @@ tasks:
 
 ### Disable parsing
 
-The dbt tasks have the option to turn off parsing dbt DAG with the `parseRunResults` flag, a boolean property allowing disabling parsing of the dbt manifest. If your dbt project is large, with hundreds or thousands of models and tests, parsing the manifest may be unnecessary. This flag allows you to turn off parsing the manifest and still get the results of the dbt job by inspecting the execution logs.
+The dbt tasks have the option to turn off parsing dbt DAG with the `parseRunResults` flag, a boolean property allowing disabling parsing of the dbt manifest. If your dbt project is large, with hundreds or thousands of models and tests, parsing the manifest may be unnecessary. This flag allows you to turn off parsing the manifest and still get the results of the dbt job by inspecting the execution logs.
 
 Here is how you can use this flag:
 

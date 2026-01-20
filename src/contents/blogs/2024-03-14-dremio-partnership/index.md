@@ -13,7 +13,7 @@ image: ./main.jpg
 
 ## About Dremio
 
-Dremio is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake Storage, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for Iceberg tables, and reflections — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
+Dremio is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake Storage, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for Iceberg tables, and reflections — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
 
 ## Kestra's Integration with Dremio
 
@@ -38,9 +38,9 @@ As part of our partnership, we've recently launched the Dremio and Arrow Flight 
 
 Kestra and Dremio can help data practitioners to be more productive by simplifying data access, automating data workflows, and improving data quality.
 
-If you want to learn more about Kestra and Dremio capabilities, you can read this article about [Data lakehouse orchestration](https://kestra.io/blogs/2023-12-07-dremio-kestra-integration) with Kestra, Dremio, dbt and Python.
+If you want to learn more about Kestra and Dremio capabilities, you can read this article about [Data lakehouse orchestration](https://kestra.io/blogs/2023-12-07-dremio-kestra-integration) with Kestra, Dremio, dbt and Python.
 
-You can also kickstart your Kestra & Dremio journey with our [Community Blueprints](/blueprints?page=1&size=24&q=dremio).
+You can also kickstart your Kestra & Dremio journey with our [Community Blueprints](/blueprints?page=1&size=24&q=dremio).
 
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).

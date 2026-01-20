@@ -7,7 +7,7 @@
 
                 <div class="video-responsive">
                     <iframe src="https://www.youtube.com/embed/xnGYiWFM2uk?si=Me1gxTBmI-YouP3H"
-                        title="Getting Started with Kestra in 5 minutes" frameborder="0" allowfullscreen />
+                        title="Getting Started with Kestra in 5 minutes" allowfullscreen />
                 </div>
 
                 <div class="buttons">

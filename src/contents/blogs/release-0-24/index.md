@@ -34,7 +34,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/0ziQFQYh1ow?si=__9sbqpB2gAuki0v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/0ziQFQYh1ow?si=__9sbqpB2gAuki0v" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -58,7 +58,7 @@ Note that Playground mode requires a DAG (Directed Acyclic Graph) structure. The
 
 To see Playground in action, check out the demo below.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/LjdQeZY6l0gVWb8zJ3PY?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Playground Demo | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/LjdQeZY6l0gVWb8zJ3PY?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Playground Demo | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::alert{type="warning"}
 Note that Playground mode is **currently in Beta**, and we welcome your feedback and suggestions for improvements. You can enable it directly from the Kestra UI from the **Settings** page simply by toggling on the `Playground` button:
@@ -140,7 +140,7 @@ With the new HTTP function, you can now make these dropdowns dynamic by fetching
 
 The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products that match your selected category.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/1WN2IkuzMdc3ex1YpBq0?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dynamic Inputs 2 | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/1WN2IkuzMdc3ex1YpBq0?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dynamic Inputs 2 | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ```yaml
 id: dynamic_dropdowns
@@ -169,7 +169,7 @@ tasks:
 Check out the video below to see how it works in action.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/4GbWKeYALQM?si=ECNteoA6M7d221sB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/4GbWKeYALQM?si=ECNteoA6M7d221sB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Java, Python, JavaScript, and Go SDKs
@@ -242,7 +242,7 @@ except kestra_api_client.rest.ApiException as e:
 Check out the video below to see how it works in action.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/UJLGmolOagY?si=DFzlq7OO0FAINUmq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/UJLGmolOagY?si=DFzlq7OO0FAINUmq" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Kestra plugin
@@ -281,7 +281,7 @@ pluginDefaults:
 Check the video below to see how it works:
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/RkVugo8wD80?si=6sPClrNQ1z3fehsd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/RkVugo8wD80?si=6sPClrNQ1z3fehsd" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Improved Slack integration
@@ -593,7 +593,7 @@ The 0.24 release includes many plugin enhancements, incl. new plugins and improv
 Check the video below to see the new language tasks in action.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/F9jLQbS4GS0?si=bv6kLjhh_d6GF4fV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/F9jLQbS4GS0?si=bv6kLjhh_d6GF4fV" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Additionally, we have made numerous improvements to existing plugins, including better error handling, fixed bugs, and enhanced documentation. Expand the block below to see the full list of plugin improvements.
@@ -641,5 +641,5 @@ If you like the project, give us a [GitHub star](https://github.com/kestra-io/ke
 Lastly, if you'd like to listen to a podcast episode discussing the new features, check out this episode of the Kestra Podcast:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/ZxrLNCgygBE?si=9oltgsOuMaFMRnLp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/ZxrLNCgygBE?si=9oltgsOuMaFMRnLp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

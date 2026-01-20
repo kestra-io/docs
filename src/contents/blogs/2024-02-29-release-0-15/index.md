@@ -64,7 +64,7 @@ You can now trigger backfills directly **from the UI**, specifying the **start a
 Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](/docs/concepts/backfill).
 
 <div class="video-container">
-<iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ### Recover Missed Schedules
@@ -260,7 +260,7 @@ The Kestra UI continues improving the user experience. A notable addition is the
 
 In the open-source edition, this page enables configuring basic authentication for the Kestra instance directly from the UI.
 
-![basic_auth](/docs/user-interface-guide/stats_oss.png)
+![basic_auth](./stats_oss.png)
 
 
 ### New Design of UI Tabs and Pagination
@@ -293,7 +293,7 @@ We've also revamped the RBAC system, with improved handling of Superadmin access
 
 ![access_page](./access_page.png)
 
-The new **Service Accounts UI page** allows you to create and manage [service accounts](../docs/06.enterprise/03.auth/service-accounts.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
+The new **Service Accounts UI page** allows you to create and manage [service accounts](../docs/06.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 

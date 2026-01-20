@@ -258,7 +258,7 @@ Snowflake partners with various data integration platforms:
 
 ## ClickHouse Cloud Integration
 
-ClickHouse offers a lengthy list of integrations of 18 different types. The [constantly updated list can be found here](https://clickhouse.com/docs/en/integrations).  ClickHouse integrations are organized by their support level:
+ClickHouse offers a lengthy list of integrations of 18 different types. The [constantly updated list can be found here](https://clickhouse.com/docs/en/integrations).  ClickHouse integrations are organized by their support level:
 
 - **Core integrations**: built or maintained by ClickHouse, they are supported by ClickHouse and live in the ClickHouse GitHub organization**
 - **Partner integrations**: built or maintained, and supported by, third-party software vendors**
@@ -390,7 +390,7 @@ The second part of your solution is architecture, specifically, there are three 
 
 The value of these three principles is one of the prime reasons for the ascendance of microservices. Monolithic infrastructures, like the do-everything cloud data warehouse, can be difficult to scale and maintain and trend strongly toward vendor lock-in.**
 
-Following the three principles would strongly suggest that  big data query-related activities are handled by the Cloud Data Warehouse, while data pipeline-related activities like scheduling, monitoring, logging should be handled by your workflow orchestrations platform. This becomes even more important if your shop is hybrid- or multi-cloud.
+Following the three principles would strongly suggest that  big data query-related activities are handled by the Cloud Data Warehouse, while data pipeline-related activities like scheduling, monitoring, logging should be handled by your workflow orchestrations platform. This becomes even more important if your shop is hybrid- or multi-cloud.
 
 The most valuable capability that Kestra provides is the power to keep workflow orchestration simpler, smaller, faster, better and still avoid the steep learning curves and admin nightmares. It allow me to quickly and easily create workflows that do everything I need:
 

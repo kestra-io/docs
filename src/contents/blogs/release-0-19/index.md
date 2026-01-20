@@ -29,7 +29,7 @@ The table below highlights the key features of this release:
 Check the video below for a quick overview of the new features:
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/nh2l_8IVTpI?si=xWKYGN-DtoxKEMQL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nh2l_8IVTpI?si=xWKYGN-DtoxKEMQL" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -63,7 +63,7 @@ With this new localization feature, Kestra is now language-agnostic both in term
 At Kestra, we know how critical it is to have a clear view of your orchestration platform's health. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=V-KtcXywLY7cle_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=V-KtcXywLY7cle_C" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 The previous dashboard aimed to display as much information as possible, but over time, it became cluttered and sometimes slow to load (see the image below).
@@ -114,7 +114,7 @@ Here, you’ll find the _System Blueprints_ tab, which provides fully customizab
 Video version:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8OhRFGCV3A?si=jw-VsFDdVutDObhL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8OhRFGCV3A?si=jw-VsFDdVutDObhL" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 :::alert{type="info"}
@@ -130,7 +130,7 @@ In terms of permissions, the `system` namespace is open by default. With the nam
 The video below demonstrates how to set up System Flows:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=fo8XuY6yVTmUTykb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=fo8XuY6yVTmUTykb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -141,7 +141,7 @@ The video below demonstrates how to set up System Flows:
 You can now define inputs based on conditions, allowing one input to depend on another. This feature enables interactive workflows that adapt to prior user inputs, including approval workflows, dynamic resource provisioning, and many more.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/XTP6t4QcUUY?si=gN_YlZtjmMXOltMu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/XTP6t4QcUUY?si=gN_YlZtjmMXOltMu" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 To see it in action, first add the necessary JSON key-value pairs that will be used as selectable values in the conditional inputs:
@@ -394,7 +394,7 @@ Using the new log-level navigation, you can quickly jump to the next log of a sp
 See the video below for a quick demo of the new feature:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/7Yz0N_26lDY?si=Vyy5ETE384wHflaK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/7Yz0N_26lDY?si=Vyy5ETE384wHflaK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 **Additional log enhancements worth mentioning**:
@@ -494,7 +494,7 @@ Using an invalid worker group key in a task leads to task runs being stuck in a 
 
 With the new Worker Groups UI page, worker groups are now treated as API-first objects — they must be created first from the UI, API, CLI, or Terraform before being used in flows. This ensures that worker group keys are valid and exist before they are referenced in tasks.
 
-Check the [Worker Group](../docs/06.enterprise/04.scalability/worker-group.md) documentation to learn how to create and manage worker groups.
+Check the [Worker Group](../docs/06.enterprise/04.scalability/worker-group/index.md) documentation to learn how to create and manage worker groups.
 
 In short, this new feature improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
@@ -612,7 +612,7 @@ The SSH Command plugin has been updated to [support OpenSSH config authenticatio
 Starting from Kestra 0.19.0, [you can schedule any flow](https://github.com/kestra-io/kestra/issues/3818) to run at a specific date and time in the future. You can configure that directly using the `Advanced configuration` option in the `Execute` modal.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/DSLNd7L3LR4?si=1hhh5b8tWQDXA5bh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/DSLNd7L3LR4?si=1hhh5b8tWQDXA5bh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 You can type the desired date directly, or use the date picker and click on the `Execute` button.

@@ -26,7 +26,7 @@ The table below highlights the key features of this release.
 Check the video below for a quick overview of all enhancements.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/MukH164HRu8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/MukH164HRu8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -48,7 +48,7 @@ With this flexible Editor interface, you can:
 You can customize your experience by opening only the panels you need, creating a fully personalized workspace that matches your workflow development style.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI" title="Multi Panel Editor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/SGlzRmJqFBI" title="Multi Panel Editor" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -63,7 +63,7 @@ Key improvements include:
 - **Improved editing of complex objects**: we've taken great care to ensure that complex objects, such as nested properties and arrays are easy to edit from No-Code forms.
 - **Sensible defaults**: the new No-Code forms make it easy to edit properties that have default values. If you want to revert to a default behavior, the "Clear selection" feature will help you remove your custom overrides.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/99kb4bVvCDnir4V4SxjT?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="no_code | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/99kb4bVvCDnir4V4SxjT?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="no_code | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Unit Tests for Flows (Beta)
 
@@ -147,7 +147,7 @@ testCases:
 
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo" title="Unit Test Flows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo" title="Unit Test Flows" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -159,7 +159,7 @@ We've heard your feedback that the prior filtering experience has sometimes been
 
 Since the filter configuration is just text, you can easily copy-paste a filter configuration from one flow or namespace to another, and it will just work!
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OFBpLz9IX1O2UtxuXeKi?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OFBpLz9IX1O2UtxuXeKi?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Internal Storage Persistence for Inputs and Outputs
 
@@ -272,7 +272,7 @@ A new `dependencyCacheEnabled` flag (boolean) allows you to enable or disable ca
 Again, the `beforeCommands` property is still supported for advanced use cases or custom installation steps.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/g9Jt5zt9wI4" title="Python Dependency Caching" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/g9Jt5zt9wI4" title="Python Dependency Caching" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -608,7 +608,7 @@ tasks:
 :::
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/flGQZeP1MmA?si=BU3kZr2Z6-cBojox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/flGQZeP1MmA?si=BU3kZr2Z6-cBojox" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
@@ -686,7 +686,7 @@ With this release, we've taken the opportunity to introduce several important br
 :::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
 - [Open Source](../docs/11.migration-guide/0.23.0/tenant-migration-oss.md)
-- [Enteprise](../docs/11.migration-guide/0.23.0/tenant-migration-ee.md)
+- [Enteprise](../docs/11.migration-guide/ 0.23.0/tenant-migration-ee/index.md)
 :::
 
 **Key changes include:**

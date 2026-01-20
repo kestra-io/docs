@@ -9,7 +9,7 @@ author:
 image: ./main.jpg
 ---
 
-This case study delves into how [CleverConnect](https://cleverconnect.com/), a human resources tech company, leverages Kestra's capabilities to create an integration platform. With a database of over 10 million candidates and partnerships with 2,500 companies across Europe, CleverConnect has developed an AI-driven, integrated solution for job boards, career sites, CRMs, and other HR tools. Using [Kestra](https://github.com/kestra-io/kestra), they've constructed a platform specifically tailored for automating the creation of connectors, streamlining the recruitment process, and enhancing the overall experience.
+This case study delves into how [CleverConnect](https://cleverconnect.com/), a human resources tech company, leverages Kestra's capabilities to create an integration platform. With a database of over 10 million candidates and partnerships with 2,500 companies across Europe, CleverConnect has developed an AI-driven, integrated solution for job boards, career sites, CRMs, and other HR tools. Using [Kestra](https://github.com/kestra-io/kestra), they've constructed a platform specifically tailored for automating the creation of connectors, streamlining the recruitment process, and enhancing the overall experience.
 
 ## CleverConnect’s Journey Towards Efficiency
 

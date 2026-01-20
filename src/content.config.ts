@@ -6,14 +6,13 @@ export const collections = {
   docs: defineCollection({
     loader: glob({
         pattern: "./**/*.md{,x}",
-        base: "./content/docs",
+        base: "./src/contents/docs",
         generateId,
     }),
-    schema: ({ image }) => z.object({
+    schema: () => z.object({
         title: z.string(),
         sidebarTitle: z.string().optional(),
         description: z.string().optional(),
-        // icon: image().optional(),
         icon: z.string().optional(),
         release: z.string().optional(),
         version: z.string().optional(),

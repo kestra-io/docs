@@ -1,6 +1,6 @@
 ---
-title: "End-to-End Data Ingestion, Transformation and Orchestration with Airbyte, dbt and Kestra"
-description: How you can use open-source tools to ingest, transform and orchestrate data pipelines without vendor lock-in.
+title: "End-to-End Data Ingestion, Transformation and Orchestration with Airbyte, dbt and Kestra"
+description: How you can use open-source tools to ingest, transform and orchestrate data pipelines without vendor lock-in.
 date: 2023-06-26T14:00:00
 category: Solutions
 author:

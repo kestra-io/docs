@@ -41,7 +41,7 @@ That's how CloudQuery has evolved from a Cloud Asset Inventory to a more generic
 
 CloudQuery offers many useful source and destination [plugins](https://hub.cloudquery.io/plugins/source) out of the box, and you can also create your own using an SDK. Plugins can be written in any language that has libraries for Apache Arrow and gRPC, including Go, Java, JavaScript, C++, Python, and more.
 
-**Source plugins** collect data from the source system's APIs, and **destination plugins** push that data to specific target destinations. You can think of plugins as microservices that conform to a gRPC API spec. The role of a source plugin is to collect information and adapt it to the desired destination schema using CloudQuery's Apache Arrow-based type system. Destination plugins are then responsible for taking the serialized data received from a source plugin and converting them into a suitable storage format (i.e., the logic to write to a database, a file, or a third-party API).
+**Source plugins** collect data from the source system's APIs, and **destination plugins** push that data to specific target destinations. You can think of plugins as microservices that conform to a gRPC API spec. The role of a source plugin is to collect information and adapt it to the desired destination schema using CloudQuery's Apache Arrow-based type system. Destination plugins are then responsible for taking the serialized data received from a source plugin and converting them into a suitable storage format (i.e., the logic to write to a database, a file, or a third-party API).
 
 CloudQuery also operates [CloudQuery Hub](https://cloud.cloudquery.io/), a managed service that hosts the source and destination plugins. You can sign up, generate an API key, and log in from the CLI using:
 
@@ -159,7 +159,7 @@ CloudQuery doesn't support as many source and destination connectors as data int
 
 ## Moving your CloudQuery syncs to production using Kestra
 
-Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck), a serverless DuckDB service in the cloud.
+Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck), a serverless DuckDB service in the cloud.
 
 ```yaml
 id: hackernews_to_motherduck
@@ -205,7 +205,7 @@ triggers:
 
 Orchestrating CloudQuery syncs in Kestra is simple — you configure your source(s) and destination(s) in a list, and the sync will ensure that each source is ingested into the desired destinations.
 
-In this example, we're also using Kestra's [secret management](https://kestra.io/docs/concepts/secret) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](https://kestra.io/docs/concepts/pebble) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](https://kestra.io/docs/concepts/backfill) make it easy to catch up on missed syncs.
+In this example, we're also using Kestra's [secret management](https://kestra.io/docs/concepts/secret) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](https://kestra.io/docs/concepts/pebble) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](https://kestra.io/docs/concepts/backfill) make it easy to catch up on missed syncs.
 
 ## Next steps
 

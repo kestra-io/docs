@@ -12,7 +12,7 @@ image: ./main.jpg
 If you're an engineer looking to scale your automation - maybe because your company is growing rapidly — then this article is definitely for you.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/ZV6CPZDiJFA?si=AnX2FAvAOITG8q8X" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/ZV6CPZDiJFA?si=AnX2FAvAOITG8q8X" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -182,7 +182,7 @@ Let's now show the orchestration approach.
 
 ### Orchestration approach
 
-To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../docs/02.installation/index.md) to get started.
+To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../docs/02.installation/index.mdx) to get started.
 
 To use Kestra for our purpose, click on **Namespaces** > **Tutorial**:
 

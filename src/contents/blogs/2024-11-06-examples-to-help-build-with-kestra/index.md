@@ -318,7 +318,7 @@ triggers:
 
 ### Run a Python script on Azure with Azure Batch VMs
 
-In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../docs/task-runners/index.md).
+In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../docs/task-runners/index.mdx).
 
 This example uses the Azure Batch to execute our Python code, and then returns all outputs back to Kestra, enabling us to use more resources on demand.
 
