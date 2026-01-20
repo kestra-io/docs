@@ -53,9 +53,9 @@
             <div class="grid">
               <NuxtImg
                 v-for="(logo, index) in companyLogos"
-                :key="logo.name"
+                :key="logo.alt"
                 :src="logo.src"
-                :alt="logo.name"
+                :alt="logo.alt"
                 :width="logo.width"
                 :height="logo.height"
               />
@@ -69,11 +69,11 @@
 
 <script setup lang="ts">
 const companyLogos = [
-  { name: "Apple", src: "/landing/company/teams/apple.svg", width: 38, height: 45 },
-  { name: "Fila", src: "/landing/companies/fila.svg", width: 60, height: 22 },
-  { name: "Axiom", src: "/landing/company/teams/acxiom.svg", width: 102, height: 23 },
-  { name: "Battelle", src: "/landing/company/teams/Battelle.svg", width: 101, height: 17 },
-  { name: "L'Oreal", src: "/landing/company/teams/loreal.svg", width: 115, height: 20 },
+  { alt: "Apple", src: "/landing/company/teams/apple.svg", width: 38, height: 45 },
+  { alt: "Fila", src: "/landing/companies/fila.svg", width: 60, height: 22 },
+  { alt: "Axiom", src: "/landing/company/teams/acxiom.svg", width: 102, height: 23 },
+  { alt: "Battelle", src: "/landing/company/teams/Battelle.svg", width: 101, height: 17 },
+  { alt: "L'Oreal", src: "/landing/company/teams/loreal.svg", width: 115, height: 20 },
 ]
 </script>
 
