@@ -49,7 +49,7 @@
 
     .container-fluid {
         padding-bottom: calc($spacer * 7);
-        background: url('/landing/blueprints/mask.svg') no-repeat center right;
+        background: url('./assets/mask.svg') no-repeat center right;
 
         .nav-tabs {
             border-bottom: 1px solid $black-6;
