@@ -15,7 +15,7 @@ import CTA from "~/components/home/CTA.vue";
 import PluginsBox from "~/components/PluginsBox.astro";
 import { getValues } from "./api/github";
 
-const logosNonRandomized = import.meta.glob('../../public/landing/home/trusted-companies/*.{svg,png}');
+const logosNonRandomized = import.meta.glob('~/assets/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
     return mod().then((img: any) => {
                 return {
