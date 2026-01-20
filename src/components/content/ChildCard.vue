@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body d-flex">
                         <span v-if="!hideIcons" class="card-icon">
-                            <img :src="item.icon ?? props.currentPage?.icon" :alt="item.title" width="50px" height="50px"/>
+                            <img :src="item.icon ?? currentPageIcon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
                         <h4 class="card-title">{{ item.title }}</h4>
@@ -29,9 +29,7 @@
             icon?: string;
             release?: string;
         }>;
-        currentPage?: {
-            icon?: string;
-        };
+        currentPageIcon?: string;
     }>();
 </script>
 

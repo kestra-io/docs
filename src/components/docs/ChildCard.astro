@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import ChildCardRender from "~/components/content/ChildCard.vue";
 import generateId from "~/utils/generateId";
+import {getImage} from "astro:assets";
 
 const currentPage = Astro.url.pathname.endsWith("/")
     ? Astro.url.pathname.slice(0, -1)
@@ -12,7 +13,9 @@ const contentPath = currentPage.replace('/docs/', '');
 const docs = await getCollection('docs');
 const currentDoc = docs.find(doc => doc.id === contentPath);
 
-const children = docs
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/contents/docs/icons/*.svg');
+
+const children = await Promise.all(docs
     .filter(doc =>
         doc.id.startsWith(`${contentPath}/`) &&
         !doc.id.slice(contentPath.length + 1).includes('/')
@@ -23,7 +26,7 @@ const children = docs
         }
         return a.id.localeCompare(b.id);
     })
-    .map(doc => {
+    .map(async doc => {
         const firstLine = doc.body?.split('\n').find(line =>
             line.trim().length > 0 &&
             !line.startsWith('#') &&
@@ -40,14 +43,17 @@ const children = docs
                 return match;
             })
             : '';
+
         return {
             title: doc.data.title,
             description,
             path: `/docs/${doc.id}`,
-            icon: doc.data.icon,
+            icon: doc.data.icon ? (await images[doc.data.icon]()).default.src : undefined,
             release: doc.data.release
         };
-    });
----
+    }));
 
-<ChildCardRender navigation={children} currentPage={currentDoc?.data} client:load />
+    const currentPageIcon = currentDoc?.data?.icon ? (await images[currentDoc.data.icon]()).default.src : undefined;
+    console.log(currentDoc?.data?.icon, currentPageIcon)
+---
+<ChildCardRender navigation={children} currentPageIcon={currentPageIcon} client:load />
