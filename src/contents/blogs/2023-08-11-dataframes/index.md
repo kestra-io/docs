@@ -495,7 +495,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 ## Using SQL and dataframes in your data pipelines
 
-[Kestra](../../docs/01.quickstart/index.md) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
+[Kestra](../../docs/01.quickstart/index.md) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../../docs/09.ui/05.blueprints/index.md) that you can use to get started quickly.
 
 The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how you can easily orchestrate your SQL and Pandas data transformations.
 
@@ -505,5 +505,5 @@ The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how y
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](/slack). Make sure to check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](/slack).
+This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](/slack). Make sure to check out [Kestra's blueprints](../2023-07-12-your-private-app-store-for-data-pipelines/index.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](/slack).
 

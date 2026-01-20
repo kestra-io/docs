@@ -25,7 +25,7 @@ There are multiple ways to use Git with Kestra:
 - The [git.SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) pattern enables GitOps for your namespace files.
 - The [git.PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) pattern allows you to edit flows from the UI and automatically commit and push changes to Git — ideal if you prefer using the built-in editor while keeping your code synchronized with Git.
 - The [git.PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) pattern allows you to edit namespace files from the UI and push updates to Git.
-- The [CI/CD](../version-control-cicd/cicd/index.md) pattern is ideal if you prefer managing the CI/CD process manually (for example, using GitHub Actions or Terraform) while keeping Git as the single source of truth for your code.
+- The [CI/CD](../../version-control-cicd/cicd/index.md) pattern is ideal if you prefer managing the CI/CD process manually (for example, using GitHub Actions or Terraform) while keeping Git as the single source of truth for your code.
 - [Clone](https://kestra.io/plugins/git/io.kestra.plugin.git.clone) task clones a repository directly into a flow, making scripts available for execution.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) task synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) task synchronizes objects within a single namespace with your Git repository.

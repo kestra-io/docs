@@ -101,7 +101,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 
 ## Partitions to Detect Dead Kafka Consumers
 
-In Kestra, [workers](/docs/architecture/worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
+In Kestra, [workers](../../docs/server-cli/index.md#kestra-server-worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.
@@ -118,7 +118,7 @@ Et voilà! We have detection of dead consumers using just the Kafka API. 🎉
 
 ## Beware of State Store `all()`
 
-We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](../../docs/04.workflow-components/07.triggers/flow-trigger.md). For all the flows on the cluster, we test all the flow's [conditions](/docs/developer-guide/conditions) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
+We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md). For all the flows on the cluster, we test all the flow's [conditions](../../docs/05.workflow-components/07.triggers/index.mdx#conditions) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
 
 Our first assumption was that `all()` returns an object (Flow in our case), as the API return Object, but we discovered that the `all()` method will:
 - Fetch all the data from RocksDB

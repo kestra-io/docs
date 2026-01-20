@@ -152,8 +152,6 @@ tasks:
 
 This example demonstrated how Kestra provides flexibility and control to data teams. It can orchestrate any kind of workflow with ease using the rich UI that monitors all executions.
 
-![](/ui.gif)
-
 Kestra's Databricks plugin makes data warehousing simple even for non-developers thanks to the simple declarative definition. Your Databricks pipeline can accommodate raw data from multiple sources and transform it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the ELT pipeline. Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 Join the Slack [community](/slack) if you have any questions or need assistance.

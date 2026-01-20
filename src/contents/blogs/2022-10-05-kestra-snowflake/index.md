@@ -26,7 +26,7 @@ The platform enables organizations to avoid large-scale licensing costs commonly
 
 Data warehouse workloads are typically part of a larger technological stack. To streamline operations, orchestration, and scheduling of data pipelines are crucial. This is where Kestra comes into play.
 
-Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](/docs/tutorial/flowable) sequentially or in parallel.
+Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](../../docs/03.tutorial/index.mdx) sequentially or in parallel.
 
 Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control.
 Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.download), [upload](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.upload), and [query](/plugins/plugin-jdbc-snowflake/io.kestra.plugin.jdbc.snowflake.query) data by integrating with Snowflake's storage and compute resources.
@@ -139,7 +139,7 @@ Kestra provides flexibility and control to data teams, it can orchestrate any ki
 
 ![](/ui.gif)
 
-Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](./2022-04-27-etl-vs-elt). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
+Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](../2022-04-27-etl-vs-elt/index.md). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 Join the Slack [community](/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://x.com/kestra_io) for the latest news.

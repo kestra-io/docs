@@ -31,7 +31,7 @@ After, only **0.5 cores** were necessary through most of the runtime, with a pea
 
 
 On the Kafka side, we also see **improved latency**.
-The system had a lot of [flow triggers](../../docs/04.workflow-components/07.triggers/flow-trigger.md), which needed to be analyzed for each completed execution. When you have a high volume of execution, a lot of messages are sent by Kafka and if your consumer is too slow, the queue fills up and increases latency.
+The system had a lot of [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md), which needed to be analyzed for each completed execution. When you have a high volume of execution, a lot of messages are sent by Kafka and if your consumer is too slow, the queue fills up and increases latency.
 Previously, we had a large message lag that led to a late start of flow executions (a few minutes). The optimization allowed us to keep the start of the flow to within a few seconds.
 
 ![Before](./lag-before.png)

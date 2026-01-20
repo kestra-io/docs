@@ -44,7 +44,7 @@ For a concrete example of using secrets in flows, check out our dedicated [How-T
 
 ### Secret management backends
 
-Kestra [Enterprise Edition](../07.enterprise/index.mdx) provides additional secret management backends and integrations with secrets managers. See the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page for more details.
+Kestra [Enterprise Edition](../../07.enterprise/index.mdx) provides additional secret management backends and integrations with secrets managers. See the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page for more details.
 
 ---
 

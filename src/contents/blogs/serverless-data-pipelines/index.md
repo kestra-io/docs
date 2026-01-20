@@ -64,7 +64,7 @@ Now that we covered what the project does and how it's structured, let's highlig
 
 Serverless is often associated with a tangled mess of functions and services that are hard to manage and debug. But it doesn't have to be that way. With Kestra, you can create structured, modular workflows that are easy to understand, maintain, and scale.
 
-Using [labels](../../docs/05.workflow-components/08.labels/index.md), [subflows](../../docs/05.workflow-components/10.subflows/index.md), [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md), [tenants](../../docs/06.enterprise/02.governance/tenants/index.md) and [namespaces](../../docs/05.workflow-components/02.namespace/index.md) you can bring order, structure and governance to serverless workflows.
+Using [labels](../../docs/05.workflow-components/08.labels/index.md), [subflows](../../docs/05.workflow-components/10.subflows/index.md), [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md), [tenants](../../docs/07.enterprise/02.governance/tenants/index.md) and [namespaces](../../docs/05.workflow-components/02.namespace/index.md) you can bring order, structure and governance to serverless workflows.
 - Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can easily monitor your serverless data pipelines.
 - **Subflows** let you encapsulate common tasks and reuse them across multiple flows.
 - **Event triggers** allow you to start a workflow as soon as a new file arrives in a cloud storage bucket or a new message is received in your Pub/Sub topic.

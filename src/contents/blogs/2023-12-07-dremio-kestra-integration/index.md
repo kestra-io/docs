@@ -164,7 +164,7 @@ This flow clones a Git repository with [dbt code](https://github.com/dbt-labs/ja
 
 ## How to Extend this Workflow
 
-This use case is deliberately simple to demonstrate the basic usage of these plugins. However, you can easily extend it to accommodate more complex data processing requirements. For example, if you need to automate business-critical operations **for each row from a large dataset**, add a `ForEachItem` task. [That task](../../docs/05.workflow-components/01.tasks/index.mdx#foreachitem) allows you to iterate over a list of items fetched from your data lakehouse and reliably execute downstream tasks in parallel for each row.
+This use case is deliberately simple to demonstrate the basic usage of these plugins. However, you can easily extend it to accommodate more complex data processing requirements. For example, if you need to automate business-critical operations **for each row from a large dataset**, add a `ForEachItem` task. [That task](../../docs/05.workflow-components/01.tasks/00.flowable-tasks/index.md#foreachitem) allows you to iterate over a list of items fetched from your data lakehouse and reliably execute downstream tasks in parallel for each row.
 
 ---
 

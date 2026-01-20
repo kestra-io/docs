@@ -262,7 +262,7 @@ tasks:
 
 triggers:
   - id: http
-    type: io.kestra.plugin.fs.http.Trigger
+    type: io.kestra.plugin.core.http.Trigger
     uri: https://fakestoreapi.com/products/1
     responseCondition: "{{ json(response.body).price <= 110 }}"
     interval: PT30S

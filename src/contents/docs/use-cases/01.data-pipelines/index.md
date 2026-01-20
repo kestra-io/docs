@@ -112,7 +112,7 @@ tasks:
 
 ## Getting Started with Data Orchestration
 
-1. **Install Kestra** – Follow the [quick start guide](../../01.quickstart/index.md) or the full [installation instructions for production environments](../02.installation/index.mdx).
+1. **Install Kestra** – Follow the [quick start guide](../../01.quickstart/index.md) or the full [installation instructions for production environments](../../02.installation/index.mdx).
 2. **Write Your Workflows** – Configure your [flow](../../03.tutorial/index.mdx) in YAML, declaring inputs, tasks, and triggers. Tasks can be anything — scripts, queries, remote jobs or API calls. Add `retry`, `timeout`, `concurrency` or `taskRunner` settings to scale tasks dynamically and manage data orchestration logic.
 3. **Add Triggers** – Execute flows manually, via schedules, API, flow or event [triggers](../../05.workflow-components/07.triggers/index.mdx) (e.g., S3 file uploads).
 4. **Observe and Manage** – Use [Kestra’s UI](../../09.ui/index.mdx) to inspect workflow outputs, logs, execution states, and dependencies.

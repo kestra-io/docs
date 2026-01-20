@@ -38,7 +38,7 @@ We are excited to announce the release of Kestra 0.13.0, featuring two major add
 
 🔹 Enhanced webhook filtering via `conditions`
 
-🔹 Improved access to `taskrun.value` in `WorkingDirectory` tasks used as child tasks of other [flowable](../../docs/03.tutorial/index.mdxflowable) tasks
+🔹 Improved access to `taskrun.value` in `WorkingDirectory` tasks used as child tasks of other [flowable](../../docs/05.workflow-components/01.tasks/00.flowable-tasks/index.md) tasks
 
 🔹 Support for manual database migration processes and an option to disable automatic migrations, giving you more control over the database migration process in production environments.
 

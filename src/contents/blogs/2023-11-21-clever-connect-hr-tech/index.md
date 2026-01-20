@@ -40,7 +40,7 @@ This platform allows to generate Kestra flows through a low code interface that 
 
 The more sources and destinations CleverConnect has, the more difficult it gets. Thanks to Kestra, the company has successfully uncoupled the sources and destinations, allowing ease of maintenance and development. The business logic of parsing API and make the codebase flexible has been possible thanks to the following features of Kestra:
 
-* Subflows: CleverConnect has implemented a level of abstraction, which allows them to recycle components across multiple use-cases. The strategic use of [input properties](../../docs/developer-guide/inputs) ensures not only the easy transmission of metadata and parameters but also creates a library of highly composable elements.
+* Subflows: CleverConnect has implemented a level of abstraction, which allows them to recycle components across multiple use-cases. The strategic use of [input properties](../../docs/05.workflow-components/05.inputs/index.md) ensures not only the easy transmission of metadata and parameters but also creates a library of highly composable elements.
 
 * Custom Scripting: they adeptly handle tasks such as API parsing, pagination, and rate limiting by employing custom [Groovy scripts](/plugins/plugin-script-groovy). This flexibility in script execution enables CleverConnect to structure their codebase in a way that seamlessly integrates with their requirements, while maintaining a cohesive and well-orchestrated workflow.
 
@@ -58,7 +58,7 @@ Even less technical users can read visual flows easily and grasp most of the log
 
 As Kestra is API by design, it allows them to quickly build their custom front-end and automate the flow creation. Kestra orchestrates the data flow and application logic, tying all the components of their platform together.
 Regarding deployment, the CleverConnect team chose [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine).
-The development workflow is streamlined by using [GitLab CI/CD](../../docs/developer-guide/cicd/gitlab) alongside [Terraform](../../docs/developer-guide/cicd#deploy-flows-from-terraform) to deploy Kestra flows from development to production instances. Following the best practices of DevOps and craftsmanship.
+The development workflow is streamlined by using [GitLab CI/CD](../../docs/version-control-cicd/cicd/02.gitlab/index.md) alongside [Terraform](../../docs/version-control-cicd/cicd/03.terraform/index.md) to deploy Kestra flows from development to production instances. Following the best practices of DevOps and craftsmanship.
 
 ## Conclusion
 

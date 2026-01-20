@@ -5,7 +5,7 @@ title: Working with Yaml
 
 ## Working with Yaml
 
-Most of Kestra resource need to be described as Yaml like [kestra_flow](../resources/flow.md) & [kestra_template](../resources/template.md).
+Most of Kestra resource need to be described as Yaml like [kestra_flow](../../resources/flow/index.md) & [kestra_template](../../resources/template/index.md).
 
 We have chosen to use a full yaml in terraform definition since the structure is recursive and dynamic, so it can't be described using terraform internal schema.
 
@@ -32,7 +32,7 @@ resource "kestra_flow" "example" {
   flow_id = "my-flow"
   content = <<EOT
 id: my-flow
-namespace: company.team  
+namespace: company.team
 inputs:
   - name: my-value
     type: STRING

@@ -135,7 +135,7 @@ triggers:
 ```
 
 
-The `PushNamespaceFiles` and `SyncNamespaceFiles` tasks work analogically to the `PushFlows` and `SyncFlows` tasks, but applied to [namespace files](../../docs/08.developer-guide/03.namespace-files.md). Watch the videos below to see how you can use these tasks to manage your namespace files with Git.
+The `PushNamespaceFiles` and `SyncNamespaceFiles` tasks work analogically to the `PushFlows` and `SyncFlows` tasks, but applied to [namespace files](../../docs/06.concepts/02.namespace-files/index.md). Watch the videos below to see how you can use these tasks to manage your namespace files with Git.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/-bEnwR5t7VI?si=wNG-fvtuavvVkSmF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -155,7 +155,7 @@ Kestra 0.17.0 introduces a concept of [Realtime Event Triggers](https://github.c
 
 ### Why Realtime Triggers?
 
-Kestra has a concept of [triggers](../../docs/04.workflow-components/07.triggers.md) that can listen to external events and start a workflow execution when the event occurs. Most of these triggers **poll** external systems for new events **at regular intervals** e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with **millisecond latency** and this is where **Realtime Triggers** come into play.
+Kestra has a concept of [triggers](../../docs/05.workflow-components/07.triggers/index.mdx) that can listen to external events and start a workflow execution when the event occurs. Most of these triggers **poll** external systems for new events **at regular intervals** e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with **millisecond latency** and this is where **Realtime Triggers** come into play.
 
 ### What are Realtime Triggers?
 
@@ -193,7 +193,7 @@ An increasingly common use case for the manual approval processes is in AI appli
 </div>
 
 :::alert{type="info"}
-Check the [Pause and Resume](../../docs/15.how-to-guides/pause-resume.md) guide to learn more about how to use the Pause task in Manual Approval workflows.
+Check the [Pause and Resume](../../docs/15.how-to-guides/pause-resume/index.md) guide to learn more about how to use the Pause task in Manual Approval workflows.
 :::
 
 
@@ -323,7 +323,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details on the `ARRAY` input type, check out the [Inputs](../../docs/04.workflow-components/index.md) documentation.
+For more details on the `ARRAY` input type, check out the [Inputs](../../docs/05.workflow-components/index.mdx) documentation.
 :::
 
 ### Renaming
@@ -338,7 +338,7 @@ All of these are **non-breaking changes** as we leverage **aliases** for backwar
 It's worth taking a couple of minutes to rename those in your flows to future-proof your code.
 
 :::alert{type="info"}
-Check the [Renamed Plugins](../../docs/11.migration-guide/renamed-plugins.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
+Check the [Renamed Plugins](../../docs/11.migration-guide/0.17.0/renamed-plugins/index.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
 :::
 
 ### Improved serialization of JSON objects

@@ -229,7 +229,7 @@ This release introduces new global views for managing secrets and key-value pair
 
 - We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up to 90% less database space due to aggresive cleaning and perform better. Queues can now sustain a much higher Executions throughput with lower database load. We also haven't forgotten about the Kafka runner, which also benefits from latency improvements due to configuration finetuning.
 - [DevContainer support](../../docs/04.contribute-to-kestra/index.mdx) simplifies development setup for contributors with ready-to-use environments
-- [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
+- [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](../../docs/15.how-to-guides/python/index.md).
 - Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
 - Expanded context variables now include [taskrun and execution states accessible via Pebble](https://github.com/kestra-io/kestra/issues/7155). The `{{tasks.your_task_id.state }}` context returns a task run's state while the `{{execution.state}}` allows to retrieve the flow execution state.

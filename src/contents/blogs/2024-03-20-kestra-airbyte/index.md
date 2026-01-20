@@ -135,8 +135,6 @@ When the Sync job has succeeded, you can verify that the `Full refresh | Overwri
 
 This example demonstrated how we can integrate Airbyte with Kestra. Kestra can orchestrate any kind of workflow, exposing a rich UI that monitors all executions.
 
-![](/ui.gif)
-
 Join the Slack [community](/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

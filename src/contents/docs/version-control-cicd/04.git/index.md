@@ -24,7 +24,7 @@ There are multiple ways to combine Kestra with Git:
 - [Clone](https://kestra.io/plugins/git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) keeps a single namespace in sync with a Git repo.
-- A custom [CI/CD](./cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
+- A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
 
 The image below shows how to choose the right pattern based on your needs:
 
@@ -124,7 +124,7 @@ http://<host>/api/v1/<tenant>/executions/webhook/<namespace>/<flow>/<webhook_key
 
 ## CI/CD
 
-The CI/CD pattern still treats Git as the single source of truth but pushes code changes to Kestra whenever a pull request merges. Unlike the Sync pattern, you manage the automation (GitHub Actions, Terraform, etc.). See the [CI/CD](./cicd/index.md) docs for setup details.
+The CI/CD pattern still treats Git as the single source of truth but pushes code changes to Kestra whenever a pull request merges. Unlike the Sync pattern, you manage the automation (GitHub Actions, Terraform, etc.). See the [CI/CD](../cicd/index.md) docs for setup details.
 
 ## Git PushFlows and PushNamespaceFiles
 

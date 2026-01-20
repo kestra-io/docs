@@ -40,7 +40,7 @@ The Worker Groups UI tracks the health of worker groups, showing how many worker
 ![Worker Group UI Details](./worker-group-details.png)
 
 :::alert{type="info"}
-In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../server-cli/index.md#kestra-with-server-components-in-different-services).
+In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../../server-cli/index.md#kestra-with-server-components-in-different-services).
 :::
 
 ## Using Worker Groups

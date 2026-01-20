@@ -159,7 +159,7 @@ You can add custom tags to organize and filter apps in the App Catalog. For exam
 
 ## App thumbnails
 
-Design Apps with thumbnails to clearly display their intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../06.concepts/02.namespace-files/index.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
+Design Apps with thumbnails to clearly display their intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
 
 ![Image Namespace File](./app-namespace-file.png)
 
@@ -195,7 +195,7 @@ You can copy the URL from the Apps catalog page in the Kestra UI.
 
 ### App expressions
 
-From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Expressions guide](../../expressions/index.md#applink) for parameters and examples.
+From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Expressions guide](../../../expressions/index.md#applink) for parameters and examples.
 
 ---
 

@@ -9,7 +9,7 @@ author:
 image: ./main.jpg
 ---
 
-In a recent [blog post](./2024-09-18-what-is-an-orchestrator.md), we defined what an orchestrator is, the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
+In a recent [blog post](../2024-09-18-what-is-an-orchestrator/index.md), we defined what an orchestrator is, the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
 
 Now, it's time to answer the question: when should you choose an orchestrator over a CI/CD solution? Both have overlapping functionality so how do you decide which one is best for your job?
 
@@ -149,7 +149,7 @@ Kestra is an open-source orchestration and scheduling platform designed to handl
 Here are its unique capabilities:
 
 - **Unified orchestration across systems**:  Kestra allows you to manage workflows involving different cloud providers, databases, APIs, and more — all from a single platform. This makes it easier to coordinate tasks that need to interact with diverse environments, reducing the need for custom integration scripts.
-- **Real-time event triggers**: Supports event-driven architectures, enabling workflows to react to events like file uploads, database changes, or API calls. This [real-time](./2024-06-27-realtime-triggers.m) responsiveness can be critical for applications that require immediate action.
+- **Real-time event triggers**: Supports event-driven architectures, enabling workflows to react to events like file uploads, database changes, or API calls. This [real-time](../2024-06-27-realtime-triggers/index.md) responsiveness can be critical for applications that require immediate action.
 - **Visual workflow editor**: Provides an intuitive interface to design and visualize workflows, reducing complexity and making it accessible even for those new to orchestration. This visual approach can save significant time when designing and maintaining workflows.
 - **Robust error handling and retries**: Built-in mechanisms for managing failures and retries without the need for custom scripting, ensuring reliability. This is a must when dealing with critical tasks where failure isn't an option.
 - **Scalable and distributed execution**: Designed for cloud-native environments, Kestra handles parallelism and scaling seamlessly, making it ideal for large-scale data processing and distributed workflows.
@@ -201,7 +201,7 @@ Kestra, instead, uses a declarative YAML-based syntax that is much easier to rea
 #### Scalability Challenges
 Jenkins requires a lot of manual setup for distributed builds or scaling across [multiple nodes](https://www.jenkins.io/doc/book/managing/nodes/), and this can lead to bottlenecks when the infrastructure needs to grow.
 
-In contrast, Kestra leverages [Worker Groups](../../docs/06.enterprise/04.scalability/worker-group/index.md), which are collections of workers that can be targeted for executing tasks based on specific requirements, allowing for efficient workload distribution across different nodes. Additionally, [Task Runners](../../docs/06.enterprise/04.scalability/task-runners/index.md) enable the dynamic allocation of tasks in various cloud environments, facilitating the execution of compute-intensive jobs without the need for permanent infrastructure.
+In contrast, Kestra leverages [Worker Groups](../../docs/07.enterprise/04.scalability/worker-group/index.md), which are collections of workers that can be targeted for executing tasks based on specific requirements, allowing for efficient workload distribution across different nodes. Additionally, [Task Runners](../../docs/07.enterprise/04.scalability/task-runners/index.md) enable the dynamic allocation of tasks in various cloud environments, facilitating the execution of compute-intensive jobs without the need for permanent infrastructure.
 
 These features provide streamlined and scalable approach to managing complex workflows, reducing the operational overhead associated with scaling Jenkins.
 

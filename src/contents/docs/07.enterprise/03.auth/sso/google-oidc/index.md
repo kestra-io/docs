@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 
 ## Set up Google OIDC SSO
 
-This guide provides step-by-step instructions to configure **OpenID Connect (OIDC) authentication using Google Identity Platform** and link it to [**Kestra Enterprise**](../../01.overview/index.md) for [Single Sign-On (SSO)](./index.md).
+This guide provides step-by-step instructions to configure **OpenID Connect (OIDC) authentication using Google Identity Platform** and link it to [**Kestra Enterprise**](../../../01.overview/index.md) for [Single Sign-On (SSO)](../index.md).
 
 ## Prerequisites
 

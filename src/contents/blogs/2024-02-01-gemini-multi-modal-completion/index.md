@@ -13,7 +13,7 @@ A few weeks ago, [Google introduce Gemini](https://blog.google/technology/ai/goo
 
 Built on large language models (LLMs), Gemini is accessible through the [Google Vertex AI API](https://cloud.google.com/vertex-ai).
 
-Kestra now includes a task specifically designed to integrate with Gemini's LLM. The task allows you to incorporate Gemini's AI capabilities into your workflows. To give you an idea of its potential, let's start with something simple: as I love jokes (I already told you that in my [How to Use Google's PaLM 2 Bard AI to Start Your Day with a Smile](2023-08-24-using-google-bard-ai-with-kestra.md) article that introduce Bard, the previous generation of Google's LLM), I'll ask Gemini to tell me one.
+Kestra now includes a task specifically designed to integrate with Gemini's LLM. The task allows you to incorporate Gemini's AI capabilities into your workflows. To give you an idea of its potential, let's start with something simple: as I love jokes (I already told you that in my [How to Use Google's PaLM 2 Bard AI to Start Your Day with a Smile](../2023-08-24-using-google-bard-ai-with-kestra/index.md) article that introduce Bard, the previous generation of Google's LLM), I'll ask Gemini to tell me one.
 
 ## Using Vertex AI Multimodal Task
 

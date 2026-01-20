@@ -236,7 +236,7 @@ FROM bestsellers;
 
 So far, we’ve executed standalone queries. Let’s now cover some end-to-end use cases that will leverage MotherDuck for reporting and ETL data pipelines. The examples shown below use [Kestra](https://github.com/kestra-io/kestra) — an open-source orchestration tool. However, note that MotherDuck also integrates with other orchestrators, such as [Apache Airflow](https://www.astronomer.io/blog/three-ways-to-use-airflow-with-motherduck-and-duckdb/).
 
-To get started with Kestra, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml), run `docker compose up -d` and launch the UI from http://localhost:8080. From here, you can find several built-in DuckDB examples available in the UI as [Blueprints](../../docs/09.ui/index.mdxblueprints).
+To get started with Kestra, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml), run `docker compose up -d` and launch the UI from http://localhost:8080. From here, you can find several built-in DuckDB examples available in the UI as [Blueprints](../../docs/09.ui/05.blueprints/index.md).
 
 ![blueprintKestra](./md2.png)
 

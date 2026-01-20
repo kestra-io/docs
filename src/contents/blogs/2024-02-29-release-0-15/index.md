@@ -143,7 +143,7 @@ For more details on the `NONE` action, check out:
 
 ### New HTTP Trigger
 
-Thanks to the recently introduced [HTTP Trigger](/plugins/plugin-fs/http/io.kestra.plugin.fs.http.trigger), your workflows can be initiated based on specific conditions in the HTTP response. This feature is particularly useful for integrating Kestra with external APIs. Example use cases include:
+Thanks to the recently introduced [HTTP Trigger](/plugins/core/http/io.kestra.plugin.core.http.trigger), your workflows can be initiated based on specific conditions in the HTTP response. This feature is particularly useful for integrating Kestra with external APIs. Example use cases include:
 - anomaly detection,
 - monitoring the stock or price of a product and sending an alert when the value drops below a certain threshold,
 - or triggering a workflow whenever a specific condition is met in your custom APIs.
@@ -168,7 +168,7 @@ tasks:
 
 triggers:
   - id: http
-    type: io.kestra.plugin.fs.http.Trigger
+    type: io.kestra.plugin.core.http.Trigger
     uri: https://dummyjson.com/products/search?q=macbook-pro
     responseCondition: "{{ json(response.body).products[0].price < 1800 }}"
     interval: PT30S
@@ -180,7 +180,7 @@ Check the [trigger documentation](../../docs/05.workflow-components/07.triggers/
 
 ### Automatic Encryption and Decryption of HTTP Task Outputs
 
-For maximum security, the HTTP trigger and the HTTP Request task now additionally support an automatic encryption and decryption of outputs. This [feature](https://github.com/kestra-io/plugin-fs/pull/100) ensures that sensitive data is protected both in transit and at rest. To enable encryption, set the `encryptBody` [boolean flag](/plugins/plugin-fs/http/io.kestra.plugin.fs.http.trigger#encryptbody) to `true`. Also, make sure to configure the `kestra.encryption.secret-key` in your [Kestra configuration](/docs/configuration-guide/encryption).
+For maximum security, the HTTP trigger and the HTTP Request task now additionally support an automatic encryption and decryption of outputs. This [feature](https://github.com/kestra-io/plugin-fs/pull/100) ensures that sensitive data is protected both in transit and at rest. To enable encryption, set the `encryptBody` [boolean flag](/plugins/core/http/io.kestra.plugin.core.http.trigger#encryptbody) to `true`. Also, make sure to configure the `kestra.encryption.secret-key` in your [Kestra configuration](../../docs/configuration/index.md#encryption).
 
 ---
 
@@ -254,7 +254,7 @@ Secrets management has been further improved in this release, with the introduct
 
 ### Stats Page
 
-The Kestra UI continues improving the user experience. A notable addition is the new [Stats page](../../docs/01.getting-started/14.ui.md#stats), which provides a comprehensive overview of executions, flows, namespaces, and triggers at a glance.
+The Kestra UI continues improving the user experience. A notable addition is the new [Stats page](../../docs/09.ui/index.mdx), which provides a comprehensive overview of executions, flows, namespaces, and triggers at a glance.
 
 ![Stats Page](./stats_ee.png)
 
@@ -285,7 +285,7 @@ We've also added a new generic Singer plugin that simultaneously integrates with
 
 ## Enterprise Edition Updates
 
-For Enterprise Edition users, we've added a new [Setup page](../../docs/06.enterprise/01.overview/02.setup.md) in the UI, showing the most important configuration options and streamlining the setup process for a new Kestra instance. That setup wizard will guide you through the initial configuration of your instance, making it easier to get started.
+For Enterprise Edition users, we've added a new [Setup page](../../docs/07.enterprise/01.overview/02.setup/index.md) in the UI, showing the most important configuration options and streamlining the setup process for a new Kestra instance. That setup wizard will guide you through the initial configuration of your instance, making it easier to get started.
 
 ![ee_setup_page](./ee_setup_page.png)
 
@@ -293,9 +293,9 @@ We've also revamped the RBAC system, with improved handling of Superadmin access
 
 ![access_page](./access_page.png)
 
-The new **Service Accounts UI page** allows you to create and manage [service accounts](../../docs/06.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
+The new **Service Accounts UI page** allows you to create and manage [service accounts](../../docs/07.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
 
-![service_account_create](/docs/user-interface-guide/service_account_create.png)
+![service_account_create](../../docs/07.enterprise/03.auth/service-accounts/service_account_create.png)
 
 ---
 

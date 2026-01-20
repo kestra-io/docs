@@ -22,7 +22,7 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 ## Configuration
 
-LDAP is configured under the security context of your [Kestra configuration](../../../configuration/index.md) file. Below is an example configuration with Kestra-specific properties on top of the Micronaut configuration.
+LDAP is configured under the security context of your [Kestra configuration](../../../../configuration/index.md) file. Below is an example configuration with Kestra-specific properties on top of the Micronaut configuration.
 
 ```yaml
 micronaut:

@@ -314,7 +314,7 @@ triggers:
 
 **Pause Task**: The Pause task now uses a `pauseDuration` property, replacing `delay` and removing `timeout` because `timeout` is a core property available to all tasks incl. `Pause`. When the `pauseDuration` ends, the task proceeds based on the `behavior` property: `RESUME` (default), `WARN`, `FAIL`, or `CANCEL`. Manually resumed tasks always succeed. Finally, the new `onPause` property allows you to easily define a task that should run whenever the task enters a `PAUSED` state, which is especially useful for sending alerts on paused workflows waiting for approval (i.e. waiting to be manually resumed).
 
-**Plugin Usage Metrics**: Kestra now provides plugin usage metrics based on an execution count. These metrics are compatible with [internal metrics](..docs/09.administrator-guide/03.monitoring) and Prometheus, helping you track how plugins are used in your organization.
+**Plugin Usage Metrics**: Kestra now provides plugin usage metrics based on an execution count. These metrics are compatible with [internal metrics](../../docs/10.administrator-guide/03.monitoring/index.md) and Prometheus, helping you track how plugins are used in your organization.
 
 **Data Backup**: We now support full Backup & Restore, including backup of executions and logs data, ensuring you can recover all execution-related information for disaster recovery.
 

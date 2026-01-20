@@ -24,7 +24,7 @@ With all these combined, we can build powerful workflows. Let’s look at some B
 
 ## Integrating Your Code into Kestra
 
-One of the main questions we get is, 'how do I get my code into Kestra?' Don’t worry, we’ve got you covered. We recently did an [in-depth article](./2024-10-25-code-in-any-language.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
+One of the main questions we get is, 'how do I get my code into Kestra?' Don’t worry, we’ve got you covered. We recently did an [in-depth article](../2024-10-25-code-in-any-language/index.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
 
 To accompany that, we've got a number of helpful Blueprints covering a variety of use cases.
 
@@ -283,9 +283,9 @@ triggers:
 
 ### Use GCP Pub/Sub Realtime Trigger to push events into Firestore
 
-On the trend of event driven workflows, we can use [Realtime triggers](../../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
+On the trend of event driven workflows, we can use [Realtime triggers](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) to allow our workflows to react to new messages with low latency.
 
-In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/google%20cloud/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database.
+In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database.
 
 ```yaml
 id: pubsub-realtime-trigger
@@ -410,7 +410,7 @@ tasks:
 
 ### Set up alerts for failed workflow executions using Discord
 
-This next example is a [System flow](../../docs/05.concepts/system-flows.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../../docs/04.workflow-components/07.triggers/02.flow-trigger.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
+This next example is a [System flow](../../docs/06.concepts/system-flows/index.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
 
 ```yaml
 id: failure-alert-discord

@@ -326,7 +326,7 @@ This approach democratizes workflow creation by letting platform teams build reu
 
 Namespace Files in Kestra 1.2 now support comprehensive version control with revision history. You can track changes, restore previous versions, and maintain audit trails for all namespace files. The example below shows how to reference specific versions of namespace files in your workflows:
 
-![Namespace File Revision History](/blogs/revision_namespacefiles.png)
+![Namespace File Revision History](./revision_namespacefiles.png)
 
 
 :::collapse{title="Namespace File Versioning Example"}
@@ -435,7 +435,7 @@ Both marketplace offerings are free (no software charges), with only standard cl
 
 - **Secret Managers** – Enterprise Edition users now benefit from new secret management integrations including 1Password and Doppler. These enhancements expand upon Kestra’s existing secret managers, allowing organizations greater flexibility and security in storing and accessing sensitive credentials and configuration across all environments.
 - **CSV Export on Executions Page** – You can now export execution data to CSV directly from the Executions page, making analysis and reporting easier and more efficient.
-- **Improved Liveness & Grace Period** – The liveness mechanism has been upgraded with timeout-based detection and enhanced documentation. There is now explicit, configurable support for termination grace periods. Refer to the [configuration documentation](/docs/configuration) for more information.
+- **Improved Liveness & Grace Period** – The liveness mechanism has been upgraded with timeout-based detection and enhanced documentation. There is now explicit, configurable support for termination grace periods. Refer to the [configuration documentation](../../docs/configuration/index.md) for more information.
 - **Pre-load Flows on Startup** – Introduced the `--flow-path` flag to the Kestra startup command, allowing flows to be pre-loaded from a directory at server initialization (e.g., `--flow-path /app/myflows/`). This means workflows are available immediately upon startup.
 - **Improved Left Menu Navigation** – The left-hand menu has been redesigned, grouping related features more logically and making it easier to find and access key functionality.
 - **Redesigned Plugin Page** – The Plugin page now features a modernized look, better search and filtering, improved categorization, and integrated documentation—making plugin exploration and discovery more intuitive.

@@ -98,8 +98,6 @@ In the above examples, the files are written inline for giving a complete pictur
 
 This blog demonstrates how Kestra can be used for managing infrastructure orchestration with the help of its Terraform and Ansible plugins. Kestra also supports [Docker](/plugins/plugin-docker) and [Kubernetes](/plugins/plugin-kubernetes) plugins which help control the docker and kubernetes objects respectively.
 
-![](/ui.gif)
-
 Join the Slack [community](/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

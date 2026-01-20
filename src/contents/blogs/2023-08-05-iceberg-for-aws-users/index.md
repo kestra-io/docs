@@ -729,7 +729,7 @@ See the screenshots below which demonstrate how the flow was triggered for each 
 
 ### Iceberg Blueprints
 
-All Kestra workflows covered in this post are available as [Blueprints](../../docs/04.user-interface-guide/blueprints.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../../docs/01.getting-started.md) guide, and select the Iceberg tag from the Blueprints section:
+All Kestra workflows covered in this post are available as [Blueprints](../../docs/09.ui/05.blueprints/index.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../../docs/01.quickstart/index.md) guide, and select the Iceberg tag from the Blueprints section:
 
 ![iceberg16](./iceberg16.png)
 

@@ -27,12 +27,12 @@ const navigation = await buildDocsNavigation();
 const editUrl = doc.filePath ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, 'content/')}` : undefined;
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/contents/docs/icons/*.svg');
-const icon = doc.data?.icon ? await images[doc.data.icon]() : null;
+const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null;
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
     <h1 class="title">
-        {icon ? <Image width="40" height="40" src={icon?.default} alt={`${doc.data.title} icon`} /> : null}
+        {icon ? <img width="40" height="40" src={icon} alt={`${doc.data.title} icon`} /> : null}
         {doc.data?.title}</h1>
     <div class="bd-markdown">
         <Content />

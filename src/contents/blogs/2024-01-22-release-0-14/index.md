@@ -167,7 +167,7 @@ triggers:
 
 The website has now a **new improved search** across the docs, plugins and blog posts, as well as [blueprints](/blueprints) which are now available not only in the UI but also on the website. The plugins got their own (beautiful!) [homepage](/plugins) with a dedicated search to make it easier to find the plugin you need.
 
-We've also added new documentation pages for [Azure DevOps CI/CD](../../docs/version-control-cicd/cicd/05-azure-devops.md), and [Role-Based Access Control (RBAC)](../../docs/06.enterprise/03.auth/rbac/index.md).
+We've also added new documentation pages for [Azure DevOps CI/CD](../../docs/version-control-cicd/cicd/05-azure-devops/index.md), and [Role-Based Access Control (RBAC)](../../docs/07.enterprise/03.auth/rbac/index.md).
 
 ## Bug fixes and reliability improvements
 

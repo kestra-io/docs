@@ -8,7 +8,7 @@ Set up authentik SSO to manage authentication for users.
 
 ## Configure authentik SSO
 
-In conjunction with SSO, check out the [authentik SCIM provisioning guide](../scim/authentik.md).
+In conjunction with SSO, check out the [authentik SCIM provisioning guide](../../scim/authentik/index.md).
 
 ### Install authentik
 

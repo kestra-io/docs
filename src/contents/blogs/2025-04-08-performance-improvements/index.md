@@ -94,7 +94,7 @@ In a benchmark (a flow with two tasks, one processing JSON), this configuration 
 
 Last but not least, we reviewed how we clean the JDBC `queues` table.
 
-The JDBC queues table stores internal queue messages. Previously, the [JDBC Cleaner](/docs/configuration#jdbc-cleaner) only periodically cleaned the table. The default configuration was to clean the table each hour and keep 7 days of messages.
+The JDBC queues table stores internal queue messages. Previously, the [JDBC Cleaner](../../docs/configuration/index.md#jdbc-cleaner) only periodically cleaned the table. The default configuration was to clean the table each hour and keep 7 days of messages.
 
 Our internal queue is a multiple producer / multiple consumer queue; this means that the JDBC cleaner cannot know if all consumers have read a message, as not all components read the same message. In our Kafka backend, we rely on the Kafka topic and consumer group, so it doesn't suffer from the same issue.
 

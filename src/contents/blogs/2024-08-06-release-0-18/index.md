@@ -21,7 +21,7 @@ The table below summarizes the highlights of this release.
 | **Realtime Triggers**            | The improved Trigger UI allows you to view **logs** of each Realtime Trigger and **restart** it directly from the UI.                                                                                                                  | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) |
 | **Task Runners**                 | Task Runners are out of Beta — you can safely use the `taskRunner` property in all script and CLI tasks in production at scale.                                                                                                        | Both Open-Source and Enterprise  | [Link](../../docs/task-runners/index.mdx)                       |
 | **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
-| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](/docs/configuration-guide/database#sql-server)                             |
+| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/index.md#database)                             |
 | **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
 | **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
 
@@ -116,7 +116,7 @@ Based on requests from several Enterprise customers, we've added SQL Server as a
 
 Until we remove the `preview` label, we recommend using SQL Server in development/staging environments only and PostgreSQL for production JDBC-based deployments.
 
-To help you set up a SQL Server backend, check our [Database Configuration Guide](/docs/configuration-guide/database#sql-server).
+To help you set up a SQL Server backend, check our [Database Configuration Guide](../../docs/configuration/index.md#database).
 
 ---
 
@@ -259,7 +259,7 @@ Here are the main enhancements to Task Runners added in this release:
 Task Runners in Kestra 0.18.0 offer more resilient file handling and more stability when recovering from failure in remote compute environments.
 
 :::alert{type="info"}
-Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/06.enterprise/index.md) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
+Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/07.enterprise/index.mdx) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
 :::
 
 Read more about Task Runners in our [Documentation](../../docs/task-runners/index.mdx).
@@ -339,7 +339,7 @@ Big thanks to [Yuri](https://github.com/kestra-io/kestra/issues/4211) for contri
 
 We've resolved an issue with the null coalescing operator to ensure it functions correctly when processing both empty (null) and undefined inputs.
 
-Learn more in a dedicated [How-to Guide](/docs/how-to-guides/null-values).
+Learn more in a dedicated [How-to Guide](../../docs/15.how-to-guides/null-values/index.md).
 
 ### Deleting executions now also deletes their logs and metrics
 

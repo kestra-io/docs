@@ -11,7 +11,7 @@ image: ./main.jpg
 
 Nowadays it's easy to find the last news over LinkedIn and to keep updated through the last discussions on Reddit. But there's a place where the distribution of subject and people feels more realistic: a physical event.
 
-Here I'm speaking about a big one: [Big Data London](bigdataldn.com). With over 180 exhibitors, it's one of the most important data community places to share best practices and meet data practitioners in person.
+Here I'm speaking about a big one: [Big Data London](https://bigdataldn.com). With over 180 exhibitors, it's one of the most important data community places to share best practices and meet data practitioners in person.
 
 The following are my two cents on what the industry is heading for, what I learned attending such a big event and how Kestra fits into this landscape of colourful logos.
 

@@ -54,6 +54,5 @@ const children = await Promise.all(docs
     }));
 
     const currentPageIcon = currentDoc?.data?.icon ? (await images[currentDoc.data.icon]()).default.src : undefined;
-    console.log(currentDoc?.data?.icon, currentPageIcon)
 ---
 <ChildCardRender navigation={children} currentPageIcon={currentPageIcon} client:load />

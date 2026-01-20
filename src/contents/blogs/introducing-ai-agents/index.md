@@ -255,7 +255,7 @@ With Kestra, you get the best of both worlds: traditional task-based orchestrati
 
 ## Next Steps
 
-Ready to get started? Check out our [AI Agent documentation](/docs/ai-tools/ai-agents.md) for detailed examples and configuration options.
+Ready to get started? Check out our [AI Agent documentation](../../docs/ai-tools/ai-agents/index.md) for detailed examples and configuration options.
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 

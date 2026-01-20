@@ -22,7 +22,7 @@ And this is exactly what we are going to show you in this blog post.
 
 The ultimate goal of automation is to trigger action based on business events. What happens when the product stock is too low to support new orders? How to deal with unused analytics dashboards and improve data governance in the company, how to scale the underlying application infrastructure when traffic is unusual during pics of activity?
 
-Let’s dive into 3 examples of [Kestra’s HTTP trigger task](/plugins/plugin-fs/http/io.kestra.plugin.fs.http.trigger) that allows triggering workflows based on API status.
+Let’s dive into 3 examples of [Kestra’s HTTP trigger task](/plugins/core/http/io.kestra.plugin.core.http.trigger) that allows triggering workflows based on API status.
 
 ## Notify the supply when the warehouse stock hits a threshold
 
@@ -48,7 +48,7 @@ tasks:
 
 triggers:
   - id: http
-    type: io.kestra.plugin.fs.http.Trigger
+    type: io.kestra.plugin.core.http.Trigger
     uri: https://warehouse.company.io/api/stock?product_id=1
     responseCondition: "{{ json(response.body).stock_value <= 10 }}"
     interval: PT2M
@@ -117,7 +117,7 @@ tasks:
 
 triggers:
   - id: http
-    type: io.kestra.plugin.fs.http.Trigger
+    type: io.kestra.plugin.core.http.Trigger
     uri: https://tableau.example.com/api/-/content/usage-stats/workbooks/{vars.workbook_luid}
     responseCondition: "{{ json(response.body).hitsLastTwoWeeksTotal <= 10 }}"
     interval: PT1M
@@ -185,7 +185,7 @@ tasks:
 
 triggers:
   - id: http
-    type: io.kestra.plugin.fs.http.Trigger
+    type: io.kestra.plugin.core.http.Trigger
     uri: https://your-grafana.com/api/datasources/name/prometheusmetrics?target=cpu.usage
     headers:
       Authorization: "Bearer {{ secret('GRAPHANA_API_KEY') }}"

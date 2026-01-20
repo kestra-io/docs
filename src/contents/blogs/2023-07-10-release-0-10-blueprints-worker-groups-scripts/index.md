@@ -181,15 +181,15 @@ tasks:
     tasks:
       - task:
           id: customers
-          type: io.kestra.plugin.fs.http.Download
+          type: io.kestra.plugin.core.http.Download
           uri: https://raw.githubusercontent.com/dbt-labs/jaffle_shop/main/seeds/raw_customers.csv
       - task:
           id: orders
-          type: io.kestra.plugin.fs.http.Download
+          type: io.kestra.plugin.core.http.Download
           uri: https://raw.githubusercontent.com/dbt-labs/jaffle_shop/main/seeds/raw_orders.csv
       - task:
           id: payments
-          type: io.kestra.plugin.fs.http.Download
+          type: io.kestra.plugin.core.http.Download
           uri: https://raw.githubusercontent.com/dbt-labs/jaffle_shop/main/seeds/raw_payments.csv
       - task:
           id: transform
@@ -265,7 +265,7 @@ You can start a new worker from a CLI using the command `kestra server worker --
 
 Worker groups are beneficial when your tasks require access to specific Operating Systems, libraries, on-prem applications, network resources (such as VPN), and GPUs or when your processes need to run in a particular region to satisfy compliance requirements.
 
-Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or demanding computational requirements. Check the [Worker Groups documentation](../../docs/08.architecture.md#worker-group-ee) for more details.
+Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or demanding computational requirements. Check the [Worker Groups documentation](../../docs/07.enterprise/04.scalability/worker-group/index.md) for more details.
 
 
 ## New Plugin to interact with OpenAI

@@ -112,7 +112,7 @@ The **Outputs** tab presents the execution's generated outputs. All tasks and th
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/BTW4jefHMCoxw5VgY9mB?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Execution Outputs | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-The **Debug Expression** button allows you to evaluate [expressions](../expressions/index.md) on those task outputs. It's a great way to ensure your actual output aligns with your expected output, and if not, it provides a place to debug your flows.
+The **Debug Expression** button allows you to evaluate [expressions](../../expressions/index.md) on those task outputs. It's a great way to ensure your actual output aligns with your expected output, and if not, it provides a place to debug your flows.
 
 > Note: You have to select one task to be able to use the **Debug Expression** button.
 

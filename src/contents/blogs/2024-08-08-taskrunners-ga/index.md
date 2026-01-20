@@ -25,7 +25,7 @@ You can either build a custom plugin to run your tasks in any environment you wi
 
 ## From Beta to General Availability
 
-We introduced task runners [in Beta in Kestra 0.16.0](./2024-04-12-release-0-16.md), and since then, we've been improving their performance, stability, and usability. Among others, we've added the capability to **terminate remote workers when the execution is canceled from the UI**, integrated Task Runners into **additional CLI and script plugins**, improved **file handling** and **recovery from failures** in remote compute environments, and documented the feature extensively.
+We introduced task runners [in Beta in Kestra 0.16.0](../2024-04-12-release-0-16/index.md), and since then, we've been improving their performance, stability, and usability. Among others, we've added the capability to **terminate remote workers when the execution is canceled from the UI**, integrated Task Runners into **additional CLI and script plugins**, improved **file handling** and **recovery from failures** in remote compute environments, and documented the feature extensively.
 
 Thanks to feedback from over 80 users and many enhancements and bug fixes, Task Runners are now generally available and ready for production use at scale. **We are grateful to all our Beta testers** for their valuable input and suggestions.
 
@@ -91,7 +91,7 @@ To help you get started, we prepared extensive [How-To Guides](../../docs/15.how
   <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!
+Try Task Runners in [Kestra 0.18.0](../../docs/01.quickstart/index.md) today and let us know what you think!
 
 - If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 - If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

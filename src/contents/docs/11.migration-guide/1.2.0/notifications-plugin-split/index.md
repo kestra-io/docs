@@ -27,7 +27,7 @@ Other providers (Twilio/Segment, Opsgenie, SendGrid, Sentry, Squadcast, X, Zendu
 
 1. **Update plugin sources**
    - OSS: download or reference the new provider plugins you need and remove the legacy notifications plugin from your plugins directory.
-   - EE: specify the desired provider plugins (and versions) in your plugin configuration instead of the monolithic bundle. See [versioned plugins](../../07.enterprise/05.instance/versioned-plugins/index.md) to pin and control upgrades per provider.
+   - EE: specify the desired provider plugins (and versions) in your plugin configuration instead of the monolithic bundle. See [versioned plugins](../../../07.enterprise/05.instance/versioned-plugins/index.md) to pin and control upgrades per provider.
 
 2. **Keep flow definitions unchanged (where possible)**
    Task and trigger type aliases remain in place, so flows generally do **not** need YAML changes as long as the matching provider plugin is installed. If a task fails to load, confirm the plugin is present and restart the worker/webserver.

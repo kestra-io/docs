@@ -14,7 +14,7 @@ How to manage API tokens in Kestra.
 
 ## API tokens – manage programmatic access
 
-API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](./service-accounts.md).
+API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](../service-accounts/index.md).
 
 ## Where you can use API tokens
 
@@ -23,8 +23,8 @@ API tokens are used anytime you want to grant programmatic access to the Kestra 
 Currently, we support API tokens as an authentication mechanism for the following services:
 1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
 2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra CLI](../../server-cli/index.md)
-4. [Kestra API](./api.md)
+3. [Kestra CLI](../../../server-cli/index.md)
+4. [Kestra API](../api/index.md)
 
 ## How to create a User API token
 

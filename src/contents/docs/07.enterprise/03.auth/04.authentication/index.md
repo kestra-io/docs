@@ -20,7 +20,7 @@ Kestra provides two authentication methods:
 - Basic Auth – enabled by default
 - OpenID Connect (OIDC)
 
-By default, JWT token security is configured to use the default Kestra encryption key. If you haven't already configured it, generate a secret that is at least 256 bits and add it to your [Kestra configuration](../../configuration/index.md) as follows:
+By default, JWT token security is configured to use the default Kestra encryption key. If you haven't already configured it, generate a secret that is at least 256 bits and add it to your [Kestra configuration](../../../configuration/index.md) as follows:
 
 ```yaml
 kestra:
@@ -88,4 +88,4 @@ micronaut:
 
 More information can be found in the [Micronaut OIDC configuration](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
 
-Check the [Single Sign-On documentation](./sso/index.md) for more details on how to configure SSO with Google, Microsoft, and other providers.
+Check the [Single Sign-On documentation](../sso/index.md) for more details on how to configure SSO with Google, Microsoft, and other providers.

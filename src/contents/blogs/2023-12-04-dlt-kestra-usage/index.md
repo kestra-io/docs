@@ -103,7 +103,7 @@ In this setup ☝️, **`dlt`** loads all email data into the table “my_inbox�
 ![bigquery_my_inbox](https://storage.googleapis.com/dlt-blog-images/dlt_kestra_bigquery_my_inbox.png)
 
 :::alert{type="info"}
-This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](../2023-12-04-dlt-kestra-usage/index.md*).
+This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](../2023-12-04-dlt-kestra-usage/index.md).
 :::
 
 ### The AI part

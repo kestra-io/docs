@@ -73,7 +73,7 @@ That being said, Airflow isn't without its flaws. Here are some you might find a
 
 
 ### 2. Kestra
-[Kestra](https://github.com/kestra-io/kestra) is an open-source universal orchestration platform with a declarative interface for workflow definition. It's primarily built for software engineers but it's simple enough to be used by anyone in your organization. For more information about Kestra, check our [Documentation](../../docs/index.md).
+[Kestra](https://github.com/kestra-io/kestra) is an open-source universal orchestration platform with a declarative interface for workflow definition. It's primarily built for software engineers but it's simple enough to be used by anyone in your organization. For more information about Kestra, check our [Documentation](../../docs/index.mdx).
 
 ![Image 2 - Kestra](./2.png)
 
