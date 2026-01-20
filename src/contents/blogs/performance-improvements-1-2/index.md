@@ -7,10 +7,10 @@ author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: /blogs/perf-1-2.jpg
+image: ./main.jpg
 ---
 
-In [Kestra 1.1](https://kestra.io/blogs/performance-improvements-1-1), we continued our ongoing effort to make Kestra faster and more scalable under large workloads. This release focuses on reducing execution overhead in common scenarios, especially when working with large namespaces and highly parallel workflows.
+In [Kestra 1.1](../performance-improvements-1-1/index.md), we continued our ongoing effort to make Kestra faster and more scalable under large workloads. This release focuses on reducing execution overhead in common scenarios, especially when working with large namespaces and highly parallel workflows.
 
 ## Parallel loading for namespace files
 
@@ -45,7 +45,7 @@ By continuing to optimize critical execution paths—from file loading to databa
 And we’re not done yet—performance remains a core focus as we push Kestra further toward large-scale orchestration.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

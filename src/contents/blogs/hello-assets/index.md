@@ -7,15 +7,15 @@ authors:
   - name: "Emmanuel Darras"
     image: edarras
     role: CEO & Co-Founder
-image: /blogs/hello-assets.jpg
+image: ./main.jpg
 ---
 
 If you’ve ever tried to understand which workflow updated a table in production, why a downstream job suddenly broke, or what depends on a critical dataset, you’ve seen the limits of orchestration without context. Workflows run, but the knowledge of what they touch and produce is scattered across logs, code, and people’s heads.
 
 **Kestra Assets** solves this by making governance a **byproduct of execution**.
-> 
+>
  This approach is **technology-agnostic by design**. Whether a workflow runs a **SQL query**, a **Python script**, a **dbt transformation**, an **API call**, a **CLI command**, or provisions infrastructure, you can attach asset declarations to any task. **Unlike language- or code-centric solutions** (such as Python decorators), Kestra Assets are **declarative and universal**. No matter the tool or language used under the hood, inputs and outputs can be captured as named assets. In short: *if your workflow touches it, you can track it.*
-> 
+>
 The result is a catalog you can trust and lineage that reflects reality without manual documentation or guesswork. Data and infrastructure artifacts become **discoverable, traceable, and reusable**, enabling safer pipelines and better collaboration across data, platform, and engineering teams.
 
 In this post, we’ll explore what Kestra Assets are, how they work (in a **language-agnostic** way that goes beyond just Python code), and why they matter for building modern, governed platforms.
@@ -185,29 +185,29 @@ The result is governance built directly into orchestration.
 Check the video below for a quick overview of the feature.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=SqweJSXueK7uAmST" title="Kestra 1.2 Overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=SqweJSXueK7uAmST" title="Kestra 1.2 Overview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Working with Assets in Kestra
 
 Kestra’s UI and features make it easy to leverage the Assets system:
 
-**Asset Catalog:** 
+**Asset Catalog:**
 A new **Assets** section in the Kestra UI lists all assets across your tenant (with RBAC enforcement). You can search by ID or filter by type, namespace, or metadata tags.
 
-![assets catalogs](/blogs/hello-assets/catalogs.png)
+![assets catalogs](./catalogs.png)
 
-**Dependency Graph Visualization:** 
+**Dependency Graph Visualization:**
 On any asset’s detail page, Kestra displays an interactive **lineage graph** showing that asset’s **upstream and downstream** links. This graph updates automatically as flows run. It’s invaluable for quickly understanding the context of an asset. This visual map helps both developers and stakeholders grasp data flows without reading code.
 
-![assets dependencies](/blogs/hello-assets/dependencies.png)
+![assets dependencies](./dependencies.png)
 
-**Execution History & Details:** 
+**Execution History & Details:**
 Each asset page also lists attributes (ID, type, full namespace, timestamps) and a log of **which flow executions touched it**. You can click through to the exact flow run for more details. This effectively provides an **audit log per asset**. If something looks off in a dataset, you can see if maybe an unusual flow run that affected it. For external assets that Kestra references (like an imported dataset), you’ll at least see which Kestra flows have been reading it recently.
 
-![assets executions](/blogs/hello-assets/executions.png)
+![assets executions](./executions.png)
 
-**Dynamic Asset Queries:** 
+**Dynamic Asset Queries:**
 Kestra provides a built-in function `assets()` for your workflow scripts, so you can query the asset inventory dynamically. For instance, you can populate a dropdown input with all asset IDs of a certain type. This makes your workflows extremely flexible and **self-driving based on the current catalog**.
 
 ```yaml
@@ -227,14 +227,14 @@ tasks:
         message: "{{ taskrun.value }}"
 ```
 
-**Metadata and Tagging:** 
+**Metadata and Tagging:**
 Because assets support custom metadata, you can enforce conventions. For example, tag assets with `environment: prod` vs `dev`, or `owner: team_name`, or any classification your organization needs. These tags make search and filtering powerful. More importantly, they provide context to each asset, anyone looking at it knows what it represents. In future releases, we plan to allow **programmatic updates to asset metadata** via dedicated tasks, which will further integrate assets into automated governance workflows (e.g., auto-tag new tables with a retention policy or sensitivity level).
 
-![assets details](/blogs/hello-assets/executions.png)
+![assets details](./executions.png)
 
 ## **Extensible & Future-Proof**
 
-Kestra’s vision is to make this even more global. We’re working on plugin enhancements to enable certain plugins to automatically **emit asset information**. For example, a database connector plugin might automatically register a Table asset when a query creates a table, without you specifying it. We’re also exploring triggers and alerts based on assets (imagine a trigger that fires when a particular asset hasn’t been updated in X days, indicating stale data). The Asset system is designed to be a game changer for **data quality, monitoring, and even external catalog integrations** (indeed, we have an `AssetShipper` that can export asset metadata to formats like OpenLineage or other catalogs). 
+Kestra’s vision is to make this even more global. We’re working on plugin enhancements to enable certain plugins to automatically **emit asset information**. For example, a database connector plugin might automatically register a Table asset when a query creates a table, without you specifying it. We’re also exploring triggers and alerts based on assets (imagine a trigger that fires when a particular asset hasn’t been updated in X days, indicating stale data). The Asset system is designed to be a game changer for **data quality, monitoring, and even external catalog integrations** (indeed, we have an `AssetShipper` that can export asset metadata to formats like OpenLineage or other catalogs).
 
 ## The End of "I Don't Know"
 
@@ -262,9 +262,9 @@ No more tribal knowledge. No more archaeological digs through logs and code. No 
 
 **Ready to Transform Your Orchestration?**
 
-Assets is available now in [Kestra Enterprise Edition](https://kestra.io/enterprise). If you’re serious about bringing transparency, governance, and control to your data platform, we should talk. Schedule a personalized demo to see Assets in action with your own use cases and to discuss implementing this in your Kestra platform.
+Assets is available now in [Kestra Enterprise Edition](/enterprise). If you’re serious about bringing transparency, governance, and control to your data platform, we should talk. Schedule a personalized demo to see Assets in action with your own use cases and to discuss implementing this in your Kestra platform.
 
 **The question isn’t whether you need governance in your orchestration — it’s whether you can afford to keep operating without it.**<br>
-→ [Schedule a Demo](https://kestra.io/demo) <br>
-→ [Explore Enterprise Edition](https://kestra.io/enterprise)<br>
-→ [Read the Documentation](https://kestra.io/docs/enterprise/governance/assets)<br>
+→ [Schedule a Demo](/demo) <br>
+→ [Explore Enterprise Edition](/enterprise)<br>
+→ [Read the Documentation](../../docs/07.enterprise/02.governance/01.assets/index.md)

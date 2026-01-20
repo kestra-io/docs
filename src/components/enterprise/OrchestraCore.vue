@@ -122,7 +122,7 @@
   import leftArrow from './assets/slider-left-arrow.svg';
 
   import FilaLogo from './assets/fila.svg';
-  import AcxiomLogo from '~/assets/quotes-companies/acxiom.svg';
+  import AcxiomLogo from '~/assets/quotes-companies/Acxiom.svg';
   import JPLogo from './assets/jp.svg';
   import VyomaSpaceLogo from './assets/Vyoma-Space.svg';
   import CleverConnectLogo from './assets/CleverConnect.svg';
