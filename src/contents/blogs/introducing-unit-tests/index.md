@@ -272,7 +272,7 @@ testCases:
 
 ### Using Inline Files Fixtures
 
-Let's assume that you want to add a Unit Test for the [data-engineering-pipeline](https://kestra.io/blueprints/data-engineering-pipeline) tutorial flow.
+Let's assume that you want to add a Unit Test for the [data-engineering-pipeline](/blueprints?page=1&size=24&tags=data) tutorial flow.
 
 This flow uses multiple **file operations**:
 - the first task **extracts** data and passes it as a file to the `transform` task
@@ -360,7 +360,7 @@ Now you can inspect results directly from the UI. Additionally, clicking on the 
 
 ## Next Steps
 
-Unit Tests are available in the Enterprise Edition and Kestra Cloud starting from version 0.23. To learn more, see our [Unit Tests documentation](https://kestra.io/docs/enterprise) or [request a demo](https://kestra.io/demo). If you have questions, ideas, or feedback, join our [Slack community](https://kestra.io/slack) and share your perspective.
+Unit Tests are available in the Enterprise Edition and Kestra Cloud starting from version 0.23. To learn more, see our [Unit Tests documentation](../../docs/07.enterprise/index.mdx) or [request a demo](/demo). If you have questions, ideas, or feedback, join our [Slack community](/slack) and share your perspective.
 
 If you find Kestra useful, give us a star on [GitHub](https://github.com/kestra-io/kestra).
 

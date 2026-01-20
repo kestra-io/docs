@@ -202,7 +202,7 @@ The key is to connect with the things that make your applications run, often thr
 
 So, what tasks can you automate? What tools would make your life easier?
 
-Join the [Slack community](https://kestra.io/slack) where developers share ideas, request new features, and help each other out!
+Join the [Slack community](/slack) where developers share ideas, request new features, and help each other out!
 
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

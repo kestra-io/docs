@@ -16,13 +16,13 @@ The table below highlights the key features of this release:
 
 | Feature                    | Description                                                                                                                                                                                      | Edition                  |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|
-| UI Localization            | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                             | All editions             |
+| UI Localization            | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                            | All editions             |
 | Fully redesigned Dashboard | [Get a quick overview](https://github.com/kestra-io/kestra/issues/3822) of the health of your platform with a faster and more informative Dashboard.                                             | All editions             |
 | System Flows               | [Automate maintenance tasks](https://github.com/kestra-io/kestra/issues/4557) with dedicated flows that are hidden by default to end users.                                                      | All editions             |
 | Conditional Inputs         | [Make workflows more dynamic](https://github.com/kestra-io/kestra/issues/3610) by defining [inputs based on conditions](), allowing one input to depend on another via new `dependsOn` property. | All editions             |
 | New log level display      | [Navigate logs](https://github.com/kestra-io/kestra/issues/2045) across warnings or debug messages with the new interactive Log level display.                                                   | All editions             |
-| In-app versioned docs      | [Access the full documentation](https://www.linkedin.com/feed/update/urn:li:activity:7246473901482946560/) of the version you're using, directly from the app.                                                          | All editions             |
-| Backup & Restore           | [Protect your data](https://kestra.io/docs/administrator-guide/backup-and-restore) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
+| In-app versioned docs      | [Access the full documentation](https://www.linkedin.com/feed/update/urn:li:activity:7246473901482946560/) of the version you're using, directly from the app.                                                         | All editions             |
+| Backup & Restore           | [Protect your data](../../docs/10.administrator-guide/backup-and-restore/index.md) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
 
 ---
 
@@ -38,7 +38,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Localization UI
 
-Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
+Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](../../docs/09.ui/06.settings/index.md) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
 
 Here’s the full list of the currently supported languages:
 - 🇺🇸 English (en)
@@ -95,7 +95,7 @@ System Flows are designed to handle periodically executed background operations 
 4. Syncing code from Git or pushing code to Git
 5. Automatically [releasing flows](/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments.
 
-We refer to these as **System Flows** because, by default, they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
+We refer to these as **System Flows** because, by default, they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](../../docs/06.concepts/system-flows/index.md):
 
 ```yaml
 kestra:
@@ -440,7 +440,7 @@ kestra:
 
 The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `BASE64_ENCODED_STRING_OF_32_CHARCTERS` with a secure, base64-encoded custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
 
-For more details, see the [Configuration article](../docs/configuration/index.md#encryption).
+For more details, see the [Configuration article](../../docs/configuration/index.md#encryption).
 
 If you want to use a separate secret for your JWT refresh token signature, you can **optionally** customize that as follows:
 
@@ -482,7 +482,7 @@ Restoring your instance is just as straightforward. Use the URI generated during
 kestra backups restore kestra:///backups/full/backup-20241001163000.kestra
 ```
 
-When the restore process completes, Kestra provides a detailed summary, showing the number of items restored, ensuring you have full visibility into the process. Read more about the [Backup & Restore feature](https://kestra.io/docs/administrator-guide/backup-and-restore) in our documentation.
+When the restore process completes, Kestra provides a detailed summary, showing the number of items restored, ensuring you have full visibility into the process. Read more about the [Backup & Restore feature](../../docs/10.administrator-guide/backup-and-restore/index.md) in our documentation.
 
 ---
 
@@ -494,7 +494,7 @@ Using an invalid worker group key in a task leads to task runs being stuck in a 
 
 With the new Worker Groups UI page, worker groups are now treated as API-first objects — they must be created first from the UI, API, CLI, or Terraform before being used in flows. This ensures that worker group keys are valid and exist before they are referenced in tasks.
 
-Check the [Worker Group](../docs/06.enterprise/04.scalability/worker-group/index.md) documentation to learn how to create and manage worker groups.
+Check the [Worker Group](../../docs/06.enterprise/04.scalability/worker-group/index.md) documentation to learn how to create and manage worker groups.
 
 In short, this new feature improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
@@ -510,7 +510,7 @@ One of the key advantages of Managed Roles is that they stay up to date automati
 If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, Managed Roles provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
 :::alert{type="info"}
-Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
+Note that Managed Roles are not the same as [Default Roles](../../docs/configuration/index.md#default-role). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
 :::
 
 ---
@@ -593,11 +593,11 @@ We’ve also introduced a few new plugins for popular open-source technologies:
 - [MySQL Batch Insert](https://github.com/kestra-io/plugin-jdbc/pull/358) task
 - [NATS KV Store](https://github.com/kestra-io/plugin-nats/issues/46) tasks
 - [MeiliSearch](/plugins/plugin-meilisearch) tasks
-- [DataHub](https://develop.kestra.io/plugins/plugin-datahub) ingestion task
+- [DataHub](/plugins/plugin-datahub) ingestion task
 - [Rocket.Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
-For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin, and Groovy.
+For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin, and Groovy.
 
 We've also added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
 
@@ -790,7 +790,7 @@ Then trigger multiple Executions of that flow and watch the `Concurrency` tab sh
 
 ### URL to Follow the Execution Progress
 
-The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing users to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Check the [Executions](https://kestra.io/docs/workflow-components/execution#get-url-to-follow-the-execution-progress) documentation for a hands-on example.
+The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing users to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Check the [Executions](../../docs/05.workflow-components/03.execution/index.md#get-url-to-follow-the-execution-progress) documentation for a hands-on example.
 
 ---
 
@@ -812,7 +812,7 @@ We'd like to thank all existing and new contributors who helped make this releas
 In this release, we welcome a record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
 
 :::alert{type="info"}
-If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with the [good first issue](https://go.kestra.io/contribute) label. Join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
+If you want to contribute to Kestra, check out our [Contributing Guide](../../docs/04.contribute-to-kestra/index.mdx) and a list of issues with the [good first issue](https://go.kestra.io/contribute) label. Join our [Slack community](/slack) to get help and guidance from the core team and other contributors.
 :::
 
 ---
@@ -821,6 +821,6 @@ If you want to contribute to Kestra, check out our [Contributing Guide](https://
 
 This post covered new features and enhancements added in Kestra 0.19.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

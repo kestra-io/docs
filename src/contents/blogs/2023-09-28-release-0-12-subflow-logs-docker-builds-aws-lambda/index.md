@@ -43,7 +43,7 @@ Kestra's subflows are modular components helping to build reusable and maintaina
 
 🔹 **Zoom in and out:** expand the subflow to see more details and collapse it to get a bird's eye view of the complete workflow comprised of multiple modular components. With [this change](https://github.com/kestra-io/kestra/pull/2171), you can decompose large workflows into smaller parts.
 
-![subflows](https://kestra.io/subflows.gif)
+![subflows](./subflows.gif)
 
 🔹 **Subflow labels** - subflows now inherit labels from the parent flow. [This change](https://github.com/kestra-io/kestra/issues/2114) is particularly useful to filter executions in the UI.
 
@@ -190,7 +190,7 @@ This plugin provides an additional mechanism to build decoupled workflows. For e
 
 You can also use it to build and push images as part of CI/CD pipelines orchestrated with Kestra, especially when combined with the [GitHub Webhook](https://levelup.gitconnected.com/when-github-actions-get-painful-to-troubleshoot-try-this-instead-9a134c9e9baf) used as a trigger.
 
-Search for [blueprints](../docs/04.user-interface-guide/blueprints.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries. Below is one of such examples, which builds and pushes a Docker image to **GitHub Container Registry**. The `dockerfile` parameter is a multiline string with the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
+Search for [blueprints](../../docs/04.user-interface-guide/blueprints.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries. Below is one of such examples, which builds and pushes a Docker image to **GitHub Container Registry**. The `dockerfile` parameter is a multiline string with the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
 
 ```yaml
 id: build_github_container_image
@@ -218,7 +218,7 @@ tasks:
 
 SurrealDB is a cloud-native database for modern web, mobile, and serverless applications. It supports multiple querying languages, including SQL, GraphQL, ACID transactions, WebSocket connections, structured and unstructured data, and full-text indexing.
 
-The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you to run [SurrealQL](https://surrealdb.com/docs/surrealql) `queries` and react to events from your application via the SurrealDB `trigger` — type **SurrealDB** in the [blueprints](../docs/04.user-interface-guide/blueprints.md) search bar to see examples of how to use this plugin.
+The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you to run [SurrealQL](https://surrealdb.com/docs/surrealql) `queries` and react to events from your application via the SurrealDB `trigger` — type **SurrealDB** in the [blueprints](../../docs/04.user-interface-guide/blueprints.md) search bar to see examples of how to use this plugin.
 
 ---
 
@@ -281,11 +281,11 @@ Apart from new features and integrations, we've also made several improvements t
 
 This release also adds several new features to the Enterprise Edition, including:
 
-🔹 [Azure Key Vault](../docs/configuration/index.md#azure-key-vault) allows you to store your Kestra secrets in Azure Key Vault.
+🔹 [Azure Key Vault](../../docs/configuration/index.md#azure-key-vault) allows you to store your Kestra secrets in Azure Key Vault.
 
-🔹 [AWS Secrets Manager](../docs/configuration/index.md#aws-secret-manager) allows you to store your Kestra  secrets in AWS Secrets Manager.
+🔹 [AWS Secrets Manager](../../docs/configuration/index.md#aws-secret-manager) allows you to store your Kestra  secrets in AWS Secrets Manager.
 
-🔹 [Google Secrets Manager](../docs/configuration/index.md#google-secret-manager) allows you to store your Kestra secrets in Google Secrets Manager.
+🔹 [Google Secrets Manager](../../docs/configuration/index.md#google-secret-manager) allows you to store your Kestra secrets in Google Secrets Manager.
 
 Apart from those changes, the [task runs page](https://github.com/kestra-io/kestra-ee/issues/407) now also displays execution labels and attempt numbers.
 
@@ -308,6 +308,6 @@ When it comes to infrastructure, this release adds the following enhancements:
 
 This post covered new features and enhancements added in Kestra 0.12.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

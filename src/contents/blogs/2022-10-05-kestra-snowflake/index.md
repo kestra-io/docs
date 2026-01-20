@@ -141,6 +141,6 @@ Kestra provides flexibility and control to data teams, it can orchestrate any ki
 
 Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](./2022-04-27-etl-vs-elt). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

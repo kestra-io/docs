@@ -38,11 +38,11 @@ As part of our partnership, we've recently launched the Dremio and Arrow Flight 
 
 Kestra and Dremio can help data practitioners to be more productive by simplifying data access, automating data workflows, and improving data quality.
 
-If you want to learn more about Kestra and Dremio capabilities, you can read this article about [Data lakehouse orchestration](https://kestra.io/blogs/2023-12-07-dremio-kestra-integration) with Kestra, Dremio, dbt and Python.
+If you want to learn more about Kestra and Dremio capabilities, you can read this article about [Data lakehouse orchestration](../2023-12-07-dremio-kestra-integration/index.md) with Kestra, Dremio, dbt and Python.
 
 You can also kickstart your Kestra & Dremio journey with our [Community Blueprints](/blueprints?page=1&size=24&q=dremio).
 
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

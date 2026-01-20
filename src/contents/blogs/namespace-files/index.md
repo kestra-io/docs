@@ -73,11 +73,11 @@ By following this pattern, teams avoid the chaos that often comes with scaling, 
 
  Namespace Files make it easy to scale orchestration without chaos. Reuse scripts, enforce standards, and give teams the flexibility they need—all from a single, organized structure.
 
-- 👉 Explore the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files)
+- 👉 Explore the [Namespace Files documentation](../../docs/06.concepts/02.namespace-files/index.md)
 - 📺 Watch our [walkthrough on YouTube](https://youtu.be/BeQNI2XRddA)
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

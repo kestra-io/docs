@@ -111,16 +111,16 @@ Moreover, Kestra's API-first approach allows seamless integration with external 
 
 Kestra's orchestration solutions align closely with the principles that have guided Terraform's infrastructure management. Both tools are designed with the intent to simplify, modularize, and make the workflow and infrastructure processes scalable and reusable.
 
-[Our partnership with HashiCorp](https://kestra.io/blogs/2023-09-19-kestra-terraform-partnership) emphasizes that alignment. Our official Terraform provider, with over 210,000 downloads, is used successfully across hundreds of organizations.
+[Our partnership with HashiCorp](../2023-09-19-kestra-terraform-partnership/index.md) emphasizes that alignment. Our official Terraform provider, with over 210,000 downloads, is used successfully across hundreds of organizations.
 
 Kestra Terraform provider allows you to manage all Kestra resources as code, just like you manage infrastructure. This "everything as code" approach not only streamlines workflow creation and deployment but also leverages Terraform's strengths in version control, collaboration, and auditing for your orchestration needs.
 
-By combining these tools, you create a system managed entirely via code that's not only highly efficient but also scalable so that you can benefit from the modern infrastructure. Check our [documentation](https://kestra.io/docs/developer-guide/cicd/terraform) to learn how to manage all Kestra resources with Terraform.
+By combining these tools, you create a system managed entirely via code that's not only highly efficient but also scalable so that you can benefit from the modern infrastructure. Check our [documentation](../../docs/version-control-cicd/cicd/03.terraform/index.md) to learn how to manage all Kestra resources with Terraform.
 
 Additionally, our recently launched [Terraform plugin](/plugins/plugin-terraform) allows you to orchestrate Infrastructure as Code by executing Terraform CLI commands directly from Kestra. Yes, you read that right — you can manage Kestra with Terraform, and you can also orchestrate Terraform with Kestra.
 
->To see how Kestra and Terraform can work together for your orchestration needs, check our [Terraform Provider page](https://kestra.io/use-cases/terraform-provider).
+>To see how Kestra and Terraform can work together for your orchestration needs, check our [Terraform Provider page](/use-cases/terraform-provider).
 
 
 ---
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

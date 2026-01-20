@@ -61,11 +61,11 @@ We added an [If](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If.html) t
 
 We worked a lot on our flow developer documentation lately to facilitate discovering all the wonderful things you can do with Kestra.
 
-We wrote a new page about [data storage and processing](https://kestra.io/docs/developer-guide/storage/), we strongly advise everyone to read it as you can discover some previously hidden Kestra functionalities.
+We wrote a new page about [data storage and processing](../../docs/08.architecture/data-components/index.md), we strongly advise everyone to read it as you can discover some previously hidden Kestra functionalities.
 
-We wrote a new page about flow [tasks](https://kestra.io/docs/developer-guide/tasks/).
+We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.tasks/index.mdx/).
 
-We created a [tutorial](https://kestra.io/docs/tutorial/) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
+We created a [tutorial](../../docs/03.tutorial/index.mdx) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
 
 And we also improved the quality of the [plugin documentation](/plugins/), we hope to find some time to improve it more in the upcoming weeks as we know that plugin documentation is sometimes sparse.
 
@@ -76,7 +76,7 @@ Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless]
 
 ## Enterprise Edition
 
-We made changes to the way triggers of type [Flow](https://kestra.io/docs/developer-guide/triggers/flow.html) are processed when using the Kafka runner which should improve greatly the overall performance on the Kafka side when a lot of those triggers are used.
+We made changes to the way triggers of type [Flow](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) are processed when using the Kafka runner which should improve greatly the overall performance on the Kafka side when a lot of those triggers are used.
 
 
 ## Some other goodies
@@ -84,7 +84,7 @@ We made changes to the way triggers of type [Flow](https://kestra.io/docs/develo
 The [Pause](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause.html) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
 Flow executions have a new variable `originalId`, this identifier will not change between replays so can be used to uniquely identify a flow execution.
 Flows can now be executed at a revision, this allows the execution of an old version of a flow.
-If you use [helper functions](https://kestra.io/docs/developer-guide/cicd/helpers/) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.
+If you use [helper functions](../../docs/version-control-cicd/cicd/04.helpers/index.md) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.
 We also made a lot of small enhancements, fixes, and updates. See the [list of all the changes since 0.7.0](https://github.com/kestra-io/kestra/compare/v0.7.0...0.8.0).
 
 We wanted to thank all the contributors who helped us make this release.
@@ -94,4 +94,4 @@ We wanted to thank all the contributors who helped us make this release.
 
 We will continue to work on our low-code editor, please test it and provide feedback! We also plan to add some metrics dashboard on the flow page later, if this is of interest to you don’t hesitate to get in touch with us on this subject. And of course, we will add new tasks to integrate Kestra with more and more systems easily.
 
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://kestra.io/slack) if you have any questions or want to share feedback. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
+Be sure to follow us on [Twitter](https://x.com/kestra_io) for the latest news. Please reach out to us on [Slack](/slack) if you have any questions or want to share feedback. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).

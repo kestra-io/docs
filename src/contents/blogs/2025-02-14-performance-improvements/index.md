@@ -28,7 +28,7 @@ We shared our findings with the jOOQ team, and they have [implemented a fix](htt
 
 ## JDBC backend performance improvement
 
-All JDBC backends (H2, MySQL, PostgreSQL, SQLServer) received performance boosts for queued executions (see [flow concurrency limit](/docs/workflow-components/concurrency)). The improvement came from [adding a missing index](https://github.com/kestra-io/kestra/pull/6050) on queries to the `queues` table.
+All JDBC backends (H2, MySQL, PostgreSQL, SQLServer) received performance boosts for queued executions (see [flow concurrency limit](../../docs/05.workflow-components/14.concurrency/index.md)). The improvement came from [adding a missing index](https://github.com/kestra-io/kestra/pull/6050) on queries to the `queues` table.
 
 ## Worker default number of threads
 
@@ -56,4 +56,4 @@ Benchmarks showed this could consume up to 15% of the Worker’s CPU cycles. By 
 
 ## Conclusion
 
-These highlights represent some of the most significant recent performance enhancements in Kestra. Ongoing updates continue to prioritize performance at every opportunity, keeping Kestra among the most scalable and high-performing orchestration platforms [on the market](https://kestra.io/docs/why-kestra).
+These highlights represent some of the most significant recent performance enhancements in Kestra. Ongoing updates continue to prioritize performance at every opportunity, keeping Kestra among the most scalable and high-performing orchestration platforms [on the market](../../docs/why-kestra/index.md).

@@ -98,8 +98,8 @@ If you're exploring orchestration solutions for AI, data workflows, or API tooli
 Gravitee's integration of Kestra is live, real-world, and developer-friendly. Check out [Gravitee.io](https://www.gravitee.io/) to see how they're rethinking API management with automation and AI at the core.
 
 :::alert{type="info"}
-Have a similar challenge? Reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+Have a similar challenge? Reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::
 

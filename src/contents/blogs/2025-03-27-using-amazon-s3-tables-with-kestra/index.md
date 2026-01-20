@@ -303,6 +303,6 @@ Thus, we have successfully leverage S3 table bucket to create an Iceberg table.
 
 Kestra workflows can be used to work with the S3 table buckets and create Iceberg tables. This enables us to introduce orchestration related to S3 tables with Kestra, bringing in all the good features that S3 tables have to offer.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).

@@ -35,7 +35,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ### Log Shipper
 
-The new [Log Shipper feature](../docs/06.enterprise/02.governance/logshipper/index.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
+The new [Log Shipper feature](../../docs/07.enterprise/02.governance/logshipper/index.md) streamlines how you manage and distribute logs across your entire infrastructure. This synchronization automatically batches logs into optimized chunks and manages offset keys. It provides reliable, consistent log delivery without overloading your systems or losing critical data.
 
 Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
@@ -105,7 +105,7 @@ Kestra's interface has always bridged the gap between code and no-code. In this 
 
 ### Custom Dashboards
 
-Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to [create custom dashboards](../docs/08.ui/00.dashboard.md), so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
+Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to [create custom dashboards](../../docs/09.ui/00.dashboard/index.md), so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -421,12 +421,12 @@ tasks:
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues).
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](../../docs/04.contribute-to-kestra/index.mdx) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues).
 
 ## Next Steps
 
 This post covered new features and enhancements added in Kestra 0.21.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

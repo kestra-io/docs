@@ -143,7 +143,7 @@ With Malloy for high dimension modelling and Kestra for declarative orchestratio
 Indeed, a data stack with a proper user experience.
 
 
-Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
 

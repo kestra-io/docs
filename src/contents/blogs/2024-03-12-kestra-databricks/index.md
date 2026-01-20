@@ -23,13 +23,13 @@ Databricks also offers advanced analytics and machine learning features, helping
 
 Data warehouse workloads are typically part of a larger technological stack. To streamline operations, orchestration, and scheduling of data pipelines are crucial. This is where Kestra comes into play.
 
-Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](https://kestra.io/docstutorialflowable) sequentially or in parallel.
+Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](../../docs/03.tutorial/index.mdx) sequentially or in parallel.
 
 Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving data teams complete control over their orchestration. Databricks already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to create or delete Databricks compute clusters, upload or download files from Databricks File System (DBFS), and query data by integrating with Databricks's storage and compute resources. Not only this, Kestra also supports interacting with Databricks jobs.
 
 ### Kestra's Plugin System ###
 
-Besides the [Databricks plugin](/plugins/plugin-databricks), Kestra offers numerous other plugin integrations which you can check on the Kestra’s [plugins page](https://kestra.io/plugins). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Databricks.
+Besides the [Databricks plugin](/plugins/plugin-databricks), Kestra offers numerous other plugin integrations which you can check on the Kestra’s [plugins page](/plugins). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Databricks.
 
 Kestra's Databricks plugin provides an efficient solution for creating intricate data pipelines. You can perform the create and delete cluster tasks, DBFS download and upload file tasks, query tasks, and create and submit job tasks. Let's dive into the key functionalities provided by the plugin.
 
@@ -156,6 +156,6 @@ This example demonstrated how Kestra provides flexibility and control to data te
 
 Kestra's Databricks plugin makes data warehousing simple even for non-developers thanks to the simple declarative definition. Your Databricks pipeline can accommodate raw data from multiple sources and transform it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the ELT pipeline. Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

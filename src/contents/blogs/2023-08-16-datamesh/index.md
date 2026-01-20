@@ -24,7 +24,7 @@ Leroy Merlin France has experienced a 900% increase in data production over the 
 ## Selecting the Right Data Orchestration Solution ##
 
 ### Why Apache Airflow failed in their organization
-Leroy Merlin France considered a managed Apache [Airflow](https://kestra.io/vs/airflow) service through Cloud Composer as its primary data orchestration solution due to the popularity of this open-source project. However, upon applying Airflow to a pilot project, they encountered several major issues unacceptable for such an organization:
+Leroy Merlin France considered a managed Apache [Airflow](/vs/airflow) service through Cloud Composer as its primary data orchestration solution due to the popularity of this open-source project. However, upon applying Airflow to a pilot project, they encountered several major issues unacceptable for such an organization:
 
 1. **Complexity in Simple Tasks**: The creation of workflows, previously straightforward, turned into a time-consuming task. Designing and maintaining DAGs amplified the complexity, causing processing delays and even generating bottlenecks instead of eliminating them.
 
@@ -163,6 +163,6 @@ Kestra effectively addressed Leroy Merlin France's initial needs and exceeded ex
 
 By implementing a data mesh, Kestra has empowered teams throughout the organization to independently manage and produce their own data pipelines. This not only promotes efficiency and reduces bottlenecks but also encourages ownership. Over a span of 18 months, the cumulative user base expanded by more than **900%**, totaling over **500 users**. These users transitioned from legacy tools, which supported only a limited set of executions and faltered at scale, to executing millions of tasks per month with Kestra, thereby generating significant value for their business.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).

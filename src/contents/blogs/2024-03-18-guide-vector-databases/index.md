@@ -376,10 +376,10 @@ This article has covered a lot of ground in a short time…
 
 Kestra is awesome at creating and managing ML/AI/NLP workflows that rely on vectors and VDBs that handle unstructured text, images, audio, and video. You can manage the integration of vector databases within your workflows, ensuring efficiency and scalability. Discover how to leverage Kestra for orchestrating your vector database by exploring our comprehensive guides and resources:
 
-To go deeper into the integrations of Kestra with vector databases you can read our guide [How to Work with Vector Databases in Kestra](https://kestra.io/blogs/2023-10-31-kestra-weaviate)
+To go deeper into the integrations of Kestra with vector databases you can read our guide [How to Work with Vector Databases in Kestra](../2023-10-31-kestra-weaviate/index.md)
 
-you can also check our article about [How to Orchestrate your Applications and Microservices built with SurrealDB using Kestra](https://kestra.io/blogs/2023-10-09-kestra-surrealdb).
+you can also check our article about [How to Orchestrate your Applications and Microservices built with SurrealDB using Kestra](../2023-10-09-kestra-surrealdb/index.md).
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

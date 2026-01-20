@@ -52,7 +52,7 @@ In choosing between Kestra, Airbyte, and Fivetran, context is key. Running Airby
 
 For scenarios with a limited number of sources to integrate, Kestra offers a streamlined and potentially more cost-effective solution. Its minimalist approach can be particularly advantageous for those seeking to simplify their stack.
 
-As Kestra comes with many plugins you can already move data from one database to another. From one filesystem to another. You can also listen to queue systems for new messages, listen for [events on file systems such as S3 buckets of FTP servers](https://kestra.io/docs/developer-guide/triggers).
+As Kestra comes with many plugins you can already move data from one database to another. From one filesystem to another. You can also listen to queue systems for new messages, listen for [events on file systems such as S3 buckets of FTP servers](../../docs/05.workflow-components/07.triggers/index.mdx).
 
 Moreover Kestra has a [Singer plugin](/plugins/plugin-singer) allowing to consolidate data integration with the famous systems of taps and targets. This way you can find an in-between between Airbyte and Kestra standalone.
 
@@ -62,10 +62,10 @@ When it comes to data ingestion, there are various approaches available. The cho
 
 Checkout the [Airbyte](/plugins/plugin-airbyte) and [Fivetran](/plugins/plugin-fivetran) Kestra plugins allowing to trigger sync directly from Kestra and create end-to-end pipelines.
 
-If you want to go further with Kestra and data ingestion use cases you can read [“How to create an end-to-end data ingestion, transformation and orchestration pipeline with Airbyte, dbt and Kestra”](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
+If you want to go further with Kestra and data ingestion use cases you can read [“How to create an end-to-end data ingestion, transformation and orchestration pipeline with Airbyte, dbt and Kestra”](../2023-06-26-end-to-end-data-orchestration/index.md).
 
 You can also kickstart you Airbyte & Kestra Journey with our Community Blueprints
 
-For any inquiries, feel free to contact us through [Kestra Community Slack](https://kestra.io/slack) or by [opening a GitHub issue](https://github.com/kestra-io/kestra).
+For any inquiries, feel free to contact us through [Kestra Community Slack](/slack) or by [opening a GitHub issue](https://github.com/kestra-io/kestra).
 
 Enjoying the project? [Give us a GitHub star](https://github.com/kestra-io/kestra) and become a valued member of our open-source community.

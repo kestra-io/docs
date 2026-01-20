@@ -25,7 +25,7 @@ As the demand for Kestra continues to grow, we recognize the need for hands-on a
 
 ---
 
-We invite technology and consulting companies to join our Partner Program to solve orchestration challenges together. Collaborating with technology partners allows us to integrate cutting-edge solutions seamlessly. Through this synergy, we strive to provide our customers with an unparalleled data journey and we couldn't be more honored to have [Airbyte](https://kestra.io/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership) paving the way as our pioneering technology partner!
+We invite technology and consulting companies to join our Partner Program to solve orchestration challenges together. Collaborating with technology partners allows us to integrate cutting-edge solutions seamlessly. Through this synergy, we strive to provide our customers with an unparalleled data journey and we couldn't be more honored to have [Airbyte](../2023-09-05-2023-kestra-airbyte-technology-partnership/index.md) paving the way as our pioneering technology partner!
 
 Our commitment is to develop a significant network of Partners, each bringing a deep understanding of various facets of the ecosystem. We aim to form strong, trust-based relationships that will enhance our collective customer value. Partnering with industry-leading organizations enables us to deliver end-to-end solutions that meet the changing business needs across a large range of industries.
 

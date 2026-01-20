@@ -626,7 +626,7 @@ triggers:
     cron: "@hourly"
 ```
 
-The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](https://kestra.io/docs/developer-guide/secrets) to see how to manage sensitive values in Kestra.
+The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](../../docs/07.enterprise/02.governance/secrets/index.md) to see how to manage sensitive values in Kestra.
 
 Executing this workflow should give you the following output:
 
@@ -729,7 +729,7 @@ See the screenshots below which demonstrate how the flow was triggered for each 
 
 ### Iceberg Blueprints
 
-All Kestra workflows covered in this post are available as [Blueprints](../docs/04.user-interface-guide/blueprints.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../docs/01.getting-started.md) guide, and select the Iceberg tag from the Blueprints section:
+All Kestra workflows covered in this post are available as [Blueprints](../../docs/04.user-interface-guide/blueprints.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../../docs/01.getting-started.md) guide, and select the Iceberg tag from the Blueprints section:
 
 ![iceberg16](./iceberg16.png)
 
@@ -738,4 +738,4 @@ All Kestra workflows covered in this post are available as [Blueprints](../docs/
 
 This tutorial demonstrated how to use Apache Iceberg with Amazon Athena, AWS Glue and Amazon S3, and how to manage a scheduled and event-driven data ingestion process with Kestra.
 
-If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+If you have any questions about what we've covered in this post, reach out via [our community Slack](/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).

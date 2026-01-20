@@ -73,11 +73,11 @@ That being said, Airflow isn't without its flaws. Here are some you might find a
 
 
 ### 2. Kestra
-[Kestra](https://github.com/kestra-io/kestra) is an open-source universal orchestration platform with a declarative interface for workflow definition. It's primarily built for software engineers but it's simple enough to be used by anyone in your organization. For more information about Kestra, check our [Documentation](../docs/index.md).
+[Kestra](https://github.com/kestra-io/kestra) is an open-source universal orchestration platform with a declarative interface for workflow definition. It's primarily built for software engineers but it's simple enough to be used by anyone in your organization. For more information about Kestra, check our [Documentation](../../docs/index.md).
 
 ![Image 2 - Kestra](./2.png)
 
-The open-source version of Kestra is **completely free** and recommended for a single-player experience. If you want to adopt Kestra in your team, we recommend the [Enterprise edition](https://kestra.io/enterprise), which offers Enterprise-grade features such as SSO, RBAC, namespace level secrets and variable management, plugin defaults, worker groups, custom blueprints, high availability with no single point of failure architecture, and so much more.
+The open-source version of Kestra is **completely free** and recommended for a single-player experience. If you want to adopt Kestra in your team, we recommend the [Enterprise edition](/enterprise), which offers Enterprise-grade features such as SSO, RBAC, namespace level secrets and variable management, plugin defaults, worker groups, custom blueprints, high availability with no single point of failure architecture, and so much more.
 
 This is the list of areas in which Kestra easily beats the competition:
 - **Language-agnostic orchestration tool** - Kestra uses YAML for data flow design, which isn't a programming language. This data serialization language is easy to pick up and is much easier to understand for users with no technical background. As an end result, employees from all parts of the organization can take part in the data flow creation process.
@@ -161,6 +161,6 @@ In case you need both open-source and maximum flexibility, look no further than 
 
 Keep in mind that we had a tough time limiting this article to only 5 orchestration tools. There are other great production-ready solutions out there, such as [Dagster](https://dagster.io/) and [Temporal](https://temporal.io/), so make sure to check out these as well.
 
-Also, make sure to **stay tuned** to the [Kestra blog](https://kestra.io/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
+Also, make sure to **stay tuned** to the [Kestra blog](../../../pages/blogs/index.astro) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

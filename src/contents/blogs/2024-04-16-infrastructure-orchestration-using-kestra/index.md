@@ -54,7 +54,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) uses the [Docker Task Runner](../docs/task-runners/04.types/02.docker-task-runner/index.md), and spins up the `cytopia/ansible:latest-tools` docker image. It also uses the `inputFiles` property to share the `inventory.ini` and `myplaybook.yml` files with the container. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) uses the [Docker Task Runner](../../docs/task-runners/04.types/02.docker-task-runner/index.md), and spins up the `cytopia/ansible:latest-tools` docker image. It also uses the `inputFiles` property to share the `inventory.ini` and `myplaybook.yml` files with the container. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 
@@ -100,6 +100,6 @@ This blog demonstrates how Kestra can be used for managing infrastructure orches
 
 ![](/ui.gif)
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

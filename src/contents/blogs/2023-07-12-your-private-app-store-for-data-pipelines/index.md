@@ -62,4 +62,4 @@ Blueprints facilitate fast feedback loops and knowledge sharing. No need to wait
 
 ## Next steps
 
-We’re constantly expanding the collection of Blueprints. We hope you’ll enjoy using Blueprints as much as we enjoy creating them. Which use cases and integrations would you like to see covered next? If you have any suggestions about new Blueprints or improvements to the existing ones, submit a [GitHub issue](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml) or ask us [via Slack](https://kestra.io/slack).
+We’re constantly expanding the collection of Blueprints. We hope you’ll enjoy using Blueprints as much as we enjoy creating them. Which use cases and integrations would you like to see covered next? If you have any suggestions about new Blueprints or improvements to the existing ones, submit a [GitHub issue](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml) or ask us [via Slack](/slack).

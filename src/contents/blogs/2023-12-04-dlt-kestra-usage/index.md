@@ -50,7 +50,7 @@ Wanna jump to the [GitHub repo](https://github.com/dlt-hub/dlt-kestra-demo)?
 
 To lay it all out clearly: Everything's automated in **`Kestra`**, with hassle-free data loading thanks to **`dlt`**, and the analytical thinking handled by OpenAI. Here's a diagram to help you understand the general outline of the entire process.
 
-![overview](/blogs/2023-12-04-dlt-kestra-usage.jpg)
+![overview](./main.jpg)
 
 Now, let's delve into specific parts of the implementation.
 
@@ -67,7 +67,7 @@ The great thing about **`Kestra`** is its ease of use - it's UI-based, declarati
 
 
 :::alert{type="info"}
-If you're already considering ways to use **`Kestra`** for your projects, consult their [documentation](https://kestra.io/docs) and the [plugin](https://kestra.io/plugins) pages for further insights.
+If you're already considering ways to use **`Kestra`** for your projects, consult their [documentation](/docs) and the [plugin](/plugins) pages for further insights.
 :::
 
 ### The data loading part
@@ -103,7 +103,7 @@ In this setup ☝️, **`dlt`** loads all email data into the table “my_inbox�
 ![bigquery_my_inbox](https://storage.googleapis.com/dlt-blog-images/dlt_kestra_bigquery_my_inbox.png)
 
 :::alert{type="info"}
-This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](/blogs/2023-12-04-dlt-kestra-usage/2.png).
+This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](../2023-12-04-dlt-kestra-usage/index.md*).
 :::
 
 ### The AI part
@@ -123,13 +123,13 @@ In my [subflow](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/subflow.yml
 ```
 
 :::alert{type="info"}
-**`Kestra`** also includes Slack, as well as BigQuery plugins, which I used in my flows. Additionally, there is a wide variety of [other plugins](https://kestra.io/plugins) available.
+**`Kestra`** also includes Slack, as well as BigQuery plugins, which I used in my flows. Additionally, there is a wide variety of [other plugins](/plugins) available.
 :::
 
 ### The automation part
 
 >💡 **`Kestra`** triggers are the ideal solution!
-I’ve used a [schedule trigger](https://kestra.io/docs/developer-guide/triggers) that allows you to execute your flow on a regular cadence e.g. using a CRON expression:
+I’ve used a [schedule trigger](../../docs/05.workflow-components/07.triggers/index.mdx) that allows you to execute your flow on a regular cadence e.g. using a CRON expression:
 
 ```yaml
 triggers:
@@ -164,6 +164,6 @@ In essence, using **`Kestra`** and **`dlt`** offers a trio of advantages for ref
 
 Basically, you can apply the architecture discussed in this post whenever you need to automate a business process!
 
-For detailed examples of how **`Kestra`** can be utilized in various business environments, you can explore [Kestra's use cases](https://kestra.io/use-cases).
+For detailed examples of how **`Kestra`** can be utilized in various business environments, you can explore [Kestra's use cases](/use-cases).
 
 Embrace automation, where the only limit is your imagination! 😛

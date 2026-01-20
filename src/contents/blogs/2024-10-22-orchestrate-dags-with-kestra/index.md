@@ -97,6 +97,6 @@ So why not give it a try? Use Kestra to orchestrate Airflow alongside your other
 Need to talk about migration just [reach out to us](/demo) we would be happy to discuss this with you!
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

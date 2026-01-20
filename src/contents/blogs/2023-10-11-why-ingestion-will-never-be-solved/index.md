@@ -11,7 +11,7 @@ image: ./main.png
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the most mundane and time-consuming tasks of any platform team.
 
-This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant [blueprint](../docs/04.user-interface-guide/blueprints.md) examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra) — an event-driven open-source orchestrator. First, let's start by defining the problem.
+This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant [blueprint](../../docs/04.user-interface-guide/blueprints.md) examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra) — an event-driven open-source orchestrator. First, let's start by defining the problem.
 
 ---
 
@@ -123,7 +123,7 @@ To see how you can orchestrate Airbyte connectors with [kestra](https://github.c
 :::
 
 <video autoplay muted loop>
-  <source src="/blogs/2023-10-11-why-ingestion-will-never-be-solved/airbyte_kestra.mp4" type="video/mp4">
+  <source src="./airbyte_kestra.mp4" type="video/mp4">
 </video>
 
 
@@ -158,4 +158,4 @@ To see end-to-end examples of orchestrating dlt data ingestion with Kestra, chec
 
 As discussed before, data ingestion is a challenging and multifaceted problem. Even though the existing and emerging tools can save a lot of time, none of them alone will solve the problem at its core as it's driven by competing commercial interests between SaaS vendors and system integrators. SaaS vendors who publish their APIs are [not incentivized](https://matt-rickard.com/the-m-n-api-problem) to make this process easy for system integrators, as they would rather offer their own services to extract, analyze or integrate data for their customers. And when there's a need to introduce a breaking change to some APIs to gain a competitive edge, they'll likely do it without asking data integration vendors for permission.
 
-It's possible that emerging AI-powered integration tools will provide a more scalable solution in the near future, at least for building the connectors. Until then, we shouldn't complain either. Integrating data and systems is not as difficult as it once was. We have more options than ever for nearly every use case and target audience. Kestra [partners with many of the tools](https://kestra.io/partners) mentioned in this post to streamline the orchestration of data ingestion pipelines for our users. It's encouraging to see how open-source communities continue to work together to solve that problem to the greatest extent possible by contributing and helping each other out. You, too, can join our [community](https://kestra.io/slack) and star us on [GitHub](https://github.com/kestra-io/kestra) to support the project.
+It's possible that emerging AI-powered integration tools will provide a more scalable solution in the near future, at least for building the connectors. Until then, we shouldn't complain either. Integrating data and systems is not as difficult as it once was. We have more options than ever for nearly every use case and target audience. Kestra [partners with many of the tools](/partners) mentioned in this post to streamline the orchestration of data ingestion pipelines for our users. It's encouraging to see how open-source communities continue to work together to solve that problem to the greatest extent possible by contributing and helping each other out. You, too, can join our [community](/slack) and star us on [GitHub](https://github.com/kestra-io/kestra) to support the project.

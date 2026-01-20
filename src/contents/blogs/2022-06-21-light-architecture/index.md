@@ -20,7 +20,7 @@ We have interview many people on our slack community, twitter, ... also that **c
 
 For now, we continue to think a high-availability solution is a **must-have**, a solution that can ensure you that if your needs increase, you will have a solution to scale without having to do without the features. So we decide to create a new version of Kestra (in Beta for now) that will work for a Medium-sized environment.
 
-![Kestra Architecture](./architecture-sql.svg)
+![Kestra Architecture](./architecture-sql.png)
 
 
 The solution is to **remove the dependencies of Kafka & ElasticSearch** and to allow to replace them with a **simple MySQL of Postgres** database for the both of them.
@@ -69,4 +69,4 @@ For this implementation, just note that you will need to have a docker daemon ru
 
 This feature needs a [large refactoring of Kestra](https://github.com/kestra-io/kestra/pull/368) to remove some assumptions (for example, we used Lucene query of ElasticSearch on the whole UI). So we have released a new **BETA** version `0.5.0-BETA` to gather the much feedback as possible and to be sure to avoid bugs introduce by this major version. Please go ahead, test it and send as much feedback as possible.
 
-We hope that will enjoy this new feature and that you will imagine more use cases with Kestra, stay connected and follow us on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io), or [Slack](https://kestra.io/slack).
+We hope that will enjoy this new feature and that you will imagine more use cases with Kestra, stay connected and follow us on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://x.com/kestra_io), or [Slack](/slack).

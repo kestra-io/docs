@@ -19,13 +19,13 @@ While Kestra provides all the features that any orchestration tool in the market
 
 Multiple orchestration tasks generate data, either by fetching it from external systems, or by performing actions on top of the existing data. These resultant data sets are stored internally by the orchestration engines. As part of the orchestration steps, these data sets are uploaded to file systems like S3 and Blob Storage, and used for further processing. But many times, you want to check the contents of the data sets being produced to ensure you are getting the desired results. The only choice you are left with is to download the data from the tool's internal storage onto your local machine. Soon, your local machine is cluttered with these regularly downloaded files.
 
-Kestra provides an extremely smart and easy to use feature of previewing these data sets. You can go to the Outputs tab, and the data sets that are downloaded to internal storage are available with Download and Preview option. The [Preview option](https://kestra.io/docs/workflow-components/outputs#outputs-preview) is one of my favorites giving me quick access to look at the output file contents. This is how the Preview of the data set looks like:
+Kestra provides an extremely smart and easy to use feature of previewing these data sets. You can go to the Outputs tab, and the data sets that are downloaded to internal storage are available with Download and Preview option. The [Preview option](../../docs/05.workflow-components/06.outputs/index.md#outputs-preview) is one of my favorites giving me quick access to look at the output file contents. This is how the Preview of the data set looks like:
 
 ![output_preview](./output_preview.png)
 
 ## 9. Editor
 
-Kestra comes with an embedded [Code editor](https://kestra.io/docs/getting-started/ui#editor). For any coding that you need to do, you need not go anywhere outside this tool. You have the well-equipped Code editor right there within Kestra itself. It also comes with the Kestra extension installed out of the box, and is flexible to also install any other extensions of your choice. This comes in very handy when you want to write scripts to be used within your orchestration flow.
+Kestra comes with an embedded [Code editor](../../docs/09.ui/01.flows/index.md#edit). For any coding that you need to do, you need not go anywhere outside this tool. You have the well-equipped Code editor right there within Kestra itself. It also comes with the Kestra extension installed out of the box, and is flexible to also install any other extensions of your choice. This comes in very handy when you want to write scripts to be used within your orchestration flow.
 
 ![vscode_editor](./vscode_editor.png)
 
@@ -66,7 +66,7 @@ You can read more about it on this [page](/plugins/core/triggers/io.kestra.plugi
 
 ## 6. Backfill
 
-[Backfill](https://kestra.io/docs/concepts/backfill) is one of the dreadful words in the orchestration world. While it is one of the necessary features, it is also one of the difficult tasks to achieve. Many tools are not able to abstract this underlying complexity and make it tedious for the data engineer to trigger a backfill. Data Engineers are confused by the number of parameters they need to fill in and get them right to achieve the desired results from a backfill.
+[Backfill](../../docs/06.concepts/08.backfill/index.md) is one of the dreadful words in the orchestration world. While it is one of the necessary features, it is also one of the difficult tasks to achieve. Many tools are not able to abstract this underlying complexity and make it tedious for the data engineer to trigger a backfill. Data Engineers are confused by the number of parameters they need to fill in and get them right to achieve the desired results from a backfill.
 
 Kestra has done an amazing job of achieving this with the click of a button. If you trigger this from the UI, the "backfill execution" is placed where Kestra is already aware of the context of the backfill and requires as minimum information as the time for which backfill needs to be performed. With Kestra, no data engineer will ever panic about backfilling.
 
@@ -82,7 +82,7 @@ Every flow and namespace (EE-specific feature) are also provided with dashboards
 
 ## 4. Inputs
 
-Kestra flows can be configured to accept different types of [inputs](https://kestra.io/docs/workflow-components/inputs) like string, integer, float, date, datetime, and many more. My favorite one is the FILE input type.
+Kestra flows can be configured to accept different types of [inputs](../../docs/05.workflow-components/05.inputs/index.md) like string, integer, float, date, datetime, and many more. My favorite one is the FILE input type.
 
 For many orchestration tools, it is a tedious task to provide file input, as the file either needs to be checked in to the code or uploaded to an apporopriate loaction in the file system. With Kestra's file input, you can literally choose file from any location of your machine, and provide it as an input. This makes it a piece of cake to try out the workflows with different test files. It could not be any simpler to make changes to the file and iterate the testing process.
 
@@ -92,7 +92,7 @@ For many orchestration tools, it is a tedious task to provide file input, as the
 
 It is paramount to prioritize the protection of sensitive information. It is a necessity that no sensitive information gets checked-in in its plain or easily-decodeable format. At the same time, it should also be easy to introduce this information in the platform for developer productivity.
 
-Kestra just has the right solution in place. The [secrets](https://kestra.io/docs/concepts/secret) can be provided as environment variables in base64 encoded format while operating Kestra in the dockerized mode. The secrets can also be provided from the UI directly in its EE edition. Using secret in Kestra is pretty starightforward as well. You can use the format `{{ secret('MY_PASSWORD') }}` and access a secret stored under `SECRET_MY_PASSWORD` environment variable. Overall, its mesmerizing to see how easy it is to introduce and use secrets in Kestra.
+Kestra just has the right solution in place. The [secrets](../../docs/06.concepts/04.secret/index.md) can be provided as environment variables in base64 encoded format while operating Kestra in the dockerized mode. The secrets can also be provided from the UI directly in its EE edition. Using secret in Kestra is pretty starightforward as well. You can use the format `{{ secret('MY_PASSWORD') }}` and access a secret stored under `SECRET_MY_PASSWORD` environment variable. Overall, its mesmerizing to see how easy it is to introduce and use secrets in Kestra.
 
 Here is an image of adding secret via the UI in EE edition:
 
@@ -102,7 +102,7 @@ Here is an image of adding secret via the UI in EE edition:
 
 This is yet another powerful feature from the developer productivity perspective. Generally, you develop a pipeline related to some technology, and it is extremely likely that you use multiple tasks that correspond to the same technology. For example, in a flow that queries Redshift, it is very likely that you connect to Redshift to create the table in one task and then insert data into it in another task, and then query it for some purpose. In this case, you would just end up duplicating the Redshift connection information in all these tasks. This hampers the developer's productivity and leads to configuration duplication.
 
-In order to avoid this duplication, Kestra provides [plugin defaults](https://kestra.io/docs/workflow-components/task-defaults). Mention the plugin defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
+In order to avoid this duplication, Kestra provides [plugin defaults](../../docs/05.workflow-components/09.plugin-defaults/index.md). Mention the plugin defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
 
 You can even set the plugin defaults globally or on a namespace level to ensure that all flows using, e.g., the AWS plugin leverage the same credentials.
 
@@ -150,6 +150,6 @@ During the pipeline development phase, you get multiple intermediate data sets t
 
 With all these cool features, it is no wonder that Kestra is the new future of the orchestration industry. I would definitely recommend this tool, and would encourage you to make your hands dirty trying out this tool and its awesome features.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

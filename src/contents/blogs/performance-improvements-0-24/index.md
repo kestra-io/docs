@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-In 0.23, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.23](https://kestra.io/blogs/performance-improvements-0.23.md).
+In 0.23, the engineering team focused on performance in multiple areas. You can find the details in this blog post: [Optimizing Performance in Kestra in Version 0.23](../performance-improvements-0-23/index.md).
 
 Today, we delivers even more substantial speed, efficiency, and system responsiveness enhancements.
 
@@ -60,7 +60,7 @@ We delivers major performance and scalability improvements, largely thanks to th
 Stay tuned—there’s more to come as the focus on performance, resiliency, and scalability continues.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

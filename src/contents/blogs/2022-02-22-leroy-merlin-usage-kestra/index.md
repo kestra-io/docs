@@ -39,7 +39,7 @@ They decided to create an entirely new team with that goal in mind, and took an 
 
 Adeo has a strong partnership with Google, and since Leroy Merlin is a subsidiary, the storage choice was Google BigQuery. Second decision: everything needed to be hosted on GitHub and to have a strong CI/CD process in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
 
-Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service). For the orchestration, a lot of people were using [Airflow](https://kestra.io/vs/airflow), so why not use such a popular system? What’s more, GCP even had a fully managed orchestration service: Cloud composer.
+Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service). For the orchestration, a lot of people were using [Airflow](/vs/airflow), so why not use such a popular system? What’s more, GCP even had a fully managed orchestration service: Cloud composer.
 
 ## On the Cloud After Few Months
 Leroy Merlin decided to start each of these new projects on the cloud directly before beginning the migration of existing projects. The first projects were coming along, the build was done, and more projects were in production — now they could start the process of concluding past projects.
@@ -91,7 +91,7 @@ They also moved with great speed to develop a Kestra plugin to help simplify the
 - applied some qualities with rejection of records based on business rules (upper/lower bound, validate key with referential, deduplication, etc.)
 - loaded the data in ODS (Operational Data Store) — meaning the image of the data from the incoming system
 
-The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](/docs/workflow-components/inputs#set-inputs-when-executing-the-flow-using-the-api) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
+The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../../docs/05.workflow-components/05.inputs/index.md#set-inputs-when-executing-the-flow-using-the-api) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
 
 This single task handled all the complexities of loading data — it would create ten to twenty tasks:
 ```yaml
@@ -136,7 +136,7 @@ At Leroy Merlin, there are over eighty data engineers and data scientists. They 
 
 Also, as there was a rich UI, the deployment process was really easy at the beginning — just save on the UI, and you’re good to go!
 
-Subsequently, Leroy Merlin started using Terraform in order to deploy every cloud resource; they also deploy Kestra resources using [terraform providers](../docs/11.terraform/index.md). They were able to reach a full DataOps lifecycle, all deployment is atomic with a git push and a strong CI/CD applying resources from terraform.
+Subsequently, Leroy Merlin started using Terraform in order to deploy every cloud resource; they also deploy Kestra resources using [terraform providers](../../docs/13.terraform/index.mdx). They were able to reach a full DataOps lifecycle, all deployment is atomic with a git push and a strong CI/CD applying resources from terraform.
 
 :::alert{type="success"}
 **Reach a fast time to market**

@@ -16,7 +16,7 @@ OpenTelemetry has become the standard for collecting and analyzing telemetry dat
 
 Kestra supports OpenTelemetry out of the box. You can export traces for every execution, task run, and API call, giving you full visibility into what your flows are doing.
 
-In this post, we’ll focus on tracing — how to enable it, how it works in Kestra, and how to use tools like Jaeger to analyze flow executions. If you're looking for metrics or logs, check out [OpenTelemetry](/docs/09.administrator-guide/open-telemetry) guide.
+In this post, we’ll focus on tracing — how to enable it, how it works in Kestra, and how to use tools like Jaeger to analyze flow executions. If you're looking for metrics or logs, check out [OpenTelemetry](../../docs/10.administrator-guide/open-telemetry/index.md) guide.
 
 :::alert{type="info"}
  you’ll need:
@@ -160,7 +160,7 @@ Finally, you can see a trace inside the **downstream** external service for the 
 With OpenTelemetry traces, Kestra provides a powerful way to monitor, debug, and optimize flow executions. Traces help visualize execution timelines, correlate parent-child workflows, and track external interactions. By integrating OpenTelemetry into Kestra, teams gain deep insights into execution patterns, allowing them to improve performance, troubleshoot issues efficiently, and ensure reliable data processing workflows.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

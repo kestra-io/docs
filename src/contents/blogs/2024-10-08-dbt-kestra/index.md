@@ -10,7 +10,7 @@ author:
 image: ./main.jpg
 ---
 
-When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to manage dbt projects in the best way possible, from syncing code with Git, scaling your dbt workflows on-demand with [Task Runners](https://kestra.io/docs/task-runners) to flexible code management using [Namespace Files](https://kestra.io/docs/concepts/namespace-files). Here’s how Kestra can simplify your dbt workflows and make data transformation more scalable.
+When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to manage dbt projects in the best way possible, from syncing code with Git, scaling your dbt workflows on-demand with [Task Runners](../../docs/task-runners/index.mdx) to flexible code management using [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md). Here’s how Kestra can simplify your dbt workflows and make data transformation more scalable.
 
 ### Sync dbt Projects from Git and Edit Directly in Kestra
 
@@ -140,6 +140,6 @@ With Kestra, you get a complete platform for orchestrating and scaling dbt workf
 Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our [dbt plugin documentation](/plugins/plugin-dbt) for more details.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

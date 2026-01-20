@@ -147,7 +147,7 @@ triggers:
 ```
 
 :::alert{type="info"}
-The examples above show how Kestra allows you to keep the entire scheduling logic in code. For more examples of how Kestra brings Infrastructure as Code best practices to all workflows, check the [CI/CD guide](https://kestra.io/docs/developer-guide/cicd). See it in action by following the [getting started guide](https://kestra.io/docs/getting-started).
+The examples above show how Kestra allows you to keep the entire scheduling logic in code. For more examples of how Kestra brings Infrastructure as Code best practices to all workflows, check the [CI/CD guide](../../docs/version-control-cicd/index.mdx). See it in action by following the [getting started guide](../../docs/01.quickstart/index.md).
 :::
 
 ---
@@ -156,5 +156,5 @@ The examples above show how Kestra allows you to keep the entire scheduling logi
 
 As we've seen, the right tool for your scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe have many useful features, Kestra provides more flexibility and brings Infrastructure as Code best practices to all scheduled and event-driven workflows.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
 

@@ -17,7 +17,7 @@ We're excited to announce the release of Kestra 0.9. This latest update brings a
 In previous versions, [Kestra](https://github.com/kestra-io/kestra) provided metrics for flow execution. However, there was no user-friendly interface to explore and visualize these metrics.
 
 With Kestra 0.9.0, we've introduced a new Metrics tab at the flow-execution level. You can now easily track specific metrics, such as the number of rows processed, fine-grained processing times of specific steps within your task and more.
-There are two types of metrics that you can track: counter and timer. [This documentation page](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics) includes an example showing how you can leverage these two metric types to track how many rows get processed in each partition and how long this process took.
+There are two types of metrics that you can track: counter and timer. [This documentation page](../../docs/plugin-developer-guide/index.mdx/outputs#use-cases-for-metrics) includes an example showing how you can leverage these two metric types to track how many rows get processed in each partition and how long this process took.
 
 
 ![metric dashboard screenshot](./metric_dashboard_screenshot.png)
@@ -35,7 +35,7 @@ This User Experience improvement allows you to save and return to your work at a
 We've focused on enhancing the user experience with the following improvements:
 * **Manage editor window size**: You can now resize the editor to simultaneously display the source and topology or source and documentation using a convenient slider.
 * **Re-execute Flows with last inputs**: You can now easily re-execute a Flow with the previously used inputs, saving you time on re-entering boilerplate configuration.
-* **Input validation**: You can [configure inputs with validation rules](https://kestra.io/docs/developer-guide/inputs#input-validation) that will be enforced at execution time. For example bounding an integer to a certain range of values or add a validation regex on strings.
+* **Input validation**: You can [configure inputs with validation rules](../../docs/05.workflow-components/05.inputs/index.md#input-validation) that will be enforced at execution time. For example bounding an integer to a certain range of values or add a validation regex on strings.
 * **Task-required properties listed first**: In documentation pages, required properties of any task are now prioritized and listed first, making it clearer which properties are required and which are optional.
 * **Additional improvements and fixes**: We've implemented several enhancements and fixes, including improved flow and inputs validation, enhanced page redirects, fixed Gantt display issues, improved error messaging, resolved theme discrepancies, and more. These refinements ensure a smoother user experience and enhance the overall stability of Kestra.
 
@@ -78,7 +78,7 @@ tasks:
 
 We've also improved the documentation and addressed some enterprise-specific needs.
 
-The documentation provides a new [User Interface guide](https://kestra.io/docs/user-interface-guide) to help you navigate and leverage Kestra’s UI.
+The documentation provides a new [User Interface guide](../../docs/09.ui/index.mdx) to help you navigate and leverage Kestra’s UI.
 
 For Kestra Enterprise Edition (EE) users, we've implemented the following enhancements:
 
@@ -95,8 +95,8 @@ To take the new features for a spin, you can start Kestra using Docker Compose.
 
 ![git it a try](./give_it_try.png)
 
-Kestra is continuously improving. While the [Git plugin](/plugins/plugin-git) simplifies working with custom scripts, we are working on further improving the user experience in orchestrating custom business logic built in Python. Follow us on [Twitter](https://twitter.com/kestra_io) or [LinkedIn](https://fr.linkedin.com/company/kestra) to stay up to date with the new releases and updates.
+Kestra is continuously improving. While the [Git plugin](/plugins/plugin-git) simplifies working with custom scripts, we are working on further improving the user experience in orchestrating custom business logic built in Python. Follow us on [Twitter](https://x.com/kestra_io) or [LinkedIn](https://fr.linkedin.com/company/kestra) to stay up to date with the new releases and updates.
 
-Your feedback is invaluable to us. Join [our Slack community](https://kestra.io/slack), and share your thoughts and suggestions. If you encounter any issues, you can also [open a GitHub issue](https://github.com/kestra-io/kestra/issues/new/choose). Your input helps us prioritize future enhancements.
+Your feedback is invaluable to us. Join [our Slack community](/slack), and share your thoughts and suggestions. If you encounter any issues, you can also [open a GitHub issue](https://github.com/kestra-io/kestra/issues/new/choose). Your input helps us prioritize future enhancements.
 
 To see the code and contribute, check our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

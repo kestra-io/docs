@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-In [Kestra 1.0](https://kestra.io/blogs/performance-improvements-1-0), our team delivered major performance boosts, from optimizing MySQL queries to scaling up worker thread counts and fine-tuning Kafka Streams. Those changes yielded up to 99% faster queries and better throughput in production workloads. Version 1.1 continues that momentum with targeted enhancements aimed at enterprise-scale deployments. We focused on two key areas that matter as your Kestra usage grows: smarter MySQL query planning (so dashboards and APIs stay responsive under heavy data) and a faster purge pipeline (so routine maintenance and cleanup won’t slow you down).
+In [Kestra 1.0](../performance-improvements-1-0), our team delivered major performance boosts, from optimizing MySQL queries to scaling up worker thread counts and fine-tuning Kafka Streams. Those changes yielded up to 99% faster queries and better throughput in production workloads. Version 1.1 continues that momentum with targeted enhancements aimed at enterprise-scale deployments. We focused on two key areas that matter as your Kestra usage grows: smarter MySQL query planning (so dashboards and APIs stay responsive under heavy data) and a faster purge pipeline (so routine maintenance and cleanup won’t slow you down/index.md).
 
 ## MySQL query improvements with the help of Xiaomi
 
@@ -65,7 +65,7 @@ Kestra 1.1’s performance improvements reinforce our commitment to **scalabilit
 We’d like to thank the community (shout-out to Xiaomi 🎉) for their contributions and feedback that helped drive these enhancements. As always, performance tuning is an ongoing effort. We have more in store for future releases, and we encourage you to **keep the feedback coming**. If you haven’t upgraded yet, we highly recommend moving to **Kestra 1.1** to take advantage of these gains. Your workflows, and your databases, will thank you!
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

@@ -217,7 +217,7 @@ It's also worth mentioning that DuckDB integrates exceptionally well with Polars
 ![dataframes_polars_duckdb](./dataframes_polars_duckdb.png)
 
 
-**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes, let's cover Modin, Ponder, Fugue, and Daft next.
 
@@ -495,7 +495,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 ## Using SQL and dataframes in your data pipelines
 
-[Kestra](https://kestra.io/docs/getting-started) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
+[Kestra](../../docs/01.quickstart/index.md) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
 
 The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how you can easily orchestrate your SQL and Pandas data transformations.
 
@@ -505,5 +505,5 @@ The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how y
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](https://kestra.io/slack). Make sure to check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](https://kestra.io/slack).
+This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](/slack). Make sure to check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](/slack).
 

@@ -23,7 +23,7 @@ What I would like is to receive, each morning, a joke in my professional email s
 
 We are using [Kestra](https://github.com/kestra-io/kestra) to schedule a workflow that will call the Vertex AI API and then send an email.
 
-If you’re new to Kestra, check the [getting started guide](https://kestra.io/docs/getting-started).
+If you’re new to Kestra, check the [getting started guide](../../docs/01.quickstart/index.md).
 
 Let’s first call the text completion API to ask Bard to tell me a joke, this can be done with the following Kestra workflow. The prompt property is the question we asked Bard.
 
@@ -161,7 +161,7 @@ For more information, you can have a look at the [Google Quickstarts for Generat
 
 Integrating humor with technology, as demonstrated in this guide with Bard's generative AI and Kestra, is an example of the interesting things that can be achieved. This is just a glimpse into the potential applications. Experiment with daily jokes is a fun exploration of what's possible. It's an invitation to think creatively and see how technology can be leveraged for different purposes, including brightening your day.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
 

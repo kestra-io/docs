@@ -92,7 +92,7 @@ Here we can create a Batch task having the logic of analyzing the logs encapsula
         imageName: custom_python
 ```
 
-It's worth mentioning that credentials can be set in plain text, but this is not recommended for security reasons. Kestra offers more secure methods for storing secrets, which you can learn about in the documentation. For further details, please refer to the [Kestra Administrator Guide](https://kestra.io/docs/administrator-guide).
+It's worth mentioning that credentials can be set in plain text, but this is not recommended for security reasons. Kestra offers more secure methods for storing secrets, which you can learn about in the documentation. For further details, please refer to the [Kestra Administrator Guide](../../docs/10.administrator-guide/index.mdx).
 
 ## Orchestrating the Workflow with Kestra
 
@@ -106,12 +106,12 @@ Here are some resources if you want to reproduce such a use case:
 
 * [How to run a Kafka service locally with Docker](https://towardsdatascience.com/kafka-docker-python-408baf0e1088)
 * Create an [Azure account](https://azure.microsoft.com/fr-fr/free/) and look at [Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) and [Batch](https://learn.microsoft.com/en-us/azure/batch/accounts) accounts
-* [Install Kestra](https://kestra.io/docs/getting-started)
+* [Install Kestra](../../docs/01.quickstart/index.md)
 
 ## Conclusion
 
 The combination of Azure Blob Storage, Azure Batch, and Kestra offers a powerful solution for managing, storing, and processing large-scale data workloads. By leveraging these technologies, organizations can efficiently process vast amounts of data and derive valuable insights to drive their business decisions.
 
-[Join the Slack community](https://kestra.io/slack) if you have any questions or need assistance.
+[Join the Slack community](/slack) if you have any questions or need assistance.
 
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
+Be sure to follow us on [Twitter](https://x.com/kestra_io) for the latest news. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).

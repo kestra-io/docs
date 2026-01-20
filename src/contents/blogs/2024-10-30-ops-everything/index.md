@@ -48,13 +48,13 @@ Establishing an effective **Ops-Everything** framework requires a comprehensive 
 
 ![dashoboard](./dashboard.jpg)
 
-At [**Kestra**](https://github.com/kestra-io/kestra), we’re working to build this **unified approach**, creating an orchestration platform that meets operational needs across data and engineering. Our customers [**Gorgias**](https://kestra.io/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra) and [**Leroy Merlin France**](https://kestra.io/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) underscore the transformative potential of unified workflows. Gorgias integrates Kestra with tools like **Airbyte**, **dbt**, and **Hightouch**, optimizing Infrastructure as Code practices, while Leroy Merlin relies on Kestra to support its **data mesh**, giving business units orchestration access without shadow IT.
+At [**Kestra**](https://github.com/kestra-io/kestra), we’re working to build this **unified approach**, creating an orchestration platform that meets operational needs across data and engineering. Our customers [**Gorgias**](/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra) and [**Leroy Merlin France**](/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) underscore the transformative potential of unified workflows. Gorgias integrates Kestra with tools like **Airbyte**, **dbt**, and **Hightouch**, optimizing Infrastructure as Code practices, while Leroy Merlin relies on Kestra to support its **data mesh**, giving business units orchestration access without shadow IT.
 
 Kestra’s approach is adaptable and vendor-neutral, allowing organizations to scale operations on their terms, with open standards and modular integration. Moving from fragmented tools to Kestra empowers teams across domains to follow Ops best practices, delivering cohesive, resilient workflows.
 
-A **unified platform** is the future of Ops — scalable, transparent, and open to collaboration. Consider [**Kestra**](https://kestra.io/) as a step toward flexible orchestration for diverse workflows, designed to ensure teams can work together effectively while building on best practices across domains.
+A **unified platform** is the future of Ops — scalable, transparent, and open to collaboration. Consider [**Kestra**](/) as a step toward flexible orchestration for diverse workflows, designed to ensure teams can work together effectively while building on best practices across domains.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

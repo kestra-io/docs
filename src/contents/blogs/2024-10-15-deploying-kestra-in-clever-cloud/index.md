@@ -57,7 +57,7 @@ Now that we have finished the application setup, we can now configure environmen
 We will add the following environment variables:
 
 - `CC_HEALTH_CHECK_PATH` to the `/ping` URI so Clever Cloud health check uses the lightweight ping endpoint.
-- `KESTRA_CONFIGURATION` to the Kestra [configuration](../docs/configuration/index.md) YAML file.
+- `KESTRA_CONFIGURATION` to the Kestra [configuration](../../docs/configuration/index.md) YAML file.
 
 Here is the configuration file that we will use:
 
@@ -108,7 +108,7 @@ kestra:
 2. The application will be available publicly, so we set a user and password. I strongly recommend you to do the same.
 3. We configure Kestra to use the MinIO storage by using the environment variables injected from the add-on. The MinIO storage works with all S3 compatible storage including Cellar.
 4. We set the URL of Kestra to the URL of the application, by default, this will be `${APP_ID}.cleverapps.io` where `APP_ID` is an environment variable injected by Clever Cloud with the identifier of your application.
-5. As the Docker engine is not accessible from the Kestra container, we configure globally the `Process` [task runner](../docs/task-runners/index.mdx) for all plugins using [Plugins Default](../docs/04.workflow-components/09.plugin-defaults.md).
+5. As the Docker engine is not accessible from the Kestra container, we configure globally the `Process` [task runner](../../docs/task-runners/index.mdx) for all plugins using [Plugins Default](../../docs/04.workflow-components/09.plugin-defaults.md).
 
 ![Step 3 - Docker](./clever-cloud-step-3-docker.png)
 

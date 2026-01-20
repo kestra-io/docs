@@ -40,7 +40,7 @@ This platform allows to generate Kestra flows through a low code interface that 
 
 The more sources and destinations CleverConnect has, the more difficult it gets. Thanks to Kestra, the company has successfully uncoupled the sources and destinations, allowing ease of maintenance and development. The business logic of parsing API and make the codebase flexible has been possible thanks to the following features of Kestra:
 
-* Subflows: CleverConnect has implemented a level of abstraction, which allows them to recycle components across multiple use-cases. The strategic use of [input properties](../docs/developer-guide/inputs) ensures not only the easy transmission of metadata and parameters but also creates a library of highly composable elements.
+* Subflows: CleverConnect has implemented a level of abstraction, which allows them to recycle components across multiple use-cases. The strategic use of [input properties](../../docs/developer-guide/inputs) ensures not only the easy transmission of metadata and parameters but also creates a library of highly composable elements.
 
 * Custom Scripting: they adeptly handle tasks such as API parsing, pagination, and rate limiting by employing custom [Groovy scripts](/plugins/plugin-script-groovy). This flexibility in script execution enables CleverConnect to structure their codebase in a way that seamlessly integrates with their requirements, while maintaining a cohesive and well-orchestrated workflow.
 
@@ -58,10 +58,10 @@ Even less technical users can read visual flows easily and grasp most of the log
 
 As Kestra is API by design, it allows them to quickly build their custom front-end and automate the flow creation. Kestra orchestrates the data flow and application logic, tying all the components of their platform together.
 Regarding deployment, the CleverConnect team chose [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine).
-The development workflow is streamlined by using [GitLab CI/CD](../docs/developer-guide/cicd/gitlab) alongside [Terraform](../docs/developer-guide/cicd#deploy-flows-from-terraform) to deploy Kestra flows from development to production instances. Following the best practices of DevOps and craftsmanship.
+The development workflow is streamlined by using [GitLab CI/CD](../../docs/developer-guide/cicd/gitlab) alongside [Terraform](../../docs/developer-guide/cicd#deploy-flows-from-terraform) to deploy Kestra flows from development to production instances. Following the best practices of DevOps and craftsmanship.
 
 ## Conclusion
 
 Kestra has become a critical asset for CleverConnect, enabling them to accelerate their development processes and manage an ever-growing number of connectors. The platform's versatility, rapid development capabilities, and robust API have played a critical role in CleverConnect's ongoing mission to change the recruitment industry. With Kestra by their side, CleverConnect is well on its way to achieving its ambitious goal by 2030: to help over 350 million people find a fulfilling job.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

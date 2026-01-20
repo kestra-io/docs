@@ -55,15 +55,15 @@ In Kestra, the transfer of metadatas is facilitated through connections, task in
 Kestra provides full API control, enabling complete management of workflows without relying solely on the UI and facilitating integration with other tools.
 
 ### 12-Security ###
-Kestra takes data security seriously, with our [Enterprise Edition](https://kestra.io/enterprise) we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
+Kestra takes data security seriously, with our [Enterprise Edition](/enterprise) we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
 
 ## A Declarative Data Orchestrator: Embracing YAML for Workflow ##
 
 A distinguishing feature of Kestra is its declarative nature. We leverage YAML (Yet Another Markup Language) to define workflows. YAML is  known for its simplicity, readability, and ease of use, making it an ideal choice for building data pipelines. With a declarative approach, both data teams and business stakeholders can participate in the workflow creation process.
 
-Through declarative orchestration, we aim to ensure that Kestra remains accessible and easy to use, facilitating collaboration and enabling fast iteration cycles. We're building a flexible, scalable, secure, and user-friendly tool. As we continue to evolve with the dynamic journey of data orchestration, we remain committed to evolving and adapting to it. You can learn more about declarative orchestration [here](https://kestra.io/features/declarative-data-orchestration).
+Through declarative orchestration, we aim to ensure that Kestra remains accessible and easy to use, facilitating collaboration and enabling fast iteration cycles. We're building a flexible, scalable, secure, and user-friendly tool. As we continue to evolve with the dynamic journey of data orchestration, we remain committed to evolving and adapting to it. You can learn more about declarative orchestration [here](/features/declarative-data-orchestration).
 
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

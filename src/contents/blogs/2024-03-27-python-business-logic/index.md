@@ -91,7 +91,7 @@ A broad set of Python frameworks has been developed to cover almost every aspect
 
 ## Declare your flows, code your logic and stop wasting time
 
-With Kestra we’re definitely in the same mindset: we’ve built our DSL with [YAML](https://kestra.io/blogs/2023-12-01-yaml-pitfalls) - an even simpler markup language to describe workflows. We have made the realization that orchestration logic is tied to basic concepts:
+With Kestra we’re definitely in the same mindset: we’ve built our DSL with [YAML](../2023-12-01-yaml-pitfalls/index.md) - an even simpler markup language to describe workflows. We have made the realization that orchestration logic is tied to basic concepts:
 
 - Declare a sequence of tasks
 - Declare upstream and/or downstream dependencies
@@ -127,11 +127,11 @@ If our system doesn't allow us to sit and wait for completion to focus on someth
 The outcomes we should look for are automation at its full potential and optimized engineering costs.
 Most of the time we just want to trigger those docker container runs. To launch this `python main.py` command. To trigger them and manage the dependencies that come before and after the execution. That’s it.
 Managing the underlying business logic is not out of the scope here. It’s about uncoupling stuff from each other. Making simple inputs and outputs definitions here is the key to making things flow seamlessly.
-That’s why Kestra comes with simple declarative statements to deal with [inputs](https://kestra.io/docs/tutorial/inputs), [outputs](https://kestra.io/docs/tutorial/outputs), and globally speaking metadata arising from orchestrating dependencies between one job and another.
+That’s why Kestra comes with simple declarative statements to deal with [inputs](../../docs/03.tutorial/02.inputs/index.md), [outputs](../../docs/03.tutorial/03.outputs/index.md), and globally speaking metadata arising from orchestrating dependencies between one job and another.
 
 As engineers, we're like Lego builders who've already molded the plastic bricks. Once we pass that stage, we just want to grab the polished blocks and start assembling the system that unlocks the real value of the data for the business.
 
-Are you using Python in your worfklows? We would love to hear from you: join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
+Are you using Python in your worfklows? We would love to hear from you: join the Slack [community](/slack) if you have any questions or need assistance.
 
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

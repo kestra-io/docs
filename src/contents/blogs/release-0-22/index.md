@@ -49,7 +49,7 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
 
 ---
 
-For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../docs/enterprise/instance/versioned-plugins).
+For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../../docs/07.enterprise/05.instance/versioned-plugins/index.md).
 
 :::alert{type="warning"}
 Plugin versioning is currently in Beta and may change in upcoming releases.
@@ -69,7 +69,7 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 
 ---
 
-For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../docs/enterprise/governance/read-only-secrets).
+For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../../docs/07.enterprise/02.governance/read-only-secrets/index.md).
 
 ![read only secret manager](./read-only-secret-manager.png)
 
@@ -125,7 +125,7 @@ You might use `afterExecution` to send custom notifications after a flow complet
 
 ---
 
-For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution](../docs/workflow-components/afterexecution).
+For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution](../../docs/05.workflow-components/20.afterexecution/index.md).
 
 
 ### Sharing Namespace Files
@@ -152,7 +152,7 @@ tasks:
 ```
 :::
 
-For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](https://kestra.io/docs/concepts/namespace-files).
+For detailed instructions on how to configure and use this feature, check the [Namespace Files documentation](../../docs/06.concepts/02.namespace-files/index.md).
 
 ### Sharing KV pairs across namespaces
 
@@ -162,7 +162,7 @@ You can still provide a `namespace` explicitly as follows: `kv('KEY_NAME', names
 
 In the example below, the first task will be able to retrieve the key-value pair defined upstream in the `company` namespace (but not present in `company.team` namespace). The second task is able to get the key-value pair defined from another namespace explicitly provided in the `kv()` function.
 
-For more details on how to use and configure the KV pairs, check our [KV Store documentation](https://kestra.io/docs/concepts/kv-store).
+For more details on how to use and configure the KV pairs, check our [KV Store documentation](../../docs/06.concepts/05.kv-store).
 
 :::collapse{title="Example of key-value inheritance"}
 ```yaml
@@ -198,7 +198,7 @@ Once LDAP integration is set up, users logging into Kestra for the first time wi
 
 ---
 
-For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](/docs/enterprise/auth/sso/ldap).
+For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](../../docs/07.enterprise/03.auth/sso/ldap/index.md).
 
 ![ldap](./ldap.png)
 
@@ -215,7 +215,7 @@ The cloud storage log exporters provide a cost-effective long-term storage solut
 
 Additionally, the new `AuditLogShipper` plugin allows you to export audit trails to multiple destinations, providing a convenient way to analyze comprehensive record of all user and service account actions within your Kestra instance.
 
-For detailed information on setting up and configuring log shippers, check the [Log Shipper documentation](https://kestra.io/docs/enterprise/governance/logshipper).
+For detailed information on setting up and configuring log shippers, check the [Log Shipper documentation](../../docs/07.enterprise/02.governance/logshipper/index.md).
 
 ### Unified Secrets and KV Store UI
 
@@ -228,7 +228,7 @@ This release introduces new global views for managing secrets and key-value pair
 ## Notable Backend Enhancements
 
 - We've revamped our **Queues** for performance and reliability. You can expect the `queues` database table to take up to 90% less database space due to aggresive cleaning and perform better. Queues can now sustain a much higher Executions throughput with lower database load. We also haven't forgotten about the Kafka runner, which also benefits from latency improvements due to configuration finetuning.
-- [DevContainer support](/docs/01.getting-started/03.contributing.md) simplifies development setup for contributors with ready-to-use environments
+- [DevContainer support](../../docs/04.contribute-to-kestra/index.mdx) simplifies development setup for contributors with ready-to-use environments
 - [New Python package](https://github.com/kestra-io/libs/pull/16) allows you to read Kestra's native ION files into Pandas or Polars dataframes. Read more in our [Python How-to guide](/docs/how-to-guides/python)
 - Improved Ansible integration with the ability to [capture outputs from individual steps](https://github.com/kestra-io/plugin-ansible/pull/35) of your Ansible playbooks
 - Multiple bug fixes for dynamic properties ensure more reliable and predictable behavior across workflows
@@ -359,11 +359,11 @@ pluginDefaults:
 
 ### New MariaDB tasks
 
-We've also introduced a new plugin for MariaDB, including `Query`, `Queries` and `Trigger`, allowing you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](https://kestra.io/plugins/plugin-jdbc-mariadb) for more details.
+We've also introduced a new plugin for MariaDB, including `Query`, `Queries` and `Trigger`, allowing you to interact with MariaDB databases directly from your Kestra workflows. Check out the [MariaDB plugin documentation](/plugins/plugin-jdbc-mariadb) for more details.
 
 ### New ServiceNow plugins
 
-We've expanded our ServiceNow integration with a new `Get` task and improvements to other ServiceNow plugins. This addition allows you to retrieve data from ServiceNow instances directly within your Kestra workflows. Check out the [ServiceNow plugin documentation](https://kestra.io/plugins/plugin-servicenow) to learn more.
+We've expanded our ServiceNow integration with a new `Get` task and improvements to other ServiceNow plugins. This addition allows you to retrieve data from ServiceNow instances directly within your Kestra workflows. Check out the [ServiceNow plugin documentation](/plugins/plugin-servicenow) to learn more.
 
 ### New Pebble functions
 
@@ -372,13 +372,13 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 - **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given URI location.
 - **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given URI location.
 - **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given URI location is empty.
-- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../docs/configuration/index.md).
-- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../docs/configuration/index.md).
+- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
+- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
 
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](../../docs/04.contribute-to-kestra/index.mdx) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the new [DevContainer support](../../docs/04.contribute-to-kestra/index.mdx), it's easier than ever to start contributing to Kestra.
 
 Special thanks to [V-Rico](https://github.com/V-Rico) for their [pull request](https://github.com/kestra-io/kestra/pull/7662) resolving an XSS vulnerability in Kestra.
 
@@ -386,7 +386,7 @@ Special thanks to [V-Rico](https://github.com/V-Rico) for their [pull request](h
 
 This post covered new features and enhancements added in Kestra 0.22.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
 

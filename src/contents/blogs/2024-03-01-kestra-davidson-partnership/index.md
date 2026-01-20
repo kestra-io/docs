@@ -45,5 +45,5 @@ This partnership will also feature a knowledge exchange program, including joint
 
 ## Get Involved
 
-Stay tuned for more updates on this exciting partnership. For more information or to get involved with our joint initiatives, please contact us through [Slack channels](https://kestra.io/slack). We're eager to explore this new chapter with Davidson and invite you to join us on this journey!
+Stay tuned for more updates on this exciting partnership. For more information or to get involved with our joint initiatives, please contact us through [Slack channels](/slack). We're eager to explore this new chapter with Davidson and invite you to join us on this journey!
 

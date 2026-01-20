@@ -166,7 +166,7 @@ Orchestrating your code is useful, but being able to sync that with your Git rep
 
 Starting with **Clone**, we can clone our repository and then have other tasks access it as if we were using it on our local machine.
 
-This example also uses the [WorkingDirectory task](../docs/16.scripts/working-directory.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files]((../docs/16.scripts/input-output-files.md), which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
+This example also uses the [WorkingDirectory task](../../docs/16.scripts/working-directory.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files]((../../docs/16.scripts/input-output-files.md), which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
 
 ```yaml
 id: git-python
@@ -283,7 +283,7 @@ triggers:
 
 ### Use GCP Pub/Sub Realtime Trigger to push events into Firestore
 
-On the trend of event driven workflows, we can use [Realtime triggers](../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
+On the trend of event driven workflows, we can use [Realtime triggers](../../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
 
 In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/google%20cloud/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database.
 
@@ -318,7 +318,7 @@ triggers:
 
 ### Run a Python script on Azure with Azure Batch VMs
 
-In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../docs/task-runners/index.mdx).
+In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../../docs/task-runners/index.mdx).
 
 This example uses the Azure Batch to execute our Python code, and then returns all outputs back to Kestra, enabling us to use more resources on demand.
 
@@ -410,7 +410,7 @@ tasks:
 
 ### Set up alerts for failed workflow executions using Discord
 
-This next example is a [System flow](../docs/05.concepts/system-flows.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../docs/04.workflow-components/07.triggers/02.flow-trigger.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
+This next example is a [System flow](../../docs/05.concepts/system-flows.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../../docs/04.workflow-components/07.triggers/02.flow-trigger.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
 
 ```yaml
 id: failure-alert-discord
@@ -439,6 +439,6 @@ triggers:
 
 This is just the start of some of the areas you can explore in Kestra to integrate into your existing solution. I'd recommend checking out the full Blueprint library for over 180 curated examples. If you build any useful examples, feel free to contribute back by making a Pull Request on our [GitHub repository](https://github.com/kestra-io/blueprints)!
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).

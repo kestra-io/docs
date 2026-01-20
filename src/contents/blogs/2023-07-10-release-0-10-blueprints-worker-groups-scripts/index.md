@@ -233,7 +233,7 @@ tasks:
     format: "{{ secret('SLACK_WEBHOOK_KEY') }}"
 ```
 
-Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](/docs/concepts/secret) guide.
+Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](../../docs/06.concepts/04.secret/index.md) guide.
 
 
 ## Improved Polling Triggers
@@ -265,7 +265,7 @@ You can start a new worker from a CLI using the command `kestra server worker --
 
 Worker groups are beneficial when your tasks require access to specific Operating Systems, libraries, on-prem applications, network resources (such as VPN), and GPUs or when your processes need to run in a particular region to satisfy compliance requirements.
 
-Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or demanding computational requirements. Check the [Worker Groups documentation](../docs/08.architecture.md#worker-group-ee) for more details.
+Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or demanding computational requirements. Check the [Worker Groups documentation](../../docs/08.architecture.md#worker-group-ee) for more details.
 
 
 ## New Plugin to interact with OpenAI
@@ -292,7 +292,7 @@ Further enhancements added as part of this release include:
 
 This post covered new features and enhancements added in Kestra 0.10.0 release. We are looking forward to seeing how you use those new features. Your input and feedback help us prioritize future enhancements.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
 

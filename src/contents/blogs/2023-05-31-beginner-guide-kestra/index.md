@@ -49,7 +49,7 @@ You can also download [Docker Extension for VSC](https://marketplace.visualstudi
 
 ## Kestra Guided Tour ##
 
-Once you're in, the easiest thing to do is the follow the [Guided Tour](https://kestra.io/docs/flow-examples/example-guided-tour.html) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
+Once you're in, the easiest thing to do is the follow the [Guided Tour](../../docs/09.ui/index.mdx) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
 
 ![Guided tour](./guided-tour.png)
 
@@ -82,10 +82,10 @@ description: My first flow is a CSV Download and transform the results into JSON
 **The second step introduces the concept of flows.**
 
 - **A flow is a sum of tasks.**
-At the moment of writing this guide, Kestra has hundreds of [tasks](https://kestra.io/docs/developer-guide/tasks), which can be challenging to remember. That's why we provide an auto-completion feature to help you find the task you need. Use the shortcut CTRL or ⌘ + SPACE to activate it.
+At the moment of writing this guide, Kestra has hundreds of [tasks](../../docs/05.workflow-components/01.tasks/index.mdx), which can be challenging to remember. That's why we provide an auto-completion feature to help you find the task you need. Use the shortcut CTRL or ⌘ + SPACE to activate it.
 
 - **With a few "parameters".**
-Also named [Inputs](https://kestra.io/docs/developer-guide/inputs). You can see them as a way to add context during the execution of your tasks or to pass data from task to task.
+Also named [Inputs](../../docs/05.workflow-components/05.inputs/index.md). You can see them as a way to add context during the execution of your tasks or to pass data from task to task.
 
 ```yaml
 inputs:
@@ -93,7 +93,7 @@ inputs:
     type: STRING
     defaults: https://www.data.gouv.fr/fr/datasets/r/6637991e-c4d8-4cd6-854e-ce33c5ab49d5
 ```
-**The last step is the creation of a** [task](https://kestra.io/docs/developer-guide/tasks)**.**
+**The last step is the creation of a** [task](../../docs/05.workflow-components/01.tasks/index.mdx)**.**
 
 **A task is a step in your flow that will execute a specific action.**
 
@@ -149,6 +149,6 @@ What will your next move be? To play a few SQL Queries and export the results in
 
 And that’s what I personally love about Kestra: it empowers thousands of people to manipulate data regardless of their technical background!
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

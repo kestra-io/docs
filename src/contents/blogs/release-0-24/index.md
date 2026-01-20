@@ -483,7 +483,7 @@ The Apps catalog is offered as a dedicated page without showing any typical Kest
 
 ## Custom UI Links (EE only)
 
-In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your [Kestra configuration](../docs/configuration/index.md) file as follows:
+In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your [Kestra configuration](../../docs/configuration/index.md) file as follows:
 
 ```yaml
 kestra:
@@ -562,11 +562,11 @@ When you run this test, Kestra will execute the flow and verify that the output 
 
 ## Mandatory Authentication in OSS
 
-In this release, we introduced a [mandatory login screen](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting) for the open-source version of Kestra to improve security. This means that all users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment.
+In this release, we introduced a [mandatory login screen](../../docs/10.administrator-guide/basic-auth-troubleshooting/index.md) for the open-source version of Kestra to improve security. This means that all users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment.
 
 This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows. The login screen requires a username and password.
 
-If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](https://kestra.io/docs/migration-guide/0.24.0).
+If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](../../docs/11.migration-guide/0.24.0/index.mdx).
 
 
 ## Plugin Enhancements
@@ -634,9 +634,9 @@ Additionally, we have made numerous improvements to existing plugins, including 
 
 This post highlighted the new features and enhancements introduced in Kestra 0.24.0. Which updates are most interesting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
 
 Lastly, if you'd like to listen to a podcast episode discussing the new features, check out this episode of the Kestra Podcast:
 

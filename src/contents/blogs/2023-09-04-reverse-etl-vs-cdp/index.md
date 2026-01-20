@@ -138,10 +138,10 @@ Check out the full [plugin documentation](/plugins/plugin-hightouch) for all spe
 
 We can expect these platforms to incorporate more advanced features, possibly blurring the lines between their distinct functionalities. Will we see CDPs offering more customization options? Or perhaps Reverse ETL tools incorporating more in-depth analytics?
 
-To further grasp the nuances of data management and to explore related concepts, don't forget to read our blog post on [ELT vs ETL: Why not both?](https://kestra.io/blogs/2022-04-27-etl-vs-elt)
+To further grasp the nuances of data management and to explore related concepts, don't forget to read our blog post on [ELT vs ETL: Why not both?](../2022-04-27-etl-vs-elt/index.md)
 
 Thank you for taking this deep dive with us. We hope this guide has been instrumental in helping you understand the unique capabilities and advantages of Reverse ETL and CDPs.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).

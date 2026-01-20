@@ -10,7 +10,7 @@ author:
 image: ./main.jpg
 ---
 
-In 0.22, the engineering team focused on performance in multiple areas, you can find the details in this blog post [Optimizing Performance in Kestra in Version 0.22](https://kestra.io/blogs/2025-04-08-performance-improvements).
+In 0.22, the engineering team focused on performance in multiple areas, you can find the details in this blog post [Optimizing Performance in Kestra in Version 0.22](../2025-04-08-performance-improvements/index.md).
 
 One of our most advanced power users, the Xiaomi Engineering team, extensively leverages Kestra at a massive scale. Xiaomi's continuous insights and active contributions have significantly accelerated our performance optimization efforts in Kestra 0.23. Thanks to their help, this latest version delivers even more substantial enhancements in speed, efficiency, and system responsiveness.
 
@@ -56,7 +56,7 @@ Historically, for simplicity, we mimicked task execution by the Worker for all f
 
 Further details can be found in this pull request: [PR #8236](https://github.com/kestra-io/kestra/pull/8236).
 
-Let's take as an example this flow that has 5 [If](https://kestra.io/plugins/core/flow/io.kestra.plugin.core.flow.if) tasks, the `If` task is flowable:
+Let's take as an example this flow that has 5 [If](/plugins/core/flow/io.kestra.plugin.core.flow.if) tasks, the `If` task is flowable:
 
 :::collapse{title="Expand to see the Benchmark Flow"}
 ```yaml
@@ -176,7 +176,7 @@ We're incredibly grateful for their collaboration and the broader open-source co
 Stay tuned—there’s even more to come as we double down our focus on performance, resiliency, and scalability.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

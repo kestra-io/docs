@@ -157,7 +157,7 @@ inputs:
     required: true
 ```
 
-The CURL command (complete [API](https://kestra.io/docs/api-guide/)) can also be used to trigger the flow if you need to automatize the execution from another application. Here is a sample CURL for such a use case.
+The CURL command (complete [API](../../docs/api-reference/index.mdx)) can also be used to trigger the flow if you need to automatize the execution from another application. Here is a sample CURL for such a use case.
 
 ```bash
 curl -v "http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-to-gcs"
@@ -258,6 +258,6 @@ Accessing specific information about the flow is simple, requiring only the uniq
 ## Next Steps ##
 If you would like to see more posts diving into GCP integrations or integrations with other cloud providers, let us know. We'd love to hear your feedback and the use cases you would like us to cover next.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

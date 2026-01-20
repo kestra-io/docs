@@ -182,7 +182,7 @@ triggers:
 ```
 
 Here the first task upload input CSV files coming from our previous Flow to Google Cloud Storage. Then we load this data into a BigQuery table.
-You can find more information about the secret function used in the above example in the [dedicated documentation](https://kestra.io/docs/developer-guide/secrets).
+You can find more information about the secret function used in the above example in the [dedicated documentation](../../docs/07.enterprise/02.governance/secrets/index.md).
 
 ## Integrating Marketing Data ##
 Shiny Rocks doesn't just produce products; it also (fictionally) invests in marketing campaigns. Managed in a Google Spreadsheet, this data becomes integral when evaluating ROI. To ensure comprehensive analysis, we transfer this spreadsheet data into our primary data warehouse.

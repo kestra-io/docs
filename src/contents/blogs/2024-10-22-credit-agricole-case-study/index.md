@@ -43,4 +43,4 @@ We see many use cases in the future:
 I’m sure that this will be just a start and we’ll soon cover more complex processes including certificates management and event-driven use cases.
 
 
-As we continue to expand Kestra adoption across our operations, we’re excited to explore even more use cases in the future. If this resonates with your challenges, consider giving Kestra [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+As we continue to expand Kestra adoption across our operations, we’re excited to explore even more use cases in the future. If this resonates with your challenges, consider giving Kestra [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

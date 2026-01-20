@@ -59,6 +59,6 @@ We hope that our new visual identity resonates with you and showcases the innova
 
 You can download Kestra’s logo kit [here](https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing).
 
-To stay up-to-date with our latest developments and engage with our team, we encourage you to join our [Slack channel](https://kestra.io/slack). Here, you can ask questions, share your thoughts, and connect with fellow Kestra users and enthusiasts.
+To stay up-to-date with our latest developments and engage with our team, we encourage you to join our [Slack channel](/slack). Here, you can ask questions, share your thoughts, and connect with fellow Kestra users and enthusiasts.
 
 Additionally, if you find our data orchestration platform valuable and want to support our efforts, please give us a star on [GitHub](https://github.com/kestra-io/kestra). Your feedback and support are essential to our growth and development.

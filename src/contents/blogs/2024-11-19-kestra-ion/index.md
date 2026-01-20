@@ -270,4 +270,4 @@ tasks:
 
 Similarly, other formats can also be converted into ION using the correponding tasks.
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

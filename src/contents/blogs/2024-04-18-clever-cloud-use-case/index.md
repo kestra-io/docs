@@ -55,6 +55,6 @@ If you want to learn more about Clever Cloud’s solution to offload billions of
 
 We are very proud of the usage of Kestra at Clever Cloud, this integration led to significant improvements in handling data volume, maintaining system performance, and optimizing storage use. The success of this project has encouraged further exploration of automating other areas within Clever Cloud's infrastructure with Kestra. From our side we are working on an integration of Kestra into their platform.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the [Slack community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

@@ -378,7 +378,7 @@ This release introduces new integrations to automate data lake processes includi
 
 ### Amazon Athena
 
-Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](https://kestra.io/blogs/2023-08-05-iceberg-for-aws-users).
+Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](../2023-08-05-iceberg-for-aws-users/index.md).
 
 ### Databricks plugin
 
@@ -401,7 +401,7 @@ We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plu
 1. The [PaLM TextCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
 2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
 
-To see both of these tasks in action, check [the blog post by Loïc Mathieu](https://kestra.io/blogs/2023-08-24-using-google-bard-ai-with-kestra).
+To see both of these tasks in action, check [the blog post by Loïc Mathieu](../2023-08-24-using-google-bard-ai-with-kestra/index.md).
 
 ---
 
@@ -432,7 +432,7 @@ We've extended the existing Singer plugin to support the following new taps:
 
 The DuckDB plugin [now supports MotherDuck](https://github.com/kestra-io/plugin-jdbc/pull/144). All DuckDB blueprints now also work with [MotherDuck](https://motherduck.com/) as long as you provide the MotherDuck service token and database name in your JDBC URL.
 
-We recommend storing the MotherDuck service token as a Kestra [Secret](https://kestra.io/docs/developer-guide/secrets). Below is an example pointing the Query task to the MotherDuck database named `my_db` and referencing the token stored as `MOTHERDUCK_TOKEN` secret:
+We recommend storing the MotherDuck service token as a Kestra [Secret](../../docs/07.enterprise/02.governance/secrets/index.md). Below is an example pointing the Query task to the MotherDuck database named `my_db` and referencing the token stored as `MOTHERDUCK_TOKEN` secret:
 
 ```yaml
   - id: query
@@ -452,7 +452,7 @@ You can read more about various use cases for using MotherDuck with Kestra in ou
 
 So far, Kestra has supported custom scripts written in Python, R, Node.js, Shell and Powershell. With this release, we've also added [support for Julia](/plugins/plugin-script-julia).
 
-We've also improved the [documentation for new script plugins](https://kestra.io/docs/developer-guide/scripts).
+We've also improved the [documentation for new script plugins](../../docs/16.scripts/index.mdx).
 
 
 ### Telegram notifications
@@ -479,10 +479,10 @@ tasks:
 ### Templates
 
 :::alert{type="warning"}
-Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](https://kestra.io/docs/migration-guide/templates) explains why templates are being phased out and how to transition from templates to subflows.
+Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](../../docs/11.migration-guide/0.11.0/templates/index.md) explains why templates are being phased out and how to transition from templates to subflows.
 :::
 
-If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../docs/configuration/index.md) option to still be able to use them:
+If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.md) option to still be able to use them:
 
 ```yaml
 kestra:
@@ -492,7 +492,7 @@ kestra:
 
 ### Core script tasks
 
-Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin (the one which is always included in any Kestra distribution). In 0.10.0, we introduced new [script tasks](https://kestra.io/docs/developer-guide/scripts) maintained using [dedicated script plugins](https://github.com/kestra-io/plugin-scripts) which offer script tasks for Python, R, Node.js, Shell and Powershell (and now, also Julia). Since then, the old core scripting tasks have been deprecated and moved out of the core plugin.
+Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin (the one which is always included in any Kestra distribution). In 0.10.0, we introduced new [script tasks](../../docs/16.scripts/index.mdx) maintained using [dedicated script plugins](https://github.com/kestra-io/plugin-scripts) which offer script tasks for Python, R, Node.js, Shell and Powershell (and now, also Julia). Since then, the old core scripting tasks have been deprecated and moved out of the core plugin.
 
 :::alert{type="warning"}
 If you use one of these `core` script tasks e.g. `io.kestra.core.tasks.scripts.python`, you should **migrate to the new script task** that runs by default in a Docker container and is more feature-rich. Using the same Python task as an example, you should now use the  `io.kestra.plugin.scripts.python.Script` task instead.
@@ -522,11 +522,11 @@ We have further **improved performance** across multiple areas, including:
 
 
 The **documentation enhancements** include, among others:
-- [New welcome page](https://kestra.io/docs) explaining the product principles
-- [New troubleshooting section](https://kestra.io/docs/troubleshooting) explaining a.o. how to troubleshoot networking issues when running Kestra locally with Docker-Compose
-- [New migrations section](https://kestra.io/docs/migration-guide) explaining how to migrate from older versions of Kestra and how to transition from deprecated features e.g. from templates to subflows
-- [New FAQ page](https://kestra.io/faq)
-- [Improved inputs docs](https://kestra.io/docs/developer-guide/inputs) providing examples on how to use custom input validators.
+- [New welcome page](/docs) explaining the product principles
+- [New troubleshooting section](../../docs/10.administrator-guide/16.troubleshooting/index.md) explaining a.o. how to troubleshoot networking issues when running Kestra locally with Docker-Compose
+- [New migrations section](../../docs/11.migration-guide/index.mdx) explaining how to migrate from older versions of Kestra and how to transition from deprecated features e.g. from templates to subflows
+- [New FAQ page](/faq)
+- [Improved inputs docs](../../docs/05.workflow-components/05.inputs/index.md) providing examples on how to use custom input validators.
 
 ---
 
@@ -534,7 +534,7 @@ The **documentation enhancements** include, among others:
 
 This post covered new features and enhancements added in Kestra 0.11.0. Which of them are your favorites? What should we add next? Your input and feedback is always appreciated.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
 

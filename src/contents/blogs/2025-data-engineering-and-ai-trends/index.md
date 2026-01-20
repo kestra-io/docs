@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-Many trends that began shaping [data engineering in 2024](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends) continue to affect data teams in 2025. AI keeps accelerating, and data lakes—along with open table formats—are more popular than ever. Below is our take on the trends influencing data engineering and AI today, and how they impact data professionals.
+Many trends that began shaping [data engineering in 2024](../2024-01-24-2024-data-engineering-trends/index.md) continue to affect data teams in 2025. AI keeps accelerating, and data lakes—along with open table formats—are more popular than ever. Below is our take on the trends influencing data engineering and AI today, and how they impact data professionals.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/JMfRRP_2Bs8?si=W1SSyqcwRGw-sfZV" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -20,7 +20,7 @@ Many trends that began shaping [data engineering in 2024](https://kestra.io/blog
 
 ## **1. Generative AI as an Efficiency Driver**
 
-Last year’s prediction that AI would turn data teams [from cost into profit centers](https://kestra.io/blogs/2024-01-24-2024-data-engineering-trends#data-teams-as-profit-centers) hasn't played out as expected. While generative AI is delivering measurable productivity gains, its impact on **revenue generation remains limited outside hyperscalers and niche applications**.
+Last year’s prediction that AI would turn data teams [from cost into profit centers](../2024-01-24-2024-data-engineering-trends#data-teams-as-profit-centers/index.md) hasn't played out as expected. While generative AI is delivering measurable productivity gains, its impact on **revenue generation remains limited outside hyperscalers and niche applications**.
 
 Coding assistants (e.g., Cursor, GitHub Copilot) accelerate development, while AI chatbots and search tools streamline workflows—enabling teams to achieve more with fewer hires.
 
@@ -62,13 +62,13 @@ The **EU AI Act** entered force in August 2024, with strict rules for high-risk 
 
 **1. Fighting Bias at the Source —** AI systems must now document training data origins and implement bias safeguards. Teams need audit trails showing exactly how data moves from raw sources to model inputs.
 
-**2. Granular Control —** [Article 10](https://artificialintelligenceact.eu/article/10/) requires tracking *who* accesses sensitive data and *why*. Apache Iceberg’s [merge/delete capabilities](https://iceberg.apache.org/spec/) can help satisfy GDPR’s right to be forgotten, while integrations with [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/) enable column-level permissions. With orchestration tools like [Kestra](https://kestra.io/docs/enterprise), you can add compliance to your data workflows through built-in [custom RBAC](https://kestra.io/docs/enterprise/rbac), [SSO](https://kestra.io/docs/enterprise/auth/sso), [SCIM](https://kestra.io/docs/enterprise/scim), [audit logs](https://kestra.io/docs/enterprise/audit-logs), [outputs](https://kestra.io/docs/workflow-components/outputs) and [metrics](https://kestra.io/docs/workflow-components/tasks/scripts/outputs-metrics) tracking, and [manual approval](https://kestra.io/docs/how-to-guides/pause-resume) features.
+**2. Granular Control —** [Article 10](https://artificialintelligenceact.eu/article/10/) requires tracking *who* accesses sensitive data and *why*. Apache Iceberg’s [merge/delete capabilities](https://iceberg.apache.org/spec/) can help satisfy GDPR’s right to be forgotten, while integrations with [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/) enable column-level permissions. With orchestration tools like [Kestra](../../docs/07.enterprise/index.mdx), you can add compliance to your data workflows through built-in [custom RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), [SSO](../../docs/07.enterprise/03.auth/sso/index.md), [SCIM](../../docs/07.enterprise/03.auth/scim/index.mdx), [audit logs](../../docs/07.enterprise/02.governance/06.audit-logs/index.md), [outputs](../../docs/05.workflow-components/06.outputs/index.md) and [metrics](../../docs/16.scripts/06.outputs-metrics/index.md) tracking, and [manual approval](../../docs/15.how-to-guides/pause-resume/index.md) features.
 
 ---
 
 ## 5. Cloud Costs Under the Microscope
 
-As more AI and data workloads [enter production](https://cloud.google.com/transform/2025-and-the-next-chapters-of-ai), cloud costs rise. Data leaders keep a closer eye on how often they run jobs and how much storage they consume. Hidden costs like data egress, idle services, or frequent transformations can add up fast if not closely monitored. Open table formats and smarter data orchestration with on-demand compute (like **Kestra’s [task runners](https://kestra.io/docs/enterprise/task-runners)**) can help cut costs.
+As more AI and data workloads [enter production](https://cloud.google.com/transform/2025-and-the-next-chapters-of-ai), cloud costs rise. Data leaders keep a closer eye on how often they run jobs and how much storage they consume. Hidden costs like data egress, idle services, or frequent transformations can add up fast if not closely monitored. Open table formats and smarter data orchestration with on-demand compute (like **Kestra’s [task runners](../../docs/task-runners/index.mdx)**) can help cut costs.
 
 ---
 
@@ -80,7 +80,7 @@ Cost optimization continues to drive renewed interest in data lakes, with teams 
 - Schema evolution to handle changing data models
 - RBAC integration through catalogs like [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/).
 
-This setup allows teams to query data directly in object storage using engines like [DuckDB](https://kestra.io/blogs/2023-08-11-dataframes) (ad-hoc analysis), [chDB](https://kestra.io/blogs/embedded-databases) (lightweight aggregations), or Polars (complex transformations). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
+This setup allows teams to query data directly in object storage using engines like [DuckDB](../2023-08-11-dataframes) (ad-hoc analysis), [chDB](../embedded-databases/index.md) (lightweight aggregations), or Polars (complex transformations/index.md). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
 
 ---
 
@@ -121,7 +121,7 @@ Yet this doesn’t signal engineering’s decline—it’s a recalibration. **Je
 
 ## 10. Doing More with Fewer Tools
 
-Companies face a proliferation of specialized data tools. To combat this complexity, teams are consolidating workflows into unified platforms—a trend often called *platformization*. Modern data orchestration now spans real-time streams, dynamic ML pipelines, and enterprise automation, going far [beyond traditional batch ETL](https://kestra.io/blogs/data-orchestration-beyond-analytics).
+Companies face a proliferation of specialized data tools. To combat this complexity, teams are consolidating workflows into unified platforms—a trend often called *platformization*. Modern data orchestration now spans real-time streams, dynamic ML pipelines, and enterprise automation, going far [beyond traditional batch ETL](../data-orchestration-beyond-analytics/index.md).
 
 Open-source platforms like [Kestra](https://github.com/kestra-io/kestra) exemplify this shift by unifying:
 
@@ -153,6 +153,6 @@ These changing roles also call for more unified tooling. Open-source solutions l
 
 As the data field continues to evolve, staying adaptable, embracing automation, and relying on proven patterns can help teams thrive. Data professionals who focus on domain expertise and stakeholder collaboration will do well in 2025 and beyond.
 
-We’d love to hear your thoughts. Are these trends shaping your data stack? Join the [Kestra community](https://kestra.io/) and share your perspective—or suggest a trend we might have missed.
+We’d love to hear your thoughts. Are these trends shaping your data stack? Join the [Kestra community](/) and share your perspective—or suggest a trend we might have missed.
 
-If you want to learn more about Kestra, check out our [documentation](https://kestra.io/docs) or [request a demo](https://kestra.io/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).
+If you want to learn more about Kestra, check out our [documentation](/docs) or [request a demo](/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).

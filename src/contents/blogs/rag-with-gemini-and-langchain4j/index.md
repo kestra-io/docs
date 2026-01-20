@@ -50,15 +50,15 @@ tasks:
     embeddings: #2
       type: io.kestra.plugin.langchain4j.embeddings.KestraKVStore
     fromExternalURLs: #3
-      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/content/blogs/release-0-22.md
-      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/content/blogs/release-0-21.md
-      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/content/blogs/release-0-20.md
-      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/content/blogs/release-0-19.md
+      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/src/contents/blogs/release-0-22/index.md
+      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/src/contents/blogs/release-0-21/index.md
+      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/src/contents/blogs/release-0-20/index.md
+      - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/src/contents/blogs/release-0-19/index.md
     drop: true #4
 ```
 
 1. We use the `io.kestra.plugin.langchain4j.provider.GoogleGemini` model provider to use the embedding model from **Google Gemini**. We must use the same model at generation time. Kestra supports many large language models (LLM), and more will be supported soon.
-2. We use the `io.kestra.plugin.langchain4j.embeddings.KestraKVStore` embedding store. This is a convenient store that will store embeddings inside a [KeyValue store](https://kestra.io/doc/concepts/kv-store) and load them all in memory at generation time. For a large number of documents, you would typically use a vector database instead, like PGVector or Elasticsearch.
+2. We use the `io.kestra.plugin.langchain4j.embeddings.KestraKVStore` embedding store. This is a convenient store that will store embeddings inside a [KeyValue store](../../docs/06.concepts/05.kv-store/index.md) and load them all in memory at generation time. For a large number of documents, you would typically use a vector database instead, like PGVector or Elasticsearch.
 3. We use `fromExternalURLs` to define a list of documents to ingest from external URLs; here, the blog posts for Kestra releases 0.19 to 0.22. We will go into detail for other ways to define documents to ingest later.
 4. We use `drop: true` to recreate the embedding store each time the flow is executed.
 
@@ -69,7 +69,7 @@ After executing the flow, you will be able to see a new KV store entry with the 
 ### Define documents from multiple sources
 
 Depending on your use case, you can use different task properties to define documents from multiple types of sources:
-- `fromPath`: from a working directory path, usually used in tandem with a [WorkingDirectory](https://kestra.io/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) task, each file in the directory will create a document.
+- `fromPath`: from a working directory path, usually used in tandem with a [WorkingDirectory](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) task, each file in the directory will create a document.
 - `fromInternalURIs`: from a list of internal storage URIs.
 - `fromExternalURLs`: from a list of external URLs.
 - `fromDocuments`: from a list of documents defined inside the task itself.
@@ -152,7 +152,7 @@ Here's what's new in Kestra 0.22:
 [...].
 ```
 
-We'll spare you the long list of 0.22 features here, but if you missed it, they can be seen in the [0.22 blog post](https://kestra.io/blogs/release-0-22). Or, take the example above with your own Gemini API Key and enjoy the results!
+We'll spare you the long list of 0.22 features here, but if you missed it, they can be seen in the [0.22 blog post](../release-0-22/index.md). Or, take the example above with your own Gemini API Key and enjoy the results!
 
 Moving on, even more interestingly, we can ask it for information across documents and include its sources!
 
@@ -167,7 +167,7 @@ Here are some of the most interesting new features:
 
 1.  **Apps: Custom UIs for Your Flows (Kestra 0.20)**
     This feature allows users to build custom interfaces for interacting with Kestra workflows. It democratizes access to workflows by providing simple forms, output displays, and approval buttons, enabling non-technical business users to trigger, pause, or submit data to automated processes without needing to understand the underlying code. Flows act as the backend, while Apps serve as the frontend.
-    *   **Source:** [Kestra 0.20 adds SLAs, Invites, User-Facing Apps, Isolated Storage and Secrets per Team, and Transactional Queries](https://kestra.io/blogs/2024-12-03-release-0-20#apps)
+    *   **Source:** [Kestra 0.20 adds SLAs, Invites, User-Facing Apps, Isolated Storage and Secrets per Team, and Transactional Queries](../release-0-20/index.md#apps-custom-uis-for-your-flows)
 
 [...]
 ```
@@ -185,8 +185,8 @@ At ingestion time, each document will be indexed with metadata, including the do
 RAG significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s Langchain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::
 

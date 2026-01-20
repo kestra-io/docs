@@ -108,6 +108,6 @@ Kestra's Debezium plugins include connectors for Postgres and MySQL, PostgreSQL,
 
 by integrating Kestra and Debezium, you can leverage the strengths of both tools to create a more efficient and cost-effective solution for data pipeline management. This hybrid solution is adaptable to various requirements, ensuring the most efficient use of resources and providing a robust platform for complex data pipeline workflows.
 
-[Join the Slack community](https://kestra.io/slack) if you have any questions or need assistance.
+[Join the Slack community](/slack) if you have any questions or need assistance.
 
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
+Be sure to follow us on [Twitter](https://x.com/kestra_io) for the latest news. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).

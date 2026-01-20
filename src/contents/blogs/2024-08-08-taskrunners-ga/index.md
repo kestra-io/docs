@@ -17,7 +17,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 ## What are Task Runners
 
-[Task Runners](../docs/task-runners/index.mdx) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
+[Task Runners](../../docs/task-runners/index.mdx) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
 
 You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered in Kestra Enterprise or Kestra Cloud, such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
 
@@ -65,7 +65,7 @@ Check the video below summarizing the key benefits of Task Runners.
 
 Embrace the scalability of dynamically-provisioned resources with Task Runners, now fully equipped to handle your most demanding data processing workflows.
 
-To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.mdx), [Blueprints](/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
+To help you get started, we prepared extensive [How-To Guides](../../docs/15.how-to-guides/index.mdx), [Blueprints](/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/N-Bq-TWqxiw?si=2u4_xmm2vLivKLPO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -93,6 +93,6 @@ To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to
 
 Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!
 
-- If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-- If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+- If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+- If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 

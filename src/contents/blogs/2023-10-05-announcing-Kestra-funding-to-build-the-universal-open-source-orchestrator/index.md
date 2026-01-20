@@ -53,13 +53,13 @@ Kestra strives to be the easiest-to-use orchestration tool on the market. Our us
 
 ## What's Coming Next
 
-The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](https://kestra.io/enterprise) solution.
+The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](/enterprise) solution.
 
 We'll be working on many exciting features to make orchestration not only reliable, but also enjoyable. This includes, among others, a new code editor, additional remote infrastructure and marketplace offerings, along with many new integrations.
 
 We're incredibly grateful for the support and confidence shown by our investors, community, and customers. This funding enables us to further our vision of making Kestra the go-to orchestration platform.
 
-If you want to support us in our journey, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you want to support us in our journey, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 
 ## Trusted by Leading Tech Investors
 

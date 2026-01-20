@@ -182,7 +182,7 @@ Let's now show the orchestration approach.
 
 ### Orchestration approach
 
-To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../docs/02.installation/index.mdx) to get started.
+To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../../docs/02.installation/index.mdx) to get started.
 
 To use Kestra for our purpose, click on **Namespaces** > **Tutorial**:
 

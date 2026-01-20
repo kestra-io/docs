@@ -223,6 +223,6 @@ If you want to learn more about the integrations between Kestra and dbt, you can
 
 Check out the [plugin](/plugins/plugin-dbt) documentation for more information about the dbt plugin.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

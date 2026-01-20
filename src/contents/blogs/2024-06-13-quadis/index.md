@@ -77,9 +77,9 @@ As we mentioned before, Quadis teams have to manage different API calls, and cus
 ## Quadis progress with Kestra so far
 
 In less than 3 months, Quadis successfully onboarded over 5 developers into Kestra.
-The [installation](https://kestra.io/docs/installation/aws-ec2) was quite easy with two instances (development and production) relying on EC2 compute, S3 buckets, and AWS RDS database.
+The [installation](../../docs/02.installation/08.aws-ec2/index.md) was quite easy with two instances (development and production) relying on EC2 compute, S3 buckets, and AWS RDS database.
 
-Once the installation and setup of the [secret configuration](https://kestra.io/docs/concepts/secret) had been made, they moved fast on the different blocks needed for their orchestration:
+Once the installation and setup of the [secret configuration](../../docs/06.concepts/04.secret/index.md) had been made, they moved fast on the different blocks needed for their orchestration:
 
 - **Access files**: Quadis business relies a lot on different file protocols associated with the different services they have. They often use the [FTP](/plugins/plugin-fs), [CSV Writer/Reader](/plugins/plugin-serdes/csv/io.kestra.plugin.serdes.csv.csvwriter), [Excel](/plugins/plugin-serdes/excel/io.kestra.plugin.serdes.excel.exceltoion), and [S3](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.download) tasks to gather files and move them from one place to another.
 
@@ -94,7 +94,7 @@ Once the installation and setup of the [secret configuration](https://kestra.io/
 ## What’s Next
 
 Moving from a legacy system made of more than a hundred pipelines is always a complex task. At Kestra we’re impressed by the involvement of Quadis teams and the speed of their development with Kestra.
-After onboarding the first users, they expect to have more than 30 users using Kestra in the coming months. Even more: some of them will be less technical people. Thanks to the Kestra user interface and [role-based access control](../docs/06.enterprise/03.auth/rbac/index.md) they could execute flows without the fear of messing up with other works.
+After onboarding the first users, they expect to have more than 30 users using Kestra in the coming months. Even more: some of them will be less technical people. Thanks to the Kestra user interface and [role-based access control](../../docs/06.enterprise/03.auth/rbac/index.md) they could execute flows without the fear of messing up with other works.
 
 As part of a broader modernization of Quadis operation, Kestra would also be the support for the new data lake architecture.
 
@@ -107,6 +107,6 @@ Supported by such transformation, Quadis is looking to expand beyond Spain: Fran
 
 We’re eager to see how Quadis will continue to use Kestra and drive their car rental business, following best practices of software and architecture.
 
-Would you like to know how Kestra can streamline your critical operations? Join the [Slack community](https://kestra.io/slack) if you have any questions or need pieces of advice. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Would you like to know how Kestra can streamline your critical operations? Join the [Slack community](/slack) if you have any questions or need pieces of advice. Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

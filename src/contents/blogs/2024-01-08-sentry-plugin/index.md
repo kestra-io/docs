@@ -52,7 +52,7 @@ That will take you to this screen, where you can copy the DSN.
 
 **N.B. A DSN is all anyone needs to send traffic to your account, and you are responsible for the cost of the traffic, so guard this as carefully as you would any API Key or password.**
 
-**For more on working with secrets in Kestra, see our [Managing Secrets](https://kestra.io/docs/developer-guide/secrets) guide.**
+**For more on working with secrets in Kestra, see our [Managing Secrets](../../docs/07.enterprise/02.governance/secrets/index.md) guide.**
 
 ![sentry client](./sentry_dsn_client_keys.png)
 
@@ -391,7 +391,7 @@ triggers:
 
 ## Flow Execution States
 
-Per the [online documentation](https://kestra.io/docs/concepts/executions), there are nine possible states for any execution:
+Per the [online documentation](../../docs/05.workflow-components/03.execution/index.md), there are nine possible states for any execution:
 
 However, not all are available or make sense with the `ExecutionStatus` condition task. This task could be executed by the PAUSED state when someone manually pauses the task execution. The most common for states are FAILED and WARNING.
 
@@ -543,8 +543,8 @@ triggers:
 
 After you’ve tried the examples above in your own environment, you’ll see how easy it is for business or technical users to add Sentry.io monitoring and alerting. From dev to production, whatever the size of your shop, Kestra and Sentry help create issues from workflows, successes or failures, but tracking them throughout any of your issues’ lifecycle stages. Together, Kestra and Sentry are fully capable of delivering enterprise-grade workflow automation and end-to-end observability.
 
-Kestra provides dashboards and metrics directly in the UI, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](https://kestra.io/docs/administrator-guide/monitoring) or in our [Notification Blueprints](/blueprints?page=1&size=24&tags=17).
+Kestra provides dashboards and metrics directly in the UI, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](../../docs/10.administrator-guide/03.monitoring/index.md) or in our [Notification Blueprints](/blueprints?page=1&size=24&tags=17).
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack)
+If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](/slack)

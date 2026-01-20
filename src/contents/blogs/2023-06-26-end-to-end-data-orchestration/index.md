@@ -64,7 +64,7 @@ First, download Kestra's [Docker Compose file](https://raw.githubusercontent.com
 curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
 ```
 
-Then, run `docker compose up -d` and navigate to the UI under `http://localhost:8080/`. You can start [building your first flows](https://kestra.io/docs/getting-started) using the integrated code editor in the UI.
+Then, run `docker compose up -d` and navigate to the UI under `http://localhost:8080/`. You can start [building your first flows](../../docs/01.quickstart/index.md) using the integrated code editor in the UI.
 
 The UI ships with Blueprints, which provide ready-to-use flow examples. For instance, you can use [the following Blueprint](/blueprints/airbyte-sync-parallel-with-dbt) that combines all steps needed to orchestrate Airbyte, dbt, and Kestra:
 
@@ -150,5 +150,5 @@ triggers:
 
 ## Next steps
 
-This post covered how combining Airbyte, dbt, and Kestra can simplify data management. Using these open-core technologies, you can avoid vendor lock-in and get the most out of the Modern Data Stack. If you encounter anything unexpected while reproducing this demo, you can open [a GitHub issue](https://github.com/kestra-io/kestra) or [ask via Kestra Community Slack](https://kestra.io/slack). Lastly, give us [a GitHub star](https://github.com/kestra-io/kestra) if you like the project.
+This post covered how combining Airbyte, dbt, and Kestra can simplify data management. Using these open-core technologies, you can avoid vendor lock-in and get the most out of the Modern Data Stack. If you encounter anything unexpected while reproducing this demo, you can open [a GitHub issue](https://github.com/kestra-io/kestra) or [ask via Kestra Community Slack](/slack). Lastly, give us [a GitHub star](https://github.com/kestra-io/kestra) if you like the project.
 

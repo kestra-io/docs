@@ -202,7 +202,7 @@ Snowpipe remains a valuable tool for lightweight ingestion scenarios, but its sc
 With Kestra, you move beyond basic ingestion to build dynamic, event-driven workflows that  integrate with Snowflake. Whether it’s handling complex transformations, responding to real-time events, or managing downstream processes, Kestra ensures your data pipelines are both powerful and future-proof.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

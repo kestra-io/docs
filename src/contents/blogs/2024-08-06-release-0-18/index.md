@@ -9,22 +9,21 @@ author:
 image: ./main.png
 ---
 
-We are thrilled to announce Kestra 0.18.0, which introduces a host of enhancements to both [Open-Source](https://github.com/kestra-io/kestra) and [Enterprise Edition](https://kestra.io/enterprise).
+We are thrilled to announce Kestra 0.18.0, which introduces a host of enhancements to both [Open-Source](https://github.com/kestra-io/kestra) and [Enterprise Edition](/enterprise).
 
 The table below summarizes the highlights of this release.
 
-| Feature                          | Enhancement                                                                                                                                                                                                                            | Edition                          | Docs                                                        |
-|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|-------------------------------------------------------------|
-| **KV Store**                     | This major addition to Kestra's orchestration capabilities allows you to **store and retrieve key-value pairs** in tasks and triggers, enabling new use cases and bringing statefulness to otherwise stateless workflow execution. | Both Open-Source and Enterprise  | [Link](/docs/concepts/kv-store)                             |
-| **Outputs**                      | The new **Execution Outputs UI** makes it easy to inspect, preview and download your workflow artifacts even across many, often deeply nested outputs.                                                                                 | Both Open-Source and Enterprise  | [Link](/docs/workflow-components/outputs)                   |
-| **Namespaces**                   | The improved Namespace Overview, now also available in the Open Source version, provides a comprehensive view of all namespaces used in your flows without having to create those namespaces manually.                                 | Both Open-Source and Enterprise  | [Link](/docs/workflow-components/namespace)                 |
-| **Realtime Triggers**            | The improved Trigger UI allows you to view **logs** of each Realtime Trigger and **restart** it directly from the UI.                                                                                                                  | Both Open-Source and Enterprise  | [Link](/docs/workflow-components/triggers/realtime-trigger) |
-| **Task Runners**                 | Task Runners are out of Beta — you can safely use the `taskRunner` property in all script and CLI tasks in production at scale.                                                                                                        | Both Open-Source and Enterprise  | [Link](/docs/concepts/task-runners)                         |
-| **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](/docs/enterprise/scim)                               |
-| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](/docs/configuration-guide/database#sql-server)                               |
-| **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](/docs/enterprise/audit-logs)                         |
-| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](/docs/enterprise/secrets)                            |
-
+| Feature                          | Enhancement                                                                                                                                                                                                                            | Edition                          | Docs                                                      |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|-----------------------------------------------------------|
+| **KV Store**                     | This major addition to Kestra's orchestration capabilities allows you to **store and retrieve key-value pairs** in tasks and triggers, enabling new use cases and bringing statefulness to otherwise stateless workflow execution. | Both Open-Source and Enterprise  | [Link](../../docs/06.concepts/05.kv-store/index.md)                            |
+| **Outputs**                      | The new **Execution Outputs UI** makes it easy to inspect, preview and download your workflow artifacts even across many, often deeply nested outputs.                                                                                 | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/06.outputs/index.md)                 |
+| **Namespaces**                   | The improved Namespace Overview, now also available in the Open Source version, provides a comprehensive view of all namespaces used in your flows without having to create those namespaces manually.                                 | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/02.namespace/index.md)               |
+| **Realtime Triggers**            | The improved Trigger UI allows you to view **logs** of each Realtime Trigger and **restart** it directly from the UI.                                                                                                                  | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) |
+| **Task Runners**                 | Task Runners are out of Beta — you can safely use the `taskRunner` property in all script and CLI tasks in production at scale.                                                                                                        | Both Open-Source and Enterprise  | [Link](../../docs/task-runners/index.mdx)                       |
+| **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
+| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](/docs/configuration-guide/database#sql-server)                             |
+| **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
+| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
 
 If you'd like to see a 2-minute overview of the release highlights, check out the video below:
 
@@ -63,7 +62,7 @@ If you are on Enterprise Edition, make sure to add a `KVSTORE` permission to any
 
 Overall, the KV store is a powerful addition to Kestra's orchestration capabilities, allowing you to persist state and share data across flows and executions.
 
-Read more about the KV Store in our [documentation](/docs/concepts/kv-store).
+Read more about the KV Store in our [documentation]([](../../docs/06.concepts/05.kv-store/index.md).
 
 ---
 
@@ -77,7 +76,7 @@ Before Kestra 0.18.0, the `Namespaces` UI page suffered from the following issue
 
 The `Namespaces` page has been [fully redesigned](https://github.com/kestra-io/kestra/issues/3609) in Kestra 0.18.0 to address these issues. You will now see all namespaces used in any flow in a hierarchical structure, including nested child namespaces that can be expanded and collapsed. And we're excited to announce that this feature is now available in the open-source version as well.
 
-We have also added the `Editor` tab to the `Namespace` page, offering one more place from where you can access and manage [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files).
+We have also added the `Editor` tab to the `Namespace` page, offering one more place from where you can access and manage [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md).
 
 Here is how the new `Namespaces` overview page looks like in Kestra 0.18.0 (in both Open Source and Enterprise Edition):
 
@@ -107,7 +106,7 @@ Our SCIM integration allows you to automate the provisioning and de-provisioning
 
 ![scim](./scim.jpeg)
 
-At the time of this release, we have tested and [documented](/docs/enterprise/scim) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
+At the time of this release, we have tested and [documented]([](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
 
 ---
 
@@ -129,7 +128,7 @@ Our audit logs have undergone a comprehensive refactor in this release, making i
 
 You can now filter Audit Log events created by a specific `User`. Each audit log now additionally includes information on whether a given resource has been `Created`, `Updated` or `Deleted`. When you need to dive even deeper, click on the `Changes` icon to see a JSON diff of the changes displayed in a Git-like diff format, similar to the one you can see in the flow revision history.
 
-![audit_logs_diff](/docs/enterprise/audit_logs/audit_logs_diff.gif)
+![audit_logs_diff](../../docs/07.enterprise/02.governance/06.audit-logs/changes_diff.png)
 
 We've also introduced a couple of new log events, e.g. for Tenant-level changes (_when a tenant is created, renamed, or deleted_).
 
@@ -260,10 +259,10 @@ Here are the main enhancements to Task Runners added in this release:
 Task Runners in Kestra 0.18.0 offer more resilient file handling and more stability when recovering from failure in remote compute environments.
 
 :::alert{type="info"}
-Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../docs/06.enterprise/index.md) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
+Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/06.enterprise/index.md) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
 :::
 
-Read more about Task Runners in our [Documentation](../docs/task-runners/index.mdx).
+Read more about Task Runners in our [Documentation](../../docs/task-runners/index.mdx).
 
 ---
 
@@ -430,7 +429,7 @@ Here is what you need to adjust in your Docker image tags:
 - If you use the `develop-full` or `latest-full` image with all plugins, cut the `-full` suffix from your Docker image tag.
 - If you use the `develop` or `latest` image without plugins, add `-no-plugins` suffix to the image tag.
 
-For more details on that change, check the [Docker Image Tags documentation](../docs/02.installation/02.docker/index.md#docker-image-tags) and the Breaking Changes section of the [GitHub Release Notes](https://github.com/kestra-io/kestra/releases/tag/v0.18.0).
+For more details on that change, check the [Docker Image Tags documentation](../../docs/02.installation/02.docker/index.md#docker-image-tags) and the Breaking Changes section of the [GitHub Release Notes](https://github.com/kestra-io/kestra/releases/tag/v0.18.0).
 
 ### The `kestra-ee` binary has been renamed to `kestra`
 
@@ -456,6 +455,6 @@ Kestra's integration ecosystem keeps growing with every new release. The plugins
 
 This post covered new features and enhancements added in Kestra 0.18.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

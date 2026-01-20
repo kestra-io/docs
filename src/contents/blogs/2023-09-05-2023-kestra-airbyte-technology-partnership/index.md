@@ -47,7 +47,7 @@ The collaborative efforts offer a unified platform for end-to-end data orchestra
 
 ![dbt-airbyte-jobs](./dbt-job-airbyte.png)
 
-- **Efficient Data Management**: Learn how this collaboration supports an end-to-end data orchestration approach in [this blog post](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
+- **Efficient Data Management**: Learn how this collaboration supports an end-to-end data orchestration approach in [this blog post](../2023-06-26-end-to-end-data-orchestration/index.md).
 
 ### What You Can Achieve ###
 With the Kestra-Airbyte collaboration, users can perform a wide range of tasks:
@@ -62,10 +62,10 @@ With the Kestra-Airbyte collaboration, users can perform a wide range of tasks:
 
 This partnership provides a versatile toolkit for data professionals, extending the possibilities of data handling. The potential applications are large, aligning with various organizational needs and ensuring data-driven success. Discover more about this integration through our [documentation](/plugins/plugin-airbyte).
 
-If you want to go further with Kestra and Airbyte capabilities you can read this article about [Everything as Code for Data Infrastructure with Airbyte and Kestra Terraform Providers](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers) or [how to create an End-to-End Data Ingestion, Transformation and Orchestration pipeline with Airbyte, dbt and Kestra](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration)
+If you want to go further with Kestra and Airbyte capabilities you can read this article about [Everything as Code for Data Infrastructure with Airbyte and Kestra Terraform Providers](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers) or [how to create an End-to-End Data Ingestion, Transformation and Orchestration pipeline with Airbyte, dbt and Kestra](../2023-06-26-end-to-end-data-orchestration/index.md)
 
 You can also kickstart you Airbyte & Kestra Journey with our [Community Blueprints](/blueprints?q=airbyte)
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).

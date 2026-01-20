@@ -85,13 +85,13 @@ Having a control-plane like Kestra is key here: it allows one to manage differen
 
 While the lakehouse architecture reduces computing costs by a great factor, an equally crucial aspect is the human element of development.
 
-Kestra's intuitive, declarative syntax enhances productivity, enabling teams to focus more on innovation and less on the intricacies of orchestration. It facilitates the separation of business and orchestration logic through a fully managed control plane - either using a full web user interface or using code assets like Terraform resources or following [GitOps patterns](https://kestra.io/blogs/2024-02-06-gitops).
+Kestra's intuitive, declarative syntax enhances productivity, enabling teams to focus more on innovation and less on the intricacies of orchestration. It facilitates the separation of business and orchestration logic through a fully managed control plane - either using a full web user interface or using code assets like Terraform resources or following [GitOps patterns](../2024-02-06-gitops/index.md).
 
-To go further between the integration of DuckDB and Kestra you can check our article on [how to automate your data analyse usigin kestra and DuckDB](https://kestra.io/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb) or check out our article about [when you need to move from DuckDB to MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck)
+To go further between the integration of DuckDB and Kestra you can check our article on [how to automate your data analyse using kestra and DuckDB](../2023-04-25-automate-data-analysis-with-kestra-and-duckdb/index.md) or check out our article about [when you need to move from DuckDB to MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md)
 
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
 
 

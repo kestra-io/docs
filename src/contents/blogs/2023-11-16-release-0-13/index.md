@@ -15,7 +15,7 @@ We are excited to announce the release of Kestra 0.13.0, featuring two major add
 
 🔹 An embedded [Visual Studio Code](https://github.com/microsoft/vscode) Editor
 
-🔹 [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) and the `read()` function, enabling the orchestration of custom scripts and microservices with modular components
+🔹 [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md) and the `read()` function, enabling the orchestration of custom scripts and microservices with modular components
 
 🔹 Multi-tenancy in the Enterprise Edition, offering enhanced isolation and resource management
 
@@ -25,7 +25,7 @@ We are excited to announce the release of Kestra 0.13.0, featuring two major add
 
 🔹 The `ForEachItem` task for efficient data processing in micro-batches
 
-🔹 A flow-level `concurrency` setting to manage the number of [concurrent executions](https://kestra.io/docs/developer-guide/concurrency) and determine custom behavior upon limit breach
+🔹 A flow-level `concurrency` setting to manage the number of [concurrent executions](../../docs/05.workflow-components/14.concurrency/index.md) and determine custom behavior upon limit breach
 
 🔹 New notification plugins including OpsGenie (Atlassian), Sentry, PagerDuty, Zenduty, Discord, Twilio, WhatsApp, SendGrid, and GoogleChat
 
@@ -38,7 +38,7 @@ We are excited to announce the release of Kestra 0.13.0, featuring two major add
 
 🔹 Enhanced webhook filtering via `conditions`
 
-🔹 Improved access to `taskrun.value` in `WorkingDirectory` tasks used as child tasks of other [flowable](https://kestra.io/docs/tutorial/flowable) tasks
+🔹 Improved access to `taskrun.value` in `WorkingDirectory` tasks used as child tasks of other [flowable](../../docs/03.tutorial/index.mdxflowable) tasks
 
 🔹 Support for manual database migration processes and an option to disable automatic migrations, giving you more control over the database migration process in production environments.
 
@@ -51,7 +51,7 @@ Let’s explore these enhancements in detail.
 
 Imagine working on orchestration pipelines would be as effortless as editing local files using your favorite IDE, without having to worry about dependency management, packaging, or deployments. We're excited to introduce **the new Kestra Editor**, which makes that possible by bringing the Visual Studio Code IDE experience right into Kestra.
 
-This feature not only makes your work more efficient but also brings your YAML definitions together with your scripts, microservices, custom queries, and other project files (called [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files)) into a single, streamlined interface.
+This feature not only makes your work more efficient but also brings your YAML definitions together with your scripts, microservices, custom queries, and other project files (called [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md)) into a single, streamlined interface.
 
 ![vscode](./vscode.png)
 
@@ -77,7 +77,7 @@ The new editor is a significant step in bringing together your orchestration and
 
 Recognized as the most popular IDE [five years in a row](https://visualstudiomagazine.com/articles/2023/06/28/so-2023.aspx) in the [Stack Overflow Developer Survey](https://survey.stackoverflow.co/2023/), Visual Studio Code's integration into Kestra offers an intuitive environment for writing complex business logic and orchestrating it efficiently. Our decision to embed VS Code aligns with our commitment to providing a familiar and intuitive toolset to our users.
 
-Every script, query, or configuration file you add to the new embedded VS Code editor is managed in the backend as a [Namespace File](https://kestra.io/docs/developer-guide/namespace-files). You can think of Namespace Files as equivalent of a project in your local IDE or a copy of your Git repository. Namespace Files can hold Python modules, R or Node.js scripts, complex SQL queries, custom scripts, and many more. You can synchronize your Git repository with a specific namespace to orchestrate dbt data transformation jobs, Terraform or Ansible infrastructure, or any other project that contains code and configuration files.
+Every script, query, or configuration file you add to the new embedded VS Code editor is managed in the backend as a [Namespace File](../../docs/06.concepts/02.namespace-files/index.md). You can think of Namespace Files as equivalent of a project in your local IDE or a copy of your Git repository. Namespace Files can hold Python modules, R or Node.js scripts, complex SQL queries, custom scripts, and many more. You can synchronize your Git repository with a specific namespace to orchestrate dbt data transformation jobs, Terraform or Ansible infrastructure, or any other project that contains code and configuration files.
 
 ---
 
@@ -209,7 +209,7 @@ tasks:
 :::alert{type="info"}
 Whether you're dealing with large datasets or need to process items individually, `ForEachItem` offers a simple and resilient way to automate data processing at scale
 
-For detailed information on how to use that task, refer to the [ForEachItem task documentation](https://kestra.io/docs/developer-guide/tasks#foreachitem).
+For detailed information on how to use that task, refer to the [ForEachItem task documentation](../../docs/05.workflow-components/01.tasks/index.mdx#foreachitem).
 :::
 
 ---
@@ -308,7 +308,7 @@ This release introduces multi-tenancy in Kestra's Enterprise Edition. This featu
 1. **Environment management**: multi-tenancy allows for managing development, staging, and production environments within a single Kestra instance. This reduces the overhead of maintaining multiple instances, and makes it easy to switch between environments.
 2. **Data isolation**: teams, business units, or even different customers can operate in fully isolated environments while sharing the same Kestra instance along with the same Single Sign-On (SSO) provider. This separation ensures data privacy and security, a critical aspect for enterprise applications.
 3. **Resource isolation**: once you enable multi-tenancy, resources such as flows, triggers, executions, and RBAC are separated by tenant. This way, the same identifiers and namespaces can exist simultaneously in different tenants without interfering with each other. For example, two different tenants can have a `prod` namespace, fully isolated from each other.
-4. **Simple configuration**: multi-tenancy is not enabled by default to maintain backward compatibility. However, setting it up and creating tenants is straightforward. More information is available in the [Administrator Guide](https://kestra.io/docs/architecture#multi-tenancy).
+4. **Simple configuration**: multi-tenancy is not enabled by default to maintain backward compatibility. However, setting it up and creating tenants is straightforward. More information is available in the [Administrator Guide](../../docs/08.architecture/index.mdx).
 5. **Intuitive UI navigation**: the UI includes a tenant selection dropdown, allowing you to seamlessly switch between tenants. To ensure clear navigation, the tenant identifier is included in the URL at all times.
 
 ---
@@ -320,7 +320,7 @@ Tenants can be managed in several ways. You can create and manage tenants via UI
 A critical note for administrators: users who create a tenant are automatically assigned administrative rights for that tenant.
 
 :::alert{type="warning"}
-**A note to plugin authors**: due to the multi-tenancy feature, some Java APIs of Kestra have changed, so you may need to adapt your plugin. Noticeable changes are the `StorageInterface` on which each method now takes a `tenantId` as a parameter (_you can use the `null` tenant in tests_) and the `RunnerUtils` that takes a `tenantId` to run a flow (_also here, you can use `null` in tests_). Check [the following URL](https://github.com/kestra-io/plugin-notifications/commit/d8935b54395c6a213d8e844f004b3f3698281637#diff-0a44b7ad6627bafd72[…]435228407fc6edb6dcb93d91) for an example of what is needed to retrieve the `tenantId` in the notifications plugin. If you struggle to make your custom plugin compatible with the new multi-tenancy feature, don't hesitate to reach out to us via [Slack](https://kestra.io/slack), e.g. in a `#contributors` channel.
+**A note to plugin authors**: due to the multi-tenancy feature, some Java APIs of Kestra have changed, so you may need to adapt your plugin. Noticeable changes are the `StorageInterface` on which each method now takes a `tenantId` as a parameter (_you can use the `null` tenant in tests_) and the `RunnerUtils` that takes a `tenantId` to run a flow (_also here, you can use `null` in tests_). Check [the following URL](https://github.com/kestra-io/plugin-notifications/commit/d8935b54395c6a213d8e844f004b3f3698281637#diff-0a44b7ad6627bafd72[…]435228407fc6edb6dcb93d91) for an example of what is needed to retrieve the `tenantId` in the notifications plugin. If you struggle to make your custom plugin compatible with the new multi-tenancy feature, don't hesitate to reach out to us via [Slack](/slack), e.g. in a `#contributors` channel.
 :::
 
 ---
@@ -347,7 +347,7 @@ Kestra 0.13 brings a wide range of new notification plugins to send alerts and n
 
 We've also added plugins for a variety of other services and open-source tools.
 
-To avoid overwhelming you with details, we'll only list the new plugins in alphabetical order. For more information on how to use them, refer to the respective [Plugin Documentation](https://kestra.io/plugins) and [Blueprints](/blueprints).
+To avoid overwhelming you with details, we'll only list the new plugins in alphabetical order. For more information on how to use them, refer to the respective [Plugin Documentation](/plugins) and [Blueprints](/blueprints).
 
 1. [Ansible](/plugins/plugin-ansible)
 2. [Arrow Flight](/plugins/plugin-jdbc-arrow-flight)
@@ -377,7 +377,7 @@ To avoid overwhelming you with details, we'll only list the new plugins in alpha
 
 This post covered new features and enhancements added in Kestra 0.13.0, including multi-tenancy, concurrency limits, new `ForEachItem` task and the new embedded VS Code Editor. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 

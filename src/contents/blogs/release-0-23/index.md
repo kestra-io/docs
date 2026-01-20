@@ -167,7 +167,7 @@ Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage
 
 By default, all flow outputs are stored in the shared metadata database. With this new configuration, you can isolate outputs for each tenant or namespace, making sure that sensitive data is not accessible outside its intended scope.
 
-To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../docs/configuration/index.md) file:
+To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../../docs/configuration/index.md) file:
 
 ```yaml
 kestra:
@@ -681,12 +681,12 @@ We've expanded the ServiceNow plugin with two new tasks:
 
 ### Migration and Breaking Changes
 
-With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our [dedicated migration guide](https://kestra.io/docs/migration-guide/0.23.0).
+With this release, we've taken the opportunity to introduce several important breaking changes designed to improve reliability, maintainability, and long-term robustness of Kestra. These changes pave the way for a more secure and future-proof platform. For full migration scripts and details, please refer to our [dedicated migration guide](../../docs/11.migration-guide/0.23.0/index.mdx).
 
 :::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
-- [Open Source](../docs/11.migration-guide/0.23.0/tenant-migration-oss.md)
-- [Enteprise](../docs/11.migration-guide/ 0.23.0/tenant-migration-ee/index.md)
+- [Open Source](../../docs/11.migration-guide/0.23.0/tenant-migration-oss/index.md)
+- [Enteprise](../../docs/11.migration-guide/ 0.23.0/tenant-migration-ee/index.md)
 :::
 
 **Key changes include:**
@@ -707,16 +707,16 @@ Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Ke
   - SQL Server backend is no longer supported.
   - Manual user refresh is required to migrate the `Superadmin` property.
 
-For a complete list of changes and migration instructions, check the [migration guide](https://kestra.io/docs/migration-guide/0.23.0) and the Breaking Changes section in [Release Notes on GitHub](https://github.com/kestra-io/kestra/releases/tag/v0.23.0).
+For a complete list of changes and migration instructions, check the [migration guide](../../docs/11.migration-guide/0.23.0/index.mdx) and the Breaking Changes section in [Release Notes on GitHub](https://github.com/kestra-io/kestra/releases/tag/v0.23.0).
 
 ## Thanks to Our Contributors
 
-Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](/docs/01.getting-started/03.contributing.md), it's easier than ever to start contributing to Kestra.
+Thank you to everyone who contributed to this release through feedback, bug reports, and pull requests. If you want to become a Kestra contributor, check out our [Contributing Guide](../../docs/04.contribute-to-kestra/index.mdx) and the [list of good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues&utm_source=GitHub&utm_medium=github&utm_content=Good+First+Issues). With the [DevContainer support](../../docs/04.contribute-to-kestra/index.mdx), it's easier than ever to start contributing to Kestra.
 
 ## Next Steps
 
 This post covered new features and enhancements added in Kestra 0.23.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

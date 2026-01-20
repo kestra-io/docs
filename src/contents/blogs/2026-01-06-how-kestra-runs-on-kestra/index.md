@@ -12,11 +12,11 @@ image: ./main.png
 
 ## **How Kestra runs on Kestra**
 
-As Kestra’s only analytics engineer, I run a [production-grade ELT stack](https://kestra.io/docs/how-to-guides/etl-pipelines) end-to-end. I rely on PyAirbyte and custom dltHub sources to ingest data from platforms like PostHog, HubSpot, and Pylon into BigQuery, transform it with dbt, and visualize it in Lightdash. This streamlined pipeline enables me to support sales, marketing, product, and leadership teams from a single, cohesive system.
+As Kestra’s only analytics engineer, I run a [production-grade ELT stack](../../docs/15.how-to-guides/etl-pipelines/index.md) end-to-end. I rely on PyAirbyte and custom dltHub sources to ingest data from platforms like PostHog, HubSpot, and Pylon into BigQuery, transform it with dbt, and visualize it in Lightdash. This streamlined pipeline enables me to support sales, marketing, product, and leadership teams from a single, cohesive system.
 
 This works because Kestra treats my Python scripts, SQL transformations, and bash utilities as first-class citizens—no refactoring required. Unlike other orchestrators, which expect code to conform to their framework patterns, Kestra orchestrates my existing tooling exactly as written. For enterprises, this means migrating workflows doesn't require rewriting your codebase or training teams on new abstractions.
 
-When the [orchestration layer](https://kestra.io/blogs/2023-09-13-choreography#orchestration-is-the-core-layer-underneath-data) stays out of the way, I get to spend my time doing the work analytics engineers actually want to do: understanding the business, answering internal questions, and building things my colleagues actually use.
+When the [orchestration layer](../2023-09-13-choreography#orchestration-is-the-core-layer-underneath-data/index.md) stays out of the way, I get to spend my time doing the work analytics engineers actually want to do: understanding the business, answering internal questions, and building things my colleagues actually use.
 
 ## **Our data stack**
 
@@ -27,23 +27,23 @@ Here's what Kestra's data infrastructure actually looks like:
 **Sources:**
 
 - PostHog (product analytics)
-- [HubSpot](https://kestra.io/plugins/plugin-hubspot) (CRM)
+- [HubSpot](/plugins/plugin-hubspot) (CRM)
 - Pylon (ticketing)
 - Common Room (community data)
 - Internal application data
 
 **Ingestion:**
 
-- [PyAirbyte](https://kestra.io/plugins/plugin-airbyte)
-- [dltHub](https://kestra.io/plugins/plugin-dlt)
+- [PyAirbyte](/plugins/plugin-airbyte)
+- [dltHub](/plugins/plugin-dlt)
 
 **Warehouse:**
 
-- [BigQuery](https://kestra.io/plugins/plugin-gcp/bigquery)
+- [BigQuery](/plugins/plugin-gcp/bigquery)
 
 **Transformation:**
 
-- [dbt Core](https://kestra.io/plugins/plugin-dbt)
+- [dbt Core](/plugins/plugin-dbt)
 
 **Visualization:**
 
@@ -55,7 +55,7 @@ Here's what Kestra's data infrastructure actually looks like:
 
 ## **The architecture decisions that matter**
 
-In Kestra, workflows are [defined declaratively](https://kestra.io/blogs/declarative-from-day-one) in `YAML` and execution happens in [Docker](https://kestra.io/docs/installation/docker) containers. (New to `YAML`? We have an [introductory blog post here.](https://kestra.io/blogs/2023-11-27-yaml-crashcourse)) Orchestration logic is kept separate from application code by design. That separation makes it easier to orchestrate data pipelines that span [multiple languages](https://kestra.io/docs/scripts) and tools.
+In Kestra, workflows are [defined declaratively](../declarative-from-day-one) in `YAML` and execution happens in [Docker](../../docs/02.installation/02.docker/index.md) containers. (New to `YAML`? We have an [introductory blog post here.](../2023-11-27-yaml-crashcourse/index.md) Orchestration logic is kept separate from application code by design. That separation makes it easier to orchestrate data pipelines that span [multiple languages](../../docs/16.scripts/index.mdx) and tools.
 
 This is important for enterprise environments, because data pipelines routinely coordinate SQL transformations, Python-based ingestion, and language-specific services that teams rely on for different parts of the stack.
 
@@ -63,7 +63,7 @@ In our case, this shows up directly in how the analytics stack is wired together
 
 ### **Any language, one workflow**
 
-In Kestra, a single [flow](https://kestra.io/docs/workflow-components/flow) can:
+In Kestra, a single [flow](../../docs/05.workflow-components/01.flow/index.md) can:
 
 - Check out a GitHub repository
 - Build a Docker image
@@ -80,7 +80,7 @@ Kestra simply ties these pieces together without introducing additional layers t
 
 ### **Subflows for reusability**
 
-When enterprises scale, the number of pipelines grow and the same operational steps repeat everywhere: building containers, wiring credentials, running dbt, handling failures consistently. Duplicating those steps makes changes harder and increases the risk of inconsistencies, so Kestra supports reuse at the workflow level through **[subflows](https://kestra.io/docs/workflow-components/subflows)**.
+When enterprises scale, the number of pipelines grow and the same operational steps repeat everywhere: building containers, wiring credentials, running dbt, handling failures consistently. Duplicating those steps makes changes harder and increases the risk of inconsistencies, so Kestra supports reuse at the workflow level through **[subflows](../../docs/05.workflow-components/10.subflows/index.md)**.
 
 A subflow is a complete workflow that can be invoked by other workflows. This lets us standardize how pipelines run without copying configuration everywhere, so adding or modifying pipelines stays cheap as the stack grows.
 
@@ -114,15 +114,15 @@ This is the kind of reuse analytics engineering actually needs: a way to central
 
 ### **Smart alerting by namespace**
 
-In Kestra, every workflow belongs to a [**namespace**](https://kestra.io/docs/workflow-components/namespace), and that namespace is visible to the orchestrator at runtime.
+In Kestra, every workflow belongs to a [**namespace**](../../docs/05.workflow-components/02.namespace/index.md), and that namespace is visible to the orchestrator at runtime.
 
 We use namespaces to reflect ownership and purpose in the analytics stack. Data pipelines live in one namespace, product and internal workflows live in other namespaces.
 
-Because namespaces are part of the orchestration model, we can build [**alerting**](https://kestra.io/docs/how-to-guides/alerting) once, at the system level. A single monitoring flow watches execution states across all workflows.
+Because namespaces are part of the orchestration model, we can build [**alerting**](../../docs/15.how-to-guides/alerting/index.md) once, at the system level. A single monitoring flow watches execution states across all workflows.
 
-When one of our workflows fails or enters a warning state, the monitoring flow inspects the namespace and routes failures to its respective [Slack](https://kestra.io/plugins/plugin-slack) channel. Data pipeline failures go to #data-alerts, and product-related failures go to #product-alerts.
+When one of our workflows fails or enters a warning state, the monitoring flow inspects the namespace and routes failures to its respective [Slack](/plugins/plugin-slack) channel. Data pipeline failures go to #data-alerts, and product-related failures go to #product-alerts.
 
-The routing logic is a small set of conditional [**tasks**](https://kestra.io/docs/workflow-components/tasks) defined in ~30 lines of `YAML`:
+The routing logic is a small set of conditional [**tasks**](../../docs/05.workflow-components/01.tasks/index.mdx) defined in ~30 lines of `YAML`:
 
 ```yaml
 id: slack
@@ -159,19 +159,19 @@ triggers:
 
 As workflows are added or ownership changes, the alerting model remains stable because it’s driven by namespace, not by individual pipelines.
 
-Kestra also provides ready-to-use [**Blueprints**](https://kestra.io/blueprints) for common patterns like this, making it easy to implement monitoring, alerting, and other operational workflows without starting from scratch.
+Kestra also provides ready-to-use [**Blueprints**](/blueprints) for common patterns like this, making it easy to implement monitoring, alerting, and other operational workflows without starting from scratch.
 
 ### **Environment separation through Terraform and tenants**
 
-All our flows are deployed via [**Terraform**](https://kestra.io/docs/terraform) for one simple reason: Kestra’s model maps cleanly onto **infrastructure-as-code** practices.
+All our flows are deployed via [**Terraform**](../../docs/13.terraform/index.mdx) for one simple reason: Kestra’s model maps cleanly onto **infrastructure-as-code** practices.
 
-Flows, namespaces, [**schedules**](https://kestra.io/docs/workflow-components/triggers/schedule-trigger), and [**secrets**](https://kestra.io/docs/concepts/secret) in Kestra are all declarative and environment-scoped. That makes them a natural fit for being managed alongside the rest of our infrastructure, rather than existing as state hidden in a UI or embedded in application code.
+Flows, namespaces, [**schedules**](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md), and [**secrets**](../../docs/06.concepts/04.secret/index.md) in Kestra are all declarative and environment-scoped. That makes them a natural fit for being managed alongside the rest of our infrastructure, rather than existing as state hidden in a UI or embedded in application code.
 
-In our setup, workflow definitions live in [**Git**](https://kestra.io/plugins/plugin-git) and are promoted [from development to production](https://kestra.io/docs/best-practices/from-dev-to-prod) through Terraform. We maintain separation between development and production environments through Terraform state, ensuring changes are tested before they reach production. Terraform owns the deployment lifecycle, while Kestra remains the execution and coordination layer.
+In our setup, workflow definitions live in [**Git**](/plugins/plugin-git) and are promoted [from development to production](../../docs/14.best-practices/1.from-dev-to-prod/index.md) through Terraform. We maintain separation between development and production environments through Terraform state, ensuring changes are tested before they reach production. Terraform owns the deployment lifecycle, while Kestra remains the execution and coordination layer.
 
-For enterprises requiring stronger isolation, Kestra Enterprise provides [**tenants**](https://kestra.io/docs/enterprise/governance/tenants)—fully isolated environments within a single Kestra instance. Each tenant gets its own namespace hierarchy, execution isolation, and access controls. This enables multi-team deployments where different business units can operate independently while sharing the same orchestration infrastructure.
+For enterprises requiring stronger isolation, Kestra Enterprise provides [**tenants**](../../docs/07.enterprise/02.governance/tenants/index.md)—fully isolated environments within a single Kestra instance. Each tenant gets its own namespace hierarchy, execution isolation, and access controls. This enables multi-team deployments where different business units can operate independently while sharing the same orchestration infrastructure.
 
-For example, our secrets flow from [**GCP Secret Manager**](https://kestra.io/plugins/plugin-gcp) into Terraform and then into Kestra. There’s no secondary configuration layer or ambiguity about what’s deployed where. Orchestration is treated like infrastructure, using the same patterns we rely on everywhere else.
+For example, our secrets flow from [**GCP Secret Manager**](/plugins/plugin-gcp) into Terraform and then into Kestra. There’s no secondary configuration layer or ambiguity about what’s deployed where. Orchestration is treated like infrastructure, using the same patterns we rely on everywhere else.
 
 For a small analytics team (n=1), this matters because it removes operational risk. One person can make changes confidently without accidentally breaking production.
 
@@ -195,4 +195,4 @@ The job of an orchestrator is to adapt to that complexity. It should coordinate 
 
 That’s the model Kestra is built around. It’s what enables me to run our entire analytics operation solo. It’s the setup that allows teams to move fast when the business needs answers.
 
-If you’re curious to dig deeper, **[book a demo](https://kestra.io/demo)** to see how Kestra can support your analytics stack.
+If you’re curious to dig deeper, **[book a demo](/demo)** to see how Kestra can support your analytics stack.

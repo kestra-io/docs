@@ -66,7 +66,7 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.mdx) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
+And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../../docs/task-runners/index.mdx) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
 
 Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` .
 
@@ -275,6 +275,6 @@ tasks:
 
 When we execute this, we'll get the same result in the terminal but using a completely different programming language - and this works for any other language too! This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra. Another way to view it is you can easily change your tech stack without having to completely rebuild your workflows.
 
-This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../docs/16.scripts/index.md).
+This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../../docs/16.scripts/index.md).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

@@ -43,4 +43,4 @@ With LTS, Kestra offers stability and predictability for production, while allow
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
-For questions or feedback, join [our Slack community](http://kestra.io/slack) or open an issue on GitHub.
+For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.

@@ -65,7 +65,7 @@ It demonstrates how Kestra is not only a data orchestrator for analytics: it can
 
 ### Great User Experience
 
-Locxia’s team made full use of [Kestra's user interface](https://kestra.io/docs/user-interface-guide). The platform's topology view was instrumental in managing Locxia's extensive data workflows. It gave the team an immediate visual representation of task dependencies, improving their understanding of the entire data pipeline. This holistic perspective facilitated the planning and execution of necessary modifications effectively.
+Locxia’s team made full use of [Kestra's user interface](../../docs/09.ui/index.mdx). The platform's topology view was instrumental in managing Locxia's extensive data workflows. It gave the team an immediate visual representation of task dependencies, improving their understanding of the entire data pipeline. This holistic perspective facilitated the planning and execution of necessary modifications effectively.
 
 A standout feature appreciated by the Ntico developers was Kestra's openness to customization: if anything needed custom development, they could bring their own business logic and technical needs thanks to Docker support. Hence, they have the total freedom to create their own pipelines and build new systems quickly.
 Moreover, they develop flows in the proper user interface - allowing to limit context-switching with integrated documentation and full topology view. They also follow best practices for continuous integration and development thanks to the integration with GitHub Action.

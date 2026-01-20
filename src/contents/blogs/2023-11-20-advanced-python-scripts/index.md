@@ -323,6 +323,6 @@ The latter allows you to write and edit Python code straight from the Kestra UI,
 
 **Whichever one you choose, you won't go wrong.**
 
-Make sure to **stay tuned** to the [Kestra blog](https://kestra.io/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
+Make sure to **stay tuned** to the [Kestra blog](../../../pages/blogs/index.astro) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

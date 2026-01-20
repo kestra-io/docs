@@ -259,7 +259,7 @@ Ready to get started? Check out our [AI Agent documentation](/docs/ai-tools/ai-a
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
-For questions or feedback, join [our Slack community](http://kestra.io/slack) or open an issue on GitHub.
+For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.
 
 For a demo of AI Agents in action, check out the video below:
 

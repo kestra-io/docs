@@ -29,7 +29,7 @@ Here's a more detailed breakdown of the workflow:
 
 1. **Data ingestion with Kestra**: the workflow starts by ingesting raw data from an HTTP REST API into BigQuery. The dataset includes customers, orders, order items, product details, stores, and supplies. Each dataset is fetched and stored as a `.parquet` file and loaded into its own BigQuery table.
 
-2. **Transformation with dbt**: once the data is loaded into BigQuery, we use **dbt** to transform it. For example, we use dbt to join datasets, create aggregate tables, and apply business logic to make the data ready for analysis. A critical part of this process is generating a `manifest.json` file, which dbt uses to track the state of the models. Kestra stores this manifest in a [KV Store](https://kestra.io/docs/concepts/kv-store), so the next time the workflow runs, we don’t need to re-run unchanged models.
+2. **Transformation with dbt**: once the data is loaded into BigQuery, we use **dbt** to transform it. For example, we use dbt to join datasets, create aggregate tables, and apply business logic to make the data ready for analysis. A critical part of this process is generating a `manifest.json` file, which dbt uses to track the state of the models. Kestra stores this manifest in a [KV Store](../../docs/06.concepts/05.kv-store), so the next time the workflow runs, we don’t need to re-run unchanged models.
 
 3. **Forecasting on Modal**: after the transformation, we trigger a forecasting model using **Modal**. This is where serverless compute comes into play — Modal dynamically provisions the necessary resources (with requested CPU, memory, etc.) based on user inputs. If you need more CPU for a large dataset, you simply select it in the dropdown menu in the UI when running the workflow, and Kestra will pass that information to Modal. The forecasted data is stored in BigQuery, and the final interactive HTML report is stored in a Google Cloud Storage (GCS) bucket.
 
@@ -64,7 +64,7 @@ Now that we covered what the project does and how it's structured, let's highlig
 
 Serverless is often associated with a tangled mess of functions and services that are hard to manage and debug. But it doesn't have to be that way. With Kestra, you can create structured, modular workflows that are easy to understand, maintain, and scale.
 
-Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger), [tenants](../docs/06.enterprise/02.governance/tenants/index.md) and [namespaces](https://kestra.io/docs/workflow-components/namespace) you can bring order, structure and governance to serverless workflows.
+Using [labels](../../docs/05.workflow-components/08.labels/index.md), [subflows](../../docs/05.workflow-components/10.subflows/index.md), [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md), [tenants](../../docs/06.enterprise/02.governance/tenants/index.md) and [namespaces](../../docs/05.workflow-components/02.namespace/index.md) you can bring order, structure and governance to serverless workflows.
 - Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can easily monitor your serverless data pipelines.
 - **Subflows** let you encapsulate common tasks and reuse them across multiple flows.
 - **Event triggers** allow you to start a workflow as soon as a new file arrives in a cloud storage bucket or a new message is received in your Pub/Sub topic.
@@ -72,7 +72,7 @@ Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](ht
 
 ### Interactivity with Conditional Inputs
 
-One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resource requests, or customize the forecast output. Here’s why this flexibility is valuable:
+One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](../../docs/05.workflow-components/05.inputs/index.md#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resource requests, or customize the forecast output. Here’s why this flexibility is valuable:
 
 - **On-the-fly Adjustments**: you don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that value at runtime or configure it in a `Schedule` trigger definition as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally enter the wrong values or run the flow with invalid parameters. The strongly typed inputs introduce governance and guardrails to ensure that only valid inputs are accepted.
 
@@ -94,15 +94,15 @@ triggers:
 
 - **Skip Unnecessary Tasks**: some tasks don’t always need to run. For example, if the ingestion process hasn’t changed, you can skip it by setting the `run_ingestion` input to `false`. Kestra's conditional logic ensures tasks are executed only when necessary, saving time and compute resources.
 
-- **Dynamic Resource Allocation**: Kestra’s interactive workflows make it easy to fine-tune input parameters on the fly, depending on the size of your dataset or the complexity of your model. The dbt project already runs on serverless compute with BigQuery, but you can additionally scale the dbt model parsing process to run on serverless compute such as AWS ECS Fargate, Google Cloud Run, or Azure Batch using Kestra's [Task Runners](https://kestra.io/docs/task-runners).
+- **Dynamic Resource Allocation**: Kestra’s interactive workflows make it easy to fine-tune input parameters on the fly, depending on the size of your dataset or the complexity of your model. The dbt project already runs on serverless compute with BigQuery, but you can additionally scale the dbt model parsing process to run on serverless compute such as AWS ECS Fargate, Google Cloud Run, or Azure Batch using Kestra's [Task Runners](../../docs/task-runners/index.mdx).
 
 ### Storing State with Kestra
 
-Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily rerun any part of the pipeline if any task fails, e.g. using one of our most popular 🔥 [Replay feature](https://kestra.io/docs/concepts/replay) allowing you to rerun a flow from any chosen task.
+Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily rerun any part of the pipeline if any task fails, e.g. using one of our most popular 🔥 [Replay feature](../../docs/06.concepts/10.replay/index.md) allowing you to rerun a flow from any chosen task.
 
-For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](https://kestra.io/docs/concepts/kv-store). This file contains information about materialized tables, so we can avoid rerunning dbt models that haven't changed since the last run. This is a notable time-saver, especially when working with large datasets or complex transformations.
+For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](../../docs/06.concepts/05.kv-store). This file contains information about materialized tables, so we can avoid rerunning dbt models that haven't changed since the last run. This is a notable time-saver, especially when working with large datasets or complex transformations.
 
-Additionally, Kestra captures logs, metrics and outputs at each stage of the workflow. This provides visibility into what happened during serverless workflow execution. If something goes wrong, Kestra can [automatically retry](https://kestra.io/docs/workflow-components/retries) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](https://kestra.io/docs/workflow-components/outputs) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
+Additionally, Kestra captures logs, metrics and outputs at each stage of the workflow. This provides visibility into what happened during serverless workflow execution. If something goes wrong, Kestra can [automatically retry](../../docs/05.workflow-components/12.retries/index.md) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](../../docs/05.workflow-components/06.outputs/index.md) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
 
 ### Future-Proof Your Data Platform
 
@@ -116,9 +116,9 @@ The power of this architecture lies in combining serverless infrastructure with 
 
 The best part about Kestra is that everything works out of the box. Thanks to the built-in plugins, you don’t have to fight with Python dependencies to install dbt or Modal — plugins are pre-installed and ready to use. The powerful UI lets you interactively adjust workflow inputs, skip steps if needed, and easily track all output artifacts without jumping through hoops. Adding Modal and BigQuery to the mix provides serverless compute on-demand and a scalable data warehouse to future-proof your data platform.
 
-If you want to give this setup a try, you can find the entire code for this project in the [kestra-io/serverless](https://github.com/kestra-io/serverless) repository. [Launch Kestra](https://kestra.io/docs/quickstart#start-kestra) in Docker, add the flow from that GitHub repository, and run it. That's all you need to get started with serverless, interactive workflows.
+If you want to give this setup a try, you can find the entire code for this project in the [kestra-io/serverless](https://github.com/kestra-io/serverless) repository. [Launch Kestra](../../docs/01.quickstart/index.md) in Docker, add the flow from that GitHub repository, and run it. That's all you need to get started with serverless, interactive workflows.
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 

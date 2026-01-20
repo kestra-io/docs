@@ -314,6 +314,6 @@ triggers:
 
 ## What’s Next
 
-Did you find this useful for getting started with Kestra? Let us know via [Slack](https://kestra.io/slack)!
+Did you find this useful for getting started with Kestra? Let us know via [Slack](/slack)!
 
-If you want to learn more about Kestra, check out our [documentation](https://kestra.io/docs) or [request a demo](https://kestra.io/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).
+If you want to learn more about Kestra, check out our [documentation](/docs) or [request a demo](/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).

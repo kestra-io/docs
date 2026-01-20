@@ -47,15 +47,15 @@ Bring Kestra into your CI/CD pipelines using Terraform Cloud or GitHub Actions. 
 
 **Leroy Merlin France** has significantly improved its workflow automation process by integrating Kestra and Terraform, both employing declarative language and fully embracing Git-based version control. They used Terraform for automated deployments of BigQuery assets like datasets, tables, views, and ACLs, all part of a streamlined CI/CD process.
 
-Upon adopting Kestra, a custom Terraform provider was developed to bring the same level of version control and automation to Kestra’s resources. This harmonized architecture has led to over **5 million pipeline executions** each month, more than **4.000+ data flows created**, and a staggering 900% increase in data activity, all while fostering team-wide confidence during production deployments. Learn more about this use case in our [Data Mesh case study](https://kestra.io/blogs/2023-08-16-datamesh).
+Upon adopting Kestra, a custom Terraform provider was developed to bring the same level of version control and automation to Kestra’s resources. This harmonized architecture has led to over **5 million pipeline executions** each month, more than **4.000+ data flows created**, and a staggering 900% increase in data activity, all while fostering team-wide confidence during production deployments. Learn more about this use case in our [Data Mesh case study](../2023-08-16-datamesh/index.md).
 
 ---
 
 ## What’s Next
 
-Our collaboration is just the beginning. Your insights and contributions can greatly influence the utility and success of this integration. Share your feedback via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+Our collaboration is just the beginning. Your insights and contributions can greatly influence the utility and success of this integration. Share your feedback via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you want to learn more, dive into Kestra's Terraform Provider [Documentation](https://kestra.io/docs/terraform).
+If you want to learn more, dive into Kestra's Terraform Provider [Documentation](../../docs/13.terraform/index.mdx).
 
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).

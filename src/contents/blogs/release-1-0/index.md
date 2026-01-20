@@ -326,7 +326,7 @@ These changes make it easier to:
 - Scale to production with `kestra` chart connected to a managed database and object storage.
 - Customize your deployments.
 
-The new Helm Charts remove friction for both quick evaluations and production-ready deployments. Check the [migration guide](https://kestra.io/docs/migration-guide/1.0.0/helm-charts.md) for details on moving from the old chart to the new ones.
+The new Helm Charts remove friction for both quick evaluations and production-ready deployments. Check the [migration guide](../../docs/11.migration-guide/1.0.0/helm-charts/index.md) for details on moving from the old chart to the new ones.
 
 ---
 
@@ -553,4 +553,4 @@ This post highlighted the new features and enhancements introduced in Kestra 1.0
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
-For questions or feedback, join [our Slack community](http://kestra.io/slack) or open an issue on GitHub.
+For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.

@@ -361,13 +361,13 @@ After the migration completes, revert to the standard startup command to run the
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
-Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](https://kestra.io/docs/migration-guide) for complete upgrade instructions.
+Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](../../docs/11.migration-guide/1.1.0/index.mdx) for complete upgrade instructions.
 :::
 
 ## Next Steps
 
 This post highlighted the new features and enhancements introduced in Kestra 1.1. Which updates are most exciting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

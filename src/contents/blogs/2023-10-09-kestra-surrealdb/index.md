@@ -362,7 +362,7 @@ And that's how Kestra integrates with SurrealDB - let's wrap things up next.
 ---
 
 ## Summing up Kestra and SurrealDB
-Kestra's plugin library grows by the day, and every [new release](https://kestra.io/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda) packs a ton of features attractive to both individual and [enterprise users](https://kestra.io/enterprise). Combine that with the fact that you don't have to stick to a programming language to write and schedule data flows, and you'll get the idea of why more and more users are switching from competing data platforms.
+Kestra's plugin library grows by the day, and every [new release](../2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/index.md) packs a ton of features attractive to both individual and [enterprise users](/enterprise). Combine that with the fact that you don't have to stick to a programming language to write and schedule data flows, and you'll get the idea of why more and more users are switching from competing data platforms.
 
 Today's article showed you how simple the integration with SurrealDB is, and how it's actually faster to write the code than it is to describe the functionalities in plain English - especially with the last example.
 

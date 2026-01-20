@@ -48,12 +48,12 @@ The separation of concerns in your application and orchestration layer helps you
 ![git clone](./git-clone.png)
 
 
-- [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files): Kestra offers an embedded Code editor where you can store any kind of files. This is very useful when you want to inject custom scripts into your orchestration layer without the burden of having an unreadable YAML file.
+- [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md): Kestra offers an embedded Code editor where you can store any kind of files. This is very useful when you want to inject custom scripts into your orchestration layer without the burden of having an unreadable YAML file.
 
 ![namespace file](./namespace-file.png)
 
 
-- [Custom Docker image](https://kestra.io/docs/developer-guide/scripts/custom-docker-image): one can build its own Docker image with business logic built in it. As script tasks in Kestra allow passing any docker image, it’s easy to build custom applications and orchestrate them in Kestra.
+- [Custom Docker image](../../docs/16.scripts/04.custom-docker-image/index.md): one can build its own Docker image with business logic built in it. As script tasks in Kestra allow passing any docker image, it’s easy to build custom applications and orchestrate them in Kestra.
 
 ```
 FROM python:3.11-slim
@@ -111,6 +111,6 @@ Having a robust, fast, and consistent platform overcomes the challenges posed by
 Applying GitOps aims to provide support for projects to be consistent, manageable, and transparent. That’s what Kestra provides too.
 
 Are you already implementing GitOps in your projects? What are the benefits?
-Please share your views in [Kestra’s Slack](https://kestra.io/slack) channels.
+Please share your views in [Kestra’s Slack](/slack) channels.
 
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

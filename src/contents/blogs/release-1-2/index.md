@@ -129,7 +129,7 @@ tasks:
 
 Common use cases include data pipeline orchestration with automatic lineage tracking, infrastructure as code management, multi-environment resource management via metadata tagging, and data governance initiatives that require complete audit trails.
 
-This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness or auto-emit assets for plugins, along with additional integrations. For more documentation and examples, see the [Assets documentation](https://kestra.io/docs/enterprise/governance/assets).
+This first release establishes a foundation for resource management, with future updates planned to bring new capabilities such as trigger on asset freshness or auto-emit assets for plugins, along with additional integrations. For more documentation and examples, see the [Assets documentation](../../docs/07.enterprise/02.governance/01.assets/index.md).
 
 
 <div class="video-container">
@@ -158,7 +158,7 @@ extend:
         - value3
 ```
 
-All Kestra [input types](/docs/workflow-components/inputs) are supported. These arguments automatically generate a guided UI form.
+All Kestra [input types](../../docs/05.workflow-components/05.inputs/index.md) are supported. These arguments automatically generate a guided UI form.
 
 ### Use Template Arguments
 
@@ -482,7 +482,7 @@ After the migration completes, revert to the standard startup command to run the
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
-Check the [migration guide](https://kestra.io/docs/migration-guide/1.2.0) for complete upgrade instructions.
+Check the [migration guide](../../docs/11.migration-guide/1.2.0/index.mdx) for complete upgrade instructions.
 :::
 
 
@@ -490,6 +490,6 @@ Check the [migration guide](https://kestra.io/docs/migration-guide/1.2.0) for co
 
 This post highlighted the new features and enhancements introduced in Kestra 1.2. Which updates are most exciting to you? Are there additional capabilities you'd like to see in future releases? We welcome your feedback.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).

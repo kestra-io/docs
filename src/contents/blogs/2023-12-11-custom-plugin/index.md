@@ -56,7 +56,7 @@ There are two notable approaches here:
 
 Choosing one or the other depends on the situation and the developer's expertise. Both provide straightforward ways to create custom modular components in your workflows.
 
-Alternatively, you could build custom Python scripts (especially using the [embedded Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
+Alternatively, you could build custom Python scripts (especially using the [embedded Code Editor](../../docs/06.concepts/02.namespace-files/index.md) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
 
 ![flow subflow](./flow_subflow.jpg)
 
@@ -66,6 +66,6 @@ The creation of reusable components is crucial in software development. Kestra's
 
 Teams, whether proficient in Java, preferring exclusive work with Python, or utilizing any other language, can utilize Kestra to actively create custom plugins and subflows and interact with these components using YAML syntax.
 
-If you're interested in developing your own plugin, make sure to check [this documentation](https://kestra.io/docs/plugin-developer-guide). We would love to hear from you and learn about your use case, so don’t hesitate to share your ideas or questions in the [Slack community](http://kestra.io/slack).
+If you're interested in developing your own plugin, make sure to check [this documentation](../../docs/plugin-developer-guide/index.mdx). We would love to hear from you and learn about your use case, so don’t hesitate to share your ideas or questions in the [Slack community](/slack).
 
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository and give us a star](https://github.com/kestra-io/kestra) if you like the project.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository and give us a star](https://github.com/kestra-io/kestra) if you like the project.

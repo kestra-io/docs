@@ -64,11 +64,11 @@ With Kestra's new Git integration features, managing your version control has ne
 
 **Ready to Unlock Your GitOps Superpowers?**
 
-- [Read the Documentation](https://kestra.io/docs/developer-guide/git): Dive into our comprehensive guides and learn how to implement and optimize your Git workflows with Kestra.
+- [Read the Documentation](../../docs/version-control-cicd/04.git/index.md): Dive into our comprehensive guides and learn how to implement and optimize your Git workflows with Kestra.
 - [Watch the Video Playlist](https://youtu.be/OPlNKQZFeho): Follow our step-by-step video tutorials and get up to speed quickly.
 
 ---
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the [Slack community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

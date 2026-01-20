@@ -9,7 +9,7 @@ author:
 image: ./main.jpg
 ---
 
-Following the announcement of our [partnership with Snowflake](https://kestra.io/blogs/2023-09-25-kestra-snowflake-partnership), we've witnessed a surge in the usage of our plugin. An increasing number of companies are now leveraging Kestra to orchestrate their Snowflake data lakehouses, transforming how they manage their data at scale. This collaboration has significantly improved how data is managed at scale, offering Kestra users advanced capabilities for orchestration within Snowflake's ecosystem.
+Following the announcement of our [partnership with Snowflake](../2023-09-25-kestra-snowflake-partnership/index.md), we've witnessed a surge in the usage of our plugin. An increasing number of companies are now leveraging Kestra to orchestrate their Snowflake data lakehouses, transforming how they manage their data at scale. This collaboration has significantly improved how data is managed at scale, offering Kestra users advanced capabilities for orchestration within Snowflake's ecosystem.
 
 ### Inside Snowflake's Cloud-Native Capabilities
 
@@ -119,6 +119,6 @@ The synergy between Kestra and Snowflake through this plugin has opened new aven
 
 As we continue to enhance this integration, Kestra users can expect even more features designed to maximize the value of their data within Snowflake's platform.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Join the Slack [community](/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://x.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

@@ -53,7 +53,7 @@ YAML uses Python-style indentation to structure key-value pairs into arbitrarily
 
 The indentation is always **two spaces** rather than tabs for portability reasons. This is a deliberate design choice to avoid issues with different tab sizes on different systems. Therefore, **two whitespaces** (_literal `space` characters_) are used **instead of tabs** for indentation.
 
-For example, the following YAML snippet defining which [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) should be included or excluded in a [Python script task](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) has two levels of indentation — one for the `namespaceFiles` property and another for the `include` and `exclude` child properties:
+For example, the following YAML snippet defining which [Namespace Files](../../docs/06.concepts/02.namespace-files/index.md) should be included or excluded in a [Python script task](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) has two levels of indentation — one for the `namespaceFiles` property and another for the `include` and `exclude` child properties:
 
 ```yaml
 id: namespace_files
@@ -420,8 +420,8 @@ Finally, **validate YAML syntax** before using it in production. This will help 
 
 ## Next Steps
 
-YAML is a versatile, language-agnostic, and user-friendly format for configuring applications, including Kestra flows. In just a couple of minutes, anyone in your organization can learn the basics of YAML syntax and [start building workflows](https://kestra.io/docs/getting-started/) directly from the embedded editor in the Kestra UI.
+YAML is a versatile, language-agnostic, and user-friendly format for configuring applications, including Kestra flows. In just a couple of minutes, anyone in your organization can learn the basics of YAML syntax and [start building workflows](../../docs/01.quickstart/index.md) directly from the embedded editor in the Kestra UI.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
+If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](/slack).

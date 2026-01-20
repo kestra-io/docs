@@ -91,7 +91,7 @@ Data is not software and the data experience needs evolution. We always have thi
 We think this vision is the good starting point for reaching a real data experience. For achieving real data choreography.
 
 
-Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+Feel free to share your vision of the perfect data experience! Reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
 

@@ -90,7 +90,7 @@ With the release of Kestra 0.17.0, we are also [introducing](https://github.com/
 
 ### Push Flows to Git
 
-The `PushFlows` task allows you to easily commit and push your saved flows to a Git repository. Check the [following documentation](https://kestra.io/docs/how-to-guides/pushflows) and the video demonstration below to learn more about how you can use this task to automate your Git workflow.
+The `PushFlows` task allows you to easily commit and push your saved flows to a Git repository. Check the [following documentation](../../docs/15.how-to-guides/pushflows/index.md) and the video demonstration below to learn more about how you can use this task to automate your Git workflow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -135,7 +135,7 @@ triggers:
 ```
 
 
-The `PushNamespaceFiles` and `SyncNamespaceFiles` tasks work analogically to the `PushFlows` and `SyncFlows` tasks, but applied to [namespace files](../docs/08.developer-guide/03.namespace-files.md). Watch the videos below to see how you can use these tasks to manage your namespace files with Git.
+The `PushNamespaceFiles` and `SyncNamespaceFiles` tasks work analogically to the `PushFlows` and `SyncFlows` tasks, but applied to [namespace files](../../docs/08.developer-guide/03.namespace-files.md). Watch the videos below to see how you can use these tasks to manage your namespace files with Git.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/-bEnwR5t7VI?si=wNG-fvtuavvVkSmF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -155,7 +155,7 @@ Kestra 0.17.0 introduces a concept of [Realtime Event Triggers](https://github.c
 
 ### Why Realtime Triggers?
 
-Kestra has a concept of [triggers](../docs/04.workflow-components/07.triggers.md) that can listen to external events and start a workflow execution when the event occurs. Most of these triggers **poll** external systems for new events **at regular intervals** e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with **millisecond latency** and this is where **Realtime Triggers** come into play.
+Kestra has a concept of [triggers](../../docs/04.workflow-components/07.triggers.md) that can listen to external events and start a workflow execution when the event occurs. Most of these triggers **poll** external systems for new events **at regular intervals** e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with **millisecond latency** and this is where **Realtime Triggers** come into play.
 
 ### What are Realtime Triggers?
 
@@ -172,7 +172,7 @@ Realtime triggers listen to events in real time and start a workflow execution a
 - a new row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
 
-With this new feature, you can orchestrate business-critical processes and microservices in real time. Visit the [Realtime Trigger documentation](https://kestra.io/docs/workflow-components/triggers/realtime-triggers) to learn more and check the video below to see it in action:
+With this new feature, you can orchestrate business-critical processes and microservices in real time. Visit the [Realtime Trigger documentation](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) to learn more and check the video below to see it in action:
 
 <div class="video-container">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -193,7 +193,7 @@ An increasingly common use case for the manual approval processes is in AI appli
 </div>
 
 :::alert{type="info"}
-Check the [Pause and Resume](../docs/15.how-to-guides/pause-resume.md) guide to learn more about how to use the Pause task in Manual Approval workflows.
+Check the [Pause and Resume](../../docs/15.how-to-guides/pause-resume.md) guide to learn more about how to use the Pause task in Manual Approval workflows.
 :::
 
 
@@ -288,11 +288,11 @@ The new plugin catalog shows all plugins available in your Kestra instance. You 
 ## Enhancements to the core 🫶
 
 ### Java 21
-Kestra [now runs](https://github.com/kestra-io/kestra/issues/3234) on Java 21. If you use [Standalone Server](https://kestra.io/docs/installation/standalone-server), make sure to update your Java version to 21 before upgrading to Kestra 0.17.0 and beyond.
+Kestra [now runs](https://github.com/kestra-io/kestra/issues/3234) on Java 21. If you use [Standalone Server](../../docs/02.installation/12.standalone-server/index.md), make sure to update your Java version to 21 before upgrading to Kestra 0.17.0 and beyond.
 
 ### Array input
 
-So far, the `JSON` input type allowed you to pass an array of objects. However, the contents of the array could be of any type and the only way to add validation to them would be to use [nested inputs](../docs/04.workflow-components/05.inputs.md#nested-inputs).
+So far, the `JSON` input type allowed you to pass an array of objects. However, the contents of the array could be of any type and the only way to add validation to them would be to use [nested inputs](../../docs/05.workflow-components/05.inputs/index.md#nested-inputs).
 
 Kestra 0.17.0 adds a new `ARRAY` input type that allows you to specify the type of the array elements using the `itemType` property.
 
@@ -323,7 +323,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details on the `ARRAY` input type, check out the [Inputs](../docs/04.workflow-components/index.md) documentation.
+For more details on the `ARRAY` input type, check out the [Inputs](../../docs/04.workflow-components/index.md) documentation.
 :::
 
 ### Renaming
@@ -333,12 +333,12 @@ We've refactored several core abstractions to ensure consistent and intuitive na
 
 All of these are **non-breaking changes** as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
-![renamed-core-plugins](/docs/migration-guide/renamed-core-plugins.png)
+![renamed-core-plugins](../../docs/11.migration-guide/0.17.0/renamed-plugins/renamed-core-plugins.png)
 
 It's worth taking a couple of minutes to rename those in your flows to future-proof your code.
 
 :::alert{type="info"}
-Check the [Renamed Plugins](../docs/11.migration-guide/renamed-plugins.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
+Check the [Renamed Plugins](../../docs/11.migration-guide/renamed-plugins.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
 :::
 
 ### Improved serialization of JSON objects
@@ -489,12 +489,12 @@ We've added a new feature that allows you to explicitly declare which namespaces
 
 When you navigate to any Namespace and go to the `Edit` tab, you can explicitly configure which namespaces are allowed to access it. By default, all namespaces are allowed.
 
-![allowed-namespaces](/docs/enterprise/allowed-namespaces.png)
+![allowed-namespaces](../../docs/07.enterprise/02.governance/07.namespace-management/allowed-namespaces.png)
 
 However, you can restrict that access if you want only specific namespaces (or no namespace at all) to trigger its corresponding resources.
 
 :::alert{type="info"}
-Check the [Allowed Namespaces](../docs/06.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) documentation for more details.
+Check the [Allowed Namespaces](../../docs/07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) documentation for more details.
 :::
 
 ## Improved Execution page
@@ -601,7 +601,7 @@ tasks:
 
 This post covered new features and enhancements added in Kestra 0.17.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 

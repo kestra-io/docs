@@ -86,8 +86,8 @@ We provide solutions that simplify complex orchestration challenges without burd
 
 Kestra strikes the perfect balance, offering the simplicity and flexibility essential for modern businesses. We empower users, from business analysts to engineers, ensuring that everyone can contribute effectively within a unified system.
 
-Interested in learning more about how Kestra is addressing complex orchestration challenges with ease and efficiency? Read our blog post on [How to Solve Complex Orchestration Problems Without Adding Complexity](https://kestra.io/blogs/2023-12-14-orchestration-problems-and-complexity)
+Interested in learning more about how Kestra is addressing complex orchestration challenges with ease and efficiency? Read our blog post on [How to Solve Complex Orchestration Problems Without Adding Complexity](../2023-12-14-orchestration-problems-and-complexity/index.md)
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
+If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](/slack).

@@ -97,6 +97,6 @@ We are immensely grateful to our **investors** who believe in our vision and hav
 **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://go.kestra.io/github-fundraise) and joining this exciting journey.
 
  **Resources:**
-- [Join the Kestra Slack Community](https://kestra.io/slack)
+- [Join the Kestra Slack Community](/slack)
 - Star us on [GitHub](https://github.com/kestra-io/kestra)!
 - [Airbyte’s deck sharing](https://airbyte.com/blog/the-deck-we-used-to-raise-our-150m-series-b)

@@ -77,5 +77,5 @@ We’ve had wins, and we’ve had challenges, but staying open-source has been a
 Feel free to ask any questions about our tech decisions (good and bad), or where we’re heading next. We’d love to talk more about open source — it's been an incredible journey and we appreciate the open source community that’s been with us every step of the way.
 
  **Resources:**
-- [Join the Kestra Slack Community](https://kestra.io/slack)
+- [Join the Kestra Slack Community](/slack)
 - Star us on [GitHub](https://github.com/kestra-io/kestra)!

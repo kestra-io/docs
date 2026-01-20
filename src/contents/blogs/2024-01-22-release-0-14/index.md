@@ -15,7 +15,7 @@ Let's dive into the highlights of this release.
 
 ## Version Control with Git
 
-We've heard from many of you that you'd like to use Git to [version control](https://kestra.io/docs/developer-guide/git) your workflows. This release adds two new tasks to the [Git plugin](/plugins/plugin-git) that allow you to sync your code from Git to Kestra and push your code from Kestra to Git.
+We've heard from many of you that you'd like to use Git to [version control](../../docs/version-control-cicd/04.git/index.md) your workflows. This release adds two new tasks to the [Git plugin](/plugins/plugin-git) that allow you to sync your code from Git to Kestra and push your code from Kestra to Git.
 
 ### GitOps with `git.Sync`
 
@@ -25,13 +25,13 @@ You can use `git.Sync` in two ways:
 1. **Event-driven (webhook trigger)**: a system flow will automatically sync your code whenever a new commit is pushed to the Git repository
 2. **GitOps (schedule trigger)**: a system flow will automatically sync your code from Git to kestra on a regular schedule to ensure that your workflow code always matches the desired state defined in your Git repository. If you don't want some files from Git to be synced, you can add them to a `.kestraignore` file at the root of your `gitDirectory` folder — that file works the same way as `.gitignore`.
 
-Check the [Git Sync](https://kestra.io/docs/developer-guide/git-sync) documentation for more details.
+Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md-sync) documentation for more details.
 
 ### Push to Git from Kestra with `git.Push`
 
 Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git/io.kestra.plugin.git.push) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
 
-Check the [Version Control with Git](https://kestra.io/docs/developer-guide/git) documentation for a deep dive into multiple ways to version control your code with Git and when to use them.
+Check the [Version Control with Git](../../docs/version-control-cicd/04.git/index.md) documentation for a deep dive into multiple ways to version control your code with Git and when to use them.
 
 ![git](./git.png)
 
@@ -46,12 +46,12 @@ We've made several improvements to our embedded VS Code Editor and the [VS Code 
 
 ## Recursive rendering of Pebble expressions
 
-So far, the templating engine has been rendering all [expressions](https://kestra.io/docs/concepts/expression) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
+So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.md) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
 
 Starting from this release, the default rendering behavior is **not recursive**. We've also introduced a new `render()` function that gives you more control over which expressions should be rendered and how.
 
 :::alert{type="warning"}
-Note that this is a **breaking change**. If you want to keep the old behavior, you can set the `kestra.variables.recursive-rendering` property to `true` in your `application.yml` file (the default is `false`). In most of the cases, migrating your workflows to that new behavior is as simple as adding a `render()` function before calling a variable, e.g. `{{ render(vars.trigger_var) }}` instead of `{{ vars.trigger_var }}`. Check the [Recursive rendering of Pebble expressions](https://kestra.io/docs/migration-guide/recursive-rendering) migration page for more details on how to migrate.
+Note that this is a **breaking change**. If you want to keep the old behavior, you can set the `kestra.variables.recursive-rendering` property to `true` in your `application.yml` file (the default is `false`). In most of the cases, migrating your workflows to that new behavior is as simple as adding a `render()` function before calling a variable, e.g. `{{ render(vars.trigger_var) }}` instead of `{{ vars.trigger_var }}`. Check the [Recursive rendering of Pebble expressions](../../docs/11.migration-guide/0.14.0/recursive-rendering/index.md) migration page for more details on how to migrate.
 :::
 
 ## Execution labels can now be set from a task
@@ -116,7 +116,7 @@ You should see that the default song label has been overridden by a [new song](h
 
 ## The Allow Failure pattern is now available as a core task property
 
-So far, the `AllowFailure` workflow pattern was only available as [a dedicated task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure). We've now added it as a [core task property](https://kestra.io/docs/concepts/task-properties) called `allowFailure` allowing you to easily configure it on any task without complicated nesting. Here is how that works:
+So far, the `AllowFailure` workflow pattern was only available as [a dedicated task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure). We've now added it as a [core task property](../../docs/05.workflow-components/01.tasks/index.mdx) called `allowFailure` allowing you to easily configure it on any task without complicated nesting. Here is how that works:
 
 ```yaml
 id: allow_failure
@@ -165,19 +165,19 @@ triggers:
 
 ## Website improvements
 
-The website has now a **new improved search** across the docs, plugins and blog posts, as well as [blueprints](/blueprints) which are now available not only in the UI but also on the website. The plugins got their own (beautiful!) [homepage](https://kestra.io/plugins) with a dedicated search to make it easier to find the plugin you need.
+The website has now a **new improved search** across the docs, plugins and blog posts, as well as [blueprints](/blueprints) which are now available not only in the UI but also on the website. The plugins got their own (beautiful!) [homepage](/plugins) with a dedicated search to make it easier to find the plugin you need.
 
-We've also added new documentation pages for [Azure DevOps CI/CD](../docs/version-control-cicd/cicd/05-azure-devops.md), and [Role-Based Access Control (RBAC)](../docs/06.enterprise/03.auth/rbac/index.md).
+We've also added new documentation pages for [Azure DevOps CI/CD](../../docs/version-control-cicd/cicd/05-azure-devops.md), and [Role-Based Access Control (RBAC)](../../docs/06.enterprise/03.auth/rbac/index.md).
 
 ## Bug fixes and reliability improvements
 
 As usual, we've fixed plenty of bugs and improved the reliability of Kestra. Significant area of improvements was the Multi-tenancy and RBAC, which are now more robust and reliable.
 
-Tenants can now be assigned a default [worker group](https://kestra.io/docs/concepts/worker-group), allowing you to match a specific server as a default execution layer for a tenant.
+Tenants can now be assigned a default [worker group](../../docs/07.enterprise/04.scalability/worker-group/index.md), allowing you to match a specific server as a default execution layer for a tenant.
 
 ## Flow task renamed to `Subflow`
 
-The `Flow` task got renamed to `Subflow` for clarity. We've also added [a dedicated page for Subflows](https://kestra.io/docs/concepts/subflows) in the docs.
+The `Flow` task got renamed to `Subflow` for clarity. We've also added [a dedicated page for Subflows](../../docs/05.workflow-components/10.subflows/index.md) in the docs.
 
 Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core/conditions/io.kestra.plugin.core.condition.executionflow) condition.
 
@@ -291,6 +291,6 @@ We are grateful to our community for their contributions to this release:
 
 This post covered new features and enhancements added in Kestra 0.14.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

@@ -12,7 +12,7 @@ image: ./main.jpg
 
 We’re excited to introduce **Apps**. With Apps, you can create custom user interfaces on top of your Kestra workflows. This feature makes it possible for anyone — not just technical users — to interact with your flows directly by submitting data, approving tasks, or viewing outputs, allowing you to build self-service applications for your data products and business processes.
 
-![apps_catalog](/docs/enterprise/apps/apps_catalog.png)
+![apps_catalog](../../docs/07.enterprise/04.scalability/apps/apps_catalog.png)
 
 ---
 
@@ -54,7 +54,7 @@ Currently, Kestra supports two main use cases with Apps:
 1. **Form Submissions** — users submit data to workflows by entering custom parameter values. When they press the `Submit` button, Kestra initiates a new workflow execution.
 2. **Approval Processes** — users can approve or reject paused workflow executions. The workflow resumes or stops based on their decision.
 
-Both of them are built using the `Execution` app type. Read more about [available App types in our docs](https://kestra.io/docs/enterprise/apps).
+Both of them are built using the `Execution` app type. Read more about [available App types in our docs](../../docs/07.enterprise/04.scalability/apps/index.md).
 
 More types of apps are on the roadmap, such as apps to trigger actions using Kestra’s API. If you have a specific use case in mind, [we’d love to hear about it](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=enhancement%2Carea%2Fbackend%2Carea%2Ffrontend&projects=&template=feature.yml)!
 
@@ -202,7 +202,7 @@ Apps open up a wide range of possibilities for automating user-facing processes.
 With Apps, you can make Kestra workflows accessible to everyone, regardless of their technical expertise. Try out Apps in the latest version of Kestra Enterprise Edition, and let us know what you think!
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

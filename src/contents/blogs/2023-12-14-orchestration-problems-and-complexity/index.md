@@ -58,7 +58,7 @@ To solve silos without creating new ones, Kestra meets users where they are.
 
 To meet users where they are and remove the need for new silos, Kestra integrates with tools you already know and love. Because each plugin is a single binary file, there’s no package dependency hell, even without relying on Docker (_Docker is supported but not required_). These integrations reduce the complexity of orchestration, and in combination with blueprints, they enable hundreds of use cases out of the box.
 
-Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](https://kestra.io/docs/plugin-developer-guide) in minutes.
+Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](../../docs/plugin-developer-guide/index.mdx) in minutes.
 
 ![ui](./ui.png)
 
@@ -67,6 +67,6 @@ Thanks to the open-source contributions, the list of supported plugins keeps gro
 
 Building reliable data platforms doesn't need to involve adding more layers of complexity. Solving complex orchestration challenges requires a balanced approach that combines simplicity, flexibility, and user-centric design. Kestra offers a simple yet flexible platform that adapts to your evolving needs and makes orchestration an enabler of automation rather than a source of frustration and silos.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
+If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](/slack).

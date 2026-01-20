@@ -61,14 +61,14 @@ The scheduling system in Kestra has received a major upgrade, improving performa
 ### Backfills from the UI
 You can now trigger backfills directly **from the UI**, specifying the **start and end dates** for the period you want to cover. This **API-first** feature eliminates the need to edit source code to execute backfills, significantly simplifying the process without disrupting your deployment patterns. No more Terraform state conflicts due to backfill changes in the source code!
 
-Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](/docs/concepts/backfill).
+Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](../../docs/06.concepts/08.backfill/index.md).
 
 <div class="video-container">
 <iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ### Recover Missed Schedules
-Speaking of backfills, Kestra 0.15.0 [introduces](https://github.com/kestra-io/kestra/issues/2219) a new configuration allowing you to choose whether you want to automatically backfill missed schedules on server startup or not. This gives you more control over your scheduled executions, especially after a planned maintenance window or an outage. The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`, and can be defined globally for all flows or within a specific flow. For more information, check out the [Recover Missed Schedules](/docs/workflow-components/triggers#recover-missed-schedules) documentation.
+Speaking of backfills, Kestra 0.15.0 [introduces](https://github.com/kestra-io/kestra/issues/2219) a new configuration allowing you to choose whether you want to automatically backfill missed schedules on server startup or not. This gives you more control over your scheduled executions, especially after a planned maintenance window or an outage. The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`, and can be defined globally for all flows or within a specific flow. For more information, check out the [Recover Missed Schedules](../../docs/05.workflow-components/07.triggers/index.mdx) documentation.
 
 
 ### Schedule conditions are now unified with trigger conditions
@@ -79,7 +79,7 @@ Note that as a result of this change, the `scheduleConditions` property is marke
 
 This change is implemented in a **non-breaking** way, so you don't need to immediately change your existing flows in order to successfully migrate to 0.15.0. However, the `scheduleConditions` property will be removed in the future.
 
-For more details and examples, check out the [Schedule Conditions](/docs/migration-guide/schedule-conditions) migration guide.
+For more details and examples, check out the [Schedule Conditions](../../docs/11.migration-guide/0.15.0/schedule-conditions/index.md) migration guide.
 
 ---
 
@@ -91,7 +91,7 @@ This release also introduces several improvements to triggers, adding a new togg
 
 You can now disable and re-enable triggers directly from the UI without having to modify the source code. This feature is particularly useful for managing triggers during maintenance or when you need to temporarily pause a trigger. Additionally, you can now see the status of each trigger and unlock it when needed with a single click from the Trigger tab on the Flow's detail page.
 
-You can read more about this functionality in the [Trigger documentation](/docs/workflow-components/triggers).
+You can read more about this functionality in the [Trigger documentation](../../docs/05.workflow-components/07.triggers/index.mdx).
 
 ![trigger_toggle](./trigger_toggle.png)
 
@@ -176,7 +176,7 @@ triggers:
       - SUCCESS
 ```
 
-Check the [trigger documentation](/docs/workflow-components/triggers) for more details on how to use the `stopAfter` property.
+Check the [trigger documentation](../../docs/05.workflow-components/07.triggers/index.mdx) for more details on how to use the `stopAfter` property.
 
 ### Automatic Encryption and Decryption of HTTP Task Outputs
 
@@ -229,7 +229,7 @@ tasks:
 🚨 Keep in mind that you need to **set the `wait` property to `true` in the `Subflow` task** to enable passing data between flows because parent flow needs to wait for the subflow to finish before it can use its outputs.
 
 :::alert{type="warning"}
-As a result of the new flow `outputs` feature, the `outputs` property of a `Subflow` task is deprecated. To pass data between flows, use flow `outputs` as shown in the example above. If you have many subflows passing data between each other and you need more time for the migration, you can add a configuration flag to keep the old behavior. Check the [migration documentation](/docs/migration-guide/subflow-outputs) for more details.
+As a result of the new flow `outputs` feature, the `outputs` property of a `Subflow` task is deprecated. To pass data between flows, use flow `outputs` as shown in the example above. If you have many subflows passing data between each other and you need more time for the migration, you can add a configuration flag to keep the old behavior. Check the [migration documentation](../../docs/11.migration-guide/0.15.0/subflow-outputs/index.md) for more details.
 :::
 
 ### Subflow Termination from the Parent Flow
@@ -254,7 +254,7 @@ Secrets management has been further improved in this release, with the introduct
 
 ### Stats Page
 
-The Kestra UI continues improving the user experience. A notable addition is the new [Stats page](../docs/01.getting-started/14.ui.md#stats), which provides a comprehensive overview of executions, flows, namespaces, and triggers at a glance.
+The Kestra UI continues improving the user experience. A notable addition is the new [Stats page](../../docs/01.getting-started/14.ui.md#stats), which provides a comprehensive overview of executions, flows, namespaces, and triggers at a glance.
 
 ![Stats Page](./stats_ee.png)
 
@@ -285,7 +285,7 @@ We've also added a new generic Singer plugin that simultaneously integrates with
 
 ## Enterprise Edition Updates
 
-For Enterprise Edition users, we've added a new [Setup page](../docs/06.enterprise/01.overview/02.setup.md) in the UI, showing the most important configuration options and streamlining the setup process for a new Kestra instance. That setup wizard will guide you through the initial configuration of your instance, making it easier to get started.
+For Enterprise Edition users, we've added a new [Setup page](../../docs/06.enterprise/01.overview/02.setup.md) in the UI, showing the most important configuration options and streamlining the setup process for a new Kestra instance. That setup wizard will guide you through the initial configuration of your instance, making it easier to get started.
 
 ![ee_setup_page](./ee_setup_page.png)
 
@@ -293,7 +293,7 @@ We've also revamped the RBAC system, with improved handling of Superadmin access
 
 ![access_page](./access_page.png)
 
-The new **Service Accounts UI page** allows you to create and manage [service accounts](../docs/06.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
+The new **Service Accounts UI page** allows you to create and manage [service accounts](../../docs/06.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
@@ -303,7 +303,7 @@ The new **Service Accounts UI page** allows you to create and manage [service ac
 
 ### New `id` Property for Inputs
 
-The `inputs` property now uses `id` instead of `name` for consistency with the rest of the Kestra flow configuration. This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully [migrate to 0.15.0](/docs/migration-guide/inputs-name). The `name` property will be removed in the future.
+The `inputs` property now uses `id` instead of `name` for consistency with the rest of the Kestra flow configuration. This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully [migrate to 0.15.0](../../docs/11.migration-guide/0.15.0/inputs-name/index.md). The `name` property will be removed in the future.
 
 ### New `ENUM` Input Type
 
@@ -315,7 +315,7 @@ We've renamed Organization blueprints to Custom blueprints to better reflect the
 
 ### Micronaut 4 Migration
 
-Kestra 0.15.0 migrates to Micronaut 4.3. Check the [migration guide](/docs/migration-guide/micronaut4) for more details on how you can migrate your custom plugins.
+Kestra 0.15.0 migrates to Micronaut 4.3. Check the [migration guide](../../docs/11.migration-guide/0.15.0/micronaut4/index.md) for more details on how you can migrate your custom plugins.
 
 ### Change in Concurrency Control with the Kafka Runner
 
@@ -325,6 +325,6 @@ If you're on the Kestra Enterprise Edition with a Kafka backend, make sure that 
 
 This post covered new features and enhancements added in Kestra 0.15.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated as we continue to refine the platform based on your suggestions.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

@@ -31,7 +31,7 @@ After, only **0.5 cores** were necessary through most of the runtime, with a pea
 
 
 On the Kafka side, we also see **improved latency**.
-The system had a lot of [flow triggers](../docs/04.workflow-components/07.triggers/flow-trigger.md), which needed to be analyzed for each completed execution. When you have a high volume of execution, a lot of messages are sent by Kafka and if your consumer is too slow, the queue fills up and increases latency.
+The system had a lot of [flow triggers](../../docs/04.workflow-components/07.triggers/flow-trigger.md), which needed to be analyzed for each completed execution. When you have a high volume of execution, a lot of messages are sent by Kafka and if your consumer is too slow, the queue fills up and increases latency.
 Previously, we had a large message lag that led to a late start of flow executions (a few minutes). The optimization allowed us to keep the start of the flow to within a few seconds.
 
 ![Before](./lag-before.png)
@@ -111,7 +111,7 @@ The Kafka plugin is now also released with a first [Produce](/plugins/plugin-kaf
 
 We currently support [many types of serializers in Kafka](/plugins/plugin-kafka/io.kestra.plugin.kafka.produce#valueserializer), the most notable ones are `STRING`, `JSON` & `AVRO` with support for [Kafka schema registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
-This is just the beginning for this plugin but we plan to support JSON and the Protobuf schema with the schema registry. Also, as mentioned before, we want to support `Consume` tasks (with OU without of consumer groups). We may also want a [Trigger](/docs/concepts/triggers) based on `Consume` that allows you to start executions based on an incoming topic, we are waiting for more feedback from the community for this part.
+This is just the beginning for this plugin but we plan to support JSON and the Protobuf schema with the schema registry. Also, as mentioned before, we want to support `Consume` tasks (with OU without of consumer groups). We may also want a [Trigger](../../docs/05.workflow-components/07.triggers/index.mdx) based on `Consume` that allows you to start executions based on an incoming topic, we are waiting for more feedback from the community for this part.
 
 
 ## Singer plugins
@@ -233,4 +233,4 @@ This is a valuable feature that provides a complete view of your entire data pip
 In the meantime, we have released versions [0.4.1](https://github.com/kestra-io/kestra/releases/tag/v0.4.1) and [0.4.2](https://github.com/kestra-io/kestra/releases/tag/v0.4.2) to fix a few minor bugs and to provide some nice polish to our UX and UI.
 
 We are working on the next step with a lot of new plugins allowing stronger integrations with the ecosystem.
-Stay connected and follow us on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io) or [Slack](https://kestra.io/slack).
+Stay connected and follow us on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://x.com/kestra_io) or [Slack](/slack).

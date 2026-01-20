@@ -9,7 +9,7 @@ author:
 image: ./main.png
 ---
 
-In the [previous article](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved), we've discussed why data ingestion is a challenging problem and how various tools have approached it. In this post, we'll introduce CloudQuery, an open-source, high-performance ELT framework for developers. We'll briefly cover the product's history and its main strengths. We'll also look at a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB, and how to put your CloudQuery syncs to production using Kestra.
+In the [previous article](../2023-10-11-why-ingestion-will-never-be-solved/index.md), we've discussed why data ingestion is a challenging problem and how various tools have approached it. In this post, we'll introduce CloudQuery, an open-source, high-performance ELT framework for developers. We'll briefly cover the product's history and its main strengths. We'll also look at a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB, and how to put your CloudQuery syncs to production using Kestra.
 
 ## What is CloudQuery
 
@@ -159,7 +159,7 @@ CloudQuery doesn't support as many source and destination connectors as data int
 
 ## Moving your CloudQuery syncs to production using Kestra
 
-Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck), a serverless DuckDB service in the cloud.
+Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md), a serverless DuckDB service in the cloud.
 
 ```yaml
 id: hackernews_to_motherduck
@@ -205,12 +205,12 @@ triggers:
 
 Orchestrating CloudQuery syncs in Kestra is simple — you configure your source(s) and destination(s) in a list, and the sync will ensure that each source is ingested into the desired destinations.
 
-In this example, we're also using Kestra's [secret management](https://kestra.io/docs/concepts/secret) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](https://kestra.io/docs/concepts/pebble) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](https://kestra.io/docs/concepts/backfill) make it easy to catch up on missed syncs.
+In this example, we're also using Kestra's [secret management](../../docs/06.concepts/04.secret/index.md) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](../../docs/06.concepts/06.pebble/index.md) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](../../docs/06.concepts/08.backfill/index.md) make it easy to catch up on missed syncs.
 
 ## Next steps
 
 In this article, we've discussed CloudQuery, an open-source high-performance ELT framework for developers. We've explored the product's evolution, strengths, and limitations and walked through a practical example of how to use CloudQuery to ingest data from Hacker News API to DuckDB. We've then demonstrated how to put your CloudQuery syncs into production using Kestra.
 
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

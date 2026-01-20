@@ -134,7 +134,7 @@ For new users discovering Kestra, plugin versioning means you can confidently ad
 In summary, **Kestra’s Plugin Versioning** feature makes plugin management a first-class citizen of the orchestration process. It acknowledges that change is constant – new plugin versions will come – but with the proper tooling, change doesn’t have to be scary.
 
 :::alert{type="info"}
-If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::

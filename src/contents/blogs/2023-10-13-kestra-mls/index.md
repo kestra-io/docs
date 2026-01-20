@@ -61,4 +61,4 @@ Ending a migration is always a fresher. The football analytics team is now headi
 
 We’re quite happy to have Kestra running in such a football club, assuring the orchestration of data ingestion and machine learning models. We can’t wait to see how far they will go, both technically and sportingly speaking.
 
-Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository and give us a star](https://github.com/kestra-io/kestra) if you like the project.
+Join the [Slack community](/slack) if you have any questions or need assistance. Follow us on [Twitter](https://x.com/kestra_io) for the latest news. Check the code in our [GitHub repository and give us a star](https://github.com/kestra-io/kestra) if you like the project.

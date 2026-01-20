@@ -85,6 +85,6 @@ For those who are interested in exploring more about the capabilities and use ca
 
 ![duckdb blueprints](./blueprints-DuckDB.png)
 
-If you are particularly interested in learning more about DuckDB and its various applications, you can check out this blog post: [DuckDB vs MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck). It provides a comprehensive comparison between DuckDB and its in-memory, shareable version, MotherDuck, and will give you further insights into how to use these tools effectively in your own data workflows.
+If you are particularly interested in learning more about DuckDB and its various applications, you can check out this blog post: [DuckDB vs MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md). It provides a comprehensive comparison between DuckDB and its in-memory, shareable version, MotherDuck, and will give you further insights into how to use these tools effectively in your own data workflows.
 
-If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+If you have any questions about what we've covered in this post, reach out via [our community Slack](/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
