@@ -20,7 +20,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/cloudflare": "^12.6.8",
     "@astrojs/markdown-remark": "^6.3.10",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
@@ -78,7 +78,7 @@
     "nitro-cloudflare-dev": "^0.2.2",
     "remark-directive": "^4.0.0",
     "sass": "^1.97.2",
-    "wrangler": "^4.59.2"
+    "wrangler": "^4.35.0"
   },
   "engines": {
     "node": ">= 14",
