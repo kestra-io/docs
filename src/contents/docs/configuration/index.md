@@ -1804,6 +1804,29 @@ kestra:
 
 If MinIO is configured with `MINIO_DOMAIN`, use [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1) via `kestra.storage.minio.vhost: true`. Keep `endpoint` as base domain (`my.domain.com`), not `bucket.domain`.
 
+### SeaweedFS
+
+[SeaweedFS](https://github.com/seaweedfs/seaweedfs) is a fast, distributed storage system for blobs, objects, files. It provides a lightweight alternative to MinIO or S3-compatible backends for self-hosted deployments.
+
+First, install the SeaweedFS storage plugin:
+
+```
+./kestra plugins install io.kestra.storage:storage-seaweedfs:LATEST
+```
+
+Then, configure the storage in your Kestra configuration:
+
+```yaml
+kestra:
+  storage:
+    type: seaweedfs
+    seaweedfs:
+      filer-host: localhost
+      filer-port: 18888
+      prefix: ""
+      replication: "000"
+```
+
 ### Outscale Object Storage (OOS)
 
 [Outscale Object Storage (OOS)](https://en.outscale.com/storage/outscale-object-storage/) is a large-scale, secure, and resilient (S3-like) storage service in the Cloud. Install the MinIO plugin and use an Outscale Object Storage endpoint. Ensure that `secure: true` is configured to use this endpoint with MinIO `type`.
