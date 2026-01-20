@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="row g-0">
-                <div class="col-md-6 p-5 d-flex flex-column justify-content-center">
+                <div class="col-md-6 p-5 d-flex flex-column text-white justify-content-center">
                     <h6>OHHHH... 😔</h6>
                     <h1 @click="visible = !visible">
                         {{ title }}
@@ -11,8 +11,13 @@
                         {{ description }}
                     </p>
                     <div v-if="visible">
-                        <h3>{{ error.message }}</h3>
-                        <span v-html="error.stack" />
+                        <h3>{{ error.title }}</h3>
+                        <ul>
+                            <li v-if="error.name">name: <code>{{ error.name }}</code></li>
+                            <li v-if="error.plugin">plugin: <code>{{ error.plugin }}</code></li>
+                            <li v-if="error.id">id: <code>{{ error.id }}</code></li>
+                        </ul>
+                        <pre>{{ JSON.stringify(error, null, 2) }}</pre>
                     </div>
                     <NuxtLink href="/" class="btn btn-animated btn-purple-animated mb-2">
                         Back to home
@@ -31,7 +36,7 @@
         purpleButtonText="Get started with Kestra"
         purpleButtonHref="https://kestra.io/slack"
         :animation="false"
-        class="mb-5"
+        class="mb-5 text-white"
     />
 </template>
 
@@ -46,9 +51,10 @@
 
     defineProps<{
         error: {
-            statusCode: number,
-            message: string,
-            stack?: string
+            name: string,
+            title: string,
+            plugin: string,
+            id: string,
         },
         title: string,
         description: string
