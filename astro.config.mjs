@@ -99,7 +99,8 @@ export default defineConfig({
                 weights: [400, 700],
                 cssVariable: "--font-family-mona-sans"
             }
-        ]
+        ],
+        svgo: true
     },
     env: {
         schema: {
