@@ -106,7 +106,7 @@ attached_to:"{{ inputs.target_vm }}"
 
 In this flow, the **`reserve_ip`** task would allocate the static IP (again simulated by a log). The **`assets.inputs`** declares a dependency on the VM asset (by its ID, e.g. **`windows-web-01`** from the previous step). The **`assets.outputs`** then registers a new IP asset, using a combination of the IP address and execution ID as a unique asset ID. We record the IP type ("static") and which VM it's attached to. Now our Kestra inventory knows that **`windows-web-01`** has an IP resource linked to it.
 
-## Phase 2: Configuration & Compliance**
+## Phase 2: Configuration & Compliance
 
 *Objective:* Apply software, configuration, and governance controls to the base infrastructure, and track these as assets.
 
