@@ -146,15 +146,15 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response;
     }
 
-    const originalUrl = context.url.toString();
+    const originalUrl = new URL(context.url);
 
     try {
         const result = await (await fetch(`${API_URL}/redirects?${new URLSearchParams({
-            from: originalUrl
+            from: originalUrl.pathname
         }).toString()}`)).json();
 
-        if (result && result.to && result.to !== originalUrl) {
-            sendRedirect(result.to);
+        if (result && result.to && result.to !== originalUrl.pathname) {
+            return sendRedirect(result.to);
         }
     } catch (e) {
         console.error("Error fetching redirect:", e);
