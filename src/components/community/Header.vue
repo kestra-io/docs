@@ -13,11 +13,7 @@
                 </div>
                 <div class="col-md-5 order-0 order-md-1">
                     <NuxtImg
-                        height="572px"
-                        width="668px"
-                        loading="lazy"
-                        format="webp"
-                        src="/landing/community/header.svg"
+                        v-bind="HeaderImage"
                         class="img-fluid"
                         alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"
                         data-usal="zoomin"
@@ -28,20 +24,15 @@
     </div>
 </template>
 
-<script>
-    import Console from "vue-material-design-icons/Console.vue"
-    import Email from "vue-material-design-icons/Email.vue"
-
-    export default {
-        components: {Console, Email}
-    }
+<script lang="ts" setup>
+    import HeaderImage from "./assets/header.svg";
 </script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
     .container-fluid {
-        background: url("/landing/community/header-bg.svg") no-repeat center;
+        background: url("./assets/header-bg.svg") no-repeat center;
         background-size: 100% 100%;
         color: $white;
 

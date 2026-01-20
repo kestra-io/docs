@@ -5,36 +5,37 @@
                 <div class="w-100 d-flex justify-content-between align-items-center">
                     <span class="card-quote">“</span>
                     <NuxtImg
-                        v-if="item.imgName"
+                        v-if="imgName"
                         class="company-icon"
                         data-usal="fade-u"
-                        :src="(item.directory ?? '/landing/companies/') + item.imgName  + '.svg'"
-                        :alt="item.imgName"
+                        :src="directory + imgName  + '.svg'"
+                        :alt="imgName"
                     />
                 </div>
                 <p class="mt-3">
-                    {{ item.message }}
+                    {{ message }}
                 </p>
             </div>
             <div class="footer">
                 <div />
                 <span>
-                    <a :href="item.link" target="_blank">{{ item.name }}</a><br />
-                    {{ item.designation }}
+                    <a v-if="link" :href="link" target="_blank">{{ name }}</a><br />
+                    {{ designation }}
                 </span>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-    export default {
-        props: {
-            item: {
-                type: Object
-            }
-        }
-    }
+<script lang="ts" setup>
+    defineProps<{
+        name: string;
+        designation: string;
+        message: string;
+        directory: string;
+        link?: string;
+        imgName?: string;
+    }>();
 </script>
 
 <style lang="scss" scoped>

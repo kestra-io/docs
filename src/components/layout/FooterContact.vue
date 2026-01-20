@@ -79,7 +79,7 @@
         margin-top: calc($spacer * 5.625);
         border-radius: calc($spacer * 0.5);
         border: $block-border;
-        background: $black-2 url("/landing/community/bg.svg") no-repeat right;
+        background: $black-2 url("./assets/bg.svg") no-repeat right;
         background-size: 20% 100%;
         color: $white;
         @include media-breakpoint-down(lg) {

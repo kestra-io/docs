@@ -78,7 +78,7 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
     .container-fluid {
-        background: url("/landing/community/guidelines-bg.svg") no-repeat bottom center;
+        background: url("./assets/guidelines-bg.svg") no-repeat bottom center;
         :deep(.card-body) {
             h4 {
                 font-weight: 600;

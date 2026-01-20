@@ -3,8 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <NuxtImg width="286px" height="81px" loading="lazy" format="webp" data-usal="fade-l"
-                        src="/landing/community/contributors.png" class="mb-4 img-fluid" />
+                    <NuxtImg v-bind="ContributorsImg" class="mb-4 img-fluid" data-usal="fade-l" />
                     <h2 class="mb-4" data-usal="fade-l">Kestra is built in the open</h2>
                     <p data-usal="fade-r">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us improve
@@ -104,6 +103,7 @@ import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.v
 import { useApi } from '~/composables/useApi'
 import { onMounted, ref } from 'vue'
 import { $fetch } from '~/utils/fetch'
+import ContributorsImg from './assets/contributors.png'
 
 interface GitHubMetrics {
     stars: number
@@ -153,7 +153,7 @@ onMounted(fetchData)
 
     .container-fluid {
         color: var(--bs-white);
-        background: url("/landing/community/community-bg.svg") no-repeat right;
+        background: url("./assets/community-bg.svg") no-repeat right;
 
         &.hide-overflow {
             overflow: hidden;
