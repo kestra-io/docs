@@ -6,6 +6,7 @@ category: Solutions
 authors:
   - name: "Faizan Quazi"
     image: fqazi
+    role: Solution Engineer
 
 image: /blogs/todo.jpg
 ---
@@ -14,7 +15,7 @@ We are moving beyond simple "fire-and-forget" task execution. By leveraging **K
 
 In this guide, we outline a standard operating procedure for provisioning and maintaining Windows VMs on GCP using Kestra Assets. Each step in the lifecycle is implemented as a workflow that **registers assets** (like VMs, IPs, users, licenses) into Kestra's Asset Inventory. The result is an always-updated catalog of resources with lineage information, so you can answer questions such as *"Which VM has which IP and certificate?"* or *"When was this user added to the VM and by which process?"*.
 
-## **Architecture: Asset Lineage Overview**
+## Architecture: Asset Lineage Overview
 
 Kestra's Asset Inventory allows you to model relationships between infrastructure components. In our implementation, a Windows VM is a **root asset** that produces several child assets representing its associated resources. The high-level asset lineage looks like this:
 
@@ -105,7 +106,7 @@ attached_to:"{{ inputs.target_vm }}"
 
 In this flow, the **`reserve_ip`** task would allocate the static IP (again simulated by a log). The **`assets.inputs`** declares a dependency on the VM asset (by its ID, e.g. **`windows-web-01`** from the previous step). The **`assets.outputs`** then registers a new IP asset, using a combination of the IP address and execution ID as a unique asset ID. We record the IP type ("static") and which VM it's attached to. Now our Kestra inventory knows that **`windows-web-01`** has an IP resource linked to it.
 
-## **⚙️ Phase 2: Configuration & Compliance**
+## Phase 2: Configuration & Compliance**
 
 *Objective:* Apply software, configuration, and governance controls to the base infrastructure, and track these as assets.
 
@@ -121,7 +122,7 @@ The main configuration flows and the assets they create are summarized below:
 
 Let's walk through each of these configuration workflows and their asset definitions:
 
-### **1. Apply License to VM**
+### 1. Apply License to VM
 
 The **`apply_license`** flow activates a Windows license on the VM and registers a License asset. This asset lets us catalog which license (and related metadata) is associated with the VM.
 
@@ -156,7 +157,7 @@ vm:"{{ inputs.target_vm }}"
 
 Here we simulate a PowerShell script that activates the license. We declare the VM as an input asset (dependency) and then output a new License asset. The asset ID is a combination of a license code and the execution ID (ensuring uniqueness). We store metadata like the license expiry date, cost center, and the VM it belongs to. Later, this allows auditing of license usage (e.g., finding all licenses expiring by end of 2025, or all licenses applied to a given VM).
 
-### **2. Onboard Admin User**
+### 2. Onboard Admin User
 
 Next, the **`onboard_user`** flow creates an administrator user on the VM and registers a User asset. This captures who has access at the VM level and any compliance checks.
 
@@ -196,7 +197,7 @@ vm:"{{ inputs.target_vm }}"
 
 This flow would run a PowerShell script on the VM to create a new user account (in practice). The assets section again links to the VM asset as input, and outputs a new User asset. The asset ID includes the username and execution ID. We record metadata such as the user's role (**`admin`**) and a compliance check status, along with the VM reference. With this in the catalog, we can later query all admin users across VMs or ensure compliance policies (like whether an admin user exists and has passed certain checks).
 
-### **3. Install Software (Nginx)**
+### 3. Install Software (Nginx)
 
 Finally, the **`install_software`** flow installs an ingress software (e.g. Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
 
@@ -239,7 +240,7 @@ By the end of Phase 2, our VM has a license, an admin user, and Nginx installed,
 
 Now that the VM is running and configured, we consider routine Day 2 operations. These include things like provisioning SSL certificates for security and taking regular snapshots for disaster recovery. Each operation is implemented as a workflow that attaches new assets (Certificate or Snapshot) to the VM.
 
-### **1. Assign SSL Certificate**
+### 1. Assign SSL Certificate
 
 In this workflow (**`assign_certificate`**), we provision an SSL/TLS certificate (for HTTPS) and associate it with the VM's external IP. This creates an asset of type **`io.kestra.plugin.ee.assets.VM.Certificate`**. Notably, this flow demonstrates how an asset can have multiple dependencies: the certificate is tied to both the VM and the Static IP assets.
 
@@ -287,7 +288,7 @@ vm:"{{ inputs.target_vm }}"
 
 This flow uses a bit of Kestra magic: before provisioning the cert, it dynamically looks up the asset ID of the VM's IP (using the **`assets()`** function with a filter) and stores it in **`ip_asset_id`**. The **`certbot_provision`** task (simulated by an **`echo`** here) then lists two input assets: the VM and the IP (by their IDs). This means the certificate generation depends on both the VM existing and the IP being allocated to it. The output is a new Certificate asset with an auto-generated ID (**`cert-<execution-id>`**). In the metadata, we note the issuer (Let's Encrypt), an expiry date for the cert, and tie it back to the VM name. Because we also listed the IP as an input asset, Kestra will link the Certificate asset to *both* the VM and the IP in the lineage graph. This way, if the VM is replaced but the IP remains, the certificate can be traced via the IP asset as well.
 
-### 2. Take VM Snapshot**
+### 2. Take VM Snapshot
 
 Finally, the **`take_snapshot`** workflow creates a disk snapshot of the VM for backup purposes, registering an asset of type **`io.kestra.plugin.ee.assets.VM.Snapshot`**. Each execution of this flow produces a new Snapshot asset, building a history of backups for the VM.
 
@@ -322,7 +323,7 @@ vm:"{{ inputs.target_vm }}"
 
 The **`gcp_snapshot`** task would call the GCP API to snapshot the VM's disk (here just logging a name). We mark the VM as an input asset (so that the snapshot asset will be linked to it), and define an output asset for the new snapshot. The asset ID includes "snapshot-", the VM name, and the execution ID to ensure uniqueness (e.g., **`snapshot-windows-web-01-<id>`**). Metadata captures things like retention policy (30 days) and the trigger (manual backup vs. automated schedule), along with the VM reference. Over time, if this flow runs regularly, you'll accumulate multiple snapshot assets associated with the same VM asset, which provides a visual timeline of backups in the Kestra UI.
 
-## Result: Live Asset Inventory**
+## Result: Live Asset Inventory
 
 By running all the above workflows in order, Kestra's Asset Inventory is automatically populated with a rich set of assets and their linkages. We effectively have a live configuration management database (CMDB) or catalog of our VM and everything related to it. Below is an example of what the inventory might contain for our example (simplified for clarity):
 
@@ -349,7 +350,7 @@ This live inventory is queryable via Kestra's API or UI. For instance, you can f
 
 ou can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
 
-## **Key Benefits**
+## Key Benefits
 
 Using Kestra Assets to build an infrastructure catalog with lineage provides several key benefits:
 
@@ -357,7 +358,7 @@ Using Kestra Assets to build an infrastructure catalog with lineage provides sev
 2. **Audit Readiness:** Every asset has an audit trail. You can see exactly when and how a resource was created or modified, and by which workflow execution. For example, you can prove when the **`admin_user`** was added to the VM and by which automation run. This built-in audit log of changes helps with compliance and troubleshooting.
 3. **Dynamic State Awareness:** Workflows can dynamically query the asset inventory at runtime. This means you can create maintenance or patching workflows that target resources based on their current state in the catalog. For instance, a patching flow could find all VM assets with **`os: windows-server-2022`** in metadata and then apply updates to each. The assets feature allows Kestra to act not just as an orchestrator but also as a real-time CMDB, enabling smarter automation decisions.
 
-## **Conclusion**
+## Conclusion
 
 By leveraging Kestra's Assets feature, we turned what would be isolated provisioning scripts into an integrated, stateful picture of our infrastructure. Each workflow not only performs an action (creating a VM, assigning an IP, installing software, etc.) but also records an asset with metadata and links to other assets. The end result is a living catalog of resources and their relationships that teams can explore and rely on for governance, auditing, and automation. This approach unifies orchestration with infrastructure tracking, ensuring that at any point, you can ask "*What is the full story of this VM?*" and get an answer backed by Kestra's live inventory.
 
