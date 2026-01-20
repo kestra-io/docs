@@ -14,7 +14,7 @@
         </div>
         <div class="slide-container">
             <TransitionGroup name="slide">
-                <NuxtImg width="1096" height="590" :key="displayTab" :src="tabs[displayTab].imageSrc" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
+                <img :key="displayTab" v-bind="tabs[displayTab].image" alt="Experience" class="experience-image" :class="{isSlidingToLeft}"/>
             </TransitionGroup>
         </div>
     </section>
@@ -23,25 +23,18 @@
 <script lang="ts" setup>
 import { nextTick, ref } from 'vue';
 
-
-const tabs = [
-    {
-        label: "CI/CD for all your Workflows",
-        imageSrc: "/landing/home/tabs/cd.png",
-    },
-    {
-        label: "No Code, Low Code, Full Code",
-        imageSrc: "/landing/home/tabs/no-code.png",
-    },
-    {
-        label: "Revision History & Rollback",
-        imageSrc: "/landing/home/tabs/revisions.png",
-    },
-    {
-        label: "Alerting & Infrastructure Monitoring",
-        imageSrc: "/landing/home/tabs/alerting.png",
-    }
-]
+defineProps<{
+    tabs: {
+        label: string,
+        image: {
+            src: string,
+            width?: number,
+            height?: number,
+            format?: string,
+            quality?: number,
+        }
+    }[]
+}>();
 
 const displayTab = ref(0)
 const isSlidingToLeft = ref(false)

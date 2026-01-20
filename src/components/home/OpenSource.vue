@@ -8,7 +8,7 @@
 
             <div class="features">
                 <div v-for="feature in features" :key="feature.title" class="feature">
-                    <NuxtImg :src="feature.image" :alt="feature.title" class="feature-image"/>
+                    <NuxtImg v-bind="feature.image" :alt="feature.title" class="feature-image"/>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
                 </div>
@@ -26,6 +26,9 @@
 
 <script lang="ts" setup>
     import {computed} from "vue";
+    import declarativeOrchestration from './assets/declarative-orchestration.png';
+    import eventTriggers from './assets/event-triggers.png';
+    import lockIn from './assets/lock-in.png';
 
     const props = defineProps<{
         stargazers: number,
@@ -37,17 +40,17 @@
         {
             title: "Declarative Orchestration",
             description: "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra's declarative syntax.",
-            image: "/landing/home/declarative-orchestration.png",
+            image: declarativeOrchestration,
         },
         {
             title: "Event Based Triggers",
             description: "Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.",
-            image: "/landing/home/event-triggers.png",
+            image: eventTriggers,
         },
         {
             title: "No vendor Lock-in",
             description: "Define your flow in YAML from the embedded Code Editor, run them directly from the UI, scale to any infrastructure.",
-            image: "/landing/home/lock-in.png",
+            image: lockIn,
         }
     ]
 

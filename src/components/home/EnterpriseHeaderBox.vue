@@ -1,6 +1,6 @@
 <template>
     <section class="enterprise-header-box container">
-        <NuxtImg class="box-right" width="558px" height="432px" src="/landing/home/EnterpriseHeader.svg" alt="enterprise"/>
+        <NuxtImg class="box-right" v-bind="enterpriseHeader" alt="enterprise"/>
         <div class="box-left">
             <h2>Scale With Kestra <span>Enterprise Edition</span></h2>
             <p>Built for Enterprises and SMBs</p>
@@ -21,6 +21,7 @@
 
 <script lang="ts" setup>
     import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue";
+    import enterpriseHeader from "./assets/EnterpriseHeader.svg";
 </script>
 
 <style lang="scss" scoped>
@@ -75,7 +76,7 @@
 
             li{
                 list-style: none;
-                background: url('/landing/home/purple-check.svg') no-repeat 0 0;
+                background: url('./assets/purple-check.svg') no-repeat 0 0;
                 padding-left: 32px;
                 margin: .5rem 0;
             }

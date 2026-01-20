@@ -3,7 +3,7 @@
         <div v-for="feat, index of features" class="block-content">
             <div class="clipper">
                 <div class="img-block">
-                    <NuxtImg :src="feat.icon" :width="feat.width" alt="Feature Icon"/>
+                    <NuxtImg v-bind="feat.icon" :width="feat.width" alt="Feature Icon"/>
                 </div>
             </div>
             <div class="arrow-box">
@@ -31,40 +31,48 @@
             <p>{{ feat.description }}</p>
         </div>
         <div class="block-center-image">
-            <img src="/landing/home/features-cube.svg" alt="Feature Container"/>
-            <img src="/landing/home/features-kestra.svg" alt="Kestra Monogram" class="kestra-logo" />
+            <img v-bind="cube" alt="Feature Container"/>
+            <img v-bind="kestraLogo" alt="Kestra Monogram" class="kestra-logo" />
         </div>
     </HomeCard>
 </template>
 
 <script setup lang="ts">
 import HomeCard from '~/components/home/Card.vue';
+import featuresCloud from './assets/features-cloud.svg';
+import featuresApi from './assets/features-api.svg';
+import featuresCog from './assets/features-cog.svg';
+import featuresLogos from './assets/features-logos.svg';
+
+import cube from './assets/features-cube.svg';
+import kestraLogo from './assets/features-kestra.svg';
+
 const features = [
     {
         name: "Deploy Anywhere",
         description: "Run Kestra anywhere—on-prem, hybrid, or any cloud, no dependencies, no installation headaches.",
-        icon: "/landing/home/features-cloud.svg",
+        icon: featuresCloud,
         color: "#3991FF",
         width: 69,
     },
     {
         name: "Connect to Any API or Service",
         description: "Automating everything from data pipelines, microservices, business processes to infrastructure provisioning.",
-        icon: "/landing/home/features-api.svg",
+        icon: featuresApi,
         color: "#E58238",
         width: 50,
     },
     {
         name: "Build Everything As Code & From the UI",
         description: "Empower every team members to collaborate from a single tool—code for developers, UI for everyone else, all in sync.",
-        icon: "/landing/home/features-cog.svg",
+        icon: featuresCog,
         width: 60,
         color: "#21CE9C",
     },
     {
         name: "Write Business Logic in Any Language",
         description: "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language.",
-        icon: "/landing/home/features-logos.svg",
+        icon: featuresLogos,
         color: "#FCE07C",
         width: 123,
     },

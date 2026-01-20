@@ -10,7 +10,7 @@
                     Started</NuxtLink>
             </HomeCard>
             <HomeCard class="side-box side-box-purple">
-                <NuxtImg src="/landing/home/logo-cta.svg" alt="CTA" class="logo-cta" />
+                <NuxtImg v-bind="LogoCTA" alt="CTA" class="logo-cta" />
                 <p class="pre-title">Schedule a meeting</p>
                 <h2>Let's meet</h2>
                 <p class="description">Connect with our product specialists and discuss your project requirements.</p>
@@ -21,6 +21,7 @@
 </template>
 <script setup lang="ts">
 import HomeCard from "~/components/home/Card.vue";
+import LogoCTA from "./assets/logo-cta.svg";
 </script>
 
 <style lang="scss" scoped>

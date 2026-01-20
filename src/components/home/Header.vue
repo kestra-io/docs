@@ -37,17 +37,14 @@
                         Kestra in 60 seconds
                     </div>
                     <NuxtImg
-                        src="/landing/home/video60sec.gif"
+                        v-bind="video60Gif"
                         alt="video"
-                        height="90"
-                        width="162"
                     />
                 </a>
                 <NuxtImg
                     v-if="isMobile"
-                    height="720"
                     loading="lazy"
-                    src="/landing/home/homepage.png"
+                    v-bind="homePageImage"
                     alt="homepage"
                     class="homepage-image"
                 />
@@ -104,6 +101,9 @@
     import { nextTick, onUnmounted, ref, useTemplateRef, watch } from "vue";
     import { useMediaQuery, useIntersectionObserver } from "@vueuse/core";
     import PlayCircleOutlineIcon from "vue-material-design-icons/PlayCircleOutline.vue";
+    import video60Gif from "./assets/video60sec.gif";
+    import homePageImage from "./assets/homepage.png";
+    import homepageRiv from "./assets/homepage.riv?url";
 
     const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -125,7 +125,7 @@
             return
         }
         const anim = new Rive({
-            src: "/landing/home/homepage.riv",
+            src: homepageRiv,
             canvas,
             autoplay: true,
             stateMachines: "kestra",

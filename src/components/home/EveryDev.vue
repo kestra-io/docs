@@ -10,8 +10,8 @@
         </div>
         <div class="container">
             <HomeCard class="left-card card-block">
-                <NuxtImg width="117" height="120" src="/landing/home/every-software.png" alt="developers" class="img-natural"/>
-                <NuxtImg width="117" height="120" src="/landing/home/every-software-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg v-bind="everySoftware" alt="developers" class="img-natural"/>
+                <NuxtImg v-bind="everySoftwareHover" alt="developers" class="img-hover"/>
                 <h3>Software Engineers</h3>
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
@@ -20,8 +20,8 @@
             </HomeCard>
 
             <HomeCard class="right-card card-block">
-                <NuxtImg width="117" height="120" src="/landing/home/every-platform.png" alt="developers" class="img-natural"/>
-                <NuxtImg width="117" height="120" src="/landing/home/every-platform-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg v-bind="everyPlatform" alt="developers" class="img-natural"/>
+                <NuxtImg v-bind="everyPlatformHover" alt="developers" class="img-hover"/>
                 <h3>Platform Engineers</h3>
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
@@ -30,8 +30,8 @@
             </HomeCard>
 
             <HomeCard class="bottom-card card-block">
-                <NuxtImg width="117" height="120" src="/landing/home/every-data.png" alt="developers" class="img-natural"/>
-                <NuxtImg width="117" height="120" src="/landing/home/every-data-hover.png" alt="developers" class="img-hover"/>
+                <NuxtImg v-bind="everyData" alt="developers" class="img-natural"/>
+                <NuxtImg v-bind="everyDataHover" alt="developers" class="img-hover"/>
                 <h3>Data Engineers</h3>
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
@@ -45,6 +45,13 @@
 <script setup>
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
 import HomeCard from '~/components/home/Card.vue';
+
+import everySoftware from './assets/every-software.png';
+import everySoftwareHover from './assets/every-software-hover.png';
+import everyPlatform from './assets/every-platform.png';
+import everyPlatformHover from './assets/every-platform-hover.png';
+import everyData from './assets/every-data.png';
+import everyDataHover from './assets/every-data-hover.png';
 </script>
 
 
@@ -61,7 +68,7 @@ import HomeCard from '~/components/home/Card.vue';
         background-size: cover;
         @include media-breakpoint-up(md){
             padding: 2rem;
-            background-image: linear-gradient(0deg, #0D0E13FF 0%, #0D0E1388 10%, #0D0E1300 30%, #0D0E1300 100%), url(/landing/home/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
+            background-image: linear-gradient(0deg, #0D0E13FF 0%, #0D0E1388 10%, #0D0E1300 30%, #0D0E1300 100%), url(./assets/every-bg-dots.svg), radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
             background-blend-mode: normal, luminosity, normal;
             background-repeat: no-repeat, no-repeat, no-repeat;
             background-position: center bottom, center bottom, center bottom;

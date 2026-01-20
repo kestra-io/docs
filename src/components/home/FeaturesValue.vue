@@ -34,7 +34,7 @@
                 <div class="spider-box" style="top: 37%; left: 12%;">
                     Batch or<br/> Real-Time ETL
                 </div>
-                <img src="/landing/home/any-spider.svg" alt="Any orchestration" class="spider" />
+                <img v-bind="anySpider" alt="Any orchestration" class="spider" />
             </div>
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
             <NuxtLink
@@ -50,6 +50,7 @@
 <script setup lang="ts">
 import HomeCard from '~/components/home/Card.vue';
 import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue';
+import anySpider from "./assets/any-spider.svg"
 
 const valueSet = [
     {

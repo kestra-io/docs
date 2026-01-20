@@ -14,6 +14,7 @@ import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue
 import CTA from "~/components/home/CTA.vue";
 import PluginsBox from "~/components/PluginsBox.astro";
 import { getValues } from "./api/github";
+import { getImage } from 'astro:assets';
 
 const logosNonRandomized = import.meta.glob('~/assets/trusted-companies/*.{svg,png}');
 const logos = await Promise.all(Object.entries(logosNonRandomized).map(([filePath, mod]) => {
@@ -45,6 +46,41 @@ const quotesLogos = (await Promise.all(Object.entries(quotesCompaniesLogos).map(
     return acc;
 }, {} as Record<string, string>);
 
+const tabs = [
+    {
+        label: "CI/CD for all your Workflows",
+        image: await getImage({
+            src: import('~/components/home/assets/tabs/cd.png'),
+            width: 1096,
+            height: 590,
+        }),
+    },
+    {
+        label: "No Code, Low Code, Full Code",
+        image: await getImage({
+            src: import('~/components/home/assets/tabs/no-code.png'),
+            width: 1096,
+            height: 590,
+        }),
+    },
+    {
+        label: "Revision History & Rollback",
+        image: await getImage({
+            src: import('~/components/home/assets/tabs/revisions.png'),
+            width: 1096,
+            height: 590,
+        }),
+    },
+    {
+        label: "Alerting & Infrastructure Monitoring",
+        image: await getImage({
+            src: import('~/components/home/assets/tabs/alerting.png'),
+            width: 1096,
+            height: 590,
+        }),
+    }
+]
+
 ---
 
 <Layout>
@@ -54,7 +90,7 @@ const quotesLogos = (await Promise.all(Object.entries(quotesCompaniesLogos).map(
     <OpenSourceQuotes client:visible />
     <Features />
     <EveryDev />
-    <Experience client:visible />
+    <Experience tabs={tabs} client:visible />
     <PluginsBox />
     <BlueprintsRender blueprints={blueprints.results} client:visible />
     <Enterprise stories={stories.results} client:visible />
