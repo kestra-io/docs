@@ -4,7 +4,7 @@
             <div class="quote">
                 <q class="quote-text">{{ quote.text }}</q>
                 <div class="quote-author"><b>{{ quote.author.name }}</b> <span>{{ quote.author.title }}</span></div>
-                <NuxtImg v-if="quote.logo" height="36" :src="quote.logo" alt="Company Logo" />
+                <NuxtImg v-if="quote.logo && quotesCompaniesLogos[quote.logo]" height="36" :src="quotesCompaniesLogos[quote.logo]" alt="Company Logo" />
             </div>
         </template>
     </HomeQuotes>
@@ -14,6 +14,10 @@
     import HomeQuotes from "~/components/home/Quotes.vue";
     import { onMounted, ref } from "vue";
 
+    defineProps<{
+        quotesCompaniesLogos: Record<string, string>;
+    }>()
+
     const quotes = [
         {
             "text": "This tool is an absolute game changer for Orchestration: the UI, build quality, architecture and features are top notch. It's by far the easiest tool I've ever set-up, thanks to the excellent documentation and rapid response. It's already revolutionising the way my team works.",
@@ -22,7 +26,7 @@
                 "title": "Senior Data Engineer",
                 "company": "EssenceMediacom"
             },
-            "logo": "/landing/home/quotes-companies/EssenceMediacom.svg"
+            "logo": "EssenceMediacom.svg"
         },
         {
             "text": "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
@@ -31,7 +35,7 @@
                 "title": "Head of Data Engineering",
                 "company": "Leroy Merlin"
             },
-            "logo": "/landing/home/quotes-companies/LeroyMerlin.svg"
+            "logo": "LeroyMerlin.svg"
         },
         {
             "text": "Companies typically don't like to share their secret weapon but everyone in the data world needs to know about Kestra. It has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
@@ -40,7 +44,7 @@
                 "title": "SVP of Analytics and Business Intelligence",
                 "company": "Foundation Direct"
             },
-            "logo": "/landing/home/quotes-companies/Foundation.svg"
+            "logo": "Foundation.svg"
         },
         {
             "text": "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop",
@@ -49,7 +53,7 @@
                 "title": "Lead Software Engineer",
                 "company": "Axciom"
             },
-            "logo": "/landing/home/quotes-companies/Acxiom.svg"
+            "logo": "Acxiom.svg"
         },
         {
             "text": "We're convinced we chose the right tool. The support and communication are great. Kestra adapts to any tool thanks to its plugins, and it's easy for anyone to understand.",
@@ -58,7 +62,7 @@
                 "title": "Team Leader",
                 "company": "Quadis"
             },
-            "logo": "/landing/home/quotes-companies/quadis.svg"
+            "logo": "quadis.svg"
         },
         {
             "text": "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain",
@@ -67,7 +71,7 @@
                 "title": "Cybersecurity & Technology Controls",
                 "company": "JPMorgan Chase & Co."
             },
-            "logo": "/landing/home/quotes-companies/JP-Morgan-Chase-Co.svg"
+            "logo": "JP-Morgan-Chase-Co.svg"
         },
         {
             "text": "I'm very impressed with what your team has here in Kestra. I moved some of my automated jobs over from Apache NIFI to Kestra. Kestra is way easier to work with because of everything being in the UI.",
@@ -76,7 +80,7 @@
                 "title": "Associate System Consultant",
                 "company": "Union Pacific RailRoad"
             },
-            "logo": "/landing/home/quotes-companies/Union-Pacific-RailRoad.svg"
+            "logo": "Union-Pacific-RailRoad.svg"
         },
         {
             "text": "I ported 80% of the prefect workflow in about a week to kestra, learing the syntax as i go […] yeah the yaml definitions make it super approachable.",
@@ -85,7 +89,7 @@
                 "title": "Purple Team Cybersecurity",
                 "company": "Orange"
             },
-            "logo": "/landing/home/quotes-companies/Orange.svg"
+            "logo": "Orange.svg"
         },
         {
             "text": "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes. Its strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines, including those in the field of genomics.",
@@ -94,7 +98,7 @@
                 "title": "Bioinformatician",
                 "company": "Sophia Genetics"
             },
-            "logo": "/landing/home/quotes-companies/Sophia-Genetics.svg"
+            "logo": "Sophia-Genetics.svg"
         },
         {
             "text": "I've been using Kestra on data projects at Sopht, also a french company, and it's been amazing for data processes. The declarative approach really works well for easy scalable contexts.",
@@ -103,7 +107,7 @@
                 "title": "CEO",
                 "company": "DataFlooder"
             },
-            "logo": "/landing/home/quotes-companies/DataFlooder.svg"
+            "logo": "DataFlooder.svg"
         },
         {
             "text": "Kestra’s UI and speed of development is brilliant. Very quick to prototype a new pipeline, continuously iterate, and test things out. Love the replay feature. It has very clear separation of pipeline and processing code.",
@@ -112,7 +116,7 @@
                 "title": "Senior Data Engineer",
                 "company": "Vyoma Space"
             },
-            "logo": "/landing/home/quotes-companies/Vyoma-Space.svg"
+            "logo": "Vyoma-Space.svg"
         },
         {
             "text": "I’ve been really enjoying Kestra! It’s been much simpler to use than building Airflow DAGs or using Prefect, the plugins are incredibly handy.",
@@ -121,7 +125,7 @@
                 "title": "Senior Data Engineer",
                 "company": "Political Data"
             },
-            "logo": "/landing/home/quotes-companies/Political-Data.svg"
+            "logo": "Political-Data.svg"
         },
         {
             "text": "Kestra is becoming mission critical.",
@@ -130,7 +134,7 @@
                 "title": "CTO",
                 "company": "Mattilda"
             },
-            "logo": "/landing/home/quotes-companies/Mattilda.svg"
+            "logo": "Mattilda.svg"
         },
         {
             "text": "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
@@ -139,7 +143,7 @@
                 "title": "Product Manager",
                 "company": "Clever Connect"
             },
-            "logo": "/landing/home/quotes-companies/CleverConnect.svg"
+            "logo": "CleverConnect.svg"
         },
         {
             "text": "Kestra is the first exciting thing I’ve seen in a long time.I’ve spent a huge part of my career looking for a solution that handle huge data sets.",
@@ -148,7 +152,7 @@
                 "title": "Lead Research Engineer",
                 "company": "TwoSix Labs"
             },
-            "logo": "/landing/home/quotes-companies/TwoSix.svg"
+            "logo": "TwoSix.svg"
         },
         {
             "text": "Thank you for your hard work in creating this good software. It is beginner friendly and easy to customize.",
@@ -157,7 +161,7 @@
                 "title": "IT Project Manager",
                 "company": "Airpaz"
             },
-            "logo": "/landing/home/quotes-companies/Airpaz.svg"
+            "logo": "Airpaz.svg"
         },
         {
             "text": "I'd like to say the product is fantastic! I love it so far! […] With Kestra we run git pull, build dbt models, and run Elementary reports and send a notification over Slack for the Elementary report, and it’s a breeze!",
@@ -166,7 +170,7 @@
                 "title": "Co-Founder",
                 "company": "EduBI Analytics"
             },
-            "logo": "/landing/home/quotes-companies/EduBIAnalytics.svg"
+            "logo": "EduBIAnalytics.svg"
         },
         {
             "text": "Kestra is an easy-to-learn, feature-rich platform for a wide variety of use cases. Its web interface simplifies flows and logs monitoring. ",
@@ -175,7 +179,7 @@
                 "title": "Principal Engineer",
                 "company": "SopraSteria"
             },
-            "logo": "/landing/home/quotes-companies/SopraSteria.svg"
+            "logo": "SopraSteria.svg"
         },
         {
             "text": "Kestra meets the needs perfectly, it’s very simple to use and manages the complexities behind it to offer a huge saving in time and costs.",
@@ -184,7 +188,7 @@
                 "title": "Data Engineer",
                 "company": "ADEO Services"
             },
-            "logo": "/landing/home/quotes-companies/ADEOServices.svg"
+            "logo": "ADEOServices.svg"
         },
         {
             "text": "Easy to use and very powerful, it does everything I need, and orchestrating flows has never been easier.",
@@ -193,7 +197,7 @@
                 "title": "Data Engineer",
                 "company": "Decathlon"
             },
-            "logo": "/landing/home/quotes-companies/Decathlon.svg"
+            "logo": "Decathlon.svg"
         },
         {
             "text": "With Kestra, I got started in minutes, no complex deployment, no rate limits, no lock-in to Python. Triggers, logs, multi-language support, it all just works. Compared to Prefect, Kestra feels like everything is in the right place.",
@@ -202,7 +206,7 @@
                 "title": "Software Engineer",
                 "company": "Apple"
             },
-            "logo": "/landing/home/quotes-companies/Apple.svg"
+            "logo": "Apple.svg"
         },
         {
             "text": "Kestra is really capable of supporting the growth of the company thanks to complete and controlled scalability!",
@@ -211,7 +215,7 @@
                 "title": "Senior Data Manager",
                 "company": "Ntico"
             },
-            "logo": "/landing/home/quotes-companies/Ntico.svg"
+            "logo": "Ntico.svg"
         },
         {
             "text": "Kestra has changed how we handle data orchestration. Instead of spending days fixing issues, we now have full visibility and control. As we scale, having a system that grows with us is invaluable",
@@ -220,7 +224,7 @@
                 "title": "IT Lead",
                 "company": "Fila"
             },
-            "logo": "/landing/home/quotes-companies/Fila.svg"
+            "logo": "Fila.svg"
         },
         {
             "text": "I don't want my teams to have to write Python. That's why I'm more interested in Kestra than Airflow",
@@ -229,7 +233,7 @@
                 "title": "Cybersecurity & Technology Controls",
                 "company": "JPMorgan Chase & Co."
             },
-            "logo": "/landing/home/quotes-companies/JP-Morgan-Chase-Co.svg"
+            "logo": "JP-Morgan-Chase-Co.svg"
         }
     ]
     const sorted = ref<Array<any>>([]);

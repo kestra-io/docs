@@ -30,6 +30,21 @@ const githubData = await getValues();
 const blueprints  = await $fetchApi<{results: Blueprint[]}>("/blueprints/versions/latest?page=1&size=20")
 const stories = await $fetchApi<{results: any[]}>("/customer-stories-v2?featured=true")
 
+const quotesCompaniesLogos = import.meta.glob('~/assets/quotes-companies/*.{svg,png}');
+const quotesLogos = (await Promise.all(Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
+    return mod().then((img: any) => {
+                return {
+                    name: filePath.split('/').pop(),
+                    url: img.default.src,
+                }
+            })
+}))).reduce((acc, curr) => {
+    if(curr.name){
+        acc[curr.name] = curr.url;
+    }
+    return acc;
+}, {} as Record<string, string>);
+
 ---
 
 <Layout>
@@ -43,6 +58,6 @@ const stories = await $fetchApi<{results: any[]}>("/customer-stories-v2?featured
     <PluginsBox />
     <BlueprintsRender blueprints={blueprints.results} client:visible />
     <Enterprise stories={stories.results} client:visible />
-    <EnterpriseQuotesRender client:visible />
+    <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
     <CTA client:visible />
 </Layout>
