@@ -4,7 +4,7 @@ description: "Stop fire-and-forget automation. Use Kestra Assets to manage VMs, 
 date: 2026-01-21T13:00:00
 category: Solutions
 authors:
-  - name: "Faizan Quazi"
+  - name: "Faizan Qazi"
     image: fqazi
     role: Solution Engineer
 
