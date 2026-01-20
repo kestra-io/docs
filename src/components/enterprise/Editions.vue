@@ -80,64 +80,64 @@
                                 <tr>
                                     <td><NuxtLink href="/features/declarative-data-orchestration">Embedded code editor</NuxtLink></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Open-source plugins</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom plugins</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Code versioning & Git integration</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Autocompletion and syntax validation</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Live-updating topology view</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Dependency management between tasks, subflows and flow event triggers</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -148,98 +148,98 @@
                                 <tr>
                                     <td>Advanced orchestration engine (sequential and parallel task processing, ditributed mapping)</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Concurrency limits</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Human-in-the-loop orchestration with pauses for manual approval</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Flexible scheduling system (Cron, interval-based and custom conditions)</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Event-driven data processing</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Event-driven data processing at scale (high throughput)</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom error handling and on-failure behavior</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Automated retries and restarts</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Automated notifications on success or failure</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom internal storage backend</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Workflow monitoring, observability & performance optimization</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -250,97 +250,97 @@
                                 <tr>
                                     <td>Fine-grained visibility into workflow execution states</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Dashboard about the status of your workflow executions across the instance</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Embedded code editor enabling fast feedback loops without deployment overhead</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Input validation on manual workflow executions from the UI</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Embedded task and trigger documentation</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Embedded blueprints with example usage</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom blueprints showing company-wide usage patterns</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Full-text search across task runs</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Centralized user & permission management from the UI</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Governance over code revision history (who updated the workflow and when)</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Namespace-level management for secrets, variables and task configuration</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Support to seamlessly switch between environments from the same UI via tenants</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -351,67 +351,67 @@
                                 <tr>
                                     <td>API-first design: everything can be automated via an API call</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Webhook triggers</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Webhook triggers at scale capable of handling millions of events</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Official Terraform provider for provisioning flows and namespace files</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Official Terraform provider to provision all resources incl. users and secrets management</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Official support for GitHub Actions, GitLab, Azure DevOps and more CI/CD providers</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Community blueprints</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom blueprints representing company-wide usage patterns</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -423,63 +423,63 @@
                                     <td>OIDC/SSO authentication</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Role-Based Access Control</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Audit logs</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Custom secrets backends (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Namespace-level credential store</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Namespace-level variable store</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Namespace-level task configuration</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Namespace-level permissions</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Worker security isolation</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -490,24 +490,24 @@
                                 <tr>
                                     <td>Self-hosted deployment</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>High-Availability with No Single Point of Failure</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Worker groups supporting distributed workers</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr class="table-section">
@@ -518,31 +518,31 @@
                                 <tr>
                                     <td>Community support</td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Enterprise support with SLAs</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Onboarding</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Training</td>
                                     <td></td>
                                     <td>
-                                        <img src="/landing/enterprise/check.svg" alt="Check"/>
+                                        <img v-bind="imageCheck" alt="Check"/>
                                     </td>
                                 </tr>
                             </table>
@@ -560,6 +560,7 @@ import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 import Section from '~/components/layout/Section.vue';
 import { usePluginsCount } from "~/composables/usePluginsCount";
+import imageCheck from "./assets/check.svg";
 
 const { totalPlugins } = usePluginsCount();
 const isOpen = ref(false);
