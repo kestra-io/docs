@@ -16,7 +16,7 @@ const plugins = pluginMetadata
         link: `/plugins/${plugin.artifactId}` + (`plugin-${plugin.name}` != plugin.artifactId ? "/" + plugin.name : ""),
         icon: `/icons/${plugin.group}.svg`
     }))
-    .filter(r => r.artifactId !== "core" && r.artifactId !== "plugin-kestra" && r.artifactId !== "plugin-debezium" && !r.artifactId.startsWith("plugin-ee") && !r.artifactId.startsWith("secret-") && !r.artifactId.startsWith("storage-"))
+    .filter(r => r.artifactId && r.artifactId !== "core" && r.artifactId !== "plugin-kestra" && r.artifactId !== "plugin-debezium" && !r.artifactId.startsWith("plugin-ee") && !r.artifactId.startsWith("secret-") && !r.artifactId.startsWith("storage-"))
     .sort(() => 0.5 - Math.random()).slice(0, 20);
 
 ---
