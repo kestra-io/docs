@@ -4933,7 +4933,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code in a single string
+        description: A list of flow files
         content:
           application/x-yaml:
             schema:
@@ -5043,16 +5043,18 @@ paths:
       - Flows
       summary: Update a complete namespace from yaml source
       description: |-
-        All flow will be created / updated for this namespace.
-        Flow that already created but not in `flows` will be deleted if the query delete is `true`
+        All flows will be created / updated for this namespace.
+        Existing flows missing from `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: namespace
-        in: path
-        description: The flow namespace
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
         required: true
+        explode: false
         schema:
-          type: string
+          type: boolean
+          default: false
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -5061,13 +5063,19 @@ paths:
         schema:
           type: boolean
           default: true
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
       - name: tenant
         in: path
         required: true
         schema:
           type: string
       requestBody:
-        description: A list of flows source code
+        description: A list of flow files
         content:
           application/x-yaml:
             schema:
@@ -6791,7 +6799,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KVController.TypedValue"
+                $ref: "#/components/schemas/KVController.KvDetail"
     put:
       tags:
       - KV
@@ -9283,13 +9291,19 @@ components:
           items:
             type: string
       description: API Response for the bulk-delete operation.
-    KVController.TypedValue:
+    KVController.KvDetail:
       type: object
       properties:
         type:
           $ref: "#/components/schemas/KVType"
         value:
           type: object
+        revision:
+          type: integer
+          format: int32
+        updated:
+          type: string
+          format: date-time
     KVEntry:
       type: object
       properties:
@@ -10254,8 +10268,6 @@ components:
           type: string
           nullable: true
           readOnly: true
-        durationOrComputeIt:
-          type: string
         startDate:
           type: string
           format: date-time
@@ -10594,13 +10606,15 @@ components:
       - index
       type: object
       properties:
-        flow:
-          type: string
-        namespace:
-          type: string
         index:
           type: integer
           format: int32
+        filename:
+          type: string
+        namespace:
+          type: string
+        flow:
+          type: string
         constraints:
           type: string
         outdated:
