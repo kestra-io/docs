@@ -26,7 +26,7 @@ const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
                 {index == 0 ? '' : (
                     <hr  />
                 )}
-                <a :to={ post.path } class="post-card">
+                <a href={ post.path } class="post-card">
                     <Image src={post.image} class="card-img-left" alt={post.title} width={80}/>
                     <div class="card-body">
                         <div class="card-details">
