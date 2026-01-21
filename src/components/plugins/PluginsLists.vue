@@ -135,11 +135,12 @@
     });
 
     watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
-        const url = new URL(window.location);
+        const url = new URL(window.location.href);
         url.searchParams.set('category', cat);
         url.searchParams.set('sort', sort);
 
-        q ? url.searchParams.set('q', q) : url.searchParams.delete('q');
+        if(q) url.searchParams.set('q', q);
+        else url.searchParams.delete('q');
 
         window.history.replaceState(null, '', url);
     });

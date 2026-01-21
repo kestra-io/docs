@@ -224,7 +224,7 @@ const headingDescription = pluginType ? page.title :
     );
 
 const pageNamesHeading = {
-        ...(pageNames ?? {}),
+        ...pageNames,
         [pathname]: headingTitle,
         [`/plugins/${pluginName}`]: getPluginTitle(
             rootPlugin!,

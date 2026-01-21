@@ -37,11 +37,11 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
                 .sort(([_, a], [__, b]) => {
                     return Boolean(b.$required) === Boolean(a.$required)
                         ? 0
-                        : Boolean(a.$required)
+                        : a.$required
                             ? 1
                             : -1;
                 })
-                .map(([key, prop]) => ({id: prefix + key, depth: 3, text: key.split("_")[0]}));
+                .map(([key, _prop]) => ({id: prefix + key, depth: 3, text: key.split("_")[0]}));
         };
 
         const links: TocLink[] = [];

@@ -1,6 +1,6 @@
 import {generate} from "~/utils/ogImage.ts";
 import {$fetch} from "~/utils/fetch.ts";
-import type {JSONSchema, Plugin, PluginMetadata} from "@kestra-io/ui-libs";
+import type {JSONSchema} from "@kestra-io/ui-libs";
 import {API_URL} from "astro:env/client";
 import {formatElementName} from "~/utils/pluginUtils.ts";
 

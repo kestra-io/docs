@@ -24,7 +24,7 @@ export const GET: APIRoute = async () => {
                 .concat(
                     Object.entries(plugin)
                         .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                        .map(([key, value]) => value as PluginElement[])
+                        .map(([_, value]) => value as PluginElement[])
                         .flatMap(value => {
                             return value.map((t: PluginElement) => {
                                 const subgroup = mapping.clsToSubgroup[t.cls];

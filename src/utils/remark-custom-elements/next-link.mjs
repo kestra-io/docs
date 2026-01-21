@@ -1,4 +1,4 @@
-export function NextLink(data, attributes, node, file) {
+export function NextLink(data, _attributes, node, _file) {
     const children = node.children || [];
     data.hName = 'div';
     data.hProperties = {

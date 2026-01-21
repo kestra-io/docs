@@ -16,26 +16,22 @@ declare global{
 export function hubspotFormCreate(eventType: string, data: Record<string, any>) {
     const gtm = useGtm();
     scriptLoad(() => {
-        const formData = {
-            ...data, ...{
-                region: "eu1",
-                portalId: "27220195",
-                onFormSubmit: function ($form: HTMLFormElement) {
-                    gtm?.trackEvent({
-                        event: eventType,
-                        noninteraction: false,
-                    })
-
-                    posthog.capture(eventType);
-
-                    const email = $form.querySelector('[name="email"]') as HTMLInputElement;
-
-                    if (email?.value) {
-                        identify(email?.value);
-                    }
-                }
-            }
-        }
+        const formData = ({
+	...data,
+	region: 'eu1',
+	portalId: '27220195',
+	onFormSubmit: function($form: HTMLFormElement) {
+		gtm?.trackEvent({
+			event: eventType,
+			noninteraction: false
+		});
+		posthog.capture(eventType);
+		const email = $form.querySelector('[name="email"]') as HTMLInputElement;
+		if (email?.value) {
+			identify(email?.value);
+		}
+	}
+})
 
         window.hbspt.forms.create(formData);
     });

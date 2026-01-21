@@ -1,7 +1,7 @@
 import { visit } from 'unist-util-visit'
 
 export default function() {
-    return function(tree, file) {
+    return function(tree, _file) {
         visit(tree, function (node) {
             if(node.type !== 'table') return;
             // add classname 'table' to all table nodes

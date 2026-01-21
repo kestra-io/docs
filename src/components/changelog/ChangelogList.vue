@@ -113,9 +113,10 @@
     const updateUrl = () => {
         if (typeof window !== "undefined") {
             const url = new URL(window.location.href);
-            currentFilter.value === "all"
-                ? url.searchParams.delete("filter")
-                : url.searchParams.set("filter", currentFilter.value);
+            if(currentFilter.value === "all")
+                url.searchParams.delete("filter");
+            else
+                url.searchParams.set("filter", currentFilter.value);
 
             window.history.pushState({}, "", url.toString());
         }

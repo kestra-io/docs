@@ -144,7 +144,9 @@
     }
 
     const changePage = () => {
-        typeof window !== 'undefined' && window.scrollTo(0, 0)
+        if(typeof window !== 'undefined') {
+            window.scrollTo({ top: 0 });
+        }
     };
 
     const generateCardHref = (blueprint: Blueprint) => {

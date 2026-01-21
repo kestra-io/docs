@@ -18,7 +18,7 @@
     "workers:deploy-dryrun": "wrangler deploy --dry-run",
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
-    "lint": "oxc .",
+    "lint": "oxlint . --fix",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -54,7 +54,7 @@
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.12.2",
     "nitro-cloudflare-dev": "^0.2.2",
-    "oxc": "^1.0.1",
+    "oxlint": "^1.41.0",
     "posthog-js": "^1.328.0",
     "prettier": "^3.8.0",
     "prettier-plugin-astro": "^0.14.1",

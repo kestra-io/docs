@@ -9,7 +9,7 @@ const initZoom = () => {
     const fixedContainer = document.getElementById("fixed-container");
     const navTocGlobal = document.getElementById("nav-toc-global");
 
-    zoomHandler.on('close', event => {
+    zoomHandler.on('close', () => {
         topBar.classList.remove("animation-slide-up");
         fixedContainer.classList.remove("animation-slide-right");
         navTocGlobal?.classList.remove("animation-slide-right")
@@ -17,7 +17,7 @@ const initZoom = () => {
 
     zoomHandler.on(
         'open',
-        event => {
+        () => {
             topBar.classList.toggle("animation-slide-up", true);
             fixedContainer.classList.toggle("animation-slide-right", true);
             navTocGlobal?.classList.toggle("animation-slide-right", true);
