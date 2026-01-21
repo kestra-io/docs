@@ -18,7 +18,7 @@ This release also makes Kestra easier to use for Command Line enthusiasts. We've
 
 The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-notifications#telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -457,7 +457,7 @@ We've also improved the [documentation for new script plugins](../../docs/16.scr
 
 ### Telegram notifications
 
-There is a [new plugin](/plugins/plugin-notifications#telegram) allowing you to send notifications using [Telegram](https://telegram.org/).
+There is a [new plugin](/plugins/plugin-telegram) allowing you to send notifications using [Telegram](https://telegram.org/).
 
 Below is a simple example:
 
@@ -466,7 +466,7 @@ id: telegram
 namespace: company.team
 tasks:
   - id: telegram_notification
-    type: io.kestra.plugin.notifications.telegram.TelegramSend
+    type: io.kestra.plugin.telegram.TelegramSend
     channel: "@general"
     token: "{{ secret('TELEGRAM_BOT_TOKEN') }}"
     payload: "Hello from Kestra!"

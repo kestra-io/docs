@@ -397,7 +397,7 @@ namespace: company.team
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: >
       {
@@ -418,7 +418,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     url: "{{ secret('DISCORD_WEBHOOK') }}"
     executionId: "{{ trigger.executionId }}"
 

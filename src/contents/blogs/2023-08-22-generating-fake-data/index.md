@@ -389,7 +389,7 @@ tasks:
 
   - id: send_email
     disabled: true
-    type: io.kestra.plugin.notifications.mail.MailSend
+    type: io.kestra.plugin.email.MailSend
     attachments:
       - name: plot.png
         uri: '{{ outputs.output["plot.png"] }}'

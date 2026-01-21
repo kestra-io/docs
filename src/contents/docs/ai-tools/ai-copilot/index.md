@@ -232,9 +232,9 @@ kestra:
       base-url: http://localhost:11434
 ```
 
-::alert{type="info"}
-If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
-::
+:::alert{type="info"}
+If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In thi"s case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
+:::
 
 :::alert{type="info"}
 Some Ollama model names can be confusing. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to SHA `ad815644918f`, which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scenes. This is a thinking model that doesn't support disabling it.
