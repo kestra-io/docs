@@ -36,7 +36,7 @@ namespace: company.team
 
 tasks:
   - id: send_whatsapp_message
-    type: io.kestra.plugin.notifications.whatsapp.WhatsAppIncomingWebhook
+    type: io.kestra.plugin.meta.whatsapp.WhatsAppIncomingWebhook
     url: "{{ secret('WHATSAPP_WEBHOOK') }}"
     payload: |
       {
@@ -107,7 +107,7 @@ tasks:
       </tsRequest>
 
   - id: send_slack_alert
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {
@@ -174,7 +174,7 @@ tasks:
       channel_id: "{{ json(outputs.create_war_room_slack.body).channel.id }}"
 
   - id: send_pagerduty_alert
-    type: io.kestra.plugin.notifications.pagerduty.PagerDutyAlert
+    type: io.kestra.plugin.pagerduty.PagerDutyAlert
     url: "{{ secret('PAGERDUTY_URL') }}"
     payload: |
       {

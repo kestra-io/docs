@@ -72,7 +72,7 @@ And we also improved the quality of the [plugin documentation](/plugins/), we ho
 
 ## Plugins
 
-Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-notifications/#teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.Command.html) task so send shell commands to a remote server with the SSH protocol.
+Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-microsoft365/teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.Command.html) task so send shell commands to a remote server with the SSH protocol.
 
 ## Enterprise Edition
 

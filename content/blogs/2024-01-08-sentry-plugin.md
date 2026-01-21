@@ -64,7 +64,7 @@ Kestra provides two plugins for sending issues to Sentry. Let’s have a look at
 
 ### SentryAlert Task
 
-`type: io.kestra.plugin.notifications.sentry.SentryAlert`
+`type: io.kestra.plugin.sentry.SentryAlert`
 
 This is an incredibly useful plugin. You can use it to send an Issue to Sentry for any reason, not just for workflow failure - just keep in mind that you pay based on the volume of issues you send to Sentry.
 
@@ -112,7 +112,7 @@ This example uses the full set of payload properties:
 ```yaml
 tasks:
   - id: just_send_an_alert
-    type: io.kestra.plugin.notifications.sentry.SentryAlert
+    type: io.kestra.plugin.sentry.SentryAlert
     dsn: "{{ secret('SENTRY_DSN') }}"
     payload: |
       {
@@ -217,7 +217,7 @@ tasks:
 
 
   - id: send_sentry_alert_on_success
-    type: io.kestra.plugin.notifications.sentry.SentryAlert
+    type: io.kestra.plugin.sentry.SentryAlert
     dsn: "{{ secret('SENTRY_DSN') }}"
     payload: |
       {
@@ -227,7 +227,7 @@ tasks:
 
 errors:
   - id: send_sentry_alert_on_failure
-    type: io.kestra.plugin.notifications.sentry.SentryAlert
+    type: io.kestra.plugin.sentry.SentryAlert
     dsn: "{{ secret('SENTRY_DSN') }}"
     payload: |
       {
@@ -242,7 +242,7 @@ triggers:
 ```
 
 ### SentryExecution Task
-`type: io.kestra.plugin.notifications.sentry.SentryExecution`
+`type: io.kestra.plugin.sentry.SentryExecution`
 
 This task demonstrates a really cool feature of Kestra: triggers that trigger other triggers. Let me explain.
 
@@ -270,7 +270,7 @@ The task is straightforward. All you need to provide is the **DSN** and the **Le
 ```yaml
 tasks:
 - id: send_alert
-  type: io.kestra.plugin.notifications.sentry.SentryExecution
+  type: io.kestra.plugin.sentry.SentryExecution
   executionId: "{{ trigger.executionId }}"
   transaction: "/execution/id/{{ trigger.executionId }}"
   dsn: "{{ secret('SENTRY_DSN') }}"
@@ -338,7 +338,7 @@ description: Waits for another flow with the namespace specified below to fail o
 warn, and then sends a Sentry issue.
 tasks:
 - id: send_alert
-  type: io.kestra.plugin.notifications.sentry.SentryExecution
+  type: io.kestra.plugin.sentry.SentryExecution
   executionId: "{{ trigger.executionId }}"
   transaction: "/execution/id/{{ trigger.executionId }}"
   dsn: "{{ secret('SENTRY_DSN') }}"
@@ -424,7 +424,7 @@ errors:
     type: io.kestra.plugin.core.log.Log
     message: "Something bad happened while running {{execution.id}} {{task.id}}"
   - id: send_sentry_alert_on_failure
-    type: io.kestra.plugin.notifications.sentry.SentryAlert
+    type: io.kestra.plugin.sentry.SentryAlert
     dsn: "{{ secret('SENTRY_DSN') }}"
     payload: |
       {
@@ -520,7 +520,7 @@ description: Waits for another flow with the namespace specified below to fail o
 
 tasks:
 - id: send_alert
-  type: io.kestra.plugin.notifications.sentry.SentryExecution
+  type: io.kestra.plugin.sentry.SentryExecution
   executionId: "{{ trigger.executionId }}"
   transaction: "/execution/id/{{ trigger.executionId }}"
   dsn: "{{ secret('SENTRY_DSN') }}"
