@@ -106,28 +106,28 @@ $bd-gutter-x: 3rem;
 
     @include media-breakpoint-down(lg) {
         h1 {
-            font-size: $h4-font-size!important;
-            line-height: $h4-font-size!important;
+            font-size: $h4-font-size;
+            line-height: $h4-font-size;
         }
         h2 {
-            font-size: $h5-font-size!important;
-            line-height: $h5-font-size!important;
+            font-size: $h5-font-size;
+            line-height: $h5-font-size;
         }
         h3 {
-            font-size: $h6-font-size!important;
-            line-height: $h6-font-size!important;
+            font-size: $h6-font-size;
+            line-height: $h6-font-size;
         }
         h4 {
-            font-size: $font-size-base!important;
-            line-height: $font-size-base!important;
+            font-size: $font-size-base;
+            line-height: $font-size-base;
         }
         h5 {
-            font-size: $font-size-sm!important;
-            line-height: $font-size-sm!important;
+            font-size: $font-size-sm;
+            line-height: $font-size-sm;
         }
         h6 {
-            font-size: $font-size-xs!important;
-            line-height: $font-size-xs!important;
+            font-size: $font-size-xs;
+            line-height: $font-size-xs;
         }
     }
 
@@ -202,6 +202,7 @@ $bd-gutter-x: 3rem;
 .expressive-code {
     // makes the copied flag show in white on purple
     --ec-frm-tooltipSuccessBg: var(--ks-button-background-primary);
+    margin-bottom: 2rem;
 
     // displays the name of the language on top-right of code blocks
     pre[data-language] {
@@ -212,8 +213,8 @@ $bd-gutter-x: 3rem;
             opacity: 0.5;
             display: block;
             position: absolute;
-            top: .3rem;
-            right: .6rem;
+            top: 1rem;
+            right: 1rem;
             font-size: 0.65rem;
             text-transform: lowercase;
             z-index: 1;
@@ -224,45 +225,7 @@ $bd-gutter-x: 3rem;
     }
 }
 
-.layout-docs-wrapper .bd-content {
-    #{--bs-heading-color}: white;
-    grid-area: content;
-    min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
-
-    a {
-        color: var(--ks-content-link);
-        &:hover {
-            color: var(--ks-content-link-hover);
-        }
-    }
-
-    .bd-markdown {
-        h1 {
-            display: none;
-        }
-    }
-
-
-        h1, h2, h3, h4, h5, h6 {
-            margin-bottom: 1rem;
-            position: relative;
-            &:hover [href] {
-                position: absolute;
-                z-index: 1;
-                left: -2rem;
-                width: 2rem;
-                display: block;
-                .icon-link:before {
-                    content: "#";
-                }
-            }
-        }
-
-        h2 {
-            margin-top: 3rem;
-        }
-
-
+.bd-content{
     .video-container  {
         position: relative;
         width: 100%;
@@ -292,6 +255,45 @@ $bd-gutter-x: 3rem;
                 height: 100%;
             }
         }
+    }
+}
+
+.layout-docs-wrapper .bd-content {
+    #{--bs-heading-color}: white;
+    grid-area: content;
+    min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
+
+    a {
+        color: var(--ks-content-link);
+        &:hover {
+            color: var(--ks-content-link-hover);
+        }
+    }
+
+    .bd-markdown {
+        h1 {
+            display: none;
+        }
+    }
+
+
+    h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 1rem;
+        position: relative;
+        &:hover [href] {
+            position: absolute;
+            z-index: 1;
+            left: -2rem;
+            width: 2rem;
+            display: block;
+            .icon-link:before {
+                content: "#";
+            }
+        }
+    }
+
+    h2 {
+        margin-top: 3rem;
     }
 
 

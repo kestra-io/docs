@@ -50,7 +50,7 @@ const jsonLinkedData = {
 };
 
 ---
-<LayoutBlogs activeStem={`/blogs/${post.id}`} title={title} description={description} image={staticImage.src}>
+<LayoutBlogs activeStem={`/blogs/${post.id}`} title={title} description={description} image={staticImage?.src}>
     <Fragment slot="head">
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={new Date(date).toISOString()} />
@@ -114,8 +114,60 @@ const jsonLinkedData = {
     .bd-content {
         max-width: 100%;
         padding-right: 1.5rem;
+
         :global(img) {
             border: $block-border;
+        }
+
+        :global(p){
+            margin-bottom: 2rem;
+        }
+
+        :global(h2) {
+            margin-top: 7.25rem;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            position: relative;
+            font-size: calc($font-size-base * 2.25);
+            font-weight: 500;
+
+            &:before {
+                height: 1px;
+                display: block;
+                position: absolute;
+                top: -3.12rem;
+                left: 0;
+                content: "";
+                width: 100%;
+                background: $black-6;
+            }
+            &:after {
+                height: 100%;
+                width: 5px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: $purple-36;
+                display: block;
+                content: " "
+            }
+
+            &:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 3.12rem;
+            }
+        }
+
+        :global(ul) {
+            list-style: disc;
+            li::marker {
+                color: #736BCD ;
+            }
+        }
+
+        :global(li::marker) {
+            color: #5A3ABC;
         }
     }
 
