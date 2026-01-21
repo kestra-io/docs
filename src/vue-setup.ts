@@ -28,7 +28,7 @@ export default (app: App) => {
 
     app.use(USALPlugin, {
         defaults: {
-            duration: 400,
+            duration: 200,
             threshold: 0.1,
         },
         once: true,
@@ -42,11 +42,5 @@ export default (app: App) => {
             alt: props.alt
         }),
         props: ["width", "height", "src", "alt"]
-    }));
-
-    app.component("ClientOnly", defineComponent({
-        setup: (_, { slots }) => () => slots.default?.(),
-        inheritAttrs: false,
-        props: ["fallback"]
     }));
 };

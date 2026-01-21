@@ -13,9 +13,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-text">
-                                <ClientOnly>
-                                    <div id="hubspotForm" data-usal="fade-l" />
-                                </ClientOnly>
+                                <div id="hubspotForm" data-usal="fade-l" />
                             </div>
                         </div>
                     </div>

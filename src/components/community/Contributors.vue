@@ -6,22 +6,17 @@
             <div ref="topOfSection" />
             <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
                 <template v-for="(contributor, index) in displayedContributors" :key="contributor.name">
-                    <ClientOnly>
-                        <template #fallback>
-                            <a :href="'https://github.com/' + contributors[index].name" />
-                        </template>
-                        <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin" >
-                            <img
-                                width="90px"
-                                height="90px"
-                                loading="lazy"
-                                class="rounded-circle"
-                                :src="contributor.avatar"
-                                :alt="contributor.name"
-                            />
-                            <p>{{contributor.name}}</p>
-                        </a>
-                    </ClientOnly>
+                    <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin" >
+                        <img
+                            width="90px"
+                            height="90px"
+                            loading="lazy"
+                            class="rounded-circle"
+                            :src="contributor.avatar"
+                            :alt="contributor.name"
+                        />
+                        <p>{{contributor.name}}</p>
+                    </a>
                 </template>
             </div>
             <div v-if="contributors && moreCount > 0" class="text-center mt-4">

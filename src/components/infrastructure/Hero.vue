@@ -39,11 +39,9 @@
                 <h5>Trusted by Leading Global Companies</h5>
                 <div class="companies-logos">
                     <template v-for="(company, index) in companiesCarousel" :key="index">
-                        <ClientOnly :fallback="company.name">
-                            <NuxtImg :src="`/landing/infrastructure/companies/${company.name}.svg`" :width="company.width"
-                                :height="company.height" loading="lazy" format="webp"
-                                :alt="company.name" />
-                        </ClientOnly>
+                        <NuxtImg :src="`/landing/infrastructure/companies/${company.name}.svg`" :width="company.width"
+                            :height="company.height" loading="lazy" format="webp"
+                            :alt="company.name" />
                     </template>
                 </div>
             </div>
