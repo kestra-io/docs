@@ -115,6 +115,7 @@
         const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name];
         return {
             name: plugin.name,
+            subGroupTitle: plugin.title,
             title: pluginInfo?.title,
             description: pluginInfo?.description ?? plugin.description,
             categories: pluginInfo?.categories,
