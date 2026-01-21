@@ -8,7 +8,7 @@ authors:
     image: fqazi
     role: Solution Engineer
 
-image: /blogs/todo.jpg
+image: /blogs/assets-for-infra.jpg
 ---
 
 We are moving beyond simple "fire-and-forget" task execution. By leveraging **Kestra Assets**, we treat our infrastructure as a stateful inventory of resources, complete with lineage and metadata tracking. Instead of disparate scripts, we define a **chain of workflows** that build a dependency graph linking Day 1 provisioning (resource creation) to Day 2 operations (snapshots, patching, etc.). This approach yields a live catalog of all infrastructure components and their relationships, enabling full traceability and auditability.
@@ -349,6 +349,8 @@ This live inventory is queryable via Kestra's API or UI. For instance, you can f
 ![metadata](/blogs/assets-for-infra/metadata.png)
 
 You can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
+
+![dependencies](/blogs/assets-for-infra/dependency-assets.jpg)
 
 ## Key Benefits
 
