@@ -199,8 +199,29 @@ $bd-gutter-x: 3rem;
     display: none !important;
 }
 
-.layout-docs-wrapper  {
+.expressive-code {
+    // makes the copied flag show in white on purple
     --ec-frm-tooltipSuccessBg: var(--ks-button-background-primary);
+
+    // displays the name of the language on top-right of code blocks
+    pre[data-language] {
+        position: relative;
+        &:before{
+            content: attr(data-language);
+            color: white;
+            opacity: 0.5;
+            display: block;
+            position: absolute;
+            top: .3rem;
+            right: .6rem;
+            font-size: 0.65rem;
+            text-transform: lowercase;
+            z-index: 1;
+        }
+        &:hover:before{
+            display: none;
+        }
+    }
 }
 
 .layout-docs-wrapper .bd-content {
