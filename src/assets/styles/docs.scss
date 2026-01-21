@@ -36,7 +36,10 @@ $bd-gutter-x: 3rem;
 
 .bd-content, .bd-main > div.bd-title > h1, .bd-main > div.bd-title .slug {
     margin: 0 auto;
-    max-width: 45.8rem;
+    max-width: 48rem;
+    @media (min-width: 2000px) {
+        max-width: 75rem;
+    }
     width: 100%;
 }
 

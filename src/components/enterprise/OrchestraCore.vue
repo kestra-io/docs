@@ -429,15 +429,16 @@
                 }
 
                 .content {
-                    overflow: hidden;
+                    -webkit-backdrop-filter: blur(74px);
+                    backdrop-filter: blur(74px);
+                    background: linear-gradient(347.23deg, #1c1c2699 9.24%, #2b293299 106.62%);
                     border-radius: 20px;
                     display: flex;
                     flex-direction: column;
                     gap: 40px;
-                    padding: 72px 102px;
                     margin: 0 74px;
-                    background: linear-gradient(347.23deg, rgba(28, 28, 38, 0.6) 9.24%, rgba(43, 41, 50, 0.6) 106.62%);
-                    backdrop-filter: blur(74px);
+                    overflow: hidden;
+                    padding: 72px 102px;
 
                     @media only screen and (max-width: 992px) {
                         gap: 16px;

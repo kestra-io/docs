@@ -172,6 +172,7 @@ const companyLogos = [
                 backdrop-filter: blur(10px);
                 width: fit-content;
                 position: relative;
+                background-color: transparent;
 
                 @include media-breakpoint-down(lg) {
                     border: 1px solid #7777FFB2;
