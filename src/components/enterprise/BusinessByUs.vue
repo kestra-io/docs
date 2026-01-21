@@ -18,7 +18,7 @@
                     <div class="info-item">
                         <h3>+300,000</h3>
                         <p>executions per day</p>
-                        <img v-bind="MT"" alt="Mattilda">
+                        <img v-bind="MT" alt="Mattilda">
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item">
