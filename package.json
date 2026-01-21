@@ -54,6 +54,7 @@
     "nitro-cloudflare-dev": "^0.2.2",
     "posthog-js": "^1.328.0",
     "rapidoc": "^9.3.8",
+    "rehype-autolink-headings": "^7.1.0",
     "rehype-external-links": "^3.0.0",
     "remark-directive": "^4.0.0",
     "remark-link-rewrite": "^1.0.7",

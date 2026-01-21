@@ -221,6 +221,17 @@ $bd-gutter-x: 3rem;
 
         h1, h2, h3, h4, h5, h6 {
             margin-bottom: 1rem;
+            position: relative;
+            &:hover [href] {
+                position: absolute;
+                z-index: 1;
+                left: -2rem;
+                width: 2rem;
+                display: block;
+                .icon-link:before {
+                    content: "#";
+                }
+            }
         }
 
         h2 {
