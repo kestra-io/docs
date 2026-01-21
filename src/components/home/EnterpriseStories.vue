@@ -52,6 +52,7 @@
 	export interface Story {
 		id: string
 		title: string
+        content: string
 		description: string
 		quote: string
 		quotePerson: string
@@ -60,6 +61,13 @@
 		featuredImage: string
 		heroImage: string
 		logoDark: string
+        kpi1: string
+        kpi2: string
+        kpi3: string
+        industry: string
+        headquarter: string
+        solution: string
+        tasks: string[]
 	}
 
 	const activeStory = ref<number>(0)

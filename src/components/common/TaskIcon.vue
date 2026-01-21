@@ -17,7 +17,7 @@
 	const props = defineProps({
 		cls: {
 			type: String,
-			default: undefined,
+			default: "",
 		},
 	})
 

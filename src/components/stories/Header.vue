@@ -20,7 +20,7 @@
 
 			<div class="bottom">
 				<div v-for="(kpi, index) in kpis" :key="index" class="kpi-section">
-					<MDCParserAndRenderer :content="kpi" />
+					<MDCParserAndRenderer v-if="kpi" :content="kpi" />
 				</div>
 			</div>
 		</div>

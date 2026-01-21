@@ -1,4 +1,4 @@
-import { $fetch } from "~/utils/fetch.ts"
+import { $fetchApi } from "~/utils/fetch.ts"
 
 interface BlueprintsOptions {
 	page?: number
@@ -19,8 +19,8 @@ export async function useBlueprintsList(options: BlueprintsOptions = {}): Promis
 	if (q) {
 		PARAMS.append("q", q)
 	}
-	return await $fetch(
-		`${useRuntimeConfig().public.apiUrl}/blueprints/versions/latest?${PARAMS}`,
+	return await $fetchApi(
+		`/blueprints/versions/latest?${PARAMS}`,
 	).then((DATA) => ({
 		...DATA,
 		results: [...DATA.results].sort(() => Math.random() - 0.5),

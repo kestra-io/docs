@@ -5,6 +5,17 @@ import {
 	type PluginMetadata,
 } from "@kestra-io/ui-libs"
 
+function toNavTitle(title: string): string {
+    let startCaseTitle = title.charAt(0).toUpperCase() + title.slice(1);
+    if (title.match(/^[a-z]+[A-Z][a-z]/)) {
+        startCaseTitle = title.replace(/[A-Z][a-z]/, match => ` ${match}`);
+    }
+    return startCaseTitle
+        .split(".")
+        .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+        .join("");
+}
+
 /**
  * Hack to get the subpackage from a cls if subGroup is not directly provided.
  * Extracts the first-level subpackage from a class name for grouping.
@@ -79,5 +90,5 @@ export function groupBySubpackage(plugin: Plugin, allMetadata: PluginMetadata[])
 			categories: plugin.categories ?? [],
 			...elementsByType,
 		}
-	})
+	}) as any[]
 }

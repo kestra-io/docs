@@ -30,7 +30,7 @@
 			items?: FeatureItem[]
 		}>(),
 		{
-			items: [] as FeatureItem[],
+			items: () => [],
 		},
 	)
 </script>

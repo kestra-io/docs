@@ -57,6 +57,18 @@
 	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<Ref<string>>
 	export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
 	const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
+
+    export interface NavigationItem {
+		isSection?: boolean
+		isPage?: boolean
+		path: string
+		title: string
+		sidebarTitle?: string
+		hideSubMenus?: boolean
+		hideSidebar?: boolean
+		emoji?: string
+		children?: NavigationItem[]
+	}
 </script>
 
 <script setup lang="ts">
@@ -77,17 +89,7 @@
 
 	const rootLink = useTemplateRef<HTMLAnchorElement | null>("root-link")
 
-	export interface NavigationItem {
-		isSection?: boolean
-		isPage?: boolean
-		path: string
-		title: string
-		sidebarTitle?: string
-		hideSubMenus?: boolean
-		hideSidebar?: boolean
-		emoji?: string
-		children?: NavigationItem[]
-	}
+
 
 	const props = defineProps<{
 		item: NavigationItem

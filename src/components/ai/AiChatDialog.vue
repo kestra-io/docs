@@ -390,7 +390,7 @@
 				const data = JSON.parse(streamValue.data) as ResponseData
 				await processStreamData(indexToUpdate, streamValue, data)
 			}
-		} catch (error) {
+		} catch (error: any) {
 			if (error.name == "AbortError") {
 				// gère abort()
 				return

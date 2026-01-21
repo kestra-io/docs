@@ -123,13 +123,13 @@
 	import { ref, computed } from "vue"
 	import type { PluginMetadata } from "@kestra-io/ui-libs"
 	import { formatCategoryName } from "~/utils/pluginUtils"
-	import type { ReleaseInfo } from "~/server/api/github-releases"
 
 	import Github from "vue-material-design-icons/Github.vue"
 	import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
 	import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 	import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 	import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
+    import type { ReleaseInfo } from "../../pages/api/github-releases"
 
 	const props = withDefaults(
 		defineProps<{
