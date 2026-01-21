@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" class="container-fluid bg-dark-4">
+    <div ref="container" class="container-fluid bg-dark-4 px-4">
         <div class="container">
             <div class="mb-5 language-agnostic">
                 <h2 class="title">Language Agnostic <span>Orchestration</span></h2>
