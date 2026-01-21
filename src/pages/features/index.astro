@@ -1,7 +1,7 @@
 ---
 import FeaturesHeader from "~/components/features/Header.vue"
-import FeaturesDeclarative from "~/components/features/Declarative.vue"
-import FeaturesOutBox from "~/components/features/OutBox.vue"
+import FeaturesDeclarative from "~/components/features/Declarative.astro"
+import FeaturesOutBox from "~/components/features/OutBox.astro"
 import FeaturesExperience from "~/components/features/Experience.vue"
 import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
 import FeaturesCTA from "~/components/features/CTA.vue"
@@ -16,8 +16,8 @@ const description =
 <Layout title={title} description={description}>
 	<div class="features">
 		<FeaturesHeader client:load />
-		<FeaturesDeclarative client:visible />
-		<FeaturesOutBox client:visible />
+		<FeaturesDeclarative />
+		<FeaturesOutBox />
 		<section class="features-plugins">
 			<div class="container">
 				<PluginsBox />
