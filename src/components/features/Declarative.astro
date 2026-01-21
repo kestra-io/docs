@@ -47,7 +47,7 @@ const featureCardsSecond: FeatureCard[] = [
 		</div>
 		<div class="coil d-none d-xl-block">
 			<div class="inside">
-				<img src="/landing/features/kestra.png" alt="Kestra Core" />
+				<img src="/landing/features/kestra.png" alt="Kestra Core" width="70" height="70" />
 				<span class="label">Kestra Core</span>
 			</div>
 			<img
@@ -131,6 +131,8 @@ const featureCardsSecond: FeatureCard[] = [
 
 <style lang="scss" scoped>
 	@import "~/assets/styles/variable";
+
+	$arrow-icon-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><linearGradient id="ag" x1="0%25" y1="0%25" x2="100%25" y2="0%25"><stop offset="57.35%25" stop-color="%2351CFF7"/><stop offset="95.94%25" stop-color="%234782F5"/></linearGradient></defs><path fill="url(%23ag)" d="M4,10V14H13L9.5,17.5L11.92,19.92L19.84,12L11.92,4.08L9.5,6.5L13,10H4Z"/></svg>');
 
 	.main {
 		background: #15171e;
@@ -384,7 +386,7 @@ const featureCardsSecond: FeatureCard[] = [
 					height: 24px;
 					margin-right: 4px;
 					vertical-align: middle;
-					background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><linearGradient id="ag" x1="0%25" y1="0%25" x2="100%25" y2="0%25"><stop offset="57.35%25" stop-color="%2351CFF7"/><stop offset="95.94%25" stop-color="%234782F5"/></linearGradient></defs><path fill="url(%23ag)" d="M4,10V14H13L9.5,17.5L11.92,19.92L19.84,12L11.92,4.08L9.5,6.5L13,10H4Z"/></svg>');
+					background-image: $arrow-icon-svg;
 					background-repeat: no-repeat;
 					background-position: center;
 					background-size: contain;
