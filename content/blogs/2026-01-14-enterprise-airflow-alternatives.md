@@ -7,7 +7,7 @@ author:
   name: Elliot Gunn
   image: egunn
   role: Product Marketing Manager
-image: /blogs/2026-01-14-enterprise-airflow-alternatives.png
+image: /blogs/2026-01-14-enterprise-airflow-alternatives/2026-01-14-enterprise-airflow-alternatives.png
 ---
 
 If you're here, you've probably already discovered that Apache Airflow is excellent at orchestrating data pipelines and considerably less excellent at making your platform team's life easy. The gap between "works in development" and "runs reliably in production with proper access controls, audit logging, and disaster recovery" is where enterprise requirements live, and it's a gap that Airflow was never designed to close.
@@ -98,6 +98,8 @@ Depending on your use case, you may also encounter these options in your evaluat
 ## Kestra: A universal approach to enterprise data orchestration
 
 Kestra takes a fundamentally different approach from Python-centric tools: it's a **declarative control plane that orchestrates execution [in any language](https://kestra.io/features/declarative-data-orchestration)**. Rather than forcing you to rewrite everything in Python, Kestra coordinates your existing scripts, containers, and services through a unified interface. 
+
+![Data engineering pipeline example in Kestra](blogs/2026-01-14-enterprise-airflow-alternatives/kestra-data-eng-pipeline-ui.png)
 
 In practice, this means:
 
