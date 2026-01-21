@@ -11,7 +11,7 @@ const description = "Get full access of all the Open source features and unlock 
 ---
 <Layout title={title} description={description}>
     <EnterpriseHeader />
-    <div>
+    <div class="enterprise">
         <EnterpriseSecurity client:idle />
         <EnterpriseSuccessProgram />
         <EnterpriseProjectDetails client:visible />
@@ -19,3 +19,9 @@ const description = "Get full access of all the Open source features and unlock 
 
     <EnterpriseOrchestraCore client:visible/>
 </Layout>
+
+<style scoped lang="scss">
+    .enterprise {
+        overflow: clip;
+    }
+</style>
