@@ -1,0 +1,142 @@
+---
+import Layout from '~/components/layout.astro';
+import PreviewAccessHeader from '~/components/preview-access/Header.vue';
+import PreviewAccessFeatures from '~/components/preview-access/Features.vue';
+import PreviewAccessDiscoverCloud from '~/components/preview-access/DiscoverCloud.vue';
+import OverviewWorkflows from "~/components/overview/Workflows.vue";
+
+const title = "Kestra Preview Mode";
+const description = "Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required.";
+---
+
+<Layout title={title} description={description}>
+    <div class="livedemo">
+        <PreviewAccessHeader client:load />
+        <PreviewAccessFeatures client:visible routePath={new URL(Astro.request.url).pathname} />
+        <PreviewAccessDiscoverCloud client:visible />
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+@import "~/assets/styles/variable";
+
+.livedemo {
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("~/components/preview-access/images/Bg.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -3;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: -15%;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background-image: url("~/components/preview-access/images/gradients_right.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+    @media (max-width: 575.98px) {
+        &::after {
+            right: auto;
+            left: 0;
+            transform: scaleX(-1);
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        &::after {
+            right: auto;
+            left: 0;
+            transform: scaleX(-1);
+        }
+    }
+
+    @media (max-width: 991.98px) {
+        &::after {
+            right: auto;
+            left: 0;
+            transform: scaleX(-1);
+        }
+    }
+
+    & :global(.highlight) {
+        background: linear-gradient(90deg, #7C2EEA 57.35%, #658AF9 95.94%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    & :global(h1),
+    & :global(h2),
+    & :global(h3),
+    & :global(h4),
+    & :global(h5),
+    & :global(h6) {
+        color: $white;
+        font-weight: 600;
+    }
+
+    & :global(h1) {
+        font-size: $font-size-3xl;
+    }
+
+    & :global(h2) {
+        font-size: $font-size-2xl;
+    }
+
+    & :global(h3) {
+        font-size: $font-size-2xl;
+    }
+
+    & :global(h4) {
+        font-size: $font-size-xl;
+    }
+
+    & :global(h5) {
+        font-size: $font-size-lg;
+    }
+
+    & :global(h6) {
+        font-size: $font-size-md;
+        font-weight: 600;
+    }
+
+    & :global(p) {
+        font-size: 14px;
+        color: $white-1
+    }
+
+    & :global(div) {
+        color: $white;
+    }
+
+    & :global(.form) {
+        & h4,
+        & p,
+        & div
+        {
+            color: #000;
+        }
+
+        & div {
+            &.success {
+                padding-top: 100px;
+            }
+
+            font-size: $font-size-sm;
+        }
+    }
+}
+</style>

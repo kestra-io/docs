@@ -1,0 +1,21 @@
+---
+import Layout from '~/components/layout.astro';
+import PluginsLists from "~/components/plugins/PluginsLists.vue";
+import { $fetchApi } from "~/utils/fetch";
+import type { Plugin } from "@kestra-io/ui-libs";
+
+const plugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const pluginsData = await $fetchApi(`/plugins/pluginsInformation`);
+
+const title = "Hundreds of Plugins For All Your Orchestrations Needs";
+const description = "Connect Kestra with tools you already know and love";
+
+---
+<Layout title={title} description={description}>
+    <PluginsLists
+        client:load
+        pluginsData={pluginsData.byPlugin}
+        {plugins}
+        fullPath={Astro.request.url}
+    />
+</Layout>
