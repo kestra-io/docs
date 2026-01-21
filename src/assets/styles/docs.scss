@@ -489,6 +489,10 @@ $bd-gutter-x: 3rem;
                 color: var(--ks-content-#{$color});
                 background-color: var(--ks-background-#{$color});
 
+                p {
+                    color: var(--ks-content-#{$color});
+                }
+
                 &::before {
                     -webkit-mask-image: url($icon);
                     mask-image: url($icon);
