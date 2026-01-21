@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.2.0
+  version: 1.2.1
 tags:
 - name: Flows
   description: Flows api
@@ -9557,10 +9557,6 @@ paths:
           type: string
       requestBody:
         description: A list of flows source code in a single string
-        content:
-          application/x-yaml:
-            schema:
-              type: string
         required: true
       responses:
         "200":
@@ -9682,12 +9678,14 @@ paths:
         Flow that already created but not in `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: namespace
-        in: path
-        description: The flow namespace
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
         required: true
+        explode: false
         schema:
-          type: string
+          type: boolean
+          default: false
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -9696,6 +9694,12 @@ paths:
         schema:
           type: boolean
           default: true
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
       - name: tenant
         in: path
         required: true
@@ -13141,7 +13145,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KVController.TypedValue"
+                $ref: "#/components/schemas/KVController.KvDetail"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -19118,13 +19122,19 @@ components:
           type: array
           items:
             type: string
-    KVController.TypedValue:
+    KVController.KvDetail:
       type: object
       properties:
         type:
           $ref: "#/components/schemas/KVType"
         value:
           type: object
+        revision:
+          type: integer
+          format: int32
+        updated:
+          type: string
+          format: date-time
     KVEntry:
       type: object
       properties:
@@ -21182,8 +21192,6 @@ components:
           type: string
           nullable: true
           readOnly: true
-        durationOrComputeIt:
-          type: string
         startDate:
           type: string
           format: date-time
@@ -21882,13 +21890,15 @@ components:
       - index
       type: object
       properties:
-        flow:
-          type: string
-        namespace:
-          type: string
         index:
           type: integer
           format: int32
+        filename:
+          type: string
+        namespace:
+          type: string
+        flow:
+          type: string
         constraints:
           type: string
         outdated:
