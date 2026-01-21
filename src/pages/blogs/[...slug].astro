@@ -28,7 +28,7 @@ const editUrl = `https://github.com/kestra-io/docs/edit/main/content/blogs/${pos
 
 const { title, description, image, date, authors } = page;
 
-const staticImage = await getImage({src: image, format: 'webp'});
+const staticImage = image ? await getImage({src: image, format: 'webp'}) : null;
 
 const jsonLinkedData = {
     "@context": "http://schema.org",
@@ -38,7 +38,7 @@ const jsonLinkedData = {
         "@id": `/blogs/${post.id}`
     },
     "headline": title,
-    "image": [staticImage.src],
+    "image": [staticImage ? staticImage.src : null],
     "datePublished": date,
     "author": (authors ?? []).map(author => ({ "@type": "Person", "name": author.name })),
     "publisher": {
@@ -75,12 +75,12 @@ const jsonLinkedData = {
                             <NavToc links={links} {editUrl} />
                         </div>
                     </div>
-                    <Image
+                    {page.image && <Image
                         class="mb-2 rounded-3 img"
                         data-usal="fade-r"
                         src={page.image}
                         alt={page.title}
-                    />
+                    />}
                     <div class="subtitle">
                         <p>{page.description}</p>
                     </div>
@@ -92,7 +92,8 @@ const jsonLinkedData = {
     </div>
 </LayoutBlogs>
 
-<style>
+<style lang="scss">
+    @import "~/assets/styles/variable";
     .bd-main {
         margin-bottom: 4.5rem;
         margin-top: 4.5rem;
@@ -112,6 +113,10 @@ const jsonLinkedData = {
 
     .bd-content {
         max-width: 100%;
+        padding-right: 1.5rem;
+        :global(img) {
+            border: $block-border;
+        }
     }
 
     @media(min-width: 1400px) {
