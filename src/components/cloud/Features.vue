@@ -288,7 +288,7 @@ const onSubmit = async (e: Event) => {
   position: relative;
 
   @include media-breakpoint-up(lg) {
-    padding: calc($spacer * 1.25) calc($spacer * 0.5);
+    padding: 0;
   }
 
   .meeting-form {

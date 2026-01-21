@@ -1,5 +1,5 @@
 <template>
-    <Section subtitle="Productivity and Integration">
+    <Section subtitle="Productivity and Integration" class="p-3">
         <div class="container">
             <div class="row mb-5 align-items-center">
                 <div class="col-md-6 order-1 order-md-1"

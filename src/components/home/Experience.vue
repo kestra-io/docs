@@ -79,6 +79,7 @@ function setTab(index: number) {
     .experience-image {
         margin-top: 1rem;
         transform: translateX(0);
+        width: -webkit-fill-available;
     }
 
     .tabs {

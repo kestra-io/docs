@@ -52,10 +52,10 @@
 
     const href = computed(() => {
         const base = `/plugins/${props.plugin.name}`;
-        if (props.plugin.subGroup === undefined) {
+        if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
             return base;
         }
-        return `${base}/${slugify(props.plugin.title)}`;
+        return `${base}/${slugify(props.plugin.subGroupTitle)}`;
     });
 </script>
 

@@ -109,7 +109,7 @@
             </div>
         </div>
         <div class="plus-icon">
-            <img src="./assets/plus.svg" alt="plus"/>
+            <img v-bind="Plus" alt="plus"/>
         </div>
         <div class="bottom-block">
             <span>Kestra CORE</span>
@@ -167,6 +167,7 @@
   import Vector from './assets/Vector.svg';
   import GoogleDrive from './assets/google.svg';
   import HomeRoof from './assets/home-roof.svg';
+  import Plus from './assets/plus.svg';
 
 </script>
 <style lang="scss" scoped>

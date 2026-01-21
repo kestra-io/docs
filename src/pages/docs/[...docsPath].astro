@@ -31,7 +31,7 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
-    <h1 class="title">
+    <h1 class="title" slot="title">
         {icon ? <img width="40" height="40" src={icon} alt={`${doc.data.title} icon`} /> : null}
         {doc.data?.title}</h1>
     <div class="bd-markdown">
@@ -41,11 +41,13 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
     </div>
     <NavToc
-        client:visible links={headings.map(heading => ({
-        id: heading.slug,
-        text: heading.text,
-        depth: heading.depth
-    }))} slot="headings"
+        links={headings.map(heading => ({
+            id: heading.slug,
+            text: heading.text,
+            depth: heading.depth
+        }))}
+        client:visible
+        slot="headings"
         {editUrl}
     />
 </LayoutDocs>

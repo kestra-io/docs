@@ -9,7 +9,7 @@
                     height="347px"
                     src="/landing/features/scheduling/workflow/workflow_1.svg"
                     alt="Centralized Control"
-                    class="mw-100"
+                    class="p-3 mw-100"
                 />
             </div>
 

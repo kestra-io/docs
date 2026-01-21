@@ -13,6 +13,7 @@ import remarkLinkRewrite from "remark-link-rewrite";
 import remarkCustomElements from "./src/utils/remark-custom-elements/index.mjs";
 import remarkClassname from "./src/utils/remark-classname/index.mjs";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import generateId from "./src/utils/generateId";
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts";
 import rehypeExternalLinks from "rehype-external-links";
@@ -41,7 +42,7 @@ export default defineConfig({
             defaultProps: {
                 wrap: true,
                 overridesByLang: {
-                    "bash,sh,zsh,shell": {
+                    "bash,sh,zsh,shell,twig": {
                         frame: "none"
                     }
                 }
@@ -64,16 +65,17 @@ export default defineConfig({
                     }
                     return url;
                 }
-            }]
+            }],
         ],
         rehypePlugins: [
             rehypeHeadingIds,
+            rehypeAutolinkHeadings,
             rehypeImgPlugin,
             [rehypeExternalLinks, {
                 target: '_blank',
                 rel: ['noopener', 'noreferrer']
-            }]
-        ]
+            }],
+        ],
     },
     image: {
         layout: "constrained"

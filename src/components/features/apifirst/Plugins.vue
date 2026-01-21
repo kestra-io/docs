@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" class="container-fluid bg-dark-4">
+    <div ref="container" class="container-fluid bg-dark-4 p-2">
         <div class="container">
             <div class="mb-5">
                 <h2 class="title">Plugin-Powered <span>Flexibility</span></h2>

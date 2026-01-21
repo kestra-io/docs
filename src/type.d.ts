@@ -51,6 +51,7 @@ interface Story {
 
 interface PluginInformation {
     name?: string;
+    subGroupTitle?: string;
     className?: string;
     elementCounts: number;
     blueprints?: number;
