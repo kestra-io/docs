@@ -1,31 +1,34 @@
 ---
-export const prerender = false;
+export const prerender = false
 
-import Layout from '~/components/layout.astro';
-import BlueprintsLists from "~/components/blueprints/Lists.vue";
-import LayoutFooterContact from "~/components/layout/FooterContact.vue";
-import { $fetchApi } from "~/utils/fetch";
+import Layout from "~/components/layout.astro"
+import BlueprintsLists from "~/components/blueprints/Lists.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import { $fetchApi } from "~/utils/fetch"
 
-const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`);
+const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
 // fetch all the blueprints so we can filter client side
-const {results: allBlueprints} = await $fetchApi<{results: Blueprint[]}>(`/blueprints/versions/latest?size=10000`);
-const title = "Blueprints";
-const description = "Get started with our library of workflows ready to use";
+const { results: allBlueprints } = await $fetchApi<{ results: Blueprint[] }>(
+	`/blueprints/versions/latest?size=10000`,
+)
+const title = "Blueprints"
+const description = "Get started with our library of workflows ready to use"
 ---
+
 <Layout title={title} description={description}>
-    <div class="container">
-        <BlueprintsLists
-            tags={tags}
-            allBlueprints={allBlueprints}
-            currentUrl={Astro.request.url}
-            client:idle
-        />
-        <LayoutFooterContact
-            title="New to Kestra?"
-            subtitle="Use blueprints to kickstart your first workflows."
-            purpleButtonText="Get started with Kestra"
-            purpleButtonHref="/docs/quickstart#start-kestra"
-            client:visible
-        />
-    </div>
+	<div class="container">
+		<BlueprintsLists
+			tags={tags}
+			allBlueprints={allBlueprints}
+			currentUrl={Astro.request.url}
+			client:idle
+		/>
+		<LayoutFooterContact
+			title="New to Kestra?"
+			subtitle="Use blueprints to kickstart your first workflows."
+			purpleButtonText="Get started with Kestra"
+			purpleButtonHref="/docs/quickstart#start-kestra"
+			client:visible
+		/>
+	</div>
 </Layout>

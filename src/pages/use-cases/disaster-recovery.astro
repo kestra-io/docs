@@ -1,25 +1,26 @@
 ---
-import Layout from '~/components/layout.astro';
-import HeaderSection from '~/components/use-cases/HeaderSection.vue';
-import MainSection from '~/components/use-cases/MainSection.vue';
-import EnterpriseEditionSection from '~/components/use-cases/EnterpriseEditionSection.vue';
-import CardSection from '~/components/use-cases/disaster-recovery/CardSection.vue';
-import CapabilitiesSection from '~/components/use-cases/CapabilitiesSection.vue';
-import LayoutFooterContact from '~/components/layout/FooterContact.vue';
+import Layout from "~/components/layout.astro"
+import HeaderSection from "~/components/use-cases/HeaderSection.vue"
+import MainSection from "~/components/use-cases/MainSection.vue"
+import EnterpriseEditionSection from "~/components/use-cases/EnterpriseEditionSection.vue"
+import CardSection from "~/components/use-cases/disaster-recovery/CardSection.vue"
+import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
 
-
-const title = "Disaster Recovery with Kestra";
-const description = "Automate disaster recovery processes, secure your data, and ensure business continuity with Kestra.";
+const title = "Disaster Recovery with Kestra"
+const description =
+	"Automate disaster recovery processes, secure your data, and ensure business continuity with Kestra."
 
 const mainContent = [
-    {
-        title: "Automated Backup",
-        img: "/landing/usecases/disaster-recovery/automated-backup.svg",
-        imgAlt: "Automated Backup",
-        imgWidth: "568px",
-        imgHeight: "420px",
-        description: "Kestra enables automated backup processes, ensuring that your data is regularly and securely backed up. This minimizes data loss and facilitates quick recovery in the event of a disaster.",
-        content: `
+	{
+		title: "Automated Backup",
+		img: "/landing/usecases/disaster-recovery/automated-backup.svg",
+		imgAlt: "Automated Backup",
+		imgWidth: "568px",
+		imgHeight: "420px",
+		description:
+			"Kestra enables automated backup processes, ensuring that your data is regularly and securely backed up. This minimizes data loss and facilitates quick recovery in the event of a disaster.",
+		content: `
                     <ul>
                         <li>
                             Scheduled Backups:
@@ -30,16 +31,17 @@ const mainContent = [
                             <span>Store backups securely in the cloud or on-premises, ensuring data protection and compliance with regulatory requirements.</span>
                         </li>
                     </ul>
-                  `
-    },
-    {
-        title: "Leverage API Integrations",
-        img: "/landing/usecases/disaster-recovery/leverage-integrations.svg",
-        imgAlt: "Leverage API Integrations",
-        imgWidth: "568px",
-        imgHeight: "420px",
-        description: "Kestra integrates with various APIs, enabling you to automate and manage disaster recovery processes efficiently. Utilize API capabilities to trigger backups, initiate failover procedures, and streamline recovery workflows.",
-        content: `
+                  `,
+	},
+	{
+		title: "Leverage API Integrations",
+		img: "/landing/usecases/disaster-recovery/leverage-integrations.svg",
+		imgAlt: "Leverage API Integrations",
+		imgWidth: "568px",
+		imgHeight: "420px",
+		description:
+			"Kestra integrates with various APIs, enabling you to automate and manage disaster recovery processes efficiently. Utilize API capabilities to trigger backups, initiate failover procedures, and streamline recovery workflows.",
+		content: `
                     <ul>
                         <li>
                             API-Driven Automation:
@@ -54,16 +56,17 @@ const mainContent = [
                             </span>
                         </li>
                     </ul>
-                `
-    },
-    {
-        title: "Automated Failover and Restoration",
-        img: "/landing/usecases/databases/quick-recovery.svg",
-        imgAlt: "Automated Failover and Restoration",
-        imgWidth: "604px",
-        imgHeight: "477px",
-        description: "Kestra's automation capabilities enable you to set up workflows that automatically trigger failover and restoration processes, reducing downtime and ensuring business continuity.",
-        content: `
+                `,
+	},
+	{
+		title: "Automated Failover and Restoration",
+		img: "/landing/usecases/databases/quick-recovery.svg",
+		imgAlt: "Automated Failover and Restoration",
+		imgWidth: "604px",
+		imgHeight: "477px",
+		description:
+			"Kestra's automation capabilities enable you to set up workflows that automatically trigger failover and restoration processes, reducing downtime and ensuring business continuity.",
+		content: `
                     <ul>
                         <li>
                             Automated Failover:
@@ -78,50 +81,50 @@ const mainContent = [
                             </span>
                         </li>
                     </ul>
-                  `
-    }
-];
-
+                  `,
+	},
+]
 
 const capabilities = [
-    "Continuous Integration/Continuous Deployment (CI/CD)",
-    "Provisioning and Deployment",
-    "Infrastructure Monitoring",
-];
+	"Continuous Integration/Continuous Deployment (CI/CD)",
+	"Provisioning and Deployment",
+	"Infrastructure Monitoring",
+]
 ---
+
 <Layout title={title} description={description}>
-    <HeaderSection
-        client:load
-        titleHtml="Disaster Recovery"
-        description="Automate disaster recovery processes, secure your data, and ensure business continuity."
-        imageSrc="/landing/usecases/disaster-recovery/header-hero.svg"
-        imageAlt="Devops Monitoring"
-    />
+	<HeaderSection
+		client:load
+		titleHtml="Disaster Recovery"
+		description="Automate disaster recovery processes, secure your data, and ensure business continuity."
+		imageSrc="/landing/usecases/disaster-recovery/header-hero.svg"
+		imageAlt="Devops Monitoring"
+	/>
 
-    <MainSection
-        client:visible
-        subtitle="Disaster Recovery"
-        subtitleBefore="Automate"
-        baseline="Kestra empower platform engineers to maintain data integrity and ensure quick recovery from failures."
-        mainContent={mainContent}
-    />
+	<MainSection
+		client:visible
+		subtitle="Disaster Recovery"
+		subtitleBefore="Automate"
+		baseline="Kestra empower platform engineers to maintain data integrity and ensure quick recovery from failures."
+		mainContent={mainContent}
+	/>
 
-    <EnterpriseEditionSection client:visible />
+	<EnterpriseEditionSection client:visible />
 
-    <CardSection client:visible />
+	<CardSection client:visible />
 
-    <CapabilitiesSection
-        client:visible
-        title="for Platform Orchestration"
-        sections={capabilities}
-    />
+	<CapabilitiesSection
+		client:visible
+		title="for Platform Orchestration"
+		sections={capabilities}
+	/>
 
-    <LayoutFooterContact
-        client:visible
-        title="Ready to take your Infrastructure to the next level ?"
-        purpleButtonText="Get Started"
-        purpleButtonHref="/docs/getting-started/quickstart"
-        darkButtonText="Talk to us"
-        darkButtonHref="/demo"
-    />
+	<LayoutFooterContact
+		client:visible
+		title="Ready to take your Infrastructure to the next level ?"
+		purpleButtonText="Get Started"
+		purpleButtonHref="/docs/getting-started/quickstart"
+		darkButtonText="Talk to us"
+		darkButtonHref="/demo"
+	/>
 </Layout>

@@ -3,79 +3,76 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "docs",
-    "compatibility_date": "2025-02-04",
-    "main": "./dist/_worker.js/index.js",
-    "routes": [
-        {
-            "pattern": "docs.cf.kestra.io",
-            "custom_domain": true
-        }
-    ],
-    "assets": {
-        "binding": "ASSETS",
-        "directory": "./dist",
-        "html_handling": "drop-trailing-slash"
-    },
-    "keep_vars": true,
-    "preview_urls": true,
-    "minify": true,
-    "compatibility_flags": [
-        "nodejs_compat",
-        "global_fetch_strictly_public"
-    ],
-    "observability": {
-        "enabled": true,
-        "traces": {
-            "enabled": true
-        },
-        "logs": {
-            "invocation_logs": true,
-            "enabled": true
-        }
-    },
-    "upload_source_maps": true,
-    "logpush": false,
-    /**
-     * Smart Placement
-     * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-     */
-    // "placement": { "mode": "smart" },
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "docs",
+	"compatibility_date": "2025-02-04",
+	"main": "./dist/_worker.js/index.js",
+	"routes": [
+		{
+			"pattern": "docs.cf.kestra.io",
+			"custom_domain": true,
+		},
+	],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist",
+		"html_handling": "drop-trailing-slash",
+	},
+	"keep_vars": true,
+	"preview_urls": true,
+	"minify": true,
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"observability": {
+		"enabled": true,
+		"traces": {
+			"enabled": true,
+		},
+		"logs": {
+			"invocation_logs": true,
+			"enabled": true,
+		},
+	},
+	"upload_source_maps": true,
+	"logpush": false,
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" },
 
-    /**
-     * Bindings
-     * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-     * databases, object storage, AI inference, real-time communication and more.
-     * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-     */
-    "kv_namespaces": [
-        {
-            "binding": "ISR_CACHE",
-            "id": "c7003b3ecfc2485bb2efb713d75da274"
-        }
-    ],
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	"kv_namespaces": [
+		{
+			"binding": "ISR_CACHE",
+			"id": "c7003b3ecfc2485bb2efb713d75da274",
+		},
+	],
 
-    /**
-     * Environment Variables
-     * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-     */
-    "env": {
-        "preview": {
-            "vars": {
-                "NO_IMAGE_OPTIM": "true"
-            }
-        }
-    }
-    /**
-     * Note: Use secrets to store sensitive data.
-     * https://developers.cloudflare.com/workers/configuration/secrets/
-     */
-    // "vars": {  "MY_VARIABLE": "production_value" }
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	"env": {
+		"preview": {
+			"vars": {
+				"NO_IMAGE_OPTIM": "true",
+			},
+		},
+	},
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+	// "vars": {  "MY_VARIABLE": "production_value" }
 
-    /**
-     * Service Bindings (communicate between multiple Workers)
-     * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
-     */
-    // "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
 }

@@ -5,14 +5,20 @@ docId: triggers
 sidebarTitle: Triggers
 ---
 
-import ChildCard from "~/components/docs/ChildCard.astro";
+import ChildCard from "~/components/docs/ChildCard.astro"
 
 A trigger is a mechanism that automatically starts the execution of a flow.
 
 ## Triggers – workflow component reference
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+	<iframe
+		src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu"
+		title="YouTube video player"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		referrerpolicy="strict-origin-when-cross-origin"
+		allowfullscreen
+	></iframe>
 </div>
 
 ---
@@ -33,7 +39,6 @@ Kestra supports five core trigger types:
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/io.kestra.plugin.kafka.trigger).
 
-
 ### Trigger Common Properties
 
 The following properties are common to all triggers:
@@ -46,8 +51,6 @@ The following properties are common to all triggers:
 | `disabled`        | Set it to `true` to disable execution of the trigger.                                    |
 | `allowConcurrent` | Set it to `true` to allow multiple executions from this trigger to run at the same time. |
 | `workerGroup.key` | To execute this trigger on a specific Worker Group (EE).                                 |
-
-
 
 ---
 
@@ -66,16 +69,15 @@ id: variables
 namespace: company.team
 
 tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: "Hello World on {{ trigger.date }}! 🚀"
+    - id: hello
+      type: io.kestra.plugin.core.log.Log
+      message: "Hello World on {{ trigger.date }}! 🚀"
 
 triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@hourly"
-    allowConcurrent: false
-
+    - id: schedule
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: "@hourly"
+      allowConcurrent: false
 ```
 
 :::alert{type="warning"}
@@ -90,13 +92,13 @@ Each trigger ID is limited to a single active execution at a time. If a schedule
 id: hourlyFlow
 namespace: company.team
 tasks:
-  - id: important-task
-    type: io.kestra.plugin.core.log.Log
-    message: If this runs for longer than 1h, next Executions will be queued rather than being started immediately
+    - id: important-task
+      type: io.kestra.plugin.core.log.Log
+      message: If this runs for longer than 1h, next Executions will be queued rather than being started immediately
 triggers:
-  - id: hourly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@hourly"
+    - id: hourly
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: "@hourly"
 ```
 
 ## Conditions
@@ -135,18 +137,18 @@ id: hello_world
 namespace: company.team
 
 tasks:
-  - id: sleep
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - sleep 30
+    - id: sleep
+      type: io.kestra.plugin.scripts.shell.Commands
+      taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+      commands:
+          - sleep 30
 
 triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/1 * * * *"
-    disabled: true
+    - id: schedule
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: "*/1 * * * *"
+      disabled: true
 ```
 
 However, this approach requires changing the source code. A simpler approach is to use the `Enabled` toggle in the UI.
@@ -154,6 +156,7 @@ However, this approach requires changing the source code. A simpler approach is 
 ### Disabling a trigger from the UI
 
 You can disable or re-enable a trigger from the UI. Here is how you can do it:
+
 1. Go to the `Flows` page and click on the flow you want to disable the trigger for.
 2. Go to the `Triggers` tab and click on the `Enabled` toggle next to the trigger you want to disable. You can re-enable it by clicking the toggle again.
 
@@ -194,25 +197,25 @@ id: bad_trigger_example
 namespace: company.team
 
 tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World!
+    - id: hello
+      type: io.kestra.plugin.core.log.Log
+      message: Hello World!
 
 triggers:
-  - id: sqs_trigger
-    type: io.kestra.plugin.aws.sqs.Trigger
-    accessKeyId: "nonExistingKey"
-    secretKeyId: "nonExistingSecret"
-    region: "us-east-1"
-    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
-    maxRecords: 10
+    - id: sqs_trigger
+      type: io.kestra.plugin.aws.sqs.Trigger
+      accessKeyId: "nonExistingKey"
+      secretKeyId: "nonExistingSecret"
+      region: "us-east-1"
+      queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+      maxRecords: 10
 ```
 
 When you add that flow to Kestra, you'll see that no Executions are created. To troubleshoot this, you can go to the `Triggers` tab on the Flow's page and **expand the logs** of the trigger that is causing the issue. You'll see a detailed error message that will help you identify the problem:
 
 ![invalid_trigger_configuration](./invalid_trigger_configuration.png)
 
-## The ``stopAfter`` property
+## The `stopAfter` property
 
 Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
 
@@ -221,7 +224,6 @@ This property is most useful with `Schedule` triggers and polling-based triggers
 :::alert{type="info"}
 Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
 :::
-
 
 ### Pause the schedule trigger after a failed execution
 
@@ -232,16 +234,16 @@ id: business_critical_flow
 namespace: company.team
 
 tasks:
- - id: important_task
-   type: io.kestra.plugin.core.log.Log
-   message: if this fails, we want to stop the flow from running until we fix it
+    - id: important_task
+      type: io.kestra.plugin.core.log.Log
+      message: if this fails, we want to stop the flow from running until we fix it
 
 triggers:
- - id: stopAfter
-   type: io.kestra.plugin.core.trigger.Schedule
-   cron: "0 9 * * *"
-   stopAfter:
-     - FAILED
+    - id: stopAfter
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: "0 9 * * *"
+      stopAfter:
+          - FAILED
 ```
 
 The above flow will be triggered every day at 9:00 AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
@@ -255,27 +257,27 @@ id: http
 namespace: company.team
 
 tasks:
-  - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    messageText: "The price is now: {{ json(trigger.body).price }}"
+    - id: slack
+      type: io.kestra.plugin.slack.SlackIncomingWebhook
+      url: "{{ secret('SLACK_WEBHOOK') }}"
+      messageText: "The price is now: {{ json(trigger.body).price }}"
 
 triggers:
-  - id: http
-    type: io.kestra.plugin.core.http.Trigger
-    uri: https://fakestoreapi.com/products/1
-    responseCondition: "{{ json(response.body).price <= 110 }}"
-    interval: PT30S
-    stopAfter:
-      - SUCCESS
+    - id: http
+      type: io.kestra.plugin.core.http.Trigger
+      uri: https://fakestoreapi.com/products/1
+      responseCondition: "{{ json(response.body).price <= 110 }}"
+      interval: PT30S
+      stopAfter:
+          - SUCCESS
 ```
 
 Let's break down the above example:
+
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
 2. If the condition is met, the Execution will be created
 3. Within that execution, the `slack` task will send a Slack message to notify about the price change
 4. After that execution finishes successfully, the `stopAfter` property condition is met — it will disable the trigger ensuring that you don't get alerted every 30 seconds about the same condition.
-
 
 ## Locked triggers
 
@@ -294,21 +296,21 @@ id: myflow
 namespace: company.team
 
 inputs:
-  - id: user
-    type: STRING
-    defaults: Rick Astley
+    - id: user
+      type: STRING
+      defaults: Rick Astley
 
 tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: "Hello {{ inputs.user }}! 🚀"
+    - id: hello
+      type: io.kestra.plugin.core.log.Log
+      message: "Hello {{ inputs.user }}! 🚀"
 
 triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/1 * * * *"
-    inputs:
-      user: John Smith
+    - id: schedule
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: "*/1 * * * *"
+      inputs:
+          user: John Smith
 ```
 
 ## Trigger errors
@@ -322,19 +324,19 @@ id: bad_trigger_example
 namespace: company.team
 
 tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World!
+    - id: hello
+      type: io.kestra.plugin.core.log.Log
+      message: Hello World!
 
 triggers:
-  - id: sqs_trigger
-    type: io.kestra.plugin.aws.sqs.Trigger
-    accessKeyId: "nonExistingKey"
-    secretKeyId: "nonExistingSecret"
-    region: "us-east-1"
-    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
-    maxRecords: 10
-    failOnTriggerError: true
+    - id: sqs_trigger
+      type: io.kestra.plugin.aws.sqs.Trigger
+      accessKeyId: "nonExistingKey"
+      secretKeyId: "nonExistingSecret"
+      region: "us-east-1"
+      queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+      maxRecords: 10
+      failOnTriggerError: true
 ```
 
 With this configuration, the flow will produce an execution containing logs that describe the trigger failure. This execution can be used for both troubleshooting and notification, in addition to the trigger logs.

@@ -4,7 +4,7 @@ sidebarTitle: Cloud & Enterprise Edition
 editions: ["EE", "Cloud"]
 ---
 
-import ChildCard from "~/components/docs/ChildCard.astro";
+import ChildCard from "~/components/docs/ChildCard.astro"
 
 How to configure Kestra Enterprise Edition and Kestra Cloud.
 
@@ -18,19 +18,19 @@ How to configure Kestra Enterprise Edition and Kestra Cloud.
 
 While Kestra Cloud provides a fully managed, hassle-free experience, it differs from Kestra Enterprise in several important ways, primarily around infrastructure control, customization, and direct access to backend components.
 
-| Feature / Area                  | Kestra Cloud                                                                              | Kestra Enterprise Edition                                                  |
-| ------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| **Infrastructure Control**      | Fully managed by Kestra for simplicity and reliability                                    | Full control and customization                                      |
-| **Backend Technology**          | PostgreSQL JDBC only                                                                        | Customizable Kafka, PostgreSQL, MySQL, H2 (testing)       |
-| **Workers**                     | Managed worker pools sized for stability                                                  | Remote [Worker Groups](./04.scalability/worker-group/index.md), autoscaling |
-| **Custom Internal Storage & Secrets** | No instance-level control, **tenant/namespace-level only** backends                          | Fully customizable backends                                         |
-| **Network Configuration**       | Secure access over public Internet                                                        | Private networking (self-hosted, VPC peering, etc.)                 |
-| **Backup Access**               | Automatic backups handled by Kestra                                                       | Customer-controlled backups                                         |
-| **Plugins**                     | Curated plugin environment                                                                | Full plugin customization                                           |
-| **Identity Providers (IdP)**    | Built-in Google, Microsoft, or Basic Authentication                                       | Custom SSO/SCIM supported                                           |
-| **Log Retention**               | Automatic retention protocol managed by Kestra                                            | Unlimited (based on customer setup)                                 |
-| **Deployment Regions**          | US & EU (Belgium) on GCP                                                                  | Any cloud, any region                                               |
-| **Task Runners**                | Compatible with most, [Process Task Runner](../task-runners/04.types/01.process-task-runner/index.md) excluded | Compatible with all task runners                                    |
+| Feature / Area                        | Kestra Cloud                                                                                                   | Kestra Enterprise Edition                                                   |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Infrastructure Control**            | Fully managed by Kestra for simplicity and reliability                                                         | Full control and customization                                              |
+| **Backend Technology**                | PostgreSQL JDBC only                                                                                           | Customizable Kafka, PostgreSQL, MySQL, H2 (testing)                         |
+| **Workers**                           | Managed worker pools sized for stability                                                                       | Remote [Worker Groups](./04.scalability/worker-group/index.md), autoscaling |
+| **Custom Internal Storage & Secrets** | No instance-level control, **tenant/namespace-level only** backends                                            | Fully customizable backends                                                 |
+| **Network Configuration**             | Secure access over public Internet                                                                             | Private networking (self-hosted, VPC peering, etc.)                         |
+| **Backup Access**                     | Automatic backups handled by Kestra                                                                            | Customer-controlled backups                                                 |
+| **Plugins**                           | Curated plugin environment                                                                                     | Full plugin customization                                                   |
+| **Identity Providers (IdP)**          | Built-in Google, Microsoft, or Basic Authentication                                                            | Custom SSO/SCIM supported                                                   |
+| **Log Retention**                     | Automatic retention protocol managed by Kestra                                                                 | Unlimited (based on customer setup)                                         |
+| **Deployment Regions**                | US & EU (Belgium) on GCP                                                                                       | Any cloud, any region                                                       |
+| **Task Runners**                      | Compatible with most, [Process Task Runner](../task-runners/04.types/01.process-task-runner/index.md) excluded | Compatible with all task runners                                            |
 
 This section describes those features in detail and explains how to configure them.
 

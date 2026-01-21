@@ -37,7 +37,7 @@ jobs:
       - name: Set up Node via nvm
         uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
 
       - name: Install dependencies
         run: npm install
