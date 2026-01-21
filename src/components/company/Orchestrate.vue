@@ -68,9 +68,10 @@
 </template>
 
 <script setup lang="ts">
+import FilaLogo from '~/assets/companies/fila.svg';
 const companyLogos = [
   { alt: "Apple", src: "/landing/company/teams/apple.svg", width: 38, height: 45 },
-  { alt: "Fila", src: "/landing/companies/fila.svg", width: 60, height: 22 },
+  { alt: "Fila", src: FilaLogo.src, width: 60, height: 22 },
   { alt: "Axiom", src: "/landing/company/teams/acxiom.svg", width: 102, height: 23 },
   { alt: "Battelle", src: "/landing/company/teams/Battelle.svg", width: 101, height: 17 },
   { alt: "L'Oreal", src: "/landing/company/teams/loreal.svg", width: 115, height: 20 },
