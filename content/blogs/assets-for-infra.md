@@ -108,7 +108,7 @@ tasks:
 
 In this flow, the **`reserve_ip`** task would allocate the static IP (again simulated by a log). The **`assets.inputs`** declares a dependency on the VM asset (by its ID, e.g. **`windows-web-01`** from the previous step). The **`assets.outputs`** then registers a new IP asset, using a combination of the IP address and execution ID as a unique asset ID. We record the IP type ("static") and which VM it's attached to. Now our Kestra inventory knows that **`windows-web-01`** has an IP resource linked to it.
 
-## Phase 2: Configuration & Compliance**
+## Phase 2: Configuration & Compliance
 
 *Objective:* Apply software, configuration, and governance controls to the base infrastructure, and track these as assets.
 
@@ -202,7 +202,7 @@ This flow would run a PowerShell script on the VM to create a new user account (
 
 ### 3. Install Software (Nginx)
 
-Finally, the **`install_software`** flow installs an ingress software (e.g. Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
+Finally, the **`install_software`** flow installs an ingress software (e.g., Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
 
 ```yaml
 id: install_software
@@ -348,7 +348,7 @@ This live inventory is queryable via Kestra's API or UI. For instance, you can f
 
 ![metadata](/blogs/assets-for-infra/metadata.png)
 
-ou can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
+You can also drill down into the VM asset to see all its related assets (Kestra's UI would show a dependency graph or list of linked assets for **`windows-web-01`**). In our example, viewing the VM asset would reveal the IP, user, license, nginx, certificate, and snapshots in its **Dependencies** section. This gives you a complete picture of the infrastructure component and everything associated with it, at a glance.
 
 ## Key Benefits
 
