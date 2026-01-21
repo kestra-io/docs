@@ -170,5 +170,5 @@ export const onRequest = sequence(
     incomingRedirect,
     securityHeaders,
     notFoundRedirect,
-    middlewareISRCache,
+    // middlewareISRCache,
 );

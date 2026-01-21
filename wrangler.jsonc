@@ -55,6 +55,11 @@
             "id": "c7003b3ecfc2485bb2efb713d75da274"
         }
     ],
+
+    /**
+     * Environment Variables
+     * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+     */
     "env": {
         "preview": {
             "vars": {
@@ -63,8 +68,6 @@
         }
     }
     /**
-     * Environment Variables
-     * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
      */
