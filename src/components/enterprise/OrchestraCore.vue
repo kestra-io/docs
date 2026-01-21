@@ -32,160 +32,60 @@
                     <span>Talk to sales</span>
                 </NuxtLink>
             </div>
-            <div class="slider">
-                <div data-usal="fade-l">
-                    <Carousel v-bind="settings" :breakpoints="breakpoints">
-                        <Slide v-for="(slide, slideIndex) in testimonialData" :key="slide.message">
-                            <div class="carousel--item">
-                                <div class="content">
-                                    <img class="slide-svg" src="./assets/slider-icon.svg"
-                                         alt="Carousel img"/>
-                                    <span>{{slide.message}}</span>
-                                    <div class="person">
-                                        <div class="company-logo">
-                                            <img v-bind="slide.logo" :alt="`${slide.name} company logo`"/>
-                                        </div>
-                                        <div class="person-info">
-                                            <p>{{slide.name}}</p>
-                                            <span>{{slide.designation}}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="dots">
-                                        <div class="slide-counter">
-                                            <div class="slider-actions">
-                                                <Navigation>
-                                                    <template #prev>
-                                                        <div
-                                                            class="mobile-btn-prev carousel-control carousel-control-prev">
-                                                            <img v-bind="leftArrow"
-                                                                 alt="prev"/>
-                                                        </div>
-                                                    </template>
-                                                    <template #next>
-                                                        <div
-                                                            class="mobile-btn-next carousel-control carousel-control-next">
-                                                            <img v-bind="rightArrow"
-                                                                 alt="next"/>
-                                                        </div>
-                                                    </template>
-                                                </Navigation>
-                                            </div>
-                                            <div
-                                                class="dot"
-                                                v-for="(slide, index) in testimonialData"
-                                                :class="slideIndex === index && 'active'"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Slide>
-                        <template #addons>
-                            <Navigation>
-                                <template #next>
-                                    <div class="carousel-btn carousel-control carousel-control-next">
-                                        <img v-bind="rightArrow" alt="next"/>
-                                    </div>
-                                </template>
-                                <template #prev>
-                                    <div class="carousel-btn carousel-control carousel-control-prev ">
-                                        <img v-bind="leftArrow" alt="prev"/>
-                                    </div>
-                                </template>
-                            </Navigation>
-                        </template>
-                    </Carousel>
-                </div>
-                <div class="ready-scale">
-                    <p>Ready to Scale Your Workflows</p>
-                    <span>
-                        Kestra Enterprise delivers the security, control, and flexibility you need to scale operations
-                        with confidence. Empower your team, streamline governance, and harness reliable infrastructure
-                        to drive growth without compromise.
-                    </span>
-                    <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
-                        <span>Talk to us</span>
-                    </NuxtLink>
-
-                </div>
-            </div>
+            <Testimonials :testimonialData />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import {Carousel, Slide, Navigation} from 'vue3-carousel';
-  import 'vue3-carousel/dist/carousel.css'
-  import rightArrow from './assets/slider-right-arrow.svg';
-  import leftArrow from './assets/slider-left-arrow.svg';
+    import Testimonials from "~/components/common/Testimonials.vue";
+    import FilaLogo from './assets/fila.svg';
+    import AcxiomLogo from '~/assets/quotes-companies/Acxiom.svg';
+    import JPLogo from './assets/jp.svg';
+    import VyomaSpaceLogo from './assets/Vyoma-Space.svg';
+    import CleverConnectLogo from './assets/CleverConnect.svg';
 
-  import FilaLogo from './assets/fila.svg';
-  import AcxiomLogo from '~/assets/quotes-companies/Acxiom.svg';
-  import JPLogo from './assets/jp.svg';
-  import VyomaSpaceLogo from './assets/Vyoma-Space.svg';
-  import CleverConnectLogo from './assets/CleverConnect.svg';
-
-
-
-    const settings = ref({
-        itemsToShow: 1,
-        snapAlign: 'center',
-    });
-
-    const breakpoints = ref({
-        768: {
-            itemsToShow: 1,
-            snapAlign: 'start',
-        },
-        1024: {
-            itemsToShow: 1,
-            snapAlign: 'start',
-        },
-    } as const);
-
-        const testimonialData = [
-          {
+    const testimonialData = [
+        {
             message: "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
             name: "John Kim",
             designation: "IT Lead",
             alt: "IT Lead",
             logo: FilaLogo,
-          },
-          {
+        },
+        {
             message: "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop.",
             name: "Kyle Hanson",
             designation: "Lead Software Engineer",
             alt: "Lead Software Engineer",
             logo: AcxiomLogo,
-          },
-          {
+        },
+        {
             message: "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
             name: "Amy King",
             designation: "Cybersecurity & Technology Controls",
             alt: "Cybersecurity & Technology Controls",
             logo: JPLogo,
-          },
-          {
+        },
+        {
             message: "Kestra’s UI and speed of development is brilliant. Very quick to prototype a new pipeline, continuously iterate, and test things out. Love the replay feature. It has very clear separation of pipeline and processing code.",
             name: "Ollie Steiner",
             designation: "Senior Data Engineer",
             alt: "Senior Data Engineer",
             logo: VyomaSpaceLogo,
-          },
-          {
+        },
+        {
             message: "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
             name: "Patrick Ferreira",
             designation: "Product Manager",
             alt: "Product Manager",
             logo: CleverConnectLogo,
-          },
-        ];
+        },
+    ];
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+@import "~/assets/styles/variable";
 
     .content {
         background-color: #121217;
@@ -210,6 +110,7 @@
                 align-items: center;
                 flex-direction: column;
                 gap: 32px;
+
                 @media only screen and (max-width: 760px) {
                     padding: $rem-2;
                 }
@@ -260,13 +161,10 @@
                     display: flex;
                     gap: $rem-1;
                     width: 100%;
+
                     @media only screen and (max-width: 1120px) {
                         flex-wrap: wrap;
                         justify-content: center;
-                    }
-
-                    @media only screen and (max-width: 738px) {
-
                     }
 
 
@@ -275,6 +173,7 @@
                         border-radius: 8px;
                         width: 100%;
                         background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);
+
                         @media only screen and (max-width: 1120px) {
                             max-width: 329px;
                             padding: $rem-1 $rem-2;
@@ -351,231 +250,6 @@
                 }
             }
 
-            .slider {
-                display: flex;
-                flex-direction: column;
-                padding-top: 180px;
-                width: 100%;
-                background-image: url(./assets/visual-bg.png);
-                background-size: 100% auto;
-                background-repeat: no-repeat;
-                gap: 42px;
-
-                @include media-breakpoint-down(sm) {
-                    background-size: 160% auto;
-                    background-position: center;
-                }
-                @media only screen and (max-width: 760px) {
-                    padding-top: 64px;
-                }
-
-                .dots {
-                    display: flex;
-                    width: 100%;
-                    justify-content: center;
-                    margin-top: 40px;
-
-                    @media only screen and (max-width: 760px) {
-                        margin-top: 16px;
-                    }
-
-
-                    .slider-actions {
-                        display: none;
-
-                        .mobile-btn-next {
-                            position: absolute;
-                            right: -56px;
-                        }
-
-                        .mobile-btn-prev {
-                            position: absolute;
-                            left: -56px;
-                        }
-
-                        @media only screen and (max-width: 760px) {
-                            display: block;
-                        }
-                    }
-
-                    .slide-counter {
-                        position: relative;
-                        display: flex;
-                        align-items: center;
-
-                        .dot {
-                            width: 6px;
-                            height: 6px;
-                            margin-right: 24px;
-                            border-radius: 20px;
-                            background: #FFFFFF33;
-
-                            &:last-child {
-                                margin-right: 0;
-                            }
-                        }
-
-
-                        .active {
-                            background: #FFFFFF;
-                        }
-                    }
-                }
-
-                .carousel-btn {
-                    @media only screen and (max-width: 760px) {
-                        display: none !important;
-                    }
-                }
-
-                .content {
-                    -webkit-backdrop-filter: blur(74px);
-                    backdrop-filter: blur(74px);
-                    background: linear-gradient(347.23deg, #1c1c2699 9.24%, #2b293299 106.62%);
-                    border-radius: 20px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 40px;
-                    margin: 0 74px;
-                    overflow: hidden;
-                    padding: 72px 102px;
-
-                    @media only screen and (max-width: 992px) {
-                        gap: 16px;
-                        padding: $rem-2;
-                    }
-
-                    @media only screen and (max-width: 760px) {
-                        margin: 0 $rem-2;
-                    }
-
-                    .slide-svg {
-                        width: 57px;
-                        height: 57px;
-
-                        @media only screen and (max-width: 760px) {
-                            width: 42px;
-                            height: 32px;
-                        }
-                    }
-
-                    .person {
-                        display: flex;
-                        gap: 17px;
-                        max-width: 264px;
-
-                        .company-logo {
-                            padding: 6px 0;
-
-                            img {
-                                width: 75px;
-                                height: 23.5px;
-                            }
-                        }
-
-                        .person-info {
-                            display: flex;
-                            flex-direction: column;
-
-                            p {
-                                font-family: $font-family-sans-serif;
-                                font-size: 14px;
-                                font-weight: 700;
-                                line-height: 18px;
-                                letter-spacing: -0.05em;
-                                text-align: left;
-                                margin: 0;
-                                color: $white;
-                            }
-
-                            span {
-                                font-family: $font-family-sans-serif;
-                                white-space: nowrap;
-                                font-size: 12px;
-                                font-weight: 400;
-                                line-height: 18px;
-                                letter-spacing: -0.05em;
-                                text-align: left;
-                                margin: 0;
-                                color: #E1E1E1;
-                            }
-                        }
-                    }
-
-                    > span {
-                        font-family: $font-family-sans-serif;
-                        font-size: 39px;
-                        font-weight: 400;
-                        line-height: 52.26px;
-                        letter-spacing: -0.005em;
-                        text-align: left;
-                        color: $white;
-
-                        @media only screen and (max-width: 992px) {
-                            font-size: 30px;
-                        }
-
-                        @media only screen and (max-width: 760px) {
-                            font-size: 19px;
-                            line-height: 25px;
-                        }
-                    }
-                }
-
-                .ready-scale {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 20px;
-                    width: 100%;
-                    max-width: 944px;
-                    margin: auto;
-                    overflow: hidden;
-                    border-radius: 20px;
-                    padding: $rem-4;
-                    background: linear-gradient(180deg, rgba(49, 53, 70, 0.8) 3%, rgba(33, 36, 46, 0.8) 58%, rgba(26, 28, 36, 0.8) 100%);
-                    backdrop-filter: blur(44px);
-                    margin-bottom: 150px;
-
-                    @media only screen and (max-width: 760px) {
-                        margin: 0 $rem-2;
-                        margin-bottom: 150px;
-                        padding: $rem-2;
-                        max-width: -webkit-fill-available;
-                    }
-
-
-                    > p {
-                        max-width: 400px;
-                        color: $white;
-                        font-family: $font-family-sans-serif;
-                        font-size: $rem-3;
-                        font-weight: 400;
-                        line-height: 56.4px;
-                        text-align: center;
-
-                        @media only screen and (max-width: 991px) {
-                            font-size: $rem-2;
-                            line-height: 35px;
-                        }
-
-                        @media only screen and (max-width: 760px) {
-                            font-size: 24px;
-                            line-height: 28px;
-                        }
-                    }
-
-                    > span {
-                        max-width: 568px;
-                        color: $white;
-                        font-family: $font-family-sans-serif;
-                        font-size: 14px;
-                        font-weight: 300;
-                        line-height: 22px;
-                        text-align: center;
-                    }
-                }
-            }
         }
     }
 </style>
