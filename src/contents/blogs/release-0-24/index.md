@@ -322,7 +322,7 @@ tasks:
           country: "{{ inputs.country_code }}"
 
   - id: send_via_slack
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
 ```

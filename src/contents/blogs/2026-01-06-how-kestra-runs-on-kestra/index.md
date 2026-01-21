@@ -130,7 +130,7 @@ namespace: monitors
 
 tasks:
   - id: data
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ render(namespace.slack.webhook) }}"
     channel: "#data-alerts"
     username: "Kestra Monitor"
@@ -139,7 +139,7 @@ tasks:
     runIf: "{{ trigger.namespace | startsWith('data') }}"
 
   - id: product
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.SlackExecution
     url: "{{ render(namespace.slack.webhook) }}"
     channel: "#product-alerts"
     username: "Kestra Monitor"

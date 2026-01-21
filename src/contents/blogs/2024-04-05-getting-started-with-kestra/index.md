@@ -189,7 +189,7 @@ All we need to do now is reference these inputs inside of our tasks and we shoul
 
 ```yaml
 - id: send_notification
-  type: io.kestra.plugin.notifications.discord.DiscordExecution
+  type: io.kestra.plugin.discord.DiscordExecution
   url: "{{ inputs.discord_webhook_url }}"
   avatarUrl: "{{ inputs.kestra_logo }}"
   username: Kestra
@@ -229,7 +229,7 @@ tasks:
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     url: "{{ inputs.discord_webhook_url }}"
     avatarUrl: "{{ inputs.kestra_logo }}"
     username: Kestra
@@ -300,7 +300,7 @@ tasks:
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
-    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    type: io.kestra.plugin.discord.DiscordExecution
     url: "{{ inputs.discord_webhook_url }}"
     avatarUrl: "{{ inputs.kestra_logo }}"
     username: Kestra

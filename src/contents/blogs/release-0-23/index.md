@@ -103,7 +103,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {

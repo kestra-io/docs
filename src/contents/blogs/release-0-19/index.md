@@ -335,7 +335,7 @@ variables:
 
 tasks:
   - id: send_approval_request
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: https://kestra.io/api/mock
     payload: |
       {

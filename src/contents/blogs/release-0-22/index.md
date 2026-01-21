@@ -95,7 +95,7 @@ tasks:
 afterExecution:
   - id: onSuccess
     runIf: "{{execution.state == 'SUCCESS'}}"
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
@@ -104,7 +104,7 @@ afterExecution:
 
   - id: onFailure
     runIf: "{{execution.state == 'FAILED'}}"
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
