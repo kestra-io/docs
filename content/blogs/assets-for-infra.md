@@ -21,7 +21,7 @@ Kestra's Asset Inventory allows you to model relationships between infrastructur
 
 ![Asset Graph](/blogs/assets-for-infra/schema.png)
 
-- **Asset: Windows VM** – The primary VM resource (e.g. **`windows-web-01`**). All other assets are linked to this VM as dependencies.
+**Asset: Windows VM** – The primary VM resource (e.g. **`windows-web-01`**). All other assets are linked to this VM as dependencies.
     - **Asset: Static IP** – A reserved external IP attached to the VM.
     - **Asset: Admin User** – An administrative user account created on the VM.
     - **Asset: Nginx Package** – An installed software component (ingress web server) on the VM.
@@ -40,30 +40,32 @@ Each arrow in the asset dependency graph denotes an "outputs" relationship: the 
 The first workflow, **`create_vm`**, initializes the VM and registers it as an asset. This flow provisions a new GCP Windows VM and outputs an asset of type **`io.kestra.plugin.ee.assets.VM`**. The asset captures metadata like OS version, region, status, and name. By declaring the VM as an output asset, we effectively mark the VM's creation in the Kestra catalog.
 
 ```yaml
-id:create_vm
-namespace:company.team
+id: create_vm
+namespace: company.team
+
 labels:
--key:feature
-value:assets
+  - key: feature
+    value: assets
 
 inputs:
--id:vm_name
-type:STRING
-default:"windows-web-01"
+  - id: vm_name
+    type: STRING
+    defaults: "windows-web-01"
 
 tasks:
--id:gcp_create_instance
-type:io.kestra.plugin.core.log.Log
-message:"Provisioning VM {{ inputs.vm_name }}"
-assets:
-outputs:
--id:"{{ inputs.vm_name | slugify }}"
-type:io.kestra.plugin.ee.assets.VM
-metadata:
-os:"windows-server-2022"
-region:"us-central1"
-status:"running"
-name:"{{ inputs.vm_name }}"
+  - id: gcp_create_instance
+    type: io.kestra.plugin.core.log.Log
+    message: "Provisionioning VM {{ inputs.vm_name }}"
+    assets:
+      outputs:
+        - id: "{{ inputs.vm_name | slugify }}"
+          type: io.kestra.plugin.ee.assets.VM
+          metadata:
+            os: "windows-server-2022"
+            region: "us-central1"
+            status: "running"
+            name: "{{ inputs.vm_name }}"
+            vm: "{{ inputs.vm_name}}"
 
 ```
 
@@ -74,33 +76,33 @@ In this YAML snippet, the **`gcp_create_instance`** task would normally call G
 After the VM exists, we assign it a static external IP address. The **`assign_external_ip`** workflow consumes the VM asset as an input dependency and produces an **`io.kestra.plugin.ee.assets.VM.IP`** asset as output. This ensures the IP is tracked and linked to the VM in the asset graph.
 
 ```yaml
-id:assign_external_ip
-namespace:company.team
-labels:
--key:feature
-value:assets
-
+id: assign_external_ip
+namespace: company.team
+labels: 
+  - key: feature
+    value: assets
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
--id:target_ip
-type:STRING
-default:"35.202.10.100"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01" 
+  - id: target_ip
+    type: STRING
+    defaults: "35.202.10.100" 
 
 tasks:
--id:reserve_ip
-type:io.kestra.plugin.core.log.Log
-message:"{{ inputs.target_vm }}-ip:{{ inputs.target_ip }}"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
-outputs:
--id:"{{ inputs.target_ip ~ '-' ~ execution.id }}"
-type:io.kestra.plugin.ee.assets.VM.IP
-metadata:
-type:"static"
-attached_to:"{{ inputs.target_vm }}"
+  - id: reserve_ip
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.target_vm }}-ip: {{inputs.target_ip}}"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}" # Dependency: Needs VM to exist
+      outputs:
+        - id: "{{ inputs.target_ip ~ '-' ~ execution.id }}" # Simulated Static IP
+          type: io.kestra.plugin.ee.assets.VM.IP
+          metadata:
+            type: "static"
+            attached_to: "{{ inputs.target_vm }}"
+            vm: "{{ inputs.target_vm }}"
 
 ```
 
@@ -127,31 +129,33 @@ Let's walk through each of these configuration workflows and their asset definit
 The **`apply_license`** flow activates a Windows license on the VM and registers a License asset. This asset lets us catalog which license (and related metadata) is associated with the VM.
 
 ```yaml
-id:apply_license
-namespace:company.team
-labels:
--key:feature
-value:assets
 
+id: apply_license
+namespace: company.team
+
+labels: 
+  - key: feature
+    value: assets
+    
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01"
 
 tasks:
--id:activate_license
-type:io.kestra.plugin.scripts.powershell.Script
-script:"Write-Output 'Activating Windows Enterprise License...'"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
-outputs:
--id:"{{ ('LIC-WIN-2022-' ~ execution.id) | slugify }}"
-type:io.kestra.plugin.ee.assets.VM.License
-metadata:
-expiry:"2025-12-31"
-cost_center:"IT-Ops"
-vm:"{{ inputs.target_vm }}"
+  - id: activate_license
+    type: io.kestra.plugin.scripts.powershell.Script
+    script: "Write-Output 'Activating Windows Enterprise License...'"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}"
+      outputs:
+        - id: "{{ ('LIC-WIN-2022-' ~ execution.id) | slugify }}"
+          type: io.kestra.plugin.ee.assets.VM.License
+          metadata:
+            expiry: "2025-12-31"
+            cost_center: "IT-Ops"
+            vm: "{{ inputs.target_vm }}"
 
 ```
 
@@ -162,36 +166,35 @@ Here we simulate a PowerShell script that activates the license. We declare the 
 Next, the **`onboard_user`** flow creates an administrator user on the VM and registers a User asset. This captures who has access at the VM level and any compliance checks.
 
 ```yaml
-id:onboard_user
-namespace:company.team
-labels:
--key:feature
-value:assets
-
+id: onboard_user
+namespace: company.team
+labels: 
+  - key: feature
+    value: assets
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
--id:username
-type:STRING
-default:"admin_user"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01"
+  - id: username
+    type: STRING
+    defaults: "admin_user"
 
 tasks:
--id:create_windows_user
-type:io.kestra.plugin.scripts.powershell.Script
-script: |
+  - id: create_windows_user
+    type: io.kestra.plugin.scripts.powershell.Script
+    script: |
       # PowerShell logic to add user
       Write-Output "User {{ inputs.username }} added to {{ inputs.target_vm }}"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
-outputs:
--id:"{{ (inputs.username ~ '-' ~ execution.id) | slugify }}"
-type:io.kestra.plugin.ee.assets.VM.User
-metadata:
-role:"admin"
-compliance_check:"passed"
-vm:"{{ inputs.target_vm }}"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}"
+      outputs:
+        - id: "{{ (inputs.username ~ '-' ~ execution.id) | slugify }}"
+          type: io.kestra.plugin.ee.assets.VM.User
+          metadata:
+            role: "admin"
+            compliance_check: "passed"
+            vm: "{{ inputs.target_vm }}"
 
 ```
 
@@ -202,32 +205,31 @@ This flow would run a PowerShell script on the VM to create a new user account (
 Finally, the **`install_software`** flow installs an ingress software (e.g. Nginx) on the VM and creates an Ingress asset. This tracks software installed on the VM, which is useful for inventory and potential reuse.
 
 ```yaml
-id:install_software
-namespace:company.team
-labels:
--key:feature
-value:assets
-
+id: install_software
+namespace: company.team
+labels: 
+  - key: feature
+    value: assets
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01"
 
 tasks:
--id:choco_install_nginx
-type:io.kestra.plugin.core.log.Log
-message:"choco install nginx -y"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
-outputs:
--id:"{{ 'nginx-' ~ execution.id }}"
-type:io.kestra.plugin.ee.assets.VM.Ingress
-metadata:
-version:"1.24.0"
-installed_on:"{{ inputs.target_vm }}"
-type:"nginx"
-
+  - id: choco_install_nginx
+    type: io.kestra.plugin.core.log.Log
+    message: "choco install nginx -y"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}"
+      outputs:
+        - id: "{{ 'nginx-' ~ execution.id }}"
+          type: io.kestra.plugin.ee.assets.VM.Ingress
+          metadata:
+            version: "1.24.0"
+            installed_on: "{{ inputs.target_vm }}"
+            vm: "{{ inputs.target_vm }}"
+            type: nginx
 ```
 
 This example uses a log task to represent a Chocolatey installation of Nginx on Windows. We mark the VM as an input asset (meaning the VM must exist), and then output an Ingress asset (a custom asset type representing something like a networking or web service component on the VM). Metadata includes the version installed, the VM it was installed on, and a type identifier (**`nginx`**). With this, anyone can query the asset inventory to see which VMs have Nginx (or any ingress software) installed, and what versions.
@@ -245,44 +247,43 @@ Now that the VM is running and configured, we consider routine Day 2 operations.
 In this workflow (**`assign_certificate`**), we provision an SSL/TLS certificate (for HTTPS) and associate it with the VM's external IP. This creates an asset of type **`io.kestra.plugin.ee.assets.VM.Certificate`**. Notably, this flow demonstrates how an asset can have multiple dependencies: the certificate is tied to both the VM and the Static IP assets.
 
 ```yaml
-id:assign_certificate
-namespace:company.team
-labels:
--key:feature
-value:assets
-
+id: assign_certificate
+namespace: company.team
+labels: 
+  - key: feature
+    value: assets
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
--id:target_ip
-type:STRING
-default:"35.202.10.100"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01"
 
-# Find the Asset ID of the IP associated with the VM (dynamically via assets() function)
--id:ip_asset_id
-type:SELECT
-autoSelectFirst:true
-expression:"{{ [((assets() | jq('.[] | select(.type == \"io.kestra.plugin.ee.assets.VM.IP\") | select(.metadata.attached_to == \"' ~ inputs.target_vm ~ '\"))) | first).id] }}"
-dependsOn:
-inputs:
--target_vm
+  - id: target_ip
+    type: STRING
+    defaults: "35.202.10.100" # References the IP Asset ID
+
+  - id: ip_asset_id
+    type: SELECT
+    autoSelectFirst: true
+    expression: "{{ [((assets(type='io.kestra.plugin.ee.assets.VM.IP') | jq('.[]  | select(.metadata.attached_to == \"' ~ inputs.target_vm ~ '\")')) | first).id] }}"
+    dependsOn:
+      inputs:
+        - target_vm
 
 tasks:
--id:certbot_provision
-type:io.kestra.plugin.scripts.shell.Script
-script:"echo 'Provisioning LetsEncrypt Cert for {{ inputs.target_ip }}'"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
--id:"{{ inputs.ip_asset_id }}"
-outputs:
--id:"{{ 'cert-' ~ execution.id }}"
-type:io.kestra.plugin.ee.assets.VM.Certificate
-metadata:
-issuer:"LetsEncrypt"
-valid_until:"2024-05-01"
-vm:"{{ inputs.target_vm }}"
+  - id: certbot_provision
+    type: io.kestra.plugin.scripts.shell.Script
+    script: "echo 'Provisioning Lets Encrypt Cert for {{ inputs.target_ip }}'"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}"
+        - id: "{{ inputs.ip_asset_id }}"
+      outputs:
+        - id: "{{ 'cert-' ~ execution.id }}"
+          type: io.kestra.plugin.ee.assets.VM.Certificate
+          metadata:
+            issuer: "LetsEncrypt"
+            valid_until: "2024-05-01"
+            vm: "{{ inputs.target_vm }}"
 
 ```
 
@@ -293,31 +294,30 @@ This flow uses a bit of Kestra magic: before provisioning the cert, it dynamical
 Finally, the **`take_snapshot`** workflow creates a disk snapshot of the VM for backup purposes, registering an asset of type **`io.kestra.plugin.ee.assets.VM.Snapshot`**. Each execution of this flow produces a new Snapshot asset, building a history of backups for the VM.
 
 ```yaml
-id:take_snapshot
-namespace:company.team
-labels:
--key:feature
-value:assets
-
+id: take_snapshot
+namespace: company.team
+labels: 
+  - key: feature
+    value: assets
 inputs:
--id:target_vm
-type:STRING
-default:"windows-web-01"
+  - id: target_vm
+    type: STRING
+    defaults: "windows-web-01"
 
 tasks:
--id:gcp_snapshot
-type:io.kestra.plugin.core.log.Log
-message:"backup-{{ inputs.target_vm }}-{{ execution.startDate }}"
-assets:
-inputs:
--id:"{{ inputs.target_vm | slugify }}"
-outputs:
--id:"{{ ('snapshot-' ~ inputs.target_vm ~ '-' ~ execution.id) | slugify }}"
-type:io.kestra.plugin.ee.assets.VM.Snapshot
-metadata:
-retention:"30days"
-trigger:"manual-backup"
-vm:"{{ inputs.target_vm }}"
+  - id: gcp_snapshot
+    type: io.kestra.plugin.core.log.Log
+    message: "backup-{{ inputs.target_vm }}-{{ execution.startDate }}"
+    assets:
+      inputs:
+        - id: "{{ inputs.target_vm | slugify }}"
+      outputs:
+        - id: "{{ ('snapshot-' ~ inputs.target_vm ~ '-' ~  execution.id) | slugify  }}"
+          type: io.kestra.plugin.ee.assets.VM.Snapshot
+          metadata:
+            retention: "30days"
+            trigger: "manual-backup"
+            vm: "{{ inputs.target_vm }}"
 
 ```
 
