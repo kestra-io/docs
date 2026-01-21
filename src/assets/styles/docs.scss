@@ -420,32 +420,66 @@ $bd-gutter-x: 3rem;
         padding: 1rem;
         margin-bottom: 1rem;
         border-radius: 0.25rem;
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
 
-        > * {
-            margin: 0;
-        }
-        &.alert-danger {
-            border-color: var(--ks-border-error);
-            color: var(--ks-content-error);
-            background-color: var(--ks-background-error);
-        }
-
-        &.alert-warning {
-            border-color: var(--ks-border-warning);
-            color: var(--ks-content-warning);
-            background-color: var(--ks-background-warning);
-        }
-
-        &.alert-info {
-            border-color: var(--ks-border-info);
-            color: var(--ks-content-info);
-            background-color: var(--ks-background-info);
+        &::before {
+            content: "";
+            display: inline-block;
+            margin-top: 0.25rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            flex-shrink: 0;
+            background-color: currentColor;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
         }
 
-        &.alert-success {
-            border-color: var(--ks-border-success);
-            color: var(--ks-content-success);
-            background-color: var(--ks-background-success);
+        > div {
+            flex-grow: 1;
+            > * {
+                margin: 0;
+            }
+        }
+
+        $alert-types: (
+            "danger": (
+                "color": "error",
+                "icon": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='currentColor' d='M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/></svg>"
+            ),
+            "warning": (
+                "color": "warning",
+                "icon": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='currentColor' d='M12,2L1,21H23L12,2M12,6L19.53,19H4.47L12,6M11,10V14H13V10H11M11,16V18H13V16H11Z'/></svg>"
+            ),
+            "info": (
+                "color": "info",
+                "icon": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='currentColor' d='M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z'/></svg>"
+            ),
+            "success": (
+                "color": "success",
+                "icon": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='currentColor' d='M12,2C6.5,2 2,6.5 2,12C2,17.5 6.5,22 12,22C17.5,22 22,17.5 22,12C22,6.5 17.5,2 12,2M10,17L5,12L6.41,10.59L10,14.17L17.59,6.58L19,8L10,17Z'/></svg>"
+            )
+        );
+
+        @each $type, $map in $alert-types {
+            $color: map-get($map, "color");
+            $icon: map-get($map, "icon");
+
+            &.alert-#{$type} {
+                border-color: var(--ks-border-#{$color});
+                color: var(--ks-content-#{$color});
+                background-color: var(--ks-background-#{$color});
+
+                &::before {
+                    -webkit-mask-image: url($icon);
+                    mask-image: url($icon);
+                }
+            }
         }
     }
 
@@ -479,14 +513,20 @@ $bd-gutter-x: 3rem;
             }
 
             &::before {
-                content: "▶";
+                $svg-icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' fill='currentColor'/></svg>";
+                content: "";
                 position: absolute;
                 left: 0.25rem;
                 top: 50%;
+                width: 24px;
+                height: 24px;
                 transform: translateY(-50%) rotate(0deg);
                 transition: transform 0.18s ease, color 0.18s ease;
-                color: $white;
-                font-size: 20px;
+                background-color: currentColor;
+                -webkit-mask: url($svg-icon) no-repeat 50% 50%;
+                mask: url($svg-icon) no-repeat 50% 50%;
+                -webkit-mask-size: cover;
+                mask-size: cover;
             }
 
             &:hover {

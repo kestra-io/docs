@@ -31,7 +31,7 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
 ---
 
 <LayoutDocs activeStem={`/docs/${doc.id}`} pageTitle={doc.data?.sidebarTitle ?? doc.data?.title} image={image.toString()}>
-    <h1 class="title">
+    <h1 class="title" slot="title">
         {icon ? <img width="40" height="40" src={icon} alt={`${doc.data.title} icon`} /> : null}
         {doc.data?.title}</h1>
     <div class="bd-markdown">
