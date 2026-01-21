@@ -1,23 +1,13 @@
 <template>
     <aside class="bd-sidebar scroller">
         <div class="mb-4">
-            <button
-                class="btn d-lg-none mt-2"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#docs-menu"
-                aria-expanded="false"
-                aria-controls="tocContents"
-            >
+            <button ref="menuToggleBtn" class="btn d-lg-none mt-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#docs-menu" aria-expanded="false" aria-controls="tocContents">
                 <Menu /> Documentation Menu
             </button>
             <div class="ai-button-wrapper mb-2">
-                <button
-                    class="ai-button"
-                    title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
-                >
+                <button class="ai-button" title="Ask Kestra AI" data-bs-toggle="modal"
+                    data-bs-target="#search-ai-modal">
                     <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
                 </button>
@@ -25,7 +15,9 @@
             <div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                 <div class="input-group">
                     <div class="input-icon">
-                        <span class="input-group-text"><Magnify/></span>
+                        <span class="input-group-text">
+                            <Magnify />
+                        </span>
                         <p>Search</p>
                     </div>
                     <div class="align-items-center d-flex input-group-append">
@@ -37,15 +29,8 @@
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
-                        <RecursiveNavSidebar
-                            v-for="item in items"
-                            :key="item.path"
-                            :parent-slug="'/' + type"
-                            :type="type"
-                            :item="item"
-                            :depth-level="0"
-                            :disabled-pages="disabledPages"
-                        />
+                        <RecursiveNavSidebar v-for="item in items" :key="item.path" :parent-slug="'/' + type"
+                            :type="type" :item="item" :depth-level="0" :disabled-pages="disabledPages" />
                     </ul>
                 </nav>
             </div>
@@ -54,20 +39,20 @@
 </template>
 
 <script lang="ts" setup>
-  import {computed, provide, ref, type PropType} from "vue";
-  import Magnify from "vue-material-design-icons/Magnify.vue"
-  import Keyboard from "vue-material-design-icons/Keyboard.vue"
-  import Menu from "vue-material-design-icons/Menu.vue"
-  import RecursiveNavSidebar, { activeSlugInjectionKey, type NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
-  import KSAIImg from "./assets/ks-ai.svg"
+    import { computed, provide, ref, type PropType } from "vue";
+    import Magnify from "vue-material-design-icons/Magnify.vue"
+    import Keyboard from "vue-material-design-icons/Keyboard.vue"
+    import Menu from "vue-material-design-icons/Menu.vue"
+    import RecursiveNavSidebar, { activeSlugInjectionKey, closeSidebarInjectionKey, type NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue";
+    import KSAIImg from "./assets/ks-ai.svg"
 
-  const props = defineProps({
+    const props = defineProps({
         type: {
             type: String,
             required: true
         },
         navigation: {
-            type: Object as PropType<{children: NavigationItem[]}[]>,
+            type: Object as PropType<{ children: NavigationItem[] }[]>,
         },
         slug: {
             type: String,
@@ -83,6 +68,16 @@
     // provide activeSlug to all children
     const activeSlug = ref<string>(props.slug ?? '')
     provide(activeSlugInjectionKey, activeSlug)
+
+    const menuToggleBtn = ref<HTMLButtonElement | null>(null)
+
+    const closeSidebar = () => {
+        if (window.innerWidth < 992 && menuToggleBtn.value && menuToggleBtn.value.getAttribute('aria-expanded') === 'true') {
+            menuToggleBtn.value.click();
+        }
+    }
+
+    provide(closeSidebarInjectionKey, closeSidebar)
 
     const items = computed(() => props.navigation?.[0]?.children ?? [])
 </script>
@@ -117,6 +112,7 @@
             font-weight: bold;
             width: 100%;
             color: $white;
+
             @include media-breakpoint-down(lg) {
                 background-color: $black-3;
                 font-size: $font-size-sm;
@@ -146,7 +142,8 @@
             }
         }
 
-        .search, .ai-button-wrapper {
+        .search,
+        .ai-button-wrapper {
             width: 209px;
             height: 32px;
 
