@@ -7,7 +7,7 @@ author:
   name: Elliot Gunn
   image: egunn
   role: Product Marketing Manager
-image: TBD
+image: /blogs/2026-01-14-enterprise-airflow-alternatives.png
 ---
 
 If you're here, you've probably already discovered that Apache Airflow is excellent at orchestrating data pipelines and considerably less excellent at making your platform team's life easy. The gap between "works in development" and "runs reliably in production with proper access controls, audit logging, and disaster recovery" is where enterprise requirements live, and it's a gap that Airflow was never designed to close.
@@ -16,14 +16,12 @@ This isn't a knock on Airflow. It emerged from Airbnb's data team in 2014 to sol
 
 So what are your actual options in 2026? 
 
-## Image 1 (in design; Kestra will be first)
-
 | Tool | Best for |
 |------|----------|
+| **Kestra** | Platform teams needing multi-language support, governance, and deployment flexibility |
 | **Astronomer** | Teams committed to Airflow who want managed infrastructure and enterprise support |
 | **Dagster** | Data teams wanting asset-centric orchestration with strong lineage and data quality |
 | **Prefect** | Python developers who want lightweight orchestration without DAG ceremony |
-| **Kestra** | Platform teams needing multi-language support, governance, and deployment flexibility |
 | **Control-M** | Regulated industries with existing mainframe/batch workloads |
 | **AWS Step Functions** | AWS-native shops orchestrating serverless and microservices |
 | **Azure Data Factory** | Microsoft-centric enterprises with hybrid on-prem/cloud data movement |
@@ -44,17 +42,15 @@ Third, there's language lock-in. Airflow is Python, and only Python. That was a 
 
 Finally, there's operational burden. Airflow's architecture means your platform team becomes an Airflow operations team. Workers, schedulers, metadata databases, and executors all need care and feeding. At scale, this becomes a meaningful line item in your engineering budget.
 
-## Image 2 (in design; Kestra will be first)
-
-| Criteria | Astronomer | Dagster | Prefect | Kestra | Control-M | Step Functions |
-|----------|-----------|---------|---------|--------|-----------|----------------|
-| **Multi-tenancy** | Limited | Cloud only | Cloud only | Native | Yes | IAM-based |
-| **RBAC** | Yes | Cloud only | Cloud only | Native | Yes | IAM policies |
-| **Audit logging** | Yes | Cloud only | Cloud only | Native | Yes | CloudTrail |
-| **On-prem deployment** | No | Yes | Yes | Yes | Yes | No |
-| **Air-gapped support** | No | Limited | No | Yes | Yes | No |
-| **Multi-language** | Python only | Python only | Python only | Any | Any | JSON/ASL |
-| **Self-hosted option** | No | Yes | Yes | Yes (OSS) | Yes | No |
+| Criteria | Kestra | Astronomer | Dagster | Prefect | Control-M | Step Functions |
+  |----------|--------|-----------|---------|---------|-----------|----------------|
+  | **Multi-tenancy** | Native | Limited | Cloud only | Cloud only | Yes | IAM-based |
+  | **RBAC** | Native | Yes | Cloud only | Cloud only | Yes | IAM policies |
+  | **Audit logging** | Native | Yes | Cloud only | Cloud only | Yes | CloudTrail |
+  | **On-prem deployment** | Yes | No | Yes | Yes | Yes | No |
+  | **Air-gapped support** | Yes | No | Limited | No | Yes | No |
+  | **Multi-language** | Any | Python only | Python only | Python only | Any | JSON/ASL |
+  | **Self-hosted option** | Yes (OSS) | No | Yes | Yes | Yes | No |
 
 ### Managed Airflow options
 
