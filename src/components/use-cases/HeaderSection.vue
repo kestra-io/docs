@@ -9,12 +9,12 @@
                             {{description}}
                         </p>
                         <div class="cta d-flex gap-3 flex-wrap">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
+                            <a href="/demo" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Talk to Us
-                            </NuxtLink>
-                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
+                            </a>
+                            <a href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Get started
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

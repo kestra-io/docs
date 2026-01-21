@@ -23,14 +23,14 @@
                         {{ content.description }}
                     </p>
                     <div class="d-flex flex-wrap gap-2">
-                        <NuxtLink :href="content.cta.href">
+                        <a :href="content.cta.href">
                             <button
                                 class="btn btn-dark"
                                 :class="content.cta.style"
                             >
                                 {{ content.cta.text }}
                             </button>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
 

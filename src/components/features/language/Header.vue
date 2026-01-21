@@ -9,9 +9,9 @@
                             Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools
                         </p>
                         <div class="cta d-flex gap-3">
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
+                            <a href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Get Started
-                            </NuxtLink>
+                            </a>
                             <a href="/demo"  class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Talk to us
                             </a>

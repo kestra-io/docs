@@ -9,9 +9,9 @@
                     <br class="d-none d-xxl-block" />
                     With Kestra
                 </h2>
-                <NuxtLink to="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
+                <a to="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
                     Talk to us
-                </NuxtLink>
+                </a>
             </aside>
             <div class="d-flex flex-column gap-6 cards">
                 <div
@@ -38,9 +38,9 @@
                     </div>
                 </div>
             </div>
-            <NuxtLink to="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
+            <a to="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
                 Talk to us
-            </NuxtLink>
+            </a>
         </div>
     </section>
 </template>

@@ -17,9 +17,9 @@
                             and human-in-the-loop approvals.
                         </p>
                         <div data-usal="fade-u">
-                            <NuxtLink href="/demo" class="btn btn-lg btn-primary">
+                            <a href="/demo" class="btn btn-lg btn-primary">
                                 Book a Strategy Session
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

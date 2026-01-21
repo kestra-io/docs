@@ -6,9 +6,9 @@
                     <div>
                         <h1 data-usal="fade-r">Connect and Collaborate</h1>
                         <p class="baseline" data-usal="fade-l">Connect with experts in the field, get support from the community, exchange ideas and contribute your code and feedback.</p>
-                        <NuxtLink href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-usal="zoomin" target="_blank">
+                        <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-usal="zoomin" target="_blank">
                             Join us on Slack
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-5 order-0 order-md-1">

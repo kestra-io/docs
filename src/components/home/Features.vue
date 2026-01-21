@@ -6,7 +6,7 @@
             with a no-code interface that anyone can learn in minutes
         </p>
         <div class="cta-buttons">
-            <NuxtLink class="btn btn-primary btn-lg" href="/features">See All Features</NuxtLink>
+            <a class="btn btn-primary btn-lg" href="/features">See All Features</a>
             <a
                 href="https://www.youtube.com/embed/xnGYiWFM2uk?autoplay=1"
                 class="btn btn-secondary btn-lg"

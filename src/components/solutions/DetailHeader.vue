@@ -6,9 +6,9 @@
                     <div>
                         <h1 data-usal="fade-r"><span v-if="titleBefore">{{ titleBefore }}</span> {{ title }} <span v-if="titleAfter">{{ titleAfter }}</span></h1>
                         <p data-usal="fade-l" class="baseline">{{ subtitle }}</p>
-                        <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
+                        <a href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                             Get started
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">

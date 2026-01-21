@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
+    <a :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
         <div class="card" data-usal="fade-r">
             <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div class="d-flex align-items-center card-body-container">
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-    </NuxtLink>
+    </a>
 </template>
 
 <script setup lang="ts">

@@ -21,13 +21,13 @@
                         class="icon"
                     />
                     <h4 class="title">{{ item.title }}</h4>
-                    <NuxtLink
+                    <a
                         v-if="item.hasButton"
                         to="/docs/quickstart"
                         class="btn btn-primary btn-gradient"
                     >
                         Get Started
-                    </NuxtLink>
+                    </a>
                     <p
                         v-else
                         class="description"

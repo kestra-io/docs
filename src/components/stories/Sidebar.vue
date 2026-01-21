@@ -30,9 +30,9 @@
                 </div>
             </div>
             <div class="block pt-2 w-100 d-flex justify-content-center">
-                <NuxtLink href="/demo" class="btn btn-gradient mx-auto">
+                <a href="/demo" class="btn btn-gradient mx-auto">
                     Book a demo
-                </NuxtLink>
+                </a>
             </div>
         </div>
         <div class="socials">

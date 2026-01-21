@@ -19,9 +19,9 @@
                             {{description}}
                         </p>
                         <div class="cta">
-                            <NuxtLink :href="storeLink" class="btn btn-dark me-3" data-usal="zoomin">
+                            <a :href="storeLink" class="btn btn-dark me-3" data-usal="zoomin">
                                 Read the Story
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

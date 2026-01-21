@@ -39,13 +39,13 @@
                 <p>With native triggers, declarative flows, and built-in monitoring, Kestra gives you a clear path from
                     workflow creation to reliable execution across your stack</p>
                 <div class="buttons">
-                    <NuxtLink href="/demo" class="btn btn-secondary mb-2" target="_blank">
+                    <a href="/demo" class="btn btn-secondary mb-2" target="_blank">
                         Talk to us
-                    </NuxtLink>
-                    <NuxtLink href="/docs/quickstart#start-kestra"
+                    </a>
+                    <a href="/docs/quickstart#start-kestra"
                         class="btn btn-primary ms-3 mb-2">
                         Get Started!
-                    </NuxtLink>
+                    </a>
                 </div>
             </footer>
         </div>

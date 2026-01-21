@@ -14,9 +14,9 @@
                 <h2 data-usal="fade-l">{{ title }}</h2>
                 <p class="text-center" data-usal="fade-r">{{ subtitle }}</p>
                 <div class="text-center cta">
-                    <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
+                    <a href="/docs/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                         Get started
-                    </NuxtLink>
+                    </a>
                 </div>
             </div>
         </div>

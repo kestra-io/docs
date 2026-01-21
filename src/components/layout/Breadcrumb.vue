@@ -7,13 +7,13 @@
                 class="breadcrumb-item"
                 :class="{ active: index === breadcrumb.length - 1 }"
             >
-                <NuxtLink
+                <a
                     v-if="index !== breadcrumb.length - 1"
-                    :to="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''"
+                    :href="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''"
                     class="link"
                 >
                     {{ getDisplayName(item, index) }}
-                </NuxtLink>
+                </a>
 
                 <span v-else aria-current="page">{{ getDisplayName(item, index) }}</span>
             </li>

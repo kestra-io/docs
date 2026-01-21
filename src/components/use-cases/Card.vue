@@ -11,11 +11,11 @@
                         v-if="content.cta.length"
                         v-for="action in content.cta"
                     >
-                        <NuxtLink :href="action.href" :target="action.target">
+                        <a :href="action.href" :target="action.target">
                             <button class="btn" :class="action.style">
                                 {{ action.text }}
                             </button>
-                        </NuxtLink>
+                        </a>
                     </template>
                 </div>
             </div>

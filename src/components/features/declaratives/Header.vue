@@ -7,9 +7,9 @@
                         <h1 data-usal="fade-r"><span>Declarative</span> Orchestration with Kestra</h1>
                         <p class="baseline" data-usal="fade-l">Bring Infrastructure as Code Best Practices to All Workflows</p>
                         <div class="cta d-flex gap-3">
-                            <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
+                            <a href="/docs/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-usal="zoomin">
                                 Get Started
-                            </NuxtLink>
+                            </a>
                             <a href="/demo"  class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                                 Talk to us
                             </a>

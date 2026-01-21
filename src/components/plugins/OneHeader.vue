@@ -30,9 +30,9 @@ defineProps<{
         </div>
         <div v-if="rootPlugin?.license" class="title-actions d-flex flex-column gap-2 ps-4">
             <span class="btn enterprise-badge">Enterprise Edition</span>
-            <NuxtLink href="/demo" class="btn btn-primary" target="_blank">
+            <a href="/demo" class="btn btn-primary" target="_blank">
                 Talk to us
-            </NuxtLink>
+            </a>
         </div>
     </h1>
 </template>

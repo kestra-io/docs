@@ -50,9 +50,9 @@
                     <p>{{ feature.description }}</p>
                 </div>
             </div>
-            <NuxtLink href="/blogs/release-1-0" target="_blank" class="btn btn-lg btn-primary">
+            <a href="/blogs/release-1-0" target="_blank" class="btn btn-lg btn-primary">
                 Explore the 1.0 Highlights
-            </NuxtLink>
+            </a>
         </div>
         <svg width="0" height="0">
             <defs>

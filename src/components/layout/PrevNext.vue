@@ -1,8 +1,8 @@
 <template>
     <div v-if="prev || next" class="docs-prev-next mt-5">
-        <NuxtLink
+        <a
             v-if="prev"
-            :to="prev.path"
+            :href="prev.path"
             class="prev"
         >
             <ArrowLeft />
@@ -12,13 +12,13 @@
                 </span>
                 <span class="title">{{ prev.title }}</span>
             </div>
-        </NuxtLink>
+        </a>
 
         <span v-else />
 
-        <NuxtLink
+        <a
             v-if="next"
-            :to="next.path"
+            :href="next.path"
             class="next"
         >
             <div class="wrapper">
@@ -28,7 +28,7 @@
                 <span class="title">{{ next.title }}</span>
             </div>
             <ArrowRight />
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

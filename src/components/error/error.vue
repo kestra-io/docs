@@ -19,9 +19,9 @@
                         </ul>
                         <pre>{{ JSON.stringify(error, null, 2) }}</pre>
                     </div>
-                    <NuxtLink href="/" class="btn btn-animated btn-purple-animated mb-2">
+                    <a href="/" class="btn btn-animated btn-purple-animated mb-2">
                         Back to home
-                    </NuxtLink>
+                    </a>
                 </div>
                 <div class="col-md-6 p-5">
                     <img v-bind="errorImage" class="img-fluid" alt="error" />

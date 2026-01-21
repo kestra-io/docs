@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href">
+    <a :href="href">
         <div class="card bg-dark-2">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-    </NuxtLink>
+    </a>
 </template>
 
 <script setup lang="ts">

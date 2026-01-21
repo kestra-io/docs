@@ -54,9 +54,9 @@
                 </div>
             </div>
 
-            <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+            <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                 <span>Talk to us</span>
-            </NuxtLink>
+            </a>
         </div>
     </div>
 </template>

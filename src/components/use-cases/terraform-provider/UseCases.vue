@@ -18,7 +18,7 @@
                             <h4 class="mb-3">Reliable Deployments with Infrastructure as Code</h4>
                             <p>
                                 Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows. <br/>
-                                <NuxtLink href="/use-cases/ci-cd" class="text-decoration-underline link-offset-2">Learn more</NuxtLink>
+                                <a href="/use-cases/ci-cd" class="text-decoration-underline link-offset-2">Learn more</a>
                             </p>
                         </div>
                     </div>

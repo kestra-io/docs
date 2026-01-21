@@ -3,9 +3,9 @@
         <div class="container py-4 py-md-5 px-4 px-md-3">
             <div class="row">
                 <div class="col-lg-3 mb-3">
-                    <NuxtLink href="/">
+                    <a href="/">
                         <img src="/logo-white.svg" height="60" alt="Kestra's logo">
-                    </NuxtLink>
+                    </a>
                     <p class="mt-2">Open Source Declarative Orchestration</p>
                     <Socials class="mt-4 socials" />
                     <LayoutNewsletter />
@@ -20,7 +20,7 @@
                                     :key="link.href"
                                     class="mb-2"
                                 >
-                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                    <a :href="link.href">{{ link.text }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -32,7 +32,7 @@
                                     :key="link.href"
                                     class="mb-2"
                                 >
-                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                    <a :href="link.href">{{ link.text }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -44,7 +44,7 @@
                                     :key="link.href"
                                     class="mb-2"
                                 >
-                                    <NuxtLink v-if="!link.external" :href="link.href">{{ link.text }}</NuxtLink>
+                                    <a v-if="!link.external" :href="link.href">{{ link.text }}</a>
                                     <a v-else :href="link.href" target="_blank">{{ link.text }}</a>
                                 </li>
                             </ul>
@@ -57,7 +57,7 @@
                                     :key="link.href"
                                     class="mb-2"
                                 >
-                                    <NuxtLink :href="link.href">{{ link.text }}</NuxtLink>
+                                    <a :href="link.href">{{ link.text }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -69,10 +69,10 @@
                                     :key="link.href"
                                     class="mb-2"
                                 >
-                                    <NuxtLink :href="link.href">
+                                    <a :href="link.href">
                                         {{ link.text }}
                                         <span v-if="link.badge" class="badge text-bg-danger">{{ link.badge }}</span>
-                                    </NuxtLink>
+                                    </a>
                                 </li>
                             </ul>
 
@@ -88,16 +88,16 @@
             <div class="d-flex d-100">
                 <div class="flex-grow-1">
                     <p class="mb-0 d-none d-md-inline">
-                        © {{  new Date().getFullYear() }} <NuxtLink href="/">Kestra Technologies</NuxtLink>.
+                        © {{  new Date().getFullYear() }} <a href="/">Kestra Technologies</a>.
                         Developed with <Heart class="text-danger" /> on 🌎.
 
                     </p>
                 </div>
                 <div class="text-end">
                     <p class="mb-0">
-                        <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>
+                        <a href="/privacy-policy">Privacy Policy</a>
                         /
-                        <NuxtLink href="/cookie-policy">Cookie Policy</NuxtLink>
+                        <a href="/cookie-policy">Cookie Policy</a>
                     </p>
                 </div>
             </div>

@@ -154,7 +154,7 @@
             </div>
             <div class="col-12 mb-4">
                <small class="agree">
-                  By submitting this form, you agree to our <NuxtLink target="_blank" href="/privacy-policy">Privacy Policy.</NuxtLink>
+                  By submitting this form, you agree to our <a target="_blank" href="/privacy-policy">Privacy Policy.</a>
                </small>
             </div>
 

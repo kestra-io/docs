@@ -11,9 +11,9 @@
             hands-on access to Kestra Cloud. Enjoy a fully managed
             platform and personalized support.
           </p>
-          <NuxtLink to="/cloud/" class="btn btn-primary mt-3 cta-btn">
+          <a to="/cloud/" class="btn btn-primary mt-3 cta-btn">
             Request Access to Kestra Cloud
-          </NuxtLink>
+          </a>
         </div>
       </div>
     </div>

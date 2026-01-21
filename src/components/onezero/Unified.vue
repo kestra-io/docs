@@ -44,9 +44,9 @@
       </div>
 
       <div data-usal="fade-u">
-        <NuxtLink href="/demo" class="btn btn-lg btn-primary">
+        <a href="/demo" class="btn btn-lg btn-primary">
           Calculate Your Savings With Kestra
-        </NuxtLink>
+        </a>
       </div>
     </div>
   </section>

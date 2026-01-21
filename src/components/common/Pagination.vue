@@ -2,13 +2,13 @@
     <nav aria-label="Page navigation">
         <ul class="pagination mb-0">
              <li class="page-item" role="button">
-                <NuxtLink
+                <a
                     class="page-link fw-bold arrow-button bg-dark-2"
-                    :to="getPageUrl(currentPage - 1)"
+                    :href="getPageUrl(currentPage - 1)"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
                         <ChevronLeft />
-                </NuxtLink>
+                </a>
             </li>
             <li
                 v-for="n in pages"
@@ -19,16 +19,16 @@
 
             >
                 <span v-if="n === morePagesPlaceholder" class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span>
-                <NuxtLink v-else class="page-list-item bg-dark-2 page-link fw-bold" :to="getPageUrl(n)" @click.prevent="changePage({ pageNo: n })">{{ n }}</NuxtLink>
+                <a v-else class="page-list-item bg-dark-2 page-link fw-bold" :href="getPageUrl(n)" @click.prevent="changePage({ pageNo: n })">{{ n }}</a>
             </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
-                <NuxtLink
+                <a
                     class="page-link fw-bold arrow-button bg-dark-2"
-                    :to="getPageUrl(currentPage + 1)"
+                    :href="getPageUrl(currentPage + 1)"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
                         <ChevronRight />
-                </NuxtLink>
+                </a>
             </li>
         </ul>
     </nav>

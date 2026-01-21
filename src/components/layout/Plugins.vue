@@ -13,7 +13,7 @@
         <img loading="lazy" data-usal="fade-u delay-100" src="/icons/io.kestra.plugin.github.svg" alt="GitHub" />
     </div>
     <div class="d-flex justify-content-center" data-usal="zoomin">
-        <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
+        <a class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</a>
     </div>
 </template>
 

@@ -10,9 +10,9 @@
                             transparency. Integration with secrets managers and API tokens enhances secure automation,
                             while end-to-end encryption protects your data at all times.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
                 <div class="sticky-features-item">
@@ -22,9 +22,9 @@
                             Give your team secured, isolated environments and control over workflows. With tailored
                             automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
                 <div class="sticky-features-item mb__5">
@@ -34,9 +34,9 @@
                             Kestra Enterprise scales with no downtime. Its reliable architecture and task runners,
                             support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                             transparency. Integration with secrets managers and API tokens enhances secure automation,
                             while end-to-end encryption protects your data at all times.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -90,9 +90,9 @@
                             Give your team secured, isolated environments and control over workflows. With tailored
                             automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -112,9 +112,9 @@
                             support both internal and external execution, minimize risk and provide performance
                             insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                        <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Talk to us</span>
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>

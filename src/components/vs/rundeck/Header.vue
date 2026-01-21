@@ -7,9 +7,9 @@
                         <h1 data-usal="fade-r">Kestra Alternative to Rundeck</h1>
                         <p class="baseline" data-usal="fade-l">Discover the differences between Kestra and Rundeck for IT Automation</p>
                         <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
+                            <a href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
                                 Talk to us
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

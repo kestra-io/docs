@@ -1,6 +1,6 @@
 <template>
     <div class="row card-group card-centered mb-2">
-        <NuxtLink :href="item.path" class="col-12 col-md-10 mb-4" v-for="item in navigation" :key="item.path">
+        <a :href="item.path" class="col-12 col-md-10 mb-4" v-for="item in navigation" :key="item.path">
             <div class="card">
                 <div class="card-body">
                     <div>
@@ -10,7 +10,7 @@
                     <p class="card-text">{{ item.description }}</p>
                 </div>
             </div>
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

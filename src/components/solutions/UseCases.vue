@@ -10,7 +10,7 @@
                     class="col-md-4"
                     data-usal="fade-r"
                 >
-                    <NuxtLink :href="_case.link" class="d-flex flex-column gap-2">
+                    <a :href="_case.link" class="d-flex flex-column gap-2">
                         <div class="img-block bg-dark-2">
                             <img
                                 class="img-fluid"
@@ -20,7 +20,7 @@
                         </div>
                         <h4 class="title">{{ _case.title }}</h4>
                         <p>{{ _case.description }}</p>
-                    </NuxtLink>
+                    </a>
                 </div>
             </div>
         </Section>

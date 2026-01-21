@@ -49,11 +49,10 @@
                             <div v-if="message.role === 'assistant' && message.sources?.length" class="sources">
                                 <h6>SOURCES</h6>
                                 <div class="items">
-                                    <NuxtLink
+                                    <a
                                         v-for="source in message.sources"
                                         :key="source.url"
-                                        :to="source.url"
-                                        external
+                                        :href="source.url"
                                         target="_blank"
                                         class="item"
                                     >
@@ -64,7 +63,7 @@
                                             <div class="title">{{ source.title }}</div>
                                             <div class="path">{{ source.path }}</div>
                                         </div>
-                                    </NuxtLink>
+                                    </a>
                                 </div>
                             </div>
 

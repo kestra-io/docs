@@ -30,9 +30,9 @@
           <h6>
             How much risk and cost are you still accepting today?
           </h6>
-          <NuxtLink href="/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+          <a href="/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
             Read the story
-          </NuxtLink>
+          </a>
         </div>
       </div>
     </div>

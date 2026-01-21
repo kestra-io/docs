@@ -25,9 +25,9 @@
                         custom applications, plugins enable you to connect, schedule, and
                         automate your entire tech stack.
                     </p>
-                    <NuxtLink href="/plugins" class="btn btn-dark mt-2" data-usal="zoomin">
+                    <a href="/plugins" class="btn btn-dark mt-2" data-usal="zoomin">
                         See all Plugins
-                    </NuxtLink>
+                    </a>
                 </div>
             </div>
         </div>

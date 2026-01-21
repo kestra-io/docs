@@ -28,9 +28,9 @@
                         <span>Deployment Speed</span>
                     </div>
                 </div>
-                <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                     <span>Talk to sales</span>
-                </NuxtLink>
+                </a>
             </div>
             <Testimonials :testimonialData />
         </div>

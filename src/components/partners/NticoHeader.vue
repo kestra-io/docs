@@ -14,12 +14,12 @@
                         <h1>Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions</h1>
                         <p class="text-white baseline fs-4">The Ntico team is ready to support you in your data orchestration and ETL projects with Kestra.</p>
                         <div class="cta">
-                            <NuxtLink
+                            <a
                                 href="/demo"
                                 class="btn text-white btn-animated btn-purple-animated mt-2"
                             >
                                 Talk to us
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -4,12 +4,12 @@
             <div class=" text-center rounded">
                 <h3 data-usal="fade-r" class="mb-3">Getting Started</h3>
                 <div class="d-flex gap-2  flex-wrap justify-content-center align-items-center">
-                    <NuxtLink href="/docs">
+                    <a href="/docs">
                         <button class="btn  btn-dark mx-2 mt-2">Get Started</button>
-                    </NuxtLink>
-                    <NuxtLink href="https://github.com/kestra-io/kestra">
+                    </a>
+                    <a href="https://github.com/kestra-io/kestra">
                         <button class="btn btn-animated btn-purple-animated mx-2 mt-2">Get Started</button>
-                    </NuxtLink>
+                    </a>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@
             <HomeBlueprintsCarousel :blueprints="blueprints" />
         </Suspense>
         <div class="button-container">
-            <NuxtLink href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</NuxtLink>
+            <a href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</a>
         </div>
     </section>
 </template>

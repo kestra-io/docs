@@ -10,10 +10,10 @@
                     </a>
                 </li>
                 <li v-for="link in socialLinks" :key="link.href">
-                    <NuxtLink class="text-white" :to="link.href" target="_blank">
+                    <a class="text-white" :href="link.href" target="_blank">
                         <component :is="link.icon" />
                         {{ link.text }}
-                    </NuxtLink>
+                    </a>
                 </li>
             </ul>
         </nav>

@@ -45,7 +45,7 @@
                         <div class="row search-results" v-else>
                             <div class="search-result col-12 col-md-6">
                                 <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                    <NuxtLink :href="'/' + result.url" :class="{'active': index === selectedIndex}" @click="close">
+                                    <a :href="'/' + result.url" :class="{'active': index === selectedIndex}" @click="close">
                                         <div class="result">
                                             <div class="w-100">
                                                 <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
@@ -60,7 +60,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </NuxtLink>
+                                    </a>
                                 </div>
                             </div>
                             <div class="search-detail p-3 col-6 d-none d-md-flex">

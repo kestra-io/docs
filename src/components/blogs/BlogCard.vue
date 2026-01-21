@@ -1,6 +1,6 @@
 <template>
     <div class="mb-5 mt-1" role="button">
-        <NuxtLink class="text-dark" :href="blog.path">
+        <a class="text-dark" :href="blog.path">
             <img
                 v-if="typeof blog.image === 'string' && blog.image?.startsWith('https://')"
                 width="300"
@@ -25,7 +25,7 @@
                     :date="blog.date.toString()"
                 />
             </div>
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

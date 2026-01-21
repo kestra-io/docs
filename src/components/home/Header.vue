@@ -8,20 +8,20 @@
                 </h1>
                 <p>Unify orchestration for all engineers. Build and govern <br>all your workflows — Everything-as-Code, from the UI and with AI</p>
                 <div class="buttons">
-                    <NuxtLink
+                    <a
                         href="/docs/quickstart#start-kestra"
                         class="btn btn-lg btn-primary me-3 mb-2"
                     >
                         Get Started!
-                    </NuxtLink>
+                    </a>
 
-                    <NuxtLink
+                    <a
                         href="/demo"
                         class="btn btn-lg btn-secondary mb-2"
                         target="_blank"
                     >
                         Talk to us
-                    </NuxtLink>
+                    </a>
 
                 </div>
             </div>

@@ -16,9 +16,9 @@
           <div class="team-info">
             <div class="team-name" :class="{ 'mb-3': member.isOpenPosition }" v-html="member.name" />
             <div v-if="member.title" class="team-title">{{ member.title }}</div>
-            <NuxtLink v-if="member.isOpenPosition" href="/careers" class="btn btn-sm btn-secondary">
+            <a v-if="member.isOpenPosition" href="/careers" class="btn btn-sm btn-secondary">
               Open Positions
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>

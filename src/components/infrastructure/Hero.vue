@@ -13,12 +13,12 @@
 
                 <div class="right-section" data-usal="slide-d delay-100 duration-700 ease-out">
                     <p>Still relying on scripts and legacy tools <br class="d-none d-xl-block" /> to run mission-critical infrastructure?</p>
-                    <NuxtLink
+                    <a
                         to="/demo"
                         class="btn btn-primary btn-gradient"
                     >
                         Book a demo
-                    </NuxtLink>
+                    </a>
                 </div>
             </div>
 

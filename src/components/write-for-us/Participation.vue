@@ -6,13 +6,13 @@
                 <p>{{ cta.description }}</p>
             </div>
             <div class="w-auto">
-                <NuxtLink :href="cta.action.href" :target="cta.action.target">
+                <a :href="cta.action.href" :target="cta.action.target">
                     <button class="btn" :class="cta.action.style">
                         <span class="mx-4">
                             {{ cta.action.text }}
                         </span>
                     </button>
-                </NuxtLink>
+                </a>
             </div>
         </div>
     </div>

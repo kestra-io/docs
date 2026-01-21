@@ -12,7 +12,7 @@
                 >
                     <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
                         <p class="d-flex" @click="slideTo(index)">
-                            <span class="d-inline-block text-truncate" >{{slide.text}}</span> <NuxtLink class="d-inline-block text-nowrap" :href="slide.href">{{slide.linkText}}</NuxtLink>
+                            <span class="d-inline-block text-truncate" >{{slide.text}}</span> <a class="d-inline-block text-nowrap" :href="slide.href">{{slide.linkText}}</a>
                         </p>
                     </Slide>
                 </Carousel>

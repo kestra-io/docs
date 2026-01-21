@@ -34,9 +34,9 @@
                 </div>
             </div>
 
-            <NuxtLink to="/demo" class="btn btn-primary btn-gradient">
+            <a to="/demo" class="btn btn-primary btn-gradient">
                 Talk to us
-            </NuxtLink>
+            </a>
         </div>
     </section>
 </template>

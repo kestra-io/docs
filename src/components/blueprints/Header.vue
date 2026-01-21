@@ -3,7 +3,7 @@
     <div class="container-fluid pt-5">
         <div class="container">
             <div class="header">
-                <NuxtLink class="breadcrumb" to="/blueprints">Blueprints</NuxtLink>
+                <a class="breadcrumb" to="/blueprints">Blueprints</a>
                 <div class="row">
                     <div class="col-12 col-md-9">
                         <h2>{{ page.title }}</h2>

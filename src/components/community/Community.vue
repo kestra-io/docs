@@ -71,14 +71,14 @@
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <NuxtLink href="https://github.com/kestra-io/kestra" data-usal="zoomin"
+                <a href="https://github.com/kestra-io/kestra" data-usal="zoomin"
                     class="btn btn-animated btn-dark-animated mt-2 mx-2">
                     Follow on GitHub
-                </NuxtLink>
-                <NuxtLink href="https://github.com/kestra-io/kestra/issues" data-usal="zoomin" class="btn btn-animated btn-purple-animated
+                </a>
+                <a href="https://github.com/kestra-io/kestra/issues" data-usal="zoomin" class="btn btn-animated btn-purple-animated
                      mt-2">
                     Find Open Issues
-                </NuxtLink>
+                </a>
             </div>
         </div>
     </div>

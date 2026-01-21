@@ -1,7 +1,7 @@
 <template>
-    <NuxtLink :href="link" :target="target">
+    <a :href="link" :target="target">
         <slot />
-    </NuxtLink>
+    </a>
 </template>
 
 <script setup>

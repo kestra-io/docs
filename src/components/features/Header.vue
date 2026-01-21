@@ -12,12 +12,12 @@
           </span>
         </h1>
         <div class="buttons">
-          <NuxtLink href="/demo" class="btn btn-lg btn-secondary me-3" target="_blank">
+          <a href="/demo" class="btn btn-lg btn-secondary me-3" target="_blank">
             Talk to us
-          </NuxtLink>
-          <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-lg btn-primary">
+          </a>
+          <a href="/docs/quickstart#start-kestra" class="btn btn-lg btn-primary">
             Get Started!
-          </NuxtLink>
+          </a>
         </div>
       </div>
       <div class="img-block">

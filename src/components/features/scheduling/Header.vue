@@ -7,12 +7,12 @@
                     <h1 data-usal="fade-r" class="title-2 title">and Automation</h1>
                     <p class="baseline mb-0 pb-3" data-usal="fade-l">Automate scheduled and event-driven workflows with Kestra</p>
                     <div class="cta">
-                        <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-usal="zoomin">
+                        <a href="/demo" class="btn btn-dark mt-2 me-3" data-usal="zoomin">
                             Talk to us
-                        </NuxtLink>
-                        <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-usal="zoomin">
+                        </a>
+                        <a href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-usal="zoomin">
                             Get started
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>

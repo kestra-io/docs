@@ -20,13 +20,13 @@
         <div v-else class="content">
           <h3 class="heading">{{ card.title }}</h3>
           <p class="desc">{{ card.description }}</p>
-          <NuxtLink
+          <a
             v-if="card.button"
-            :to="card.button.href"
+            :href="card.button.href"
             :class="['btn', 'btn-sm', card.button.variant, 'cta']"
           >
             {{ card.button.text }}
-          </NuxtLink>
+          </a>
         </div>
       </article>
     </div>
@@ -38,9 +38,9 @@
         <p class="text">
           For Media Inquiries and Exclusive Insights,<br>
           Reach Out to Our Press Team at
-          <NuxtLink href="mailto:press@kestra.io" class="link" external>press@kestra.io</NuxtLink>
+          <a href="mailto:press@kestra.io" class="link" external>press@kestra.io</a>
         </p>
-        <NuxtLink
+        <a
           to="/kestra-logo-kit.zip"
           class="btn btn-md btn-primary btn-download"
           external
@@ -48,7 +48,7 @@
           download="kestra-logo-kit.zip"
         >
           Download Logo Pack
-        </NuxtLink>
+        </a>
       </div>
       <div class="media d-none d-md-flex">
         <NuxtImg

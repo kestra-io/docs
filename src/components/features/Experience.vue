@@ -23,10 +23,10 @@
                                 <span class="text-truncate">{{ card.title }}</span>
                             </h3>
                             <p>{{ card.description }}</p>
-                            <NuxtLink :to="card.link" class="cta">
+                            <a :href="card.link" class="cta">
                                 <span>{{ card.cta }}</span>
                                 <ArrowRight />
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

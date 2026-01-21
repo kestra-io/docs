@@ -13,9 +13,9 @@
                             </p>
                         </div>
                         <div class="third">
-                            <NuxtLink href="/demo" class="btn btn-gradient">
+                            <a href="/demo" class="btn btn-gradient">
                                 Book a demo
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -133,9 +133,9 @@
             </div>
         </div>
         <div class="compare-btn">
-            <NuxtLink href="/pricing" class="button  btn-animated btn-purple-animated">
+            <a href="/pricing" class="button  btn-animated btn-purple-animated">
                 <span>Compare all offers</span>
-            </NuxtLink>
+            </a>
         </div>
     </div>
 </template>

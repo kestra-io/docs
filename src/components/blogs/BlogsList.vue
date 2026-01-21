@@ -86,9 +86,9 @@
                 <div v-for="news in externalNews" :key="news.id">
                     <BlogCard :blog="news" data-usal="zoomin" />
                 </div>
-                <NuxtLink href="/blogs/community">
+                <a href="/blogs/community">
                     <button class="btn btn-dark w-100">More news</button>
-                </NuxtLink>
+                </a>
             </div>
 
         </div>

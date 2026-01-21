@@ -14,12 +14,12 @@
                         <h1>Conapi & Kestra Partnership</h1>
                         <p class="text-white baseline fs-4">Conapi brings its integration expertise to the Kestra ecosystem, specializing in connecting legacy infrastructure with modern solutions</p>
                         <div class="cta">
-                            <NuxtLink
+                            <a
                                 href="/demo"
                                 class="btn text-white btn-animated btn-purple-animated mt-2"
                             >
                                 Talk to us
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -11,10 +11,10 @@
               }">
                 <p class="fw-bold">{{ head.name }}</p>
                 <span>{{ head.period }}</span>
-                <NuxtLink v-if="head?.button" :href="head?.button?.href"
+                <a v-if="head?.button" :href="head?.button?.href"
                   :class="head.name === 'Enterprise' ? 'enterprise-btn' : 'edition-btn'">
                   {{ head.button?.text }}
-                </NuxtLink>
+                </a>
               </div>
             </th>
           </tr>
@@ -28,7 +28,7 @@
                   <Information class="info" />
                   <div class="tooltip-content">
                     {{ item.description.text }}
-                    <NuxtLink v-if="item.description.link" :to="item.description.link">Learn more</NuxtLink>
+                    <a v-if="item.description.link" :href="item.description.link">Learn more</a>
                   </div>
                 </div>
               </span>
@@ -77,7 +77,7 @@
                   <Information class="info ps-4" />
                   <div class="tooltip-content">
                     {{ child.description.text }}
-                    <NuxtLink v-if="child.description.link" :to="child.description.link">Learn more</NuxtLink>
+                    <a v-if="child.description.link" :href="child.description.link">Learn more</a>
                   </div>
                 </div>
               </span>
@@ -96,10 +96,10 @@
             </div>
           </div>
         </CollapsedFeatures>
-        <NuxtLink :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
+        <a :href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
           :class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'">
           {{ selectedType === 'enterprise' ? 'Talk to Sales' : 'Get Started' }}
-        </NuxtLink>
+        </a>
       </div>
     </div>
   </div>

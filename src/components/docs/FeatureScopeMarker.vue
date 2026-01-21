@@ -19,9 +19,9 @@
     <div class="mb-3" v-if="page?.deprecated">
         <p class="fw-bold d-flex gap-2 flex-wrap">Deprecated since:
             <span v-if="page?.deprecated.since" class="badge d-flex align-items-center bg-body-tertiary">{{ page?.deprecated.since }}</span>
-            <NuxtLink v-if="page?.deprecated.migrationGuide" class="badge d-flex align-items-center bg-secondary text-white" :href="page?.deprecated.migrationGuide">
+            <a v-if="page?.deprecated.migrationGuide" class="badge d-flex align-items-center bg-secondary text-white" :href="page?.deprecated.migrationGuide">
                 Migration Guide
-            </NuxtLink>
+            </a>
         </p>
     </div>
     <div class="mb-3" v-if="page?.release">

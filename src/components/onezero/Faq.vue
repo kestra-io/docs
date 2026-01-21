@@ -18,9 +18,9 @@
             <div class="session-card" data-usal="zoomin">
                 <h1>Book a Strategy Session</h1>
                 <p>What could Declarative Agentic Orchestration can do for you?</p>
-                <NuxtLink href="/demo" class="btn btn-lg btn-primary">
+                <a href="/demo" class="btn btn-lg btn-primary">
                     Book Your Strategy Session
-                </NuxtLink>
+                </a>
             </div>
 
             <PriceFaq :items="faqItems" />

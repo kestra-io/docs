@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="card-grid mb-2">
-        <NuxtLink class="card" :href="item.path" v-for="item in navigation" :key="item.path">
+        <a class="card" :href="item.path" v-for="item in navigation" :key="item.path">
             <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
                 {{item.stage}}
             </span>
@@ -46,7 +46,7 @@
             <div class="topics">
                 <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{topic}}</span>
             </div>
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

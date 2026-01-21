@@ -11,11 +11,11 @@
                 <li>Enterprise Support with SLA</li>
             </ul>
             <div class="cta">
-                <NuxtLink href="/demo" class="btn btn-lg btn-primary">Talk to Sales</NuxtLink>
-                <NuxtLink href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></NuxtLink>
+                <a href="/demo" class="btn btn-lg btn-primary">Talk to Sales</a>
+                <a href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></a>
             </div>
         </div>
-        <NuxtLink href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></NuxtLink>
+        <a href="/enterprise" class="learn-more">Learn More <ArrowRightIcon/></a>
     </section>
 </template>
 

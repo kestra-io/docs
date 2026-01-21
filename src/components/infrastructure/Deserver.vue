@@ -43,9 +43,9 @@
                 <h6 class="deserver-subheading">
                     Ready to replace vRA, Rundeck, Jenkins, Control-M, and fragmented scripts?
                 </h6>
-                <NuxtLink href="/demo" class="btn btn-primary btn-gradient deserver-btn">
+                <a href="/demo" class="btn btn-primary btn-gradient deserver-btn">
                     Discuss Your Automation Landscape
-                </NuxtLink>
+                </a>
             </div>
         </div>
     </section>

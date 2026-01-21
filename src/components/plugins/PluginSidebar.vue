@@ -19,9 +19,9 @@
                 >
                     <summary class="subgroup-title">
                         <ChevronRight class="chevron-icon" />
-                        <NuxtLink :to="navigateToSubgroup(subGroup)" class="subgroup-link">
+                        <a :href="navigateToSubgroup(subGroup)" class="subgroup-link">
                             {{ subGroupName(subGroup) }}
-                        </NuxtLink>
+                        </a>
                     </summary>
                     <PluginElements
                         :grouped-elements="groupPluginElements(subGroup)"
@@ -46,25 +46,25 @@
         <div class="plugin-links">
             <div class="link-section">
                 <h4>Request a plugin</h4>
-                <NuxtLink
+                <a
                     to="https://kestra.io/slack"
                     external
                     target="_blank"
                     class="link"
                 >
                     Ask on slack
-                </NuxtLink>
+                </a>
             </div>
             <div class="link-section">
                 <h4>Create a plugin</h4>
-                <NuxtLink
+                <a
                     to="/docs/plugin-developer-guide"
                     external
                     target="_blank"
                     class="link"
                 >
                     Go to the developer platform
-                </NuxtLink>
+                </a>
             </div>
         </div>
     </nav>

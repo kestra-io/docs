@@ -63,9 +63,9 @@
                 with confidence. Empower your team, streamline governance, and harness reliable infrastructure
                 to drive growth without compromise.
             </span>
-            <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+            <a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                 <span>Talk to us</span>
-            </NuxtLink>
+            </a>
         </div>
     </div>
 </template>

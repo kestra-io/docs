@@ -6,15 +6,15 @@
                 <h2>Jump in</h2>
                 <p class="description">Install Kestra Open-Source and get your first workflow ready in less than 5
                     minutes.</p>
-                <NuxtLink href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary">Get
-                    Started</NuxtLink>
+                <a href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary">Get
+                    Started</a>
             </HomeCard>
             <HomeCard class="side-box side-box-purple">
                 <NuxtImg v-bind="LogoCTA" alt="CTA" class="logo-cta" />
                 <p class="pre-title">Schedule a meeting</p>
                 <h2>Let's meet</h2>
                 <p class="description">Connect with our product specialists and discuss your project requirements.</p>
-                <NuxtLink href="/demo" class="btn btn-md btn-primary">Talk to us</NuxtLink>
+                <a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
             </HomeCard>
         </div>
     </section>

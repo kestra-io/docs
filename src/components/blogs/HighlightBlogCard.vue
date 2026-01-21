@@ -1,6 +1,6 @@
 <template>
     <div role="button">
-        <NuxtLink class="d-inline-block text-dark w-100" :href="blog.path">
+        <a class="d-inline-block text-dark w-100" :href="blog.path">
             <NuxtImg width="840" loading="lazy" class="w-100 col-md-12 rounded-3 img-fluid blog-image" :alt="blog.image" :src="blog.image" />
             <div class="description mt-4">
                 <span class="small-text category">{{ blog.category }}</span>
@@ -10,7 +10,7 @@
                 <p class="text">{{ blog.description }}</p>
                 <BlogCardDetails :authors="blog.authors || (blog.author ? [blog.author] : [])" :date="blog.date.toString()"/>
             </div>
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

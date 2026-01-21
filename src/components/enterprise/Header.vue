@@ -6,9 +6,9 @@
                     <p class="text-center header-desc">Built For Critical Use Cases</p>
                     <h1 data-usal="fade-r">Scale With Kestra <br> Enterprise Edition</h1>
                     <div class="d-flex flex-wrap gap-2 button-group">
-                        <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
+                        <a href="/demo" class="btn btn-animated btn-purple-animated" data-usal="zoomin">
                             Talk to sales
-                        </NuxtLink>
+                        </a>
                     </div>
                     <div class="teams-content">
                         <p>Trusted by Teams From:</p>

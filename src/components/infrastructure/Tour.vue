@@ -8,9 +8,9 @@
                 <p data-usal="fade-u delay-100 duration-500 ease-out">
                     Explore how Kestra gives you full control over complex infrastructure workflows.
                 </p>
-                <NuxtLink to="/docs/quickstart" class="btn btn-primary btn-gradient tour-btn" data-usal="zoomin duration-500 delay-150 ease-out">
+                <a to="/docs/quickstart" class="btn btn-primary btn-gradient tour-btn" data-usal="zoomin duration-500 delay-150 ease-out">
                     Take the tour
-                </NuxtLink>
+                </a>
             </div>
             <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
                 <NuxtImg

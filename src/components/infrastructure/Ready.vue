@@ -11,7 +11,7 @@
                 with Kestra, without changing their tools.
             </p>
             <div class="d-flex" data-usal="fade-u delay-300">
-                <NuxtLink href="/demo" class="btn btn-primary btn-gradient">Book a demo</NuxtLink>
+                <a href="/demo" class="btn btn-primary btn-gradient">Book a demo</a>
             </div>
         </div>
     </section>

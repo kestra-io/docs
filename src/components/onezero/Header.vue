@@ -22,9 +22,9 @@
                     </p>
                 </div>
                 <div data-usal="fade-u delay-400">
-                    <NuxtLink href="/demo" target="_blank" class="btn btn-primary my-4 mb-2">
+                    <a href="/demo" target="_blank" class="btn btn-primary my-4 mb-2">
                         Book a Strategy Session
-                    </NuxtLink>
+                    </a>
                 </div>
                 <div class="highlights" data-usal="fade-u delay-300">
                     <div

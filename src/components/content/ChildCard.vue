@@ -1,6 +1,6 @@
 <template>
     <div class="row card-group mb-2">
-        <NuxtLink :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in props.navigation" :key="item.path">
+        <a :href="item.path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in props.navigation" :key="item.path">
             <div class="card">
                 <div class="card-body d-flex">
                         <span v-if="!hideIcons" class="card-icon">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-        </NuxtLink>
+        </a>
     </div>
 </template>
 

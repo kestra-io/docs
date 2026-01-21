@@ -62,9 +62,9 @@
               <div class="col-12 mt-3">
                 <small class="agree">
                   By submitting this form, you agree to our
-                  <NuxtLink target="_blank" href="/privacy-policy">
+                  <a target="_blank" href="/privacy-policy">
                     Privacy Policy.
-                  </NuxtLink>
+                  </a>
                 </small>
               </div>
 

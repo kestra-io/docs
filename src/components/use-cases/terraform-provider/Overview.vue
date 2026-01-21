@@ -62,7 +62,7 @@
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-7 px-5 px-md-0" data-usal="fade-l">
                                 <h3 class="mb-3">Modularity in the Infrastructure Management</h3>
-                                <p>Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <NuxtLink href="/docs/terraform" class="text-decoration-underline link-offset-2">documentation.</NuxtLink></p>
+                                <p>Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <a href="/docs/terraform" class="text-decoration-underline link-offset-2">documentation.</a></p>
                             </div>
                         </div>
                     </div>

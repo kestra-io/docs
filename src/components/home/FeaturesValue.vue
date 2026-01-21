@@ -10,12 +10,12 @@
                     <p class="kpi-description">{{ value.description }}</p>
                 </div>
             </div>
-            <NuxtLink
+            <a
                 class="learn-more"
                 href="/use-cases/stories"
             >
                 Discover our Customer Stories<ArrowRightIcon/>
-            </NuxtLink>
+            </a>
         </HomeCard>
         <HomeCard class="card-block">
             <div class="any-spider">
@@ -37,12 +37,12 @@
                 <img v-bind="anySpider" alt="Any orchestration" class="spider" />
             </div>
             <h3><span>Any Orchestration</span><br/> Use Case</h3>
-            <NuxtLink
+            <a
                 class="learn-more"
                 href="/use-cases"
             >
                 Explore Use Cases<ArrowRightIcon/>
-            </NuxtLink>
+            </a>
         </HomeCard>
     </div>
 </template>

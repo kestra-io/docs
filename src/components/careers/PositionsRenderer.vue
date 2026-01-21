@@ -7,7 +7,7 @@
         >
             <ul class="list-unstyled d-flex flex-column gap-3">
                 <li data-usal="fade-l" v-for="doc in positions" :key="doc.id">
-                    <NuxtLink class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
+                    <a class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
                         <div class="d-flex align-items-center gap-3">
                             <img v-bind="emojiPeople" alt="emoji_people" />
                             <span>
@@ -23,7 +23,7 @@
                         <div class="d-flex align-items-center gap-3">
                             <img v-bind="arrowRight" alt="arrow_right" />
                         </div>
-                    </NuxtLink>
+                    </a>
                 </li>
             </ul>
         </LayoutSection>

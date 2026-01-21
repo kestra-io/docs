@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="href" class="blueprint" :class="{ light: scheme === 'light' }">
+    <a :href="href" class="blueprint" :class="{ light: scheme === 'light' }">
         <h6 class="title">
             {{ capitalizedTitle }}
         </h6>
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-    </NuxtLink>
+    </a>
 </template>
 
 <script setup lang="ts">

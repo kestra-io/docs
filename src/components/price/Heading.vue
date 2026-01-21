@@ -21,9 +21,9 @@
                                     The core features of Kestra, maintained by the Kestra team and community.
                                 </div>
                             </div>
-                            <NuxtLink href="https://github.com/kestra-io/kestra" class="get-started" data-usal="zoomin">
+                            <a href="https://github.com/kestra-io/kestra" class="get-started" data-usal="zoomin">
                                 Get started
-                            </NuxtLink>
+                            </a>
                             <ul>
                                 <li data-usal="fade-r delay-100">
                                     <div class="check-icon">
@@ -57,9 +57,9 @@
                                     <div class="pricing-desc" data-usal="fade-l"> Predictable instance based model with:
                                         no limits on users, workflows, or tasks.</div>
                                 </div>
-                                <NuxtLink href="/demo" class="demo-btn" data-usal="zoomin">
+                                <a href="/demo" class="demo-btn" data-usal="zoomin">
                                     Talk to us
-                                </NuxtLink>
+                                </a>
                                 <ul>
                                     <li data-usal="fade-r delay-100">
                                         <div class="check-icon">

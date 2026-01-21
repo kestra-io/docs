@@ -7,9 +7,9 @@
                         <h1 data-usal="fade-r">Migrate from Aria Operations & Cloud Foundation to Kestra</h1>
                         <p class="baseline" data-usal="fade-l">Pick the right choice for your company</p>
                         <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
+                            <a href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-usal="zoomin">
                                 Talk to us
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

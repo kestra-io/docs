@@ -23,12 +23,12 @@
                     @mouseover="hoveredIndex = flatElements.indexOf(element)"
                     @mouseleave="hoveredIndex = -1"
                 >
-                    <NuxtLink
+                    <a
                         :href="getElementHref(element)"
                         :class="{ active: isElementActive(element) }"
                     >
                         {{ formatElementName(element.cls) }}
-                    </NuxtLink>
+                    </a>
                 </li>
             </ul>
         </div>

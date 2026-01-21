@@ -16,7 +16,7 @@
                 <p class="description">
                     Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.
                 </p>
-                <NuxtLink href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></NuxtLink>
+                <a href="/use-cases/software-engineers" class="main-link">Ship Workflows Like Your Code <ArrowRightIcon/></a>
             </HomeCard>
 
             <HomeCard class="right-card card-block">
@@ -26,7 +26,7 @@
                 <p class="description">
                     Automate infrastructure tasks, manage dependencies, and ensure operational consistency.
                 </p>
-                <NuxtLink href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></NuxtLink>
+                <a href="/use-cases/platform-engineers" class="main-link">Take Control of Your Platform Ops <ArrowRightIcon/></a>
             </HomeCard>
 
             <HomeCard class="bottom-card card-block">
@@ -36,7 +36,7 @@
                 <p class="description">
                     Build reliable  data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.
                 </p>
-                <NuxtLink href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></NuxtLink>
+                <a href="/use-cases/data-engineers" class="main-link">Pipelines You Can Count On <ArrowRightIcon/></a>
             </HomeCard>
         </div>
     </section>

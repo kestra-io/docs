@@ -14,13 +14,13 @@
                         </p>
 
                         <div class="cta">
-                            <NuxtLink
+                            <a
                                 href="/docs/quickstart#start-kestra"
                                 class="btn btn-animated btn-purple-animated mt-2"
                                 data-usal="zoomin"
                             >
                                 Get started
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>

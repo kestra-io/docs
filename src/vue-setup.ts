@@ -34,12 +34,6 @@ export default (app: App) => {
         once: true,
     });
 
-    // Register global NuxtLink as the standard <a href> tag
-    app.component("NuxtLink", defineComponent({
-        setup: (props, { slots }) => () => h("a", { href: props.to ?? props.href }, slots.default?.()),
-        props: ["to", "href"]
-    }));
-
     app.component("NuxtImg", defineComponent({
         setup: (props) => () => h("img", {
             width: props.width,
