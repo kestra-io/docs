@@ -6,8 +6,6 @@ description: |-
 
 ---
 
-## Provider configurations
-
 ## Kestra 1.0.x compatibility
 
 :::alert{type="danger"}
