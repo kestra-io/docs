@@ -199,6 +199,9 @@ $bd-gutter-x: 3rem;
     display: none !important;
 }
 
+.layout-docs-wrapper  {
+    --ec-frm-tooltipSuccessBg: var(--ks-button-background-primary);
+}
 
 .layout-docs-wrapper .bd-content {
     #{--bs-heading-color}: white;
