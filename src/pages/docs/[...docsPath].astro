@@ -41,11 +41,13 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
     </div>
     <NavToc
-        client:visible links={headings.map(heading => ({
-        id: heading.slug,
-        text: heading.text,
-        depth: heading.depth
-    }))} slot="headings"
+        links={headings.map(heading => ({
+            id: heading.slug,
+            text: heading.text,
+            depth: heading.depth
+        }))}
+        client:visible
+        slot="headings"
         {editUrl}
     />
 </LayoutDocs>

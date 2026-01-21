@@ -4,7 +4,7 @@
     </li>
     <li v-else :class="{ ['depth-' + depthLevel]: true }">
         <a v-if="isPage && !item.hideSidebar" :class="classes" :href="item.path"
-            @click="handleNavClick($event, item.path)">
+            @click="handleNavClick($event, item.path)" ref="root-link">
             {{ item.emoji }}
             {{ title }}
         </a>
@@ -33,10 +33,12 @@
 </script>
 
 <script setup lang="ts">
-    import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref, computed } from "vue"
+    import { ref, nextTick, onMounted, inject, type InjectionKey, type Ref, computed, watch, useTemplateRef } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import { useSidebarScroll } from "~/composables/useSidebarScroll"
+
+    const rootLink = useTemplateRef<HTMLAnchorElement | null>('root-link')
 
     export interface NavigationItem {
         isSection?: boolean;
@@ -64,6 +66,16 @@
     const toggled = ref<boolean>(isActive.value || props.item.isSection === true)
     const title = computed(() => props.item.sidebarTitle ?? props.item.title)
 
+    watch(activeSlug, (v) => {
+        if(props.item.isSection === true) return
+        toggled.value = isActive.value
+        if(isActive.value && (props.item.hideSubMenus || !props.item.isPage)){
+            nextTick(() => {
+                rootLink.value?.scrollIntoView()
+            })
+        }
+    })
+
     onMounted(() => {
         const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
 
@@ -76,7 +88,7 @@
         })
     })
 
-    const handleNavClick = (_event: Event, path: string) => {
+    function handleNavClick(_event: Event, path: string){
         closeSidebar()
         activeSlug.value = path
         toggled.value = true
@@ -84,7 +96,7 @@
         preserveScrollPosition()
     }
 
-    const toggleWithChildrenHandling = (path: string) => {
+    function toggleWithChildrenHandling(path: string){
         props.item.children?.filter(i => i.path.startsWith(path))
             .forEach(i => {
                 if (isActiveOrExpanded(i) || i.path === path) {
