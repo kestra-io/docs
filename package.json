@@ -54,7 +54,7 @@
     "@nuxt/content": "^3.8.2",
     "@nuxt/devtools": "^3.1.1",
     "@nuxt/image": "^2.0.0",
-    "@nuxtjs/mdc": "^0.19.1",
+    "@nuxtjs/mdc": "^0.20.0",
     "@nuxtjs/robots": "^5.6.0",
     "@nuxtjs/sitemap": "^7.4.7",
     "@saslavik/nuxt-gtm": "^0.1.3",
